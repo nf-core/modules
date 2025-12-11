@@ -18,14 +18,14 @@
                 ]
             ],
             [
-                "versions.yml:md5,2287e2fdf9f0e754cb73fab98d1a407c",
+                "versions.yml:md5,055ba50f00b32df929e0e147ba6d4408",
                 "versions.yml:md5,3ba3affc995d9a03ef59f8cf9e7fac38",
-                "versions.yml:md5,735a6ce4c760e4957c04b9b444953924",
+                "versions.yml:md5,e4c10555396b9a57ef3aafc9a4707963",
                 "versions.yml:md5,ff3101d4f934dc550b466d79e092707c"
             ],
             [
                 {
-                    "VCF_IMPUTE_BEAGLE5:BCFTOOLS_INDEX_1": {
+                    "VCF_IMPUTE_BEAGLE5:BCFTOOLS_INDEX_BEAGLE": {
                         "bcftools": 1.22
                     }
                 },
@@ -35,7 +35,7 @@
                     }
                 },
                 {
-                    "VCF_IMPUTE_BEAGLE5:BCFTOOLS_INDEX_2": {
+                    "VCF_IMPUTE_BEAGLE5:BCFTOOLS_INDEX_LIGATE": {
                         "bcftools": 1.22
                     }
                 },
@@ -50,7 +50,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-12-10T21:05:04.415254164"
+        "timestamp": "2025-12-11T10:40:58.515114119"
     },
     "homo_sapiens - empty channels - stub": {
         "content": [
@@ -59,8 +59,8 @@
                     [
                         {
                             "id": "NA12878",
-                            "panel": "1000GP",
-                            "chr": "chr21"
+                            "chr": "chr21",
+                            "panel": "1000GP"
                         },
                         "NA12878_chr21.ligate.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
                         "NA12878_chr21.ligate.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
@@ -68,25 +68,25 @@
                     [
                         {
                             "id": "NA12878",
-                            "panel": "1000GP",
-                            "chr": "chr22"
+                            "chr": "chr22",
+                            "panel": "1000GP"
                         },
                         "NA12878_chr22.ligate.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
                         "NA12878_chr22.ligate.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,2287e2fdf9f0e754cb73fab98d1a407c",
+                    "versions.yml:md5,055ba50f00b32df929e0e147ba6d4408",
                     "versions.yml:md5,3ba3affc995d9a03ef59f8cf9e7fac38",
-                    "versions.yml:md5,735a6ce4c760e4957c04b9b444953924",
+                    "versions.yml:md5,e4c10555396b9a57ef3aafc9a4707963",
                     "versions.yml:md5,ff3101d4f934dc550b466d79e092707c"
                 ],
                 "vcf_index": [
                     [
                         {
                             "id": "NA12878",
-                            "panel": "1000GP",
-                            "chr": "chr21"
+                            "chr": "chr21",
+                            "panel": "1000GP"
                         },
                         "NA12878_chr21.ligate.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
                         "NA12878_chr21.ligate.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
@@ -94,23 +94,23 @@
                     [
                         {
                             "id": "NA12878",
-                            "panel": "1000GP",
-                            "chr": "chr22"
+                            "chr": "chr22",
+                            "panel": "1000GP"
                         },
                         "NA12878_chr22.ligate.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
                         "NA12878_chr22.ligate.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,2287e2fdf9f0e754cb73fab98d1a407c",
+                    "versions.yml:md5,055ba50f00b32df929e0e147ba6d4408",
                     "versions.yml:md5,3ba3affc995d9a03ef59f8cf9e7fac38",
-                    "versions.yml:md5,735a6ce4c760e4957c04b9b444953924",
+                    "versions.yml:md5,e4c10555396b9a57ef3aafc9a4707963",
                     "versions.yml:md5,ff3101d4f934dc550b466d79e092707c"
                 ]
             },
             [
                 {
-                    "VCF_IMPUTE_BEAGLE5:BCFTOOLS_INDEX_1": {
+                    "VCF_IMPUTE_BEAGLE5:BCFTOOLS_INDEX_BEAGLE": {
                         "bcftools": 1.22
                     }
                 },
@@ -120,7 +120,7 @@
                     }
                 },
                 {
-                    "VCF_IMPUTE_BEAGLE5:BCFTOOLS_INDEX_2": {
+                    "VCF_IMPUTE_BEAGLE5:BCFTOOLS_INDEX_LIGATE": {
                         "bcftools": 1.22
                     }
                 },
@@ -135,7 +135,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-12-10T21:12:57.511570759"
+        "timestamp": "2025-12-11T10:37:59.303608442"
     },
     "Impute with beagle5 one bcf gz - panel - map - chunks - two chrosomes": {
         "content": [
@@ -143,8 +143,8 @@
                 [
                     {
                         "id": "NA12878",
-                        "panel": "1000GP",
-                        "chr": "chr21"
+                        "chr": "chr21",
+                        "panel": "1000GP"
                     },
                     "NA12878_chr21.ligate.vcf.gz",
                     "NA12878_chr21.ligate.vcf.gz.csi",
@@ -157,8 +157,8 @@
                 [
                     {
                         "id": "NA12878",
-                        "panel": "1000GP",
-                        "chr": "chr22"
+                        "chr": "chr22",
+                        "panel": "1000GP"
                     },
                     "NA12878_chr22.ligate.vcf.gz",
                     "NA12878_chr22.ligate.vcf.gz.csi",
@@ -171,7 +171,7 @@
             ],
             [
                 {
-                    "VCF_IMPUTE_BEAGLE5:BCFTOOLS_INDEX_1": {
+                    "VCF_IMPUTE_BEAGLE5:BCFTOOLS_INDEX_BEAGLE": {
                         "bcftools": 1.22
                     }
                 },
@@ -181,7 +181,7 @@
                     }
                 },
                 {
-                    "VCF_IMPUTE_BEAGLE5:BCFTOOLS_INDEX_2": {
+                    "VCF_IMPUTE_BEAGLE5:BCFTOOLS_INDEX_LIGATE": {
                         "bcftools": 1.22
                     }
                 },
@@ -201,6 +201,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-12-10T21:28:55.484413804"
+        "timestamp": "2025-12-11T10:41:17.021023357"
     }
 }

@@ -59,7 +59,6 @@ nextflow_workflow {
     }
 
     test("Impute with beagle5 one bcf gz - panel - map - chunks - two chrosomes") {
-        tag "test"
         setup {
             run ("BCFTOOLS_VIEW", alias: "BCFTOOLS_VIEW_BCF" ) {
                 script "../../../../modules/nf-core/bcftools/view"
@@ -129,6 +128,7 @@ nextflow_workflow {
     }
 
     test("homo_sapiens - empty channels - stub") {
+        tag "test"
         options "-stub"
         when {
             workflow {
@@ -196,7 +196,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.failed },
-                { assert workflow.errorMessage.contains("ERROR: ch_input files must be in VCF or BCF format.") }
+                { assert workflow.errorMessage.contains("ERROR: genome.GRCh38.chr22.minimac.map in ch_input channel must be in VCF or BCF format.") }
             )
         }
     }

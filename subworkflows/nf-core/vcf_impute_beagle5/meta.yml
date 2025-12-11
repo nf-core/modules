@@ -5,8 +5,8 @@ description: |
   takes VCF files, phased reference panel, genetic maps and chunks region to perform imputation
   and outputs phased and imputed VCF files.
   Meta map of all channels, except ch_input, will be used to perform joint operations.
-  "regionout" key will be added to the meta map to distinguish the different file
-  before ligation and therefore should not be used.
+  "regionout" and "regionsize" keys will be added to the meta map to distinguish the different
+  file before ligation and therefore should not be used.
 keywords:
   - VCF
   - imputation

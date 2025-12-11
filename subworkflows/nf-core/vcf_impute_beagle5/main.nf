@@ -1,8 +1,8 @@
-include { BEAGLE5_BEAGLE                     } from '../../../modules/nf-core/beagle5/beagle'
-include { BCFTOOLS_VIEW                      } from '../../../modules/nf-core/bcftools/view'
-include { GLIMPSE2_LIGATE                    } from '../../../modules/nf-core/glimpse2/ligate'
-include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_1 } from '../../../modules/nf-core/bcftools/index'
-include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_2 } from '../../../modules/nf-core/bcftools/index'
+include { BEAGLE5_BEAGLE                          } from '../../../modules/nf-core/beagle5/beagle'
+include { BCFTOOLS_VIEW                           } from '../../../modules/nf-core/bcftools/view'
+include { GLIMPSE2_LIGATE                         } from '../../../modules/nf-core/glimpse2/ligate'
+include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_BEAGLE } from '../../../modules/nf-core/bcftools/index'
+include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_LIGATE } from '../../../modules/nf-core/bcftools/index'
 
 workflow VCF_IMPUTE_BEAGLE5 {
 
@@ -18,14 +18,14 @@ workflow VCF_IMPUTE_BEAGLE5 {
     // Branch input files based on format
     ch_input
         .branch { _meta, vcf, _tbi ->
-            bcf: vcf.baseName.contains('.bcf')
-            vcf: vcf.baseName.contains('.vcf')
+            bcf: vcf.name.contains('.bcf')
+            vcf: vcf.name.contains('.vcf')
             other: true
         }
         .set { ch_input_branched }
 
-    ch_input_branched.other.map{
-        error "ERROR: ch_input files must be in VCF or BCF format."
+    ch_input_branched.other.map{ _meta, vcf, _tbi ->
+        error "ERROR: ${vcf.name} in ch_input channel must be in VCF or BCF format."
     }
 
     // Convert BCF to VCF if necessary
@@ -45,9 +45,16 @@ workflow VCF_IMPUTE_BEAGLE5 {
         )
 
     // Prepare input channels for BEAGLE5 by combining VCF, panel, and map files
+    ch_chunks_counts = ch_chunks
+        .groupTuple()
+        .map { metaPC, regionouts ->
+            [metaPC, regionouts.size()]
+        }
+
     ch_panel_map = ch_panel
         .combine(ch_map, by: 0)
         .combine(ch_chunks, by: 0)
+        .combine(ch_chunks_counts, by: 0)
 
     ch_panel_map.ifEmpty{
         error "ERROR: join operation resulted in an empty channel. Please provide a valid ch_panel and ch_map channel as input."
@@ -55,8 +62,8 @@ workflow VCF_IMPUTE_BEAGLE5 {
 
     ch_beagle_input = ch_ready_vcf
         .combine(ch_panel_map)
-        .map { metaI, input_vcf, input_index, metaPC, panel_vcf, panel_index, map, regionout -> [
-            metaI + metaPC + ["regionout": regionout],
+        .map { metaI, input_vcf, input_index, metaPC, panel_vcf, panel_index, map, regionout, regionsize -> [
+            metaI + metaPC + ["regionout": regionout, "regionsize": regionsize],
             input_vcf, input_index,
             panel_vcf, panel_index,
             map, [], [], regionout
@@ -67,32 +74,40 @@ workflow VCF_IMPUTE_BEAGLE5 {
     ch_versions = ch_versions.mix(BEAGLE5_BEAGLE.out.versions.first())
 
     // Index the imputed VCF files
-    BCFTOOLS_INDEX_1(BEAGLE5_BEAGLE.out.vcf)
-    ch_versions = ch_versions.mix(BCFTOOLS_INDEX_1.out.versions.first())
+    BCFTOOLS_INDEX_BEAGLE(BEAGLE5_BEAGLE.out.vcf)
+    ch_versions = ch_versions.mix(BCFTOOLS_INDEX_BEAGLE.out.versions.first())
 
     // Ligate all phased files in one and index it
     ligate_input = BEAGLE5_BEAGLE.out.vcf
         .join(
-            BCFTOOLS_INDEX_1.out.tbi
-                .mix(BCFTOOLS_INDEX_1.out.csi)
+            BCFTOOLS_INDEX_BEAGLE.out.tbi
+                .mix(BCFTOOLS_INDEX_BEAGLE.out.csi)
         )
         .map{ meta, vcf, index ->
-            def keysToKeep = meta.keySet() - ['regionout']
-            [ meta.subMap(keysToKeep), vcf, index ]
+            def keysToKeep = meta.keySet() - ['regionout', 'regionsize']
+            [
+                groupKey(meta.subMap(keysToKeep), meta.regionsize),
+                vcf, index
+            ]
         }
         .groupTuple()
+        .map{ groupKeyObj, vcf, index ->
+            // Extract the actual meta from the groupKey
+            def meta = groupKeyObj.getGroupTarget()
+            [meta, vcf, index]
+        }
 
     GLIMPSE2_LIGATE( ligate_input )
     ch_versions = ch_versions.mix( GLIMPSE2_LIGATE.out.versions.first() )
 
-    BCFTOOLS_INDEX_2( GLIMPSE2_LIGATE.out.merged_variants )
-    ch_versions = ch_versions.mix( BCFTOOLS_INDEX_2.out.versions.first() )
+    BCFTOOLS_INDEX_LIGATE( GLIMPSE2_LIGATE.out.merged_variants )
+    ch_versions = ch_versions.mix( BCFTOOLS_INDEX_LIGATE.out.versions.first() )
 
     // Join imputed and index files
     ch_vcf_index = GLIMPSE2_LIGATE.out.merged_variants
         .join(
-            BCFTOOLS_INDEX_2.out.tbi
-                .mix(BCFTOOLS_INDEX_2.out.csi)
+            BCFTOOLS_INDEX_LIGATE.out.tbi
+                .mix(BCFTOOLS_INDEX_LIGATE.out.csi)
         )
 
     emit:
