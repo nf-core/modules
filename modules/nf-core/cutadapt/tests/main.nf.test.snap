@@ -50,13 +50,20 @@
                 ]
             ],
             [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.cutadapt.log:md5,bf1865d6c1ea5c2843fb5911deac3a83"
-                ]
+                "Command line parameters: --cores 2 -o test_1.trim.fastq.gz -p test_2.trim.fastq.gz test_1.fastq.gz test_2.fastq.gz",
+                "Processing paired-end reads on 2 cores ...",
+                "",
+                "=== Summary ===",
+                "",
+                "Total read pairs processed:                100",
+                "Pairs written (passing filters):           100 (100.0%)",
+                "",
+                "Total basepairs processed:        27,645 bp",
+                "  Read 1:        13,897 bp",
+                "  Read 2:        13,748 bp",
+                "Total written (filtered):         27,645 bp (100.0%)",
+                "  Read 1:        13,897 bp",
+                "  Read 2:        13,748 bp"
             ],
             {
                 "versions_cutadapt": [
@@ -72,7 +79,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-11T13:02:17.477395208"
+        "timestamp": "2025-12-11T14:12:08.287985982"
     },
     "sarscov2 - fastq - single-end": {
         "content": [
@@ -86,13 +93,16 @@
                 ]
             ],
             [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test.cutadapt.log:md5,b4198fbd1cbe0a238f93db20a95a4661"
-                ]
+                "Command line parameters: --cores 2 -o test.trim.fastq.gz test_1.fastq.gz",
+                "Processing single-end reads on 2 cores ...",
+                "",
+                "=== Summary ===",
+                "",
+                "Total reads processed:                     100",
+                "Reads written (passing filters):           100 (100.0%)",
+                "",
+                "Total basepairs processed:        13,897 bp",
+                "Total written (filtered):         13,897 bp (100.0%)"
             ],
             {
                 "versions_cutadapt": [
@@ -108,6 +118,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-11T13:02:11.212925216"
+        "timestamp": "2025-12-11T14:06:44.706447277"
     }
 }

@@ -28,7 +28,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.reads,
-                    process.out.log,
+                    file(process.out.log[0][1]).readLines()[1..10], // python versions differ in the default conda env and container
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
@@ -56,7 +56,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.reads,
-                    process.out.log,
+                    file(process.out.log[0][1]).readLines()[1..14], // python versions differ in the default conda env and container
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
