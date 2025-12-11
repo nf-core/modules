@@ -42,9 +42,10 @@ output:
       - haplogrep3:
           type: string
           description: The tool name
-      - haplogrep3 | sed -n 's/.*Haplogrep 3 \\([0-9.]\\+\\':
-          type: string
-          description: The command used to generate the version of the tool
+      - haplogrep3 | sed -n 's/.*Haplogrep 3 \([0-9.]\+\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -53,9 +54,10 @@ topics:
       - haplogrep3:
           type: string
           description: The tool name
-      - haplogrep3 | sed -n 's/.*Haplogrep 3 \\([0-9.]\\+\\':
-          type: string
-          description: The command used to generate the version of the tool
+      - haplogrep3 | sed -n 's/.*Haplogrep 3 \([0-9.]\+\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@lucpen"
 maintainers:
