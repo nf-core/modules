@@ -65,7 +65,7 @@ process T1K_RUN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo ${args}
-    
+
     touch ${prefix}_genotype.tsv
     touch ${prefix}_allele.tsv
     touch ${prefix}_candidate_1.fq
