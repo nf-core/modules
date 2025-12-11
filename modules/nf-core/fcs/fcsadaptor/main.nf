@@ -79,6 +79,7 @@ process FCS_FCSADAPTOR {
     def FCSADAPTOR_VERSION = '0.5.0'
 
     """
+    echo | gzip > ${prefix}.cleaned_sequences.fa.gz
     touch ${prefix}.fcs_adaptor_report.txt
     touch ${prefix}.fcs_adaptor.log
     touch ${prefix}.pipeline_args.yaml
