@@ -37,11 +37,17 @@ process CUTADAPT {
     """
 
     stub:
-    def prefix  = task.ext.prefix ?: "${meta.id}"
-    def trimmed = meta.single_end ? "${prefix}.trim.fastq.gz" : "${prefix}_1.trim.fastq.gz ${prefix}_2.trim.fastq.gz"
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if (meta.single_end) {
+        output_command = "echo '' | gzip > ${prefix}.trim.fastq.gz ;"
+    }
+    else {
+        output_command  = "echo '' | gzip > ${prefix}_1.trim.fastq.gz ;"
+        output_command += "echo '' | gzip > ${prefix}_2.trim.fastq.gz ;"
+    }
     """
+    ${output_command}
     touch ${prefix}.cutadapt.log
-    touch ${trimmed}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
