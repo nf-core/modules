@@ -1,10 +1,12 @@
-include { BOWTIE2_ALIGN                             } from '../../../modules/nf-core/bowtie2/align/main'
-include { BOWTIE2_ALIGN as BOWTIE2_ALIGN_PE         } from '../../../modules/nf-core/bowtie2/align/main'
-include { BOWTIE2_BUILD                             } from '../../../modules/nf-core/bowtie2/build/main'
-include { RIBODETECTOR                              } from '../../../modules/nf-core/ribodetector/main'
-include { SAMTOOLS_FASTQ as SAMTOOLS_FASTQ_BOWTIE2  } from '../../../modules/nf-core/samtools/fastq/main'
-include { SAMTOOLS_VIEW as SAMTOOLS_VIEW_BOWTIE2    } from '../../../modules/nf-core/samtools/view/main'
-include { SEQKIT_STATS                              } from '../../../modules/nf-core/seqkit/stats/main'
+include { BOWTIE2_ALIGN                               } from '../../../modules/nf-core/bowtie2/align/main'
+include { BOWTIE2_ALIGN as BOWTIE2_ALIGN_PE             } from '../../../modules/nf-core/bowtie2/align/main'
+include { BOWTIE2_BUILD                               } from '../../../modules/nf-core/bowtie2/build/main'
+include { RIBODETECTOR                                } from '../../../modules/nf-core/ribodetector/main'
+include { SAMTOOLS_FASTQ as SAMTOOLS_FASTQ_BOWTIE2    } from '../../../modules/nf-core/samtools/fastq/main'
+include { SAMTOOLS_VIEW as SAMTOOLS_VIEW_BOWTIE2      } from '../../../modules/nf-core/samtools/view/main'
+include { SEQKIT_REPLACE                              } from '../../../modules/nf-core/seqkit/replace/main'
+include { SEQKIT_REPLACE as SEQKIT_REPLACE_U2T         } from '../../../modules/nf-core/seqkit/replace/main'
+include { SEQKIT_STATS                                } from '../../../modules/nf-core/seqkit/stats/main'
 include { SORTMERNA                                 } from '../../../modules/nf-core/sortmerna/main'
 include { SORTMERNA as SORTMERNA_INDEX              } from '../../../modules/nf-core/sortmerna/main'
 
@@ -100,16 +102,33 @@ workflow FASTQ_REMOVE_RRNA {
     }
     else if (ribo_removal_tool == 'bowtie2') {
         if (make_bowtie2_index) {
-            // Collect all fastas into a single file for index building
-            // Convert U to T since rRNA references may contain RNA (U) but reads are DNA (T)
+            // Process each rRNA file to add unique prefixes and convert U to T
+            // This prevents duplicate sequence IDs in SAM header when combining databases
             ch_rrna_fastas
-                .collectFile(name: 'rrna_combined.fasta', newLine: true)
-                .map { fasta ->
-                    def content = fasta.text.replaceAll('U', 'T').replaceAll('u', 't')
-                    def convertedFasta = file("${fasta.parent}/rrna_combined_dna.fasta")
-                    convertedFasta.text = content
-                    [[id: 'rrna_refs'], convertedFasta]
-                }
+                .map { fasta -> [[id: fasta.baseName], fasta] }
+                .set { ch_rrna_with_meta }
+
+            // Step 1: Add filename prefixes to sequence headers
+            SEQKIT_REPLACE(
+                ch_rrna_with_meta
+            )
+            ch_versions = ch_versions.mix(SEQKIT_REPLACE.out.versions)
+
+            // Step 2: Convert U to T in sequences (RNA to DNA)
+            SEQKIT_REPLACE.out.fastx
+                .map { meta, fasta -> [[id: "${meta.id}_dna"], fasta] }
+                .set { ch_prefixed_fastas }
+
+            SEQKIT_REPLACE_U2T(
+                ch_prefixed_fastas
+            )
+            ch_versions = ch_versions.mix(SEQKIT_REPLACE_U2T.out.versions)
+
+            // Collect processed files (already prefixed and U->T converted)
+            SEQKIT_REPLACE_U2T.out.fastx
+                .map { meta, fasta -> fasta }
+                .collectFile(name: 'rrna_combined_dna.fasta', newLine: true)
+                .map { fasta -> [[id: 'rrna_refs'], fasta] }
                 .set { ch_combined_fasta }
 
             BOWTIE2_BUILD(
