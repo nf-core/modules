@@ -60,8 +60,8 @@ workflow VCF_IMPUTE_GLIMPSE {
 
     // Ligate all phased files in one and index it
     ligate_input = GLIMPSE_PHASE.out.phased_variants
-        .join( BCFTOOLS_INDEX_1.out.csi
-            .mix(BCFTOOLS_INDEX_1.out.tbi)
+        .join( BCFTOOLS_INDEX_PHASE.out.csi
+            .mix(BCFTOOLS_INDEX_PHASE.out.tbi)
         )
         .map{ meta, vcf, index ->
             def keysToKeep = meta.keySet() - 'regionout'
