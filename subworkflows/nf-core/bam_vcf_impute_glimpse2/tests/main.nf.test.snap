@@ -1,0 +1,524 @@
+{
+    "homo_sapiens - vcf no list and no sample, panel vcf region, no chunks, no map, no fasta, chunk recursive + splitreference": {
+        "content": [
+            [
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "chr22:16570065-16609999",
+                    "chr22:16570065-16592222"
+                ],
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "chr22:16570065-16609999",
+                    "chr22:16592223-16609999"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "input_vcf",
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "input_vcf_22.vcf.gz",
+                    "input_vcf_22.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=903, phased=true, phasedAutodetect=false]",
+                    [
+                        "NA12878"
+                    ],
+                    "b9ccc0359ccca0714fca43367538de47"
+                ]
+            ],
+            [
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_CHUNK": {
+                        "glimpse2": "2.0.0"
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_PHASE": {
+                        "glimpse2": "2.0.0"
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_2": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_LIGATE": {
+                        "glimpse2": "2.0.0"
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_1": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_SPLITREFERENCE": {
+                        "glimpse2": "2.0.0"
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-11-21T12:07:17.825740137"
+    },
+    "homo_sapiens - bam no list and no sample, panel vcf region, no chunks, no map, no fasta, chunk sequential + splitreference": {
+        "content": [
+            [
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "chr22:1-16609999",
+                    "chr22:1-16590520"
+                ],
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "chr22:16570065-1248956422",
+                    "chr22:16590521-1248956422"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "input_bam",
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "input_bam_22.vcf.gz",
+                    "input_bam_22.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=903, phased=true, phasedAutodetect=true]",
+                    [
+                        "NA12878.chr22.1X"
+                    ],
+                    "661a9923af273601dbf0e7a3a666ebd0"
+                ]
+            ],
+            [
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_CHUNK": {
+                        "glimpse2": "2.0.0"
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_PHASE": {
+                        "glimpse2": "2.0.0"
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_2": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_LIGATE": {
+                        "glimpse2": "2.0.0"
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_1": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_SPLITREFERENCE": {
+                        "glimpse2": "2.0.0"
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-11-21T12:08:29.707313034"
+    },
+    "homo_sapiens - empty channels, chunk sequential + splitreference - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "panel": "ref_panel",
+                            "chr": "21"
+                        },
+                        "0",
+                        "0"
+                    ],
+                    [
+                        {
+                            "panel": "ref_panel",
+                            "chr": "22"
+                        },
+                        "0",
+                        "0"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "allid",
+                            "panel": "ref_panel",
+                            "chr": "21"
+                        },
+                        "allid_21.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "allid_21.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ],
+                    [
+                        {
+                            "id": "allid",
+                            "panel": "ref_panel",
+                            "chr": "22"
+                        },
+                        "allid_22.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "allid_22.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,302281bbff76712870c031340d3819ff",
+                    "versions.yml:md5,3500318c881e3f24e9dd2fddc593142a",
+                    "versions.yml:md5,9422ca169a15fd68878396c2837bc185",
+                    "versions.yml:md5,c6ff81aa44fb2fdcc08db6062731d0d9",
+                    "versions.yml:md5,cb51e18b4296c3791ade5f6f2737bd24",
+                    "versions.yml:md5,ed6ebcf6ca30c2cdc39ec1dd535a2695"
+                ],
+                "ch_chunks": [
+                    [
+                        {
+                            "panel": "ref_panel",
+                            "chr": "21"
+                        },
+                        "0",
+                        "0"
+                    ],
+                    [
+                        {
+                            "panel": "ref_panel",
+                            "chr": "22"
+                        },
+                        "0",
+                        "0"
+                    ]
+                ],
+                "ch_vcf_index": [
+                    [
+                        {
+                            "id": "allid",
+                            "panel": "ref_panel",
+                            "chr": "21"
+                        },
+                        "allid_21.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "allid_21.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ],
+                    [
+                        {
+                            "id": "allid",
+                            "panel": "ref_panel",
+                            "chr": "22"
+                        },
+                        "allid_22.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "allid_22.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,302281bbff76712870c031340d3819ff",
+                    "versions.yml:md5,3500318c881e3f24e9dd2fddc593142a",
+                    "versions.yml:md5,9422ca169a15fd68878396c2837bc185",
+                    "versions.yml:md5,c6ff81aa44fb2fdcc08db6062731d0d9",
+                    "versions.yml:md5,cb51e18b4296c3791ade5f6f2737bd24",
+                    "versions.yml:md5,ed6ebcf6ca30c2cdc39ec1dd535a2695"
+                ]
+            },
+            [
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_CHUNK": {
+                        "glimpse2": "2.0.0"
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_PHASE": {
+                        "glimpse2": "2.0.0"
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_2": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_LIGATE": {
+                        "glimpse2": "2.0.0"
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_1": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_SPLITREFERENCE": {
+                        "glimpse2": "2.0.0"
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-11-21T12:10:17.321588787"
+    },
+    "homo_sapiens - vcf no list with sample, panel vcf region, chunks, map, no fasta, no chunking + no splitreference": {
+        "content": [
+            [
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "chr22:16570065-16597215",
+                    "chr22:16570065-16592216"
+                ],
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "chr22:16587172-16609999",
+                    "chr22:16592229-16609999"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "input_vcf",
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "input_vcf_22.vcf.gz",
+                    "input_vcf_22.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=903, phased=true, phasedAutodetect=false]",
+                    [
+                        "NA12878"
+                    ],
+                    "a0d696cbdb219c168b6d54fc28c5f7dd"
+                ]
+            ],
+            [
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_PHASE": {
+                        "glimpse2": "2.0.0"
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_2": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_LIGATE": {
+                        "glimpse2": "2.0.0"
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_1": {
+                        "bcftools": 1.22
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-11-21T12:08:13.222110779"
+    },
+    "homo_sapiens - vcf no list with sample, panel vcf region, chunks, map, no fasta, no chunking + splitreference": {
+        "content": [
+            [
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "chr22:16570065-16597215",
+                    "chr22:16570065-16592216"
+                ],
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "chr22:16587172-16609999",
+                    "chr22:16592229-16609999"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "input_vcf",
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "input_vcf_22.vcf.gz",
+                    "input_vcf_22.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=903, phased=true, phasedAutodetect=false]",
+                    [
+                        "NA12878"
+                    ],
+                    "a0d696cbdb219c168b6d54fc28c5f7dd"
+                ]
+            ],
+            [
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_PHASE": {
+                        "glimpse2": "2.0.0"
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_2": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_LIGATE": {
+                        "glimpse2": "2.0.0"
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_1": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_SPLITREFERENCE": {
+                        "glimpse2": "2.0.0"
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-11-21T12:07:58.812913099"
+    },
+    "homo_sapiens - bam list and sample, panel vcf region, chunks, map, no fasta, no chunking + splitreference": {
+        "content": [
+            [
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "21"
+                    },
+                    "chr21:16570065-16597215",
+                    "chr21:16570065-16592216"
+                ],
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "21"
+                    },
+                    "chr21:16587172-16609999",
+                    "chr21:16592229-16609999"
+                ],
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "chr22:16570065-16597215",
+                    "chr22:16570065-16592216"
+                ],
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "chr22:16587172-16609999",
+                    "chr22:16592229-16609999"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "allid",
+                        "panel": "ref_panel",
+                        "chr": "21"
+                    },
+                    "allid_21.vcf.gz",
+                    "allid_21.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr21], sampleCount=2, variantCount=836, phased=true, phasedAutodetect=true]",
+                    [
+                        "Sample1",
+                        "Sample2"
+                    ],
+                    "56a7bd192123c52ea77f8b3a59e50342"
+                ],
+                [
+                    {
+                        "id": "allid",
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "allid_22.vcf.gz",
+                    "allid_22.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr22], sampleCount=2, variantCount=903, phased=true, phasedAutodetect=true]",
+                    [
+                        "Sample1",
+                        "Sample2"
+                    ],
+                    "13cdb23c1074393f9fe53feae397a3df"
+                ]
+            ],
+            [
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_PHASE": {
+                        "glimpse2": "2.0.0"
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_2": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_LIGATE": {
+                        "glimpse2": "2.0.0"
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_1": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_SPLITREFERENCE": {
+                        "glimpse2": "2.0.0"
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-12-08T19:39:08.135355223"
+    }
+}
