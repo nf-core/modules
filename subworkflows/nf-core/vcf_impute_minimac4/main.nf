@@ -35,6 +35,8 @@ workflow VCF_IMPUTE_MINIMAC4 {
         ch_panel_branched.msav.map { meta, file, _index -> [meta, file] }
     )
 
+    // Channel with all reference and chunks informations
+    // [ meta, reference panel msav, sites to impute vcf, sites index, region to impute, genetic map ]
     ch_panel_impute = ch_panel_msav
         .combine(ch_posfile, by: 0)
         .combine(ch_chunks, by: 0)
