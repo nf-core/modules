@@ -72,6 +72,17 @@ output:
           description: "Merged output file"
           pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
           ontologies: []
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.{tbi,csi}":
+          type: file
+          description: "Index of merged output file"
+          pattern: "*.{tbi,csi}"
+          ontologies: []
   versions_trgt:
     - - ${task.process}:
           type: string
