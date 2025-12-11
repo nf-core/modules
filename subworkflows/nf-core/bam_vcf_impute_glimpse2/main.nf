@@ -24,8 +24,8 @@ workflow BAM_VCF_IMPUTE_GLIMPSE2 {
     if ( chunk == true ){
         // Error if pre-defined chunks are provided when chunking is activated
         ch_chunks
-            .filter { _meta, regionin, regionout -> regionin.size() > 0 || regionout.size() > 0 }
-            .subscribe {
+            .filter { _meta, regionin, regionout -> regionin.size() == 0 && regionout.size() == 0 }
+            .ifEmpty {
                 error "ERROR: Cannot provide pre-defined chunks (regionin) when chunk=true. Please either set chunk=false to use provided chunks, or remove input chunks to enable automatic chunking."
             }
 
