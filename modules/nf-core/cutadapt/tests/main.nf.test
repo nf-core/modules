@@ -28,8 +28,10 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.reads != null },
                 { assert process.out.reads.get(0).get(1) ==~ ".*.trim.fastq.gz" },
-                { assert snapshot(process.out.versions).match("versions_single_end") },
-                { assert snapshot(path(process.out.reads.get(0).get(1)).linesGzip[0]).match() }
+                { assert snapshot(
+                    path(process.out.reads.get(0).get(1)).linesGzip[0],
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
     }
@@ -56,8 +58,10 @@ nextflow_process {
                 { assert process.out.reads != null },
                 { assert process.out.reads.get(0).get(1).get(0) ==~ ".*.1.trim.fastq.gz" },
                 { assert process.out.reads.get(0).get(1).get(1) ==~ ".*.2.trim.fastq.gz" },
-                { assert snapshot(path(process.out.reads.get(0).get(1).get(1)).linesGzip[0]).match() },
-                { assert snapshot(process.out.versions).match("versions_paired_end") }
+                { assert snapshot(
+                    path(process.out.reads.get(0).get(1).get(1)).linesGzip[0],
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
     }
@@ -81,11 +85,10 @@ nextflow_process {
 
         then {
             assertAll (
-                { assert process.success },
-                { assert process.out.reads != null },
-                { assert process.out.reads.get(0).get(1) ==~ ".*.trim.fastq.gz" },
-                { assert snapshot(process.out.versions).match("versions_single_end_stub") },
-                { assert snapshot(path(process.out.reads.get(0).get(1)).linesGzip[0]).match() }
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
     }
