@@ -45,7 +45,7 @@ nextflow_process {
                 .combine(MINIMAC4_COMPRESSREF.out.msav)
                 .map{
                     meta, target_vcf, target_index, sites_vcf, sites_index, map, metaRef, ref -> [
-                        meta, target_vcf, target_index, ref, sites_vcf, sites_index, map
+                        meta, target_vcf, target_index, ref, sites_vcf, sites_index, map, "chr22"
                     ]
                 }
                 """
@@ -86,7 +86,7 @@ nextflow_process {
                 .combine(MINIMAC4_COMPRESSREF.out.msav)
                 .map{
                     meta, target_vcf, target_index, metaRef, ref -> [
-                        meta, target_vcf, target_index, ref, [], [], []
+                        meta, target_vcf, target_index, ref, [], [], [], []
                     ]
                 }
                 """
@@ -126,7 +126,7 @@ nextflow_process {
                     [id: "NA12878", chr: "chr22"],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz",checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi",checkIfExists:true),
-                    [], [], [], []
+                    [], [], [], [], []
                 ])
                 """
             }
