@@ -14,7 +14,6 @@ process BCL2FASTQ {
     tuple val(meta), path("output/**Undetermined_S0*_I?_00?.fastq.gz")  , optional:true, emit: undetermined_idx
     tuple val(meta), path("output/Reports")                             , emit: reports
     tuple val(meta), path("output/Stats")                               , emit: stats
-    tuple val(meta), path("InterOp/*.bin")                       , emit: interop
     path("versions.yml")                                         , emit: versions
 
     when:
@@ -62,8 +61,6 @@ process BCL2FASTQ {
         --runfolder-dir ${input_dir} \\
         --sample-sheet ${samplesheet} \\
         --processing-threads ${task.cpus}
-
-    cp -r ${input_dir}/InterOp .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
