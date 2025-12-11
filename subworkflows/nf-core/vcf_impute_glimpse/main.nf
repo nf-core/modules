@@ -72,14 +72,14 @@ workflow VCF_IMPUTE_GLIMPSE {
     GLIMPSE_LIGATE ( ligate_input )
     ch_versions = ch_versions.mix(GLIMPSE_LIGATE.out.versions.first() )
 
-    BCFTOOLS_INDEX_2 ( GLIMPSE_LIGATE.out.merged_variants )
-    ch_versions = ch_versions.mix( BCFTOOLS_INDEX_2.out.versions.first() )
+    BCFTOOLS_INDEX_LIGATE ( GLIMPSE_LIGATE.out.merged_variants )
+    ch_versions = ch_versions.mix( BCFTOOLS_INDEX_LIGATE.out.versions.first() )
 
     // Join imputed and index files
     ch_vcf_index = GLIMPSE_LIGATE.out.merged_variants
         .join(
-            BCFTOOLS_INDEX_2.out.tbi
-                .mix(BCFTOOLS_INDEX_2.out.csi)
+            BCFTOOLS_INDEX_LIGATE.out.tbi
+                .mix(BCFTOOLS_INDEX_LIGATE.out.csi)
         )
 
     emit:
