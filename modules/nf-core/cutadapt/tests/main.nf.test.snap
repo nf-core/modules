@@ -1,58 +1,24 @@
 {
-    "sarscov2 Illumina single end [fastq] - stub": {
+    "sarscov2 - fastq - single-end - stub": {
         "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.trim.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.cutadapt.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        "CUTADAPT",
-                        "cutadapt",
-                        "5.2"
-                    ]
-                ],
-                "log": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.cutadapt.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "reads": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.trim.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "versions_cutadapt": [
-                    [
-                        "CUTADAPT",
-                        "cutadapt",
-                        "5.2"
-                    ]
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.trim.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                 ]
-            },
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.cutadapt.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ]
+            ],
             {
                 "versions_cutadapt": [
                     [
@@ -67,11 +33,31 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-11T12:28:40.409039883"
+        "timestamp": "2025-12-11T12:48:07.964157954"
     },
-    "sarscov2 Illumina single end [fastq]": {
+    "sarscov2 - fastq - paired-end": {
         "content": [
-            "@ERR5069949.2151832 NS500628:121:HK3MMAFX2:2:21208:10793:15304/1",
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "test_1.trim.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec",
+                        "test_2.trim.fastq.gz:md5,2ebae722295ea66d84075a3b042e2b42"
+                    ]
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.cutadapt.log:md5,32c7e6e3b8a6741541519c71eb0aae48"
+                ]
+            ],
             {
                 "versions_cutadapt": [
                     [
@@ -86,11 +72,28 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-11T12:28:28.497939847"
+        "timestamp": "2025-12-11T12:49:21.554600817"
     },
-    "sarscov2 Illumina paired-end [fastq]": {
+    "sarscov2 - fastq - single-end": {
         "content": [
-            "@ERR5069949.2151832 NS500628:121:HK3MMAFX2:2:21208:10793:15304/2",
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.trim.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.cutadapt.log:md5,97ee1da59d19d31679cc487b672ffc34"
+                ]
+            ],
             {
                 "versions_cutadapt": [
                     [
@@ -105,6 +108,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-11T12:28:34.888064355"
+        "timestamp": "2025-12-11T12:47:06.276800363"
     }
 }
