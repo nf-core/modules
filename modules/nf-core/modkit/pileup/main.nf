@@ -46,7 +46,7 @@ process MODKIT_PILEUP {
             fi
         done
     else
-        mv ${prefix}.tmp ${prefix}.bed
+        mv ${prefix}.tmp ${prefix}.bed.gz
     fi
 
     cat <<-END_VERSIONS > versions.yml
