@@ -6,6 +6,7 @@
 
 include { BCLCONVERT } from "../../../modules/nf-core/bclconvert/main"
 include { BCL2FASTQ  } from "../../../modules/nf-core/bcl2fastq/main"
+include { UNTAR      } from "../../../modules/nf-core/untar/main"
 
 workflow BCL_DEMULTIPLEX {
     take:
@@ -19,34 +20,34 @@ workflow BCL_DEMULTIPLEX {
         ch_stats         = channel.empty()
         ch_logs          = channel.empty()
 
-        // Split flowcells into separate channels containing run as tar and run as path
-        // https://nextflow.slack.com/archives/C02T98A23U7/p1650963988498929
+        // Split flowcells into tar.gz archives vs directories
         ch_flowcell
             .branch { _meta, _samplesheet, run ->
                 tar: run.toString().endsWith(".tar.gz")
                 dir: true
-            }.set { ch_flowcells }
+            }.set { ch_flowcells_branched }
 
-        ch_flowcells.tar
-            .multiMap { meta, samplesheet, run ->
-                samplesheets: [ meta, samplesheet ]
-                run_dirs: [ meta, run ]
-            }.set { ch_flowcells_tar }
-
-        // Runs when run_dir is a tar archive
-        // Re-join the metadata and the untarred run directory with the samplesheet
-        ch_flowcells_tar_merged = ch_flowcells_tar
-                                    .samplesheets
-                                    .join( ch_flowcells_tar.run_dirs )
-
-        // Merge the two channels back together
-        ch_flowcells = ch_flowcells.dir.mix(ch_flowcells_tar_merged)
-
-        // Extract InterOp files directly from the input channel
-        ch_interop = ch_flowcells.map { meta, _samplesheet, run_dir ->
-            def interop_files = files("${run_dir}/{,**/}InterOp/*.bin")
-            [meta, interop_files]
+        // For tar.gz inputs, extract once and reuse for both InterOp and demultiplexing
+        ch_tar_input = ch_flowcells_branched.tar.multiMap { meta, samplesheet, run ->
+            samplesheets: [meta, samplesheet]
+            run_dirs: [meta, run]
         }
+        UNTAR( ch_tar_input.run_dirs )
+        ch_versions = ch_versions.mix(UNTAR.out.versions.first())
+
+        // Extract InterOp files from run directories (more efficient than waiting for demultiplexing)
+        // Note: The {,**/} pattern matches zero-or-more directories
+        ch_interop = ch_flowcells_branched.dir
+            .map { meta, _samplesheet, run_dir -> [meta, run_dir] }
+            .mix(UNTAR.out.untar)
+            .map { meta, run_dir ->
+                [meta, files("${run_dir}/{,**/}InterOp/*.bin")]
+            }
+
+        // Combine untarred directories with samplesheets and merge with directory inputs
+        ch_flowcells = ch_tar_input.samplesheets
+            .join(UNTAR.out.untar)
+            .mix(ch_flowcells_branched.dir)
 
         // MODULE: bclconvert
         // Demultiplex the bcl files
