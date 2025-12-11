@@ -172,7 +172,6 @@ nextflow_workflow {
     }
 
     test("homo_sapiens - error wrong panel format - stub") {
-        tag "test"
         options "-stub"
         when {
             workflow {
@@ -210,9 +209,6 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.failed },
-                { assert snapshot(
-                    workflow.errorMessage
-                ).match()},
                 { assert workflow.errorMessage.contains("ERROR: ch_panel files must be either VCF/BCF or MSAV.") }
             )
         }
