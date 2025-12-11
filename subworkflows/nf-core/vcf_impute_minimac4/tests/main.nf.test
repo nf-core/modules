@@ -209,7 +209,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.failed },
-                { assert workflow.errorMessage.contains("ERROR: ch_panel files must be either VCF/BCF or MSAV.") }
+                { assert filterNextflowOutput(workflow.stdout).contains("ERROR: ch_panel files must be either VCF/BCF or MSAV.") }
             )
         }
     }
@@ -254,7 +254,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.failed },
-                { assert workflow.errorMessage.contains("ERROR: join operation resulted in an empty channel. Please provide a valid ch_posfile, ch_chunks and ch_map channel as input.") }
+                { assert filterNextflowOutput(workflow.stdout).contains("ERROR: join operation resulted in an empty channel. Please provide a valid ch_posfile, ch_chunks and ch_map channel as input.") }
             )
         }
     }
