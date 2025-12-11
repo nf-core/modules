@@ -18,14 +18,15 @@ nextflow_process {
                 script "../../phase/main.nf"
                 process {
                 """
-                input_vcf = Channel.of([
+                input_vcf = channel.of([
                     [ id:'input' ],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi", checkIfExists: true),
-                    [], [],
-                    "chr22:16600000-16800000",
-                    "chr22:16650000-16750000"
-                ])
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists: true),
+                    [], []
+                ]).combine(channel.of(
+                    ["chr22:16570065-16597215", "chr22:16570065-16592216"],
+                    ["chr22:16587172-16609999", "chr22:16592229-16609999"]
+                ))
 
                 ref_panel = Channel.of([
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
@@ -36,9 +37,12 @@ nextflow_process {
 
                 // [meta, vcf, index, sample_infos, regionin, regionout,ref, index, map] [meta, fasta, fai]
                 input[0] = input_vcf
+                    .map { meta, vcf, index, list, sample, regionI, regionO ->
+                        [[id: meta.id, region : regionI], vcf, index, list, sample, regionI, regionO]
+                    }
                     .combine(ref_panel)
                     .combine(map_file)
-                input[1] = Channel.of([[],[],[]])
+                input[1] = Channel.of([[],[],[]]).collect()
                 """
                 }
             }
@@ -56,8 +60,9 @@ nextflow_process {
             process {
                 """
                 input[0] = GLIMPSE2_PHASE.out.phased_variants
-                    | groupTuple()
-                    | join (BCFTOOLS_INDEX.out.csi.groupTuple())
+                    .join(BCFTOOLS_INDEX.out.csi)
+                    .map{ meta, vcf, index -> [meta.subMap("id"), vcf, index]}
+                    .groupTuple()
                 """
             }
         }
@@ -67,7 +72,12 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.versions,
-                    process.out.merged_variants.collect{ path(it[1]).vcf.variantsMD5}
+                    process.out.merged_variants.collect{ meta, vcf -> [
+                        meta,
+                        file(vcf).name,
+                        path(vcf).vcf.summary,
+                        path(vcf).vcf.variantsMD5
+                    ] }
                 ).match() },
             )
         }
@@ -80,8 +90,8 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'input' ],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists: true),
                 ])
                 """
             }
@@ -90,10 +100,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml,
-                ).match() },
+                { assert snapshot(process.out).match() },
             )
         }
     }
