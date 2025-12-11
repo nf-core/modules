@@ -32,7 +32,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = MODKIT_PILEUP.out.bed
+                input[0] = MODKIT_PILEUP.out.bedgz
                 input[1] = [
                     [ id : 'hg38' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
@@ -55,7 +55,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = MODKIT_PILEUP.out.bed
+                input[0] = MODKIT_PILEUP.out.bedgz
                 input[1] = [
                     [ id : 'hg38' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
@@ -78,7 +78,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = MODKIT_PILEUP.out.bed
+                input[0] = MODKIT_PILEUP.out.bedgz
                 input[1] = [
                     [ id : 'hg38' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
