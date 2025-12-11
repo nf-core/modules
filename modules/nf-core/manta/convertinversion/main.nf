@@ -15,7 +15,7 @@ process MANTA_CONVERTINVERSION {
     output:
     tuple val(meta), path("*.vcf.gz")    , emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi
-    tuple val("${task.process}"), val("manta_convertinversion"), eval("configManta.py --version"), topic: versions, emit: versions_manta_convertinversion
+    tuple val("${task.process}"), val("manta"), eval("configManta.py --version"), topic: versions, emit: versions_manta
     tuple val("${task.process}"), val("samtools"), eval("samtools --version | head -1 | sed -e s'/samtools //'"), topic: versions, emit: versions_samtools
 
     when:
