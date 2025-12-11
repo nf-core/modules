@@ -18,7 +18,8 @@ process GLIMPSE2_SPLITREFERENCE {
         'biocontainers/glimpse-bio:2.0.1--h46b9e50_1' }"
 
     input:
-        tuple val(meta) , path(reference), path(reference_index), val(input_region), val(output_region), path(map)
+        tuple val(meta) , path(reference), path(reference_index), val(input_region), val(output_region)
+        tuple val(meta2), path(map)
 
 
     output:

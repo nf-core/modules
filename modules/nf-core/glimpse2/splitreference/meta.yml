@@ -42,6 +42,11 @@ input:
         type: string
         description: Target imputed region, excluding left and right buffers (e.g. chr20:1000000-2000000).
         pattern: "chrXX:leftBufferPosition-rightBufferPosition"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing genomic map information
+          e.g. `[ map:'GRCh38' ]`
     - map:
         type: file
         description: File containing the genetic map.
