@@ -55,8 +55,8 @@ workflow VCF_IMPUTE_GLIMPSE {
     GLIMPSE_PHASE ( phase_input )
     ch_versions = ch_versions.mix(GLIMPSE_PHASE.out.versions.first() )
 
-    BCFTOOLS_INDEX_1 ( GLIMPSE_PHASE.out.phased_variants )
-    ch_versions = ch_versions.mix( BCFTOOLS_INDEX_1.out.versions.first() )
+    BCFTOOLS_INDEX_PHASE ( GLIMPSE_PHASE.out.phased_variants )
+    ch_versions = ch_versions.mix( BCFTOOLS_INDEX_PHASE.out.versions.first() )
 
     // Ligate all phased files in one and index it
     ligate_input = GLIMPSE_PHASE.out.phased_variants
