@@ -1,15 +1,18 @@
 name: cutadapt
-description: Perform adapter/quality trimming on sequencing reads
+description: Removes adapter sequences from sequencing reads
 keywords:
+  - adapter
+  - primers
+  - poly-A tails
   - trimming
-  - adapter trimming
-  - adapters
-  - quality trimming
+  - fastq
 tools:
-  - cuatadapt:
+  - cutadapt:
       description: |
-        Cutadapt finds and removes adapter sequences, primers, poly-A tails and other types of unwanted sequence from your high-throughput sequencing reads.
-      documentation: https://cutadapt.readthedocs.io/en/stable/index.html
+        Cutadapt finds and removes adapter sequences, primers, poly-A tails
+        and other types of unwanted sequence from your high-throughput sequencing reads.
+      homepage: https://cutadapt.readthedocs.io/en/stable/index.html
+      documentation: https://github.com/marcelm/cutadapt
       doi: 10.14806/ej.17.1.200
       licence: ["MIT"]
       identifier: biotools:cutadapt
@@ -50,7 +53,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.log":
           type: file
-          description: cuatadapt log file
+          description: cutadapt log file
           pattern: "*cutadapt.log"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # Textual format
