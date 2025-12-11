@@ -18,8 +18,8 @@ workflow VCF_IMPUTE_BEAGLE5 {
     // Branch input files based on format
     ch_input
         .branch { _meta, vcf, _tbi ->
-            bcf: vcf.toString().contains('.bcf')
-            vcf: vcf.toString().contains('.vcf')
+            bcf: vcf.baseName.contains('.bcf')
+            vcf: vcf.baseName.contains('.vcf')
             other: true
         }
         .set { ch_input_branched }
