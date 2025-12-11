@@ -8,6 +8,8 @@ process BEAGLE5_BEAGLE {
         'biocontainers/beagle:5.5_27Feb25.75f--hdfd78af_0' }"
 
     input:
+    // Including `val(region)` to prevent errors with multi-chromosome VCFs and single-chromosome reference panels.
+    // This enhances clarity and simplifies implementation in the subworkflow.
     tuple val(meta), path(vcf), path(vcf_index), path(refpanel), path(refpanel_index), path(genmap), path(exclsamples), path(exclmarkers), val(region)
 
     output:
