@@ -7,6 +7,9 @@ library("BiocParallel")
 library("limma")
 
 # Load auxiliary helping functions
+is_valid_string <- function(input) {
+  !is.null(input) && nzchar(trimws(input))
+}
 
 #' Parse out options from a string without recourse to optparse
 #'
@@ -60,6 +63,7 @@ opt <- list(
     output_prefix      = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
     count_file         = "$counts",                 # File containing raw counts
     sample_file        = "$samplesheet",            # File containing sample information
+    blocking_variables = NULL,
     contrast_variable  = "$contrast_variable",      # Variable for contrast (e.g., "treatment")
     contrast_reference = "$reference",              # Reference level for the contrast
     contrast_target    = "$target",                 # Target level for the contrast (e.g., "mCherry")
@@ -95,7 +99,7 @@ for (ao in names(args_opt)) {
 }
 
 # If there is no option supplied, convert string "null" to NULL
-keys <- c("formula", "contrast_string", "contrast_variable", "contrast_reference")
+keys <- c("formula", "contrast_string", "contrast_variable", "blocking_variable", "contrast_reference")
 opt[keys] <- lapply(opt[keys], nullify)
 
 opt\$threads      <- as.numeric(opt\$threads)
@@ -116,6 +120,49 @@ if (!is.null(opt\$round_digits)){
 metadata <- read_delim_flexible(opt\$sample_file, header = TRUE, stringsAsFactors = TRUE)
 rownames(metadata) <- metadata[[opt\$sample_id_col]]
 
+if (!is_valid_string(opt\$formula)) {
+  contrast_variable <- make.names(opt\$contrast_variable)
+  blocking.vars <- c()
+
+  if (!contrast_variable %in% colnames(metadata)) {
+    stop(
+      paste0(
+        'Chosen contrast variable \"',
+        contrast_variable,
+        '\" not in sample sheet'
+      )
+    )
+  } else if (any(!c(opt\$contrast_reference, opt\$contrast_target) %in% metadata[[contrast_variable]])) {
+    stop(
+      paste(
+        'Please choose reference and treatment levels that are present in the',
+        contrast_variable,
+        'column of the sample sheet'
+      )
+    )
+  } else if (is_valid_string(opt\$blocking_variables)) {
+    blocking.vars = make.names(unlist(strsplit(opt\$blocking_variables, split = ';')))
+    if (!all(blocking.vars %in% colnames(metadata))) {
+      missing_block <- paste(blocking.vars[! blocking.vars %in% colnames(metadata)], collapse = ',')
+      stop(
+        paste(
+          'Blocking variables', missing_block,
+          'do not correspond to sample sheet columns.'
+        )
+      )
+    }
+  }
+
+  # Optionally, subset to only the samples involved in the contrast
+  if (opt\$subset_to_contrast_samples){
+    sample_selector <- metadata[[contrast_variable]] %in% c(opt\$contrast_target, opt\$contrast_reference)
+    selected_samples <- metadata[sample_selector, opt\$sample_id_col]
+    count.table <- count.table[, selected_samples]
+    metadata <- metadata[selected_samples, ]
+  }
+
+}
+
 # Ensure contrast variable is factor, then relevel
 if (!is.null(opt\$contrast_reference) && opt\$contrast_reference != "") {
     metadata[[opt\$contrast_variable]] <- factor(metadata[[opt\$contrast_variable]])
@@ -128,15 +175,27 @@ if (!is.null(opt\$exclude_samples_col) && !is.null(opt\$exclude_samples_values))
 }
 
 # Load count data
-countMatrix <- read_delim_flexible(opt\$count_file, header = TRUE, stringsAsFactors = FALSE)
+countMatrix <- read_delim_flexible(opt\$count_file, header = TRUE, stringsAsFactors = FALSE, check.names = FALSE)
 rownames(countMatrix) <- countMatrix\$gene_id # count_file/matrix must have a gene_id column.
 countMatrix <- countMatrix[, rownames(metadata), drop = FALSE]
 
-# Construct model formula using user-provided formula if available; if not, default to contrast variable only
+# Construct model formula using user-provided formula if available; if not, generate formula from variables
 if (!is.null(opt\$formula) && opt\$formula != "") {
     form <- as.formula(opt\$formula)
 } else {
-        stop(paste("Invalid or absent formula:", opt\$formula))
+    form <- '~ 0'
+
+    if (is_valid_string(opt\$blocking_variables)) {
+        form <- paste(form, paste(blocking.vars, collapse = ' + '), sep=' + ')
+    }
+
+    # Make sure all the appropriate variables are factors
+    for (v in c(blocking.vars, contrast_variable)) {
+        metadata[[v]] <- as.factor(metadata[[v]])
+    }
+
+    # Variable of interest goes last
+    form <- paste(form, contrast_variable, sep = ' + ')
 }
 print(form)
 
