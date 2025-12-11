@@ -1,8 +1,8 @@
 include { GLIMPSE_CHUNK                      } from '../../../modules/nf-core/glimpse/chunk/main'
 include { GLIMPSE_PHASE                      } from '../../../modules/nf-core/glimpse/phase/main'
 include { GLIMPSE_LIGATE                     } from '../../../modules/nf-core/glimpse/ligate/main'
-include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_1 } from '../../../modules/nf-core/bcftools/index/main.nf'
-include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_2 } from '../../../modules/nf-core/bcftools/index/main.nf'
+include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_PHASE } from '../../../modules/nf-core/bcftools/index/main.nf'
+include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_LIGATE } from '../../../modules/nf-core/bcftools/index/main.nf'
 
 workflow VCF_IMPUTE_GLIMPSE {
 
