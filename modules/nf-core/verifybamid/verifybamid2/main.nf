@@ -3,9 +3,9 @@ process VERIFYBAMID_VERIFYBAMID2 {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/verifybamid2:2.0.1--hbb20b25_6' :
-        'biocontainers/verifybamid2:2.0.1--h19d48f6_8' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/verifybamid2:2.0.1--hbb20b25_6'
+        : 'biocontainers/verifybamid2:2.0.1--h19d48f6_8'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -36,12 +36,13 @@ process VERIFYBAMID_VERIFYBAMID2 {
         "--SVDPrefix ${svd_ud.baseName}" : "--UDPath ${svd_ud} --MeanPath ${svd_mu} --BedPath ${svd_bed}"
     def refvcf_args = "${refvcf}".endsWith(".vcf") ? "--RefVCF ${refvcf}" : ""
 
-    def reference_args = ("$references".endsWith('.fasta')) ?
-        "--Reference ${references}" : ''
+    def reference_args = "${references}".matches(/.+((fasta)|(fa)|(fna))(\.gz)*$/)
+        ? "--Reference ${references}"
+        : ''
 
     """
     verifybamid2 \\
-        --NumThread $task.cpus \\
+        --NumThread ${task.cpus} \\
         ${svd_args} \\
         ${bam_file} \\
         ${refvcf_args} \\
