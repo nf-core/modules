@@ -42,7 +42,7 @@ workflow BCL_DEMULTIPLEX {
             .join(UNTAR.out.untar)
             .mix(ch_flowcells_branched.dir)
             .tap { ch_flowcells }
-            .map { meta, _samlesheet, run_dir -> [ meta, files("${run_dir}/{,**/}InterOp/*.bin") ] }
+            .map { meta, _samplesheet, run_dir -> [ meta, files("${run_dir}/{,**/}InterOp/*.bin") ] }
             .set { ch_interop }
 
         // MODULE: bclconvert
