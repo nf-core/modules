@@ -28,10 +28,11 @@ workflow BCL_DEMULTIPLEX {
             }.set { ch_flowcells_branched }
 
         // For tar.gz inputs, extract once and reuse for both InterOp and demultiplexing
-        ch_tar_input = ch_flowcells_branched.tar.multiMap { meta, samplesheet, run ->
-            samplesheets: [meta, samplesheet]
-            run_dirs: [meta, run]
-        }
+        ch_flowcells_branched.tar
+            .multiMap { meta, samplesheet, run ->
+                samplesheets: [meta, samplesheet]
+                run_dirs: [meta, run]
+            }.set { ch_tar_input }
         UNTAR( ch_tar_input.run_dirs )
         ch_versions = ch_versions.mix(UNTAR.out.versions.first())
 
