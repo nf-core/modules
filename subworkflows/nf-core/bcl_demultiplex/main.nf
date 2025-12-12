@@ -31,8 +31,8 @@ workflow BCL_DEMULTIPLEX {
         // For tar.gz inputs, extract once and reuse for both InterOp and demultiplexing
         ch_flowcells_branched.tar
             .multiMap { meta, samplesheet, run ->
-                samplesheets: [meta, samplesheet]
-                run_dirs: [meta, run]
+                samplesheets: [ meta, samplesheet ]
+                run_dirs: [ meta, run ]
             }.set { ch_flowcells_tar }
         UNTAR( ch_flowcells_tar.run_dirs )
         ch_versions = ch_versions.mix(UNTAR.out.versions.first())
@@ -40,10 +40,10 @@ workflow BCL_DEMULTIPLEX {
         // Extract InterOp files from run directories (more efficient than waiting for demultiplexing)
         // Note: The {,**/} pattern matches zero-or-more directories
         ch_interop = ch_flowcells_branched.dir
-            .map { meta, _samplesheet, run_dir -> [meta, run_dir] }
+            .map { meta, _samplesheet, run_dir -> [ meta, run_dir ] }
             .mix(UNTAR.out.untar)
             .map { meta, run_dir ->
-                [meta, files("${run_dir}/{,**/}InterOp/*.bin")]
+                [ meta, files("${run_dir}/{,**/}InterOp/*.bin") ]
             }
 
         // Combine untarred directories with samplesheets and merge with directory inputs
