@@ -1,0 +1,37 @@
+name: bigslice_prep_input
+description: Prepares antiSMASH outputs for BiG-SLiCE clustering analysis by organizing BGC GenBank files into the required directory structure
+keywords:
+  - biosynthetic gene cluster
+  - BGC
+  - antismash
+  - bigslice
+  - data preparation
+  - genome mining
+
+tools:
+  - bigslice:
+      description: A highly scalable, user-interactive tool for the large scale analysis of Biosynthetic Gene Clusters data
+      homepage: https://github.com/medema-group/BiG-SLiCE
+      documentation: https://github.com/medema-group/BiG-SLiCE/wiki
+      tool_dev_url: https://github.com/medema-group/BiG-SLiCE
+      doi: "10.1038/s41467-021-21428-1"
+      licence: ["AGPL v3"]
+
+input:
+  - antismash_dirs:
+      type: directory
+      description: |
+        List of antiSMASH output directories, one per sample.
+        Each directory should contain *.region*.gbk files representing
+        detected biosynthetic gene clusters.
+      pattern: "*/"
+
+output:
+  - input_dir:
+      type: directory
+      description: |
+        Structured input directory for BiG-SLiCE containing:
+        - datasets.tsv: dataset configuration file
+        - <dataset_name>/: organized BGC GenBank files by sample
+        - taxonomy/: taxonomic information in GTDB format
+      pattern: "input/"
