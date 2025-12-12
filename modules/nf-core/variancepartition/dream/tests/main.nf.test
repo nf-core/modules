@@ -112,7 +112,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
+                { assert path(process.out.results[0][1]).getText().contains("1074") },
+                { assert path(process.out.results[0][1]).getText().contains("857.67\t432.83\t5.42") },
+                { assert snapshot(process.out.model, process.out.versions).match() }
             )
         }
     }
