@@ -55,7 +55,6 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
     if (!skip_cutadapt) {
         CUTADAPT( ch_reads )
         ch_reads         = CUTADAPT.out.reads
-        ch_versions      = ch_versions.mix(CUTADAPT.out.versions.first())
         ch_multiqc_files = ch_multiqc_files.mix(CUTADAPT.out.log)
     }
 
