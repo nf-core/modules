@@ -1,0 +1,94 @@
+nextflow_process {
+
+    name "Test Process RIBOCODE_RIBOCODE"
+    script "../main.nf"
+    process "RIBOCODE_RIBOCODE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ribocode"
+    tag "ribocode/ribocode"
+    tag "ribocode/prepare"
+    tag "ribocode/metaplots"
+    tag "ribocode/gtfupdate"
+    tag "gunzip"
+
+    setup {
+        run("GUNZIP") {
+            script "../../../gunzip/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+        run("RIBOCODE_GTFUPDATE") {
+            script "../../gtfupdate/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
+                ]
+                """
+            }
+        }
+        run("RIBOCODE_PREPARE") {
+            script "../../prepare/main.nf"
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = RIBOCODE_GTFUPDATE.out.gtf
+                """
+            }
+        }
+        run("RIBOCODE_METAPLOTS") {
+            script "../../metaplots/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887.Aligned.toTranscriptome.out.bam", checkIfExists: true)
+                ]
+                input[1] = RIBOCODE_PREPARE.out.annotation
+                """
+            }
+        }
+    }
+
+    test("test_ribocode_ribocode") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887.Aligned.toTranscriptome.out.bam", checkIfExists: true)
+                ]
+                input[1] = RIBOCODE_PREPARE.out.annotation
+                input[2] = RIBOCODE_METAPLOTS.out.config
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.orf_txt,
+                    process.out.orf_txt_collapsed,
+                    process.out.versions
+                ).match() },
+                { assert process.out.orf_pdf[0][1].toString().endsWith('.pdf') },
+                { assert process.out.psites_hd5[0][1].toString().endsWith('.hd5') }
+            )
+        }
+
+    }
+
+}
