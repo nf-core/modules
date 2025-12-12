@@ -20,7 +20,8 @@ workflow BCL_DEMULTIPLEX {
         ch_stats         = channel.empty()
         ch_logs          = channel.empty()
 
-        // Split flowcells into tar.gz archives vs directories
+        // Split flowcells into separate channels containing run as tar and run as path
+        // https://nextflow.slack.com/archives/C02T98A23U7/p1650963988498929
         ch_flowcell
             .branch { _meta, _samplesheet, run ->
                 tar: run.toString().endsWith(".tar.gz")
@@ -32,8 +33,8 @@ workflow BCL_DEMULTIPLEX {
             .multiMap { meta, samplesheet, run ->
                 samplesheets: [meta, samplesheet]
                 run_dirs: [meta, run]
-            }.set { ch_tar_input }
-        UNTAR( ch_tar_input.run_dirs )
+            }.set { ch_flowcells_tar }
+        UNTAR( ch_flowcells_tar.run_dirs )
         ch_versions = ch_versions.mix(UNTAR.out.versions.first())
 
         // Extract InterOp files from run directories (more efficient than waiting for demultiplexing)
@@ -46,7 +47,7 @@ workflow BCL_DEMULTIPLEX {
             }
 
         // Combine untarred directories with samplesheets and merge with directory inputs
-        ch_flowcells = ch_tar_input.samplesheets
+        ch_flowcells = ch_flowcells_tar.samplesheets
             .join(UNTAR.out.untar)
             .mix(ch_flowcells_branched.dir)
 
