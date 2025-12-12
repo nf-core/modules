@@ -1,4 +1,36 @@
 {
+    "sarscov2 - fastq - single-end - with-skips": {
+        "content": [
+            "test.fastp.fastq.gz:md5,e051aedfa286d0567c83870d93ed93a3",
+            [
+                "test.fail.fastq.gz"
+            ],
+            "test.fastp.html",
+            32,
+            [
+                "test.bbduk.log",
+                "test.cutadapt.log",
+                "test.fastp.json"
+            ],
+            [
+                {
+                    "FASTQ_REMOVEADAPTERS_MERGE:FASTP": {
+                        "fastp": "1.0.1"
+                    }
+                },
+                {
+                    "FASTQ_REMOVEADAPTERS_MERGE:BBMAP_BBDUK": {
+                        "bbmap": 39.18
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2025-12-12T14:49:19.909628033"
+    },
     "sarscov2 - fastq - single-end - stub": {
         "content": [
             {

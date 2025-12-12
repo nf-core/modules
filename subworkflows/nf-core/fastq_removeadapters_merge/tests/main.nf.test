@@ -164,6 +164,47 @@ nextflow_workflow {
         }
     }
 
+    test("sarscov2 - fastq - single-end - with-skips") {
+        when {
+            params {
+                save_merged = false
+            }
+            workflow {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+
+                input[1]  = true               // skip_trimmomatic
+                input[2]  = false              // skip_cutadapt
+                input[3]  = true               // skip_trimgalore
+                input[4]  = false              // skip_bbduk
+                input[5]  = []                 // contaminants
+                input[6]  = true               // skip_leehom
+                input[7]  = false              // skip_fastp
+                input[8]  = false              // fastp_discard_trimmed_pass
+                input[9]  = true               // fastp_save_trimmed_fail
+                input[10] = params.save_merged
+                input[11] = true               // skip_adapterremoval
+                input[12] = []                 // text adapters
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(
+                workflow.out.reads[0][1],
+                workflow.out.discarded_reads.collect { file(it[1]).name },
+                file(workflow.out.fastp_html[0][1]).name,
+                path(workflow.out.fastp_log[0][1]).readLines().size(),
+                workflow.out.multiqc_files.collect { file(it[1]).name },
+                workflow.out.versions.collect { path(it).yaml }
+            ).match()
+        }
+    }
+
     test("sarscov2 - fastq - single-end - stub") {
 
         options "-stub"
