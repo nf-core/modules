@@ -1,4 +1,42 @@
 {
+    "Should run with alternative .fa reference input -stub": {
+        "content": [
+            "test.log",
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.genome.vcf.bed:md5,47106c764019ee359b1936410e2efa1e"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.genome.vcf.mu:md5,0810db02af2a176fa5ddc0f404911b66"
+                ]
+            ],
+            [
+                
+            ],
+            [
+                
+            ],
+            [
+                "versions.yml:md5,199f2e02b570926d6a249055c917c6b1"
+            ],
+            "test.genome.vcf.UD"
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-12-12T12:09:25.523364"
+    },
     "Should run with panel input": {
         "content": [
             "test.log",
@@ -237,6 +275,119 @@
             "nextflow": "24.10.6"
         },
         "timestamp": "2025-05-05T16:45:57.687144464"
+    },
+    "Should run with alternative .fa reference input": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bed:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.mu:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "4": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.selfSM:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "5": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.Ancestry:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "6": [
+                    "versions.yml:md5,199f2e02b570926d6a249055c917c6b1"
+                ],
+                "ancestry": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.Ancestry:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "bed": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bed:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "mu": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.mu:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "self_sm": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.selfSM:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "ud": [
+                    
+                ],
+                "versions": [
+                    "versions.yml:md5,199f2e02b570926d6a249055c917c6b1"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-12-12T12:28:45.106596"
     },
     "Should run with SVD input": {
         "content": [
