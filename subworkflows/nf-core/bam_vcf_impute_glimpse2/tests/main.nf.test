@@ -56,7 +56,7 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out.chunks,
-                    workflow.out.ch_vcf_index.collect{[
+                    workflow.out.vcf_index.collect{[
                         it[0],
                         path(it[1]).getFileName().toString(),
                         path(it[2]).getFileName().toString(),
@@ -110,7 +110,7 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out.chunks,
-                    workflow.out.ch_vcf_index.collect{[
+                    workflow.out.vcf_index.collect{[
                         it[0],
                         path(it[1]).getFileName().toString(),
                         path(it[2]).getFileName().toString(),
@@ -164,7 +164,7 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out.chunks,
-                    workflow.out.ch_vcf_index.collect{[
+                    workflow.out.vcf_index.collect{[
                         it[0],
                         path(it[1]).getFileName().toString(),
                         path(it[2]).getFileName().toString(),
@@ -215,7 +215,7 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out.chunks,
-                    workflow.out.ch_vcf_index.collect{[
+                    workflow.out.vcf_index.collect{[
                         it[0],
                         path(it[1]).getFileName().toString(),
                         path(it[2]).getFileName().toString(),
@@ -283,7 +283,7 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out.chunks,
-                    workflow.out.ch_vcf_index.collect{[
+                    workflow.out.vcf_index.collect{[
                         it[0],
                         path(it[1]).getFileName().toString(),
                         path(it[2]).getFileName().toString(),
@@ -412,7 +412,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.failed },
-                { assert workflow.errorMessage.contains("ERROR: chunks channel is empty. Please provide a valid channel or set chunk parameter to true.") }
+                { assert workflow.errorMessage.contains("ERROR: ch_chunks channel is empty. Please provide a valid channel or set chunk parameter to true.") }
             )
         }
     }
@@ -454,7 +454,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.failed },
-                { assert workflow.errorMessage.contains("ERROR: join operation resulted in an empty channel. Please provide a valid chunks and ch_map channel as input.") }
+                { assert workflow.errorMessage.contains("ERROR: join operation resulted in an empty channel. Please provide a valid ch_chunks and ch_map channel as input.") }
             )
         }
     }

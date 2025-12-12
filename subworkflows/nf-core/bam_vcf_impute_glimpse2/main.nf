@@ -68,6 +68,7 @@ workflow BAM_VCF_IMPUTE_GLIMPSE2 {
         GLIMPSE2_SPLITREFERENCE(split_input)
         ch_versions = ch_versions.mix(GLIMPSE2_SPLITREFERENCE.out.versions.first())
 
+        // Everything is provided by the bin file so no additional file
         ch_chunks_panel_map = GLIMPSE2_SPLITREFERENCE.out.bin_ref
             .map { meta, bin_ref -> [meta, [], [], bin_ref, [], []] }
     } else {
@@ -102,13 +103,13 @@ workflow BAM_VCF_IMPUTE_GLIMPSE2 {
     ch_versions = ch_versions.mix(GLIMPSE2_PHASE.out.versions.first())
 
     // Index phased file
-    BCFTOOLS_INDEX_PHASE(GLIMPSE2_PHASE.out.phased_variants)
+    BCFTOOLS_INDEX_PHASE(GLIMPSE2_PHASE.out.phased_variants.view())
     ch_versions = ch_versions.mix(BCFTOOLS_INDEX_PHASE.out.versions.first())
 
     // Ligate all phased files in one and index it
     ligate_input = GLIMPSE2_PHASE.out.phased_variants
         .join(
-            BCFTOOLS_INDEX_PHASE.out.tbi.mix(BCFTOOLS_INDEX_PHASE.out.csi),
+            BCFTOOLS_INDEX_PHASE.out.tbi.mix(BCFTOOLS_INDEX_PHASE.out.csi).view(),
             failOnMismatch: true,
             failOnDuplicate: true,
         )
