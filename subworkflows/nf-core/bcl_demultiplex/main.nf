@@ -37,19 +37,13 @@ workflow BCL_DEMULTIPLEX {
         UNTAR( ch_flowcells_tar.run_dirs )
         ch_versions = ch_versions.mix(UNTAR.out.versions.first())
 
-        // Extract InterOp files from run directories (more efficient than waiting for demultiplexing)
-        // Note: The {,**/} pattern matches zero-or-more directories
-        ch_interop = ch_flowcells_branched.dir
-            .map { meta, _samplesheet, run_dir -> [ meta, run_dir ] }
-            .mix(UNTAR.out.untar)
-            .map { meta, run_dir ->
-                [ meta, files("${run_dir}/{,**/}InterOp/*.bin") ]
-            }
-
         // Combine untarred directories with samplesheets and merge with directory inputs
-        ch_flowcells = ch_flowcells_tar.samplesheets
+        ch_flowcells_tar.samplesheets
             .join(UNTAR.out.untar)
             .mix(ch_flowcells_branched.dir)
+            .tap { ch_flowcells }
+            .map { meta, _samlesheet, run_dir -> [ meta, files("${run_dir}/{,**/}InterOp/*.bin") ] }
+            .set { ch_interop }
 
         // MODULE: bclconvert
         // Demultiplex the bcl files
