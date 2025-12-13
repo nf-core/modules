@@ -37,6 +37,11 @@
             ],
             [
                 {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_PHASE": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
                     "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_CHUNK": {
                         "glimpse2": "2.0.0"
                     }
@@ -47,18 +52,13 @@
                     }
                 },
                 {
-                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_2": {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_LIGATE": {
                         "bcftools": 1.22
                     }
                 },
                 {
                     "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_LIGATE": {
                         "glimpse2": "2.0.0"
-                    }
-                },
-                {
-                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_1": {
-                        "bcftools": 1.22
                     }
                 },
                 {
@@ -72,7 +72,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-11-21T12:07:17.825740137"
+        "timestamp": "2025-12-12T17:46:53.105738111"
     },
     "homo_sapiens - bam no list and no sample, panel vcf region, no chunks, no map, no fasta, chunk sequential + splitreference": {
         "content": [
@@ -112,6 +112,11 @@
             ],
             [
                 {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_PHASE": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
                     "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_CHUNK": {
                         "glimpse2": "2.0.0"
                     }
@@ -122,18 +127,13 @@
                     }
                 },
                 {
-                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_2": {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_LIGATE": {
                         "bcftools": 1.22
                     }
                 },
                 {
                     "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_LIGATE": {
                         "glimpse2": "2.0.0"
-                    }
-                },
-                {
-                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_1": {
-                        "bcftools": 1.22
                     }
                 },
                 {
@@ -147,7 +147,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-11-21T12:08:29.707313034"
+        "timestamp": "2025-12-12T17:47:45.080376306"
     },
     "homo_sapiens - empty channels, chunk sequential + splitreference - stub": {
         "content": [
@@ -191,14 +191,14 @@
                     ]
                 ],
                 "2": [
+                    "versions.yml:md5,127e1dce80da79a92d0b685e82095c4a",
                     "versions.yml:md5,302281bbff76712870c031340d3819ff",
                     "versions.yml:md5,3500318c881e3f24e9dd2fddc593142a",
-                    "versions.yml:md5,9422ca169a15fd68878396c2837bc185",
+                    "versions.yml:md5,6f1e64d5b987d61d5a718c0fba06e230",
                     "versions.yml:md5,c6ff81aa44fb2fdcc08db6062731d0d9",
-                    "versions.yml:md5,cb51e18b4296c3791ade5f6f2737bd24",
                     "versions.yml:md5,ed6ebcf6ca30c2cdc39ec1dd535a2695"
                 ],
-                "ch_chunks": [
+                "chunks": [
                     [
                         {
                             "panel": "ref_panel",
@@ -216,7 +216,7 @@
                         "0"
                     ]
                 ],
-                "ch_vcf_index": [
+                "vcf_index": [
                     [
                         {
                             "id": "allid",
@@ -237,15 +237,20 @@
                     ]
                 ],
                 "versions": [
+                    "versions.yml:md5,127e1dce80da79a92d0b685e82095c4a",
                     "versions.yml:md5,302281bbff76712870c031340d3819ff",
                     "versions.yml:md5,3500318c881e3f24e9dd2fddc593142a",
-                    "versions.yml:md5,9422ca169a15fd68878396c2837bc185",
+                    "versions.yml:md5,6f1e64d5b987d61d5a718c0fba06e230",
                     "versions.yml:md5,c6ff81aa44fb2fdcc08db6062731d0d9",
-                    "versions.yml:md5,cb51e18b4296c3791ade5f6f2737bd24",
                     "versions.yml:md5,ed6ebcf6ca30c2cdc39ec1dd535a2695"
                 ]
             },
             [
+                {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_PHASE": {
+                        "bcftools": 1.22
+                    }
+                },
                 {
                     "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_CHUNK": {
                         "glimpse2": "2.0.0"
@@ -257,18 +262,13 @@
                     }
                 },
                 {
-                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_2": {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_LIGATE": {
                         "bcftools": 1.22
                     }
                 },
                 {
                     "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_LIGATE": {
                         "glimpse2": "2.0.0"
-                    }
-                },
-                {
-                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_1": {
-                        "bcftools": 1.22
                     }
                 },
                 {
@@ -282,7 +282,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-11-21T12:10:17.321588787"
+        "timestamp": "2025-12-12T17:48:24.153179179"
     },
     "homo_sapiens - vcf no list with sample, panel vcf region, chunks, map, no fasta, no chunking + no splitreference": {
         "content": [
@@ -322,23 +322,23 @@
             ],
             [
                 {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_PHASE": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
                     "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_PHASE": {
                         "glimpse2": "2.0.0"
                     }
                 },
                 {
-                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_2": {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_LIGATE": {
                         "bcftools": 1.22
                     }
                 },
                 {
                     "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_LIGATE": {
                         "glimpse2": "2.0.0"
-                    }
-                },
-                {
-                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_1": {
-                        "bcftools": 1.22
                     }
                 }
             ]
@@ -347,7 +347,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-11-21T12:08:13.222110779"
+        "timestamp": "2025-12-12T17:47:25.417111147"
     },
     "homo_sapiens - vcf no list with sample, panel vcf region, chunks, map, no fasta, no chunking + splitreference": {
         "content": [
@@ -387,23 +387,23 @@
             ],
             [
                 {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_PHASE": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
                     "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_PHASE": {
                         "glimpse2": "2.0.0"
                     }
                 },
                 {
-                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_2": {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_LIGATE": {
                         "bcftools": 1.22
                     }
                 },
                 {
                     "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_LIGATE": {
                         "glimpse2": "2.0.0"
-                    }
-                },
-                {
-                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_1": {
-                        "bcftools": 1.22
                     }
                 },
                 {
@@ -417,7 +417,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-11-21T12:07:58.812913099"
+        "timestamp": "2025-12-12T17:47:10.50028164"
     },
     "homo_sapiens - bam list and sample, panel vcf region, chunks, map, no fasta, no chunking + splitreference": {
         "content": [
@@ -489,23 +489,23 @@
             ],
             [
                 {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_PHASE": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
                     "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_PHASE": {
                         "glimpse2": "2.0.0"
                     }
                 },
                 {
-                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_2": {
+                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_LIGATE": {
                         "bcftools": 1.22
                     }
                 },
                 {
                     "BAM_VCF_IMPUTE_GLIMPSE2:GLIMPSE2_LIGATE": {
                         "glimpse2": "2.0.0"
-                    }
-                },
-                {
-                    "BAM_VCF_IMPUTE_GLIMPSE2:BCFTOOLS_INDEX_1": {
-                        "bcftools": 1.22
                     }
                 },
                 {
@@ -519,6 +519,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-12-08T19:39:08.135355223"
+        "timestamp": "2025-12-12T17:48:08.11043848"
     }
 }
