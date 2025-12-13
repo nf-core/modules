@@ -90,15 +90,6 @@ output:
           description: Log files
           pattern: "Logs/*.{log,txt}"
           ontologies: []
-  interop:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample information
-      - "output/InterOp/*.bin":
-          type: file
-          description: Interop files
-          pattern: "*.{bin}"
-          ontologies: []
   versions:
     - versions.yml:
         type: file

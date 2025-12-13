@@ -14,7 +14,6 @@ process BCLCONVERT {
     tuple val(meta), path("output/**Undetermined_S0*_I?_00?.fastq.gz"), emit: undetermined_idx, optional:true
     tuple val(meta), path("output/Reports")                           , emit: reports
     tuple val(meta), path("output/Logs")                              , emit: logs
-    tuple val(meta), path("output/InterOp/*.bin")                     , emit: interop         , optional:true
     path("versions.yml")                                              , emit: versions
 
     when:
@@ -62,10 +61,6 @@ process BCLCONVERT {
         --bcl-input-directory ${input_dir} \\
         --sample-sheet ${samplesheet}
 
-    # copy the InterOp folder contents to ensure it gets picked up when using fusion
-    mkdir -p output/InterOp/
-    cp -n **/InterOp/*.bin output/InterOp/
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bclconvert: \$(bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //')
@@ -94,14 +89,6 @@ process BCLCONVERT {
     touch output/Logs/FastqComplete.log
     touch output/Logs/Info.log
     touch output/Logs/Warnings.log
-    mkdir -p output/InterOp
-    touch output/InterOp/ControlMetricsOut.bin
-    touch output/InterOp/CorrectedIntMetricsOut.bin
-    touch output/InterOp/ErrorMetricsOut.bin
-    touch output/InterOp/ExtractionMetricsOut.bin
-    touch output/InterOp/IndexMetricsOut.bin
-    touch output/InterOp/QMetricsOut.bin
-    touch output/InterOp/TileMetricsOut.bin
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bclconvert: \$(bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //')

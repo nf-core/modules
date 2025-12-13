@@ -35,9 +35,6 @@ nextflow_process {
                     process.out.undetermined_idx,
                     process.out.reports,
                     process.out.logs.collect { meta, logs -> file(logs).list().sort() },
-                    process.out.interop.collect { meta, interop ->
-                                                interop.findAll { interopfile ->
-                                                file(interopfile).name != "IndexMetricsOut.bin" } },
                     process.out.versions,
                     path(process.out.versions[0]).yaml
                 ).match() }
@@ -77,10 +74,6 @@ nextflow_process {
                     process.out.undetermined_idx,
                     process.out.reports,
                     process.out.logs.collect { meta, logs -> file(logs).list().sort() },
-                    process.out.interop,
-                    process.out.interop.collect { meta, interop ->
-                                                interop.findAll { interopfile ->
-                                                file(interopfile).name != "IndexMetricsOut.bin" } },
                     process.out.versions,
                     path(process.out.versions[0]).yaml
                 ).match() }

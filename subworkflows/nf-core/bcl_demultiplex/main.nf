@@ -6,6 +6,7 @@
 
 include { BCLCONVERT } from "../../../modules/nf-core/bclconvert/main"
 include { BCL2FASTQ  } from "../../../modules/nf-core/bcl2fastq/main"
+include { UNTAR      } from "../../../modules/nf-core/untar/main"
 
 workflow BCL_DEMULTIPLEX {
     take:
@@ -17,7 +18,6 @@ workflow BCL_DEMULTIPLEX {
         ch_fastq         = channel.empty()
         ch_reports       = channel.empty()
         ch_stats         = channel.empty()
-        ch_interop       = channel.empty()
         ch_logs          = channel.empty()
 
         // Split flowcells into separate channels containing run as tar and run as path
@@ -26,29 +26,30 @@ workflow BCL_DEMULTIPLEX {
             .branch { _meta, _samplesheet, run ->
                 tar: run.toString().endsWith(".tar.gz")
                 dir: true
-            }.set { ch_flowcells }
+            }.set { ch_flowcells_branched }
 
-        ch_flowcells.tar
+        // For tar.gz inputs, extract once and reuse for both InterOp and demultiplexing
+        ch_flowcells_branched.tar
             .multiMap { meta, samplesheet, run ->
                 samplesheets: [ meta, samplesheet ]
                 run_dirs: [ meta, run ]
             }.set { ch_flowcells_tar }
+        UNTAR( ch_flowcells_tar.run_dirs )
+        ch_versions = ch_versions.mix(UNTAR.out.versions.first())
 
-        // Runs when run_dir is a tar archive
-        // Re-join the metadata and the untarred run directory with the samplesheet
-        ch_flowcells_tar_merged = ch_flowcells_tar
-                                    .samplesheets
-                                    .join( ch_flowcells_tar.run_dirs )
-
-        // Merge the two channels back together
-        ch_flowcells = ch_flowcells.dir.mix(ch_flowcells_tar_merged)
+        // Combine untarred directories with samplesheets and merge with directory inputs
+        ch_flowcells_tar.samplesheets
+            .join(UNTAR.out.untar)
+            .mix(ch_flowcells_branched.dir)
+            .tap { ch_flowcells }
+            .map { meta, _samplesheet, run_dir -> [ meta, files("${run_dir}/{,**/}InterOp/*.bin") ] }
+            .set { ch_interop }
 
         // MODULE: bclconvert
         // Demultiplex the bcl files
         if (demultiplexer == "bclconvert") {
             BCLCONVERT( ch_flowcells )
             ch_fastq    = ch_fastq.mix(BCLCONVERT.out.fastq)
-            ch_interop  = ch_interop.mix(BCLCONVERT.out.interop)
             ch_reports  = ch_reports.mix(BCLCONVERT.out.reports)
             ch_logs     = ch_logs.mix(BCLCONVERT.out.logs)
             ch_versions = ch_versions.mix(BCLCONVERT.out.versions.first())
@@ -59,7 +60,6 @@ workflow BCL_DEMULTIPLEX {
         if (demultiplexer == "bcl2fastq") {
             BCL2FASTQ( ch_flowcells )
             ch_fastq    = ch_fastq.mix(BCL2FASTQ.out.fastq)
-            ch_interop  = ch_interop.mix(BCL2FASTQ.out.interop)
             ch_reports  = ch_reports.mix(BCL2FASTQ.out.reports)
             ch_stats    = ch_stats.mix(BCL2FASTQ.out.stats)
             ch_versions = ch_versions.mix(BCL2FASTQ.out.versions.first())
