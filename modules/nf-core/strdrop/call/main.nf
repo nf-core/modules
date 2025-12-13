@@ -4,8 +4,8 @@ process STRDROP_CALL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4f/4fc3114f6d67fadb826981d29ae67f8564ee81283184893c2db677d919b5b32d/data':
-        'community.wave.seqera.io/library/pip_strdrop:df8d5dc993ea6848' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f8/f860e6cdc0d4222f89145d5e5f6aba15368eefc50b65bc78890613d976344a7f/data':
+        'community.wave.seqera.io/library/pip_strdrop:b1aa6c1a4a3357f2' }"
 
     input:
     tuple val(meta), path(vcf)
