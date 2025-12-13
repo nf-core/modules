@@ -1,11 +1,11 @@
 process MINIMAC4_IMPUTE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/minimac4:4.1.6--hcb620b3_1':
-        'biocontainers/minimac4:4.1.6--hcb620b3_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/minimac4:4.1.6--hcb620b3_1'
+        : 'biocontainers/minimac4:4.1.6--hcb620b3_1'}"
 
     input:
     tuple val(meta), path(target_vcf), path(target_index), path(ref_msav), path(sites_vcf), path(sites_index), path(map), val(region)
@@ -32,13 +32,13 @@ process MINIMAC4_IMPUTE {
     def region_cmd = region    ? "--region $region"   : ""
     """
     minimac4 \\
-        $ref_msav \\
-        $target_vcf \\
-        $args \\
-        $sites_cmd \\
-        $map_cmd \\
-        $region_cmd \\
-        --threads $task.cpus \\
+        ${ref_msav} \\
+        ${target_vcf} \\
+        ${args} \\
+        ${sites_cmd} \\
+        ${map_cmd} \\
+        ${region_cmd} \\
+        --threads ${task.cpus} \\
         -o ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml

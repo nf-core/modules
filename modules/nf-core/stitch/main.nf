@@ -1,16 +1,16 @@
 process STITCH {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-stitch:1.7.3--r44h64f727c_0':
-        'biocontainers/r-stitch:1.7.3--r44h64f727c_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/r-stitch:1.7.3--r44h64f727c_0'
+        : 'biocontainers/r-stitch:1.7.3--r44h64f727c_0'}"
 
     input:
     tuple val(meta), path(collected_crams), path(collected_crais), path(cramlist), path(samplename), path(posfile), path(input, stageAs: "input"), path(genetic_map), path(rdata, stageAs: "RData_in"), val(chromosome_name), val(start), val(end), val(K), val(nGen)
     tuple val(meta2), path(fasta), path(fasta_fai)
-    val(seed)
+    val seed
 
     output:
     tuple val(meta), path("input", type: "dir") , emit: input
@@ -24,19 +24,19 @@ process STITCH {
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix               = task.ext.prefix ?: "${meta.id}"
-    def args                 = task.ext.args   ?: ""
-    def args2                = task.ext.args2  ?: ""
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args   = task.ext.args   ?: ""
+    def args2  = task.ext.args2  ?: ""
 
-    generate_input_only      = args2.contains( "--generateInputOnly TRUE" )
-    bgen_output              = args2.contains( "--output_format bgen" )
-    def suffix               = bgen_output ? "bgen" : "vcf.gz"
+    generate_input_only = args2.contains("--generateInputOnly TRUE")
+    bgen_output         = args2.contains("--output_format bgen")
+    def suffix          = bgen_output ? "bgen" : "vcf.gz"
 
     def crams_list = collected_crams instanceof Collection ? collected_crams : [collected_crams]
-    def reads_ext = crams_list ? crams_list.collect {path -> path.extension }.unique() : []
+    def reads_ext  = crams_list ? crams_list.collect { path -> path.extension }.unique() : []
 
-    if ( reads_ext.size() > 1 ) {
-        error "STITCH process: Mixed input read file types detected: ${reads_ext}. Please provide either all BAM or all CRAM files."
+    if (reads_ext.size() > 1) {
+        error("STITCH process: Mixed input read file types detected: ${reads_ext}. Please provide either all BAM or all CRAM files.")
     }
     def cramlist_cmd         = cramlist && reads_ext == ["cram"] ? "--cramlist ${cramlist}"           : ""
     def bamlist_cmd          = cramlist && reads_ext == ["bam" ] ? "--bamlist ${cramlist}"            : ""
@@ -79,18 +79,20 @@ process STITCH {
     """
 
     stub:
-    def prefix               = task.ext.prefix      ?: "${meta.id}"
-    def _args                = task.ext.args        ?: ""
-    def args2                = task.ext.args2       ?: ""
-    def nb_samples           = collected_crams.size()
-    generate_input_only      = args2.contains( "--generateInputOnly TRUE" )
-    bgen_output              = args2.contains( "--output_format bgen" )
-    def generate_plots_cmd   = !generate_input_only
-    def generate_file_cmd    = !generate_input_only ? bgen_output ? "touch ${prefix}.bgen" : "echo '' | gzip > ${prefix}.vcf.gz"      : ""
-    def rsync_version_cmd    = rdata                ? "rsync: \$(rsync --version | head -n1 | sed 's/^rsync  version //; s/ .*\$//')" : ""
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def _args  = task.ext.args   ?: ""
+    def args2  = task.ext.args2  ?: ""
+
+    def nb_samples      = collected_crams.size()
+    generate_input_only = args2.contains("--generateInputOnly TRUE")
+    bgen_output         = args2.contains("--output_format bgen")
+
+    def generate_plots_cmd = !generate_input_only
+    def generate_file_cmd  = !generate_input_only ? bgen_output ? "touch ${prefix}.bgen" : "echo '' | gzip > ${prefix}.vcf.gz" : ""
+    def rsync_version_cmd  = rdata ? "rsync: \$(rsync --version | head -n1 | sed 's/^rsync  version //; s/ .*\$//')" : ""
     """
     mkdir -p input
-    for i in {1..$nb_samples}
+    for i in {1..${nb_samples}}
     do
         touch "input/sample.\$i.input.${chromosome_name}.RData"
     done

@@ -51,7 +51,7 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out.versions,
-                    workflow.out.chunk_chr,
+                    workflow.out.chunks,
                     workflow.out.vcf_index.collect{ meta, vcf, index -> [
                         meta,
                         path(vcf).getFileName().toString(),
@@ -103,7 +103,7 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out.versions,
-                    workflow.out.chunk_chr,
+                    workflow.out.chunks,
                     workflow.out.vcf_index.collect{ meta, vcf, index -> [
                         meta,
                         path(vcf).getFileName().toString(),

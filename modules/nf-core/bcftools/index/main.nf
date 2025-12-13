@@ -20,7 +20,6 @@ process BCFTOOLS_INDEX {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     bcftools \\
@@ -37,7 +36,6 @@ process BCFTOOLS_INDEX {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def extension = args.contains("--tbi") || args.contains("-t") ? "tbi" :
                     "csi"
     """

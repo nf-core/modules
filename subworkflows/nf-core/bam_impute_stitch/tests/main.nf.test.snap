@@ -17,21 +17,21 @@
                 ]
             ],
             [
-                "versions.yml:md5,597985efae796d9efe8b1005c4b0bb18",
                 "versions.yml:md5,8b0020b997bad45e9e3cf0d9b868a3b2",
+                "versions.yml:md5,a4f599fd82e75ff0d0d523a0b0c519ea",
                 "versions.yml:md5,c32cdf9d543fe0fe8f0cfeade5ceade2",
-                "versions.yml:md5,d9282aba3ae921597b3a7387e17e220d"
+                "versions.yml:md5,fad02b5beb8bf43963d49e3b1e79f51d"
             ],
             [
-                {
-                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_2": {
-                        "bcftools": 1.22
-                    }
-                },
                 {
                     "BAM_IMPUTE_STITCH:STITCH": {
                         "r-base": "4.4.2",
                         "r-stitch": "1.7.3"
+                    }
+                },
+                {
+                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_LIGATE": {
+                        "bcftools": 1.22
                     }
                 },
                 {
@@ -40,7 +40,7 @@
                     }
                 },
                 {
-                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_1": {
+                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_PHASE": {
                         "bcftools": 1.22
                     }
                 }
@@ -50,7 +50,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-11-27T09:22:32.971453937"
+        "timestamp": "2025-12-12T17:56:15.184463537"
     },
     "homo_sapiens - empty channels - stub": {
         "content": [
@@ -74,10 +74,10 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,597985efae796d9efe8b1005c4b0bb18",
                     "versions.yml:md5,8b0020b997bad45e9e3cf0d9b868a3b2",
+                    "versions.yml:md5,a4f599fd82e75ff0d0d523a0b0c519ea",
                     "versions.yml:md5,c32cdf9d543fe0fe8f0cfeade5ceade2",
-                    "versions.yml:md5,d9282aba3ae921597b3a7387e17e220d"
+                    "versions.yml:md5,fad02b5beb8bf43963d49e3b1e79f51d"
                 ],
                 "vcf_index": [
                     [
@@ -98,22 +98,22 @@
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,597985efae796d9efe8b1005c4b0bb18",
                     "versions.yml:md5,8b0020b997bad45e9e3cf0d9b868a3b2",
+                    "versions.yml:md5,a4f599fd82e75ff0d0d523a0b0c519ea",
                     "versions.yml:md5,c32cdf9d543fe0fe8f0cfeade5ceade2",
-                    "versions.yml:md5,d9282aba3ae921597b3a7387e17e220d"
+                    "versions.yml:md5,fad02b5beb8bf43963d49e3b1e79f51d"
                 ]
             },
             [
                 {
-                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_2": {
-                        "bcftools": 1.22
-                    }
-                },
-                {
                     "BAM_IMPUTE_STITCH:STITCH": {
                         "r-base": "4.4.2",
                         "r-stitch": "1.7.3"
+                    }
+                },
+                {
+                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_LIGATE": {
+                        "bcftools": 1.22
                     }
                 },
                 {
@@ -122,7 +122,7 @@
                     }
                 },
                 {
-                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_1": {
+                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_PHASE": {
                         "bcftools": 1.22
                     }
                 }
@@ -132,7 +132,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-11-21T22:32:30.735092649"
+        "timestamp": "2025-12-12T17:57:16.113125809"
     },
     "Impute with stitch two individual bam, renaming, posfile, chunks, map, no fasta": {
         "content": [
@@ -168,14 +168,14 @@
             ],
             [
                 {
-                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_2": {
-                        "bcftools": 1.22
-                    }
-                },
-                {
                     "BAM_IMPUTE_STITCH:STITCH": {
                         "r-base": "4.4.2",
                         "r-stitch": "1.7.3"
+                    }
+                },
+                {
+                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_LIGATE": {
+                        "bcftools": 1.22
                     }
                 },
                 {
@@ -184,7 +184,7 @@
                     }
                 },
                 {
-                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_1": {
+                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_PHASE": {
                         "bcftools": 1.22
                     }
                 }
@@ -194,6 +194,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-11-27T10:28:44.112173975"
+        "timestamp": "2025-12-12T17:56:52.597711102"
     }
 }

@@ -1,19 +1,19 @@
-include { GLIMPSE2_CHUNK                     } from '../../../modules/nf-core/glimpse2/chunk'
-include { SHAPEIT5_PHASECOMMON               } from '../../../modules/nf-core/shapeit5/phasecommon'
-include { SHAPEIT5_LIGATE                    } from '../../../modules/nf-core/shapeit5/ligate'
-include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_1 } from '../../../modules/nf-core/bcftools/index'
-include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_2 } from '../../../modules/nf-core/bcftools/index'
+include { GLIMPSE2_CHUNK                          } from '../../../modules/nf-core/glimpse2/chunk'
+include { SHAPEIT5_PHASECOMMON                    } from '../../../modules/nf-core/shapeit5/phasecommon'
+include { SHAPEIT5_LIGATE                         } from '../../../modules/nf-core/shapeit5/ligate'
+include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_PHASE  } from '../../../modules/nf-core/bcftools/index'
+include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_LIGATE } from '../../../modules/nf-core/bcftools/index'
 
 workflow VCF_PHASE_SHAPEIT5 {
 
     take:
-    ch_vcf        // channel (mandatory) : [ [id, chr], vcf, index, pedigree, region ]
-    ch_chunks     // channel (optional)  : [ [id, chr], regionout ]
-    ch_ref        // channel (optional)  : [ [id, chr], vcf, index ]
-    ch_scaffold   // channel (optional)  : [ [id, chr], vcf, index ]
-    ch_map        // channel (optional)  : [ [id, chr], map]
-    chunk         // val     (mandatory) : boolean to activate/deactivate chunking step
-    chunk_model   // channel (mandatory) : [ model ]
+    ch_vcf      // channel (mandatory) : [ [id, chr], vcf, index, pedigree, region ]
+    ch_chunks   // channel (optional)  : [ [id, chr], regionout ]
+    ch_ref      // channel (optional)  : [ [id, chr], vcf, index ]
+    ch_scaffold // channel (optional)  : [ [id, chr], vcf, index ]
+    ch_map      // channel (optional)  : [ [id, chr], map]
+    chunk       // val     (mandatory) : boolean to activate/deactivate chunking step
+    chunk_model // channel (mandatory) : [ model ]
 
     main:
 
@@ -76,13 +76,12 @@ workflow VCF_PHASE_SHAPEIT5 {
     SHAPEIT5_PHASECOMMON (ch_phase_input)
     ch_versions = ch_versions.mix(SHAPEIT5_PHASECOMMON.out.versions.first())
 
-    BCFTOOLS_INDEX_1(SHAPEIT5_PHASECOMMON.out.phased_variant)
-    ch_versions = ch_versions.mix(BCFTOOLS_INDEX_1.out.versions.first())
+    BCFTOOLS_INDEX_PHASE(SHAPEIT5_PHASECOMMON.out.phased_variant)
+    ch_versions = ch_versions.mix(BCFTOOLS_INDEX_PHASE.out.versions.first())
 
     ch_ligate_input = SHAPEIT5_PHASECOMMON.out.phased_variant
         .join(
-            BCFTOOLS_INDEX_1.out.csi
-                .mix(BCFTOOLS_INDEX_1.out.tbi),
+            BCFTOOLS_INDEX_PHASE.out.tbi.mix(BCFTOOLS_INDEX_PHASE.out.csi),
             failOnMismatch:true, failOnDuplicate:true
         )
         .map{ meta, vcf, index ->
@@ -94,17 +93,17 @@ workflow VCF_PHASE_SHAPEIT5 {
     SHAPEIT5_LIGATE(ch_ligate_input)
     ch_versions = ch_versions.mix(SHAPEIT5_LIGATE.out.versions.first())
 
-    BCFTOOLS_INDEX_2(SHAPEIT5_LIGATE.out.merged_variants)
-    ch_versions = ch_versions.mix(BCFTOOLS_INDEX_2.out.versions.first())
+    BCFTOOLS_INDEX_LIGATE(SHAPEIT5_LIGATE.out.merged_variants)
+    ch_versions = ch_versions.mix(BCFTOOLS_INDEX_LIGATE.out.versions.first())
 
     ch_vcf_index = SHAPEIT5_LIGATE.out.merged_variants
         .join(
-            BCFTOOLS_INDEX_2.out.csi.mix(BCFTOOLS_INDEX_2.out.tbi),
+            BCFTOOLS_INDEX_LIGATE.out.tbi.mix(BCFTOOLS_INDEX_LIGATE.out.csi),
             failOnMismatch:true, failOnDuplicate:true
         )
 
     emit:
-    chunks              = ch_chunks                    // channel: [ [id, chr], regionout]
-    vcf_index           = ch_vcf_index                 // channel: [ [id, chr], vcf, csi ]
-    versions            = ch_versions                  // channel: [ versions.yml ]
+    chunks    = ch_chunks    // channel: [ [id, chr], regionout]
+    vcf_index = ch_vcf_index // channel: [ [id, chr], vcf, csi ]
+    versions  = ch_versions  // channel: [ versions.yml ]
 }

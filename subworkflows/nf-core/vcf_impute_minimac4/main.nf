@@ -6,11 +6,11 @@ include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_LIGATE } from '../../../modules/nf-co
 
 workflow VCF_IMPUTE_MINIMAC4 {
     take:
-    ch_input // channel (mandatory): [ [id, chr], vcf, tbi ]
-    ch_panel // channel (mandatory): [ [panel, chr], vcf, tbi ]
+    ch_input   // channel (mandatory): [ [id, chr], vcf, tbi ]
+    ch_panel   // channel (mandatory): [ [panel, chr], vcf, tbi ]
     ch_posfile // channel (optional) : [ [panel, chr], sites_vcf, sites_index ]
-    ch_chunks // channel (optional) : [ [panel, chr], regionout ]
-    ch_map // channel (optional) : [ [panel, chr], map]
+    ch_chunks  // channel (optional) : [ [panel, chr], regionout ]
+    ch_map     // channel (optional) : [ [panel, chr], map]
 
     main:
 
@@ -52,11 +52,9 @@ workflow VCF_IMPUTE_MINIMAC4 {
         .map { metaI, target_vcf, target_tbi, metaPC, ref_msav, sites_vcf, sites_index, regionout, map ->
             [
                 metaPC + metaI + ["regionout": regionout],
-                target_vcf,
-                target_tbi,
+                target_vcf, target_tbi,
                 ref_msav,
-                sites_vcf,
-                sites_index,
+                sites_vcf, sites_index,
                 map,
                 regionout,
             ]
@@ -72,7 +70,9 @@ workflow VCF_IMPUTE_MINIMAC4 {
     // Ligate all phased files in one and index it
     ligate_input = MINIMAC4_IMPUTE.out.vcf
         .join(
-            BCFTOOLS_INDEX_PHASE.out.tbi.mix(BCFTOOLS_INDEX_PHASE.out.csi)
+            BCFTOOLS_INDEX_PHASE.out.tbi.mix(BCFTOOLS_INDEX_PHASE.out.csi),
+            failOnMismatch: true,
+            failOnDuplicate: true,
         )
         .map { meta, vcf, index ->
             def keysToKeep = meta.keySet() - ['regionout']
@@ -88,10 +88,12 @@ workflow VCF_IMPUTE_MINIMAC4 {
 
     // Join imputed and index files
     ch_vcf_index = GLIMPSE2_LIGATE.out.merged_variants.join(
-        BCFTOOLS_INDEX_LIGATE.out.tbi.mix(BCFTOOLS_INDEX_LIGATE.out.csi)
+        BCFTOOLS_INDEX_LIGATE.out.tbi.mix(BCFTOOLS_INDEX_LIGATE.out.csi),
+        failOnMismatch: true,
+        failOnDuplicate: true,
     )
 
     emit:
     vcf_index = ch_vcf_index // channel: [ [id, panel, chr], vcf, index ]
-    versions  = ch_versions // channel: [ versions.yml ]
+    versions  = ch_versions  // channel: [ versions.yml ]
 }
