@@ -77,7 +77,7 @@ jobs:
         env:
           NFT_VER: ${{ env.NFT_VER }}
         with:
-          max_shards: 16
+          max_shards: 60
           paths: "${{ join(fromJson(steps.list.outputs.components ), ' ') }}"
 
       - name: debug
