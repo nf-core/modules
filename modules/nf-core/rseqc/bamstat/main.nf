@@ -4,15 +4,15 @@ process RSEQC_BAMSTAT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/rseqc:5.0.3--py39hf95cd2a_0' :
-        'biocontainers/rseqc:5.0.3--py39hf95cd2a_0' }"
+        'https://depot.galaxyproject.org/singularity/rseqc:5.0.4--pyhdfd78af_1' :
+        'biocontainers/rseqc:5.0.4--pyhdfd78af_1' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(bai)
 
     output:
     tuple val(meta), path("*.bam_stat.txt"), emit: txt
-    path  "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('rseqc'), eval('bam_stat.py --version | sed "s/bam_stat.py //"'), emit: versions_rseqc, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,21 +25,11 @@ process RSEQC_BAMSTAT {
         -i $bam \\
         $args \\
         > ${prefix}.bam_stat.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rseqc: \$(bam_stat.py --version | sed -e "s/bam_stat.py //g")
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bam_stat.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rseqc: \$(bam_stat.py --version | sed -e "s/bam_stat.py //g")
-    END_VERSIONS
     """
 }
