@@ -55,8 +55,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.ch_chunks,
-                    workflow.out.ch_vcf_index.collect{[
+                    workflow.out.chunks,
+                    workflow.out.vcf_index.collect{[
                         it[0],
                         path(it[1]).getFileName().toString(),
                         path(it[2]).getFileName().toString(),
@@ -109,8 +109,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.ch_chunks,
-                    workflow.out.ch_vcf_index.collect{[
+                    workflow.out.chunks,
+                    workflow.out.vcf_index.collect{[
                         it[0],
                         path(it[1]).getFileName().toString(),
                         path(it[2]).getFileName().toString(),
@@ -163,8 +163,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.ch_chunks,
-                    workflow.out.ch_vcf_index.collect{[
+                    workflow.out.chunks,
+                    workflow.out.vcf_index.collect{[
                         it[0],
                         path(it[1]).getFileName().toString(),
                         path(it[2]).getFileName().toString(),
@@ -214,8 +214,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.ch_chunks,
-                    workflow.out.ch_vcf_index.collect{[
+                    workflow.out.chunks,
+                    workflow.out.vcf_index.collect{[
                         it[0],
                         path(it[1]).getFileName().toString(),
                         path(it[2]).getFileName().toString(),
@@ -282,8 +282,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.ch_chunks,
-                    workflow.out.ch_vcf_index.collect{[
+                    workflow.out.chunks,
+                    workflow.out.vcf_index.collect{[
                         it[0],
                         path(it[1]).getFileName().toString(),
                         path(it[2]).getFileName().toString(),
