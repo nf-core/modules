@@ -90,8 +90,8 @@ nextflow_process {
                         meta,
                         file(vcf).name,
                         path(vcf).vcf.header.getGenotypeSamples().sort(),
-                        path(vcf).vcf.summary,
-                        path(vcf).vcf.variantsMD5
+                        path(vcf).vcf.summary
+                        // path(vcf).vcf.variantsMD5 // Not reproducible without seed
                     ]},
                     process.out.versions
                 ).match() }

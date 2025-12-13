@@ -1,11 +1,11 @@
 process GLIMPSE_SAMPLE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/glimpse-bio:1.1.1--hce55b13_1':
-        'biocontainers/glimpse-bio:1.1.1--hce55b13_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/glimpse-bio:1.1.1--hce55b13_1'
+        : 'biocontainers/glimpse-bio:1.1.1--hce55b13_1'}"
 
     input:
     tuple val(meta), path(input), path(index)
@@ -24,9 +24,9 @@ process GLIMPSE_SAMPLE {
 
     """
     GLIMPSE_sample \\
-        $args \\
-        --input $input \\
-        --thread $task.cpus \\
+        ${args} \\
+        --input ${input} \\
+        --thread ${task.cpus} \\
         --output ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml

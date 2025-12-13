@@ -1,37 +1,38 @@
 process SHAPEIT5_SWITCH {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/shapeit5:5.1.1--hb60d31d_0':
-        'biocontainers/shapeit5:5.1.1--hb60d31d_0'}"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/shapeit5:5.1.1--hb60d31d_0'
+        : 'biocontainers/shapeit5:5.1.1--hb60d31d_0'}"
 
     input:
-        tuple val(meta), path(estimate), path(estimate_index), val(region), path(pedigree), path(truth), path(truth_index), path(freq) , path(freq_index)
+    tuple val(meta), path(estimate), path(estimate_index), val(region), path(pedigree), path(truth), path(truth_index), path(freq), path(freq_index)
 
     output:
         tuple val(meta), path("*.txt.gz"), emit: errors
         path "versions.yml"              , emit: versions
 
     when:
-        task.ext.when == null || task.ext.when
+    task.ext.when == null || task.ext.when
 
     script:
-    def args         = task.ext.args   ?: ''
-    def prefix       = task.ext.prefix ?: "${meta.id}"
-    def freq_cmd     = freq            ? "--frequency ${freq}"   : ""
-    def pedigree_cmd = pedigree        ? "--pedigree ${pedigree}": ""
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    def freq_cmd     = freq     ? "--frequency ${freq}"    : ""
+    def pedigree_cmd = pedigree ? "--pedigree ${pedigree}" : ""
 
     """
     SHAPEIT5_switch \\
-        $args \\
-        --estimation $estimate \\
-        --region $region \\
-        --validation $truth \\
-        $freq_cmd \\
-        $pedigree_cmd \\
-        --thread $task.cpus \\
+        ${args} \\
+        --estimation ${estimate} \\
+        --region ${region} \\
+        --validation ${truth} \\
+        ${freq_cmd} \\
+        ${pedigree_cmd} \\
+        --thread ${task.cpus} \\
         --output ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
@@ -41,8 +42,9 @@ process SHAPEIT5_SWITCH {
     """
 
     stub:
-    def prefix       = task.ext.prefix ?: "${meta.id}"
-    def create_cmd   = "echo '' | gzip >"
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    def create_cmd = "echo '' | gzip >"
     """
     ${create_cmd} ${prefix}.block.switch.txt.gz
     ${create_cmd} ${prefix}.calibration.switch.txt.gz
