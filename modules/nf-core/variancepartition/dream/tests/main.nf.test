@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process VARIANCEPARTITION_DREAM"
     script "../main.nf"
+    config "./nextflow.config"
     process "VARIANCEPARTITION_DREAM"
 
     tag "modules"
@@ -12,6 +13,9 @@ nextflow_process {
     test("RNAseq - Feature Counts - formula + comparison contrast string - interaction") {
 
     when {
+        params {
+            module_args = "--round_digits 2"
+        }
         process {
             """
             input[0] = Channel.of([
@@ -40,8 +44,8 @@ nextflow_process {
         assertAll(
             { assert process.success },
             { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
-            { assert path(process.out.results[0][1]).getText().contains("0.8333") },
-            { assert path(process.out.results[0][1]).getText().contains("13.5\t21.125\t4.40") },
+            { assert path(process.out.results[0][1]).getText().contains("0.83") },
+            { assert path(process.out.results[0][1]).getText().contains("13.5\t21.12\t4.41") },
             { assert snapshot(process.out.model, process.out.versions).match() }
         )
     }
@@ -50,6 +54,9 @@ nextflow_process {
     test("Mus musculus - expression table - contrasts") {
 
         when {
+            params {
+                module_args = "--round_digits 2"
+            }
             process {
                 """
                 input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':null, 'formula':null])
@@ -77,6 +84,9 @@ nextflow_process {
     test("Mus musculus - expression table - contrasts + formula + comparison contrast string") {
 
         when {
+            params {
+                module_args = "--round_digits 2"
+            }
             process {
                 """
                 input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ treatment', 'comparison':'treatmenthND6'])
@@ -98,9 +108,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
-                { assert path(process.out.results[0][1]).getText().contains("849.6666") },
-                { assert path(process.out.results[0][1]).getText().contains("1050\t549\t3.78") }
-                )
+                { assert path(process.out.results[0][1]).getText().contains("849.67") },
+                { assert path(process.out.results[0][1]).getText().contains("1050\t549\t3.78") },
+                { assert snapshot(process.out.model, process.out.versions).match() }
+            )
         }
     }
 
@@ -108,6 +119,9 @@ nextflow_process {
     test("Mus musculus - expression table - contrasts + formula + weighted comparison contrast string") {
 
         when {
+            params {
+                module_args = "--round_digits 2"
+            }
             process {
                 """
                 input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ 0 + treatment', 'comparison':'2 * treatmenthND6 - treatmentmCherry'])
@@ -128,17 +142,20 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.model, process.out.versions).match() },
                 { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
-                { assert path(process.out.results[0][1]).getText().contains("2124\t549\t4.83") },
-                { assert path(process.out.results[0][1]).getText().contains("1707.33") }
-                )
+                { assert path(process.out.results[0][1]).getText().contains("2124\t549\t4.84") },
+                { assert path(process.out.results[0][1]).getText().contains("1707.33") },
+                { assert snapshot(process.out.model, process.out.versions).match() }
+            )
         }
     }
 
     test("Mus musculus - expression table - contrasts + formula + comparison contrast string - no intercept") {
 
         when {
+            params {
+                module_args = "--round_digits 2"
+            }
             process {
                 """
                 input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ 0 + treatment + sample_number', 'comparison':'treatmenthND6 - treatmentmCherry'])
@@ -161,15 +178,18 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(process.out.model, process.out.versions).match() },
                 { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
-                { assert path(process.out.results[0][1]).getText().contains("-95.6666") },
-                { assert path(process.out.results[0][1]).getText().contains("1050\t549\t4.15") }
-                )
+                { assert path(process.out.results[0][1]).getText().contains("-95.67") },
+                { assert path(process.out.results[0][1]).getText().contains("1050\t549\t4.16") }
+            )
         }
     }
 
     test("Mus musculus - expression table - contrasts + blocking factors") {
 
         when {
+            params {
+                module_args = "--round_digits 2"
+            }
             process {
                 """
                 input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ treatment + (1 | sample_number)'])
@@ -199,6 +219,9 @@ nextflow_process {
 
         options '-stub'
         when {
+            params {
+                module_args = "--round_digits 2"
+            }
             process {
                 """
                 input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ treatment + (1 | sample_number)'])

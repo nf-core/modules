@@ -23,12 +23,13 @@ process TCOFFEE_ALIGN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def tree_args = tree ? "-usetree $tree" : ""
-    def template_args = template ? "-template_file $template" : ""
-    def outfile = compress ? "stdout" : "${prefix}.aln"
-    def write_output = compress ? " | pigz -cp ${task.cpus} > ${prefix}.aln.gz" : ""
+    def args               = task.ext.args ?: ''
+    def prefix             = task.ext.prefix ?: "${meta.id}"
+    def tree_args          = tree ? "-usetree $tree" : ""
+    def template_args      = template ? "-template_file $template" : ""
+    def outfile            = compress ? "stdout" : "${prefix}.aln"
+    def default_out_format = ("-output" in "${args}") ? "" : "-output fasta_aln"
+    def write_output       = compress ? " | pigz -cp ${task.cpus} > ${prefix}.aln.gz" : ""
     """
     export TEMP='./'
     export TMP_4_TCOFFEE="./"
@@ -37,6 +38,7 @@ process TCOFFEE_ALIGN {
         $tree_args \
         $template_args \
         $args \
+        $default_out_format \
         -thread ${task.cpus} \
         -outfile $outfile \
         $write_output

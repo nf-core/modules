@@ -1,0 +1,100 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: VCF_IMPUTE_BEAGLE5
+description: |
+  Subworkflow to impute VCF files using BEAGLE5 software. The subworkflow
+  takes VCF files, phased reference panel, genetic maps and chunks region to perform imputation
+  and outputs phased and imputed VCF files.
+  Meta map of all channels, except ch_input, will be used to perform joint operations.
+  "regionout" and "regionsize" keys will be added to the meta map to distinguish the different
+  file before ligation and therefore should not be used.
+keywords:
+  - VCF
+  - imputation
+  - beagle5
+  - phasing
+components:
+  - beagle5/beagle
+  - bcftools/index
+  - bcftools/view
+  - glimpse2/ligate
+input:
+  - ch_input:
+      description: Channel with input data
+      structure:
+        - meta:
+            type: map
+            description: |
+              Metadata map containing sample information
+        - vcf:
+            type: file
+            description: Input VCF files
+            pattern: "*.{vcf,bcf}{.gz}?"
+        - index:
+            type: file
+            description: Input index file
+            pattern: "*.{tbi,csi}"
+  - ch_panel:
+      description: Channel with phased reference panel data
+      structure:
+        - meta:
+            type: map
+            description: |
+              Metadata map that will be combined with the input data map
+        - vcf:
+            type: file
+            description: Reference panel VCF files by chromosomes
+            pattern: "*.{vcf,bcf,vcf.gz}"
+        - index:
+            type: file
+            description: Reference panel VCF index files
+            pattern: "*.{tbi,csi}"
+  - ch_chunks:
+      description: Channel containing the region to impute
+      structure:
+        - meta:
+            type: map
+            description: |
+              Metadata map containing chromosome information
+        - regionout:
+          type: string
+          description: Region to perform the phasing on
+          pattern: "[chr]+[0-9]+:[0-9]+-[0-9]+"
+  - ch_map:
+      description: Channel with genetic map data
+      structure:
+        - meta:
+            type: map
+            description: |
+              Metadata map containing chromosome information
+        - map:
+            type: file
+            description: Plink format genetic map files
+            pattern: "*.map"
+output:
+  - vcf_index:
+      description: Channel with imputed and phased VCF files
+      structure:
+        - meta:
+            type: map
+            description: |
+              Metadata map of the target input file combined with the reference panel map.
+        - vcf:
+            type: file
+            description: VCF imputed and phased file by sample
+            pattern: "*.{vcf,bcf,vcf.gz}"
+        - index:
+            type: file
+            description: VCF index file
+            pattern: "*.{tbi,csi}"
+  - versions:
+      description: Channel containing software versions file
+      structure:
+        - versions.yml:
+            type: file
+            description: File containing versions of the software used
+authors:
+  - "@LouisLeNezet"
+  - "@gichas"
+maintainers:
+  - "@LouisLeNezet"
+  - "@gichas"
