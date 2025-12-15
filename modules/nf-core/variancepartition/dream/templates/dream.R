@@ -196,6 +196,7 @@ if (!is.null(opt\$formula) && opt\$formula != "") {
 
     # Variable of interest goes last
     form <- paste(form, contrast_variable, sep = ' + ')
+    form <- as.formula(form)
 }
 print(form)
 
