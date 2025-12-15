@@ -81,13 +81,12 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.orf_txt,
-                    process.out.orf_txt_collapsed,
-                ).match() },
+                    process.out.orf_txt_collapsed
+                    ).match("orf_outputs") },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match("versions") },
                 { assert process.out.orf_pdf[0][1].toString().endsWith('.pdf') },
                 { assert process.out.psites_hd5[0][1].toString().endsWith('.hd5') }
             )
         }
-
     }
-
 }

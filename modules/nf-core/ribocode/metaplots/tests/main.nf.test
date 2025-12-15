@@ -65,13 +65,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.config,
-                ).match() },
-                { assert process.out.pdf[0][1].toString().endsWith('.pdf') }
+                { assert snapshot(process.out.config).match("config") },
+                { assert process.out.pdf[0][1].toString().endsWith('.pdf') },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match("versions") }
             )
         }
-
     }
-
 }
