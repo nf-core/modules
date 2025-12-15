@@ -33,7 +33,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = GENMAP_INDEX.out.index.view()
+                input[0] = GENMAP_INDEX.out.index
                 input[1] = [
                     [id:"bed"],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists:true)
