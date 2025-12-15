@@ -65,7 +65,6 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
         ch_trimgalore_log      = TRIMGALORE.out.log
         ch_trimgalore_html     = TRIMGALORE.out.html
         ch_trimgalore_zip      = TRIMGALORE.out.zip
-        ch_versions            = ch_versions.mix(TRIMGALORE.out.versions.first())
     }
 
     if (!skip_bbduk) {
