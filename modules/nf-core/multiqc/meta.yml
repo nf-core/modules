@@ -95,7 +95,28 @@ topics:
       - multiqc --version | sed "s/.* //g":
           type: eval
           description: The expression to obtain the version of the tool
-
+containers:
+  conda:
+    linux/amd64:
+      lock_file: https://wave.seqera.io/v1alpha1/builds/bd-d58f60e4deb769bf_1/condalock
+    linux/arm64:
+      lock_file: https://wave.seqera.io/v1alpha1/builds/bd-193776baee4194db_1/condalock
+  docker:
+    linux/amd64:
+      buildId: bd-d58f60e4deb769bf_1
+      name: community.wave.seqera.io/library/multiqc:1.32--d58f60e4deb769bf
+      scanId: sc-d76ac07493e940b4_6
+    linux/arm64:
+      buildId: bd-193776baee4194db_1
+      name: community.wave.seqera.io/library/multiqc:1.32--193776baee4194db
+      scanId: sc-86caded0bff8246e_3
+  singularity:
+    linux/amd64:
+      buildId: bd-e649ffa094d1ef4a_1
+      name: oras://community.wave.seqera.io/library/multiqc:1.32--e649ffa094d1ef4a
+    linux/arm64:
+      buildId: bd-aee0064f5570ef22_1
+      name: oras://community.wave.seqera.io/library/multiqc:1.32--aee0064f5570ef22
 authors:
   - "@abhi18av"
   - "@bunop"
