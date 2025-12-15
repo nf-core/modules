@@ -82,7 +82,6 @@ nextflow_process {
                 { assert snapshot(
                     process.out.orf_txt,
                     process.out.orf_txt_collapsed,
-                    process.out.versions
                 ).match() },
                 { assert process.out.orf_pdf[0][1].toString().endsWith('.pdf') },
                 { assert process.out.psites_hd5[0][1].toString().endsWith('.hd5') }

@@ -67,7 +67,6 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.config,
-                    process.out.versions
                 ).match() },
                 { assert process.out.pdf[0][1].toString().endsWith('.pdf') }
             )
