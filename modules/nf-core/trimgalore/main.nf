@@ -16,7 +16,9 @@ process TRIMGALORE {
     tuple val(meta), path("*unpaired{,_1,_2}.fq.gz")                  , emit: unpaired, optional: true
     tuple val(meta), path("*.html")                                    , emit: html, optional: true
     tuple val(meta), path("*.zip")                                     , emit: zip, optional: true
-    path "versions.yml"					                               , emit: versions
+    tuple val("${task.process}"), val('trim_galore'), eval("trim_galore --version 2>&1 | grep -Eo '[0-9]+(\\.[0-9]+)+'"), topic: versions, emit: versions_trim_galore
+    tuple val("${task.process}"), val('cutadapt'), eval("echo \$(cutadapt --version 2>&1)"), topic: versions, emit: versions_cutadapt
+    tuple val("${task.process}"), val('pigz'), eval("echo \$( pigz --version 2>&1 | sed 's/pigz //g' )"), topic: versions, emit: versions_pigz
 
     when:
     task.ext.when == null || task.ext.when
@@ -52,13 +54,6 @@ process TRIMGALORE {
             --cores ${cores} \\
             --gzip \\
             ${prefix}.fastq.gz
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            trimgalore: \$(echo \$(trim_galore --version 2>&1) | sed 's/^.*version //; s/Last.*\$//')
-            cutadapt: \$(cutadapt --version)
-            pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-        END_VERSIONS
         """
     }
     else {
@@ -72,13 +67,6 @@ process TRIMGALORE {
             --gzip \\
             ${prefix}_1.fastq.gz \\
             ${prefix}_2.fastq.gz
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            trimgalore: \$(echo \$(trim_galore --version 2>&1) | sed 's/^.*version //; s/Last.*\$//')
-            cutadapt: \$(cutadapt --version)
-            pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-        END_VERSIONS
         """
     }
 
@@ -96,12 +84,5 @@ process TRIMGALORE {
     }
     """
     ${output_command}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trimgalore: \$(echo \$(trim_galore --version 2>&1) | sed 's/^.*version //; s/Last.*\$//')
-        cutadapt: \$(cutadapt --version)
-        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-    END_VERSIONS
     """
 }
