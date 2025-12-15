@@ -171,5 +171,4 @@ workflow BAM_RSEQC {
     readduplication_rscript         // channel: [ val(meta), r   ]
 
     tin_txt                         // channel: [ val(meta), txt ]
-    versions = channel.topic('versions')       // channel: [ versions.yml ]
 }
