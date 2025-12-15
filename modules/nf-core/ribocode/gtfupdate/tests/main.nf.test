@@ -30,4 +30,27 @@ nextflow_process {
             )
         }
     }
+
+    test("test_ribocode_gtfupdate - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.gtf[0][1].toString().endsWith('.gtf') }
+            )
+        }
+    }
 }

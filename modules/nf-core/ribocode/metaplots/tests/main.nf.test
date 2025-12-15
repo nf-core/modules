@@ -8,39 +8,17 @@ nextflow_process {
     tag "modules_nfcore"
     tag "ribocode"
     tag "ribocode/metaplots"
-    tag "ribocode/prepare"
-    tag "ribocode/gtfupdate"
-    tag "gunzip"
+    tag "untar"
 
     setup {
-        run("GUNZIP") {
-            script "../../../gunzip/main.nf"
+        run("UNTAR") {
+            script "../../../untar/main.nf"
             process {
                 """
                 input[0] = [
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz", checkIfExists: true)
+                    [ id:'annotation' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/ribocode/annotation.tar.gz", checkIfExists: true)
                 ]
-                """
-            }
-        }
-        run("RIBOCODE_GTFUPDATE") {
-            script "../../gtfupdate/main.nf"
-            process {
-                """
-                input[0] = [
-                    [ id:'genome' ],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
-                ]
-                """
-            }
-        }
-        run("RIBOCODE_PREPARE") {
-            script "../../prepare/main.nf"
-            process {
-                """
-                input[0] = GUNZIP.out.gunzip
-                input[1] = RIBOCODE_GTFUPDATE.out.gtf
                 """
             }
         }
@@ -57,7 +35,7 @@ nextflow_process {
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887.Aligned.toTranscriptome.out.bam", checkIfExists: true)
                 ]
-                input[1] = RIBOCODE_PREPARE.out.annotation
+                input[1] = UNTAR.out.untar
                 """
             }
         }
@@ -68,6 +46,35 @@ nextflow_process {
                 { assert snapshot(process.out.config).match("config") },
                 { assert process.out.pdf[0][1].toString().endsWith('.pdf') },
                 { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match("versions") }
+            )
+        }
+    }
+
+    test("test_ribocode_metaplots - stub") {
+
+        options "-stub"
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887.Aligned.toTranscriptome.out.bam", checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'annotation' ],
+                    file("annotation")
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.config[0][1].toString().endsWith('_config.txt') },
+                { assert process.out.pdf[0][1].toString().endsWith('.pdf') }
             )
         }
     }
