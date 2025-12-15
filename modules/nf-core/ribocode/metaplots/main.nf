@@ -12,9 +12,9 @@ process RIBOCODE_METAPLOTS {
     tuple val(meta2), path(annotation)
 
     output:
-    tuple val(meta), path("*config.txt")             , emit: config
-    tuple val(meta), path("*.pdf")                  , emit: pdf
-    path "versions.yml"                             , emit: versions
+    tuple val(meta), path("*config.txt")                                            , emit: config
+    tuple val(meta), path("*.pdf")                                                  , emit: pdf
+    tuple val("${task.process}"), val('ribocode'), eval('RiboCode --version  2>&1') , emit: versions_ribocode, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,11 +28,6 @@ process RIBOCODE_METAPLOTS {
         -r $bam \\
         -o ${prefix} \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        RiboCode: \$(RiboCode --version 2>&1)
-    END_VERSIONS
     """
 
     stub:
@@ -41,10 +36,5 @@ process RIBOCODE_METAPLOTS {
     """
     touch ${prefix}_config.txt
     touch ${prefix}_report.pdf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        RiboCode: \$(echo "1.2.15")
-    END_VERSIONS
     """
 }

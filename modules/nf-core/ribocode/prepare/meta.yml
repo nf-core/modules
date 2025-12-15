@@ -34,7 +34,8 @@ input:
           e.g. `[ id:'genome' ]`
     - gtf:
         type: file
-        description: Reference genome GTF annotation file (uncompressed, updated with ribocode/gtfupdate)
+        description: Reference genome GTF annotation file (uncompressed, updated with
+          ribocode/gtfupdate)
         pattern: "*.{gtf}"
         ontologies: []
 output:
@@ -46,13 +47,31 @@ output:
             e.g. `[ id:'test', single_end:false ]`
       - annotation:
           type: directory
-          description: Directory containing RiboCode annotation files
-            (transcripts_cds.txt, transcripts_sequence.fa, transcripts.pickle)
+          description: Directory containing RiboCode annotation files (transcripts_cds.txt,
+            transcripts_sequence.fa, transcripts.pickle)
           pattern: "annotation/"
+  versions_ribocode:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - ribocode:
+          type: string
+          description: Name of the tool
+      - RiboCode --version  2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - ribocode:
+          type: string
+          description: Name of the tool
+      - RiboCode --version  2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@JackCurragh"

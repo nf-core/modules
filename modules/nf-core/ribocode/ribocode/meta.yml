@@ -34,8 +34,7 @@ input:
           e.g. [ id:'genome' ]
     - annotation:
         type: directory
-        description: Directory containing RiboCode annotation files from
-          ribocode/prepare
+        description: Directory containing RiboCode annotation files from ribocode/prepare
         pattern: "annotation"
   - - meta3:
         type: map
@@ -44,8 +43,7 @@ input:
           e.g. [ id:'config' ]
     - config:
         type: file
-        description: RiboCode configuration file containing P-site offsets from
-          ribocode/metaplots
+        description: RiboCode configuration file containing P-site offsets from ribocode/metaplots
         pattern: "*_config.txt"
 
         ontologies: []
@@ -58,8 +56,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.txt":
           type: file
-          description: Text file containing all detected ORFs with detailed
-            information
+          description: Text file containing all detected ORFs with detailed information
           pattern: "*.txt"
           ontologies: []
   orf_txt_collapsed:
@@ -95,10 +92,28 @@ output:
           description: HDF5 file containing P-site positions
           pattern: "*_psites.hd5"
           ontologies: []
+  versions_ribocode:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - ribocode:
+          type: string
+          description: Name of the tool
+      - RiboCode --version  2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - ribocode:
+          type: string
+          description: Name of the tool
+      - RiboCode --version  2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@JackCurragh"

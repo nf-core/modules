@@ -12,8 +12,8 @@ process RIBOCODE_PREPARE {
     tuple val(meta2), path(gtf)
 
     output:
-    tuple val(meta), path("annotation"), emit: annotation
-    path "versions.yml"                , emit: versions
+    tuple val(meta), path("annotation")                                             , emit: annotation
+    tuple val("${task.process}"), val('ribocode'), eval('RiboCode --version  2>&1') , emit: versions_ribocode, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,11 +27,6 @@ process RIBOCODE_PREPARE {
         -f ${fasta} \\
         -o annotation \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        RiboCode: \$(RiboCode --version)
-    END_VERSIONS
     """
 
     stub:
@@ -43,10 +38,5 @@ process RIBOCODE_PREPARE {
     touch annotation/transcripts_cds.txt
     touch annotation/transcripts_sequence.fa
     touch annotation/transcripts.pickle
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        RiboCode: \$(echo "1.2.15")
-    END_VERSIONS
     """
 }

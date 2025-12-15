@@ -39,10 +39,28 @@ output:
           type: file
           description: Updated GTF annotation file
           pattern: "*_updated.gtf"
+  versions_ribocode:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - ribocode:
+          type: string
+          description: Name of the tool
+      - RiboCode --version  2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - ribocode:
+          type: string
+          description: Name of the tool
+      - RiboCode --version  2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@JackCurragh"

@@ -11,8 +11,8 @@ process RIBOCODE_GTFUPDATE {
     tuple val(meta), path(gtf)
 
     output:
-    tuple val(meta), path("*.gtf"), emit: gtf
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.gtf")                                                  , emit: gtf
+    tuple val("${task.process}"), val('ribocode'), eval('RiboCode --version  2>&1') , emit: versions_ribocode, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,11 +26,6 @@ process RIBOCODE_GTFUPDATE {
         ${gtf} \\
         $args \\
         > ${prefix}_updated.gtf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        RiboCode: \$(RiboCode --version)
-    END_VERSIONS
     """
 
     stub:
@@ -39,10 +34,5 @@ process RIBOCODE_GTFUPDATE {
 
     """
     touch ${prefix}_updated.gtf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        RiboCode: \$(echo "1.2.15")
-    END_VERSIONS
     """
 }
