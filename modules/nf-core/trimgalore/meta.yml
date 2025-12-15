@@ -51,10 +51,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_report.txt":
+      - "*report.txt":
           type: file
           description: trimgalore log file
-          pattern: "*_report.txt"
+          pattern: "*report.txt"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # Textual format
   unpaired:
@@ -90,7 +90,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.zip":
           type: file
-          description: FastQC report output zip after trimming when the --fastqc flag is used
+          description: FastQC report output zip after trimming when the --fastqc flag
+            is used
           pattern: "*_fastqc.zip"
           ontologies:
             - edam: http://edamontology.org/format_3987 # ZIP format
@@ -101,10 +102,9 @@ output:
       - trimgalore:
           type: string
           description: The name of the tool
-      - trim_galore --version | grep -Eo "[0-9]+(\\.[0-9]+":
+      - trim_galore --version | grep -Eo "[0-9]+(\\.[0-9]+:
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -113,7 +113,7 @@ topics:
       - trimgalore:
           type: string
           description: The name of the tool
-      - trim_galore --version | grep -Eo "[0-9]+(\\.[0-9]+)+":
+      - trim_galore --version | grep -Eo "[0-9]+(\\.[0-9]+:
           type: eval
           description: The expression to obtain the version of the tool
 
