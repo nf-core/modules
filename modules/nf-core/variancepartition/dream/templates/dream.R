@@ -99,7 +99,7 @@ for (ao in names(args_opt)) {
 }
 
 # If there is no option supplied, convert string "null" to NULL
-keys <- c("formula", "contrast_string", "contrast_variable", "blocking_variable", "contrast_reference")
+keys <- c("formula", "contrast_string", "contrast_variable", "blocking_variables", "contrast_reference")
 opt[keys] <- lapply(opt[keys], nullify)
 
 opt\$threads      <- as.numeric(opt\$threads)
