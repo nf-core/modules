@@ -7,6 +7,18 @@ library("BiocParallel")
 library("limma")
 
 # Load auxiliary helping functions
+
+#' Check for Non-Empty, Non-Whitespace String
+#'
+#' This function checks if the input is non-NULL and contains more than just whitespace.
+#' It returns TRUE if the input is a non-empty, non-whitespace string, and FALSE otherwise.
+#'
+#' @param input A variable to check.
+#' @return A logical value: TRUE if the input is a valid, non-empty, non-whitespace string; FALSE otherwise.
+#' @examples
+#' is_valid_string("Hello World") # Returns TRUE
+#' is_valid_string("   ")         # Returns FALSE
+#' is_valid_string(NULL)          # Returns FALSE
 is_valid_string <- function(input) {
   !is.null(input) && nzchar(trimws(input))
 }
