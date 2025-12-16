@@ -23,6 +23,7 @@ process TRGT_MERGE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def input = (vcfs.collect().size() > 1) ? vcfs.sort{ vcf -> vcf.name } : vcfs
     def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
                     args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
                     args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
@@ -37,7 +38,7 @@ process TRGT_MERGE {
         $args \\
         $reference \\
         $output \\
-        --vcf ${vcfs}
+        --vcf ${input}
     """
 
     stub:
