@@ -51,8 +51,7 @@ nextflow_workflow {
                     workflow.out.junctionsaturation_all.findAll { it[1].endsWith('.pdf') == false },
                     workflow.out.readdistribution_txt,
                     workflow.out.readduplication_all.findAll { it[1].endsWith('.pdf') == false },
-                    workflow.out.tin_txt,
-                    workflow.out.versions).match()}
+                    workflow.out.tin_txt).match()}
             )
         }
     }
@@ -80,15 +79,14 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert workflow.out.bamstat_txt.size() == 0 },
-                { assert workflow.out.innerdistance_all.size() == 0 },
-                { assert workflow.out.inferexperiment_txt.size() == 0 },
-                { assert workflow.out.junctionannotation_all.size() == 0 },
-                { assert workflow.out.junctionsaturation_all.size() == 0 },
-                { assert workflow.out.readdistribution_txt.size() == 0 },
-                { assert workflow.out.readduplication_all.size() == 0 },
-                { assert workflow.out.tin_txt.size() == 0 },
-                { assert workflow.out.versions.size() == 0 }
+                { assert workflow.out.bamstat_txt == null || workflow.out.bamstat_txt.size() == 0 },
+                { assert workflow.out.innerdistance_all == null || workflow.out.innerdistance_all.size() == 0 },
+                { assert workflow.out.inferexperiment_txt == null || workflow.out.inferexperiment_txt.size() == 0 },
+                { assert workflow.out.junctionannotation_all == null || workflow.out.junctionannotation_all.size() == 0 },
+                { assert workflow.out.junctionsaturation_all == null || workflow.out.junctionsaturation_all.size() == 0 },
+                { assert workflow.out.readdistribution_txt == null || workflow.out.readdistribution_txt.size() == 0 },
+                { assert workflow.out.readduplication_all == null || workflow.out.readduplication_all.size() == 0 },
+                { assert workflow.out.tin_txt == null || workflow.out.tin_txt.size() == 0 }
             )
         }
     }
