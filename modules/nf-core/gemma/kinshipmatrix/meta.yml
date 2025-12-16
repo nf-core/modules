@@ -1,0 +1,63 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gemma_kinshipmatrix"
+description: GEMMA is a software toolkit for fast application of linear mixed models (LMMs)
+keywords:
+  - matrix
+  - lmms
+  - gwas
+tools:
+  - "gemma":
+      description: "Linear mixed models (LMMs) for genome-wide association (GWA)"
+      homepage: "https://github.com/genetics-statistics/GEMMA"
+      documentation: "https://github.com/genetics-statistics/GEMMA"
+      tool_dev_url: "https://github.com/genetics-statistics/GEMMA"
+      doi: "10.1038/ng.2310"
+      licence: ["GPL v3"]
+      identifier: biotools:gemma
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+
+    - genotype:
+        type: file
+        description: genotype_matrix file
+        pattern: "*.txt"
+
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+
+    - phenotype:
+        type: file
+        description: phenotype file
+        pattern: "*.txt"
+
+output:
+  - matrix:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "output/${meta.id}.out.cXX.txt":
+          type: file
+          description: kinship matrix
+          pattern: "output/*out.cXX.txt"
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@chriswyatt1"
+maintainers:
+  - "@chriswyatt1"
