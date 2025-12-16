@@ -1,0 +1,118 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "blast_rpsblast"
+description: The rpsblast application searches a protein query against the conserved domain database (CDD), which is a set of protein profiles
+keywords:
+  - protein
+  - CDD
+  - blast
+  - rpsblast
+tools:
+  - blast:
+      description: |
+        BLAST+ is a new suite of BLAST tools that utilizes the NCBI C++ Toolkit.
+      homepage: https://blast.ncbi.nlm.nih.gov/Blast.cgi
+      documentation: https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=Blastdocs
+      doi: 10.1016/S0022-2836(05)80360-2
+      licence: ["US-Government-Work"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - fasta:
+        type: file
+        description: Input fasta file containing protein queries sequences
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing db information
+          e.g. [ id:'test2', single_end:false ]
+    - db:
+        type: directory
+        description: Directory containing an rpsblast compatible database
+        pattern: "*"
+  - out_ext:
+      type: string
+      description: |
+        Specify the type of output file to be generated. `xml` corresponds to BLAST xml format.
+        `tsv` corresponds to BLAST tabular format. `csv` corresponds to BLAST comma separated format.
+        `asn` corresponds to BLAST archive (ASN.1) format (default, necessary for post-processing)
+      pattern: "xml|tsv|csv|asn"
+output:
+  xml:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.xml*":
+          type: file
+          description: File containing rpsblast hits in XML format
+          pattern: "*.{xml}"
+          ontologies:
+            - edam: http://edamontology.org/format_2332 # XML
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.tsv*":
+          type: file
+          description: File containing rpsblast hits in tabular format
+          pattern: "*.{tsv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.csv*":
+          type: file
+          description: File containing rpsblast hits in comma separated format
+          pattern: "*.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  asn:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.asn*":
+          type: file
+          description: File containing rpsblast hits in BLAST archive (ASN.1) format
+          pattern: "*.asn"
+          ontologies:
+            - edam: http://edamontology.org/format_1966 # ASN
+  versions_blast:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "rpsblast":
+          type: string
+          description: The name of the tool
+      - "rpsblast -version":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rpsblast:
+          type: string
+          description: The name of the tool
+      - rpsblast -version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@Ales-ibt"
+maintainers:
+  - "@Ales-ibt"

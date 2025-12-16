@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process BLAST_RPSBLAST"
+    script "../main.nf"
+    process "BLAST_RPSBLAST"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "blast"
+    tag "blast/rpsblast"
+    tag "wget"
+    tag "untar"
+
+    setup {
+        run("WGET") {
+            script "../../../wget/main.nf"
+            process {
+                """
+                input[0] = [ [id:'smart'], "https://ftp.ncbi.nih.gov/pub/mmdb/cdd/little_endian/Smart_LE.tar.gz" ]
+                """
+            }
+        }
+
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = WGET.out.outfile
+                """
+            }
+        }
+    }
+
+    test("Search for hits versus the smart database and generates output in asn format") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                input[1] = UNTAR.out.untar
+                input[2] = ''
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                ).match() }
+            )
+        }
+
+    }
+
+}
