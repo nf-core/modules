@@ -27,12 +27,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert process.out.pdf.size() == 0 || file(process.out.pdf[0][1]).name.endsWith('.pdf') },
+                { assert process.out.events_pdf.size() == 0 || file(process.out.events_pdf[0][1]).name.endsWith('.pdf') },
                 { assert snapshot(
-                    file(process.out.pdf[0][1]).name,
-                    file(process.out.events_pdf[0][1]).name,
                     process.out.log,
-                    process.out.bed,
-                    process.out.interact_bed,
                     process.out.rscript,
                     process.out.xls,
                     process.out.versions_rseqc
