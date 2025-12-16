@@ -72,33 +72,33 @@ nullify <- function(x) {
 
 # Options list
 opt <- list(
-    output_prefix      = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
-    count_file         = "$counts",                 # File containing raw counts
-    sample_file        = "$samplesheet",            # File containing sample information
-    blocking_variables = NULL,
-    contrast_variable  = "$contrast_variable",      # Variable for contrast (e.g., "treatment")
-    contrast_reference = "$reference",              # Reference level for the contrast
-    contrast_target    = "$target",                 # Target level for the contrast (e.g., "mCherry")
-    contrast_string    = "$comparison",             # Optional full (complex) contrast expression comparison
-    sample_id_col      = "sample",                  # Column name for sample IDs
-    threads            = "$task.cpus",              # Number of threads for multithreading
+    output_prefix              = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
+    count_file                 = "$counts",                 # File containing raw counts
+    sample_file                = "$samplesheet",            # File containing sample information
+    blocking_variables         = NULL,
+    contrast_variable          = "$contrast_variable",      # Variable for contrast (e.g., "treatment")
+    contrast_reference         = "$reference",              # Reference level for the contrast
+    contrast_target            = "$target",                 # Target level for the contrast (e.g., "mCherry")
+    contrast_string            = "$comparison",             # Optional full (complex) contrast expression comparison
+    sample_id_col              = "sample",                  # Column name for sample IDs
+    threads                    = "$task.cpus",              # Number of threads for multithreading
     subset_to_contrast_samples = FALSE,            # Whether to subset to contrast samples
-    exclude_samples_col = NULL,                    # Column for excluding samples
-    exclude_samples_values = NULL,                 # Values for excluding samples
-    adjust.method      = "BH",                    # Adjustment method for topTable
-    p.value            = 1,                       # P-value threshold for topTable
-    lfc                = 0,                       # Log fold-change threshold for topTable
-    confint            = FALSE,                   # Whether to compute confidence intervals in topTable
-    proportion         = 0.01,                    # Proportion for eBayes
-    stdev_coef_lim     = "0.1,4",                 # Standard deviation coefficient limits for eBayes
-    trend              = FALSE,                   # Whether to use trend in eBayes
-    robust             = FALSE,                   # Whether to use robust method in eBayes
-    winsor_tail_p      = "0.05,0.1",              # Winsor tail probabilities for eBayes
-    ddf                = "adaptive",              # 'Satterthwaite', 'Kenward-Roger', or 'adaptive'
-    reml               = FALSE,
-    round_digits       = NULL,
-    formula            = "$formula",              # User-specified formula (e.g. "~ + (1 | sample_number)")
-    apply_voom         = FALSE                    # Whether to apply `voomWithDreamWeights`
+    exclude_samples_col        = NULL,                    # Column for excluding samples
+    exclude_samples_values     = NULL,                 # Values for excluding samples
+    adjust.method              = "BH",                    # Adjustment method for topTable
+    p.value                    = 1,                       # P-value threshold for topTable
+    lfc                        = 0,                       # Log fold-change threshold for topTable
+    confint                    = FALSE,                   # Whether to compute confidence intervals in topTable
+    proportion                 = 0.01,                    # Proportion for eBayes
+    stdev_coef_lim             = "0.1,4",                 # Standard deviation coefficient limits for eBayes
+    trend                      = FALSE,                   # Whether to use trend in eBayes
+    robust                     = FALSE,                   # Whether to use robust method in eBayes
+    winsor_tail_p              = "0.05,0.1",              # Winsor tail probabilities for eBayes
+    ddf                        = "adaptive",              # 'Satterthwaite', 'Kenward-Roger', or 'adaptive'
+    reml                       = FALSE,
+    round_digits               = NULL,
+    formula                    = "$formula",              # User-specified formula (e.g. "~ + (1 | sample_number)")
+    apply_voom                 = FALSE                    # Whether to apply `voomWithDreamWeights`
 )
 
 # Load external arguments to opt list
@@ -164,15 +164,6 @@ if (!is_valid_string(opt\$formula)) {
       )
     }
   }
-
-  # Optionally, subset to only the samples involved in the contrast
-  if (opt\$subset_to_contrast_samples){
-    sample_selector <- metadata[[contrast_variable]] %in% c(opt\$contrast_target, opt\$contrast_reference)
-    selected_samples <- metadata[sample_selector, opt\$sample_id_col]
-    count.table <- count.table[, selected_samples]
-    metadata <- metadata[selected_samples, ]
-  }
-
 }
 
 # Ensure contrast variable is factor, then relevel
@@ -191,8 +182,18 @@ countMatrix <- read_delim_flexible(opt\$count_file, header = TRUE, stringsAsFact
 rownames(countMatrix) <- countMatrix\$gene_id # count_file/matrix must have a gene_id column.
 countMatrix <- countMatrix[, rownames(metadata), drop = FALSE]
 
+if (opt\$subset_to_contrast_samples) {
+  sample_selector <- metadata[[contrast_variable]] %in%
+    c(opt\$contrast_target, opt\$contrast_reference)
+
+  selected_samples <- rownames(metadata)[sample_selector]
+
+  metadata <- metadata[selected_samples, , drop = FALSE]
+  countMatrix <- countMatrix[, selected_samples, drop = FALSE]
+}
+
 # Construct model formula using user-provided formula if available; if not, generate formula from variables
-if (!is.null(opt\$formula) && opt\$formula != "") {
+if (is_valid_string(opt\$formula)) {
     form <- as.formula(opt\$formula)
 } else {
     form <- '~ 0'
@@ -207,8 +208,7 @@ if (!is.null(opt\$formula) && opt\$formula != "") {
     }
 
     # Variable of interest goes last
-    form <- paste(form, contrast_variable, sep = ' + ')
-    form <- as.formula(form)
+    form <- as.formula(paste(form, contrast_variable, sep = ' + '))
 }
 print(form)
 
@@ -244,28 +244,41 @@ fitmm <- eBayes(fitmm, proportion = opt\$proportion,
 head(fitmm\$design, 3)
 print(colnames(fitmm\$design))
 
+has_intercept <- "(Intercept)" %in% colnames(fitmm\$design)
+
 # If contrast_string is provided, use that for makeContrast
 if (!is.null(opt\$contrast_string)) {
-    cat("Using contrast string:", opt\$contrast_string, "\n")
-    colnames(fitmm\$design) <- make.names(colnames(fitmm\$design))
-    # Use makeContrasts
-    contrast_matrix <- makeContrasts(contrast = opt\$contrast_string, levels = colnames(fitmm\$design))
-    fit2 <- contrasts.fit(fitmm, contrast_matrix)
-    fit2 <- eBayes(fit2, proportion = opt\$proportion,
-                   stdev.coef.lim = stdev_coef_lim_vals,
-                   trend = opt\$trend, robust = opt\$robust,
-                   winsor.tail.p = winsor_tail_p_vals)
-    results <- topTable(fit2, number = Inf,
-                        adjust.method = opt\$adjust.method,
-                        p.value = opt\$p.value, lfc = opt\$lfc, confint = opt\$confint)
-
-} else {
+    contrast_string <- opt\$contrast_string
+} else if (has_intercept) {
+  contrast_string <- ""
+    # Intercept model → use coef (reference level is implicit)
     coef_name <- paste0(opt\$contrast_variable, opt\$contrast_target)
     cat("Using default contrast matrix:", coef_name, "\n")
 
     results <- topTable(fitmm, coef = coef_name, number = Inf,
                         adjust.method = opt\$adjust.method, p.value = opt\$p.value,
                         lfc = opt\$lfc, confint = opt\$confint)
+} else {
+    reference <- paste0(opt\$contrast_variable, opt\$contrast_reference)
+    target <- paste0(opt\$contrast_variable, opt\$contrast_target)
+
+    contrast_string <- paste0(target, " - ", reference)
+}
+
+if (is_valid_string(contrast_string)) {
+    cat("Using contrast string:", contrast_string, "\n")
+
+    colnames(fitmm\$design) <- make.names(colnames(fitmm\$design))
+    # Use makeContrasts
+    contrast_matrix <- makeContrasts(contrast = contrast_string, levels = colnames(fitmm\$design))
+    fit2 <- contrasts.fit(fitmm, contrast_matrix)
+    fit2 <- eBayes(fit2, proportion = opt\$proportion,
+                  stdev.coef.lim = stdev_coef_lim_vals,
+                  trend = opt\$trend, robust = opt\$robust,
+                  winsor.tail.p = winsor_tail_p_vals)
+    results <- topTable(fit2, number = Inf,
+                        adjust.method = opt\$adjust.method,
+                        p.value = opt\$p.value, lfc = opt\$lfc, confint = opt\$confint)
 }
 
 results\$gene_id <- rownames(results)
