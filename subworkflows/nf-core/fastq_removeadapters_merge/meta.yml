@@ -78,53 +78,69 @@ input:
 output:
   - reads:
       type: file
-      description: The trimmed/modified single or paired end fastq reads
+      description: |
+        Structure: [ val(meta), path(fastq.gz) ]
+        The trimmed/modified single or paired end fastq reads
       pattern: "*.fastq.gz"
   - merged_reads:
       type: file
       description: |
+        Structure: [ val(meta), path(fastq.gz) ]
         The trimmed/modified fastq reads merged into a single file.
         Only meaningful for paired-end reads.
       pattern: "*.fastq.gz"
   - discarded_reads:
       type: file
       description: |
+        Structure: [ val(meta), path(fastq.gz) ]
         All files containing discarded reads throughout the steps.
       pattern: "*.fastq.gz"
   - trimmomatic_trim_log:
       type: file
-      description: trimmomatic log file, from the trim_log parameter
+      description: |
+        Structure: [ val(meta), path(log) ]
+        trimmomatic log file, from the trim_log parameter
       pattern: "*.log"
   - trimmomatic_summary:
       type: file
-      description: trimmomatic summary file of surviving and dropped reads
+      description: |
+        Structure: [ val(meta), path(summary) ]
+        trimmomatic summary file of surviving and dropped reads
       pattern: "*.summary"
   - trimgalore_log:
       type: file
       description: |
+        Structure: [ val(meta), path(txt) ]
         trimgalore log file
       pattern: "*_report.txt"
   - trimgalore_html:
       type: file
       description: |
+        Structure: [ val(meta), path(html) ]
         fastqc HTML output if run with the --fastqc flag.
       pattern: "*_fastqc.html"
   - trimgalore_zip:
       type: file
       description: |
+        Structure: [ val(meta), path(zip) ]
         fastqc zip output if run with the --fastqc flag.
       pattern: "*_fastqc.zip"
   - fastp_html:
       type: file
-      description: fastp results in HTML format
+      description: |
+        Structure: [ val(meta), path(html) ]
+        fastp results in HTML format
       pattern: "*.html"
   - fastp_log:
       type: file
-      description: fastp fastq log file
+      description: |
+        Structure: [ val(meta), path(log) ]
+        fastp fastq log file
       pattern: "*.log"
   - adapterremoval_paired_interleaved:
       type: file
       description: |
+        Structure: [ val(meta), path(fastq.gz) ]
         Write paired-end reads to a single file, interleaving mate 1 and mate 2 reads
       pattern: "*.paired.fastq.gz"
   - versions:
