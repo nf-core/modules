@@ -95,6 +95,16 @@ topics:
       - multiqc --version | sed "s/.* //g":
           type: eval
           description: The expression to obtain the version of the tool
+authors:
+  - "@abhi18av"
+  - "@bunop"
+  - "@drpatelh"
+  - "@jfy133"
+maintainers:
+  - "@abhi18av"
+  - "@bunop"
+  - "@drpatelh"
+  - "@jfy133"
 containers:
   conda:
     linux/amd64:
@@ -114,16 +124,8 @@ containers:
     linux/amd64:
       buildId: bd-e649ffa094d1ef4a_1
       name: oras://community.wave.seqera.io/library/multiqc:1.32--e649ffa094d1ef4a
+      https: https://community.wave.seqera.io/v2/library/multiqc/blobs/sha256:8c6c120d559d7ee04c7442b61ad7cf5a9e8970be5feefb37d68eeaa60c1034eb
     linux/arm64:
       buildId: bd-aee0064f5570ef22_1
       name: oras://community.wave.seqera.io/library/multiqc:1.32--aee0064f5570ef22
-authors:
-  - "@abhi18av"
-  - "@bunop"
-  - "@drpatelh"
-  - "@jfy133"
-maintainers:
-  - "@abhi18av"
-  - "@bunop"
-  - "@drpatelh"
-  - "@jfy133"
+      https: https://community.wave.seqera.io/v2/library/multiqc/blobs/sha256:f02c59ebf6e9a00aa954ee8188a4ecc5c743e18f40b9215a242f67606a00f9cf
