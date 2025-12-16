@@ -296,13 +296,13 @@
             "type": "object",
             "description": "Conda lock file information",
             "properties": {
-                "lock file": {
+                "lock_file": {
                     "type": "string",
                     "description": "URL to the conda lock file",
                     "pattern": "^https://.*$"
                 }
             },
-            "required": ["lock file"]
+            "required": ["lock_file"]
         }
     },
     "required": ["name", "description", "keywords", "authors", "output", "tools"]
