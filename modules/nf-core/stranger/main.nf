@@ -14,7 +14,7 @@ process STRANGER {
     output:
     tuple val(meta), path("*.vcf.gz")    , emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi
-    tuple val("${task.process}"), val('stranger'), eval("strdrop --version | sed 's/stranger, version //g'"), topic: versions, emit: versions_stranger
+    tuple val("${task.process}"), val('stranger'), eval("stranger --version | sed 's/stranger, version //g'"), topic: versions, emit: versions_stranger
     tuple val("${task.process}"), val('tabix'), eval("tabix --version | sed -n 's/^.*htslib) //p'"), topic: versions, emit: versions_tabix
 
     when:
