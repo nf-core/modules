@@ -148,8 +148,6 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         ch_fastq.multiple
     ).reads.mix(ch_fastq.single).set { ch_filtered_reads }
 
-    ch_versions = ch_versions.mix(CAT_FASTQ.out.versions.first())
-
     //
     // MODULE: Lint FastQ files
     //
@@ -259,6 +257,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         BBMAP_BBSPLIT.out.primary_fastq.set { ch_filtered_reads }
 
         ch_versions = ch_versions.mix(BBMAP_BBSPLIT.out.versions.first())
+        ch_multiqc_files = ch_multiqc_files.mix(BBMAP_BBSPLIT.out.stats)
 
         if (!skip_linting) {
             FQ_LINT_AFTER_BBSPLIT(
