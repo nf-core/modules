@@ -9,11 +9,15 @@ process FASTANI {
 
     input:
     tuple val(meta), path(query)
-    path reference
+    tuple val(meta2), path(reference)
+    path ql
+    path rl
 
     output:
-    tuple val(meta), path("*.ani.txt"), emit: ani
-    path "versions.yml"               , emit: versions
+    tuple val(meta), path("*.txt")  , emit: ani
+    tuple val(meta), path("*.visual")   , optional:true, emit: visual
+    tuple val(meta), path("*.matrix")   , optional:true, emit: matrix
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,30 +25,40 @@ process FASTANI {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix2 = task.ext.prefix2 ?: "${meta2.id}"
+    def input_query = query ? "-q ${query}": "--ql ${ql}"
+    def input_reference = reference ? "-r ${reference}": "--rl ${rl}"
+    def out = query ?: ( reference ? "-o ${prefix}_v_${prefix2}": "-o ${prefix}_v_all"): ( reference ? "-o all_v_${prefix2}": "-o all_v_all" )
 
-    if (meta.batch_input) {
-        """
-        fastANI \\
-            -ql $query \\
-            -rl $reference \\
-            -o ${prefix}.ani.txt
+    """
+    fastANI \\
+        $input_query \\
+        $input_reference \\
+        --threads $task.cpus \\
+        $out
+    
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        fastani: \$(fastANI --version 2>&1 | sed 's/version//;')
+    END_VERSIONS
+    """
 
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            fastani: \$(fastANI --version 2>&1 | sed 's/version//;')
-        END_VERSIONS
-        """
-    } else {
-        """
-        fastANI \\
-            -q $query \\
-            -r $reference \\
-            -o ${prefix}.ani.txt
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix2 = task.ext.prefix2 ?: "${meta2.id}"
+    def input_query = query ? "-q ${query}": "--ql ${ql}"
+    def input_reference = reference ? "-r ${reference}": "--rl ${rl}"
+    def out = query ?: ( reference ? "-o ${prefix}_v_${prefix2}": "-o ${prefix}_v_all"): ( reference ? "-o all_v_${prefix2}": "-o all_v_all" )
 
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            fastani: \$(fastANI --version 2>&1 | sed 's/version//;')
-        END_VERSIONS
-        """
-    }
+    """
+    touch ${out}.visual
+    touch ${out}.txt
+    touch ${out}.matrix
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        fastani: \$(fastANI --version 2>&1 | sed 's/version//;')
+    END_VERSIONS
+    """
 }
