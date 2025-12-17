@@ -34,7 +34,7 @@ process FASTANI {
         $input_reference \\
         --threads $task.cpus \\
         -o ${prefix}_v_${prefix2}.txt
-        
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         fastani: \$(fastANI --version 2>&1 | sed 's/version//;')
@@ -55,4 +55,3 @@ process FASTANI {
     END_VERSIONS
     """
 }
-
