@@ -30,14 +30,9 @@ nextflow_process {
         }
     }
 
-    test("sarscov2 - fasta - asn ") {
+    test("sarscov2 - fasta - asn") {
 
         when {
-            params {
-
-                outdir = "$outputDir"
-
-            }
             process {
                 """
                 input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
@@ -58,16 +53,11 @@ nextflow_process {
         }
     }
 
-    test("sarscov2 - fasta - asn - stub ") {
+    test("sarscov2 - fasta - asn - stub") {
 
         options '-stub'
 
         when {
-            params {
-
-                outdir = "$outputDir"
-
-            }
             process {
                 """
                 input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
