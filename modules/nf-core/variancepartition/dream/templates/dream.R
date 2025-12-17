@@ -224,7 +224,7 @@ if (as.logical(opt\$apply_voom)) {
     vobjDream <- voomWithDreamWeights(dge, form, metadata, BPPARAM = param)
 } else {
     # Assume countMatrix roughly follows a normal distribution
-    vobjDream<- countMatrix
+    vobjDream <- countMatrix
 }
 
 # Fit the DREAM model with ddf and reml options
@@ -244,32 +244,42 @@ fitmm <- eBayes(fitmm, proportion = opt\$proportion,
 head(fitmm\$design, 3)
 print(colnames(fitmm\$design))
 
-has_intercept <- "(Intercept)" %in% colnames(fitmm\$design)
-
 # If contrast_string is provided, use that for makeContrast
 if (!is.null(opt\$contrast_string)) {
     contrast_string <- opt\$contrast_string
-} else if (has_intercept) {
-  contrast_string <- ""
-    # Intercept model → use coef (reference level is implicit)
-    coef_name <- paste0(opt\$contrast_variable, opt\$contrast_target)
-    cat("Using default contrast matrix:", coef_name, "\n")
-
-    results <- topTable(fitmm, coef = coef_name, number = Inf,
-                        adjust.method = opt\$adjust.method, p.value = opt\$p.value,
-                        lfc = opt\$lfc, confint = opt\$confint)
 } else {
-    reference <- paste0(opt\$contrast_variable, opt\$contrast_reference)
-    target <- paste0(opt\$contrast_variable, opt\$contrast_target)
+    # Construct the expected column names for the target and reference levels in the design matrix
+    treatment_target <- paste0(opt\$contrast_variable, opt\$contrast_target)
+    treatment_reference <- paste0(opt\$contrast_variable, opt\$contrast_reference)
 
-    contrast_string <- paste0(target, " - ", reference)
+    # Determine how to construct the contrast string based on which levels are present in the design matrix
+    if ((treatment_target %in% colnames(fitmm\$design)) && (treatment_reference %in% colnames(fitmm\$design))) {
+        # Both target and reference levels are present in the design matrix
+        # We can directly compare the two levels
+        contrast_string <- paste0(treatment_target, "-", treatment_reference)
+    } else if (treatment_target %in% colnames(fitmm\$design)) {
+        # Only the target level is present in the design matrix
+        # The reference level may have been omitted due to collinearity or being set as the baseline
+        # We compare the target level to zero (implicit reference)
+        contrast_string <- ""
+        coef_name <- paste0(opt\$contrast_variable, opt\$contrast_target)
+        cat("Using default contrast matrix:", coef_name, "\n")
+
+        results <- topTable(fitmm, coef = coef_name, number = Inf,
+                            adjust.method = opt\$adjust.method, p.value = opt\$p.value,
+                            lfc = opt\$lfc, confint = opt\$confint)
+    } else {
+        # Neither level is present in the design matrix
+        # This indicates an error; the specified levels are not found
+        stop(paste0(treatment_target, " not found in design matrix"))
+    }
 }
 
+# Use makeContrasts if contrast_string exists
 if (is_valid_string(contrast_string)) {
     cat("Using contrast string:", contrast_string, "\n")
 
     colnames(fitmm\$design) <- make.names(colnames(fitmm\$design))
-    # Use makeContrasts
     contrast_matrix <- makeContrasts(contrast = contrast_string, levels = colnames(fitmm\$design))
     fit2 <- contrasts.fit(fitmm, contrast_matrix)
     fit2 <- eBayes(fit2, proportion = opt\$proportion,
