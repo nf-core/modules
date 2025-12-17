@@ -30,28 +30,28 @@ input:
       pattern: "Cdd|Cdd_NCBI|Cog|Kog|Pfam|Prk|Smart|Tigr"
 output:
   db:
-    - cdd_databases:
+    - cdd_databases/:
         type: directory
-        description: Directory containing the CDD database
-        pattern: "cdd_databases"
+        description: Directory containing the CDD database files
+        pattern: "cdd_databases/"
   versions_wget:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "wget":
+      - wget:
           type: string
           description: The name of the tool
-      - "wget --version | head -1 | cut -d ' ' -f 3":
+      - wget --version | head -1 | cut -d ' ' -f 3:
           type: eval
           description: The expression to obtain the version of the tool
   versions_tar:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "untar":
+      - untar:
           type: string
           description: The name of the tool
-      - "tar --version 2>&1 | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+' | head -1":
+      - tar --version 2>&1 | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+' | head -1:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -63,12 +63,6 @@ topics:
           type: string
           description: The name of the tool
       - wget --version | head -1 | cut -d ' ' -f 3:
-          type: eval
-          description: The expression to obtain the version of the tool
-      - tar:
-          type: string
-          description: The name of the tool
-      - tar --version 2>&1 | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+' | head -1:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
