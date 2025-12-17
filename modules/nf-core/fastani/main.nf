@@ -8,34 +8,33 @@ process FASTANI {
         'biocontainers/fastani:1.32--he1c1bb9_0' }"
 
     input:
-    tuple val(meta), path(query)
+    tuple val(meta),  path(query)
     tuple val(meta2), path(reference)
-    path ql
-    path rl
+    path(ql)
+    path(rl)
 
     output:
-    tuple val(meta), path("*.txt")  , emit: ani
-    tuple val(meta), path("*.visual")   , optional:true, emit: visual
-    tuple val(meta), path("*.matrix")   , optional:true, emit: matrix
+    tuple val(meta), path("*.txt")      , emit: ani
+    tuple val(meta), path("*.visual")   , optional:true , emit: visual
+    tuple val(meta), path("*.matrix")   , optional:true , emit: matrix
     path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def prefix2 = task.ext.prefix2 ?: "${meta2.id}"
-    def input_query = query ? "-q ${query}": "--ql ${ql}"
+    def args            = task.ext.args ?: ''
+    def prefix          = task.ext.prefix  ?: ( meta.id  ?: 'all')
+    def prefix2         = task.ext.prefix2 ?: ( meta2.id ?: 'all')
+    def input_query     = query ? "-q ${query}": "--ql ${ql}"
     def input_reference = reference ? "-r ${reference}": "--rl ${rl}"
-    def out = query ?: ( reference ? "-o ${prefix}_v_${prefix2}": "-o ${prefix}_v_all"): ( reference ? "-o all_v_${prefix2}": "-o all_v_all" )
-
+    
     """
     fastANI \\
         $input_query \\
         $input_reference \\
         --threads $task.cpus \\
-        $out
+        -o ${prefix}_v_${prefix2}.txt
     
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -44,17 +43,13 @@ process FASTANI {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def prefix2 = task.ext.prefix2 ?: "${meta2.id}"
-    def input_query = query ? "-q ${query}": "--ql ${ql}"
-    def input_reference = reference ? "-r ${reference}": "--rl ${rl}"
-    def out = query ?: ( reference ? "-o ${prefix}_v_${prefix2}": "-o ${prefix}_v_all"): ( reference ? "-o all_v_${prefix2}": "-o all_v_all" )
+    def prefix          = task.ext.prefix  ?: ( meta.id  ?: 'all')
+    def prefix2         = task.ext.prefix2 ?: ( meta2.id ?: 'all')
 
     """
-    touch ${out}.visual
-    touch ${out}.txt
-    touch ${out}.matrix
+    touch ${prefix}_v_${prefix2}.visual
+    touch ${prefix}_v_${prefix2}.txt
+    touch ${prefix}_v_${prefix2}.matrix
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
