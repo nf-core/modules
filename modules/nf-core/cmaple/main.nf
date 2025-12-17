@@ -13,7 +13,7 @@ process CMAPLE {
     output:
     tuple val(meta), path("*.treefile"), emit: treefile
     tuple val(meta), path("*.log")     , emit: log
-    tuple val("${task.process}"), val("cmaple"), eval('cmaple --help | grep -m1 "CMAPLE version" | sed -E "s/.*version ([0-9.]+).*/\\1/"'), topic: versions, emit: versions_cmaple
+    tuple val("${task.process}"), val("cmaple"), eval('cmaple --help | grep -m1 -oE "[0-9]+(\\.[0-9]+)+"'), topic: versions, emit: versions_cmaple
 
     when:
     task.ext.when == null || task.ext.when
