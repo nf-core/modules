@@ -19,16 +19,21 @@ process CMAPLE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args     = task.ext.args ?: ''
-    def prefix   = task.ext.prefix ?: "${meta.id}"
-    def tree_arg = newick ? "-t ${newick}" : ""
+    def args             = task.ext.args ?: ''
+    def prefix           = task.ext.prefix ?: "${meta.id}"
+    def is_compressed    = aln.getExtension() == "gz"
+    def aln_name         = is_compressed ? aln.getBaseName() : aln
+    def uncompress_input = is_compressed ? "gzip -c -d ${aln} > ${aln_name}" : ''
+    def tree_arg         = newick ? "-t ${newick}" : ""
     """
+    $uncompress_input
+
     cmaple-aa \\
         $args \\
         -nt $task.cpus \\
         --prefix ${prefix} \\
         ${tree_arg} \\
-        -aln $aln
+        -aln $aln_name
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

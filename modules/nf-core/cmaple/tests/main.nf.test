@@ -7,7 +7,6 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "cmaple"
-    tag "gunzip"
 
     test("seatoxin - aa - aln") {
 
@@ -36,30 +35,16 @@ nextflow_process {
 
     }
 
-    test("haemophilus_influenzae - dna - newick - aln") {
-
-        setup {
-            run("GUNZIP") {
-                script "../../gunzip/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id: 'test_gunzip' ],
-                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.aln.gz', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
-        }
+    test("haemophilus_influenzae - dna - newick - aln.gz") {
 
         when {
             process {
                 """
-                input[0] = GUNZIP.out.gunzip.map{[
+                input[0] = [
                     [ id: 'test_dna' ],
-                    it[1],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.aln.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.aln.nwk', checkIfExists: true)
-                ]}
+                ]
                 """
             }
         }
