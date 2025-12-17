@@ -1,0 +1,102 @@
+nextflow_process {
+
+    name "Test Process BLAST_CDDDOWNLOADER"
+    script "../main.nf"
+    process "BLAST_CDDDOWNLOADER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "blast"
+    tag "blast/cdddownloader"
+
+    test("cdddownload - smart") {
+        when {
+            process {
+                """
+                input[0] = 'Smart'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.db,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+    test("cdddownload - default Cdd_NCBI") {
+        when {
+            process {
+                """
+                input[0] = ''
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.db,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+    test("cdddownload - smart - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = 'Smart'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.db,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+    test("cdddownload - default Cdd_NCBI - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = ''
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.db,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+}
