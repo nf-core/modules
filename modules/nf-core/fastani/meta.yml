@@ -1,55 +1,73 @@
 name: fastani
-description: Alignment-free computation of average nucleotide Identity (ANI)
+description: Alignment-free computation of Average Nucleotide Identity (ANI)
 keywords:
   - genome
   - fasta
   - ANI
+
 tools:
   - fastani:
-      description: FastANI is developed for fast alignment-free computation of whole-genome
-        Average Nucleotide Identity (ANI).
+      description: FastANI is developed for fast alignment-free computation of whole-genome Average Nucleotide Identity (ANI).
       homepage: https://github.com/ParBLiSS/FastANI
       documentation: https://github.com/ParBLiSS/FastANI
       tool_dev_url: https://github.com/ParBLiSS/FastANI
       doi: 10.1038/s41467-018-07641-9
       licence: ["Apache-2.0"]
       identifier: biotools:fastani
+
 input:
   - - meta:
         type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+        description: Groovy Map containing sample information for the query
     - query:
         type: file
-        description: Fasta file(s) to be queried
+        description: Fasta file to be used as the query
         pattern: "*.fasta"
-        ontologies: []
-  - reference:
+  - - meta2:
+        type: map
+        description: Groovy Map containing sample information for the reference
+    - reference:
+        type: file
+        description: Fasta file to be used as the reference
+        pattern: "*.fasta"
+  - ql:
       type: file
-      description: Fasta file(s) to be used as reference for the query
-      pattern: "*.fasta"
-      ontologies: []
+      description: File containing a list of query fasta paths
+      pattern: "*.txt"
+  - rl:
+      type: file
+      description: File containing a list of reference fasta paths
+      pattern: "*.txt"
+
 output:
   ani:
     - - meta:
           type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.ani.txt":
+      - "*.txt":
           type: file
-          description: Results of the query
-          pattern: "*.ani.txt"
-          ontologies: []
+          description: ANI results file
+          pattern: "*.txt"
+  visual:
+    - "*.visual":
+        type: file
+        optional: true
+        description: FastANI visualization output
+  matrix:
+    - "*.matrix":
+        type: file
+        optional: true
+        description: ANI matrix output
   versions:
     - versions.yml:
         type: file
-        description: File containing software versions
+        description: File containing software version information
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+          - edam: http://edamontology.org/format_3750
+
 authors:
+  - "@Ethan-Hetrick"
   - "@abhi18av"
 maintainers:
+  - "@Ethan-Hetrick"
   - "@abhi18av"
