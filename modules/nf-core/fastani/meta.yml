@@ -17,8 +17,10 @@ tools:
 
 input:
   - - meta:
-        type: map
-        description: Groovy Map containing sample information for the query
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
     - query:
         type: file
         description: Fasta file to be used as the query
@@ -43,20 +45,33 @@ output:
   ani:
     - - meta:
           type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
       - "*.txt":
           type: file
           description: ANI results file
           pattern: "*.txt"
   visual:
-    - "*.visual":
-        type: file
-        optional: true
-        description: FastANI visualization output
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.visual":
+          type: file
+          optional: true
+          description: FastANI visualization output
   matrix:
-    - "*.matrix":
-        type: file
-        optional: true
-        description: ANI matrix output
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.matrix":
+          type: file
+          optional: true
+          description: ANI matrix output
   versions:
     - versions.yml:
         type: file
