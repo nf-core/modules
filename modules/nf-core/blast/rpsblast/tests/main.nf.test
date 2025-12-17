@@ -56,15 +56,36 @@ nextflow_process {
                 ).match() }
             )
         }
-
     }
 
+    test("sarscov2 - fasta - asn - stub ") {
 
+        options '-stub'
 
+        when {
+            params {
 
+                outdir = "$outputDir"
 
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                input[1] = UNTAR.out.untar
+                input[2] = ''  // empty defaults to .asn
+                """
+            }
+        }
 
-
-
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.asn,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+    }
 
 }
