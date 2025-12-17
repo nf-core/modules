@@ -4,16 +4,16 @@ process RSEQC_INFEREXPERIMENT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/rseqc:5.0.3--py39hf95cd2a_0' :
-        'biocontainers/rseqc:5.0.3--py39hf95cd2a_0' }"
+        'https://depot.galaxyproject.org/singularity/rseqc:5.0.4--pyhdfd78af_1' :
+        'biocontainers/rseqc:5.0.4--pyhdfd78af_1' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(bai)
     path  bed
 
     output:
     tuple val(meta), path("*.infer_experiment.txt"), emit: txt
-    path  "versions.yml"                           , emit: versions
+    tuple val("${task.process}"), val('rseqc'), eval('infer_experiment.py --version | sed "s/infer_experiment.py //"'), emit: versions_rseqc, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,21 +27,11 @@ process RSEQC_INFEREXPERIMENT {
         -r $bed \\
         $args \\
         > ${prefix}.infer_experiment.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rseqc: \$(infer_experiment.py --version | sed -e "s/infer_experiment.py //g")
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.infer_experiment.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rseqc: \$(infer_experiment.py --version | sed -e "s/infer_experiment.py //g")
-    END_VERSIONS
     """
 }
