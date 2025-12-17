@@ -4,7 +4,6 @@ keywords:
   - genome
   - fasta
   - ANI
-
 tools:
   - fastani:
       description: FastANI is developed for fast alignment-free computation of whole-genome Average Nucleotide Identity (ANI).
@@ -14,7 +13,6 @@ tools:
       doi: 10.1038/s41467-018-07641-9
       licence: ["Apache-2.0"]
       identifier: biotools:fastani
-
 input:
   - - meta:
           type: map
@@ -40,7 +38,6 @@ input:
       type: file
       description: File containing a list of reference fasta paths
       pattern: "*.txt"
-
 output:
   ani:
     - - meta:
@@ -79,7 +76,6 @@ output:
         pattern: "versions.yml"
         ontologies:
           - edam: http://edamontology.org/format_3750
-
 authors:
   - "@Ethan-Hetrick"
   - "@abhi18av"
