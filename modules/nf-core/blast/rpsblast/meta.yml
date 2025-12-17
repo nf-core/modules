@@ -99,7 +99,7 @@ output:
       - "rpsblast":
           type: string
           description: The name of the tool
-      - "rpsblast -version":
+      - "rpsblast -version 2>&1 | head -1 | sed 's/^.* //'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
