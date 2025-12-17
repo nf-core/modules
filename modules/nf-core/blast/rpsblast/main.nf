@@ -17,7 +17,7 @@ process BLAST_RPSBLAST {
     tuple val(meta), path("*.tsv*") , emit: tsv, optional: true
     tuple val(meta), path("*.csv*") , emit: csv, optional: true
     tuple val(meta), path("*.asn*") , emit: asn, optional: true   // outfmt 11 compatible with post-processing rpsbproc tool
-    tuple val("${task.process}"), val('rpsblast'), eval("rpsblast -version"), topic: versions, emit: versions_blast
+    tuple val("${task.process}"), val('rpsblast'), eval("rpsblast -version 2>&1 | head -1 | sed 's/^.* //'"), topic: versions, emit: versions_blast
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,7 +25,7 @@ process BLAST_RPSBLAST {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def is_compressed = fasta.getExtension() == "gz" ? true : false
+    def is_compressed = fasta.getExtension() == "gz"
     def fasta_name = is_compressed ? fasta.getBaseName() : fasta
     def uncompress_input = is_compressed ? "gzip -c -d ${fasta} > ${fasta_name}" : ''
 
