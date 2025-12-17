@@ -28,14 +28,13 @@ process FASTANI {
     def prefix2         = task.ext.prefix2 ?: ( meta2.id ?: 'all')
     def input_query     = query ? "-q ${query}": "--ql ${ql}"
     def input_reference = reference ? "-r ${reference}": "--rl ${rl}"
-    
     """
     fastANI \\
         $input_query \\
         $input_reference \\
         --threads $task.cpus \\
         -o ${prefix}_v_${prefix2}.txt
-    
+        
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         fastani: \$(fastANI --version 2>&1 | sed 's/version//;')
@@ -45,7 +44,6 @@ process FASTANI {
     stub:
     def prefix          = task.ext.prefix  ?: ( meta.id  ?: 'all')
     def prefix2         = task.ext.prefix2 ?: ( meta2.id ?: 'all')
-
     """
     touch ${prefix}_v_${prefix2}.visual
     touch ${prefix}_v_${prefix2}.txt
