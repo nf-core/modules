@@ -28,6 +28,15 @@ process RIBOCODE_METAPLOTS {
         -r $bam \\
         -o ${prefix} \\
         $args
+
+    config_lines=\$(wc -l < ${prefix}_pre_config.txt)
+    if [ "\$config_lines" -le 1 ]; then
+        echo "" >&2
+        echo "ERROR: metaplots created config file with only header line." >&2
+        echo "This usually indicates insufficient periodic signal in Ribo-Seq data." >&2
+        echo "Investigate alignment performance or risk lower quality annotations by lowering cutoff with --extra_ribocode_metaplots_args '-f0_percent 0.XX'" >&2
+        exit 1
+    fi
     """
 
     stub:
