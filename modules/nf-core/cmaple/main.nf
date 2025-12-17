@@ -13,7 +13,7 @@ process CMAPLE {
     output:
     tuple val(meta), path("*.treefile"), emit: treefile
     tuple val(meta), path("*.log")     , emit: log
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val("cmaple"), eval('cmaple --help | grep -m1 "CMAPLE version" | sed -E "s/.*version ([0-9.]+).*/\\1/"'), topic: versions, emit: versions_cmaple
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,11 +34,6 @@ process CMAPLE {
         --prefix ${prefix} \\
         ${tree_arg} \\
         -aln $aln_name
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cmaple: \$(cmaple --help | grep -m1 'CMAPLE version' | sed -E 's/.*version ([0-9.]+).*/\\1/')
-    END_VERSIONS
     """
 
     stub:
@@ -49,10 +44,5 @@ process CMAPLE {
 
     touch ${prefix}.treefile
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cmaple: \$(cmaple --help | grep -m1 'CMAPLE version' | sed -E 's/.*version ([0-9.]+).*/\\1/')
-    END_VERSIONS
     """
 }
