@@ -30,17 +30,19 @@ nextflow_process {
         }
     }
 
-    test("Search for hits versus the smart database and generates output in asn format") {
+    test("sarscov2 - fasta - asn ") {
 
         when {
             params {
+
                 outdir = "$outputDir"
+
             }
             process {
                 """
                 input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
                 input[1] = UNTAR.out.untar
-                input[2] = ''
+                input[2] = ''  // empty defaults to .asn
                 """
             }
         }
@@ -56,5 +58,13 @@ nextflow_process {
         }
 
     }
+
+
+
+
+
+
+
+
 
 }
