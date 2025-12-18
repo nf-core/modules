@@ -329,6 +329,7 @@
                         "target": "hND6",
                         "blocking_factors": "sample_number",
                         "formula": "~ treatment + (1 | sample_number)",
+                        "comparison": "treatmenthND6",
                         "differential_method": "dream",
                         "fc_threshold": 1.5,
                         "stat_threshold": 0.05
@@ -345,6 +346,7 @@
                         "target": "hND6",
                         "blocking_factors": "sample_number",
                         "formula": "~ treatment + (1 | sample_number)",
+                        "comparison": "treatmenthND6",
                         "differential_method": "dream"
                     },
                     "treatment_mCherry_hND6_test_dream.dream.model.txt:md5,7103206474aa480ffd9cec149263489f"
@@ -357,9 +359,9 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
+            "nextflow": "25.04.2"
         },
-        "timestamp": "2025-12-04T21:21:42.90174732"
+        "timestamp": "2025-12-18T19:49:31.61509886"
     },
     "deseq2 + limma-voom + propd - mouse - basic": {
         "content": [

@@ -213,13 +213,13 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert process.exitStatus == 1},
+                { assert process.errorReport.contains("Missing required options: contrast_string") }
             )
         }
     }
 
-    test("Mus musculus - expression table - contrasts + blocking factors stub") {
+    test("Mus musculus - expression table - contrasts + formula + comparison contrast string - no intercept stub") {
 
         options '-stub'
         when {
@@ -228,7 +228,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ treatment + (1 | sample_number)'])
+                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ 0 + treatment + sample_number', 'comparison':'treatmenthND6 - treatmentmCherry'])
                     .map{
                         tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
