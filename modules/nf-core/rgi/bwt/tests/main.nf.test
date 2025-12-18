@@ -60,7 +60,6 @@ nextflow_process {
                     process.out.versions,
                     process.out.tsv,
                     process.out.json,
-                    file(process.out.tmp.get(0).get(1)).list().sort(),
                     process.out.tool_version,
                     process.out.db_version,
                     ).match() }
