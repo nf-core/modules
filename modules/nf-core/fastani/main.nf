@@ -33,7 +33,7 @@ process FASTANI {
         $input_query \\
         $input_reference \\
         --threads $task.cpus \\
-        -o ${prefix}_v_${prefix2}.txt
+        -o ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
