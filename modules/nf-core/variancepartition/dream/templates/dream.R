@@ -73,18 +73,18 @@ nullify <- function(x) {
 # Options list
 opt <- list(
     output_prefix              = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
-    count_file                 = "$counts",                 # File containing raw counts
-    sample_file                = "$samplesheet",            # File containing sample information
+    count_file                 = "$counts",               # File containing raw counts
+    sample_file                = "$samplesheet",          # File containing sample information
     blocking_variables         = NULL,
-    contrast_variable          = "$contrast_variable",      # Variable for contrast (e.g., "treatment")
-    contrast_reference         = "$reference",              # Reference level for the contrast
-    contrast_target            = "$target",                 # Target level for the contrast (e.g., "mCherry")
-    contrast_string            = "$comparison",             # Optional full (complex) contrast expression comparison
-    sample_id_col              = "sample",                  # Column name for sample IDs
-    threads                    = "$task.cpus",              # Number of threads for multithreading
-    subset_to_contrast_samples = FALSE,            # Whether to subset to contrast samples
+    contrast_variable          = "$contrast_variable",    # Variable for contrast (e.g., "treatment")
+    contrast_reference         = "$reference",            # Reference level for the contrast
+    contrast_target            = "$target",               # Target level for the contrast (e.g., "mCherry")
+    contrast_string            = "$comparison",           # Full (complex) contrast expression comparison needed if using formula
+    sample_id_col              = "sample",                # Column name for sample IDs
+    threads                    = "$task.cpus",            # Number of threads for multithreading
+    subset_to_contrast_samples = FALSE,                   # Whether to subset to contrast samples
     exclude_samples_col        = NULL,                    # Column for excluding samples
-    exclude_samples_values     = NULL,                 # Values for excluding samples
+    exclude_samples_values     = NULL,                    # Values for excluding samples
     adjust.method              = "BH",                    # Adjustment method for topTable
     p.value                    = 1,                       # P-value threshold for topTable
     lfc                        = 0,                       # Log fold-change threshold for topTable
@@ -131,6 +131,18 @@ if (!is.null(opt\$round_digits)){
 # Load metadata
 metadata <- read_delim_flexible(opt\$sample_file, header = TRUE, stringsAsFactors = TRUE)
 rownames(metadata) <- metadata[[opt\$sample_id_col]]
+
+# Check if required parameters have been provided
+if (is_valid_string(opt\$formula)) {
+  required_opts <- c('output_prefix', 'contrast_string')
+} else {
+  required_opts <- c('contrast_variable', 'contrast_reference', 'contrast_target', 'output_prefix')
+}
+missing <- required_opts[!unlist(lapply(opt[required_opts], is_valid_string)) | !required_opts %in% names(opt)]
+
+if (length(missing) > 0){
+  stop(paste("Missing required options:", paste(missing, collapse=', ')))
+}
 
 if (!is_valid_string(opt\$formula)) {
   contrast_variable <- make.names(opt\$contrast_variable)
@@ -257,17 +269,6 @@ if (!is.null(opt\$contrast_string)) {
         # Both target and reference levels are present in the design matrix
         # We can directly compare the two levels
         contrast_string <- paste0(treatment_target, "-", treatment_reference)
-    } else if (treatment_target %in% colnames(fitmm\$design)) {
-        # Only the target level is present in the design matrix
-        # The reference level may have been omitted due to collinearity or being set as the baseline
-        # We compare the target level to zero (implicit reference)
-        contrast_string <- ""
-        coef_name <- paste0(opt\$contrast_variable, opt\$contrast_target)
-        cat("Using default contrast matrix:", coef_name, "\n")
-
-        results <- topTable(fitmm, coef = coef_name, number = Inf,
-                            adjust.method = opt\$adjust.method, p.value = opt\$p.value,
-                            lfc = opt\$lfc, confint = opt\$confint)
     } else {
         # Neither level is present in the design matrix
         # This indicates an error; the specified levels are not found
