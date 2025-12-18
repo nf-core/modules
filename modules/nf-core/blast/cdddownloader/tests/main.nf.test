@@ -14,10 +14,10 @@ nextflow_process {
             process {
                 """
                 input[0] = 'Smart'
+                input[1] = file("${outputDir}")
                 """
             }
         }
-
         then {
             assert process.success
             assertAll(
@@ -27,7 +27,6 @@ nextflow_process {
                 ).match() }
             )
         }
-
     }
 
     test("cdddownload - default Cdd_NCBI") {
@@ -35,10 +34,10 @@ nextflow_process {
             process {
                 """
                 input[0] = ''
+                input[1] = file("${outputDir}")
                 """
             }
         }
-
         then {
             assert process.success
             assertAll(
@@ -48,7 +47,6 @@ nextflow_process {
                 ).match() }
             )
         }
-
     }
 
     test("cdddownload - smart - stub") {
@@ -59,10 +57,10 @@ nextflow_process {
             process {
                 """
                 input[0] = 'Smart'
+                input[1] = file("${outputDir}")
                 """
             }
         }
-
         then {
             assert process.success
             assertAll(
@@ -83,10 +81,10 @@ nextflow_process {
             process {
                 """
                 input[0] = ''
+                input[1] = file("${outputDir}")
                 """
             }
         }
-
         then {
             assert process.success
             assertAll(
@@ -96,7 +94,6 @@ nextflow_process {
                 ).match() }
             )
         }
-
     }
 
 }

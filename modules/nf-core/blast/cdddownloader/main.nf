@@ -9,9 +9,10 @@ process BLAST_CDDDOWNLOADER {
 
     input:
     val db_prefix
+    path download_path
 
     output:
-    path "cdd_databases/", emit: db
+    path "${download_path}/cdd_databases/", emit: db
     tuple val("${task.process}"), val('wget'), eval("wget --version | head -1 | cut -d ' ' -f 3"), topic: versions, emit: versions_wget
     tuple val("${task.process}"), val('untar'), eval("tar --version 2>&1 | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+' | head -1"), topic: versions, emit: versions_tar
 
@@ -40,24 +41,63 @@ process BLAST_CDDDOWNLOADER {
     }
 
     """
-    mkdir -p cdd_databases/${db_prefix}
-    cd cdd_databases/
-    mkdir data
+    # Check if cdd_databases directory exists in download_path
+    if [ -d "${download_path}/cdd_databases" ]; then
+        echo "Found existing cdd_databases directory at ${download_path}"
+        cd ${download_path}/cdd_databases
 
-    echo "Downloading ${db_prefix} database into ${db_prefix} dir"
+        # Check if db_prefix directory exists
+        if [ -d "${db_prefix}" ]; then
+            file_count=\$(find ${db_prefix} -type f | wc -l)
+            echo "WARNING: The directory ${download_path}/cdd_databases/${db_prefix} already exists and contains \${file_count} files."
+            echo "If you want to download the database ${db_prefix} again, remove the current ${db_prefix} directory first."
+        else
+            echo "Creating ${db_prefix} directory and downloading database..."
+            mkdir ${db_prefix}
+            echo "Downloading ${db_prefix} database into ${db_prefix} dir"
+            wget https://ftp.ncbi.nlm.nih.gov/pub/mmdb/cdd/little_endian/${db_name}.tar.gz
+            tar -xzf ${db_name}.tar.gz -C ./${db_prefix}
+            rm -f ${db_name}.tar.gz
+            echo "Database ${db_prefix} downloaded successfully"
+        fi
 
-    wget https://ftp.ncbi.nlm.nih.gov/pub/mmdb/cdd/little_endian/${db_name}.tar.gz
-    tar -xzf ${db_name}.tar.gz -C ./${db_prefix}
-    rm -f ${db_name}.tar.gz
+        # Check if data directory exists
+        if [ -d "data" ]; then
+            data_file_count=\$(find data -type f | wc -l)
+            echo "The directory ${download_path}/cdd_databases/data already exists and contains \${data_file_count} files."
+            echo "Skipping metadata files downloading"
+            echo "If you want to download the metadata files again, remove the current data directory first."
+        else
+            echo "Creating data directory and downloading metadata files..."
+            mkdir data
+            echo "Downloading metadata files"
+            wget https://ftp.ncbi.nih.gov/pub/mmdb/cdd/cddid.tbl.gz -O ./data/cddid.tbl.gz && gzip -d ./data/cddid.tbl.gz
+            wget https://ftp.ncbi.nih.gov/pub/mmdb/cdd/cdtrack.txt -O ./data/cdtrack.txt
+            wget https://ftp.ncbi.nih.gov/pub/mmdb/cdd/family_superfamily_links -O ./data/family_superfamily_links
+            wget https://ftp.ncbi.nih.gov/pub/mmdb/cdd/cddannot.dat.gz -O ./data/cddannot.dat.gz && gzip -d ./data/cddannot.dat.gz
+            wget https://ftp.ncbi.nih.gov/pub/mmdb/cdd/cddannot_generic.dat.gz -O ./data/cddannot_generic.dat.gz && gzip -d ./data/cddannot_generic.dat.gz
+            wget https://ftp.ncbi.nih.gov/pub/mmdb/cdd/bitscore_specific.txt -O ./data/bitscore_specific.txt
+            echo "Metadata files downloaded successfully"
+        fi
+    else
+        echo "Creating new cdd_databases directory structure at ${download_path}"
+        mkdir -p ${download_path}/cdd_databases/${db_prefix}
+        mkdir -p ${download_path}/cdd_databases/data
+        cd ${download_path}/cdd_databases
 
-    echo "Downloading metadata files"
+        echo "Downloading ${db_prefix} database into ${db_prefix} dir"
+        wget https://ftp.ncbi.nlm.nih.gov/pub/mmdb/cdd/little_endian/${db_name}.tar.gz
+        tar -xzf ${db_name}.tar.gz -C ./${db_prefix}
+        rm -f ${db_name}.tar.gz
 
-    wget https://ftp.ncbi.nih.gov/pub/mmdb/cdd/cddid.tbl.gz -O ./data/cddid.tbl.gz && gzip -d ./data/cddid.tbl.gz
-    wget https://ftp.ncbi.nih.gov/pub/mmdb/cdd/cdtrack.txt -O ./data/cdtrack.txt
-    wget https://ftp.ncbi.nih.gov/pub/mmdb/cdd/family_superfamily_links -O ./data/family_superfamily_links
-    wget https://ftp.ncbi.nih.gov/pub/mmdb/cdd/cddannot.dat.gz -O ./data/cddannot.dat.gz && gzip -d ./data/cddannot.dat.gz
-    wget https://ftp.ncbi.nih.gov/pub/mmdb/cdd/cddannot_generic.dat.gz -O ./data/cddannot_generic.dat.gz && gzip -d ./data/cddannot_generic.dat.gz
-    wget https://ftp.ncbi.nih.gov/pub/mmdb/cdd/bitscore_specific.txt -O ./data/bitscore_specific.txt
+        echo "Downloading metadata files"
+        wget https://ftp.ncbi.nih.gov/pub/mmdb/cdd/cddid.tbl.gz -O ./data/cddid.tbl.gz && gzip -d ./data/cddid.tbl.gz
+        wget https://ftp.ncbi.nih.gov/pub/mmdb/cdd/cdtrack.txt -O ./data/cdtrack.txt
+        wget https://ftp.ncbi.nih.gov/pub/mmdb/cdd/family_superfamily_links -O ./data/family_superfamily_links
+        wget https://ftp.ncbi.nih.gov/pub/mmdb/cdd/cddannot.dat.gz -O ./data/cddannot.dat.gz && gzip -d ./data/cddannot.dat.gz
+        wget https://ftp.ncbi.nih.gov/pub/mmdb/cdd/cddannot_generic.dat.gz -O ./data/cddannot_generic.dat.gz && gzip -d ./data/cddannot_generic.dat.gz
+        wget https://ftp.ncbi.nih.gov/pub/mmdb/cdd/bitscore_specific.txt -O ./data/bitscore_specific.txt
+    fi
 
     echo "Finish"
 
@@ -65,6 +105,6 @@ process BLAST_CDDDOWNLOADER {
 
     stub:
     """
-    mkdir cdd_databases/
+    mkdir output/cdd_databases/
     """
 }

@@ -9,18 +9,13 @@ keywords:
   - wget
   - tar
 tools:
-  - wget:
-      description: "wget is a free utility for non-interactive download of files from
-        the Web."
-      homepage: "https://www.gnu.org/software/wget/"
-      documentation: "https://www.gnu.org/software/wget/manual/wget.html"
-      licence: ["GPL"]
-      identifier: ""
-  - untar:
+  - blast:
       description: |
-        Extract tar, tar.gz, tar.bz2, tar.xz files.
-      documentation: https://www.gnu.org/software/tar/manual/
-      licence: ["GPL-3.0-or-later"]
+        BLAST+ is a new suite of BLAST tools that utilizes the NCBI C++ Toolkit.
+      homepage: https://blast.ncbi.nlm.nih.gov/Blast.cgi
+      documentation: https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=Blastdocs
+      doi: 10.1016/S0022-2836(05)80360-2
+      licence: ["US-Government-Work"]
       identifier: ""
 input:
   - db_prefix:
@@ -28,12 +23,19 @@ input:
       description: |
         Specify the database to be downloaded from https://ftp.ncbi.nih.gov/pub/mmdb/cdd/little_endian/
       pattern: "Cdd|Cdd_NCBI|Cog|Kog|Pfam|Prk|Smart|Tigr"
+  - download_path:
+      type: directory
+      description: |
+        The path where the databases should be downloaded
+      pattern: "*/"
 output:
   db:
     - cdd_databases/:
         type: directory
-        description: Directory containing the CDD database files
-        pattern: "cdd_databases/"
+        description: |
+          Directory containing the CDD database files, located at download_path/cdd_databases.
+          Contains subdirectories for the specified database prefix and a 'data' directory with metadata files.
+        pattern: "*/cdd_databases/"
   versions_wget:
     - - ${task.process}:
           type: string
