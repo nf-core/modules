@@ -26,8 +26,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - fasta:
         type: file
-        description: Nucleotide or protein sequences in FASTA format
-        pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
+        description: Nucleotide sequences in FASTQ or FASTA format
+        pattern: "*.{fastq,fastq.gz,fq,fq.gz,fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
         ontologies: []
   - card:
       type: directory
