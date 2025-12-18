@@ -6,7 +6,10 @@ nextflow_process {
     tag "fastani"
     script "../main.nf"
     process "FASTANI"
-
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fastani"
     test("fastani - 1v1") {
 
         when {
