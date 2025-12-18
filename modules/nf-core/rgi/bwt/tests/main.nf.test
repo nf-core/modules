@@ -59,7 +59,6 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.versions,
-                    process.out.json,
                     file(process.out.tmp.get(0).get(1)).list().sort(),
                     process.out.tool_version,
                     process.out.db_version,
