@@ -1,5 +1,5 @@
 {
-    "Params: bwamem single-end - default": {
+    "Sarscov2 fasta - SE - deduplicate - with GPU parabricks/fq2bam": {
         "content": [
             [
                 "b4ac761f4117f0c95693ce61825aa03d"
@@ -13,7 +13,7 @@
                         "id": "test",
                         "single_end": true
                     },
-                    "test.flagstat:md5,2191911d72575a2358b08b1df64ccb53"
+                    "test.flagstat:md5,1d27922f8027430ae3055f7e7fc1ce36"
                 ]
             ],
             [
@@ -22,18 +22,10 @@
                         "id": "test",
                         "single_end": true
                     },
-                    "test.stats:md5,0883b19c92a783883b3e11d5bfcc5d6a"
+                    "test.stats:md5,f65552b84f1a36c9ded508c03a493158"
                 ]
             ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test.idxstats:md5,613e048487662c694aa4a2f73ca96a20"
-                ]
-            ],
+            null,
             [
                 "test.deduped.sorted.MarkDuplicates.metrics.txt"
             ],
@@ -44,22 +36,23 @@
                 "test.stats"
             ],
             [
+                "versions.yml:md5,33ef2596639d7968f743b8cdb697a274",
                 "versions.yml:md5,6fa0c192669339220d5c5735739188ac",
-                "versions.yml:md5,8f2ff4c430c4c5f42631534eaf358833",
+                "versions.yml:md5,71928d7ca7a14123b4b025bab027d798",
                 "versions.yml:md5,c8ad9ea35566f100e41588f4c271b663",
                 "versions.yml:md5,e0c30eb274e33f3086ff9e694aae2161"
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.04.7"
         },
-        "timestamp": "2025-11-03T18:07:22.444845091"
+        "timestamp": "2025-12-03T20:40:01.700398606"
     },
-    "Params: bwamem paired-end - skip_deduplication": {
+    "Sarscov2 fasta - PE - skip deduplication - with GPU parabricks/fq2bam": {
         "content": [
             [
-                "94fcf617f5b994584c4e8d4044e16b4f"
+                "2d64e4363d9f3c0e2167fce49d5087cf"
             ],
             [
                 "test.sorted.bam.bai"
@@ -70,7 +63,7 @@
                         "id": "test",
                         "single_end": false
                     },
-                    "test.flagstat:md5,2191911d72575a2358b08b1df64ccb53"
+                    "test.flagstat:md5,18d602435a02a4d721b78d1812622159"
                 ]
             ],
             [
@@ -79,18 +72,10 @@
                         "id": "test",
                         "single_end": false
                     },
-                    "test.stats:md5,0883b19c92a783883b3e11d5bfcc5d6a"
+                    "test.stats:md5,75934f2a51780a80d2ab4674301a018d"
                 ]
             ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.idxstats:md5,613e048487662c694aa4a2f73ca96a20"
-                ]
-            ],
+            null,
             [
                 
             ],
@@ -100,16 +85,17 @@
                 "test.stats"
             ],
             [
-                "versions.yml:md5,8f2ff4c430c4c5f42631534eaf358833"
+                "versions.yml:md5,33ef2596639d7968f743b8cdb697a274",
+                "versions.yml:md5,71928d7ca7a14123b4b025bab027d798"
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.04.7"
         },
-        "timestamp": "2025-11-03T18:07:48.375738382"
+        "timestamp": "2025-12-03T20:41:36.509584972"
     },
-    "Params: bwamem single-end - default - stub": {
+    "Sarscov2 fasta - SE - skip deduplication - with GPU parabricks/fq2bam - stub": {
         "content": [
             {
                 "0": [
@@ -181,8 +167,9 @@
                     ]
                 ],
                 "7": [
+                    "versions.yml:md5,33ef2596639d7968f743b8cdb697a274",
                     "versions.yml:md5,6fa0c192669339220d5c5735739188ac",
-                    "versions.yml:md5,8f2ff4c430c4c5f42631534eaf358833",
+                    "versions.yml:md5,71928d7ca7a14123b4b025bab027d798",
                     "versions.yml:md5,c8ad9ea35566f100e41588f4c271b663",
                     "versions.yml:md5,e0c30eb274e33f3086ff9e694aae2161"
                 ],
@@ -255,22 +242,27 @@
                     ]
                 ],
                 "versions": [
+                    "versions.yml:md5,33ef2596639d7968f743b8cdb697a274",
                     "versions.yml:md5,6fa0c192669339220d5c5735739188ac",
-                    "versions.yml:md5,8f2ff4c430c4c5f42631534eaf358833",
+                    "versions.yml:md5,71928d7ca7a14123b4b025bab027d798",
                     "versions.yml:md5,c8ad9ea35566f100e41588f4c271b663",
                     "versions.yml:md5,e0c30eb274e33f3086ff9e694aae2161"
                 ]
             },
             [
                 {
+                    "FASTQ_ALIGN_DEDUP_BWAMEM:BAM_SORT_STATS_SAMTOOLS:SAMTOOLS_INDEX": {
+                        "samtools": "1.22.1"
+                    }
+                },
+                {
                     "FASTQ_ALIGN_DEDUP_BWAMEM:PICARD_MARKDUPLICATES": {
                         "picard": "3.4.0"
                     }
                 },
                 {
-                    "FASTQ_ALIGN_DEDUP_BWAMEM:FASTQ_ALIGN_BWA:BWA_MEM": {
-                        "bwa": "0.7.19-r1273",
-                        "samtools": "1.22.1"
+                    "FASTQ_ALIGN_DEDUP_BWAMEM:PARABRICKS_FQ2BAM": {
+                        "pbrun": "4.6.0-1"
                     }
                 },
                 {
@@ -287,65 +279,54 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.04.7"
         },
-        "timestamp": "2025-11-03T18:08:01.772454395"
+        "timestamp": "2025-12-03T20:41:52.090425476"
     },
-    "Params: bwamem paired-end - default": {
+    "Sarscov2 fasta - SE - skip deduplication - with GPU parabricks/fq2bam": {
         "content": [
             [
-                "b4ac761f4117f0c95693ce61825aa03d"
+                "30c325e1e032eb1782a280d34c0fb1c7"
             ],
             [
-                "test.deduped.sorted.bam.bai"
+                "test.sorted.bam.bai"
             ],
             [
                 [
                     {
                         "id": "test",
-                        "single_end": false
+                        "single_end": true
                     },
-                    "test.flagstat:md5,2191911d72575a2358b08b1df64ccb53"
+                    "test.flagstat:md5,1d27922f8027430ae3055f7e7fc1ce36"
                 ]
             ],
             [
                 [
                     {
                         "id": "test",
-                        "single_end": false
+                        "single_end": true
                     },
-                    "test.stats:md5,0883b19c92a783883b3e11d5bfcc5d6a"
+                    "test.stats:md5,f65552b84f1a36c9ded508c03a493158"
                 ]
             ],
+            null,
             [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.idxstats:md5,613e048487662c694aa4a2f73ca96a20"
-                ]
+                
             ],
             [
-                "test.deduped.sorted.MarkDuplicates.metrics.txt"
-            ],
-            [
-                "test.deduped.sorted.MarkDuplicates.metrics.txt",
                 "test.flagstat",
                 "test.idxstats",
                 "test.stats"
             ],
             [
-                "versions.yml:md5,6fa0c192669339220d5c5735739188ac",
-                "versions.yml:md5,8f2ff4c430c4c5f42631534eaf358833",
-                "versions.yml:md5,c8ad9ea35566f100e41588f4c271b663",
-                "versions.yml:md5,e0c30eb274e33f3086ff9e694aae2161"
+                "versions.yml:md5,33ef2596639d7968f743b8cdb697a274",
+                "versions.yml:md5,71928d7ca7a14123b4b025bab027d798"
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.04.7"
         },
-        "timestamp": "2025-11-03T18:07:38.589146631"
+        "timestamp": "2025-12-03T20:40:48.92955311"
     }
 }
