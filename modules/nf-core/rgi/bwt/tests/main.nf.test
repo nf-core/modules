@@ -36,7 +36,6 @@ nextflow_process {
         }
     }
 
-
     test("rgi/bwt - homo_sapiens - test_fastq_gz") {
 
         when {
@@ -44,8 +43,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true),
+                    [
+                        file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true),
+                    ]
                 ]
                 input[1] = RGI_CARDANNOTATION.out.db
                 input[2] = []
@@ -58,8 +59,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.versions,
-                    process.out.tsv,
                     process.out.json,
+                    file(process.out.tmp.get(0).get(1)).list().sort(),
                     process.out.tool_version,
                     process.out.db_version,
                     ).match() }
@@ -76,8 +77,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true),
+                    [
+                        file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true),
+                    ]
                 ]
                 input[1] = RGI_CARDANNOTATION.out.db
                 input[2] = []
