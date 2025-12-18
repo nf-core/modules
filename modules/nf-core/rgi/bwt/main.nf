@@ -8,7 +8,7 @@ process RGI_BWT {
         : 'biocontainers/rgi:6.0.5--pyh05cac1d_0'}"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(reads)
     path card
     path wildcard
 
@@ -27,6 +27,8 @@ process RGI_BWT {
     def args = task.ext.args ?: ''
     // This customizes the command: rgi bwt
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def read_one = reads instanceof List ? reads[0] : reads
+    def read_two = reads instanceof List && reads.size() > 1 ? reads[1] : null
     def load_wildcard = ""
 
     if (wildcard) {
@@ -57,7 +59,9 @@ process RGI_BWT {
         ${args} \\
         --threads ${task.cpus} \\
         --output_file ${prefix} \\
-        --input_sequence ${fasta}
+        --read_one ${read_one} \\
+        ${ read_two ? "--read_two ${read_two}" : "" }
+
 
     mkdir temp/
     for FILE in *.xml *.fsa *.{nhr,nin,nsq} *.draft *.potentialGenes *{variant,rrna,protein,predictedGenes,overexpression,homolog}.json; do [[ -e \$FILE ]] && mv \$FILE temp/; done
