@@ -30,7 +30,7 @@ input:
       pattern: "*/"
 output:
   db:
-    - cdd_databases/:
+    - ${download_path}/cdd_databases/:
         type: directory
         description: |
           Directory containing the CDD database files, located at download_path/cdd_databases.
