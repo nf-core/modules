@@ -6,12 +6,13 @@ keywords:
   - antibiotic resistance
 tools:
   - rgi:
-      description: This tool provides a preliminary annotation of your DNA sequence(s)
-        based upon the data available in The Comprehensive Antibiotic Resistance Database
-        (CARD). Hits to genes tagged with Antibiotic Resistance ontology terms will
-        be highlighted. As CARD expands to include more pathogens, genomes, plasmids,
-        and ontology terms this tool will grow increasingly powerful in providing first-pass
-        detection of antibiotic resistance associated genes. See license at CARD website
+      description: This tool provides a preliminary annotation of your DNA
+        sequence(s) based upon the data available in The Comprehensive Antibiotic
+        Resistance Database (CARD). Hits to genes tagged with Antibiotic
+        Resistance ontology terms will be highlighted. As CARD expands to include
+        more pathogens, genomes, plasmids, and ontology terms this tool will grow
+        increasingly powerful in providing first-pass detection of antibiotic
+        resistance associated genes. See license at CARD website.
       homepage: https://card.mcmaster.ca
       documentation: https://github.com/arpcard/rgi
       tool_dev_url: https://github.com/arpcard/rgi
@@ -24,22 +25,22 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - fasta:
+    - reads:
         type: file
         description: Nucleotide sequences in FASTQ or FASTA format
         pattern: "*.{fastq,fastq.gz,fq,fq.gz,fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
         ontologies: []
   - card:
       type: directory
-      description: Directory containing the CARD database. This is expected to be the
-        unarchived but otherwise unaltered download folder (see RGI documentation for
-        download instructions).
+      description: Directory containing the CARD database. This is expected to be
+        the unarchived but otherwise unaltered download folder (see RGI
+        documentation for download instructions).
       pattern: "*/"
   - wildcard:
       type: directory
-      description: Directory containing the WildCARD database (optional). This is expected
-        to be the unarchived but otherwise unaltered download folder (see RGI documentation
-        for download instructions).
+      description: Directory containing the WildCARD database (optional). This is
+        expected to be the unarchived but otherwise unaltered download folder (see
+        RGI documentation for download instructions).
       pattern: "*/"
 output:
   json:
@@ -78,13 +79,13 @@ output:
   tool_version:
     - RGI_VERSION:
         type: string
-        description: The version of the tool in string format (useful for downstream
-          tools such as hAMRronization)
+        description: The version of the tool in string format (useful for
+          downstream tools such as hAMRronization)
   db_version:
     - DB_VERSION:
         type: string
-        description: The version of the used database in string format (useful for downstream
-          tools such as hAMRronization)
+        description: The version of the used database in string format (useful for
+          downstream tools such as hAMRronization)
   versions:
     - versions.yml:
         type: file
