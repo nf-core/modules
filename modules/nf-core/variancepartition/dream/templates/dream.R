@@ -260,20 +260,10 @@ print(colnames(fitmm\$design))
 if (!is.null(opt\$contrast_string)) {
     contrast_string <- opt\$contrast_string
 } else {
-    # Construct the expected column names for the target and reference levels in the design matrix
+    # Construct the contrast_string
     treatment_target <- paste0(opt\$contrast_variable, opt\$contrast_target)
     treatment_reference <- paste0(opt\$contrast_variable, opt\$contrast_reference)
-
-    # Determine how to construct the contrast string based on which levels are present in the design matrix
-    if ((treatment_target %in% colnames(fitmm\$design)) && (treatment_reference %in% colnames(fitmm\$design))) {
-        # Both target and reference levels are present in the design matrix
-        # We can directly compare the two levels
-        contrast_string <- paste0(treatment_target, "-", treatment_reference)
-    } else {
-        # Neither level is present in the design matrix
-        # This indicates an error; the specified levels are not found
-        stop(paste0(treatment_target, " not found in design matrix"))
-    }
+    contrast_string <- paste0(treatment_target, "-", treatment_reference)
 }
 
 # Use makeContrasts if contrast_string exists
