@@ -16,133 +16,68 @@ components:
   - fastp
   - adapterremoval
 input:
-  - ch_reads:
+  - ch_input_reads:
       type: file
       description: |
         List of FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
         Structure: [ val(meta), [ path(reads) ] ]
-  - skip_trimmomatic:
-      type: boolean
+  - val_adapter_tool:
+      type: string
       description: |
-        If true, skips the trimmomatic process.
-  - skip_cutadapt:
-      type: boolean
-      description: |
-        If true, skips the cutadapt process.
-  - skip_trimgalore:
-      type: boolean
-      description: |
-        If true, skips the trimgalore process.
-        We suggest running either cutadapt or trimgalore,
-        because trimgalore also runs cutadapt in the background.
-  - skip_bbduk:
-      type: boolean
-      description: |
-        If true, skips the bbmap/bbduk process.
-  - contaminants:
+        Choose one of the available adapter removal and/or merging tools
+      enum: ["trimmomatic", "cutadapt", "trimgalore", "bbduk", "leehom", "fastp", "adapterremoval"]
+  - ch_adapters:
       type: file
       description: |
-        Reference files used by bbmap/bbduk and/or fastp, containing adapter and/or contaminant sequences for removal
-  - skip_leehom:
+        Optional reference files, containing adapter and/or contaminant sequences for removal.
+        In fasta format for bbmap/bbduk and fastp, or in text format for AdapterRemoval (one adapter per line).
+  - val_save_merged:
       type: boolean
       description: |
-        If true, skips the leehom process.
-  - skip_fastp:
+        Specify true to output merged reads instead
+        Used by fastp and adapterremoval
+  - val_fastp_discard_trimmed_pass:
       type: boolean
       description: |
-        If true, skips the fastp process.
-  - fastp_discard_trimmed_pass:
-      type: boolean
-      description: |
+        Used only by fastp.
         Specify true to not write any reads that pass trimming thresholds from the fastp process.
         This can be used to use fastp for the output report only.
-  - fastp_save_trimmed_fail:
+  - val_fastp_save_trimmed_fail:
       type: boolean
       description: |
+        Used only by fastp.
         Specify true to save files that failed to pass fastp trimming thresholds
-        ending in `*.fail.fastq.gz`
-  - save_merged:
-      type: boolean
-      description: |
-        Specify true to save all merged reads to a file ending in `*.merged.fastq.gz`
-        Used by fastp
-  - skip_adapterremoval:
-      type: boolean
-      description: |
-        If true, skips the adapterremoval process.
-  - text_adapters:
-      type: file
-      description: Optional text file containing list of adapters to look for for removal
-        with one adapter per line. Otherwise will look for default adapters (see AdapterRemoval
-        man page), or can be modified to remove user-specified adapters via ext.args.
 output:
-  - reads:
+  - processed_reads:
       type: file
       description: |
         Structure: [ val(meta), path(fastq.gz) ]
-        The trimmed/modified single or paired end fastq reads
-      pattern: "*.fastq.gz"
-  - merged_reads:
-      type: file
-      description: |
-        Structure: [ val(meta), path(fastq.gz) ]
-        The trimmed/modified fastq reads merged into a single file.
-        Only meaningful for paired-end reads.
+        The trimmed/modified single or paired end or merged fastq reads
       pattern: "*.fastq.gz"
   - discarded_reads:
       type: file
       description: |
         Structure: [ val(meta), path(fastq.gz) ]
-        All files containing discarded reads throughout the steps.
+        The discarded reads
       pattern: "*.fastq.gz"
-  - trimmomatic_trim_log:
-      type: file
-      description: |
-        Structure: [ val(meta), path(log) ]
-        trimmomatic log file, from the trim_log parameter
-      pattern: "*.log"
-  - trimmomatic_summary:
-      type: file
-      description: |
-        Structure: [ val(meta), path(summary) ]
-        trimmomatic summary file of surviving and dropped reads
-      pattern: "*.summary"
-  - trimgalore_log:
-      type: file
-      description: |
-        Structure: [ val(meta), path(txt) ]
-        trimgalore log file
-      pattern: "*_report.txt"
-  - trimgalore_html:
-      type: file
-      description: |
-        Structure: [ val(meta), path(html) ]
-        fastqc HTML output if run with the --fastqc flag.
-      pattern: "*_fastqc.html"
-  - trimgalore_zip:
-      type: file
-      description: |
-        Structure: [ val(meta), path(zip) ]
-        fastqc zip output if run with the --fastqc flag.
-      pattern: "*_fastqc.zip"
-  - fastp_html:
-      type: file
-      description: |
-        Structure: [ val(meta), path(html) ]
-        fastp results in HTML format
-      pattern: "*.html"
-  - fastp_log:
-      type: file
-      description: |
-        Structure: [ val(meta), path(log) ]
-        fastp fastq log file
-      pattern: "*.log"
-  - adapterremoval_paired_interleaved:
+  - paired_interleaved:
       type: file
       description: |
         Structure: [ val(meta), path(fastq.gz) ]
-        Write paired-end reads to a single file, interleaving mate 1 and mate 2 reads
+        Adapterremoval paired-end reads in a single file, interleaving mate 1 and mate 2 reads
       pattern: "*.paired.fastq.gz"
+  - logfile:
+      type: file
+      description: |
+        Execution log file
+        (trimmomatic {log}, trimgalore {txt}, fastp {log})
+      pattern: "*.{log,txt}"
+  - report:
+      type: file
+      description: |
+        Execution report
+        (trimmomatic {summary}, trimgalore {html,zip}, fastp {html})
+      pattern: "*.{summary,html,zip}"
   - versions:
       type: file
       description: |
@@ -151,7 +86,9 @@ output:
       pattern: "versions.yml"
   - multiqc_files:
       type: file
-      description: MultiQC-compatible output files from tools used in preprocessing
+      description: |
+        MultiQC-compatible output files from tools used in preprocessing
+        (trimmomatic, cutadapt, bbduk, leehom, fastp, adapterremoval)
 authors:
   - "@kornkv"
   - "@vagkaratzas"
