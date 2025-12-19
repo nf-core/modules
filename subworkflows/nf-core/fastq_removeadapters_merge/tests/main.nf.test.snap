@@ -1,26 +1,16 @@
 {
-    "sarscov2 - fastq - single-end - with-skips": {
+    "sarscov2 - fastq - trimmomatic - single-end": {
         "content": [
-            "test.fastp.fastq.gz:md5,e051aedfa286d0567c83870d93ed93a3",
+            "test.SE.paired.trim.fastq.gz:md5,e68abbd3b88f7ec12940a4f5c2b8bfb9",
+            "test_trim.log:md5,e4c3f619e9b0e26847f8f3e3d9af319b",
+            "test.summary:md5,24c973237557a1439c775ca19a5deaa5",
             [
-                "test.fail.fastq.gz"
-            ],
-            "test.fastp.html",
-            32,
-            [
-                "test.bbduk.log",
-                "test.cutadapt.log",
-                "test.fastp.json"
+                "test_out.log"
             ],
             [
                 {
-                    "FASTQ_REMOVEADAPTERS_MERGE:FASTP": {
-                        "fastp": "1.0.1"
-                    }
-                },
-                {
-                    "FASTQ_REMOVEADAPTERS_MERGE:BBMAP_BBDUK": {
-                        "bbmap": 39.18
+                    "FASTQ_REMOVEADAPTERS_MERGE:TRIMMOMATIC": {
+                        "trimmomatic": 0.39
                     }
                 }
             ]
@@ -29,105 +19,70 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-12T14:49:19.909628033"
+        "timestamp": "2025-12-19T11:19:19.104684739"
     },
-    "sarscov2 - fastq - single-end - stub": {
+    "sarscov2 - fastq - leehom - single-end": {
+        "content": [
+            "test.fq.gz:md5,304af6f5f6bb58c70abf7924eacfa175",
+            [
+                "test.fail.fq.gz"
+            ],
+            [
+                "test.log"
+            ],
+            [
+                {
+                    "FASTQ_REMOVEADAPTERS_MERGE:LEEHOM": {
+                        "leehom": "1.2.15"
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2025-12-19T11:48:35.122105584"
+    },
+    "sarscov2 - fastq - trimmomatic - paired-end - stub": {
         "content": [
             {
                 "0": [
                     [
                         {
                             "id": "test",
-                            "single_end": true
+                            "single_end": false
                         },
-                        "test.truncated.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        [
+                            "test.paired.trim_1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test.paired.trim_2.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
                     ]
                 ],
                 "1": [
-                    
-                ],
-                "10": [
-                    
-                ],
-                "11": [
-                    "versions.yml:md5,2d5c9b99267e97292e2a581635bd72f7",
-                    "versions.yml:md5,aa418419664a944b74696ee0e9ef1c7a",
-                    "versions.yml:md5,ba074f9db361b3f8d0a8cc93c3907a91",
-                    "versions.yml:md5,bcfe22d952cc3ae0ac5ff685e16fa4a5",
-                    "versions.yml:md5,ea028122f5baa3d73d93e46d4eb742fd"
-                ],
-                "12": [
                     [
                         {
                             "id": "test",
-                            "single_end": true
+                            "single_end": false
                         },
-                        "test.bbduk.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.unpaired.trim_1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ],
                     [
                         {
                             "id": "test",
-                            "single_end": true
+                            "single_end": false
                         },
-                        "test.cutadapt.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ],
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.fastp.json:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ],
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ],
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.settings:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ],
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_out.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.unpaired.trim_2.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.discarded.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ],
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.fail.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ],
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.fail.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
+                    
                 ],
                 "3": [
                     [
                         {
                             "id": "test",
-                            "single_end": true
+                            "single_end": false
                         },
                         "test_trim.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -136,183 +91,83 @@
                     [
                         {
                             "id": "test",
-                            "single_end": true
+                            "single_end": false
                         },
                         "test.summary:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "5": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.fastq.gz_trimming_report.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
+                    "versions.yml:md5,134eb815a4e39fddbfa930d8023aafaa"
                 ],
                 "6": [
-                    
-                ],
-                "7": [
-                    
-                ],
-                "8": [
                     [
                         {
                             "id": "test",
-                            "single_end": true
+                            "single_end": false
                         },
-                        "test.fastp.html:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test_out.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
-                ],
-                "9": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.fastp.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "adapterremoval_paired_interleaved": [
-                    
                 ],
                 "discarded_reads": [
                     [
                         {
                             "id": "test",
-                            "single_end": true
+                            "single_end": false
                         },
-                        "test.discarded.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test.unpaired.trim_1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ],
                     [
                         {
                             "id": "test",
-                            "single_end": true
+                            "single_end": false
                         },
-                        "test.fail.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ],
+                        "test.unpaired.trim_2.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "logfile": [
                     [
                         {
                             "id": "test",
-                            "single_end": true
+                            "single_end": false
                         },
-                        "test.fail.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test_trim.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
-                ],
-                "fastp_html": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.fastp.html:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "fastp_log": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.fastp.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "merged_reads": [
-                    
                 ],
                 "multiqc_files": [
                     [
                         {
                             "id": "test",
-                            "single_end": true
-                        },
-                        "test.bbduk.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ],
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.cutadapt.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ],
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.fastp.json:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ],
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ],
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.settings:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ],
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
+                            "single_end": false
                         },
                         "test_out.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "reads": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.truncated.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "trimgalore_html": [
+                "paired_interleaved": [
                     
                 ],
-                "trimgalore_log": [
+                "processed_reads": [
                     [
                         {
                             "id": "test",
-                            "single_end": true
+                            "single_end": false
                         },
-                        "test.fastq.gz_trimming_report.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            "test.paired.trim_1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test.paired.trim_2.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
                     ]
                 ],
-                "trimgalore_zip": [
-                    
-                ],
-                "trimmomatic_summary": [
+                "report": [
                     [
                         {
                             "id": "test",
-                            "single_end": true
+                            "single_end": false
                         },
                         "test.summary:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "trimmomatic_trim_log": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_trim.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
                 "versions": [
-                    "versions.yml:md5,2d5c9b99267e97292e2a581635bd72f7",
-                    "versions.yml:md5,aa418419664a944b74696ee0e9ef1c7a",
-                    "versions.yml:md5,ba074f9db361b3f8d0a8cc93c3907a91",
-                    "versions.yml:md5,bcfe22d952cc3ae0ac5ff685e16fa4a5",
-                    "versions.yml:md5,ea028122f5baa3d73d93e46d4eb742fd"
+                    "versions.yml:md5,134eb815a4e39fddbfa930d8023aafaa"
                 ]
             }
         ],
@@ -320,119 +175,87 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-15T16:11:48.259971231"
+        "timestamp": "2025-12-19T11:19:48.58678264"
     },
-    "sarscov2 - fastq - paired-end": {
+    "sarscov2 - fastq - cutadapt - paired-end": {
         "content": [
             [
-                "test.pair1.truncated.fastq.gz:md5,b865b4a1d2a7ac9c1caee464e9857da0",
-                "test.pair2.truncated.fastq.gz:md5,1ec9f8b98d3c6dbf956db0782228b29c"
-            ],
-            "test.collapsed.fastq.gz:md5,984b6edf9c613449d2f7ce6dbe0f5550",
-            [
-                "test.discarded.fastq.gz",
-                "test.fail.fq.gz",
-                "test.paired.fail.fastq.gz",
-                "test.unpaired.trim_1.fastq.gz",
-                "test.unpaired.trim_2.fastq.gz",
-                "test_1.fail.fastq.gz",
-                "test_2.fail.fastq.gz",
-                "test_r1.fail.fq.gz",
-                "test_r2.fail.fq.gz"
-            ],
-            "test_trim.log:md5,9629761761a34576b3484bf4174f681f",
-            "test.summary:md5,9698e5e5c060bbe64588998fe35f8d71",
-            59,
-            62,
-            "test.fastp.html",
-            51,
-            [
-                "test.bbduk.log",
-                "test.cutadapt.log",
-                "test.fastp.json",
-                "test.log",
-                "test.settings",
-                "test_out.log"
+                "test_1.trim.fastq.gz:md5,682dab8e982563cffac2bd60bf7444f4",
+                "test_2.trim.fastq.gz:md5,1a1e8ab23af40e6474be0cdf82fab907"
             ],
             [
-                {
-                    "FASTQ_REMOVEADAPTERS_MERGE:ADAPTERREMOVAL_PE": {
-                        "adapterremoval": "2.3.2"
-                    }
-                },
-                {
-                    "FASTQ_REMOVEADAPTERS_MERGE:FASTP": {
-                        "fastp": "1.0.1"
-                    }
-                },
-                {
-                    "FASTQ_REMOVEADAPTERS_MERGE:LEEHOM": {
-                        "leehom": "1.2.15"
-                    }
-                },
-                {
-                    "FASTQ_REMOVEADAPTERS_MERGE:BBMAP_BBDUK": {
-                        "bbmap": 39.18
-                    }
-                },
-                {
-                    "FASTQ_REMOVEADAPTERS_MERGE:TRIMMOMATIC": {
-                        "trimmomatic": 0.39
-                    }
-                }
+                "test.cutadapt.log"
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-15T16:11:16.074223859"
+        "timestamp": "2025-12-19T11:19:27.959952445"
     },
-    "sarscov2 - fastq - single-end": {
+    "sarscov2 - fastq - bbduk - paired-end": {
         "content": [
-            "test.truncated.fastq.gz:md5,6dcea64429b2bcf5e31751f9c8041914",
             [
-                "test.discarded.fastq.gz",
-                "test.fail.fastq.gz",
-                "test.fail.fq.gz"
+                "test_bbduk_1.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec",
+                "test_bbduk_2.fastq.gz:md5,2ebae722295ea66d84075a3b042e2b42"
             ],
-            "test_trim.log:md5,e4c3f619e9b0e26847f8f3e3d9af319b",
-            "test.summary:md5,24c973237557a1439c775ca19a5deaa5",
-            60,
-            "test.fastp.html",
+            [
+                "test_bbduk.bbduk.log"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2025-12-19T11:19:41.651709543"
+    },
+    "sarscov2 - fastq - trimgalore - single-end": {
+        "content": [
+            "test_trimmed.fq.gz:md5,566d44cca0d22c522d6cf0e50c7165dc",
+            60
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2025-12-19T11:19:34.98214978"
+    },
+    "sarscov2 - fastq - adapterremoval - paired-end - merge": {
+        "content": [
+            "test.collapsed.fastq.gz:md5,369452751050a7f1e31b839702d61417",
+            [
+                "test.discarded.fastq.gz"
+            ],
+            [
+                {
+                    "FASTQ_REMOVEADAPTERS_MERGE:ADAPTERREMOVAL_PE": {
+                        "adapterremoval": "2.3.2"
+                    }
+                }
+            ],
+            [
+                "test.settings"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2025-12-19T11:48:05.024036426"
+    },
+    "sarscov2 - fastq - fastp - single-end": {
+        "content": [
+            "test.fastp.fastq.gz:md5,67b2bbae47f073e05a97a9c2edce23c7",
+            "test.fail.fastq.gz:md5,3e4aaadb66a5b8fc9b881bf39c227abd",
             32,
+            2394,
             [
-                "test.bbduk.log",
-                "test.cutadapt.log",
-                "test.fastp.json",
-                "test.log",
-                "test.settings",
-                "test_out.log"
+                "test.fastp.json"
             ],
             [
                 {
                     "FASTQ_REMOVEADAPTERS_MERGE:FASTP": {
                         "fastp": "1.0.1"
-                    }
-                },
-                {
-                    "FASTQ_REMOVEADAPTERS_MERGE:ADAPTERREMOVAL_SE": {
-                        "adapterremoval": "2.3.2"
-                    }
-                },
-                {
-                    "FASTQ_REMOVEADAPTERS_MERGE:LEEHOM": {
-                        "leehom": "1.2.15"
-                    }
-                },
-                {
-                    "FASTQ_REMOVEADAPTERS_MERGE:BBMAP_BBDUK": {
-                        "bbmap": 39.18
-                    }
-                },
-                {
-                    "FASTQ_REMOVEADAPTERS_MERGE:TRIMMOMATIC": {
-                        "trimmomatic": 0.39
                     }
                 }
             ]
@@ -441,71 +264,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-15T16:11:01.68533947"
-    },
-    "sarscov2 - fastq - paired-end - no-merge": {
-        "content": [
-            [
-                "test.pair1.truncated.fastq.gz:md5,b042d3460f77b69f0a4d2a5cb20b1b25",
-                "test.pair2.truncated.fastq.gz:md5,510c140a51b7b0457e92e658113acbdc"
-            ],
-            [
-                "test.discarded.fastq.gz",
-                "test.fail.fq.gz",
-                "test.paired.fail.fastq.gz",
-                "test.unpaired.trim_1.fastq.gz",
-                "test.unpaired.trim_2.fastq.gz",
-                "test_1.fail.fastq.gz",
-                "test_2.fail.fastq.gz",
-                "test_r1.fail.fq.gz",
-                "test_r2.fail.fq.gz"
-            ],
-            "test_trim.log:md5,9629761761a34576b3484bf4174f681f",
-            "test.summary:md5,9698e5e5c060bbe64588998fe35f8d71",
-            59,
-            62,
-            "test.fastp.html",
-            51,
-            [
-                "test.bbduk.log",
-                "test.cutadapt.log",
-                "test.fastp.json",
-                "test.log",
-                "test.settings",
-                "test_out.log"
-            ],
-            [
-                {
-                    "FASTQ_REMOVEADAPTERS_MERGE:ADAPTERREMOVAL_PE": {
-                        "adapterremoval": "2.3.2"
-                    }
-                },
-                {
-                    "FASTQ_REMOVEADAPTERS_MERGE:FASTP": {
-                        "fastp": "1.0.1"
-                    }
-                },
-                {
-                    "FASTQ_REMOVEADAPTERS_MERGE:LEEHOM": {
-                        "leehom": "1.2.15"
-                    }
-                },
-                {
-                    "FASTQ_REMOVEADAPTERS_MERGE:BBMAP_BBDUK": {
-                        "bbmap": 39.18
-                    }
-                },
-                {
-                    "FASTQ_REMOVEADAPTERS_MERGE:TRIMMOMATIC": {
-                        "trimmomatic": 0.39
-                    }
-                }
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2025-12-15T16:11:29.80825695"
+        "timestamp": "2025-12-19T11:49:02.995746975"
     }
 }
