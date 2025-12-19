@@ -173,8 +173,10 @@ output:
       - ribowaltz_qc/*.tsv:
           type: file
           description: TSV files containing data underlying riboWaltz QC plots including
-            P-site region distribution, frame distribution, and frame distribution
-            stratified by read length (optional)
+            read length distribution, read length bins for P-site offset identification,
+            ends heatmap, codon usage, P-site region distribution, frame distribution,
+            frame distribution stratified by read length, and metaprofile P-site
+            frequency around start/stop codons (optional)
           pattern: "ribowaltz_qc/*.tsv"
           ontologies: []
   versions:

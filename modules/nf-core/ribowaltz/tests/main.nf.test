@@ -36,7 +36,7 @@ nextflow_process {
                 { assert snapshot(process.out.cds_coverage).match('cds_coverage') },
                 { assert snapshot(process.out.cds_window_coverage).match('cds_window_coverage') },
                 { assert snapshot(process.out.ribowaltz_qc.size() == 8) },
-                { assert snapshot(process.out.ribowaltz_qc_data.size() == 3) },
+                { assert snapshot(process.out.ribowaltz_qc_data.size() == 8) },
                 { assert snapshot(process.out.versions).match('versions') }
             )
         }

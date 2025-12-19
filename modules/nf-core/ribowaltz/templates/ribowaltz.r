@@ -156,6 +156,11 @@ plot_length_bins <- function(sample_name, df_list) {
 
     ggplot2::ggsave(paste0(getwd(),"/ribowaltz_qc/", sample_name, ".length_bins_for_psite.pdf"), length_dist_split.gg, dpi = 400, width = 10, height = 5)
 
+    # Export underlying data
+    length_bins_dt <- length_dist_split[["count_dt"]]
+    if (!is.null(length_bins_dt)) {
+        data.table::fwrite(length_bins_dt, paste0(getwd(), "/ribowaltz_qc/", sample_name, ".length_bins_for_psite.tsv"), sep = "\t")
+    }
 }
 
 #' Export meta-heatmaps of read extremities around start and stop codons produced by the `riboWaltz::rends_heat` function
@@ -176,6 +181,11 @@ plot_metaheatmap <- function(sample_name, df_list, annotation) {
 
     ggplot2::ggsave(paste0(getwd(),"/ribowaltz_qc/", sample_name, ".ends_heatmap.pdf"), ends_heatmap.gg, dpi = 400, width = 12, height = 8)
 
+    # Export underlying data
+    ends_heatmap_dt <- ends_heatmap[["count_dt"]]
+    if (!is.null(ends_heatmap_dt)) {
+        data.table::fwrite(ends_heatmap_dt, paste0(getwd(), "/ribowaltz_qc/", sample_name, ".ends_heatmap.tsv"), sep = "\t")
+    }
 }
 
 #' Export meta-heatmaps of read extremities around start and stop codons produced by the `riboWaltz::codon_usage_psite` function
@@ -201,6 +211,12 @@ plot_codon_usage <- function(sample_name, psite_info_ls, frequency_normalization
     cu_barplot.gg <-cu_barplot[[paste0("plot_", sample_name)]]
 
     ggplot2::ggsave(paste0(getwd(),"/ribowaltz_qc/", sample_name, ".codon_usage.pdf"), cu_barplot.gg, dpi = 400, width = 10, height = 7)
+
+    # Export underlying data
+    codon_usage_dt <- cu_barplot[["count_dt"]]
+    if (!is.null(codon_usage_dt)) {
+        data.table::fwrite(codon_usage_dt, paste0(getwd(), "/ribowaltz_qc/", sample_name, ".codon_usage.tsv"), sep = "\t")
+    }
 }
 
 
@@ -268,6 +284,11 @@ save_length_distribution_plot <- function(sample_name, dt.ls) {
 
     ggplot2::ggsave(paste0(getwd(), "/ribowaltz_qc/", sample_name, ".length_distribution.pdf"), length_dist.gg, dpi = 400)
 
+    # Export underlying data
+    length_dist_dt <- length_dist[["count_dt"]]
+    if (!is.null(length_dist_dt)) {
+        data.table::fwrite(length_dist_dt, paste0(getwd(), "/ribowaltz_qc/", sample_name, ".length_distribution.tsv"), sep = "\t")
+    }
 }
 
 #' Save P-site Region Plot
@@ -383,6 +404,12 @@ save_metaprofile_psite_plot <- function(sample_name, df.ls, annotation.df) {
     ggplot2::ggsave(paste0(getwd(),"/ribowaltz_qc/", sample_name, ".metaprofile_psite.pdf"), metaprofiles.gg,
                     dpi = 400, width = 12, height = 6) # save in wide format
 
+    # Export plot data for MultiQC
+    plot_dt <- metaprofile[["plot_dt"]]
+    if (!is.null(plot_dt)) {
+        write.table(plot_dt, paste0(getwd(), "/ribowaltz_qc/", sample_name, ".metaprofile_psite.tsv"),
+                    sep = "\t", row.names = FALSE, quote = FALSE)
+    }
 }
 # =========
 # Parse parameters for Nextflow
