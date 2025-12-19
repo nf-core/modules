@@ -182,7 +182,7 @@ plot_metaheatmap <- function(sample_name, df_list, annotation) {
     ggplot2::ggsave(paste0(getwd(),"/ribowaltz_qc/", sample_name, ".ends_heatmap.pdf"), ends_heatmap.gg, dpi = 400, width = 12, height = 8)
 
     # Export underlying data
-    ends_heatmap_dt <- ends_heatmap[["dt"]]
+    ends_heatmap_dt <- ends_heatmap[["count_dt"]]
     if (!is.null(ends_heatmap_dt)) {
         data.table::fwrite(ends_heatmap_dt, paste0(getwd(), "/ribowaltz_qc/", sample_name, ".ends_heatmap.tsv"), sep = "\t")
     }
