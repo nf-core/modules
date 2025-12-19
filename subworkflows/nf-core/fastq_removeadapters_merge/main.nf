@@ -12,7 +12,7 @@ include { ADAPTERREMOVAL as ADAPTERREMOVAL_PE } from '../../../modules/nf-core/a
 workflow FASTQ_REMOVEADAPTERS_MERGE {
 
     take:
-    reads                       // channel: [ val(meta), [ reads ] ]
+    input_reads                       // channel: [ val(meta), [ reads ] ]
     skip_trimmomatic            // boolean
     skip_cutadapt               // boolean
     skip_trimgalore             // boolean
