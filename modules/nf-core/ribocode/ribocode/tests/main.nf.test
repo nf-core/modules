@@ -92,4 +92,36 @@ nextflow_process {
             )
         }
     }
+
+    test("test_ribocode_ribocode - invalid config failure") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                // Create a config file with only a header (no data)
+                def config_file = new File('invalid_config.txt')
+                config_file.text = "sample_name\\tstrand\\tP-site\\treads\\n"
+
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887.Aligned.toTranscriptome.out.bam", checkIfExists: true)
+                ]
+                input[1] = UNTAR.out.untar
+                input[2] = [
+                    [ id:'config' ],
+                    config_file.toPath()
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.stdout.toString().contains("ERROR: RiboCode failed") }
+            )
+        }
+    }
 }
