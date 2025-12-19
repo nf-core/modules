@@ -294,6 +294,11 @@ save_psite_region_plot <- function(sample_name, dt.ls, annotation.df) {
 
     ggplot2::ggsave(paste0(getwd(), "/ribowaltz_qc/", sample_name, ".psite_region.pdf"), psite_region.gg, dpi = 400, width = 10)
 
+    # Export underlying data
+    region_dt <- psite_region[["count_dt"]]
+    if (!is.null(region_dt)) {
+        data.table::fwrite(region_dt, paste0(getwd(), "/ribowaltz_qc/", sample_name, ".psite_region.tsv"), sep = "\t")
+    }
 }
 
 #' Save Frame Plots
@@ -329,12 +334,22 @@ save_frame_plots <- function(sample_name, dt.ls, annotation.df, min_length, max_
 
     ggplot2::ggsave(paste0(getwd(), "/ribowaltz_qc/", sample_name, ".frames_stratified.pdf"), frames_stratified.gg, dpi = 600, height = 9 , width = 12)
 
+    # Export underlying data for stratified frames
+    frames_stratified_dt <- frames_stratified[["count_dt"]]
+    if (!is.null(frames_stratified_dt)) {
+        data.table::fwrite(frames_stratified_dt, paste0(getwd(), "/ribowaltz_qc/", sample_name, ".frames_stratified.tsv"), sep = "\t")
+    }
 
     frames <- riboWaltz::frame_psite(dt.ls, region = "all", length_range = min_length:max_length, sample = sample_name, annotation = annotation.df, colour = "grey70")
     frames.gg <- frames[[paste0("plot_", sample_name)]]
 
     ggplot2::ggsave(paste0(getwd(), "/ribowaltz_qc/", sample_name, ".frames.pdf"), frames.gg, dpi = 600, height = 9 , width = 9)
 
+    # Export underlying data for aggregated frames
+    frames_dt <- frames[["count_dt"]]
+    if (!is.null(frames_dt)) {
+        data.table::fwrite(frames_dt, paste0(getwd(), "/ribowaltz_qc/", sample_name, ".frames.tsv"), sep = "\t")
+    }
 }
 
 
