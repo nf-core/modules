@@ -59,8 +59,9 @@ process MODKIT_PILEUP {
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.bed
-    touch ${prefix}.bedgraph
+    echo $args
+
+    echo | gzip > ${prefix}.bed.gz
     touch ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
