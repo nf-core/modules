@@ -132,7 +132,7 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
     }
 
     emit:
-    reads                              = ch_reads                               // channel: [ val(meta), [ fastq.gz ] ]
+    processed_reads                              = ch_reads                               // channel: [ val(meta), [ fastq.gz ] ]
     merged_reads                       = ch_merged_reads                        // channel: [ val(meta), [ fastq.gz ] ]
     discarded_reads                    = ch_discarded_reads                     // channel: [ val(meta), [ fastq.gz ] ]
     trimmomatic_trim_log               = ch_trimmomatic_trim_log                // channel: [ val(meta), [ log ] ]
