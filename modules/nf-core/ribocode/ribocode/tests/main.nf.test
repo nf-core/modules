@@ -100,9 +100,9 @@ nextflow_process {
         when {
             process {
                 """
-                // Create a config file with only a header (no data)
-                def config_file = new File('invalid_config.txt')
-                config_file.text = "sample_name\\tstrand\\tP-site\\treads\\n"
+                // Create an invalid config with only a header (no data)
+                def invalid_cfg = new File('invalid_config.txt')
+                invalid_cfg.text = "sample_name\\tstrand\\tP-site\\treads\\n"
 
                 input[0] = [
                     [ id:'test', single_end:false ],
@@ -110,8 +110,8 @@ nextflow_process {
                 ]
                 input[1] = UNTAR.out.untar
                 input[2] = [
-                    [ id:'config' ],
-                    config_file.toPath()
+                    [ id:'test_cfg' ],
+                    invalid_cfg.toPath()
                 ]
                 """
             }
