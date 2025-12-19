@@ -23,13 +23,15 @@ process MODKIT_BEDMETHYLTOBIGWIG {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def mods = modcodes instanceof List ? modcodes.join(',') : modcodes
+    input_cmd = bedmethyl.getName().endsWith('.gz') ? "gzip -cd" : "cat"
     """
-    modkit bedmethyl tobigwig \\
+    $input_cmd $bedmethyl |\\
+        modkit bedmethyl tobigwig \\
         $args \\
         --nthreads $task.cpus \\
         --sizes $chromsizes \\
         --mod-codes $mods \\
-        $bedmethyl \\
+        - \\
         ${prefix}.bw
 
     cat <<-END_VERSIONS > versions.yml
