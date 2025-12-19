@@ -23,7 +23,7 @@ process MODKIT_BEDMETHYLTOBIGWIG {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def mods = modcodes instanceof List ? modcodes.join(',') : modcodes
-    input_cmd = bedmethyl.getName().endsWith('.gz') ? "gzip -cd" : "cat"
+    def input_cmd = bedmethyl.getName().endsWith('.gz') ? "gzip -cd" : "cat"
     """
     $input_cmd $bedmethyl |\\
         modkit bedmethyl tobigwig \\
