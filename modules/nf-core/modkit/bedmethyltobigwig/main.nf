@@ -20,9 +20,9 @@ process MODKIT_BEDMETHYLTOBIGWIG {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def mods = modcodes instanceof List ? modcodes.join(',') : modcodes
+    def args      = task.ext.args ?: ''
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def mods      = modcodes instanceof List ? modcodes.join(',') : modcodes
     def input_cmd = bedmethyl.getName().endsWith('.gz') ? "gzip -cd" : "cat"
     """
     $input_cmd $bedmethyl |\\
