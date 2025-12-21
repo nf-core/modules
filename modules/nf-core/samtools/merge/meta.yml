@@ -103,25 +103,34 @@ output:
           description: CRAM index file (optional)
           pattern: "*.crai"
           ontologies: []
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
+
 topics:
   versions:
-    - - "${task.process}":
-        type: string
-        description: The name of the process
-      - "{{ component }}":
-        type: string
-        description: The name of the tool
-      - "{{ component }} version | sed '1!d;s/.* //'":
-        type: eval
-        description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
-  - "@drpatelh"
   - "@yuukiiwa "
   - "@maxulysse"
   - "@FriederikeHanssen"
   - "@ramprasadn"
 maintainers:
-  - "@drpatelh"
   - "@yuukiiwa "
   - "@maxulysse"
   - "@FriederikeHanssen"
