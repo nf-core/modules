@@ -96,9 +96,12 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.vaf,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match() }
             )
         }
 
@@ -124,9 +127,12 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.vaf,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match() }
             )
         }
 
