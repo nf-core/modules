@@ -87,11 +87,11 @@ output:
           description: mpileup gzipped output for all positions
           pattern: "{*.mpileup.gz}"
           ontologies: []
-  versions_samtools:
+  versions_bcftools:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
-      - samtools:
+      - bcftools:
           type: string
           description: The tool name
       - "bcftools --version | sed -n '1s/.* //p'":
@@ -103,7 +103,7 @@ topics:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
-      - samtools:
+      - bcftools:
           type: string
           description: The tool name
       - "bcftools --version | sed -n '1s/.* //p'":
