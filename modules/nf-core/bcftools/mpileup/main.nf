@@ -17,7 +17,7 @@ process BCFTOOLS_MPILEUP {
     tuple val(meta), path("*vcf.gz.tbi") , emit: tbi
     tuple val(meta), path("*stats.txt")  , emit: stats
     tuple val(meta), path("*.mpileup.gz"), emit: mpileup, optional: true
-    path  "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed -n '1s/.* //p'"), topic: versions, emit: versions_bcftools
 
     when:
     task.ext.when == null || task.ext.when
@@ -49,11 +49,6 @@ process BCFTOOLS_MPILEUP {
     tabix -p vcf -f ${prefix}.vcf.gz
 
     bcftools stats ${prefix}.vcf.gz > ${prefix}.bcftools_stats.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -63,10 +58,5 @@ process BCFTOOLS_MPILEUP {
     echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
     echo "" | gzip > ${prefix}.mpileup.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
-    END_VERSIONS
     """
 }
