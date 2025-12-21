@@ -9,7 +9,6 @@ workflow BAM_NGSCHECKMATE {
     ch_fasta            // channel: [ val(meta3), fasta ]
 
     main:
-
     ch_input_bed = ch_input.combine(ch_snp_bed)
                         .map{ input_meta, input_file, _bed_meta, bed_file ->
                             [input_meta, input_file, bed_file]
@@ -31,7 +30,7 @@ workflow BAM_NGSCHECKMATE {
     .set {ch_vcfs}
 
     NGSCHECKMATE_NCM (ch_vcfs, ch_snp_bed, ch_fasta)
-    
+
     emit:
     corr_matrix  = NGSCHECKMATE_NCM.out.corr_matrix  // channel: [ meta, corr_matrix ]
     matched      = NGSCHECKMATE_NCM.out.matched      // channel: [ meta, matched ]

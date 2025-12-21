@@ -84,7 +84,7 @@ nextflow_process {
                     process.out.pdf,
                     proccess.out.vcf.collect {meta, vcf -> path(vcf).vcf.variantsMD5 },
                     process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match() 
+                    ).match()
                 }
             )
         }
@@ -117,7 +117,7 @@ nextflow_process {
                     process.out.all,
                     process.out.pdf,
                     process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match() 
+                    ).match()
                 }
             )
         }
@@ -153,7 +153,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out,
                     process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match() 
+                    ).match()
                 }
             )
         }
@@ -182,7 +182,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out,
                     process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match() 
+                    ).match()
                 }
             )
         }
