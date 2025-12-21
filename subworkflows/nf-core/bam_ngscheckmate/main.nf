@@ -10,7 +10,7 @@ workflow BAM_NGSCHECKMATE {
 
     main:
 
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
     ch_input_bed = ch_input.combine(ch_snp_bed)
                         .map{ input_meta, input_file, _bed_meta, bed_file ->
                             [input_meta, input_file, bed_file]
@@ -33,8 +33,8 @@ workflow BAM_NGSCHECKMATE {
     .set {ch_vcfs}
 
     NGSCHECKMATE_NCM (ch_vcfs, ch_snp_bed, ch_fasta)
-    ch_versions = ch_versions.mix(NGSCHECKMATE_NCM.out.versions)
-
+    // versions emitted via topic channel
+    
     emit:
     corr_matrix  = NGSCHECKMATE_NCM.out.corr_matrix  // channel: [ meta, corr_matrix ]
     matched      = NGSCHECKMATE_NCM.out.matched      // channel: [ meta, matched ]
