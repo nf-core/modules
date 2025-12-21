@@ -82,7 +82,6 @@ nextflow_process {
                     process.out.matched,
                     process.out.all,
                     process.out.pdf,
-                    proccess.out.vcf.collect {meta, vcf -> path(vcf).vcf.variantsMD5 },
                     process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
