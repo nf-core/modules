@@ -137,6 +137,86 @@ nextflow_process {
         }
     }
 
+    test("SRR389222 - fastq - se - no reference") {
+
+        config './nextflow.config'
+
+        when {
+            params {
+                module_args = '--low-memory'
+                // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
+                // Parabricks’s fq2bam requires 24GB of memory.
+                // Using --low-memory for testing
+                bwa_prefix = 'genome.fa'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+				    [ id:'test', single_end:true ], // meta map
+				    [
+				        file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
+				    ]
+				])
+                input[1] = [ [], [] ]
+				input[2] = BWA_INDEX.out.index
+                input[3] = [ [], [] ]
+                input[4] = [ [], [] ]
+                input[5] = 'bam'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    file(process.out.bai[0][1]).name,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("SRR389222 - fastq - se - no reference - stub") {
+
+        options '-stub'
+
+        when {
+            params {
+                module_args = ''
+                bwa_prefix = ''
+            }
+            process {
+                """
+                input[0] = Channel.of([
+				    [ id:'test', single_end:true ], // meta map
+				    [
+				        file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
+				    ]
+				])
+                input[1] = [ [], [] ]
+				input[2] = BWA_INDEX.out.index
+                input[3] = [ [], [] ]
+                input[4] = [ [], [] ]
+                input[5] = 'bam'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions.get(0)).yaml,
+                    path(process.out.compatible_versions.get(0)).yaml
+                    ).match() }
+            )
+        }
+    }
+
     test("sarscov2 - fastq - pe") {
 
         when {
