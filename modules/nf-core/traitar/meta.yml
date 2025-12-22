@@ -1,0 +1,89 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "traitar"
+description: "Traitar3 - predict microbial phenotypes from genomic sequences using protein families"
+keywords:
+  - phenotype
+  - prediction
+  - microbial
+  - traits
+  - genomics
+  - protein families
+tools:
+  - "traitar":
+      description: "Traitar3 - the microbial trait analyzer (for Python3)"
+      homepage: "https://github.com/nick-youngblut/traitar3"
+      documentation: "https://github.com/nick-youngblut/traitar3"
+      tool_dev_url: "https://github.com/nick-youngblut/traitar3"
+      doi: "10.1128/mSystems.00101-16"
+      licence: ["GPL-3.0"]
+      identifier: biotools:traitar
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - proteins:
+        type: file
+        description: Protein sequences in FASTA format (or nucleotide sequences if input_type is from_nucleotides)
+        pattern: "*.{fa,fasta,faa,fna}"
+
+output:
+  - predictions_combined:
+      - - meta:
+            type: map
+            description: |
+              Groovy Map containing sample information
+              e.g. `[ id:'sample1' ]`
+        - "traitar_out/phenotype_prediction/predictions_majority-vote_combined.txt":
+            type: file
+            description: Combined phenotype predictions (majority vote between classifiers)
+            ontologies:
+              - edam: "http://edamontology.org/format_3475" # TSV
+  - predictions_phypat:
+      - - meta:
+            type: map
+            description: |
+              Groovy Map containing sample information
+          - "traitar_out/phenotype_prediction/predictions_majority-vote_phypat.txt":
+              type: file
+              description: Phyletic pattern classifier predictions
+              ontologies:
+                - edam: "http://edamontology.org/format_3475" # TSV
+  - heatmaps:
+      - - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - "traitar_out/phenotype_prediction/heatmap_*.png":
+            type: file
+            description: Heatmaps showing phenotype predictions across samples
+            pattern: "heatmap_*.png"
+  - pfam_annotation:
+      - - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - "traitar_out/pfam_annotation/*":
+            type: file
+            description: Pfam protein family annotation results
+            optional: true
+  - gene_prediction:
+      - - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - "traitar_out/gene_prediction/*":
+            type: file
+            description: Gene prediction results (from from_nucleotides option)
+            optional: true
+  - versions:
+      - - "${task.process}":
+            type: string
+            description: The name of the process
+        - "versions.yml":
+            type: file
+            description: File containing software versions
+
+authors:
+  - "@brovolia"
+maintainers:
+  - "@brovolia"
