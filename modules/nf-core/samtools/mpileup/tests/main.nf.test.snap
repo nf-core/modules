@@ -27,15 +27,30 @@
     },
     "bam_bed --stub": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.mpileup.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                ]
-            ],
             {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.mpileup.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "1": [
+                    [
+                        "SAMTOOLS_MPILEUP",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ],
+                "mpileup": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.mpileup.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
                 "versions_samtools": [
                     [
                         "SAMTOOLS_MPILEUP",
@@ -49,7 +64,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-21T13:22:25.857370029"
+        "timestamp": "2025-12-22T08:54:55.388446375"
     },
     "bam_bed_fasta": {
         "content": [
