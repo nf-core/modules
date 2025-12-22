@@ -10,14 +10,14 @@ workflow BAM_NGSCHECKMATE {
 
     main:
 
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
     ch_input_bed = ch_input.combine(ch_snp_bed)
                         .map{ input_meta, input_file, _bed_meta, bed_file ->
                             [input_meta, input_file, bed_file]
                         }
 
     BCFTOOLS_MPILEUP (ch_input_bed, ch_fasta.collect(), false)
-    ch_versions = ch_versions.mix(BCFTOOLS_MPILEUP.out.versions)
+    // Note: bcftools/mpileup versions collected via topic
 
     BCFTOOLS_MPILEUP
     .out
