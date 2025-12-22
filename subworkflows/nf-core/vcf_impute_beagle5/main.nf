@@ -18,8 +18,8 @@ workflow VCF_IMPUTE_BEAGLE5 {
     ch_input
         .branch { _meta, vcf, _tbi ->
             def vcfStr = vcf.toString()
-            bcf: vcfStr.contains('.bcf')
-            vcf: vcfStr.contains('.vcf')
+            bcf: vcfStr.endsWith('.bcf') || vcfStr.endsWith('.bcf.gz')
+            vcf: vcfStr.endsWith('.vcf') || vcfStr.endsWith('.vcf.gz')
             other: true
         }
         .set { ch_input_branched }
