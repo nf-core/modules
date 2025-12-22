@@ -57,8 +57,7 @@ output:
           type: file
           description: The merged bam file
           pattern: "*.bam"
-          ontologies: []
-      - "*.bam":
+      - ${prefix}.bam:
           type: file
           description: The merged bam file
           pattern: "*.bam"
