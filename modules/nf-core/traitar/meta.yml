@@ -30,58 +30,58 @@ input:
         pattern: "*.{fa,fasta,faa,fna}"
 
 output:
-  - predictions_combined:
-      - - meta:
-            type: map
-            description: |
-              Groovy Map containing sample information
-              e.g. `[ id:'sample1' ]`
-        - "traitar_out/phenotype_prediction/predictions_majority-vote_combined.txt":
-            type: file
-            description: Combined phenotype predictions (majority vote between classifiers)
-            ontologies:
-              - edam: "http://edamontology.org/format_3475" # TSV
-  - predictions_phypat:
-      - - meta:
-            type: map
-            description: |
-              Groovy Map containing sample information
-          - "traitar_out/phenotype_prediction/predictions_majority-vote_phypat.txt":
-              type: file
-              description: Phyletic pattern classifier predictions
-              ontologies:
-                - edam: "http://edamontology.org/format_3475" # TSV
-  - heatmaps:
-      - - meta:
-            type: map
-            description: Groovy Map containing sample information
-        - "traitar_out/phenotype_prediction/heatmap_*.png":
-            type: file
-            description: Heatmaps showing phenotype predictions across samples
-            pattern: "heatmap_*.png"
-  - pfam_annotation:
-      - - meta:
-            type: map
-            description: Groovy Map containing sample information
-        - "traitar_out/pfam_annotation/*":
-            type: file
-            description: Pfam protein family annotation results
-            optional: true
-  - gene_prediction:
-      - - meta:
-            type: map
-            description: Groovy Map containing sample information
-        - "traitar_out/gene_prediction/*":
-            type: file
-            description: Gene prediction results (from from_nucleotides option)
-            optional: true
-  - versions:
-      - - "${task.process}":
-            type: string
-            description: The name of the process
-        - "versions.yml":
-            type: file
-            description: File containing software versions
+  predictions_combined:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - "traitar_out/phenotype_prediction/predictions_majority-vote_combined.txt":
+        type: file
+        description: Combined phenotype predictions (majority vote between classifiers)
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+  predictions_phypat:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - "traitar_out/phenotype_prediction/predictions_majority-vote_phypat.txt":
+        type: file
+        description: Phyletic pattern classifier predictions
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+  heatmaps:
+    - meta:
+        type: map
+        description: Groovy Map containing sample information
+    - "traitar_out/phenotype_prediction/heatmap_*.png":
+        type: file
+        description: Heatmaps showing phenotype predictions across samples
+        pattern: "heatmap_*.png"
+  pfam_annotation:
+    - meta:
+        type: map
+        description: Groovy Map containing sample information
+    - "traitar_out/pfam_annotation/*":
+        type: file
+        description: Pfam protein family annotation results
+        optional: true
+  gene_prediction:
+    - meta:
+        type: map
+        description: Groovy Map containing sample information
+    - "traitar_out/gene_prediction/*":
+        type: file
+        description: Gene prediction results (from from_nucleotides option)
+        optional: true
+  versions:
+    - "${task.process}":
+        type: string
+        description: The name of the process
+    - "versions.yml":
+        type: file
+        description: File containing software versions
 
 authors:
   - "@brovolia"
