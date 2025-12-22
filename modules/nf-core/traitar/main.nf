@@ -41,7 +41,7 @@ process TRAITAR {
     script:
     def args = task.ext.args ?: ''
     def input_type = task.ext.input_type ?: 'from_genes'
-    
+
     """
     # Create input directory with protein sequences
     mkdir -p input_dir
