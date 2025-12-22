@@ -1,28 +1,10 @@
-// TODO nf-core: If in doubt look at other nf-core/modules to see how we are doing things! :)
-//               https://github.com/nf-core/modules/tree/master/modules/nf-core/
-//               You can also ask for help via your pull request or on the #modules channel on the nf-core Slack workspace:
-//               https://nf-co.re/join
-// TODO nf-core: A module file SHOULD only define input and output files as command-line parameters.
-//               All other parameters MUST be provided using the "task.ext" directive, see here:
-//               https://www.nextflow.io/docs/latest/process.html#ext
-//               where "task.ext" is a string.
-//               Any parameters that need to be evaluated in the context of a particular sample
-//               e.g. single-end/paired-end data MUST also be defined and evaluated appropriately.
-// TODO nf-core: Software that can be piped together SHOULD be added to separate module files
-//               unless there is a run-time, storage advantage in implementing in this way
-//               e.g. it's ok to have a single module for bwa to output BAM instead of SAM:
-//                 bwa mem | samtools view -B -T ref.fasta
-// TODO nf-core: Optional inputs are not currently supported by Nextflow. However, using an empty
-//               list (`[]`) instead of a file can be used to work around this issue.
-
 process TRAITAR {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::traitar=3.0.1" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'library://a_gihawi/traitar3/traitar3' :
-        'quay.io/biocontainers/traitar:3.0.1--pyh7cba7a3_0' }"
+        'docker://a_gihawi/traitar3:latest' }"
 
     input:
     tuple val(meta), path(proteins)
@@ -41,6 +23,10 @@ process TRAITAR {
     script:
     def args = task.ext.args ?: ''
     def input_type = task.ext.input_type ?: 'from_genes'
+    // Validate input_type against allowed values
+    if (!['from_genes', 'from_proteins', 'from_nucleotides'].contains(input_type)) {
+        error("Invalid input_type: ${input_type}. Must be one of: 'from_genes', 'from_proteins', 'from_nucleotides'")
+    }
 
     """
     # Create input directory with protein sequences
@@ -55,7 +41,7 @@ process TRAITAR {
     traitar phenotype \\
         input_dir \\
         samples.txt \\
-        ${input_type} \\
+        '${input_type}' \\
         traitar_out \\
         -c ${task.cpus} \\
         ${args}
