@@ -68,12 +68,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out.vcf,
-                    process.out.tbi,
-                    process.out.stats,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match() }
+                { assert snapshot(process.out).match()}
             )
         }
 
@@ -138,13 +133,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out.vcf,
-                    process.out.tbi,
-                    process.out.stats,
-                    process.out.mpileup,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match() }
+                { assert snapshot(process.out).match()}
             )
         }
 
@@ -207,12 +196,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out.vcf,
-                    process.out.tbi,
-                    process.out.stats,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match() }
+                { assert snapshot(process.out).match()}
             )
         }
 
