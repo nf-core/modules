@@ -2,9 +2,7 @@ process TRAITAR {
     tag "$meta.id"
     label 'process_medium'
 
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'library://a_gihawi/traitar3/traitar3' :
-        'docker://a_gihawi/traitar3:latest' }"
+    container "docker://a_gihawi/traitar3:latest"
 
     input:
     tuple val(meta), path(proteins)
@@ -15,7 +13,7 @@ process TRAITAR {
     tuple val(meta), path("traitar_out/phenotype_prediction/heatmap_*.png"), optional: true, emit: heatmaps
     tuple val(meta), path("traitar_out/pfam_annotation/*"), optional: true, emit: pfam_annotation
     tuple val(meta), path("traitar_out/gene_prediction/*"), optional: true, emit: gene_prediction
-    tuple val("${task.process}"), val('traitar'), path("versions.yml"), emit: versions
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
