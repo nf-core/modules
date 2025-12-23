@@ -13,7 +13,7 @@ process NGSCHECKMATE_FASTQ {
 
     output:
     tuple val(meta), path("*.vaf"), emit: vaf
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('ngscheckmate'), eval("ncm.py --help | sed '7!d;s/.* v//g'"), topic: versions, emit: versions_ngscheckmate
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,23 +24,12 @@ process NGSCHECKMATE_FASTQ {
     def fastq2command  = ( reads instanceof List && reads.size() == 2 ) ? " -2 ${reads[1]} " : ""
 
     """
-    ngscheckmate_fastq  -1 ${reads[0]} $fastq2command ${snp_pt} -p ${task.cpus} $args > ${prefix}.vaf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ngscheckmate: \$(ncm.py --help | sed "7!d;s/ *Ensuring Sample Identity v//g")
-    END_VERSIONS
+    ngscheckmate_fastq -1 ${reads[0]} $fastq2command ${snp_pt} -p ${task.cpus} $args > ${prefix}.vaf
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.vaf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ngscheckmate: \$(ncm.py --help | sed "7!d;s/ *Ensuring Sample Identity v//g")
-    END_VERSIONS
     """
 }
