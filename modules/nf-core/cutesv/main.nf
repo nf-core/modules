@@ -36,7 +36,7 @@ process CUTESV {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}" 
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch "${prefix}.vcf"
     cat <<-END_VERSIONS > versions.yml

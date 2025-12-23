@@ -1,0 +1,67 @@
+// nf-core modules test plastid
+nextflow_process {
+
+    name "Test Process PLASTID_PSITE"
+    script "../main.nf"
+    process "PLASTID_PSITE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plastid"
+    tag "plastid/psite"
+
+    test("human chr20 bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'SRX11780887' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam.bai", checkIfExists: true)
+                    ]
+                input[1] = [[id:'homo_sapiens_chr20'], file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/plastid/Homo_sapiens.GRCh38.111_chr20_rois.txt", checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.metagene_profiles.get(0).get(1)).getText().contains('28-mers') },
+                { assert file(process.out.p_offsets_png.get(0).get(1)).exists() },
+                { assert path(process.out.p_offsets.get(0).get(1)).getText().contains("length\tp_offset") },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+    }
+
+    test("human chr20 bam -stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'SRX11780887' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam.bai", checkIfExists: true)
+                    ]
+                input[1] = [[id:'homo_sapiens_chr20'], file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/plastid/Homo_sapiens.GRCh38.111_chr20_rois.txt", checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.metagene_profiles.get(0).get(1)).exists() },
+                { assert file(process.out.p_offsets_png.get(0).get(1)).exists() },
+                { assert file(process.out.p_offsets.get(0).get(1)).exists() },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+    }
+
+}

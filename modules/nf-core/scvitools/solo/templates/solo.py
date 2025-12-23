@@ -7,10 +7,10 @@ os.environ["MPLCONFIGDIR"] = "./tmp"
 import anndata as ad
 import scvi
 import torch
+import yaml
 from scvi.external import SOLO
 from scvi.model import SCVI
 from threadpoolctl import threadpool_limits
-import yaml
 
 torch.set_float32_matmul_precision("medium")
 scvi.settings.seed = 0
@@ -21,11 +21,13 @@ scvi.settings.num_threads = int("${task.cpus}")
 batch_key = "${batch_key ?: ''}"
 max_epochs = "${max_epochs ?: ''}"
 
+
 def train_model(model):
     if "${task.ext.use_gpu}" == "true":
         model.to_device(0)
 
     model.train(max_epochs=int(max_epochs) if max_epochs else None, datasplitter_kwargs={"drop_last": True})
+
 
 adata = ad.read_h5ad("${h5ad}")
 

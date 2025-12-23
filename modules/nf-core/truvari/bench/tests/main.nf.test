@@ -47,6 +47,7 @@ nextflow_process {
                     path(process.out.tp_comp_vcf[0][1]).vcf.summary,
                     file(process.out.tp_comp_tbi[0][1]).name,
                     path(process.out.versions[0]).yaml,
+                    file(process.out.log[0][1]).name,
                     process.out.summary,
                     process.out.versions
                     ).match()
@@ -93,6 +94,7 @@ nextflow_process {
                     path(process.out.tp_comp_vcf[0][1]).vcf.summary,
                     file(process.out.tp_comp_tbi[0][1]).name,
                     path(process.out.versions[0]).yaml,
+                    file(process.out.log[0][1]).name,
                     process.out.summary,
                     process.out.versions
                     ).match()

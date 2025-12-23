@@ -52,4 +52,3 @@ workflow FASTA_HMMSEARCH_RANK_FASTAS {
 
     versions                = ch_versions                     // channel: [ versions.yml ]
 }
-

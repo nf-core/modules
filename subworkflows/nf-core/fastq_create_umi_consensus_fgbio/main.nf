@@ -149,7 +149,6 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
 
     // finally sort bam file
     SORTBAM ( ZIPPERBAMS_POST.out.bam, fasta, '' )
-    ch_versions = ch_versions.mix(SORTBAM.out.versions)
 
     emit:
     ubam               = FASTQTOBAM.out.bam             // channel: [ val(meta), [ bam ] ]

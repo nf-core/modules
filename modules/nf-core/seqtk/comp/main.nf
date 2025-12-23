@@ -39,7 +39,7 @@ process SEQTK_COMP {
 
     """
     echo "" > ${prefix}.seqtk_stats.tsv
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         seqtk: \$(seqtk |& sed '/Version/!d; s/.* //')

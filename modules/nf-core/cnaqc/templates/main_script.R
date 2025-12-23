@@ -42,11 +42,11 @@ parse_args <- function(x){
 
 opt <- list(
   prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
-  genome = 'GRCh38', 
-  genome_coords = NULL, 
+  genome = 'GRCh38',
+  genome_coords = NULL,
   karyotypes = c("1:0", "1:1", "2:0", "2:1", "2:2"),
-  min_absolute_karyotype_mutations = 100, 
-  matching_strategy = 'rightmost', 
+  min_absolute_karyotype_mutations = 100,
+  matching_strategy = 'rightmost',
   min_karyotype_size = 0,
   p_binsize_peaks = 0.005,
   matching_epsilon = NULL,
@@ -58,7 +58,7 @@ opt <- list(
   starting_state_subclonal_evolution = "1:1",
   cluster_subclonal_CCF = FALSE,
   min_VAF = 0,
-  muts_per_karyotype = 25, 
+  muts_per_karyotype = 25,
   cutoff_QC_PASS = 0.1,
   method = "ENTROPY"
 )
@@ -88,7 +88,7 @@ library(dplyr)
 library(CNAqc)
 
 SNV = readRDS("$snv_rds") %>%
-  purrr::pluck("$tumour_sample", "mutations") %>% 
+  purrr::pluck("$tumour_sample", "mutations") %>%
   dplyr::mutate(mutation_id = paste(chr,from,to,ref,alt,sep = ':'))
 
 CNA = readRDS("$cna_rds")
@@ -110,7 +110,7 @@ x = CNAqc::compute_CCF(x,
 
 # this is needed in order to plot the results without the 0 VAF mutations
 tmp_x <- x
-mut <- CNAqc::Mutations(tmp_x) %>% 
+mut <- CNAqc::Mutations(tmp_x) %>%
   dplyr::filter(VAF > 0)
 tmp_x\$mutations <- mut
 
@@ -138,9 +138,9 @@ pl_qc = ggpubr::ggarrange(
   plotlist = list(
     CNAqc::plot_peaks_analysis(tmp_x, what = 'common', empty_plot = FALSE),
     CNAqc::plot_qc(tmp_x),
-    CNAqc::plot_CCF(tmp_x, assembly_plot = TRUE, empty_plot = FALSE)), 
+    CNAqc::plot_CCF(tmp_x, assembly_plot = TRUE, empty_plot = FALSE)),
   nrow = 3,
-  heights = c(1,1.5,1)) 
+  heights = c(1,1.5,1))
 pl_qc = ggpubr::annotate_figure(pl_qc, top = ggpubr::text_grob("$tumour_sample", size = 14))
 
 saveRDS(object = x, file = paste0(opt[["prefix"]], "_qc.rds"))

@@ -25,9 +25,9 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
     val_sites_per_chunk         //   value: the amount of variants per scattered VCF
 
     main:
-    def ch_versions  = Channel.empty()
-    def ch_vep_input = Channel.empty()
-    def ch_scatter   = Channel.empty()
+    def ch_versions  = channel.empty()
+    def ch_vep_input = channel.empty()
+    def ch_scatter   = channel.empty()
 
     // Check if val_sites_per_chunk is set and scatter if it is
     if(val_sites_per_chunk) {
@@ -89,8 +89,8 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
     }
 
     // Annotate with ensemblvep if it's part of the requested tools
-    def ch_vep_output   = Channel.empty()
-    def ch_vep_reports  = Channel.empty()
+    def ch_vep_output   = channel.empty()
+    def ch_vep_reports  = channel.empty()
     if("ensemblvep" in val_tools_to_use){
         ENSEMBLVEP_VEP(
             ch_vep_input,
@@ -110,10 +110,10 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
     }
 
     // Annotate with snpeff if it's part of the requested tools
-    def ch_snpeff_output    = Channel.empty()
-    def ch_snpeff_reports   = Channel.empty()
-    def ch_snpeff_html      = Channel.empty()
-    def ch_snpeff_genes     = Channel.empty()
+    def ch_snpeff_output    = channel.empty()
+    def ch_snpeff_reports   = channel.empty()
+    def ch_snpeff_html      = channel.empty()
+    def ch_snpeff_genes     = channel.empty()
     if("snpeff" in val_tools_to_use){
         SNPEFF_SNPEFF(
             ch_vep_output,
@@ -130,13 +130,14 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
             SNPEFF_SNPEFF.out.vcf
         )
         ch_versions = ch_versions.mix(TABIX_BGZIP.out.versions.first())
+
         ch_snpeff_output = TABIX_BGZIP.out.output
     } else {
         ch_snpeff_output  = ch_vep_output
     }
 
     // Gather the files back together if they were scattered
-    def ch_ready_vcfs = Channel.empty()
+    def ch_ready_vcfs = channel.empty()
     if(val_sites_per_chunk) {
         //
         // Concatenate the VCFs back together with bcftools concat
@@ -187,10 +188,9 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
     TABIX_TABIX(
         ch_tabix_input.bgzip
     )
-    ch_versions = ch_versions.mix(TABIX_TABIX.out.versions)
 
     def ch_vcf_tbi = ch_tabix_input.bgzip
-        .join(TABIX_TABIX.out.tbi, failOnDuplicate: true, failOnMismatch: true)
+        .join(TABIX_TABIX.out.index, failOnDuplicate: true, failOnMismatch: true)
         .mix(ch_tabix_input.unzip)
 
     emit:
