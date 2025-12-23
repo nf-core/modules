@@ -11,7 +11,7 @@ nextflow_process {
     tag "variancepartition/dream"
 
     test("RNAseq - Feature Counts - formula + comparison contrast string - interaction") {
-
+        tag "trial"
         when {
             params {
                 module_args = "--round_digits 2"
@@ -20,12 +20,8 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     'id': 'genotype_WT_KO_treatment_Control_Treated',
-                    'variable': 'genotype',
-                    'reference': 'WT',
-                    'target': 'KO',
-                    'blocking_factors': 'batch',
                     'formula': '~ genotype * treatment',
-                    'comparison': 'genotypeKO.treatmentTreated' // should be a 'make.names() string'
+                    'comparison': 'genotypeWT - treatmentTreated' // should be a 'make.names() string'
                 ])
                 .map {
                     tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
@@ -59,7 +55,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ treatment', 'comparison':'treatmenthND6'])
+                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'formula':'~ treatment', 'comparison':'treatmenthND6'])
                     .map{
                         tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
@@ -128,7 +124,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ 0 + treatment', 'comparison':'2 * treatmenthND6 - treatmentmCherry'])
+                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'formula':'~ 0 + treatment', 'comparison':'2 * treatmenthND6 - treatmentmCherry'])
                     .map{
                         tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
@@ -162,7 +158,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ 0 + treatment + sample_number', 'comparison':'treatmenthND6 - treatmentmCherry'])
+                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'formula':'~ 0 + treatment + sample_number', 'comparison':'treatmenthND6 - treatmentmCherry'])
                     .map{
                         tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
@@ -196,7 +192,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ treatment + (1 | sample_number)'])
+                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'formula':'~ treatment + (1 | sample_number)'])
                     .map{
                         tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
@@ -228,7 +224,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ 0 + treatment + sample_number', 'comparison':'treatmenthND6 - treatmentmCherry'])
+                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'formula':'~ 0 + treatment + sample_number', 'comparison':'treatmenthND6 - treatmentmCherry'])
                     .map{
                         tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
