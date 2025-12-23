@@ -11,7 +11,6 @@ nextflow_process {
     tag "variancepartition/dream"
 
     test("RNAseq - Feature Counts - formula + comparison contrast string - interaction") {
-        tag "trial"
         when {
             params {
                 module_args = "--round_digits 2"
@@ -21,7 +20,7 @@ nextflow_process {
                 input[0] = Channel.of([
                     'id': 'genotype_WT_KO_treatment_Control_Treated',
                     'formula': '~ genotype * treatment',
-                    'comparison': 'genotypeWT - treatmentTreated' // should be a 'make.names() string'
+                    'comparison': 'genotypeKO - treatmentTreated' // should be a 'make.names() string'
                 ])
                 .map {
                     tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
