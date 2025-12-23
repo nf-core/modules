@@ -110,9 +110,9 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    file(process.out.corr_matrix[0][1]).name,
+                    process.out.corr_matrix,
                     file(process.out.matched[0][1]).name,
-                    file(process.out.all[0][1]).name,
+                    process.out.all,
                     file(process.out.pdf[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
