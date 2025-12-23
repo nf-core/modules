@@ -14,13 +14,12 @@ process NGSCHECKMATE_PATTERNGENERATOR {
 
     output:
     tuple val(meta), path("*.pt"), emit: pt
-    path "versions.yml"          , emit: versions
+    tuple val("${task.process}"), val('ngscheckmate'), eval("ncm.py --help | sed '7!d;s/.* v//g'"), topic: versions, emit: versions_ngscheckmate
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     if ("$fasta" == "${prefix}.fasta") error "makesnvpattern.pl generates a fasta file with the same name as the input fasta, use \"task.ext.prefix\" to disambiguate!"
 
@@ -28,11 +27,6 @@ process NGSCHECKMATE_PATTERNGENERATOR {
     INDEX=\$(find -L ./ -name "*.3.ebwt" | sed 's/\\.3.ebwt\$//')
 
     makesnvpattern.pl ${bed} ${fasta} \$INDEX . ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ngscheckmate: \$(ncm.py --help | sed "7!d;s/ *Ensuring Sample Identity v//g")
-    END_VERSIONS
     """
 
 
@@ -42,10 +36,5 @@ process NGSCHECKMATE_PATTERNGENERATOR {
 
     """
     touch ${prefix}.pt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ngscheckmate: \$(ncm.py --help | sed "7!d;s/ *Ensuring Sample Identity v//g")
-    END_VERSIONS
     """
 }
