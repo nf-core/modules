@@ -5,10 +5,6 @@
                 [
                     {
                         "id": "treatment_mCherry_hND6",
-                        "variable": "treatment",
-                        "reference": "mCherry",
-                        "target": "hND6",
-                        "blocking_factors": "sample_number",
                         "formula": "~ 0 + treatment + sample_number",
                         "comparison": "treatmenthND6 - treatmentmCherry"
                     },
@@ -21,35 +17,24 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
+            "nextflow": "25.04.2"
         },
-        "timestamp": "2025-12-04T21:00:34.198143553"
+        "timestamp": "2025-12-23T18:57:51.598745459"
     },
     "RNAseq - Feature Counts - formula + comparison contrast string - interaction": {
         "content": [
             [
-                [
-                    {
-                        "id": "genotype_WT_KO_treatment_Control_Treated",
-                        "variable": "genotype",
-                        "reference": "WT",
-                        "target": "KO",
-                        "blocking_factors": "batch",
-                        "formula": "~ genotype * treatment",
-                        "comparison": "genotypeKO.treatmentTreated"
-                    },
-                    "genotype_WT_KO_treatment_Control_Treated.dream.model.txt:md5,e67d5a9c42dd9374b370b6426832d08f"
-                ]
+                
             ],
             [
-                "versions.yml:md5,fc1f26eb2194018e99fc2916332676b7"
+                
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.04.2"
         },
-        "timestamp": "2025-12-16T15:51:47.281537506"
+        "timestamp": "2025-12-23T19:04:58.864804168"
     },
     "Mus musculus - contrasts - matrix - no formula": {
         "content": [
@@ -219,10 +204,6 @@
                 [
                     {
                         "id": "treatment_mCherry_hND6",
-                        "variable": "treatment",
-                        "reference": "mCherry",
-                        "target": "hND6",
-                        "blocking_factors": "sample_number",
                         "formula": "~ 0 + treatment",
                         "comparison": "2 * treatmenthND6 - treatmentmCherry"
                     },
@@ -235,9 +216,9 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
+            "nextflow": "25.04.2"
         },
-        "timestamp": "2025-12-04T21:02:12.893838766"
+        "timestamp": "2025-12-23T18:57:42.761838155"
     },
     "Mus musculus - expression table - contrasts + formula + comparison contrast string - no intercept stub": {
         "content": [
@@ -246,10 +227,6 @@
                     [
                         {
                             "id": "treatment_mCherry_hND6",
-                            "variable": "treatment",
-                            "reference": "mCherry",
-                            "target": "hND6",
-                            "blocking_factors": "sample_number",
                             "formula": "~ 0 + treatment + sample_number",
                             "comparison": "treatmenthND6 - treatmentmCherry"
                         },
@@ -260,10 +237,6 @@
                     [
                         {
                             "id": "treatment_mCherry_hND6",
-                            "variable": "treatment",
-                            "reference": "mCherry",
-                            "target": "hND6",
-                            "blocking_factors": "sample_number",
                             "formula": "~ 0 + treatment + sample_number",
                             "comparison": "treatmenthND6 - treatmentmCherry"
                         },
@@ -277,10 +250,6 @@
                     [
                         {
                             "id": "treatment_mCherry_hND6",
-                            "variable": "treatment",
-                            "reference": "mCherry",
-                            "target": "hND6",
-                            "blocking_factors": "sample_number",
                             "formula": "~ 0 + treatment + sample_number",
                             "comparison": "treatmenthND6 - treatmentmCherry"
                         },
@@ -291,10 +260,6 @@
                     [
                         {
                             "id": "treatment_mCherry_hND6",
-                            "variable": "treatment",
-                            "reference": "mCherry",
-                            "target": "hND6",
-                            "blocking_factors": "sample_number",
                             "formula": "~ 0 + treatment + sample_number",
                             "comparison": "treatmenthND6 - treatmentmCherry"
                         },
@@ -310,32 +275,21 @@
             "nf-test": "0.9.3",
             "nextflow": "25.04.2"
         },
-        "timestamp": "2025-12-18T19:28:59.6217958"
+        "timestamp": "2025-12-23T18:58:10.585988582"
     },
     "Mus musculus - expression table - contrasts + formula + comparison contrast string": {
         "content": [
             [
-                [
-                    {
-                        "id": "treatment_mCherry_hND6",
-                        "variable": "treatment",
-                        "reference": "mCherry",
-                        "target": "hND6",
-                        "blocking_factors": "sample_number",
-                        "formula": "~ treatment",
-                        "comparison": "treatmenthND6"
-                    },
-                    "treatment_mCherry_hND6.dream.model.txt:md5,8cb944a29e3d3d0e540048b4d8331b17"
-                ]
+                
             ],
             [
-                "versions.yml:md5,fc1f26eb2194018e99fc2916332676b7"
+                
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.04.2"
         },
-        "timestamp": "2025-12-16T15:51:57.43036012"
+        "timestamp": "2025-12-23T18:57:23.96036747"
     }
 }
