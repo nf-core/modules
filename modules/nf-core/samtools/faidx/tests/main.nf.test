@@ -8,7 +8,8 @@ nextflow_process {
     tag "modules_nfcore"
     tag "samtools"
     tag "samtools/faidx"
-
+    config "./nextflow.config"
+    
     test("test_samtools_faidx") {
 
         when {

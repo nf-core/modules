@@ -32,7 +32,6 @@ process SAMTOOLS_FAIDX {
         $args
 
     ${get_sizes_command}
-
     """
 
     stub:
@@ -47,6 +46,5 @@ process SAMTOOLS_FAIDX {
     fi
 
     ${get_sizes_command}
-
     """
 }
