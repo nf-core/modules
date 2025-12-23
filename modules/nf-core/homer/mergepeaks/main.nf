@@ -1,6 +1,6 @@
-process HOMER_ANNOTATEPEAKS {
-    tag "${meta.id}"
-    label 'process_medium'
+process HOMER_MERGEPEAKS {
+    tag "$meta.id"
+    label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     // singularity build url: https://wave.seqera.io/view/builds/bd-9c603739ae7d4fd3_1
@@ -10,31 +10,27 @@ process HOMER_ANNOTATEPEAKS {
         : 'community.wave.seqera.io/library/bioconductor-deseq2_bioconductor-edger_homer_samtools_pruned:08c7bb832e96c6bd'}"
 
     input:
-    tuple val(meta), path(peak)
-    path fasta
-    path gtf
+    tuple val(meta), path(peaks)  // peaks can be a list of peak files
 
     output:
-    tuple val(meta), path("*annotatePeaks.txt"), emit: txt
-    tuple val(meta), path("*annStats.txt"), emit: stats, optional: true
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.txt"), emit: txt
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}" + "_merged_peaks"
+    def peak_files = peaks instanceof List ? peaks.join(' ') : peaks
     def VERSION = '5.1'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+
     """
-    annotatePeaks.pl \\
-        ${peak} \\
-        ${fasta} \\
-        ${args} \\
-        -gtf ${gtf} \\
-        -cpu ${task.cpus} \\
-        > ${prefix}.annotatePeaks.txt
+    mergePeaks \\
+        $args \\
+        -prefix ${prefix} \\
+        $peak_files \\
+        > ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -43,11 +39,10 @@ process HOMER_ANNOTATEPEAKS {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_merged_peaks"
     def VERSION = '5.1'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    touch ${prefix}.annotatePeaks.txt
+    touch ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
