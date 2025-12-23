@@ -111,7 +111,7 @@ for (ao in names(args_opt)) {
 }
 
 # If there is no option supplied, convert string "null" to NULL
-keys <- c("formula", "contrast_string", "contrast_variable", "blocking_variables", "contrast_reference")
+keys <- c("formula", "contrast_string", "contrast_target", "contrast_variable", "blocking_variables", "contrast_reference")
 opt[keys] <- lapply(opt[keys], nullify)
 
 opt\$threads      <- as.numeric(opt\$threads)
@@ -134,13 +134,25 @@ rownames(metadata) <- metadata[[opt\$sample_id_col]]
 
 # Check if required parameters have been provided
 if (is_valid_string(opt\$formula)) {
+  contrast_tuple <- c('contrast_variable', 'contrast_reference', 'contrast_target', 'blocking_variables')
+  offending <- vapply(
+    opt[contrast_tuple],
+    is_valid_string,
+    logical(1)
+  )
+  offending_opts <- contrast_tuple[offending]
+  if (length(offending_opts) > 0) {
+    stop(paste("When 'formula' is provided, contrasts must be specified only via 'contrast_string'.\n",
+        "The following options should not be set:",
+        paste(offending_opts, collapse = ', ')))
+  }
   required_opts <- c('output_prefix', 'contrast_string')
 } else {
   required_opts <- c('contrast_variable', 'contrast_reference', 'contrast_target', 'output_prefix')
 }
 missing <- required_opts[!unlist(lapply(opt[required_opts], is_valid_string)) | !required_opts %in% names(opt)]
 
-if (length(missing) > 0){
+if (length(missing) > 0) {
   stop(paste("Missing required options:", paste(missing, collapse=', ')))
 }
 
