@@ -22,22 +22,30 @@ input:
     - query:
         type: file
         description: Fasta file to be used as the query
-        pattern: "*.fasta"
+        pattern: "*.{fasta,fna,fa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta2:
         type: map
         description: Groovy Map containing sample information for the reference
     - reference:
         type: file
         description: Fasta file to be used as the reference
-        pattern: "*.fasta"
+        pattern: "*.{fasta,fna,fa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
   - ql:
       type: file
       description: File containing a list of query fasta paths
       pattern: "*.txt"
+      ontologies:
+        - edam: "http://edamontology.org/format_2330" # TXT
   - rl:
       type: file
       description: File containing a list of reference fasta paths
       pattern: "*.txt"
+      ontologies:
+        - edam: "http://edamontology.org/format_2330" # TXT
 output:
   ani:
     - - meta:
@@ -49,6 +57,8 @@ output:
           type: file
           description: ANI results file
           pattern: "*.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # TXT
   visual:
     - - meta:
           type: map
@@ -59,6 +69,9 @@ output:
           type: file
           optional: true
           description: FastANI visualization output
+          pattern: "*.visual"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   matrix:
     - - meta:
           type: map
@@ -69,13 +82,16 @@ output:
           type: file
           optional: true
           description: ANI matrix output
+          ontologies:
+            - edam: "http://edamontology.org/format_3033" # MATRIX
+
   versions:
     - versions.yml:
         type: file
         description: File containing software version information
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@abhi18av"
   - "@Ethan-Hetrick"
