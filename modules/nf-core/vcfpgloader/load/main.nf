@@ -15,9 +15,7 @@ process VCFPGLOADER_LOAD {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://ghcr.io/zacharyr41/vcf-pg-loader:0.5.3' :
-        'ghcr.io/zacharyr41/vcf-pg-loader:0.5.3' }"
+    container "ghcr.io/zacharyr41/vcf-pg-loader:0.5.3"
 
     input:
     tuple val(meta), path(vcf), path(tbi)

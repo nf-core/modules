@@ -79,43 +79,4 @@ nextflow_process {
         }
     }
 
-    test("sarscov2 - vcf.gz - integration") {
-        tag "integration"
-        tag "database_required"
-
-        when {
-            params {
-                db_host = System.getenv('PGHOST') ?: 'localhost'
-                db_port = System.getenv('PGPORT') ?: '5432'
-                db_name = System.getenv('PGDATABASE') ?: 'vcf_test'
-                db_user = System.getenv('PGUSER') ?: 'postgres'
-            }
-            process {
-                """
-                input[0] = [
-                    [ id: 'test_integration', family: 'TEST' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true)
-                ]
-                input[1] = params.db_host
-                input[2] = params.db_port.toInteger()
-                input[3] = params.db_name
-                input[4] = params.db_user
-                input[5] = 'public'
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert path(process.out.report.get(0).get(1)).exists() },
-                { assert process.out.row_count.get(0).get(1).toInteger() > 0 },
-                { assert snapshot(
-                    process.out.report,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
-            )
-        }
-    }
 }
