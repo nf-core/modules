@@ -4,8 +4,8 @@ process T1K_RUN {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community.wave.seqera.io/library/t1k:1.0.8--e9be2449ed2ce125'
-        : 'community.wave.seqera.io/library/t1k:1.0.8--e73a2a3c3d836a4a'}"
+        ? 'https://community.wave.seqera.io/library/t1k:1.0.9--f80694a7607e947e'
+        : 'community.wave.seqera.io/library/t1k:1.0.9--793c68c25d680b97'}"
 
     input:
     tuple val(meta), path(input), path(fasta), path(cordinates), path(barcodes), path(barcodewhitelist)
