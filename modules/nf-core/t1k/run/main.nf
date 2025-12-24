@@ -45,6 +45,9 @@ process T1K_RUN {
         // Interleaved FASTQ
         input_args = "-i ${input}"
     }
+    else {
+        error "Invalid input files for sample ${meta.id}. Please provide either a BAM file, single-end FASTQ, paired-end FASTQ (2 files), or interleaved FASTQ."
+    }
     def cordinates_args = cordinates && is_bam ? "-c ${cordinates}" : ''
     def barcodes_args = barcodes ? "--barcode ${barcodes}" : ''
     def barcodewhitelist_args = barcodewhitelist ? "--barcodeWhiteList ${barcodewhitelist} " : ''
