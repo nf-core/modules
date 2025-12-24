@@ -8,7 +8,7 @@ process HIPHASE {
         'community.wave.seqera.io/library/hiphase:1.5.0--f36e5874e9287052' }"
 
     input:
-    tuple val(meta) , path(vcf), path(csi)
+    tuple val(meta), path(vcf), path(csi)
     tuple val(meta2), path(bam), path(bai)
     tuple val(meta3), path(fasta)
 
