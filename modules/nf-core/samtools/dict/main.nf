@@ -12,7 +12,7 @@ process SAMTOOLS_DICT {
 
     output:
     tuple val(meta), path ("*.dict"), emit: dict
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,19 +26,10 @@ process SAMTOOLS_DICT {
         $fasta \\
         > ${fasta}.dict
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
     """
     touch ${fasta}.dict
-    cat <<-END_VERSIONS > versions.yml
-
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }

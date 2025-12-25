@@ -156,7 +156,7 @@ workflow FASTA_INDEX_METHYLSEQ {
                 false
             )
             ch_fasta_index = SAMTOOLS_FAIDX.out.fai
-            ch_versions    = ch_versions.mix(SAMTOOLS_FAIDX.out.versions)
+            // samtools/faidx version emitted into the topic channel
         }
     }
 
