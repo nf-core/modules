@@ -15,7 +15,7 @@ process VCFPGLOADER_LOAD {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "ghcr.io/zacharyr41/vcf-pg-loader:0.5.3"
+    container "ghcr.io/zacharyr41/vcf-pg-loader:0.5.4"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
@@ -29,7 +29,7 @@ process VCFPGLOADER_LOAD {
     tuple val(meta), path("*.load_report.json"), emit: report
     tuple val(meta), path("*.load.log")        , emit: log
     tuple val(meta), env(ROWS_LOADED)          , emit: row_count
-    tuple val("${task.process}"), val("vcf-pg-loader"), eval('vcf-pg-loader --version'), topic: versions, emit: versions_vcfpgloader
+    tuple val("${task.process}"), val("vcf-pg-loader"), eval('vcf-pg-loader --version | sed "s/.*version //"'), topic: versions, emit: versions_vcfpgloader
 
     when:
     task.ext.when == null || task.ext.when
