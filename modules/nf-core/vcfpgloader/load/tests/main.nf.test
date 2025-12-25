@@ -39,8 +39,7 @@ nextflow_process {
                 { assert path(process.out.log.get(0).get(1)).exists() },
                 { assert snapshot(
                     process.out.report,
-                    process.out.log,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    process.out.log
                 ).match() }
             )
         }
@@ -72,8 +71,7 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.report.get(0).get(1)).exists() },
                 { assert snapshot(
-                    process.out.report,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    process.out.report
                 ).match() }
             )
         }
