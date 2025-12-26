@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "vcfpgloader_load"
-description: High-performance VCF to PostgreSQL loader using asyncpg for bulk variant ingestion
+description: High-performance VCF to PostgreSQL loader using asyncpg for bulk
+  variant ingestion
 keywords:
   - vcf
   - postgresql
@@ -64,7 +64,8 @@ output:
             e.g. [ id:'sample1' ]
       - "*.load_report.json":
           type: file
-          description: JSON report with loading statistics including variant counts, elapsed time, and throughput metrics
+          description: JSON report with loading statistics including variant
+            counts, elapsed time, and throughput metrics
           pattern: "*.load_report.json"
           ontologies:
             - edam: "http://edamontology.org/format_3464"
@@ -96,10 +97,9 @@ output:
       - vcf-pg-loader:
           type: string
           description: The name of the tool
-      - vcf-pg-loader --version:
+      - vcf-pg-loader --version | sed "s/.*version //":
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -108,10 +108,9 @@ topics:
       - vcf-pg-loader:
           type: string
           description: The name of the tool
-      - vcf-pg-loader --version:
+      - vcf-pg-loader --version | sed "s/.*version //":
           type: eval
           description: The expression to obtain the version of the tool
-
 authors:
   - "@Zacharyr41"
 maintainers:
