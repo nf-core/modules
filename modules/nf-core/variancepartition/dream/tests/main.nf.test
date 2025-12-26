@@ -20,7 +20,7 @@ nextflow_process {
                 input[0] = Channel.of([
                     'id': 'genotype_WT_KO_treatment_Control_Treated',
                     'formula': '~ genotype * treatment',
-                    'comparison': 'genotypeKO - treatmentTreated' // should be a 'make.names() string'
+                    'comparison': 'genotypeWT - treatmentTreated' // should be a 'make.names() string'
                 ])
                 .map {
                     tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
@@ -39,8 +39,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
-                { assert path(process.out.results[0][1]).getText().contains("0.83") },
-                { assert path(process.out.results[0][1]).getText().contains("13.5\t21.12\t4.41") },
+                { assert path(process.out.results[0][1]).getText().contains("1309.83") },
+                { assert path(process.out.results[0][1]).getText().contains("557\t279.88\t18.81") },
                 { assert snapshot(process.out.model, process.out.versions).match() }
             )
         }
@@ -54,7 +54,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'formula':'~ treatment', 'comparison':'treatmenthND6'])
+                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'formula':'~ treatment', 'comparison':'treatmentmCherry'])
                     .map{
                         tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
@@ -73,8 +73,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
-                { assert path(process.out.results[0][1]).getText().contains("849.67") },
-                { assert path(process.out.results[0][1]).getText().contains("1050\t549\t3.78") },
+                { assert path(process.out.results[0][1]).getText().contains("-849.67") },
+                { assert path(process.out.results[0][1]).getText().contains("-1050\t549\t-3.78") },
                 { assert snapshot(process.out.model, process.out.versions).match() }
             )
         }
