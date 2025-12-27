@@ -25,6 +25,18 @@ input:
         pattern: "*.fasta"
         ontologies: []
 output:
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: Assembly statistics in tsv format
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   json:
     - - meta:
           type: map
@@ -47,6 +59,8 @@ output:
 authors:
   - "@sateeshperi"
   - "@mjcipriano"
+  - "@eit-maxlcummins"
 maintainers:
   - "@sateeshperi"
   - "@mjcipriano"
+  - "@eit-maxlcummins"
