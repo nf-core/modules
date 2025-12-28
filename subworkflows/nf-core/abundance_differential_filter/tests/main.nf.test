@@ -36,7 +36,7 @@ nextflow_workflow {
                 ])
                 ch_transcript_lengths = Channel.of([ [], [] ])
                 ch_control_features = Channel.of([ [], [] ])
-                ch_contrasts =  Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ treatment + (1 | sample_number)'])
+                ch_contrasts =  Channel.of(['id': 'treatment_mCherry_hND6', 'formula':'~ treatment + (1 | sample_number)', 'comparison': 'treatmentmCherry'])
                     .map{
                         tuple([id: 'test'], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
@@ -91,7 +91,7 @@ nextflow_workflow {
                 ])
                 ch_transcript_lengths = Channel.of([ [], [] ])
                 ch_control_features = Channel.of([ [], [] ])
-                ch_contrasts =  Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ 0 + treatment + sample_number', 'comparison':'treatmenthND6 - treatmentmCherry'])
+                ch_contrasts =  Channel.of(['id': 'treatment_mCherry_hND6', 'formula':'~ 0 + treatment + sample_number', 'comparison':'treatmenthND6 - treatmentmCherry'])
                     .map{
                         tuple([id: 'test'], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
