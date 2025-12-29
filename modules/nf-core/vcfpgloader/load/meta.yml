@@ -39,21 +39,21 @@ input:
         description: Tabix index for the VCF file
         pattern: "*.tbi"
         ontologies: []
-  - db_host:
-      type: string
-      description: PostgreSQL server hostname or IP address
-  - db_port:
-      type: integer
-      description: PostgreSQL server port (default 5432)
-  - db_name:
-      type: string
-      description: Target database name
-  - db_user:
-      type: string
-      description: Database username for authentication
-  - db_schema:
-      type: string
-      description: Target schema for variant tables (default public)
+    - db_host:
+        type: string
+        description: PostgreSQL server hostname or IP address
+    - db_port:
+        type: integer
+        description: PostgreSQL server port (default 5432)
+    - db_name:
+        type: string
+        description: Target database name
+    - db_user:
+        type: string
+        description: Database username for authentication
+    - db_schema:
+        type: string
+        description: Target schema for variant tables (default public)
 
 output:
   report:

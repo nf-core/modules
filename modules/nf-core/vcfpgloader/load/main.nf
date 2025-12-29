@@ -18,12 +18,7 @@ process VCFPGLOADER_LOAD {
     container "ghcr.io/zacharyr41/vcf-pg-loader:0.5.4"
 
     input:
-    tuple val(meta), path(vcf), path(tbi)
-    val db_host
-    val db_port
-    val db_name
-    val db_user
-    val db_schema
+    tuple val(meta), path(vcf), path(tbi), val(db_host), val(db_port), val(db_name), val(db_user), val(db_schema)
 
     output:
     tuple val(meta), path("*.load_report.json"), emit: report

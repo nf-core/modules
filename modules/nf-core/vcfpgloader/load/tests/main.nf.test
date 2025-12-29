@@ -21,13 +21,13 @@ nextflow_process {
                 input[0] = [
                     [ id: 'test_sample', family: 'TEST_FAM' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
+                    'localhost',
+                    5432,
+                    'testdb',
+                    'postgres',
+                    'public'
                 ]
-                input[1] = 'localhost'
-                input[2] = 5432
-                input[3] = 'testdb'
-                input[4] = 'postgres'
-                input[5] = 'public'
                 """
             }
         }
@@ -55,13 +55,13 @@ nextflow_process {
                 input[0] = [
                     [ id: 'test_human' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotc.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotc.vcf.gz.tbi', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotc.vcf.gz.tbi', checkIfExists: true),
+                    'localhost',
+                    5432,
+                    'testdb',
+                    'postgres',
+                    'public'
                 ]
-                input[1] = 'localhost'
-                input[2] = 5432
-                input[3] = 'testdb'
-                input[4] = 'postgres'
-                input[5] = 'public'
                 """
             }
         }
