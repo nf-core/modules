@@ -33,7 +33,7 @@ process SYRI {
         -F $file_type \\
         $args \\
         --prefix $prefix \\
-        2> >(tee "${prefix}.error.log" >&2) \\
+        2>| >(tee "${prefix}.error.log" >&2) \\
         || echo "Errors from syri printed to ${prefix}.error.log"
 
     [ -f "${prefix}syri.out" ] \\

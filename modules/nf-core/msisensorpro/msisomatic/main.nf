@@ -4,8 +4,8 @@ process MSISENSORPRO_MSISOMATIC {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/msisensor-pro:1.2.0--hfc31af2_0' :
-        'biocontainers/msisensor-pro:1.2.0--hfc31af2_0' }"
+            'https://depot.galaxyproject.org/singularity/msisensor-pro%3A1.3.0--hfef96ef_0':
+            'biocontainers/msisensor-pro:1.3.0--hfef96ef_0' }"
 
     input:
     tuple val(meta), path(normal), path(normal_index), path(tumor), path(tumor_index), path(intervals)
@@ -15,8 +15,8 @@ process MSISENSORPRO_MSISOMATIC {
     output:
     tuple val(meta), path("${prefix}")         , emit: output_report
     tuple val(meta), path("${prefix}_dis")     , emit: output_dis
-    tuple val(meta), path("${prefix}_germline"), emit: output_germline
-    tuple val(meta), path("${prefix}_somatic") , emit: output_somatic
+    tuple val(meta), path("${prefix}_germline"), emit: output_germline, optional: true
+    tuple val(meta), path("${prefix}_somatic") , emit: output_somatic,  optional: true
     path "versions.yml"                        , emit: versions
 
     when:

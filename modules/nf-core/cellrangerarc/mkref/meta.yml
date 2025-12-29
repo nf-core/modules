@@ -16,43 +16,50 @@ tools:
         - 10x Genomics EULA
       identifier: ""
 input:
-  - - fasta:
-        type: file
-        description: Reference genome FASTA file
-        pattern: "*.{fasta,fa}"
-  - - gtf:
-        type: file
-        description: Reference transcriptome GTF file
-        pattern: "*.gtf"
-  - - motifs:
-        type: file
-        description: Sequence motif file (e.g., from transcription factors)
-        pattern: "*.txt"
-  - - reference_config:
-        type: file
-        description: JSON-like file holding organism, genome, reference fasta path,
-          reference annotation gtf path, contigs that should be excluded and sequence
-          format motif file path
-        pattern: config
-  - - reference_name:
-        type: string
-        description: The name to give the new reference folder
-        pattern: str
+  - fasta:
+      type: file
+      description: Reference genome FASTA file
+      pattern: "*.{fasta,fa}"
+      ontologies: []
+  - gtf:
+      type: file
+      description: Reference transcriptome GTF file
+      pattern: "*.gtf"
+      ontologies: []
+  - motifs:
+      type: file
+      description: Sequence motif file (e.g., from transcription factors)
+      pattern: "*.txt"
+      ontologies: []
+  - reference_config:
+      type: file
+      description: JSON-like file holding organism, genome, reference fasta path, reference
+        annotation gtf path, contigs that should be excluded and sequence format motif
+        file path
+      pattern: config
+      ontologies: []
+  - reference_name:
+      type: string
+      description: The name to give the new reference folder
+      pattern: str
 output:
-  - reference:
-      - ${reference_name}:
-          type: directory
-          description: Folder called like the reference_name containing all the reference
-            indices needed by Cell Ranger Arc
-  - config:
-      - config:
-          type: file
-          description: Configuration file
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software version
-          pattern: "versions.yml"
+  reference:
+    - ${reference_name}:
+        type: directory
+        description: Folder called like the reference_name containing all the reference
+          indices needed by Cell Ranger Arc
+  config:
+    - config:
+        type: file
+        description: Configuration file
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ggabernet"
   - "@heylf"

@@ -1,0 +1,79 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "autocycler_resolve"
+description: Resolve trimmed assembly graphs into final contigs within Autocycler.
+keywords:
+  - autocycler
+  - genome-assembly
+  - graph-resolution
+  - long-read
+tools:
+  - autocycler:
+      description: "A tools for generating consensus long-read assemblies for bacterial genomes."
+      homepage: "https://github.com/rrwick/Autocycler/wiki"
+      documentation: "https://github.com/rrwick/Autocycler/wiki"
+      tool_dev_url: "https://github.com/rrwick/Autocycler"
+      doi: "10.1093/bioinformatics/btaf474"
+      licence: ["GPL-3.0"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - gfa:
+        type: file
+        description: |
+          Trimmed assembly graph in GFA format from the previous step.
+        pattern: "*.gfa"
+
+output:
+  bridged:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "$prefix/3_bridged.gfa":
+          type: file
+          description: Assembly graph with bridges resolved.
+          pattern: "3_bridged.gfa"
+          ontologies:
+            - edam: "http://edamontology.org/format_3975" #GFA1
+  merged:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "$prefix/4_merged.gfa":
+          type: file
+          description: Merged assembly graph after bridging.
+          pattern: "4_merged.gfa"
+          ontologies:
+            - edam: "http://edamontology.org/format_3975" #GFA1
+  resolved:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "$prefix/5_final.gfa":
+          type: file
+          description: Final resolved assembly graph.
+          pattern: "5_final.gfa"
+          ontologies:
+            - edam: "http://edamontology.org/format_3975" #GFA1
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@dwells-eit"
+maintainers:
+  - "@dwells-eit"

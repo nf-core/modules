@@ -24,7 +24,8 @@ input:
         type: file
         description: Paired-end reads in FASTQ format
         pattern: "*_R[1|2].{fastq.gz,fq.gz}"
-  - - meta:
+        ontologies: []
+  - - meta2:
         type: map
         description: |
           Groovy Map containing sample information
@@ -33,21 +34,27 @@ input:
         type: file
         description: An Ariba prepared database
         pattern: "*.tar.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
 output:
-  - results:
-      - meta:
+  results:
+    - - meta:
           type: file
           description: A directory of Ariba analysis outputs
           pattern: "*"
+          ontologies: []
       - ${prefix}/*:
           type: file
           description: A directory of Ariba analysis outputs
           pattern: "*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rpetit3"
 maintainers:

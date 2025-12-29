@@ -26,13 +26,14 @@ input:
         type: file
         description: FASTA file
         pattern: "*.{fasta.gz,fa.gz,fna.gz}"
-  - - output_format:
-        type: string
-        description: Output format
-        pattern: "{gbk,gff}"
+        ontologies: []
+  - output_format:
+      type: string
+      description: Output format
+      pattern: "{gbk,gff}"
 output:
-  - annotations:
-      - meta:
+  annotations:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -42,8 +43,9 @@ output:
           description: Gene annotations. The file format is specified via input channel
             "output_format".
           pattern: "*.{gbk,gff}.gz"
-  - fna:
-      - meta:
+          ontologies: []
+  fna:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,8 +54,9 @@ output:
           type: file
           description: nucleotide sequences file
           pattern: "*.{fna.gz}"
-  - faa:
-      - meta:
+          ontologies: []
+  faa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,8 +65,9 @@ output:
           type: file
           description: protein translations file
           pattern: "*.{faa.gz}"
-  - score:
-      - meta:
+          ontologies: []
+  score:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -72,11 +76,14 @@ output:
           type: file
           description: all potential genes (with scores)
           pattern: "*.{score.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@louperelo"
 maintainers:

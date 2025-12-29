@@ -23,27 +23,32 @@ input:
         type: file
         description: FASTA file of the reference sequence
         pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
+        ontologies: []
     - query:
         type: file
         description: FASTA file of the query sequence
         pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
+        ontologies: []
 output:
-  - coords:
-      - meta:
+  coords:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.coords":
           type: file
-          description: File containing coordinates of matches between reference and query
-            sequence
+          description: File containing coordinates of matches between reference and
+            query sequence
           pattern: "*.coords"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mjcipriano"
   - "@sateeshperi"

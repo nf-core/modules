@@ -22,6 +22,7 @@ input:
         type: file
         description: SAM/BAM/CRAM file to be lifted
         pattern: "*.{bam}"
+        ontologies: []
   - - meta_ref:
         type: map
         description: |
@@ -31,9 +32,10 @@ input:
         type: file
         description: Clft file of indexed ChainMap.
         pattern: "*.{clft}"
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -42,11 +44,14 @@ output:
           type: file
           description: Lifted bam file
           pattern: "*.{bam}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@lgrochowalski"
 maintainers:

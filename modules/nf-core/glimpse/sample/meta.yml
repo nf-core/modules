@@ -22,11 +22,17 @@ input:
           e.g. [ id:'test', single_end:false ]
     - input:
         type: file
-        description: VCF/BCF file generated using GLIMPSE ligate
+        description: Imputed VCF/BCF file
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+        ontologies: []
+    - index:
+        type: file
+        description: Index file of the input VCF/BCF file.
+        pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
+        ontologies: []
 output:
-  - haplo_sampled:
-      - meta:
+  haplo_sampled:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,11 +41,14 @@ output:
           type: file
           description: Output VCF/BCF file containing phased genotypes.
           pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@louislenezet"
 maintainers:

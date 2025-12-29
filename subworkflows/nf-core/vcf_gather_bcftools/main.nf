@@ -15,10 +15,11 @@ workflow VCF_GATHER_BCFTOOLS {
     ch_versions = Channel.empty()
 
     ch_concat_input = ch_vcfs.join(ch_scatter_output)
-        .map{ meta, vcf, tbi, bed, gather_count ->
+        .map{ meta, vcf, tbi, _bed, gather_count ->
             meta = val_common_meta ? meta + [id:meta[val_common_meta]] : meta
             [ groupKey(meta, gather_count), vcf, tbi ]
         }.groupTuple()
+        .map { meta, vcf, tbi -> [meta.target, vcf, tbi] }
 
     BCFTOOLS_CONCAT ( ch_concat_input )
     ch_versions = ch_versions.mix(BCFTOOLS_CONCAT.out.versions)
@@ -34,11 +35,10 @@ workflow VCF_GATHER_BCFTOOLS {
     }
 
     TABIX_TABIX ( ch_tabix_input )
-    ch_versions = ch_versions.mix(TABIX_TABIX.out.versions)
 
     emit:
     vcf      = ch_tabix_input        // channel: [ val(meta), [ vcf ] ]
-    tbi      = TABIX_TABIX.out.tbi   // channel: [ val(meta), [ tbi ] ]
+    tbi      = TABIX_TABIX.out.index // channel: [ val(meta), [ tbi ] ]
 
     versions = ch_versions           // channel: [ versions.yml ]
 }

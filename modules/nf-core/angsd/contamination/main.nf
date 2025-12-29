@@ -29,7 +29,7 @@ process ANGSD_CONTAMINATION {
         -a ${icounts} \
         -h ${hapmap_file} \
         -p ${task.cpus} \
-        2> >(tee ${prefix}.txt >&2)
+        2>| >(tee ${prefix}.txt >&2)
 
 
     cat <<-END_VERSIONS > versions.yml

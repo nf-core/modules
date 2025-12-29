@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "catpack_bins"
-description: Taxonomic classification of long DNA sequences and metagenome assembled genomes (e.g. MAGs / bins).
+description: Taxonomic classification of long DNA sequences and metagenome assembled
+  genomes (e.g. MAGs / bins).
 keywords:
   - taxonomic classification
   - classification
@@ -86,13 +87,13 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_3751"
 
-  - - bin_suffix:
-        type: string
-        description: Suffix to search for in the input files when `bins` is a directory.
+  - bin_suffix:
+      type: string
+      description: Suffix to search for in the input files when `bins` is a directory.
 
 output:
-  - orf2lca:
-      - meta:
+  orf2lca:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -103,8 +104,8 @@ output:
           pattern: "*.ORF2LCA.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475"
-  - bin2classification:
-      - meta:
+  bin2classification:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -116,8 +117,8 @@ output:
           pattern: "*.bin2classification.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475"
-  - log:
-      - meta:
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -127,8 +128,8 @@ output:
           description: Log file with run messages and basic statistics
           ontologies:
             - edam: "http://edamontology.org/format_2330"
-  - diamond:
-      - meta:
+  diamond:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -138,8 +139,8 @@ output:
           description: Intermediate DIAMOND TSV summary output file with alignment results
           ontologies:
             - edam: "http://edamontology.org/format_3475"
-  - faa:
-      - meta:
+  faa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -149,8 +150,8 @@ output:
           description: FAA file of DIAMOND predicted proteins hits
           ontologies:
             - edam: "http://edamontology.org/format_3475"
-  - gff:
-      - meta:
+  gff:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -160,11 +161,13 @@ output:
           description: GFF file of DIAMOND predicted proteins hits
           ontologies:
             - edam: "http://edamontology.org/format_2305"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

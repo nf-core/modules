@@ -5,8 +5,8 @@ process MANTA_CONVERTINVERSION {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-40295ae41112676b05b649e513fe7000675e9b84:a0332aa38645fbb8969567731ce68cfb7f830ec4-0':
-        'biocontainers/mulled-v2-40295ae41112676b05b649e513fe7000675e9b84:a0332aa38645fbb8969567731ce68cfb7f830ec4-0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7b/7b09474b3b6537f95f6fabbd4ed3ae397adad69d195217585e5101c8bdb914aa/data':
+        'community.wave.seqera.io/library/htslib_manta_samtools_python:0f2533c881652912' }"
 
     input:
     tuple val(meta), path(vcf)
@@ -15,23 +15,17 @@ process MANTA_CONVERTINVERSION {
     output:
     tuple val(meta), path("*.vcf.gz")    , emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi
-    path "versions.yml"                  , emit: versions
+    tuple val("${task.process}"), val("manta"), eval("configManta.py --version"), topic: versions, emit: versions_manta
+    tuple val("${task.process}"), val("samtools"), eval("samtools --version | head -1 | sed -e s'/samtools //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     convertInversion.py \$(which samtools) $fasta $vcf | bgzip --threads $task.cpus > ${prefix}.vcf.gz
     tabix ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        manta: \$( configManta.py --version )
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' )
-    END_VERSIONS
     """
 
     stub:
@@ -39,11 +33,5 @@ process MANTA_CONVERTINVERSION {
     """
     echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        manta: \$( configManta.py --version )
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' )
-    END_VERSIONS
     """
 }

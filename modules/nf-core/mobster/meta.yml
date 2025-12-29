@@ -1,0 +1,115 @@
+name: mobster
+description: Subclonal deconvolution of cancer genome sequencing data.
+keywords:
+  - subclonal deconvolution
+  - genomics
+  - cancer evolution
+tools:
+  - "mobster":
+      description: |
+        mobster is a package that implements a model-based approach for subclonal deconvolution of
+        cancer genome sequencing data.
+
+        The package integrates evolutionary theory (i.e., population) and Machine-Learning to analyze
+        (e.g., whole-genome) bulk data from cancer samples. This analysis relates to clustering; we
+        approach it via a maximum-likelihood formulation of Dirichlet mixture models, and use bootstrap
+        routines to assess the confidence of the parameters.
+      homepage: https://caravagnalab.github.io/mobster/
+      documentation: https://caravagnalab.github.io/mobster/
+      tool_dev_url: https://github.com/caravagnalab/mobster
+      doi: "10.1038/s41588-020-0675-5"
+      licence: ["GPL-3.0"]
+      identifier: biotools:mobster-R
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - rds_join:
+        type: file
+        description: Either a .rds object of class mCNAqc or a .csv mutations
+          table
+        pattern: "*.{rds,csv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3752" # csv
+output:
+  mobster_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_mobster_fit.rds":
+          type: file
+          description: Full mobster fit as an .rds object
+          pattern: "*_mobster_fit.rds"
+          ontologies: []
+  mobster_best_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_mobster_best_fit.rds":
+          type: file
+          description: Best mobster fit as an .rds object
+          pattern: "*_mobster_best_fit.rds"
+          ontologies: []
+  mobster_best_plots_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_mobster_best_plots.rds":
+          type: file
+          description: Final plots as an .rds object
+          pattern: "*_mobster_best_plots.rds"
+          ontologies: []
+  mobster_report_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_mobster_report.rds":
+          type: file
+          description: Final report plots as an .rds object
+          pattern: "*_mobster_report.rds"
+          ontologies: []
+  mobster_report_pdf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_mobster_report.pdf":
+          type: file
+          description: Final report plots as a .pdf file
+          pattern: "*_mobster_report.pdf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3508" # pdf
+  mobster_report_png:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_mobster_report.png":
+          type: file
+          description: Final report plots as a .png file
+          pattern: "*_mobster_report.png"
+          ontologies:
+            - edam: "http://edamontology.org/format_3603" # png
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@elena-buscaroli"
+maintainers:
+  - "@elena-buscaroli"

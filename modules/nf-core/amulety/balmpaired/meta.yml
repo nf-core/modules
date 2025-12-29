@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "amulety_balmpaired"
-description: A module to create BALM paired embeddings of antibody (BCR) amino acid sequences using amulety.
+description: A module to create BALM paired embeddings of antibody (BCR) amino acid
+  sequences using amulety.
 keywords:
   - embeddings
   - BCR
@@ -16,7 +16,8 @@ tools:
       documentation: "https://amulety.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/immcantation/amulety"
       doi: "10.1101/2025.03.21.644583"
-      licence: ['GPL v3']
+      licence: ["GPL v3"]
+      identifier: ""
 
 input:
   - - meta:
@@ -28,29 +29,35 @@ input:
         type: file
         description: TSV with BCR/TCR nucleotide sequences in AIRR rearrangement format
         pattern: "*.{tsv}"
-  - - chain:
-        type: string
-        description: |
-          The chain to use for the embeddings. Can be either 'H' (heavy) or 'HL' (heavy + light, for single-cell data).
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - chain:
+      type: string
+      description: |
+        The chain to use for the embeddings. Can be either 'H' (heavy) or 'HL' (heavy + light, for single-cell data).
 
 output:
-  - embedding:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*.tsv":
-        type: file
-        description: TSV with BALM paired embeddings.
-        pattern: "*.tsv"
+  embedding:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tsv":
+          type: file
+          description: TSV with BALM paired embeddings.
+          pattern: "*.tsv"
 
-  - versions:
-    - "versions.yml":
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ggabernet"
 maintainers:

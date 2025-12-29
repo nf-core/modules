@@ -23,9 +23,10 @@ input:
         type: file
         description: FASTA file for a given assembly
         pattern: "*.fasta"
+        ontologies: []
 output:
-  - json:
-      - meta:
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,11 +35,15 @@ output:
           type: file
           description: Assembly statistics in JSON format
           pattern: "*.json"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sateeshperi"
   - "@mjcipriano"

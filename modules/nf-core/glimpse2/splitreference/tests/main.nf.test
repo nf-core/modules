@@ -12,18 +12,17 @@ nextflow_process {
     tag "glimpse2/splitreference"
 
     test("Should run without map") {
-
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'ref1000GP', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
-                    "chr21:16600000-16800000",
-                    "chr21:16600000-16800000"
+                    [ id:'ref1000GP', single_end:false ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                    "chr22:16600000-16800000",
+                    "chr22:16600000-16800000",
+                    []
                 ]
-                input[1]= [[ id:'map'],[]]
                 """
             }
         }
@@ -32,26 +31,26 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 // File has a timestamp in it and is in binary format, so we can only check the name
-                { assert file(process.out.bin_ref[0][1]).name == "ref1000GP_chr21_16600000_16800000.bin" },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(
+                    file(process.out.bin_ref[0][1]).name,
+                    process.out.versions
+                ).match() }
             )
         }
-
     }
 
     test("Should run with map") {
-
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'ref1000GP', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
-                    "chr21:16600000-16800000",
-                    "chr21:16600000-16800000"
+                    [ id:'ref1000GP', single_end:false ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                    "chr22:16600000-16800000",
+                    "chr22:16600000-16800000",
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.glimpse.map", checkIfExists:true)
                 ]
-                input[1]= [[ id:'map'], file(params.modules_testdata_base_path + "delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true)]
                 """
             }
         }
@@ -60,8 +59,38 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 // File has a timestamp in it and is in binary format, so we can only check the name
-                { assert file(process.out.bin_ref[0][1]).name == "ref1000GP_chr21_16600000_16800000.bin" },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(
+                    file(process.out.bin_ref[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("Should run without map -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'ref1000GP', single_end:false ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                    "chr22:16600000-16800000",
+                    "chr22:16600000-16800000",
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
 

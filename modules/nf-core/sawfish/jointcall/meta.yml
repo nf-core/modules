@@ -1,0 +1,192 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: sawfish_jointcall
+description: Joint calling of structural variants from multiple samples using
+  Sawfish
+keywords:
+  - sawfish
+  - structural-variant calling
+  - joint calling
+  - CNV calling
+  - Pacbio
+tools:
+  - "sawfish":
+      description: "Joint structural variant and copy number variant caller for HiFi
+        sequencing data"
+      homepage: "https://github.com/PacificBiosciences/sawfish"
+      documentation: "https://github.com/PacificBiosciences/sawfish/tree/main/docs"
+      doi: "10.1093/bioinformatics/btaf136"
+      licence:
+        ["Pacific Biosciences Software License (https://github.com/PacificBiosciences/sawfish/blob/main/LICENSE.md)"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - sample_dirs:
+        type: directory
+        description: Sample directories from sawfish discover step
+        pattern: "*_discover_dir/"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'fasta' ]
+    - fasta:
+        type: file
+        description: Reference genome in FASTA format
+        pattern: "*.{fasta,fa}"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - bams:
+        type: file
+        description: Sorted BAM/CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies: []
+    - bais:
+        type: file
+        description: Index of BAM/CAM file
+        pattern: "*.{bai,crai}"
+        ontologies: []
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing additional information
+          e.g. [ id:'csv' ]
+    - sample_csv:
+        type: file
+        description: CSV file listing sample sawfish discover output and the
+          sample bam file used with sawfish discover
+        ontologies: []
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*/*_genotyped.sv.vcf.gz":
+          type: file
+          description: Joint called variants in compressed VCF format
+          pattern: "*_genotyped.sv.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*/*_genotyped.sv.vcf.gz.tbi":
+          type: file
+          description: Tabix index for the joint called VCF file
+          pattern: "*_genotyped.sv.vcf.gz.tbi"
+          ontologies: []
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*/contig.alignment.bam":
+          type: file
+          description: Contig alignment BAM file
+          pattern: "*.bam"
+          ontologies: []
+  bam_index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*/contig.alignment.bam.csi":
+          type: file
+          description: Contig alignment BAM index file
+          pattern: "*.csi"
+          ontologies: []
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*/run.stats.json":
+          type: file
+          description: Run statistics JSON file
+          pattern: "*.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  depth_bw:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*/samples/*/depth.bw":
+          type: file
+          description: Sample depth BigWig file
+          pattern: "*.bw"
+          ontologies: []
+  copynum_bedgraph:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*/samples/*/copynum.bedgraph":
+          type: file
+          description: Sample copy number BEDGraph file
+          pattern: "*.bedgraph"
+          ontologies: []
+  gc_bias_corrected_depth_bw:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*/samples/*/gc_bias_corrected_depth.bw":
+          type: file
+          description: Sample GC bias BigWig file
+          pattern: "*.bw"
+          ontologies: []
+  copynum_summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*/samples/*/copynum.summary.json":
+          type: file
+          description: Sample copy number summary JSON file
+          pattern: "*.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*/sawfish.log":
+          type: file
+          description: Sawfish log file
+          pattern: "*.log"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@padraicc"
+maintainers:
+  - "@padraicc"

@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "jvarkit_vcf2table"
 description: Convert VCF to a user friendly table
@@ -28,7 +27,7 @@ tools:
       args_id: "$args1"
       identifier: "biotools:samtools"
 input:
-  - - "meta":
+  - - meta:
         type: map
         description: |
           Groovy Map containing VCF information
@@ -37,14 +36,18 @@ input:
         type: file
         description: Input vcf/bcf file
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+        ontologies: []
     - tbi:
         type: file
         description: Optional index file for the VCF
         pattern: "*.{tbi,csi}"
+        ontologies: []
     - regions_file:
         type: file
         description: Optional. Restrict to regions listed in a file
         pattern: "*.{bed,bed.gz,txt,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
   - - meta2:
         type: map
         description: |
@@ -53,9 +56,10 @@ input:
         type: file
         description: Optional pedigree for jvarkit
         pattern: "*.{ped,pedigree}"
+        ontologies: []
 output:
-  - output:
-      - meta:
+  output:
+    - - meta:
           type: map
           description: |
             Groovy Map containing VCF information
@@ -64,11 +68,14 @@ output:
           type: file
           description: Output file
           pattern: "*.{txt,html}"
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@lindenb"
 maintainers:

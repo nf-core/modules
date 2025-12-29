@@ -25,13 +25,18 @@ process FCSGX_RUNGX {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def database = ramdisk_path ? "$ramdisk_path/$task.index/" : gxdb // Use task.index to make memory location unique
+    def database = ramdisk_path ?: gxdb
     ( ramdisk_path ?
     """
+    if [ -d "${database}" ]; then
+        echo "ERROR: Database exists in memory, and may be in use by another process" >&2
+        ls -l ${database}
+        exit 1
+    fi
+    # Clean up shared memory on exit
+    trap "rm -rf ${database}" EXIT
     # Copy DB to RAM-disk when supplied. Otherwise, rungx is very slow.
     rclone copy ${gxdb} ${database}
-    # Clean up shared memory on exit
-    trap "rm -rf "${database}" EXIT
 
     """: "")
     <<

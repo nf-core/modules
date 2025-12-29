@@ -38,7 +38,7 @@ process MOTUS_PROFILE {
         -t $task.cpus \\
         -n $prefix \\
         -o ${prefix}.out \\
-        2> >(tee ${prefix}.log >&2)
+        2>| >(tee ${prefix}.log >&2)
 
     ## mOTUs version number is not available from command line.
     ## mOTUs save the version number in index database folder.

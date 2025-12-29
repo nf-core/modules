@@ -22,6 +22,7 @@ ENV PATH="$MAMBA_ROOT_PREFIX/bin:$PATH"
 
 # NOTE Docker doesn't support md5sum and that's what spaceranger gives us --checksum=md5sum:949088b1e2cc5bd03079b60a65b41d39
 # https://docs.docker.com/reference/dockerfile/#add---checksum
+# hadolint ignore=DL3020
 ADD --checksum=sha256:$SPACERANGER_SHA256 \
     $SPACERANGER_URL \
     /opt/spaceranger-$SPACERANGER_VER.tar.gz

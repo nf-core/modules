@@ -84,7 +84,7 @@ nextflow_process {
                     process.out.stats,
                     process.out.versions,
                     path(process.out.versions[0]).yaml
-                    ).match() }
+                ).match() }
             )
         }
     }
@@ -129,7 +129,7 @@ nextflow_process {
                     process.out.stats,
                     process.out.versions,
                     path(process.out.versions[0]).yaml
-                    ).match() }
+                ).match() }
             )
         }
     }
@@ -177,7 +177,7 @@ nextflow_process {
                     process.out.contamination_segments,
                     process.out.versions,
                     path(process.out.versions[0]).yaml
-                    ).match() }
+                ).match() }
             )
         }
     }
@@ -217,14 +217,13 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.summary,
                     file(process.out.index[0][1]).name,
-                    process.out.versions,
                     process.out.stats,
+                    process.out.versions,
                     path(process.out.versions[0]).yaml
-                    ).match() }
+                ).match() }
             )
         }
     }
-
 
     test("tumour normal - stub") {
         options '-stub'
@@ -289,5 +288,4 @@ nextflow_process {
             )
         }
     }
-
 }

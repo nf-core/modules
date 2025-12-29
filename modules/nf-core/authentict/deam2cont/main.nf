@@ -20,18 +20,18 @@ process AUTHENTICT_DEAM2CONT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
+    def args   = task.ext.args   ?: ''
+    def args2  = task.ext.args2  ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def config_file = config ? "-c ${config}" : ""
+    def config_file    = config    ? "-c ${config}"    : ""
     def positions_file = positions ? "-p ${positions}" : ""
 
     """
-    samtools view $args $bam | AuthentiCT \\
+    samtools view ${args} ${bam} | AuthentiCT \\
         deam2cont \\
-        $args2 \\
-        $config_file \\
-        $positions_file \\
+        ${args2} \\
+        ${config_file} \\
+        ${positions_file} \\
         - \\
         > ${prefix}.txt
 
@@ -44,7 +44,6 @@ process AUTHENTICT_DEAM2CONT {
 
     stub :
     prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     touch ${prefix}.txt
     cat <<-END_VERSIONS > versions.yml

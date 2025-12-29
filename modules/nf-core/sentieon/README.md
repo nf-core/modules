@@ -81,7 +81,7 @@ Additionally, the following may be necessary. If you don't know either key, you 
 export SENTIEON_AUTH_MECH="GitHub Actions - token"
 SENTIEON_ENCRYPTION_KEY=$(op read "op://Dev/Sentieon License Server/GitHub Secrets/SENTIEON_ENCRYPTION_KEY")
 SENTIEON_LICENSE_MESSAGE=$(op read "op://Dev/Sentieon License Server/GitHub Secrets/SENTIEON_LICENSE_MESSAGE")
-nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
+nextflow secrets set SENTIEON_AUTH_DATA $(python3 modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
 ```
 
 > [!NOTE]

@@ -1,0 +1,108 @@
+nextflow_process {
+
+    name "Test Process MSISENSOR_MSI"
+
+    script "../main.nf"
+    process "MSISENSOR_MSI"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "msisensor"
+    tag "msisensor/scan"
+    tag "msisensor/msi"
+
+    /* Old test
+    test("sarscov2 - bam bai - scan tab") {
+        setup {
+            run("MSISENSOR_SCAN") {
+                script "../../scan/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                // Imperfect test:
+                // Using Sars-Cov2 data as normal: tumor pairs this will suffice to test module execution but not functionality.
+                // Functionality has been tested manually using author-provided test data (https://github.com/ding-lab/msisensor/tree/master/test)
+                input[0] = Channel.from([[id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true)])
+                    .concat(MSISENSOR_SCAN.out.txt)
+                    .collect()
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.output,
+                    process.out.output_dis,
+                    // process.out.output_germline, //  Empty output
+                    // process.out.output_somatic, //  Empty output
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }*/
+
+    test("Deprecated") {
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true),
+                    [],
+                    []
+                ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated") }
+            )
+        }
+    }
+
+    test("Deprecated -- stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true),
+                    [],
+                    []
+                ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated") }
+            )
+        }
+    }
+}

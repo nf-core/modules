@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "proovframe_map"
-description: frame-shift correction for long read (meta)genomics - maps proteins to reads
+description: frame-shift correction for long read (meta)genomics - maps proteins to
+  reads
 keywords:
   - frame-shift correction
   - long-read sequencing
@@ -22,18 +22,35 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - faa:
-        type: file
-        description: A FASTA file containing a database of guide protein sequences
-        pattern: "*.{faa,fasta,fa}"
     - fasta:
         type: file
-        description: A FASTA file containing raw read nucleotide sequences
+        description: A FASTA fna file containing raw read nucleotide sequences
         pattern: "*.{fasta,fa}"
-
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - faa:
+        type: file
+        description: A proteome fasta file to create a database of guide protein sequences
+          from
+        pattern: "*.{faa,fasta,fa}"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - db:
+        type: file
+        description: A previously generated diamond database of guide protein sequences
+        pattern: "*.{dmnd}"
+        ontologies: []
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -41,12 +58,16 @@ output:
       - "*.tsv":
           type: file
           description: Output TSV file with the frameshift-aware protein to read alignments
-          pattern: "*.tsv"
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          pattern: "*.{tsv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 
 authors:
   - "@manuelcarbajo"
@@ -54,3 +75,4 @@ authors:
   - "@vagkaratzas"
 maintainers:
   - "@vagkaratzas"
+  - "@Ge94"

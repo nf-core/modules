@@ -2,9 +2,10 @@
 name: "hiphase"
 description: pacbio structural variant calling tool
 keywords:
-  - sort
-  - example
-  - genomics
+  - pacbio
+  - structural variant
+  - phasing
+  - pacbio hifi
 tools:
   - "hiphase":
       description: "Small and structural variant phasing tool for PacBio HiFi reads"
@@ -23,10 +24,12 @@ input:
         type: file
         description: VCF File
         pattern: "*.{vcf}"
+        ontologies: []
     - csi:
         type: file
         description: CSI File associated with VCF
         pattern: "*.{csi}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -36,10 +39,12 @@ input:
         type: file
         description: Sorted BAM/CRAM/SAM file
         pattern: "*.{bam}"
+        ontologies: []
     - bai:
         type: file
         description: Index File BAI associated with BAM file
         pattern: "*.{bai}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -49,9 +54,10 @@ input:
         type: file
         description: FASTA File (used for the alignment of the BAM file)
         pattern: "*.{fasta}"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,8 +66,9 @@ output:
           type: file
           description: Phased VCF file
           pattern: "*.vcf"
-  - csv:
-      - meta:
+          ontologies: []
+  csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -71,12 +78,16 @@ output:
           description: stats associated with the phasing
           pattern: "*.csv"
 
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@tanyasarkjain"
 maintainers:

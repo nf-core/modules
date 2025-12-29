@@ -27,9 +27,10 @@ input:
         description: file with nucleotide sequences
         pattern: "*.{fna, fa, fasta, fa.gz, fasta.gz, fna.gz, fastq.gz, fastq, fq.gz,
           fq}"
+        ontologies: []
 output:
-  - hits:
-      - meta:
+  hits:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,11 +40,14 @@ output:
           description: .txt file containing hits from a query seuqnce to various reference
             sequences output
           pattern: "*.{txt}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@phanhung2"
 maintainers:

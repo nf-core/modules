@@ -1,0 +1,55 @@
+name: "seqfu_check"
+description: Evaluates the integrity of DNA FASTQ files
+keywords:
+  - check
+  - seqfu
+  - fastq
+tools:
+  - "seqfu":
+      description: "A general-purpose program to manipulate and parse information from FASTQ files"
+      homepage: https://telatin.github.io/seqfu2/
+      documentation: https://telatin.github.io/seqfu2/tools/check.html#usage
+      tool_dev_url: https://github.com/telatin/seqfu2
+      doi: "10.3390/bioengineering8050059"
+      licence: ["MIT"]
+      identifier: biotools:seqfu
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1' ]`
+    - reads:
+        type: file
+        description: Either fastq file(s) or directory containing fastq files to be checked
+        pattern: "*.{fq,fastq}[.gz]"
+        ontologies:
+          - edam: http://edamontology.org/format_1931 # FASTQ-illumina format
+
+output:
+  check:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - "${prefix}.tsv":
+          type: file
+          description: >
+            Tab-separated output file with basic sequence statistics.
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: versions.yml
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@kornkv"
+  - "@mrozon-zip"
+maintainers:
+  - "@kornkv"
+  - "@mrozon-zip"
+  - "@vagkaratzas"

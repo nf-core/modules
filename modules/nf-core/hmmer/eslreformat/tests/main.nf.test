@@ -4,7 +4,7 @@ nextflow_process {
     config "./nextflow.config"
     script "../main.nf"
     process "HMMER_ESLREFORMAT"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "hmmer"
@@ -14,7 +14,7 @@ nextflow_process {
     setup {
         run("HMMER_HMMALIGN") {
             script "../../hmmalign/main.nf"
-            
+
             process {
                 """
                 input[0] = [

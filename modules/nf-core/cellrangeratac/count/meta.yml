@@ -25,25 +25,28 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively, plus an additional FastQ for the barcodes
-  - - reference:
-        type: directory
-        description: Directory containing all the reference indices needed by Cell Ranger
-          ATAC
+        ontologies: []
+  - reference:
+      type: directory
+      description: Directory containing all the reference indices needed by Cell Ranger
+        ATAC
 output:
-  - outs:
-      - meta:
-          type: file
-          description: Files containing the outputs of Cell Ranger ATAC
-          pattern: "sample-${meta.gem}/outs/*"
+  outs:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - ${meta.id}/outs/*:
           type: file
           description: Files containing the outputs of Cell Ranger ATAC
           pattern: "sample-${meta.gem}/outs/*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software version
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ggabernet"
   - "@edmundmiller"

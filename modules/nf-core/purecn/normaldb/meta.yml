@@ -32,77 +32,92 @@ input:
         type: file
         description: Coverage files from normal samples
         pattern: "*.txt.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
     - normal_vcf:
         type: file
         description: |
           Normal panel in VCF format, used to precompute mapping bias
           for faster runtimes. Optional.
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
     - normal_vcf_tbi:
         type: file
         description: Normal panel in VCF format
         pattern: "*.vcf.gz.tbi"
-  - - genome:
-        type: string
-        description: Genome build
-  - - assay:
-        type: string
-        description: Assay name
+        ontologies: []
+  - genome:
+      type: string
+      description: Genome build
+  - assay:
+      type: string
+      description: Assay name
 output:
-  - rds:
-      - meta:
+  rds:
+    - - meta:
           type: file
           description: File containing the generated panel of normals
           pattern: "normalDB*.rds"
+          ontologies: []
       - normalDB*.rds:
           type: file
           description: File containing the generated panel of normals
           pattern: "normalDB*.rds"
-  - png:
-      - meta:
+          ontologies: []
+  png:
+    - - meta:
           type: file
-          description: Plot of interval weights calculated from the panel of normals
-          pattern: "interval_weights*.png"
+          description: File containing the generated panel of normals
+          pattern: "normalDB*.rds"
+          ontologies: []
       - interval_weights*.png:
           type: file
           description: Plot of interval weights calculated from the panel of normals
           pattern: "interval_weights*.png"
-  - bias_rds:
-      - meta:
+          ontologies: []
+  bias_rds:
+    - - meta:
           type: file
-          description: Calculated mapping bias from the normal files
-          pattern: "mapping_bias*.rds"
+          description: File containing the generated panel of normals
+          pattern: "normalDB*.rds"
+          ontologies: []
       - mapping_bias*.rds:
           type: file
           description: Calculated mapping bias from the normal files
           pattern: "mapping_bias*.rds"
-  - bias_bed:
-      - meta:
+          ontologies: []
+  bias_bed:
+    - - meta:
           type: file
-          description: Calculated mapping bias sites from the normal files
-          pattern: "mapping_bias_hq_sites*.bed"
+          description: File containing the generated panel of normals
+          pattern: "normalDB*.rds"
+          ontologies: []
       - mapping_bias_hq_sites*.bed:
           type: file
           description: Calculated mapping bias sites from the normal files
           pattern: "mapping_bias_hq_sites*.bed"
-  - low_cov_bed:
-      - meta:
+          ontologies: []
+  low_cov_bed:
+    - - meta:
           type: file
-          description: |
-            BED with possibly low coverage targets identified, only
-            generated if there are low coverage targets
-          pattern: "low_coverage_targets*.bed"
+          description: File containing the generated panel of normals
+          pattern: "normalDB*.rds"
+          ontologies: []
       - low_coverage_targets*.bed:
           type: file
           description: |
             BED with possibly low coverage targets identified, only
             generated if there are low coverage targets
           pattern: "low_coverage_targets*.bed"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@aldosr"
   - "@lbeltrame"

@@ -1,11 +1,11 @@
 process GLIMPSE_LIGATE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/glimpse-bio:1.1.1--hce55b13_1':
-        'biocontainers/glimpse-bio:1.1.1--hce55b13_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/glimpse-bio:1.1.1--hce55b13_1'
+        : 'biocontainers/glimpse-bio:1.1.1--hce55b13_1'}"
 
     input:
     tuple val(meta), path(input_list), path(input_index)
@@ -22,26 +22,28 @@ process GLIMPSE_LIGATE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
     """
-    printf "%s\\n" $input_list | tr -d '[],' > all_files.txt
+    printf "%s\\n" ${input_list} | tr -d '[],' | sort -V > all_files.txt
 
     GLIMPSE_ligate \\
-        $args \\
+        ${args} \\
         --input all_files.txt \\
-        --thread $task.cpus \\
+        --thread ${task.cpus} \\
         --output ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            glimpse: "\$(GLIMPSE_ligate --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
+    "${task.process}":
+        glimpse: "\$(GLIMPSE_ligate --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
-    def args    = task.ext.args   ?: ""
+
+    def create_cmd = suffix.endsWith(".gz") ? "echo '' | gzip >" : "touch"
+
     """
-    touch ${prefix}.${suffix}
+    ${create_cmd} ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

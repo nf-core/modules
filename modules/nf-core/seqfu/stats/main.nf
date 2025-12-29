@@ -4,18 +4,17 @@ process SEQFU_STATS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqfu:1.20.3--h1eb128b_0':
-        'biocontainers/seqfu:1.20.3--h1eb128b_0' }"
-
+        'https://depot.galaxyproject.org/singularity/seqfu:1.22.3--hfd12232_2':
+        'biocontainers/seqfu:1.22.3--hfd12232_2' }"
 
     input:
     // stats can get one or more fasta or fastq files
     tuple val(meta), path(files)
 
     output:
-    tuple val(meta), path("*.tsv")    ,  emit: stats
+    tuple val(meta), path("*.tsv")    , emit: stats
     tuple val(meta), path("*_mqc.txt"), emit: multiqc
-    path "versions.yml"               ,  emit: versions
+    path "versions.yml"               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,12 +39,14 @@ process SEQFU_STATS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo $args
+
+    touch ${prefix}.tsv
     touch ${prefix}_mqc.txt
-    seqfu stats ${prefix}_mqc.txt > ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        seqfu: \$(samtools --version |& sed '1!d ; s/samtools //')
+        seqfu: \$(seqfu version)
     END_VERSIONS
     """
 }

@@ -23,56 +23,80 @@ input:
         type: file
         description: Fasta file of the assembled contigs
         pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz}"
+        ontologies: []
     - bam:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram}"
+        ontologies: []
 output:
-  - csv:
-      - meta:
+  csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "${prefix}/*.csv":
+      - ${prefix}/*.csv:
           type: file
           description: generated files
           pattern: "*.csv"
-  - model:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  model:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "${prefix}/*.h5":
+      - ${prefix}/*.h5:
           type: file
           description: model file
           pattern: "*.h5"
-  - output_fasta:
-      - meta:
+          ontologies: []
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "${prefix}/output_bins/*.fa.gz":
-          type: file
-          description: precluster fasta files
-          pattern: "*.fa"
-  - tsv:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test' ]
-      - "${prefix}/*.tsv":
+      - ${prefix}/*.tsv:
           type: file
           description: information of bins
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  output_fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/output_bins/*.fa.gz:
           type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: precluster fasta files
+          pattern: "*.fa"
+          ontologies: []
+  versions_semibin:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - SemiBin:
+          type: string
+          description: The name of the tool
+      - "SemiBin2 --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - SemiBin:
+          type: string
+          description: The name of the tool
+      - "SemiBin2 --version":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@BigDataBiology"
 maintainers:

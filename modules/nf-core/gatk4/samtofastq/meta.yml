@@ -25,21 +25,25 @@ input:
         type: file
         description: Input SAM/BAM file
         pattern: "*.{bam,sam}"
+        ontologies: []
 output:
-  - fastq:
-      - meta:
-          type: file
-          description: converted fastq file
-          pattern: "*.fastq"
+  fastq:
+    - - meta:
+          type: map
+          description: A Groovy map containing sample information
       - "*.fastq.gz":
           type: file
           description: converted fastq file
           pattern: "*.fastq"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kevinmenden"
 maintainers:

@@ -35,7 +35,7 @@ process LTRRETRIEVER_LAI {
         -t $task.cpus \\
         $monoploid_param \\
         $args \\
-        > >(tee "${prefix}.LAI.log") \\
+        >| >(tee "${prefix}.LAI.log") \\
         || echo "LAI failed! See ${prefix}.LAI.log"
 
     mv \\

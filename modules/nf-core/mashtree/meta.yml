@@ -24,9 +24,11 @@ input:
         type: file
         description: FASTA, FASTQ, GenBank, or Mash sketch files
         pattern: "*.{fna,fna.gz,fasta,fasta.gz,fa,fa.gz,gbk,gbk.gz,fastq.gz,msh}"
+        ontologies:
+          - edam: http://edamontology.org/format_3911 # msh
 output:
-  - tree:
-      - meta:
+  tree:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,8 +37,9 @@ output:
           type: file
           description: A Newick formatted tree file
           pattern: "*.{dnd}"
-  - matrix:
-      - meta:
+          ontologies: []
+  matrix:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,11 +48,15 @@ output:
           type: file
           description: A TSV matrix of pair-wise Mash distances
           pattern: "*.{tsv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rpetit3"
 maintainers:

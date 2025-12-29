@@ -1,0 +1,82 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "varscan_somatic"
+description: VarScan2 is a tool for variant detection in massively parallel
+  sequencing data. It can detect SNPs, indels, and copy number variations in
+  both somatic and germline samples. It is particularly useful for analyzing
+  tumor/normal sample pairs.
+keywords:
+  - variant calling
+  - germline
+  - somatic
+  - vcf
+  - variants
+  - genomics
+tools:
+  - "varscan":
+      description: "variant detection in massively parallel sequencing data"
+      homepage: "https://github.com/dkoboldt/varscan"
+      documentation: "https://dkoboldt.github.io/varscan/"
+      tool_dev_url: "https://github.com/dkoboldt/varscan"
+      doi: "10.1101/gr.129684.111"
+      licence: ["The Non-Profit Open Software License version 3.0 (NPOSL-3.0)"]
+      identifier: biotools:varscan
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+
+    - normal_mpileup:
+        type: file
+        description: mpileup file from normal sample
+        pattern: "*.mpileup"
+        ontologies:
+          - edam: "http://edamontology.org/format_3015" # Pileup
+
+    - tumour_mpileup:
+        type: file
+        description: mpileup file from tumour sample
+        pattern: "*.mpileup"
+        ontologies:
+          - edam: "http://edamontology.org/format_3015" #
+
+output:
+  vcf_snvs:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.snvs.vcf.gz":
+          type: file
+          description: VCF file with SNVs
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  vcf_indels:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.indels.vcf.gz":
+          type: file
+          description: VCF file with indels
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@vmelichar"
+maintainers:
+  - "@vmelichar"

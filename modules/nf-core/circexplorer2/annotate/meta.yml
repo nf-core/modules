@@ -22,17 +22,20 @@ input:
         type: file
         description: Reformatted junctions file
         pattern: "*.{junction}"
-  - - fasta:
-        type: file
-        description: Genome FASTA file
-        pattern: "*.{fa,fasta}"
-  - - gene_annotation:
-        type: file
-        description: Reformatted GTF file for CIRCexplorer2
-        pattern: "*.{txt}"
+        ontologies: []
+  - fasta:
+      type: file
+      description: Genome FASTA file
+      pattern: "*.{fa,fasta}"
+      ontologies: []
+  - gene_annotation:
+      type: file
+      description: Reformatted GTF file for CIRCexplorer2
+      pattern: "*.{txt}"
+      ontologies: []
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -41,11 +44,14 @@ output:
           type: file
           description: Annotated circRNA TXT file
           pattern: "*.{txt}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@BarryDigby"
 maintainers:

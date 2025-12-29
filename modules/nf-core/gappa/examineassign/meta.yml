@@ -25,12 +25,14 @@ input:
         description: jplace file output from phylogenetic placement, e.g. EPA-NG, gzipped
           or not
         pattern: "*.{jplace,jplace.gz}"
+        ontologies: []
     - taxonomy:
         type: file
         description: taxonomy file
+        ontologies: []
 output:
-  - examineassign:
-      - meta:
+  examineassign:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,8 +40,8 @@ output:
       - ./.:
           type: directory
           description: Execution directory
-  - profile:
-      - meta:
+  profile:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,8 +50,10 @@ output:
           type: file
           description: profile tsv file
           pattern: "*profile.tsv"
-  - labelled_tree:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  labelled_tree:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -58,8 +62,9 @@ output:
           type: file
           description: labelled tree in newick format
           pattern: "*labelled_tree.newick"
-  - per_query:
-      - meta:
+          ontologies: []
+  per_query:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -68,8 +73,10 @@ output:
           type: file
           description: per query taxonomy assignments in tsv format
           pattern: "*per_query.tsv"
-  - krona:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  krona:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -78,8 +85,9 @@ output:
           type: file
           description: krona profile file
           pattern: "*krona.profile"
-  - sativa:
-      - meta:
+          ontologies: []
+  sativa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -88,11 +96,15 @@ output:
           type: file
           description: sativa output file
           pattern: "*sativa.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@erikrikarddaniel"
 maintainers:

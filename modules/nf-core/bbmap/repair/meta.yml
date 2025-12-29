@@ -7,8 +7,8 @@ keywords:
   - preprocessing
 tools:
   - repair:
-      description: Repair.sh is a tool that re-pairs reads that became disordered or had some mates eliminated
-        tools.
+      description: Repair.sh is a tool that re-pairs reads that became disordered or
+        had some mates eliminated tools.
       homepage: https://jgi.doe.gov/data-and-tools/software-tools/bbtools/
       documentation: https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/
       licence: ["UC-LBL license (see package)"]
@@ -25,13 +25,15 @@ input:
         description: |
           List of input paired end fastq files
         pattern: "*.{fastq,fq}.gz"
-  - - interleave:
-        type: boolean
-        description: |
-          Indicates whether the input paired reads are interleaved or not
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - interleave:
+      type: boolean
+      description: |
+        Indicates whether the input paired reads are interleaved or not
 output:
-  - repaired:
-      - meta:
+  repaired:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,26 +42,33 @@ output:
           type: file
           description: re-paired reads
           pattern: "*_repaired.fastq.gz"
-  - singleton:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  singleton:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "${prefix}_singleton.fastq.gz":
+      - ${prefix}_singleton.fastq.gz:
           type: file
           description: singleton reads
           pattern: "*singleton.fastq.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-  - log:
-      - "*.log":
-          type: file
-          description: log file containing stdout and stderr from repair.sh
-          pattern: "*.log"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  log:
+    - "*.log":
+        type: file
+        description: log file containing stdout and stderr from repair.sh
+        pattern: "*.log"
+        ontologies: []
 authors:
   - "@mazzalab"
 maintainers:

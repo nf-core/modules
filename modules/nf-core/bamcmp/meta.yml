@@ -33,39 +33,41 @@ input:
         description: BAM/CRAM/SAM file with the reads aligned to the primary genome
           (the one you want to keep)
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - contaminant_aligned_bam:
         type: file
         description: BAM/CRAM/SAM file with the reads aligned to the contaminant genome
           (the one you want to filter out)
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
 output:
-  - primary_filtered_bam:
-      - meta:
-          type: file
-          description: Bam file containing the reads which align better to the primary
-            genome.
-          pattern: "*.{bam,cram,sam}"
+  primary_filtered_bam:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - ${prefix}.bam:
           type: file
           description: Bam file containing the reads which align better to the primary
             genome.
           pattern: "*.{bam,cram,sam}"
-  - contamination_bam:
-      - meta:
-          type: file
-          description: Bam file containing the reads which align better to the contaminant
-            genome.
-          pattern: "*.{bam,cram,sam}"
+          ontologies: []
+  contamination_bam:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - ${prefix2}.bam:
           type: file
           description: Bam file containing the reads which align better to the contaminant
             genome.
           pattern: "*.{bam,cram,sam}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kmurat1"
   - "@sppearce"

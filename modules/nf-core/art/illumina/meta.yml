@@ -27,20 +27,21 @@ input:
         type: file
         description: FASTA file of input DNA/RNA reference
         pattern: "*.{fasta,fa}"
-  - - sequencing_system:
-        type: string
-        description: The name of Illumina sequencing system of the built-in profile
-          used for simulation
-  - - fold_coverage:
-        type: integer
-        description: The fold of read coverage to be simulated or number of reads/read
-          pairs generated for each amplicon
-  - - read_length:
-        type: integer
-        description: The length of reads to be simulated
+        ontologies: []
+  - sequencing_system:
+      type: string
+      description: The name of Illumina sequencing system of the built-in profile used
+        for simulation
+  - fold_coverage:
+      type: integer
+      description: The fold of read coverage to be simulated or number of reads/read
+        pairs generated for each amplicon
+  - read_length:
+      type: integer
+      description: The length of reads to be simulated
 output:
-  - fastq:
-      - meta:
+  fastq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,8 +50,10 @@ output:
           type: file
           description: Simulated reads
           pattern: "*.fq.gz"
-  - aln:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  aln:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,22 +63,26 @@ output:
           description: OPTIONAL Alignment file of the simulated reads. Enabled by default,
             to disable, use -na/--noALN.
           pattern: "*.aln"
-  - sam:
-      - meta:
+          ontologies: []
+  sam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.sam":
           type: file
-          description: OPTIONAL Alignment file in SAM format of the simulated reads. Enabled
-            with -sam/--samout.
+          description: OPTIONAL Alignment file in SAM format of the simulated reads.
+            Enabled with -sam/--samout.
           pattern: "*.sam"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@MarieLataretu"
 maintainers:

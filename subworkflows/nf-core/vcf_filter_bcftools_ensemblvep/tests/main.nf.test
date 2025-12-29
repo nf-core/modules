@@ -1,0 +1,136 @@
+nextflow_workflow {
+
+    name "Test Subworkflow VCF_FILTER_BCFTOOLS_ENSEMBLVEP"
+    script "../main.nf"
+    workflow "VCF_FILTER_BCFTOOLS_ENSEMBLVEP"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/vcf_filter_bcftools_ensemblvep"
+    tag "bcftools/view"
+    tag "ensemblvep/filtervep"
+    tag "tabix/bgziptabix"
+
+    test("vcf, hgnc_ids - filter on expression") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/genmod.vcf.gz')
+                ])
+                input[1] = Channel.of('3084')
+                    .collectFile(name: 'hgnc_ids.txt')
+                    .map { file -> [ [ id: 'hgnc_ids' ], file ] }
+                input[2] = true
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.versions,
+                    file(workflow.out.tbi.get(0).get(1)).name,
+                    path(workflow.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    path(workflow.out.vcf.get(0).get(1)).vcf.summary,
+                ).match() }
+            )
+        }
+    }
+
+    test("vcf, hgnc_ids - filter on hgnc ids") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/genmod.vcf.gz')
+                ])
+                input[1] = Channel.of('3084')
+                    .collectFile(name: 'hgnc_ids.txt')
+                    .map { file -> [ [ id: 'hgnc_ids' ], file ] }
+                input[2] = false
+                input[3] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.versions,
+                    file(workflow.out.tbi.get(0).get(1)).name,
+                    path(workflow.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    path(workflow.out.vcf.get(0).get(1)).vcf.summary,
+                ).match() }
+            )
+        }
+    }
+
+    test("vcf, hgnc_ids - filter on hgnc ids and expression") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/genmod.vcf.gz')
+                ])
+                input[1] = Channel.of('3084')
+                    .collectFile(name: 'hgnc_ids.txt')
+                    .map { file -> [ [ id: 'hgnc_ids' ], file ] }
+                input[2] = true
+                input[3] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.versions,
+                    file(workflow.out.tbi.get(0).get(1)).name,
+                    path(workflow.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    path(workflow.out.vcf.get(0).get(1)).vcf.summary,
+                ).match() }
+            )
+        }
+    }
+
+    test("vcf, hgnc_ids - filter on hgnc ids and expression - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/genmod.vcf.gz')
+                ])
+                input[1] = Channel.of('3084')
+                    .collectFile(name: 'hgnc_ids.txt')
+                    .map { file -> [ [ id: 'hgnc_ids' ], file ] }
+                input[2] = true
+                input[3] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
+}

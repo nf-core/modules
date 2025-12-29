@@ -1,0 +1,106 @@
+nextflow_process {
+
+    name "Test Process SLAMDUNK_ALL"
+    script "../main.nf"
+    process "SLAMDUNK_ALL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "slamdunk"
+    tag "slamdunk/all"
+    tag "gunzip"
+
+    setup {
+        run("GUNZIP") {
+            script "../../../gunzip/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test_ref' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/slamseq/reference/hg38_chr8.fa.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("slamseq - fastq") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/slamseq/testdata/MOLM-13_dmso_1_chr8.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = GUNZIP.out.gunzip
+                input[2] = [
+                    [ id:'test_bed' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/slamseq/reference/hg38_refseq_3UTR.chr8.bed', checkIfExists: true)
+                ]
+                input[3] = [[], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bam.collect { file(it[1]).getName() },
+                    process.out.filtered_bam.collect { file(it[1]).getName() },
+                    process.out.filtered_bai.collect { file(it[1]).getName() },
+                    process.out.vcf,
+                    process.out.tsv,
+                    process.out.plus_bedgraph,
+                    process.out.mins_bedgraph,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("slamseq - fastq - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/slamseq/testdata/MOLM-13_dmso_1_chr8.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test_ref' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/slamseq/reference/hg38_chr8.fa.gz', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'test_bed' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/slamseq/reference/hg38_refseq_3UTR.chr8.bed', checkIfExists: true)
+                ]
+                input[3] = [[], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bam,
+                    process.out.filtered_bam,
+                    process.out.filtered_bai,
+                    process.out.vcf,
+                    process.out.tsv,
+                    process.out.plus_bedgraph,
+                    process.out.mins_bedgraph,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+}

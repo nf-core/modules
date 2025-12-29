@@ -26,35 +26,39 @@ input:
         pattern: "*.{fa,fasta}"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
-  - - kmer_size:
-        type: integer
-        description: k-mer size to use
+  - kmer_size:
+      type: integer
+      description: k-mer size to use
 output:
-  - report:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-    - "*.report.txt":
-        type: file
-        description: Text file containing unique-kmers.py execution report
-        pattern: "*.report.txt"
-  - kmers:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-    - "*.kmers.txt":
-        type: file
-        description: Text file containing number of kmers
-        pattern: "*.kmers.txt"
-  - versions:
-    - "versions.yml":
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.report.txt":
+          type: file
+          description: Text file containing unique-kmers.py execution report
+          pattern: "*.report.txt"
+          ontologies: []
+  kmers:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.kmers.txt":
+          type: file
+          description: Text file containing number of kmers
+          pattern: "*.kmers.txt"
+          ontologies: []
+  versions:
+    - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@JoseEspinosa"
 maintainers:

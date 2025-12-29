@@ -28,19 +28,21 @@ input:
         type: file
         description: Name-Sorted BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
-  - - index:
-        type: directory
-        description: Annotation index created by mudskipper/index
-  - - gtf:
-        type: file
-        description: Annotation file
-        pattern: "*.{gtf,gff,gff3}"
-  - - rad:
-        type: string
-        description: File type
+        ontologies: []
+  - index:
+      type: directory
+      description: Annotation index created by mudskipper/index
+  - gtf:
+      type: file
+      description: Annotation file
+      pattern: "*.{gtf,gff,gff3}"
+      ontologies: []
+  - rad:
+      type: string
+      description: File type
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,8 +51,9 @@ output:
           type: file
           description: Sorted BAM file
           pattern: "*.bam"
-  - rad:
-      - meta:
+          ontologies: []
+  rad:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -59,10 +62,13 @@ output:
           type: file
           description: RAD file
           pattern: "*.rad"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@anoronh4"

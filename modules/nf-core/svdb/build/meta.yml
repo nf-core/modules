@@ -22,12 +22,13 @@ input:
         type: file
         description: Input VCF file(s) or folder
         pattern: "*"
-  - - input_type:
-        type: string
-        description: input type
+        ontologies: []
+  - input_type:
+      type: string
+      description: input type
 output:
-  - db:
-      - meta:
+  db:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,10 +36,13 @@ output:
       - "*.db":
           type: file
           description: SVDB database
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@fellen31"

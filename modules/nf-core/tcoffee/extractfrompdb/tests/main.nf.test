@@ -28,7 +28,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.collect{ meta, dir -> file(dir).listFiles().collect().first() }.map{ pdb -> [[ id: 'test'], pdb]}
+                input[0] = UNTAR.out.untar.collect{ meta, dir -> file(dir).listFiles().toList().sort{ file -> file.name }.first() }.map{ pdb -> [[ id: 'test'], pdb]}
                 """
             }
         }

@@ -15,26 +15,34 @@ tools:
       licence: ["MIT"]
       identifier: ""
 input:
-  - - versions:
-        type: file
-        description: YML file containing software versions
-        pattern: "*.yml"
-output:
-  - yml:
-      - software_versions.yml:
-          type: file
-          description: Standard YML file containing software versions
-          pattern: "software_versions.yml"
-  - mqc_yml:
-      - software_versions_mqc.yml:
-          type: file
-          description: MultiQC custom content YML file containing software versions
-          pattern: "software_versions_mqc.yml"
   - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+      type: file
+      description: YML file containing software versions
+      pattern: "*.yml"
+      ontologies:
+        - edam: http://edamontology.org/format_3750 # YAML
+output:
+  yml:
+    - software_versions.yml:
+        type: file
+        description: Standard YML file containing software versions
+        pattern: "software_versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  mqc_yml:
+    - software_versions_mqc.yml:
+        type: file
+        description: MultiQC custom content YML file containing software versions
+        pattern: "software_versions_mqc.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@drpatelh"
   - "@grst"

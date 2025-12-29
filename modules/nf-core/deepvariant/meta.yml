@@ -26,13 +26,16 @@ input:
         type: file
         description: BAM/CRAM file
         pattern: "*.bam/cram"
+        ontologies: []
     - index:
         type: file
         description: Index of BAM/CRAM file
         pattern: "*.bai/crai"
+        ontologies: []
     - intervals:
         type: file
         description: file containing intervals
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -42,6 +45,7 @@ input:
         type: file
         description: The reference fasta file
         pattern: "*.fasta"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -51,6 +55,7 @@ input:
         type: file
         description: Index of reference fasta file
         pattern: "*.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -60,6 +65,7 @@ input:
         type: file
         description: GZI index of reference fasta file
         pattern: "*.gzi"
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -69,9 +75,10 @@ input:
         type: file
         description: BED file containing PAR regions
         pattern: "*.bed"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -80,8 +87,10 @@ output:
           type: file
           description: Compressed VCF file
           pattern: "*.vcf.gz"
-  - vcf_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  vcf_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -90,8 +99,9 @@ output:
           type: file
           description: Tabix index of compressed VCF file
           pattern: "*.vcf.gz.tbi"
-  - gvcf:
-      - meta:
+          ontologies: []
+  gvcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -100,8 +110,10 @@ output:
           type: file
           description: Compressed GVCF file
           pattern: "*.g.vcf.gz"
-  - gvcf_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  gvcf_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -110,11 +122,14 @@ output:
           type: file
           description: Tabix index of compressed GVCF file
           pattern: "*.g.vcf.gz.tbi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@abhi18av"
   - "@ramprasadn"

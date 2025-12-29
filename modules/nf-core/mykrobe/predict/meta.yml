@@ -23,13 +23,14 @@ input:
         type: file
         description: BAM or FASTQ file
         pattern: "*.{bam,fastq.gz,fq.gz}"
-  - - species:
-        type: string
-        description: Species to make AMR prediction against
-        pattern: "*"
+        ontologies: []
+  - species:
+      type: string
+      description: Species to make AMR prediction against
+      pattern: "*"
 output:
-  - csv:
-      - meta:
+  csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,8 +39,10 @@ output:
           type: file
           description: AMR predictions in CSV format
           pattern: "*.csv"
-  - json:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,11 +51,15 @@ output:
           type: file
           description: AMR predictions in JSON format
           pattern: "*.json"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rpetit3"
 maintainers:

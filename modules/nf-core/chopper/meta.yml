@@ -38,13 +38,16 @@ input:
         type: file
         description: FastQ with reads from long read sequencing e.g. PacBio or ONT
         pattern: "*.{fastq.gz}"
-  - - fasta:
-        type: file
-        description: An optional reference fasta file against which to remove reads that align to it.
-        pattern: "*.fasta"
+        ontologies: []
+  - fasta:
+      type: file
+      description: An optional reference fasta file against which to remove reads that
+        align to it.
+      pattern: "*.fasta"
+      ontologies: []
 output:
-  - fastq:
-      - meta:
+  fastq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,11 +56,14 @@ output:
           type: file
           description: Filtered and trimmed FastQ file
           pattern: "*.{fastq.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@FynnFreyer"
 maintainers:

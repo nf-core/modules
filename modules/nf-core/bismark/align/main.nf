@@ -4,8 +4,8 @@ process BISMARK_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bismark:0.24.2--hdfd78af_0' :
-        'biocontainers/bismark:0.24.2--hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/38/38e61d14ccaed82f60c967132963eb467d0fa4bccb7a21404c49b4f377735f03/data' :
+        'community.wave.seqera.io/library/bismark:0.25.1--1f50935de5d79c47' }"
 
     input:
     tuple val(meta), path(reads)
@@ -16,7 +16,7 @@ process BISMARK_ALIGN {
     tuple val(meta), path("*bam")       , emit: bam
     tuple val(meta), path("*report.txt"), emit: report
     tuple val(meta), path("*fq.gz")     , emit: unmapped, optional: true
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val("bismark"), eval('bismark --version | grep Version | sed -e "s/Bismark Version: v//" | xargs'), topic: versions, emit: versions_bismark
 
     when:
     task.ext.when == null || task.ext.when
@@ -61,11 +61,6 @@ process BISMARK_ALIGN {
         --genome ${index} \\
         --bam \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bismark: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -74,10 +69,5 @@ process BISMARK_ALIGN {
     """
     touch ${prefix}.bam
     touch ${prefix}.report.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bismark: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
-    END_VERSIONS
     """
 }

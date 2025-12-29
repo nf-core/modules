@@ -25,11 +25,13 @@ input:
         type: file
         description: Multiple Alignment Format (MAF) file, compressed with gzip
         pattern: "*.{maf.gz}"
+        ontologies: []
     - annot_b:
         type: file
         description: Annotation file in BED, Repeamasker, genePred or AGP format for
           the second (vertical) sequence
         pattern: "*.{bed,bed.gz,out,out.gz,rmsk.txt,rmsk.txt.gz,genePred,genePred.gz,gff,gff.gz,gtf,gtf.gz,gap.txt,gap.txt.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -40,15 +42,16 @@ input:
         description: Annotation file in BED, Repeamasker, genePred or AGP format for
           the first (horizontal) sequence
         pattern: "*.{bed,bed.gz,out,out.gz,rmsk.txt,rmsk.txt.gz,genePred,genePred.gz,gff,gff.gz,gtf,gtf.gz,gap.txt,gap.txt.gz}"
-  - - format:
-        type: string
-        description: Output format (PNG or GIF).
-  - - filter:
-        type: boolean
-        description: Remove isolated alignments using the `maf-linked` software.
+        ontologies: []
+  - format:
+      type: string
+      description: Output format (PNG or GIF).
+  - filter:
+      type: boolean
+      description: Remove isolated alignments using the `maf-linked` software.
 output:
-  - gif:
-      - meta:
+  gif:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,8 +60,9 @@ output:
           type: file
           description: Pairwise alignment dot plot image, in GIF format.
           pattern: "*.gif"
-  - png:
-      - meta:
+          ontologies: []
+  png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,11 +71,14 @@ output:
           type: file
           description: Pairwise alignment dot plot image, in PNG format.
           pattern: "*.png"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@charles-plessy"
 maintainers:

@@ -1,0 +1,142 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "pbcpgtools_alignedbamtocpgscores"
+description: Converts aligned BAM files into CpG methylation scores
+keywords:
+  - methylation
+  - cpg
+  - pacbio
+tools:
+  - pbcpgtools:
+      description: "Collection of tools for the analysis of CpG data"
+      homepage: "https://github.com/PacificBiosciences/pb-CpG-tools"
+      documentation: "https://github.com/PacificBiosciences/pb-CpG-tools#readme"
+      tool_dev_url: "https://github.com/PacificBiosciences/pb-CpG-tools"
+      licence: ["Pacific Biosciences Software License Agreement"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - bam:
+        type: file
+        description: BAM/CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies: []
+    - bai:
+        type: file
+        description: Index of BAM/CRAM file
+        pattern: "*.{bai,crai,csi}"
+        ontologies: []
+output:
+  combined_bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.combined.bed.gz":
+          type: file
+          description: Zipped BED file with CpG methylation scores for both haplotypes
+          pattern: "*.{combined.bed.gz}"
+          ontologies: []
+  combined_bed_index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.combined.bed.gz.tbi":
+          type: file
+          description: Index of combined zipped BED file
+          pattern: "*.{combined.bed.gz.tbi}"
+          ontologies: []
+  combined_bigwig:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.combined.bw":
+          type: file
+          description: Bigwig file for visualization in IGV
+          pattern: "*.{combined.bw}"
+          ontologies: []
+  hap1_bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.hap1.bed.gz":
+          type: file
+          description: Zipped BED file with CpG methylation scores for haplotype 1
+          pattern: "*.{hap1.bed.gz}"
+          ontologies: []
+  hap1_bed_index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.hap1.bed.gz.tbi":
+          type: file
+          description: Index of hap1 zipped BED file
+          pattern: "*.{hap1.bed.gz.tbi}"
+          ontologies: []
+  hap1_bigwig:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.hap1.bw":
+          type: file
+          description: Bigwig file for visualization in IGV
+          pattern: "*.{hap1.bw}"
+          ontologies: []
+  hap2_bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.hap2.bed.gz":
+          type: file
+          description: Zipped BED file with CpG methylation scores for haplotype 2
+          pattern: "*.{hap2.bed.gz}"
+          ontologies: []
+  hap2_bed_index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.hap2.bed.gz.tbi":
+          type: file
+          description: Index of hap2 zipped BED file
+          pattern: "*.{hap2.bed.gz.tbi}"
+          ontologies: []
+  hap2_bigwig:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.hap2.bw":
+          type: file
+          description: Bigwig file for visualization in IGV
+          pattern: "*.{hap2.bw}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@inemesb"
+maintainers:
+  - "@inemesb"

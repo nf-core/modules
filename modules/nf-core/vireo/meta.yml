@@ -26,6 +26,7 @@ input:
         description: The cell genotype file in VCF format or cellSNP folder with sparse
           matrices.
         pattern: "*.vcf|*/"
+        ontologies: []
     - n_donor:
         type: integer
         description: Number of donors to demultiplex.
@@ -33,12 +34,14 @@ input:
         type: file
         description: The optional donor genotype file in VCF format.
         pattern: "*.vcf"
+        ontologies: []
     - vartrix_data:
         type: file
         description: The optional cell genotype files in vartrix outputs.
+        ontologies: []
 output:
-  - summary:
-      - meta:
+  summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,8 +50,10 @@ output:
           type: file
           description: Summary tsv file of deconvolution result.
           pattern: "*_summary.tsv"
-  - donor_ids:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  donor_ids:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,8 +62,10 @@ output:
           type: file
           description: Donor assignment with detailed statistics.
           pattern: "*_donor_ids.tsv"
-  - prob_singlets:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  prob_singlets:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,8 +74,10 @@ output:
           type: file
           description: contains probability of classifing singlets
           pattern: "*_prob_singlet.tsv.gz"
-  - prob_doublets:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  prob_doublets:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -77,11 +86,15 @@ output:
           type: file
           description: contains probability of classifing doublets
           pattern: "*_prob_doublet.tsv.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mari-ga"
   - "@maxozo"

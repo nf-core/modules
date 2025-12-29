@@ -23,6 +23,7 @@ input:
         type: file
         description: VCF file
         pattern: "*.{vcf}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -32,9 +33,10 @@ input:
         type: file
         description: Input RHO file produced from rhocall
         pattern: "*.{roh}"
+        ontologies: []
 output:
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,8 +45,9 @@ output:
           type: file
           description: Bed file containing roh calls
           pattern: "*.{bed}"
-  - wig:
-      - meta:
+          ontologies: []
+  wig:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,11 +56,14 @@ output:
           type: file
           description: Wig file containing roh calls
           pattern: "*.{wig}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ramprasadn"
 maintainers:

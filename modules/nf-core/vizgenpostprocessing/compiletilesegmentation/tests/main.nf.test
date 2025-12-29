@@ -1,0 +1,160 @@
+nextflow_process {
+
+    name "Test Process VIZGENPOSTPROCESSING_COMPILETILESEGMENTATION"
+    script "../main.nf"
+    process "VIZGENPOSTPROCESSING_COMPILETILESEGMENTATION"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vizgenpostprocessing"
+    tag "vizgenpostprocessing/preparesegmentation"
+    tag "vizgenpostprocessing/runsegmentationontile"
+    tag "vizgenpostprocessing/compiletilesegmentation"
+    tag "untar"
+
+    setup {
+        run("UNTAR", alias: "TESTDATA") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [:],
+                    file('https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/spatial_omics/merscope/minimal_data.tar.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        run("VIZGENPOSTPROCESSING_PREPARESEGMENTATION") {
+            script "../../preparesegmentation/main.nf"
+            params {
+                module_args = '--tile-size 200 --tile-overlap 20'
+            }
+            process {
+                """
+                TESTDATA.out.untar.map {
+                    meta, dir ->
+                        def images_dir = dir.listFiles().find { it.getName().matches('images') && it.isDirectory() }
+                        def pixel_transform_file = images_dir.listFiles().find { it.getName().matches('micron_to_mosaic_pixel_transform.csv') }
+                    return [
+                        [ id:'test' ],
+                        images_dir,
+                        pixel_transform_file
+                    ]
+                }.set { input_ch }
+
+                input[0] = input_ch
+                input[1] = file('https://raw.githubusercontent.com/Vizgen/vpt-plugin-cellpose2/refs/heads/develop/example_analysis_algorithm/cellpose2_nuclei.json', checkIfExists: true)
+                input[2] = "mosaic_(?P<stain>[\\\\w|-]+)_z(?P<z>[0-9]+).tif"
+                """
+            }
+        }
+        run("VIZGENPOSTPROCESSING_RUNSEGMENTATIONONTILE") {
+            script "../../runsegmentationontile/main.nf"
+            process {
+                """
+                VIZGENPOSTPROCESSING_PREPARESEGMENTATION.out.segmentation_files
+                    .flatten()
+                    .last()
+                    .set { segmentation_params_ch }
+
+                TESTDATA.out.untar.map {
+                    meta, dir ->
+                        def images_dir = dir.listFiles().find { it.getName().matches('images') && it.isDirectory() }
+                    return [
+                        [ id:'test' ],
+                        images_dir
+                    ]
+                }
+                .combine(segmentation_params_ch) // segmentation params JSON file
+                .combine(Channel.of(0)) // tile_index
+                .set { seg_input_ch }
+
+                input[0] = seg_input_ch
+                input[1] = file('https://raw.githubusercontent.com/Vizgen/vpt-plugin-cellpose2/refs/heads/develop/example_analysis_algorithm/cellpose2_nuclei.json', checkIfExists: true)
+                input[2] = []
+                """
+            }
+        }
+    }
+
+    test("nuclei - json, images, parquet") {
+
+        when {
+            process {
+                """
+                Channel.of([
+                    [ id:'test' ],
+                    file("tmpdir", type: 'dir'),
+                ]).set { images_ch }
+
+                VIZGENPOSTPROCESSING_PREPARESEGMENTATION.out.segmentation_files
+                    .join(images_ch, by: 0)
+                    .map { meta, seg_params, input_images ->
+                        tuple(
+                            meta,
+                            input_images,
+                            seg_params
+                        )
+                    }.set{ seg_input_ch }
+
+                VIZGENPOSTPROCESSING_RUNSEGMENTATIONONTILE.out.segmented_tile
+                    .map { meta, seg_tile -> seg_tile }
+                    .flatten()
+                    .collect()
+                    .set{ seg_tiles_ch }
+
+                input[0] = seg_input_ch
+                input[1] = file('https://raw.githubusercontent.com/Vizgen/vpt-plugin-cellpose2/refs/heads/develop/example_analysis_algorithm/cellpose2_nuclei.json', checkIfExists: true)
+                input[2] = seg_tiles_ch
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.mosaic_space[0][1]).name, // Parquet file is not stable as cellpose uses a random seed which cannot be set via VPT
+                    file(process.out.micron_space[0][1]).name, // Parquet file is not stable as cellpose uses a random seed which cannot be set via VPT
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+
+    }
+
+    test("nuclei - json, images, parquet - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                testDir = file("tmpdir", type: 'dir')
+                testDir.mkdir()
+
+                segmentationParams = file("algorithm_specification.json")
+                segmentationParams.text = '{}'
+
+                input[0] = [
+                    [ id:'test' ],
+                    testDir,
+                    segmentationParams
+                ]
+                input[1] = file('https://raw.githubusercontent.com/Vizgen/vpt-plugin-cellpose2/refs/heads/develop/example_analysis_algorithm/cellpose2_nuclei.json', checkIfExists: true)
+                input[2] = [ file("cell_0.parquet") ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
