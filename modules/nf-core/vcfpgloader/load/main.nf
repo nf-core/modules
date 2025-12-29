@@ -11,7 +11,7 @@
 //   }
 
 process VCFPGLOADER_LOAD {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -19,16 +19,16 @@ process VCFPGLOADER_LOAD {
 
     input:
     tuple val(meta), path(vcf), path(tbi)
-    val(db_host)
-    val(db_port)
-    val(db_name)
-    val(db_user)
-    val(db_schema)
+    val db_host
+    val db_port
+    val db_name
+    val db_user
+    val db_schema
 
     output:
     tuple val(meta), path("*.load_report.json"), emit: report
-    tuple val(meta), path("*.load.log")        , emit: log
-    tuple val(meta), env(ROWS_LOADED)          , emit: row_count
+    tuple val(meta), path("*.load.log"), emit: log
+    tuple val(meta), env(ROWS_LOADED), emit: row_count
     tuple val("${task.process}"), val("vcf-pg-loader"), eval('vcf-pg-loader --version | sed "s/.*version //"'), topic: versions, emit: versions_vcfpgloader
 
     when:
@@ -47,12 +47,12 @@ process VCFPGLOADER_LOAD {
         --user ${db_user} \\
         --schema ${db_schema} \\
         --batch ${batch_size} \\
-        --workers $task.cpus \\
+        --workers ${task.cpus} \\
         --sample-id ${meta.id} \\
         --report ${prefix}.load_report.json \\
         --log ${prefix}.load.log \\
-        $args \\
-        $vcf
+        ${args} \\
+        ${vcf}
 
     ROWS_LOADED=\$(jq -r '.variants_loaded' ${prefix}.load_report.json)
     """
