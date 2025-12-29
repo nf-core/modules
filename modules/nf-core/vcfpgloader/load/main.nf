@@ -54,7 +54,7 @@ process VCFPGLOADER_LOAD {
         ${args} \\
         ${vcf}
 
-    ROWS_LOADED=\$(jq -r '.variants_loaded' ${prefix}.load_report.json)
+    export ROWS_LOADED=\$(jq -r '.variants_loaded' ${prefix}.load_report.json)
     """
 
     stub:
@@ -62,6 +62,6 @@ process VCFPGLOADER_LOAD {
     """
     echo '{"status": "stub", "variants_loaded": 0, "elapsed_seconds": 0}' > ${prefix}.load_report.json
     touch ${prefix}.load.log
-    ROWS_LOADED=0
+    export ROWS_LOADED=0
     """
 }
