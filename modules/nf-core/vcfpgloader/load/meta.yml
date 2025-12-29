@@ -97,7 +97,7 @@ output:
       - vcf-pg-loader:
           type: string
           description: The name of the tool
-      - vcf-pg-loader --version | sed "s/.*version //":
+      - "vcf-pg-loader --version | sed 's/.*version //'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -108,7 +108,7 @@ topics:
       - vcf-pg-loader:
           type: string
           description: The name of the tool
-      - vcf-pg-loader --version | sed "s/.*version //":
+      - "vcf-pg-loader --version | sed 's/.*version //'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
