@@ -25,13 +25,6 @@ process RGI_BWT {
 
     script:
     def args = task.ext.args ?: ''
-    def use_local = task.ext.local == null ? true : task.ext.local as boolean
-    // Add this to nextflow.config if not using local:
-    // withName: RGI_BWT {
-    //      ext.local = false
-    //  }
-    def local_flag = use_local ? '--local' : ''
-    // This customizes the command: rgi bwt
     def prefix = task.ext.prefix ?: "${meta.id}"
     def read_one = reads instanceof List ? reads[0] : reads
     def read_two = reads instanceof List && reads.size() > 1 ? reads[1] : null
@@ -54,7 +47,7 @@ process RGI_BWT {
     rgi \\
         load \\
         ${args} \\
-        ${local_flag} \\
+        --local \\
         --card_json ${card}/card.json \\
         --debug \\
         --card_annotation ${card}/card_database_v\$DB_VERSION.fasta \\
@@ -64,7 +57,7 @@ process RGI_BWT {
     rgi \\
         bwt \\
         ${args} \\
-        ${local_flag} \\
+        --local \\
         --threads ${task.cpus} \\
         --output_file ${prefix} \\
         --read_one ${read_one} \\
