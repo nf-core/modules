@@ -65,7 +65,8 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*_genotype.tsv":
           type: file
-          description: Genotyping file where the allele for each gene has its own line.
+          description: Genotyping file where the allele for each gene has its own
+            line.
           pattern: "*_genotype.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 #TSV
@@ -77,7 +78,8 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*_allele.tsv":
           type: file
-          description: File with the representative alleles and their quality scores.
+          description: File with the representative alleles and their quality
+            scores.
           pattern: "*_allele.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -100,19 +102,32 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*_candidate*.fq":
           type: file
-          description: Fastq file containing candidate reads extracted from raw data for genotyping.
+          description: Fastq file containing candidate reads extracted from raw
+            data for genotyping.
           ontologies:
             - edam: http://edamontology.org/format_1930 # FASTQ
-  aligned_reads:
+  aligned_reads_single:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*_aligned*.fa":
+      - "*_aligned.fa":
           type: file
-          description: The reads that were aligned during genotyping.
-          pattern: "*_aligned*.fa"
+          description: Aligned reads in fasta format from single-end input.
+          pattern: "*_aligned.fa"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  aligned_reads_paired:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_aligned_{1,2}.fa":
+          type: file
+          description: Aligned reads in fasta format from paired-end input.
+          pattern: "*_aligned_{1,2}.fa"
           ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
   barcode_tsv:
@@ -123,7 +138,8 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*_barcode_expr.tsv":
           type: file
-          description: Data matrix where rows are the barcodes and columns are the allele abundances.
+          description: Data matrix where rows are the barcodes and columns are the
+            allele abundances.
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   barcode_candidate:

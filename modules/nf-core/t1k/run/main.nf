@@ -15,7 +15,8 @@ process T1K_RUN {
     tuple val(meta), path("*_allele.tsv")         , emit: allele_tsv
     tuple val(meta), path("*_allele.vcf")         , emit: allele_vcf
     tuple val(meta), path("*_candidate*.fq")      , optional: true, emit: candidate_reads
-    tuple val(meta), path("*_aligned*.fa")        , optional: true, emit: aligned_reads
+    tuple val(meta), path("*_aligned.fa")         , optional: true, emit: aligned_reads_single
+    tuple val(meta), path("*_aligned_{1,2}.fa")   , optional: true, emit: aligned_reads_paired
     tuple val(meta), path("*_barcode_expr.tsv")   , optional: true, emit: barcode_tsv
     tuple val(meta), path("*_candidate_bc.fa")    , optional: true, emit: barcode_candidate
     tuple val(meta), path("*_aligned_bc.fa")      , optional: true, emit: barcode_aligned
