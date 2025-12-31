@@ -103,13 +103,13 @@ workflow BAM_VCF_IMPUTE_GLIMPSE2 {
     ch_versions = ch_versions.mix(GLIMPSE2_PHASE.out.versions.first())
 
     // Index phased file
-    BCFTOOLS_INDEX_PHASE(GLIMPSE2_PHASE.out.phased_variants.view())
+    BCFTOOLS_INDEX_PHASE(GLIMPSE2_PHASE.out.phased_variants)
     ch_versions = ch_versions.mix(BCFTOOLS_INDEX_PHASE.out.versions.first())
 
     // Ligate all phased files in one and index it
     ligate_input = GLIMPSE2_PHASE.out.phased_variants
         .join(
-            BCFTOOLS_INDEX_PHASE.out.tbi.mix(BCFTOOLS_INDEX_PHASE.out.csi).view(),
+            BCFTOOLS_INDEX_PHASE.out.tbi.mix(BCFTOOLS_INDEX_PHASE.out.csi),
             failOnMismatch: true,
             failOnDuplicate: true,
         )
