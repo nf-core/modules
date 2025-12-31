@@ -2,8 +2,6 @@ process PARABRICKS_FQ2BAM {
     tag "${meta.id}"
     label 'process_high'
     label 'process_gpu'
-    // needed by the module to run on a cluster because we need to copy the fasta reference, see https://github.com/nf-core/modules/issues/9230
-    stageInMode 'copy'
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-1"
 
@@ -44,14 +42,49 @@ process PARABRICKS_FQ2BAM {
     def known_sites_output_cmd = known_sites   ? "--out-recal-file ${prefix}.table" : ""
     def interval_file_command  = interval_file ? (interval_file instanceof List ? interval_file.collect { "--interval-file ${it}" }.join(' ') : "--interval-file ${interval_file}") : ""
 
-    def num_gpus   = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
-    """
+    def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
+    
+    if (!fasta && extension=="cram") error "Fasta reference is required for CRAM output"
+    
+    """    
+    # The section below checks if the reference is present with the index files. 
+    # If it is not, then we create a dummy reference file to allow Parabricks to run without erroring out 
+    # For BAMs, this index file is empty, for CRAMs we symlink the fasta to the expected index path 
+
     INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
-    cp ${fasta} \$INDEX
+
+    echo "Inferred reference at: \$INDEX"
+    
+    dummy_index=0 
+    ref_path=${fasta}
+
+    # Set up cleanup trap to ensure we clean up the dummy index even on error
+    # only cleanup the dummy index or symlink if we created it
+    # checked via the dummy_index variable
+    cleanup() {
+        if [ \$dummy_index -eq 1 ]; then
+            rm -f \$INDEX
+        fi
+    }
+    # always cleanup; on success or failure
+    trap cleanup EXIT
+
+    if [[ "${extension}" == "bam" ]] && [ ! -e \$INDEX ]; then
+        echo "BAM requested but ref path does not exist. Creating dummy reference."
+        dummy_index=1
+        touch \$INDEX
+        ref_path="\$INDEX"
+    elif [[ "${extension}" == "cram" ]] && [ ! -e \$INDEX ]; then
+        echo "CRAM requested but ref does not follow pattern. Creating symlink."
+        dummy_index=1
+        ln -sf \$(realpath ${fasta}) \$(realpath \$INDEX)
+        ref_path="\$INDEX"
+    fi
 
     pbrun \\
         fq2bam \\
-        --ref \$INDEX \\
+        --preserve-file-symlinks \\
+        --ref \$ref_path \\
         ${in_fq_command} \\
         --out-bam ${prefix}.${extension} \\
         ${known_sites_command} \\
