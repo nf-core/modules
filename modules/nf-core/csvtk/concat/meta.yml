@@ -40,7 +40,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}.${out_extension}:
+      - ${prefix}.${suffix}:
           type: file
           description: Concatenated CSV/TSV file
           pattern: "*.{csv,tsv}"
