@@ -1,0 +1,104 @@
+// nf-core modules test trident/fetch
+nextflow_process {
+
+    name "Test Process TRIDENT_FETCH"
+    script "../main.nf"
+    process "TRIDENT_FETCH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "trident"
+    tag "trident/fetch"
+
+    test("2012_MeyerScience-2.1.1 - fetchString") {
+        // This test uses the smallest poseidon package in the archives (22M). It should be quick to download and validate.
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [], // archive_dir
+                    '*2012_MeyerScience-2.1.1*', // fetchString
+                    [], // fetchFile
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("Existing package: 2012_MeyerScience-2.1.1 - fetchString") {
+        // This test uses the smallest poseidon package in the archives (22M). It should be quick to download and validate.
+
+        setup {
+            run("TRIDENT_FETCH", alias: "PREFETCH") {
+                script "../main.nf"
+                process {
+                    """
+                    input[0] = Channel.fromList([
+                        tuple(
+                            [], // archive_dir
+                            '*2012_MeyerScience-2.1.1*', // fetchString
+                            [], // fetchFile
+                        )
+                    ])
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = PREFETCH.out.poseidon_yml.map{ 
+                x ->
+                def archive_dir = x.parent.parent.parent
+                def fetchString = "'*2012_MeyerScience-2.1.1*'"
+                tuple(archive_dir, fetchString, [])
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("2012_MeyerScience-2.1.1 - fetchString - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [], // archive_dir
+                    "2012_MeyerScience-2.1.1", // fetchString
+                    [], // fetchFile
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
