@@ -71,7 +71,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
         ch_alignment
     )
     ch_alignment_index = SAMTOOLS_INDEX_ALIGNMENTS.out.bai
-    ch_versions        = ch_versions.mix(SAMTOOLS_INDEX_ALIGNMENTS.out.versions)
+    // SAMTOOLS_INDEX emits version as a topic channel
 
     /*
      * Run samtools flagstat
@@ -110,7 +110,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
         ch_alignment_index = SAMTOOLS_INDEX_DEDUPLICATED.out.bai
         ch_picard_metrics  = PICARD_MARKDUPLICATES.out.metrics
         ch_versions        = ch_versions.mix(PICARD_MARKDUPLICATES.out.versions)
-        ch_versions        = ch_versions.mix(SAMTOOLS_INDEX_DEDUPLICATED.out.versions)
+        // SAMTOOLS_INDEX emits version as a topic channel
     }
 
     /*

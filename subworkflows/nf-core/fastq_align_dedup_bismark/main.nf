@@ -70,7 +70,7 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
     SAMTOOLS_INDEX (
         SAMTOOLS_SORT.out.bam
     )
-    ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions)
+    // SAMTOOLS_INDEX emits version as a topic channel
 
     /*
      * Run bismark_methylation_extractor

@@ -99,7 +99,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
         ch_alignment       = PICARD_MARKDUPLICATES.out.bam
         ch_alignment_index = SAMTOOLS_INDEX.out.bai
         ch_picard_metrics  = PICARD_MARKDUPLICATES.out.metrics
-        ch_versions        = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
+        // SAMTOOLS_INDEX emits version as a topic channel
     }
 
     /*

@@ -24,7 +24,7 @@ workflow BAM_DEDUP_STATS_SAMTOOLS_UMICOLLAPSE {
     // Index BAM file and run samtools stats, flagstat and idxstats
     //
     SAMTOOLS_INDEX ( UMICOLLAPSE.out.bam )
-    ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
+    // SAMTOOLS_INDEX emits version as a topic channel
 
     ch_bam_bai_dedup = UMICOLLAPSE.out.bam
         .join(SAMTOOLS_INDEX.out.bai, by: [0], remainder: true)
