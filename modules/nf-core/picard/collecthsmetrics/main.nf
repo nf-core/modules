@@ -16,7 +16,7 @@ process PICARD_COLLECTHSMETRICS {
 
     output:
     tuple val(meta), path("*_metrics")  , emit: metrics
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('picard'), eval("picard CollectHsMetrics --version 2>&1 | sed 's/Version://'"), topic: versions, emit: versions_picard
 
     when:
     task.ext.when == null || task.ext.when
@@ -63,21 +63,11 @@ process PICARD_COLLECTHSMETRICS {
         --INPUT $bam \\
         --OUTPUT ${prefix}.CollectHsMetrics.coverage_metrics
 
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(echo \$(picard CollectHsMetrics --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.CollectHsMetrics.coverage_metrics
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(echo \$(picard CollectHsMetrics --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
     """
 }
