@@ -1,0 +1,83 @@
+name: "blast_cdddownloader"
+description: CDD databases downloader
+keywords:
+  - cdd
+  - rpsblast
+  - databases
+  - metadata
+  - wget
+  - tar
+tools:
+  - blast:
+      description: |
+        BLAST+ is a new suite of BLAST tools that utilizes the NCBI C++ Toolkit.
+      homepage: https://blast.ncbi.nlm.nih.gov/Blast.cgi
+      documentation: https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=Blastdocs
+      doi: 10.1016/S0022-2836(05)80360-2
+      licence: ["US-Government-Work"]
+      identifier: ""
+input:
+  - db_prefix:
+      type: string
+      description: |
+        Specify the database to be downloaded from https://ftp.ncbi.nih.gov/pub/mmdb/cdd/little_endian/
+      pattern: "Cdd|Cdd_NCBI|Cog|Kog|Pfam|Prk|Smart|Tigr"
+  - download_path:
+      type: directory
+      description: |
+        The path where the databases should be downloaded
+      pattern: "*/"
+output:
+  db:
+    - ${download_path}/cdd_databases/:
+        type: directory
+        description: |
+          Directory containing the CDD database files, located at download_path/cdd_databases.
+          Contains subdirectories for the specified database prefix and a 'data' directory with metadata files.
+        pattern: "*/cdd_databases/"
+  versions_wget:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - wget:
+          type: string
+          description: The name of the tool
+      - wget --version | head -1 | cut -d ' ' -f 3:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_tar:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - untar:
+          type: string
+          description: The name of the tool
+      - tar --version 2>&1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - wget:
+          type: string
+          description: The name of the tool
+      - wget --version | head -1 | cut -d ' ' -f 3:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - untar:
+          type: string
+          description: The name of the tool
+      - tar --version 2>&1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@Ales-ibt"
+maintainers:
+  - "@Ales-ibt"
