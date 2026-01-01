@@ -56,12 +56,21 @@ process VIREO {
     stub:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def optional_files = ''
+    if (args.contains('--forceLearnGT')) {
+        optional_files = """
+        echo "" | gzip > ${prefix}_GT_donors.vireo.vcf.gz
+        touch ${prefix}_filtered_variants.tsv
+        """
+    }
 
     """
     touch ${prefix}_summary.tsv
     touch ${prefix}_donor_ids.tsv
     echo "" | gzip > ${prefix}_prob_singlet.tsv.gz
     echo "" | gzip > ${prefix}_prob_doublet.tsv.gz
+
+    ${optional_files}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
