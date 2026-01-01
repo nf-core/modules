@@ -23,8 +23,8 @@ workflow BAM_MARKDUPLICATES_PICARD {
     ch_markdup = PICARD_MARKDUPLICATES.out.bam.mix(PICARD_MARKDUPLICATES.out.cram)
 
     SAMTOOLS_INDEX ( ch_markdup )
-    ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
-
+    // SAMTOOLS_INDEX emits version as a topic channel
+    
     ch_reads_index = ch_markdup
         .join(SAMTOOLS_INDEX.out.bai,  by: [0], remainder: true)
         .join(SAMTOOLS_INDEX.out.crai, by: [0], remainder: true)

@@ -52,8 +52,8 @@ workflow BAM_SPLIT_BY_REGION {
     //
 
     SAMTOOLS_INDEX(SAMTOOLS_VIEW.out.bam)
-    ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
-
+    // SAMTOOLS_INDEX emits version as a topic channel
+    
     //
     // Emit channel in the same format as was taken in by joining each bam with its bai.
     //
