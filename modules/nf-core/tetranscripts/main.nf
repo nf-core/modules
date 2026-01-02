@@ -26,10 +26,13 @@ process TETRANSCRIPTS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+// Join multiple BAM files with spaces for -t and -c arguments
+    def treatment_bams = [bam_t].flatten().join(' ')
+    def control_bams = [bam_c].flatten().join(' ')
     """
     TEtranscripts \\
-	-t $bam_t \\
-	-c $bam_c \\
+	-t ${treatment_bams} \\
+	-c ${control_bams} \\
 	--GTF $g_gtf \\
 	--TE $te_gtf \\
 	--project ${prefix} \\
