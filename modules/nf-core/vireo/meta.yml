@@ -108,7 +108,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*_filtered_variants.tsv":
           type: file
-          description: contains the minimal set of discriminatory variants created by `GTbarcode` (only created if `--forceLearnGT` is set in `ext.args`, see the hadge pipeline as an example)
+          description: contains the minimal set of discriminatory variants created by `GTbarcode` (only created if `--forceLearnGT` is set in `ext.args`, see the hadge pipeline as an example, and only shows consistent results if `--randSeed` is set)
           pattern: "*_filtered_variants.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
