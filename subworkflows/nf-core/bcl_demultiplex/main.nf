@@ -51,7 +51,6 @@ workflow BCL_DEMULTIPLEX {
             ch_interop  = ch_interop.mix(BCLCONVERT.out.interop)
             ch_reports  = ch_reports.mix(BCLCONVERT.out.reports)
             ch_logs     = ch_logs.mix(BCLCONVERT.out.logs)
-            ch_versions = ch_versions.mix(BCLCONVERT.out.versions.first())
         }
 
         // MODULE: bcl2fastq
