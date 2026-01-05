@@ -27,7 +27,7 @@ process BCFTOOLS_SORT {
                     args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
                     "vcf"
-    def max_memory = task.memory ? "--max-mem ${task.memory.toUnit('MB')}M" : ""
+    def max_memory = task.memory ? "--max-mem ${task.memory.toUnit('MB') * 0.9}M" : ""
     """
     bcftools \\
         sort \\
