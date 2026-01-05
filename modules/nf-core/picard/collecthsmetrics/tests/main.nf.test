@@ -185,7 +185,7 @@ nextflow_process {
                     file(process.out.metrics[0][1]).name,
                     size,
                     lines,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
@@ -224,7 +224,7 @@ nextflow_process {
                     file(process.out.metrics[0][1]).name,
                     size,
                     lines,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
