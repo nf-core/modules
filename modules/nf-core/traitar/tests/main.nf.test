@@ -18,7 +18,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test_sample' ],
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: false),
+                    file('test.fna', checkIfExists: false),
                 ]
                 """
             }
