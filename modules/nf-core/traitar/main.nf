@@ -4,7 +4,7 @@ process TRAITAR {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'library://a_gihawi/traitar3/traitar3:latest' :
+        'library://a_gihawi/traitar3/traitar3' :
         null }"
 
     input:
