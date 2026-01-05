@@ -2,7 +2,10 @@ process TRAITAR {
     tag "$meta.id"
     label 'process_medium'
 
-    container null
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'library://a_gihawi/traitar3/traitar3' :
+        'a_gihawi/traitar3:latest' }"
 
     input:
     tuple val(meta), path(proteins)
