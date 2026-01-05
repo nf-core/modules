@@ -13,7 +13,7 @@ process TRAITAR {
     tuple val(meta), path("traitar_out/phenotype_prediction/heatmap_*.png"), optional: true, emit: heatmaps
     tuple val(meta), path("traitar_out/pfam_annotation/*"), optional: true, emit: pfam_annotation
     tuple val(meta), path("traitar_out/gene_prediction/*"), optional: true, emit: gene_prediction
-    path "versions.yml" , emit: versions
+    tuple val("${task.process}"), val('traitar'), path("versions.yml"), emit: versions
 
     when:
     task.ext.when == null || task.ext.when

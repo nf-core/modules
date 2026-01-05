@@ -88,11 +88,16 @@ output:
           optional: true
           ontologies: []
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-
-        ontologies: []
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "traitar":
+          type: string
+          description: Software name
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          ontologies: []
 authors:
   - "@brovolia"
 maintainers:
