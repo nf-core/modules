@@ -4,7 +4,7 @@ process T1K_RUN {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'oras://community.wave.seqera.io/library/t1k:1.0.9--f80694a7607e947e'
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c6/c64676623c43855d3a9dd8a5b02a03b13216e454a8bd1e9a7d9d5695daf5030b/data'
         : 'community.wave.seqera.io/library/t1k:1.0.9--793c68c25d680b97'}"
 
     input:
