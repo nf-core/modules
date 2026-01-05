@@ -3,9 +3,7 @@ process TRAITAR {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'library://a_gihawi/traitar3/traitar3' :
-        null }"
+    container "community.wave.seqera.io/library/pip_traitar:0befe03cdbeb4ed0"
 
     input:
     tuple val(meta), path(proteins)
