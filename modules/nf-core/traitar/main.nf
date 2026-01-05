@@ -2,7 +2,7 @@ process TRAITAR {
     tag "$meta.id"
     label 'process_medium'
 
-    container "a_gihawi/traitar3:latest"
+    container null
 
     input:
     tuple val(meta), path(proteins)
