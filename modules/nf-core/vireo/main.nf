@@ -23,6 +23,8 @@ process VIREO {
 
     script:
     def args   = task.ext.args   ?: ''
+    // hardcode a default random seed
+    if (!(args ==~ /.*--randSeed.*/)) {args += " --randSeed 42"}
     // use the same randSeed of vireo for GTbarcode if specified in args
     def matcher = (args =~ /(--randSeed\s+\d+)/)
     def randSeed_GTbarcode = matcher ? matcher[0][1] : ''
