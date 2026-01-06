@@ -1,4 +1,155 @@
 {
+    "traitar - proteomes": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test_sample"
+                        },
+                        "predictions_majority-vote_combined.txt:md5,2f9600f21c4d648147a2b9dc20747074"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test_sample"
+                        },
+                        "predictions_single-votes_combined.txt:md5,8405498a666995eb6c034196d4216780"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test_sample"
+                        },
+                        [
+                            "predictions_flat_majority-votes_combined.txt:md5,807d5ea8871984e4171b85f10c74fb7b",
+                            "predictions_flat_single-votes_combined.txt:md5,59b8198a90eb38d84138c785537d3a64"
+                        ]
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test_sample"
+                        },
+                        [
+                            "predictions_conservative-vote.txt:md5,903fba34fd304a835030a0c29fa36d99",
+                            "predictions_majority-vote.txt:md5,54976e197f2a7315b957f0b4af27fd43",
+                            "predictions_raw.txt:md5,3888151f0707e70f037b241a103b96c3",
+                            "predictions_single-votes.txt:md5,1edb80ababb43793793f51a450bac7f0"
+                        ]
+                    ]
+                ],
+                "4": [
+                    [
+                        {
+                            "id": "test_sample"
+                        },
+                        [
+                            "summary.dat:md5,979d31cbb5cbc2a9aa92cdc26cae44ad",
+                            "test_sample_domtblout.dat:md5,ddeb21c3829a4a120a29b6df03de4b0f",
+                            "test_sample_filtered_best.dat:md5,4bc8e93b23fcae3fe832fe8ff723278c"
+                        ]
+                    ]
+                ],
+                "5": [
+                    [
+                        {
+                            "id": "test_sample"
+                        },
+                        [
+                            "test_sample.faa:md5,836e9a80d33d8b89168f07ddc13ee991",
+                            "test_sample.gff:md5,61050b0706addc9498b2088a2d6efa9a"
+                        ]
+                    ]
+                ],
+                "6": [
+                    [
+                        "TRAITAR",
+                        "traitar",
+                        "versions.yml:md5,07c587bdf65edbb55047c33053342e06"
+                    ]
+                ],
+                "gene_prediction": [
+                    [
+                        {
+                            "id": "test_sample"
+                        },
+                        [
+                            "test_sample.faa:md5,836e9a80d33d8b89168f07ddc13ee991",
+                            "test_sample.gff:md5,61050b0706addc9498b2088a2d6efa9a"
+                        ]
+                    ]
+                ],
+                "pfam_annotation": [
+                    [
+                        {
+                            "id": "test_sample"
+                        },
+                        [
+                            "summary.dat:md5,979d31cbb5cbc2a9aa92cdc26cae44ad",
+                            "test_sample_domtblout.dat:md5,ddeb21c3829a4a120a29b6df03de4b0f",
+                            "test_sample_filtered_best.dat:md5,4bc8e93b23fcae3fe832fe8ff723278c"
+                        ]
+                    ]
+                ],
+                "predictions_combined": [
+                    [
+                        {
+                            "id": "test_sample"
+                        },
+                        "predictions_majority-vote_combined.txt:md5,2f9600f21c4d648147a2b9dc20747074"
+                    ]
+                ],
+                "predictions_flat": [
+                    [
+                        {
+                            "id": "test_sample"
+                        },
+                        [
+                            "predictions_flat_majority-votes_combined.txt:md5,807d5ea8871984e4171b85f10c74fb7b",
+                            "predictions_flat_single-votes_combined.txt:md5,59b8198a90eb38d84138c785537d3a64"
+                        ]
+                    ]
+                ],
+                "predictions_raw": [
+                    [
+                        {
+                            "id": "test_sample"
+                        },
+                        [
+                            "predictions_conservative-vote.txt:md5,903fba34fd304a835030a0c29fa36d99",
+                            "predictions_majority-vote.txt:md5,54976e197f2a7315b957f0b4af27fd43",
+                            "predictions_raw.txt:md5,3888151f0707e70f037b241a103b96c3",
+                            "predictions_single-votes.txt:md5,1edb80ababb43793793f51a450bac7f0"
+                        ]
+                    ]
+                ],
+                "predictions_single_votes": [
+                    [
+                        {
+                            "id": "test_sample"
+                        },
+                        "predictions_single-votes_combined.txt:md5,8405498a666995eb6c034196d4216780"
+                    ]
+                ],
+                "versions": [
+                    [
+                        "TRAITAR",
+                        "traitar",
+                        "versions.yml:md5,07c587bdf65edbb55047c33053342e06"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2026-01-06T15:54:10.172807155"
+    },
     "traitar - proteomes - stub": {
         "content": [
             {
@@ -15,7 +166,7 @@
                         {
                             "id": "test_sample"
                         },
-                        "predictions_majority-vote_phypat.txt:md5,83e0c0b0618a5040bef0b02650eadc76"
+                        "predictions_single-votes_combined.txt:md5,83e0c0b0618a5040bef0b02650eadc76"
                     ]
                 ],
                 "2": [
@@ -23,7 +174,10 @@
                         {
                             "id": "test_sample"
                         },
-                        "heatmap_combined.png:md5,e9dd2797018cad79186e03e8c5aec8dc"
+                        [
+                            "predictions_flat_majority-votes_combined.txt:md5,83e0c0b0618a5040bef0b02650eadc76",
+                            "predictions_flat_single-votes_combined.txt:md5,83e0c0b0618a5040bef0b02650eadc76"
+                        ]
                     ]
                 ],
                 "3": [
@@ -31,7 +185,12 @@
                         {
                             "id": "test_sample"
                         },
-                        "test_sample.tsv:md5,271748ba5c72a01b5294c1c62790626d"
+                        [
+                            "predictions_conservative-vote.txt:md5,83e0c0b0618a5040bef0b02650eadc76",
+                            "predictions_majority-vote.txt:md5,83e0c0b0618a5040bef0b02650eadc76",
+                            "predictions_raw.txt:md5,6039a3c79eb2bfc751feb7aa83c61c65",
+                            "predictions_single-votes.txt:md5,83e0c0b0618a5040bef0b02650eadc76"
+                        ]
                     ]
                 ],
                 "4": [
@@ -39,10 +198,25 @@
                         {
                             "id": "test_sample"
                         },
-                        "test_sample.tsv:md5,e5d9b2739c0beca243871fa099322ea0"
+                        [
+                            "summary.dat:md5,9d4d69aacb390938a57a325ac6bae224",
+                            "test_sample_domtblout.dat:md5,300832047735bece330791a66bb5c9f9",
+                            "test_sample_filtered_best.dat:md5,271748ba5c72a01b5294c1c62790626d"
+                        ]
                     ]
                 ],
                 "5": [
+                    [
+                        {
+                            "id": "test_sample"
+                        },
+                        [
+                            "test_sample.faa:md5,9de9751626f1f7875a31dd4047992443",
+                            "test_sample.gff:md5,54f3805ac060e6d03538d1c7f8ad00d2"
+                        ]
+                    ]
+                ],
+                "6": [
                     [
                         "TRAITAR",
                         "traitar",
@@ -54,15 +228,10 @@
                         {
                             "id": "test_sample"
                         },
-                        "test_sample.tsv:md5,e5d9b2739c0beca243871fa099322ea0"
-                    ]
-                ],
-                "heatmaps": [
-                    [
-                        {
-                            "id": "test_sample"
-                        },
-                        "heatmap_combined.png:md5,e9dd2797018cad79186e03e8c5aec8dc"
+                        [
+                            "test_sample.faa:md5,9de9751626f1f7875a31dd4047992443",
+                            "test_sample.gff:md5,54f3805ac060e6d03538d1c7f8ad00d2"
+                        ]
                     ]
                 ],
                 "pfam_annotation": [
@@ -70,7 +239,11 @@
                         {
                             "id": "test_sample"
                         },
-                        "test_sample.tsv:md5,271748ba5c72a01b5294c1c62790626d"
+                        [
+                            "summary.dat:md5,9d4d69aacb390938a57a325ac6bae224",
+                            "test_sample_domtblout.dat:md5,300832047735bece330791a66bb5c9f9",
+                            "test_sample_filtered_best.dat:md5,271748ba5c72a01b5294c1c62790626d"
+                        ]
                     ]
                 ],
                 "predictions_combined": [
@@ -81,12 +254,36 @@
                         "predictions_majority-vote_combined.txt:md5,83e0c0b0618a5040bef0b02650eadc76"
                     ]
                 ],
-                "predictions_phypat": [
+                "predictions_flat": [
                     [
                         {
                             "id": "test_sample"
                         },
-                        "predictions_majority-vote_phypat.txt:md5,83e0c0b0618a5040bef0b02650eadc76"
+                        [
+                            "predictions_flat_majority-votes_combined.txt:md5,83e0c0b0618a5040bef0b02650eadc76",
+                            "predictions_flat_single-votes_combined.txt:md5,83e0c0b0618a5040bef0b02650eadc76"
+                        ]
+                    ]
+                ],
+                "predictions_raw": [
+                    [
+                        {
+                            "id": "test_sample"
+                        },
+                        [
+                            "predictions_conservative-vote.txt:md5,83e0c0b0618a5040bef0b02650eadc76",
+                            "predictions_majority-vote.txt:md5,83e0c0b0618a5040bef0b02650eadc76",
+                            "predictions_raw.txt:md5,6039a3c79eb2bfc751feb7aa83c61c65",
+                            "predictions_single-votes.txt:md5,83e0c0b0618a5040bef0b02650eadc76"
+                        ]
+                    ]
+                ],
+                "predictions_single_votes": [
+                    [
+                        {
+                            "id": "test_sample"
+                        },
+                        "predictions_single-votes_combined.txt:md5,83e0c0b0618a5040bef0b02650eadc76"
                     ]
                 ],
                 "versions": [
@@ -102,6 +299,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-12-22T13:45:11.326796623"
+        "timestamp": "2026-01-06T15:30:02.138433895"
     }
 }
