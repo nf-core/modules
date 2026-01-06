@@ -1,272 +1,116 @@
 {
     "fastq_align_bwa_paired_end": {
         "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.bam:md5,0f19bea682a4a8eda31dfb6568d0bb55"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sorted.bam:md5,395c036482222bdff7ed1e5fa4d1cbd7"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sorted.bam.bai:md5,0f4dccb4c3660b7d1cc78e1921e38ca5"
-                    ]
-                ],
-                "3": [
-                    
-                ],
-                "4": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sorted.bam.stats:md5,75934f2a51780a80d2ab4674301a018d"
-                    ]
-                ],
-                "5": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sorted.bam.flagstat:md5,18d602435a02a4d721b78d1812622159"
-                    ]
-                ],
-                "6": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sorted.bam.idxstats:md5,85d20a901eef23ca50c323638a2eb602"
-                    ]
-                ],
-                "7": [
-                    "versions.yml:md5,21c3a69aa768887de1715ea1b442b0ba",
-                    "versions.yml:md5,42e5cc142537f96b0d91f10af4fa6a51",
-                    "versions.yml:md5,819701fe5d2921de66bcb188a5c3cf9b"
-                ],
-                "bai": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sorted.bam.bai:md5,0f4dccb4c3660b7d1cc78e1921e38ca5"
-                    ]
-                ],
-                "bam": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sorted.bam:md5,395c036482222bdff7ed1e5fa4d1cbd7"
-                    ]
-                ],
-                "bam_orig": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.bam:md5,0f19bea682a4a8eda31dfb6568d0bb55"
-                    ]
-                ],
-                "csi": [
-                    
-                ],
-                "flagstat": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sorted.bam.flagstat:md5,18d602435a02a4d721b78d1812622159"
-                    ]
-                ],
-                "idxstats": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sorted.bam.idxstats:md5,85d20a901eef23ca50c323638a2eb602"
-                    ]
-                ],
-                "stats": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sorted.bam.stats:md5,75934f2a51780a80d2ab4674301a018d"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,21c3a69aa768887de1715ea1b442b0ba",
-                    "versions.yml:md5,42e5cc142537f96b0d91f10af4fa6a51",
-                    "versions.yml:md5,819701fe5d2921de66bcb188a5c3cf9b"
+            "57aeef88ed701a8ebc8e2f0a381b2a6",
+            "af8628d9df18b2d3d4f6fd47ef2bb872",
+            "test.sorted.bam.bai",
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.sorted.bam.stats:md5,75934f2a51780a80d2ab4674301a018d"
                 ]
-            }
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.sorted.bam.flagstat:md5,18d602435a02a4d721b78d1812622159"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.sorted.bam.idxstats:md5,85d20a901eef23ca50c323638a2eb602"
+                ]
+            ],
+            [
+                {
+                    "FASTQ_ALIGN_BWA:BAM_SORT_STATS_SAMTOOLS:BAM_STATS_SAMTOOLS:SAMTOOLS_FLAGSTAT": {
+                        "samtools": "1.22.1"
+                    }
+                },
+                {
+                    "FASTQ_ALIGN_BWA:BAM_SORT_STATS_SAMTOOLS:BAM_STATS_SAMTOOLS:SAMTOOLS_IDXSTATS": {
+                        "samtools": "1.22.1"
+                    }
+                },
+                {
+                    "FASTQ_ALIGN_BWA:BWA_MEM": {
+                        "bwa": "0.7.19-r1273",
+                        "samtools": "1.22.1"
+                    }
+                }
+            ]
         ],
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-01-06T11:11:15.129947277"
+        "timestamp": "2026-01-06T12:32:18.995614765"
     },
     "fastq_align_bwa_single_end": {
         "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.bam:md5,b9885dffef48c2e847f040b2699d622f"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.sorted.bam:md5,24779266b70d4bb6456db5f6620999c9"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.sorted.bam.bai:md5,b494353fbd79e354c8c0add290687426"
-                    ]
-                ],
-                "3": [
-                    
-                ],
-                "4": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.sorted.bam.stats:md5,0883b19c92a783883b3e11d5bfcc5d6a"
-                    ]
-                ],
-                "5": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.sorted.bam.flagstat:md5,2191911d72575a2358b08b1df64ccb53"
-                    ]
-                ],
-                "6": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.sorted.bam.idxstats:md5,613e048487662c694aa4a2f73ca96a20"
-                    ]
-                ],
-                "7": [
-                    "versions.yml:md5,21c3a69aa768887de1715ea1b442b0ba",
-                    "versions.yml:md5,42e5cc142537f96b0d91f10af4fa6a51",
-                    "versions.yml:md5,819701fe5d2921de66bcb188a5c3cf9b"
-                ],
-                "bai": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.sorted.bam.bai:md5,b494353fbd79e354c8c0add290687426"
-                    ]
-                ],
-                "bam": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.sorted.bam:md5,24779266b70d4bb6456db5f6620999c9"
-                    ]
-                ],
-                "bam_orig": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.bam:md5,b9885dffef48c2e847f040b2699d622f"
-                    ]
-                ],
-                "csi": [
-                    
-                ],
-                "flagstat": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.sorted.bam.flagstat:md5,2191911d72575a2358b08b1df64ccb53"
-                    ]
-                ],
-                "idxstats": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.sorted.bam.idxstats:md5,613e048487662c694aa4a2f73ca96a20"
-                    ]
-                ],
-                "stats": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.sorted.bam.stats:md5,0883b19c92a783883b3e11d5bfcc5d6a"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,21c3a69aa768887de1715ea1b442b0ba",
-                    "versions.yml:md5,42e5cc142537f96b0d91f10af4fa6a51",
-                    "versions.yml:md5,819701fe5d2921de66bcb188a5c3cf9b"
+            "798439cbd7fd81cbcc5078022dc5479d",
+            "94fcf617f5b994584c4e8d4044e16b4f",
+            "test.sorted.bam.bai",
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.sorted.bam.stats:md5,0883b19c92a783883b3e11d5bfcc5d6a"
                 ]
-            }
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.sorted.bam.flagstat:md5,2191911d72575a2358b08b1df64ccb53"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.sorted.bam.idxstats:md5,613e048487662c694aa4a2f73ca96a20"
+                ]
+            ],
+            [
+                {
+                    "FASTQ_ALIGN_BWA:BAM_SORT_STATS_SAMTOOLS:BAM_STATS_SAMTOOLS:SAMTOOLS_FLAGSTAT": {
+                        "samtools": "1.22.1"
+                    }
+                },
+                {
+                    "FASTQ_ALIGN_BWA:BAM_SORT_STATS_SAMTOOLS:BAM_STATS_SAMTOOLS:SAMTOOLS_IDXSTATS": {
+                        "samtools": "1.22.1"
+                    }
+                },
+                {
+                    "FASTQ_ALIGN_BWA:BWA_MEM": {
+                        "bwa": "0.7.19-r1273",
+                        "samtools": "1.22.1"
+                    }
+                }
+            ]
         ],
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-01-06T11:10:58.988976483"
+        "timestamp": "2026-01-06T12:32:02.891010818"
     }
 }

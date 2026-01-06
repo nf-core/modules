@@ -48,19 +48,17 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
                 { assert snapshot(
-                        workflow.out.bai,
-                        workflow.out.csi,
-                        workflow.out.stats,
-                        workflow.out.flagstat,
-                        workflow.out.idxstats,
-                        workflow.out.versions,
-                    ).match()
-                },
-                { assert file(workflow.out.bam_unsorted.get(0).get(1)).exists() },
-                { assert file(workflow.out.bam.get(0).get(1)).exists() },
+                    bam(workflow.out.bam_unsorted.get(0).get(1)).getReadsMD5(),
+                    bam(workflow.out.bam.get(0).get(1)).getReadsMD5(),
+                    file(workflow.out.bai.get(0).get(1)).name,
+                    workflow.out.stats,
+                    workflow.out.flagstat,
+                    workflow.out.idxstats,
+                    workflow.out.versions.collect{ path(it).yaml }
+                    ).match() }
             )
         }
     }
