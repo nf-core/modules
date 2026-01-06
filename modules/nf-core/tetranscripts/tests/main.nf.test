@@ -10,7 +10,7 @@ nextflow_process {
     tag "tetranscripts"
 
     test("single file c and t - bam") {
-
+        config "./nextflow.config"
         // TODO nf-core: If you are created a test for a chained module
         // (the module requires running more than one process to generate the required output)
         // add the 'setup' method here.
@@ -28,7 +28,7 @@ nextflow_process {
 
 		input[1] = [
                     [ id:'test_bam' ],
-                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA19401.chr21_22.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA19401.chr21_22.bam', checkIfExists: true),
                 ]
 		input[2] = [
                     [ id:'genome_gtf' ],
@@ -59,6 +59,8 @@ nextflow_process {
     test("single file c and t - bam - stub") {
 
         options "single file c and t - bam -stub"
+
+        config "./nextflow.config"       
 
         when {
             process {
