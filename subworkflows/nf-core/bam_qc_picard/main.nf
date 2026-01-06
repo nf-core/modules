@@ -29,7 +29,7 @@ workflow BAM_QC_PICARD {
             return [ meta, bam, bai, bait, target ]
         wgsmetrics : true
             return [ meta, bam, bai ]
-    } 
+    }
 
     PICARD_COLLECTHSMETRICS( ch_bam_bai_bait_target_branched.hsmetrics, ch_fasta, ch_fasta_fai, ch_fasta_dict, ch_fasta_gzi )
     ch_coverage_metrics = ch_coverage_metrics.mix(PICARD_COLLECTHSMETRICS.out.metrics)
