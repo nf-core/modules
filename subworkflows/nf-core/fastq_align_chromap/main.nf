@@ -16,7 +16,7 @@ workflow FASTQ_ALIGN_CHROMAP {
     ch_pairs_chr_order // channel (optional):  [ pairs_chr_order ]
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     //
     // Map reads with CHROMAP

@@ -10,12 +10,12 @@ include { SAMTOOLS_INDEX     } from '../../../modules/nf-core/samtools/index/mai
 workflow FASTQ_ALIGN_BWAALN {
 
     take:
-    ch_reads // channel (mandatory): [ val(meta), path(reads) ]. subworkImportant: meta REQUIRES single_end` entry!
+    ch_reads // channel (mandatory): [ val(meta), path(reads) ] Important: meta REQUIRES single_end` entry!
     ch_index // channel (mandatory): [ val(meta), path(index) ]
 
     main:
 
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     // WARNING: You must specify in your prefix `meta.id_index` in your `modules.conf`
     // to ensure that you do not overwrite multiple BAM files from one sample mapped

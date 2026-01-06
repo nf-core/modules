@@ -45,9 +45,13 @@ nextflow_workflow {
             }
         }
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    bam(workflow.out.bam.get(0).get(1)).getReadsMD5(),
+                    workflow.out.bai,
+                    workflow.out.versions.collect{ path(it).yaml }
+                    ).match() }
             )
         }
     }
@@ -81,9 +85,13 @@ nextflow_workflow {
             }
         }
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    bam(workflow.out.bam.get(0).get(1)).getReadsMD5(),
+                    workflow.out.bai,
+                    workflow.out.versions.collect{ path(it).yaml }
+                    ).match() }
             )
         }
     }
@@ -127,9 +135,13 @@ nextflow_workflow {
             }
         }
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    bam(workflow.out.bam.get(0).get(1)).getReadsMD5(),
+                    workflow.out.bai,
+                    workflow.out.versions.collect{ path(it).yaml }
+                    ).match() }
             )
         }
     }
@@ -178,9 +190,13 @@ nextflow_workflow {
             }
         }
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    bam(workflow.out.bam.get(0).get(1)).getReadsMD5(),
+                    workflow.out.bai,
+                    workflow.out.versions.collect{ path(it).yaml }
+                    ).match() }
             )
         }
     }
@@ -230,12 +246,13 @@ nextflow_workflow {
             }
         }
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
                 { assert snapshot(
-                    workflow.out,
+                    bam(workflow.out.bam.get(0).get(1)).getReadsMD5(),
+                    workflow.out.bai,
                     workflow.out.versions.collect{ path(it).yaml }
-                ).match() }
+                    ).match() }
             )
         }
     }

@@ -13,7 +13,7 @@ workflow FASTQ_ALIGN_BWA {
     ch_fasta        // channel (optional) : [ val(meta3), path(fasta) ]
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     //
     // Map reads with BWA
