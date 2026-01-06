@@ -9,7 +9,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "tetranscripts"
 
-    test("PTBP1 - bam") {
+    test("single file c and t - bam") {
 
         // TODO nf-core: If you are created a test for a chained module
         // (the module requires running more than one process to generate the required output)
@@ -23,22 +23,20 @@ nextflow_process {
                 
                 input[0] = [
                     [ id:'ctrl_bam' ],
-                    [file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_data/PTBP1_Hs_HEK293_siMATR3_R1_abb.bam', checkIfExists: true),
-                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_data/PTBP1_Hs_HEK293_siMATR3_R1_tail_abb.bam', checkIfExists: true)]
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.bam', checkIfExists: true),
                 ]
 
 		input[1] = [
                     [ id:'test_bam' ],
-                    [file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_data/PTBP1_Hs_HEK293_siCtrl_2_R1_abb.bam', checkIfExists: true),
-                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_data/PTBP1_Hs_HEK293_siCtrl_2_R1_tail_abb.bam', checkIfExists: true)]
+                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA19401.chr21_22.bam', checkIfExists: true),
                 ]
 		input[2] = [
                     [ id:'genome_gtf' ],
-                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_data/Homo_sapiens.GRCh38.109_Chr22.gtf', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true),
                 ]
 		input[3] = [
-                    [ id:'test4' ],
-                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_data/GRCh38_GENCODE_rmsk_TE_2_Chr22.gtf', checkIfExists: true),
+                    [ id:'te_gtf' ],
+                    file('/nemo/lab/ulej/home/users/jonesh1/CLIPseq_pipeline/data_temp/GRCh38_GENCODE_rmsk_TE_chr22.gtf', checkIfExists: true),
                 ]
                 """
 		
@@ -58,29 +56,29 @@ nextflow_process {
     }
 
     // TODO nf-core: Change the test name preferably indicating the test-data and file-format used but keep the " - stub" suffix.
-    test("sarscov2 - bam - stub") {
+    test("single file c and t - bam - stub") {
 
-        options "PTBP1 bam -stub"
+        options "single file c and t - bam -stub"
 
         when {
             process {
                 """
 		input[0] = [
                     [ id:'ctrl_bam' ],
-                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_data/PTBP1_Hs_HEK293_siMATR3_R1_abb.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.bam', checkIfExists: true),
                 ]
 
                 input[1] = [
                     [ id:'test_bam' ],
-                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_data/PTBP1_Hs_HEK293_siCtrl_2_R1_abb.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA19401.chr21_22.bam', checkIfExists: true),
                 ]
                 input[2] = [
                     [ id:'genome_gtf' ],
-                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_data/Homo_sapiens.GRCh38.109_Chr22.gtf', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true),
                 ]
                 input[3] = [
-                    [ id:'test4' ],
-                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_data/GRCh38_GENCODE_rmsk_TE_2_Chr22.gtf', checkIfExists: true),
+                    [ id:'te_gtf' ],
+                    file('/nemo/lab/ulej/home/users/jonesh1/CLIPseq_pipeline/data_temp/GRCh38_GENCODE_rmsk_TE_chr22.gtf', checkIfExists: true),
                 ]                
 
                 """
