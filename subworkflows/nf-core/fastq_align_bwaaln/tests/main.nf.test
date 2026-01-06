@@ -49,7 +49,7 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     bam(workflow.out.bam.get(0).get(1)).getReadsMD5(),
-                    workflow.out.bai,
+                    file(workflow.out.bai.get(0).get(1)).name,
                     workflow.out.versions.collect{ path(it).yaml }
                     ).match() }
             )
@@ -89,7 +89,7 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     bam(workflow.out.bam.get(0).get(1)).getReadsMD5(),
-                    workflow.out.bai,
+                    file(workflow.out.bai.get(0).get(1)).name,
                     workflow.out.versions.collect{ path(it).yaml }
                     ).match() }
             )
@@ -139,7 +139,7 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     bam(workflow.out.bam.get(0).get(1)).getReadsMD5(),
-                    workflow.out.bai,
+                    file(workflow.out.bai.get(0).get(1)).name,
                     workflow.out.versions.collect{ path(it).yaml }
                     ).match() }
             )
@@ -194,7 +194,7 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     bam(workflow.out.bam.get(0).get(1)).getReadsMD5(),
-                    workflow.out.bai,
+                    file(workflow.out.bai.get(0).get(1)).name,
                     workflow.out.versions.collect{ path(it).yaml }
                     ).match() }
             )
@@ -250,7 +250,7 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     bam(workflow.out.bam.get(0).get(1)).getReadsMD5(),
-                    workflow.out.bai,
+                    file(workflow.out.bai.get(0).get(1)).name,
                     workflow.out.versions.collect{ path(it).yaml }
                     ).match() }
             )

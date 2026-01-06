@@ -2,16 +2,7 @@
     "test_fastq_align_bwaaln_singleend": {
         "content": [
             "1ca0f48b86ee8cf2417f72d6bf95939a",
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true,
-                        "id_index": "test"
-                    },
-                    "test_test.bam.bai:md5,293e54ae31cd49f65c0ac09fe18c5d40"
-                ]
-            ],
+            "test_test.bam.bai",
             [
                 {
                     "FASTQ_ALIGN_BWAALN:BWA_SAMSE": {
@@ -30,21 +21,12 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-01-06T11:01:03.333214989"
+        "timestamp": "2026-01-06T15:04:01.729971327"
     },
     "test_fastq_align_bwaaln_paired_end": {
         "content": [
             "ae4005223c9eb0f2b11bcd984e088f9c",
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false,
-                        "id_index": "test"
-                    },
-                    "test_test.bam.bai:md5,6688f1635ae492883f41573b0e8b09c5"
-                ]
-            ],
+            "test_test.bam.bai",
             [
                 {
                     "FASTQ_ALIGN_BWAALN:BWA_ALN": {
@@ -63,45 +45,12 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-01-06T11:01:16.631607444"
+        "timestamp": "2026-01-06T15:04:14.363452063"
     },
     "test_fastq_align_bwa_multiref": {
         "content": [
             "88d78879c34214288644aec7ec3cb270",
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false,
-                        "id_index": "reftest2"
-                    },
-                    "test_reftest2.bam.bai:md5,16615e11435236323497a687daee78bc"
-                ],
-                [
-                    {
-                        "id": "test",
-                        "single_end": false,
-                        "id_index": "reftest"
-                    },
-                    "test_reftest.bam.bai:md5,f837ce16119fe9e50849cef36c1f9a1d"
-                ],
-                [
-                    {
-                        "id": "test2",
-                        "single_end": true,
-                        "id_index": "reftest2"
-                    },
-                    "test2_reftest2.bam.bai:md5,3b99d4c5af1dfc3b19d938ac5e9a5b77"
-                ],
-                [
-                    {
-                        "id": "test2",
-                        "single_end": true,
-                        "id_index": "reftest"
-                    },
-                    "test2_reftest.bam.bai:md5,2ee3c7f5d0831e30e681349fbbc515d7"
-                ]
-            ],
+            "test_reftest2.bam.bai",
             [
                 {
                     "FASTQ_ALIGN_BWAALN:BWA_SAMSE": {
@@ -126,29 +75,12 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-01-06T11:01:51.860208504"
+        "timestamp": "2026-01-06T15:04:48.631954893"
     },
     "test_fastq_align_bwaaln_both": {
         "content": [
             "ae4005223c9eb0f2b11bcd984e088f9c",
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false,
-                        "id_index": "test"
-                    },
-                    "test_test.bam.bai:md5,6688f1635ae492883f41573b0e8b09c5"
-                ],
-                [
-                    {
-                        "id": "test2",
-                        "single_end": true,
-                        "id_index": "test"
-                    },
-                    "test2_test.bam.bai:md5,e2c4885900c9f6a0f7619897df6fc92d"
-                ]
-            ],
+            "test_test.bam.bai",
             [
                 {
                     "FASTQ_ALIGN_BWAALN:BWA_SAMSE": {
@@ -173,45 +105,12 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-01-06T11:01:31.202857548"
+        "timestamp": "2026-01-06T15:04:29.076161972"
     },
     "test_fastq_align_bwa_multiref -- stub": {
         "content": [
             "d41d8cd98f00b204e9800998ecf8427e",
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false,
-                        "id_index": "reftest2"
-                    },
-                    "test_reftest2.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ],
-                [
-                    {
-                        "id": "test",
-                        "single_end": false,
-                        "id_index": "reftest"
-                    },
-                    "test_reftest.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ],
-                [
-                    {
-                        "id": "test2",
-                        "single_end": true,
-                        "id_index": "reftest2"
-                    },
-                    "test2_reftest2.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ],
-                [
-                    {
-                        "id": "test2",
-                        "single_end": true,
-                        "id_index": "reftest"
-                    },
-                    "test2_reftest.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ]
-            ],
+            "test_reftest2.bam.bai",
             [
                 {
                     "FASTQ_ALIGN_BWAALN:BWA_SAMSE": {
@@ -236,6 +135,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-01-06T11:02:12.400063531"
+        "timestamp": "2026-01-06T15:05:09.555454392"
     }
 }
