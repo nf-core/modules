@@ -5,8 +5,6 @@ process TRAITAR {
     conda "${moduleDir}/environment.yml"
     container "community.wave.seqera.io/library/hmmer_prodigal_pandas_pip_pruned:a83f0296374a52e6"
 
-    publishDir "${params.outdir}/${task.process.toLowerCase()}", mode: params.publish_dir_mode
-
     input:
     tuple val(meta), path(proteins)
 
@@ -15,8 +13,8 @@ process TRAITAR {
     tuple val(meta), path("traitar_out/phenotype_prediction/predictions_single-votes_combined.txt"), emit: predictions_single_votes
     tuple val(meta), path("traitar_out/phenotype_prediction/predictions_flat_*.txt"), optional: true, emit: predictions_flat
     tuple val(meta), path("traitar_out/predictions_*.txt"), optional: true, emit: predictions_raw
-    tuple val(meta), path("traitar_out/annotation/pfam/*"), optional: true, emit: pfam_annotation
-    tuple val(meta), path("traitar_out/gene_prediction/*"), optional: true, emit: gene_prediction
+    tuple val(meta), path("traitar_out/annotation/pfam/"), optional: true, emit: pfam_annotation
+    tuple val(meta), path("traitar_out/gene_prediction/"), optional: true, emit: gene_prediction
     tuple val("${task.process}"), val('traitar'), path("versions.yml"), emit: versions
 
     when:

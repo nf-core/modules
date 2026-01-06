@@ -44,57 +44,67 @@ output:
           description: Combined phenotype predictions (majority vote between classifiers)
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
-  predictions_phypat:
+  predictions_single_votes:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - traitar_out/phenotype_prediction/predictions_majority-vote_phypat.txt:
+      - traitar_out/phenotype_prediction/predictions_single-votes_combined.txt:
           type: file
-          description: Phyletic pattern classifier predictions
+          description: Single-vote phenotype predictions (combined)
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
-  heatmaps:
+  predictions_flat:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - traitar_out/phenotype_prediction/heatmap_*.png:
+      - traitar_out/phenotype_prediction/predictions_flat_*.txt:
           type: file
-          description: Heatmaps showing phenotype predictions across samples
-          ontologies: []
+          description: Flat format phenotype predictions
+          optional: true
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  predictions_raw:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - traitar_out/predictions_*.txt:
+          type: file
+          description: Raw phenotype prediction files
+          optional: true
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   pfam_annotation:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - traitar_out/pfam_annotation/*:
-          type: file
-          description: Pfam protein family annotation results
-          optional: true
-          ontologies: []
+      - traitar_out/annotation/pfam/:
+          type: directory
+          description: PFAM annotation directory containing filtered_best.dat, domtblout.dat, summary.dat
   gene_prediction:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - traitar_out/gene_prediction/*:
-          type: file
-          description: Gene prediction results (from from_nucleotides option)
-          optional: true
-          ontologies: []
+      - traitar_out/gene_prediction/:
+          type: directory
+          description: Gene prediction directory containing FASTA and GFF files
   versions:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
-          description: The name of the process
-      - "traitar":
+          description: Process name
+      - traitar:
           type: string
           description: Software name
-      - "versions.yml":
+      - versions.yml:
           type: file
           description: File containing software versions
           ontologies: []
