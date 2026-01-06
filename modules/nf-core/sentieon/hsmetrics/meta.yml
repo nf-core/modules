@@ -1,5 +1,5 @@
 name: sentieon_hsmetrics
-description: Collects whole genome quality metrics from a bam file
+description: Collects hybrid-selection (HS) metrics for a SAM or BAM file.
 keywords:
   - metrics
   - bam
@@ -20,14 +20,16 @@ input:
           e.g. `[ id:'test']`
     - bam:
         type: file
-        description: Sorted BAM/CRAM/SAM file
+        description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
     - bai:
         type: file
-        description: Index of th sorted BAM/CRAM/SAM file
+        description: Index of the BAM/CRAM/SAM file
         pattern: "*.{bai,crai,sai}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
     - bait_intervals:
         type: file
         description: An interval file that contains the locations of the baits
@@ -48,7 +50,8 @@ input:
         type: file
         description: Genome fasta file
         pattern: "*.{fa,fasta}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
   - - meta3:
         type: map
         description: |
@@ -58,7 +61,8 @@ input:
         type: file
         description: Index of the genome fasta file
         pattern: "*.fai"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3326"
 output:
   metrics:
     - - meta:
@@ -68,8 +72,7 @@ output:
             e.g. `[ id:'test', single_end:false ]`
       - "*.txt":
           type: file
-          description: File containing the information about mean base quality
-            score for each sequencing cycle
+          description:  Alignment metrics related to how many reads overlap the target/bait regions.
           pattern: "*.txt"
           ontologies: []
   versions_sentieon:
@@ -95,6 +98,6 @@ topics:
           type: string
           description: The command used to generate the version of the tool
 authors:
-  - "@ramprasadn"
+  - "@sppearce"
 maintainers:
-  - "@ramprasadn"
+  - "@sppearce"
