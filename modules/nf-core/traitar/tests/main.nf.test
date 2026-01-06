@@ -9,6 +9,30 @@ nextflow_process {
     tag "modules_nfcore"
     tag "traitar"
 
+    test("traitar - proteomes") {
+
+        config "./nf-test.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_sample' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
     test("traitar - proteomes - stub") {
 
         options "-stub"
