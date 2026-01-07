@@ -10,7 +10,7 @@ nextflow_process {
     tag "snpeff"
     tag "snpeff/snpeff"
 
-    test("test_SNPEFF_SNPEFF") {
+    test("SNPEFF_SNPEFF") {
 
         when {
             process {
@@ -38,13 +38,13 @@ nextflow_process {
                     file(process.out.report[0][1]).name,
                     file(process.out.summary_html[0][1]).name,
                     file(process.out.vcf[0][1]).name,
-                    process.out.versions
+                    process.out.versions_snpeff
                 ).match() }
             )
         }
     }
 
-    test("test_SNPEFF_SNPEFF - stub") {
+    test("SNPEFF_SNPEFF - stub") {
 
         options "-stub"
 
