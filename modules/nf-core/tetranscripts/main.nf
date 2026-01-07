@@ -55,7 +55,7 @@ END_VERSIONS
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        tetranscripts: \$(tetranscripts --version)
+        tetranscripts: \$(TEtranscripts --version)
     END_VERSIONS
     """
 }
