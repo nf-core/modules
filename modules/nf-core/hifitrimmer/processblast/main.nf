@@ -8,8 +8,8 @@ process HIFITRIMMER_PROCESSBLAST {
       'community.wave.seqera.io/library/hifi_trimmer:2.1.0--7bdb23c108803277' }"
 
    input:
-   tuple val(meta), path(bam), path(blast)
-   path(yaml)
+   tuple val(meta), path(blast)
+   tuple val(meta2), path(yaml)
 
 
    output:
@@ -24,9 +24,12 @@ process HIFITRIMMER_PROCESSBLAST {
    script:
    def prefix = task.ext.prefix ?: "${meta.id}"
    def args = task.ext.args ? task.ext.args : ''
-   def args1 = task.ext.args1 ? task.ext.args1 : ''
    """
-   hifi_trimmer process_blast $args $blast $yaml -t ${task.cpus}
+   hifi_trimmer process_blast \\
+       -t ${task.cpus} \\
+       ${args} \\
+       ${blast} \\
+       ${yaml}
    """
 
    stub:

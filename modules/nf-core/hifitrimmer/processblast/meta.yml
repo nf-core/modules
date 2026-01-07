@@ -1,13 +1,15 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "hifitrimmer_processblast"
 description: |
-  Run hifi_trimmer process_blast to process BLAST results against adapter sequences of PacBio HiFi reads.
+  Run hifi_trimmer process_blast to process a BLAST search of adapter sequences against PacBio HiFi reads.
   Primary output is a BED describing regions to exclude, a json of summary information, and an optional hits file.
 keywords:
   - pacbio
   - bam
   - hifi_trimmer
   - processblast
+  - quality control
+  - adapter removal
 tools:
   - hifi_trimmer:
       description: |
@@ -22,10 +24,6 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - bam:
-        type: file
-        description: Input BAM file to filter
-        pattern: "*.bam"
     - blast:
         type: file
         description: BLAST output file used by hifi_trimmer (e.g. .blast, .out)
