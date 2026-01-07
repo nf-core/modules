@@ -51,7 +51,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
         )
         ch_versions = ch_versions.mix(BCFTOOLS_PLUGINSCATTER.out.versions.first())
 
-        // If BCFTOOLS_PLUGINSCATTER created multiple file we return a list of vcf and the size of that list
+        // If BCFTOOLS_PLUGINSCATTER created multiple files we return a list of vcfs and the size of that list
         // Otherwise, a single vcf and the value 1
         // We then use transpose and combine to
         // - Transpose on the VCFs => Creates an entry for each VCF in the list
