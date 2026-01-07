@@ -69,6 +69,19 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, nrows = -
     )
 }
 
+#' Convert NULL-like inputs to R NULL.
+#'
+#' @param v Any input to be checked and parsed.
+#' 
+#' @return NULL object if input is NULL-like, otherwise the original input.
+parse_null <- function(v) {
+    if (is.null(v)) return(NULL)
+    if (length(v) == 0) return(NULL)
+    vv <- as.character(v)
+    if (vv %in% c("null", "NULL", "", "false", "FALSE")) return(NULL)
+    v
+}
+
 #' Identify rows that are among the top n most variant
 #'
 #' @param matrix_data Matrix object
@@ -106,8 +119,11 @@ for ( ao in names(args_opt)){
         stop(paste("Invalid option:", ao))
     }else{
 
-        # Preserve classes from defaults where possible
-        if (! is.null(opt[[ao]])){
+        # Allow explicit nulls from Nextflow CLI args
+        args_opt[[ao]] <- parse_null(args_opt[[ao]])
+
+        # Preserve classes from defaults where possible (only if not NULL now)
+        if (!is.null(args_opt[[ao]]) && !is.null(opt[[ao]])) {
             args_opt[[ao]] <- as(args_opt[[ao]], opt_types[[ao]])
         }
         opt[[ao]] <- args_opt[[ao]]
@@ -182,16 +198,25 @@ if (is.null(opt\$minimum_samples_not_na)) {
 # Define the tests
 
 tests <- list(
-    'abundance' = function(x) sum(x >= opt\$minimum_abundance, na.rm = T) >= opt\$minimum_samples, # check if rows have sufficiently high abundance
     'na' = function(x) !any(is.na(x)) || sum(!is.na(x)) >= opt\$minimum_samples_not_na  # check if enough values in row are not NA
 )
 
+# Only apply abundance filter if a threshold was provided
+if (!is.null(opt\$minimum_abundance)) {
+    tests[["abundance"]] = function(x) sum(x >= opt\$minimum_abundance, na.rm = TRUE) >= opt\$minimum_samples
+}
+
 # Apply the functions row-wise on the abundance_matrix and store the result in a boolean matrix
 
-boolean_matrix <- t(apply(abundance_matrix, 1, function(row) {
-    sapply(tests, function(f) f(row))
-}))
+boolean_matrix <- do.call(
+    rbind,
+    lapply(seq_len(nrow(abundance_matrix)), function(i) {
+        vapply(tests, function(f) f(abundance_matrix[i, ]), logical(1))
+    })
+)
 
+rownames(boolean_matrix) <- rownames(abundance_matrix)
+colnames(boolean_matrix) <- names(tests)
 # Apply the 'most_variant_test' function to identify the most variant rows and add
 # the result to the boolean matrix
 
@@ -225,11 +250,8 @@ write.table(
 
 write.table(
     data.frame(rownames(abundance_matrix), boolean_matrix),
-    file = paste0(
-        prefix,
-        '.tests.tsv'
-    ),
-    col.names = c(feature_id_name, names(tests)),
+    file = paste0(prefix, '.tests.tsv'),
+    col.names = c(feature_id_name, colnames(boolean_matrix)),
     row.names = FALSE,
     sep = '\t',
     quote = FALSE
