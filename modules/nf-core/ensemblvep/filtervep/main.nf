@@ -13,7 +13,7 @@ process ENSEMBLVEP_FILTERVEP {
 
     output:
     tuple val(meta), path("*.${extension}"), emit: output
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('ensemblvep'), eval("vep --help 2>&1 | sed 's/ //g' | grep ensembl-vep | cut -f 2 -d ':'"), topic: versions, emit: versions_ensemblvep
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,11 +28,6 @@ process ENSEMBLVEP_FILTERVEP {
         --input_file ${input} \\
         --output_file ${prefix}.${extension} \\
         --only_matched
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ensemblvep: \$( echo \$(vep --help 2>&1) | sed 's/^.*Versions:.*ensembl-vep : //;s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -40,10 +35,5 @@ process ENSEMBLVEP_FILTERVEP {
     extension = task.ext.suffix ?: "vcf"
     """
     touch ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ensemblvep: \$( echo \$(vep --help 2>&1) | sed 's/^.*Versions:.*ensembl-vep : //;s/ .*\$//')
-    END_VERSIONS
     """
 }
