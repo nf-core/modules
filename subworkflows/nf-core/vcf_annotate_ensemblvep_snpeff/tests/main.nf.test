@@ -56,7 +56,7 @@ nextflow_workflow {
                     workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },
-                    workflow.out.versions.collect { it instanceof String ? file(it).name : it }
+                    workflow.out.versions.collect { it instanceof String ? path(it).yaml : it }
                 ).match()}
             )
         }
@@ -110,7 +110,7 @@ nextflow_workflow {
                     workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },
-                    workflow.out.versions.collect { it instanceof String ? file(it).name : it }
+                    workflow.out.versions.collect { it instanceof String ? path(it).yaml : it }
                 ).match()}
             )
         }
@@ -159,7 +159,7 @@ nextflow_workflow {
                     workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },
-                    workflow.out.versions.collect { it instanceof String ? file(it).name : it }
+                    workflow.out.versions.collect { it instanceof String ? path(it).yaml : it }
                 ).match()}
             )
         }
@@ -204,7 +204,7 @@ nextflow_workflow {
                     workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },
-                    workflow.out.versions.collect { it instanceof String ? file(it).name : it }
+                    workflow.out.versions.collect { it instanceof String ? path(it).yaml : it }
                 ).match()}
             )
         }
@@ -249,7 +249,7 @@ nextflow_workflow {
                     workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },
-                    workflow.out.versions.collect { it instanceof String ? file(it).name : it }
+                    workflow.out.versions.collect { it instanceof String ? path(it).yaml : it }
                 ).match()}
             )
         }
