@@ -13,10 +13,10 @@ process HIFITRIMMER_PROCESSBLAST {
 
 
    output:
-   tuple val(meta), path("*.bed.gz")                         , emit: bed
-   tuple val(meta), path("*.summary.json")                   , emit: summary
-   tuple val(meta), path("*.hits")                           , emit: hits, optional: true
-   path  "versions.yml"                                      , emit: versions
+   tuple val(meta), path("*.bed.gz")      , emit: bed
+   tuple val(meta), path("*.summary.json"), emit: summary
+   tuple val(meta), path("*.hits")        , emit: hits, optional: true
+   tuple val("${task.process}"), val('hifi_trimmer'), eval("hifi_trimmer --version | sed 's/hifi_trimmer, version*//'"), emit: versions_hifitrimmer, topic: versions
 
    when:
    task.ext.when == null || task.ext.when
@@ -27,10 +27,6 @@ process HIFITRIMMER_PROCESSBLAST {
    def args1 = task.ext.args1 ? task.ext.args1 : ''
    """
    hifi_trimmer process_blast $args $blast $yaml -t ${task.cpus}
-   cat <<-END_VERSIONS > versions.yml
-   "${task.process}":
-      \$(hifi_trimmer --version | sed 's/, version/: /')
-   END_VERSIONS
    """
 
    stub:
@@ -39,9 +35,5 @@ process HIFITRIMMER_PROCESSBLAST {
    echo "stub" | gzip > ${prefix}.bed.gz
    echo "stub" | gzip > ${prefix}.summary.json
    echo "stub" | gzip > ${prefix}.hits
-   cat <<-END_VERSIONS > versions.yml
-   "${task.process}":
-      \$(hifi_trimmer --version | sed 's/, version/: /')
-   END_VERSIONS
    """
 }

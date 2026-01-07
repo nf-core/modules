@@ -14,7 +14,7 @@ process HIFITRIMMER_FILTERBAM {
 
    output:
    tuple val(meta), path("*.hifi_trimmer.fast{q,a}*"), emit: filtered
-   path  "versions.yml"                              , emit: versions
+   tuple val("${task.process}"), val('hifi_trimmer'), eval("hifi_trimmer --version | sed 's/hifi_trimmer, version*//'"), emit: versions_hifitrimmer, topic: versions
 
    when:
    task.ext.when == null || task.ext.when
@@ -25,21 +25,11 @@ process HIFITRIMMER_FILTERBAM {
    def suffix = args.contains('-f') ? "fastq.gz"  : "fasta"
    """
    hifi_trimmer filter_bam $args $bam $bed ${prefix}.hifi_trimmer.${suffix} -t ${task.cpus}
-
-   cat <<-END_VERSIONS > versions.yml
-   "${task.process}":
-      \$(hifi_trimmer --version | sed 's/, version/: /')
-   END_VERSIONS
    """
 
    stub:
    def prefix = task.ext.prefix ?: "${meta.id}"
    """
    echo "stub" | gzip > ${prefix}.hifi_trimmer.fastq.gz
-
-   cat <<-END_VERSIONS > versions.yml
-   "${task.process}":
-      \$(hifi_trimmer --version | sed 's/, version/: /')
-   END_VERSIONS
    """
 }

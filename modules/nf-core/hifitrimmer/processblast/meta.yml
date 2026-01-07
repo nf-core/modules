@@ -56,7 +56,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.summary.json":
           type: file
-          description: JSON summary produced by hifi_trimmer
+          description: JSON summary including trimming and filtering information
           pattern: "*.summary.json"
           ontologies:
             - edam: "http://edamontology.org/format_3464" # JSON
@@ -71,13 +71,28 @@ output:
           description: Optional hits file produced by hifi_trimmer (may be absent when no hits found or '-hf' is not specified)
           pattern: "*.hits"
           ontologies: []
+  versions_hifitrimmer:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hifi_trimmer:
+          type: string
+          description: The name of the tool
+      - hifi_trimmer --version | sed 's/hifi_trimmer, version*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hifi_trimmer:
+          type: string
+          description: The name of the tool
+      - hifi_trimmer --version | sed 's/hifi_trimmer, version*//':
+          type: eval
+          description: The expression to obtain the version
 authors:
   - "@sainsachiko"
 maintainers:

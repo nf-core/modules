@@ -43,7 +43,7 @@ nextflow_process {
                         [ meta, path(summary_file).json.tap { it.remove('run_info') } ]
                     },
 		    process.out.hits,
-		    process.out.versions
+		    process.out.versions_hifitrimmer
  		    ).match() 
 		}
             )
@@ -80,7 +80,7 @@ nextflow_process {
                     process.out.summary.collect{ meta, summary_file ->
                         [ meta, path(summary_file).json.tap { it.remove('run_info') } ]
                     },
-                    process.out.versions
+                    process.out.versions_hifitrimmer
                     ).match()
                 }
             )
@@ -118,7 +118,7 @@ nextflow_process {
                         [ meta, path(summary_file).json.tap { it.remove('run_info') } ]
                     },
                     process.out.hits,
-                    process.out.versions
+                    process.out.versions_hifitrimmer
                     ).match()
                 }
             )

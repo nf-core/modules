@@ -41,7 +41,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.filtered,
-                    process.out.versions
+                    process.out.versions_hifitrimmer
                     ).match()
                 }
             )
@@ -78,7 +78,7 @@ nextflow_process {
                 { assert snapshot(
                     // dont check process.out.bed as it is expected to be an empty file, which fails modules lint
                     process.out.filtered,
-                    process.out.versions
+                    process.out.versions_hifitrimmer
                     ).match()
                 }
             )
@@ -115,7 +115,7 @@ nextflow_process {
                 { assert snapshot(
                     // dont check process.out.bed as it is expected to be an empty file, which fails modules lint
                     process.out.filtered,
-                    process.out.versions
+                    process.out.versions_hifitrimmer
                     ).match()
                 }
             )
