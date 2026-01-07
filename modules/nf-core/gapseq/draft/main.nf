@@ -11,9 +11,9 @@ process GAPSEQ_DRAFT {
     tuple val(meta), path(pathways), path(transporters)
 
     output:
-    tuple val(meta), path("*.RDS")                                                                 , emit: draft
-    tuple val(meta), path("*.log")                                                                 , emit: log    , optional: true
-    tuple val("${task.process}"), val('gapseq'), eval('gapseq --version | sed "s/gapseq //"')     , emit: versions_gapseq, topic: versions
+    tuple val(meta), path("*.RDS")  , emit: draft
+    tuple val(meta), path("*.log")  , emit: log      , optional: true
+    path  "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,6 +29,11 @@ process GAPSEQ_DRAFT {
         $transporters_arg \\
         -c $prefix \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gapseq: \$(gapseq --version 2>&1 | sed 's/gapseq //')
+    END_VERSIONS
     """
 
     stub:

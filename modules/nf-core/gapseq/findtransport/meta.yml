@@ -61,28 +61,13 @@ output:
           description: Log files from gapseq find-transport
           pattern: "*.log"
           ontologies: []
-  versions_gapseq:
-    - - ${task.process}:
-          type: string
-          description: The process the versions were collected from
-      - gapseq:
-          type: string
-          description: The tool name
-      - gapseq --version | sed "s/gapseq //":
-          type: eval
-          description: The expression to obtain the version of the tool
-
-topics:
   versions:
-    - - ${task.process}:
-          type: string
-          description: The process the versions were collected from
-      - gapseq:
-          type: string
-          description: The tool name
-      - gapseq --version | sed "s/gapseq //":
-          type: eval
-          description: The expression to obtain the version of the tool
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@copilot"
 maintainers:

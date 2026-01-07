@@ -11,10 +11,10 @@ process GAPSEQ_FINDTRANSPORT {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.csv")                                                                 , emit: csv
-    tuple val(meta), path("*.fna")                                                                 , emit: fna    , optional: true
-    tuple val(meta), path("*.log")                                                                 , emit: log    , optional: true
-    tuple val("${task.process}"), val('gapseq'), eval('gapseq --version | sed "s/gapseq //"')     , emit: versions_gapseq, topic: versions
+    tuple val(meta), path("*.csv")  , emit: csv
+    tuple val(meta), path("*.fna")  , emit: fna      , optional: true
+    tuple val(meta), path("*.log")  , emit: log      , optional: true
+    path  "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,6 +43,11 @@ process GAPSEQ_FINDTRANSPORT {
             mv "\$file" "${prefix}_\$file"
         fi
     done
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gapseq: \$(gapseq --version 2>&1 | sed 's/gapseq //')
+    END_VERSIONS
     """
 
     stub:
