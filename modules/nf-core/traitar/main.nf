@@ -31,7 +31,7 @@ process TRAITAR {
     """
     # Create input directory with protein sequences
     mkdir -p input_dir
-    
+
     # Handle gzipped files by decompressing
     if [[ "${proteins}" == *.gz ]]; then
         gunzip -c "${proteins}" > "input_dir/\$(basename '${proteins}' .gz)"
