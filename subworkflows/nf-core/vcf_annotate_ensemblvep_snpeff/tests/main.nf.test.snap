@@ -119,18 +119,33 @@
                 ]
             ],
             [
-                "versions.yml",
-                "versions.yml",
-                "versions.yml",
-                "versions.yml",
-                "versions.yml"
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_SORT": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:TABIX_BGZIP": {
+                        "tabix": 1.21
+                    }
+                },
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_PLUGINSCATTER": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_CONCAT": {
+                        "bcftools": 1.22
+                    }
+                }
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-29T11:42:55.57866235"
+        "timestamp": "2026-01-07T13:43:50.665892462"
     },
     "sarscov2 - ensemblvep - large chunks": {
         "content": [
@@ -160,17 +175,34 @@
                 
             ],
             [
-                "versions.yml",
-                "versions.yml",
-                "versions.yml",
-                "versions.yml"
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_SORT": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_PLUGINSCATTER": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:ENSEMBLVEP_VEP": {
+                        "ensemblvep": 115.2,
+                        "tabix": 1.21
+                    }
+                },
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_CONCAT": {
+                        "bcftools": 1.22
+                    }
+                }
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-28T15:05:08.526580844"
+        "timestamp": "2026-01-07T12:54:53.233919256"
     },
     "sarscov2 - snpeff + ensemblvep": {
         "content": [
@@ -240,19 +272,39 @@
                 ]
             ],
             [
-                "versions.yml",
-                "versions.yml",
-                "versions.yml",
-                "versions.yml",
-                "versions.yml",
-                "versions.yml"
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_SORT": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:TABIX_BGZIP": {
+                        "tabix": 1.21
+                    }
+                },
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_PLUGINSCATTER": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:ENSEMBLVEP_VEP": {
+                        "ensemblvep": 115.2,
+                        "tabix": 1.21
+                    }
+                },
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_CONCAT": {
+                        "bcftools": 1.22
+                    }
+                }
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-29T11:43:20.014782103"
+        "timestamp": "2026-01-07T13:44:19.391740772"
     },
     "sarscov2 - ensemblvep - no scatter": {
         "content": [
@@ -279,14 +331,19 @@
                 
             ],
             [
-                "versions.yml"
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:ENSEMBLVEP_VEP": {
+                        "ensemblvep": 115.2,
+                        "tabix": 1.21
+                    }
+                }
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-28T15:05:34.860678122"
+        "timestamp": "2026-01-07T12:55:10.880334336"
     },
     "sarscov2 - ensemblvep": {
         "content": [
@@ -317,16 +374,33 @@
                 
             ],
             [
-                "versions.yml",
-                "versions.yml",
-                "versions.yml",
-                "versions.yml"
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_SORT": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_PLUGINSCATTER": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:ENSEMBLVEP_VEP": {
+                        "ensemblvep": 115.2,
+                        "tabix": 1.21
+                    }
+                },
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_CONCAT": {
+                        "bcftools": 1.22
+                    }
+                }
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-28T15:03:18.747847891"
+        "timestamp": "2026-01-07T13:46:56.053663592"
     }
 }
