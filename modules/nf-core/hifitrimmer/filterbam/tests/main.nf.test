@@ -23,12 +23,7 @@ nextflow_process {
                 input[0] = Channel.of(
                     [
                         [ id:'test' ], // meta map
-                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/hits/test.bam', checkIfExists: true)
-                    ]
-                )
-                input[1] = Channel.of(
-                    [
-                        [ id:'test' ], // meta map
+                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/hits/test.bam', checkIfExists: true),
                         file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/hits/test.bed.gz', checkIfExists: true)
                     ]
                 )
@@ -52,19 +47,14 @@ nextflow_process {
 
         when {
             params {
-                filter_bam_args    = "-f"
+                filter_bam_args    = ""
             }
             process {
                 """
                 input[0] = Channel.of(
                     [
                         [ id:'test' ], // meta map
-                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/no_hits/test.bam', checkIfExists: true)
-                    ]
-                )
-                    input[1] = Channel.of(
-                    [
-                        [ id:'test' ], // meta map
+                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/no_hits/test.bam', checkIfExists: true),
                         file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/no_hits/test.bed.gz', checkIfExists: true)
                     ]
                 )
@@ -96,12 +86,7 @@ nextflow_process {
                 input[0] = Channel.of(
                     [
                         [ id:'test' ], // meta map
-                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/no_valid_hits/test.bam', checkIfExists: true)
-                    ]
-                )
-                input[1] = Channel.of(
-                    [
-                        [ id:'test' ], // meta map
+                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/no_valid_hits/test.bam', checkIfExists: true),
                         file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/no_valid_hits/test.bed.gz', checkIfExists: true)
                     ]
                 )
@@ -133,12 +118,7 @@ nextflow_process {
                 input[0] = Channel.of(
                     [
                         [ id:'test' ], // meta map
-                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/hits/test.bam', checkIfExists: true)
-                    ]
-                )
-                input[1] = Channel.of(
-                    [
-                        [ id:'test' ], // meta map
+                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/hits/test.bam', checkIfExists: true),
                         file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/hits/test.bed.gz', checkIfExists: true)
                     ]
                 )

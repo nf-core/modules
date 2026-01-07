@@ -27,11 +27,6 @@ input:
         type: file
         description: Input BAM file to filter
         pattern: "*.bam"
-  - - meta1:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
     - bed:
         type: file
         description: Input gzipped bed file contains regions to filter/trim
@@ -57,7 +52,7 @@ output:
       - hifi_trimmer:
           type: string
           description: The name of the tool
-      - "hifi_trimmer --version | sed 's/hifi_trimmer, version*//'":
+      - hifi_trimmer --version | cut -d' ' -f3:
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -69,7 +64,7 @@ topics:
       - hifi_trimmer:
           type: string
           description: The name of the tool
-      - "hifi_trimmer --version | sed 's/hifi_trimmer, version*//'":
+      - hifi_trimmer --version | cut -d' ' -f3:
           type: eval
           description: The expression to obtain the version
 authors:

@@ -16,7 +16,7 @@ process HIFITRIMMER_PROCESSBLAST {
    tuple val(meta), path("*.bed.gz")      , emit: bed
    tuple val(meta), path("*.summary.json"), emit: summary
    tuple val(meta), path("*.hits")        , emit: hits, optional: true
-   tuple val("${task.process}"), val('hifi_trimmer'), eval("hifi_trimmer --version | sed 's/hifi_trimmer, version*//'"), emit: versions_hifitrimmer, topic: versions
+   tuple val("${task.process}"), val('hifi_trimmer'), eval("hifi_trimmer --version | cut -d' ' -f3"), emit: versions_hifitrimmer, topic: versions
 
    when:
    task.ext.when == null || task.ext.when

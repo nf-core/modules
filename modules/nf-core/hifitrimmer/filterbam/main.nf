@@ -8,13 +8,12 @@ process HIFITRIMMER_FILTERBAM {
       'community.wave.seqera.io/library/hifi_trimmer:2.1.0--7bdb23c108803277' }"
 
    input:
-   tuple val(meta), path(bam)
-   tuple val(meta1), path(bed)
+   tuple val(meta), path(bam), path(bed)
 
 
    output:
    tuple val(meta), path("*.hifi_trimmer.fast{q,a}*"), emit: filtered
-   tuple val("${task.process}"), val('hifi_trimmer'), eval("hifi_trimmer --version | sed 's/hifi_trimmer, version*//'"), emit: versions_hifitrimmer, topic: versions
+   tuple val("${task.process}"), val('hifi_trimmer'), eval("hifi_trimmer --version | cut -d' ' -f3"), emit: versions_hifitrimmer, topic: versions
 
    when:
    task.ext.when == null || task.ext.when
@@ -29,7 +28,8 @@ process HIFITRIMMER_FILTERBAM {
 
    stub:
    def prefix = task.ext.prefix ?: "${meta.id}"
+   def suffix = args.contains('-f') ? "fastq.gz"  : "fasta"
    """
-   echo "stub" | gzip > ${prefix}.hifi_trimmer.fastq.gz
+   echo "stub" | gzip > ${prefix}.hifi_trimmer.${suffix}
    """
 }
