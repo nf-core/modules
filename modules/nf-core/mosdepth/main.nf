@@ -34,11 +34,11 @@ process MOSDEPTH {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--fasta ${fasta}" : ""
     def interval = bed ? "--by ${bed}" : ""
-    if (bed && args.contains("--by")) {
+    if (bed && (args.contains("--by") || args.contains("-b "))) {
         error "'--by' can only be specified once when running mosdepth! Either remove input BED file definition or remove '--by' from 'ext.args' definition"
     }
-    if (!bed && args.contains("--thresholds")) {
-        error "'--thresholds' can only be specified in conjunction with '--by'"
+    if (args.contains("--thresholds") && !(bed || args.contains("--by") || args.contains("-b "))) {
+        error "'--thresholds' can only be specified in conjunction with '--by' or an input bed file"
     }
 
     """
@@ -54,11 +54,11 @@ process MOSDEPTH {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if (bed && args.contains("--by")) {
+    if (bed && (args.contains("--by") || args.contains("-b "))) {
         error "'--by' can only be specified once when running mosdepth! Either remove input BED file definition or remove '--by' from 'ext.args' definition"
     }
-    if (!bed && args.contains("--thresholds")) {
-        error "'--thresholds' can only be specified in conjunction with '--by'"
+    if (args.contains("--thresholds") && !(bed || args.contains("--by") || args.contains("-b "))) {
+        error "'--thresholds' can only be specified in conjunction with '--by' or an input bed file"
     }
     """
     touch ${prefix}.global.dist.txt
