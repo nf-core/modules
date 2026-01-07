@@ -8,7 +8,7 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "hifitrimmer"
-    tag "hifitrimmer/processblast" 
+    tag "hifitrimmer/processblast"
 
     config './nextflow.config'
 
@@ -41,11 +41,11 @@ nextflow_process {
                     process.out.bed,
      		    process.out.summary.collect{ meta, summary_file ->
                         [ meta, path(summary_file).json.tap { it.remove('run_info') } ]
-                    },
-		    process.out.hits,
-		    process.out.versions_hifitrimmer
- 		    ).match() 
-		}
+                },
+                process.out.hits,
+                process.out.versions_hifitrimmer
+                ).match()
+                }
             )
         }
     }
@@ -148,7 +148,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out).match() },
+                { assert snapshot(process.out.versions_hifitrimmer).match("versions") }
             )
         }
     }

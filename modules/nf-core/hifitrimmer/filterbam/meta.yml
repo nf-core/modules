@@ -57,7 +57,7 @@ output:
       - hifi_trimmer:
           type: string
           description: The name of the tool
-      - hifi_trimmer --version | sed 's/hifi_trimmer, version*//':
+      - "hifi_trimmer --version | sed 's/hifi_trimmer, version*//'":
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -69,7 +69,7 @@ topics:
       - hifi_trimmer:
           type: string
           description: The name of the tool
-      - hifi_trimmer --version | sed 's/hifi_trimmer, version*//':
+      - "hifi_trimmer --version | sed 's/hifi_trimmer, version*//'":
           type: eval
           description: The expression to obtain the version
 authors:

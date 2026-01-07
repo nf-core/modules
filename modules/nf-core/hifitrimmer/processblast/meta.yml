@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "hifitrimmer_processblast"
 description: |
-  Run hifi_trimmer process_blast to process BLAST results against adapter sequences of PacBio HiFi reads. 
+  Run hifi_trimmer process_blast to process BLAST results against adapter sequences of PacBio HiFi reads.
   Primary output is a BED describing regions to exclude, a json of summary information, and an optional hits file.
 keywords:
   - pacbio
@@ -78,7 +78,7 @@ output:
       - hifi_trimmer:
           type: string
           description: The name of the tool
-      - hifi_trimmer --version | sed 's/hifi_trimmer, version*//':
+      - "hifi_trimmer --version | sed 's/hifi_trimmer, version*//'":
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -90,7 +90,7 @@ topics:
       - hifi_trimmer:
           type: string
           description: The name of the tool
-      - hifi_trimmer --version | sed 's/hifi_trimmer, version*//':
+      - "hifi_trimmer --version | sed 's/hifi_trimmer, version*//'":
           type: eval
           description: The expression to obtain the version
 authors:
