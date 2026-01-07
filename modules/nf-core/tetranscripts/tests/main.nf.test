@@ -23,12 +23,12 @@ nextflow_process {
                 
                 input[0] = [
                     [ id:'ctrl_bam' ],
-                    file('https://github.com/nf-core/test-datasets/blob/modules/data/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/CLIPseq-testing/nf_module/test.paired_end.sorted.bam', checkIfExists: true),
                 ]
 
 		input[1] = [
                     [ id:'test_bam' ],
-                    file('https://github.com/nf-core/test-datasets/blob/modules/data/genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
+                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/CLIPseq-testing/nf_module', checkIfExists: true),
                 ]
 		input[2] = [
                     [ id:'genome_gtf' ],
@@ -36,7 +36,7 @@ nextflow_process {
                 ]
 		input[3] = [
                     [ id:'te_gtf' ],
-                    file('/nemo/lab/ulej/home/users/jonesh1/CLIPseq_pipeline/data_temp/GRCh38_GENCODE_rmsk_TE_chr22.gtf', checkIfExists: true),
+                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_data/GRCh38_GENCODE_rmsk_TE_2_Chr22.gtf', checkIfExists: true),
                 ]
                 """
 		
