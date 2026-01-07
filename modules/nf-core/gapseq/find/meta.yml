@@ -28,16 +28,16 @@ input:
         pattern: "*.{fasta,fa,faa,fna,gz}"
         ontologies: []
 output:
-  csv:
+  tbl:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.csv":
+      - "*.tbl":
           type: file
-          description: CSV files containing pathway and reaction predictions
-          pattern: "*.csv"
+          description: TBL files containing pathway and reaction predictions
+          pattern: "*.tbl"
           ontologies: []
   fna:
     - - meta:

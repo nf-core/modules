@@ -28,16 +28,16 @@ input:
         pattern: "*.{fasta,fa,faa,fna,gz}"
         ontologies: []
 output:
-  csv:
+  tbl:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.csv":
+      - "*.tbl":
           type: file
-          description: CSV files containing transporter predictions
-          pattern: "*.csv"
+          description: TBL files containing transporter predictions
+          pattern: "*.tbl"
           ontologies: []
   fna:
     - - meta:

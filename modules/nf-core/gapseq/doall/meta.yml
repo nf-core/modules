@@ -46,16 +46,16 @@ output:
           description: Gap-filled metabolic model in RDS format
           pattern: "*.RDS"
           ontologies: []
-  csv:
+  tbl:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.csv":
+      - "*.tbl":
           type: file
-          description: CSV files containing pathway and transporter predictions
-          pattern: "*.csv"
+          description: TBL files containing pathway and transporter predictions
+          pattern: "*.tbl"
           ontologies: []
   fna:
     - - meta:

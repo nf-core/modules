@@ -12,7 +12,7 @@ process GAPSEQ_DOALL {
 
     output:
     tuple val(meta), path("*.RDS")  , emit: model
-    tuple val(meta), path("*.csv")  , emit: csv
+    tuple val(meta), path("*.tbl")  , emit: tbl
     tuple val(meta), path("*.fna")  , emit: fna      , optional: true
     tuple val(meta), path("*.log")  , emit: log      , optional: true
     path  "versions.yml"            , emit: versions
@@ -32,25 +32,6 @@ process GAPSEQ_DOALL {
         $args \\
         $fasta
 
-    # Rename output files with prefix
-    for file in *.RDS; do
-        if [ -f "\$file" ]; then
-            mv "\$file" "${prefix}_\$file"
-        fi
-    done
-
-    for file in *.csv; do
-        if [ -f "\$file" ]; then
-            mv "\$file" "${prefix}_\$file"
-        fi
-    done
-
-    for file in *.fna; do
-        if [ -f "\$file" ]; then
-            mv "\$file" "${prefix}_\$file"
-        fi
-    done
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         gapseq: \$(gapseq --version 2>&1 | sed 's/gapseq //')
@@ -61,7 +42,7 @@ process GAPSEQ_DOALL {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_model-filled.RDS
-    touch ${prefix}_pathways.csv
-    touch ${prefix}_transporters.csv
+    touch ${prefix}_pathways.tbl
+    touch ${prefix}_transporters.tbl
     """
 }
