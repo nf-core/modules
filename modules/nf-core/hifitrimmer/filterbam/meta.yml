@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "hifitrimmer_filterbam"
+description: |
+  Run hifi_trimmer to filter and trim adapter hits from PacBio HiFi reads using BLAST against
+  adapter sequences. Primary output is filtered FASTA/FASTQ.
+keywords:
+  - pacbio
+  - bam
+  - hifi_trimmer
+  - filterring
+  - trimming
+tools:
+  - hifi_trimmer:
+      description: |
+        hifi_trimmer: tools for processing HiFi read BLAST results and filtering/trimming
+        BAM files to output processed FASTA/FASTQ and accompanying summary and hit (optional) files.
+      homepage: "https://github.com/sanger-tol/hifi-trimmer"
+      documentation: "https://github.com/sanger-tol/hifi-trimmer"
+      licence: ["MIT"]
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Input BAM file to filter
+        pattern: "*.bam"
+  - - meta1:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bed:
+        type: file
+        description: Input gzipped bed file contains regions to filter/trim
+        pattern: "*.bed.gz"
+output:
+  filtered:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.hifi_trimmer.fast{q,a}*":
+          type: file
+          description: Gzipped FASTA/FASTQ produced by hifi_trimmer
+          pattern: "*.hifi_trimmer.fast{q,a}*"
+          ontologies:
+            - edam: "http://edamontology.org/format_1930" # FASTQ
+            - edam: "http://edamontology.org/format_1929" # FASTA
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@sainsachiko"
+maintainers:
+  - "@sainsachiko"
