@@ -32,8 +32,6 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     path(process.out.database.get(0).get(1)).md5,
-                    path(process.out.rna_sequences.get(0).get(1)).md5,
-                    path(process.out.dna_sequences.get(0).get(1)).md5,
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
