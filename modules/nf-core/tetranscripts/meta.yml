@@ -18,37 +18,45 @@ tools:
       identifier: biotools:tetranscripts
 
 input:
-  - - meta:
+  # Treatment BAM
+  - - meta_t:
         type: map
         description: |
-          Groovy Map containing sample information. e.g. `[
+          Groovy Map containing treatment sample information. e.g. `[
           id:'sample1' ]`
     - bam_t:
       type: file
       description: A BAM file for the treatment condition
       pattern: "*.{bam}"
 
+  # Control BAM
+  - - meta_c:
+        type: map
+        descriptiion: |
+          Groovy Map containing control sample information,
+          e.g. `[ id:'control1']`
     - bam_c:
       type: file
       description: A BAM file for the control condition
       pattern: "*.{bam}"
 
-    - bai_t:
-      type: file
-      description: A BAM index file for the treatment condition
-      pattern: "*.{bai}"
-      optional: true
-
-    - bai_c:
-      type: file
-      description: A BAM index file for the control condition
-      pattern: "*.{bai}"
-      optional: true
-
+  # Genome GTF
+  - - meta_ggtf:
+        type: map
+        description: |
+          Groovy map containing control sample information
+          e.g. `[ id:'control1' ]`
     - g_gtf:
       type: file
       description: A GTF file for alignment to the genome
       pattern: "*.{gtf}"
+
+  # TE GTF
+  - - meta_ggtf:
+        type: map
+        description: |
+          Groovy map containing control sample information
+          e.g. `[ id:'control1' ]`
 
     - te_gtf:
       type: file
@@ -56,36 +64,35 @@ input:
       pattern: "*.{gtf}"
 
 output:
-  gene_expression_data:
-    - meta:
-        type: map
-        description: Groovy Map containing sample information. e.g. `[
-          id:'sample1' ]`
-    - cntTable:
-       - meta:
+  - countTable:
+      - meta_t:
           type: map
-          description: Groovy map containing sample information
-       - "*.{cntTable}":
+          description: |
+            Groovy Map containing treatment sample information. e.g. `[
+            id:'sample1' ]`
+      - "*.cntTable":
           type: file
           description: Counts table of transposable element families
           pattern: "*.cntTable"
 
-    - r:
-      - meta:
+  - log2fc:
+      - meta_t:
          type: map
-         description: Groovy map containing sample information
-      - "*.{R}":
+         description: |
+           Groovy map containing treatment sample information. e.g. `[
+           id:'sample1' ]`
+      - ".R":
          type: file
          description: Differential gene expression analysis file
          pattern: "*.R"
 
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: versions.yml
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: versions.yml
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@hanalysis"
 maintainers:
