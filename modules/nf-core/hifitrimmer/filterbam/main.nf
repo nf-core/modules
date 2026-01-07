@@ -12,7 +12,7 @@ process HIFITRIMMER_FILTERBAM {
 
 
    output:
-   tuple val(meta), path("*.hifi_trimmer.fast{q,a}*"), emit: filtered
+   tuple val(meta), path("*.fast{q,a}.gz"), emit: filtered
    tuple val("${task.process}"), val('hifi_trimmer'), eval("hifi_trimmer --version | cut -d' ' -f3"), emit: versions_hifitrimmer, topic: versions
 
    when:
@@ -28,7 +28,7 @@ process HIFITRIMMER_FILTERBAM {
       ${args} \\
       ${bam} \\
       ${bed} \\
-      ${prefix}.hifi_trimmer.${suffix}
+      ${prefix}.${suffix}
    """
 
    stub:

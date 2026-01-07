@@ -40,10 +40,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.hifi_trimmer.fast{q,a}*":
+      - "*.fast{q,a}.gz":
           type: file
           description: Gzipped FASTA/FASTQ produced by hifi_trimmer
-          pattern: "*.hifi_trimmer.fast{q,a}*"
+          pattern: "*.fast{q,a}.gz"
           ontologies:
             - edam: "http://edamontology.org/format_1930" # FASTQ
             - edam: "http://edamontology.org/format_1929" # FASTA
