@@ -1,0 +1,7 @@
+# Ignore phenotype prediction files due to non-deterministic MD5 checksums
+# These vary based on library versions (numpy, pandas, scikit-learn, etc.)
+# across different environments (conda vs container, different OS versions)
+traitar_out/phenotype_prediction/predictions_majority-vote_combined.txt
+traitar_out/phenotype_prediction/predictions_single-votes_combined.txt
+traitar_out/phenotype_prediction/predictions_flat_*.txt
+traitar_out/predictions_*.txt

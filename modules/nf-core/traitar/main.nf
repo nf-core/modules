@@ -56,7 +56,7 @@ process TRAITAR {
         samples.txt \\
         '${input_type}' \\
         traitar_out \\
-        -c ${task.cpus} \\
+        -c 1 \
         --overwrite \\
         ${args}
 
