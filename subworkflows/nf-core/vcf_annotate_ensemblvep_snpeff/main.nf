@@ -94,8 +94,6 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
             ch_fasta,
             ch_vep_extra_files,
         )
-        ch_versions = ch_versions.mix(ENSEMBLVEP_VEP.out.versions.first())
-
         ch_vep_output = ENSEMBLVEP_VEP.out.vcf
         ch_vep_reports = ENSEMBLVEP_VEP.out.report
     }
