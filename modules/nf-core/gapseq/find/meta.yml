@@ -1,0 +1,89 @@
+name: gapseq_find
+description: Predict metabolic pathways from genomic data using gapseq
+keywords:
+  - metabolic pathways
+  - genomics
+  - bacteria
+  - pathway prediction
+tools:
+  - gapseq:
+      description: |
+        gapseq is designed to combine metabolic pathway analysis with metabolic network reconstruction and curation.
+        The find command predicts metabolic pathways from genomic information and databases for pathways and reactions.
+      homepage: https://github.com/jotech/gapseq
+      documentation: https://gapseq.readthedocs.io/
+      tool_dev_url: https://github.com/jotech/gapseq
+      doi: "10.1186/s13059-021-02295-1"
+      licence: ["AGPL-3.0-only"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Protein or genomic FASTA file
+        pattern: "*.{fasta,fa,faa,fna,gz}"
+        ontologies: []
+output:
+  csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csv":
+          type: file
+          description: CSV files containing pathway and reaction predictions
+          pattern: "*.csv"
+          ontologies: []
+  fna:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fna":
+          type: file
+          description: Optional extracted sequences in FASTA format
+          pattern: "*.fna"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: Log files from gapseq find
+          pattern: "*.log"
+          ontologies: []
+  versions_gapseq:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - gapseq:
+          type: string
+          description: The tool name
+      - gapseq --version | sed "s/gapseq //":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - gapseq:
+          type: string
+          description: The tool name
+      - gapseq --version | sed "s/gapseq //":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@copilot"
+maintainers:
+  - "@copilot"
