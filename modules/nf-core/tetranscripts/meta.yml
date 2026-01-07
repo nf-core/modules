@@ -20,7 +20,8 @@ tools:
 input:
   - - meta:
         type: map
-        description: Groovy Map containing sample information. e.g. `[
+        description: |
+          Groovy Map containing sample information. e.g. `[
           id:'sample1' ]`
     - bam_t:
       type: file
@@ -38,22 +39,28 @@ input:
       pattern: "*.{bai}"
       optional: true
 
+    - bai_c:
+      type: file
+      description: A BAM index file for the control condition
+      pattern: "*.{bai}"
+      optional: true
+
     - g_gtf:
       type: file
       description: A GTF file for alignment to the genome
       pattern: "*.{gtf}"
 
     - te_gtf:
-     type: file
-     description: A curated GTF file containing additional columns for alignment to transposable elements
-     pattern: "*.{gtf}"
+      type: file
+      description: A curated GTF file containing additional columns for alignment to transposable elements
+      pattern: "*.{gtf}"
 
 output:
   gene_expression_data:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample information. e.g. `[
-            id:'sample1' ]`
+    - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1' ]`
     - cntTable:
        - meta:
           type: map
@@ -67,10 +74,10 @@ output:
       - meta:
          type: map
          description: Groovy map containing sample information
-       - "*.{R}"":
-          type: file
-          description: Differential gene expression analysis file
-          pattern: "*.R"
+      - "*.{R}":
+         type: file
+         description: Differential gene expression analysis file
+         pattern: "*.R"
 
   versions:
     - versions.yml:
