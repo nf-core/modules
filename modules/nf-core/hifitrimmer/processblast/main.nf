@@ -9,7 +9,7 @@ process HIFITRIMMER_PROCESSBLAST {
 
    input:
    tuple val(meta), path(blast)
-   tuple val(meta2), path(yaml)
+   tuple val(meta1), path(yaml)
 
 
    output:

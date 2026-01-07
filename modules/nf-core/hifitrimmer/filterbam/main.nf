@@ -21,14 +21,19 @@ process HIFITRIMMER_FILTERBAM {
    script:
    def prefix = task.ext.prefix ?: "${meta.id}"
    def args = task.ext.args ? task.ext.args : ''
-   def suffix = args.contains('-f') ? "fastq.gz"  : "fasta"
+   def suffix = args.contains('-f') ? "fastq.gz"  : "fasta.gz"
    """
-   hifi_trimmer filter_bam $args $bam $bed ${prefix}.hifi_trimmer.${suffix} -t ${task.cpus}
+   hifi_trimmer filter_bam \\
+      -t ${task.cpus} \\
+      ${args} \\
+      ${bam} \\
+      ${bed} \\
+      ${prefix}.hifi_trimmer.${suffix}
    """
 
    stub:
    def prefix = task.ext.prefix ?: "${meta.id}"
-   def suffix = args.contains('-f') ? "fastq.gz"  : "fasta"
+   def suffix = args.contains('-f') ? "fastq.gz"  : "fasta.gz"
    """
    echo "stub" | gzip > ${prefix}.hifi_trimmer.${suffix}
    """

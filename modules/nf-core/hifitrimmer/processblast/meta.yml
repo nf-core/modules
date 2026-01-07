@@ -28,10 +28,15 @@ input:
         type: file
         description: BLAST output file used by hifi_trimmer (e.g. .blast, .out)
         pattern: "*.blast"
-  - yaml:
-      type: file
-      description: YAML file contain trimming/filtering configuration for `hifi_trimmer`
-      pattern: "*.{yaml,yml}"
+  - - meta1:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - yaml:
+        type: file
+        description: YAML file contain trimming/filtering configuration for `hifi_trimmer`
+        pattern: "*.{yaml,yml}"
 output:
   bed:
     - - meta:
@@ -68,7 +73,8 @@ output:
           type: file
           description: Optional hits file produced by hifi_trimmer (may be absent when no hits found or '-hf' is not specified)
           pattern: "*.hits"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   versions_hifitrimmer:
     - - ${task.process}:
           type: string

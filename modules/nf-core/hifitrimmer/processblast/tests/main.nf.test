@@ -27,7 +27,10 @@ nextflow_process {
                     ]
                 )
                     input[1] = Channel.of(
+                    [
+                        [ id:'test' ], // meta map
                         file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/hits/test.yaml', checkIfExists: true)
+                    ]
                     )
                 """
             }
@@ -64,8 +67,11 @@ nextflow_process {
                     ]
                 )
                 input[1] = Channel.of(
-                    file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/no_hits/test.yaml', checkIfExists: true)
-                    )
+                    [
+                        [ id:'test' ], // meta map
+                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/no_hits/test.yaml', checkIfExists: true)
+                    ]
+                )
                 """
             }
         }
@@ -99,9 +105,12 @@ nextflow_process {
                         file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/no_valid_hits/test.blastout.gz', checkIfExists: true)
                     ]
                 )
-                    input[1] = Channel.of(
+                input[1] = Channel.of(
+                    [
+                        [ id:'test' ], // meta map
                         file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/no_valid_hits/test.yaml', checkIfExists: true)
-                    )
+                    ]
+                )
                 """
             }
         }
@@ -136,7 +145,12 @@ nextflow_process {
                         file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/hits/test.blastout.gz', checkIfExists: true)
                     ]
                 )
-                input[1] = file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/hits/test.yaml', checkIfExists: true)
+                input[1] = Channel.of(
+                    [
+                        [ id:'test' ], // meta map
+                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/hits/test.yaml', checkIfExists: true)
+                    ]
+                )
                 """
             }
         }
