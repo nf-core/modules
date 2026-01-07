@@ -72,7 +72,7 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, nrows = -
 #' Convert NULL-like inputs to R NULL.
 #'
 #' @param v Any input to be checked and parsed.
-#' 
+#'
 #' @return NULL object if input is NULL-like, otherwise the original input.
 parse_null <- function(v) {
     if (is.null(v)) return(NULL)
