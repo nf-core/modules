@@ -1,5 +1,5 @@
 process TETRANSCRIPTS {
-    tag "$meta.id"
+    tag "$meta_c.id"
     label 'process_single'
 
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
@@ -9,15 +9,15 @@ process TETRANSCRIPTS {
         'biocontainers/tetranscripts:2.2.3--pyh7cba7a3_0' }"
 
     input:
-    tuple val(meta), path(bam_t)
+    tuple val(meta_t), path(bam_t)
     tuple val(meta_c), path(bam_c)
     tuple val(meta_ggtf), path(g_gtf)
     tuple val(meta_tegtf), path(te_gtf)
 
     output:
     // TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
-    tuple val(meta), path("*.cntTable"), emit: countTable
-    tuple val(meta_c), path("*.R"), emit: log2fc
+    tuple val(meta_t), path("*.cntTable"), emit: countTable
+    tuple val(meta_t), path("*.R"), emit: log2fc
     path "versions.yml"           , emit: versions
 
     when:
@@ -25,7 +25,7 @@ process TETRANSCRIPTS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta_c.id}"
 // Join multiple BAM files with spaces for -t and -c arguments
     def treatment_bams = [bam_t].flatten().join(' ')
     def control_bams = [bam_c].flatten().join(' ')
@@ -46,7 +46,7 @@ END_VERSIONS
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta_c.id}"
     """
     echo $args
     
