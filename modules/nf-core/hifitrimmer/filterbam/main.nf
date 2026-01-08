@@ -35,6 +35,6 @@ process HIFITRIMMER_FILTERBAM {
    def prefix = task.ext.prefix ?: "${meta.id}"
    def suffix = args.contains('-f') ? "fastq.gz"  : "fasta.gz"
    """
-   echo "stub" | gzip > ${prefix}.hifi_trimmer.${suffix}
+   echo "stub" | gzip > ${prefix}.${suffix}
    """
 }

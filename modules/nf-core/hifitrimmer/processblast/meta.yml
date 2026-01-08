@@ -26,7 +26,7 @@ input:
           e.g. `[ id:'sample1' ]`
     - blast:
         type: file
-        description: BLAST output file used by hifi_trimmer (e.g. .blast, .out)
+        description: BLAST TSV output file used by hifi_trimmer (e.g. .blast, .out). Must be generated using "blastn -query <reads> -db <adapter_db> -outfmt '6 std qlen'".
         pattern: "*.blast"
   - - meta1:
         type: map
