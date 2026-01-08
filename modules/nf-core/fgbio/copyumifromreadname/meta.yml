@@ -73,20 +73,20 @@ output:
       - fgbio:
           type: string
           description: The tool name
-      - fgbio --version 2>&1 | grep -oE '[0-9]+(\\.[0-9]+:
+      - "fgbio --version 2>&1 | sed -n 's/^Version: *//p'":
           type: string
           description: The command used to generate the version of the tool
 topics:
-  - versions:
-      - - process:
-            type: string
-            description: The process the versions were collected from
-        - tool:
-            type: string
-            description: The tool name
-        - version:
-            type: string
-            description: The version of the tool
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fgbio:
+          type: string
+          description: The tool name
+      - "fgbio --version 2>&1 | sed -n 's/^Version: *//p'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@sppearce"
 maintainers:
