@@ -53,8 +53,7 @@ output:
   reads:
     - - meta:
           type: map
-          description: Groovy Map containing sample information. e.g. `[ id:'sample1'
-            ]`
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1']`
       - "*.{bam,cram}":
           type: file
           description: Filtered BAM/CRAM file
@@ -63,12 +62,19 @@ output:
             - edam: http://edamontology.org/format_2572 # BAM
             - edam: http://edamontology.org/format_3462 # CRAM
   versions_samclip:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: versions.yml
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samclip:
+          type: string
+          description: The tool name
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
 authors:
   - "@emmcauley"
 maintainers:

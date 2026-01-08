@@ -13,7 +13,8 @@ process SAMCLIP {
 
     output:
     tuple val(meta), path("*.{bam,cram}"), emit: reads
-    path "versions.yml", topic: versions, emit: versions_samclip
+    tuple val("${task.process}"), val('samclip'), eval("samclip --version | sed 's/^.*samclip //g'"), topic: versions, emit: versions_samclip
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
