@@ -12,26 +12,44 @@ process SAMCLIP {
     tuple val(meta2), path(reference), path(reference_index)
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.bam"),  emit: bam,  optional: true
+    tuple val(meta), path("*.cram"), emit: cram, optional: true
     path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}.samclip"
+    def args       = task.ext.args   ?: ''   // samclip args
+    def args2      = task.ext.args2  ?: ''   // samtools sort (first, name sort) args
+    def args3      = task.ext.args3  ?: ''   // samtools fixmate args
+    def args4      = task.ext.args4  ?: ''   // samtools sort (second, coordinate sort) args
+    def prefix     = task.ext.prefix ?: "${meta.id}_samclip"
+    def extension  = args4.contains("--output-fmt cram") ? "cram" :
+                     args4.contains("-O cram")           ? "cram" :
+                     args4.contains("-O CRAM")           ? "cram" :
+                     "bam"
+    def reference_arg = extension == "cram" ? "--reference ${reference}" : ""
     def is_compressed = reference.getName().endsWith(".gz")
-    def ref_filename = reference.getName().replaceAll(/\.gz$/, "")
+    def ref_filename  = reference.getName().replaceAll(/\.gz$/, "")
+
+    if ("${bam}" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     # decompress reference if gzipped
-    ${is_compressed ? "gzip -c -d ${reference} > ${ref_filename}" : ""}
+    if [ "${is_compressed}" = "true" ]; then
+        gzip -c -d ${reference} > ${ref_filename}
+    fi
 
     samtools view -h --output-fmt sam ${bam} | \\
     samclip ${args} --ref ${ref_filename} | \\
-    samtools sort -n -O BAM -T /tmp | \\
-    samtools fixmate -m - - | \\
-    samtools sort -O BAM > ${prefix}.bam
+    samtools sort -n -O SAM ${args2} | \\
+    samtools fixmate -m ${args3} - - | \\
+    samtools sort ${args4} ${reference_arg} -O ${extension.toUpperCase()} -o ${prefix}.${extension}
+
+    # clean up decompressed reference
+    if [ "${is_compressed}" = "true" ]; then
+        rm -f ${ref_filename}
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -41,9 +59,16 @@ process SAMCLIP {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}.samclip"
+    def args4     = task.ext.args4  ?: ''
+    def prefix    = task.ext.prefix ?: "${meta.id}_samclip"
+    def extension = args4.contains("--output-fmt cram") ? "cram" :
+                    args4.contains("-O cram")           ? "cram" :
+                    args4.contains("-O CRAM")           ? "cram" :
+                    "bam"
+
+    if ("${bam}" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
-    touch ${prefix}.bam
+    touch ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

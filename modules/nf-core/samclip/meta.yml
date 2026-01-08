@@ -21,8 +21,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-
+          e.g. `[ id:'sample1' ]`
     - bam:
         type: file
         description: BAM file
@@ -33,30 +32,39 @@ input:
         type: map
         description: |
           Groovy Map containing fasta reference information
-          e.g. [ id:'test' ]
+          e.g. `[ id:'ref' ]`
     - reference:
         type: file
         description: |
           reference FASTA file
-        pattern: "*.{fasta,fa}"
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
     - reference_index:
         type: file
         description: |
           reference FASTA file index
-        pattern: "*.{fai}"
+        pattern: "*.fai"
         ontologies: []
 output:
   bam:
     - - meta:
           type: map
-          description: Groovy Map containing sample information. e.g. [ id:'test']
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
       - "*.bam":
           type: file
-          description: Filtered BAM
+          description: Filtered BAM file (when not outputting CRAM)
           ontologies:
             - edam: http://edamontology.org/format_2572 # BAM
+  cram:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - "*.cram":
+          type: file
+          description: Filtered CRAM file (when using --output-fmt cram or -O cram in ext.args4)
+          ontologies:
+            - edam: http://edamontology.org/format_3462 # CRAM
   versions:
     - versions.yml:
         type: file
