@@ -15,6 +15,15 @@
 # sample number related to group size. Note that we do not filter with an
 # awareness of the groups themselves, since this adds bias towards discovery
 # between those groups.
+#
+# This script supports the following options:
+#
+# - `--minimum_abundance`: Minimum value threshold for feature filtering.
+#   Set to a numeric value (e.g., 0.5) to enable, or to 'false'/'null' to disable.
+# - `--minimum_samples`: Minimum number of samples passing the abundance threshold.
+# - `--minimum_samples_not_na`: Minimum number of non-NA values per feature.
+# - `--grouping_variable`: Optional column in sample sheet for group-specific filtering.
+# - `--minimum_proportion`: Proportion-based filtering threshold.
 
 ################################################
 ################################################
@@ -100,16 +109,16 @@ most_variant_test <- function(matrix_data) {
 # Set up default options
 
 opt <- list(
-    abundance_matrix_file = '$abundance',
-    sample_file = '$samplesheet',
-    sample_id_col = NULL,
-    minimum_abundance = 1,
-    minimum_samples = 1,
-    minimum_proportion = 0,
-    grouping_variable = NULL,
-    minimum_proportion_not_na = 0.5,
-    minimum_samples_not_na = NULL,
-    most_variant_features = NULL
+    abundance_matrix_file = '$abundance',   # Path to input abundance matrix (TSV/CSV)
+    sample_file = '$samplesheet',           # Path to optional sample metadata file
+    sample_id_col = NULL,                   # Column name in samplesheet matching matrix columns
+    minimum_abundance = 1,                  # Abundance threshold (disabled if NULL/false)
+    minimum_samples = 1,                    # Minimum number of samples passing abundance filter
+    minimum_proportion = 0,                 # Proportion-based filtering threshold (optional)
+    grouping_variable = NULL,               # Grouping variable for stratified filtering (optional)
+    minimum_proportion_not_na = 0.5,        # Minimum proportion of non-NA values per feature
+    minimum_samples_not_na = NULL,          # Minimum count of non-NA samples per feature (optional)
+    most_variant_features = NULL            # Number of most variant rows to keep (optional)
 )
 opt_types <- lapply(opt, class)
 
