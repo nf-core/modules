@@ -3,7 +3,7 @@ process NACHO_NORMALIZE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container 'community.wave.seqera.io/library/r-dplyr_r-fs_r-ggplot2_r-nacho_pruned:033bc017f5f36b6d'
+    container 'community.wave.seqera.io/library/r-dplyr_r-fs_r-ggplot2_r-nacho_pruned:92aef6fc5eff932b'
 
     input:
     tuple val(meta) , path(rcc_files, stageAs: "input/*")
