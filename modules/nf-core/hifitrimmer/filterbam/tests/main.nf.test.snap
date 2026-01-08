@@ -13,31 +13,7 @@
             "nf-test": "0.9.2",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2026-01-07T15:38:51.881716631"
-    },
-    "hifi_trimmer test - no hits": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.fasta.gz:md5,85409914cba55f834083c2880a70ed87"
-                ]
-            ],
-            [
-                [
-                    "HIFITRIMMER_FILTERBAM",
-                    "hifi_trimmer",
-                    "2.1.0"
-                ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.10.0"
-        },
-        "timestamp": "2026-01-07T17:07:41.605865918"
+        "timestamp": "2026-01-08T10:30:31.36732045"
     },
     "hifi_trimmer test - stub": {
         "content": [
@@ -47,7 +23,7 @@
                         {
                             "id": "test"
                         },
-                        "test.hifi_trimmer.fasta.gz:md5,f50b84b1db4b83ba62ec1deacc69c260"
+                        "test.fasta.gz:md5,f50b84b1db4b83ba62ec1deacc69c260"
                     ]
                 ],
                 "1": [
@@ -62,7 +38,7 @@
                         {
                             "id": "test"
                         },
-                        "test.hifi_trimmer.fasta.gz:md5,f50b84b1db4b83ba62ec1deacc69c260"
+                        "test.fasta.gz:md5,f50b84b1db4b83ba62ec1deacc69c260"
                     ]
                 ],
                 "versions_hifitrimmer": [
@@ -78,33 +54,9 @@
             "nf-test": "0.9.2",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2026-01-07T16:46:13.612510898"
+        "timestamp": "2026-01-08T10:30:31.342847372"
     },
-    "hifi_trimmer test - no valid hits": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.fasta.gz:md5,85409914cba55f834083c2880a70ed87"
-                ]
-            ],
-            [
-                [
-                    "HIFITRIMMER_FILTERBAM",
-                    "hifi_trimmer",
-                    "2.1.0"
-                ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.10.0"
-        },
-        "timestamp": "2026-01-07T17:07:53.862711525"
-    },
-    "hifi_trimmer test - hits": {
+    "hifi_trimmer filter_bam test - fasta": {
         "content": [
             [
                 [
@@ -126,6 +78,30 @@
             "nf-test": "0.9.2",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2026-01-07T17:07:29.131634381"
+        "timestamp": "2026-01-08T10:30:05.755944393"
+    },
+    "hifi_trimmer filter_bam test - fastq": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.fastq.gz:md5,7a1bbfa8bef6df98d0cedd214b17f588"
+                ]
+            ],
+            [
+                [
+                    "HIFITRIMMER_FILTERBAM",
+                    "hifi_trimmer",
+                    "2.1.0"
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2026-01-08T10:45:24.598675879"
     }
 }

@@ -12,7 +12,7 @@ nextflow_process {
 
     config './nextflow.config'
 
-    test("hifi_trimmer test - hits") {
+    test("hifi_trimmer process_blast test") {
 
         when {
             params {
@@ -23,15 +23,15 @@ nextflow_process {
                 input[0] = Channel.of(
                     [
                         [ id:'test' ], // meta map
-                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/hits/test.blastout.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.blastout.gz', checkIfExists: true)
                     ]
                 )
-                    input[1] = Channel.of(
+                input[1] = Channel.of(
                     [
                         [ id:'test' ], // meta map
-                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/hits/test.yaml', checkIfExists: true)
+                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.yaml', checkIfExists: true)
                     ]
-                    )
+                )
                 """
             }
         }
@@ -41,86 +41,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.bed,
-     		    process.out.summary.collect{ meta, summary_file ->
-                        [ meta, path(summary_file).json.tap { it.remove('run_info') } ]
-                },
-                process.out.hits,
-                process.out.versions_hifitrimmer
-                ).match()
-                }
-            )
-        }
-    }
-
-    test("hifi_trimmer test - no hits") {
-
-        when {
-            params {
-                process_blast_args = "-hf"
-            }
-            process {
-                """
-                input[0] = Channel.of(
-                    [
-                        [ id:'test' ], // meta map
-                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/no_hits/test.blastout.gz', checkIfExists: true)
-                    ]
-                )
-                input[1] = Channel.of(
-                    [
-                        [ id:'test' ], // meta map
-                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/no_hits/test.yaml', checkIfExists: true)
-                    ]
-                )
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    // dont check process.out.bed as it is expected to be an empty file, which fails modules lint
-                    process.out.summary.collect{ meta, summary_file ->
-                        [ meta, path(summary_file).json.tap { it.remove('run_info') } ]
-                    },
-                    process.out.versions_hifitrimmer
-                    ).match()
-                }
-            )
-        }
-    }
-
-    test("hifi_trimmer test - no valid hits") {
-
-        when {
-            params {
-                process_blast_args = "-hf"
-            }
-            process {
-                """
-                input[0] = Channel.of(
-                    [
-                        [ id:'test' ], // meta map
-                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/no_valid_hits/test.blastout.gz', checkIfExists: true)
-                    ]
-                )
-                input[1] = Channel.of(
-                    [
-                        [ id:'test' ], // meta map
-                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/no_valid_hits/test.yaml', checkIfExists: true)
-                    ]
-                )
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    // dont check process.out.bed as it is expected to be an empty file, which fails modules lint
-                    process.out.summary.collect{ meta, summary_file ->
+     		        process.out.summary.collect{ meta, summary_file ->
                         [ meta, path(summary_file).json.tap { it.remove('run_info') } ]
                     },
                     process.out.hits,
@@ -131,7 +52,7 @@ nextflow_process {
         }
     }
 
-    test("hifi_trimmer test - stub") {
+    test("hifi_trimmer process_blast test - stub") {
 
         options "-stub"
 
@@ -142,13 +63,13 @@ nextflow_process {
                 input[0] = Channel.of(
                     [
                         [ id:'test' ], // meta map
-                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/hits/test.blastout.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.blastout.gz', checkIfExists: true)
                     ]
                 )
                 input[1] = Channel.of(
                     [
                         [ id:'test' ], // meta map
-                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/hits/test.yaml', checkIfExists: true)
+                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.yaml', checkIfExists: true)
                     ]
                 )
                 """

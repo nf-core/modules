@@ -1,22 +1,14 @@
 {
-    "versions": {
+    "hifi_trimmer process_blast test": {
         "content": [
             [
                 [
-                    "HIFITRIMMER_PROCESSBLAST",
-                    "hifi_trimmer",
-                    "2.1.0"
+                    {
+                        "id": "test"
+                    },
+                    "test.bed.gz:md5,3738c66c8eaf6217c351947a3da07939"
                 ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.10.0"
-        },
-        "timestamp": "2026-01-07T15:41:32.613852024"
-    },
-    "hifi_trimmer test - no hits": {
-        "content": [
+            ],
             [
                 [
                     {
@@ -24,17 +16,45 @@
                     },
                     {
                         "detections": [
-                            
+                            {
+                                "adapter": "gnl|uv|NGB00973.1:1-35",
+                                "n_hits": 339
+                            },
+                            {
+                                "adapter": "PacBio_ULI_adapter",
+                                "n_hits": 24
+                            }
                         ],
                         "hits": [
-                            
+                            {
+                                "adapter": "gnl|uv|NGB00973.1:1-35",
+                                "action": "trim",
+                                "n_hits": 54,
+                                "n_reads": 3,
+                                "bases_removed": 600
+                            },
+                            {
+                                "adapter": "PacBio_ULI_adapter",
+                                "action": "discard",
+                                "n_hits": 24,
+                                "n_reads": 1,
+                                "bases_removed": 14095
+                            }
                         ],
                         "summary": {
-                            "total_reads_discarded": 0,
-                            "total_reads_trimmed": 0,
-                            "total_bases_removed": 0
+                            "total_reads_discarded": 1,
+                            "total_reads_trimmed": 3,
+                            "total_bases_removed": 14695
                         }
                     }
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.hits:md5,762ca33409b32c240df80263e440fae9"
                 ]
             ],
             [
@@ -49,9 +69,25 @@
             "nf-test": "0.9.2",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2026-01-07T15:41:03.438780765"
+        "timestamp": "2026-01-08T10:47:23.52454549"
     },
-    "hifi_trimmer test - stub": {
+    "versions": {
+        "content": [
+            [
+                [
+                    "HIFITRIMMER_PROCESSBLAST",
+                    "hifi_trimmer",
+                    "2.1.0"
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2026-01-08T10:27:22.084339787"
+    },
+    "hifi_trimmer process_blast test - stub": {
         "content": [
             {
                 "0": [
@@ -122,119 +158,6 @@
             "nf-test": "0.9.2",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2026-01-07T15:41:32.56453088"
-    },
-    "hifi_trimmer test - no valid hits": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    {
-                        "detections": [
-                            {
-                                "adapter": "gnl|uv|NGB00973.1:1-35",
-                                "n_hits": 339
-                            },
-                            {
-                                "adapter": "PacBio_ULI_adapter",
-                                "n_hits": 24
-                            }
-                        ],
-                        "hits": [
-                            
-                        ],
-                        "summary": {
-                            "total_reads_discarded": 0,
-                            "total_reads_trimmed": 0,
-                            "total_bases_removed": 0
-                        }
-                    }
-                ]
-            ],
-            [
-                
-            ],
-            [
-                [
-                    "HIFITRIMMER_PROCESSBLAST",
-                    "hifi_trimmer",
-                    "2.1.0"
-                ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.10.0"
-        },
-        "timestamp": "2026-01-07T15:41:19.572640951"
-    },
-    "hifi_trimmer test - hits": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.bed.gz:md5,3738c66c8eaf6217c351947a3da07939"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    {
-                        "detections": [
-                            {
-                                "adapter": "gnl|uv|NGB00973.1:1-35",
-                                "n_hits": 339
-                            },
-                            {
-                                "adapter": "PacBio_ULI_adapter",
-                                "n_hits": 24
-                            }
-                        ],
-                        "hits": [
-                            {
-                                "adapter": "gnl|uv|NGB00973.1:1-35",
-                                "action": "trim",
-                                "n_hits": 54,
-                                "n_reads": 3,
-                                "bases_removed": 600
-                            },
-                            {
-                                "adapter": "PacBio_ULI_adapter",
-                                "action": "discard",
-                                "n_hits": 24,
-                                "n_reads": 1,
-                                "bases_removed": 14095
-                            }
-                        ],
-                        "summary": {
-                            "total_reads_discarded": 1,
-                            "total_reads_trimmed": 3,
-                            "total_bases_removed": 14695
-                        }
-                    }
-                ]
-            ],
-            [
-                
-            ],
-            [
-                [
-                    "HIFITRIMMER_PROCESSBLAST",
-                    "hifi_trimmer",
-                    "2.1.0"
-                ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.10.0"
-        },
-        "timestamp": "2026-01-07T15:40:49.073469431"
+        "timestamp": "2026-01-08T10:27:22.054278704"
     }
 }

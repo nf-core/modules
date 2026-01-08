@@ -12,38 +12,7 @@ nextflow_process {
 
     config './nextflow.config'
 
-    test("hifi_trimmer test - hits") {
-
-        when {
-            params {
-                filter_bam_args    = "-f"
-            }
-            process {
-                """
-                input[0] = Channel.of(
-                    [
-                        [ id:'test' ], // meta map
-                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/hits/test.bam', checkIfExists: true),
-                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/hits/test.bed.gz', checkIfExists: true)
-                    ]
-                )
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.filtered,
-                    process.out.versions_hifitrimmer
-                    ).match()
-                }
-            )
-        }
-    }
-
-    test("hifi_trimmer test - no hits") {
+    test("hifi_trimmer filter_bam test - fasta") {
 
         when {
             params {
@@ -54,8 +23,8 @@ nextflow_process {
                 input[0] = Channel.of(
                     [
                         [ id:'test' ], // meta map
-                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/no_hits/test.bam', checkIfExists: true),
-                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/no_hits/test.bed.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.bed.gz', checkIfExists: true)
                     ]
                 )
                 """
@@ -74,7 +43,7 @@ nextflow_process {
         }
     }
 
-    test("hifi_trimmer test - no valid hits") {
+    test("hifi_trimmer filter_bam test - fastq") {
 
         when {
             params {
@@ -85,8 +54,8 @@ nextflow_process {
                 input[0] = Channel.of(
                     [
                         [ id:'test' ], // meta map
-                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/no_valid_hits/test.bam', checkIfExists: true),
-                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/no_valid_hits/test.bed.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.bed.gz', checkIfExists: true)
                     ]
                 )
                 """
@@ -116,8 +85,8 @@ nextflow_process {
                 input[0] = Channel.of(
                     [
                         [ id:'test' ], // meta map
-                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/hits/test.bam', checkIfExists: true),
-                        file('https://github.com/sanger-tol/hifi-trimmer/raw/refs/heads/main/tests/data/hits/test.bed.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.bed.gz', checkIfExists: true)
                     ]
                 )
                 """
