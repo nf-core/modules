@@ -1,3 +1,5 @@
+nextflow.preview.types = true
+
 process TETRANSCRIPTS {
     tag "$meta_c.id"
     label 'process_single'
@@ -9,16 +11,26 @@ process TETRANSCRIPTS {
         'biocontainers/tetranscripts:2.2.3--pyh7cba7a3_0' }"
 
     input:
-    tuple val(meta_t), path(bam_t)
-    tuple val(meta_c), path(bam_c)
-    tuple val(meta_ggtf), path(g_gtf)
-    tuple val(meta_tegtf), path(te_gtf)
+    (meta_t, bam_t, bai_t): Tuple<Map, Path, Path?>
+    (meta_c, bam_c, bai_c): Tuple<Map, Path, Path?>
+    (meta_ggtf, g_gtf): Tuple<Map, Path>
+    (meta_tegtf, te_gtf): Tuple<Map, Path>
+    //tuple val(meta_t), path(bam_t), path?(bai_t)
+    //tuple val(meta_c), path(bam_c)
+    //tuple val(meta_ggtf), path(g_gtf)
+    //tuple val(meta_tegtf), path(te_gtf)
 
     output:
     // TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
-    tuple val(meta_t), path("*.cntTable"), emit: countTable
-    tuple val(meta_t), path("*.R"), emit: log2fc
-    path "versions.yml"           , emit: versions
+    countTable = tuple(val(meta_t), files('*.cntTable'))
+    log2fc = tuple(val(meta_t), files('*.R'))
+    versions = file('versions.yml')
+    DGE = tuple(val(meta_t), file('*.txt', optional: true))
+
+
+    //tuple val(meta_t), path("*.cntTable"), emit: countTable
+    //tuple val(meta_t), path("*.R"), emit: log2fc
+    //path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
