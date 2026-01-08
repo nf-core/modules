@@ -24,6 +24,8 @@
 # - `--minimum_samples_not_na`: Minimum number of non-NA values per feature.
 # - `--grouping_variable`: Optional column in sample sheet for group-specific filtering.
 # - `--minimum_proportion`: Proportion-based filtering threshold.
+# - `--minimum_proportion_not_na`: Minimum proportion of non-NA values required per feature.
+# - `--most_variant_features`: Optional integer specifying the number of most-variant features to retain.
 
 ################################################
 ################################################
