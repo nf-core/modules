@@ -22,7 +22,7 @@ process ENSEMBLVEP_VEP {
     tuple val(meta), path("*.tab.gz"), emit: tab, optional: true
     tuple val(meta), path("*.json.gz"), emit: json, optional: true
     path "*.html", emit: report, optional: true
-    tuple val("${task.process}"), val('ensemblvep'), eval("vep --help 2>&1 | sed 's/ //g' | grep ensembl-vep | cut -f 2 -d ':'"), topic: versions, emit: versions_ensemblvep
+    tuple val("${task.process}"), val('ensemblvep'), eval("vep --help | sed -n '/ensembl-vep/s/.*: //p'"), topic: versions, emit: versions_ensemblvep
     tuple val("${task.process}"), val('tabix'), eval("tabix -h 2>&1 | grep -oP 'Version:\\s*\\K[^\\s]+'"), topic: versions, emit: versions_tabix
 
     when:

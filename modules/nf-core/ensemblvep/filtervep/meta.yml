@@ -51,7 +51,7 @@ output:
       - ensemblvep:
           type: string
           description: The tool name
-      - "vep --help 2>&1 | sed 's/ //g' | grep ensembl-vep | cut -f 2 -d ':'":
+      - "vep --help | sed -n '/ensembl-vep/s/.*: //p'":
           type: string
           description: The command used to generate the version of the tool
 topics:
@@ -62,7 +62,7 @@ topics:
       - ensemblvep:
           type: string
           description: The tool name
-      - "vep --help 2>&1 | sed 's/ //g' | grep ensembl-vep | cut -f 2 -d ':'":
+      - "vep --help | sed -n '/ensembl-vep/s/.*: //p'":
           type: string
           description: The command used to generate the version of the tool
 authors:

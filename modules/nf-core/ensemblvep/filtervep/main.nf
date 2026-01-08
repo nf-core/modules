@@ -13,7 +13,7 @@ process ENSEMBLVEP_FILTERVEP {
 
     output:
     tuple val(meta), path("*.${extension}"), emit: output
-    tuple val("${task.process}"), val('ensemblvep'), eval("vep --help 2>&1 | sed 's/ //g' | grep ensembl-vep | cut -f 2 -d ':'"), topic: versions, emit: versions_ensemblvep
+    tuple val("${task.process}"), val('ensemblvep'), eval("vep --help | sed -n '/ensembl-vep/s/.*: //p'"), topic: versions, emit: versions_ensemblvep
 
     when:
     task.ext.when == null || task.ext.when
