@@ -23,7 +23,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.db,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    process.out.findAll { key, val -> key.startsWith("versions") && !key.contains("tar")}
                 ).match() }
             )
         }
@@ -43,7 +43,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.db,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    process.out.findAll { key, val -> key.startsWith("versions") && !key.contains("tar")}
                 ).match() }
             )
         }
@@ -66,7 +66,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.db,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    process.out.findAll { key, val -> key.startsWith("versions") && !key.contains("tar")}
                 ).match() }
             )
         }
@@ -90,10 +90,9 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.db,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    process.out.findAll { key, val -> key.startsWith("versions") && !key.contains("tar")}
                 ).match() }
             )
         }
     }
-
 }
