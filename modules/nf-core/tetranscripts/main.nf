@@ -16,10 +16,10 @@ process TETRANSCRIPTS
     (meta_tegtf, te_gtf): Tuple<Map,Path>
 
     output:
-    countTable= tuple(val(meta_t), files('*.cntTable'))
-    log2fc= tuple(val(meta_t), files('*.R'))
+    countTable= files('*.cntTable')
+    log2fc= files('*.R')
     versions= file('versions.yml')
-    DGE= tuple(val(meta_t), file('*.txt', optional: true))
+    DGE= file('*.txt', optional: true)
 
     when:
     task.ext.when == null || task.ext.when
