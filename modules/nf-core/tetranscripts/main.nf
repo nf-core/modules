@@ -1,6 +1,7 @@
 nextflow.preview.types = true
 
-process tetranscripts {
+process TETRANSCRIPTS
+{
     tag "$meta_c.id"
     label 'process_single'
     conda "${moduleDir}/environment.yml"
@@ -9,10 +10,10 @@ process tetranscripts {
         'biocontainers/tetranscripts:2.2.3--pyh7cba7a3_0' }"
 
     input:
-    (meta_t, bam_t, bai_t): Tuple<Map, Path, Path?>
-    (meta_c, bam_c, bai_c): Tuple<Map, Path, Path?>
-    (meta_ggtf, g_gtf): Tuple<Map, Path>
-    (meta_tegtf, te_gtf): Tuple<Map, Path>
+    (meta_t, bam_t, bai_t): Tuple<Map,Path,Path?>
+    (meta_c, bam_c, bai_c): Tuple<Map,Path,Path?>
+    (meta_ggtf, g_gtf): Tuple<Map,Path>
+    (meta_tegtf, te_gtf): Tuple<Map,Path>
 
     output:
     countTable= tuple(val(meta_t), files('*.cntTable'))
