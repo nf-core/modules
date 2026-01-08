@@ -4,8 +4,8 @@ process FGBIO_COPYUMIFROMREADNAME {
 
     conda "${moduleDir}/environment.yml"
     container workflow.containerEngine in ['singularity', 'apptainer'] ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5f/5f3f7e07c7f261ec7fd86168d8a273624cc0aace8e28eb20e37ddfb2f8f9c75b/data' :
-        'community.wave.seqera.io/library/fgbio:3.0.0--c1b70e1869d6fa49'
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fe/fe9479adc5e6e0a1c125d346fdfa0dd313834249e9c55c40e8d44ec3a48c6559/data' :
+        'community.wave.seqera.io/library/fgbio:3.1.1--6c9a88faf1d62b6c'
 
     input:
     tuple val(meta), path(bam), path(bai)
