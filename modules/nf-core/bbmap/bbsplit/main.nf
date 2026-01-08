@@ -64,6 +64,7 @@ process BBMAP_BBSPLIT {
         }
         fastq_in  = meta.single_end ? "in=${reads}" : "in=${reads[0]} in2=${reads[1]}"
         fastq_out = meta.single_end ? "basename=${prefix}_%.fastq.gz" : "basename=${prefix}_%_#.fastq.gz"
+        fastq_unmapped = meta.single_end ? "outu=${prefix}_unmapped.fastq.gz" : "outu=${prefix}_unmapped_#.fastq.gz"
         refstats_cmd = 'refstats=' + prefix + '.stats.txt'
     }
     """
@@ -93,6 +94,7 @@ process BBMAP_BBSPLIT {
         $fastq_in \\
         $fastq_out \\
         $refstats_cmd \\
+        $fastq_unmapped \\
         $args 2>| >(tee ${prefix}.log >&2)
 
     # Summary files will have an absolute path that will make the index
@@ -128,6 +130,7 @@ process BBMAP_BBSPLIT {
         echo '' | gzip >  ${prefix}_primary.fastq.gz
         ${other_refs}
         touch ${prefix}.stats.txt
+        touch ${prefix}_unmapped.fastq.gz
     fi
 
     touch ${prefix}.log
