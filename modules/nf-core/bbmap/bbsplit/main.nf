@@ -46,6 +46,7 @@ process BBMAP_BBSPLIT {
     def fastq_out=''
     def index_files=''
     def refstats_cmd=''
+    def fastq_unmapped=''
     def use_index = index ? true : false
 
     if (only_build_index) {
