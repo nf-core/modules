@@ -12,9 +12,8 @@ process SAMCLIP {
     tuple val(meta2), path(reference), path(reference_index)
 
     output:
-    tuple val(meta), path("*.bam"),  emit: bam,  optional: true
-    tuple val(meta), path("*.cram"), emit: cram, optional: true
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.{bam,cram}"), emit: reads
+    path "versions.yml", topic: versions, emit: versions_samclip
 
     when:
     task.ext.when == null || task.ext.when

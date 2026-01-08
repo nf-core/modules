@@ -1,11 +1,14 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: samclip
-description: Filters SAM file for soft and hard clipped alignments
+description: Filters SAM/BAM/CRAM files for soft and hard clipped alignments
 keywords:
   - soft-clipped reads
   - hard-clipped reads
+  - clipping
   - genomics
   - sam
+  - bam
+  - cram
 tools:
   - samclip:
       description: Filters SAM file for soft and hard clipped alignments
@@ -47,25 +50,19 @@ input:
         pattern: "*.fai"
         ontologies: []
 output:
-  bam:
+  reads:
     - - meta:
           type: map
-          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
-      - "*.bam":
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1'
+            ]`
+      - "*.{bam,cram}":
           type: file
-          description: Filtered BAM file (when not outputting CRAM)
+          description: Filtered BAM/CRAM file
+          pattern: "*.{bam,cram}"
           ontologies:
             - edam: http://edamontology.org/format_2572 # BAM
-  cram:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
-      - "*.cram":
-          type: file
-          description: Filtered CRAM file (when using --output-fmt cram or -O cram in ext.args4)
-          ontologies:
             - edam: http://edamontology.org/format_3462 # CRAM
-  versions:
+  versions_samclip:
     - versions.yml:
         type: file
         description: File containing software versions
