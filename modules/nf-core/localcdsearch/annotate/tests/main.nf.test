@@ -15,8 +15,7 @@ nextflow_process {
             script "../../download/main.nf"
             process {
                 """
-                input[0] = file("${outputDir}")
-                input[1] = ['smart']
+                input[0] = ['smart']
                 """
             }
         }
