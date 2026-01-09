@@ -32,5 +32,6 @@ process LOCALCDSEARCH_DOWNLOAD {
     def args = task.ext.args ?: ''
     """
     echo $args
+    mkdir database/
     """
 }
