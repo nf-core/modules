@@ -1,0 +1,43 @@
+process NIRVANA {
+    tag "${meta.id}"
+    label 'process_medium'
+
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0b/0be2df22eec1d7042d164febf61513ff31d5895a6ceecc6c3961364496b0be5a/data'
+        : 'community.wave.seqera.io/library/nirvana:3.18.1--910f092f78f85c70'}"
+
+    input:
+    tuple val(meta), path(vcf)
+    tuple val(meta2), path(reference)
+    tuple val(meta3), path(cache)
+    tuple val(meta4), path(supplementary_annotations)
+
+    output:
+    tuple val(meta), path("*.json.gz"), emit: json
+    tuple val(meta), path("*.json.gz"), emit: jsi
+    tuple val("${task.process}"), val('nirvana'), eval("Nirvana -v 2>&1 | awk '{print \$2}' | cut -d'-' -f1"), topic: versions, emit: versions_nirvana
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def sa_command = supplementary_annotations ? "--sd ${supplementary_annotations}" : ""
+    """
+    Nirvana \\
+        -i ${vcf} \\
+        -r ${reference} \\
+        -c ${cache} \\
+        ${sa_command} \\
+        ${args} \\
+        -o ${prefix}
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.json.gz
+    """
+}

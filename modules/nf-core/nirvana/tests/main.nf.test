@@ -1,0 +1,101 @@
+nextflow_process {
+
+    name "Test Process NIRVANA"
+    script "../main.nf"
+    process "NIRVANA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "nirvana"
+    tag "untar"
+
+    setup {
+        run("UNTAR", alias: "UNTAR_CACHE") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'cache' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/nirvana/cache.tar.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("UNTAR", alias: "UNTAR_SA") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'sa' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/nirvana/supplementary_annotations.tar.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - vcf") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'reference' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/nirvana/SARS-CoV-2.ASM985889v3.dat', checkIfExists: true)
+                ]
+                input[2] = UNTAR_CACHE.out.untar
+                input[3] = UNTAR_SA.out.untar
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.json[0][1]).linesGzip[0..2],
+                    path(process.out.jsi[0][1]).linesGzip[0..2],
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - vcf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'reference' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/nirvana/SARS-CoV-2.ASM985889v3.dat', checkIfExists: true)
+                ]
+                input[2] = UNTAR_CACHE.out.untar
+                input[3] = UNTAR_SA.out.untar
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
