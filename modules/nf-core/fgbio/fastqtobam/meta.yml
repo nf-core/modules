@@ -32,21 +32,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.bam":
+      - "*.{bam,cram}":
           type: file
-          description: Unaligned, unsorted BAM file
-          pattern: "*.{bam}"
-          ontologies: []
-  cram:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.cram":
-          type: file
-          description: Unaligned, unsorted CRAM file
-          pattern: "*.{cram}"
+          description: Unaligned, unsorted BAM or CRAM file
+          pattern: "*.{bam,cram}"
           ontologies: []
   versions_fgbio:
     - - ${task.process}:

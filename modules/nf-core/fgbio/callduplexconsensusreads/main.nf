@@ -14,7 +14,7 @@ process FGBIO_CALLDUPLEXCONSENSUSREADS {
 
     output:
     tuple val(meta), path("${prefix}.bam"), emit: bam
-    tuple val("${task.process}"), val('fgbio'), eval("fgbio --version 2>&1 | sed -n 's/^Version:[[:space:]]*//p'"), topic: versions, emit: versions_fgbio
+    tuple val("${task.process}"), val('fgbio'), eval("fgbio --version 2>&1 | sed -n 's/Version: *//p'"), topic: versions, emit: versions_fgbio
 
     when:
     task.ext.when == null || task.ext.when

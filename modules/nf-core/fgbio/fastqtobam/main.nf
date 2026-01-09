@@ -11,8 +11,7 @@ process FGBIO_FASTQTOBAM {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*.bam"),  emit: bam,  optional: true
-    tuple val(meta), path("*.cram"), emit: cram, optional: true
+    tuple val(meta), path("*.{bam,cram}"), emit: bam
     tuple val("${task.process}"), val('fgbio'), eval("fgbio --version 2>&1 | sed -n 's/^Version:[[:space:]]*//p'"), topic: versions, emit: versions_fgbio
 
     when:
