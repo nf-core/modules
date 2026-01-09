@@ -20,6 +20,7 @@ process LOCALCDSEARCH_DOWNLOAD {
     script:
     def args = task.ext.args ?: ''
     """
+    mkdir database/
     local-cd-search \\
         download \\
         ${args} \\
