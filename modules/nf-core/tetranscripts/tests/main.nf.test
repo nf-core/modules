@@ -36,7 +36,7 @@ nextflow_process {
                 ]
 		input[3] = [
                     [ id:'te_gtf' ],
-                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_data/GRCh38_GENCODE_rmsk_TE_chr21.gtf', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/hanalysis/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/genome/chr21/sequence/GRCh38_GENCODE_rmsk_TE_chr21.gtf', checkIfExists: true),
                 ]
                 """
 		
@@ -80,7 +80,7 @@ nextflow_process {
                 ]
                 input[3] = [
                     [ id:'te_gtf' ],
-                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_data/GRCh38_GENCODE_rmsk_TE_chr21.gtf', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/hanalysis/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/genome/chr21/sequence/GRCh38_GENCODE_rmsk_TE_chr21.gtf', checkIfExists: true),
                 ]                
 
                 """
