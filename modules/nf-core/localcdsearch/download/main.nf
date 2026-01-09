@@ -11,7 +11,7 @@ process LOCALCDSEARCH_DOWNLOAD {
     val databases
 
     output:
-    path download_path, emit: db
+    path('database/'), emit: db
     tuple val("${task.process}"), val('local-cd-search'), eval("echo '0.3.0'"), topic: versions, emit: versions_localcdsearch
 
     when:
