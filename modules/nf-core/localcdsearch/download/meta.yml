@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "localcdsearch_download"
-description: A command-line tool for local protein domain annotation using NCBI's Conserved Domain Database (CDD)
+description: A command-line tool for local protein domain annotation using
+  NCBI's Conserved Domain Database (CDD)
 keywords:
   - cdd
   - rpsblast
@@ -12,12 +12,11 @@ keywords:
 tools:
   - "localcdsearch":
       description: "Protein annotation using local PSSM databases from CDD."
-      homepage: "None"
-      documentation: "None"
+      homepage: "https://github.com/apcamargo/local-cd-search"
+      documentation: "https://github.com/apcamargo/local-cd-search"
       tool_dev_url: "https://github.com/apcamargo/local-cd-search"
-      doi: ""
       licence: ["MIT"]
-      identifier: null
+      identifier: ""
 
 input:
   - download_path:
@@ -28,16 +27,13 @@ input:
       type: list
       description: |
         List of database names to download. Can be a single database name or multiple names.
-        Valid options: cdd, cdd_ncbi, cog, kog, pfam, prk, smart, tigr 
+        Valid options: cdd, cdd_ncbi, cog, kog, pfam, prk, smart, tigr
       pattern: "cdd|cdd_ncbi|cog|kog|pfam|prk|smart|tigr"
 output:
   db:
-    - ${download_path}/:
+    - download_path:
         type: directory
-        description: |
-          Directory containing the CDD database files, located at download_path/.
-          Contains subdirectories for the specified databases and a 'data' directory with metadata files.
-        pattern: "*/"
+        description: Directory containing downloaded CDD databases
   versions_localcdsearch:
     - - ${task.process}:
           type: string
