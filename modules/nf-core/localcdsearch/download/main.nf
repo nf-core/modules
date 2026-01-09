@@ -23,7 +23,7 @@ process LOCALCDSEARCH_DOWNLOAD {
     """
     local-cd-search \\
         download \\
-        $args \\
+        ${args} \\
         ${download_path} \\
         ${databases.join(' ')}
     """
