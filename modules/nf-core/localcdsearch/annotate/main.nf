@@ -8,7 +8,7 @@ process LOCALCDSEARCH_ANNOTATE {
         'biocontainers/local-cd-search:0.3.0--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta) , path(fasta)
+    tuple val(meta), path(fasta)
     path db
     val sites
 
