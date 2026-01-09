@@ -30,6 +30,8 @@ output:
     - "database/":
         type: directory
         description: Directory containing downloaded CDD databases
+        ontologies:
+          - edam: http://edamontology.org/data_1049 # The name of a directory
   versions_localcdsearch:
     - - ${task.process}:
           type: string
