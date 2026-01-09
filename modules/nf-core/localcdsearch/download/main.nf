@@ -8,7 +8,6 @@ process LOCALCDSEARCH_DOWNLOAD {
         'biocontainers/local-cd-search:0.3.0--pyhdfd78af_0' }"
 
     input:
-    path download_path
     val databases
 
     output:
