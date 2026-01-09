@@ -2,7 +2,6 @@ process TETRANSCRIPTS {
     tag "$meta_c.id"
     label 'process_single'
 
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/tetranscripts:2.2.3--pyh7cba7a3_0':
@@ -15,7 +14,6 @@ process TETRANSCRIPTS {
     tuple val(meta_tegtf), path(te_gtf)
 
     output:
-    // TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
     tuple val(meta_t), path("*.cntTable"), emit: countTable
     tuple val(meta_t), path("*.R"), emit: log2fc
     path "versions.yml"           , emit: versions
