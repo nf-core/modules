@@ -14,7 +14,6 @@ tools:
       homepage: "https://illumina.github.io/NirvanaDocumentation/"
       documentation: "https://illumina.github.io/NirvanaDocumentation/"
       tool_dev_url: "https://github.com/Illumina/Nirvana"
-      doi: ""
       licence: ["GPL v3"]
       identifier: biotools:nirvana
 
@@ -47,6 +46,9 @@ input:
     - cache:
         type: directory
         description: Nirvana cache directory
+    - cache_prefix:
+        type: string
+        description: Prefix for cache files (e.g., 'SARS-CoV-2' for files like SARS-CoV-2.transcripts.ndb)
   - - meta4:
         type: map
         description: |
@@ -69,6 +71,16 @@ output:
           pattern: "*.json.gz"
           ontologies:
             - edam: "http://edamontology.org/format_3464" # JSON
+  jsi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.json.gz.jsi":
+          type: file
+          description: JSON index file for the annotations
+          pattern: "*.json.gz.jsi"
   versions_nirvana:
     - - "${task.process}":
           type: string
