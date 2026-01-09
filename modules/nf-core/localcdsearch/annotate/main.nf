@@ -4,7 +4,7 @@ process LOCALCDSEARCH_ANNOTATE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/local-cd-search:0.3.0--pyhdfd78af_0' :
+        'quay.io/biocontainers/local-cd-search:0.3.0--pyhdfd78af_0' :
         'biocontainers/local-cd-search:0.3.0--pyhdfd78af_0' }"
 
     input:
