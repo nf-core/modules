@@ -236,7 +236,7 @@ jobs:
         with:
           python-version: "3.14"
 
-      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+      - uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5
         id: cache-pip-pytest
         with:
           path: ~/.cache/pip
@@ -269,7 +269,7 @@ jobs:
 
       - name: Set up Conda
         if: matrix.profile == 'conda'
-        uses: conda-incubator/setup-miniconda@505e6394dae86d6a5c7fbb6e3fb8938e3e863830 # v3
+        uses: conda-incubator/setup-miniconda@835234971496cad1653abb28a638a281cf32541f # v3
         with:
           auto-update-conda: true
           conda-solver: libmamba
@@ -297,7 +297,7 @@ jobs:
 
       - name: Upload logs on failure
         if: failure()
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: logs-${{ matrix.profile }}-${{ steps.parsed.outputs.result }}
           path: |
