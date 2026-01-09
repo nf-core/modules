@@ -51,11 +51,6 @@ process SAMCLIP {
         rm -f ${ref_filename}
     fi
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samclip: \$(echo \$(samclip --version 2>&1) | sed 's/^.*samclip //g' )
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -70,10 +65,5 @@ process SAMCLIP {
     """
     touch ${prefix}.${extension}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samclip: \$(echo \$(samclip --version 2>&1) | sed 's/^.*samclip //g' )
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }
