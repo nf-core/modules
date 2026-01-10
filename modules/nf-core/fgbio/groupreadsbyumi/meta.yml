@@ -78,7 +78,7 @@ output:
       - fgbio:
           type: string
           description: The tool name
-      - "fgbio --version 2>&1 | sed -n 's/Version: *//p'":
+      - "echo $(fgbio --version 2>&1 | tr -d '[:cntrl:]' ) | sed -e 's/^.*Version: //;s/\\[.*$//'":
           type: string
           description: The command used to generate the version of the tool
 topics:
@@ -89,7 +89,7 @@ topics:
       - fgbio:
           type: string
           description: The tool name
-      - "fgbio --version 2>&1 | sed -n 's/Version: *//p'":
+      - "echo $(fgbio --version 2>&1 | tr -d '[:cntrl:]' ) | sed -e 's/^.*Version: //;s/\\[.*$//'":
           type: string
           description: The command used to generate the version of the tool
 authors:
