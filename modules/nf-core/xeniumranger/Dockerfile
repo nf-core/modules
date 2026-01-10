@@ -10,20 +10,20 @@ RUN apt-get update --allow-releaseinfo-change \
 
 # copy over xeniumranger
 # the latest version of the xeniumranger tool has been downloaded from https://www.10xgenomics.com/support/software/xenium-ranger/downloads
-COPY xeniumranger-3.0.1.tar.gz /xeniumranger-3.0.1.tar.gz
+COPY xeniumranger-4.0.0.tar.gz /xeniumranger-4.0.0.tar.gz
 
 # install xenium ranger
-RUN tar -xzvf /xeniumranger-3.0.1.tar.gz && \
-    rm /xeniumranger-3.0.1.tar.gz
+RUN tar -xzvf /xeniumranger-4.0.0.tar.gz && \
+    rm /xeniumranger-4.0.0.tar.gz
 
 # Set environment variables
-# ENV PATH="xeniumranger-xenium3.0/bin:$PATH"
+# ENV PATH="xeniumranger-xenium4.0/bin:$PATH"
 
 # multistage to reduce image size
 FROM ubuntu:20.04
 
 # Set environment variables
-ENV PATH="/xeniumranger-xenium3.0/bin:$PATH"
+ENV PATH="/xeniumranger-xenium4.0/bin:$PATH"
 
 # copy over xenium from builder
-COPY --from=builder /xeniumranger-xenium3.0 /xeniumranger-xenium3.0/
+COPY --from=builder /xeniumranger-xenium4.0 /xeniumranger-xenium4.0/

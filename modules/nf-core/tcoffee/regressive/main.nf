@@ -21,11 +21,12 @@ process TCOFFEE_REGRESSIVE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args          = task.ext.args ?: ''
-    def prefix        = task.ext.prefix ?: "${meta.id}"
-    def tree_args     = tree ? "-reg_tree $tree" : ""
-    def template_args = template ? "-template_file $template" : ""
-    def outfile       = compress ? "stdout" : "${prefix}.aln"
+    def args               = task.ext.args ?: ''
+    def prefix             = task.ext.prefix ?: "${meta.id}"
+    def tree_args          = tree ? "-reg_tree $tree" : ""
+    def template_args      = template ? "-template_file $template" : ""
+    def default_out_format = ("-output" in "${args}") ? "" : "-output fasta_aln"
+    def outfile            = compress ? "stdout" : "${prefix}.aln"
     """
     export TEMP='./'
     t_coffee -reg \
@@ -33,6 +34,7 @@ process TCOFFEE_REGRESSIVE {
         $tree_args \
         $template_args \
         $args \
+        $default_out_format \
         -reg_thread ${task.cpus} \
         -outfile $outfile
 

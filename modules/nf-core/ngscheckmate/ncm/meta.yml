@@ -106,13 +106,28 @@ output:
             calls used
           pattern: "*.vcf"
           ontologies: []
+  versions_ngscheckmate:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - ngscheckmate:
+          type: string
+          description: The tool name
+      - "ncm.py --help | sed '7!d;s/.* v//g'":
+          type: string
+          description: The command used to generate the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - ngscheckmate:
+          type: string
+          description: The tool name
+      - "ncm.py --help | sed '7!d;s/.* v//g'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@sppearce"
 maintainers:

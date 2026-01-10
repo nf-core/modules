@@ -29,13 +29,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.bam[0][1]).name).match("bam_bam") },
-                { assert snapshot(process.out.bai).match("bam_bai") },
-                { assert snapshot(process.out.crai).match("bam_crai") },
-                { assert snapshot(process.out.cram).match("bam_cram") },
-                { assert snapshot(process.out.csi).match("bam_csi") },
-                { assert snapshot(process.out.sam).match("bam_sam") },
-                { assert snapshot(process.out.versions).match("bam_versions") }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam"])).match()}
             )
         }
     }
@@ -62,11 +56,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.bam[0][1]).name,
-                    file(process.out.csi[0][1]).name,
-                    process.out.versions).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam", "csi"])).match()}
             )
         }
     }
@@ -93,10 +83,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.bam[0][1]).name,
-                    file(process.out.bai[0][1]).name,
-                    process.out.versions).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam", "bai"])).match()}
             )
         }
     }
@@ -124,13 +111,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.bam[0][1]).name,
-                    file(process.out.bai[0][1]).name,
-                    file(process.out.unselected[0][1]).name,
-                    file(process.out.unselected_index[0][1]).name,
-                    process.out.versions).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam", "bai", "unselected", "unselected_index"])).match()}
             )
         }
     }
@@ -158,13 +139,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.cram[0][1]).name,
-                    file(process.out.crai[0][1]).name,
-                    file(process.out.unselected[0][1]).name,
-                    file(process.out.unselected_index[0][1]).name,
-                    process.out.versions).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam", "bai", "unselected", "unselected_index", "crai"])).match()}
             )
         }
     }
@@ -192,13 +167,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.cram[0][1]).name).match("cram_cram") },
-                { assert snapshot(process.out.bai).match("cram_bai") },
-                { assert snapshot(process.out.bam).match("cram_bam") },
-                { assert snapshot(process.out.crai).match("cram_crai") },
-                { assert snapshot(process.out.csi).match("cram_csi") },
-                { assert snapshot(process.out.sam).match("cram_sam") },
-                { assert snapshot(process.out.versions).match("cram_versions") }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["cram"])).match()}
             )
         }
     }
@@ -228,13 +197,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.bam[0][1]).name).match("cram_to_bam_bam") },
-                { assert snapshot(process.out.bai).match("cram_to_bam_bai") },
-                { assert snapshot(process.out.crai).match("cram_to_bam_crai") },
-                { assert snapshot(process.out.cram).match("cram_to_bam_cram") },
-                { assert snapshot(process.out.csi).match("cram_to_bam_csi") },
-                { assert snapshot(process.out.sam).match("cram_to_bam_sam") },
-                { assert snapshot(process.out.versions).match("cram_to_bam_versions") }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam"])).match()}
             )
         }
     }
@@ -264,13 +227,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.bam[0][1]).name).match("cram_to_bam_index_bam") },
-                { assert snapshot(file(process.out.csi[0][1]).name).match("cram_to_bam_index_csi") },
-                { assert snapshot(process.out.bai).match("cram_to_bam_index_bai") },
-                { assert snapshot(process.out.crai).match("cram_to_bam_index_crai") },
-                { assert snapshot(process.out.cram).match("cram_to_bam_index_cram") },
-                { assert snapshot(process.out.sam).match("cram_to_bam_index_sam") },
-                { assert snapshot(process.out.versions).match("cram_to_bam_index_versions") }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam", "csi"])).match()}
             )
         }
     }
@@ -300,15 +257,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.bam[0][1]).name).match("cram_to_bam_index_qname_bam") },
-                { assert snapshot(file(process.out.csi[0][1]).name).match("cram_to_bam_index_qname_csi") },
-                { assert snapshot(process.out.bai).match("cram_to_bam_index_qname_bai") },
-                { assert snapshot(process.out.crai).match("cram_to_bam_index_qname_crai") },
-                { assert snapshot(process.out.cram).match("cram_to_bam_index_qname_cram") },
-                { assert snapshot(process.out.sam).match("cram_to_bam_index_qname_sam") },
-                { assert snapshot(file(process.out.unselected[0][1]).name).match("cram_to_bam_index_qname_unselected") },
-                { assert snapshot(file(process.out.unselected_index[0][1]).name).match("cram_to_bam_index_qname_unselected_csi") },
-                { assert snapshot(process.out.versions).match("cram_to_bam_index_qname_versions") }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam", "bai", "unselected", "unselected_index"])).match()}
             )
         }
     }
@@ -336,13 +285,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.bam[0][1]).name).match("bam_stub_bam") },
-                { assert snapshot(file(process.out.csi[0][1]).name).match("bam_stub_csi") },
-                { assert snapshot(process.out.bai).match("bam_stub_bai") },
-                { assert snapshot(process.out.crai).match("bam_stub_crai") },
-                { assert snapshot(process.out.cram).match("bam_stub_cram") },
-                { assert snapshot(process.out.sam).match("bam_stub_sam") },
-                { assert snapshot(process.out.versions).match("bam_stub_versions") }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam", "csi"])).match()}
             )
         }
     }
