@@ -16,7 +16,6 @@ process TETRANSCRIPTS {
     output:
     tuple val(meta_t), path("*.cntTable"), emit: countTable
     tuple val(meta_t), path("*.R"), emit: log2fc
-    path "versions.yml"           , emit: versions
     tuple val("${task.process}"), val('tetranscripts'), eval('tetranscripts --version'), emit: versions_tetranscripts, topic: versions
 
     when:
@@ -37,10 +36,6 @@ process TETRANSCRIPTS {
 	--project ${prefix} \\
         $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tetranscripts: \$(TEtranscripts --version)
-END_VERSIONS
     """
 
     stub:
