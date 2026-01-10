@@ -16,7 +16,7 @@ process TETRANSCRIPTS {
     output:
     tuple val(meta_t), path("*.cntTable"), emit: countTable
     tuple val(meta_t), path("*.R"), emit: log2fc
-    tuple val("${task.process}"), val('tetranscripts'), eval('tetranscripts --version'), emit: versions_tetranscripts, topic: versions
+    tuple val("${task.process}"), val('tetranscripts'), eval("tetranscripts version | sed '1!d;s/.* //'"), emit: versions_tetranscripts, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
