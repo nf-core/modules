@@ -17,6 +17,7 @@ process TETRANSCRIPTS {
     tuple val(meta_t), path("*.cntTable"), emit: countTable
     tuple val(meta_t), path("*.R"), emit: log2fc
     path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('tetranscripts'), eval('tetranscripts --version'), emit: versions_tetranscripts, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -51,9 +52,5 @@ END_VERSIONS
     touch ${prefix}.R
     touch ${prefix}.cntTable
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tetranscripts: \$(TEtranscripts --version)
-    END_VERSIONS
     """
 }
