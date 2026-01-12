@@ -30,7 +30,7 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ])
                 input[1] = "trimmomatic"      // val_adapter_tool
-                input[2] = []                 // ch_adapters
+                input[2] = []                 // ch_custom_adapters_file
                 input[3] = params.save_merged // val_save_merged
                 input[4] = false              // val_fastp_discard_trimmed_pass
                 input[5] = false              // val_fastp_save_trimmed_fail
@@ -69,7 +69,7 @@ nextflow_workflow {
                     ]
                 ])
                 input[1] = "cutadapt"         // val_adapter_tool
-                input[2] = []                 // ch_adapters
+                input[2] = []                 // ch_custom_adapters_file
                 input[3] = params.save_merged // val_save_merged
                 input[4] = false              // val_fastp_discard_trimmed_pass
                 input[5] = false              // val_fastp_save_trimmed_fail
@@ -101,7 +101,7 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ])
                 input[1] = "trimgalore"       // val_adapter_tool
-                input[2] = []                 // ch_adapters
+                input[2] = []                 // ch_custom_adapters_file
                 input[3] = params.save_merged // val_save_merged
                 input[4] = false              // val_fastp_discard_trimmed_pass
                 input[5] = false              // val_fastp_save_trimmed_fail
@@ -137,7 +137,7 @@ nextflow_workflow {
                     ]
                 ])
                 input[1] = "bbduk"            // val_adapter_tool
-                input[2] = []                 // ch_adapters
+                input[2] = []                 // ch_custom_adapters_file
                 input[3] = params.save_merged // val_save_merged
                 input[4] = false              // val_fastp_discard_trimmed_pass
                 input[5] = false              // val_fastp_save_trimmed_fail
@@ -169,7 +169,7 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ])
                 input[1] = "leehom"           // val_adapter_tool
-                input[2] = []                 // ch_adapters
+                input[2] = []                 // ch_custom_adapters_file
                 input[3] = params.save_merged // val_save_merged
                 input[4] = false              // val_fastp_discard_trimmed_pass
                 input[5] = false              // val_fastp_save_trimmed_fail
@@ -203,7 +203,7 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ])
                 input[1] = "fastp"            // val_adapter_tool
-                input[2] = []                 // ch_adapters
+                input[2] = []                 // ch_custom_adapters_file
                 input[3] = params.save_merged // val_save_merged
                 input[4] = false              // val_fastp_discard_trimmed_pass
                 input[5] = true               // val_fastp_save_trimmed_fail
@@ -243,7 +243,7 @@ nextflow_workflow {
                     ]
                 ])
                 input[1] = "adapterremoval"   // val_adapter_tool
-                input[2] = []                 // ch_adapters
+                input[2] = []                 // ch_custom_adapters_file
                 input[3] = params.save_merged // val_save_merged
                 input[4] = false              // val_fastp_discard_trimmed_pass
                 input[5] = false              // val_fastp_save_trimmed_fail
@@ -283,7 +283,7 @@ nextflow_workflow {
                     ]
                 ]
                 input[1] = "trimmomatic"      // val_adapter_tool
-                input[2] = []                 // ch_adapters
+                input[2] = []                 // ch_custom_adapters_file
                 input[3] = params.save_merged // val_save_merged
                 input[4] = false              // val_fastp_discard_trimmed_pass
                 input[5] = false              // val_fastp_save_trimmed_fail

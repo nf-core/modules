@@ -26,7 +26,7 @@ input:
       description: |
         Choose one of the available adapter removal and/or merging tools
       enum: ["trimmomatic", "cutadapt", "trimgalore", "bbduk", "leehom", "fastp", "adapterremoval"]
-  - ch_adapters:
+  - ch_custom_adapters_file:
       type: file
       description: |
         Optional reference files, containing adapter and/or contaminant sequences for removal.

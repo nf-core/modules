@@ -14,7 +14,7 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
     take:
     ch_input_reads                 // channel: [mandatory] meta, reads
     val_adapter_tool               // string:  [mandatory] tool_name // choose from: ["trimmomatic", "cutadapt", "trimgalore", "bbduk", "leehom", "fastp", "adapterremoval"]
-    ch_adapters                    // channel: [optional]  {fasta,txt} // fasta, for bbduk or fastp, or txt, for adapterremoval
+    ch_custom_adapters_file        // channel: [optional]  {fasta,txt} // fasta, for bbduk or fastp, or txt, for adapterremoval
     val_save_merged                // boolean: [mandatory] if true, will return the merged reads instead, for fastp and adapterremoval
     val_fastp_discard_trimmed_pass // boolean: [mandatory] // only for fastp
     val_fastp_save_trimmed_fail    // boolean: [mandatory] // only for fastp
@@ -32,7 +32,7 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
         TRIMMOMATIC( ch_input_reads )
 
         ch_processed_reads = TRIMMOMATIC.out.trimmed_reads
-        ch_discarded_reads = ch_discarded_reads.mix(TRIMMOMATIC.out.unpaired_reads.transpose()) // .transpose() because paired reads have 2 unpaired files in an array
+        ch_discarded_reads = ch_discarded_reads.mix(TRIMMOMATIC.out.unpaired_reads.transpose()) // .transpose() because paired reads will output 2 unpaired files in an array
         ch_log             = TRIMMOMATIC.out.trim_log
         ch_report          = TRIMMOMATIC.out.summary
         ch_versions        = ch_versions.mix(TRIMMOMATIC.out.versions.first())
@@ -50,7 +50,7 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
         ch_log             = TRIMGALORE.out.log
         ch_report          = TRIMGALORE.out.html.mix(TRIMGALORE.out.zip)
     } else if (val_adapter_tool == "bbduk") {
-        BBMAP_BBDUK( ch_input_reads, ch_adapters )
+        BBMAP_BBDUK( ch_input_reads, ch_custom_adapters_file )
 
         ch_processed_reads = BBMAP_BBDUK.out.reads
         ch_versions        = ch_versions.mix(BBMAP_BBDUK.out.versions.first())
@@ -73,7 +73,7 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
         ch_multiqc_files   = ch_multiqc_files.mix(LEEHOM.out.log)
     } else if (val_adapter_tool == "fastp") {
         FASTP(
-            ch_input_reads.map { meta, files ->  [ meta, files, ch_adapters ] },
+            ch_input_reads.map { meta, files ->  [ meta, files, ch_custom_adapters_file ] },
             val_fastp_discard_trimmed_pass,
             val_fastp_save_trimmed_fail,
             val_save_merged
@@ -96,8 +96,8 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
                 paired: !meta.single_end
             }
 
-        ADAPTERREMOVAL_SE( ch_adapterremoval_in.single, ch_adapters )
-        ADAPTERREMOVAL_PE( ch_adapterremoval_in.paired, ch_adapters )
+        ADAPTERREMOVAL_SE( ch_adapterremoval_in.single, ch_custom_adapters_file )
+        ADAPTERREMOVAL_PE( ch_adapterremoval_in.paired, ch_custom_adapters_file )
 
         if (val_save_merged) {
             ch_processed_reads = ADAPTERREMOVAL_SE.out.collapsed
