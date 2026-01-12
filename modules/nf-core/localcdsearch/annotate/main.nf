@@ -43,6 +43,7 @@ process LOCALCDSEARCH_ANNOTATE {
 
     stub:
     def args = task.ext.args ?: ''
+    VERSION = '0.3.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo $args
