@@ -1,6 +1,6 @@
 name: "openms_idmassaccuracy"
-description: Calculates a distribution of the mass error from given mass spectra and
-  IDs.
+description: Calculates a distribution of the mass error from given mass spectra
+  and IDs.
 keywords:
   - mass_error
   - openms
@@ -61,17 +61,28 @@ output:
           pattern: "*prec_mass_err.{tsv}"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
-  versions_openms: &versions
+  versions_openms:
     - - ${task.process}:
           type: string
           description: The name of the process
       - openms:
           type: string
           description: The name of the tool
-      - "FileInfo --help 2>&1 | grep -E '^Version' | sed 's/^.*Version: //; s/-.*$//' | sed 's/ -*//; s/ .*$//'":
+      - "FileInfo --help 2>&1 | grep -E '^Version' | sed 's/^.*Version: //; s/-.*\\$//' | sed 's/ -*//; s/ .*\\$//'":
           type: eval
           description: The expression to obtain the version of the tool
+
 topics:
-  versions: *versions
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - openms:
+          type: string
+          description: The name of the tool
+      - "FileInfo --help 2>&1 | grep -E '^Version' | sed 's/^.*Version: //; s/-.*\\$//' | sed 's/ -*//; s/ .*\\$//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@jonasscheid"

@@ -39,7 +39,7 @@ output:
           description: Fasta file containing proteins and decoy proteins
           pattern: "*.{fasta}"
           ontologies: []
-  versions_openms: &versions
+  versions_openms:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
@@ -51,7 +51,17 @@ output:
           description: The expression to obtain the version of the tool
 
 topics:
-  versions: *versions
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - openms:
+          type: string
+          description: The tool name
+      - "FileInfo --help 2>&1 | grep -E '^Version' | sed 's/^.*Version: //; s/-.*\\$//' | sed 's/ -*//; s/ .*\\$//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@jonasscheid"
 maintainers:
