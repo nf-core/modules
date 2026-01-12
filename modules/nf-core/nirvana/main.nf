@@ -8,7 +8,7 @@ process NIRVANA {
         : 'community.wave.seqera.io/library/nirvana:3.18.1--910f092f78f85c70'}"
 
     input:
-    tuple val(meta), path(vcf)
+    tuple val(meta) , path(vcf)
     tuple val(meta2), path(reference)
     tuple val(meta3), path(cache), val(cache_prefix)
     tuple val(meta4), path(supplementary_annotations)
