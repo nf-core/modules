@@ -39,7 +39,7 @@ output:
       - local-cd-search:
           type: string
           description: The name of the tool
-      - echo '0.3.0':
+      - echo ${VERSION}:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -50,7 +50,7 @@ topics:
       - local-cd-search:
           type: string
           description: The name of the tool
-      - echo '0.3.0':
+      - echo ${VERSION}:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
