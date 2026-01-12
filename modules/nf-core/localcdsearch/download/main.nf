@@ -31,6 +31,7 @@ process LOCALCDSEARCH_DOWNLOAD {
 
     stub:
     def args = task.ext.args ?: ''
+    VERSION = '0.3.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     echo $args
     mkdir database/
