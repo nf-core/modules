@@ -20,8 +20,8 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
+                { assert process.success },
                 { assert snapshot(
                     process.out.db,
                     process.out.findAll { key, val -> key.startsWith("versions")}
@@ -44,8 +44,8 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
+                { assert process.success },
                 { assert snapshot(
                     process.out.db,
                     process.out.findAll { key, val -> key.startsWith("versions") }
@@ -66,8 +66,8 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
+                { assert process.success },
                 { assert snapshot(
                     process.out.db,
                     process.out.findAll { key, val -> key.startsWith("versions") }
@@ -89,8 +89,8 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
+                { assert process.success },
                 { assert snapshot(
                     process.out.db,
                     process.out.findAll { key, val -> key.startsWith("versions") }
