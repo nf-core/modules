@@ -11,11 +11,11 @@ process T1K_BUILD {
     tuple val(meta), path(ena), path(fasta), path(annotation)
 
     output:
-    tuple val(meta), path("*_rna_seq.fa")       , optional: true, emit: rna_sequences
-    tuple val(meta), path("*_dna_seq.fa")       , optional: true, emit: dna_sequences
-    tuple val(meta), path("*_rna_coord.fa")     , optional: true, emit: rna_coordinates
-    tuple val(meta), path("*_dna_coord.fa")     , optional: true, emit: dna_coordinates
-    tuple val(meta), path("*.dat")              , optional: true, emit: database
+    tuple val(meta), path("*_rna_seq.fa")  , optional: true, emit: rna_sequences
+    tuple val(meta), path("*_dna_seq.fa")  , optional: true, emit: dna_sequences
+    tuple val(meta), path("*_rna_coord.fa"), optional: true, emit: rna_coordinates
+    tuple val(meta), path("*_dna_coord.fa"), optional: true, emit: dna_coordinates
+    tuple val(meta), path("*.dat")         , optional: true, emit: database
     tuple val("${task.process}"), val('t1k'), eval("run-t1k 2>&1 | head -n 1 | cut -d '-' -f 1 | cut -d v -f 2"), topic: versions, emit: versions_t1k
 
     when:
@@ -28,7 +28,6 @@ process T1K_BUILD {
     def ena_args = ena ? "-d ${ena}" : ''
     def fasta_args = fasta ? "-f ${fasta}" : ''
     def annotation_args = annotation ? "-g ${annotation}" : ''
-
     """
     t1k-build.pl \\
         ${args} \\
