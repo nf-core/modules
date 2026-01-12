@@ -1,0 +1,122 @@
+nextflow_process {
+
+    name "Test Process COWPY"
+    script "../main.nf"
+    process "COWPY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cowpy"
+
+    config "./nextflow.config"
+
+    test("hello") {
+
+        when {
+            process {
+                """
+                def text = "hello"
+                def text_file = new File('hello.txt')
+                text_file.text = text
+
+                input[0] = [
+                    [ id:'hello' ],
+                    file(text_file, checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("hello - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                def text = "hello"
+                def text_file = new File('hello.txt')
+                text_file.text = text
+
+                input[0] = [
+                    [ id:'hello' ],
+                    file(text_file, checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("hello with moose") {
+
+        when {
+            params {
+                module_args = "-c moose"
+            }
+            process {
+                """
+                def text = "hello"
+                def text_file = new File('hello.txt')
+                text_file.text = text
+
+                input[0] = [
+                    [ id:'hello' ],
+                    file(text_file, checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("hello with moose - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+               module_args = "-c moose"
+            }
+            process {
+                """
+                def text = "hello"
+                def text_file = new File('hello.txt')
+                text_file.text = text
+
+                input[0] = [
+                    [ id:'hello' ],
+                    file(text_file, checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

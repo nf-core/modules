@@ -28,21 +28,22 @@ input:
         type: file
         description: Nucleotide or protein sequences in FASTA format
         pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
-  - - card:
-        type: directory
-        description: Directory containing the CARD database. This is expected to be
-          the unarchived but otherwise unaltered download folder (see RGI documentation
-          for download instructions).
-        pattern: "*/"
-  - - wildcard:
-        type: directory
-        description: Directory containing the WildCARD database (optional). This is
-          expected to be the unarchived but otherwise unaltered download folder (see
-          RGI documentation for download instructions).
-        pattern: "*/"
+        ontologies: []
+  - card:
+      type: directory
+      description: Directory containing the CARD database. This is expected to be the
+        unarchived but otherwise unaltered download folder (see RGI documentation for
+        download instructions).
+      pattern: "*/"
+  - wildcard:
+      type: directory
+      description: Directory containing the WildCARD database (optional). This is expected
+        to be the unarchived but otherwise unaltered download folder (see RGI documentation
+        for download instructions).
+      pattern: "*/"
 output:
-  - json:
-      - meta:
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -51,8 +52,10 @@ output:
           type: file
           description: JSON formatted file with RGI results
           pattern: "*.{json}"
-  - tsv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -61,8 +64,9 @@ output:
           type: file
           description: Tab-delimited file with RGI results
           pattern: "*.{txt}"
-  - tmp:
-      - meta:
+          ontologies: []
+  tmp:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -71,21 +75,23 @@ output:
           type: directory
           description: Directory containing various intermediate files
           pattern: "temp/"
-  - tool_version:
-      - RGI_VERSION:
-          type: string
-          description: The version of the tool in string format (useful for downstream
-            tools such as hAMRronization)
-  - db_version:
-      - DB_VERSION:
-          type: string
-          description: The version of the used database in string format (useful for downstream
-            tools such as hAMRronization)
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  tool_version:
+    - RGI_VERSION:
+        type: string
+        description: The version of the tool in string format (useful for downstream
+          tools such as hAMRronization)
+  db_version:
+    - DB_VERSION:
+        type: string
+        description: The version of the used database in string format (useful for downstream
+          tools such as hAMRronization)
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rpetit3"
   - "@jfy133"

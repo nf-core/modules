@@ -22,17 +22,19 @@ input:
     - input:
         type: file
         description: Kaiju input file
-  - - db:
-        type: file
-        description: Kaiju database
-  - - taxon_rank:
-        type: string
-        description: |
-          Taxonomic rank to display in report
-          pattern: "phylum|class|order|family|genus|species"
+        ontologies: []
+  - db:
+      type: file
+      description: Kaiju database
+      ontologies: []
+  - taxon_rank:
+      type: string
+      description: |
+        Taxonomic rank to display in report
+        pattern: "phylum|class|order|family|genus|species"
 output:
-  - summary:
-      - meta:
+  summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -41,11 +43,14 @@ output:
           type: file
           description: Kaiju output file
           pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sofstam"
   - "@talnor"

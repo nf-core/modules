@@ -36,10 +36,12 @@ input:
           should be used to derive the target samples
     - formula:
         type: string
-        description: (Mandatory) R formula string used for modeling, e.g. '~ treatment + (1 | sample_number)'.
+        description: (Optional) R formula string used for modeling, e.g. '~ treatment
+          + (1 | sample_number)'.
     - comparison:
         type: string
-        description: (Optional) Literal string passed to `limma::makeContrasts`, e.g. 'treatmenthND6 - treatmentmCherry'.
+        description: (Optional) Literal string passed to `limma::makeContrasts`, e.g.
+          'treatmenthND6 - treatmentmCherry'.
   - - meta2:
         type: map
         description: |
@@ -55,8 +57,8 @@ input:
           TSV or CSV format expression matrix with genes as rows and samples as columns.
         ontologies: []
 output:
-  - results:
-      - meta:
+  results:
+    - - meta:
           type: map
           description: |
             groovy array with metadata information for the contrast generated
@@ -67,23 +69,24 @@ output:
           pattern: "*.dream.results.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
-  - model:
-      - meta:
+  model:
+    - - meta:
           type: map
-          description: Metadata map passed through from input.
+          description: |
+            groovy array with metadata information for the contrast generated
       - "*.dream.model.txt":
           type: file
           description: |
             R model description text file.
           pattern: "*.dream.model.txt"
           ontologies: []
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: http://edamontology.org/format_3750 # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@alanmmobbs03"
   - "@nschcolnicov"

@@ -3,7 +3,7 @@ process DEEPVARIANT_MAKEEXAMPLES {
     label 'process_high'
 
     //Conda is not supported at the moment
-    container "docker.io/google/deepvariant:1.8.0"
+    container "docker.io/google/deepvariant:1.9.0"
 
     input:
     tuple val(meta), path(input), path(index), path(intervals)

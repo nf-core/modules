@@ -22,16 +22,18 @@ tools:
       licence: ["MIT"]
       identifier: biotools:DeepBGC
 output:
-  - db:
-      - deepbgc_db/:
-          type: directory
-          description: Directory containing the DeepBGC database
-          pattern: "deepbgc_db/"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  db:
+    - deepbgc_db/:
+        type: directory
+        description: Directory containing the DeepBGC database
+        pattern: "deepbgc_db/"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@louperelo"
 maintainers:

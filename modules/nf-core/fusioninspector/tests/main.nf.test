@@ -1,0 +1,111 @@
+nextflow_process {
+
+    name "Test Process FUSIONINSPECTOR"
+    script "../main.nf"
+    process "FUSIONINSPECTOR"
+    tag "modules"
+    tag "modules_local"
+    tag "fusioninspector"
+    tag "starfusion/build"
+    tag "modules_nfcore"
+
+    test("FUSIONINSPECTOR - test") {
+        config './nextflow.config'
+
+        setup {
+            run("STARFUSION_BUILD") {
+                script "../../starfusion/build/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'minigenome_fasta' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa')
+                    ]
+                    input[1] = [
+                        [ id:'minigenome_gtf' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf')
+                    ]
+
+                    input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/CTAT_HumanFusionLib.mini.dat.gz')
+                    input[3] = "homo_sapiens"
+                    input[4] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/Pfam-A.hmm.gz')
+                    input[5] = [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_dfam.hmm'),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_dfam.hmm.h3f'),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_dfam.hmm.h3i'),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_dfam.hmm.h3m'),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_dfam.hmm.h3p')
+                    ]
+                    input[6] = "https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/AnnotFilterRule.pm"
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz'),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_2.fastq.gz')
+                    ], // reads
+                    [
+                        file("https://github.com/FusionInspector/FusionInspector/raw/master/test/fusion_targets.A.txt")
+                    ]
+                ]
+                input[1] = STARFUSION_BUILD.out.reference
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.tsv[0][1]).getText().contains("THRA--AC090627.1\t72\t83\t72.00\t80.15") },
+                { assert file(process.out.abridged_tsv[0][1]).getText().contains("THRA--AC090627.1\t72\t83\t72.00\t80.15") },
+                { assert snapshot(
+                    file(process.out.tsv[0][1]).name,
+                    process.out.out_gtf,
+                    file(process.out.abridged_tsv[0][1]).name,
+                    file(process.out.log[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("FUSIONINSPECTOR - test - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz'),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_2.fastq.gz')
+                    ], // reads
+                    [
+                        file("https://github.com/FusionInspector/FusionInspector/raw/master/test/fusion_targets.A.txt")
+                    ]
+                ]
+                input[1] = [[id:'minigenome_refs'],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out
+                    ).match() }
+            )
+        }
+
+    }
+
+}

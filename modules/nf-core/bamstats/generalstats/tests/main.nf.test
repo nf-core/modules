@@ -26,7 +26,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.json.get(0)[1]).exists() },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions")}).match() }
             )
         }
 
@@ -51,7 +51,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.json.get(0)[1]).exists() },
-                { assert snapshot(process.out.versions).match("versions_stub") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions")}).match() }
             )
         }
 

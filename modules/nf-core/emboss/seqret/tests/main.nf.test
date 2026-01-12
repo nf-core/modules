@@ -1,10 +1,10 @@
 nextflow_process {
 
     name "Test Process EMBOSS_SEQRET"
-    
+
     script "../main.nf"
     process "EMBOSS_SEQRET"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "emboss"
@@ -14,7 +14,7 @@ nextflow_process {
     setup {
             run("GUNZIP") {
                 script "modules/nf-core/gunzip/main.nf"
-                
+
                 process {
                     """
                     input[0] = [
@@ -25,9 +25,9 @@ nextflow_process {
                 }
             }
         }
-   
+
     test("bacteroides_fragilis - gbff - gz - embl") {
-        
+
         when {
             params {
                 module_args = ''
@@ -48,8 +48,8 @@ nextflow_process {
     }
 
     test("bacteroides_fragilis - gbff - gz - gff") {
-        
-        
+
+
         when {
             params {
                 module_args = ''
@@ -70,8 +70,8 @@ nextflow_process {
     }
 
     test("bacteroides_fragilis - gbff - gz - pir") {
-        
-        
+
+
         when {
             params {
                 module_args = ''
@@ -92,8 +92,8 @@ nextflow_process {
     }
 
     test("bacteroides_fragilis - gbff - gz - fasta") {
-        
-       
+
+
         when {
             params {
                 module_args = ''

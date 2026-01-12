@@ -28,9 +28,11 @@ input:
         type: file
         description: Input cutup clustering result. Typically *_gt1000.csv from concoct
         pattern: "*.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
 output:
-  - csv:
-      - meta:
+  csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,11 +41,15 @@ output:
           type: file
           description: Cluster assignments per contig part with consensus cluster
           pattern: "*.csv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

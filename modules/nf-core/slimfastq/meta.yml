@@ -21,9 +21,10 @@ input:
         type: file
         description: Either a single-end FASTQ file or paired-end files.
         pattern: "*.{fq.gz,fastq.gz}"
+        ontologies: []
 output:
-  - sfq:
-      - meta:
+  sfq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -32,11 +33,14 @@ output:
           type: file
           description: Either one or two sequence files in slimfastq compressed format.
           pattern: "*.{sfq}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Midnighter"
 maintainers:

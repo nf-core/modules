@@ -25,10 +25,12 @@ input:
         type: file
         description: |
           CSV-format sample sheet with sample metadata
+        ontologies: []
     - assay_files:
         type: file
         description: |
           List of TSV-format matrix files representing different measures for the same samples (e.g. raw and normalised).
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -38,6 +40,7 @@ input:
         type: file
         description: |
           TSV-format feature (e.g. gene) metadata
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -47,9 +50,10 @@ input:
         type: file
         description: |
           CSV-format file with four columns identifying the sample sheet variable, reference level, treatment level, and optionally a comma-separated list of covariates used as blocking factors.
+        ontologies: []
 output:
-  - sample_meta:
-      - meta:
+  sample_meta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing information on experiment.
@@ -58,8 +62,10 @@ output:
           type: file
           description: File containing validated sample metadata
           pattern: "/*.sample_metadata.tsv"
-  - feature_meta:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  feature_meta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing information on experiment.
@@ -69,8 +75,10 @@ output:
           description: File containing validated feature metadata
           pattern: "/*.feature_metadata.tsv"
           optional: true
-  - assays:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  assays:
+    - - meta:
           type: map
           description: |
             Groovy Map containing information on experiment.
@@ -79,8 +87,10 @@ output:
           type: file
           description: Files containing validated matrices
           pattern: "/*.assay.tsv"
-  - contrasts:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  contrasts:
+    - - meta:
           type: map
           description: |
             Groovy Map containing information on experiment.
@@ -89,11 +99,15 @@ output:
           type: file
           description: Files containing validated matrices
           pattern: "/*.contrasts_file.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@pinin4fjords"
 maintainers:

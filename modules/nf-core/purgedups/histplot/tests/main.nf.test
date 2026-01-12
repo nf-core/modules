@@ -1,0 +1,78 @@
+nextflow_process {
+
+    name "Test Process PURGEDUPS_HISTPLOT"
+    script "../main.nf"
+    process "PURGEDUPS_HISTPLOT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "purgedups"
+    tag "purgedups/pbcstat"
+    tag "purgedups/calcuts"
+    tag "purgedups/histplot"
+
+    setup {
+        run("PURGEDUPS_PBCSTAT") {
+            script "../../pbcstat/main.nf"
+
+            process {
+                """
+                input[0] = [[ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.paf', checkIfExists:true)
+                    ]
+                """
+            }
+        }
+
+        run("PURGEDUPS_CALCUTS") {
+            script "../../calcuts/main.nf"
+
+            process {
+                """
+                input[0] = PURGEDUPS_PBCSTAT.out.stat
+                """
+            }
+        }
+    }
+
+    test("purgedups_histplot") {
+
+        when {
+            process {
+                """
+                input[0] = PURGEDUPS_PBCSTAT.out.stat.join(PURGEDUPS_CALCUTS.out.cutoff)
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+
+    test("purgedups_histplot -- stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = PURGEDUPS_PBCSTAT.out.stat.join(PURGEDUPS_CALCUTS.out.cutoff)
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+}

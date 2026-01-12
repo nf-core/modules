@@ -49,10 +49,10 @@ process PRODIGAL {
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.fna.gz
-    touch ${prefix}.${output_format}.gz
-    touch ${prefix}.faa.gz
-    touch ${prefix}_all.txt.gz
+    echo "" | gzip > ${prefix}.fna.gz
+    echo "" | gzip > ${prefix}.${output_format}.gz
+    echo "" | gzip > ${prefix}.faa.gz
+    echo "" | gzip > ${prefix}_all.txt.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

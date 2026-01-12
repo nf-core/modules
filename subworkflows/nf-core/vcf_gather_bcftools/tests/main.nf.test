@@ -1,0 +1,127 @@
+nextflow_workflow {
+
+    name "Test Workflow VCF_GATHER_BCFTOOLS"
+    script "../main.nf"
+    workflow "VCF_GATHER_BCFTOOLS"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/vcf_gather_bcftools"
+    tag "vcf_gather_bcftools"
+
+    tag "bcftools/concat"
+    tag "bcftools/sort"
+    tag "bcftools"
+    tag "tabix/tabix"
+    tag "tabix"
+
+    test("homo_sapiens - [vcf, tbi] [vcf, tbi] - meta [] 2 - sample - true") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [id:'test_1',sample:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz.tbi', checkIfExists:true)
+                    ],
+                    [
+                        [id:'test_2',sample:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz.tbi', checkIfExists:true)
+                    ]
+                )
+                input[1] = Channel.of(
+                    [ [id:'test_1',sample:'test'], [], 2 ],
+                    [ [id:'test_2',sample:'test'], [], 2 ]
+                )
+                input[2] = 'sample'
+                input[3] = true
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.vcf.collect{ path(it[1]).vcf.variantsMD5 },
+                    workflow.out.tbi.collect{ file(it[1]).name },
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+    test("homo_sapiens no_meta - [vcf, tbi] [vcf, tbi] - meta equal [] 2 - [] - true") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz',checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz.tbi',checkIfExists:true)
+                    ],
+                    [
+                        [id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz',checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz.tbi',checkIfExists:true)
+                    ]
+                )
+                input[1] = Channel.of(
+                    [ [id:'test'], [], 2 ],
+                    [ [id:'test'], [], 2 ]
+                )
+                input[2] = []
+                input[3] = true
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.vcf.collect{ path(it[1]).vcf.variantsMD5 },
+                    workflow.out.tbi.collect{ file(it[1]).name },
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens no_meta - [vcf, tbi] [vcf, tbi] - meta equal [] 2 - [] - true -- stub") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz',checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz.tbi',checkIfExists:true)
+                    ],
+                    [
+                        [id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz',checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz.tbi',checkIfExists:true)
+                    ]
+                )
+                input[1] = Channel.of(
+                    [ [id:'test'], [], 2 ],
+                    [ [id:'test'], [], 2 ]
+                )
+                input[2] = []
+                input[3] = true
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+}

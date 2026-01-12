@@ -28,9 +28,10 @@ input:
         type: file
         description: Thermo RAW file
         pattern: "*.{raw,RAW}"
+        ontologies: []
 output:
-  - spectra:
-      - meta:
+  spectra:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,11 +40,14 @@ output:
           type: file
           description: Mass spectra in open format
           pattern: "*.{mzML,mzML.gz,mgf,mgf.gz,parquet,parquet.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jonasscheid"
 maintainers:

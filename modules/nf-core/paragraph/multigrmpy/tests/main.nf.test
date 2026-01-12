@@ -1,0 +1,122 @@
+nextflow_process {
+
+    name "Test Process PARAGRAPH_MULTIGRMPY"
+
+    script "../main.nf"
+    process "PARAGRAPH_MULTIGRMPY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "paragraph"
+    tag "paragraph/multigrmpy"
+
+    test("homo_sapiens - vcf cram manifest - fasta - fai") {
+        when {
+            process {
+                """
+                manifest = Channel.of(
+                    'id\\tpath\\tdepth\\tread length\\ntest\\ttest.paired_end.sorted.cram\\t0.73\\t150'
+                ).collectFile(name:"manifest.txt")
+                input[0] = Channel.of([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz.tbi', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists:true)
+                ]).combine(manifest)
+                input[1] = [
+                    [id:'fasta'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
+                ]
+                input[2] = [
+                    [id:'fasta_fai'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.summary,
+                    // path(process.out.vcf[0][1]).vcf.variantsMD5, // Cannot test the MD5sum due to a hash present in GRMPY_ID info field
+                    file(process.out.json[0][1]).name, // Present of the same hash than above
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - empty vcf cram manifest - fasta - fai") {
+        when {
+            process {
+                """
+                manifest = Channel.of(
+                    'id\\tpath\\tdepth\\tread length\\ntest\\ttest.paired_end.sorted.cram\\t0.73\\t150'
+                ).collectFile(name:"manifest.txt")
+                input[0] = Channel.of([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/empty.vcf.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/empty.vcf.gz.tbi', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists:true)
+                ]).combine(manifest)
+                input[1] = [
+                    [id:'fasta'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
+                ]
+                input[2] = [
+                    [id:'fasta_fai'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.summary,
+                    // path(process.out.vcf[0][1]).vcf.variantsMD5, // Cannot test the MD5sum due to a hash present in GRMPY_ID info field
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf cram manifest - fasta - fai -- stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz.tbi', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists:true),
+                    []
+                ])
+                input[1] = [
+                    [id:'fasta'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
+                ]
+                input[2] = [
+                    [id:'fasta_fai'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

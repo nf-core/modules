@@ -1,0 +1,75 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTA_VCLUST_PREFILTER_ALIGN_CLUSTER"
+    script "../main.nf"
+    workflow "FASTA_VCLUST_PREFILTER_ALIGN_CLUSTER"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fasta_vclust_prefilter_align_cluster"
+    tag "vclust"
+    tag "vclust/prefilter"
+    tag "vclust/align"
+    tag "vclust/cluster"
+
+
+    test("sarscov2 - contigs ") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true),
+                ])
+                input[1] = false
+                input[2] = 'ani'
+                input[3] = []
+                input[4] = []
+                input[5] = 0.7
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match()}
+            )
+        }
+    }
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true),
+                ])
+                input[1] = false
+                input[2] = 'ani'
+                input[3] = []
+                input[4] = []
+                input[5] = 0.7
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match()}
+            )
+        }
+    }
+}

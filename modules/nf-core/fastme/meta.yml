@@ -28,59 +28,59 @@ input:
         type: file
         description: MSA or distance matrix in Phylip format
         pattern: "*"
+        ontologies: []
     - initial_tree:
         type: file
         description: Initial tree
+        ontologies: []
 output:
-  - nwk:
-      - meta:
-          type: file
-          description: Final phylogeny in Newick format
-          pattern: "*.nwk"
+  nwk:
+    - - meta:
+          type: map
+          description: A Groovy map containing sample information
       - "*.nwk":
           type: file
           description: Final phylogeny in Newick format
           pattern: "*.nwk"
-  - stats:
-      - meta:
-          type: file
-          description: A text file with the statistics of the phylogeny
-          pattern: "*_stat.txt"
+          ontologies: []
+  stats:
+    - - meta:
+          type: map
+          description: A Groovy map containing sample information
       - "*_stat.txt":
           type: file
           description: A text file with the statistics of the phylogeny
           pattern: "*_stat.txt"
-  - matrix:
-      - meta:
-          type: file
-          description: Optional; the distance matrix in Phylip matrix format; it is generated
-            if the -O option is passed in ext.args, although the provided file name will
-            be overwritten
-          pattern: "*.matrix.phy"
+          ontologies: []
+  matrix:
+    - - meta:
+          type: map
+          description: A Groovy map containing sample information
       - "*.matrix.phy":
           type: file
-          description: Optional; the distance matrix in Phylip matrix format; it is generated
-            if the -O option is passed in ext.args, although the provided file name will
-            be overwritten
+          description: Optional; the distance matrix in Phylip matrix format; it is
+            generated if the -O option is passed in ext.args, although the provided
+            file name will be overwritten
           pattern: "*.matrix.phy"
-  - bootstrap:
-      - meta:
-          type: file
-          description: A file containing all bootstrap trees in Newick format; it is generated
-            if the -B option is passed in ext.args (and bootstrap is used), although the
-            provided file name will be overwritten
-          pattern: "*.bootstrap"
+          ontologies: []
+  bootstrap:
+    - - meta:
+          type: map
+          description: A Groovy map containing sample information
       - "*.bootstrap":
           type: file
-          description: A file containing all bootstrap trees in Newick format; it is generated
-            if the -B option is passed in ext.args (and bootstrap is used), although the
-            provided file name will be overwritten
+          description: A file containing all bootstrap trees in Newick format; it is
+            generated if the -B option is passed in ext.args (and bootstrap is used),
+            although the provided file name will be overwritten
           pattern: "*.bootstrap"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@itrujnara"
 maintainers:

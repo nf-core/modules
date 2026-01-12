@@ -28,16 +28,16 @@ input:
         pattern: "*.{fasta,fa,fsa}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
-  - - mode:
-        type: integer
-        description: |
-          Choose the running mode of the program.
-          1--Homology-based method;
-          2--Structure-based method;
-          3--Hybrid of homology-based and structure-based method.
+  - mode:
+      type: integer
+      description: |
+        Choose the running mode of the program.
+        1--Homology-based method;
+        2--Structure-based method;
+        3--Hybrid of homology-based and structure-based method.
 output:
-  - log:
-      - meta:
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,8 +48,8 @@ output:
             AnnoSINE_v2 log file
           pattern: "*.{log}"
           ontologies: []
-  - fa:
-      - meta:
+  fa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -59,12 +59,13 @@ output:
           description: |
             Non-redundant SINE library with serial number
           pattern: "*.{fa}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@GallVp"
 maintainers:

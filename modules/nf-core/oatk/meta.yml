@@ -29,50 +29,61 @@ input:
         type: file
         description: HiFi reads in FASTA format
         pattern: "*.{fasta,fasta.gz,fa,fa.gz}"
+        ontologies: []
   - - mito_hmm:
         type: file
         description: mitochondria gene annotation HMM profile database
         pattern: "*.{fa,fam}"
+        ontologies: []
     - mito_hmm_h3f:
         type: file
         description: mitochondria gene annotation HMM profile binary auxfile
         pattern: "*.{h3f}"
+        ontologies: []
     - mito_hmm_h3i:
         type: file
         description: mitochondria gene annotation HMM profile binary auxfile
         pattern: "*.{h3i}"
+        ontologies: []
     - mito_hmm_h3m:
         type: file
         description: mitochondria gene annotation HMM profile binary auxfile
         pattern: "*.{h3m}"
+        ontologies: []
     - mito_hmm_h3p:
         type: file
         description: mitochondria gene annotation HMM profile binary auxfile
         pattern: "*.{h3p}"
+        ontologies: []
   - - pltd_hmm:
         type: file
         description: plastid gene annotation HMM profile database
         pattern: "*.{fa,fam}"
+        ontologies: []
     - pltd_hmm_h3f:
         type: file
         description: plastid gene annotation HMM profile binary auxfile
         pattern: "*.{h3f}"
+        ontologies: []
     - pltd_hmm_h3i:
         type: file
         description: plastid gene annotation HMM profile binary auxfile
         pattern: "*.{h3i}"
+        ontologies: []
     - pltd_hmm_h3m:
         type: file
         description: plastid gene annotation HMM profile binary auxfile
         pattern: "*.{h3m}"
+        ontologies: []
     - pltd_hmm_h3p:
         type: file
         description: plastid gene annotation HMM profile binary auxfile
         pattern: "*.{h3p}"
+        ontologies: []
 output:
   #Only when we have meta
-  - mito_fasta:
-      - meta:
+  mito_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -81,8 +92,9 @@ output:
           type: file
           description: the structure-solved MT contigs
           pattern: "*mito.ctg.fasta"
-  - pltd_fasta:
-      - meta:
+          ontologies: []
+  pltd_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -91,8 +103,9 @@ output:
           type: file
           description: the structure-solved PT contigs
           pattern: "*pltd.ctg.fasta"
-  - mito_bed:
-      - meta:
+          ontologies: []
+  mito_bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -101,8 +114,9 @@ output:
           type: file
           description: the gene annotation for the MT sequences
           pattern: "*mito.ctg.bed"
-  - pltd_bed:
-      - meta:
+          ontologies: []
+  pltd_bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -111,8 +125,9 @@ output:
           type: file
           description: the gene annotation for the PT sequences
           pattern: "*pltd.ctg.bed"
-  - mito_gfa:
-      - meta:
+          ontologies: []
+  mito_gfa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -121,8 +136,10 @@ output:
           type: file
           description: the subgraph for the MT genome
           pattern: "*mito.gfa"
-  - pltd_gfa:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3975 # GFA 1
+  pltd_gfa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -131,8 +148,10 @@ output:
           type: file
           description: the subgraph for the PT genome
           pattern: "*pltd.gfa"
-  - annot_mito_txt:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3975 # GFA 1
+  annot_mito_txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -141,8 +160,9 @@ output:
           type: file
           description: the MT gene annotation file over all assembled sequences
           pattern: "*annot_mito.txt"
-  - annot_pltd_txt:
-      - meta:
+          ontologies: []
+  annot_pltd_txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -151,8 +171,9 @@ output:
           type: file
           description: the PT gene annotation file over all assembled sequences
           pattern: "*annot_pltd.txt"
-  - clean_gfa:
-      - meta:
+          ontologies: []
+  clean_gfa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -161,8 +182,10 @@ output:
           type: file
           description: the GFA file for the clean genome assembly
           pattern: "*utg.clean.gfa"
-  - final_gfa:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3975 # GFA 1
+  final_gfa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -171,8 +194,10 @@ output:
           type: file
           description: the GFA file for the final genome assembly
           pattern: "*utg.final.gfa"
-  - initial_gfa:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3975 # GFA 1
+  initial_gfa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -181,8 +206,10 @@ output:
           type: file
           description: the GFA file for the initial genome assembly
           pattern: "*utg.gfa"
-  - multiplex_gfa:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3975 # GFA 1
+  multiplex_gfa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -191,8 +218,10 @@ output:
           type: file
           description: the mutliplexed GFA file
           pattern: "*utg.multiplex.gfa"
-  - unzip_gfa:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3975 # GFA 1
+  unzip_gfa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -201,10 +230,14 @@ output:
           type: file
           description: the unzipped GFA file
           pattern: "*utg.unzip.gfa"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3975 # GFA 1
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ksenia-krasheninnikova"

@@ -18,6 +18,14 @@ process MSISENSOR_SCAN {
     task.ext.when == null || task.ext.when
 
     script:
+    def deprecation_message = """
+        WARNING: This module has been deprecated. Please use nf-core/modules/nf-core/msisensor2/scan or nf-core/modules/nf-core/msisensorpro/scan
+
+        Reason:
+        This module is no longer fit for purpose as it is now archived and no longer maintained.
+    """
+    assert false: deprecation_message
+
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
@@ -32,4 +40,13 @@ process MSISENSOR_SCAN {
         msisensor: \$(msisensor 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p')
     END_VERSIONS
     """
+
+    stub:
+    def deprecation_message = """
+        WARNING: This module has been deprecated. Please use nf-core/modules/nf-core/msisensor2/scan or nf-core/modules/nf-core/msisensorpro/scan
+
+        Reason:
+        This module is no longer fit for purpose as it is now archived and no longer maintained.
+    """
+    assert false: deprecation_message
 }

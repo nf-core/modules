@@ -1,0 +1,71 @@
+nextflow_workflow {
+
+    name "Test Workflow BAM_MARKDUPLICATES_SAMTOOLS"
+    config "./nextflow.config"
+    script "../main.nf"
+    workflow "BAM_MARKDUPLICATES_SAMTOOLS"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/bam_markduplicates_samtools"
+    tag "bam_markduplicates_samtools"
+
+    tag "samtools"
+    tag "samtools/collate"
+    tag "samtools/fixmate"
+    tag "samtools/sort"
+    tag "samtools/markdup"
+
+    test("sarscov2 - bam - fasta") {
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true)
+                ]
+                input[1] = [
+                    [id:'fasta'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    bam(workflow.out.bam[0][1]).getReadsMD5(),
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - bam - fasta -- stub") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true)
+                ]
+                input[1] = [
+                    [id:'fasta'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect { path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+}

@@ -7,7 +7,7 @@ keywords:
   - coreutils
   - generic
 tools:
-  - "gnu":
+  - gnu:
       description: "The GNU Core Utilities are the basic file, shell and text manipulation
         utilities of the GNU operating system. These are the core utilities which are
         expected to exist on every operating system."
@@ -26,21 +26,26 @@ input:
     - input:
         type: file
         description: Text file, possibly gzip file
+        ontologies: []
 output:
-  - split:
-      - meta:
+  split:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ' "*split*" ':
+      - ${prefix}.*:
           type: file
           description: Split files
-          pattern: "*split*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: The split files
+          pattern: "${prefix}.*"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@k1sauce"
 maintainers:

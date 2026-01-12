@@ -15,21 +15,25 @@ tools:
       licence: ["GPL v3"]
       identifier: biotools:segemehl
 input:
-  - - fasta:
-        type: file
-        description: Reference genome FASTA file
-        pattern: "*.{fa,fasta}"
+  - fasta:
+      type: file
+      description: Reference genome FASTA file
+      pattern: "*.{fa,fasta}"
+      ontologies: []
 output:
-  - index:
-      - "*.idx":
-          type: file
-          description: Segemehl index file
-          pattern: "*.{idx}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  index:
+    - "*.idx":
+        type: file
+        description: Segemehl index file
+        pattern: "*.{idx}"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@BarryDigby"
 maintainers:

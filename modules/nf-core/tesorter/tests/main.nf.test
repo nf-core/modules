@@ -1,0 +1,103 @@
+nextflow_process {
+
+    name "Test Process TESORTER"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "TESORTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tesorter"
+
+    test("actinidia_chinensis - fasta") {
+
+        config './nextflow.config'
+
+        when {
+            params {
+                test_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/actinidia_chinensis/genome/chr1/genome.fasta.gz', checkIfExists: true)
+                ]
+
+                input[1] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.domtbl[0][1]).text,
+                    process.out.dom_tsv,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("actinidia_chinensis - fasta - stub") {
+        options '-stub'
+
+        when {
+            params {
+                test_args = '-genome'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/actinidia_chinensis/genome/chr1/genome.fasta.gz', checkIfExists: true)
+                ]
+
+                input[1] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("actinidia_chinensis - fasta - no-genome - stub") {
+
+        options '-stub'
+
+        when {
+            params {
+                test_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/actinidia_chinensis/genome/chr1/genome.fasta.gz', checkIfExists: true)
+                ]
+
+                input[1] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

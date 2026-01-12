@@ -27,9 +27,11 @@ input:
         type: file
         description: fastq file
         pattern: "*.{fastq}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
 output:
-  - reads:
-      - meta:
+  reads:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,20 +40,27 @@ output:
           type: file
           description: filtered fastq file
           pattern: "*.{fastq}"
-  - logs:
-      - "*_command_log.txt":
-          type: file
-          description: command logs
-          pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-  - log_tab:
-      - "*.tab":
-          type: file
-          description: parsed log table
-          pattern: "*.tab"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  logs:
+    - "*_command_log.txt":
+        type: file
+        description: command logs
+        pattern: "*.txt"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  log_tab:
+    - "*.tab":
+        type: file
+        description: parsed log table
+        pattern: "*.tab"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
 authors:
   - "@ggabernet"

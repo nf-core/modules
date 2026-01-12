@@ -25,18 +25,26 @@ input:
     - contrast_variable:
         type: string
         description: |
-          The column in the sample sheet that should be used to define groups for
+          (Optional, required if reference and target are used) The column in the sample sheet that should be used to define groups for
           comparison
     - reference:
         type: string
         description: |
-          The value within the contrast_variable column of the sample sheet that
+          (Optional, required if contrast_variable and target are used) The value within the contrast_variable column of the sample sheet that
           should be used to derive the reference samples
     - target:
         type: string
         description: |
-          The value within the contrast_variable column of the sample sheet that
+          (Optional, required if contrast_variable and reference are used) The value within the contrast_variable column of the sample sheet that
           should be used to derive the target samples
+    - formula:
+        type: string
+        description: (Optional, requires comparison if used) R formula string used for
+          modeling, e.g. '~ treatment'.
+    - comparison:
+        type: string
+        description: (Optional, mandatory if formula is used) Literal string passed
+          to `limma::makeContrasts`, e.g. 'treatmentmCherry'.
   - - meta2:
         type: map
         description: |
@@ -45,73 +53,104 @@ input:
     - samplesheet:
         type: file
         description: Sample sheet file
+        ontologies: []
     - intensities:
         type: file
         description: |
           Raw TSV or CSV format expression matrix with probes by row and samples
           by column
+        ontologies: []
 output:
-  - results:
-      - meta:
-          type: file
-          description: TSV-format table of differential expression information as output
-            by Limma
-          pattern: "*.limma.results.tsv"
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. This can be used at the
+            workflow level to pass optional parameters to the module, e.g.
+            [ id:'contrast1', blocking:'patient' ] passed in as ext.args like:
+            '--blocking_variable $meta.blocking'.
       - "*.limma.results.tsv":
           type: file
           description: TSV-format table of differential expression information as output
             by Limma
           pattern: "*.limma.results.tsv"
-  - md_plot:
-      - meta:
-          type: file
-          description: Limma mean difference plot
-          pattern: "*.mean_difference.png"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  md_plot:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. This can be used at the
+            workflow level to pass optional parameters to the module, e.g.
+            [ id:'contrast1', blocking:'patient' ] passed in as ext.args like:
+            '--blocking_variable $meta.blocking'.
       - "*.limma.mean_difference.png":
           type: file
           description: Limma mean difference plot
           pattern: "*.mean_difference.png"
-  - rdata:
-      - meta:
-          type: file
-          description: Serialised MArrayLM object
-          pattern: "*.MArrayLM.limma.rds"
+          ontologies: []
+  rdata:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. This can be used at the
+            workflow level to pass optional parameters to the module, e.g.
+            [ id:'contrast1', blocking:'patient' ] passed in as ext.args like:
+            '--blocking_variable $meta.blocking'.
       - "*.MArrayLM.limma.rds":
           type: file
           description: Serialised MArrayLM object
           pattern: "*.MArrayLM.limma.rds"
-  - model:
-      - meta:
-          type: file
-          description: TXT-format limma model
-          pattern: "*.limma.model.tsv"
+          ontologies: []
+  model:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. This can be used at the
+            workflow level to pass optional parameters to the module, e.g.
+            [ id:'contrast1', blocking:'patient' ] passed in as ext.args like:
+            '--blocking_variable $meta.blocking'.
       - "*.limma.model.txt":
           type: file
           description: TXT-format limma model
           pattern: "*.limma.model.tsv"
-  - session_info:
-      - meta:
-          type: file
-          description: dump of R SessionInfo
-          pattern: "*.log"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  session_info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. This can be used at the
+            workflow level to pass optional parameters to the module, e.g.
+            [ id:'contrast1', blocking:'patient' ] passed in as ext.args like:
+            '--blocking_variable $meta.blocking'.
       - "*.R_sessionInfo.log":
           type: file
           description: dump of R SessionInfo
           pattern: "*.log"
-  - normalised_counts:
-      - meta:
-          type: file
-          description: normalised TSV format expression matrix with probes by row and samples by column
-          pattern: "*.normalised_counts.tsv"
+          ontologies: []
+  normalised_counts:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. This can be used at the
+            workflow level to pass optional parameters to the module, e.g.
+            [ id:'contrast1', blocking:'patient' ] passed in as ext.args like:
+            '--blocking_variable $meta.blocking'.
       - "*.normalised_counts.tsv":
           type: file
-          description: normalised TSV format expression matrix with probes by row and samples by column
+          description: normalised TSV format expression matrix with probes by row and
+            samples by column
           pattern: "*.normalised_counts.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@pinin4fjords"
 maintainers:

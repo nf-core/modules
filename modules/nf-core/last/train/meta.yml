@@ -24,13 +24,15 @@ input:
         type: file
         description: FASTA/FASTQ file
         pattern: "*.{fasta,fastq}"
-  - - index:
-        type: directory
-        description: Directory containing the files of the LAST index
-        pattern: "lastdb/"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - index:
+      type: directory
+      description: Directory containing the files of the LAST index
+      pattern: "lastdb/"
 output:
-  - param_file:
-      - meta:
+  param_file:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,8 +41,9 @@ output:
           type: file
           description: Trained parameter file
           pattern: "*.train"
-  - multiqc:
-      - meta:
+          ontologies: []
+  multiqc:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,11 +52,15 @@ output:
           type: file
           description: Alignment parameter summary for MultiQC
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@aleksandrabliznina"
   - "@charles-plessy"

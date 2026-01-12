@@ -1,0 +1,58 @@
+nextflow_workflow {
+
+    name "Test Workflow BED_SCATTER_BEDTOOLS"
+
+    script "../main.nf"
+    workflow "BED_SCATTER_BEDTOOLS"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/bed_scatter_bedtools"
+    tag "bed_scatter_bedtools"
+    tag "bedtools/split"
+    tag "bedtools"
+
+    test("homo_sapiens - bed - 3") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.multi_intervals.bed', checkIfExists:true),
+                    3
+                ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - bed - 4 -- stub") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.multi_intervals.bed', checkIfExists:true),
+                    4
+                ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+}

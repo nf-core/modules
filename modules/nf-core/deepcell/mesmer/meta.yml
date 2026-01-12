@@ -24,6 +24,7 @@ input:
         type: file
         description: Multichannel image file
         pattern: "*.{tiff,tif,h5,hdf5}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -33,10 +34,11 @@ input:
         type: file
         description: Optional membrane image to be provided separately.
         pattern: "*.{tiff,tif,h5,hdf5}"
+        ontologies: []
 output:
   #Only when we have meta
-  - mask:
-      - meta:
+  mask:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,11 +47,14 @@ output:
           type: file
           description: File containing the mask.
           pattern: "*.{tif, tiff}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@migueLib"
   - "@chiarasch"

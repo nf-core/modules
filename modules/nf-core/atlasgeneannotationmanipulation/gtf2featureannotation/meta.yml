@@ -22,6 +22,7 @@ input:
         type: file
         description: gtf annotation file
         pattern: "*.{gtf}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -32,26 +33,22 @@ input:
         description: |
           An optional cDNA file for extracting meta info and/or filtering.
         pattern: "*.{gtf}"
+        ontologies: []
 output:
-  - feature_annotation:
-      - meta:
-          type: file
-          description: TSV file with feature annotation
-          pattern: "*.{tsv}"
+  feature_annotation:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.anno.tsv":
           type: file
           description: TSV file with feature annotation
           pattern: "*.{tsv}"
-  - filtered_cdna:
-      - meta:
-          type: file
-          description: |
-            Where --parse-cdnas is specified in ext.args and an input fasta file is
-            provided, filtered sequences are output to the specified file. No file
-            will be output if this is not specified (for example for use of
-            --dummy-from-cdnas only). See documentation at
-            https://github.com/ebi-gene-expression-group/atlas-gene-annotation-manipulation.
-          pattern: "*.{tsv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  filtered_cdna:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.fa.gz":
           type: file
           description: |
@@ -61,11 +58,15 @@ output:
             --dummy-from-cdnas only). See documentation at
             https://github.com/ebi-gene-expression-group/atlas-gene-annotation-manipulation.
           pattern: "*.{tsv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@pinin4fjords"
 maintainers:

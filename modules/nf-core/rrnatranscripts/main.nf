@@ -1,5 +1,5 @@
 process RRNATRANSCRIPTS {
-    tag "$gtf"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -8,33 +8,24 @@ process RRNATRANSCRIPTS {
         'biocontainers/python:3.12' }"
 
     input:
-    path(gtf)
+    tuple val(meta), path(gtf)
 
     output:
-    path("*rrna_intervals.gtf") , emit: rrna_gtf, optional: true
-    path "versions.yml"         , emit: versions
+    tuple val(meta), path('*_rrna_intervals.gtf')    , emit: rrna_gtf
+    path "versions.yml"                              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix = task.ext.prefix ?: "${gtf.baseName}"
-    """
-    grep -E '^#|rRNA' ${gtf} > ${prefix}_rrna_intervals.gtf || true
-    if [ !  -s ${prefix}_rrna_intervals.gtf ]; then
-        rm ${prefix}_rrna_intervals.gtf
-    fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        python: \$(python --version | sed -e "s/Python //g")
-    END_VERSIONS
-    """
+    prefix = task.ext.prefix ?: "${meta.id}"
+    template 'get_rrna_transcripts.py'
 
     stub:
-    def prefix = task.ext.prefix ?: "${gtf.baseName}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_rrna_intervals.gtf
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python --version | sed -e "s/Python //g")

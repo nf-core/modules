@@ -21,17 +21,20 @@ input:
     - peak:
         type: file
         description: Peak file to annotate
-  - - fasta:
-        type: file
-        description: Fasta file of reference genome
-        pattern: "*.fasta"
-  - - gtf:
-        type: file
-        description: GTF file of reference genome
-        pattern: "*.gtf"
+        ontologies: []
+  - fasta:
+      type: file
+      description: Fasta file of reference genome
+      pattern: "*.fasta"
+      ontologies: []
+  - gtf:
+      type: file
+      description: GTF file of reference genome
+      pattern: "*.gtf"
+      ontologies: []
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,8 +43,9 @@ output:
           type: file
           description: Annotated peaks in txt file
           pattern: "*annotatePeaks.txt"
-  - stats:
-      - meta:
+          ontologies: []
+  stats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,11 +54,14 @@ output:
           type: file
           description: Annotation statistics in txt file
           pattern: "*annStats.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@drpatelh"
   - "@kevinmenden"

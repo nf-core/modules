@@ -29,7 +29,7 @@ process TCOFFEE_ALNCOMPARE {
     if [[ "${msa}" == *.gz ]]; then
         unpigz -c ${msa} > uncompressed_msa.fa
     else
-        ln ${msa} uncompressed_msa.fa
+        mv ${msa} uncompressed_msa.fa
     fi
 
     export TEMP='./'

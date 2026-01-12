@@ -18,7 +18,6 @@ nextflow_process {
                 """
                 input[0] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/pep/test_nextflow_original_samplesheet.csv", checkIfExists: true)
 				input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/pep/test_samplesheet_schema.yaml", checkIfExists: true)
-				input[2] = []
 
                 """
             }
@@ -43,7 +42,6 @@ nextflow_process {
                 """
                 input[0] = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/pep/test_pep_format_files/config.yaml", checkIfExists: true)
 				input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/pep/test_samplesheet_schema.yaml", checkIfExists: true)
-				input[2] = []
 
                 """
             }

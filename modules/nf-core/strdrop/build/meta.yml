@@ -1,0 +1,69 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "strdrop_build"
+description: Build reference json from sequencing coverage in STR VCFs
+keywords:
+  - str
+  - vcf
+  - lrs
+tools:
+  - "strdrop":
+      description: "Flag STR coverage drops in LRS data"
+      homepage: "https://github.com/dnil/strdrop"
+      documentation: "https://github.com/dnil/strdrop/blob/main/docs/README.md"
+      tool_dev_url: "https://github.com/dnil/strdrop"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - training_set:
+        type: file
+        description: Input VCF training set files
+        pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+          - edam: "http://edamontology.org/format_3020" # BCF
+output:
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.json":
+          type: file
+          description: Output reference json file
+          pattern: "*.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464" # JSON
+  versions_strdrop:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - strdrop:
+          type: string
+          description: The name of the tool
+      - strdrop --version | sed 's/.* //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - strdrop:
+          type: string
+          description: The name of the tool
+      - strdrop --version | sed 's/.* //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@fellen31"
+maintainers:
+  - "@fellen31"

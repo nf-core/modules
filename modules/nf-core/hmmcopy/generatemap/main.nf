@@ -1,5 +1,5 @@
 process HMMCOPY_GENERATEMAP {
-    tag "$bam"
+    tag "$fasta"
     label 'process_long'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
@@ -20,7 +20,6 @@ process HMMCOPY_GENERATEMAP {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '0.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     # build required indexes
@@ -32,6 +31,16 @@ process HMMCOPY_GENERATEMAP {
     generateMap.pl \\
         $args \\
         $fasta
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        hmmcopy: \$(echo $VERSION)
+    END_VERSIONS
+    """
+    stub:
+    def VERSION = '0.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch ${fasta}.map.bw
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

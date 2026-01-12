@@ -1,31 +1,88 @@
 {
     "sarscov2 - [fastq_gz_1, fastq_gz_2]": {
         "content": [
-            [
-                [
+            {
+                "assembled": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.assembled.fastq.gz:md5,c66f0d68268d800a0ca9cd285fe62453"
+                    ]
+                ],
+                "discarded": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.discarded.fastq.gz"
+                    ]
+                ],
+                "unassembled": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.unassembled.forward.fastq.gz:md5,066b58ee61df35bd2b063a511ffd5d85",
+                        "test.unassembled.reverse.fastq.gz:md5,ed35907306bdbd96d59144ddb16c951a"
+                    ]
+                ],
+                "versions": [
                     {
-                        "id": "test"
-                    },
-                    "test.assembled.fastq.gz:md5,c66f0d68268d800a0ca9cd285fe62453"
+                        "PEAR": {
+                            "pear": "0.9.6"
+                        }
+                    }
                 ]
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.unassembled.forward.fastq.gz:md5,066b58ee61df35bd2b063a511ffd5d85",
-                    "test.unassembled.reverse.fastq.gz:md5,ed35907306bdbd96d59144ddb16c951a"
-                ]
-            ],
-            [
-                "versions.yml:md5,e43b94e38546fb17eb163c68abdc9b34"
-            ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2024-06-02T22:22:37.663982144"
+        "timestamp": "2025-09-10T10:24:00.839224259"
+    },
+    "sarscov2 - [fastq_gz_1, fastq_gz_2] - stub": {
+        "content": [
+            {
+                "assembled": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.assembled.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "discarded": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.discarded.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "unassembled": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.unassembled.forward.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "test.unassembled.reverse.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions": [
+                    {
+                        "PEAR": {
+                            "pear": "0.9.6"
+                        }
+                    }
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
+        },
+        "timestamp": "2025-09-10T10:24:06.439617113"
     }
 }

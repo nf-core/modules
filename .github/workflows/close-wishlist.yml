@@ -1,0 +1,19 @@
+name: "Close wishlist issues"
+on:
+  schedule:
+    - cron: "0 0 * * 0" # Once a week
+  workflow_dispatch:
+
+jobs:
+  clean-up:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/stale@997185467fa4f803885201cee163a9f38240193d # v10
+        with:
+          stale-issue-message: "This issue has been tagged as wishlist and no one has assigned themselves to it within a year. It will be closed in 10 days unless someone assigns themselves to it."
+          close-issue-message: "This issue was closed because it has been tagged as wishlist and no one worked on it for over a year."
+          days-before-stale: 346
+          days-before-close: 10
+          any-of-labels: "wishlist"

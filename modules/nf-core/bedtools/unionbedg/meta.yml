@@ -24,6 +24,7 @@ input:
         description: |
           Input BedGraph file: four column BED format, with 4th column with numerical values: integer or real, positive or negative
         pattern: "*.{bedGraph,bedgraph}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -33,9 +34,10 @@ input:
         type: file
         description: Chromosome sizes file
         pattern: "*{.sizes,.txt}"
+        ontologies: []
 output:
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,11 +46,14 @@ output:
           type: file
           description: Combined BED file with values from all bedGraph files
           pattern: "*.{bed}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ekushele"
 maintainers:

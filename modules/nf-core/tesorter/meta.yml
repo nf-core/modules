@@ -1,0 +1,136 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "tesorter"
+description: An accurate and fast method to classify LTR-retrotransposons in plant
+  genomes
+keywords:
+  - genomics
+  - classify
+  - LTR
+  - retrotransposons
+  - plant
+tools:
+  - "tesorter":
+      description: "Lineage-level classification of transposable elements using conserved
+        protein domains."
+      homepage: "https://github.com/zhangrengang/TEsorter"
+      documentation: "https://github.com/zhangrengang/TEsorter"
+      tool_dev_url: "https://github.com/zhangrengang/TEsorter"
+      doi: "10.1093/hr/uhac017"
+      licence: ["GPL v3"]
+      identifier: biotools:TEsorter
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Input sequence
+        pattern: "*.{fa,fasta,fsa,faa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - db_hmm:
+        type: file
+        optional: true
+        description: The database HMM file used
+        ontologies: []
+output:
+  domtbl:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.domtbl":
+          type: file
+          description: HMMScan raw output
+          pattern: "*.{domtbl}"
+          ontologies: []
+  dom_faa:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.dom.faa":
+          type: file
+          description: Protein sequences of domain, which can be used for phylogenetic
+            analysis
+          pattern: "*.dom.{faa}"
+          ontologies: []
+  dom_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.dom.tsv":
+          type: file
+          description: Inner domains of TEs/LTR-RTs, which might be used to filter domains
+            based on their scores and coverages
+          pattern: "*.dom.{tsv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  dom_gff3:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.dom.gff3":
+          type: file
+          description: Domain annotations in 'gff3' format
+          pattern: "*.dom.{gff3}"
+          ontologies:
+            - edam: http://edamontology.org/format_1975 # GFF3
+  cls_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.cls.tsv":
+          type: file
+          description: TEs/LTR-RTs classifications
+          pattern: "*.cls.{tsv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  cls_lib:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.cls.lib":
+          type: file
+          description: Fasta library for RepeatMasker
+          pattern: "*.cls.{lib}"
+          ontologies: []
+  cls_pep:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.cls.pep":
+          type: file
+          description: The same sequences as '*.dom.faa', but id is changed with classifications
+          pattern: "*.cls.{pep}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@GallVp"
+maintainers:
+  - "@GallVp"

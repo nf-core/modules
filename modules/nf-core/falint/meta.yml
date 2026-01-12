@@ -1,0 +1,61 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "falint"
+description: A fasta linter/validator
+keywords:
+  - fasta
+  - validation
+  - genome
+tools:
+  - "falint":
+      description: "A Fasta linter/validator"
+      homepage: "https://github.com/GallVp/fa-lint"
+      documentation: "https://github.com/GallVp/fa-lint"
+      tool_dev_url: "https://github.com/GallVp/fa-lint"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing file information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: Input fasta file
+        pattern: "*.fasta"
+        ontologies: []
+output:
+  success_log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing file information
+            e.g. [ id:'test' ]
+      - "*.success.log":
+          type: file
+          description: Log file for successful validation
+          pattern: "*.success.log"
+          ontologies: []
+  error_log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing file information
+            e.g. [ id:'test' ]
+      - "*.error.log":
+          type: file
+          description: Log file for failed validation
+          pattern: "*.error.log"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@gallvp"
+maintainers:
+  - "@gallvp"

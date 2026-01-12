@@ -1,0 +1,53 @@
+name: samtools_bgzip
+description: Outputs a FASTA file compressed with the BGZF algorithm
+keywords:
+  - fasta
+  - BGZF
+  - bgzip
+tools:
+  - samtools:
+      description: |
+        SAMtools is a set of utilities for interacting with and post-processing
+        short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
+        These files are generated as output by short read aligners like BWA.
+      homepage: http://www.htslib.org/
+      documentation: http://www.htslib.org/doc/samtools.html
+      doi: 10.1093/bioinformatics/btp352
+      licence: ["MIT"]
+      identifier: biotools:samtools
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: FASTA file, compressed or not.
+        pattern: "*.{fa,fa.gz,fa.bz2,fa.xz,fasta,fasta.gz,fasta.bz2,fasta.xz}"
+        ontologies: []
+output:
+  fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.{fa.gz,fasta.gz}"
+      - ${output}:
+          type: map
+          description: |
+            A FASTA file compressed with the BGZF algorithm.  It will be
+            the original file if it was already BGZF-compressed.
+          pattern: "*.{fa.gz,fasta.gz}"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@charles-plessy"
+maintainers:
+  - "@charles-plessy"

@@ -9,17 +9,16 @@ process AMULETY_TRANSLATE {
 
     input:
     tuple val(meta), path(tsv)
-    path(reference_igblast) // igblast references
+    path(reference_igblast)
 
     output:
-    tuple val(meta), path("*_translated.tsv") , emit: repertoire_translated
-    path "versions.yml" , emit: versions
+    tuple val(meta), path("*_translated.tsv"), emit: repertoire_translated
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     export IGDATA=${reference_igblast}
@@ -40,7 +39,6 @@ process AMULETY_TRANSLATE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_translated.tsv

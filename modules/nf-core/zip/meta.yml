@@ -23,9 +23,10 @@ input:
     - files:
         type: file
         description: File or list of files to be zipped
+        ontologies: []
 output:
-  - zipped_archive:
-      - meta:
+  zipped_archive:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,11 +35,15 @@ output:
           type: file
           description: ZIP file
           pattern: "*.zip"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3987 # ZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
   - "@pinin4fjords"

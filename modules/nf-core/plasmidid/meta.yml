@@ -22,13 +22,15 @@ input:
         type: file
         description: |
           Fasta file containing scaffold
-  - - fasta:
-        type: file
-        description: FASTA reference file
-        pattern: "*.{fasta,fa}"
+        ontologies: []
+  - fasta:
+      type: file
+      description: FASTA reference file
+      pattern: "*.{fasta,fa}"
+      ontologies: []
 output:
-  - html:
-      - meta:
+  html:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,8 +39,9 @@ output:
           type: file
           description: html file with results rendered
           pattern: "*.{html}"
-  - tab:
-      - meta:
+          ontologies: []
+  tab:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,8 +50,10 @@ output:
           type: file
           description: Results in a tabular file
           pattern: "*.{tab}"
-  - images:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  images:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,8 +62,8 @@ output:
           type: directory
           description: Directory containing the images produced by plasmidid
           pattern: "images"
-  - logs:
-      - meta:
+  logs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,8 +72,8 @@ output:
           type: directory
           description: Directory containing the logs produced by plasmidid
           pattern: "logs"
-  - data:
-      - meta:
+  data:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -77,8 +82,8 @@ output:
           type: directory
           description: Directory containing the data produced by plasmidid
           pattern: "data"
-  - database:
-      - meta:
+  database:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -87,8 +92,8 @@ output:
           type: directory
           description: Directory containing the database produced by plasmidid
           pattern: "database"
-  - fasta_files:
-      - meta:
+  fasta_files:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -97,8 +102,8 @@ output:
           type: directory
           description: Directory containing the fasta files produced by plasmidid
           pattern: "fasta_files"
-  - kmer:
-      - meta:
+  kmer:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -107,11 +112,13 @@ output:
           type: directory
           description: Directory containing the kmer files produced by plasmidid
           pattern: "database"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@joseespinosa"
   - "@drpatelh"

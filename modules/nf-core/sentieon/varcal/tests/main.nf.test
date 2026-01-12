@@ -4,14 +4,53 @@ nextflow_process {
     config "./nextflow.config"
     script "../main.nf"
     process "SENTIEON_VARCAL"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "sentieon"
     tag "sentieon/varcal"
-   
-    test("homo sapiens") {
-        
+
+
+    test("homo sapiens - one resource") {
+
+        when {
+            params {
+                module_args = '--var_type SNP --annotation QD --annotation MQ --annotation FS --annotation SOR'
+            }
+            process {
+                """
+                input[0] = [[id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz.tbi', checkIfExists:true)
+                    ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/hapmap_3.3.hg38.vcf.gz', checkIfExists:true)
+                    ]
+                input[2] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/hapmap_3.3.hg38.vcf.gz.tbi', checkIfExists:true)
+                    ]
+                input[3] = '--resource:hapmap,known=false,training=true,truth=true,prior=15.0 hapmap_3.3.hg38.vcf.gz'
+                input[4] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists:true)
+                input[5] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists:true)
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    file(process.out.recal[0][1]).readLines()[0..5],
+                    file(process.out.idx[0][1]).name,
+                    process.out.tranches,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo sapiens - multiple resources") {
+
         when {
             params {
                 module_args = '--var_type SNP --annotation QD --annotation MQ --annotation FS --annotation SOR'
@@ -58,7 +97,7 @@ nextflow_process {
             )
         }
     }
-    
+
     test("homo sapiens -- stub") {
         options '-stub'
         when {

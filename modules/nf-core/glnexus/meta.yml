@@ -23,6 +23,12 @@ input:
         type: list
         description: Input genomic vcf files
         pattern: "*.{gvcf,gvcf.gz,g.vcf,g.vcf.gz}"
+    - custom_config:
+        type: file
+        description: Custom YML config for additional profiles
+        pattern: "*.{yml,yaml}"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
   - - meta2:
         type: map
         description: |
@@ -33,20 +39,24 @@ input:
         description: Input BED file
         pattern: "*.bed"
 output:
-  - bcf:
-      - meta:
-          type: file
-          description: merged BCF file
-          pattern: "*.bcf"
+  bcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
       - "*.bcf":
           type: file
           description: merged BCF file
           pattern: "*.bcf"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ramprasadn"
 maintainers:

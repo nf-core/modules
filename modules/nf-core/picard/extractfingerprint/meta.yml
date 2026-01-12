@@ -21,34 +21,41 @@ input:
         type: file
         description: |
           Input SAM/BAM/CRAM file
+        ontologies: []
     - bam:
         type: file
         description: BAM file
         pattern: "*.{bam}"
+        ontologies: []
     - bai:
         type: file
         description: BAM index file
         pattern: "*.{bai}"
-  - - haplotype_map:
-        type: file
-        description: |
-          A file of haplotype information. The file lists a set of SNPs, optionally arranged in high-LD blocks, to be used for fingerprinting.
-          See https://software.broadinstitute.org/gatk/documentation/article?id=9526 for details.
-        pattern: "*.{txt,vcf,vcf.gz}"
-  - - fasta:
-        type: file
-        description: Reference sequence file
-        pattern: "*.{fasta,fna,fa}"
-  - - fasta_fai:
-        type: file
-        description: Reference sequence index file
-        pattern: "*.{fai}"
-  - - sequence_dictionary:
-        type: file
-        description: Reference sequence dictionary file
+        ontologies: []
+  - haplotype_map:
+      type: file
+      description: |
+        A file of haplotype information. The file lists a set of SNPs, optionally arranged in high-LD blocks, to be used for fingerprinting.
+        See https://software.broadinstitute.org/gatk/documentation/article?id=9526 for details.
+      pattern: "*.{txt,vcf,vcf.gz}"
+      ontologies: []
+  - fasta:
+      type: file
+      description: Reference sequence file
+      pattern: "*.{fasta,fna,fa}"
+      ontologies: []
+  - fasta_fai:
+      type: file
+      description: Reference sequence index file
+      pattern: "*.{fai}"
+      ontologies: []
+  - sequence_dictionary:
+      type: file
+      description: Reference sequence dictionary file
+      ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,8 +64,10 @@ output:
           type: file
           description: VCF file
           pattern: "*.vcf.gz"
-  - tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,11 +76,14 @@ output:
           type: file
           description: Tabix index file
           pattern: "*.vcf.gz.tbi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@adamrtalbot"
   - "@mauro-saporita"

@@ -4,8 +4,8 @@ process SAMTOOLS_VIEW {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.21--h50ea8bc_0' :
-        'biocontainers/samtools:1.21--h50ea8bc_0' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.22.1--h96c455f_0' :
+        'biocontainers/samtools:1.22.1--h96c455f_0' }"
 
     input:
     tuple val(meta), path(input), path(index)
@@ -22,7 +22,7 @@ process SAMTOOLS_VIEW {
     tuple val(meta), path("${prefix}.${file_type}.crai"),                      emit: crai,             optional: true
     tuple val(meta), path("${prefix}.unselected.${file_type}"),                emit: unselected,       optional: true
     tuple val(meta), path("${prefix}.unselected.${file_type}.{csi,crai}"),     emit: unselected_index, optional: true
-    path  "versions.yml",                                                      emit: versions
+    tuple val("${task.process}"), val('samtools'), eval('samtools --version | head -1 | sed -e "s/samtools //"'), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -50,6 +50,7 @@ process SAMTOOLS_VIEW {
         }
     }
     """
+    # Note: --threads value represents *additional* CPUs to allocate (total CPUs = 1 + --threads).
     samtools \\
         view \\
         --threads ${task.cpus-1} \\
@@ -59,11 +60,6 @@ process SAMTOOLS_VIEW {
         -o ${output_file} \\
         $input \\
         $args2
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -94,10 +90,5 @@ process SAMTOOLS_VIEW {
     ${index}
     ${unselected}
     ${unselected_index}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }

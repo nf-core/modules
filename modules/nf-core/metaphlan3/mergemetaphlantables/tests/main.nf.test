@@ -1,0 +1,96 @@
+nextflow_process {
+
+    name "Test Process METAPHLAN3_MERGEMETAPHLANTABLES"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "METAPHLAN3_MERGEMETAPHLANTABLES"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "untar"
+    tag "metaphlan3"
+    tag "metaphlan3/metaphlan3"
+    tag "metaphlan3/mergemetaphlantables"
+
+    test("sarscov2 - profiles") {
+        setup {
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+
+                process {
+                    """
+                    input[0] = [
+                        [],
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/metaphlan_database.tar.gz', checkIfExists:true)
+                    ]
+                    """
+                }
+            }
+
+            run("METAPHLAN3_METAPHLAN3") {
+                script "../../metaphlan3/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of(
+                        [
+                            [id:'test', single_end:true],
+                            [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz',checkIfExists:true)]
+                        ],
+                        [
+                            [id:'test2', single_end:true],
+                            [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true)]
+                        ]
+                    )
+                    input[1] = UNTAR.out.untar.map{it[1]}
+                    """
+                }
+            }
+        }
+        when {
+            params {
+                module_metaphlan3_metaphlan3 = '--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local'
+            }
+            process {
+                """
+                input[0] = METAPHLAN3_METAPHLAN3.out.profile
+                    .map{[
+                        [id:"test"], it[1]
+                    ]}
+                    .groupTuple()
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.txt[0][1]).readLines().join('\n'),
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - profiles -- stub") {
+        options "-stub"
+        when {
+            params {
+                module_metaphlan3_metaphlan3 = ''
+            }
+            process {
+                """
+                input[0] = [[id:"test"], []]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

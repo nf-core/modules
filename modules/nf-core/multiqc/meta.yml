@@ -15,57 +15,74 @@ tools:
       licence: ["GPL-3.0-or-later"]
       identifier: biotools:multiqc
 input:
-  - - multiqc_files:
-        type: file
-        description: |
-          List of reports / files recognised by MultiQC, for example the html and zip output of FastQC
-  - - multiqc_config:
-        type: file
-        description: Optional config yml for MultiQC
-        pattern: "*.{yml,yaml}"
-  - - extra_multiqc_config:
-        type: file
-        description: Second optional config yml for MultiQC. Will override common sections
-          in multiqc_config.
-        pattern: "*.{yml,yaml}"
-  - - multiqc_logo:
-        type: file
-        description: Optional logo file for MultiQC
-        pattern: "*.{png}"
-  - - replace_names:
-        type: file
-        description: |
-          Optional two-column sample renaming file. First column a set of
-          patterns, second column a set of corresponding replacements. Passed via
-          MultiQC's `--replace-names` option.
-        pattern: "*.{tsv}"
-  - - sample_names:
-        type: file
-        description: |
-          Optional TSV file with headers, passed to the MultiQC --sample_names
-          argument.
-        pattern: "*.{tsv}"
+  - multiqc_files:
+      type: file
+      description: |
+        List of reports / files recognised by MultiQC, for example the html and zip output of FastQC
+      ontologies: []
+  - multiqc_config:
+      type: file
+      description: Optional config yml for MultiQC
+      pattern: "*.{yml,yaml}"
+      ontologies:
+        - edam: http://edamontology.org/format_3750 # YAML
+  - extra_multiqc_config:
+      type: file
+      description: Second optional config yml for MultiQC. Will override common sections
+        in multiqc_config.
+      pattern: "*.{yml,yaml}"
+      ontologies:
+        - edam: http://edamontology.org/format_3750 # YAML
+  - multiqc_logo:
+      type: file
+      description: Optional logo file for MultiQC
+      pattern: "*.{png}"
+      ontologies: []
+  - replace_names:
+      type: file
+      description: |
+        Optional two-column sample renaming file. First column a set of
+        patterns, second column a set of corresponding replacements. Passed via
+        MultiQC's `--replace-names` option.
+      pattern: "*.{tsv}"
+      ontologies:
+        - edam: http://edamontology.org/format_3475 # TSV
+  - sample_names:
+      type: file
+      description: |
+        Optional TSV file with headers, passed to the MultiQC --sample_names
+        argument.
+      pattern: "*.{tsv}"
+      ontologies:
+        - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - report:
-      - "*multiqc_report.html":
-          type: file
-          description: MultiQC report file
-          pattern: "multiqc_report.html"
-  - data:
-      - "*_data":
-          type: directory
-          description: MultiQC data dir
-          pattern: "multiqc_data"
-  - plots:
-      - "*_plots":
-          type: file
-          description: Plots created by MultiQC
-          pattern: "*_data"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  report:
+    - "*.html":
+        type: file
+        description: MultiQC report file
+        pattern: ".html"
+        ontologies: []
+  data:
+    - "*_data":
+        type: directory
+        description: MultiQC data dir
+        pattern: "multiqc_data"
+  plots:
+    - "*_plots":
+        type: file
+        description: Plots created by MultiQC
+        pattern: "*_data"
+        ontologies: []
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - multiqc:
+          type: string
+          description: The tool name
+      - multiqc --version | sed "s/.* //g":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@abhi18av"
   - "@bunop"
@@ -76,3 +93,27 @@ maintainers:
   - "@bunop"
   - "@drpatelh"
   - "@jfy133"
+containers:
+  conda:
+    linux/amd64:
+      lock_file: https://wave.seqera.io/v1alpha1/builds/bd-ee7739d47738383b_1/condalock
+    linux/arm64:
+      lock_file: https://wave.seqera.io/v1alpha1/builds/bd-58d7dee710ab3aa8_1/condalock
+  docker:
+    linux/amd64:
+      build_id: bd-ee7739d47738383b_1
+      name: community.wave.seqera.io/library/multiqc:1.33--ee7739d47738383b
+      scanId: sc-6ddec592dcadd583_4
+    linux/arm64:
+      build_id: bd-58d7dee710ab3aa8_1
+      name: community.wave.seqera.io/library/multiqc:1.33--58d7dee710ab3aa8
+      scanId: sc-a04c42273e34c55c_2
+  singularity:
+    linux/amd64:
+      build_id: bd-e3576ddf588fa00d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/34/34e733a9ae16a27e80fe00f863ea1479c96416017f24a907996126283e7ecd4d/data
+      name: oras://community.wave.seqera.io/library/multiqc:1.33--e3576ddf588fa00d
+    linux/arm64:
+      build_id: bd-2537ca5f8445e3c2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/78/78b89e91d89e9cc99ad5ade5be311f347838cb2acbfb4f13bc343b170be09ce4/data
+      name: oras://community.wave.seqera.io/library/multiqc:1.33--2537ca5f8445e3c2

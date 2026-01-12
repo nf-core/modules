@@ -1,49 +1,39 @@
 process ENSEMBLVEP_FILTERVEP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ensembl-vep:113.4--pl5321h2a3209d_0' :
-        'biocontainers/ensembl-vep:113.4--pl5321h2a3209d_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4b/4b5a8c173dc9beaa93effec76b99687fc926b1bd7be47df5d6ce19d7d6b4d6b7/data'
+        : 'community.wave.seqera.io/library/ensembl-vep:115.2--90ec797ecb088e9a'}"
 
     input:
     tuple val(meta), path(input)
-    path (feature_file)
+    path feature_file
 
     output:
     tuple val(meta), path("*.${extension}"), emit: output
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val('ensemblvep'), eval("vep --help | sed -n '/ensembl-vep/s/.*: //p'"), topic: versions, emit: versions_ensemblvep
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    extension  = task.ext.suffix ?: "vcf"
+    extension = task.ext.suffix ?: "vcf"
     """
     filter_vep \\
-        $args \\
-        --input_file $input \\
+        ${args} \\
+        --input_file ${input} \\
         --output_file ${prefix}.${extension} \\
         --only_matched
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ensemblvep: \$( echo \$(vep --help 2>&1) | sed 's/^.*Versions:.*ensembl-vep : //;s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    extension  = task.ext.suffix ?: "vcf"
+    extension = task.ext.suffix ?: "vcf"
     """
     touch ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ensemblvep: \$( echo \$(vep --help 2>&1) | sed 's/^.*Versions:.*ensembl-vep : //;s/ .*\$//')
-    END_VERSIONS
     """
 }

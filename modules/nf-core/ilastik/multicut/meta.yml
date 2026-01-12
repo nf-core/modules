@@ -27,18 +27,23 @@ input:
         type: file
         description: h5 file containing image stack to classify file
         pattern: "*.{h5,hdf5}"
+        ontologies: []
     - probs:
         type: file
-        description: Probability map for boundary based segmentation as exported by the pixel classification workflow.
+        description: Probability map for boundary based segmentation as exported by
+          the pixel classification workflow.
         pattern: "*.{h5,hdf5}"
-  - - ilp:
-        type: file
-        description: Trained 'Boundary-based Segmentation with Multicut' .ilp project file
-        pattern: "*.{ilp}"
+        ontologies: []
+  - ilp:
+      type: file
+      description: Trained 'Boundary-based Segmentation with Multicut' .ilp project
+        file
+      pattern: "*.{ilp}"
 
+      ontologies: []
 output:
-  - mask:
-      - meta:
+  mask:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,11 +52,14 @@ output:
           type: file
           description: Multicut segmentation mask output.
           pattern: "*.{tiff}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@FloWuenne"
 maintainers:

@@ -45,6 +45,7 @@ process GPROFILER2_GOST {
     "${task.process}":
         r-ggplot2: \$(Rscript -e "library(ggplot2); cat(as.character(packageVersion('ggplot2')))")
         r-gprofiler2: \$(Rscript -e "library(gprofiler2); cat(as.character(packageVersion('gprofiler2')))")
+        gprofiler-data: \$(Rscript -e "library(gprofiler2); library(yaml); cat(as.yaml(get_version_info()))")
     END_VERSIONS
     """
 }

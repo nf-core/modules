@@ -24,15 +24,17 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
-  - - keepbed:
-        type: file
-        description: BED file defining regions to keep quality
-  - - bedout:
-        type: boolean
-        description: set to true to output suspicious regions to a BED file
+        ontologies: []
+  - keepbed:
+      type: file
+      description: BED file defining regions to keep quality
+      ontologies: []
+  - bedout:
+      type: boolean
+      description: set to true to output suspicious regions to a BED file
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -41,8 +43,9 @@ output:
           type: file
           description: optional filtered/compressed BAM file
           pattern: "*.{bam}"
-  - cram:
-      - meta:
+          ontologies: []
+  cram:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -51,8 +54,9 @@ output:
           type: file
           description: optional filtered/compressed CRAM file
           pattern: "*.{cram}"
-  - sam:
-      - meta:
+          ontologies: []
+  sam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -61,8 +65,9 @@ output:
           type: file
           description: optional filtered/compressed SAM file
           pattern: "*.{sam}"
-  - bed:
-      - meta:
+          ontologies: []
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -71,11 +76,14 @@ output:
           type: file
           description: optional suspicious regions BED file
           pattern: "*{bed}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@priyanka-surana"
 maintainers:

@@ -20,42 +20,48 @@ tools:
       identifier: ""
 
 input:
-  - - host_fasta:
-        type: file
-        description: |
-          Reference genome fasta file from host, compressed or uncompressed.
-  - - graft_fasta:
-        type: file
-        description: |
-          Reference genome fasta file from graft, compressed or uncompressed.
-  - - index:
-        type: string
-        description: |
-          File name prefix to store index files.
-  - - nobjects:
-        type: string
-        description: |
-          Number of k-mers that will be stored in the hash table. Underscore should be used, i.e for 1000000, it should be typed 1_000_000.
-  - - mask:
-        type: string
-        description: |
-          Gapped k-mer mask (quoted string like '#__##_##__#').
+  - host_fasta:
+      type: file
+      description: |
+        Reference genome fasta file from host, compressed or uncompressed.
+      ontologies: []
+  - graft_fasta:
+      type: file
+      description: |
+        Reference genome fasta file from graft, compressed or uncompressed.
+      ontologies: []
+  - index:
+      type: string
+      description: |
+        File name prefix to store index files.
+  - nobjects:
+      type: string
+      description: |
+        Number of k-mers that will be stored in the hash table. Underscore should be used, i.e for 1000000, it should be typed 1_000_000.
+  - mask:
+      type: string
+      description: |
+        Gapped k-mer mask (quoted string like '#__##_##__#').
 output:
-  - hash:
-      - ${index}.hash:
-          type: file
-          description: File with index hash file.
-          pattern: "*hash"
-  - info:
-      - ${index}.info:
-          type: file
-          description: File with index info file.
-          pattern: "*info"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  hash:
+    - ${index}.hash:
+        type: file
+        description: File with index hash file.
+        pattern: "*hash"
+        ontologies: []
+  info:
+    - ${index}.info:
+        type: file
+        description: File with index info file.
+        pattern: "*info"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@diegomscoelho"
 maintainers:

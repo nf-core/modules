@@ -1,0 +1,115 @@
+name: "bcftools_pluginfilltags"
+description: Compute and fill various INFO tags
+keywords:
+  - info
+  - bcftools
+  - tags
+  - vcf
+tools:
+  - "bcftools":
+      description: "BCFtools is a set of utilities that manipulate variant calls in
+        the Variant Call Format (VCF) and its binary counterpart BCF. All commands work
+        transparently with both VCFs and BCFs, both uncompressed and BGZF-compressed.\
+        \  Most commands accept VCF, bgzipped VCF and BCF with filetype detected automatically
+        even when streaming from a pipe. Indexed VCF and BCF will work in all situations.
+        Un-indexed VCF and BCF and streams will work in most, but not all situations."
+      homepage: "https://samtools.github.io/bcftools/howtos/index.html"
+      documentation: "https://samtools.github.io/bcftools/bcftools.html"
+      tool_dev_url: "https://github.com/samtools/bcftools"
+      doi: "10.1093/bioinformatics/btp352"
+      licence: ["MIT"]
+      args_id: "$args"
+      identifier: biotools:bcftools
+  - "bcftools plugin fill-tags":
+      description: "Bcftools plugins are tools that can be used with bcftools to manipulate
+        variant calls in Variant Call Format (VCF) and BCF. The fill-tags plugin compute
+        and fill various INFO tags"
+      homepage: "https://samtools.github.io/bcftools/howtos/plugins.html"
+      documentation: "https://samtools.github.io/bcftools/bcftools.html#plugin"
+      tool_dev_url: "https://github.com/samtools/bcftools"
+      doi: "10.1093/bioinformatics/btp352"
+      licence: ["MIT"]
+      args_id: "$args2"
+      identifier: biotools:bcftools
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: |
+          The input file in variant calling format to be inspected.
+          e.g. 'file.vcf.gz'
+        pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+        ontologies: []
+    - index:
+        type: file
+        description: |
+          The tab index for the VCF file to be inspected.
+          e.g. 'file.tbi'
+        ontologies: []
+  - regions:
+      type: file
+      description: |
+        Optionally, restrict the operation to regions listed in this file.
+        e.g. 'file.vcf'
+      ontologies: []
+  - targets:
+      type: file
+      description: |
+        Optionally, restrict the operation to regions listed in this file (doesn't rely upon index files)
+        e.g. 'file.vcf'
+      ontologies: []
+  - samples:
+      type: file
+      description: |
+        Optionally, list of samples (first column) and tab-separated list of populations (second column)
+        e.g. 'file.vcf'
+      ontologies: []
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{vcf,vcf.gz,bcf,bcf.gz}":
+          type: file
+          description: VCF output file containing added INFO/INFO field
+          pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+          ontologies: []
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tbi":
+          type: file
+          description: Alternative VCF file tabix index
+          pattern: "*.tbi"
+          ontologies: []
+  csi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csi":
+          type: file
+          description: Default VCF file coordinate sorted index
+          pattern: "*.csi"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@LouisLeNezet"
+maintainers:
+  - "@LouisLeNezet"

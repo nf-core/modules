@@ -11,8 +11,8 @@ process BOWTIE_BUILD {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path('bowtie') , emit: index
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path('bowtie'), emit: index
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,7 +21,7 @@ process BOWTIE_BUILD {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p bowtie
-    bowtie-build --threads $task.cpus $fasta bowtie/${prefix}
+    bowtie-build --threads ${task.cpus} ${fasta} bowtie/${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -45,5 +45,4 @@ process BOWTIE_BUILD {
         bowtie: \$(echo \$(bowtie --version 2>&1) | sed 's/^.*bowtie-align-s version //; s/ .*\$//')
     END_VERSIONS
     """
-
 }

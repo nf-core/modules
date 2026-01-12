@@ -23,7 +23,7 @@ process AMPCOMBI2_COMPLETE {
     """
     ampcombi complete \\
         --summaries_files '${summaries.collect{"$it"}.join("' '")}' \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -32,7 +32,6 @@ process AMPCOMBI2_COMPLETE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     """
     touch Ampcombi_summary.tsv
 

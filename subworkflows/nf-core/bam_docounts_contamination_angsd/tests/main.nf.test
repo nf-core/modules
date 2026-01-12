@@ -1,0 +1,73 @@
+nextflow_workflow {
+
+    name "Test Workflow BAM_DOCOUNTS_CONTAMINATION_ANGSD"
+    config "./nextflow.config"
+    script "../main.nf"
+
+    workflow "BAM_DOCOUNTS_CONTAMINATION_ANGSD"
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/bam_docounts_contamination_angsd"
+    tag "bam_docounts_contamination_angsd"
+    tag "angsd/docounts"
+    tag "angsd/contamination"
+    tag "angsd"
+
+    test("homo_sapiens - bam bai - hapmap") {
+        when {
+            params {
+                angsd_docounts_args = "-iCounts 1"
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam.bai', checkIfExists:true)
+                ])
+                input[1] = Channel.of([
+                    [id:'hapmap'],
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/angsd/HapMapChrX.gz", checkIfExists:true)
+                ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - bam bai - hapmap -- stub") {
+        options "-stub"
+        when {
+            params {
+                angsd_docounts_args = "-iCounts 1"
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam.bai', checkIfExists:true)
+                ])
+                input[1] = Channel.of([
+                    [id:'hapmap'],
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/angsd/HapMapChrX.gz", checkIfExists:true)
+                ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+}

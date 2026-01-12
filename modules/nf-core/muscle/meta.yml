@@ -25,84 +25,87 @@ input:
         type: file
         description: Input sequences for alignment must be in FASTA format
         pattern: "*.{fasta,fa,fna}"
+        ontologies: []
 output:
-  - aligned_fasta:
-      - meta:
-          type: file
-          description: Multiple sequence alignment produced in FASTA format
-          pattern: "*.{afa}"
+  aligned_fasta:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.afa":
           type: file
           description: Multiple sequence alignment produced in FASTA format
           pattern: "*.{afa}"
-  - phyi:
-      - meta:
-          type: file
-          description: Multiple sequence alignment produced in PHYLIP interleaved format
-          pattern: "*.{phyi}"
+          ontologies: []
+  phyi:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.phyi":
           type: file
           description: Multiple sequence alignment produced in PHYLIP interleaved format
           pattern: "*.{phyi}"
-  - phys:
-      - meta:
-          type: file
-          description: Multiple sequence alignment produced in PHYLIP sequential format
-          pattern: "*.{phys}"
+          ontologies: []
+  phys:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.phys":
           type: file
           description: Multiple sequence alignment produced in PHYLIP sequential format
           pattern: "*.{phys}"
-  - clustalw:
-      - meta:
-          type: file
-          description: Multiple sequence alignment produced in ClustalW format without
-            base/residue numbering
-          pattern: "*.{clw}"
+          ontologies: []
+  clustalw:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.clw":
           type: file
           description: Multiple sequence alignment produced in ClustalW format without
             base/residue numbering
           pattern: "*.{clw}"
-  - html:
-      - meta:
-          type: file
-          description: Multiple sequence alignment produced in HTML format
-          pattern: "*.{html}"
+          ontologies: []
+  html:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.html":
           type: file
           description: Multiple sequence alignment produced in HTML format
           pattern: "*.{html}"
-  - msf:
-      - meta:
-          type: file
-          description: GCG Multiple Sequence File (MSF) alignment format (similar to CLUSTALW)
-          pattern: "*.{msf}"
+          ontologies: []
+  msf:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.msf":
           type: file
-          description: GCG Multiple Sequence File (MSF) alignment format (similar to CLUSTALW)
+          description: GCG Multiple Sequence File (MSF) alignment format (similar to
+            CLUSTALW)
           pattern: "*.{msf}"
-  - tree:
-      - meta:
-          type: file
-          description: NJ or UPGMA tree in Newick format produced from a multiple sequence
-            alignment
-          pattern: "*.{tree}"
+          ontologies: []
+  tree:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.tree":
           type: file
           description: NJ or UPGMA tree in Newick format produced from a multiple sequence
             alignment
           pattern: "*.{tree}"
-  - log:
-      - "*.log":
-          type: file
-          description: Log file of MUSCLE run
-          pattern: "*{.log}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  log:
+    - "*.log":
+        type: file
+        description: Log file of MUSCLE run
+        pattern: "*{.log}"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@MGordon"
 maintainers:

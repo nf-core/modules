@@ -24,15 +24,18 @@ input:
         type: file
         description: bam file for sample to be variant called.
         pattern: "*.bam"
+        ontologies: []
     - input_index:
         type: file
         description: (Optional) bai index corresponding to input bam file. Only necessary
           when using intervals.
         pattern: "*.bai"
+        ontologies: []
     - interval_file:
         type: file
         description: file or files containing genomic intervals.
         pattern: "*.{bed,interval_list,picard,list,intervals}"
+        ontologies: []
   - - ref_meta:
         type: map
         description: |
@@ -42,9 +45,10 @@ input:
         type: file
         description: reference fasta - must be unzipped.
         pattern: "*.fasta"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
@@ -53,8 +57,9 @@ output:
           type: file
           description: variant file.
           pattern: "*.vcf"
-  - gvcf:
-      - meta:
+          ontologies: []
+  gvcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
@@ -63,10 +68,21 @@ output:
           type: file
           description: genomic variant file, gzipped.
           pattern: "*.g.vcf.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions.
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  compatible_versions:
+    - compatible_versions.yml:
+        type: file
+        description: File containing info on compatible CPU-based software versions.
+        pattern: "compatible_versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions.
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@bsiranosian"

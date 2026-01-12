@@ -1,5 +1,36 @@
 {
-    "homo sapiens": {
+    "homo sapiens - one resource": {
+        "content": [
+            [
+                "##fileformat=VCFv4.2",
+                "##INFO=<ID=END,Number=1,Type=Integer,Description=\"Stop position of the interval\">",
+                "##INFO=<ID=NEGATIVE_TRAIN_SITE,Number=0,Type=Flag,Description=\"This variant was used to build the negative training set of bad variants\">",
+                "##INFO=<ID=POSITIVE_TRAIN_SITE,Number=0,Type=Flag,Description=\"This variant was used to build the positive training set of good variants\">",
+                "##INFO=<ID=VQSLOD,Number=1,Type=Float,Description=\"Log odds ratio of being a true variant versus being false under the trained gaussian mixture model\">",
+                "##INFO=<ID=culprit,Number=1,Type=String,Description=\"The annotation which was the worst performing in the Gaussian mixture model, likely the reason why the variant was filtered out\">"
+            ],
+            "test.recal.idx",
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.tranches:md5,21e65cd1b310b4f51fa667856a59a17a"
+                ]
+            ],
+            {
+                "SENTIEON_VARCAL": {
+                    "sentieon": 202503.01
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
+        },
+        "timestamp": "2025-05-09T09:24:53.607167407"
+    },
+    "homo sapiens - multiple resources": {
         "content": [
             [
                 "##fileformat=VCFv4.2",
@@ -20,7 +51,7 @@
             ],
             {
                 "SENTIEON_VARCAL": {
-                    "sentieon": 202308.03
+                    "sentieon": 202503.01
                 }
             }
         ],
@@ -28,7 +59,7 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-04-21T15:35:34.545211892"
+        "timestamp": "2025-05-09T09:25:22.885471633"
     },
     "homo sapiens -- stub": {
         "content": [
@@ -66,7 +97,7 @@
                     ]
                 ],
                 "4": [
-                    "versions.yml:md5,12f6cca4dd81f3db921bcd06145f62e8"
+                    "versions.yml:md5,9f0e64d56a3b09e026029691efc7b092"
                 ],
                 "idx": [
                     [
@@ -101,12 +132,12 @@
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,12f6cca4dd81f3db921bcd06145f62e8"
+                    "versions.yml:md5,9f0e64d56a3b09e026029691efc7b092"
                 ]
             },
             {
                 "SENTIEON_VARCAL": {
-                    "sentieon": 202308.03
+                    "sentieon": 202503.01
                 }
             }
         ],
@@ -114,6 +145,6 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-04-21T13:06:16.191785081"
+        "timestamp": "2025-05-09T09:25:50.621320098"
     }
 }

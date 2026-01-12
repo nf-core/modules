@@ -4,11 +4,12 @@ process PICARD_COLLECTALIGNMENTSUMMARYMETRICS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:3.3.0--hdfd78af_0':
-        'biocontainers/picard:3.3.0--hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/0861295baa7c01fc593a9da94e82b44a729dcaf8da92be8e565da109aa549b25/data':
+        'community.wave.seqera.io/library/picard:3.4.0--e9963040df0a9bf6' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta),  path(bam)
+    tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.txt"), emit: metrics
@@ -20,6 +21,7 @@ process PICARD_COLLECTALIGNMENTSUMMARYMETRICS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -33,6 +35,7 @@ process PICARD_COLLECTALIGNMENTSUMMARYMETRICS {
         CollectAlignmentSummaryMetrics \\
         --INPUT $bam \\
         --OUTPUT ${prefix}.txt \\
+        ${reference} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

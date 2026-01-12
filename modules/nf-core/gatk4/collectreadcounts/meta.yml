@@ -29,14 +29,17 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - input_index:
         type: file
         description: BAM/CRAM/SAM index file
         pattern: "*.{bai,crai,sai}"
+        ontologies: []
     - intervals:
         type: file
         description: A file containing the specified intervals
         pattern: "*.{bed,intervals}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -46,6 +49,7 @@ input:
         type: file
         description: Optional - Reference FASTA
         pattern: "*.{fasta,fa}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -55,6 +59,7 @@ input:
         type: file
         description: Optional - Index of the reference FASTA file
         pattern: "*.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -64,9 +69,10 @@ input:
         type: file
         description: Optional - Sequence dictionary of the reference FASTA file
         pattern: "*.dict"
+        ontologies: []
 output:
-  - hdf5:
-      - meta:
+  hdf5:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -75,8 +81,9 @@ output:
           type: file
           description: The read counts in hdf5 format
           pattern: "*.hdf5"
-  - tsv:
-      - meta:
+          ontologies: []
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -85,11 +92,15 @@ output:
           type: file
           description: The read counts in TSV format
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

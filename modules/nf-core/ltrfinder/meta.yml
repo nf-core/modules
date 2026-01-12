@@ -38,9 +38,10 @@ input:
         type: file
         description: Genome sequences in fasta format
         pattern: "*.{fsa,fa,fasta}"
+        ontologies: []
 output:
-  - scn:
-      - meta:
+  scn:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,8 +50,9 @@ output:
           type: file
           description: Annotation in LTRharvest or LTR_FINDER format
           pattern: "*.scn"
-  - gff:
-      - meta:
+          ontologies: []
+  gff:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -59,11 +61,14 @@ output:
           type: file
           description: Annotation in gff3 format
           pattern: "*.gff3"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@GallVp"
 maintainers:

@@ -33,9 +33,11 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
-  - - opt_whitelist:
-        type: file
-        description: Optional whitelist file
+        ontologies: []
+  - opt_whitelist:
+      type: file
+      description: Optional whitelist file
+      ontologies: []
   - - meta2:
         type: map
         description: Groovy Map containing the STAR index information.
@@ -44,8 +46,8 @@ input:
         description: STAR genome index
         pattern: "star"
 output:
-  - counts:
-      - meta:
+  counts:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
@@ -56,8 +58,9 @@ output:
           type: file
           description: STARSolo counts matrix
           pattern: "*.Solo.out"
-  - log_final:
-      - meta:
+          ontologies: []
+  log_final:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
@@ -68,8 +71,9 @@ output:
           type: file
           description: STAR final log file
           pattern: "*Log.final.out"
-  - log_out:
-      - meta:
+          ontologies: []
+  log_out:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
@@ -80,8 +84,9 @@ output:
           type: file
           description: STAR lot out file
           pattern: "*Log.out"
-  - log_progress:
-      - meta:
+          ontologies: []
+  log_progress:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
@@ -92,8 +97,9 @@ output:
           type: file
           description: STAR log progress file
           pattern: "*Log.progress.out"
-  - summary:
-      - meta:
+          ontologies: []
+  summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
@@ -104,11 +110,15 @@ output:
           type: file
           description: STARSolo metrics summary CSV file.
           pattern: "*/Gene/Summary.csv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kevinmenden"
   - "@ggabernet"

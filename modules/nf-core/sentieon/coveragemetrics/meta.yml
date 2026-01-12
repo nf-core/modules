@@ -25,10 +25,12 @@ input:
         type: file
         description: Sorted BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - bai:
         type: file
         description: BAM/CRAM/SAM file index
         pattern: "*.{bai,crai}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -38,6 +40,7 @@ input:
         type: file
         description: BED file of genome regions to draw coverage from
         pattern: "*.bed"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -47,6 +50,7 @@ input:
         type: file
         description: Genome fasta file
         pattern: "*.{fa,fasta}"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -56,6 +60,7 @@ input:
         type: file
         description: Index of the genome fasta file
         pattern: "*.fai"
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -65,19 +70,21 @@ input:
         type: file
         description: RefSeq file used to aggregate the results
         pattern: "*"
+        ontologies: []
 output:
-  - per_locus:
-      - meta:
+  per_locus:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - $prefix:
+      - ${prefix}:
           type: file
           description: The per locus coverage with no partition.
           pattern: "${sample_id}"
-  - sample_summary:
-      - meta:
+          ontologies: []
+  sample_summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -86,8 +93,9 @@ output:
           type: file
           description: The summary for PARTITION_GROUP sample, aggregated over all bases.
           pattern: "${sample_id}.sample_summary"
-  - statistics:
-      - meta:
+          ontologies: []
+  statistics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -95,9 +103,10 @@ output:
       - ${prefix}.${partitions_output}_interval_statistics:
           type: file
           description: The statistics for PARTITION_GROUP library, aggregated by interval.
-          pattern: "${sample_id}.interval_statistics"
-  - coverage_counts:
-      - meta:
+          pattern: "${sample_id}_interval_statistics"
+          ontologies: []
+  coverage_counts:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -105,9 +114,10 @@ output:
       - ${prefix}.${partitions_output}_cumulative_coverage_counts:
           type: file
           description: Contains the histogram of loci with depth larger than x.
-          pattern: "${sample_id}.interval_statistics"
-  - coverage_proportions:
-      - meta:
+          pattern: "${sample_id}_cumulative_coverage_counts"
+          ontologies: []
+  coverage_proportions:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -116,9 +126,10 @@ output:
           type: file
           description: Contains the normalized histogram of loci with depth larger than
             x.
-          pattern: "${sample_id}.interval_statistics"
-  - interval_summary:
-      - meta:
+          pattern: "${sample_id}_cumulative_coverage_proportions"
+          ontologies: []
+  interval_summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -126,16 +137,15 @@ output:
       - ${prefix}.${partitions_output}_interval_summary:
           type: file
           description: The summary for PARTITION_GROUP library, aggregated by interval.
-          pattern: "${sample_id}.interval_summary"
-      - _summary:
-          type: file
-          description: The summary for PARTITION_GROUP library, aggregated by interval.
-          pattern: "${sample_id}.interval_summary"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          pattern: "${sample_id}_interval_summary"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@adamrtalbot"
 maintainers:

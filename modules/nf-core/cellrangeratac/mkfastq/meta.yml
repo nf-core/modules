@@ -18,29 +18,32 @@ tools:
       licence: ["10x Genomics EULA"]
       identifier: ""
 input:
-  - - bcl:
-        type: file
-        description: Base call files
-        pattern: "*.bcl.bgzf"
-  - - csv:
-        type: file
-        description: Sample sheet
-        pattern: "*.csv"
+  - bcl:
+      type: file
+      description: Base call files
+      pattern: "*.bcl.bgzf"
+      ontologies: []
+  - csv:
+      type: file
+      description: Sample sheet
+      pattern: "*.csv"
+      ontologies:
+        - edam: http://edamontology.org/format_3752 # CSV
 output:
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software version
-          pattern: "versions.yml"
-  - fastq:
-      - ${bcl.getSimpleName(:
-          type: file
-          description: Unaligned FastQ files
-          pattern: "*.fastq.gz"
-      - /*.fastq.gz:
-          type: file
-          description: Unaligned FastQ files
-          pattern: "*.fastq.gz"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  fastq:
+    - ${bcl.getSimpleName(:
+        type: file
+        description: Unaligned FastQ files
+        pattern: "*.fastq.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
 authors:
   - "@ggabernet"
   - "@edmundmiller"

@@ -23,31 +23,91 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - db:
-        type: directory
-        description: contains required files to build the database
-        pattern: "*/"
-  - - cleaning:
-        type: boolean
-        description: activate or deactivate (true or false) cleaning of intermediate
-          files
+    - library_added_files:
+        type: file
+        description: Files present in the <name>/library/added/ directory, including
+          FASTA files, masked FASTAs, and prelim_map files.
+        pattern: "*"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - seqid2taxid_map:
+        type: file
+        description: File mapping sequence IDs to taxonomy IDs, either generated or
+          premade.
+        pattern: "seqid2taxid.map"
+        ontologies:
+          - edam: http://edamontology.org/data_3028 # Taxonomy
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - taxonomy_files:
+        type: file
+        description: Files present in the <name>/taxonomy/ directory, including nodes.dmp,
+          names.dmp, and .accession2taxid files.
+        pattern: "*"
+        ontologies:
+          - edam: http://edamontology.org/data_3028 # Taxonomy
+  - cleaning:
+      type: boolean
+      description: activate or deactivate (true or false) cleaning of intermediate files
 output:
-  - db:
-      - meta:
+  db:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - $prefix:
+      - kraken2-database:
           type: directory
-          description: contains the database that can be used to perform taxonomic classification
-          pattern: "*/"
-  - versions:
-      - versions.yml:
+          description: |
+            Directory contains the database that can be used to perform taxonomic classification
+
+            IMPORTANT: this output directory will be hardcoded as 'kraken2-database/' inside the module
+            to prevent issues of containers following symlinks in symlinks.
+
+            To give a user the option to provide custom name for the database directory within a pipeline, you should
+            customise this name using during pipeline output publication via the pipeline's publishDir or workflow output customisation options.
+          pattern: "kraken2-database/"
+          ontologies:
+            - edam: http://edamontology.org/data_1049 # Directory
+  db_separated:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - kraken2-database/*k2d:
           type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: Kraken2 k2d binary database files
+          pattern: "*.k2d"
+      - kraken2-database/*map:
+          type: file
+          description: Kraken2 k2d binary database taxonomy to sequencing mapping file
+          pattern: "*.map"
+      - kraken2-database/library/added/*:
+          type: file
+          description: Kraken2 masked FASTA files used to build the database
+          pattern: "*.fasta"
+      - kraken2-database/taxonomy/*:
+          type: file
+          description: Kraken2 nodes.dmp, names.dmp, and .accession2taxid taxonomy files
+          pattern: "*.{dmp,accession2taxid}"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@alxndrdiaz"
 maintainers:
   - "@alxndrdiaz"
+  - "@jfy133"

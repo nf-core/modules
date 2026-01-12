@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "coptr_estimate"
 description: Calculates peak-to-through ratio (PTR) from metagenomic sequence data
@@ -31,25 +30,28 @@ input:
           - edam: "http://edamontology.org/format_4002"
 
 output:
-  - ptr:
-      - meta:
+  ptr:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.csv":
           type: file
-          description: CSV table with rows as reference genomes, columns samples and entries as log2 PTR
+          description: CSV table with rows as reference genomes, columns samples and
+            entries as log2 PTR
           pattern: "*.csv"
           ontologies:
             - edam: "http://edamontology.org/format_3752"
 
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ramirobarrantes"
 maintainers:

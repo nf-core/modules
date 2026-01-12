@@ -1,5 +1,13 @@
 name: "mitohifi_findmitoreference"
-description: Download a mitochondrial genome to be used as reference for MitoHiFi
+description: |
+  Download a mitochondrial genome to be used as reference for MitoHiFi.
+
+  NOTE: An optional NCBI API key can be supplied to MITOHIFI_FINDMITOREFERENCE.
+  This should be set using Nextflow's secrets functionality:
+
+  `nextflow secrets set NCBI_API_KEY <key>`
+
+  See https://www.nextflow.io/docs/latest/secrets.html for more information.
 keywords:
   - mitochondrial genome
   - reference genome
@@ -25,29 +33,37 @@ input:
           be fetched
         pattern: "[A-Z]?[a-z]* [a-z]*"
 output:
-  - fasta:
-      - meta:
-          type: file
-          description: Downloaded mitochondrial genome in Fasta format
-          pattern: "*.{fasta,fa}"
+  fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*.fasta":
           type: file
           description: Downloaded mitochondrial genome in Fasta format
           pattern: "*.{fasta,fa}"
-  - gb:
-      - meta:
-          type: file
-          description: Downloaded mitochondrial genome in Genbank format
-          pattern: "*.gb"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  gb:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*.gb":
           type: file
           description: Downloaded mitochondrial genome in Genbank format
           pattern: "*.gb"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_1936 # GenBank
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@verku"
 maintainers:

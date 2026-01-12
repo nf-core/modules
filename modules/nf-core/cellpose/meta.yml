@@ -24,13 +24,15 @@ input:
         type: file
         description: tif file for ready for segmentation
         pattern: "*.{tif,tiff}"
-  - - model:
-        type: file
-        description: Optional input file. Cellpose 2 model trained by user using human-in-the-loop
-          approach.
+        ontologies: []
+  - model:
+      type: file
+      description: Optional input file. Cellpose 2 model trained by user using human-in-the-loop
+        approach.
+      ontologies: []
 output:
-  - mask:
-      - meta:
+  mask:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,8 +41,9 @@ output:
           type: file
           description: labelled mask output from cellpose in tif format
           pattern: "*.{tif, tiff}"
-  - flows:
-      - meta:
+          ontologies: []
+  flows:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,11 +52,14 @@ output:
           type: file
           description: cell flow output from cellpose
           pattern: "*.{tif}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@josenimo"
   - "@FloWuenne"

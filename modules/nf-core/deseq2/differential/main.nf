@@ -4,11 +4,11 @@ process DESEQ2_DIFFERENTIAL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bioconductor-deseq2:1.34.0--r41hc247a5b_3' :
-        'biocontainers/bioconductor-deseq2:1.34.0--r41hc247a5b_3' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a1/a15f5d61792b60b6179afd885db27d3fe60eb4c42e805c8887ed0416d88cb484/data' :
+        'community.wave.seqera.io/library/bioconductor-deseq2_bioconductor-limma:b56a0c9ddc3e87e1' }"
 
     input:
-    tuple val(meta), val(contrast_variable), val(reference), val(target)
+    tuple val(meta), val(contrast_variable), val(reference), val(target), val(formula), val(comparison)
     tuple val(meta2), path(samplesheet), path(counts)
     tuple val(meta3), path(control_genes_file)
     tuple val(meta4), path(transcript_lengths_file)

@@ -24,19 +24,24 @@ input:
         type: file
         description: fasta or fastq file of sequences to be clustered
         pattern: "*.{fasta,fastq}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
 output:
-  - fasta:
-      - meta:
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.{fa,fq}":
           type: file
-          description: fasta or fastq file of the representative sequences for each cluster
+          description: fasta or fastq file of the representative sequences for each
+            cluster
           pattern: "*.{fasta,fastq}"
-  - clusters:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  clusters:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,11 +50,14 @@ output:
           type: file
           description: List of clusters
           pattern: "*.{clstr}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Joon-Klaps"
 maintainers:

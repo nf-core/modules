@@ -201,14 +201,14 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map { meta, gendb -> 
-                    [ 
+                input[0] = UNTAR.out.untar.map { meta, gendb ->
+                    [
                         meta,
                         gendb,
                         [],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists:true),
                         []
-                    ] 
+                    ]
                 }
                 input[1] = [
                     [id:"fasta"],

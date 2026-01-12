@@ -4,8 +4,8 @@ process IQTREE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/iqtree:2.3.4--h21ec9f0_0' :
-        'biocontainers/iqtree:2.3.4--h21ec9f0_0' }"
+        'https://depot.galaxyproject.org/singularity/iqtree:2.4.0--h503566f_0' :
+        'biocontainers/iqtree:2.4.0--h503566f_0' }"
 
     input:
     tuple val(meta), path(alignment), path(tree)
@@ -52,7 +52,7 @@ process IQTREE {
 
     script:
     def args                        = task.ext.args           ?: ''
-    def alignment_arg               = alignment               ? "-s $alignment"                 : ''
+    def alignment_arg               = alignment               ? "-s ${alignment.join(',')}"     : ''
     def tree_arg                    = tree                    ? "-t $tree"                      : ''
     def tree_te_arg                 = tree_te                 ? "-te $tree_te"                  : ''
     def lmclust_arg                 = lmclust                 ? "-lmclust $lmclust"             : ''

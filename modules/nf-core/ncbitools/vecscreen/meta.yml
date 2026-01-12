@@ -28,7 +28,8 @@ input:
     - fasta_file:
         type: file
         description: FASTA file that will be screened for contaminants
-  - - adapters_database_meta:
+        ontologies: []
+  - - meta2:
         type: map
         description: |
           Groovy Map containing sample information
@@ -37,23 +38,26 @@ input:
         type: directory
         description: Directory containing the adapters database
 output:
-  - vecscreen_output:
-      - meta:
+  vecscreen_output:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', taxid:'9606' ]
-      - ${meta.id}.vecscreen.out:
+      - ${prefix}.vecscreen.out:
           type: file
           description: VecScreen report file. This can be in different formats depending
             on the value of the optional -f  parameter. 0 = HTML format, with alignments.
-            1 = HTML format, no alignments. 2 = Text list, with alignments. 3 = Text list,
-            no alignments. default = 0
+            1 = HTML format, no alignments. 2 = Text list, with alignments. 3 = Text
+            list, no alignments. default = 0
           pattern: "*.vecscreen.out"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@eeaunin"

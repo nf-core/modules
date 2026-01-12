@@ -3,9 +3,9 @@ process BUSCO_DOWNLOAD {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/busco:5.8.2--pyhdfd78af_0':
-        'biocontainers/busco:5.8.2--pyhdfd78af_0' }"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c6/c607f319867d96a38c8502f751458aa78bbd18fe4c7c4fa6b9d8350e6ba11ebe/data'
+        : 'community.wave.seqera.io/library/busco_sepp:f2dbc18a2f7a5b64'}"
 
     input:
     val lineage
@@ -27,7 +27,7 @@ process BUSCO_DOWNLOAD {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        busco: \$( busco --version 2>&1 | sed 's/^BUSCO //' )
+        busco: \$( busco --version 2> /dev/null | sed 's/BUSCO //g' )
     END_VERSIONS
     """
 
@@ -38,7 +38,7 @@ process BUSCO_DOWNLOAD {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        busco: \$( busco --version 2>&1 | sed 's/^BUSCO //' )
+        busco: \$( busco --version 2> /dev/null | sed 's/BUSCO //g' )
     END_VERSIONS
     """
 }

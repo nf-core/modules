@@ -21,16 +21,20 @@ input:
         type: file
         pattern: "*.gz"
         description: file to check compression
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
 output:
-  - compress_bgzip:
-      - meta:
-          type: string
-          description: environmental variable with value "yes" or "no"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  compress_bgzip:
+    - meta:
+        type: string
+        description: environmental variable with value "yes" or "no"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@MartaSantanaSilva"
 maintainers:
