@@ -4,7 +4,7 @@ process NIRVANA {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'oras://community.wave.seqera.io/library/nirvana:3.18.1--910f092f78f85c70'
+        ? 'oras://community.wave.seqera.io/library/nirvana:3.18.1--06981caabc5e08e1'
         : 'community.wave.seqera.io/library/nirvana:3.18.1--910f092f78f85c70'}"
 
     input:
