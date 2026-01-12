@@ -228,7 +228,7 @@ if (is_valid_string(opt\$formula)) {
 
     # Make sure all the appropriate variables are factors
     for (v in c(blocking.vars, contrast_variable)) {
-        metadata[[v]] <- as.factor(metadata[[v]])
+        metadata[[v]] <- as.factor(make.names(metadata[[v]]))
     }
 
     # Variable of interest goes last
@@ -273,8 +273,8 @@ if (!is.null(opt\$contrast_string)) {
     contrast_string <- opt\$contrast_string
 } else {
     # Construct the contrast_string
-    treatment_target <- paste0(opt\$contrast_variable, opt\$contrast_target)
-    treatment_reference <- paste0(opt\$contrast_variable, opt\$contrast_reference)
+    treatment_target <- make.names(paste0(opt\$contrast_variable, opt\$contrast_target))
+    treatment_reference <- make.names(paste0(opt\$contrast_variable, opt\$contrast_reference))
     contrast_string <- paste0(treatment_target, "-", treatment_reference)
 }
 
