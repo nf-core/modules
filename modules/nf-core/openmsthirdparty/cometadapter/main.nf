@@ -14,7 +14,7 @@ process OPENMSTHIRDPARTY_COMETADAPTER {
     tuple val(meta), path("*.idXML"), emit: idxml
     tuple val(meta), path("*.tsv")  , emit: pin, optional: true
     tuple val("${task.process}"), val('CometAdapter'), eval("CometAdapter 2>&1 | grep -E '^Version' | sed 's/Version: //g' | cut -d ' ' -f 1 | cut -d '-' -f 1"), emit: versions_cometadapter, topic: versions
-    tuple val("${task.process}"), val('Comet'), eval("comet 2>&1 | sed -n 's/.*Comet version \"\\(.*\\)\".*/\\1/p'"), emit: versions_comet, topic: versions
+    tuple val("${task.process}"), val('Comet'), eval("comet 2>&1 | sed -n 's/.*Comet version \" *\\(.*\\)\".*/\\1/p'"), emit: versions_comet, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
