@@ -8,6 +8,8 @@ include { LEEHOM                              } from '../../../modules/nf-core/l
 include { FASTP                               } from '../../../modules/nf-core/fastp/main'
 include { ADAPTERREMOVAL as ADAPTERREMOVAL_SE } from '../../../modules/nf-core/adapterremoval/main'
 include { ADAPTERREMOVAL as ADAPTERREMOVAL_PE } from '../../../modules/nf-core/adapterremoval/main'
+// helper module for concatenating adapterremoval paired-end processed reads
+include { CAT_FASTQ                           } from '../../../modules/nf-core/cat/fastq/main'
 
 workflow FASTQ_REMOVEADAPTERS_MERGE {
 
@@ -98,15 +100,29 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
         ADAPTERREMOVAL_SE( ch_adapterremoval_in.single, ch_custom_adapters_file )
         ADAPTERREMOVAL_PE( ch_adapterremoval_in.paired, ch_custom_adapters_file )
 
-        if (val_save_merged) {
-            ch_processed_reads = ADAPTERREMOVAL_SE.out.collapsed
+        if (val_save_merged) { // merge
+            ch_concat_fastq = channel.empty()
                 .mix(
                     ADAPTERREMOVAL_PE.out.collapsed,
-                    ADAPTERREMOVAL_SE.out.collapsed_truncated,
-                    ADAPTERREMOVAL_PE.out.collapsed_truncated
+                    ADAPTERREMOVAL_PE.out.collapsed_truncated,
+                    ADAPTERREMOVAL_PE.out.singles_truncated,
+                    ADAPTERREMOVAL_PE.out.paired_truncated
                 )
-        } else {
-            ch_processed_reads = ADAPTERREMOVAL_SE.out.singles_truncated.mix(ADAPTERREMOVAL_PE.out.paired_truncated)
+                .map { meta, reads ->
+                    def meta_new = meta.clone()
+                    meta_new.single_end = true
+                    [meta_new, reads]
+                }
+                .groupTuple()
+                // Paired-end reads cause a nested tuple during grouping.
+                // We want to present a flat list of files to `CAT_FASTQ`.
+                .map { meta, fastq -> [meta, fastq.flatten()] }
+
+            CAT_FASTQ( ch_concat_fastq )
+
+            ch_processed_reads = CAT_FASTQ.out.reads.mix(ADAPTERREMOVAL_SE.out.singles_truncated)
+        } else { // no merge
+            ch_processed_reads = ADAPTERREMOVAL_PE.out.paired_truncated.mix(ADAPTERREMOVAL_SE.out.singles_truncated)
         }
         ch_discarded_reads    = ch_discarded_reads.mix(ADAPTERREMOVAL_SE.out.discarded, ADAPTERREMOVAL_PE.out.discarded)
         ch_versions           = ch_versions.mix(ADAPTERREMOVAL_SE.out.versions.first(), ADAPTERREMOVAL_PE.out.versions.first())
