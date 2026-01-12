@@ -12,7 +12,7 @@ process ENSEMBLVEP_DOWNLOAD {
 
     output:
     tuple val(meta), path(prefix), emit: cache
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('ensemblvep'), eval("vep --help | sed -n '/ensembl-vep/s/.*: //p'"), topic: versions, emit: versions_ensemblvep
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,21 +27,11 @@ process ENSEMBLVEP_DOWNLOAD {
         --ASSEMBLY ${assembly} \\
         --CACHE_VERSION ${cache_version} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ensemblvep: \$( echo \$(vep --help 2>&1) | sed 's/^.*Versions:.*ensembl-vep : //;s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: 'vep_cache'
     """
     mkdir ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ensemblvep: \$( echo \$(vep --help 2>&1) | sed 's/^.*Versions:.*ensembl-vep : //;s/ .*\$//')
-    END_VERSIONS
     """
 }
