@@ -23,18 +23,18 @@ process GAWK {
     def args  = task.ext.args  ?: '' // args is used for the main arguments of the tool
     def args2 = task.ext.args2 ?: '' // args2 is used to specify a program when no program file has been given
     prefix    = task.ext.prefix ?: "${meta.id}"
-    suffix    = task.ext.suffix ?: "${input.collect{ it.getExtension()}.get(0)}" // use the first extension of the input files
+    suffix    = task.ext.suffix ?: "${input.collect{ file -> file.getExtension()}.get(0)}" // use the first extension of the input files
 
     program    = program_file ? "-f ${program_file}" : "${args2}"
-    lst_gz     = input.findResults{ it.getExtension().endsWith("gz") ? it.toString() : null }
+    lst_gz     = input.findResults{ file -> file.getExtension().endsWith("gz") ? file.toString() : null }
     unzip      = lst_gz ? "gunzip -q -f ${lst_gz.join(" ")}" : ""
-    input_cmd  = input.collect { it.toString() - ~/\.gz$/ }.join(" ")
+    input_cmd  = input.collect { file -> file.toString() - ~/\.gz$/ }.join(" ")
     output_cmd = suffix.endsWith("gz") ? "| gzip > ${prefix}.${suffix}" : "> ${prefix}.${suffix}"
     output     = disable_redirect_output ? "" : output_cmd
-    cleanup    = lst_gz ? "rm ${lst_gz.collect{ it - ~/\.gz$/ }.join(" ")}" : ""
+    cleanup    = lst_gz ? "rm ${lst_gz.collect{ file -> file - ~/\.gz$/ }.join(" ")}" : ""
 
-    input.collect{
-        assert it.name != "${prefix}.${suffix}" : "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    input.collect{ file ->
+        assert file.name != "${prefix}.${suffix}" : "Input and output names are the same, set prefix in module configuration to disambiguate!"
     }
 
     """

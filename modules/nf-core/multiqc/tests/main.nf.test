@@ -30,7 +30,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.report[0] ==~ ".*/multiqc_report.html" },
                 { assert process.out.data[0] ==~ ".*/multiqc_data" },
-                { assert snapshot(process.out.versions).match("multiqc_versions_single") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions")}).match() }
             )
         }
 
@@ -82,7 +82,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.report[0] ==~ ".*/multiqc_report.html" },
                 { assert process.out.data[0] ==~ ".*/multiqc_data" },
-                { assert snapshot(process.out.versions).match("multiqc_versions_config") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions")}).match() }
             )
         }
     }
@@ -110,7 +110,7 @@ nextflow_process {
                 { assert snapshot(process.out.report.collect { file(it).getName() } +
                                 process.out.data.collect { file(it).getName() } +
                                 process.out.plots.collect { file(it).getName() } +
-                                process.out.versions ).match("multiqc_stub") }
+                                process.out.findAll { key, val -> key.startsWith("versions")} ).match() }
             )
         }
 

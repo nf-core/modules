@@ -1,0 +1,103 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "hifitrimmer_processblast"
+description: |
+  Run hifi_trimmer process_blast to process a BLAST search of adapter sequences against PacBio HiFi reads.
+  Primary output is a BED describing regions to exclude, a json of summary information, and an optional hits file.
+keywords:
+  - pacbio
+  - bam
+  - hifi_trimmer
+  - processblast
+  - quality control
+  - adapter removal
+tools:
+  - hifi_trimmer:
+      description: |
+        hifi_trimmer: tools for processing HiFi read BLAST results and filtering/trimming
+        BAM files to output processed FASTA/FASTQ and accompanying summary and hit (optional) files.
+      homepage: "https://github.com/sanger-tol/hifi-trimmer"
+      documentation: "https://github.com/sanger-tol/hifi-trimmer"
+      licence: ["MIT"]
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - blast:
+        type: file
+        description: BLAST TSV output file used by hifi_trimmer (e.g. .blast, .out). Must be generated using "blastn -query <reads> -db <adapter_db> -outfmt '6 std qlen'".
+        pattern: "*.blast"
+  - - meta1:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - yaml:
+        type: file
+        description: YAML file contain trimming/filtering configuration for `hifi_trimmer`
+        pattern: "*.{yaml,yml}"
+output:
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bed.gz":
+          type: file
+          description: Gzipped BED file of selected reads
+          pattern: "*.bed.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003" # BED
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.summary.json":
+          type: file
+          description: JSON summary including trimming and filtering information
+          pattern: "*.summary.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464" # JSON
+  hits:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.hits":
+          type: file
+          description: Optional hits file produced by hifi_trimmer (may be absent when no hits found or '-hf' is not specified)
+          pattern: "*.hits"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_hifitrimmer:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hifi_trimmer:
+          type: string
+          description: The name of the tool
+      - hifi_trimmer --version | cut -d' ' -f3:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hifi_trimmer:
+          type: string
+          description: The name of the tool
+      - hifi_trimmer --version | cut -d' ' -f3:
+          type: eval
+          description: The expression to obtain the version
+authors:
+  - "@sainsachiko"
+maintainers:
+  - "@sainsachiko"

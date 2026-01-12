@@ -1,0 +1,461 @@
+nextflow_workflow {
+
+    name "Test Workflow BAM_VCF_IMPUTE_GLIMPSE2"
+    config "./nextflow.config"
+    script "../main.nf"
+    workflow "BAM_VCF_IMPUTE_GLIMPSE2"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "bam_vcf_impute_glimpse2"
+    tag "subworkflows/bam_vcf_impute_glimpse2"
+
+    tag "glimpse2/chunk"
+    tag "glimpse2/splitreference"
+    tag "glimpse2/phase"
+    tag "glimpse2/ligate"
+    tag "glimpse2"
+    tag "bcftools/index"
+    tag "bcftools"
+
+    test("homo_sapiens - vcf no list and no sample, panel vcf region, no chunks, no map, no fasta, chunk recursive + splitreference") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:'input_vcf'],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi", checkIfExists: true),
+                    [], []
+                ]) // input
+                input[1] = Channel.of([
+                    [panel:'ref_panel', chr: "22"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                    "chr22"
+                ]) // reference
+                input[2] = Channel.of([
+                    [panel: 'ref_panel', chr: "22"],
+                    [], []
+                ]) // chunks
+                input[3] = Channel.of([
+                    [panel: 'ref_panel', chr: "22"],
+                    []
+                ]) // map
+                input[4] = Channel.of([
+                    [id_genome:'ref_fasta'], [], []
+                ]).collect() // genome
+                input[5] = true // perform chunking
+                input[6] = "recursive" // chunking model
+                input[7] = true // splitreference
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.chunks,
+                    workflow.out.vcf_index.collect{[
+                        it[0],
+                        path(it[1]).getFileName().toString(),
+                        path(it[2]).getFileName().toString(),
+                        path(it[1]).vcf.summary,
+                        path(it[1]).vcf.header.getGenotypeSamples().sort(),
+                        path(it[1]).vcf.variantsMD5
+                    ]},
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+    test("homo_sapiens - vcf no list with sample, panel vcf region, chunks, map, no fasta, no chunking + splitreference") {
+        when {
+            workflow {
+                """
+                sample = Channel.of('NA12878 2')
+                    .collectFile(name: 'sampleinfos.txt')
+                input[0] = Channel.of([
+                    [id:'input_vcf'],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi", checkIfExists: true),
+                    [] // no list
+                ])
+                .combine(sample)
+                input[1] = Channel.of([
+                    [panel: 'ref_panel', chr: "22"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                    "chr22:16570065-16609999",
+                ])
+                input[2] = Channel.of(
+                    [[panel: 'ref_panel', chr: "22"], "chr22:16570065-16597215", "chr22:16570065-16592216"],
+                    [[panel: 'ref_panel', chr: "22"], "chr22:16587172-16609999", "chr22:16592229-16609999"]
+                ) // chunks
+                input[3] = Channel.of([
+                    [panel: 'ref_panel', chr: "22"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.glimpse.map", checkIfExists: true)
+                ]) // map
+                input[4] = Channel.of([
+                    [id_genome:'ref_fasta'], [], []
+                ]).collect() // genome
+                input[5] = false // do not perform chunking
+                input[6] = "recursive" // chunking model
+                input[7] = true // splitreference
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.chunks,
+                    workflow.out.vcf_index.collect{[
+                        it[0],
+                        path(it[1]).getFileName().toString(),
+                        path(it[2]).getFileName().toString(),
+                        path(it[1]).vcf.summary,
+                        path(it[1]).vcf.header.getGenotypeSamples().sort(),
+                        path(it[1]).vcf.variantsMD5
+                    ]},
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+    test("homo_sapiens - vcf no list with sample, panel vcf region, chunks, map, no fasta, no chunking + no splitreference") {
+        when {
+            workflow {
+                """
+                sample = Channel.of('NA12878 2')
+                    .collectFile(name: 'sampleinfos.txt')
+                input[0] = Channel.of([
+                    [id:'input_vcf'],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi", checkIfExists: true),
+                    [] // no list
+                ])
+                .combine(sample)
+                input[1] = Channel.of([
+                    [panel: 'ref_panel', chr: "22"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                    "chr22:16570065-16609999",
+                ])
+                input[2] = Channel.of(
+                    [[panel: 'ref_panel', chr: "22"], "chr22:16570065-16597215", "chr22:16570065-16592216"],
+                    [[panel: 'ref_panel', chr: "22"], "chr22:16587172-16609999", "chr22:16592229-16609999"]
+                ) // chunks
+                input[3] = Channel.of([
+                    [panel: 'ref_panel', chr: "22"],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/phaseimpute/hum_data/reference_genome/GRCh38_chr22.glimpse.map", checkIfExists: true)
+                ]) // map
+                input[4] = Channel.of([
+                    [id_genome:'ref_fasta'], [], []
+                ]).collect() // genome
+                input[5] = false // do not perform chunking
+                input[6] = "recursive" // chunking model
+                input[7] = false // no splitreference
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.chunks,
+                    workflow.out.vcf_index.collect{[
+                        it[0],
+                        path(it[1]).getFileName().toString(),
+                        path(it[2]).getFileName().toString(),
+                        path(it[1]).vcf.summary,
+                        path(it[1]).vcf.header.getGenotypeSamples().sort(),
+                        path(it[1]).vcf.variantsMD5
+                    ]},
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+    test("homo_sapiens - bam no list and no sample, panel vcf region, no chunks, no map, no fasta, chunk sequential + splitreference") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:'input_bam'],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam.bai", checkIfExists: true),
+                    [], []
+                ])
+                input[1] = Channel.of([
+                    [panel: 'ref_panel', chr: "22"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                    "chr22"
+                ])
+                input[2] = Channel.of([
+                    [panel: 'ref_panel', chr: "22"],
+                    [], []
+                ]) // chunks
+                input[3] = Channel.of([
+                    [panel: 'ref_panel', chr: "22"],
+                    []
+                ]) // map
+                input[4] = Channel.of([
+                    [id_genome:'ref_fasta'], [], []
+                ]).collect() // genome
+                input[5] = true // perform chunking
+                input[6] = "sequential" // chunking model
+                input[7] = true // splitreference
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.chunks,
+                    workflow.out.vcf_index.collect{[
+                        it[0],
+                        path(it[1]).getFileName().toString(),
+                        path(it[2]).getFileName().toString(),
+                        path(it[1]).vcf.summary,
+                        path(it[1]).vcf.header.getGenotypeSamples().sort(),
+                        path(it[1]).vcf.variantsMD5
+                    ]},
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+    test("homo_sapiens - bam list and sample, panel vcf region, chunks, map, no fasta, no chunking + splitreference") {
+        when {
+            workflow {
+                """
+                bamlist = Channel.of(
+                    "NA12878.chr21_22.1X.bam\tSample1",
+                    "NA19401.chr21_22.1X.bam\tSample2"
+                ).collectFile(name: 'bamlist.txt', newLine: true)
+                sample = Channel.of('NA12878 2')
+                    .collectFile(name: 'sampleinfos.txt')
+                input[0] = Channel.of([
+                    [id: "allid"], [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA19401.chr21_22.1X.bam", checkIfExists: true)
+                    ], [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA19401.chr21_22.1X.bam.bai", checkIfExists: true)
+                    ]
+                ]).combine(bamlist).combine(sample)
+                input[1] = Channel.of([
+                    [panel: 'ref_panel', chr: "22"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                    "chr22"
+                ],[
+                    [panel: 'ref_panel', chr: "21"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz.csi", checkIfExists:true),
+                    "chr21"
+                ]) // reference
+                input[2] = Channel.of(
+                    [[panel: 'ref_panel', chr: "22"], "chr22:16570065-16597215", "chr22:16570065-16592216"],
+                    [[panel: 'ref_panel', chr: "22"], "chr22:16587172-16609999", "chr22:16592229-16609999"],
+                    [[panel: 'ref_panel', chr: "21"], "chr21:16570065-16597215", "chr21:16570065-16592216"],
+                    [[panel: 'ref_panel', chr: "21"], "chr21:16587172-16609999", "chr21:16592229-16609999"]
+                ) // chunks
+                input[3] = Channel.of([
+                    [panel: 'ref_panel', chr: "22"], file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.glimpse.map", checkIfExists:true)
+                ],[
+                    [panel: 'ref_panel', chr: "21"], file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.glimpse.map", checkIfExists:true)
+                ]) // map
+                input[4] = Channel.of([
+                    [id_genome:'ref_fasta'], [], []
+                ]).collect() // genome
+                input[5] = false // perform chunking
+                input[6] = "sequential" // chunking model
+                input[7] = true // splitreference
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.chunks,
+                    workflow.out.vcf_index.collect{[
+                        it[0],
+                        path(it[1]).getFileName().toString(),
+                        path(it[2]).getFileName().toString(),
+                        path(it[1]).vcf.summary,
+                        path(it[1]).vcf.header.getGenotypeSamples().sort(),
+                        path(it[1]).vcf.variantsMD5
+                    ]},
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+    test("homo_sapiens - empty channels, chunk sequential + splitreference - stub") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id: "allid"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai", checkIfExists: true),
+                    [], []
+                ])
+                input[1] = Channel.of([
+                    [panel: 'ref_panel', chr: "22"], [], [], "chr22"
+                ],[
+                    [panel: 'ref_panel', chr: "21"], [], [], "chr21"
+                ]) // reference
+                input[2] = Channel.of(
+                    [[panel: 'ref_panel', chr: "22"], [], []],
+                    [[panel: 'ref_panel', chr: "21"], [], []]
+                ) // chunks
+                input[3] = Channel.of([
+                    [panel: 'ref_panel', chr: "22"], []
+                ],[
+                    [panel: 'ref_panel', chr: "21"], []
+                ]) // map
+                input[4] = Channel.of([
+                    [id_genome:'ref_fasta'], [], []
+                ]).collect() // genome
+                input[5] = true // perform chunking
+                input[6] = "sequential" // chunking model
+                input[7] = true // splitreference
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - error chunks provided and chunk is true") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([ [id: "allid"], [], [], [], [] ])
+                input[1] = Channel.of([
+                    [panel: 'ref_panel', chr: "22"], [], [], "chr22"
+                ],[
+                    [panel: 'ref_panel', chr: "21"], [], [], "chr21"
+                ]) // reference
+                input[2] = Channel.of(
+                    [[panel: 'ref_panel', chr: "22"], "chr22:16570065-16597215", "chr22:16570065-16592216"],
+                    [[panel: 'ref_panel', chr: "22"], "chr22:16587172-16609999", "chr22:16592229-16609999"],
+                    [[panel: 'ref_panel', chr: "21"], "chr21:16570065-16597215", "chr21:16570065-16592216"],
+                    [[panel: 'ref_panel', chr: "21"], "chr21:16587172-16609999", "chr21:16592229-16609999"]
+                ) // chunks
+                input[3] = Channel.of([
+                    [panel: 'ref_panel', chr: "22"], []
+                ],[
+                    [panel: 'ref_panel', chr: "21"], []
+                ]) // map
+                input[4] = Channel.of([
+                    [id_genome:'ref_fasta'], [], []
+                ]).collect() // genome
+                input[5] = true // perform chunking
+                input[6] = "sequential" // chunking model
+                input[7] = true // splitreference
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.failed },
+                { assert workflow.errorMessage.contains("ERROR: Cannot provide pre-defined chunks (regionin) when chunk=true. Please either set chunk=false to use provided chunks, or remove input chunks to enable automatic chunking.") }
+            )
+        }
+    }
+
+    test("homo_sapiens - error no chunks provided and chunk is false") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([ [id: "allid"], [], [], [], [] ])
+                input[1] = Channel.of([
+                    [panel: 'ref_panel', chr: "22"], [], [], "chr22"
+                ],[
+                    [panel: 'ref_panel', chr: "21"], [], [], "chr21"
+                ]) // reference
+                input[2] = Channel.of(
+                    [[panel: 'ref_panel', chr: "22"], [], []],
+                    [[panel: 'ref_panel', chr: "21"], [], []]
+                ) // chunks
+                input[3] = Channel.of([
+                    [panel: 'ref_panel', chr: "22"], []
+                ],[
+                    [panel: 'ref_panel', chr: "21"], []
+                ]) // map
+                input[4] = Channel.of([
+                    [id_genome:'ref_fasta'], [], []
+                ]).collect() // genome
+                input[5] = false // perform chunking
+                input[6] = "sequential" // chunking model
+                input[7] = true // splitreference
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.failed },
+                { assert workflow.errorMessage.contains("ERROR: ch_chunks channel is empty. Please provide a valid channel or set chunk parameter to true.") }
+            )
+        }
+    }
+
+    test("homo_sapiens - error empty joint") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id: "allid"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam.bai", checkIfExists: true),
+                    [], []
+                ])
+                input[1] = Channel.of([
+                    [panel: 'ref_panel', chr: "22"], [], [], "chr22"
+                ],[
+                    [panel: 'ref_panel', chr: "21"], [], [], "chr21"
+                ]) // reference
+                input[2] = Channel.of(
+                    [[panel: 'ref_panel 2', chr: "22"], "chr22:16570065-16597215", "chr22:16570065-16592216"],
+                    [[panel: 'ref_panel', chr: "21"], "chr21:16570065-16597215", "chr21:16570065-16592216"]
+                ) // chunks
+                input[3] = Channel.of([
+                    [panel: 'ref_panel', chr: "22"], []
+                ],[
+                    [panel: 'ref_panel 1', chr: "21"], []
+                ]) // map
+                input[4] = Channel.of([
+                    [id_genome:'ref_fasta'], [], []
+                ]).collect() // genome
+                input[5] = false // perform chunking
+                input[6] = "sequential" // chunking model
+                input[7] = false // splitreference
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.failed },
+                { assert workflow.errorMessage.contains("ERROR: join operation resulted in an empty channel. Please provide a valid ch_chunks and ch_map channel as input.") }
+            )
+        }
+    }
+}

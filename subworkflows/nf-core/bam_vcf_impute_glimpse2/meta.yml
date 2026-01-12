@@ -1,0 +1,79 @@
+name: "bam_vcf_impute_glimpse2"
+description: Impute VCF/BCF files, but also CRAM and BAM files with Glimpse2
+keywords:
+  - glimpse
+  - chunk
+  - phase
+  - ligate
+  - split_reference
+components:
+  - glimpse2/chunk
+  - glimpse2/phase
+  - glimpse2/ligate
+  - glimpse2/splitreference
+  - bcftools/index
+input:
+  - ch_input:
+      type: file
+      description: |
+        Target dataset in CRAM, BAM or VCF/BCF format.
+        Index file of the input file.
+        File containing the list of files to be imputed and their sample names (for CRAM/BAM input).
+        File with sample names and ploidy information.
+        Structure: [ meta, file, index, bamlist, ploidy ]
+  - ch_ref:
+      type: file
+      description: |
+        Reference panel of haplotypes in VCF/BCF format.
+        Index file of the Reference panel file.
+        Target region, usually a full chromosome (e.g. chr20:1000000-2000000 or chr20).
+        The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
+        Structure: [ meta, vcf, csi, region ]
+  - ch_chunks:
+      type: string
+      description: |
+        Channel containing the chunking regions for each chromosome.
+        Structure: [ meta, region with buffer, region without buffer ]
+  - ch_map:
+      type: file
+      description: |
+        Genetic map file for each chromosome.
+        Structure: [ meta, gmap ]
+  - ch_fasta:
+      type: file
+      description: |
+        Reference genome in fasta format.
+        Reference genome index in fai format
+        Structure: [ meta, fasta, fai ]
+  - chunk:
+      type: boolean
+      description: Whether to perform chunking of the input data before imputation.
+  - chunk_model:
+      type: string
+      description: |
+        Chunking model to use.
+        Options: "sequential", "recursive"
+  - splitreference:
+      type: boolean
+      description: Whether to split the reference panel and convert it to binary files before imputation.
+
+output:
+  - ch_chunks:
+      type: string
+      description: |
+        Channel containing the chunking regions for each chromosome.
+        Structure: [ meta, region with buffer, region without buffer ]
+  - ch_vcf_index:
+      type: file
+      description: |
+        Output VCF/BCF file for the merged regions.
+        Index file of the output VCF/BCF file.
+        Structure: [ val(meta), variants, index ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@LouisLeNezet"
+maintainers:
+  - "@LouisLeNezet"

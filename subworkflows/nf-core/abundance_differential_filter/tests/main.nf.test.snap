@@ -48,10 +48,10 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-06-17T10:30:52.112951"
+        "timestamp": "2025-12-04T21:34:41.609825626"
     },
     "deseq2 and limma - mouse - basic": {
         "content": [
@@ -237,10 +237,10 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-06-17T10:38:20.375228"
+        "timestamp": "2025-12-04T21:36:19.869897897"
     },
     "limma - voom": {
         "content": [
@@ -313,10 +313,10 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-06-17T10:31:18.015533"
+        "timestamp": "2025-12-04T21:34:54.342799115"
     },
     "dream": {
         "content": [
@@ -324,25 +324,8 @@
                 [
                     {
                         "id": "treatment_mCherry_hND6_test",
-                        "variable": "treatment",
-                        "reference": "mCherry",
-                        "target": "hND6",
-                        "blocking_factors": "sample_number",
                         "formula": "~ treatment + (1 | sample_number)",
-                        "differential_method": "dream"
-                    },
-                    "treatment_mCherry_hND6_test.dream.results.tsv:md5,ad7e79a25bf407b210e3ebfbf734f68e"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "treatment_mCherry_hND6_test",
-                        "variable": "treatment",
-                        "reference": "mCherry",
-                        "target": "hND6",
-                        "blocking_factors": "sample_number",
-                        "formula": "~ treatment + (1 | sample_number)",
+                        "comparison": "treatmentmCherry",
                         "differential_method": "dream",
                         "fc_threshold": 1.5,
                         "stat_threshold": 0.05
@@ -354,14 +337,11 @@
                 [
                     {
                         "id": "treatment_mCherry_hND6_test",
-                        "variable": "treatment",
-                        "reference": "mCherry",
-                        "target": "hND6",
-                        "blocking_factors": "sample_number",
                         "formula": "~ treatment + (1 | sample_number)",
+                        "comparison": "treatmentmCherry",
                         "differential_method": "dream"
                     },
-                    "treatment_mCherry_hND6_test.dream.model.txt:md5,7103206474aa480ffd9cec149263489f"
+                    "treatment_mCherry_hND6_test_dream.dream.model.txt:md5,7103206474aa480ffd9cec149263489f"
                 ]
             ],
             [
@@ -370,10 +350,10 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.2"
         },
-        "timestamp": "2025-07-04T21:27:14.641708892"
+        "timestamp": "2025-12-26T15:13:48.91832163"
     },
     "deseq2 + limma-voom + propd - mouse - basic": {
         "content": [
@@ -633,9 +613,9 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.04.6"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-29T15:08:57.424485"
+        "timestamp": "2025-12-04T21:37:02.640236928"
     },
     "stub": {
         "content": [
@@ -961,27 +941,35 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-06-17T10:30:02.865825"
+        "timestamp": "2025-12-04T21:34:07.788482554"
     },
     "dream - complex contrast - literal contrast string comparison": {
         "content": [
-            "treatment_mCherry_hND6_test.dream.results.tsv",
             [
                 [
                     {
                         "id": "treatment_mCherry_hND6_test",
-                        "variable": "treatment",
-                        "reference": "mCherry",
-                        "target": "hND6",
-                        "blocking_factors": "sample_number",
+                        "formula": "~ 0 + treatment + sample_number",
+                        "comparison": "treatmenthND6 - treatmentmCherry",
+                        "differential_method": "dream",
+                        "fc_threshold": 1.5,
+                        "stat_threshold": 0.05
+                    },
+                    "treatment_mCherry_hND6_test_filtered.tsv:md5,0bfc9215edc6aad064c3ce6abc81bfce"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "treatment_mCherry_hND6_test",
                         "formula": "~ 0 + treatment + sample_number",
                         "comparison": "treatmenthND6 - treatmentmCherry",
                         "differential_method": "dream"
                     },
-                    "treatment_mCherry_hND6_test.dream.model.txt:md5,46fe9413749f1475edc6985647b0e4e1"
+                    "treatment_mCherry_hND6_test_dream.dream.model.txt:md5,46fe9413749f1475edc6985647b0e4e1"
                 ]
             ],
             [
@@ -990,10 +978,10 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.2"
         },
-        "timestamp": "2025-06-17T10:29:44.113003"
+        "timestamp": "2025-12-23T19:05:11.641088832"
     },
     "deseq2 - with transcript lengths": {
         "content": [
@@ -1100,10 +1088,10 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-06-17T10:31:34.923988"
+        "timestamp": "2025-12-04T21:35:28.598725232"
     },
     "propd - mouse - basic": {
         "content": [
@@ -1190,8 +1178,8 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.04.6"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-29T15:07:36.308435"
+        "timestamp": "2025-12-04T21:35:43.634876525"
     }
 }

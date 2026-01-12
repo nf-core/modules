@@ -18,7 +18,7 @@ process CHROMOGRAPH {
     tuple val(meta7), path(sites)
 
     output:
-    tuple val(meta), path("*.png"), emit: plots
+    tuple val(meta), path("*.png"), emit: plots, optional: true
     path "versions.yml", emit: versions
 
     when:
@@ -75,5 +75,5 @@ process CHROMOGRAPH {
 // Helper function to generate touch commands
 def touchCmd(euploidy, input_file) {
     def chrs = euploidy ? (1..22) + ['X', 'Y', 'M'] : [1]
-    input_file ? chrs.collect { chr -> "touch ${input_file}_chr${chr}.png" }.join('\n') : ''
+    input_file ? chrs.collect { chr -> "touch ${input_file}_chr${chr}.png" }.join(' ') : ''
 }

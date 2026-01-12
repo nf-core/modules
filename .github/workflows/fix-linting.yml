@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Use the @nf-core-bot token to check out so we can push later
-      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
         with:
           token: ${{ secrets.nf_core_bot_auth_token }}
 
@@ -32,26 +32,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.nf_core_bot_auth_token }}
 
-      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6
-
-      - name: Install Prettier
-        run: npm install -g prettier @prettier/plugin-php
-
-      # Check that we actually need to fix something
-      - name: Run 'prettier --check'
-        id: prettier_status
-        run: |
-          if prettier --check ${GITHUB_WORKSPACE}; then
-            echo "::set-output name=result::pass"
-          else
-            echo "::set-output name=result::fail"
-          fi
-      - name: Run 'prettier --write'
-        if: steps.prettier_status.outputs.result == 'fail'
-        run: prettier --write ${GITHUB_WORKSPACE}
+      - name: Run prek
+        id: prek
+        uses: j178/prek-action@91fd7d7cf70ae1dee9f4f44e7dfa5d1073fe6623 # v1
+        continue-on-error: true
 
       - name: Post nothing-to-do comment
-        if: steps.prettier_status.outputs.result == 'pass'
+        if: steps.prek.outcome == 'success'
         uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
         with:
           issue-number: ${{ github.event.issue.number }}
@@ -60,7 +47,7 @@ jobs:
             This is probably because the linting errors come from `nf-core lint` and have to be fixed manually (or with `nf-core lint --fix`).
 
       - name: Commit & push changes
-        if: steps.prettier_status.outputs.result == 'fail'
+        if: steps.prek.outcome == 'failure'
         run: |
           git config user.email "core@nf-co.re"
           git config user.name "nf-core-bot"

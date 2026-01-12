@@ -27,8 +27,6 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         ch_input.no_tbi
     )
 
-    ch_versions = ch_versions.mix(TABIX_TABIX.out.versions)
-
     ch_somalierextract_input = ch_input.no_tbi
         .join(TABIX_TABIX.out.index)
         .mix(ch_input.tbi)

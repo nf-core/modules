@@ -1,0 +1,125 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "BAM_IMPUTE_STITCH"
+description: |
+  Subworkflow to impute BAM files using STITCH software.
+  Variants location to impute are obtain through the legend file given
+keywords:
+  - BAM
+  - imputation
+  - stitch
+components:
+  - stitch
+  - bcftools/index
+  - glimpse2/ligate
+input:
+  - ch_input:
+      description: Channel with input data
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - file:
+            type: file
+            description: List of input BAM files
+            pattern: "*.bam"
+        - index:
+            type: file
+            description: List of input index file
+            pattern: "*.{bai,csi}"
+        - bampaths:
+            type: file
+            description: |
+              File containing the list of BAM/CRAM files to be phased.
+              One file per line.
+            pattern: "*.{txt,tsv}"
+        - bamnames:
+            type: file
+            description: |
+              File containing the sample names of each BAM files listed in bampaths.
+              One file per line.
+            pattern: "*.{txt,tsv}"
+  - ch_posfile:
+      description: Channel with position to call variants by chromosomes
+      structure:
+        - meta:
+            type: map
+            description: |
+              Metadata map with chromosome information
+        - tsv:
+            type: file
+            description: Position to impute variants file in TSV format (chromosome, position, ref, alt)
+  - ch_chunks:
+      description: Channel with chromosome chunks data
+      structure:
+        - meta:
+            type: map
+            description: Metadata map with chromosome information
+        - chr:
+            type: string
+            description: Chromosome name
+        - start:
+            type: integer
+            description: Start position of the chunk
+        - end:
+            type: integer
+            description: End position of the chunk
+  - ch_map:
+      description: Channel with genetic map data
+      structure:
+        - meta:
+            type: map
+            description: |
+              Metadata map with chromosome information
+        - map:
+            type: file
+            description: Stitch format genetic map files
+            pattern: "*.map"
+  - ch_fasta:
+      description: Channel with reference genome data
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - fasta:
+            type: file
+            description: FASTA file of the reference genome
+            pattern: "*.fa[sta]+"
+        - fai:
+            type: file
+            description: FASTA index file of the reference genome
+            pattern: "*.fai"
+  - k_val:
+      type: integer
+      description: K value for STITCH imputation
+  - n_gen:
+      type: integer
+      description: Number of generations for STITCH imputation
+  - seed:
+      type: integer
+      description: Random seed for STITCH imputation
+output:
+  - vcf_index:
+      description: Channel with imputed VCF files
+      structure:
+        - meta:
+            type: map
+            description: |
+              Metadata map combined with the posfile, chunks and map data map.
+        - vcf:
+            type: file
+            description: VCF imputed file
+            pattern: "*.{vcf,bcf,vcf.gz}"
+        - index:
+            type: file
+            description: VCF index file
+            pattern: "*.{tbi,csi}"
+  - versions:
+      description: Channel containing software versions file
+      structure:
+        - versions.yml:
+            type: file
+            description: File containing versions of the software used
+authors:
+  - "@louislenezet"
+maintainers:
+  - "@louislenezet"
