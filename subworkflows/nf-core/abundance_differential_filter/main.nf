@@ -149,10 +149,10 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // Run DREAM
     // ----------------------------------------------------
 
-    // DREAM only runs with formula
+    // Prepare DREAM inputs
     dream_inputs = inputs.contrasts_for_diff_with_formula
-        .filter { meta, _variable, _reference, _target, formula, _comparison ->
-            meta.differential_method == 'dream' && formula != null
+        .filter { meta, _variable, _reference, _target, _formula, _comparison ->
+            meta.differential_method == 'dream'
         }
 
     VARIANCEPARTITION_DREAM(
