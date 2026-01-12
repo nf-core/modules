@@ -43,13 +43,18 @@ output:
           description: Refreshed idXML identification file
           pattern: "*.idXML"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  versions_openms: &versions
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - openms:
+          type: string
+          description: The name of the tool
+      - "FileInfo --help 2>&1 | grep -E '^Version' | sed 's/^.*Version: //; s/-.*$//' | sed 's/ -*//; s/ .*$//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions: *versions
 authors:
   - "@jonasscheid"
 maintainers:
