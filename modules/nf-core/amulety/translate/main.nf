@@ -13,7 +13,8 @@ process AMULETY_TRANSLATE {
 
     output:
     tuple val(meta), path("*_translated.tsv"), emit: repertoire_translated
-    path "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val('amulety'), eval("amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+'"), emit: versions_amulety, topic: versions
+    tuple val("${task.process}"), val('igblastn'), eval("igblastn -version | grep -o 'igblast[0-9\\. ]\\+' | grep -o '[0-9\\. ]\\+'"), emit: versions_igblastn, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,23 +31,11 @@ process AMULETY_TRANSLATE {
     --reference-dir ${reference_igblast}
 
     mv *_translated.tsv ${prefix}_translated.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        amulety: \$( amulety --help 2>&1 | grep -o "version [0-9\\.]\\+" | grep -o "[0-9\\.]\\+" )
-        igblastn: \$( igblastn -version | grep -o "igblast[0-9\\. ]\\+" | grep -o "[0-9\\. ]\\+" )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_translated.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        amulety: \$( amulety --help 2>&1 | grep -o "version [0-9\\.]\\+" | grep -o "[0-9\\.]\\+" )
-        igblastn: \$( igblastn -version | grep -o "igblast[0-9\\. ]\\+" | grep -o "[0-9\\. ]\\+" )
-    END_VERSIONS
     """
 }

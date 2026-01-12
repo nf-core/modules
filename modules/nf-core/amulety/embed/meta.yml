@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "amulety_embed"
-description: A module to create embeddings of B-cell receptor (BCR) or T-cell receptor (TCR) amino acid sequences using amulety.
+description: A module to create embeddings of B-cell receptor (BCR) or T-cell receptor
+  (TCR) amino acid sequences using amulety.
 keywords:
   - embeddings
   - BCR
@@ -28,38 +29,55 @@ input:
         type: file
         description: TSV with BCR/TCR nucleotide sequences in AIRR rearrangement format
         pattern: "*.{tsv}"
-  - - chain:
-        type: string
-        description: |
-          The chain to use for the embeddings. Can be either 'H' (high diversity chain: BCR heavy or TCR beta or delta),
-          'L' (low diversity chain: BCR light or TCR alpha or gamma) or 'HL' (BCR heavy + light, and TCR alpha + beta or gamma + delta).
-  - - model:
-        type: string
-        description: |
-          The embedding model to use. Options are detailed on the amulety documentation.
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - chain:
+      type: string
+      description: |
+        The chain to use for the embeddings. Can be either 'H' (high diversity chain: BCR heavy or TCR beta or delta),
+        'L' (low diversity chain: BCR light or TCR alpha or gamma) or 'HL' (BCR heavy + light, and TCR alpha + beta or gamma + delta).
+  - model:
+      type: string
+      description: |
+        The embedding model to use. Options are detailed on the amulety documentation.
 
 output:
-  - embedding:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*.tsv":
-        type: file
-        description: TSV with embeddings of BCR or TCR amino acid sequences.
-        pattern: "*.tsv"
+  embedding:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tsv":
+          type: file
+          description: TSV with embeddings of BCR or TCR amino acid sequences.
+          pattern: "*.tsv"
 
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+  versions_amulety:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - amulety:
+          type: string
+          description: The tool name
+      - amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+':
+          type: string
+          description: The command used to generate the version of the tool
 
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - amulety:
+          type: string
+          description: The tool name
+      - amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+':
+          type: string
+          description: The command used to generate the version of the tool
+
 authors:
   - "@ggabernet"
 maintainers:

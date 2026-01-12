@@ -15,7 +15,7 @@ process AMULETY_EMBED {
 
     output:
     tuple val(meta), path("*.tsv"), emit: embedding
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('amulety'), eval("amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+'"), emit: versions_amulety, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,21 +31,11 @@ process AMULETY_EMBED {
         --chain $chain \\
         --model $model \\
         --output-file-path ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        amulety: \$( amulety --help 2>&1 | grep -o "version [0-9\\.]\\+" | grep -o "[0-9\\.]\\+" )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        amulety: \$( amulety --help 2>&1 | grep -o "version [0-9\\.]\\+" | grep -o "[0-9\\.]\\+" )
-    END_VERSIONS
     """
 }
