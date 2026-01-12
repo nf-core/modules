@@ -12,13 +12,14 @@ process LOCALCDSEARCH_DOWNLOAD {
 
     output:
     path('database/'), emit: db
-    tuple val("${task.process}"), val('local-cd-search'), eval("echo '0.3.0'"), topic: versions, emit: versions_localcdsearch
+    tuple val("${task.process}"), val('local-cd-search'), eval("echo ${VERSION}"), topic: versions, emit: versions_localcdsearch
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    VERSION = '0.3.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     mkdir database/
     local-cd-search \\
