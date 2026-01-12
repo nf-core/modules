@@ -41,7 +41,7 @@ nextflow_process {
 
     test("homo_sapiens - kir - stub") {
 
-        config "./download.config"
+        config "./nextflow.config"
         options "-stub"
 
         when {
@@ -78,8 +78,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ],
                     [],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta' ,checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf' ,checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                 ]
                 """
             }
@@ -108,8 +108,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ],
                     [],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta' ,checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf' ,checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                 ]
                 """
             }
