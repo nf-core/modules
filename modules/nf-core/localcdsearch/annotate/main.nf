@@ -15,13 +15,14 @@ process LOCALCDSEARCH_ANNOTATE {
     output:
     tuple val(meta), path("*_results.tsv"), emit: result
     tuple val(meta), path("*_sites.tsv")  , emit: annot_sites, optional: true
-    tuple val("${task.process}"), val('local-cd-search'), eval("echo '0.3.0'"), topic: versions, emit: versions_localcdsearch
+    tuple val("${task.process}"), val('local-cd-search'), eval("echo ${VERSION}"), topic: versions, emit: versions_localcdsearch
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    VERSION = '0.3.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def prefix = task.ext.prefix ?: "${meta.id}"
     def val_flag = sites ? "--sites-output ${prefix}_sites.tsv" : ''
     def is_compressed = fasta.getExtension() == "gz"
