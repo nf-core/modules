@@ -21,7 +21,7 @@ process OPENMS_IDMASSACCURACY {
     script:
     def deprecation_message = """
     WARNING: This module has been deprecated. Please use nf-core/modules/path/to/new/module
-    
+
     Reason:
     This module is no longer fit for purpose because not part of openms 3.5.0 version anymore
     """
@@ -47,7 +47,7 @@ process OPENMS_IDMASSACCURACY {
     stub:
     def deprecation_message = """
     WARNING: This module has been deprecated. Please use nf-core/modules/path/to/new/module
-    
+
     Reason:
     This module is no longer fit for purpose because not part of openms 3.5.0 version anymore
     """
