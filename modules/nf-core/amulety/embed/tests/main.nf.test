@@ -1,14 +1,14 @@
 nextflow_process {
 
-    name "Test Process AMULETY_BALMPAIRED"
+    name "Test Process AMULETY_EMBED"
     script "../main.nf"
     config "./nextflow.config"
-    process "AMULETY_BALMPAIRED"
+    process "AMULETY_EMBED"
 
     tag "modules"
     tag "modules_nfcore"
     tag "amulety"
-    tag "amulety/balmpaired"
+    tag "amulety/embed"
     tag "untar"
     tag "amulety/translate"
 
@@ -46,6 +46,7 @@ nextflow_process {
                 """
                 input[0] = AMULETY_TRANSLATE.out.repertoire_translated
                 input[1] = "H"
+                input[2] = "antiberty"
                 """
             }
         }
@@ -68,6 +69,7 @@ nextflow_process {
                 """
                 input[0] = AMULETY_TRANSLATE.out.repertoire_translated
                 input[1] = "H"
+                input[2] = "antiberty"
                 """
             }
         }

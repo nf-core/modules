@@ -1,16 +1,17 @@
-process AMULETY_ESM2 {
+process AMULETY_EMBED {
     tag "$meta.id"
     label 'process_medium'
     label 'process_gpu'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/amulety_igblast:b2a7736f645c40e5':
-        'community.wave.seqera.io/library/amulety_igblast:659eaa872785adeb' }"
+        'oras://community.wave.seqera.io/library/amulety_wget:57c081c80e888ece':
+        'community.wave.seqera.io/library/amulety_wget:ff98ce74f1246e24' }"
 
     input:
     tuple val(meta), path(tsv)
     val(chain)
+    val(model)
 
     output:
     tuple val(meta), path("*.tsv"), emit: embedding
@@ -24,11 +25,12 @@ process AMULETY_ESM2 {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     TRANSFORMERS_CACHE="./cache" amulety \\
-        esm2 \\
+        embed \\
         $args \\
-        $tsv \\
-        $chain \\
-        ${prefix}.tsv
+        --input-airr $tsv \\
+        --chain $chain \\
+        --model $model \\
+        --output-file-path ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

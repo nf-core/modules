@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "amulety_esm2"
-description: A module to create esm2 embeddings of antibody (BCR) amino acid sequences using amulety.
+name: "amulety_embed"
+description: A module to create embeddings of B-cell receptor (BCR) or T-cell receptor (TCR) amino acid sequences using amulety.
 keywords:
   - embeddings
   - BCR
@@ -31,7 +31,12 @@ input:
   - - chain:
         type: string
         description: |
-          The chain to use for the embeddings. Can be either 'H' (heavy) or 'HL' (heavy + light, for single-cell data).
+          The chain to use for the embeddings. Can be either 'H' (high diversity chain: BCR heavy or TCR beta or delta),
+          'L' (low diversity chain: BCR light or TCR alpha or gamma) or 'HL' (BCR heavy + light, and TCR alpha + beta or gamma + delta).
+  - - model:
+        type: string
+        description: |
+          The embedding model to use. Options are detailed on the amulety documentation.
 
 output:
   - embedding:
@@ -42,7 +47,7 @@ output:
           e.g. `[ id:'sample1', single_end:false ]`
     - "*.tsv":
         type: file
-        description: TSV with esm2 embeddings.
+        description: TSV with embeddings of BCR or TCR amino acid sequences.
         pattern: "*.tsv"
 
   - versions:

@@ -4,8 +4,8 @@ process AMULETY_TRANSLATE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-92ebbfc09fc136b8e201cb187cd9567ba335d439:459e6ebe51fb2818cb6de807f2c5fa99599b1214-0':
-        'biocontainers/mulled-v2-92ebbfc09fc136b8e201cb187cd9567ba335d439:459e6ebe51fb2818cb6de807f2c5fa99599b1214-0' }"
+        'oras://community.wave.seqera.io/library/amulety_igblast_wget:fc4554b00bc0e6ff':
+        'community.wave.seqera.io/library/amulety_igblast_wget:2c93c3bf22f60a80' }"
 
     input:
     tuple val(meta), path(tsv)
@@ -23,7 +23,12 @@ process AMULETY_TRANSLATE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     export IGDATA=${reference_igblast}
-    amulety translate-igblast $tsv . ${reference_igblast}
+    amulety \\
+    translate-igblast \\
+    $args \\
+    --input-file $tsv \\
+    --output-dir . \\
+    --reference-dir ${reference_igblast}
 
     mv *_translated.tsv ${prefix}_translated.tsv
 
