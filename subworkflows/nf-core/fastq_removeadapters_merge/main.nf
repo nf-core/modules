@@ -22,7 +22,6 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
     main:
 
     ch_discarded_reads    = channel.empty() // from trimmomatic, trimgalore, leehom, fastp, adapterremoval
-    ch_paired_interleaved = channel.empty() // from adapterremoval
     ch_log                = channel.empty() // from trimmomatic, trimgalore, fastp
     ch_report             = channel.empty() // from trimmomatic, trimgalore, fastp
     ch_versions           = channel.empty()
@@ -110,7 +109,6 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
             ch_processed_reads = ADAPTERREMOVAL_SE.out.singles_truncated.mix(ADAPTERREMOVAL_PE.out.paired_truncated)
         }
         ch_discarded_reads    = ch_discarded_reads.mix(ADAPTERREMOVAL_SE.out.discarded, ADAPTERREMOVAL_PE.out.discarded)
-        ch_paired_interleaved = ADAPTERREMOVAL_SE.out.paired_interleaved.mix(ADAPTERREMOVAL_PE.out.paired_interleaved)
         ch_versions           = ch_versions.mix(ADAPTERREMOVAL_SE.out.versions.first(), ADAPTERREMOVAL_PE.out.versions.first())
         ch_multiqc_files      = ch_multiqc_files.mix(ADAPTERREMOVAL_PE.out.settings, ADAPTERREMOVAL_SE.out.settings)
     } else {
@@ -120,7 +118,6 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
     emit:
     processed_reads    = ch_processed_reads    // channel: [ val(meta), [ fastq.gz ] ]
     discarded_reads    = ch_discarded_reads    // channel: [ val(meta), [ fastq.gz ] ]
-    paired_interleaved = ch_paired_interleaved // channel: [ val(meta), [ fastq.gz ] ]
     logfile            = ch_log                // channel: [ val(meta), [ {log,txt} ] ]
     report             = ch_report             // channel: [ val(meta), [ {summary,html,zip} ] ]
     versions           = ch_versions           // channel: [ versions.yml ]

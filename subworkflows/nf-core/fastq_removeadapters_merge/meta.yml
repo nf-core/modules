@@ -60,12 +60,6 @@ output:
         Structure: [ val(meta), path(fastq.gz) ]
         The discarded reads
       pattern: "*.fastq.gz"
-  - paired_interleaved:
-      type: file
-      description: |
-        Structure: [ val(meta), path(fastq.gz) ]
-        Adapterremoval paired-end reads in a single file, interleaving mate 1 and mate 2 reads
-      pattern: "*.paired.fastq.gz"
   - logfile:
       type: file
       description: |
