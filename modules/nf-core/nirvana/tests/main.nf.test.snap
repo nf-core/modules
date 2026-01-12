@@ -1,60 +1,41 @@
 {
-    "sarscov2 - vcf": {
+    "json_content": {
         "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.json.gz:md5,b2fbe43d83278deae2e91289872a11a1"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.json.gz.jsi:md5,bec56314eb7d352430fd893f3e87b63d"
-                    ]
-                ],
-                "2": [
-                    [
-                        "NIRVANA",
-                        "nirvana",
-                        "Nirvana 3.18.1"
-                    ]
-                ],
-                "jsi": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.json.gz.jsi:md5,bec56314eb7d352430fd893f3e87b63d"
-                    ]
-                ],
-                "json": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.json.gz:md5,b2fbe43d83278deae2e91289872a11a1"
-                    ]
-                ],
-                "versions_nirvana": [
-                    [
-                        "NIRVANA",
-                        "nirvana",
-                        "Nirvana 3.18.1"
-                    ]
-                ]
-            }
+            [
+                "{\"header\":{\"annotator\":\"Nirvana 3.18.1\",\"genomeAssembly\":\"SARSCoV2\",\"schemaVersion\":6,\"dataVersion\":\"0.27.66\",\"dataSources\":[{\"name\":\"RefSeq\",\"version\":\"NC_045512.2\",\"description\":\"Severe acute respiratory syndrome coronavirus 2 (SARS-CoV2)\",\"releaseDate\":\"2020-03-20\"},{\"name\":\"alleleFrequency\",\"version\":\"SARS-COV-2_AllFreq.tsv\",\"releaseDate\":\"2020-05-08\"},{\"name\":\"proteinDomains\",\"version\":\"SARS-CoV-2_ProteinDomains.tsv\",\"releaseDate\":\"2020-05-08\"},{\"name\":\"MitochondrialHeteroplasmy\",\"version\":\"20180410\",\"description\":\"Variant read frequency percentiles for the Mitochondrial reference\",\"releaseDate\":\"2020-05-21\"}],\"samples\":[\"test\"]},\"positions\":[",
+                "{\"chromosome\":\"MT192765.1\",\"position\":197,\"refAllele\":\"G\",\"altAlleles\":[\"T\"],\"quality\":7.3081,\"filters\":[\"LowQual\"],\"mappingQuality\":60,\"samples\":[{\"genotype\":\"1/1\"}],\"variants\":[{\"vid\":\"MT192765.1-197-G-T\",\"chromosome\":\"MT192765.1\",\"begin\":197,\"end\":197,\"refAllele\":\"G\",\"altAllele\":\"T\",\"variantType\":\"SNV\",\"hgvsg\":\"MT192765.1:g.197G>T\"}]},",
+                "{\"chromosome\":\"MT192765.1\",\"position\":4788,\"refAllele\":\"C\",\"altAlleles\":[\"T\"],\"quality\":7.3081,\"filters\":[\"LowQual\"],\"mappingQuality\":60,\"samples\":[{\"genotype\":\"1/1\"}],\"variants\":[{\"vid\":\"MT192765.1-4788-C-T\",\"chromosome\":\"MT192765.1\",\"begin\":4788,\"end\":4788,\"refAllele\":\"C\",\"altAllele\":\"T\",\"variantType\":\"SNV\",\"hgvsg\":\"MT192765.1:g.4788C>T\"}]},",
+                "{\"chromosome\":\"MT192765.1\",\"position\":8236,\"refAllele\":\"C\",\"altAlleles\":[\"A\"],\"quality\":7.3081,\"filters\":[\"LowQual\"],\"mappingQuality\":60,\"samples\":[{\"genotype\":\"1/1\"}],\"variants\":[{\"vid\":\"MT192765.1-8236-C-A\",\"chromosome\":\"MT192765.1\",\"begin\":8236,\"end\":8236,\"refAllele\":\"C\",\"altAllele\":\"A\",\"variantType\":\"SNV\",\"hgvsg\":\"MT192765.1:g.8236C>A\"}]},",
+                "{\"chromosome\":\"MT192765.1\",\"position\":10506,\"refAllele\":\"TTATGACTGTGTCTCTTTTTGTTACATGCACCATATG\",\"altAlleles\":[\"TTATG\"],\"quality\":18.4617,\"filters\":[\"LowQual\"],\"mappingQuality\":60,\"samples\":[{\"genotype\":\"0/1\"}],\"variants\":[{\"vid\":\"MT192765.1-10510-NACTGTGTCTCTTTTTGTTACATGCACCATATG-N\",\"chromosome\":\"MT192765.1\",\"begin\":10511,\"end\":10542,\"refAllele\":\"ACTGTGTCTCTTTTTGTTACATGCACCATATG\",\"altAllele\":\"-\",\"variantType\":\"deletion\",\"hgvsg\":\"MT192765.1:g.10511_10542del\"}]},",
+                "{\"chromosome\":\"MT192765.1\",\"position\":11037,\"refAllele\":\"T\",\"altAlleles\":[\"C\"],\"quality\":7.3081,\"filters\":[\"LowQual\"],\"mappingQuality\":60,\"samples\":[{\"genotype\":\"1/1\"}],\"variants\":[{\"vid\":\"MT192765.1-11037-T-C\",\"chromosome\":\"MT192765.1\",\"begin\":11037,\"end\":11037,\"refAllele\":\"T\",\"altAllele\":\"C\",\"variantType\":\"SNV\",\"hgvsg\":\"MT192765.1:g.11037T>C\"}]},",
+                "{\"chromosome\":\"MT192765.1\",\"position\":15009,\"refAllele\":\"G\",\"altAlleles\":[\"A\"],\"quality\":30.4183,\"filters\":[\"LowQual\"],\"mappingQuality\":60,\"samples\":[{\"genotype\":\"1/1\"}],\"variants\":[{\"vid\":\"MT192765.1-15009-G-A\",\"chromosome\":\"MT192765.1\",\"begin\":15009,\"end\":15009,\"refAllele\":\"G\",\"altAllele\":\"A\",\"variantType\":\"SNV\",\"hgvsg\":\"MT192765.1:g.15009G>A\"}]},",
+                "{\"chromosome\":\"MT192765.1\",\"position\":18807,\"refAllele\":\"T\",\"altAlleles\":[\"C\"],\"quality\":136,\"filters\":[\"LowQual\"],\"mappingQuality\":60,\"samples\":[{\"genotype\":\"1/1\"}],\"variants\":[{\"vid\":\"MT192765.1-18807-T-C\",\"chromosome\":\"MT192765.1\",\"begin\":18807,\"end\":18807,\"refAllele\":\"T\",\"altAllele\":\"C\",\"variantType\":\"SNV\",\"hgvsg\":\"MT192765.1:g.18807T>C\"}]},",
+                "{\"chromosome\":\"MT192765.1\",\"position\":23813,\"refAllele\":\"T\",\"altAlleles\":[\"C\"],\"quality\":4.3847,\"filters\":[\"LowQual\"],\"mappingQuality\":60,\"samples\":[{\"genotype\":\"1/1\"}],\"variants\":[{\"vid\":\"MT192765.1-23813-T-C\",\"chromosome\":\"MT192765.1\",\"begin\":23813,\"end\":23813,\"refAllele\":\"T\",\"altAllele\":\"C\",\"variantType\":\"SNV\",\"hgvsg\":\"MT192765.1:g.23813T>C\"}]},",
+                "{\"chromosome\":\"MT192765.1\",\"position\":24103,\"refAllele\":\"A\",\"altAlleles\":[\"G\"],\"quality\":30.4183,\"filters\":[\"LowQual\"],\"mappingQuality\":60,\"samples\":[{\"genotype\":\"1/1\"}],\"variants\":[{\"vid\":\"MT192765.1-24103-A-G\",\"chromosome\":\"MT192765.1\",\"begin\":24103,\"end\":24103,\"refAllele\":\"A\",\"altAllele\":\"G\",\"variantType\":\"SNV\",\"hgvsg\":\"MT192765.1:g.24103A>G\"}]}",
+                "]}"
+            ]
         ],
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-01-09T19:50:58.066341"
+        "timestamp": "2026-01-12T09:27:01.830246"
+    },
+    "sarscov2 - vcf": {
+        "content": [
+            [
+                [
+                    "NIRVANA",
+                    "nirvana",
+                    "Nirvana 3.18.1"
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-01-12T09:27:01.842455"
     },
     "sarscov2 - vcf - stub": {
         "content": [
@@ -111,6 +92,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-01-09T19:44:31.345294"
+        "timestamp": "2026-01-12T09:27:21.144398"
     }
 }
