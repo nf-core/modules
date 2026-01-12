@@ -81,7 +81,7 @@ output:
           type: string
           description: The command used to generate the version of the tool
 
-topics:  
+topics:
   versions:
     - - ${task.process}:
           type: string
@@ -92,16 +92,6 @@ topics:
       - amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+':
           type: string
           description: The command used to generate the version of the tool
-    - - ${task.process}:
-          type: string
-          description: The process the versions were collected from
-      - igblastn:
-          type: string
-          description: The tool name
-      - igblastn -version | grep -o 'igblast[0-9\\. ]\\+' | grep -o '[0-9\\. ]\\+':
-          type: string
-          description: The command used to generate the version of the tool
-
 authors:
   - "@ggabernet"
 maintainers:
