@@ -26,7 +26,7 @@ process OPENMS_IDMASSACCURACY {
     This module is no longer fit for purpose because not part of openms 3.5.0 version anymore
     """
     assert false: deprecation_message
-    
+
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
@@ -52,7 +52,7 @@ process OPENMS_IDMASSACCURACY {
     This module is no longer fit for purpose because not part of openms 3.5.0 version anymore
     """
     assert false: deprecation_message
-    
+
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
