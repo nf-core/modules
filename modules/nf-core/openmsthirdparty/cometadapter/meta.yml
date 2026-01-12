@@ -20,11 +20,14 @@ tools:
       description: "Annotates MS/MS spectra using Comet."
       homepage: "https://openms.de"
       documentation: "https://openms.readthedocs.io/en/latest/index.html"
+      identifier: ""
   - Comet:
-      description: "Comet is an open source tandem mass spectrometry (MS/MS) sequence database search tool."
+      description: "Comet is an open source tandem mass spectrometry (MS/MS) sequence
+        database search tool."
       homepage: "http://comet-ms.sourceforge.net/"
       documentation: "http://comet-ms.sourceforge.net/"
 
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -82,9 +85,10 @@ output:
       - Comet:
           type: string
           description: The name of the tool
-      - "comet 2>&1 | grep -E 'Comet version' | sed 's/Comet version //g' | tr -d '\"'":
+      - comet 2>&1 | sed -n 's/.*Comet version "\(.*\)".*/\1/p':
           type: eval
           description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -102,9 +106,10 @@ topics:
       - Comet:
           type: string
           description: The name of the tool
-      - "comet 2>&1 | grep -E 'Comet version' | sed 's/Comet version //g' | tr -d '\"'":
+      - comet 2>&1 | sed -n 's/.*Comet version "\(.*\)".*/\1/p':
           type: eval
           description: The expression to obtain the version of the tool
+
 authors:
   - "@jonasscheid"
 maintainers:
