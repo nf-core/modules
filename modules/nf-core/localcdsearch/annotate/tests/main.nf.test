@@ -35,7 +35,8 @@ nextflow_process {
 
         then {
             assert process.success
-            assertAll(
+            assertAll (
+                { assert process.success },
                 { assert snapshot(
                     process.out.result,
                     process.out.findAll { key, val -> key.startsWith("versions")}
@@ -60,8 +61,8 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
+                { assert process.success },
                 { assert snapshot(
                     process.out.result,
                     process.out.findAll { key, val -> key.startsWith("versions")}
@@ -84,8 +85,8 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
+                { assert process.success },
                 { assert snapshot(
                     process.out.result,
                     process.out.annot_sites,
@@ -111,8 +112,8 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
+                { assert process.success },
                 { assert snapshot(
                     process.out.result,
                     process.out.annot_sites,
