@@ -4,7 +4,7 @@ process LOCALCDSEARCH_ANNOTATE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'biocontainers/local-cd-search:0.3.0--pyhdfd78af_0' :
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e1/e1ed921c933d8eeeb0db6d72ece09ec25edab9ad441c84b070acff1592af2d54/data' :
         'biocontainers/local-cd-search:0.3.0--pyhdfd78af_0' }"
 
     input:
