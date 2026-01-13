@@ -251,13 +251,13 @@ if (as.logical(opt\$apply_voom)) {
      normalized_counts <- vobjDream\$E
     if (!is.null(opt\$round_digits)) {
         normalized_counts <- apply(normalized_counts, 2, function(x) round(x, opt\$round_digits))
-        normalized_counts_with_genes <- data.frame(gene_id = rownames(normalized_counts), normalized_counts, check.names = FALSE, row.names = NULL)
-        write.table(normalized_counts_with_genes,
-            file = paste(opt\$output_prefix, "normalised_counts.tsv", sep = '.'),
-            sep = "	",
-            quote = FALSE,
-            row.names = FALSE)
-        }
+    }
+    normalized_counts_with_genes <- data.frame(gene_id = rownames(normalized_counts), normalized_counts, check.names = FALSE, row.names = NULL)
+    write.table(normalized_counts_with_genes,
+        file = paste(opt\$output_prefix, "normalised_counts.tsv", sep = '.'),
+        sep = "	",
+        quote = FALSE,
+        row.names = FALSE)
 } else {
     # Assume countMatrix roughly follows a normal distribution
     vobjDream <- countMatrix

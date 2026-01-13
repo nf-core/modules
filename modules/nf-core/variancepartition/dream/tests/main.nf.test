@@ -47,7 +47,6 @@ nextflow_process {
     }
 
     test("RNAseq - Voom - Feature Counts - formula + comparison contrast string - interaction") {
-        tag "voom_dream"
         when {
             params {
                 module_args = "--round_digits 2 --apply_voom true"
