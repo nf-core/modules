@@ -85,7 +85,7 @@ output:
       - Comet:
           type: string
           description: The name of the tool
-      - comet 2>&1 | sed -n 's/.*Comet version "\(.*\)".*/\1/p':
+      - comet 2>&1 | sed -n 's/.*Comet version " *\(.*\)".*/\1/p':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -106,7 +106,7 @@ topics:
       - Comet:
           type: string
           description: The name of the tool
-      - comet 2>&1 | sed -n 's/.*Comet version "\(.*\)".*/\1/p':
+      - comet 2>&1 | sed -n 's/.*Comet version " *\(.*\)".*/\1/p':
           type: eval
           description: The expression to obtain the version of the tool
 
