@@ -28,9 +28,11 @@ input:
         type: file
         description: A BAM file for the treatment condition
         pattern: "*.{bam}"
+        ontologies:
+         - edam: "http://edamontology.org/format_2572"
+
 
         # Control BAM
-        ontologies: []
   - - meta_c:
         type: map
         description: |
@@ -40,9 +42,11 @@ input:
         type: file
         description: A BAM file for the control condition
         pattern: "*.{bam}"
+        ontologies:
+        - edam: "http://edamontology.org/format_2572"
+
 
         # Genome GTF
-        ontologies: []
   - - meta_ggtf:
         type: map
         description: |
@@ -52,9 +56,10 @@ input:
         type: file
         description: A GTF file for alignment to the genome
         pattern: "*.{gtf}"
+        ontologies:
+        - edam: "http://edamontology.org/format_2306"
 
         # TE GTF
-        ontologies: []
   - - meta_tegtf:
         type: map
         description: |
@@ -65,8 +70,8 @@ input:
         type: file
         description: A curated GTF file for alignment to transposable elements
         pattern: "*.{gtf}"
-
-        ontologies: []
+        ontologies:
+        - edam: "http://edamontology.org/format_2306"
 output:
   countTable:
     - - meta_t:
@@ -78,7 +83,6 @@ output:
           type: file
           description: Counts table of transposable element families
           pattern: "*.cntTable"
-
           ontologies: []
   log2fc:
     - - meta_t:
