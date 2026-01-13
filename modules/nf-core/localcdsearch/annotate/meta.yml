@@ -1,0 +1,89 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "localcdsearch_annotate"
+description: A command-line tool for local protein domain annotation using NCBI's Conserved Domain Database (CDD)
+keywords:
+  - cdd
+  - rpsblast
+  - rpsbproc
+  - protein
+  - domain
+  - annotation
+tools:
+  - "localcdsearch":
+      description: "Protein annotation using local PSSM databases from CDD."
+      homepage: "https://github.com/apcamargo/local-cd-search"
+      documentation: "https://github.com/apcamargo/local-cd-search"
+      tool_dev_url: "https://github.com/apcamargo/local-cd-search"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Input fasta file containing protein queries sequences
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+  - db:
+      type: directory
+      description: Directory containing the metadata and databse directories
+      pattern: "*"
+  - sites:
+      type: boolean
+      description: When true an extra tsv output file is generated
+
+output:
+  result:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_results.tsv":
+          type: file
+          description: tab-separated file with hits filtered by CDD's curated bit-score thresholds
+          pattern: "*_results.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  annot_sites:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_sites.tsv":
+          type: file
+          description: If --sites-output is specified, an additional tab-separated file is created with functional site annotations
+          pattern: "*_sites.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_localcdsearch:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "local-cd-search":
+          type: string
+          description: The name of the tool
+      - "echo ${VERSION}":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - local-cd-search:
+          type: string
+          description: The name of the tool
+      - echo ${VERSION}:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@Ales-ibt"
+maintainers:
+  - "@Ales-ibt"
