@@ -12,7 +12,7 @@ process FGBIO_FASTQTOBAM {
 
     output:
     tuple val(meta), path("*.{bam,cram}"), emit: bam
-    tuple val("${task.process}"), val('fgbio'), eval("echo $(fgbio --version 2>&1 | tr -d '[:cntrl:]' ) | sed -e 's/^.*Version: //;s/\\[.*$//'"), topic: versions, emit: versions_fgbio
+    tuple val("${task.process}"), val('fgbio'), eval('fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\\[.*$//"'), topic: versions, emit: versions_fgbio
 
     when:
     task.ext.when == null || task.ext.when

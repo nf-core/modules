@@ -17,7 +17,7 @@ process FGBIO_COLLECTDUPLEXSEQMETRICS {
     tuple val(meta), path("**.umi_counts.txt")          , emit: umi_counts
     tuple val(meta), path("**.duplex_qc.pdf")           , emit: duplex_qc
     tuple val(meta), path("**.duplex_umi_counts.txt")   , emit: duplex_umi_counts, optional: true
-    tuple val("${task.process}"), val('fgbio')  , eval("echo $(fgbio --version 2>&1 | tr -d '[:cntrl:]' ) | sed -e 's/^.*Version: //;s/\\[.*$//'"), topic: versions, emit: versions_fgbio
+    tuple val("${task.process}"), val('fgbio')  , eval('fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\\[.*$//"'), topic: versions, emit: versions_fgbio
     tuple val("${task.process}"), val('ggplot2'), eval("Rscript -e \"library(ggplot2); cat(as.character(packageVersion('ggplot2')))\""), topic: versions, emit: versions_ggplot2
 
     when:
@@ -50,9 +50,7 @@ process FGBIO_COLLECTDUPLEXSEQMETRICS {
         --output ${prefix} \\
         $intervals \\
         $args
-
     """
-
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"

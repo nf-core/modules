@@ -40,7 +40,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}.bam:
+      - "*.bam":
           type: file
           description: consensus BAM file
           pattern: "*.bam"
@@ -52,9 +52,10 @@ output:
       - fgbio:
           type: string
           description: The tool name
-      - "echo $(fgbio --version 2>&1 | tr -d '[:cntrl:]' ) | sed -e 's/^.*Version: //;s/\\[.*$//'":
-          type: string
-          description: The command used to generate the version of the tool
+      - 'fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\[.*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -63,9 +64,9 @@ topics:
       - fgbio:
           type: string
           description: The tool name
-      - "echo $(fgbio --version 2>&1 | tr -d '[:cntrl:]' ) | sed -e 's/^.*Version: //;s/\\[.*$//'":
-          type: string
-          description: The command used to generate the version of the tool
+      - 'fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\[.*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@lescai"
 maintainers:
