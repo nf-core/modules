@@ -32,6 +32,9 @@ input:
         pattern: "*.{fa,fasta,faa,fna}"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
+  - input_type:
+      type: string
+      description: Input type specifying the format of input sequences (from_nucleotides, from_genes, or from_proteins)
 output:
   predictions_combined:
     - - meta:
@@ -87,7 +90,8 @@ output:
             e.g. `[ id:'sample1' ]`
       - traitar_out/annotation/pfam/:
           type: directory
-          description: PFAM annotation directory containing filtered_best.dat, domtblout.dat, summary.dat
+          description: PFAM annotation directory containing filtered_best.dat, domtblout.dat,
+            summary.dat
   gene_prediction:
     - - meta:
           type: map
