@@ -31,7 +31,7 @@ workflow FASTQ_QC_STATS {
         ch_fastqc_zip  = FASTQC.out.zip
     }
 
-    if (!skip_seqfu_check){
+    if (!skip_seqfu_check) {
         SEQFU_CHECK( ch_reads )
         ch_seqfu_check = SEQFU_CHECK.out.check
         ch_versions    = ch_versions.mix(SEQFU_CHECK.out.versions.first())
