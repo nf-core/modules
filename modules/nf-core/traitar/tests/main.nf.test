@@ -23,6 +23,7 @@ nextflow_process {
                     [ id:'test_sample' ],
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true),
                 ]
+                input[1] = 'from_nucleotides'
                 """
             }
         }
@@ -48,6 +49,7 @@ nextflow_process {
                     [ id:'test_sample' ],
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: false),
                 ]
+                input[1] = 'from_nucleotides'
                 """
             }
         }
