@@ -25,9 +25,6 @@ process NIRVANA {
     def cache_command = cache ? "-c ${cache}/${cache_prefix}" : ""
     def sa_command = supplementary_annotations ? "--sd ${supplementary_annotations}" : ""
     """
-
-    ln -sf /opt/conda/lib/dotnet/dotnet /opt/conda/bin/dotnet || true
-
     Nirvana \\
         -i ${vcf} \\
         -r ${reference} \\
