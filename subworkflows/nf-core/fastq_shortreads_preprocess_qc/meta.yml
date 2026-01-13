@@ -55,19 +55,179 @@ input:
         List of FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
         Structure: [ val(meta), [ path(reads) ] ]
       pattern: "*.fastq.gz"
+  - skip_fastqc:
+      type: boolean
+      description: |
+        Skip FastQC quality control step
+  - skip_seqfu_check:
+      type: boolean
+      description: |
+        Skip SeqFu check step
+  - skip_seqfu_stats:
+      type: boolean
+      description: |
+        Skip SeqFu statistics step
+  - skip_seqkit_stats:
+      type: boolean
+      description: |
+        Skip SeqKit statistics step
+  - skip_seqtk_comp:
+      type: boolean
+      description: |
+        Skip SeqTk composition analysis step
+  - skip_seqkit_sana_pair:
+      type: boolean
+      description: |
+        Skip SeqKit sanitize and pair step
+  - skip_seqkit_seq:
+      type: boolean
+      description: |
+        Skip SeqKit sequence processing step
+  - skip_seqkit_replace:
+      type: boolean
+      description: |
+        Skip SeqKit replace step
+  - skip_seqkit_rmdup:
+      type: boolean
+      description: |
+        Skip SeqKit remove duplicates step
+  - skip_umitools_extract:
+      type: boolean
+      description: |
+        Skip UMI-tools extract barcoding step
+  - umi_discard_read:
+      type: integer
+      description: |
+        Discard R1 or R2 after UMI extraction (0 = keep both, 1 = discard R1, 2 = discard R2)
+  - skip_prinseqplusplus:
+      type: boolean
+      description: |
+        Skip PRINSEQ++ complexity filtering step
+  - skip_bbmap_clumpify:
+      type: boolean
+      description: |
+        Skip BBMap Clumpify deduplication step
+  - skip_decontamination:
+      type: boolean
+      description: |
+        Skip host decontamination step
+  - ch_fasta:
+      type: file
+      description: |
+        Reference genome FASTA file for decontamination (optional)
+        Structure: [ val(meta), [ path(fasta) ] ]
+      pattern: "*.{fasta,fa,fna}"
+  - ch_reference:
+      type: directory
+      description: |
+        Pre-built reference index directory for decontamination (optional)
+        Structure: [ val(reference_name), path(reference_dir) ]
+  - index_name:
+      type: string
+      description: |
+        Name for the decontamination index (optional)
+  - decontaminator:
+      type: string
+      description: |
+        Decontamination tool to use ('hostile' or 'deacon')
+  - skip_cat_fastq:
+      type: boolean
+      description: |
+        Skip final FASTQ concatenation step
+
 output:
-  - reads::
+  - reads:
       type: file
       description: |
         Channel containing processed short reads
         Structure: [ val(meta), path(reads) ]
       pattern: "*.fastq.gz"
+  - pre_stats_fastqc_html:
+      type: file
+      description: |
+        FastQC HTML reports for pre-processing reads
+        Structure: [ val(meta), path(html) ]
+      pattern: "*.html"
+  - pre_stats_fastqc_zip:
+      type: file
+      description: |
+        FastQC ZIP archives for pre-processing reads
+        Structure: [ val(meta), path(zip) ]
+      pattern: "*.zip"
+  - pre_stats_seqfu_check:
+      type: file
+      description: |
+        SeqFu check results for pre-processing reads
+        Structure: [ val(meta), path(check) ]
+  - pre_stats_seqfu_stats:
+      type: file
+      description: |
+        SeqFu statistics for pre-processing reads
+        Structure: [ val(meta), path(stats) ]
+  - pre_stats_seqfu_multiqc:
+      type: file
+      description: |
+        SeqFu MultiQC-compatible stats for pre-processing reads
+        Structure: [ val(meta), path(multiqc) ]
+  - pre_stats_seqkit_stats:
+      type: file
+      description: |
+        SeqKit statistics for pre-processing reads
+        Structure: [ val(meta), path(stats) ]
+  - pre_stats_seqtk_stats:
+      type: file
+      description: |
+        SeqTk composition statistics for pre-processing reads
+        Structure: [ val(meta), path(stats) ]
+  - post_stats_fastqc_html:
+      type: file
+      description: |
+        FastQC HTML reports for post-processing reads
+        Structure: [ val(meta), path(html) ]
+      pattern: "*.html"
+  - post_stats_fastqc_zip:
+      type: file
+      description: |
+        FastQC ZIP archives for post-processing reads
+        Structure: [ val(meta), path(zip) ]
+      pattern: "*.zip"
+  - post_stats_seqfu_check:
+      type: file
+      description: |
+        SeqFu check results for post-processing reads
+        Structure: [ val(meta), path(check) ]
+  - post_stats_seqfu_stats:
+      type: file
+      description: |
+        SeqFu statistics for post-processing reads
+        Structure: [ val(meta), path(stats) ]
+  - post_stats_seqfu_multiqc:
+      type: file
+      description: |
+        SeqFu MultiQC-compatible stats for post-processing reads
+        Structure: [ val(meta), path(multiqc) ]
+  - post_stats_seqkit_stats:
+      type: file
+      description: |
+        SeqKit statistics for post-processing reads
+        Structure: [ val(meta), path(stats) ]
+  - post_stats_seqtk_stats:
+      type: file
+      description: |
+        SeqTk composition statistics for post-processing reads
+        Structure: [ val(meta), path(stats) ]
   - versions:
       type: file
       description: |
         File containing software versions
         Structure: [ path(versions.yml) ]
       pattern: "versions.yml"
+  - multiqc_files:
+      type: file
+      description: |
+        MultiQC compatible files for aggregated reporting
+        Structure: [ path(files) ]
+
 authors:
   - "@vagkaratzas"
 maintainers:
