@@ -19,11 +19,13 @@ nextflow_process {
                 input[0] = [
                     [ id:'ctrl_bam' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    [],
                 ]
 
 		input[1] = [
                     [ id:'test_bam' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
+                    [],
                 ]
 		input[2] = [
                     [ id:'genome_gtf' ],
@@ -60,12 +62,14 @@ nextflow_process {
                 input[0] = [
                     [ id:'ctrl_bam' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    [],
                 ]
 
                 input[1] = [
                     [ id:'test_bam' ],
                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam', checkIfExists: true),]
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam', checkIfExists: true),],
+                    []
                 ]
                 input[2] = [
                     [ id:'genome_gtf' ],
@@ -105,11 +109,13 @@ nextflow_process {
 		input[0] = [
                     [ id:'ctrl_bam' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    [],
                 ]
 
                 input[1] = [
                     [ id:'test_bam' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
+                    [],
                 ]
                 input[2] = [
                     [ id:'genome_gtf' ],
