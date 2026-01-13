@@ -12,6 +12,7 @@ process LAST_LASTDB {
 
     output:
     tuple val(meta), path("lastdb"), emit: index
+    // last-dotplot has no --version option so let's use lastal from the same suite
     tuple val("${task.process}"), val('last'), eval("lastal --version | sed 's/lastal //'"), emit: versions_last, topic: versions
 
     when:

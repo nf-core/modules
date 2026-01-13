@@ -94,7 +94,6 @@ process LAST_MAFCONVERT {
                 gzip --no-name > ${prefix}.${format}.gz
             ;;
     esac
-
     """
 
     stub:
