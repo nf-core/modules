@@ -19,40 +19,58 @@ include { CAT_FASTQ                          } from '../../../modules/nf-core/ca
 workflow FASTQ_SHORTREADS_PREPROCESS_QC {
 
     take:
-    ch_reads               // channel: [ val(meta), [ fastq ] ]
+    ch_reads                  // channel: [ val(meta), [ fastq ] ]
     // statistics
-    skip_fastqc            // boolean
-    skip_seqfu_check       // boolean
-    skip_seqfu_stats       // boolean
-    skip_seqkit_stats      // boolean
-    skip_seqtk_comp        // boolean
+    skip_fastqc               // boolean
+    skip_seqfu_check          // boolean
+    skip_seqfu_stats          // boolean
+    skip_seqkit_stats         // boolean
+    skip_seqtk_comp           // boolean
     // preprocessing
-    skip_seqkit_sana_pair  // boolean
-    skip_seqkit_seq        // boolean
-    skip_seqkit_replace    // boolean
-    skip_seqkit_rmdup      // boolean
+    skip_seqkit_sana_pair     // boolean
+    skip_seqkit_seq           // boolean
+    skip_seqkit_replace       // boolean
+    skip_seqkit_rmdup         // boolean
     // barcoding
-    skip_umitools_extract  // boolean
-    umi_discard_read       // integer: 0, 1 or 2
+    skip_umitools_extract     // boolean
+    umi_discard_read          // integer: 0, 1 or 2
     // adapter removal and merging
-    // skip_adapterremoval    // boolean
+    // skip_adapterremoval       // boolean
     // complexity filtering
-    skip_prinseqplusplus   // boolean
+    skip_complexity_filtering // boolean
     // deduplication
-    skip_bbmap_clumpify    // boolean
+    skip_bbmap_clumpify       // boolean
     // host decontamination
-    skip_decontamination    // boolean
-    ch_fasta                // channel: [ val(meta), [ fasta ] ] (optional)
-    ch_reference            // channel: [ val(reference_name), path(reference_dir) ] (optional)
-    index_name              // val (optional)
-    decontaminator          // string (enum): 'hostile' or 'deacon'
+    skip_decontamination      // boolean
+    ch_fasta                  // channel: [ val(meta), [ fasta ] ] (optional)
+    ch_reference              // channel: [ val(reference_name), path(reference_dir) ] (optional)
+    index_name                // val (optional)
+    decontaminator            // string (enum): 'hostile' or 'deacon'
     // final concatenation
-    skip_cat_fastq          // boolean
+    skip_cat_fastq            // boolean
 
     main:
 
-    ch_versions      = channel.empty()
-    ch_multiqc_files = channel.empty()
+    ch_versions                = channel.empty()
+    ch_multiqc_files           = channel.empty()
+    ch_pre_stats_fastqc_html   = channel.empty()
+    ch_pre_stats_fastqc_zip    = channel.empty()
+    ch_pre_stats_seqfu_check   = channel.empty()
+    ch_pre_stats_seqfu_stats   = channel.empty()
+    ch_pre_stats_seqkit_stats  = channel.empty()
+    ch_pre_stats_seqtk_stats   = channel.empty()
+    ch_post_stats_fastqc_html  = channel.empty()
+    ch_post_stats_fastqc_zip   = channel.empty()
+    ch_post_stats_seqfu_check  = channel.empty()
+    ch_post_stats_seqfu_stats  = channel.empty()
+    ch_post_stats_seqkit_stats = channel.empty()
+    ch_post_stats_seqtk_stats  = channel.empty()
+    ch_umi_log                 = channel.empty()
+    ch_prinseq_log             = channel.empty()
+    ch_hostile_reference       = channel.empty()
+    ch_hostile_json            = channel.empty()
+    ch_deacon_index            = channel.empty()
+    ch_deacon_summary          = channel.empty()
 
     // pre-statistics
     PRE_STATS (
@@ -63,8 +81,14 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
         skip_seqkit_stats,
         skip_seqtk_comp
     )
-    ch_multiqc_files = ch_multiqc_files.mix(PRE_STATS.out.seqfu_multiqc)
-    ch_versions      = ch_versions.mix(PRE_STATS.out.versions)
+    ch_pre_stats_fastqc_html  = PRE_STATS.out.fastqc_html
+    ch_pre_stats_fastqc_zip   = PRE_STATS.out.fastqc_zip
+    ch_pre_stats_seqfu_check  = PRE_STATS.out.seqfu_check
+    ch_pre_stats_seqfu_stats  = PRE_STATS.out.seqfu_stats
+    ch_pre_stats_seqkit_stats = PRE_STATS.out.seqkit_stats
+    ch_pre_stats_seqtk_stats  = PRE_STATS.out.seqtk_stats
+    ch_multiqc_files          = ch_multiqc_files.mix(PRE_STATS.out.seqfu_multiqc)
+    ch_versions               = ch_versions.mix(PRE_STATS.out.versions)
 
     // preprocessing
     FASTQ_PREPROCESS_SEQKIT (
@@ -74,29 +98,25 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
         skip_seqkit_replace,
         skip_seqkit_rmdup
     )
+    ch_reads    = FASTQ_PREPROCESS_SEQKIT.out.reads
     ch_versions = ch_versions.mix(FASTQ_PREPROCESS_SEQKIT.out.versions)
 
-    ch_reads = FASTQ_PREPROCESS_SEQKIT.out.reads
-
     // barcoding
-    umi_reads = ch_reads
-    umi_log = channel.empty()
     if (!skip_umitools_extract) {
         UMITOOLS_EXTRACT( ch_reads )
-        umi_reads = UMITOOLS_EXTRACT.out.reads
-        umi_log = UMITOOLS_EXTRACT.out.log
+        ch_umi_reads = UMITOOLS_EXTRACT.out.reads
+        ch_umi_log = UMITOOLS_EXTRACT.out.log
         ch_versions = ch_versions.mix(UMITOOLS_EXTRACT.out.versions.first())
 
         // Discard R1 / R2 if required
         if (umi_discard_read in [1, 2]) {
-            UMITOOLS_EXTRACT.out.reads
+            ch_umi_reads = UMITOOLS_EXTRACT.out.reads
                 .map { meta, reads ->
                     meta.single_end ? [meta, reads] : [meta + ['single_end': true], reads[umi_discard_read % 2]]
                 }
-                .set { umi_reads }
         }
 
-        ch_reads = umi_reads
+        ch_reads = ch_umi_reads
     }
 
     // adapter removal and merging
@@ -106,11 +126,12 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
     // }
 
     // complexity filtering
-    // TODO
-    // if (!skip_complexity_filtering) {
-    //     PRINSEQPLUSPLUS( ... )
-    //     ch_versions = ch_versions.mix(PRINSEQPLUSPLUS.out.versions.first())
-    // }
+    if (!skip_complexity_filtering) {
+        PRINSEQPLUSPLUS( ch_reads )
+        ch_reads       = PRINSEQPLUSPLUS.out.good_reads
+        ch_prinseq_log = PRINSEQPLUSPLUS.out.log
+        ch_versions    = ch_versions.mix(PRINSEQPLUSPLUS.out.versions.first())
+    }
 
     // deduplication
     // TODO
@@ -128,9 +149,12 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
             index_name,
             decontaminator
         )
-        ch_versions = ch_versions.mix(FASTQ_DECONTAMINATE_DEACON_HOSTILE.out.versions)
-
-        ch_reads = FASTQ_DECONTAMINATE_DEACON_HOSTILE.out.fastq_filtered
+        ch_reads             = FASTQ_DECONTAMINATE_DEACON_HOSTILE.out.fastq_filtered
+        ch_hostile_reference = FASTQ_DECONTAMINATE_DEACON_HOSTILE.out.reference
+        ch_hostile_json      = FASTQ_DECONTAMINATE_DEACON_HOSTILE.out.json
+        ch_deacon_index      = FASTQ_DECONTAMINATE_DEACON_HOSTILE.out.index
+        ch_deacon_summary    = FASTQ_DECONTAMINATE_DEACON_HOSTILE.out.summary
+        ch_versions          = ch_versions.mix(FASTQ_DECONTAMINATE_DEACON_HOSTILE.out.versions)
     }
 
 
@@ -150,32 +174,46 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
         skip_seqkit_stats,
         skip_seqtk_comp
     )
-    ch_multiqc_files = ch_multiqc_files.mix(POST_STATS.out.seqfu_multiqc)
-    ch_versions      = ch_versions.mix(POST_STATS.out.versions)
+    ch_post_stats_fastqc_html  = POST_STATS.out.fastqc_html
+    ch_post_stats_fastqc_zip   = POST_STATS.out.fastqc_zip
+    ch_post_stats_seqfu_check  = POST_STATS.out.seqfu_check
+    ch_post_stats_seqfu_stats  = POST_STATS.out.seqfu_stats
+    ch_post_stats_seqkit_stats = POST_STATS.out.seqkit_stats
+    ch_post_stats_seqtk_stats  = POST_STATS.out.seqtk_stats
+    ch_multiqc_files           = ch_multiqc_files.mix(POST_STATS.out.seqfu_multiqc)
+    ch_versions                = ch_versions.mix(POST_STATS.out.versions)
 
     emit:
-    reads         = ch_reads          // channel: [ val(meta), [ fastq ] ]
+    reads = ch_reads // channel: [ val(meta), [ fastq ] ]
 
     // statistics
-    pre_stats_fastqc_html    = PRE_STATS.out.fastqc_html
-    pre_stats_fastqc_zip     = PRE_STATS.out.fastqc_zip
-    pre_stats_seqfu_check    = PRE_STATS.out.seqfu_check
-    pre_stats_seqfu_stats    = PRE_STATS.out.seqfu_stats
-    pre_stats_seqkit_stats   = PRE_STATS.out.seqkit_stats
-    pre_stats_seqtk_stats    = PRE_STATS.out.seqtk_stats
-    post_stats_fastqc_html   = POST_STATS.out.fastqc_html
-    post_stats_fastqc_zip    = POST_STATS.out.fastqc_zip
-    post_stats_seqfu_check   = POST_STATS.out.seqfu_check
-    post_stats_seqfu_stats   = POST_STATS.out.seqfu_stats
-    post_stats_seqkit_stats  = POST_STATS.out.seqkit_stats
-    post_stats_seqtk_stats   = POST_STATS.out.seqtk_stats
+    pre_stats_fastqc_html    = ch_pre_stats_fastqc_html
+    pre_stats_fastqc_zip     = ch_pre_stats_fastqc_zip
+    pre_stats_seqfu_check    = ch_pre_stats_seqfu_check
+    pre_stats_seqfu_stats    = ch_pre_stats_seqfu_stats
+    pre_stats_seqkit_stats   = ch_pre_stats_seqkit_stats
+    pre_stats_seqtk_stats    = ch_pre_stats_seqtk_stats
+    post_stats_fastqc_html   = ch_post_stats_fastqc_html
+    post_stats_fastqc_zip    = ch_post_stats_fastqc_zip
+    post_stats_seqfu_check   = ch_post_stats_seqfu_check
+    post_stats_seqfu_stats   = ch_post_stats_seqfu_stats
+    post_stats_seqkit_stats  = ch_post_stats_seqkit_stats
+    post_stats_seqtk_stats   = ch_post_stats_seqtk_stats
+
+    // barcoding
+    umi_log = ch_umi_log
+
+    // adapter removal and merging
+
+    // complexity filtering
+    prinseq_log = ch_prinseq_log
 
     // host decontamination
-    hostile_reference = FASTQ_DECONTAMINATE_DEACON_HOSTILE.out.reference
-    hostile_json      = FASTQ_DECONTAMINATE_DEACON_HOSTILE.out.json
-    deacon_index      = FASTQ_DECONTAMINATE_DEACON_HOSTILE.out.index
-    deacon_summary    = FASTQ_DECONTAMINATE_DEACON_HOSTILE.out.summary
+    hostile_reference = ch_hostile_reference
+    hostile_json      = ch_hostile_json
+    deacon_index      = ch_deacon_index
+    deacon_summary    = ch_deacon_summary
 
-    versions      = ch_versions       // channel: [ versions.yml ]
+    versions      = ch_versions      // channel: [ versions.yml ]
     multiqc_files = ch_multiqc_files
 }
