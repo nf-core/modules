@@ -1,44 +1,67 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fastq_shortreads_preprocess_qc"
-## TODO nf-core: Add a description of the subworkflow and list keywords
-description: Sort SAM/BAM/CRAM file
+description: |
+  Quality check and preprocessing subworkflow of Illumina short reads
+  that can do; quality check of input reads and generate statistics,
+  preprocess and validate reads, barcoding, remove adapters and merge reads,
+  filter complexity, deduplicate reads, remove host contamination,
+  concatenate reads and generate statistics for post-processing reads.
 keywords:
-  - sort
-  - bam
-  - sam
-  - cram
-## TODO nf-core: Add a list of the modules and/or subworkflows used in the subworkflow
+  - fastq
+  - illumina
+  - short
+  - reads
+  - qc
+  - stats
+  - preprocess
+  - barcoding
+  - adapters
+  - merge
+  - complexity
+  - deduplication
+  - host
+  - decontamination
 components:
-  - samtools/sort
-  - samtools/index
-## TODO nf-core: List all of the channels used as input with a description and their structure
+  - fastq_qc_stats
+  - fastqc
+  - seqfu/check
+  - seqfu/stats
+  - seqkit/stats
+  - seqtk/comp
+  - fastq_preprocess_seqkit
+  - fastq_sanitise_seqkit
+  - seqkit/sana
+  - seqkit/pair
+  - seqkit/seq
+  - seqkit/replace
+  - seqkit/rmdup
+  - umitools/extract
+  - prinseqplusplus
+  - bbmap/clumpify
+  - fastq_decontaminate_deacon_hostile
+  - fastq_index_filter_deacon
+  - fastq_fetch_clean_hostile
+  - hostile/fetch
+  - hostile/clean
+  - bowtie2/build
+  - deacon/filter
+  - deacon/index
+  - cat/fastq
+
 input:
-  - ch_bam:
+  - ch_reads:
       type: file
       description: |
-        The input channel containing the BAM/CRAM/SAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.{bam/cram/sam}"
-## TODO nf-core: List all of the channels used as output with a descriptions and their structure
+        List of FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
+        Structure: [ val(meta), [ path(reads) ] ]
+      pattern: "*.fastq.gz"
 output:
-  - bam:
+  - reads::
       type: file
       description: |
-        Channel containing BAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.bam"
-  - bai:
-      type: file
-      description: |
-        Channel containing indexed BAM (BAI) files
-        Structure: [ val(meta), path(bai) ]
-      pattern: "*.bai"
-  - csi:
-      type: file
-      description: |
-        Channel containing CSI files
-        Structure: [ val(meta), path(csi) ]
-      pattern: "*.csi"
+        Channel containing processed short reads
+        Structure: [ val(meta), path(reads) ]
+      pattern: "*.fastq.gz"
   - versions:
       type: file
       description: |
