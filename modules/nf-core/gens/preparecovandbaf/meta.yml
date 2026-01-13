@@ -1,15 +1,12 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-# # TODO nf-core: Add a description of the module and list keywords
-name: "gens/preparecovandbaf"
-description: write your description here
+name: "preparegensinputdata"
+description: Prepare coverage and BAF data for visualization in Gens
 keywords:
-  - sort
-  - example
+  - gens
+  - preprocessing
   - genomics
 tools:
-  ## TODO nf-core: Add a description and other details for the software below
   - "gens":
-      description: ""
+      description: "Scripts for preparing input data to Gens"
       homepage: "https://github.com/SMD-Bioinformatics-Lund/Prepare-Gens-input-data"
       documentation: "https://github.com/SMD-Bioinformatics-Lund/Prepare-Gens-input-data/README.md"
       tool_dev_url: "https://github.com/SMD-Bioinformatics-Lund/Prepare-Gens-input-data"
@@ -17,36 +14,65 @@ tools:
       identifier: ""
 
 input:
-  ### TODO nf-core: Add a description of all of the variables used as input
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - bam:
+    - read_counts:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-        ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
-          - edam: "http://edamontology.org/format_3462" # SAM
+        description: Binned coverage calculations from GATK
+        pattern: "*.{tsv}"
+    - gvcf:
+        type: file
+        description: GVCF
+        pattern: "*.vcf.gz"
+    - gvcf_tbi:
+        type: file
+        description: GVCF tabix index
+        pattern: "*.vcf.gz.tbi"
+  - - baf_positions:
+        type: file
+        description: Sites to sample for BAF calculations
+        pattern: "*.{tsv,tsv.gz}"
 
 output:
-  ### TODO nf-core: Add a description of all of the variables used as output
-  - bam:
+  - cov_gz:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-      - "*.bam":
+      - "*.cov.bed.gz":
           type: file
-          description: Sorted BAM/CRAM/SAM file
-          pattern: "*.{bam,cram,sam}"
-          ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
-            - edam: "http://edamontology.org/format_2573" # CRAM
-            - edam: "http://edamontology.org/format_3462" # SAM
+          description: BGzipped bed file with coverage information
+          pattern: "*.{bed.gz}"
+  - cov_tbi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.cov.bed.gz.tbi":
+          type: file
+          description: Tabix index for cov_gz
+          pattern: "*.{bed.gz.tbi}"
+  - baf_gz:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.cov.bed.gz":
+          type: file
+          description: BGzipped bed file with coverage information
+          pattern: "*.{bed.gz}"
+  - baf_tbi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.cov.bed.gz.tbi":
+          type: file
+          description: Tabix index for baf_gz
+          pattern: "*.{bed.gz.tbi}"
   - versions:
       - "versions.yml":
           type: file

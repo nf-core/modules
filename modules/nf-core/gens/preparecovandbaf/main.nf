@@ -7,7 +7,7 @@ process PREPAREGENSINPUTDATA {
         'community.wave.seqera.io/library/tabix_pip_gens-input-data-tools:acc3fd1b79233d2d' }"
 
     input:
-    tuple val(meta), path(read_counts_gz), path(gvcf), path(gvcf_tbi)
+    tuple val(meta), path(read_counts), path(gvcf), path(gvcf_tbi)
     path baf_positions
 
     output:
@@ -32,7 +32,7 @@ process PREPAREGENSINPUTDATA {
     def python_base = "/opt/conda/lib/python3.14/site-packages/gens_input_data_tools"
     """
     python3 $python_base/generate_cov_and_baf.py \\
-        --coverage $read_counts_gz \\
+        --coverage read_counts \\
         --gvcf $gvcf \\
         --label $prefix \\
         --baf_positions $baf_positions \\
