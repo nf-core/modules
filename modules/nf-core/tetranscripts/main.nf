@@ -16,6 +16,8 @@ process TETRANSCRIPTS {
     output:
     tuple val(meta_t), path("*.cntTable"), emit: countTable
     tuple val(meta_t), path("*.R"), emit: log2fc
+    tuple val(meta_t), path("*_analysis.txt"), emit: analysis, optional: true
+    tuple val(meta_t), path("*_gene_TE.txt"), emit: sigdiff, optional: true
     tuple val("${task.process}"), val('tetranscripts'), eval("tetranscripts version | sed '1!d;s/.* //'"), emit: versions_tetranscripts, topic: versions
 
     when:
@@ -46,6 +48,8 @@ process TETRANSCRIPTS {
     
     touch ${prefix}.R
     touch ${prefix}.cntTable
+    touch ${prefix}_gene_TE_analysis.txt
+    touch ${prefix}_sigdiff_gene_TE.txt
 
     """
 }

@@ -30,7 +30,12 @@ input:
         pattern: "*.{bam}"
         ontologies:
          - edam: "http://edamontology.org/format_2572"
-
+    - bai_t:
+        type: file
+        description: A BAM index file for the treatment condition
+        pattern: "*.{bai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
 
         # Control BAM
   - - meta_c:
@@ -44,7 +49,12 @@ input:
         pattern: "*.{bam}"
         ontologies:
         - edam: "http://edamontology.org/format_2572"
-
+    - bai_c:
+        type: file
+        description: A BAM index file for the control condition
+        pattern: "*.{bai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
 
         # Genome GTF
   - - meta_ggtf:
@@ -97,6 +107,33 @@ output:
 
           ontologies:
             - edam: http://edamontology.org/format_3999 # R script
+
+  analysis:
+    - - meta_t:
+          type: map
+          description: |
+            Groovy map containing treatment sample information.
+            e.g. `id:'sample1' ]`
+      - "*_analysis.txt":
+          type: file
+          description: DESeq2 analysis file
+          pattern: "*_analysis.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # text format
+
+  sigdiff:
+    - - meta_t:
+          type: map
+          description: |
+            Groovy map containing treatment sample information.
+            e.g. `id:'sample1' ]`
+      - "*_gene_TE.txt":
+          type: file
+          description: DESeq2 analysis file
+          pattern: "*_gene_TE.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # text format
+
   versions_tetranscripts:
     - - ${task.process}:
           type: string
