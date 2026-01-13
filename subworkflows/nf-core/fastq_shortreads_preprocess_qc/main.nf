@@ -1,20 +1,20 @@
 // statistics
-include { FASTQ_GENERATE_STATISTICS as PRE_STATS  } from '../fastq_generate_statistics/main'
-include { FASTQ_GENERATE_STATISTICS as POST_STATS } from '../fastq_generate_statistics/main'
+include { FASTQ_QC_STATS as PRE_STATS        } from '../fastq_qc_stats/main'
+include { FASTQ_QC_STATS as POST_STATS       } from '../fastq_qc_stats/main'
 // preprocessing
-include { FASTQ_PREPROCESS_SEQKIT                 } from '../fastq_preprocess_seqkit/main'
+include { FASTQ_PREPROCESS_SEQKIT            } from '../fastq_preprocess_seqkit/main'
 // barcoding
-include { UMITOOLS_EXTRACT                        } from '../../../modules/nf-core/umitools/extract/main'
+include { UMITOOLS_EXTRACT                   } from '../../../modules/nf-core/umitools/extract/main'
 // adapter removal and merging
-// include { FASTQ_REMOVEADAPTERS_MERGE              } from '../fastq_removeadapters_merge/main'
+// include { FASTQ_REMOVEADAPTERS_MERGE         } from '../fastq_removeadapters_merge/main'
 // complexity filtering
-include { PRINSEQPLUSPLUS                         } from '../../../modules/nf-core/prinseqplusplus/main'
+include { PRINSEQPLUSPLUS                    } from '../../../modules/nf-core/prinseqplusplus/main'
 // deduplication
-include { BBMAP_CLUMPIFY                          } from '../../../modules/nf-core/bbmap/clumpify/main'
+include { BBMAP_CLUMPIFY                     } from '../../../modules/nf-core/bbmap/clumpify/main'
 // host decontamination
-include { FASTQ_DECONTAMINATE_DEACON_HOSTILE      } from '../fastq_decontaminate_deacon_hostile/main'
+include { FASTQ_DECONTAMINATE_DEACON_HOSTILE } from '../fastq_decontaminate_deacon_hostile/main'
 // final concatenation
-include { CAT_FASTQ                               } from '../../../modules/nf-core/cat/fastq/main'
+include { CAT_FASTQ                          } from '../../../modules/nf-core/cat/fastq/main'
 
 workflow FASTQ_SHORTREADS_PREPROCESS_QC {
 
