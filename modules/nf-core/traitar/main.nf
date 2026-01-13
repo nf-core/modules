@@ -24,7 +24,7 @@ process TRAITAR {
     script:
     def args = task.ext.args ?: ''
     def input_file = proteins.name.endsWith('.gz') ? proteins.name[0..-4] : proteins.name
-    
+
     // Validate input_type against allowed values
     if (!['from_genes', 'from_proteins', 'from_nucleotides'].contains(input_type)) {
         error("Invalid input_type: ${input_type}. Must be one of: 'from_genes', 'from_proteins', 'from_nucleotides'")
