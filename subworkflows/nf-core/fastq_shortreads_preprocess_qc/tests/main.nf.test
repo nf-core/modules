@@ -84,4 +84,46 @@ nextflow_workflow {
             )
         }
     }
+
+    test("sarscov2 - fastq - skip all - single_end - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1]  = true // skip_fastqc
+                input[2]  = true // skip_seqfu_check
+                input[3]  = true // skip_seqfu_stats
+                input[4]  = true // skip_seqkit_stats
+                input[5]  = true // skip_seqtk_comp
+                input[6]  = true // skip_seqkit_sana_pair
+                input[7]  = true // skip_seqkit_seq
+                input[8]  = true // skip_seqkit_replace
+                input[9]  = true // skip_seqkit_rmdup
+                input[10] = true // skip_umitools_extract
+                input[11] = 0    // umi_discard_read
+
+                input[12] = true // skip_prinseqplusplus
+                input[13] = true // skip_bbmap_clumpify
+                input[14] = true // skip_decontamination
+                input[15] = []   // ch_fasta
+                input[16] = []   // ch_reference
+                input[17] = []   // index_name
+                input[18] = ""   // decontaminator
+                input[19] = true // skip_cat_fastq
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(workflow.out.reads).match() }
+            )
+        }
+    }
 }
