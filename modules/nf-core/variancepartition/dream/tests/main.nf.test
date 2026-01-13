@@ -46,6 +46,43 @@ nextflow_process {
         }
     }
 
+    test("RNAseq - Voom - Feature Counts - formula + comparison contrast string - interaction") {
+        tag "voom_dream"
+        when {
+            params {
+                module_args = "--round_digits 2 --apply_voom true"
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                    'id': 'genotype_WT_KO_treatment_Control_Treated',
+                    'formula': '~ genotype * treatment',
+                    'comparison': 'genotypeWT - treatmentTreated' // should be a 'make.names() string'
+                ])
+                .map {
+                    tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                }
+
+                input[1] = Channel.of([
+                    [ id: 'test' ],
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/metadata.tsv", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/counts.tsv", checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
+                { assert path(process.out.results[0][1]).getText().contains("5.07") },
+                { assert path(process.out.results[0][1]).getText().contains("2.97\t3.88\t38.17") },
+                { assert snapshot(process.out.model, process.out.normalised_counts, process.out.versions).match() }
+            )
+        }
+    }
+
     test("Mus musculus - expression table - contrasts + formula + comparison contrast string") {
 
         when {
