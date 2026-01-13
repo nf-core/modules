@@ -1,11 +1,11 @@
 nextflow_workflow {
-    name "Test Subworkflow FASTQ_GENERATE_STATISTICS"
+    name "Test Subworkflow FASTQ_QC_STATS"
     script "../main.nf"
-    workflow "FASTQ_GENERATE_STATISTICS"
+    workflow "FASTQ_QC_STATS"
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
-    tag "subworkflows/fastq_generate_statistics"
+    tag "subworkflows/fastq_qc_stats"
     tag "fastqc"
     tag "seqfu"
     tag "seqfu/check"
@@ -19,8 +19,8 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([
-                    [ id:'test_single', single_end:true ], // meta map
+                input[0] = channel.of([
+                    [ id:'test_single', single_end:true ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ])
                 input[1] = false
@@ -47,11 +47,36 @@ nextflow_workflow {
             )
         }
     }
+
+    test("sarscov2 - fastq - single_end - skip all") {
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test_single', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = true
+                input[2] = true
+                input[3] = true
+                input[4] = true
+                input[5] = true
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
     test("sarscov2 - fastq - paired_end") {
         when {
             workflow {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test_paired', single_end:false ], // meta map
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
@@ -84,6 +109,7 @@ nextflow_workflow {
             )
         }
     }
+
     test("sarscov2 - fastq - single_end - stub") {
 
         options "-stub"
@@ -91,7 +117,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test_single', single_end:true ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ])
@@ -113,6 +139,7 @@ nextflow_workflow {
             )
         }
     }
+
     test("sarscov2 - fastq - paired_end - stub") {
 
         options "-stub"
@@ -120,7 +147,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test_paired', single_end:false ], // meta map
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
