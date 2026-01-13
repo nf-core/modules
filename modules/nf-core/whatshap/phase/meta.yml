@@ -85,13 +85,27 @@ output:
           pattern: "*.vcf.gz.tbi"
           ontologies:
             - edam: http://edamontology.org/format_3616 # TBI format
+  versions_whatshap:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - whatshap:
+          type: string
+          description: The name of the tool
+      - whatshap --version:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - whatshap:
+          type: string
+          description: The name of the tool
+      - whatshap --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
   - "@haidyi"
