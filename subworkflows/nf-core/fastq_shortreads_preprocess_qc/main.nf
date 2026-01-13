@@ -63,7 +63,8 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
         skip_seqkit_stats,
         skip_seqtk_comp
     )
-    ch_versions = ch_versions.mix(PRE_STATS.out.versions)
+    ch_multiqc_files = ch_multiqc_files.mix(PRE_STATS.out.seqfu_multiqc)
+    ch_versions      = ch_versions.mix(PRE_STATS.out.versions)
 
     // preprocessing
     FASTQ_PREPROCESS_SEQKIT (
@@ -149,7 +150,8 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
         skip_seqkit_stats,
         skip_seqtk_comp
     )
-    ch_versions = ch_versions.mix(POST_STATS.out.versions)
+    ch_multiqc_files = ch_multiqc_files.mix(POST_STATS.out.seqfu_multiqc)
+    ch_versions      = ch_versions.mix(POST_STATS.out.versions)
 
     emit:
     reads         = ch_reads          // channel: [ val(meta), [ fastq ] ]
@@ -159,16 +161,20 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
     pre_stats_fastqc_zip     = PRE_STATS.out.fastqc_zip
     pre_stats_seqfu_check    = PRE_STATS.out.seqfu_check
     pre_stats_seqfu_stats    = PRE_STATS.out.seqfu_stats
-    pre_stats_seqfu_multiqc  = PRE_STATS.out.seqfu_multiqc
     pre_stats_seqkit_stats   = PRE_STATS.out.seqkit_stats
     pre_stats_seqtk_stats    = PRE_STATS.out.seqtk_stats
     post_stats_fastqc_html   = POST_STATS.out.fastqc_html
     post_stats_fastqc_zip    = POST_STATS.out.fastqc_zip
     post_stats_seqfu_check   = POST_STATS.out.seqfu_check
     post_stats_seqfu_stats   = POST_STATS.out.seqfu_stats
-    post_stats_seqfu_multiqc = POST_STATS.out.seqfu_multiqc
     post_stats_seqkit_stats  = POST_STATS.out.seqkit_stats
     post_stats_seqtk_stats   = POST_STATS.out.seqtk_stats
+
+    // host decontamination
+    hostile_reference = FASTQ_DECONTAMINATE_DEACON_HOSTILE.out.reference
+    hostile_json      = FASTQ_DECONTAMINATE_DEACON_HOSTILE.out.json
+    deacon_index      = FASTQ_DECONTAMINATE_DEACON_HOSTILE.out.index
+    deacon_summary    = FASTQ_DECONTAMINATE_DEACON_HOSTILE.out.summary
 
     versions      = ch_versions       // channel: [ versions.yml ]
     multiqc_files = ch_multiqc_files
