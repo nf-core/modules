@@ -75,8 +75,10 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
     )
     ch_versions = ch_versions.mix(FASTQ_PREPROCESS_SEQKIT.out.versions)
 
+    ch_reads = FASTQ_PREPROCESS_SEQKIT.out.reads
+
     // barcoding
-    umi_reads = FASTQ_PREPROCESS_SEQKIT.out.reads
+    umi_reads = ch_reads
     umi_log = channel.empty()
     if (!skip_umitools_extract) {
         UMITOOLS_EXTRACT( ch_reads )
@@ -151,6 +153,23 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
 
     emit:
     reads         = ch_reads          // channel: [ val(meta), [ fastq ] ]
+
+    // statistics
+    pre_stats_fastqc_html    = PRE_STATS.out.fastqc_html
+    pre_stats_fastqc_zip     = PRE_STATS.out.fastqc_zip
+    pre_stats_seqfu_check    = PRE_STATS.out.seqfu_check
+    pre_stats_seqfu_stats    = PRE_STATS.out.seqfu_stats
+    pre_stats_seqfu_multiqc  = PRE_STATS.out.seqfu_multiqc
+    pre_stats_seqkit_stats   = PRE_STATS.out.seqkit_stats
+    pre_stats_seqtk_stats    = PRE_STATS.out.seqtk_stats
+    post_stats_fastqc_html   = POST_STATS.out.fastqc_html
+    post_stats_fastqc_zip    = POST_STATS.out.fastqc_zip
+    post_stats_seqfu_check   = POST_STATS.out.seqfu_check
+    post_stats_seqfu_stats   = POST_STATS.out.seqfu_stats
+    post_stats_seqfu_multiqc = POST_STATS.out.seqfu_multiqc
+    post_stats_seqkit_stats  = POST_STATS.out.seqkit_stats
+    post_stats_seqtk_stats   = POST_STATS.out.seqtk_stats
+
     versions      = ch_versions       // channel: [ versions.yml ]
     multiqc_files = ch_multiqc_files
 }
