@@ -417,7 +417,7 @@ save_metaprofile_psite_plot <- function(sample_name, df.ls, annotation.df) {
 
 # Set defaults and classes
 opt <- list(
-    output_prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
+    output_prefix = paste0(ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'), '.ribowaltz'),
     threads = '$task.cpus',
     bam = '$bam',
     gtf = '$gtf',

@@ -32,7 +32,7 @@ process RIBOWALTZ {
     template 'ribowaltz.r'
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = "${task.ext.prefix ?: meta.id}.ribowaltz"
     """
     touch ${prefix}.best_offset.txt
     touch ${prefix}.psite_offset.tsv
@@ -45,6 +45,7 @@ process RIBOWALTZ {
     touch ribowaltz_qc/${prefix}.psite_region.tsv
     touch ribowaltz_qc/${prefix}.frames.tsv
     touch ribowaltz_qc/${prefix}.frames_stratified.tsv
+    touch ribowaltz_qc/${prefix}.metaprofile_psite.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
