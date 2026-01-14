@@ -36,7 +36,7 @@ nextflow_process {
                     file('https://raw.githubusercontent.com/hanalysis/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/genome/chr21/sequence/GRCh38_GENCODE_rmsk_TE_chr21.gtf', checkIfExists: true),
                 ]
                 """
-		
+
             }
         }
 
@@ -86,7 +86,7 @@ nextflow_process {
 
         then {
             assert process.success
-            
+
             def outputFile = path(process.out.countTable[0][1]) // [0] is first sample, [1] is file (not meta)
             assert outputFile.exists()
 
@@ -114,7 +114,7 @@ nextflow_process {
 
         options "-stub"
 
-        config "./nextflow.config"       
+        config "./nextflow.config"
 
         when {
             process {
@@ -137,7 +137,7 @@ nextflow_process {
                 input[3] = [
                     [ id:'te_gtf' ],
                     file('https://raw.githubusercontent.com/hanalysis/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/genome/chr21/sequence/GRCh38_GENCODE_rmsk_TE_chr21.gtf', checkIfExists: true),
-                ]                
+                ]
 
                 """
             }

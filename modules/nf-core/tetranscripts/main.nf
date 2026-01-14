@@ -45,7 +45,7 @@ process TETRANSCRIPTS {
     def prefix = task.ext.prefix ?: "${meta_c.id}"
     """
     echo $args
-    
+
     touch ${prefix}.R
     touch ${prefix}.cntTable
     touch ${prefix}_gene_TE_analysis.txt
