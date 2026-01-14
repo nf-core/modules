@@ -7,9 +7,6 @@ nextflow_process {
     script "../main.nf"
     process "FASTANI"
     config "./nextflow.config"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "fastani"
     test("sarscov2 - referece vs contigs - fastANI") {
 
         when {
