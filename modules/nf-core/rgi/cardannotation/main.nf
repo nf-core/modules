@@ -11,8 +11,8 @@ process RGI_CARDANNOTATION {
 
     output:
     path ("card_database_processed"), emit: db
-    env RGI_VERSION, emit: tool_version
-    env DB_VERSION, emit: db_version
+    env 'RGI_VERSION', emit: tool_version
+    env 'DB_VERSION', emit: db_version
     path "versions.yml", emit: versions
 
     when:
