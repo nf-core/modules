@@ -38,11 +38,10 @@ process FASTANI {
 
     stub:
     def prefix          = task.ext.prefix  ?: ( meta.id  ?: 'all')
-    def prefix2         = task.ext.prefix2 ?: ( meta2.id ?: 'all')
     """
-    touch ${prefix}_v_${prefix2}.visual
-    touch ${prefix}_v_${prefix2}.txt
-    touch ${prefix}_v_${prefix2}.matrix
+    touch ${prefix}.visual
+    touch ${prefix}.txt
+    touch ${prefix}.matrix
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
