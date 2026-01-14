@@ -44,13 +44,27 @@ output:
           pattern: "*.{vcf,tab,txt,tsv}"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_ensemblvep:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - ensemblvep:
+          type: string
+          description: The tool name
+      - "vep --help | sed -n '/ensembl-vep/s/.*: //p'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - ensemblvep:
+          type: string
+          description: The tool name
+      - "vep --help | sed -n '/ensembl-vep/s/.*: //p'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@ramprasadn"
 maintainers:

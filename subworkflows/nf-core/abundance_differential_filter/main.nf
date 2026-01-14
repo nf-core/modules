@@ -149,10 +149,10 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // Run DREAM
     // ----------------------------------------------------
 
-    // DREAM only runs with formula
+    // Prepare DREAM inputs
     dream_inputs = inputs.contrasts_for_diff_with_formula
-        .filter { meta, _variable, _reference, _target, formula, _comparison ->
-            meta.differential_method == 'dream' && formula != null
+        .filter { meta, _variable, _reference, _target, _formula, _comparison ->
+            meta.differential_method == 'dream'
         }
 
     VARIANCEPARTITION_DREAM(
@@ -173,6 +173,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     ch_normalised_matrix = DESEQ2_NORM.out.normalised_counts
         .mix(LIMMA_NORM.out.normalised_counts)
+        .mix(VARIANCEPARTITION_DREAM.out.normalised_counts)
 
     ch_model = DESEQ2_DIFFERENTIAL.out.model
         .mix(LIMMA_DIFFERENTIAL.out.model)
