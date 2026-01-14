@@ -38,7 +38,6 @@ process FASTANI {
 
     stub:
     def prefix          = task.ext.prefix  ?: ( meta.id  ?: 'all')
-    tuple val("${task.process}"), val("fastani"), eval('fastANI --version'), topic: versions, emit: versions_fastani
     """
     touch ${prefix}.visual
     touch ${prefix}.txt
