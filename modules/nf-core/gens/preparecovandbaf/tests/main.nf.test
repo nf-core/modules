@@ -10,6 +10,10 @@ nextflow_process {
     tag "modules_nfcore"
     tag "preparegensinputdata"
 
+    tmp_base = "https://raw.githubusercontent.com/Jakob37/nf-core-test-datasets/refs/heads/preparegensinputdata"
+
+    params.modules_testdata_base_path = tmp_base
+
     test("preparegensinputdata - general test") {
 
         when {
@@ -17,12 +21,12 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/gatk/chr21_binned_read_counts.tsv', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/chr21.gvcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/chr21.gvcf.gz.tbi', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/gatk/hg002_chr20_90000_to_100000.standardizedCR.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/hg002_chr20_90000_to_100000.dnascope.gvcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/hg002_chr20_90000_to_100000.dnascope.gvcf.gz.tbi', checkIfExists: true),
                 ]
                 input[1] = [
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/tsv/baf_sites.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/tsv/gnomad_hg38_chr20_90000_to_100000.0.05.txt.gz', checkIfExists: true),
                 ]
                 """
             }
@@ -35,14 +39,11 @@ nextflow_process {
                     process.out,
                     path(process.out.versions[0]).yaml
                 ).match() }
-                //TODO nf-core: Add all required assertions to verify the test output.
-                // See https://nf-co.re/docs/contributing/tutorials/nf-test_assertions for more information and examples.
             )
         }
 
     }
 
-    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used but keep the " - stub" suffix.
     test("preparegensinputdata - general test - stub") {
 
         options "-stub"
@@ -52,12 +53,12 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/gatk/chr21_binned_read_counts.tsv', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/chr21.gvcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/chr21.gvcf.gz.tbi', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/gatk/hg002_chr20_90000_to_100000.standardizedCR.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/hg002_chr20_90000_to_100000.dnascope.gvcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/hg002_chr20_90000_to_100000.dnascope.gvcf.gz', checkIfExists: true),
                 ]
                 input[1] = [
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/tsv/baf_sites.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/tsv/gnomad_hg38_chr20_90000_to_100000.0.05.txt.gz', checkIfExists: true),
                 ]
                 """
             }
