@@ -1,0 +1,149 @@
+// nf-core modules test t1k/run
+nextflow_process {
+
+    name "Test Process T1K_RUN"
+    script "../main.nf"
+    process "T1K_RUN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "t1k"
+    tag "t1k/run"
+
+    test("homo_sapiens - paired_end  - 10x ") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/4plex_scFFPE/4plex_human_liver_colorectal_ovarian_panc_scFFPE_multiplex_S1_L001_R1_001.subsampled.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/4plex_scFFPE/4plex_human_liver_colorectal_ovarian_panc_scFFPE_multiplex_S1_L001_R2_001.subsampled.fastq.gz', checkIfExists: true)
+                    ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta' ,checkIfExists: true),
+                    [],
+                    [],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.genotype_tsv.get(0).get(1),
+                    file(process.out.allele_tsv.get(0).get(1)).name,
+                    file(process.out.allele_vcf.get(0).get(1)).name,
+                    file(process.out.candidate_reads.get(0).get(1).get(0)).name,
+                    file(process.out.candidate_reads.get(0).get(1).get(1)).name,
+                    file(process.out.aligned_reads_paired.get(0).get(1).get(0)).name,
+                    file(process.out.aligned_reads_paired.get(0).get(1).get(1)).name,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - paired_end - 10x - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/4plex_scFFPE/4plex_human_liver_colorectal_ovarian_panc_scFFPE_multiplex_S1_L001_R1_001.subsampled.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/4plex_scFFPE/4plex_human_liver_colorectal_ovarian_panc_scFFPE_multiplex_S1_L001_R2_001.subsampled.fastq.gz', checkIfExists: true)
+                    ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta' ,checkIfExists: true),
+                    [],
+                    [],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - single_end") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    [
+                    file(params.modules_testdata_base_path + 'delete_me/fastq/test_single_end.fastq.gz', checkIfExists: true)
+                    ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta' ,checkIfExists: true),
+                    [],
+                    [],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.genotype_tsv.get(0).get(1),
+                    file(process.out.allele_tsv.get(0).get(1)).name,
+                    file(process.out.allele_vcf.get(0).get(1)).name,
+                    file(process.out.candidate_reads.get(0).get(1)).name,
+                    file(process.out.aligned_reads_single.get(0).get(1)).name,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - single_end  - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    [
+                        file(params.modules_testdata_base_path + 'delete_me/fastq/test_single_end.fastq.gz', checkIfExists: true)
+                    ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta' ,checkIfExists: true),
+                    [],
+                    [],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out
+                ).match() }
+            )
+        }
+    }
+}
