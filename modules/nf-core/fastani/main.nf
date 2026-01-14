@@ -17,7 +17,7 @@ process FASTANI {
     tuple val(meta), path("*.txt")      , emit: ani
     tuple val(meta), path("*.visual")   , optional:true , emit: visual
     tuple val(meta), path("*.matrix")   , optional:true , emit: matrix
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val("fastani"), eval('fastANI --version'), topic: versions, emit: versions_fastani
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,11 +34,6 @@ process FASTANI {
         $input_reference \\
         --threads $task.cpus \\
         -o ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastani: \$(fastANI --version 2>&1 | sed 's/version//;')
-    END_VERSIONS
     """
 
     stub:
