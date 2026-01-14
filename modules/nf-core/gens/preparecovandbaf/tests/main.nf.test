@@ -10,11 +10,11 @@ nextflow_process {
     tag "modules_nfcore"
     tag "preparegensinputdata"
 
-    tmp_base = "https://raw.githubusercontent.com/Jakob37/nf-core-test-datasets/refs/heads/preparegensinputdata"
-
-    params.modules_testdata_base_path = tmp_base
+    def testdata_base  = "https://raw.githubusercontent.com/Jakob37/nf-core-test-datasets/refs/heads/preparegensinputdata"
 
     test("preparegensinputdata - general test") {
+
+        options "--modules_testdata_base_path=${testdata_base}"
 
         when {
             process {
@@ -46,7 +46,9 @@ nextflow_process {
 
     test("preparegensinputdata - general test - stub") {
 
-        options "-stub"
+        options "-stub --modules_testdata_base_path=${testdata_base}"
+
+        // options "-stub"
 
         when {
             process {
