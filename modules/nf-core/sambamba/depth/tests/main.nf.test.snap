@@ -1,4 +1,39 @@
 {
+    "test-sambamba-depth-with-region-bed": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bed:md5,e312edd2c0a9f63b833b5a8913952ba6"
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,6e2f38cc3306b1ea59da275d9de28d57"
+                ],
+                "bed": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bed:md5,e312edd2c0a9f63b833b5a8913952ba6"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,6e2f38cc3306b1ea59da275d9de28d57"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
+        },
+        "timestamp": "2025-12-05T12:03:11.190921915"
+    },
     "test-sambamba-depth": {
         "content": [
             {
@@ -26,13 +61,20 @@
                 "versions": [
                     "versions.yml:md5,6e2f38cc3306b1ea59da275d9de28d57"
                 ]
-            }
+            },
+            [
+                {
+                    "SAMBAMBA_DEPTH": {
+                        "sambamba": "1.0.1"
+                    }
+                }
+            ]
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.10.0"
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2025-11-12T15:12:13.586918"
+        "timestamp": "2025-12-05T12:03:07.689091449"
     },
     "test-sambamba-depth-stub": {
         "content": [
@@ -47,7 +89,7 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,cc89620fa5c4f3af3aebf53eadd3edce"
+                    "versions.yml:md5,6e2f38cc3306b1ea59da275d9de28d57"
                 ],
                 "bed": [
                     [
@@ -59,14 +101,21 @@
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,cc89620fa5c4f3af3aebf53eadd3edce"
+                    "versions.yml:md5,6e2f38cc3306b1ea59da275d9de28d57"
                 ]
-            }
+            },
+            [
+                {
+                    "SAMBAMBA_DEPTH": {
+                        "sambamba": "1.0.1"
+                    }
+                }
+            ]
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.10.0"
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2025-11-12T15:12:29.380779"
+        "timestamp": "2025-12-05T12:03:14.737096819"
     }
 }
