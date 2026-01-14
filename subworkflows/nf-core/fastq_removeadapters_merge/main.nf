@@ -106,7 +106,6 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
                     ADAPTERREMOVAL_PE.out.collapsed,
                     ADAPTERREMOVAL_PE.out.collapsed_truncated,
                     ADAPTERREMOVAL_PE.out.singles_truncated,
-                    ADAPTERREMOVAL_PE.out.paired_truncated
                 )
                 .map { meta, reads ->
                     def meta_new = meta.clone()
