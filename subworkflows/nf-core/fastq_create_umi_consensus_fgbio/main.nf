@@ -55,7 +55,7 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     ch_versions = ch_versions.mix(BAM2FASTQ_PRE.out.versions)
 
     // the user can choose here to use either bwa-mem (default) or bwa-mem2
-    aligned_bam = Channel.empty()
+    aligned_bam = channel.empty()
 
     if (aligner == "bwa-mem") {
 

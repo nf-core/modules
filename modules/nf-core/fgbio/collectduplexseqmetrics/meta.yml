@@ -125,7 +125,7 @@ output:
           type: string
           description: The tool name
       - "fgbio --version 2>&1 | tr -d \"[:cntrl:]\" | sed -e \"s/^.*Version: //;s/\\[.*$//\"":
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
   versions_ggplot2:
     - - ${task.process}:
@@ -134,9 +134,10 @@ output:
       - ggplot2:
           type: string
           description: The tool name
-      - 'Rscript -e "library(ggplot2); cat(as.character(packageVersion(''ggplot2'')))"':
-          type: string
+      - Rscript -e "cat(as.character(packageVersion('ggplot2')))":
+          type: eval
           description: The command used to generate the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -145,18 +146,19 @@ topics:
       - fgbio:
           type: string
           description: The tool name
-      - "fgbio --version 2>&1 | tr -d \"[:cntrl:]\" | sed -e \"s/^.*Version: //;s/\\[.*$//\"":
-          type: string
-          description: The command used to generate the version of the tool
+      - 'fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\[.*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
       - ggplot2:
           type: string
           description: The tool name
-      - 'Rscript -e "library(ggplot2); cat(as.character(packageVersion(''ggplot2'')))"':
-          type: string
-          description: The command used to generate the version of the tool
+      - Rscript -e "cat(as.character(packageVersion('ggplot2')))":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@georgiakes"
 maintainers:

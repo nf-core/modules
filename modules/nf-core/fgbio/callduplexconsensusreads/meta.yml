@@ -40,10 +40,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.bam":
+      - "${prefix}.bam":
           type: file
           description: consensus BAM file
-          pattern: "*.bam"
+          pattern: "${prefix}.bam"
           ontologies: []
   versions_fgbio:
     - - ${task.process}:
