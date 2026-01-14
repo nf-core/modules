@@ -26,7 +26,8 @@ process NACHO_QC {
     """
     nacho_qc.R \\
         --input_rcc_path input \\
-        --input_samplesheet ${sample_sheet}
+        --input_samplesheet ${sample_sheet} \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
