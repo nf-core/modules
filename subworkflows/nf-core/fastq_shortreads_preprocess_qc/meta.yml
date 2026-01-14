@@ -103,7 +103,7 @@ input:
       type: boolean
       description: |
         Skip PRINSEQ++ complexity filtering step
-  - skip_bbmap_clumpify:
+  - skip_deduplication:
       type: boolean
       description: |
         Skip BBMap Clumpify deduplication step
@@ -130,7 +130,7 @@ input:
       type: string
       description: |
         Decontamination tool to use ('hostile' or 'deacon')
-  - skip_cat_fastq:
+  - skip_final_concatenation:
       type: boolean
       description: |
         Skip final FASTQ concatenation step

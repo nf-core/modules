@@ -39,7 +39,7 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
     // complexity filtering
     skip_complexity_filtering // boolean
     // deduplication
-    skip_bbmap_clumpify       // boolean
+    skip_deduplication        // boolean
     // host decontamination
     skip_decontamination      // boolean
     ch_fasta                  // channel: [ val(meta), [ fasta ] ] (optional)
@@ -47,7 +47,7 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
     index_name                // val (optional)
     decontaminator            // string (enum): 'hostile' or 'deacon'
     // final concatenation
-    skip_cat_fastq            // boolean
+    skip_final_concatenation  // boolean
 
     main:
 
@@ -67,6 +67,7 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
     ch_post_stats_seqtk_stats  = channel.empty()
     ch_umi_log                 = channel.empty()
     ch_prinseq_log             = channel.empty()
+    ch_clumpify_log            = channel.empty()
     ch_hostile_reference       = channel.empty()
     ch_hostile_json            = channel.empty()
     ch_deacon_index            = channel.empty()
@@ -134,11 +135,12 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
     }
 
     // deduplication
-    // TODO
-    // if (!skip_deduplication) {
-    //     BBMAP_CLUMPIFY( ... )
-    //     ch_versions = ch_versions.mix(BBMAP_CLUMPIFY.out.versions.first())
-    // }
+    if (!skip_deduplication) {
+        BBMAP_CLUMPIFY( ch_reads )
+        ch_reads        = BBMAP_CLUMPIFY.out.reads
+        ch_clumpify_log = BBMAP_CLUMPIFY.out.log
+        ch_versions     = ch_versions.mix(BBMAP_CLUMPIFY.out.versions.first())
+    }
 
     // host decontamination
     if (!skip_decontamination) {
@@ -159,11 +161,11 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
 
 
     // final concatenation
-    // TODO
-    // if (!skip_final_concatenation) {
-    //     CAT_FASTQ( ... )
-    //     ch_versions = ch_versions.mix(CAT_FASTQ.out.versions.first())
-    // }
+    if (!skip_final_concatenation) {
+        // CAT_FASTQ ( ch_reads.map { meta, reads -> [meta, reads.flatten()] } ) // TODO test more cases
+        CAT_FASTQ ( ch_reads )
+        ch_reads = CAT_FASTQ.out.reads
+    }
 
     // post-statistics
     POST_STATS (
@@ -207,6 +209,9 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
 
     // complexity filtering
     prinseq_log = ch_prinseq_log
+
+    // deduplication
+    clumpify_log = ch_clumpify_log
 
     // host decontamination
     hostile_reference = ch_hostile_reference
