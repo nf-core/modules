@@ -27,9 +27,11 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+            assertAll (
+                { assert snapshot(
+                    process.out.ani,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
     }
@@ -56,9 +58,13 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+            assertAll (
+                { assert snapshot(
+                    process.out.ani,
+                    process.out.visual,
+                    process.out.matrix,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
 
