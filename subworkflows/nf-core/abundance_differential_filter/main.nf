@@ -173,6 +173,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     ch_normalised_matrix = DESEQ2_NORM.out.normalised_counts
         .mix(LIMMA_NORM.out.normalised_counts)
+        .mix(VARIANCEPARTITION_DREAM.out.normalised_counts)
 
     ch_model = DESEQ2_DIFFERENTIAL.out.model
         .mix(LIMMA_DIFFERENTIAL.out.model)
