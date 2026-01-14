@@ -30,12 +30,6 @@ input:
         pattern: "*.{bam}"
         ontologies:
          - edam: "http://edamontology.org/format_2572"
-    - bai_t:
-        type: file
-        description: A BAM index file for the treatment condition
-        pattern: "*.{bai}"
-        ontologies:
-          - edam: "http://edamontology.org/format_3327"
 
         # Control BAM
   - - meta_c:
@@ -49,12 +43,6 @@ input:
         pattern: "*.{bam}"
         ontologies:
         - edam: "http://edamontology.org/format_2572"
-    - bai_c:
-        type: file
-        description: A BAM index file for the control condition
-        pattern: "*.{bai}"
-        ontologies:
-          - edam: "http://edamontology.org/format_3327"
 
         # Genome GTF
   - - meta_ggtf:

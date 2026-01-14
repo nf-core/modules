@@ -8,8 +8,8 @@ process TETRANSCRIPTS {
         'biocontainers/tetranscripts:2.2.3--pyh7cba7a3_0' }"
 
     input:
-    tuple val(meta_t), path(bam_t), path(bai_t)
-    tuple val(meta_c), path(bam_c), path(bai_c)
+    tuple val(meta_t), path(bam_t)
+    tuple val(meta_c), path(bam_c)
     tuple val(meta_ggtf), path(g_gtf)
     tuple val(meta_tegtf), path(te_gtf)
 
