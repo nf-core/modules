@@ -57,7 +57,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/gatk/hg002_chr20_90000_to_100000.standardizedCR.tsv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/hg002_chr20_90000_to_100000.dnascope.gvcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/hg002_chr20_90000_to_100000.dnascope.gvcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/hg002_chr20_90000_to_100000.dnascope.gvcf.gz.tbi', checkIfExists: true),
                 ]
                 input[1] = [
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/tsv/gnomad_hg38_chr20_90000_to_100000.0.05.txt.gz', checkIfExists: true),
