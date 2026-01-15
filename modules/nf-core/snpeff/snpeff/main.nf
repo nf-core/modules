@@ -36,6 +36,7 @@ process SNPEFF_SNPEFF {
     """
     snpEff \\
         -Xmx${avail_mem}M \\
+        -XX:-UsePerfData \\
         ${db} \\
         ${args} \\
         -csvStats ${prefix}.csv \\
