@@ -80,6 +80,7 @@ workflow FASTQ_REMOVE_RRNA {
         )
 
         ch_versions = ch_versions.mix(SEQKIT_STATS.out.versions.first())
+        ch_multiqc_files = ch_multiqc_files.mix(SEQKIT_STATS.out.stats)
 
         // Join stats with reads and calculate read length for RiboDetector
         ch_filtered_reads
