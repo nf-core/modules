@@ -13,7 +13,8 @@ process LAST_SPLIT {
     output:
     tuple val(meta), path("*.maf.gz"), emit: maf
     tuple val(meta), path("*.tsv")   , emit: multiqc
-    path "versions.yml"              , emit: versions
+    // last-dotplot has no --version option so let's use lastal from the same suite
+    tuple val("${task.process}"), val('last'), eval("lastal --version | sed 's/lastal //'"), emit: versions_last, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -82,11 +83,6 @@ process LAST_SPLIT {
 
     # Combine the two stats file into one for MultiQC.
     paste ${prefix}.alignmentstats.txt ${prefix}.genomestats.txt > ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        last: \$(last-split --version 2>&1 | sed 's/last-split //')
-    END_VERSIONS
     """
 
     stub:
@@ -96,10 +92,5 @@ process LAST_SPLIT {
     """
     echo stub | gzip --no-name > ${prefix}.maf.gz
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        last: \$(last-split --version 2>&1 | sed 's/last-split //')
-    END_VERSIONS
     """
 }
