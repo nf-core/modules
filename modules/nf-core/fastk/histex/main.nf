@@ -12,8 +12,9 @@ process FASTK_HISTEX {
     tuple val(meta), path(histogram)
 
     output:
-    tuple val(meta), path("*.hist"), emit: hist
-    path "versions.yml"            , emit: versions
+    tuple val(meta), path("*.hist.txt"), emit: hist
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('fastk'), eval('echo 1.1'), emit: versions_fastk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,28 +22,16 @@ process FASTK_HISTEX {
     script:
     def args          = task.ext.args ?: ''
     def prefix        = task.ext.prefix ?: "${meta.id}"
-    def FASTK_VERSION = '1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     Histex \\
         $args \\
         $histogram \\
-        > ${prefix}.hist
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastk: $FASTK_VERSION
-    END_VERSIONS
+        > ${prefix}.hist.txt
     """
 
     stub:
     def prefix        = task.ext.prefix ?: "${meta.id}"
-    def FASTK_VERSION = '1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    touch ${prefix}.hist
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastk: $FASTK_VERSION
-    END_VERSIONS
+    touch ${prefix}.hist.txt
     """
 }
