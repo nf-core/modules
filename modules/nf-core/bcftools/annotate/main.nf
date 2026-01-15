@@ -14,9 +14,9 @@ process BCFTOOLS_ANNOTATE {
     path rename_chrs
 
     output:
-    tuple val(meta), path("${prefix}*.{vcf,vcf.gz,bcf,bcf.gz}"), emit: vcf
-    tuple val(meta), path("${prefix}*.tbi"), emit: tbi, optional: true
-    tuple val(meta), path("${prefix}*.csi"), emit: csi, optional: true
+    tuple val(meta), path("${prefix}*{b,v}cf{.gz,}"), emit: vcf
+    tuple val(meta), path("${prefix}*tbi"), emit: tbi, optional: true
+    tuple val(meta), path("${prefix}*csi"), emit: csi, optional: true
     tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
 
     when:
