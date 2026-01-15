@@ -45,6 +45,9 @@ output:
       - assemblyscan:
           type: string
           description: The tool name
+      - "assembly-scan --version 2>&1 | sed 's/^.*assembly-scan //; s/Using.*\\$//'":
+          type: string
+          description: The command used to generate the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -53,7 +56,7 @@ topics:
       - assemblyscan:
           type: string
           description: The tool name
-      - "assembly-scan --version 2>&1 | sed 's/^.*assembly-scan //; s/Using.*$//'":
+      - "assembly-scan --version 2>&1 | sed 's/^.*assembly-scan //; s/Using.*\\$//'":
           type: string
           description: The command used to generate the version of the tool
 authors:
