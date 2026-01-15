@@ -2,7 +2,7 @@ process SPACERANGER_COUNT {
     tag "$meta.id"
     label 'process_high'
 
-    container "quay.io/nf-core/spaceranger:9c5e7dc93c32448e"
+    container "nf-core/spaceranger:9c5e7dc93c32448e"
 
     input:
     tuple val(meta), path(reads), path(image), val(slide), val(area), path(cytaimage), path(darkimage), path(colorizedimage), path(alignment), path(slidefile)
