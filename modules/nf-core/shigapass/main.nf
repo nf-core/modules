@@ -8,23 +8,23 @@ process SHIGAPASS {
         'biocontainers/shigapass:1.5.0--hdfd78af_0' }"
 
     input:
-        tuple val(meta), path(fasta)
+    tuple val(meta), path(fasta)
 
     output:
-        tuple val(meta), path("${prefix}.tsv"),                 emit: report
-        tuple val(meta), path("*_ShigaPass_Flex_summary.tsv"),  emit: flex_tsv, optional: true
-        path "versions.yml",                                    emit: versions
+    tuple val(meta), path("${prefix}.tsv"),                 emit: report
+    tuple val(meta), path("*_ShigaPass_Flex_summary.tsv"),  emit: flex_tsv, optional: true
+    tuple val("${task.process}"), val('shigapass'), eval("ShigaPass.sh --version 2>&1 | sed 's/^.*ShigaPass version //'"), topic: versions, emit: versions_shigapass
 
     when:
         task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed = fasta.getName().endsWith(".gz") ? true : false
     def fasta_name = fasta.getName().replace(".gz", "")
     """
-    # ShigaPass does not accept compressed FASTA files
+    # Optional decompression
     if [ "${is_compressed}" == "true" ]; then
         gzip -c -d ${fasta} > ${fasta_name}
     fi
@@ -48,22 +48,12 @@ process SHIGAPASS {
 
     # Convert to tab delimited and move to the pwd
     [ ! -f ${prefix}/ShigaPass_Flex_summary.csv ] || sed 's/;/\t/g' ${prefix}/ShigaPass_Flex_summary.csv > ${prefix}_Flex_summary.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        shigapass: \$(echo \$(ShigaPass.sh --version 2>&1) | sed 's/^.*ShigaPass version //' )
-    END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        shigapass: \$(echo \$(ShigaPass.sh --version 2>&1) | sed 's/^.*ShigaPass version //' )
-    END_VERSIONS
     """
 }
