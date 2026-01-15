@@ -56,7 +56,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.{vcf,vcf.gz,bcf,bcf.gz}":
+      - "${prefix}*.{vcf,vcf.gz,bcf,bcf.gz}":
           type: file
           description: Compressed annotated VCF file
           pattern: "*{vcf,vcf.gz,bcf,bcf.gz}"
@@ -67,7 +67,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.tbi":
+      - "${prefix}*.tbi":
           type: file
           description: Alternative VCF file index
           pattern: "*.tbi"
@@ -78,7 +78,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.csi":
+      - "${prefix}*.csi":
           type: file
           description: Default VCF file index
           pattern: "*.csi"
