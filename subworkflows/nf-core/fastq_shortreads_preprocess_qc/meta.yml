@@ -36,6 +36,7 @@ components:
   - seqkit/replace
   - seqkit/rmdup
   - umitools/extract
+  - fastq_removeadapters_merge
   - prinseqplusplus
   - bbmap/clumpify
   - fastq_decontaminate_deacon_hostile
@@ -95,7 +96,7 @@ input:
       type: boolean
       description: |
         Skip UMI-tools extract barcoding step
-  - umi_discard_read:
+  - val_umi_discard_read:
       type: integer
       description: |
         Discard R1 or R2 after UMI extraction (0 = keep both, 1 = discard R1, 2 = discard R2)
@@ -122,11 +123,11 @@ input:
       description: |
         Pre-built reference index directory for decontamination (optional)
         Structure: [ val(reference_name), path(reference_dir) ]
-  - index_name:
+  - val_index_name:
       type: string
       description: |
         Name for the decontamination index (optional)
-  - decontaminator:
+  - val_decontaminator:
       type: string
       description: |
         Decontamination tool to use ('hostile' or 'deacon')
