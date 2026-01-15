@@ -14,9 +14,9 @@ process BCFTOOLS_ANNOTATE {
     path rename_chrs
 
     output:
-    tuple val(meta), path("${prefix}*{b,v}cf{.gz,}"), emit: vcf
-    tuple val(meta), path("${prefix}*tbi"), emit: tbi, optional: true
-    tuple val(meta), path("${prefix}*csi"), emit: csi, optional: true
+    tuple val(meta), path("${prefix}.${extension}"), emit: vcf
+    tuple val(meta), path("${prefix}.${extension}.tbi"), emit: tbi, optional: true
+    tuple val(meta), path("${prefix}.${extension}.csi"), emit: csi, optional: true
     tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
 
     when:
@@ -29,7 +29,7 @@ process BCFTOOLS_ANNOTATE {
     def columns_file = columns ? "--columns-file ${columns}" : ''
     def header_file = header_lines ? "--header-lines ${header_lines}" : ''
     def rename_chrs_file = rename_chrs ? "--rename-chrs ${rename_chrs}" : ''
-    def extension = args.contains("--output-type b") || args.contains("-Ob")
+    extension = args.contains("--output-type b") || args.contains("-Ob")
         ? "bcf.gz"
         : args.contains("--output-type u") || args.contains("-Ou")
             ? "bcf"
@@ -59,7 +59,7 @@ process BCFTOOLS_ANNOTATE {
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def extension = args.contains("--output-type b") || args.contains("-Ob")
+    extension = args.contains("--output-type b") || args.contains("-Ob")
         ? "bcf.gz"
         : args.contains("--output-type u") || args.contains("-Ou")
             ? "bcf"
