@@ -2,9 +2,12 @@ process PREPAREGENSINPUTDATA {
     tag "$meta.id"
     label 'process_single'
 
+https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a9/a9f414681caefff508dcab89f4872ae3cda18d15b9b610b679fa5eb5023b4b7c/data
+community.wave.seqera.io/library/tabix_pip_gens-input-data-tools:5d39cfe6f6bf258b
+
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/29/2931cf8e5eac90d974b42ec069b4268fd7f8aefa37b46fa18eb342a4802a967d/data':
-        'community.wave.seqera.io/library/tabix_pip_gens-input-data-tools:acc3fd1b79233d2d' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a9/a9f414681caefff508dcab89f4872ae3cda18d15b9b610b679fa5eb5023b4b7c/data':
+        'community.wave.seqera.io/library/tabix_pip_gens-input-data-tools:5d39cfe6f6bf258b' }"
 
     input:
     tuple val(meta), path(read_counts), path(gvcf), path(gvcf_tbi)
