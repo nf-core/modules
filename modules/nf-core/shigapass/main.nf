@@ -13,7 +13,7 @@ process SHIGAPASS {
     output:
     tuple val(meta), path("${prefix}.tsv"),                 emit: report
     tuple val(meta), path("*_ShigaPass_Flex_summary.tsv"),  emit: flex_tsv, optional: true
-    tuple val("${task.process}"), val('shigapass'), eval("ShigaPass.sh --version 2>&1 | sed 's/^.*ShigaPass version //'"), topic: versions, emit: versions_shigapass
+    tuple val("${task.process}"), val('shigapass'), eval("ShigaPass.sh -v 2>&1 | sed 's/^.*ShigaPass version //'"), topic: versions, emit: versions_shigapass
 
     when:
         task.ext.when == null || task.ext.when
