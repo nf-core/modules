@@ -48,6 +48,17 @@ output:
       - "assembly-scan --version 2>&1 | sed 's/^.*assembly-scan //; s/Using.*$//'":
           type: string
           description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+           type: string
+           description: The process the versions were collected from
+      - assemblyscan:
+          type: string
+          description: The tool name
+      - "assembly-scan --version 2>&1 | sed 's/^.*assembly-scan //; s/Using.*$//'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@sateeshperi"
   - "@mjcipriano"
