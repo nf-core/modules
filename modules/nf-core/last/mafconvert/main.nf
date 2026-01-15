@@ -27,7 +27,8 @@ process LAST_MAFCONVERT {
     tuple val(meta), path("*.psl.gz"),             optional:true, emit: psl_gz
     tuple val(meta), path("*.sam.gz"),             optional:true, emit: sam_gz
     tuple val(meta), path("*.tab.gz"),             optional:true, emit: tab_gz
-    path "versions.yml"                                         , emit: versions
+    // last-dotplot has no --version option so let's use lastal from the same suite
+    tuple val("${task.process}"), val('last'), eval("lastal --version | sed 's/lastal //'"), emit: versions_last, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -93,13 +94,6 @@ process LAST_MAFCONVERT {
                 gzip --no-name > ${prefix}.${format}.gz
             ;;
     esac
-
-    # maf-convert has no --version option but lastdb (part of the same package) has.
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        last: \$(lastdb --version 2>&1 | sed 's/lastdb //')
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -117,12 +111,5 @@ process LAST_MAFCONVERT {
             echo stub | gzip --no-name > ${prefix}.${format}.gz
             ;;
     esac
-
-    # maf-convert has no --version option but lastdb (part of the same package) has.
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        last: \$(lastdb --version 2>&1 | sed 's/lastdb //')
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }
