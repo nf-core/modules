@@ -28,10 +28,8 @@ process PREPAREGENSINPUTDATA {
 
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // FIXME: Can I avoid this
-    def python_base = "/opt/conda/lib/python3.14/site-packages/gens_input_data_tools"
     """
-    python3 $python_base/generate_cov_and_baf.py \\
+    generate_cov_and_baf \\
         --coverage read_counts \\
         --gvcf $gvcf \\
         --label $prefix \\
@@ -42,13 +40,12 @@ process PREPAREGENSINPUTDATA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        preparegensinputdata: \$(python3 $python_base/generate_cov_and_baf.py --version)
+        preparegensinputdata: \$(generate_cov_and_baf --version)
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def python_base = "/opt/conda/lib/python3.14/site-packages/gens_input_data_tools"
     """
     echo "" | gzip > ${prefix}.cov.bed.gz
     touch ${prefix}.cov.bed.gz.tbi
@@ -57,7 +54,7 @@ process PREPAREGENSINPUTDATA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        preparegensinputdata: \$(python3 $python_base/generate_cov_and_baf.py --version)
+        preparegensinputdata: \$(generate_cov_and_baf --version)
     END_VERSIONS
     """
 }
