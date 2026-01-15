@@ -4,8 +4,8 @@ process TRAITAR {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/hmmer_prodigal_pandas_pip_pruned:d2b59b60c4871d7e' :
-        'community.wave.seqera.io/library/hmmer_prodigal_pandas_pip_pruned:a83f0296374a52e6' }"
+        'community.wave.seqera.io/library/hmmer_prodigal_pandas_pip_pruned:a83f0296374a52e6' :
+        'oras://community.wave.seqera.io/library/hmmer_prodigal_pandas_pip_pruned:d2b59b60c4871d7e' }"
 
     input:
     tuple val(meta), path(proteins)
@@ -18,7 +18,7 @@ process TRAITAR {
     tuple val(meta), path("*/predictions_*.txt"), optional: true, emit: predictions_raw
     tuple val(meta), path("*/annotation/pfam/"), optional: true, emit: pfam_annotation
     tuple val(meta), path("*/gene_prediction/"), optional: true, emit: gene_prediction
-    tuple val("${task.process}"), val('traitar'), eval('echo $(traitar --version 2>&1)'), emit: versions_traitar, topic: versions
+    tuple val("${task.process}"), val('traitar'), eval('traitar --version 2>&1 | tail -1'), topic: versions, emit: versions_traitar
 
     when:
     task.ext.when == null || task.ext.when
@@ -84,5 +84,8 @@ process TRAITAR {
     touch ${prefix}/phenotype_prediction/predictions_flat_single-votes_combined.txt
     touch ${prefix}/gene_prediction/${meta.id}.faa
     touch ${prefix}/gene_prediction/${meta.id}.gff
+    
+    # Get version for stub test
+    traitar --version 2>&1 | tail -1 > version.txt
     """
 }
