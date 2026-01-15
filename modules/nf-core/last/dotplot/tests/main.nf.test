@@ -39,7 +39,7 @@ nextflow_process {
                 { assert file(process.out.png.get(0).get(1)).exists() }
             )
         }
-        
+
     }
 
     test("sarscov2 - contigs - genome - png - filter") {
