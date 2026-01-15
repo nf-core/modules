@@ -30,7 +30,7 @@ process PREPAREGENSINPUTDATA {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     generate_cov_and_baf \\
-        --coverage read_counts \\
+        --coverage $read_counts \\
         --gvcf $gvcf \\
         --label $prefix \\
         --baf_positions $baf_positions \\
