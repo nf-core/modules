@@ -19,35 +19,35 @@ process SHIGAPASS {
         task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-    def is_compressed = fasta.getName().endsWith(".gz") ? true : false
-    def fasta_name = fasta.getName().replace(".gz", "")
+    def args   = task.ext.args ?: ''
+    prefix    = task.ext.prefix ?: "${meta.id}"
+    def dbPath = (
+        workflow.containerEngine == 'singularity' ||
+        workflow.containerEngine == 'apptainer'  ||
+        task.ext.singularity_pull_docker_container
+    ) ?
+        "/usr/local/share/shigapass-1.5.0/db" :
+        "\$CONDA_PREFIX/share/shigapass-1.5.0/db"
+    def is_compressed = fasta.getName().endsWith(".gz")
+    def fasta_name    = fasta.getName().replace(".gz", "")
     """
     # Optional decompression
     if [ "${is_compressed}" == "true" ]; then
         gzip -c -d ${fasta} > ${fasta_name}
     fi
 
-    # Convert our genome path to a file with a path in it
     ls ${fasta_name} > ${fasta_name}_tmp.txt
 
-    # Run ShigaPass
     ShigaPass.sh \\
         -l ${fasta_name}_tmp.txt \\
         $args \\
-        -p /usr/local/share/shigapass-1.5.0/db \\
+        -p ${dbPath} \\
         -t ${task.cpus} \\
         -o ${prefix}
 
-    # Remove the temporary file from above
     rm ${fasta_name}_tmp.txt
-
-    # Convert to tab delimited and move to the pwd
-    sed 's/;/\t/g' ${prefix}/ShigaPass_summary.csv > ${prefix}.tsv
-
-    # Convert to tab delimited and move to the pwd
-    [ ! -f ${prefix}/ShigaPass_Flex_summary.csv ] || sed 's/;/\t/g' ${prefix}/ShigaPass_Flex_summary.csv > ${prefix}_Flex_summary.tsv
+    sed 's/;/\\t/g' ${prefix}/ShigaPass_summary.csv > ${prefix}.tsv
+    [ ! -f ${prefix}/ShigaPass_Flex_summary.csv ] || sed 's/;/\\t/g' ${prefix}/ShigaPass_Flex_summary.csv > ${prefix}_Flex_summary.tsv
     """
 
     stub:
