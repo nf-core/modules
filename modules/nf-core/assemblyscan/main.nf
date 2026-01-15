@@ -13,7 +13,7 @@ process ASSEMBLYSCAN {
     output:
     tuple val(meta), path("*.tsv"),     emit: tsv, optional: true
     tuple val(meta), path("*.json"),    emit: json, optional: true
-    path "versions.yml",                emit: versions
+    tuple val("${task.process}"), val('assemblyscan'), eval("assembly-scan --version | sed 's/assembly-scan //'"), emit: versions_assemblyscan, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,10 +26,5 @@ process ASSEMBLYSCAN {
     assembly-scan \\
          ${args} \\
          ${assembly} > ${prefix}.${file_format}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        assemblyscan: \$( assembly-scan --version 2>&1 | sed 's/^.*assembly-scan //; s/Using.*\$//' )
-    END_VERSIONS
     """
 }
