@@ -7,7 +7,28 @@ nextflow_process {
     tag "modules_nfcore"
     tag "assemblyscan"
 
-    test("genome.fasta") {
+    test("genome.fasta - json") {
+
+        when {
+            config './json.config'
+            process {
+                """
+                input[0] =  [ [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("genome.fasta - tsv") {
 
         when {
             process {
