@@ -15,7 +15,8 @@ process FASTK_MERGE {
     tuple val(meta), path("*.hist")                      , emit: hist
     tuple val(meta), path("*.ktab*", hidden: true)       , emit: ktab, optional: true
     tuple val(meta), path("*.{prof,pidx}*", hidden: true), emit: prof, optional: true
-    path "versions.yml"                                  , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('fastk'), eval('echo 1.1'), emit: versions_fastk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,34 +24,21 @@ process FASTK_MERGE {
     script:
     def args          = task.ext.args ?: ''
     def prefix        = task.ext.prefix ?: "${meta.id}"
-    def FASTK_VERSION = '1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     Fastmerge \\
         $args \\
         -T$task.cpus \\
         ${prefix} \\
         $hist
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastk: $FASTK_VERSION
-    END_VERSIONS
     """
 
     stub:
     def args          = task.ext.args ?: ''
     def prefix        = task.ext.prefix ?: "${meta.id}"
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    def FASTK_VERSION = '1.1'
     def touch_hist    = args.contains('-h') ? "touch ${prefix}_fk.hist"                      : ''
     def touch_ktab    = args.contains('-t') ? "touch ${prefix}_fk.ktab .${prefix}_fk.ktab.1" : ''
     """
     ${touch_hist}
     ${touch_ktab}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastk: $FASTK_VERSION
-    END_VERSIONS
     """
 }
