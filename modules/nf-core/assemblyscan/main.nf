@@ -27,4 +27,12 @@ process ASSEMBLYSCAN {
          ${args} \\
          ${assembly} > ${prefix}.${file_format}
     """
+
+    stub:
+    def args        = task.ext.args   ?: ''
+    def prefix      = task.ext.prefix ?: "${meta.id}"
+    def file_format = (task.ext.args?.contains("--json")) ? "json" : "tsv"
+    """
+    touch ${prefix}.${file_format}
+    """
 }
