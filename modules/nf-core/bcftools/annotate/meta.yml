@@ -87,7 +87,7 @@ output:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
-      - ensemblvep:
+      - bcftools:
           type: string
           description: The tool name
       - "bcftools --version | sed '1!d; s/^.*bcftools //'":
@@ -98,7 +98,7 @@ topics:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
-      - ensemblvep:
+      - bcftools:
           type: string
           description: The tool name
       - "bcftools --version | sed '1!d; s/^.*bcftools //'":
