@@ -1,0 +1,158 @@
+// nf-core modules test tetranscripts
+nextflow_process {
+
+    name "Test Process TETRANSCRIPTS"
+    script "../main.nf"
+    process "TETRANSCRIPTS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tetranscripts"
+
+    test("single file c and t - bam") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'ctrl_bam' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    [],
+                ]
+
+		input[1] = [
+                    [ id:'test_bam' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
+                    [],
+                ]
+		input[2] = [
+                    [ id:'genome_gtf' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true),
+                ]
+		input[3] = [
+                    [ id:'te_gtf' ],
+                    file('https://raw.githubusercontent.com/hanalysis/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/genome/chr21/sequence/GRCh38_GENCODE_rmsk_TE_chr21.gtf', checkIfExists: true),
+                ]
+                """
+
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("multiple files t - bam") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'ctrl_bam' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    [],
+                ]
+
+                input[1] = [
+                    [ id:'test_bam' ],
+                   [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam', checkIfExists: true),],
+                    []
+                ]
+                input[2] = [
+                    [ id:'genome_gtf' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true),
+                ]
+                input[3] = [
+                    [ id:'te_gtf' ],
+                    file('https://raw.githubusercontent.com/hanalysis/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/genome/chr21/sequence/GRCh38_GENCODE_rmsk_TE_chr21.gtf', checkIfExists: true),
+                ]
+                """
+
+            }
+        }
+
+        then {
+            assert process.success
+
+            def outputFile = path(process.out.countTable[0][1]) // [0] is first sample, [1] is file (not meta)
+            assert outputFile.exists()
+
+            def lines = outputFile.readLines()
+            // take first 5 lines to check
+            def firstLines = lines.take(5)
+
+            // Check 4 columns (row names + 3 samples)
+            firstLines.eachWithIndex { line, idx ->
+               def columns = line.split(/\s+/)
+               assert columns.size() == 4: "Line ${idx + 1}: Expected 4 columns but got ${columns.size()} in line: '${line}'"
+            }
+
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("single file c and t - bam - stub") {
+
+        options "-stub"
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+		input[0] = [
+                    [ id:'ctrl_bam' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    [],
+                ]
+
+                input[1] = [
+                    [ id:'test_bam' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
+                    [],
+                ]
+                input[2] = [
+                    [ id:'genome_gtf' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true),
+                ]
+                input[3] = [
+                    [ id:'te_gtf' ],
+                    file('https://raw.githubusercontent.com/hanalysis/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/genome/chr21/sequence/GRCh38_GENCODE_rmsk_TE_chr21.gtf', checkIfExists: true),
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+}
