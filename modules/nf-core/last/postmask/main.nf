@@ -12,7 +12,8 @@ process LAST_POSTMASK {
 
     output:
     tuple val(meta), path("*.maf.gz"), emit: maf
-    path "versions.yml"              , emit: versions
+    // last-dotplot has no --version option so let's use lastal from the same suite
+    tuple val("${task.process}"), val('last'), eval("lastal --version | sed 's/lastal //'"), emit: versions_last, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,12 +25,6 @@ process LAST_POSTMASK {
     """
     set -o pipefail
     last-postmask $args $maf | gzip --no-name > ${prefix}.maf.gz
-
-    # last-postmask does not have a --version option
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        last: \$(lastal --version 2>&1 | sed 's/lastal //')
-    END_VERSIONS
     """
 
     stub:
@@ -38,11 +33,5 @@ process LAST_POSTMASK {
     if( "$maf" == "${prefix}.maf.gz" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     echo stub | gzip --no-name > ${prefix}.maf.gz
-
-    # last-postmask does not have a --version option
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        last: \$(lastal --version 2>&1 | sed 's/lastal //')
-    END_VERSIONS
     """
 }
