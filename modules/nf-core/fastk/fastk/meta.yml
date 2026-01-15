@@ -45,11 +45,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.ktab*":
+      - '"*.ktab*", hidden: true':
           type: file
           description: A sorted table of all canonical k‑mers along with their
             counts.
-          pattern: "*.ktab"
+          pattern: "*.ktab*"
           ontologies: []
   prof:
     - - meta:
@@ -57,11 +57,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.{prof,pidx}*":
+      - '"*.{prof,pidx}*", hidden: true':
           type: file
           description: A k‑mer count profile of each sequence in the input data
             set.
-          pattern: "*.prof"
+          pattern: "*.{prof,pidx}*"
           ontologies: []
   versions_fastk:
     - - ${task.process}:
