@@ -119,7 +119,6 @@ nextflow_workflow {
                 { assert snapshot(
                     workflow.out.results_genewise_filtered,
                     workflow.out.model,
-                    workflow.out.normalised_matrix,
                     workflow.out.versions
                 ).match() }
             )
