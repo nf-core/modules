@@ -36,6 +36,7 @@ process SHIGAPASS {
         gzip -c -d ${fasta} > ${fasta_name}
     fi
 
+    # Create temp file
     ls ${fasta_name} > ${fasta_name}_tmp.txt
 
     ShigaPass.sh \\
@@ -45,7 +46,10 @@ process SHIGAPASS {
         -t ${task.cpus} \\
         -o ${prefix}
 
+    # Remove temp file
     rm ${fasta_name}_tmp.txt
+
+    # Change from ; delim to tab delim
     sed 's/;/\\t/g' ${prefix}/ShigaPass_summary.csv > ${prefix}.tsv
     [ ! -f ${prefix}/ShigaPass_Flex_summary.csv ] || sed 's/;/\\t/g' ${prefix}/ShigaPass_Flex_summary.csv > ${prefix}_Flex_summary.tsv
     """
