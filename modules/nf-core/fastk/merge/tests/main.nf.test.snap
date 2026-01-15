@@ -5,13 +5,23 @@
                 "0": [
                     [
                         {
-                            "id": "test"
+                            "id": "test",
+                            "single_end": false
                         },
-                        "test_merged_fk.hist:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test_merged.hist:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "1": [
-                    
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            ".test_merged.ktab.1:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_merged.ktab:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
                 ],
                 "2": [
                     
@@ -26,13 +36,23 @@
                 "hist": [
                     [
                         {
-                            "id": "test"
+                            "id": "test",
+                            "single_end": false
                         },
-                        "test_merged_fk.hist:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test_merged.hist:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "ktab": [
-                    
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            ".test_merged.ktab.1:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_merged.ktab:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
                 ],
                 "prof": [
                     
@@ -50,64 +70,36 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2026-01-15T15:19:03.04238"
+        "timestamp": "2026-01-15T15:36:15.665524"
     },
     "homo_sapiens - Illumina": {
         "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test_merged.hist"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        ".test_merged.ktab.1",
+                        ".test_merged.ktab.2",
+                        "test_merged.ktab"
+                    ]
+                ]
+            ],
+            [
+                
+            ],
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_merged.hist:md5,e35814b0148355e81d24411d395c3ddd"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            ".test_merged.ktab.1:md5,3feddaf2d5cfe598176843b5e4676d9b",
-                            ".test_merged.ktab.2:md5,f048f778133fa1d8253ef84f8fdce919",
-                            "test_merged.ktab:md5,026590b00ba68b6d3f4dd6882e7dda43"
-                        ]
-                    ]
-                ],
-                "2": [
-                    
-                ],
-                "3": [
-                    [
-                        "FASTK_MERGE",
-                        "fastk",
-                        "1.1"
-                    ]
-                ],
-                "hist": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_merged.hist:md5,e35814b0148355e81d24411d395c3ddd"
-                    ]
-                ],
-                "ktab": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            ".test_merged.ktab.1:md5,3feddaf2d5cfe598176843b5e4676d9b",
-                            ".test_merged.ktab.2:md5,f048f778133fa1d8253ef84f8fdce919",
-                            "test_merged.ktab:md5,026590b00ba68b6d3f4dd6882e7dda43"
-                        ]
-                    ]
-                ],
-                "prof": [
-                    
-                ],
                 "versions_fastk": [
                     [
                         "FASTK_MERGE",
@@ -121,6 +113,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2026-01-15T15:18:54.297451"
+        "timestamp": "2026-01-15T15:27:29.964896"
     }
 }

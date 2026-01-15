@@ -35,8 +35,8 @@ process FASTK_MERGE {
     stub:
     def args          = task.ext.args ?: ''
     def prefix        = task.ext.prefix ?: "${meta.id}"
-    def touch_hist    = args.contains('-h') ? "touch ${prefix}_fk.hist"                      : ''
-    def touch_ktab    = args.contains('-t') ? "touch ${prefix}_fk.ktab .${prefix}_fk.ktab.1" : ''
+    def touch_hist    = args.contains('-h') ? "touch ${prefix}.hist"                   : ''
+    def touch_ktab    = args.contains('-t') ? "touch ${prefix}.ktab .${prefix}.ktab.1" : ''
     """
     ${touch_hist}
     ${touch_ktab}
