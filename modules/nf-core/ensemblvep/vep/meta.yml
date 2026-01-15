@@ -114,11 +114,15 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
   report:
-    - "*.html":
-        type: file
-        description: VEP report file
-        pattern: "*.html"
-        ontologies: []
+    - - meta:
+          type: map
+          description: |
+            Map with sample information
+      - "*.html":
+          type: file
+          description: VEP report file
+          pattern: "*.html"
+          ontologies: []
   versions_ensemblvep:
     - - ${task.process}:
           type: string
