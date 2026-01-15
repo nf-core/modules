@@ -182,7 +182,6 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
 
     // final concatenation
     if (!skip_final_concatenation) {
-        // CAT_FASTQ ( ch_reads.map { meta, reads -> [meta, reads.flatten()] } ) // TODO test more cases
         CAT_FASTQ ( ch_reads )
         ch_reads = CAT_FASTQ.out.reads
     }
