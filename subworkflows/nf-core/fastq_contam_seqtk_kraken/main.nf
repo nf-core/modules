@@ -30,7 +30,7 @@ workflow FASTQ_CONTAM_SEQTK_KRAKEN {
 
         SEQTK_SAMPLE(ch_reads_with_n)
 
-        ch_versions = ch_versions.mix(SEQTK_SAMPLE.out.versions)
+        // SEQTK_SAMPLE emits version as a topic channel
 
         KRAKEN2(SEQTK_SAMPLE.out.reads,
                 kraken2_db,
