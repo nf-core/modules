@@ -29,7 +29,8 @@ input:
         type: file
         description: Nucleotide sequences in FASTQ or FASTA format
         pattern: "*.{fastq,fastq.gz,fq,fq.gz,fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
   - card:
       type: directory
       description: Directory containing the CARD database. This is expected to be
@@ -76,23 +77,39 @@ output:
           type: directory
           description: Directory containing various intermediate files
           pattern: "temp/"
-  tool_version:
-    - RGI_VERSION:
-        type: string
-        description: The version of the tool in string format (useful for
-          downstream tools such as hAMRronization)
-  db_version:
-    - DB_VERSION:
-        type: string
-        description: The version of the used database in string format (useful for
-          downstream tools such as hAMRronization)
+  versions_rgi:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rgi:
+          type: string
+          description: The tool name
+      - rgi main --version:
+          type: string
+          description: The version string returned by the command
+  versions_db:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rgi-database:
+          type: string
+          description: The tool name
+      - echo $DB_VERSION:
+          type: string
+          description: The CARD database version string
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rgi:
+          type: string
+          description: The tool name
+      - rgi main --version:
+          type: string
+          description: The command used to generate the version of the tool
+
 authors:
   - "@vinisalazar"
 maintainers:
