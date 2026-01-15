@@ -47,6 +47,10 @@ nextflow_workflow {
     test("sarscov2 - fastq - seqfu - seqkit - deacon - single_end") {
 
         when {
+            params {
+                save_merged = false
+                adapterremoval_args = save_merged ? "--collapse" : ""
+            }
             workflow {
                 """
                 input[0] = channel.of([
@@ -107,6 +111,10 @@ nextflow_workflow {
     test("sarscov2 - fastq - umitools - prinseq - clumpify - cat - single_end") {
 
         when {
+            params {
+                save_merged = false
+                adapterremoval_args = save_merged ? "--collapse" : ""
+            }
             workflow {
                 """
                 input[0] = channel.of([
@@ -162,6 +170,10 @@ nextflow_workflow {
     test("sarscov2 - fastq - fastqc - seqkit - cutadapt - clumpify - cat - paired_end") {
 
         when {
+            params {
+                save_merged = false
+                adapterremoval_args = save_merged ? "--collapse" : ""
+            }
             workflow {
                 """
                 input[0] = channel.of([
@@ -203,7 +215,8 @@ nextflow_workflow {
             assert workflow.success
             assertAll(
                 { assert snapshot(
-                    workflow.out.reads,
+                    path(workflow.out.reads[0][1][0]).linesGzip.size(),
+                    path(workflow.out.reads[0][1][1]).linesGzip.size(),
                     file(workflow.out.pre_stats_fastqc_html[0][1][0]).name,
                     file(workflow.out.pre_stats_fastqc_html[0][1][1]).name,
                     file(workflow.out.post_stats_fastqc_html[0][1][0]).name,
@@ -212,8 +225,73 @@ nextflow_workflow {
                     file(workflow.out.pre_stats_fastqc_zip[0][1][1]).name,
                     file(workflow.out.post_stats_fastqc_zip[0][1][0]).name,
                     file(workflow.out.post_stats_fastqc_zip[0][1][1]).name,
-                    workflow.out.adapterremoval_discarded_reads.collect { file(it[1]).name },
                     path(workflow.out.clumpify_log[0][1]).readLines().size(),
+                    workflow.out.versions.collect { path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - adapterremoval - merge - cat more files - paired_end") {
+
+        when {
+            params {
+                save_merged = true
+                adapterremoval_args = save_merged ? "--collapse" : ""
+            }
+            workflow {
+                """
+                input[0] = channel.of(
+                    [
+                        [ id:'test', single_end:false ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ],
+                    [
+                        [ id:'test2', single_end:false ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                )
+                input[1]  = true               // skip_fastqc
+                input[2]  = true               // skip_seqfu_check
+                input[3]  = true               // skip_seqfu_stats
+                input[4]  = true               // skip_seqkit_stats
+                input[5]  = true               // skip_seqtk_comp
+                input[6]  = true               // skip_seqkit_sana_pair
+                input[7]  = true               // skip_seqkit_seq
+                input[8]  = true               // skip_seqkit_replace
+                input[9]  = true               // skip_seqkit_rmdup
+                input[10] = true               // skip_umitools_extract
+                input[11] = 0                  // val_umi_discard_read
+                input[12] = false              // skip_adapterremoval
+                input[13] = "adapterremoval"   // val_adapter_tool
+                input[14] = []                 // ch_custom_adapters_file
+                input[15] = params.save_merged // val_save_merged
+                input[16] = false              // val_fastp_discard_trimmed_pass
+                input[17] = false              // val_fastp_save_trimmed_fail
+                input[18] = true               // skip_complexity_filtering
+                input[19] = true               // skip_deduplication
+                input[20] = true               // skip_decontamination
+                input[21] = []                 // ch_fasta
+                input[22] = []                 // ch_reference
+                input[23] = []                 // val_index_name
+                input[24] = ''                 // val_decontaminator
+                input[25] = false              // skip_final_concatenation
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    workflow.out.reads[0][1],
+                    workflow.out.reads[1][1],
+                    workflow.out.adapterremoval_discarded_reads.collect { file(it[1]).name },
                     workflow.out.versions.collect { path(it).yaml }
                 ).match() }
             )
@@ -223,6 +301,10 @@ nextflow_workflow {
     test("sarscov2 - fastq - skip all - single_end") {
 
         when {
+            params {
+                save_merged = false
+                adapterremoval_args = save_merged ? "--collapse" : ""
+            }
             workflow {
                 """
                 input[0] = channel.of([
@@ -273,6 +355,10 @@ nextflow_workflow {
         options "-stub"
 
         when {
+            params {
+                save_merged = false
+                adapterremoval_args = save_merged ? "--collapse" : ""
+            }
             workflow {
                 """
                 input[0] = channel.of([

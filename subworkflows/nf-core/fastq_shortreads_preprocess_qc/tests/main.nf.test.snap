@@ -118,20 +118,32 @@
         },
         "timestamp": "2026-01-13T13:42:12.770307912"
     },
+    "sarscov2 - fastq - adapterremoval - merge - cat more files - paired_end": {
+        "content": [
+            "test.merged.fastq.gz:md5,369452751050a7f1e31b839702d61417",
+            "test2.merged.fastq.gz:md5,369452751050a7f1e31b839702d61417",
+            [
+                "test.discarded.fastq.gz",
+                "test2.discarded.fastq.gz"
+            ],
+            [
+                {
+                    "FASTQ_SHORTREADS_PREPROCESS_QC:FASTQ_REMOVEADAPTERS_MERGE:ADAPTERREMOVAL_PE": {
+                        "adapterremoval": "2.3.2"
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-01-15T11:56:56.943674841"
+    },
     "sarscov2 - fastq - fastqc - seqkit - cutadapt - clumpify - cat - paired_end": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    [
-                        "test_1.merged.fastq.gz:md5,42fed2ac405007f67eb6aee7888aa161",
-                        "test_2.merged.fastq.gz:md5,84ea538be7792467d2a8d8201a8d5da7"
-                    ]
-                ]
-            ],
+            400,
+            400,
             "test_1_fastqc.html",
             "test_2_fastqc.html",
             "test_1_fastqc.html",
@@ -140,9 +152,6 @@
             "test_2_fastqc.zip",
             "test_1_fastqc.zip",
             "test_2_fastqc.zip",
-            [
-                
-            ],
             36,
             [
                 {
@@ -181,7 +190,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-01-15T11:19:16.402935285"
+        "timestamp": "2026-01-15T11:39:36.442733591"
     },
     "sarscov2 - fastq - skip all - single_end": {
         "content": [
