@@ -52,6 +52,17 @@ output:
       - "ShigaPass.sh --version 2>&1 | sed 's/^.*ShigaPass version //'":
           type: string
           description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+           type: string
+           description: The process the versions were collected from
+      - shigapass:
+          type: string
+          description: The tool name
+      - "ShigaPass.sh --version 2>&1 | sed 's/^.*ShigaPass version //'":
+          type: string
+          description: The command used to generate the version of the tool
 
 authors:
   - "@maxlcummins"
