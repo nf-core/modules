@@ -15,7 +15,7 @@ process TMB_PYTMB {
     tuple val(meta), path("*.log")          , emit: tmb_log
     tuple val(meta), path("*_export.vcf.gz"), optional:true, emit: export_vcf
     tuple val(meta), path("*_debug.vcf.gz") , optional:true, emit: debug_vcf
-    tuple val("${task.process}"), val('tmb'), eval(" pyTMB.py --version | awk '{print \$2}' | tr -d '()' "), emit: versions
+    tuple val("${task.process}"), val('tmb'), eval(" pyTMB.py --version | awk '{print \$2}' | tr -d '()' "), topic: versions, emit: versions_tmb
     when:
     task.ext.when == null || task.ext.when
 
