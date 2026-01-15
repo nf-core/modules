@@ -22,6 +22,7 @@ process BFTOOLS_SHOWINF {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    export BF_FLAGS='-XX:+PerfDisableSharedMem'
     showinf -nopix -no-upgrade -omexml-only \\
         $args \\
         $image > ${prefix}.xml

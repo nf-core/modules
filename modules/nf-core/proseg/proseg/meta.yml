@@ -26,169 +26,169 @@ input:
   - mode:
       type: string
       description: Proseg preset mode
-      enum: ['xenium', 'merfish', 'cosmx']
+      enum: ["xenium", "merfish", "cosmx"]
   - - transcript_metadata_fmt:
         type: string
         description: Format of the transcript metadata file
-        enum: ['csv', 'csv.gz', 'parquet']
+        enum: ["csv", "csv.gz", "parquet"]
     - cell_metadata_fmt:
         type: file
         description: Format of the cell metadata file
-        enum: ['csv', 'csv.gz', 'parquet']
+        enum: ["csv", "csv.gz", "parquet"]
     - expected_counts_fmt:
         type: file
         description: Format of the expected counts file
-        enum: ['csv', 'csv.gz', 'parquet']
+        enum: ["csv", "csv.gz", "parquet"]
 
 output:
   transcript_metadata:
-      - - meta:
-            type: map
-            description: Groovy Map containing sample information
-        - "*transcript-metadata.{csv,csv.gz,parquet}":
-            type: file
-            description: Transcript ids, genes, revised positions, assignment probability, etc.
-            pattern: "*transcript-metadata.{csv.gz,csv,parquet}"
-            ontologies:
-              - edam: http://edamontology.org/format_3752 # CSV
-              - edam: http://edamontology.org/format_3989 # GZIP format
-  union_cell_polygons:
-      - - meta:
-            type: map
-            description: Groovy Map containing sample information
-        - "*cell-polygons-union.geojson.gz":
-            type: file
-            description: Union cell polygons
-            pattern: "*cell-polygons-union.geojson.gz"
-  cell_polygons:
-      - - meta:
-            type: map
-            description: Groovy Map containing sample information
-        - "*cell-polygons.geojson.gz":
-            type: file
-            description: Cell polygons file
-            pattern: "*cell-polygons.geojson.gz"
-  cell_metadata:
-      - - meta:
-            type: map
-            description: Groovy Map containing sample information
-        - "*cell-metadata.{csv,csv.gz,parquet}":
-            type: file
-            description: Cell metadata file
-            pattern: "*cell-metadata.{csv.gz,csv,parquet}"
-            ontologies:
-              - edam: http://edamontology.org/format_3752 # CSV
-              - edam: http://edamontology.org/format_3989 # GZIP format
-  cell_polygons_layers:
-      - - meta:
-            type: map
-            description: Groovy Map containing sample information
-        - "*cell-polygons-layers.geojson.gz":
-            type: file
-            description: Cell polygon layers file
-            pattern: "*cell-polygons-layers.geojson.gz"
-  expected_counts:
-      - - meta:
-            type: map
-            description: Groovy Map containing sample information
-        - "*expected-counts.{csv,csv.gz,parquet}":
-            type: file
-            description: Expected transcript counts file
-            pattern: "*expected-counts.{csv.gz,csv,parquet}"
-            ontologies:
-              - edam: http://edamontology.org/format_3752 # CSV
-              - edam: http://edamontology.org/format_3989 # GZIP format
-  maxpost_counts:
-      - - meta:
-            type: map
-            description: Groovy Map containing sample information
-        - "*maxpost-counts.{csv,csv.gz,parquet}":
-            type: file
-            description: point estimate of counts per cell
-            pattern: "*maxpost-counts.{csv.gz,csv,parquet}"
-            optional: true
-            ontologies:
-              - edam: http://edamontology.org/format_3752 # CSV
-              - edam: http://edamontology.org/format_3989 # GZIP format
-  output_rates:
-      - - meta:
-            type: map
-            description: Groovy Map containing sample information
-        - "*output-rates.{csv,csv.gz,parquet}":
-            type: file
-            description: Estimated poisson expression rates for each cell
-            pattern: "*output-rates.{csv.gz,csv,parquet}"
-            optional: true
-            ontologies:
-              - edam: http://edamontology.org/format_3752 # CSV
-              - edam: http://edamontology.org/format_3989 # GZIP format
-  cell_hulls:
-      - - meta:
-            type: map
-            description: Groovy Map containing sample information
-        - "*cell-hulls.{csv,csv.gz,parquet}":
-            type: file
-            description: Cell convex hulls
-            pattern: "*cell-hulls.{csv.gz,csv,parquet}"
-            optional: true
-            ontologies:
-              - edam: http://edamontology.org/format_3752 # CSV
-              - edam: http://edamontology.org/format_3989 # GZIP format
-  gene_metadata:
-      - - meta:
-            type: map
-            description: Groovy Map containing sample information
-        - "*gene-metadata.{csv,csv.gz,parquet}":
-            type: file
-            description: gene metadata
-            pattern: "*gene-metadata.{csv.gz,csv,parquet}"
-            optional: true
-            ontologies:
-              - edam: http://edamontology.org/format_3752 # CSV
-              - edam: http://edamontology.org/format_3989 # GZIP format
-  metagene_rates:
-      - - meta:
-            type: map
-            description: Groovy Map containing sample information
-        - "*metagene-rates.{csv,csv.gz,parquet}":
-            type: file
-            description: metagene rates
-            pattern: "*metagene-rates.{csv.gz,csv,parquet}"
-            optional: true
-            ontologies:
-              - edam: http://edamontology.org/format_3752 # CSV
-              - edam: http://edamontology.org/format_3989 # GZIP format
-  metagene_loadings:
-      - - meta:
-            type: map
-            description: Groovy Map containing sample information
-        - "*metagene-loadings.{csv,csv.gz,parquet}":
-            type: file
-            description: metagene loadings
-            pattern: "*metagene-loadings.{csv.gz,csv,parquet}"
-            optional: true
-            ontologies:
-              - edam: http://edamontology.org/format_3752 # CSV
-              - edam: http://edamontology.org/format_3989 # GZIP format
-  cell_voxels:
-      - - meta:
-            type: map
-            description: Groovy Map containing sample information
-        - "*cell-voxels.{csv,csv.gz,parquet}":
-            type: file
-            description: table of each voxel in each cell
-            pattern: "*cell-voxels.{csv.gz,csv,parquet}"
-            optional: true
-            ontologies:
-              - edam: http://edamontology.org/format_3752 # CSV
-              - edam: http://edamontology.org/format_3989 # GZIP format
-  versions:
-      - "versions.yml":
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*transcript-metadata.{csv,csv.gz,parquet}":
           type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: Transcript ids, genes, revised positions, assignment probability, etc.
+          pattern: "*transcript-metadata.{csv.gz,csv,parquet}"
           ontologies:
-            - edam: http://edamontology.org/format_3750 # YAML
+            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  union_cell_polygons:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*cell-polygons-union.geojson.gz":
+          type: file
+          description: Union cell polygons
+          pattern: "*cell-polygons-union.geojson.gz"
+  cell_polygons:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*cell-polygons.geojson.gz":
+          type: file
+          description: Cell polygons file
+          pattern: "*cell-polygons.geojson.gz"
+  cell_metadata:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*cell-metadata.{csv,csv.gz,parquet}":
+          type: file
+          description: Cell metadata file
+          pattern: "*cell-metadata.{csv.gz,csv,parquet}"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  cell_polygons_layers:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*cell-polygons-layers.geojson.gz":
+          type: file
+          description: Cell polygon layers file
+          pattern: "*cell-polygons-layers.geojson.gz"
+  expected_counts:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*expected-counts.{csv,csv.gz,parquet}":
+          type: file
+          description: Expected transcript counts file
+          pattern: "*expected-counts.{csv.gz,csv,parquet}"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  maxpost_counts:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*maxpost-counts.{csv,csv.gz,parquet}":
+          type: file
+          description: point estimate of counts per cell
+          pattern: "*maxpost-counts.{csv.gz,csv,parquet}"
+          optional: true
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  output_rates:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*output-rates.{csv,csv.gz,parquet}":
+          type: file
+          description: Estimated poisson expression rates for each cell
+          pattern: "*output-rates.{csv.gz,csv,parquet}"
+          optional: true
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  cell_hulls:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*cell-hulls.{csv,csv.gz,parquet}":
+          type: file
+          description: Cell convex hulls
+          pattern: "*cell-hulls.{csv.gz,csv,parquet}"
+          optional: true
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  gene_metadata:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*gene-metadata.{csv,csv.gz,parquet}":
+          type: file
+          description: gene metadata
+          pattern: "*gene-metadata.{csv.gz,csv,parquet}"
+          optional: true
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  metagene_rates:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*metagene-rates.{csv,csv.gz,parquet}":
+          type: file
+          description: metagene rates
+          pattern: "*metagene-rates.{csv.gz,csv,parquet}"
+          optional: true
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  metagene_loadings:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*metagene-loadings.{csv,csv.gz,parquet}":
+          type: file
+          description: metagene loadings
+          pattern: "*metagene-loadings.{csv.gz,csv,parquet}"
+          optional: true
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  cell_voxels:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*cell-voxels.{csv,csv.gz,parquet}":
+          type: file
+          description: table of each voxel in each cell
+          pattern: "*cell-voxels.{csv.gz,csv,parquet}"
+          optional: true
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 
 authors:
   - "@derrik-gratz"

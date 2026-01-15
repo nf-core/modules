@@ -16,7 +16,7 @@ process BISMARK_ALIGN {
     tuple val(meta), path("*bam")       , emit: bam
     tuple val(meta), path("*report.txt"), emit: report
     tuple val(meta), path("*fq.gz")     , emit: unmapped, optional: true
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val("bismark"), eval('bismark --version | grep Version | sed -e "s/Bismark Version: v//" | xargs'), topic: versions, emit: versions_bismark
 
     when:
     task.ext.when == null || task.ext.when
@@ -61,11 +61,6 @@ process BISMARK_ALIGN {
         --genome ${index} \\
         --bam \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bismark: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -74,10 +69,5 @@ process BISMARK_ALIGN {
     """
     touch ${prefix}.bam
     touch ${prefix}.report.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bismark: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
-    END_VERSIONS
     """
 }

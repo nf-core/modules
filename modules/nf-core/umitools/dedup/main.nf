@@ -33,7 +33,7 @@ process UMITOOLS_DEDUP {
     """
     #Prevent matplotlib from using /tmp
     mkdir .tmp && chmod 777 .tmp
-    
+
     MPLCONFIGDIR=.tmp TMPDIR=.tmp PYTHONHASHSEED=0 umi_tools \\
         dedup \\
         -I $bam \\

@@ -44,7 +44,7 @@ process FASTQDL {
     echo "" | gzip > ${accession}_1.fastq.gz
     echo "" | gzip > ${accession}_2.fastq.gz
     touch ${prefix}-run-info.tsv
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         fastq-dl: \$(fastq-dl --version |& sed 's/.* //')

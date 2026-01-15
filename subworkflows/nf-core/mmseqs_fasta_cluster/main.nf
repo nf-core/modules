@@ -9,8 +9,8 @@ workflow MMSEQS_FASTA_CLUSTER {
     clustering_tool // string: ["linclust", "cluster"]
 
     main:
-    ch_versions       = Channel.empty()
-    ch_clustering_tsv = Channel.empty()
+    ch_versions       = channel.empty()
+    ch_clustering_tsv = channel.empty()
 
     MMSEQS_CREATEDB( sequences )
     ch_versions = ch_versions.mix( MMSEQS_CREATEDB.out.versions )

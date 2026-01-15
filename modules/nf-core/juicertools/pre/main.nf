@@ -29,7 +29,7 @@ process JUICERTOOLS_PRE {
     def prefix   = task.ext.prefix ?: "${meta.id}"
     input_genome = genome_id       ?: chromsizes
     """
-    export JAVA_OPTS='"-Xms${task.memory.toMega()/4}m" "-Xmx${task.memory.toGiga()}g"'
+    export _JAVA_OPTIONS="-Xms${task.memory.toMega().intdiv(4)}m -Xmx${task.memory.toGiga()}g"
 
     juicer_tools pre \\
         --threads ${task.cpus} \\

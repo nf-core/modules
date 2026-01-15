@@ -38,6 +38,8 @@ process BLAST_BLASTN {
         gzip -c -d ${fasta} > ${fasta_name}
     fi
 
+    export BLASTDB=${db}
+
     DB=`find -L ./ -name "*.nal" | sed 's/\\.nal\$//'`
     if [ -z "\$DB" ]; then
         DB=`find -L ./ -name "*.nin" | sed 's/\\.nin\$//'`

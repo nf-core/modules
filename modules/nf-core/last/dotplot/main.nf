@@ -16,7 +16,8 @@ process LAST_DOTPLOT {
     output:
     tuple val(meta), path("*.gif"), optional:true, emit: gif
     tuple val(meta), path("*.png"), optional:true, emit: png
-    path "versions.yml"                          , emit: versions
+    // last-dotplot has no --version option so let's use lastal from the same suite
+    tuple val("${task.process}"), val('last'), eval("lastal --version | sed 's/lastal //'"), emit: versions_last, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,12 +40,6 @@ process LAST_DOTPLOT {
         $annot_b_arg \\
         - \\
         $prefix.$format
-
-    # last-dotplot has no --version option so let's use lastal from the same suite
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        last: \$(lastal --version | sed 's/lastal //')
-    END_VERSIONS
     """
 
     stub:
@@ -52,12 +47,6 @@ process LAST_DOTPLOT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch $prefix.$format
-
-    # last-dotplot has no --version option so let's use lastal from the same suite
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        last: \$(lastal --version | sed 's/lastal //')
-    END_VERSIONS
     """
 
 }

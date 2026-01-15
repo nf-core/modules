@@ -3,11 +3,16 @@ repos:
     rev: "v3.1.0"
     hooks:
       - id: prettier
+        entry: prettier --experimental-cli --write --ignore-unknown --no-cache
+        exclude: |
+          (?x)^(
+              .*\.snap$
+          )$
         additional_dependencies:
-          - prettier@3.6.2
+          - prettier@3.7.3
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
@@ -22,7 +27,7 @@ repos:
           )$
 
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.33.2
+    rev: 0.35.0
     hooks:
       - id: check-jsonschema
         name: "Match meta.ymls in one of the subdirectories of modules/nf-core"
@@ -43,7 +48,7 @@ repos:
 
   # use ruff for python files
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.12.9
+    rev: v0.14.7
     hooks:
       - id: ruff
         files: \.py$
@@ -51,10 +56,7 @@ repos:
       - id: ruff-format # formatter
     # NOTE This runs with Docker instead of the binary. Hoping anyone messing with Dockerfiles has Docker installed
   - repo: https://github.com/hadolint/hadolint
-    rev: v2.12.0
+    rev: v2.14.0
     hooks:
       - id: hadolint-docker
-  - repo: https://github.com/nf-core/tools
-    rev: pre-commit
-    hooks:
-      - id: lint-subworkflows
+        args: ["--failure-threshold", "error"]

@@ -15,7 +15,7 @@ process TRUST4 {
     val(cell_barcode_read)
     val(umi_read)
     val(read_format)
-    
+
 
     output:
     tuple val(meta), path("*.tsv")                  , emit: tsv

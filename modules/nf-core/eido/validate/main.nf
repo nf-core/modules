@@ -4,13 +4,12 @@ process EIDO_VALIDATE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://containers.biocontainers.pro/s3/SingImgsRepo/eido/0.1.9_cv2/eido_0.1.9_cv2.sif' :
-        'docker.io/biocontainers/eido:0.1.9_cv2' }"
+        'oras://community.wave.seqera.io/library/eido_peppy:2522b1352d5d6547' :
+        'community.wave.seqera.io/library/eido_peppy:3721c3f85cc3d076' }"
 
     input:
     path samplesheet
     path schema
-    path pep_input_base_dir
 
     output:
     path "versions.yml"  , emit: versions

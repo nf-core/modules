@@ -22,7 +22,7 @@ input:
         type: map
         description: Groovy Map containing sample information. e.g. `[
           id:'sample1' ]`
-    - sv_file: 
+    - sv_file:
         type: file
         description: Structural variants file in VCF or BED format
         pattern: "*.{vcf,bed}"
@@ -33,7 +33,7 @@ input:
     - assembly:
         type: string
         description: Genome assembly version, has to be one of 'GRCh38' or 'GRCh37'
-        enum: [ 'GRCh38', 'GRCh37' ]
+        enum: ["GRCh38", "GRCh37"]
   - - meta2:
         type: map
         description: Groovy Map containing sample information. e.g. `[

@@ -23,13 +23,13 @@ nextflow_process {
                     file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true) ]
                     """
                 }
-            } 
+            }
             run("CELLSNP_MODEA") {
                 script "../../cellsnp/modea/main.nf"
                 process {
                     """
-                    input[0] = SAMTOOLS_INDEX.out.bai.collect{ meta, bai -> bai }.map{ 
-                               bai -> [[id: 'sample1'], 
+                    input[0] = SAMTOOLS_INDEX.out.bai.collect{ meta, bai -> bai }.map{
+                               bai -> [[id: 'sample1'],
                                         file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
                                         bai,
                                         file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true),
@@ -42,7 +42,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = CELLSNP_MODEA.out.cell.collect{ meta, cell -> cell }.map{ 
+                input[0] = CELLSNP_MODEA.out.cell.collect{ meta, cell -> cell }.map{
                             cell -> [[id:'test'],
                                       cell,
                                       2,

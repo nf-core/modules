@@ -1,6 +1,5 @@
 name: "backsub"
-description: Pixel-by-pixel channel subtraction scaled by exposure times of pre-stitched
-  `tif` images.
+description: Pixel-by-pixel channel subtraction tool for multiplexed immunofluorescence data.
 keywords:
   - background
   - cycif
@@ -10,8 +9,7 @@ keywords:
   - highly_multiplexed_imaging
 tools:
   - "backsub":
-      description: "Module for pixel-by-pixel channel subtraction scaled by exposure
-        times"
+      description: "Pixel-by-pixel channel subtraction tool for multiplexed immunofluorescence data"
       homepage: "https://github.com/SchapiroLabor/Background_subtraction"
       documentation: "https://github.com/SchapiroLabor/Background_subtraction/blob/master/README.md"
       tool_dev_url: "https://github.com/SchapiroLabor/Background_subtraction"
@@ -27,7 +25,8 @@ input:
         type: file
         description: Multi-channel image file
         pattern: "*.{tif,tiff}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3591 # TIFF
   - - meta2:
         type: map
         description: |
@@ -51,7 +50,8 @@ output:
           type: file
           description: Background corrected pyramidal ome.tif
           pattern: "*.{tif}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3727 # OME-TIFF
   markerout:
     - - meta2:
           type: map

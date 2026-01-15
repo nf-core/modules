@@ -37,7 +37,7 @@ def _make_versions_html(versions):
                 dedent(
                     f"""\\
                     <tr>
-                        <td><samp>{process if (i == 0) else ''}</samp></td>
+                        <td><samp>{process if (i == 0) else ""}</samp></td>
                         <td><samp>{tool}</samp></td>
                         <td><samp>{version}</samp></td>
                     </tr>

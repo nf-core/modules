@@ -2,54 +2,59 @@ name: "eigscis"
 description: Perform eigen value decomposition on a cooler matrix to calculate compartment
   signal by finding the eigenvector that correlates best with the phasing track
 keywords:
-- cool
-- Hi-C
-- compartment signal
-- eigenvector
+  - cool
+  - Hi-C
+  - compartment signal
+  - eigenvector
 tools:
-- "cooltools":
-    description: "Analysis tools for genomic interaction data stored in .cool format"
-    homepage: "https://cooltools.readthedocs.io"
-    documentation: "https://cooltools.readthedocs.io"
-    tool_dev_url: "https://github.com/open2c/cooltools/"
-    doi: "10.5281/zenodo.5214125"
-    licence: ["MIT"]
-    identifier: biotools:cooltools
+  - "cooltools":
+      description: "Analysis tools for genomic interaction data stored in .cool format"
+      homepage: "https://cooltools.readthedocs.io"
+      documentation: "https://cooltools.readthedocs.io"
+      tool_dev_url: "https://github.com/open2c/cooltools/"
+      doi: "10.5281/zenodo.5214125"
+      licence: ["MIT"]
+      identifier: biotools:cooltools
 
 input:
-- - meta:
-      type: map
-      description: Groovy Map containing sample information
-  - cool:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information
+    - cool:
+        type: file
+        description: cool file
+        pattern: "*.cool"
+        ontologies: []
+  - bed:
       type: file
-      description: cool file
-      pattern: "*.cool"
-- - bed:
-      type: file
-      description: bed file, phasing track for orienting and ranking eigenvectors,provided as /path/to/track::track_value_column_name
+      description: bed file, phasing track for orienting and ranking eigenvectors,provided
+        as /path/to/track::track_value_column_name
       pattern: "*.bed"
-
+      ontologies: []
 output:
-- result:
-  - meta:
-      type: map
-      description: Groovy Map containing sample information e.g. id:'test'
-  - "*compartment*":
-      type: file
-      description: BED-like file for compartment track
-- bigwig:
-  - meta:
-      type: map
-      description: Groovy Map containing sample information e.g. id:'test'
-  - "*.bw":
-      type: file
-      description: bigwig file for compartment track
-      ontologies:
-      - edam: "http://edamontology.org/format_3006"     # bigWig
-- versions:
-  - versions.yml:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  result:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. id:'test'
+      - "*compartment*":
+          type: file
+          description: BED-like file for compartment track
+          ontologies: []
+  bigwig:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. id:'test'
+      - "*.bw":
+          type: file
+          description: bigwig file for compartment track
+          ontologies:
+            - edam: "http://edamontology.org/format_3006" # bigWig
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
-- "@Thibault-Poinsignon"
+  - "@Thibault-Poinsignon"

@@ -76,7 +76,7 @@ nextflow_process {
                         process.out.versions,
                         file(process.out.log_txt[0][1]).readLines().last().contains("CONCOCT Finished, the log shows how it went."),
                         path(process.out.versions[0]).yaml
-                    ).match() 
+                    ).match()
                 }
             )
         }

@@ -2,62 +2,62 @@ name: "fibertoolsrs_extract"
 description: Extract Fiber-seq information (such as m6A, CpG, nucleosomes, and MSPs)
   from BAM file into BED file
 keywords:
-- methylation
-- genomics
-- bam
-- m6A
-- fiberseq
+  - methylation
+  - genomics
+  - bam
+  - m6A
+  - fiberseq
 tools:
-- "fibertoolsrs":
-    description: "Mitchell Vollger's rust tools for fiberseq data."
-    homepage: "https://fiberseq.github.io/fibertools/fibertools.html"
-    documentation: "https://fiberseq.github.io/fibertools/fibertools.html"
-    tool_dev_url: "https://github.com/fiberseq/fibertools-rs"
-    doi: "10.5281/zenodo.14782951"
-    licence: ['MIT']
-    identifier: ""
+  - "fibertoolsrs":
+      description: "Mitchell Vollger's rust tools for fiberseq data."
+      homepage: "https://fiberseq.github.io/fibertools/fibertools.html"
+      documentation: "https://fiberseq.github.io/fibertools/fibertools.html"
+      tool_dev_url: "https://github.com/fiberseq/fibertools-rs"
+      doi: "10.5281/zenodo.14782951"
+      licence: ["MIT"]
+      identifier: ""
 
 input:
-- - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM file
-      pattern: "*.{bam,cram}"
-      ontologies:
-      - edam: "http://edamontology.org/format_2572"     # BAM
-      - edam: "http://edamontology.org/format_2573"     # CRAM
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2573" # CRAM
 
-- extract_type:
+  - extract_type:
       type: string
       description: |
         Type of fiberseq information to extract
         e.g. `m6a`, `cpg`, `msp`, `nuc`, `all`
 output:
   bed:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-    - '*.bed.gz':
-        type: file
-        description: Gzipped BED file with fiber-seq information
-        pattern: "*.bed.gz"
-        ontologies:
-        - edam: http://edamontology.org/format_3989  # GZIP format
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bed.gz":
+          type: file
+          description: Gzipped BED file with fiber-seq information
+          pattern: "*.bed.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
   versions:
-  - versions.yml:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-      ontologies:
-      - edam: "http://edamontology.org/format_3750"     # YAML
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 
 authors:
-- "@mrvollger"
+  - "@YiJin-Xiong"
 maintainers:
-- "@mrvollger"
+  - "@YiJin-Xiong"
