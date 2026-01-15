@@ -1,0 +1,68 @@
+## Describe the fields
+## For definition, provide the expected key:values
+## Note that several keys/values can be defined
+
+###############################################
+## SnpEff Parsing
+
+## Tags
+tag: "ANN"
+sep: "&"
+
+## Annotation flags
+
+isCoding:
+  1:
+    - protein_coding
+
+isNonCoding:
+  1:
+    - 3_prime_UTR_truncation
+    - 3_prime_UTR_variant
+    - 5_prime_UTR_premature_start_codon_gain_variant
+    - 5_prime_UTR_truncation
+    - 5_prime_UTR_variant
+    - conserved_intergenic_variant
+    - conserved_intron_variant
+    - downstream_gene_variant
+    - feature_elongation
+    - feature_truncation
+    - intergenic_region
+    - intragenic_variant
+    - intron_variant
+    - mature_miRNA_variant
+    - miRNA
+    - NMD_transcript_variant
+    - non_coding_transcript_exon_variant
+    - non_coding_transcript_variant
+    - regulatory_region_ablation
+    - regulatory_region_amplification
+    - regulatory_region_variant
+    - TF_binding_site_variant
+    - TFBS_ablation
+    - TFBS_amplification
+    - upstream_gene_variant
+
+isSplicing:
+  1:
+    - splice_donor_variant
+    - splice_acceptor_variant
+    - splice_region_variant
+
+isSynonymous:
+  1:
+    - start_retained_variant
+    - stop_retained_variant
+    - synonymous_variant
+
+isNonSynonymous:
+  1:
+    - frameshift_variant
+    - missense_variant
+    - rare_amino_acid_variant
+    - splice_acceptor_variant
+    - splice_donor_variant
+    - splice_region_variant
+    - start_lost
+    - stop_gained
+    - stop_lost
