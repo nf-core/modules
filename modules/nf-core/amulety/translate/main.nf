@@ -4,8 +4,8 @@ process AMULETY_TRANSLATE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/amulety_igblast_wget:fc4554b00bc0e6ff':
-        'community.wave.seqera.io/library/amulety_igblast_wget:2c93c3bf22f60a80' }"
+        'oras://community.wave.seqera.io/library/amulety_igblast_wget:63680dbda079196f':
+        'community.wave.seqera.io/library/amulety_igblast_wget:0cc8c96f93ce70c3' }"
 
     input:
     tuple val(meta), path(tsv)
@@ -20,6 +20,7 @@ process AMULETY_TRANSLATE {
     task.ext.when == null || task.ext.when
 
     script:
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     export IGDATA=${reference_igblast}
