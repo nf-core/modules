@@ -24,7 +24,7 @@ nextflow_process {
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                         ],
                         [
-                            [ id:'test', single_end:false ],
+                            [ id:'test2', single_end:false ],
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                         ]
                     )
@@ -36,11 +36,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = FASTK_FASTK.out.hist.groupTuple()
-                    .join( FASTK_FASTK.out.ktab.groupTuple(), remainder: true )
-                    .join( FASTK_FASTK.out.prof.groupTuple(), remainder: true )
+                input[0] = FASTK_FASTK.out.hist.map { meta, hist -> [[id: "test"], hist] }.groupTuple()
+                    .join( FASTK_FASTK.out.ktab.map { meta, ktab -> [[id: "test"], ktab] }.groupTuple(), remainder: true )
+                    .join( FASTK_FASTK.out.prof.map { meta, prof -> [[id: "test"], prof] }.groupTuple(), remainder: true )
                     .map { meta, hist, ktab, prof ->
-                        [meta, hist, ktab ? ktab.flatten().sort() : [] , prof ? prof.flatten().sort() : [] ]
+                        [meta, hist.sort(), ktab ? ktab.flatten().sort() : [] , prof ? prof.flatten().sort() : [] ]
                     }
                 """
             }
@@ -70,7 +70,7 @@ nextflow_process {
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                         ],
                         [
-                            [ id:'test', single_end:false ],
+                            [ id:'test2', single_end:false ],
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                         ]
                     )
@@ -83,12 +83,13 @@ nextflow_process {
 
             process {
                 """
-                input[0] = FASTK_FASTK.out.hist.groupTuple()
-                    .join( FASTK_FASTK.out.ktab.groupTuple(), remainder: true )
-                    .join( FASTK_FASTK.out.prof.groupTuple(), remainder: true )
+                input[0] = FASTK_FASTK.out.hist.map { meta, hist -> [[id: "test"], hist] }.groupTuple()
+                    .join( FASTK_FASTK.out.ktab.map { meta, ktab -> [[id: "test"], ktab] }.groupTuple(), remainder: true )
+                    .join( FASTK_FASTK.out.prof.map { meta, prof -> [[id: "test"], prof] }.groupTuple(), remainder: true )
                     .map { meta, hist, ktab, prof ->
-                        [meta, hist, ktab ? ktab.flatten().sort() : [] , prof ? prof.flatten().sort() : [] ]
-                    }                """
+                        [meta, hist.sort(), ktab ? ktab.flatten().sort() : [] , prof ? prof.flatten().sort() : [] ]
+                    }
+                """
             }
         }
 
