@@ -8,15 +8,15 @@ process SHIGAPASS {
         'biocontainers/shigapass:1.5.0--hdfd78af_0' }"
 
     input:
-        tuple val(meta), path(fasta)
+    tuple val(meta), path(fasta)
 
     output:
-        tuple val(meta), path("${prefix}.tsv"),                 emit: report
-        tuple val(meta), path("*_ShigaPass_Flex_summary.tsv"),  emit: flex_tsv, optional: true
-        path "versions.yml",                                    emit: versions
+    tuple val(meta), path("${prefix}.tsv"),                 emit: report
+    tuple val(meta), path("*_ShigaPass_Flex_summary.tsv"),  emit: flex_tsv, optional: true
+    path "versions.yml",                                    emit: versions
 
     when:
-        task.ext.when == null || task.ext.when
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
