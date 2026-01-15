@@ -11,8 +11,7 @@ process ASSEMBLYSCAN {
     tuple val(meta), path(assembly)
 
     output:
-    tuple val(meta), path("*.tsv"),     emit: tsv, optional: true
-    tuple val(meta), path("*.json"),    emit: json, optional: true
+    tuple val(meta), path("*.{json,tsv}"),     emit: report, optional: true
     tuple val("${task.process}"), val('assemblyscan'), eval("assembly-scan --version 2>&1 | sed 's/^.*assembly-scan //; s/Using.*\$//'"), topic: versions, emit: versions_assemblyscan
 
     when:
