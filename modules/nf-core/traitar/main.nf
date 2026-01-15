@@ -4,8 +4,8 @@ process TRAITAR {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'community.wave.seqera.io/library/hmmer_prodigal_pandas_pip_pruned:a83f0296374a52e6' :
-        'oras://community.wave.seqera.io/library/hmmer_prodigal_pandas_pip_pruned:d2b59b60c4871d7e' }"
+        'oras://community.wave.seqera.io/library/hmmer_prodigal_pandas_pip_pruned:d2b59b60c4871d7e' :
+        'community.wave.seqera.io/library/hmmer_prodigal_pandas_pip_pruned:a83f0296374a52e6' }"
 
     input:
     tuple val(meta), path(proteins)
@@ -84,7 +84,7 @@ process TRAITAR {
     touch ${prefix}/phenotype_prediction/predictions_flat_single-votes_combined.txt
     touch ${prefix}/gene_prediction/${meta.id}.faa
     touch ${prefix}/gene_prediction/${meta.id}.gff
-    
+
     # Get version for stub test
     traitar --version 2>&1 | tail -1 > version.txt
     """
