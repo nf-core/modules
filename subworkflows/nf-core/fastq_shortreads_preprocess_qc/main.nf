@@ -139,8 +139,8 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
             val_fastp_save_trimmed_fail
         )
         ch_adapterremoval_discarded_reads = FASTQ_REMOVEADAPTERS_MERGE.out.discarded_reads
-        ch_adapterremoval_logfile         = FASTQ_REMOVEADAPTERS_MERGE.out.ch_log
-        ch_adapterremoval_report          = FASTQ_REMOVEADAPTERS_MERGE.out.ch_report
+        ch_adapterremoval_logfile         = FASTQ_REMOVEADAPTERS_MERGE.out.logfile
+        ch_adapterremoval_report          = FASTQ_REMOVEADAPTERS_MERGE.out.report
         ch_reads                          = FASTQ_REMOVEADAPTERS_MERGE.out.processed_reads
         ch_multiqc_files                  = ch_multiqc_files.mix(FASTQ_REMOVEADAPTERS_MERGE.out.multiqc_files)
         ch_versions                       = ch_versions.mix(FASTQ_REMOVEADAPTERS_MERGE.out.versions)
