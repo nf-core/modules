@@ -9,7 +9,7 @@ process MERQURYFK_MERQURYFK {
         'community.wave.seqera.io/library/fastk_merquryfk_r-cowplot_r-ggplot2_r-viridis:f9994edc2270683c' }"
 
     input:
-    tuple val(meta) , path(fastk_hist),path(fastk_ktab), path(assembly), path(haplotigs)
+    tuple val(meta) , path(fastk_hist), path(fastk_ktab), path(assembly), path(haplotigs)
     tuple val(meta2), path(mathaptab) // optional, trio mode
     tuple val(meta3), path(pathaptab) // optional, trio mode
 
@@ -17,20 +17,15 @@ process MERQURYFK_MERQURYFK {
     tuple val(meta), path("${prefix}.completeness.stats")         , emit: stats
     tuple val(meta), path("${prefix}.*_only.bed")                 , emit: bed
     tuple val(meta), path("${prefix}.*.qv")                       , emit: assembly_qv
-    tuple val(meta), path("${prefix}.*.spectra-cn.fl.{png,pdf}")  , emit: spectra_cn_fl     , optional: true
-    tuple val(meta), path("${prefix}.*.spectra-cn.ln.{png,pdf}")  , emit: spectra_cn_ln     , optional: true
-    tuple val(meta), path("${prefix}.*.spectra-cn.st.{png,pdf}")  , emit: spectra_cn_st     , optional: true
     tuple val(meta), path("${prefix}.qv")                         , emit: qv
-    tuple val(meta), path("${prefix}.spectra-asm.fl.{png,pdf}")   , emit: spectra_asm_fl    , optional: true
-    tuple val(meta), path("${prefix}.spectra-asm.ln.{png,pdf}")   , emit: spectra_asm_ln    , optional: true
-    tuple val(meta), path("${prefix}.spectra-asm.st.{png,pdf}")   , emit: spectra_asm_st    , optional: true
     tuple val(meta), path("${prefix}.phased_block.bed")           , emit: phased_block_bed  , optional: true
     tuple val(meta), path("${prefix}.phased_block.stats")         , emit: phased_block_stats, optional: true
-    tuple val(meta), path("${prefix}.continuity.N.{pdf,png}")     , emit: continuity_N      , optional: true
-    tuple val(meta), path("${prefix}.block.N.{pdf,png}")          , emit: block_N           , optional: true
-    tuple val(meta), path("${prefix}.block.blob.{pdf,png}")       , emit: block_blob        , optional: true
-    tuple val(meta), path("${prefix}.hapmers.blob.{pdf,png}")     , emit: hapmers_blob      , optional: true
-    path "versions.yml"                                           , emit: versions
+    tuple val(meta), path("*.{pdf,png}")                          , emit: images, optional: true
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('merquryfk'), eval('echo 1.1.1'), emit: versions_merquryfk, topic: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('fastk'), eval('echo 1.1'), emit: versions_fastk, topic: versions
+    tuple val("${task.process}"), val('R'), eval('R --version | sed "1!d; s/.*version //; s/ .*//"'), emit: versions_r, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,14 +37,9 @@ process MERQURYFK_MERQURYFK {
 
     def args    = task.ext.args ?: ''
     prefix      = task.ext.prefix ?: "${meta.id}"
-    fk_ktab     = fastk_ktab ? "${fastk_ktab.find{ it.toString().endsWith(".ktab") }}" : ''
-    mat_hapktab = mathaptab  ? "${mathaptab.find{ it.toString().endsWith(".ktab") }}"  : ''
-    pat_hapktab = pathaptab  ? "${pathaptab.find{ it.toString().endsWith(".ktab") }}"  : ''
-
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    def FASTK_VERSION   = '1.1.0'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    def MERQURY_VERSION = '1.1.1'
+    def fk_ktab     = fastk_ktab ? "${fastk_ktab.find{ it.toString().endsWith(".ktab") }}" : ''
+    def mat_hapktab = mathaptab  ? "${mathaptab.find{ it.toString().endsWith(".ktab") }}"  : ''
+    def pat_hapktab = pathaptab  ? "${pathaptab.find{ it.toString().endsWith(".ktab") }}"  : ''
     """
     MerquryFK \\
         $args \\
@@ -60,32 +50,14 @@ process MERQURYFK_MERQURYFK {
         $assembly \\
         $haplotigs \\
         $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastk: $FASTK_VERSION
-        merquryfk: $MERQURY_VERSION
-        r: \$( R --version | sed '1!d; s/.*version //; s/ .*//' )
-    END_VERSIONS
     """
 
     stub:
-    prefix              = task.ext.prefix ?: "${meta.id}"
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    def FASTK_VERSION   = '1.1.0'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    def MERQURY_VERSION = '1.1.1'
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.completeness.stats
     touch ${prefix}.qv
     touch ${prefix}._.qv
     touch ${prefix}._only.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastk: $FASTK_VERSION
-        merquryfk: $MERQURY_VERSION
-        r: \$( R --version | sed '1!d; s/.*version //; s/ .*//' )
-    END_VERSIONS
     """
 }

@@ -27,7 +27,18 @@
                     ]
                 ],
                 "2": [
-                    "versions.yml:md5,c5273cf653220afcc805c31c12dd9ee9"
+                    [
+                        "MERQURYFK_HAPMAKER",
+                        "merquryfk",
+                        "1.1.1"
+                    ]
+                ],
+                "3": [
+                    [
+                        "MERQURYFK_HAPMAKER",
+                        "fastk",
+                        "1.1"
+                    ]
                 ],
                 "mat_hap_ktab": [
                     [
@@ -53,8 +64,19 @@
                         ]
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,c5273cf653220afcc805c31c12dd9ee9"
+                "versions_fastk": [
+                    [
+                        "MERQURYFK_HAPMAKER",
+                        "fastk",
+                        "1.1"
+                    ]
+                ],
+                "versions_merquryfk": [
+                    [
+                        "MERQURYFK_HAPMAKER",
+                        "merquryfk",
+                        "1.1.1"
+                    ]
                 ]
             }
         ],
@@ -62,68 +84,50 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2026-01-15T11:58:13.163638"
+        "timestamp": "2026-01-15T16:11:42.848714"
     },
     "homo_sapiens - Illumina": {
         "content": [
+            [
+                [
+                    {
+                        "id": "pat",
+                        "single_end": false
+                    },
+                    [
+                        ".pat.hap.ktab.1:md5,c0964e92ed3a16f221a1097898bd7d78",
+                        ".pat.hap.ktab.2:md5,c0964e92ed3a16f221a1097898bd7d78",
+                        "pat.hap.ktab:md5,b15ed2005a95952f6264fa8e12f0661e"
+                    ]
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "mat",
+                        "single_end": false
+                    },
+                    [
+                        ".mat.hap.ktab.1:md5,3779758edcdcfc863f8cf9183422b11e",
+                        ".mat.hap.ktab.2:md5,b9aa23e5aca96272871361cf04137706",
+                        "mat.hap.ktab:md5,e7712947c87b5e117f78ed63607daa67"
+                    ]
+                ]
+            ],
             {
-                "0": [
+                "versions_fastk": [
                     [
-                        {
-                            "id": "pat",
-                            "single_end": false
-                        },
-                        [
-                            ".pat.hap.ktab.1:md5,c0964e92ed3a16f221a1097898bd7d78",
-                            ".pat.hap.ktab.2:md5,c0964e92ed3a16f221a1097898bd7d78",
-                            "pat.hap.ktab:md5,b15ed2005a95952f6264fa8e12f0661e"
-                        ]
+                        "MERQURYFK_HAPMAKER",
+                        "fastk",
+                        "1.1"
                     ]
                 ],
-                "1": [
+                "versions_merquryfk": [
                     [
-                        {
-                            "id": "mat",
-                            "single_end": false
-                        },
-                        [
-                            ".mat.hap.ktab.1:md5,3779758edcdcfc863f8cf9183422b11e",
-                            ".mat.hap.ktab.2:md5,b9aa23e5aca96272871361cf04137706",
-                            "mat.hap.ktab:md5,e7712947c87b5e117f78ed63607daa67"
-                        ]
+                        "MERQURYFK_HAPMAKER",
+                        "merquryfk",
+                        "1.1.1"
                     ]
-                ],
-                "2": [
-                    "versions.yml:md5,c5273cf653220afcc805c31c12dd9ee9"
-                ],
-                "mat_hap_ktab": [
-                    [
-                        {
-                            "id": "pat",
-                            "single_end": false
-                        },
-                        [
-                            ".pat.hap.ktab.1:md5,c0964e92ed3a16f221a1097898bd7d78",
-                            ".pat.hap.ktab.2:md5,c0964e92ed3a16f221a1097898bd7d78",
-                            "pat.hap.ktab:md5,b15ed2005a95952f6264fa8e12f0661e"
-                        ]
-                    ]
-                ],
-                "pat_hap_ktab": [
-                    [
-                        {
-                            "id": "mat",
-                            "single_end": false
-                        },
-                        [
-                            ".mat.hap.ktab.1:md5,3779758edcdcfc863f8cf9183422b11e",
-                            ".mat.hap.ktab.2:md5,b9aa23e5aca96272871361cf04137706",
-                            "mat.hap.ktab:md5,e7712947c87b5e117f78ed63607daa67"
-                        ]
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,c5273cf653220afcc805c31c12dd9ee9"
                 ]
             }
         ],
@@ -131,6 +135,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2026-01-15T11:58:06.270954"
+        "timestamp": "2026-01-15T16:12:53.021814"
     }
 }

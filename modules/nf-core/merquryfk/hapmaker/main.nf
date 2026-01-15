@@ -17,7 +17,10 @@ process MERQURYFK_HAPMAKER {
     output:
     tuple val(meta) , path("*${input_mat}.hap.ktab*", hidden: true), emit: mat_hap_ktab
     tuple val(meta2), path("*${input_pat}.hap.ktab*", hidden: true), emit: pat_hap_ktab
-    path "versions.yml"                                            , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('merquryfk'), eval('echo 1.1.1'), emit: versions_merquryfk, topic: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('fastk'), eval('echo 1.1'), emit: versions_fastk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,11 +30,6 @@ process MERQURYFK_HAPMAKER {
     input_mat       = matktab   ? "${matktab.find{ it.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}"   : ''
     input_pat       = patktab   ? "${patktab.find{ it.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}"   : ''
     def input_child = childktab ? "${childktab.find{ it.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}" : ''
-
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    def FASTK_VERSION   = '1.1.0'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    def MERQURY_VERSION = '1.1.1'
     """
     HAPmaker \\
         $args \\
@@ -39,33 +37,16 @@ process MERQURYFK_HAPMAKER {
         ${input_mat} \\
         ${input_pat} \\
         ${input_child}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        FastK: $FASTK_VERSION
-        MerquryFK: $MERQURY_VERSION
-    END_VERSIONS
     """
 
     stub:
     def args  = task.ext.args ?: ''
     input_mat = matktab ? "${matktab.find{ it.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}" : ''
     input_pat = patktab ? "${patktab.find{ it.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}" : ''
-
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    def FASTK_VERSION   = '1.1.0'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    def MERQURY_VERSION = '1.1.1'
     """
     touch ${input_mat}.hap.ktab
     touch .${input_mat}.hap.ktab.1
     touch ${input_pat}.hap.ktab
     touch .${input_pat}.hap.ktab.1
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        FastK: $FASTK_VERSION
-        MerquryFK: $MERQURY_VERSION
-    END_VERSIONS
     """
 }
