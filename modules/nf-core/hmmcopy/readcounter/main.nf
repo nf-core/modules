@@ -14,7 +14,8 @@ process HMMCOPY_READCOUNTER {
 
     output:
     tuple val(meta), path("*.wig"), emit: wig
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('hmmcopy'), eval("echo 0.1.1"), topic: versions, emit: versions_hmmcopy
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,13 +23,11 @@ process HMMCOPY_READCOUNTER {
     script:
     def args    = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     // Note that piping the cram directly into the tool didn't work.
     def convert_cram     = bam.Extension == "cram" ? "samtools view -T ${fasta} -h ${bam} -o temp.bam##idx##temp.bam.bai --write-index " : ""
     def input            = bam.Extension == "cram" ? "temp.bam" : "${bam}"
     def cleanup          = bam.Extension == "cram" ? "rm temp.bam{,.bai}" : ""
-    def samtools_version = bam.Extension == "cram" ? "samtools: \$(samtools --version |& sed '1!d ; s/samtools //')" : ""
     """
     ${convert_cram}
 
@@ -37,24 +36,10 @@ process HMMCOPY_READCOUNTER {
         ${input} > ${prefix}.wig
 
     ${cleanup}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmcopy: $VERSION
-        $samtools_version
-    END_VERSIONS
     """
     stub:
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    def samtools_version = bam.Extension == "cram" ? "samtools: \$(samtools --version |& sed '1!d ; s/samtools //')" : ""
     """
     touch ${prefix}.wig
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmcopy: $VERSION
-        $samtools_version
-    END_VERSIONS
     """
 }
