@@ -4,7 +4,7 @@ process HISAT3N_BUILD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/01/019e3df43ceed54d16e3e97d86e448317fa7af5accb483763075d3ed2702737b/data' :
+        'oras://community.wave.seqera.io/library/hisat-3n:0.0.3--b4c98eb79ad7c714' :
         'community.wave.seqera.io/library/hisat-3n:0.0.3--b4b80cb38c483147' }"
 
     input:
