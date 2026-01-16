@@ -251,6 +251,9 @@
                     ]
                 ],
                 "2": [
+                    
+                ],
+                "3": [
                     "versions.yml:md5,03b686ec8c67a91501ebb2b2a5234e77"
                 ],
                 "model": [
@@ -262,6 +265,9 @@
                         },
                         "treatment_mCherry_hND6.dream.model.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
+                ],
+                "normalised_counts": [
+                    
                 ],
                 "results": [
                     [
@@ -282,7 +288,39 @@
             "nf-test": "0.9.3",
             "nextflow": "25.04.2"
         },
-        "timestamp": "2025-12-23T18:58:10.585988582"
+        "timestamp": "2026-01-13T15:35:07.121696674"
+    },
+    "RNAseq - Voom - Feature Counts - formula + comparison contrast string - interaction": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "genotype_WT_KO_treatment_Control_Treated",
+                        "formula": "~ genotype * treatment",
+                        "comparison": "genotypeWT - treatmentTreated"
+                    },
+                    "genotype_WT_KO_treatment_Control_Treated.dream.model.txt:md5,e67d5a9c42dd9374b370b6426832d08f"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "genotype_WT_KO_treatment_Control_Treated",
+                        "formula": "~ genotype * treatment",
+                        "comparison": "genotypeWT - treatmentTreated"
+                    },
+                    "genotype_WT_KO_treatment_Control_Treated.normalised_counts.tsv:md5,84917b0fe7db41763ae3dc7c09e2ec4f"
+                ]
+            ],
+            [
+                "versions.yml:md5,fc1f26eb2194018e99fc2916332676b7"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.2"
+        },
+        "timestamp": "2026-01-13T15:53:31.743589111"
     },
     "Mus musculus - expression table - contrasts + formula + comparison contrast string": {
         "content": [
