@@ -118,6 +118,9 @@ output:
           type: map
           description: |
             Map with sample information
+      - ensemblvep:
+          type: string
+          description: The tool name
       - "*.html":
           type: file
           description: VEP report file
@@ -145,6 +148,19 @@ output:
           description: The expression to obtain the version of the tool
 
 topics:
+  reports:
+    - - meta:
+          type: map
+          description: |
+            Map with sample information
+      - ensemblvep:
+          type: string
+          description: The tool name
+      - "*.html":
+          type: file
+          description: VEP report file
+          pattern: "*.html"
+          ontologies: []
   versions:
     - - ${task.process}:
           type: string
