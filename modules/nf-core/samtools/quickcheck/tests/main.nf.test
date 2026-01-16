@@ -24,23 +24,19 @@ nextflow_process {
         }
 
         then {
-            assert process.success
-            assertAll(
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
     }
 
-/*
     test(" bam - SE ") {
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ],
+                    [ id:'test.single_end.sorted' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true),
                 ]
                 """
@@ -48,12 +44,9 @@ nextflow_process {
         }
 
         then {
-            assert process.success
-            assertAll(
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
     }
@@ -65,7 +58,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ],
+                    [ id:'test.paired_end.sorted' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                 ]
                 """
@@ -73,14 +66,11 @@ nextflow_process {
         }
 
         then {
-            assert process.success
-            assertAll(
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
     }
-*/
+
 }
