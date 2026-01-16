@@ -54,16 +54,16 @@ process MAFFT_ALIGN {
     """
 
     stub:
-    def args         = task.ext.args   ?: ''
-    def prefix       = task.ext.prefix ?: "${meta.id}"
-    def add          = add             ? "--add ${add}"                   : ''
-    def addfragments = addfragments    ? "--addfragments ${addfragments}" : ''
-    def addfull      = addfull         ? "--addfull ${addfull}"           : ''
-    def addprofile   = addprofile      ? "--addprofile ${addprofile}"     : ''
-    def addlong      = addlong         ? "--addlong ${addlong}"           : ''
-    if ("$fasta" == "${prefix}.fas" )  error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    def args_stub         = task.ext.args   ?: ''
+    def prefix_stub       = task.ext.prefix ?: "${meta.id}"
+    def add_stub          = add             ? "--add ${add}"                   : ''
+    def addfragments_stub = addfragments    ? "--addfragments ${addfragments}" : ''
+    def addfull_stub      = addfull         ? "--addfull ${addfull}"           : ''
+    def addprofile_stub   = addprofile      ? "--addprofile ${addprofile}"     : ''
+    def addlong_stub      = addlong         ? "--addlong ${addlong}"           : ''
+    if ("$fasta" == "${prefix_stub}.fas" )  error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
-    touch ${prefix}.fas${compress ? '.gz' : ''}
+    touch ${prefix_stub}.fas${compress ? '.gz' : ''}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
