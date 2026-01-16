@@ -62,10 +62,9 @@ output:
       - amulety:
           type: string
           description: The tool name
-      - amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+':
+      - "amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+'":
           type: string
           description: The command used to generate the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -74,10 +73,9 @@ topics:
       - amulety:
           type: string
           description: The tool name
-      - amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+':
+      - "amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+'":
           type: string
           description: The command used to generate the version of the tool
-
 authors:
   - "@ggabernet"
 maintainers:
