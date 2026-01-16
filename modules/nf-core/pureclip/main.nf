@@ -10,7 +10,7 @@ process PURECLIP {
     input:
     tuple val(meta), path(ipbam), path(controlbam)
     tuple val(meta2), path(ipbai), path(controlbai)
-    tuple val(meta2), path(genome_fasta)
+    tuple val(meta3), path(genome_fasta)
     val input_control
 
     output:

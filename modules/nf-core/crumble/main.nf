@@ -30,7 +30,7 @@ process CRUMBLE {
                     args.contains("-O cram") ? "cram" :
                     "bam"
     def bedin      = keepbed ? "-R ${keepbed}" : ""
-    def bedout     = bedout ? "-b ${prefix}.out.bed" : ""
+    def bedout_opt     = bedout ? "-b ${prefix}.out.bed" : ""
     if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
     def CRUMBLE_VERSION = '0.9.1' //WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
@@ -38,7 +38,7 @@ process CRUMBLE {
     crumble \\
         $args \\
         $bedin \\
-        $bedout \\
+        $bedout_opt \\
         $input \\
         ${prefix}.${extension}
 
@@ -55,13 +55,13 @@ process CRUMBLE {
                     args.contains("-O bam") ? "bam" :
                     args.contains("-O cram") ? "cram" :
                     "bam"
-    def bedout     = bedout ? "touch ${prefix}.out.bed" : ''
+    def bedout_opt     = bedout ? "touch ${prefix}.out.bed" : ''
     if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
     def CRUMBLE_VERSION = '0.9.1' //WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.${extension}
-    $bedout
+    $bedout_opt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

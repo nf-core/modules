@@ -25,11 +25,11 @@ process SAM2LCA_ANALYZE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def make_db = database ? "" : "mkdir sam2lca_db"
-    def database = database ? "${database}" : "sam2lca_db"
+    def database_path = database ? "${database}" : "sam2lca_db"
     """
     $make_db
     sam2lca \\
-        -d $database \\
+        -d $database_path \\
         analyze \\
         $args \\
         -o ${prefix} \\
