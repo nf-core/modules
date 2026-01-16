@@ -19,7 +19,7 @@ process MAFFT_ALIGN {
     output:
     tuple val(meta), path("*.fas{.gz,}"), emit: fas
     tuple val("${task.process}"), val("mafft"), eval("mafft --version 2>&1 | sed 's/ (.*) //g'"), topic: versions, emit: versions_mafft
-    tuple val("${task.process}"), val("pigz") , eval("pigz --version 2>&1 | sed 's/pigz //g'")  , topic: versions, emit: versions_pigz
+    tuple val("${task.process}"), val("pigz"), eval("pigz --version 2>&1 | sed 's/pigz //g'")   , topic: versions, emit: versions_pigz
 
     when:
     task.ext.when == null || task.ext.when
