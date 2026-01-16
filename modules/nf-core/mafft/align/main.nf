@@ -26,22 +26,22 @@ process MAFFT_ALIGN {
     script:
     def args         = task.ext.args   ?: ''
     def prefix       = task.ext.prefix ?: "${meta.id}"
-    def add          = add             ? "--add <(unpigz -cdf ${add})"                   : ''
-    def addfragments = addfragments    ? "--addfragments <(unpigz -cdf ${addfragments})" : ''
-    def addfull      = addfull         ? "--addfull <(unpigz -cdf ${addfull})"           : ''
-    def addprofile   = addprofile      ? "--addprofile <(unpigz -cdf ${addprofile})"     : ''
-    def addlong      = addlong         ? "--addlong <(unpigz -cdf ${addlong})"           : ''
+    def add_opt          = add             ? "--add <(unpigz -cdf ${add})"                   : ''
+    def addfragments_opt = addfragments    ? "--addfragments <(unpigz -cdf ${addfragments})" : ''
+    def addfull_opt      = addfull         ? "--addfull <(unpigz -cdf ${addfull})"           : ''
+    def addprofile_opt   = addprofile      ? "--addprofile <(unpigz -cdf ${addprofile})"     : ''
+    def addlong_opt      = addlong         ? "--addlong <(unpigz -cdf ${addlong})"           : ''
     def write_output = compress ? " | pigz -cp ${task.cpus} > ${prefix}.fas.gz" : "> ${prefix}.fas"
     // this will not preserve MAFFTs return value, but mafft crashes when it receives a process substitution
     if ("$fasta" == "${prefix}.fas" ) error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     mafft \\
         --thread ${task.cpus} \\
-        ${add} \\
-        ${addfragments} \\
-        ${addfull} \\
-        ${addprofile} \\
-        ${addlong} \\
+        ${add_opt} \\
+        ${addfragments_opt} \\
+        ${addfull_opt} \\
+        ${addprofile_opt} \\
+        ${addlong_opt} \\
         ${args} \\
         ${fasta} \\
         ${write_output}

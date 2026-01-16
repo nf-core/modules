@@ -19,7 +19,7 @@ process SCDS {
     task.ext.when == null || task.ext.when
 
     script:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     if ("${rds}" == "${prefix}.rds") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     template 'scds.R'
 
