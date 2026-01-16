@@ -36,6 +36,7 @@ process DESEQ2_DIFFERENTIAL {
     """
     touch ${meta.id}.deseq2.results.tsv
     touch ${meta.id}.deseq2.dispersion.png
+    touch ${meta.id}.deseq2.dispersion.pdf
     touch ${meta.id}.dds.rld.rds
     touch ${meta.id}.deseq2.sizefactors.tsv
     touch ${meta.id}.normalised_counts.tsv
