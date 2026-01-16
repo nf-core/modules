@@ -5,8 +5,8 @@ process MERQURYFK_MERQURYFK {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9f/9f0bee9bfacd05665a9b1a11dd087dbf1be41ac3e640931c38c914a2390642cf/data' :
-        'community.wave.seqera.io/library/fastk_merquryfk_r-cowplot_r-ggplot2_r-viridis:f9994edc2270683c' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ea/eac8f03ba65d6724979d6669025ce522084aa105cb34474cf0d8f0132bfe182b/data' :
+        'community.wave.seqera.io/library/fastk_merquryfk_r-cowplot_r-ggplot2_r-viridis:fbb9ec7afe26f14b' }"
 
     input:
     tuple val(meta) , path(fastk_hist), path(fastk_ktab), path(assembly), path(haplotigs)
@@ -22,7 +22,7 @@ process MERQURYFK_MERQURYFK {
     tuple val(meta), path("${prefix}.phased_block.stats")         , emit: phased_block_stats, optional: true
     tuple val(meta), path("*.{pdf,png}")                          , emit: images, optional: true
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    tuple val("${task.process}"), val('merquryfk'), eval('echo 1.1.1'), emit: versions_merquryfk, topic: versions
+    tuple val("${task.process}"), val('merquryfk'), eval('echo 1.1.3'), emit: versions_merquryfk, topic: versions
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('fastk'), eval('echo 1.1'), emit: versions_fastk, topic: versions
     tuple val("${task.process}"), val('R'), eval('R --version | sed "1!d; s/.*version //; s/ .*//"'), emit: versions_r, topic: versions

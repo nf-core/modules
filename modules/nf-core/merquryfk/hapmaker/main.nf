@@ -6,8 +6,8 @@ process MERQURYFK_HAPMAKER {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9f/9f0bee9bfacd05665a9b1a11dd087dbf1be41ac3e640931c38c914a2390642cf/data' :
-        'community.wave.seqera.io/library/fastk_merquryfk_r-cowplot_r-ggplot2_r-viridis:f9994edc2270683c' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ea/eac8f03ba65d6724979d6669025ce522084aa105cb34474cf0d8f0132bfe182b/data' :
+        'community.wave.seqera.io/library/fastk_merquryfk_r-cowplot_r-ggplot2_r-viridis:fbb9ec7afe26f14b' }"
 
     input:
     tuple val(meta) , path(matktab)
@@ -18,7 +18,7 @@ process MERQURYFK_HAPMAKER {
     tuple val(meta) , path("*${input_mat}.hap.ktab*", hidden: true), emit: mat_hap_ktab
     tuple val(meta2), path("*${input_pat}.hap.ktab*", hidden: true), emit: pat_hap_ktab
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    tuple val("${task.process}"), val('merquryfk'), eval('echo 1.1.1'), emit: versions_merquryfk, topic: versions
+    tuple val("${task.process}"), val('merquryfk'), eval('echo 1.1.3'), emit: versions_merquryfk, topic: versions
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('fastk'), eval('echo 1.1'), emit: versions_fastk, topic: versions
 

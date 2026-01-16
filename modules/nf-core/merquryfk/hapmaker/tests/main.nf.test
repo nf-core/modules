@@ -17,7 +17,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'mat', single_end:false ],
+                    [ id:'pat', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ]
                 """
@@ -29,7 +29,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'pat', single_end:false ],
+                    [ id:'mat', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                 ]
                 """
