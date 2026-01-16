@@ -5,8 +5,8 @@ process MERQURYFK_MERQURYFK {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ea/eac8f03ba65d6724979d6669025ce522084aa105cb34474cf0d8f0132bfe182b/data' :
-        'community.wave.seqera.io/library/fastk_merquryfk_r-cowplot_r-ggplot2_r-viridis:fbb9ec7afe26f14b' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8e/8e7bf3e855f8b4abb82024913359efef5dfc40902913bede1a6e6fbf8fc110bc/data' :
+        'community.wave.seqera.io/library/fastk_merquryfk_r-ggplot2_r-viridis_pruned:bbe5238acf370901' }"
 
     input:
     tuple val(meta) , path(fastk_hist), path(fastk_ktab), path(assembly), path(haplotigs)
