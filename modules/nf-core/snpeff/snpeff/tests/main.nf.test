@@ -34,10 +34,10 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out.genes_txt,
-                    file(process.out.report[0][1]).name,
-                    file(process.out.summary_html[0][1]).name,
-                    file(process.out.vcf[0][1]).name,
+                    file(process.out.genes_txt[0][2]),
+                    file(process.out.report[0][2]).name,
+                    file(process.out.summary_html[0][2]).name,
+                    file(process.out.vcf[0][1]).name + ",variantsMD5:" + path(process.out.vcf[0][1]).vcf.variantsMD5,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
@@ -69,7 +69,13 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    file(process.out.genes_txt[0][2]),
+                    file(process.out.report[0][2]),
+                    file(process.out.summary_html[0][2]),
+                    file(process.out.vcf[0][1]),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }
