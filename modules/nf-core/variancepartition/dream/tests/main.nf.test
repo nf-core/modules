@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process VARIANCEPARTITION_DREAM"
     script "../main.nf"
+    config "./nextflow.config"
     process "VARIANCEPARTITION_DREAM"
 
     tag "modules"
@@ -10,49 +11,223 @@ nextflow_process {
     tag "variancepartition/dream"
 
     test("RNAseq - Feature Counts - formula + comparison contrast string - interaction") {
-
-    when {
-        process {
-            """
-            input[0] = Channel.of([
-                'id': 'genotype_WT_KO_treatment_Control_Treated',
-                'variable': 'genotype',
-                'reference': 'WT',
-                'target': 'KO',
-                'blocking_factors': 'batch',
-                'formula': '~ genotype * treatment',
-                'comparison': 'genotypeKO.treatmentTreated' // should be a 'make.names() string'
-            ])
-            .map {
-                tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+        when {
+            params {
+                module_args = "--round_digits 2"
             }
+            process {
+                """
+                input[0] = Channel.of([
+                    'id': 'genotype_WT_KO_treatment_Control_Treated',
+                    'formula': '~ genotype * treatment',
+                    'comparison': 'genotypeWT - treatmentTreated' // should be a 'make.names() string'
+                ])
+                .map {
+                    tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                }
 
-            input[1] = Channel.of([
-                [ id: 'test' ],
-                file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/metadata.tsv", checkIfExists: true),
-                file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/counts.tsv", checkIfExists: true)
-            ])
-            """
+                input[1] = Channel.of([
+                    [ id: 'test' ],
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/metadata.tsv", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/counts.tsv", checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
+                { assert path(process.out.results[0][1]).getText().contains("1309.83") },
+                { assert path(process.out.results[0][1]).getText().contains("557\t279.88\t18.81") },
+                { assert snapshot(process.out.model, process.out.versions).match() }
+            )
         }
     }
 
-    then {
-        assertAll(
-            { assert process.success },
-            { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
-            { assert path(process.out.results[0][1]).getText().contains("0.8333") },
-            { assert path(process.out.results[0][1]).getText().contains("13.5\t21.125\t4.40") },
-            { assert snapshot(process.out.model, process.out.versions).match() }
-        )
-    }
-}
-
-    test("Mus musculus - expression table - contrasts") {
-
+    test("RNAseq - Voom - Feature Counts - formula + comparison contrast string - interaction") {
         when {
+            params {
+                module_args = "--round_digits 2 --apply_voom true"
+            }
             process {
                 """
-                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':null, 'formula':null])
+                input[0] = Channel.of([
+                    'id': 'genotype_WT_KO_treatment_Control_Treated',
+                    'formula': '~ genotype * treatment',
+                    'comparison': 'genotypeWT - treatmentTreated' // should be a 'make.names() string'
+                ])
+                .map {
+                    tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                }
+
+                input[1] = Channel.of([
+                    [ id: 'test' ],
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/metadata.tsv", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/counts.tsv", checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
+                { assert path(process.out.results[0][1]).getText().contains("5.07") },
+                { assert path(process.out.results[0][1]).getText().contains("2.97\t3.88\t38.17") },
+                { assert snapshot(process.out.model, process.out.normalised_counts, process.out.versions).match() }
+            )
+        }
+    }
+
+    test("Mus musculus - expression table - contrasts + formula + comparison contrast string") {
+
+        when {
+            params {
+                module_args = "--round_digits 2"
+            }
+            process {
+                """
+                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'formula':'~ treatment', 'comparison':'treatmentmCherry'])
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                    }
+
+                input[1] = Channel.of([
+                    [ id:'test' ],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv", checkIfExists: true),
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv", checkIfExists: true)
+                    ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
+                { assert path(process.out.results[0][1]).getText().contains("-849.67") },
+                { assert path(process.out.results[0][1]).getText().contains("-1050\t549\t-3.78") },
+                { assert snapshot(process.out.model, process.out.versions).match() }
+            )
+        }
+    }
+
+    test("Mus musculus - contrasts - matrix - no formula") {
+
+        when {
+            params {
+                module_args = "--round_digits 2"
+            }
+            process {
+                """
+                ch_contrasts = Channel.fromPath(file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.contrasts.csv", checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                    }
+
+                input[0] = ch_contrasts
+                input[1] = Channel.of([
+                    [ id:'test' ],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv", checkIfExists: true),
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv", checkIfExists: true)
+                    ]
+                )
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
+                { assert path(process.out.results[0][1]).getText().contains("1050") },
+                { assert path(process.out.results[0][1]).getText().contains("849.67\t432.83\t3.8") },
+                { assert snapshot(process.out.model, process.out.versions).match() }
+            )
+        }
+    }
+
+    test("Mus musculus - expression table - contrasts + formula + weighted comparison contrast string") {
+
+        when {
+            params {
+                module_args = "--round_digits 2"
+            }
+            process {
+                """
+                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'formula':'~ 0 + treatment', 'comparison':'2 * treatmenthND6 - treatmentmCherry'])
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                    }
+
+                input[1] = Channel.of([
+                    [ id:'test' ],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv", checkIfExists: true),
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv", checkIfExists: true)
+                    ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
+                { assert path(process.out.results[0][1]).getText().contains("2124\t549\t4.84") },
+                { assert path(process.out.results[0][1]).getText().contains("1707.33") },
+                { assert snapshot(process.out.model, process.out.versions).match() }
+            )
+        }
+    }
+
+    test("Mus musculus - expression table - contrasts + formula + comparison contrast string - no intercept") {
+
+        when {
+            params {
+                module_args = "--round_digits 2"
+            }
+            process {
+                """
+                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'formula':'~ 0 + treatment + sample_number', 'comparison':'treatmenthND6 - treatmentmCherry'])
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                    }
+
+                input[1] = Channel.of([
+                    [ id:'test' ],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv", checkIfExists: true),
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv", checkIfExists: true)
+                    ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.model, process.out.versions).match() },
+                { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
+                { assert path(process.out.results[0][1]).getText().contains("-95.67") },
+                { assert path(process.out.results[0][1]).getText().contains("1050\t549\t4.16") }
+            )
+        }
+    }
+
+    test("Mus musculus - expression table - contrasts + blocking factors") {
+
+        when {
+            params {
+                module_args = "--round_digits 2"
+            }
+            process {
+                """
+                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'formula':'~ treatment + (1 | sample_number)'])
                     .map{
                         tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
@@ -70,138 +245,21 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.exitStatus == 1},
-                { assert process.errorReport.contains("Invalid or absent formula") })
-        }
-    }
-
-    test("Mus musculus - expression table - contrasts + formula + comparison contrast string") {
-
-        when {
-            process {
-                """
-                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ treatment', 'comparison':'treatmenthND6'])
-                    .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
-                    }
-
-                input[1] = Channel.of([
-                    [ id:'test' ],
-                        file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv", checkIfExists: true),
-                        file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv", checkIfExists: true)
-                    ]
-                )
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
-                { assert path(process.out.results[0][1]).getText().contains("849.6666") },
-                { assert path(process.out.results[0][1]).getText().contains("1050\t549\t3.78") }
-                )
-        }
-    }
-
-
-    test("Mus musculus - expression table - contrasts + formula + weighted comparison contrast string") {
-
-        when {
-            process {
-                """
-                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ 0 + treatment', 'comparison':'2 * treatmenthND6 - treatmentmCherry'])
-                    .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
-                    }
-
-                input[1] = Channel.of([
-                    [ id:'test' ],
-                        file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv", checkIfExists: true),
-                        file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv", checkIfExists: true)
-                    ]
-                )
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.model, process.out.versions).match() },
-                { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
-                { assert path(process.out.results[0][1]).getText().contains("2124\t549\t4.83") },
-                { assert path(process.out.results[0][1]).getText().contains("1707.33") }
-                )
-        }
-    }
-
-    test("Mus musculus - expression table - contrasts + formula + comparison contrast string - no intercept") {
-
-        when {
-            process {
-                """
-                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ 0 + treatment + sample_number', 'comparison':'treatmenthND6 - treatmentmCherry'])
-                    .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
-                    }
-
-                input[1] = Channel.of([
-                    [ id:'test' ],
-                        file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv", checkIfExists: true),
-                        file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv", checkIfExists: true)
-                    ]
-                )
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.model, process.out.versions).match() },
-                { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
-                { assert path(process.out.results[0][1]).getText().contains("-95.6666") },
-                { assert path(process.out.results[0][1]).getText().contains("1050\t549\t4.15") }
-                )
-        }
-    }
-
-    test("Mus musculus - expression table - contrasts + blocking factors") {
-
-        when {
-            process {
-                """
-                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ treatment + (1 | sample_number)'])
-                    .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
-                    }
-
-                input[1] = Channel.of([
-                    [ id:'test' ],
-                        file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv", checkIfExists: true),
-                        file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv", checkIfExists: true)
-                    ]
-                )
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert process.errorReport.contains("Missing required options: contrast_string") }
             )
         }
     }
 
-    test("Mus musculus - expression table - contrasts + blocking factors stub") {
+    test("Mus musculus - expression table - contrasts + formula + comparison contrast string - no intercept stub") {
 
         options '-stub'
         when {
+            params {
+                module_args = "--round_digits 2"
+            }
             process {
                 """
-                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ treatment + (1 | sample_number)'])
+                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'formula':'~ 0 + treatment + sample_number', 'comparison':'treatmenthND6 - treatmentmCherry'])
                     .map{
                         tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }

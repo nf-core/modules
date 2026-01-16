@@ -17,11 +17,11 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
 
     main:
 
-    ch_fasta         = Channel.empty()
-    ch_fasta_index   = Channel.empty()
-    ch_bismark_index = Channel.empty()
-    ch_bwameth_index = Channel.empty()
-    ch_versions      = Channel.empty()
+    ch_fasta         = channel.empty()
+    ch_fasta_index   = channel.empty()
+    ch_bismark_index = channel.empty()
+    ch_bwameth_index = channel.empty()
+    ch_versions      = channel.empty()
 
     // Check if fasta file is gzipped and decompress if needed
     fasta
@@ -118,7 +118,7 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
                 false
             )
             ch_fasta_index = SAMTOOLS_FAIDX.out.fai
-            ch_versions    = ch_versions.mix(SAMTOOLS_FAIDX.out.versions)
+            // samtools/faidx version emitted into the topic channel
         }
     }
 

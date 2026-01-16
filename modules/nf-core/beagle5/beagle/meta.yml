@@ -57,6 +57,10 @@ input:
           the analysis
         pattern: "*.*"
         ontologies: []
+    - region:
+        type: string
+        description: Region to perform imputation
+        pattern: "(chr)?\\d*:\\d*-\\d*"
 output:
   vcf:
     - - meta:

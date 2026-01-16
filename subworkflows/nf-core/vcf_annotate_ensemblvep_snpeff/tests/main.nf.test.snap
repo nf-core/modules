@@ -119,18 +119,33 @@
                 ]
             ],
             [
-                "versions.yml",
-                "versions.yml",
-                "versions.yml",
-                "versions.yml",
-                "versions.yml"
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_SORT": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:TABIX_BGZIP": {
+                        "tabix": 1.21
+                    }
+                },
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_PLUGINSCATTER": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_CONCAT": {
+                        "bcftools": 1.22
+                    }
+                }
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-29T11:42:55.57866235"
+        "timestamp": "2026-01-07T13:43:50.665892462"
     },
     "sarscov2 - ensemblvep - large chunks": {
         "content": [
@@ -148,7 +163,13 @@
                 ]
             ],
             [
-                "custom_test0_annotated.vep.vcf.gz_summary.html"
+                [
+                    {
+                        "id": "custom_test0_annotated",
+                        "single_end": false
+                    },
+                    "custom_test0_annotated.vep.vcf.gz_summary.html"
+                ]
             ],
             [
                 
@@ -160,17 +181,28 @@
                 
             ],
             [
-                "versions.yml",
-                "versions.yml",
-                "versions.yml",
-                "versions.yml"
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_SORT": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_PLUGINSCATTER": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_CONCAT": {
+                        "bcftools": 1.22
+                    }
+                }
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-28T15:05:08.526580844"
+        "timestamp": "2026-01-15T11:34:31.494403864"
     },
     "sarscov2 - snpeff + ensemblvep": {
         "content": [
@@ -188,8 +220,20 @@
                 ]
             ],
             [
-                "custom_test0_annotated.vep.vcf.gz_summary.html",
-                "custom_test1_annotated.vep.vcf.gz_summary.html"
+                [
+                    {
+                        "id": "custom_test0_annotated",
+                        "single_end": false
+                    },
+                    "custom_test0_annotated.vep.vcf.gz_summary.html"
+                ],
+                [
+                    {
+                        "id": "custom_test1_annotated",
+                        "single_end": false
+                    },
+                    "custom_test1_annotated.vep.vcf.gz_summary.html"
+                ]
             ],
             [
                 [
@@ -240,19 +284,33 @@
                 ]
             ],
             [
-                "versions.yml",
-                "versions.yml",
-                "versions.yml",
-                "versions.yml",
-                "versions.yml",
-                "versions.yml"
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_SORT": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:TABIX_BGZIP": {
+                        "tabix": 1.21
+                    }
+                },
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_PLUGINSCATTER": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_CONCAT": {
+                        "bcftools": 1.22
+                    }
+                }
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-29T11:43:20.014782103"
+        "timestamp": "2026-01-15T11:34:12.568662709"
     },
     "sarscov2 - ensemblvep - no scatter": {
         "content": [
@@ -267,7 +325,13 @@
                 ]
             ],
             [
-                "custom_test.vep.vcf.gz_summary.html"
+                [
+                    {
+                        "id": "custom_test",
+                        "single_end": false
+                    },
+                    "custom_test.vep.vcf.gz_summary.html"
+                ]
             ],
             [
                 
@@ -279,14 +343,14 @@
                 
             ],
             [
-                "versions.yml"
+                
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-28T15:05:34.860678122"
+        "timestamp": "2026-01-15T11:34:48.728050993"
     },
     "sarscov2 - ensemblvep": {
         "content": [
@@ -304,8 +368,20 @@
                 ]
             ],
             [
-                "custom_test0_annotated.vep.vcf.gz_summary.html",
-                "custom_test1_annotated.vep.vcf.gz_summary.html"
+                [
+                    {
+                        "id": "custom_test0_annotated",
+                        "single_end": false
+                    },
+                    "custom_test0_annotated.vep.vcf.gz_summary.html"
+                ],
+                [
+                    {
+                        "id": "custom_test1_annotated",
+                        "single_end": false
+                    },
+                    "custom_test1_annotated.vep.vcf.gz_summary.html"
+                ]
             ],
             [
                 
@@ -317,16 +393,27 @@
                 
             ],
             [
-                "versions.yml",
-                "versions.yml",
-                "versions.yml",
-                "versions.yml"
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_SORT": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_PLUGINSCATTER": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:BCFTOOLS_CONCAT": {
+                        "bcftools": 1.22
+                    }
+                }
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-28T15:03:18.747847891"
+        "timestamp": "2026-01-15T11:33:06.429529263"
     }
 }

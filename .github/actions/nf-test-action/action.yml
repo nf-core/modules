@@ -17,7 +17,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5
+    - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
       with:
         distribution: "temurin"
         java-version: "17"
@@ -25,7 +25,7 @@ runs:
     - name: Set up Nextflow
       uses: nf-core/setup-nextflow@v2
       with:
-        version: "${{ env.NXF_VERSION }}"
+        version: "${{ env.NXF_VER }}"
 
     - name: Set up Python
       uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6
@@ -52,7 +52,7 @@ runs:
 
     - name: Set up Conda
       if: ${{contains(inputs.profile, 'conda')}}
-      uses: conda-incubator/setup-miniconda@505e6394dae86d6a5c7fbb6e3fb8938e3e863830 # v3
+      uses: conda-incubator/setup-miniconda@835234971496cad1653abb28a638a281cf32541f # v3
       with:
         auto-update-conda: true
         conda-solver: libmamba
