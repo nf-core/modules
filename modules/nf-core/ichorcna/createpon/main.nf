@@ -24,11 +24,11 @@ process ICHORCNA_CREATEPON {
 
     script:
     def args = task.ext.args     ?: ''
-    prefix = task.ext.prefix ?: "PoN"
+    def prefix = task.ext.prefix ?: "PoN"
     def map    = map_wig         ? "mapWig='${map_wig}',"                 : 'mapWig=NULL,'
     def centro = centromere      ? "centromere='${centromere}',"          : ''
     def rep    = rep_time_wig    ? "repTimeWig='${rep_time_wig}',"        : 'repTimeWig=NULL,'
-    def exons  = exons           ? "exons.bed='${exons}',"                : ''
+    def exons_opt  = exons           ? "exons.bed='${exons}',"                : ''
 
     """
     #!/usr/bin/env Rscript
@@ -43,7 +43,7 @@ process ICHORCNA_CREATEPON {
         ${rep}
         filelist = "filelist.txt",
         outfile = "${prefix}",
-        ${exons}
+        ${exons_opt}
         ${centro}
         $args
     )

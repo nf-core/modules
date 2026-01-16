@@ -9,7 +9,7 @@ process PEKA {
 
     input:
     tuple val(meta), path(peaks)
-    tuple val(meta), path(crosslinks)
+    tuple val(meta2), path(crosslinks)
     path fasta
     path fai
     path gtf
