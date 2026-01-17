@@ -41,8 +41,12 @@ via a boolean switch, making 'getchromsizes' unnecessary.
     """
 
     stub:
-    """
-    >&2 echo "${deprecation_message}"
-    false
-    """
+    def deprecation_message = """
+WARNING: The getchromsizes process has been deprecated. Please use nf-core/modules/samtools/faidx.
+
+Reason:
+Getting chromosome sizes was added to samtools/faidx (https://github.com/nf-core/modules/pull/7041)
+via a boolean switch, making 'getchromsizes' unnecessary.
+"""
+    assert false: deprecation_message
 }

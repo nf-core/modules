@@ -52,6 +52,12 @@ This module is now renamed as FCSGX_RUNGX and as been updated to the latest vers
     """
 
     stub:
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/fcsgx/rungx
+
+Reason:
+This module is now renamed as FCSGX_RUNGX and as been updated to the latest version
+"""
     // Comment out this block to disable the deprecation warning
     assert false: deprecation_message
 
