@@ -31,6 +31,13 @@ extends the outputs to include other types of SAM header.
     """
 
     stub:
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/samtools/splitheader
+
+Reason:
+This module has been renamed to samtools/splitheader, which has the same functionality but
+extends the outputs to include other types of SAM header.
+"""
     def prefix = task.ext.prefix ?: "${meta.id}"
     assert false: deprecation_message
     """

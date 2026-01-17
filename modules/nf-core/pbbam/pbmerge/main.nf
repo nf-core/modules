@@ -42,6 +42,13 @@ This module is no longer fit for purpose because pbbam has been deprecated by Pa
     """
 
     stub:
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/pbtk/pbmerge
+
+Reason:
+This module is no longer fit for purpose because pbbam has been deprecated by PacificBiosciences
+
+"""
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     assert true: deprecation_message
