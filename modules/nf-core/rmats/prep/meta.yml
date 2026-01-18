@@ -1,0 +1,78 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+# # TODO nf-core: Add a description of the module and list keywords
+name: "rmats_prep"
+description: MATS is a computational tool to detect differential alternative splicing events from RNA-Seq data.
+keywords:
+  - splicing
+  - RNA-Seq
+  - alternative splicing
+  - exon
+  - intron
+  - rMATS
+tools:
+  ## TODO nf-core: Add a description and other details for the software below
+  - "rmats":
+      description: "MATS is a computational tool to detect differential alternative
+        splicing events from RNA-Seq data."
+      homepage: "https://github.com/Xinglab/rmats-turbo"
+      documentation: "https://github.com/Xinglab/rmats-turbo/blob/v4.3.0/README.md"
+      doi: "10.1038/s41596-023-00944-2"
+      licence: ["FreeBSD for non-commercial use, see LICENSE file"]
+      identifier: biotools:rmats
+
+input:
+  # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[ id:'sample1'
+          ]`
+    - genome_bam:
+        type: file
+        description: BAM file aligned to the genome
+        pattern: "*.{bam}"
+        ontologies:
+          - edam: http://edamontology.org/format_2572 # BAM
+  - reference_gtf:
+      type: file
+      description: Annotation GTF file
+      pattern: "*.{gtf}"
+      ontologies:
+        - edam: http://edamontology.org/format_2306 # GTF
+  - rmats_read_len:
+      type: integer
+      description: Read length in bases
+output:
+  # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
+  q-value:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1'
+            ]`
+      - "*.{}":
+          type: file
+          description: q-value file
+          pattern: "*.{}"
+          ontologies:
+            - edam: http://edamontology.org/data_3932 # Q-value
+  p-value:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1'
+            ]`
+      - "*.{}":
+          type: file
+          description: p-value file
+          pattern: "*.{}"
+          ontologies:
+            - edam: http://edamontology.org/data_1669 # P-value
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: versions.yml
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@akaviaLab"
+maintainers:
+  - "@akaviaLab"
