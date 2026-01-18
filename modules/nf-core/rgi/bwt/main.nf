@@ -8,7 +8,7 @@ process RGI_BWT {
         : 'biocontainers/rgi:6.0.5--pyh05cac1d_0'}"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(reads, arity: '1..2')
     path card
     path wildcard
 
@@ -23,10 +23,13 @@ process RGI_BWT {
     task.ext.when == null || task.ext.when
 
     script:
+    // This customizes the command: rgi load
     def args = task.ext.args ?: ''
+    // This customizes the command: rgi main
+    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def read_one = reads instanceof List ? reads[0] : reads
-    def read_two = reads instanceof List && reads.size() > 1 ? reads[1] : null
+    def read_one = reads[0]
+    def read_two = reads.size() > 1 ? reads[1] : null
     def load_wildcard = ""
 
     if (wildcard) {
