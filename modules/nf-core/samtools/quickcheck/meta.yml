@@ -38,7 +38,7 @@ output:
       - samtools:
           type: string
           description: The name of the tool
-      - samtools --version:
+      - "samtools version | sed '1!d;s/.* //'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -49,7 +49,7 @@ topics:
       - samtools:
           type: string
           description: The name of the tool
-      - samtools --version:
+      - "samtools version | sed '1!d;s/.* //'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
