@@ -8,7 +8,7 @@ process SEQKIT_REPLACE {
         : 'biocontainers/seqkit:2.9.0--h9ee0642_0'}"
 
     input:
-    tuple val(meta), path(fastx)
+    tuple val(meta), path(fastx, stageAs: "raw.fasta")
 
     output:
     tuple val(meta), path("*.fast*"), emit: fastx
@@ -34,8 +34,8 @@ process SEQKIT_REPLACE {
         replace \\
         ${args} \\
         --threads ${task.cpus} \\
-        -i ${fastx} \\
-        -o ${prefix}.${endswith}
+        -o ${prefix}.${endswith} \\
+        ${fastx}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
