@@ -14,7 +14,7 @@ process HHSUITE_REFORMAT {
 
     output:
     tuple val(meta), path("${prefix}.${outformat}.gz"), emit: msa
-    tuple val("${task.process}"), val("hhsuite"), eval('hhblits -h | grep \'HHblits\' | sed -n -e \'s/.*\\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p\''), topic: versions, emit: versions_hhsuite
+    tuple val("${task.process}"), val("hhsuite"), eval("hhblits -h 2>&1 | sed -n '1s/^HHblits \\([0-9.]\\+\\):/\\1/p'"), topic: versions, emit: versions_hhsuite
 
     when:
     task.ext.when == null || task.ext.when
