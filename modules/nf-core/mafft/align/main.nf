@@ -25,7 +25,7 @@ process MAFFT_ALIGN {
 
     script:
     def args         = task.ext.args   ?: ''
-    prefix           = task.ext.prefix ?: "${meta.id}"
+    def prefix           = task.ext.prefix ?: "${meta.id}"
     def add_opt          = add             ? "--add <(unpigz -cdf ${add})"                   : ''
     def addfragments_opt = addfragments    ? "--addfragments <(unpigz -cdf ${addfragments})" : ''
     def addfull_opt      = addfull         ? "--addfull <(unpigz -cdf ${addfull})"           : ''
@@ -54,10 +54,10 @@ process MAFFT_ALIGN {
     """
 
     stub:
-    prefix_stub       = task.ext.prefix ?: "${meta.id}"
-    if ("$fasta" == "${prefix_stub}.fas" )  error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    prefix = task.ext.prefix ?: "${meta.id}"
+    if ("$fasta" == "${prefix}.fas" )  error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
-    touch ${prefix_stub}.fas${compress ? '.gz' : ''}
+    touch ${prefix}.fas${compress ? '.gz' : ''}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
