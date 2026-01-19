@@ -44,7 +44,7 @@ workflow FASTA_HMMSEARCH_RANK_FASTAS {
         .set { ch_subseq_fasta }
 
     SEQTK_SUBSEQ ( ch_subseq_fasta, ch_subseq_filter.map { it[1] } )
-    ch_versions = ch_versions.mix(SEQTK_SUBSEQ.out.versions.first())
+    // SEQTK_SUBSEQ emits version as a topic channel
 
     emit:
     hmmrank                 = HMMER_HMMRANK.out.hmmrank       // channel: [ [ id: 'rank' ], hmmrank_tsv ]
