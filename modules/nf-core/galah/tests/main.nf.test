@@ -60,7 +60,7 @@ nextflow_process {
                         [file("https://github.com/nf-core/test-datasets/raw/refs/heads/magmap/testdata/GCA_002688505.1_ASM268850v1_genomic.fna.gz", checkIfExists: true),
                         file("https://github.com/nf-core/test-datasets/raw/refs/heads/magmap/testdata/GCF_004296495.1_ASM429649v1_genomic.fna.gz", checkIfExists: true)]
                     ]
-                    input[1] = CHECKM2_DATABASEDOWNLOAD.out.database
+                    input[1] = UNTAR.out.untar
                     """
                 }
             }
