@@ -28,7 +28,7 @@ nextflow_process {
                 """
             }
         }
-        
+
         run("DIAMOND_BLASTX") {
             script "../../../diamond/blastx/main.nf"
             process {
@@ -44,7 +44,7 @@ nextflow_process {
             }
         }
     }
-    
+
     test("test_megan_daa2info") {
         when {
             params {
@@ -69,7 +69,7 @@ nextflow_process {
             )
         }
     }
-    
+
     test("test_megan_daa2info -- stub") {
         options '-stub'
         when {

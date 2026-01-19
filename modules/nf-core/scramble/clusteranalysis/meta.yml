@@ -25,6 +25,7 @@ input:
         description: Tab-delimited text file containing soft-clipped clusters. Has to
           be generated using scramble/clusteridentifier
         pattern: "*clusters.txt"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -34,14 +35,16 @@ input:
         type: file
         description: The reference FASTA file (mandatory when using CRAM files)
         pattern: "*.{fasta,fa}"
-  - - mei_ref:
-        type: file
-        description: Optional fasta file containing the MEI reference. This file should
-          only be supplied in special occasions where the default isn't correct
-        pattern: "*.{fasta,fa}"
+        ontologies: []
+  - mei_ref:
+      type: file
+      description: Optional fasta file containing the MEI reference. This file should
+        only be supplied in special occasions where the default isn't correct
+      pattern: "*.{fasta,fa}"
+      ontologies: []
 output:
-  - meis_tab:
-      - meta:
+  meis_tab:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,8 +53,9 @@ output:
           type: file
           description: Tab-delimited text file containing MEI calls
           pattern: "*_MEIs.txt"
-  - dels_tab:
-      - meta:
+          ontologies: []
+  dels_tab:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,8 +64,9 @@ output:
           type: file
           description: Tab-delimited text file containing predicted deletions
           pattern: "*_PredictedDeletions.txt"
-  - vcf:
-      - meta:
+          ontologies: []
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -71,11 +76,14 @@ output:
           description: A VCF file containing the MEI calls and/or the predicted deletions
             (depending on the given arguments)
           pattern: "*.vcf"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

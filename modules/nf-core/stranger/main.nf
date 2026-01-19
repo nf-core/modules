@@ -4,8 +4,8 @@ process STRANGER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/19/19f14a7c1b0ec9cbdeb6d32e3692208d559e9186b210e9a0a6922e001cb6ad32/data':
-        'community.wave.seqera.io/library/stranger_tabix:847b205e87ed124b' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bc/bc075f106c93d3bb9c786c73f897c8cb005962e4c31c08226bd55eef742e9025/data':
+        'community.wave.seqera.io/library/tabix_pip_stranger:9685bd298256c94b' }"
 
     input:
     tuple val(meta), path(vcf)
@@ -14,7 +14,8 @@ process STRANGER {
     output:
     tuple val(meta), path("*.vcf.gz")    , emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi
-    path "versions.yml"                  , emit: versions
+    tuple val("${task.process}"), val('stranger'), eval("stranger --version | sed 's/stranger, version //g'"), topic: versions, emit: versions_stranger
+    tuple val("${task.process}"), val('tabix'), eval("tabix --version | sed -n 's/^.*htslib) //p'"), topic: versions, emit: versions_tabix
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,12 +38,6 @@ process STRANGER {
         $args3 \\
         --threads ${task.cpus} \\
         ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        stranger: \$( stranger --version | sed 's/stranger, version //g' )
-        tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -52,11 +47,5 @@ process STRANGER {
     """
     echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        stranger: \$( stranger --version | sed 's/stranger, version //g' )
-        tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-    END_VERSIONS
     """
 }

@@ -23,29 +23,36 @@ input:
         type: file
         description: AnnData file containing filtered data (without empty droplets)
         pattern: "*.h5ad"
+        ontologies: []
     - unfiltered:
         type: file
         description: AnnData file containing unfiltered data (with empty droplets)
         pattern: "*.h5ad"
+        ontologies: []
     - cellbender_h5:
         type: file
         description: CellBender h5 file containing ambient RNA estimates
         pattern: "*.h5"
+        ontologies: []
 output:
-  - h5ad:
-      - meta:
+  h5ad:
+    - - meta:
           type: file
           description: AnnData file containing decontaminated counts as `adata.X`
           pattern: "*.h5ad"
+          ontologies: []
       - ${prefix}.h5ad:
           type: file
           description: AnnData file containing decontaminated counts as `adata.X`
           pattern: "*.h5ad"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software version
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nictru"
 maintainers:

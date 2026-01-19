@@ -1,8 +1,8 @@
 name: "gatk4_svannotate"
-description: Adds predicted functional consequence, gene overlap, and noncoding element
-  overlap annotations to SV VCF from GATK-SV pipeline. Input files are an SV VCF,
-  a GTF file containing primary or canonical transcripts, and a BED file containing
-  noncoding elements. Output file is an annotated SV VCF.
+description: Adds predicted functional consequence, gene overlap, and noncoding
+  element overlap annotations to SV VCF from GATK-SV pipeline. Input files are
+  an SV VCF, a GTF file containing primary or canonical transcripts, and a BED
+  file containing noncoding elements. Output file is an annotated SV VCF.
 keywords:
   - annotate
   - gatk4
@@ -28,32 +28,69 @@ input:
         type: file
         description: A VCF file created with a structural variant caller
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
     - tbi:
         type: file
         description: The index file of the VCF
         pattern: "*.vcf.gz.tbi"
+        ontologies: []
     - bed:
         type: file
         description: Regions to limit the analysis to
         pattern: "*.bed"
-  - - fasta:
+        ontologies: []
+    - non_coding_bed:
         type: file
-        description: Optional - reference FASTA file needed when the input is a CRAM
-          file
+        description: File containing noncoding regions
+        pattern: "*.bed"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing FASTA information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Optional - reference FASTA file needed when the input is a
+          CRAM file
         pattern: "*.{fasta,fa}"
-  - - fasta_fai:
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing FAI information
+          e.g. [ id:'test', single_end:false ]
+    - fasta_fai:
         type: file
-        description: Optional - index of the reference FASTA file needed when the input
-          is a CRAM file
+        description: Optional - index of the reference FASTA file needed when the
+          input is a CRAM file
         pattern: "*.fai"
-  - - dict:
+        ontologies: []
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing DICT information
+          e.g. [ id:'test', single_end:false ]
+    - dict:
         type: file
-        description: Optional - sequence dictionary of the reference FASTA file needed
-          when the input is a CRAM file
+        description: Optional - sequence dictionary of the reference FASTA file
+          needed when the input is a CRAM file
         pattern: "*.dict"
+        ontologies: []
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing GTF information
+          e.g. [ id:'test', single_end:false ]
+    - gtf:
+        type: file
+        description: Optional - GTF file containing transcript information
+        pattern: "*.gtf"
+        ontologies: []
 output:
-  - annotated_vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,8 +99,10 @@ output:
           type: file
           description: The annotated structural variant VCF
           pattern: "*.vcf.gz"
-  - index:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -72,11 +111,14 @@ output:
           type: file
           description: The index of the VCF
           pattern: "*.vcf.gz.tbi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

@@ -8,12 +8,13 @@ process CELLRANGER_MKFASTQ {
     tuple val(meta), path(csv), path(bcl)
 
     output:
-    tuple val(meta), path("*_outs/outs/fastq_path/**/*.fastq.gz")          , emit: fastq
-    tuple val(meta), path("*_outs/outs/fastq_path/Undetermined*.fastq.gz") , optional:true, emit: undetermined_fastq
-    tuple val(meta), path("*_outs/outs/fastq_path/Reports")                , optional:true, emit: reports
-    tuple val(meta), path("*_outs/outs/fastq_path/Stats")                  , optional:true, emit: stats
-    tuple val(meta), path("*_outs/outs/interop_path/*.bin")                , emit: interop
-    path "versions.yml"                                                    , emit: versions
+    tuple val(meta), path("*_outs/outs/fastq_path/**/**_S[0-9]*_R?_00?.fastq.gz")  , emit: fastq
+    tuple val(meta), path("*_outs/outs/fastq_path/**/**_S[0-9]*_I?_00?.fastq.gz")  , optional:true, emit: fastq_idx
+    tuple val(meta), path("*_outs/outs/fastq_path/Undetermined*.fastq.gz")         , optional:true, emit: undetermined_fastq
+    tuple val(meta), path("*_outs/outs/fastq_path/Reports")                        , optional:true, emit: reports
+    tuple val(meta), path("*_outs/outs/fastq_path/Stats")                          , optional:true, emit: stats
+    tuple val(meta), path("*_outs/outs/interop_path/*.bin")                        , emit: interop
+    path "versions.yml"                                                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -58,9 +59,11 @@ process CELLRANGER_MKFASTQ {
     # data for fastq channels
     mkdir -p "${prefix}_outs/outs/fastq_path/sample/files/"
     touch "${prefix}_outs/outs/fastq_path/Undetermined_fake_file.fastq"
-    touch "${prefix}_outs/outs/fastq_path/sample/files/fake_file.fastq"
+    touch "${prefix}_outs/outs/fastq_path/sample/files/fake_sample_S1_R1_001.fastq"
+    touch "${prefix}_outs/outs/fastq_path/sample/files/fake_sample_S1_I1_001.fastq"
     gzip "${prefix}_outs/outs/fastq_path/Undetermined_fake_file.fastq"
-    gzip "${prefix}_outs/outs/fastq_path/sample/files/fake_file.fastq"
+    gzip "${prefix}_outs/outs/fastq_path/sample/files/fake_sample_S1_R1_001.fastq"
+    gzip "${prefix}_outs/outs/fastq_path/sample/files/fake_sample_S1_I1_001.fastq"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

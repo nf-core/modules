@@ -1,65 +1,72 @@
 name: abacas
-description: contiguate draft genome assembly
+description: Contiguate draft genome assembly
 keywords:
-- genome
-- assembly
-- contiguate
+  - genome
+  - assembly
+  - contiguate
 tools:
-- abacas:
-    description: |
-      ABACAS is intended to rapidly contiguate (align, order, orientate),
-      visualize and design primers to close gaps on shotgun assembled
-      contigs based on a reference sequence.
-    homepage: http://abacas.sourceforge.net/documentation.html
-    documentation: http://abacas.sourceforge.net/documentation.html
-    doi: "10.1093/bioinformatics/btp347"
-    licence: ["GPL v2-or-later"]
-    identifier: biotools:abacas
+  - abacas:
+      description: |
+        ABACAS is intended to rapidly contiguate (align, order, orientate),
+        visualize and design primers to close gaps on shotgun assembled
+        contigs based on a reference sequence.
+      homepage: http://abacas.sourceforge.net/documentation.html
+      documentation: http://abacas.sourceforge.net/documentation.html
+      doi: "10.1093/bioinformatics/btp347"
+      licence: ["GPL v2-or-later"]
+      identifier: biotools:abacas
 input:
-- - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - scaffold:
-      type: file
-      description: Fasta file containing scaffold
-      pattern: "*.{fasta,fa}"
-      ontologies:
-      - edam: http://edamontology.org/format_1929  # FASTA
-- - fasta:
-      type: file
-      description: FASTA reference file
-      pattern: "*.{fasta,fa}"
-      ontologies:
-      - edam: http://edamontology.org/format_1929  # FASTA
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - scaffold:
+        type: file
+        description: Fasta file containing scaffold
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing genome information
+          e.g. [ id:'fasta' ]
+    - fasta:
+        type: file
+        description: FASTA reference file
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
 output:
-- results:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - "${prefix}.*":
-      type: file
-      description: |
-        List containing abacas output files
-        [ 'test.abacas.bin', 'test.abacas.fasta', 'test.abacas.gaps',
-        'test.abacas.gaps.tab', 'test.abacas.nucmer.delta',
-        'test.abacas.nucmer.filtered.delta', 'test.abacas.nucmer.tiling',
-        'test.abacas.tab', 'test.abacas.unused.contigs.out',
-        'test.abacas.MULTIFASTA.fa' ]
-      pattern: "${prefix}.*"
-      ontologies: []
-- versions:
-  - versions.yml:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-      ontologies: []
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.*:
+          type: file
+          description: |
+            List containing abacas output files
+            [ '*.abacas.bin', '*.abacas.fasta', '*.abacas.gaps',
+            '*.abacas.gaps.tab', '*.abacas.nucmer.delta',
+            '*.abacas.nucmer.filtered.delta', '*.abacas.nucmer.tiling',
+            '*.abacas.tab', '*.abacas.unused.contigs.out',
+            '*.abacas.MULTIFASTA.fa' ]
+          pattern: "${prefix}.*"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750" # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
-- "@joseespinosa"
-- "@drpatelh"
+  - "@joseespinosa"
+  - "@drpatelh"
 maintainers:
-- "@joseespinosa"
-- "@drpatelh"
+  - "@joseespinosa"
+  - "@drpatelh"

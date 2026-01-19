@@ -11,6 +11,8 @@ workflow BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK {
     ch_fasta                 // channel: /path/to/reference/fasta
     ch_fai                   // channel: /path/to/reference/fasta/index
     ch_dict                  // channel: /path/to/reference/fasta/dictionary
+    ch_alleles               // channel: /path/to/alleles
+    ch_alleles_tbi           // channel: /path/to/alleles/index
     ch_germline_resource     // channel: /path/to/germline/resource
     ch_germline_resource_tbi // channel: /path/to/germline/index
     ch_panel_of_normals      // channel: /path/to/panel/of/normals
@@ -26,10 +28,12 @@ workflow BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK {
         ch_fasta,
         ch_fai,
         ch_dict,
+        ch_alleles,
+        ch_alleles_tbi,
         ch_germline_resource,
         ch_germline_resource_tbi,
         ch_panel_of_normals,
-        ch_panel_of_normals_tbi,
+        ch_panel_of_normals_tbi
     )
 
     //Generate pileup summary table using getpileupsummaries.

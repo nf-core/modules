@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "deacon_index"
+description: Create deacon index for reference genome
+keywords:
+  - index
+  - fasta
+  - genome
+  - reference
+  - minimizer
+  - decontamination
+tools:
+  - "deacon":
+      description: "Fast alignment-free sequence filter"
+      homepage: "https://github.com/bede/deacon"
+      documentation: "https://github.com/bede/deacon#readme"
+      tool_dev_url: "https://github.com/bede/deacon"
+      doi: "10.1093/bioinformatics/btae004"
+      licence: ["MIT"]
+      identifier: "biotools:deacon"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input genome fasta file
+        pattern: "*.{fasta,fasta.gz,fas,fas.gz,fa,fa.gz,fna,fna.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/data_2044" # Sequence
+          - edam: "http://edamontology.org/format_1929" # FASTA
+
+output:
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing reference information.
+            e.g. [ id:'test', single_end:false ]
+      - "*.idx":
+          type: file
+          description: Deacon minimizer index file
+          pattern: "*.idx"
+          ontologies:
+            - edam: "http://edamontology.org/data_3210" # Genome index
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@mberacochea"
+maintainers:
+  - "@mberacochea"

@@ -6,9 +6,9 @@ keywords:
   - seqtk
 tools:
   - seqtk:
-      description: Seqtk is a fast and lightweight tool for processing sequences in
-        the FASTA or FASTQ format. Seqtk mergepe command merges pair-end reads into
-        one interleaved file.
+      description: Seqtk is a fast and lightweight tool for processing sequences
+        in the FASTA or FASTQ format. Seqtk mergepe command merges pair-end reads
+        into one interleaved file.
       homepage: https://github.com/lh3/seqtk
       documentation: https://docs.csc.fi/apps/seqtk/
       tool_dev_url: https://github.com/lh3/seqtk
@@ -24,9 +24,10 @@ input:
         type: file
         description: A single fasta file to be split.
         pattern: "*.{fasta}"
+        ontologies: []
 output:
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,11 +36,28 @@ output:
           type: file
           description: The output bed which summarised locations of cuts
           pattern: "*.{bed}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_seqtk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqtk:
+          type: string
+          description: The name of the tool
+      - "seqtk 2>&1 | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqtk:
+          type: string
+          description: The name of the tool
+      - "seqtk 2>&1 | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@DLBPointon"
 maintainers:

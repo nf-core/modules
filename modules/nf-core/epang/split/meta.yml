@@ -25,14 +25,16 @@ input:
         description: reference alignment in any supported format including phylip and
           fasta, may be gzipped
         pattern: "*.{faa,fna,fa,fasta,fa,phy,aln,alnfaa,alnfna,alnfa,mfa,faa.gz,fna.gz,fa.gz,fasta.gz,fa.gz,phy.gz,aln.gz,alnfaa.gz,alnfna.gz,alnfa.gz,mfa.gz}"
+        ontologies: []
     - fullaln:
         type: file
         description: full alignment in any supported format to split into reference
           and query alignments
         pattern: "*.{faa,fna,fa,fasta,fa,phy,aln,alnfaa,alnfna,alnfa,mfa,faa.gz,fna.gz,fa.gz,fasta.gz,fa.gz,phy.gz,aln.gz,alnfaa.gz,alnfna.gz,alnfa.gz,mfa.gz}"
+        ontologies: []
 output:
-  - query:
-      - meta:
+  query:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,8 +42,9 @@ output:
       - "*query.fasta.gz":
           type: file
           description: query sequence alignment in gzipped fasta format
-  - reference:
-      - meta:
+          ontologies: []
+  reference:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,11 +52,14 @@ output:
       - "*reference.fasta.gz":
           type: file
           description: reference sequence alignment in gzipped fasta format
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@erikrikarddaniel"
 maintainers:

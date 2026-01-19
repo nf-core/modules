@@ -24,30 +24,37 @@ input:
         type: file
         description: A VCF with called variants to benchmark against the standard
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
     - query_vcf_tbi:
         type: file
-        description: The index of the VCF file with called variants to benchmark against the standard
+        description: The index of the VCF file with called variants to benchmark against
+          the standard
         pattern: "*.{vcf.gz.tbi, vcf.tbi}"
+        ontologies: []
     - truth_vcf:
         type: file
         description: A standard VCF to compare against
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
     - truth_vcf_tbi:
         type: file
         description: The index of the standard VCF to compare against
         pattern: "*.{vcf.gz.tbi, vcf.tbi}"
+        ontologies: []
     - truth_bed:
         type: file
-        description: A BED file containing the strict regions where VCFeval should
-          only evaluate the fully overlapping variants (optional)
-          This input should be used to provide the golden truth BED files.
+        description: A BED file containing the strict regions where VCFeval should only
+          evaluate the fully overlapping variants (optional) This input should be used
+          to provide the golden truth BED files.
         pattern: "*.bed"
+        ontologies: []
     - regions_bed:
         type: file
         description: A BED file containing the regions where VCFeval will evaluate every
-          fully and partially overlapping variant (optional)
-          This input should be used to provide the regions used by the analysis
+          fully and partially overlapping variant (optional) This input should be used
+          to provide the regions used by the analysis
         pattern: "*.bed"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -56,9 +63,10 @@ input:
     - sdf:
         type: file
         description: The SDF (RTG Sequence Data File) folder of the reference genome
+        ontologies: []
 output:
-  - tp_vcf:
-      - meta:
+  tp_vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,8 +75,10 @@ output:
           type: file
           description: A VCF file for the true positive variants
           pattern: "*.tp.vcf.gz"
-  - tp_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tp_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -77,8 +87,9 @@ output:
           type: file
           description: The index of the VCF file for the true positive variants
           pattern: "*.tp.vcf.gz.tbi"
-  - fn_vcf:
-      - meta:
+          ontologies: []
+  fn_vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -87,8 +98,10 @@ output:
           type: file
           description: A VCF file for the false negative variants
           pattern: "*.fn.vcf.gz"
-  - fn_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  fn_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -97,8 +110,9 @@ output:
           type: file
           description: The index of the VCF file for the false negative variants
           pattern: "*.fn.vcf.gz.tbi"
-  - fp_vcf:
-      - meta:
+          ontologies: []
+  fp_vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -107,8 +121,10 @@ output:
           type: file
           description: A VCF file for the false positive variants
           pattern: "*.fp.vcf.gz"
-  - fp_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  fp_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -117,8 +133,9 @@ output:
           type: file
           description: The index of the VCF file for the false positive variants
           pattern: "*.fp.vcf.gz.tbi"
-  - baseline_vcf:
-      - meta:
+          ontologies: []
+  baseline_vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -127,19 +144,22 @@ output:
           type: file
           description: A VCF file for the true positive variants from the baseline
           pattern: "*.tp-baseline.vcf.gz"
-  - baseline_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  baseline_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.tp-baseline.vcf.gz.tbi":
           type: file
-          description: The index of the VCF file for the true positive variants from the
-            baseline
+          description: The index of the VCF file for the true positive variants from
+            the baseline
           pattern: "*.tp-baseline.vcf.gz.tbi"
-  - snp_roc:
-      - meta:
+          ontologies: []
+  snp_roc:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -148,8 +168,10 @@ output:
           type: file
           description: TSV files containing ROC data for the SNPs
           pattern: "*.snp_roc.tsv.gz"
-  - non_snp_roc:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  non_snp_roc:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -158,8 +180,10 @@ output:
           type: file
           description: TSV files containing ROC data for all variants except SNPs
           pattern: "*.non_snp_roc.tsv.gz"
-  - weighted_roc:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  weighted_roc:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -168,8 +192,10 @@ output:
           type: file
           description: TSV files containing weighted ROC data for all variants
           pattern: "*.weighted_snp_roc.tsv.gz"
-  - summary:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -178,8 +204,9 @@ output:
           type: file
           description: A TXT file containing the summary of the evaluation
           pattern: "*.summary.txt"
-  - phasing:
-      - meta:
+          ontologies: []
+  phasing:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -188,11 +215,14 @@ output:
           type: file
           description: A TXT file containing the data on the phasing
           pattern: "*.phasing.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

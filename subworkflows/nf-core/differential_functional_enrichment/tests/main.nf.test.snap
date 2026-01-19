@@ -16,10 +16,10 @@
                         "functional_method": "gprofiler2"
                     },
                     [
-                        "treatment_mCherry_hND6__test.gprofiler2.GO:BP.sub_enriched_pathways.tsv:md5,6047ffd74fe8a49db9b924485a441948",
-                        "treatment_mCherry_hND6__test.gprofiler2.GO:CC.sub_enriched_pathways.tsv:md5,891018299a66d62fbe979a56e9f31035",
-                        "treatment_mCherry_hND6__test.gprofiler2.GO:MF.sub_enriched_pathways.tsv:md5,46bb279062af777060495d56ac9767d7",
-                        "treatment_mCherry_hND6__test.gprofiler2.REAC.sub_enriched_pathways.tsv:md5,ca5e92673eb17242477e9c2787d68323"
+                        "treatment_mCherry_hND6__test.gprofiler2.GO:BP.sub_enriched_pathways.tsv:md5,8bcbfe1fd28d3a8f0066b019497e9e75",
+                        "treatment_mCherry_hND6__test.gprofiler2.GO:CC.sub_enriched_pathways.tsv:md5,5aabd9bb302c95ee7c323796c4368e95",
+                        "treatment_mCherry_hND6__test.gprofiler2.GO:MF.sub_enriched_pathways.tsv:md5,3e9fd56d8aa063b12c41a1cd07517a3f",
+                        "treatment_mCherry_hND6__test.gprofiler2.REAC.sub_enriched_pathways.tsv:md5,a3f2a2e4f0421e6c654e5bf8f8995578"
                     ]
                 ],
                 [
@@ -35,11 +35,11 @@
                         "functional_method": "gprofiler2"
                     },
                     [
-                        "treatment_mCherry_hND6_sample_number_test.gprofiler2.GO:BP.sub_enriched_pathways.tsv:md5,f55e010f72ee9200624137f42e94a5e5",
-                        "treatment_mCherry_hND6_sample_number_test.gprofiler2.GO:CC.sub_enriched_pathways.tsv:md5,5bb51d9184e7257ce6cdd0ce7db16923",
-                        "treatment_mCherry_hND6_sample_number_test.gprofiler2.GO:MF.sub_enriched_pathways.tsv:md5,210e4b99919354c79b37e12c83fdeaa5",
+                        "treatment_mCherry_hND6_sample_number_test.gprofiler2.GO:BP.sub_enriched_pathways.tsv:md5,749c45d1684a8c94c2598e0bc7729f48",
+                        "treatment_mCherry_hND6_sample_number_test.gprofiler2.GO:CC.sub_enriched_pathways.tsv:md5,c2995c4e7b48d6507c60b059008324ae",
+                        "treatment_mCherry_hND6_sample_number_test.gprofiler2.GO:MF.sub_enriched_pathways.tsv:md5,fac730dc1f70509ad027a533c6c26110",
                         "treatment_mCherry_hND6_sample_number_test.gprofiler2.KEGG.sub_enriched_pathways.tsv:md5,3cbdbbb1c5b232ab73d35d4a0953d19c",
-                        "treatment_mCherry_hND6_sample_number_test.gprofiler2.REAC.sub_enriched_pathways.tsv:md5,d754c55c2a2a1b8acda1c663165b4d2b"
+                        "treatment_mCherry_hND6_sample_number_test.gprofiler2.REAC.sub_enriched_pathways.tsv:md5,3433b462078c4d01af6068d8bf0d1b77"
                     ]
                 ]
             ],
@@ -128,16 +128,16 @@
                 ]
             ],
             [
+                "versions.yml:md5,0d83547f6ab8761c0ce33dbe39d03604",
+                "versions.yml:md5,0d83547f6ab8761c0ce33dbe39d03604",
+                "versions.yml:md5,0d83547f6ab8761c0ce33dbe39d03604",
+                "versions.yml:md5,0d83547f6ab8761c0ce33dbe39d03604",
+                "versions.yml:md5,0d83547f6ab8761c0ce33dbe39d03604",
+                "versions.yml:md5,0d83547f6ab8761c0ce33dbe39d03604",
                 "versions.yml:md5,25ab98049a601f4940f3e5a24aa73f55",
                 "versions.yml:md5,25ab98049a601f4940f3e5a24aa73f55",
                 "versions.yml:md5,25ab98049a601f4940f3e5a24aa73f55",
                 "versions.yml:md5,25ab98049a601f4940f3e5a24aa73f55",
-                "versions.yml:md5,46ccfd5d9b5c422857ca7b53147be4f4",
-                "versions.yml:md5,46ccfd5d9b5c422857ca7b53147be4f4",
-                "versions.yml:md5,46ccfd5d9b5c422857ca7b53147be4f4",
-                "versions.yml:md5,46ccfd5d9b5c422857ca7b53147be4f4",
-                "versions.yml:md5,46ccfd5d9b5c422857ca7b53147be4f4",
-                "versions.yml:md5,46ccfd5d9b5c422857ca7b53147be4f4",
                 "versions.yml:md5,cd9cd1563a983e586b15fd2276da8bfb",
                 "versions.yml:md5,cd9cd1563a983e586b15fd2276da8bfb",
                 "versions.yml:md5,f2db818ec8143f64399247548098b643",
@@ -152,10 +152,105 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.2"
         },
-        "timestamp": "2025-04-25T09:59:30.083904812"
+        "timestamp": "2026-01-13T16:47:14.656830015"
+    },
+    "deseq2 + gprofiler2 - mouse": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "treatment_mCherry_hND6__test",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking": "",
+                        "differential_method": "deseq2",
+                        "fc_threshold": 1.5,
+                        "stat_threshold": 0.05,
+                        "functional_method": "gprofiler2"
+                    },
+                    "treatment_mCherry_hND6__test.gprofiler2.all_enriched_pathways.tsv:md5,c15813671bfe656b8e8d24469eb792f8"
+                ],
+                [
+                    {
+                        "id": "treatment_mCherry_hND6_sample_number_test",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking": "sample_number",
+                        "differential_method": "deseq2",
+                        "fc_threshold": 1.5,
+                        "stat_threshold": 0.05,
+                        "functional_method": "gprofiler2"
+                    },
+                    "treatment_mCherry_hND6_sample_number_test.gprofiler2.all_enriched_pathways.tsv:md5,6281e95c4864e60d01d6670afecedd54"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "treatment_mCherry_hND6__test",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking": "",
+                        "differential_method": "deseq2",
+                        "fc_threshold": 1.5,
+                        "stat_threshold": 0.05,
+                        "functional_method": "gprofiler2"
+                    },
+                    [
+                        "treatment_mCherry_hND6__test.gprofiler2.GO:BP.sub_enriched_pathways.tsv:md5,8bcbfe1fd28d3a8f0066b019497e9e75",
+                        "treatment_mCherry_hND6__test.gprofiler2.GO:CC.sub_enriched_pathways.tsv:md5,5aabd9bb302c95ee7c323796c4368e95",
+                        "treatment_mCherry_hND6__test.gprofiler2.GO:MF.sub_enriched_pathways.tsv:md5,3e9fd56d8aa063b12c41a1cd07517a3f",
+                        "treatment_mCherry_hND6__test.gprofiler2.REAC.sub_enriched_pathways.tsv:md5,a3f2a2e4f0421e6c654e5bf8f8995578"
+                    ]
+                ],
+                [
+                    {
+                        "id": "treatment_mCherry_hND6_sample_number_test",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking": "sample_number",
+                        "differential_method": "deseq2",
+                        "fc_threshold": 1.5,
+                        "stat_threshold": 0.05,
+                        "functional_method": "gprofiler2"
+                    },
+                    [
+                        "treatment_mCherry_hND6_sample_number_test.gprofiler2.GO:BP.sub_enriched_pathways.tsv:md5,749c45d1684a8c94c2598e0bc7729f48",
+                        "treatment_mCherry_hND6_sample_number_test.gprofiler2.GO:CC.sub_enriched_pathways.tsv:md5,c2995c4e7b48d6507c60b059008324ae",
+                        "treatment_mCherry_hND6_sample_number_test.gprofiler2.GO:MF.sub_enriched_pathways.tsv:md5,fac730dc1f70509ad027a533c6c26110",
+                        "treatment_mCherry_hND6_sample_number_test.gprofiler2.KEGG.sub_enriched_pathways.tsv:md5,3cbdbbb1c5b232ab73d35d4a0953d19c",
+                        "treatment_mCherry_hND6_sample_number_test.gprofiler2.REAC.sub_enriched_pathways.tsv:md5,3433b462078c4d01af6068d8bf0d1b77"
+                    ]
+                ]
+            ],
+            [
+                "treatment_mCherry_hND6__test.gprofiler2.gostplot.html",
+                "treatment_mCherry_hND6_sample_number_test.gprofiler2.gostplot.html"
+            ],
+            {
+                "\"DIFFERENTIAL_FUNCTIONAL_ENRICHMENT:GPROFILER2_GOST\"": {
+                    "r-ggplot2": "3.4.3",
+                    "r-gprofiler2": "0.2.2",
+                    "gprofiler-data": "biomart: Ensembl\nbiomart_version: '113'\ndisplay_name: Mouse\ngenebuild: GRCm39\ngprofiler_version: e113_eg59_p19_6ece67f5\norganism: mmusculus\nsources:\n  CORUM:\n    name: CORUM protein complexes\n    version: 28.11.2022 Corum 4.1\n  GO:BP:\n    name: biological process\n    version: |-\n      annotations: BioMart\n      classes: releases/2025-03-16\n  GO:CC:\n    name: cellular component\n    version: |-\n      annotations: BioMart\n      classes: releases/2025-03-16\n  GO:MF:\n    name: molecular function\n    version: |-\n      annotations: BioMart\n      classes: releases/2025-03-16\n  HP:\n    name: Human Phenotype Ontology\n    version: |-\n      annotations: 05.2025\n      classes: None\n  KEGG:\n    name: Kyoto Encyclopedia of Genes and Genomes\n    version: KEGG FTP Release 2024-01-22\n  REAC:\n    name: Reactome\n    version: |-\n      annotations: BioMart\n      classes: 2025-5-23\n  TF:\n    name: Transfac\n    version: |-\n      annotations: TRANSFAC Release 2024.2\n      classes: v2\n  WP:\n    name: WikiPathways\n    version: '20250510'\ntaxonomy_id: '10090'\n"
+                }
+            },
+            [
+                "versions.yml:md5,0d83547f6ab8761c0ce33dbe39d03604",
+                "versions.yml:md5,0d83547f6ab8761c0ce33dbe39d03604"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.2"
+        },
+        "timestamp": "2026-01-13T16:45:04.216675971"
     },
     "propd + grea - mouse": {
         "content": [
@@ -197,103 +292,9 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.6"
+            "nextflow": "24.10.5"
         },
-        "timestamp": "2025-04-25T09:58:04.20890691"
-    },
-    "deseq2 + gprofiler2 - mouse": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "treatment_mCherry_hND6__test",
-                        "variable": "treatment",
-                        "reference": "mCherry",
-                        "target": "hND6",
-                        "blocking": "",
-                        "differential_method": "deseq2",
-                        "fc_threshold": 1.5,
-                        "stat_threshold": 0.05,
-                        "functional_method": "gprofiler2"
-                    },
-                    "treatment_mCherry_hND6__test.gprofiler2.all_enriched_pathways.tsv:md5,088003a4cbb5b6294f1c3efd7768ea6a"
-                ],
-                [
-                    {
-                        "id": "treatment_mCherry_hND6_sample_number_test",
-                        "variable": "treatment",
-                        "reference": "mCherry",
-                        "target": "hND6",
-                        "blocking": "sample_number",
-                        "differential_method": "deseq2",
-                        "fc_threshold": 1.5,
-                        "stat_threshold": 0.05,
-                        "functional_method": "gprofiler2"
-                    },
-                    "treatment_mCherry_hND6_sample_number_test.gprofiler2.all_enriched_pathways.tsv:md5,cd972792880248e9ad31be3fd2851a29"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "treatment_mCherry_hND6__test",
-                        "variable": "treatment",
-                        "reference": "mCherry",
-                        "target": "hND6",
-                        "blocking": "",
-                        "differential_method": "deseq2",
-                        "fc_threshold": 1.5,
-                        "stat_threshold": 0.05,
-                        "functional_method": "gprofiler2"
-                    },
-                    [
-                        "treatment_mCherry_hND6__test.gprofiler2.GO:BP.sub_enriched_pathways.tsv:md5,6047ffd74fe8a49db9b924485a441948",
-                        "treatment_mCherry_hND6__test.gprofiler2.GO:CC.sub_enriched_pathways.tsv:md5,891018299a66d62fbe979a56e9f31035",
-                        "treatment_mCherry_hND6__test.gprofiler2.GO:MF.sub_enriched_pathways.tsv:md5,46bb279062af777060495d56ac9767d7",
-                        "treatment_mCherry_hND6__test.gprofiler2.REAC.sub_enriched_pathways.tsv:md5,ca5e92673eb17242477e9c2787d68323"
-                    ]
-                ],
-                [
-                    {
-                        "id": "treatment_mCherry_hND6_sample_number_test",
-                        "variable": "treatment",
-                        "reference": "mCherry",
-                        "target": "hND6",
-                        "blocking": "sample_number",
-                        "differential_method": "deseq2",
-                        "fc_threshold": 1.5,
-                        "stat_threshold": 0.05,
-                        "functional_method": "gprofiler2"
-                    },
-                    [
-                        "treatment_mCherry_hND6_sample_number_test.gprofiler2.GO:BP.sub_enriched_pathways.tsv:md5,f55e010f72ee9200624137f42e94a5e5",
-                        "treatment_mCherry_hND6_sample_number_test.gprofiler2.GO:CC.sub_enriched_pathways.tsv:md5,5bb51d9184e7257ce6cdd0ce7db16923",
-                        "treatment_mCherry_hND6_sample_number_test.gprofiler2.GO:MF.sub_enriched_pathways.tsv:md5,210e4b99919354c79b37e12c83fdeaa5",
-                        "treatment_mCherry_hND6_sample_number_test.gprofiler2.KEGG.sub_enriched_pathways.tsv:md5,3cbdbbb1c5b232ab73d35d4a0953d19c",
-                        "treatment_mCherry_hND6_sample_number_test.gprofiler2.REAC.sub_enriched_pathways.tsv:md5,d754c55c2a2a1b8acda1c663165b4d2b"
-                    ]
-                ]
-            ],
-            [
-                "treatment_mCherry_hND6__test.gprofiler2.gostplot.html",
-                "treatment_mCherry_hND6_sample_number_test.gprofiler2.gostplot.html"
-            ],
-            {
-                "DIFFERENTIAL_FUNCTIONAL_ENRICHMENT:GPROFILER2_GOST": {
-                    "r-ggplot2": "3.4.3",
-                    "r-gprofiler2": "0.2.2"
-                }
-            },
-            [
-                "versions.yml:md5,46ccfd5d9b5c422857ca7b53147be4f4",
-                "versions.yml:md5,46ccfd5d9b5c422857ca7b53147be4f4"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.6"
-        },
-        "timestamp": "2025-04-25T09:56:14.388236673"
+        "timestamp": "2025-06-19T11:40:12.466459"
     },
     "test gprofiler2 - mouse": {
         "content": [
@@ -307,7 +308,7 @@
                         "blocking": "batch",
                         "functional_method": "gprofiler2"
                     },
-                    "Condition_genotype_WT_KO.gprofiler2.all_enriched_pathways.tsv:md5,31d1e4cfa1d09b30bf9126415cb93aff"
+                    "Condition_genotype_WT_KO.gprofiler2.all_enriched_pathways.tsv:md5,28e56fd3d540057c7c9cfeae7e26c02f"
                 ]
             ],
             [
@@ -321,15 +322,14 @@
                         "functional_method": "gprofiler2"
                     },
                     [
-                        "Condition_genotype_WT_KO.gprofiler2.GO:BP.sub_enriched_pathways.tsv:md5,6211f4fa1a226f3aaab77c3fb9318fe7",
-                        "Condition_genotype_WT_KO.gprofiler2.GO:CC.sub_enriched_pathways.tsv:md5,98a49b69f8b724d88d6367dea494ca53",
-                        "Condition_genotype_WT_KO.gprofiler2.GO:MF.sub_enriched_pathways.tsv:md5,39ce8238319df47708df78b1c461a89d",
-                        "Condition_genotype_WT_KO.gprofiler2.HP.sub_enriched_pathways.tsv:md5,616f3a5d19844001bb8aac38049e987a",
-                        "Condition_genotype_WT_KO.gprofiler2.KEGG.sub_enriched_pathways.tsv:md5,413724002abe683f376ea914d4f21ade",
-                        "Condition_genotype_WT_KO.gprofiler2.MIRNA.sub_enriched_pathways.tsv:md5,9168f1d7f7d1b1db18a4652db05b81b6",
-                        "Condition_genotype_WT_KO.gprofiler2.REAC.sub_enriched_pathways.tsv:md5,3571ac765c47e1c38c63c463465f2a1e",
-                        "Condition_genotype_WT_KO.gprofiler2.TF.sub_enriched_pathways.tsv:md5,4d23e5fdc96395ea79d174b1afe84756",
-                        "Condition_genotype_WT_KO.gprofiler2.WP.sub_enriched_pathways.tsv:md5,e99c42df912a9ee75c7197f92d615979"
+                        "Condition_genotype_WT_KO.gprofiler2.GO:BP.sub_enriched_pathways.tsv:md5,1648b102be1826a74cce7d8083141e68",
+                        "Condition_genotype_WT_KO.gprofiler2.GO:CC.sub_enriched_pathways.tsv:md5,cc29149a88f34db3bd0da300df2ec08f",
+                        "Condition_genotype_WT_KO.gprofiler2.GO:MF.sub_enriched_pathways.tsv:md5,cfeb84bd1255ca79da6c51d8cd58d28a",
+                        "Condition_genotype_WT_KO.gprofiler2.HP.sub_enriched_pathways.tsv:md5,256a54c47d3c2daa4723b4d390645691",
+                        "Condition_genotype_WT_KO.gprofiler2.KEGG.sub_enriched_pathways.tsv:md5,1f8a25427b40c00b63918b78739104ce",
+                        "Condition_genotype_WT_KO.gprofiler2.REAC.sub_enriched_pathways.tsv:md5,4bdedf98415ac3ddc36beb0fdb028435",
+                        "Condition_genotype_WT_KO.gprofiler2.TF.sub_enriched_pathways.tsv:md5,66a4101bf955da9f80886d6af2a1e551",
+                        "Condition_genotype_WT_KO.gprofiler2.WP.sub_enriched_pathways.tsv:md5,a204c1f347747819abeb65569b12f2bb"
                     ]
                 ]
             ],
@@ -337,20 +337,60 @@
                 "Condition_genotype_WT_KO.gprofiler2.gostplot.html"
             ],
             {
-                "DIFFERENTIAL_FUNCTIONAL_ENRICHMENT:GPROFILER2_GOST": {
+                "\"DIFFERENTIAL_FUNCTIONAL_ENRICHMENT:GPROFILER2_GOST\"": {
                     "r-ggplot2": "3.4.3",
-                    "r-gprofiler2": "0.2.2"
+                    "r-gprofiler2": "0.2.2",
+                    "gprofiler-data": "biomart: Ensembl\nbiomart_version: '113'\ndisplay_name: Mouse\ngenebuild: GRCm39\ngprofiler_version: e113_eg59_p19_6ece67f5\norganism: mmusculus\nsources:\n  CORUM:\n    name: CORUM protein complexes\n    version: 28.11.2022 Corum 4.1\n  GO:BP:\n    name: biological process\n    version: |-\n      annotations: BioMart\n      classes: releases/2025-03-16\n  GO:CC:\n    name: cellular component\n    version: |-\n      annotations: BioMart\n      classes: releases/2025-03-16\n  GO:MF:\n    name: molecular function\n    version: |-\n      annotations: BioMart\n      classes: releases/2025-03-16\n  HP:\n    name: Human Phenotype Ontology\n    version: |-\n      annotations: 05.2025\n      classes: None\n  KEGG:\n    name: Kyoto Encyclopedia of Genes and Genomes\n    version: KEGG FTP Release 2024-01-22\n  REAC:\n    name: Reactome\n    version: |-\n      annotations: BioMart\n      classes: 2025-5-23\n  TF:\n    name: Transfac\n    version: |-\n      annotations: TRANSFAC Release 2024.2\n      classes: v2\n  WP:\n    name: WikiPathways\n    version: '20250510'\ntaxonomy_id: '10090'\n"
                 }
             },
             [
-                "versions.yml:md5,46ccfd5d9b5c422857ca7b53147be4f4"
+                "versions.yml:md5,0d83547f6ab8761c0ce33dbe39d03604"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.2"
+        },
+        "timestamp": "2026-01-13T16:44:24.970752"
+    },
+    "deseq2 + decoupler - mouse": {
+        "content": [
+            [
+                [
+                    "treatment_mCherry_hND6",
+                    [
+                        "deseq2_treatment_mCherry_hND6_consensus_estimate_decoupler.tsv",
+                        "deseq2_treatment_mCherry_hND6_mlm_estimate_decoupler.tsv"
+                    ]
+                ]
+            ],
+            [
+                [
+                    "treatment_mCherry_hND6",
+                    [
+                        "deseq2_treatment_mCherry_hND6_consensus_pvals_decoupler.tsv",
+                        "deseq2_treatment_mCherry_hND6_mlm_pvals_decoupler.tsv"
+                    ]
+                ]
+            ],
+            [
+                [
+                    "treatment_mCherry_hND6",
+                    [
+                        "deseq2_treatment_mCherry_hND6_consensus_estimate_decoupler_plot.png",
+                        "deseq2_treatment_mCherry_hND6_mlm_estimate_decoupler_plot.png"
+                    ]
+                ]
+            ],
+            [
+                "versions.yml:md5,ee67949b865ffd841f658d8645dd5024"
             ]
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2025-04-23T08:58:14.16545136"
+        "timestamp": "2025-09-19T18:08:19.213003254"
     },
     "deseq2 + gsea - mouse": {
         "content": [
@@ -399,9 +439,9 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.6"
+            "nextflow": "24.10.5"
         },
-        "timestamp": "2025-04-25T09:57:27.961898843"
+        "timestamp": "2025-06-19T11:39:23.649985"
     },
     "stub": {
         "content": [
@@ -446,13 +486,31 @@
                     ]
                 ],
                 "3": [
-
+                    
                 ],
                 "4": [
-
+                    
                 ],
                 "5": [
-                    "versions.yml:md5,46ccfd5d9b5c422857ca7b53147be4f4"
+                    
+                ],
+                "6": [
+                    
+                ],
+                "7": [
+                    
+                ],
+                "8": [
+                    "versions.yml:md5,6cc615ac7ba96eaf49f24851c64fde49"
+                ],
+                "decoupler_dc_estimate": [
+                    
+                ],
+                "decoupler_dc_pvals": [
+                    
+                ],
+                "decoupler_png": [
+                    
                 ],
                 "gprofiler2_all_enrich": [
                     [
@@ -494,20 +552,20 @@
                     ]
                 ],
                 "grea_results": [
-
+                    
                 ],
                 "gsea_report": [
-
+                    
                 ],
                 "versions": [
-                    "versions.yml:md5,46ccfd5d9b5c422857ca7b53147be4f4"
+                    "versions.yml:md5,6cc615ac7ba96eaf49f24851c64fde49"
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.2"
         },
-        "timestamp": "2025-04-23T08:56:20.232279447"
+        "timestamp": "2026-01-13T16:48:38.618873304"
     }
 }

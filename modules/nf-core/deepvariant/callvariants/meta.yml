@@ -24,9 +24,11 @@ input:
         type: file
         description: The actual sharded input files, from DEEPVARIANT_MAKEEXAMPLES process
         pattern: "*.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
 output:
-  - call_variants_tfrecords:
-      - meta:
+  call_variants_tfrecords:
+    - - meta:
           type: list
           description: |
             Each output contains: unique ID string from input channel, meta, tfrecord file with variant calls.
@@ -34,11 +36,13 @@ output:
           type: list
           description: |
             Each output contains: unique ID string from input channel, meta, tfrecord file with variant calls.
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software version
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@abhi18av"
   - "@ramprasadn"

@@ -4,8 +4,8 @@ process FASTQUTILS_INFO {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fastq_utils:0.25.2--h96c455f_2':
-        'biocontainers/fastq_utils:0.25.2--h96c455f_2' }"
+        'https://depot.galaxyproject.org/singularity/fastq_utils:0.25.3--ha9dfd29_0':
+        'biocontainers/fastq_utils:0.25.3--ha9dfd29_0' }"
 
     input:
     tuple val(meta), path(reads)

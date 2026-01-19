@@ -25,39 +25,46 @@ input:
         type: file
         description: A BAM/ file
         pattern: "*.bam"
+        ontologies: []
     - bai:
         type: file
         description: The BAI file for the input BAM file
         pattern: "*.bai"
+        ontologies: []
     - pmd:
         type: file
         description: Optional PMD file from atlas pmd function in text format
         pattern: "*.txt"
+        ontologies: []
     - recal:
         type: file
         description: Optional recalibration file from atlas recal function in text format
         pattern: "*.txt"
-  - - fasta:
-        type: file
-        description: The reference FASTA file used to generate the BAM file
-        pattern: "*.{fasta,fna,fa}"
-  - - fai:
-        type: file
-        description: The index of the FASTA file used for to generate the BAM file
-        pattern: "*.fai"
-  - - known_alleles:
-        type: file
-        description: Optional tab separated text file containing 1-based list of known
-          alleles. See atlas call documentation.
-        pattern: "*.{txt.tsv}"
-  - - method:
-        type: string
-        description: Which variant calling algorithm to use. Some may require additional
-          parameters supplied via ext.args. Check atlas documentation.
-        pattern: "MLE|Bayesian|allelePresence|randomBase|majorityBase"
+        ontologies: []
+  - fasta:
+      type: file
+      description: The reference FASTA file used to generate the BAM file
+      pattern: "*.{fasta,fna,fa}"
+      ontologies: []
+  - fai:
+      type: file
+      description: The index of the FASTA file used for to generate the BAM file
+      pattern: "*.fai"
+      ontologies: []
+  - known_alleles:
+      type: file
+      description: Optional tab separated text file containing 1-based list of known
+        alleles. See atlas call documentation.
+      pattern: "*.{txt.tsv}"
+      ontologies: []
+  - method:
+      type: string
+      description: Which variant calling algorithm to use. Some may require additional
+        parameters supplied via ext.args. Check atlas documentation.
+      pattern: "MLE|Bayesian|allelePresence|randomBase|majorityBase"
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,11 +73,15 @@ output:
           type: file
           description: VCF file with variant calls
           pattern: "*.vcf.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

@@ -28,6 +28,7 @@ input:
     - bam:
         type: file
         description: BAM file contained mapped reads
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -36,6 +37,7 @@ input:
     - bai:
         type: file
         description: BAM file index
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -44,6 +46,7 @@ input:
     - snp_bed:
         type: file
         description: BED file containing SNP information (optional)
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -52,6 +55,7 @@ input:
     - fasta:
         type: file
         description: Input genome fasta file
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -61,8 +65,8 @@ input:
         type: directory
         description: Directory containing biscuit genome index
 output:
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -71,11 +75,14 @@ output:
           type: file
           description: Gzipped BED file with methylation (and optionally SNV) information
           pattern: "*.{epiread.bed.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@njspix"
 maintainers:

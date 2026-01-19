@@ -29,30 +29,33 @@ input:
           - edam: "http://edamontology.org/data_2977" # Nucleic acid sequence
           - edam: "http://edamontology.org/format_1929" #FASTA
 output:
-  - gbk:
-      - meta:
+  gbk:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*/*.gbk":
           type: file
-          description: Creates a Genbank files with all the annotations found (present in the .integrons file)
+          description: Creates a Genbank files with all the annotations found (present
+            in the .integrons file)
           pattern: "*.gbk"
-          ontologies: &id001
+          ontologies:
             - edam: "http://edamontology.org/format_1936" # GenBank
-  - integrons:
-      - meta:
+  integrons:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*/*.integrons":
           type: file
-          description: A file with all integrons and their elements detected in all sequences in the input file
+          description: A file with all integrons and their elements detected in all
+            sequences in the input file
           pattern: "*.integrons"
-  - summary:
-      - meta:
+          ontologies: []
+  summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -61,21 +64,26 @@ output:
           type: file
           description: A summary file with the number and type of integrons per sequence
           pattern: "*.summary"
-  - out:
-      - meta:
+          ontologies: []
+  out:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*/integron_finder.out":
           type: file
-          description: A copy standard output. The stdout can be silenced with the argument --mute
+          description: A copy standard output. The stdout can be silenced with the argument
+            --mute
           pattern: "integron_finder.out"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nguyent-son"
   - "@juke34"

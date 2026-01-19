@@ -13,7 +13,7 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
@@ -21,6 +21,10 @@ nextflow_process {
                 ]
                 input[1] = []
                 input[2] = []
+                input[3] = [
+                    [ id:'no_blacklist' ],
+                    []
+                ]
                 """
             }
         }
@@ -28,8 +32,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bigwig,                                
-                                  process.out.versions)
+                { assert snapshot(process.out.bigwig,
+                                  process.out.versions,
+                                  path(process.out.versions[0]).yaml)
                                   .match()
                 }
             )
@@ -40,7 +45,7 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
@@ -48,6 +53,10 @@ nextflow_process {
                 ]
                 input[1] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
                 input[2] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true) ]
+                input[3] = [
+                    [ id:'no_blacklist' ],
+                    []
+                ]
                 """
             }
         }
@@ -55,8 +64,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bigwig,                                
-                                  process.out.versions)
+                { assert snapshot(process.out.bigwig,
+                                  process.out.versions,
+                                  path(process.out.versions[0]).yaml)
                                   .match()
                 }
             )
@@ -67,7 +77,7 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
@@ -75,6 +85,10 @@ nextflow_process {
                 ]
                 input[1] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
                 input[2] = []
+                input[3] = [
+                    [ id:'no_blacklist' ],
+                    []
+                ]
                 """
             }
         }
@@ -82,8 +96,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bigwig,                                
-                                  process.out.versions)
+                { assert snapshot(process.out.bigwig,
+                                  process.out.versions,
+                                  path(process.out.versions[0]).yaml)
                                   .match()
                 }
             )
@@ -96,7 +111,7 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
@@ -104,6 +119,10 @@ nextflow_process {
                 ]
                 input[1] = []
                 input[2] = []
+                input[3] = [
+                    [ id:'no_blacklist' ],
+                    []
+                ]
                 """
             }
         }

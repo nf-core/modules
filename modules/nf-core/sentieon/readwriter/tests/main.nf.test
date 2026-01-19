@@ -26,17 +26,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                        bam(process.out.output[0][1], stringency: "lenient").getReadsMD5(),
-                        file(process.out.index.get(0).get(1)).name,
-                        process.out.versions
-                        ).match() }
-
+                    bam(process.out.output[0][1], stringency: "lenient").getReadsMD5(),
+                    file(process.out.index.get(0).get(1)).name,
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
-
     }
 
     test("cram") {
@@ -55,14 +53,13 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                        bam(process.out.output[0][1], process.out.output[0][0].fasta).getReadsMD5(),
-                        file(process.out.index.get(0).get(1)).name,
-                        process.out.versions
-                        ).match() }
-
+                    bam(process.out.output[0][1], process.out.output[0][0].fasta).getReadsMD5(),
+                    file(process.out.index.get(0).get(1)).name,
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
     }
@@ -90,17 +87,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                        bam(process.out.output[0][1], stringency: "lenient").getReadsMD5(),
-                        file(process.out.index.get(0).get(1)).name,
-                        process.out.versions
-                        ).match() }
-
+                    bam(process.out.output[0][1], stringency: "lenient").getReadsMD5(),
+                    file(process.out.index.get(0).get(1)).name,
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
-
     }
 
     test("merging - output bam to cram") {
@@ -126,17 +121,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                        bam(process.out.output[0][1], process.out.output[0][0].fasta).getReadsMD5(),
-                        file(process.out.index.get(0).get(1)).name,
-                        process.out.versions
-                        ).match() }
-
+                    bam(process.out.output[0][1], process.out.output[0][0].fasta).getReadsMD5(),
+                    file(process.out.index.get(0).get(1)).name,
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
-
     }
 
     test("sentieon readwriter - stub") {
@@ -157,12 +150,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
 }

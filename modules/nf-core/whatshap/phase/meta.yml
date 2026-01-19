@@ -1,0 +1,113 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "whatshap_phase"
+description: Phase variants in a VCF file using long-read sequencing data
+keywords:
+  - phasing
+  - haplotypes
+  - vcf
+  - long-reads
+  - nanopore
+  - pacbio
+tools:
+  - whatshap:
+      description: |
+        WhatsHap is a software for phasing genomic variants using DNA sequencing
+        reads, also called read-based phasing or haplotype assembly.
+      homepage: https://whatshap.readthedocs.io/
+      documentation: https://whatshap.readthedocs.io/
+      tool_dev_url: https://github.com/whatshap/whatshap
+      doi: "10.1101/085050"
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: VCF file with unphased variants (can be gzipped)
+        pattern: "*.{vcf,vcf.gz}"
+    - tbi:
+        type: file
+        description: VCF index file (optional but recommended)
+        pattern: "*.{tbi,csi}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing bam information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM file with aligned reads
+        pattern: "*.bam"
+    - bai:
+        type: file
+        description: BAM index file (optional but recommended)
+        pattern: "*.bai"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Reference genome in FASTA format
+        pattern: "*.{fa,fasta}"
+    - fai:
+        type: file
+        description: Reference genome index
+        pattern: "*.fai"
+
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.vcf.gz":
+          type: file
+          description: Bgzipped phased VCF file
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.vcf.gz.tbi":
+          type: file
+          description: Phased VCF index file
+          pattern: "*.vcf.gz.tbi"
+          ontologies:
+            - edam: http://edamontology.org/format_3616 # TBI format
+  versions_whatshap:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - whatshap:
+          type: string
+          description: The name of the tool
+      - whatshap --version:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - whatshap:
+          type: string
+          description: The name of the tool
+      - whatshap --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@haidyi"
+maintainers:
+  - "@haidyi"

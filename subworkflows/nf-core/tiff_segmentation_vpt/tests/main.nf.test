@@ -1,0 +1,69 @@
+nextflow_workflow {
+
+    name "Test Subworkflow TIFF_SEGMENTATION_VPT"
+    script "../main.nf"
+    workflow "TIFF_SEGMENTATION_VPT"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/tiff_segmentation_vpt"
+
+    tag "vizgenpostprocessing/preparesegmentation"
+    tag "vizgenpostprocessing/runsegmentationontile"
+    tag "vizgenpostprocessing/compiletilesegmentation"
+    tag "untar"
+
+    config "./nextflow.config"
+
+    setup {
+        run("UNTAR", alias: "TESTDATA") {
+            script "../../../../modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [:],
+                    file('https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/spatial_omics/merscope/minimal_data.tar.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("merscope - tiff") {
+
+        when {
+            workflow {
+                """
+                TESTDATA.out.untar.map {
+                    meta, dir ->
+                        def images_dir = dir.listFiles().find { it.getName().matches('images') && it.isDirectory() }
+                        def pixel_transform_file = images_dir.listFiles().find { it.getName().matches('micron_to_mosaic_pixel_transform.csv') }
+                    return [
+                        [ id:'test' ],
+                        images_dir,
+                        pixel_transform_file
+                    ]
+                }.set { input_ch }
+
+                input[0] = input_ch
+                // file cannot be hosted in the nf-core test-datasets repo due to licensing issues
+                input[1] = file('https://raw.githubusercontent.com/Vizgen/vpt-plugin-cellpose2/refs/heads/develop/example_analysis_algorithm/cellpose2_nuclei.json', checkIfExists: true) // Algorithm JSON
+                input[2] = "mosaic_(?P<stain>[\\\\w|-]+)_z(?P<z>[0-9]+).tif" // Image regex
+                input[3] = [] // No custom weights
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    file(workflow.out.micron_space_segmentation[0][1]).name, // Parquet file is not stable as cellpose uses a random seed which cannot be set via VPT
+                    file(workflow.out.mosaic_space_segmentation[0][1]).name, // Parquet file is not stable as cellpose uses a random seed which cannot be set via VPT
+                    workflow.out.versions,
+                    path(workflow.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

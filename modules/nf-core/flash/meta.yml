@@ -23,9 +23,11 @@ input:
         description: |
           List of input FastQ files of size 2; i.e., paired-end data.
         pattern: "*fastq.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
 output:
-  - merged:
-      - meta:
+  merged:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,8 +36,10 @@ output:
           type: file
           description: The merged fastq reads
           pattern: ".extendedFrags.fastq.gz"
-  - notcombined:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  notcombined:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,8 +48,10 @@ output:
           type: file
           description: Not combined reads from flash
           pattern: ".notCombined_*.fastq.gz"
-  - histogram:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  histogram:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,11 +60,14 @@ output:
           type: file
           description: HistogramNumeric histogram of merged read lengths.
           pattern: ".hist"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Erkison"
 maintainers:

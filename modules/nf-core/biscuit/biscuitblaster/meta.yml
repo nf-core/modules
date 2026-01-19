@@ -1,5 +1,6 @@
 name: biscuit_blaster
-description: A fast, compact one-liner to produce duplicate-marked, sorted, and indexed BAM files using Biscuit
+description: A fast, compact one-liner to produce duplicate-marked, sorted, and indexed
+  BAM files using Biscuit
 keywords:
   - biscuit
   - DNA methylation
@@ -49,6 +50,7 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -57,6 +59,7 @@ input:
     - fasta:
         type: file
         description: Input genome fasta file
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -66,8 +69,8 @@ input:
         type: directory
         description: Directory containing biscuit genome index
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -76,8 +79,9 @@ output:
           type: file
           description: Output BAM file containing read alignments
           pattern: "*.{bam}"
-  - bai:
-      - meta:
+          ontologies: []
+  bai:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -86,11 +90,14 @@ output:
           type: file
           description: Output BAM index
           pattern: "*.{bai}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@njspix"
 maintainers:

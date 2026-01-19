@@ -35,11 +35,10 @@ workflow VCF_GATHER_BCFTOOLS {
     }
 
     TABIX_TABIX ( ch_tabix_input )
-    ch_versions = ch_versions.mix(TABIX_TABIX.out.versions)
 
     emit:
     vcf      = ch_tabix_input        // channel: [ val(meta), [ vcf ] ]
-    tbi      = TABIX_TABIX.out.tbi   // channel: [ val(meta), [ tbi ] ]
+    tbi      = TABIX_TABIX.out.index // channel: [ val(meta), [ tbi ] ]
 
     versions = ch_versions           // channel: [ versions.yml ]
 }

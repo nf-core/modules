@@ -30,9 +30,10 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
 output:
-  - spp:
-      - meta:
+  spp:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,8 +44,9 @@ output:
             A ChIP-Seq Processing Pipeline file containing
             peakshift/phantomPeak results
           pattern: "*.{out}"
-  - pdf:
-      - meta:
+          ontologies: []
+  pdf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,8 +55,9 @@ output:
           type: file
           description: A pdf containing save cross-correlation plots
           pattern: "*.{pdf}"
-  - rdata:
-      - meta:
+          ontologies: []
+  rdata:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -63,11 +66,14 @@ output:
           type: file
           description: Rdata file containing the R session
           pattern: "*.{Rdata}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@drpatelh"
   - "@edmundmiller"

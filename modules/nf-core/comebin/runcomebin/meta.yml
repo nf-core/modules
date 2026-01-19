@@ -1,0 +1,110 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "comebin_runcomebin"
+description: Effective binning of metagenomic contigs using COntrastive
+  Multi-viEw representation learning
+keywords:
+  - metagenomics
+  - binning
+  - clustering
+tools:
+  - "comebin":
+      description: "COMEBin allows effective binning of metagenomic contigs using COntrastive
+        Multi-viEw representation learning"
+      homepage: "https://github.com/ziyewang/COMEBin"
+      documentation: "https://github.com/ziyewang/COMEBin"
+      tool_dev_url: "https://github.com/ziyewang/COMEBin"
+      doi: "10.1038/s41467-023-44290-z"
+      licence: ["GPL v3"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - assembly:
+        type: file
+        description: FASTA file of contigs for binning
+        pattern: "*.{fa,fas,fasta,fna,fa.gz,fas.gz,fasta.gz,fna.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+    - bam:
+        type: file
+        description: |
+          List of sorted bam files of reads mapped to the reference assembly. Not compatible with TSV input.
+        pattern: "*.bam"
+        ontologies:
+          - edam: http://edamontology.org/format_2572 # BAM
+output:
+  bins:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - ${prefix}/comebin_res_bins/*.fa.gz:
+          type: file
+          description: List of FASTA files of binned contigs
+          pattern: "*.fna.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tsv:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - ${prefix}/comebin_res.tsv:
+          type: file
+          description: |
+            TSV mapping the output clusters to contigs
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  log:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - ${prefix}/comebin.log:
+          type: file
+          description: |
+            COMEBin log file
+          pattern: "*.log"
+          ontologies:
+            - edam: http://edamontology.org/format_3671 # Text
+  embeddings:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - ${prefix}/embeddings.tsv:
+          type: file
+          description: |
+            TSV describing the embeddings of the contigs
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  covembeddings:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - ${prefix}/covembeddings.tsv:
+          type: file
+          description: |
+            TSV describing the embeddings of the contigs
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@prototaxites"
+maintainers:
+  - "@prototaxites"

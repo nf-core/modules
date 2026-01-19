@@ -44,6 +44,8 @@ input:
         description: |
           Sequencing reads in FASTQ or BAM (unmapped/mapped) related formats. Supports only single-end or merged paired-end data (mandatory)
         pattern: "*.{bam,cram,fastq,fastq.gz,fq,fq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
   - - meta2:
         type: map
         description: |
@@ -53,32 +55,33 @@ input:
         type: file
         description: mapAD genome index files (mandatory)
         pattern: "*.{tbw,tle,toc,tos,tpi,trt,tsa}"
-  - - mismatch_parameter:
-        type: float
-        description: |
-          Minimum probability of the number of mismatches under `-D` base error rate
-  - - double_stranded_library:
-        type: boolean
-        description: Library preparation method - specify if double stranded else it's
-          assumed single stranded
-  - - five_prime_overhang:
-        type: float
-        description: 5'-overhang length parameter
-  - - three_prime_overhang:
-        type: float
-        description: 3'-overhang length parameter
-  - - deam_rate_double_stranded:
-        type: float
-        description: Deamination rate in double-stranded stem of a read
-  - - deam_rate_single_stranded:
-        type: float
-        description: Deamination rate in single-stranded ends of a read
-  - - indel_rate:
-        type: float
-        description: Expected rate of indels between reads and reference
+        ontologies: []
+  - mismatch_parameter:
+      type: float
+      description: |
+        Minimum probability of the number of mismatches under `-D` base error rate
+  - double_stranded_library:
+      type: boolean
+      description: Library preparation method - specify if double stranded else it's
+        assumed single stranded
+  - five_prime_overhang:
+      type: float
+      description: 5'-overhang length parameter
+  - three_prime_overhang:
+      type: float
+      description: 3'-overhang length parameter
+  - deam_rate_double_stranded:
+      type: float
+      description: Deamination rate in double-stranded stem of a read
+  - deam_rate_single_stranded:
+      type: float
+      description: Deamination rate in single-stranded ends of a read
+  - indel_rate:
+      type: float
+      description: Expected rate of indels between reads and reference
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -87,11 +90,14 @@ output:
           type: file
           description: Output BAM/SAM file containing read alignments
           pattern: "*.bam"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jch-13"
 maintainers:

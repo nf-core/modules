@@ -24,39 +24,45 @@ input:
         type: file
         description: The VCF file to split
         pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+        ontologies: []
     - tbi:
         type: file
         description: OPTIONAL - The index of the input VCF/BCF
         pattern: "*.tbi"
-  - - samples:
-        type: file
-        description: |
-          A tab-separated file determining which samples should be in which output file
-          column 1: The sample name(s) in the input file
-          column 2: The sample name(s) to use in the output file (use `-` to keep the original name)
-          column 3: The name of the output file
-          Either this or a groups file should be given
-        pattern: "*"
-  - - groups:
-        type: file
-        description: |
-          A tab-separated file determining which samples should be in which output file(s)
-          column 1: The sample name(s) in the input file
-          column 2: The sample name(s) to use in the output file (use `-` to keep the original name)
-          column 3: The name of the output file(s)
-          Either this or a samples file should be given
-        pattern: "*"
-  - - regions:
-        type: file
-        description: A BED file containing regions to use
-        pattern: "*.bed"
-  - - targets:
-        type: file
-        description: A BED file containing regions to use (but streams rather than index-jumps)
-        pattern: "*.bed"
+        ontologies: []
+  - samples:
+      type: file
+      description: |
+        A tab-separated file determining which samples should be in which output file
+        column 1: The sample name(s) in the input file
+        column 2: The sample name(s) to use in the output file (use `-` to keep the original name)
+        column 3: The name of the output file
+        Either this or a groups file should be given
+      pattern: "*"
+      ontologies: []
+  - groups:
+      type: file
+      description: |
+        A tab-separated file determining which samples should be in which output file(s)
+        column 1: The sample name(s) in the input file
+        column 2: The sample name(s) to use in the output file (use `-` to keep the original name)
+        column 3: The name of the output file(s)
+        Either this or a samples file should be given
+      pattern: "*"
+      ontologies: []
+  - regions:
+      type: file
+      description: A BED file containing regions to use
+      pattern: "*.bed"
+      ontologies: []
+  - targets:
+      type: file
+      description: A BED file containing regions to use (but streams rather than index-jumps)
+      pattern: "*.bed"
+      ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,8 +71,9 @@ output:
           type: file
           description: The resulting VCF files from the split
           pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
-  - tbi:
-      - meta:
+          ontologies: []
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -75,8 +82,9 @@ output:
           type: file
           description: TBI file
           pattern: "*.tbi"
-  - csi:
-      - meta:
+          ontologies: []
+  csi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -85,11 +93,14 @@ output:
           type: file
           description: CSI file
           pattern: "*.csi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

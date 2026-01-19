@@ -24,9 +24,10 @@ input:
         type: file
         description: Input sequences
         pattern: "*.{fasta,fna,fa,fst,aln,phy}"
+        ontologies: []
 output:
-  - revseq:
-      - meta:
+  revseq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,11 +36,14 @@ output:
           type: file
           description: File with reverse complemented sequences
           pattern: "*.{fasta,fna,fa,fst,aln,phy}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@erikrikarddaniel"
 maintainers:

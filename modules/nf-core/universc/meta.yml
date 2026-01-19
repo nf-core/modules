@@ -38,12 +38,13 @@ input:
     - reference:
         type: file
         description: Reference genome file
-  - - technology:
-        type: string
-        description: Technology to pass to universc `--technology argument`
+        ontologies: []
+  - technology:
+      type: string
+      description: Technology to pass to universc `--technology argument`
 output:
-  - outs:
-      - meta:
+  outs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,13 +53,14 @@ output:
           type: file
           description: Files containing the outputs of Cell Ranger
           pattern: "${prefix}/outs/*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software version
-          pattern: "versions.yml"
-          ontologies:
-            - edam: http://edamontology.org/format_3750 # YAML
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kbattenb"
   - "@tomkellygenetics"

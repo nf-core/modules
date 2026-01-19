@@ -28,12 +28,14 @@ input:
         type: file
         description: FASTA/GenBank/Pfam CSV file
         pattern: "*.{fasta,fa,fna,gbk,csv}"
-  - - db:
-        type: directory
-        description: Database path
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+  - db:
+      type: directory
+      description: Database path
 output:
-  - readme:
-      - meta:
+  readme:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -42,8 +44,9 @@ output:
           type: file
           description: txt file containing description of output files
           pattern: "*.{txt}"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,8 +55,9 @@ output:
           type: file
           description: Log output of DeepBGC
           pattern: "*.{txt}"
-  - json:
-      - meta:
+          ontologies: []
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,8 +66,10 @@ output:
           type: file
           description: AntiSMASH JSON file for sideloading
           pattern: "*.{json}"
-  - bgc_gbk:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  bgc_gbk:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -72,8 +78,9 @@ output:
           type: file
           description: Sequences and features of all detected BGCs in GenBank format
           pattern: "*.{bgc.gbk}"
-  - bgc_tsv:
-      - meta:
+          ontologies: []
+  bgc_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -82,8 +89,9 @@ output:
           type: file
           description: Table of detected BGCs and their properties
           pattern: "*.{bgc.tsv}"
-  - full_gbk:
-      - meta:
+          ontologies: []
+  full_gbk:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -93,8 +101,9 @@ output:
           description: Fully annotated input sequence with proteins, Pfam domains (PFAM_domain
             features) and BGCs (cluster features)
           pattern: "*.{full.gbk}"
-  - pfam_tsv:
-      - meta:
+          ontologies: []
+  pfam_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -104,8 +113,9 @@ output:
           description: Table of Pfam domains (pfam_id) from given sequence (sequence_id)
             in genomic order, with BGC detection scores
           pattern: "*.{pfam.tsv}"
-  - bgc_png:
-      - meta:
+          ontologies: []
+  bgc_png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -114,8 +124,9 @@ output:
           type: file
           description: Detected BGCs plotted by their nucleotide coordinates
           pattern: "*.{bgc.png}"
-  - pr_png:
-      - meta:
+          ontologies: []
+  pr_png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -124,8 +135,9 @@ output:
           type: file
           description: Precision-Recall curve based on predicted per-Pfam BGC scores
           pattern: "*.{pr.png}"
-  - roc_png:
-      - meta:
+          ontologies: []
+  roc_png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -134,8 +146,9 @@ output:
           type: file
           description: ROC curve based on predicted per-Pfam BGC scores
           pattern: "*.{roc.png}"
-  - score_png:
-      - meta:
+          ontologies: []
+  score_png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -144,11 +157,14 @@ output:
           type: file
           description: BGC detection scores of each Pfam domain in genomic order
           pattern: "*.{score.png}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@louperelo"
   - "@jfy133"

@@ -3,7 +3,6 @@ nextflow_process {
     name "Test Process XENIUMRANGER_RENAME"
     script "../main.nf"
     process "XENIUMRANGER_RENAME"
-    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -16,7 +15,7 @@ nextflow_process {
                 script "modules/nf-core/unzip/main.nf"
                 process {
                     """
-                    input[0] = [[], file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/Xenium_Prime_Mouse_Ileum_tiny_outs.zip', checkIfExists: true)]
+                    input[0] = [[], file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/Xenium_V1_Protein_Human_Kidney_tiny_outs.zip', checkIfExists: true)]
                     """
                 }
             }
@@ -26,11 +25,15 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = UNZIP.out.unzipped_archive
+                    .map { _, bundle ->
+                        [
                             [id: "test_xeniumranger_rename"],
-                        ]).combine(UNZIP.out.unzipped_archive.map { it[1] })
-                input[1] = "test_region"
-                input[2] = "test_cassette"
+                            bundle,
+                            "test_region",
+                            "test_cassette"
+                        ]
+                    }
                 """
             }
         }
@@ -38,18 +41,16 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.outs != null },
-                {
-                    assert snapshot(
-                        process.out.versions,
-                        process.out.outs.get(0).get(1).findAll { file(it).name !in [
-                            'analysis_summary.html',
-                            'experiment.xenium',
-                        ]}
-                    ).match()
-                },
-                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'analysis_summary.html' }).exists() },
-                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'experiment.xenium' }).exists() },
-                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'metrics_summary.csv' }).exists() }
+                { assert file(process.out.outs.get(0).get(1)).isDirectory() },
+                { assert file(process.out.outs.get(0).get(1) + "/analysis_summary.html").exists() },
+                { assert file(process.out.outs.get(0).get(1) + "/cells.csv.gz").exists() },
+                { assert file(process.out.outs.get(0).get(1) + "/cells.parquet").exists() },
+                { assert file(process.out.outs.get(0).get(1) + "/cells.zarr.zip").exists() },
+                { assert file(process.out.outs.get(0).get(1) + "/transcripts.parquet").exists() },
+                { assert file(process.out.outs.get(0).get(1) + "/transcripts.zarr.zip").exists() },
+                { assert file(process.out.outs.get(0).get(1) + "/analysis.zarr.zip").exists() },
+                { assert file(process.out.outs.get(0).get(1) + "/cell_feature_matrix.zarr.zip").exists() },
+                { assert snapshot(process.out.versions_xeniumranger).match()},
             )
         }
     }
@@ -59,11 +60,15 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = UNZIP.out.unzipped_archive
+                    .map { meta, bundle ->
+                        [
                             [id: "test_xeniumranger_rename"],
-                        ]).combine(UNZIP.out.unzipped_archive.map { it[1] })
-                input[1] = "test_region"
-                input[2] = "test_cassette"
+                            bundle,
+                            "test_region",
+                            "test_cassette"
+                        ]
+                    }
                 """
             }
         }

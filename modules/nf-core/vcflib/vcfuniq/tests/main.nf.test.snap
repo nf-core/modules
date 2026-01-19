@@ -1,16 +1,41 @@
 {
     "test-vcflib-vcfuniq-stub": {
         "content": [
-            "test.uniq.uniq.vcf.gz",
-            [
-                "versions.yml:md5,1fe2003d14a6419dcc2a05298c7a810a"
-            ]
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.uniq.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,84132cc49eff7d60830dc9d1c3878304"
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.uniq.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,84132cc49eff7d60830dc9d1c3878304"
+                ]
+            },
+            {
+                "VCFLIB_VCFUNIQ": {
+                    "vcflib": "1.0.14"
+                }
+            }
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nextflow": "25.04.4"
         },
-        "timestamp": "2025-03-25T18:00:03.492260538"
+        "timestamp": "2025-06-27T13:00:42.472652381"
     },
     "test-vcflib-vcfuniq": {
         "content": [
@@ -18,33 +43,36 @@
                 "0": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         "test.uniq.vcf.gz:md5,8e722884ffb75155212a3fc053918766"
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,1fe2003d14a6419dcc2a05298c7a810a"
+                    "versions.yml:md5,84132cc49eff7d60830dc9d1c3878304"
                 ],
                 "vcf": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         "test.uniq.vcf.gz:md5,8e722884ffb75155212a3fc053918766"
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,1fe2003d14a6419dcc2a05298c7a810a"
+                    "versions.yml:md5,84132cc49eff7d60830dc9d1c3878304"
                 ]
+            },
+            {
+                "VCFLIB_VCFUNIQ": {
+                    "vcflib": "1.0.14"
+                }
             }
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nextflow": "25.04.4"
         },
-        "timestamp": "2025-03-25T17:30:39.90913615"
+        "timestamp": "2025-06-27T12:50:05.066096092"
     }
 }

@@ -25,6 +25,8 @@ input:
         type: file
         description: VCF file produces by Manta
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
   - - meta2:
         type: map
         description: |
@@ -34,9 +36,10 @@ input:
         type: file
         description: The reference fasta file
         pattern: "*.{fasta,fa,fna}"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,8 +48,10 @@ output:
           type: file
           description: VCF file with reformatted inversions
           pattern: "*.vcf.gz"
-  - tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,11 +60,49 @@ output:
           type: file
           description: TBI file produces by Manta
           pattern: "*.vcf.gz.tbi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_manta:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - manta:
+          type: string
+          description: The name of the tool
+      - configManta.py --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools --version | head -1 | sed -e s'/samtools //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - manta:
+          type: string
+          description: The name of the tool
+      - configManta.py --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools --version | head -1 | sed -e s'/samtools //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@FriederikeHanssen"
 maintainers:

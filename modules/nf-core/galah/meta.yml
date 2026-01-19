@@ -26,24 +26,28 @@ input:
         type: file
         description: A list of fasta-formatted genomes for dereplication
         pattern: "*.{fa,fna,fa.gz, etc}"
+        ontologies: []
     - qc_table:
         type: file
         description: |
           (optional) A summary TSV from either CheckM [https://nf-co.re/modules/checkm_lineagewf],
-          CheckM2 [https://nf-co.re/modules/checkm2_predict/], or a CSV 
+          CheckM2 [https://nf-co.re/modules/checkm2_predict/], or a CSV
           in drep-style format [https://github.com/MrOlm/drep] with three columnns,
-          `genome,completeness,contamination`. In both cases the first column should contain the 
-          names of the input genome files, minus the last file extension 
-          (i.e. if the genome is gzipped, the genome name should 
+          `genome,completeness,contamination`. In both cases the first column should contain the
+          names of the input genome files, minus the last file extension
+          (i.e. if the genome is gzipped, the genome name should
           retain the .fasta extension).
         pattern: "*.{csv,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3475 # TSV
     - qc_format:
         type: string
         description: Defines the type if input table in `qc_table`, if specified.
         pattern: "checkm|checkm2|genome_info"
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,8 +56,10 @@ output:
           type: file
           description: TSV file in the format `representative_genome` \t `member_genome`
           pattern: "*.tsv"
-  - dereplicated_bins:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  dereplicated_bins:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,11 +68,14 @@ output:
           type: file
           description: The representative genomes following dereplication by galah.
           pattern: "*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@prototaxites"
 maintainers:

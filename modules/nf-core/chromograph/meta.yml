@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "chromograph"
 description: Chromograph is a python package to create PNG images from genetics data
   such as BED and WIG files.
@@ -24,6 +24,7 @@ input:
     - autozyg:
         type: file
         description: Bed file containing the regions of autozygosity
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -32,6 +33,7 @@ input:
     - coverage:
         type: file
         description: Wig file containing the coverage information
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -40,6 +42,7 @@ input:
     - exome:
         type: file
         description: Bed file containing the coverage for exome.
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -48,6 +51,7 @@ input:
     - fracsnp:
         type: file
         description: Wig file containing the fraction of homozygous SNPs
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -58,6 +62,7 @@ input:
         description: |
           Bed file containing information necessary for ideogram plots.
           Format ['chrom', 'start', 'end', 'name', 'gStain']
+        ontologies: []
   - - meta6:
         type: map
         description: |
@@ -66,6 +71,7 @@ input:
     - regions:
         type: file
         description: Bed file containing UPD regions
+        ontologies: []
   - - meta7:
         type: map
         description: |
@@ -74,22 +80,25 @@ input:
     - sites:
         type: file
         description: Bed file containing UPD sites
+        ontologies: []
 output:
-  - plots:
-      - meta:
+  plots:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}:
+      - "*.png":
           type: file
-          description: Directory containing the plots in png format
-          pattern: "*.png"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: Plot(s) in PNG format
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ramprasadn"
 maintainers:

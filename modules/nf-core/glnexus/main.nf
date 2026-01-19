@@ -10,12 +10,10 @@ process GLNEXUS {
     input:
     tuple val(meta), path(gvcfs), path(custom_config)
     tuple val(meta2), path(bed)
-    val vcf_output
 
     output:
-    tuple val(meta), path("*.bcf")   , emit: bcf, optional:true
-    tuple val(meta), path("*.vcf.gz"), emit: vcf, optional:true
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.bcf"), emit: bcf
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,8 +22,6 @@ process GLNEXUS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def regions = bed ? "--bed ${bed}" : ""
-
-    def outpipe = vcf_output ? " | bcftools convert --threads $task.cpus -Oz > ${prefix}.vcf.gz" : " > ${prefix}.bcf"
 
     // Make list of GVCFs to merge
     def input = gvcfs.collect { it.toString() }
@@ -42,7 +38,7 @@ process GLNEXUS {
         $regions \\
         $args \\
         ${input.join(' ')} \\
-        $outpipe
+        > ${prefix}.bcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -52,9 +48,8 @@ process GLNEXUS {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def outpipe = vcf_output ? "echo \"\" | gzip > ${prefix}.vcf.gz" : "touch ${prefix}.bcf"
     """
-    $outpipe
+    touch ${prefix}.bcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

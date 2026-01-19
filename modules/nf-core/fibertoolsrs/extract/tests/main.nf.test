@@ -1,0 +1,109 @@
+nextflow_process {
+
+    name "Test Process FIBERTOOLSRS_EXTRACT"
+    script "../main.nf"
+    process "FIBERTOOLSRS_EXTRACT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fibertoolsrs"
+    tag "fibertoolsrs/predictm6a"
+    tag "fibertoolsrs/extract"
+
+    setup {
+        run("FIBERTOOLSRS_PREDICTM6A") {
+            script "../../predictm6a/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
+                ]
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - bam") {
+
+        when {
+            process {
+                """
+                input[0] = FIBERTOOLSRS_PREDICTM6A.out.bam
+                input[1] = 'all'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bam - cpg") {
+
+        when {
+            process {
+                """
+                input[0] = FIBERTOOLSRS_PREDICTM6A.out.bam
+                input[1] = 'cpg'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bam - invalid_extract_type") {
+
+        when {
+            process {
+                """
+                input[0] = FIBERTOOLSRS_PREDICTM6A.out.bam
+                input[1] = 'm5c'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.stdout.toString().contains("Invalid extract_type") }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[ id:'test' ], [] ]
+                input[1] = 'all'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

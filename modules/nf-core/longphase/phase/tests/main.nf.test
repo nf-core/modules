@@ -44,7 +44,7 @@ nextflow_process {
 
     }
 
-test("[ bam, bai, snps, svs, [] ], fasta, fai") {
+    test("[ bam, bai, snps, svs, [] ], fasta, fai") {
 
         when {
             process {
@@ -78,7 +78,7 @@ test("[ bam, bai, snps, svs, [] ], fasta, fai") {
 
     }
 
-test("[ bam x2, bai x2, snps, svs, [] ], fasta, fai") {
+    test("[ bam x2, bai x2, snps, svs, [] ], fasta, fai") {
 
         when {
             process {
@@ -154,4 +154,38 @@ test("[ bam x2, bai x2, snps, svs, [] ], fasta, fai") {
 
     }
 
+    test("[ bam, bai, snps, svs, [] ], fasta, fai - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id:'reference' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'reference' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
 }

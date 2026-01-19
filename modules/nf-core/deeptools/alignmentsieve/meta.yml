@@ -1,5 +1,6 @@
 name: deeptools_alignmentSieve
-description: This tool filters alignments in a BAM/CRAM file according the the specified parameters.
+description: This tool filters alignments in a BAM/CRAM file according the the specified
+  parameters.
 keywords:
   - ATACseq
   - filter
@@ -7,8 +8,8 @@ keywords:
   - ATACshift
 tools:
   - deeptools:
-      description: A set of user-friendly tools for normalization and visualization of
-        deep-sequencing data
+      description: A set of user-friendly tools for normalization and visualization
+        of deep-sequencing data
       homepage: https://deeptools.readthedocs.io/en/develop/content/tools/alignmentSieve.html
       documentation: https://deeptools.readthedocs.io/en/develop/content/tools/alignmentSieve.html
       tool_dev_url: https://github.com/deeptools/deepTools/
@@ -25,13 +26,15 @@ input:
         type: file
         description: BAM file
         pattern: "*.{bam}"
+        ontologies: []
     - input_index:
         type: file
         description: BAM index file
         pattern: "*.{bai}"
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,16 +43,20 @@ output:
           type: file
           description: BAM file
           pattern: "*.bam"
-  - logs:
-      - "*_log.txt":
-          type: file
-          description: TXT file
-          pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  logs:
+    - "*_log.txt":
+        type: file
+        description: TXT file
+        pattern: "*.txt"
+        ontologies: []
 authors:
   - "@lpantano"
 maintainers:

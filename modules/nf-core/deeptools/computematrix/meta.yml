@@ -24,13 +24,15 @@ input:
         type: file
         description: bigwig file containing genomic scores
         pattern: "*.{bw,bigwig}"
-  - - bed:
-        type: file
-        description: bed file containing genomic regions
-        pattern: "*.{bed}"
+        ontologies: []
+  - bed:
+      type: file
+      description: bed file containing genomic regions
+      pattern: "*.{bed}"
+      ontologies: []
 output:
-  - matrix:
-      - meta:
+  matrix:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -41,8 +43,9 @@ output:
             gzipped matrix file needed by the plotHeatmap and plotProfile
             deeptools utilities
           pattern: "*.{computeMatrix.mat.gz}"
-  - table:
-      - meta:
+          ontologies: []
+  table:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,11 +55,14 @@ output:
           description: |
             tabular file containing the scores of the generated matrix
           pattern: "*.{computeMatrix.vals.mat.tab}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jeremy1805"
   - "@edmundmiller"

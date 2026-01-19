@@ -187,6 +187,7 @@ nextflow_process {
                 ch_beam_control_panel    = []
                 ch_cmo_reference         = []
                 ch_cmo_barcodes          = []
+                ch_ocm_barcodes          = []
                 ch_cmo_sample_assignment = []
                 ch_frna_sampleinfo       = []
 
@@ -225,7 +226,8 @@ nextflow_process {
                 input[16] = ch_cmo_barcodes
                 input[17] = ch_cmo_sample_assignment
                 input[18] = ch_frna_sampleinfo
-                input[19] = false // default to false to guarantee renaming during test
+                input[19] = ch_ocm_barcodes
+                input[20] = false // default to false to guarantee renaming during test
                 """
             }
         }
@@ -412,6 +414,7 @@ nextflow_process {
                 ch_beam_control_panel    = []
                 ch_cmo_reference         = []
                 ch_cmo_barcodes          = []
+                ch_ocm_barcodes          = []
                 ch_cmo_sample_assignment = []
                 ch_frna_sampleinfo       = []
 
@@ -465,7 +468,8 @@ nextflow_process {
                 input[16] = ch_cmo_barcodes
                 input[17] = ch_cmo_sample_assignment
                 input[18] = ch_frna_sampleinfo
-                input[19] = false // default to false to guarantee renaming during test
+                input[19] = ch_ocm_barcodes
+                input[20] = false // default to false to guarantee renaming during test
                 """
             }
         }
@@ -652,6 +656,7 @@ nextflow_process {
                 ch_beam_control_panel    = []
                 ch_cmo_reference         = []
                 ch_cmo_barcodes          = []
+                ch_ocm_barcodes          = []
                 ch_cmo_sample_assignment = []
                 ch_frna_sampleinfo       = []
 
@@ -702,7 +707,8 @@ nextflow_process {
                 input[16] = ch_cmo_barcodes
                 input[17] = ch_cmo_sample_assignment
                 input[18] = ch_frna_sampleinfo
-                input[19] = false // default to false to guarantee renaming during test
+                input[19] = ch_ocm_barcodes
+                input[20] = false // default to false to guarantee renaming during test
                 """
             }
         }
@@ -810,6 +816,7 @@ nextflow_process {
                 ch_beam_control_panel    = []
                 ch_cmo_reference         = []
                 ch_cmo_barcodes          = []
+                ch_ocm_barcodes          = []
                 ch_cmo_sample_assignment = []
                 ch_frna_sampleinfo       = []
 
@@ -847,7 +854,8 @@ nextflow_process {
                 input[16] = ch_cmo_barcodes
                 input[17] = ch_cmo_sample_assignment
                 input[18] = ch_frna_sampleinfo
-                input[19] = false // default to false to guarantee renaming during test
+                input[19] = ch_ocm_barcodes
+                input[20] = false // default to false to guarantee renaming during test
                 """
             }
         }

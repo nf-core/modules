@@ -14,20 +14,23 @@ tools:
       licence: ["UC-LBL license (see package)"]
       identifier: biotools:bbmap
 input:
-  - - fasta:
-        type: file
-        description: fasta formatted file with nucleotide sequences
-        pattern: "*.{fna,fa,fasta}"
+  - fasta:
+      type: file
+      description: fasta formatted file with nucleotide sequences
+      pattern: "*.{fna,fa,fasta}"
+      ontologies: []
 output:
-  - index:
-      - ref:
-          type: directory
-          description: Directory containing the index files
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  index:
+    - ref:
+        type: directory
+        description: Directory containing the index files
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@erikrikarddaniel"
 maintainers:

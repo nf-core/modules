@@ -23,37 +23,44 @@ tools:
       licence: ["GPL-3.0-or-later"]
       identifier: biotools:bismark
 input:
-  - - bam:
-        type: list
-        description: List of Bismark alignment BAM filenames
-        pattern: "*.bam"
-  - - align_report:
-        type: file
-        description: Bismark alignment reports
-        pattern: "*report.txt"
-  - - dedup_report:
-        type: file
-        description: Bismark deduplication reports
-        pattern: "*.deduplication_report.txt"
-  - - splitting_report:
-        type: file
-        description: Bismark splitting reports
-        pattern: "*splitting_report.txt"
-  - - mbias:
-        type: file
-        description: Text file containing methylation bias information
-        pattern: "*.txt"
+  - bam:
+      type: list
+      description: List of Bismark alignment BAM filenames
+      pattern: "*.bam"
+  - align_report:
+      type: file
+      description: Bismark alignment reports
+      pattern: "*report.txt"
+      ontologies: []
+  - dedup_report:
+      type: file
+      description: Bismark deduplication reports
+      pattern: "*.deduplication_report.txt"
+      ontologies: []
+  - splitting_report:
+      type: file
+      description: Bismark splitting reports
+      pattern: "*splitting_report.txt"
+      ontologies: []
+  - mbias:
+      type: file
+      description: Text file containing methylation bias information
+      pattern: "*.txt"
+      ontologies: []
 output:
-  - summary:
-      - "*report.{html,txt}":
-          type: file
-          description: Bismark summary
-          pattern: "*.{html,txt}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  summary:
+    - "*report.{html,txt}":
+        type: file
+        description: Bismark summary
+        pattern: "*.{html,txt}"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@phue"
 maintainers:

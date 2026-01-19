@@ -8,11 +8,12 @@ process DEEPTOOLS_MULTIBAMSUMMARY {
         'biocontainers/deeptools:3.5.5--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bams), path(bais), val(labels)
+    tuple val(meta) , path(bams)    , path(bais), val(labels)
+    tuple val(meta2), path(blacklist)
 
     output:
-    tuple val(meta), path("*.npz") , emit: matrix
-    path  "versions.yml"           , emit: versions
+    tuple val(meta), path("*.npz"), emit: matrix
+    path  "versions.yml"          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,6 +21,7 @@ process DEEPTOOLS_MULTIBAMSUMMARY {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "all_bam"
+    def blacklist_cmd = blacklist ? "--blackListFileName ${blacklist}" : ""
     def label  = labels ? "--labels ${labels.join(' ')}" : ''
     """
     multiBamSummary bins \\
@@ -27,7 +29,8 @@ process DEEPTOOLS_MULTIBAMSUMMARY {
         $label \\
         --bamfiles ${bams.join(' ')} \\
         --numberOfProcessors $task.cpus \\
-        --outFileName ${prefix}.bamSummary.npz
+        --outFileName ${prefix}.bamSummary.npz \\
+        $blacklist_cmd
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

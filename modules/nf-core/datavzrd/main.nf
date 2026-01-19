@@ -1,18 +1,18 @@
 process DATAVZRD {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c4/c44b3faa30ec68edb0ca92766fb49bd8f526d56c1a034d1acdb0d1448b42adec/data':
-        'community.wave.seqera.io/library/datavzrd:2.36.12--dcdc5d4c72e652e2' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7e/7e1ff6edeffa771f340c0c044fde514b61bc4691ede6b79728263bf20c7990f6/data'
+        : 'community.wave.seqera.io/library/datavzrd:2.61.7--3dfa5861de05f6ac'}"
 
     input:
-    tuple val(meta), file(config_file), file(table)
+    tuple val(meta), path(config_file), path(table)
 
     output:
     tuple val(meta), path("${prefix}"), emit: report
-    path "versions.yml"               , emit: versions
+    path "versions.yml",                emit: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -4,8 +4,10 @@ description: >
   The VueGen nf-core module is designed to automate report generation from outputs
   produced by other modules, subworkflows, or pipelines. The module integrates the
   VueGen Python library and customizes it for compatibility with the Nextflow environment.
-  VueGen automates the creation of reports from bioinformatics outputs, supporting formats
-  like PDF, HTML, DOCX, ODT, PPTX, Reveal.js, Jupyter notebooks, and Streamlit web applications.
+  VueGen automates the creation of reports from bioinformatics outputs, supporting
+  formats
+  like PDF, HTML, DOCX, ODT, PPTX, Reveal.js, Jupyter notebooks, and Streamlit web
+  applications.
 keywords:
   - reports
   - data-visualization
@@ -15,10 +17,14 @@ tools:
   - "vuegen":
       description: >
         The VueGen nf-core module is designed to automate report generation from outputs
-        produced by other modules, subworkflows, or pipelines. The module integrates the
-        VueGen Python library and customizes it for compatibility with the Nextflow environment.
-        VueGen automates the creation of reports from bioinformatics outputs, supporting formats
-        like PDF, HTML, DOCX, ODT, PPTX, Reveal.js, Jupyter notebooks, and Streamlit web applications.
+        produced by other modules, subworkflows, or pipelines. The module integrates
+        the
+        VueGen Python library and customizes it for compatibility with the Nextflow
+        environment.
+        VueGen automates the creation of reports from bioinformatics outputs, supporting
+        formats
+        like PDF, HTML, DOCX, ODT, PPTX, Reveal.js, Jupyter notebooks, and Streamlit
+        web applications.
       homepage: https://github.com/Multiomics-Analytics-Group/vuegen
       documentation: https://vuegen.readthedocs.io/
       tool_dev_url: https://github.com/Multiomics-Analytics-Group/vuegen
@@ -26,31 +32,36 @@ tools:
       licence: ["MIT"]
       identifier: ""
 input:
-  - - input_type:
-        type: string
-        pattern: "^(config|directory)$"
-        description: Specifies whether the input is a configuration file ('config') or a directory ('directory').
-  - - input_path:
-        type: file
-        description: Path to the input directory or configuration file used by VueGen.
-  - - report_type:
-        type: string
-        pattern: "^(streamlit|html|pdf|docx|odt|revealjs|pptx|jupyter)$"
-        description: The type of report to generate. Options include 'streamlit', 'html', 'pdf', 'docx', 'odt', 'revealjs', 'pptx', and 'jupyter'.
+  - input_type:
+      type: string
+      pattern: "^(config|directory)$"
+      description: Specifies whether the input is a configuration file ('config') or
+        a directory ('directory').
+  - input_path:
+      type: file
+      description: Path to the input directory or configuration file used by VueGen.
+      ontologies: []
+  - report_type:
+      type: string
+      pattern: "^(streamlit|html|pdf|docx|odt|revealjs|pptx|jupyter)$"
+      description: The type of report to generate. Options include 'streamlit', 'html',
+        'pdf', 'docx', 'odt', 'revealjs', 'pptx', and 'jupyter'.
 output:
-  - output_folder:
-      - "*report":
-          type: directory
-          description: |
-            The output directory containing the generated report files.
-            - If `report_type` is 'streamlit', a 'streamlit_report' directory is created, containing subfolders for each section with Python scripts corresponding to the web application's pages.
-            - For other report types, a 'quarto_report' directory is generated, containing a Quarto Markdown (qmd) file that structures the entire report.
-          pattern: "*report"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  output_folder:
+    - "*report":
+        type: directory
+        description: |
+          The output directory containing the generated report files.
+          - If `report_type` is 'streamlit', a 'streamlit_report' directory is created, containing subfolders for each section with Python scripts corresponding to the web application's pages.
+          - For other report types, a 'quarto_report' directory is generated, containing a Quarto Markdown (qmd) file that structures the entire report.
+        pattern: "*report"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sayalaruano"
   - "@enryH"

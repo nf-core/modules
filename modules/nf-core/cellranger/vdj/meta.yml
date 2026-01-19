@@ -33,26 +33,28 @@ input:
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
         pattern: "${Sample_Name}_S1_L00${Lane_Number}_${I1,I2,R1,R2}_001.fastq.gz"
-  - - reference:
-        type: directory
-        description: Folder containing all the reference indices needed by Cell Ranger
+        ontologies: []
+  - reference:
+      type: directory
+      description: Folder containing all the reference indices needed by Cell Ranger
 output:
-  - outs:
-      - meta:
-          type: file
-          description: Files containing the outputs of Cell Ranger, see official 10X Genomics
-            documentation for a complete list
-          pattern: "${meta.id}/outs/*"
+  outs:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "**/outs/**":
           type: file
-          description: Files containing the outputs of Cell Ranger, see official 10X Genomics
-            documentation for a complete list
+          description: Files containing the outputs of Cell Ranger, see official 10X
+            Genomics documentation for a complete list
           pattern: "${meta.id}/outs/*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software version
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ggabernet"
   - "@edmundmiller"

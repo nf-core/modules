@@ -1,11 +1,11 @@
 process HIPHASE {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hiphase:1.4.5--h9ee0642_0':
-        'biocontainers/hiphase:1.4.5--h9ee0642_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d4/d418cdbaff565e9c563c441c72d480f2605bb529712dd026068f1d0a7b246617/data':
+        'community.wave.seqera.io/library/hiphase:1.5.0--f36e5874e9287052' }"
 
     input:
     tuple val(meta), path(vcf), path(csi)
@@ -13,6 +13,7 @@ process HIPHASE {
     tuple val(meta3), path(fasta)
 
     output:
+    tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path("*.vcf"), emit: vcf
     tuple val(meta), path("*.csv"), emit: csv
     path "versions.yml"           , emit: versions
@@ -44,6 +45,7 @@ process HIPHASE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    touch ${prefix}.phased.bam
     touch ${prefix}.phased.vcf
     touch ${prefix}.stats.csv
 

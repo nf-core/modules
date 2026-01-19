@@ -21,9 +21,6 @@ components:
   - samtools/flagstat
   - samtools/stats
   - picard/markduplicates
-  - samtools/index
-  - methyldackel/extract
-  - methyldackel/mbias
 input:
   - ch_reads:
       description: |
@@ -42,9 +39,9 @@ input:
         Structure: [ val(meta), path(fasta index) ]
   - ch_bwameth_index:
       description: |
-        Bismark genome index files
+        Bwa-meth genome index files
         Structure: [ val(meta), path(index) ]
-      pattern: "BismarkIndex"
+      pattern: "Bwa-methIndex"
   - skip_deduplication:
       type: boolean
       description: |
@@ -78,24 +75,6 @@ output:
         File containing samtools stats output
         Structure: [ val(meta), path(stats) ]
       pattern: "*.{stats}"
-  - methydackel_extract_bedgraph:
-      type: file
-      description: |
-        bedGraph file, containing per-base methylation metrics
-        Structure: [ val(meta), path(bedgraph) ]
-      pattern: "*.bedGraph"
-  - methydackel_extract_methylkit:
-      type: file
-      description: |
-        methylKit file, containing per-base methylation metrics
-        Structure: [ val(meta), path(methylKit) ]
-      pattern: "*.methylKit"
-  - methydackel_mbias:
-      type: file
-      description: |
-        Text file containing methylation bias
-        Structure: [ val(meta), path(mbias) ]
-      pattern: "*.{txt}"
   - picard_metrics:
       type: file
       description: |
@@ -105,9 +84,9 @@ output:
   - multiqc:
       type: file
       description: |
-        Channel containing MultiQC report aggregating results across samples.
-        Structure: [ val(meta), path(multiqc_report.html) ]
-      pattern: "*.html"
+        Channel containing files for MultiQC input (metrics, stats, flagstat).
+        Structure: [ path(files) ]
+      pattern: "*.{txt,stats,flagstat}"
   - versions:
       type: file
       description: |
@@ -119,3 +98,4 @@ authors:
 maintainers:
   - "@sateeshperi"
   - "@gallvp"
+  - "@eduard-watchmaker"

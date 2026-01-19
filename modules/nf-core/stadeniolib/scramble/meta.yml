@@ -25,21 +25,25 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
-  - - fasta:
-        type: file
-        description: Reference genome in FASTA format
-        pattern: "*.{fa,fasta}"
-  - - fai:
-        type: file
-        description: FASTA index file from samtools faidx
-        pattern: "*.{fai}"
-  - - gzi:
-        type: file
-        description: Optional gzip index file for BAM inputs
-        pattern: "*.gzi"
+        ontologies: []
+  - fasta:
+      type: file
+      description: Reference genome in FASTA format
+      pattern: "*.{fa,fasta}"
+      ontologies: []
+  - fai:
+      type: file
+      description: FASTA index file from samtools faidx
+      pattern: "*.{fai}"
+      ontologies: []
+  - gzi:
+      type: file
+      description: Optional gzip index file for BAM inputs
+      pattern: "*.gzi"
+      ontologies: []
 output:
-  - cram:
-      - meta:
+  cram:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,16 +52,20 @@ output:
           type: file
           description: Compressed BAM/CRAM file
           pattern: "*.{cram,bam}"
-  - gzi:
-      - "*.gzi":
-          type: file
-          description: gzip index file for BAM outputs
-          pattern: ".{bam.gzi}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  gzi:
+    - "*.gzi":
+        type: file
+        description: gzip index file for BAM outputs
+        pattern: ".{bam.gzi}"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@matthdsm"
 maintainers:

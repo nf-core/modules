@@ -24,14 +24,14 @@ input:
         type: directory
         description: "The 'Tag Directory'"
         pattern: "tagDir"
-  - - uniqmap:
-        type: directory
-        description: "(directory of binary files specifying uniquely mappable locations)
-          Download from http://biowhat.ucsd.edu/homer/groseq/"
-        pattern: "uniqmap/"
+  - uniqmap:
+      type: directory
+      description: "(directory of binary files specifying uniquely mappable locations)
+        Download from http://biowhat.ucsd.edu/homer/groseq/"
+      pattern: "uniqmap/"
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,11 +40,14 @@ output:
           type: file
           description: "Peaks in txt file"
           pattern: "*.peaks.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@edmundmiller"
 maintainers:

@@ -23,28 +23,34 @@ input:
         type: file
         description: BAM file
         pattern: "*.bam"
+        ontologies: []
     - bai:
         type: file
         description: BAI file
         pattern: "*.bai"
+        ontologies: []
     - empiric:
         type: file
         description: Optional txt file from PMD estimations (atlas/pmd)
         pattern: "*.txt"
+        ontologies: []
     - readgroups:
         type: file
         description: read groups
-  - - alleles:
-        type: file
-        description: Optional bed file with known alleles
-        pattern: "*.bed"
-  - - invariant_sites:
-        type: file
-        description: Optional bed file with invariant site coordinates
-        pattern: "*.bed"
+        ontologies: []
+  - alleles:
+      type: file
+      description: Optional bed file with known alleles
+      pattern: "*.bed"
+      ontologies: []
+  - invariant_sites:
+      type: file
+      description: Optional bed file with invariant site coordinates
+      pattern: "*.bed"
+      ontologies: []
 output:
-  - recal_patterns:
-      - meta:
+  recal_patterns:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,11 +60,14 @@ output:
           description: file containing the sequencing bias for each of the Read Group
             pools
           pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ltcrod"
 maintainers:

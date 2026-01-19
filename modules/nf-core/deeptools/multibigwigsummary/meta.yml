@@ -1,0 +1,76 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "deeptools_multibigwigsummary"
+description: Computes the average scores for each of the files in every genomic region
+keywords:
+  - bigwig
+  - deeptools
+  - plot
+  - heatmap
+  - matrix
+tools:
+  - "deeptools":
+      description: "A set of user-friendly tools for normalization and visualization
+        of deep-sequencing data"
+      homepage: "https://deeptools.readthedocs.io/en/develop/"
+      documentation: "https://deeptools.readthedocs.io/en/develop/"
+      tool_dev_url: "https://github.com/deeptools/deepTools/"
+      doi: "10.1093/nar/gku365"
+      licence: ["GPL v3"]
+      identifier: biotools:deeptools
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bigwigs:
+        type: file
+        description: Two or more bigWig files
+        pattern: "*.{bigWig,bw}"
+        ontologies: []
+    - labels:
+        type: list
+        description: Labels for the bigWig files used in the matrix
+
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing blacklist metadata
+          e.g. [ id:'blacklist' ]
+    - blacklist:
+        type: file
+        description: BED/GTF file containing regions to exclude from analysis
+        pattern: "*.{bed,gtf}"
+        ontologies:
+          - edam: "http://edamontology.org/data_3002"
+          - edam: "http://edamontology.org/format_3003"
+        optional: true
+
+output:
+  matrix:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.npz":
+          type: file
+          description: Matrix file from multiBigwigSummary
+          pattern: "*.npz"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@ugoiannacchero"
+  - "@daisymut"
+
+maintainers:
+  - "@ugoiannacchero"
+  - "@daisymut"

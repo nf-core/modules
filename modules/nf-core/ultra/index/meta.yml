@@ -27,6 +27,7 @@ input:
         type: file
         description: A fasta file of the genome to use as reference for mapping
         pattern: "*.{fasta, fa}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -36,9 +37,10 @@ input:
         type: file
         description: An annotation file of the reference genome in GTF format
         pattern: "*.gtf"
+        ontologies: []
 output:
-  - database:
-      - meta:
+  database:
+    - - meta:
           type: map
           description: |
             Groovy Map containing genome information
@@ -47,8 +49,9 @@ output:
           type: file
           description: Index database
           pattern: "*.db"
-  - pickle:
-      - meta:
+          ontologies: []
+  pickle:
+    - - meta:
           type: map
           description: |
             Groovy Map containing genome information
@@ -57,11 +60,15 @@ output:
           type: file
           description: Index file
           pattern: "*.pickle"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_4002 # pickle
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sguizard"
 maintainers:

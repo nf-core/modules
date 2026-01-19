@@ -30,21 +30,21 @@ input:
         pattern: "*/"
         ontologies:
           - edam: "http://edamontology.org/data_1049"
-  - - compress_type:
-        type: string
-        description: |
-          A string defining which type of (optional) compression to apply to the archive.
-          Provide an empty string in quotes for no compression
-        pattern: ".bz2|.xz|.lz|.lzma|.lzo|.zst|.gz"
+  - compress_type:
+      type: string
+      description: |
+        A string defining which type of (optional) compression to apply to the archive.
+        Provide an empty string in quotes for no compression
+      pattern: ".bz2|.xz|.lz|.lzma|.lzo|.zst|.gz"
 output:
-  - archive:
-      - meta:
+  archive:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
           pattern: "*.tar{.bz2,.xz,.lz,.lzma,.lzo,.zst,.gz,}"
-          ontologies: &id001
+          ontologies:
             - edam: "http://edamontology.org/format_25722"
             - edam: "http://edamontology.org/format_2573"
             - edam: "http://edamontology.org/format_3462"
@@ -55,12 +55,18 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
           pattern: "*.tar{.bz2,.xz,.lz,.lzma,.lzo,.zst,.gz,}"
-          ontologies: *id001
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_25722"
+            - edam: "http://edamontology.org/format_2573"
+            - edam: "http://edamontology.org/format_3462"
+
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

@@ -27,17 +27,19 @@ input:
         type: file
         description: FASTQ or FASTA file (ideally uncompressed, but not required)
         pattern: "*.{fasta,fna,fas,fa,fastq,fq,fasta.gz,fna.gz,fas.gz,fa.gz,fastq.gz,fq.gz}"
-  - - format:
-        type: string
-        description: File format of input file
-        pattern: "fasta|fastq"
-  - - mode:
-        type: string
-        description: Mode of redundancy estimation
-        pattern: "kmer|alignment"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - format:
+      type: string
+      description: File format of input file
+      pattern: "fasta|fastq"
+  - mode:
+      type: string
+      description: Mode of redundancy estimation
+      pattern: "kmer|alignment"
 output:
-  - npa:
-      - meta:
+  npa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,8 +48,9 @@ output:
           type: file
           description: Raw redundancy values
           pattern: "*.npa"
-  - npc:
-      - meta:
+          ontologies: []
+  npc:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -56,8 +59,9 @@ output:
           type: file
           description: Mates distribution file
           pattern: "*.npc"
-  - npl:
-      - meta:
+          ontologies: []
+  npl:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,8 +70,9 @@ output:
           type: file
           description: Log file
           pattern: "*.npl"
-  - npo:
-      - meta:
+          ontologies: []
+  npo:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -76,11 +81,14 @@ output:
           type: file
           description: Redundancy summary file
           pattern: "*.npo"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

@@ -43,29 +43,34 @@ input:
           The input file in variant calling format to be inspected.
           e.g. 'file.vcf.gz'
         pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+        ontologies: []
     - index:
         type: file
         description: |
           The tab index for the VCF file to be inspected.
           e.g. 'file.tbi'
-  - - regions:
-        type: file
-        description: |
-          Optionally, restrict the operation to regions listed in this file.
-          e.g. 'file.vcf'
-  - - targets:
-        type: file
-        description: |
-          Optionally, restrict the operation to regions listed in this file (doesn't rely upon index files)
-          e.g. 'file.vcf'
-  - - samples:
-        type: file
-        description: |
-          Optionally, list of samples (first column) and tab-separated list of populations (second column)
-          e.g. 'file.vcf'
+        ontologies: []
+  - regions:
+      type: file
+      description: |
+        Optionally, restrict the operation to regions listed in this file.
+        e.g. 'file.vcf'
+      ontologies: []
+  - targets:
+      type: file
+      description: |
+        Optionally, restrict the operation to regions listed in this file (doesn't rely upon index files)
+        e.g. 'file.vcf'
+      ontologies: []
+  - samples:
+      type: file
+      description: |
+        Optionally, list of samples (first column) and tab-separated list of populations (second column)
+        e.g. 'file.vcf'
+      ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,8 +79,9 @@ output:
           type: file
           description: VCF output file containing added INFO/INFO field
           pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
-  - tbi:
-      - meta:
+          ontologies: []
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -84,8 +90,9 @@ output:
           type: file
           description: Alternative VCF file tabix index
           pattern: "*.tbi"
-  - csi:
-      - meta:
+          ontologies: []
+  csi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -94,11 +101,14 @@ output:
           type: file
           description: Default VCF file coordinate sorted index
           pattern: "*.csi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@LouisLeNezet"
 maintainers:
