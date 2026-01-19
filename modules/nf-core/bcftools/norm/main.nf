@@ -1,11 +1,11 @@
 process BCFTOOLS_NORM {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/474a5ea8dc03366b04df884d89aeacc4f8e6d1ad92266888e7a8e7958d07cde8/data':
-        'community.wave.seqera.io/library/bcftools_htslib:0a3fa2654b52006f' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/474a5ea8dc03366b04df884d89aeacc4f8e6d1ad92266888e7a8e7958d07cde8/data'
+        : 'community.wave.seqera.io/library/bcftools_htslib:0a3fa2654b52006f'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
@@ -13,9 +13,9 @@ process BCFTOOLS_NORM {
 
     output:
     tuple val(meta), path("*.{vcf,vcf.gz,bcf,bcf.gz}"), emit: vcf
-    tuple val(meta), path("*.tbi")                    , emit: tbi, optional: true
-    tuple val(meta), path("*.csi")                    , emit: csi, optional: true
-    path "versions.yml"                               , emit: versions
+    tuple val(meta), path("*.tbi"),                     emit: tbi, optional: true
+    tuple val(meta), path("*.csi"),                     emit: csi, optional: true
+    path "versions.yml",                                emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,13 +28,12 @@ process BCFTOOLS_NORM {
                     args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
                     "vcf.gz"
-
     """
     bcftools norm \\
         --fasta-ref ${fasta} \\
         --output ${prefix}.${extension} \\
-        $args \\
-        --threads $task.cpus \\
+        ${args} \\
+        --threads ${task.cpus} \\
         ${vcf}
 
     cat <<-END_VERSIONS > versions.yml
@@ -53,15 +52,15 @@ process BCFTOOLS_NORM {
                     "vcf.gz"
     def index = ''
     if (extension in ['vcf.gz', 'bcf', 'bcf.gz']) {
-        if (['--write-index=tbi', '-W=tbi'].any { args.contains(it) }  && extension == 'vcf.gz') {
+        if (['--write-index=tbi', '-W=tbi'].any { arg -> args.contains(arg) } && extension == 'vcf.gz') {
             index = 'tbi'
-        } else if (['--write-index=tbi', '-W=tbi', '--write-index=csi', '-W=csi', '--write-index', '-W'].any { args.contains(it) }) {
+        }
+        else if (['--write-index=tbi', '-W=tbi', '--write-index=csi', '-W=csi', '--write-index', '-W'].any { arg -> args.contains(arg) }) {
             index = 'csi'
         }
     }
     def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
     def create_index = index ? "touch ${prefix}.${extension}.${index}" : ""
-
     """
     ${create_cmd} ${prefix}.${extension}
     ${create_index}

@@ -1,20 +1,20 @@
 process BCFTOOLS_FILTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/474a5ea8dc03366b04df884d89aeacc4f8e6d1ad92266888e7a8e7958d07cde8/data':
-        'community.wave.seqera.io/library/bcftools_htslib:0a3fa2654b52006f' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/474a5ea8dc03366b04df884d89aeacc4f8e6d1ad92266888e7a8e7958d07cde8/data'
+        : 'community.wave.seqera.io/library/bcftools_htslib:0a3fa2654b52006f'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
 
     output:
     tuple val(meta), path("*.${extension}"), emit: vcf
-    tuple val(meta), path("*.tbi")         , emit: tbi, optional: true
-    tuple val(meta), path("*.csi")         , emit: csi, optional: true
-    path  "versions.yml"                   , emit: versions
+    tuple val(meta), path("*.tbi"),          emit: tbi, optional: true
+    tuple val(meta), path("*.csi"),          emit: csi, optional: true
+    path "versions.yml",                     emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,14 +29,16 @@ process BCFTOOLS_FILTER {
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
                     "vcf"
 
-    if ("$vcf" == "${prefix}.${extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${vcf}" == "${prefix}.${extension}") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
 
     """
     bcftools filter \\
         --output ${prefix}.${extension} \\
         --threads ${task.cpus} \\
-        $args \\
-        $vcf
+        ${args} \\
+        ${vcf}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -59,7 +61,9 @@ process BCFTOOLS_FILTER {
     def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
     def create_index = extension.endsWith(".gz") && index.matches("csi|tbi") ? "touch ${prefix}.${extension}.${index}" : ""
 
-    if ("$vcf" == "${prefix}.${extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${vcf}" == "${prefix}.${extension}") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
 
     """
     ${create_cmd} ${prefix}.${extension}
