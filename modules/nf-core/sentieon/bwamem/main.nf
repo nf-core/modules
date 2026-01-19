@@ -16,6 +16,7 @@ process SENTIEON_BWAMEM {
 
     output:
     tuple val(meta), path("${prefix}"), path("${prefix}.{bai,crai}"), emit: bam_and_bai
+    tuple val("${task.process}"), val('bwa'), eval('sentieon bwa 2>&1 | sed -n "s/^Version: *//p"'), topic: versions, emit: versions_bwa
     tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
