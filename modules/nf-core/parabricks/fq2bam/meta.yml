@@ -163,7 +163,7 @@ output:
       - parabricks:
           type: string
           description: The tool name
-      - "pbrun version 2>&1 | sed 's/^Please.* //'":
+      - "pbrun version | sed 's/^Please.* //'":
           type: string
           description: The command used to generate the version of the tool
 topics:
@@ -174,7 +174,7 @@ topics:
       - parabricks:
           type: string
           description: The tool name
-      - "pbrun version 2>&1 | sed 's/^Please.* //'":
+      - "pbrun version | sed 's/^Please.* //'":
           type: string
           description: The command used to generate the version of the tool
 authors:
