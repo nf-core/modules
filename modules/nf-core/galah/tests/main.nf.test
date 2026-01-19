@@ -42,7 +42,7 @@ nextflow_process {
 
             setup {
                 run("UNTAR") {
-                    script "../../../untar/main.nf"
+                    script "../../untar/main.nf"
                     process {
                         """
                         input[0] = Channel.fromPath('https://zenodo.org/records/14897628/files/checkm2_database.tar.gz', checkIfExists: true).map{file -> [[id: 'db'], file]}
