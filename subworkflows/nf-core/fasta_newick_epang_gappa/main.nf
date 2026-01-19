@@ -127,7 +127,6 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
         [ [], [] ],
         false
     )
-    ch_versions = ch_versions.mix(MAFFT_ALIGN.out.versions)
 
     // 3.b Split the profile alignment into reference and query parts
     EPANG_SPLIT_MAFFT (

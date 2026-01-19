@@ -41,16 +41,6 @@ output:
               pattern: "*.aln.gz"
               ontologies:
                 - edam: http://edamontology.org/format_1984
-  - versions:
-      type: file
-      description: Channel containing the software versions YAML file
-      structure:
-        - versions.yml:
-            type: file
-            description: File containing software versions
-            pattern: "versions.yml"
-            ontologies:
-              - edam: http://edamontology.org/format_3750 # YAML
 
 authors:
   - "@mirpedrol"
