@@ -11,9 +11,9 @@ nextflow_process {
 
     script "../main.nf"
     process "SENTIEON_BWAMEM"
+    config "./nextflow.config"
 
     test("Single-End") {
-        config "./nextflow.config"
 
         setup {
             run("SENTIEON_BWAINDEX") {
@@ -30,6 +30,10 @@ nextflow_process {
         }
 
         when {
+            params {
+                module_args = "-R \"@RG\\tID:sample_lane\\tPU:lane\\tSM:patient_sample\\tLB:sample\\tDS:fasta\\tPL:seqplatform\""
+                module_out_cram = false
+            }
             process {
                 """
                 input[0] = [
@@ -54,7 +58,6 @@ nextflow_process {
     }
 
     test("Single-End Output CRAM") {
-        config "./nextflow_out_cram.config"
 
         setup {
             run("SENTIEON_BWAINDEX") {
@@ -71,6 +74,10 @@ nextflow_process {
         }
 
         when {
+            params {
+                module_args = "-R \"@RG\\tID:sample_lane\\tPU:lane\\tSM:patient_sample\\tLB:sample\\tDS:fasta\\tPL:seqplatform\""
+                module_out_cram = true
+            }
             process {
                 """
                 input[0] = [
@@ -95,7 +102,6 @@ nextflow_process {
     }
 
     test("Paired-End") {
-        config "./nextflow.config"
 
         setup {
             run("SENTIEON_BWAINDEX") {
@@ -112,6 +118,10 @@ nextflow_process {
         }
 
         when {
+            params {
+                module_args = "-R \"@RG\\tID:sample_lane\\tPU:lane\\tSM:patient_sample\\tLB:sample\\tDS:fasta\\tPL:seqplatform\""
+                module_out_cram = false
+            }
             process {
                 """
                 input[0] = [
@@ -128,22 +138,6 @@ nextflow_process {
             }
         }
 
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    [
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-                    ]
-                ]
-                input[1] = SENTIEON_BWAINDEX.out.index
-                input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
-                input[3] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)]
-                """
-            }
-        }
 
         then {
             assert process.success
@@ -154,7 +148,6 @@ nextflow_process {
     }
 
     test("Single-End - stub") {
-        config "./nextflow.config"
         options "-stub"
 
         setup {
@@ -172,6 +165,10 @@ nextflow_process {
         }
 
         when {
+            params {
+                module_args = "-R \"@RG\\tID:sample_lane\\tPU:lane\\tSM:patient_sample\\tLB:sample\\tDS:fasta\\tPL:seqplatform\""
+                module_out_cram = false
+            }
             process {
                 """
                 input[0] = [
@@ -196,7 +193,6 @@ nextflow_process {
     }
 
     test("Paired-End - stub") {
-        config "./nextflow.config"
         options "-stub"
 
         setup {
@@ -214,6 +210,10 @@ nextflow_process {
         }
 
         when {
+            params {
+                module_args = "-R \"@RG\\tID:sample_lane\\tPU:lane\\tSM:patient_sample\\tLB:sample\\tDS:fasta\\tPL:seqplatform\""
+                module_out_cram = false
+            }
             process {
                 """
                 input[0] = [
@@ -230,22 +230,6 @@ nextflow_process {
             }
         }
 
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    [
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-                    ]
-                ]
-                input[1] = SENTIEON_BWAINDEX.out.index
-                input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
-                input[3] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)]
-                """
-            }
-        }
 
         then {
             assert process.success
