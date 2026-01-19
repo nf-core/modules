@@ -40,13 +40,14 @@ nextflow_process {
 
     test("genomes - checkm2 qc_table") {
 
-        setup {
-            run("CHECKM2_DATABASEDOWNLOAD") {
-                script "../../checkm2/databasedownload/main.nf"
-                process {
-                    """
-                    input[0] = "5571251"
-                    """
+            setup {
+                run("UNTAR") {
+                    script "../../../untar/main.nf"
+                    process {
+                        """
+                        input[0] = Channel.fromPath('https://zenodo.org/records/14897628/files/checkm2_database.tar.gz', checkIfExists: true).map{file -> [[id: 'db'], file]}
+                        """
+                    }
                 }
             }
 
