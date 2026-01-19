@@ -45,7 +45,7 @@ nextflow_process {
                     script "../../untar/main.nf"
                     process {
                         """
-                        input[0] = Channel.fromPath('https://zenodo.org/records/14897628/files/checkm2_database.tar.gz', checkIfExists: true).map{file -> [[id: 'db'], file]}
+                        input[0] = Channel.fromPath('https://zenodo.org/records/14897628/files/checkm2_database.tar.gz', checkIfExists: true).map{dbfile -> [[id: 'db'], dbfile]}
                         """
                     }
                 }
