@@ -24,7 +24,7 @@ process SEGEMEHL_ALIGN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def reads_opt = meta.single_end ? "-q ${reads}" : "-q ${reads[0]} -p ${reads[1]}"
     suffix = ( args.contains("-b") || args.contains("--bamabafixoida") ) ? "bam" : "sam"
     """

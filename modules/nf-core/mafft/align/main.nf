@@ -25,7 +25,7 @@ process MAFFT_ALIGN {
 
     script:
     def args         = task.ext.args   ?: ''
-    def prefix       = task.ext.prefix ?: "${meta.id}"
+    prefix           = task.ext.prefix ?: "${meta.id}"
     def add_opt          = add             ? "--add <(unpigz -cdf ${add})"                   : ''
     def addfragments_opt = addfragments    ? "--addfragments <(unpigz -cdf ${addfragments})" : ''
     def addfull_opt      = addfull         ? "--addfull <(unpigz -cdf ${addfull})"           : ''
@@ -54,13 +54,7 @@ process MAFFT_ALIGN {
     """
 
     stub:
-    def args_stub         = task.ext.args   ?: ''
-    def prefix_stub       = task.ext.prefix ?: "${meta.id}"
-    def add_stub          = add             ? "--add ${add}"                   : ''
-    def addfragments_stub = addfragments    ? "--addfragments ${addfragments}" : ''
-    def addfull_stub      = addfull         ? "--addfull ${addfull}"           : ''
-    def addprofile_stub   = addprofile      ? "--addprofile ${addprofile}"     : ''
-    def addlong_stub      = addlong         ? "--addlong ${addlong}"           : ''
+    prefix_stub       = task.ext.prefix ?: "${meta.id}"
     if ("$fasta" == "${prefix_stub}.fas" )  error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     touch ${prefix_stub}.fas${compress ? '.gz' : ''}

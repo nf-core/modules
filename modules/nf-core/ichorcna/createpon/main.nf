@@ -24,7 +24,7 @@ process ICHORCNA_CREATEPON {
 
     script:
     def args = task.ext.args     ?: ''
-    def prefix = task.ext.prefix ?: "PoN"
+    prefix = task.ext.prefix ?: "PoN"
     def map    = map_wig         ? "mapWig='${map_wig}',"                 : 'mapWig=NULL,'
     def centro = centromere      ? "centromere='${centromere}',"          : ''
     def rep    = rep_time_wig    ? "repTimeWig='${rep_time_wig}',"        : 'repTimeWig=NULL,'

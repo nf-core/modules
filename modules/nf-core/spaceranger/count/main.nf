@@ -44,7 +44,10 @@ process SPACERANGER_COUNT {
         --transcriptome="${reference}" \\
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
-        $image_opt $cytaimage_opt $darkimage_opt $colorizedimage_opt \\
+        $image_opt \\
+        $cytaimage_opt \\
+        $darkimage_opt \\
+        $colorizedimage_opt \\
         $slide_and_area \\
         $probeset_opt \\
         $alignment_opt \\

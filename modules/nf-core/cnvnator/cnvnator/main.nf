@@ -25,7 +25,7 @@ process CNVNATOR_CNVNATOR {
     def args      = task.ext.args   ?: ''
     def input_cmd = bam             ? "-tree ${bam}"      : ''
     output_meta   = bam             ? meta                : meta2
-    def prefix    = task.ext.prefix ?: bam ? "${meta.id}" : "${meta2.id}"
+    prefix        = task.ext.prefix ?: bam ? "${meta.id}" : "${meta2.id}"
     if (fasta) {
         reference = fasta.isDirectory() ? "-d ${fasta}" : "-fasta ${fasta}"
     } else {
@@ -48,7 +48,7 @@ process CNVNATOR_CNVNATOR {
 
     stub:
     def args      = task.ext.args   ?: ''
-    def prefix    = task.ext.prefix ?: bam ? "${meta.id}" : "${meta2.id}"
+    prefix        = task.ext.prefix ?: bam ? "${meta.id}" : "${meta2.id}"
     output_meta   = bam             ? meta                : meta2
     def calls_cmd_opt = args.contains("-call") ? "touch ${prefix}.tab" : ''
     """

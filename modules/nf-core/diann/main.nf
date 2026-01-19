@@ -42,7 +42,7 @@ process DIANN {
         error "DIANN module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}" ?: "diann"
+    prefix = task.ext.prefix ?: "${meta.id}" ?: "diann"
 
     // Handle MS files input: two modes depending on whether we need actual files or just names
     // - ms_files: Actual file paths - used when DIA-NN needs to read raw MS data
@@ -84,7 +84,7 @@ process DIANN {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "DIANN module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def prefix = task.ext.prefix ?: "${meta.id}" ?: "diann"
+    prefix = task.ext.prefix ?: "${meta.id}" ?: "diann"
 
     """
     # Library outputs
