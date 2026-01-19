@@ -8,7 +8,6 @@ process TMB_PYTMB {
         'community.wave.seqera.io/library/tmb:1.5.0--0724a7e1e50a32cd' }"
 
     input:
-
     tuple val(meta), path(vcf), path(bed), val(eff_genome_size), path(var_config), path(db_config)
 
     output:
