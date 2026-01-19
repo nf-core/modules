@@ -20,6 +20,9 @@ nextflow_workflow {
         tag "dream_simple"
 
         when {
+            params {
+                dream_apply_voom = false
+            }
             workflow {
                 """
 
@@ -75,6 +78,9 @@ nextflow_workflow {
         tag "dream_voom"
 
         when {
+            params {
+                dream_apply_voom = true
+            }
             workflow {
                 """
 
@@ -131,6 +137,9 @@ nextflow_workflow {
         tag "dream_complex"
 
         when {
+            params {
+                dream_apply_voom = false
+            }
             workflow {
                 """
 
