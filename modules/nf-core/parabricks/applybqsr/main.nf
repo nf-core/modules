@@ -29,7 +29,7 @@ process PARABRICKS_APPLYBQSR {
     }
     def args             = task.ext.args    ?: ''
     def prefix           = task.ext.prefix  ?: "${meta.id}"
-    def interval_command = intervals        ? intervals.collect { "--interval-file ${it}" }.join(' ') : ""
+    def interval_command = intervals        ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : ""
     def num_gpus         = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
     """
     pbrun \\

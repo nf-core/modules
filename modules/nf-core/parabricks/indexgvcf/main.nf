@@ -43,7 +43,7 @@ process PARABRICKS_INDEXGVCF {
         error("Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def output_cmd = gvcf.any { it.name.endsWith(".gz") } ? "touch ${prefix}.g.vcf.gz.tbi" : "touch ${prefix}.g.vcf.idx"
+    def output_cmd = gvcf.any { item -> item.name.endsWith(".gz") } ? "touch ${prefix}.g.vcf.gz.tbi" : "touch ${prefix}.g.vcf.idx"
     """
     ${output_cmd}
 

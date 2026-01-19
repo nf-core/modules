@@ -11,7 +11,7 @@ process PARABRICKS_FQ2BAM {
     tuple val(meta), path(reads)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(index)
-    tuple val(meta4), path(interval_file)
+    tuple val(meta4), path(intervals)
     tuple val(meta5), path(known_sites)
     val output_fmt
 
@@ -24,7 +24,7 @@ process PARABRICKS_FQ2BAM {
     tuple val(meta), path("*_qc_metrics"),            emit: qc_metrics,          optional:true
     tuple val(meta), path("*.duplicate-metrics.txt"), emit: duplicate_metrics,   optional:true
     path "compatible_versions.yml",                   emit: compatible_versions, optional:true
-    path "versions.yml",                              emit: versions
+    tuple val("${task.process}"), val('parabricks'), eval("pbrun version 2>&1) | sed 's/^Please.* //' "), topic: versions, emit: versions_parabricks
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,9 +40,9 @@ process PARABRICKS_FQ2BAM {
     def in_fq_command = meta.single_end ? "--in-se-fq ${reads}" : "--in-fq ${reads}"
     def extension     = "${output_fmt}"
 
-    def known_sites_command    = known_sites   ? (known_sites instanceof List ? known_sites.collect { "--knownSites ${it}" }.join(' ') : "--knownSites ${known_sites}") : ""
+    def known_sites_command    = known_sites   ? (known_sites instanceof List ? known_sites.collect { knownSite ->  "--knownSites ${knownSite}" }.join(' ') : "--knownSites ${known_sites}") : ""
     def known_sites_output_cmd = known_sites   ? "--out-recal-file ${prefix}.table" : ""
-    def interval_file_command  = interval_file ? (interval_file instanceof List ? interval_file.collect { "--interval-file ${it}" }.join(' ') : "--interval-file ${interval_file}") : ""
+    def intervals_command  = intervals     ? (intervals instanceof List ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : "--interval-file ${intervals}") : ""
 
     def num_gpus   = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
     """
@@ -56,16 +56,11 @@ process PARABRICKS_FQ2BAM {
         --out-bam ${prefix}.${extension} \\
         ${known_sites_command} \\
         ${known_sites_output_cmd} \\
-        ${interval_file_command} \\
+        ${intervals_command} \\
         ${num_gpus} \\
         --bwa-cpu-thread-pool ${task.cpus} \\
         --monitor-usage \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 
     stub:
@@ -108,10 +103,5 @@ process PARABRICKS_FQ2BAM {
     pbrun_version: \$(echo "\$pbrun_version_output" | awk '/^pbrun:/ {print \$2; exit}')
     compatible_with: "\$compat_line"
     EOF
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 }

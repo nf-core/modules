@@ -10,7 +10,7 @@ process PARABRICKS_MINIMAP2 {
     input:
     tuple val(meta),  path(reads)
     tuple val(meta2), path(fasta)
-    tuple val(meta3), path(interval_file)
+    tuple val(meta3), path(intervals)
     tuple val(meta4), path(known_sites)
     val output_fmt
 
@@ -49,9 +49,9 @@ process PARABRICKS_MINIMAP2 {
     }
     def extension = "${output_fmt}"
 
-    def known_sites_command    = known_sites ? (known_sites instanceof List ? known_sites.collect { "--knownSites ${it}" }.join(' ') : "--knownSites ${known_sites}") : ""
+    def known_sites_command    = known_sites ? (known_sites instanceof List ? known_sites.collect { knownSite -> "--knownSites ${knownSite}" }.join(' ') : "--knownSites ${known_sites}") : ""
     def known_sites_output_cmd = known_sites ? "--out-recal-file ${prefix}.table" : ""
-    def interval_file_command  = interval_file ? (interval_file instanceof List ? interval_file.collect { "--interval-file ${it}" }.join(' ') : "--interval-file ${interval_file}") : ""
+    def intervals_command  = intervals     ? (intervals instanceof List ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : "--interval-file ${intervals}") : ""
 
     def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
     """
@@ -62,7 +62,7 @@ process PARABRICKS_MINIMAP2 {
         --out-bam ${prefix}.${extension} \\
         ${known_sites_command} \\
         ${known_sites_output_cmd} \\
-        ${interval_file_command} \\
+        ${intervals_command} \\
         ${num_gpus} \\
         ${args}
 
