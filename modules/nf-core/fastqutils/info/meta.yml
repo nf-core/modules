@@ -44,13 +44,27 @@ output:
           description: Contains info if process ran successfully
           ontologies:
             - edam: http://edamontology.org/format_2330 # TXT
+  versions_fastqutils:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fastqutils:
+          type: string
+          description: The tool name
+      - fastq_info -h 2>&1 | head -n 1 | sed 's/^fastq_utils //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fastqutils:
+          type: string
+          description: The tool name
+      - fastq_info -h 2>&1 | head -n 1 | sed 's/^fastq_utils //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@famosab"
 maintainers:

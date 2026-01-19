@@ -4,9 +4,8 @@ process FGBIO_COLLECTDUPLEXSEQMETRICS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b4/b4047e3e517b57fae311eab139a12f0887d898b7da5fceeb2a1029c73b9e3904/data' :
-        'community.wave.seqera.io/library/fgbio:2.5.21--368dab1b4f308243' }"
-
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fe/fe9479adc5e6e0a1c125d346fdfa0dd313834249e9c55c40e8d44ec3a48c6559/data' :
+        'community.wave.seqera.io/library/fgbio:3.1.1--6c9a88faf1d62b6c' }"
     input:
     tuple val(meta), path(grouped_bam)
     path interval_list
@@ -18,7 +17,8 @@ process FGBIO_COLLECTDUPLEXSEQMETRICS {
     tuple val(meta), path("**.umi_counts.txt")          , emit: umi_counts
     tuple val(meta), path("**.duplex_qc.pdf")           , emit: duplex_qc
     tuple val(meta), path("**.duplex_umi_counts.txt")   , emit: duplex_umi_counts, optional: true
-    path "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('fgbio'), eval('fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\\[.*$//"'), topic: versions, emit: versions_fgbio
+    tuple val("${task.process}"), val('ggplot2'), eval('Rscript -e "cat(as.character(packageVersion(\'ggplot2\')))"'), topic: versions, emit: versions_ggplot2
 
     when:
     task.ext.when == null || task.ext.when
@@ -50,14 +50,7 @@ process FGBIO_COLLECTDUPLEXSEQMETRICS {
         --output ${prefix} \\
         $intervals \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fgbio: \$( echo \$(fgbio --version 2>&1 | tr -d '[:cntrl:]' ) | sed -e 's/^.*Version: //;s/\\[.*\$//')
-        ggplot2: \$(Rscript -e "library(ggplot2); cat(as.character(packageVersion('ggplot2')))")
-    END_VERSIONS
     """
-
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -70,11 +63,5 @@ process FGBIO_COLLECTDUPLEXSEQMETRICS {
     touch ${prefix}.umi_counts.txt
     touch ${prefix}.duplex_qc.pdf
     $touch_duplex_umi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fgbio: \$( echo \$(fgbio --version 2>&1 | tr -d '[:cntrl:]' ) | sed -e 's/^.*Version: //;s/\\[.*\$//')
-        ggplot2: \$(Rscript -e "library(ggplot2); cat(as.character(packageVersion('ggplot2')))")
-    END_VERSIONS
     """
 }
