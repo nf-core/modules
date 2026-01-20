@@ -7,13 +7,12 @@ include { SEQFU_STATS as SEQFU_STATS_AFTER  } from '../../../modules/nf-core/seq
 workflow FAA_SEQFU_SEQKIT {
 
     take:
-    fasta              // tuple val(meta), path(fasta)
+    ch_fasta           // tuple val(meta), path(fasta)
     skip_preprocessing // boolean
 
     main:
-    ch_fasta         = fasta
-    ch_multiqc_files = Channel.empty()
-    ch_versions      = Channel.empty()
+    ch_multiqc_files = channel.empty()
+    ch_versions      = channel.empty()
 
     SEQFU_STATS_BEFORE( ch_fasta )
     ch_multiqc_files = ch_multiqc_files.mix( SEQFU_STATS_BEFORE.out.multiqc )
