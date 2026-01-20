@@ -37,7 +37,7 @@ process AMULETY_EMBED {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("${input}" == "${prefix}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${tsv}" == "${prefix}.tsv") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
     """
     touch ${prefix}.tsv
