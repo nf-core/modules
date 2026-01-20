@@ -4,8 +4,8 @@ process SENTIEON_QUALCAL {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/73e9111552beb76e2ad3ad89eb75bed162d7c5b85b2433723ecb4fc96a02674a/data'
-        : 'community.wave.seqera.io/library/sentieon:202503.02--def60555294d04fa'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ae/ae67a134620c3af22c8563a2913c4639caa0d75ce25764e7b10c996b242aa023/data'
+        : 'community.wave.seqera.io/library/sentieon_gnuplot:41931fca35668c97'}"
 
     input:
     tuple val(meta), path(input), path(input_index)
@@ -49,8 +49,6 @@ process SENTIEON_QUALCAL {
             ${args} \\
             ${knownSites} \\
             ${prefix}.table
-
-        
         """
     }
     else {
@@ -81,8 +79,6 @@ process SENTIEON_QUALCAL {
             ${prefix}.csv
 
         sentieon plot QualCal -o ${prefix}.pdf ${prefix}.csv
-
-        
         """
     }
 
@@ -97,7 +93,5 @@ process SENTIEON_QUALCAL {
     ${recalibrated_bam_cmd}
     touch ${prefix}.csv
     touch ${prefix}.pdf
-
-    
     """
 }

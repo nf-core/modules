@@ -41,15 +41,11 @@ process SENTIEON_WGSMETRICS {
         ${args} \\
         --algo WgsMetricsAlgo \\
         ${prefix}.txt
-
-    
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
-
-    
     """
 }
