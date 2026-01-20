@@ -36,7 +36,6 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
     )
 
     ch_fasta    = ch_fasta_branched.unzipped.mix(GUNZIP.out.gunzip)
-    ch_versions = ch_versions.mix(GUNZIP.out.versions)
 
     // Aligner: bismark or bismark_hisat
     if( aligner =~ /bismark/ ){

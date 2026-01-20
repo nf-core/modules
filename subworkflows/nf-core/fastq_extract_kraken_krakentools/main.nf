@@ -12,7 +12,6 @@ workflow FASTQ_EXTRACT_KRAKEN_KRAKENTOOLS {
     ch_versions = Channel.empty()
 
     KRAKEN2_KRAKEN2 ( ch_reads, ch_db, true, true )
-    ch_versions = ch_versions.mix(KRAKEN2_KRAKEN2.out.versions.first())
 
     KRAKENTOOLS_EXTRACTKRAKENREADS ( val_taxid, KRAKEN2_KRAKEN2.out.classified_reads_assignment, KRAKEN2_KRAKEN2.out.classified_reads_fastq, KRAKEN2_KRAKEN2.out.report )
     ch_versions = ch_versions.mix( KRAKENTOOLS_EXTRACTKRAKENREADS.out.versions.first() )
