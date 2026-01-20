@@ -97,10 +97,10 @@ output:
           pattern: "*vcf.gz.tbi"
           ontologies: []
   versions_sentieon:
-    - - '${task.process}':
+    - - "${task.process}":
           type: string
           description: The process the versions were collected from
-      - 'sentieon':
+      - "sentieon":
           type: string
           description: The tool name
       - 'sentieon driver --version | sed "s/.*-//g"':
@@ -109,10 +109,10 @@ output:
 
 topics:
   versions:
-    - - '${task.process}':
+    - - "${task.process}":
           type: string
           description: The process the versions were collected from
-      - 'sentieon':
+      - "sentieon":
           type: string
           description: The tool name
       - 'sentieon driver --version | sed "s/.*-//g"':
