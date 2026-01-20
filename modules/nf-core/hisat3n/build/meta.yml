@@ -45,16 +45,17 @@ output:
           description: Directory containing HISAT-3N index files
           pattern: "hisat3n"
           ontologies: []
-  versions_hisat3n_build:
+  versions_hisat3n:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
       - hisat-3n:
           type: string
           description: The tool name
-      - hisat-3n --version 2>&1 | sed -n 's/.*version \\([^ ]*\\).*/\\1/p':
+      - "hisat-3n --version 2>&1 | head -1 | sed 's/.* //'":
           type: eval
           description: The command used to generate the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -63,7 +64,7 @@ topics:
       - hisat-3n:
           type: string
           description: The tool name
-      - hisat-3n --version 2>&1 | sed -n 's/.*version \\([^ ]*\\).*/\\1/p':
+      - "hisat-3n --version 2>&1 | head -1 | sed 's/.* //'":
           type: eval
           description: The command used to generate the version of the tool
 
