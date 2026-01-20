@@ -44,7 +44,7 @@ output:
       - ucsc:
           type: string
           description: The tool name
-      - echo 377:
+      - echo $VERSION:
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -56,7 +56,7 @@ topics:
       - ucsc:
           type: string
           description: The tool name
-      - echo 377:
+      - echo $VERSION:
           type: eval
           description: The expression to obtain the version of the tool
 
