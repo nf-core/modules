@@ -12,7 +12,7 @@ process HISAT3N_BUILD {
 
     output:
     tuple val(meta), path("hisat3n"), emit: index
-    tuple val("${task.process}"), val('hisat-3n'), eval("hisat-3n --version 2>&1 | grep -o 'version [^ ]*' | cut -d ' ' -f 2"), topic: versions, emit: versions_hisat3n_build
+    tuple val("${task.process}"), val('hisat-3n'), eval("hisat-3n --version 2>&1 | sed -n 's/.*version \\([^ ]*\\).*/\\1/p'"), topic: versions, emit: versions_hisat3n_build
 
     when:
     task.ext.when == null || task.ext.when

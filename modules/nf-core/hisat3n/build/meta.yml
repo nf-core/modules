@@ -52,8 +52,8 @@ output:
       - hisat-3n:
           type: string
           description: The tool name
-      - "hisat-3n --version 2>&1 | grep -o 'version [^ ]*' | cut -d ' ' -f 2":
-          type: string
+      - hisat-3n --version 2>&1 | sed -n 's/.*version \\([^ ]*\\).*/\\1/p':
+          type: eval
           description: The command used to generate the version of the tool
 topics:
   versions:
@@ -63,8 +63,8 @@ topics:
       - hisat-3n:
           type: string
           description: The tool name
-      - "hisat-3n --version 2>&1 | grep -o 'version [^ ]*' | cut -d ' ' -f 2":
-          type: string
+      - hisat-3n --version 2>&1 | sed -n 's/.*version \\([^ ]*\\).*/\\1/p':
+          type: eval
           description: The command used to generate the version of the tool
 
 authors:
