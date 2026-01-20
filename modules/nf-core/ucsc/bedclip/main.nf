@@ -2,7 +2,6 @@ process UCSC_BEDCLIP {
     tag "$meta.id"
     label 'process_medium'
 
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ucsc-bedclip:377--h0b8a92a_2' :
@@ -14,7 +13,7 @@ process UCSC_BEDCLIP {
 
     output:
     tuple val(meta), path("*.bedGraph"), emit: bedgraph
-    tuple val("${task.process}"), val('ucsc'), eval('echo 377'), topic: versions, emit: versions_ucsc
+    tuple val("${task.process}"), val('ucsc'), eval("echo $VERSION"), topic: versions, emit: versions_ucsc
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,6 +21,7 @@ process UCSC_BEDCLIP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    VERSION = '377' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     bedClip \\
         $args \\
@@ -32,6 +32,7 @@ process UCSC_BEDCLIP {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    VERSION = '377' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.bedGraph
     """
