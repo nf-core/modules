@@ -8,7 +8,7 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "galah"
-    tag "checkm2/databasedownload"
+    tag "untar"
     tag "checkm2/predict"
     tag "gawk"
 
@@ -40,14 +40,15 @@ nextflow_process {
 
     test("genomes - checkm2 qc_table") {
 
-            setup {
-                run("UNTAR") {
-                    script "../../untar/main.nf"
-                    process {
-                        """
-                        input[0] = Channel.fromPath('https://zenodo.org/records/14897628/files/checkm2_database.tar.gz', checkIfExists: true).map{dbfile -> [[id: 'db'], dbfile]}
-                        """
-                    }
+        setup {
+            run("UNTAR") {
+                script "../../untar/main.nf"
+                process {
+                    """
+                    input[0] = channel
+                        .fromPath("https://zenodo.org/records/14897628/files/checkm2_database.tar.gz", checkIfExists: true)
+                        .map { dbfile -> [ [id: 'checkm2db'], dbfile ] }
+                    """
                 }
             }
 
