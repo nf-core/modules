@@ -14,7 +14,7 @@ workflow FASTQ_CONTAM_SEQTK_KRAKEN {
         kraken2_db  //string:  [mandatory] path to Kraken2 DB to use for screening
 
     main:
-        ch_reports  = Channel.empty()
+        ch_reports  = channel.empty()
 
         // Combine all combinations of reads with sample_size(s).
         // Note using more than 1 sample_size can cause file collisions

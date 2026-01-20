@@ -30,7 +30,7 @@ def getFastpAdapterSequence(json_file) {
     try {
         return json['adapter_cutting']['read1_adapter_sequence']
     }
-    catch (Exception ex) {
+    catch (Exception _ex) {
         return ""
     }
 }

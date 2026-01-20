@@ -21,7 +21,6 @@ process RSEQC_TIN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     tin.py \\
         -i $bam \\

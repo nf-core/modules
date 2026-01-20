@@ -21,13 +21,13 @@ def getReadLengthFromSeqkitStats(stats_file) {
     }
 
     def header = lines[0].split('\t')
-    def avgLenIdx = header.findIndexOf { it == 'avg_len' }
+    def avgLenIdx = header.findIndexOf { col -> col == 'avg_len' }
     if (avgLenIdx < 0) {
         return 100 // Default fallback if column not found
     }
 
     // Calculate mean avg_len across all files in the stats output
-    def avgLens = lines[1..-1].collect { it.split('\t')[avgLenIdx] as float }
+    def avgLens = lines[1..-1].collect { line -> line.split('\t')[avgLenIdx] as float }
     def meanAvgLen = avgLens.sum() / avgLens.size()
 
     return Math.round(meanAvgLen) as int
@@ -140,7 +140,7 @@ workflow FASTQ_REMOVE_RRNA {
 
         // Branch reads by single-end vs paired-end for different filtering strategies
         ch_filtered_reads
-            .branch { meta, reads ->
+            .branch { meta, _reads ->
                 single_end: meta.single_end
                 paired_end: !meta.single_end
             }

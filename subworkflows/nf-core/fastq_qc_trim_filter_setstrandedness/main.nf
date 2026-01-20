@@ -61,9 +61,9 @@ def getSalmonInferredStrandedness(json_file, stranded_threshold = 0.8, unstrande
     // https://groups.google.com/g/sailfish-users/c/yxzBDv6NB6I
     def unstrandedKeys = ['IU', 'U', 'MU']
 
-    def forwardFragments = forwardKeys.collect { libCounts[it] ?: 0 }.sum()
-    def reverseFragments = reverseKeys.collect { libCounts[it] ?: 0 }.sum()
-    def unstrandedFragments = unstrandedKeys.collect { libCounts[it] ?: 0 }.sum()
+    def forwardFragments = forwardKeys.collect { key -> libCounts[key] ?: 0 }.sum()
+    def reverseFragments = reverseKeys.collect { key -> libCounts[key] ?: 0 }.sum()
+    def unstrandedFragments = unstrandedKeys.collect { key -> libCounts[key] ?: 0 }.sum()
 
     // Use shared calculation function to determine strandedness
     return calculateStrandedness(forwardFragments, reverseFragments, unstrandedFragments, stranded_threshold, unstranded_threshold)

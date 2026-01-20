@@ -30,8 +30,8 @@ workflow FASTA_INDEX_METHYLSEQ {
 
     // Check if fasta file is gzipped and decompress if needed
     fasta
-        .branch {
-            gzipped: it[1].toString().endsWith('.gz')
+        .branch { _meta, file ->
+            gzipped: file.toString().endsWith('.gz')
             unzipped: true
         }
         .set { ch_fasta_branched }
@@ -50,8 +50,8 @@ workflow FASTA_INDEX_METHYLSEQ {
         if (bismark_index) {
             // Handle channel-based bismark index
             bismark_index
-                .branch {
-                    gzipped: it[1].toString().endsWith('.gz')
+                .branch { _meta, file ->
+                    gzipped: file.toString().endsWith('.gz')
                     unzipped: true
                 }
                 .set { ch_bismark_index_branched }
@@ -88,8 +88,8 @@ workflow FASTA_INDEX_METHYLSEQ {
         if (bwameth_index) {
             // Handle channel-based bwameth index
             bwameth_index
-                .branch {
-                    gzipped: it[1].toString().endsWith('.gz')
+                .branch { _meta, file ->
+                    gzipped: file.toString().endsWith('.gz')
                     unzipped: true
                 }
                 .set { ch_bwameth_index_branched }
@@ -118,8 +118,8 @@ workflow FASTA_INDEX_METHYLSEQ {
         if (bwamem_index) {
             // Handle channel-based bwamem index
             bwamem_index
-                .branch {
-                    gzipped: it[1].toString().endsWith('.gz')
+                .branch { _meta, file ->
+                    gzipped: file.toString().endsWith('.gz')
                     unzipped: true
                 }
                 .set { ch_bwamem_index_branched }
