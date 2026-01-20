@@ -977,14 +977,13 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fasta'  },
-                    process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fasta.fai'  },
-                    process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fastq'  },
-                    process.out.outs[0][1].findAll {  file(it).name.contains('consensus.bam.bai') },
-                    process.out.outs[0][1].findAll {  file(it).name == 'regions.fa' },
-                    process.out.outs[0][1].findAll {  file(it).name.contains('.json') }
+                    process.out.outs[0][1].findAll {  file(it).name == 'metrics_summary.csv'  },
+                    process.out.outs[0][1].findAll {  file(it).name == 'filtered_feature_bc_matrix.h5'  },
+                    process.out.outs[0][1].findAll {  file(it).name == 'raw_feature_bc_matrix.h5' },
+                    process.out.outs[0][1].findAll {  file(it).name == 'sample_filtered_feature_bc_matrix.h5' },
+                    process.out.outs[0][1].findAll {  file(it).name == 'sample_raw_feature_bc_matrix.h5' }
                 ).match() },
-                { assert snapshot(process.out.versions).match("versions-with-vdj") }
+                { assert snapshot(process.out.versions).match("versions-flex-singleplex") }
             )
         }
 
