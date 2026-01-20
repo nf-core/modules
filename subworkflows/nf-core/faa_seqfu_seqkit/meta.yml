@@ -1,9 +1,14 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "faa_seqfu_seqkit"
-description: Subworkflow that checks the quality of input amino acid sequences and exports statistics
+description: |
+  Subworkflow that optionally preprocesses amino acid FASTA sequences
+  (seqkit seq/replace/rmdup), computes sequence statistics before and
+  after preprocessing using seqfu stats, and exports MultiQC-compatible
+  statistics and software versions.
 keywords:
   - fasta
   - protein
+  - preprocessing
   - statistics
   - quality check
 components:
@@ -12,19 +17,30 @@ components:
   - seqkit/rmdup
   - seqkit/replace
 input:
-  - sequences:
+  - ch_fasta:
       type: file
       description: |
         Amino acid sequences fasta file.
+        Structure: [ val(meta), [ path(fasta) ] ]
+  - skip_preprocessing:
+      type: boolean
+      description: |
+        If true, skip seqkit-based preprocessing steps and only compute
+        initial sequence statistics.
 output:
-  - versions:
+  - fasta:
       type: file
       description: |
-        Versions file containing the software versions used in the workflow.
+        Contains the final amino acid FASTA file
+        (either preprocessed or original if preprocessing is skipped).
   - multiqc_files:
       type: file
       description: |
         Statistics file for MultiQC.
+  - versions:
+      type: file
+      description: |
+        Versions file containing the software versions used in the workflow.
 authors:
   - "@vagkaratzas"
 maintainers:
