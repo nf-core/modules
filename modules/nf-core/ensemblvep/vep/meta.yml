@@ -118,6 +118,12 @@ output:
           type: map
           description: |
             Map with sample information
+      - ${task.process}:
+          type: string
+          description: The process
+      - ensemblvep:
+          type: string
+          description: The tool name
       - "*.html":
           type: file
           description: VEP report file
@@ -145,6 +151,22 @@ output:
           description: The expression to obtain the version of the tool
 
 topics:
+  multiqc_files:
+    - - meta:
+          type: map
+          description: |
+            Map with sample information
+      - ${task.process}:
+          type: string
+          description: The process
+      - ensemblvep:
+          type: string
+          description: The tool name
+      - "*.html":
+          type: file
+          description: VEP report file
+          pattern: "*.html"
+          ontologies: []
   versions:
     - - ${task.process}:
           type: string
