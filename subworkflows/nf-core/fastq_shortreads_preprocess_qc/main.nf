@@ -37,7 +37,7 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
     // adapter removal and merging
     skip_adapterremoval            // boolean
     val_adapter_tool               // string:  [mandatory] tool_name // choose from: ["trimmomatic", "cutadapt", "trimgalore", "bbduk", "leehom", "fastp", "adapterremoval"]
-    ch_custom_adapters_file        // channel: [optional]  {fasta,txt} // fasta, for bbduk or fastp, or txt, for adapterremoval
+    ch_custom_adapters_file        // channel: [optional]  [ {fasta,txt} ] // fasta, for bbduk or fastp, or txt, for adapterremoval
     val_save_merged                // boolean: [mandatory] if true, will return the merged reads instead, for fastp and adapterremoval
     val_fastp_discard_trimmed_pass // boolean: [mandatory] // only for fastp
     val_fastp_save_trimmed_fail    // boolean: [mandatory] // only for fastp
