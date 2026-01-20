@@ -39,7 +39,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}:
+      - '"${prefix}", type: "dir"':
           type: directory
           description: Folder containing the set operations results perform on the vcf files
           pattern: "${prefix}"
@@ -50,7 +50,7 @@ output:
       - bcftools:
           type: string
           description: The tool name
-      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
           type: string
           description: The command used to generate the version of the tool
 topics:
@@ -61,7 +61,7 @@ topics:
       - bcftools:
           type: string
           description: The tool name
-      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
           type: string
           description: The command used to generate the version of the tool
 authors:
