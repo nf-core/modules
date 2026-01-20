@@ -96,24 +96,24 @@ output:
 
 topics:
   versions:
-  - - ${task.process}:
-        type: string
-        description: The process the versions were collected from
-    - bwa:
-        type: string
-        description: The tool name
-    - 'sentieon bwa 2>&1 | sed -n "s/^Version: *//p"':
-        type: string
-        description: The command used to generate the version of the tool
-  - - ${task.process}:
-        type: string
-        description: The process the versions were collected from
-    - sentieon:
-        type: string
-        description: The tool name
-    - sentieon driver --version | sed "s/.*-//g":
-        type: string
-        description: The command used to generate the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bwa:
+          type: string
+          description: The tool name
+      - 'sentieon bwa 2>&1 | sed -n "s/^Version: *//p"':
+          type: string
+          description: The command used to generate the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - sentieon:
+          type: string
+          description: The tool name
+      - sentieon driver --version | sed "s/.*-//g":
+          type: string
+          description: The command used to generate the version of the tool
 
 authors:
   - "@asp8200"
