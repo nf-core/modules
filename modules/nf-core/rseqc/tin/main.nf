@@ -21,7 +21,6 @@ process RSEQC_TIN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     tin.py \\
         -i $bam \\
@@ -30,7 +29,6 @@ process RSEQC_TIN {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${bam.fileName}.summary.txt
     touch ${bam.fileName}.tin.xls
