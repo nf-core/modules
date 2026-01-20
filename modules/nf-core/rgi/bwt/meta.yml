@@ -94,7 +94,7 @@ output:
       - rgi-database:
           type: string
           description: The tool name
-      - echo $DB_VERSION:
+      - echo \$DB_VERSION:
           type: string
           description: The CARD database version string
 
@@ -108,7 +108,16 @@ topics:
           description: The tool name
       - rgi main --version:
           type: string
-          description: The command used to generate the version of the tool
+          description: Command used to collect the version
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rgi-database:
+          type: string
+          description: The tool name
+      - echo $DB_VERSION:
+          type: string
+          description: Command used to collect the version
 
 authors:
   - "@vinisalazar"
