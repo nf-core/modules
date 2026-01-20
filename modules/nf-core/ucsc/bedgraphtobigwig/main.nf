@@ -14,7 +14,7 @@ process UCSC_BEDGRAPHTOBIGWIG {
 
     output:
     tuple val(meta), path("*.bigWig"), emit: bigwig
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('ucsc'), eval('echo 469'), topic: versions, emit: versions_ucsc
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,28 +22,17 @@ process UCSC_BEDGRAPHTOBIGWIG {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '469' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     bedGraphToBigWig \\
+        $args \\
         $bedgraph \\
         $sizes \\
         ${prefix}.bigWig
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ucsc: $VERSION
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '469' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.bigWig
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ucsc: $VERSION
-    END_VERSIONS
     """
 }

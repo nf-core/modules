@@ -30,7 +30,6 @@ process RSEQC_TIN {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${bam.fileName}.summary.txt
     touch ${bam.fileName}.tin.xls
