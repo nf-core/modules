@@ -121,7 +121,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.table,
                     process.out.table_post,
-                    process.out.recal_alignment,
+                    bam(process.out.recal_alignment[0][1]).getReadsMD5(),
                     process.out.csv,
                     file(process.out.pdf[0][1]).name
                     ).match() }
@@ -174,12 +174,13 @@ nextflow_process {
         }
 
         then {
+            def fasta = 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/genome.fasta'
             assert process.success
             assertAll(
                 { assert snapshot(
                     process.out.table,
                     process.out.table_post,
-                    process.out.recal_alignment,
+                    cram(process.out.recal_alignment[0][1], fasta).getReadsMD5(),
                     process.out.csv,
                     file(process.out.pdf[0][1]).name
                     ).match()
