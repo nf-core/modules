@@ -21,7 +21,7 @@ process ENSEMBLVEP_VEP {
     tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi, optional: true
     tuple val(meta), path("*.tab.gz"), emit: tab, optional: true
     tuple val(meta), path("*.json.gz"), emit: json, optional: true
-    tuple val(meta), path("*.html"), emit: report, optional: true
+    tuple val(meta), val("${task.process}"), val('ensemblvep'), path("*.html"), topic: multiqc_files, emit: report, optional: true
     tuple val("${task.process}"), val('ensemblvep'), eval("vep --help | sed -n '/ensembl-vep/s/.*: //p'"), topic: versions, emit: versions_ensemblvep
     tuple val("${task.process}"), val('tabix'), eval("tabix -h 2>&1 | grep -oP 'Version:\\s*\\K[^\\s]+'"), topic: versions, emit: versions_tabix
 
