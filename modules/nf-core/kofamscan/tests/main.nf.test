@@ -92,7 +92,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.tsv.get(0).get(1).exists() },
+                { assert path(process.out.tsv.get(0).get(1)).exists() },
                 { assert snapshot(process.out.versions).match() }
             )
         }
