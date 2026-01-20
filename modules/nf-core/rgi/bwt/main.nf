@@ -16,7 +16,7 @@ process RGI_BWT {
     tuple val(meta), path("*.json"), emit: json
     tuple val(meta), path("*.txt"), emit: tsv
     tuple val(meta), path("temp/"), emit: tmp
-    tuple val("${task.process}"), val('rgi')         , eval("rgi main --version") , emit: versions_rgi, topic: versions
+    tuple val("${task.process}"), val('rgi')         , eval("rgi main --version")  , emit: versions_rgi, topic: versions
     tuple val("${task.process}"), val('rgi-database'), eval("echo \$DB_VERSION")   , emit: versions_db , topic: versions
 
     when:
