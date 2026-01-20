@@ -100,6 +100,36 @@ input:
       type: integer
       description: |
         Discard R1 or R2 after UMI extraction (0 = keep both, 1 = discard R1, 2 = discard R2)
+  - skip_adapterremoval:
+      type: boolean
+      description: |
+        Skip the adapter removal and merge subworkflow completely
+  - val_adapter_tool:
+      type: string
+      description: |
+        Choose one of the available adapter removal and/or merging tools
+      enum: ["trimmomatic", "cutadapt", "trimgalore", "bbduk", "leehom", "fastp", "adapterremoval"]
+  - ch_custom_adapters_file:
+      type: file
+      description: |
+        Optional reference files, containing adapter and/or contaminant sequences for removal.
+        In fasta format for bbmap/bbduk and fastp, or in text format for AdapterRemoval (one adapter per line).
+  - val_save_merged:
+      type: boolean
+      description: |
+        Specify true to output merged reads instead
+        Used by fastp and adapterremoval
+  - val_fastp_discard_trimmed_pass:
+      type: boolean
+      description: |
+        Used only by fastp.
+        Specify true to not write any reads that pass trimming thresholds from the fastp process.
+        This can be used to use fastp for the output report only.
+  - val_fastp_save_trimmed_fail:
+      type: boolean
+      description: |
+        Used only by fastp.
+        Specify true to save files that failed to pass fastp trimming thresholds
   - skip_complexity_filtering:
       type: boolean
       description: |
