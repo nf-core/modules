@@ -10,10 +10,18 @@ nextflow_process {
     script "../main.nf"
     process "SENTIEON_DEDUP"
 
+    config "./nextflow.config"
+
     test("Test marking duplicates") {
-        config "./nextflow.config"
 
         when {
+            params {
+                module_args = ''
+                module_args2 = ''
+                module_args3 = ''
+                module_args4 = ''
+                module_prefix = ''
+            }
             process {
                 """
                 input[0] = [
@@ -35,10 +43,16 @@ nextflow_process {
         }
     }
 
-    test("Test removing duplicates") {
-        config "./nextflow_rmdup.config"
+    test("Test removing duplicates, cram") {
 
         when {
+            params {
+                module_args = ''
+                module_args2 = ''
+                module_args3 = ''
+                module_args4 = '--rmdup'
+                module_prefix = "test.dedup.cram"
+            }
             process {
                 """
                 input[0] = [
@@ -61,9 +75,15 @@ nextflow_process {
     }
 
     test("Test stub") {
-        config "./nextflow.config"
         options "-stub"
         when {
+            params {
+                module_args = ''
+                module_args2 = ''
+                module_args3 = ''
+                module_args4 = ''
+                module_prefix = ''
+            }
             process {
                 """
                 input[0] = [

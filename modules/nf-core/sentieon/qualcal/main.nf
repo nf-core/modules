@@ -4,8 +4,8 @@ process SENTIEON_QUALCAL {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/20/2050c5321a5426e31b9ed1e3e98356913fe3c316a7ef02c4fb872983a730db6f/data'
-        : 'community.wave.seqera.io/library/sentieon_gnuplot:a6da525a6c9ce6e3'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/73e9111552beb76e2ad3ad89eb75bed162d7c5b85b2433723ecb4fc96a02674a/data'
+        : 'community.wave.seqera.io/library/sentieon:202503.02--def60555294d04fa'}"
 
     input:
     tuple val(meta), path(input), path(input_index)
@@ -22,7 +22,7 @@ process SENTIEON_QUALCAL {
     tuple val(meta), path("*.{cram,bam}"), emit: recal_alignment, optional: true
     tuple val(meta), path("*.csv"),        emit: csv, optional: true
     tuple val(meta), path("*.pdf"),        emit: pdf, optional: true
-    path "versions.yml",                   emit: versions
+    tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
     task.ext.when == null || task.ext.when
@@ -50,10 +50,7 @@ process SENTIEON_QUALCAL {
             ${knownSites} \\
             ${prefix}.table
 
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-        END_VERSIONS
+        
         """
     }
     else {
@@ -85,10 +82,7 @@ process SENTIEON_QUALCAL {
 
         sentieon plot QualCal -o ${prefix}.pdf ${prefix}.csv
 
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-        END_VERSIONS
+        
         """
     }
 
@@ -104,9 +98,6 @@ process SENTIEON_QUALCAL {
     touch ${prefix}.csv
     touch ${prefix}.pdf
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
+    
     """
 }

@@ -123,8 +123,7 @@ nextflow_process {
                     process.out.table_post,
                     process.out.recal_alignment,
                     process.out.csv,
-                    file(process.out.pdf[0][1]).name,
-                    path(process.out.versions[0]).yaml
+                    file(process.out.pdf[0][1]).name
                     ).match() }
             )
         }
@@ -182,8 +181,7 @@ nextflow_process {
                     process.out.table_post,
                     process.out.recal_alignment,
                     process.out.csv,
-                    file(process.out.pdf[0][1]).name,
-                    path(process.out.versions[0]).yaml
+                    file(process.out.pdf[0][1]).name
                     ).match()
                 }
             )
