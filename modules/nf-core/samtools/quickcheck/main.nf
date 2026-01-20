@@ -11,10 +11,6 @@ process SAMTOOLS_QUICKCHECK {
     tuple val(meta), path(bam)
 
     output:
-    /*  The 'samtools quickcheck' module does not generate any output files.
-        Instead, it returns an error code if the mapping file (SAM/BAM/CRAM) is malformatted.
-        The Nextflow process returns this exit code along with the corresponding mapping file for.
-    */
     tuple val(meta), path(bam), env("EXIT_CODE"),   emit: bam
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 

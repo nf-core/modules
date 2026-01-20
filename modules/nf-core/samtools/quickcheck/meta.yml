@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "samtools_quickcheck"
-description: Quickly check that input files appear to be intact. Checks that beginning of the file contains a valid header (all formats) containing at least one target sequence and then seeks to the end of the file and checks that an end-of-file (EOF) is present and intact (BAM and CRAM only). Alignment records are not checked. The quickcheck module exits with a non-zero exit code if any input files don't have a valid header or are missing an EOF block. Otherwise it will exit successfully (with a zero exit code).
+description: Quickly check that input files appear to be intact. Checks that beginning of the file contains a valid header (all formats) containing at least one target sequence and then seeks to the end of the file and checks that an end-of-file (EOF) is present and intact (BAM and CRAM only). Alignment records are not checked. The quickcheck module returns a non-zero EXIT_CODE if any input files don't have a valid header or are missing an EOF block. Otherwise EXIT_CODE is zero.
 keywords:
   - check
   - quickcheck
@@ -44,7 +44,7 @@ output:
             - edam: http://edamontology.org/format_3462 # CRAM
             - edam: http://edamontology.org/format_2573 # SAM
             - edam: http://edamontology.org/format_2572 # BAM
-      - exit_code:
+      - EXIT_CODE:
           type: integer
           description: Exit code (0 for success, non-zero otherwise) that is the result of the format check.
           ontologies: []
