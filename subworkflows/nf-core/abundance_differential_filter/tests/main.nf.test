@@ -118,8 +118,8 @@ nextflow_workflow {
                 { assert path(workflow.out.results_genewise[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
                 { assert snapshot(
                     workflow.out.results_genewise_filtered,
-                    workflow.out.model,
                     workflow.out.normalised_matrix,
+                    workflow.out.model,
                     workflow.out.versions
                 ).match() }
             )
