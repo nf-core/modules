@@ -18,20 +18,21 @@ process MAFFT_ALIGN {
 
     output:
     tuple val(meta), path("*.fas{.gz,}"), emit: fas
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val("mafft"), eval("mafft --version 2>&1 | sed 's/ (.*) //g'"), topic: versions, emit: versions_mafft
+    tuple val("${task.process}"), val("pigz"), eval("pigz --version 2>&1 | sed 's/pigz //g'")   , topic: versions, emit: versions_pigz
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args         = task.ext.args   ?: ''
-    def prefix       = task.ext.prefix ?: "${meta.id}"
-    def add          = add             ? "--add <(unpigz -cdf ${add})"                   : ''
-    def addfragments = addfragments    ? "--addfragments <(unpigz -cdf ${addfragments})" : ''
-    def addfull      = addfull         ? "--addfull <(unpigz -cdf ${addfull})"           : ''
-    def addprofile   = addprofile      ? "--addprofile <(unpigz -cdf ${addprofile})"     : ''
-    def addlong      = addlong         ? "--addlong <(unpigz -cdf ${addlong})"           : ''
-    def write_output = compress ? " | pigz -cp ${task.cpus} > ${prefix}.fas.gz" : "> ${prefix}.fas"
+    def args     = task.ext.args   ?: ''
+    def prefix   = task.ext.prefix ?: "${meta.id}"
+    add          = add             ? "--add <(unpigz -cdf ${add})"                   : ''
+    addfragments = addfragments    ? "--addfragments <(unpigz -cdf ${addfragments})" : ''
+    addfull      = addfull         ? "--addfull <(unpigz -cdf ${addfull})"           : ''
+    addprofile   = addprofile      ? "--addprofile <(unpigz -cdf ${addprofile})"     : ''
+    addlong      = addlong         ? "--addlong <(unpigz -cdf ${addlong})"           : ''
+    write_output = compress ? " | pigz -cp ${task.cpus} > ${prefix}.fas.gz" : "> ${prefix}.fas"
     // this will not preserve MAFFTs return value, but mafft crashes when it receives a process substitution
     if ("$fasta" == "${prefix}.fas" ) error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
@@ -45,31 +46,20 @@ process MAFFT_ALIGN {
         ${args} \\
         ${fasta} \\
         ${write_output}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mafft: \$(mafft --version 2>&1 | sed 's/^v//' | sed 's/ (.*)//')
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
-    END_VERSIONS
     """
 
     stub:
-    def args         = task.ext.args   ?: ''
-    def prefix       = task.ext.prefix ?: "${meta.id}"
-    def add          = add             ? "--add ${add}"                   : ''
-    def addfragments = addfragments    ? "--addfragments ${addfragments}" : ''
-    def addfull      = addfull         ? "--addfull ${addfull}"           : ''
-    def addprofile   = addprofile      ? "--addprofile ${addprofile}"     : ''
-    def addlong      = addlong         ? "--addlong ${addlong}"           : ''
-    if ("$fasta" == "${prefix}.fas" )  error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("$fasta" == "${prefix}.fas" ) error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
-    touch ${prefix}.fas${compress ? '.gz' : ''}
+    echo ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mafft: \$(mafft --version 2>&1 | sed 's/^v//' | sed 's/ (.*)//')
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
-    END_VERSIONS
+    if [[ "$compress" == "true" ]]; then
+        echo "" | pigz -cp ${task.cpus} > ${prefix}.fas.gz
+    else
+        touch ${prefix}.fas
+    fi
     """
 
 }

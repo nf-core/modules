@@ -53,6 +53,6 @@ process SENTIEON_BWAMEM {
     index = prefix.tokenize('.')[-1] == "bam" ? "bai" : "crai"
     """
     touch ${prefix}
-    touch ${prefix}.${index}   
+    touch ${prefix}.${index}
     """
 }
