@@ -41,7 +41,8 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.recal[0][1]).readLines()[0..5],
                     file(process.out.idx[0][1]).name,
-                    process.out.tranches
+                    process.out.tranches,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
@@ -89,7 +90,8 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.recal[0][1]).readLines()[0..5],
                     file(process.out.idx[0][1]).name,
-                    process.out.tranches
+                    process.out.tranches,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
