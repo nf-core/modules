@@ -52,7 +52,7 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
-                    workflow.out.vep_reports.collect { it instanceof String ? file(it).name : it },
+                    workflow.out.vep_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },
@@ -106,7 +106,7 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
-                    workflow.out.vep_reports.collect { it instanceof String ? file(it).name : it },
+                    workflow.out.vep_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },
@@ -155,7 +155,7 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
-                    workflow.out.vep_reports.collect { it instanceof String ? file(it).name : it },
+                    workflow.out.vep_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },
@@ -200,7 +200,7 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
-                    workflow.out.vep_reports.collect { it instanceof String ? file(it).name : it },
+                    workflow.out.vep_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },
@@ -245,7 +245,7 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
-                    workflow.out.vep_reports.collect { it instanceof String ? file(it).name : it },
+                    workflow.out.vep_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },

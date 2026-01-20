@@ -41,7 +41,6 @@ process NACHO_NORMALIZE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     """
     touch normalized_counts.tsv
     touch normalized_counts_wo_HKnorm.tsv
