@@ -1,7 +1,6 @@
 process SAMTOOLS_QUICKCHECK {
     tag "$meta.id"
     label 'process_single'
-    errorStrategy 'terminate'   // Nextflow default; but explicit here
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -12,11 +11,11 @@ process SAMTOOLS_QUICKCHECK {
     tuple val(meta), path(bam)
 
     output:
-    /*  There is not generated output files.
-        The sole purpose of 'samtools quickcheck' is to return an error if the mapping file is malformatted.
-        The purpose in of the Nextflow process is to break the main workflow (by default) if the script returns a non-zero exit code.
-        The nf-core components guidelines (https://nf-co.re/docs/guidelines/components/modules) do not specify that there must be output files.
+    /*  The 'samtools quickcheck' module does not generate any output files.
+        Instead, it returns an error code if the mapping file (SAM/BAM/CRAM) is malformatted.
+        The Nextflow process returns this exit code along with the corresponding mapping file for.
     */
+    tuple val(meta), path(bam), env("EXIT_CODE"),   emit: bam
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
@@ -27,12 +26,15 @@ process SAMTOOLS_QUICKCHECK {
     """
     samtools quickcheck \\
         $args \\
-        $bam
+        $bam || EXIT_CODE=\$?
+
+    EXIT_CODE=\${EXIT_CODE:-0}
     """
 
     stub:
     def args = task.ext.args ?: ''
     """
+    EXIT_CODE=0
     echo $args
     """
 }

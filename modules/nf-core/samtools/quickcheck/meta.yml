@@ -31,6 +31,23 @@ input:
           - edam: http://edamontology.org/format_2573 # SAM
           - edam: http://edamontology.org/format_2572 # BAM
 output:
+  bam:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - bam:
+          type: file
+          description: sequence_trace file
+          pattern: "*.{cram,sam,bam}"
+          ontologies:
+            - edam: http://edamontology.org/data_0924 # Sequence trace
+            - edam: http://edamontology.org/format_3462 # CRAM
+            - edam: http://edamontology.org/format_2573 # SAM
+            - edam: http://edamontology.org/format_2572 # BAM
+      - exit_code:
+          type: integer
+          description: Exit code (0 for success, non-zero otherwise) that is the result of the format check.
+          ontologies: []
   versions_samtools:
     - - ${task.process}:
           type: string
