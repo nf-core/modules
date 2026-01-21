@@ -16,7 +16,7 @@ process FASTK_FASTK {
     tuple val(meta), path("*.ktab*", hidden: true)       , emit: ktab, optional: true
     tuple val(meta), path("*.{prof,pidx}*", hidden: true), emit: prof, optional: true
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    tuple val("${task.process}"), val('fastk'), val('echo 1.2'), emit: versions_fastk, topic: versions
+    tuple val("${task.process}"), val('fastk'), eval('echo 1.2'), emit: versions_fastk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
