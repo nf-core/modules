@@ -48,7 +48,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - '"*.ktab*", hidden: true':
+      - "*.ktab*":
           type: file
           description: FastK ktab file
           pattern: "*.ktab"
@@ -58,7 +58,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - '"*.{prof,pidx}*", hidden: true':
+      - "*.{prof,pidx}*":
           type: file
           description: FastK prof file
           pattern: "*.{prof,pidx}"
