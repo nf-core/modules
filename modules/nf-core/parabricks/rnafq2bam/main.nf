@@ -16,7 +16,7 @@ process PARABRICKS_RNAFQ2BAM {
     output:
     tuple val(meta), path("*.bam"),                                 emit: bam
     tuple val(meta), path("*.bai"),                                 emit: bai
-    tuple val(meta), path("Chimeric.out.junction"),                 emit: junction,             optional: true
+    tuple val(meta), path("Chimeric.out.junction"),                 emit: junction,             optional:true
     tuple val(meta), path("*_qc_metrics"),                          emit: qc_metrics,           optional:true
     tuple val(meta), path("*.duplicate-metrics.txt"),               emit: duplicate_metrics,    optional:true
     tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions_parabricks
