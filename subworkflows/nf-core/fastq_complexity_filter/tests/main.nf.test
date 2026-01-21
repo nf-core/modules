@@ -83,11 +83,13 @@ nextflow_workflow {
         then {
             assert workflow.success
             assertAll(
-                workflow.out.filtered_reads[0][1],
-                path(workflow.out.logfile[0][1]).readLines().size(),
-                path(workflow.out.report[0][1]).readLines().size(),
-                workflow.out.multiqc_files.collect { file(it[1]).name },
-                workflow.out.versions.collect { path(it).yaml }
+                { assert snapshot(
+                    workflow.out.filtered_reads[0][1],
+                    path(workflow.out.logfile[0][1]).readLines().size(),
+                    path(workflow.out.report[0][1]).readLines().size(),
+                    workflow.out.multiqc_files[0][1],
+                    workflow.out.versions.collect { path(it).yaml }
+                ).match()}
             )
         }
     }
