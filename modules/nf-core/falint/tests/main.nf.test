@@ -1,0 +1,80 @@
+nextflow_process {
+
+    name "Test Process FALINT"
+    script "../main.nf"
+    process "FALINT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "falint"
+
+    test("sarscov2-fasta-valid") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2-fasta-valid-stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2-gff3-invalid") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() },
+                { assert process.out.success_log == [] },
+                { assert file(process.out.error_log[0][1]).text.contains('Fasta file must start with a header line') }
+            )
+        }
+
+    }
+}

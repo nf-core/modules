@@ -1,11 +1,13 @@
 process BWAMEM2_INDEX {
     tag "$fasta"
-    label 'process_single'
+    // NOTE Requires 28N GB memory where N is the size of the reference sequence, floor of 280M
+    // source: https://github.com/bwa-mem2/bwa-mem2/issues/9
+    memory { (280.MB * Math.ceil(fasta.size() / 10000000)) * task.attempt }
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bwa-mem2:2.2.1--he513fc3_0' :
-        'biocontainers/bwa-mem2:2.2.1--he513fc3_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e0/e05ce34b46ad42810eb29f74e4e304c0cb592b2ca15572929ed8bbaee58faf01/data' :
+        'community.wave.seqera.io/library/bwa-mem2_htslib_samtools:db98f81f55b64113' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -25,7 +27,8 @@ process BWAMEM2_INDEX {
     bwa-mem2 \\
         index \\
         $args \\
-        $fasta -p bwamem2/${prefix}
+        -p bwamem2/${prefix} \\
+        $fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

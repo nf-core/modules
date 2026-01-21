@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process DEDUP"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "DEDUP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dedup"
+
+    test("sarscov2 - bam") {
+        when {
+            params {
+                module_args = '-m'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '-m'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+}

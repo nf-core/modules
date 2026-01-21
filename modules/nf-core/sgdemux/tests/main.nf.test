@@ -1,0 +1,77 @@
+nextflow_process {
+
+    name "Test Process SGDEMUX"
+    script "../main.nf"
+    process "SGDEMUX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sgdemux"
+    tag "untar"
+
+    test("test_sgdemux") {
+        setup {
+            run("UNTAR") {
+                script "../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id:'sim-data'],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/demultiplex/testdata/sim-data/fastq.tar.gz", checkIfExists:true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id:'sim-data'],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/demultiplex/testdata/sim-data/out.sample_meta.csv", checkIfExists:true)
+                ]).join(
+                    UNTAR.out.untar
+                )
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.sample_fastq[0][1].collect{ file(it).name },
+                    process.out.metrics,
+                    file(process.out.most_frequent_unmatched[0][1]).name, // Unstable
+                    process.out.per_project_metrics,
+                    process.out.per_sample_metrics,
+                    file(process.out.sample_barcode_hop_metrics[0][1]).name, // Empty file
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("test_sgdemux -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id:'sim-data'],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/demultiplex/testdata/sim-data/out.sample_meta.csv", checkIfExists:true),
+                    []
+                ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

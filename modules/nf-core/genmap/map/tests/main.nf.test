@@ -1,0 +1,79 @@
+nextflow_process {
+
+    name "Test Process GENMAP_MAP"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "GENMAP_MAP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "genmap"
+    tag "genmap/index"
+    tag "genmap/map"
+
+    setup {
+        run("GENMAP_INDEX") {
+            script "../../index/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id:"test"],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - index bed") {
+
+        when {
+            params {
+                module_args   = "-K 50 -E 2 -w -t -bg -d"
+            }
+            process {
+                """
+                input[0] = GENMAP_INDEX.out.index
+                input[1] = [
+                    [id:"bed"],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+
+    test("sarscov2 - index bed -- stub") {
+        options '-stub'
+        when {
+            params {
+                module_args   = "-K 50 -E 2 -w -t -bg -d"
+            }
+            process {
+                """
+                input[0] = GENMAP_INDEX.out.index
+                input[1] = [
+                    [id:"bed"],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

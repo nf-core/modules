@@ -4,8 +4,8 @@ process MOSDEPTH {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mosdepth:0.3.8--hd299d5a_0' :
-        'biocontainers/mosdepth:0.3.8--hd299d5a_0'}"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/00/00d32b53160c26794959da7303ee6e2107afd4d292060c9f287b0af1fddbd847/data' :
+        'community.wave.seqera.io/library/mosdepth_htslib:0f58993cb6d93294'}"
 
     input:
     tuple val(meta),  path(bam), path(bai), path(bed)
@@ -24,7 +24,7 @@ process MOSDEPTH {
     tuple val(meta), path('*.quantized.bed.gz.csi') , optional:true, emit: quantized_csi
     tuple val(meta), path('*.thresholds.bed.gz')    , optional:true, emit: thresholds_bed
     tuple val(meta), path('*.thresholds.bed.gz.csi'), optional:true, emit: thresholds_csi
-    path  "versions.yml"                            , emit: versions
+    tuple val("${task.process}"), val('mosdepth'), eval("mosdepth --version | sed 's/mosdepth //g'"), topic: versions, emit: versions_mosdepth
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,11 +34,11 @@ process MOSDEPTH {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--fasta ${fasta}" : ""
     def interval = bed ? "--by ${bed}" : ""
-    if (bed && args.contains("--by")) {
+    if (bed && (args.contains("--by") || args.contains("-b "))) {
         error "'--by' can only be specified once when running mosdepth! Either remove input BED file definition or remove '--by' from 'ext.args' definition"
     }
-    if (!bed && args.contains("--thresholds")) {
-        error "'--thresholds' can only be specified in conjunction with '--by'"
+    if (args.contains("--thresholds") && !(bed || args.contains("--by") || args.contains("-b "))) {
+        error "'--thresholds' can only be specified in conjunction with '--by' or an input bed file"
     }
 
     """
@@ -49,15 +49,17 @@ process MOSDEPTH {
         $args \\
         $prefix \\
         $bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mosdepth: \$(mosdepth --version 2>&1 | sed 's/^.*mosdepth //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    if (bed && (args.contains("--by") || args.contains("-b "))) {
+        error "'--by' can only be specified once when running mosdepth! Either remove input BED file definition or remove '--by' from 'ext.args' definition"
+    }
+    if (args.contains("--thresholds") && !(bed || args.contains("--by") || args.contains("-b "))) {
+        error "'--thresholds' can only be specified in conjunction with '--by' or an input bed file"
+    }
     """
     touch ${prefix}.global.dist.txt
     touch ${prefix}.region.dist.txt
@@ -71,10 +73,5 @@ process MOSDEPTH {
     touch ${prefix}.quantized.bed.gz.csi
     echo "" | gzip > ${prefix}.thresholds.bed.gz
     touch ${prefix}.thresholds.bed.gz.csi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mosdepth: \$(mosdepth --version 2>&1 | sed 's/^.*mosdepth //; s/ .*\$//')
-    END_VERSIONS
     """
 }

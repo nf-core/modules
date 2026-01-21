@@ -34,14 +34,15 @@ input:
     - custom_seqid2taxid:
         type: file
         description: custom seqid2taxid
-  - - keep_intermediate:
-        type: boolean
-        description: "Keep intermediate files"
-        pattern: true|false
+        ontologies: []
+  - keep_intermediate:
+      type: boolean
+      description: "Keep intermediate files that are not used by the database itself"
+      pattern: true|false
 
 output:
-  - db:
-      - meta:
+  db:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,11 +51,13 @@ output:
           type: directory
           description: Directory containing KrakenUniq database
           pattern: "*/"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

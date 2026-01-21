@@ -1,0 +1,115 @@
+nextflow_workflow {
+
+    name "Test Subworkflow BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK"
+    script "../main.nf"
+    workflow "BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/bam_tumor_only_somatic_variant_calling_gatk"
+
+    tag "gatk4"
+    tag "gatk4/mutect2"
+    tag "gatk4/getpileupsummaries"
+    tag "gatk4/calculatecontamination"
+    tag "gatk4/filtermutectcalls"
+
+    config "./nextflow.config"
+
+    test("human - bam - paired_end") {
+
+        when {
+            workflow {
+                """
+                input[0]  = Channel.of([ [ id:'test2'],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true)
+                    ], [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
+                    ], []
+                ])
+                input[1]  = Channel.of([[ id:'reference' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ])
+                input[2]  = Channel.of([[ id:'reference' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                    ], []
+                ])
+                input[3]  = Channel.of([[ id:'reference' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.dict', checkIfExists: true)
+                ])
+                input[4]  = []
+                input[5]  = []
+                input[6]  = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz', checkIfExists: true))
+                input[7]  = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz.tbi', checkIfExists: true))
+                input[8]  = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz', checkIfExists: true))
+                input[9]  = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz.tbi', checkIfExists: true))
+                input[10] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.interval_list', checkIfExists: true))
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.contamination_table,
+                    workflow.out.filtered_stats,
+                    file(workflow.out.filtered_tbi[0][1]).name,
+                    workflow.out.filtered_vcf.collect { meta, vcf -> [meta, "${file(vcf).name},variantsMD5:${path(vcf).vcf.variantsMD5}"] },
+                    workflow.out.mutect2_stats,
+                    file(workflow.out.mutect2_tbi[0][1]).name,
+                    workflow.out.mutect2_vcf.collect { meta, vcf -> [meta, "${file(vcf).name},variantsMD5:${path(vcf).vcf.variantsMD5}"] },
+                    workflow.out.pileup_table,
+                    workflow.out.segmentation_table,
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("human - bam - paired_end - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0]  = Channel.of([ [ id:'test'],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true)
+                    ], [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
+                    ], []
+                ])
+                input[1]  = Channel.of([[ id:'reference' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ])
+                input[2]  = Channel.of([[ id:'reference' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                    ], []
+                ])
+                input[3]  = Channel.of([[ id:'reference' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.dict', checkIfExists: true)
+                ])
+                input[4]  = []
+                input[5]  = []
+                input[6]  = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz', checkIfExists: true))
+                input[7]  = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz.tbi', checkIfExists: true))
+                input[8]  = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz', checkIfExists: true))
+                input[9]  = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz.tbi', checkIfExists: true))
+                input[10] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.interval_list', checkIfExists: true))
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}

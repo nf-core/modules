@@ -25,9 +25,10 @@ input:
         type: file
         description: FASTA file of assembled contigs.
         pattern: "*.{fa,fa.gz,fasta,fasta.gz,fna,fna.gz}"
+        ontologies: []
 output:
-  - classifications:
-      - meta:
+  classifications:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,8 +38,9 @@ output:
           description: TSV file containing per-contig classification probabilities and
             overall classifications. Gzipped if flag --gz is set.
           pattern: "*.{txt,txt.gz}"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,8 +50,9 @@ output:
           description: Log file containing tiara model parameters. Gzipped if flag --gz
             is set.
           pattern: "log_*.{txt,txt.gz}"
-  - fasta:
-      - meta:
+          ontologies: []
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -59,11 +62,14 @@ output:
           description: |
             (optional) - fasta files for each domain category specified in command flag `-tf`, containing classified contigs
           pattern: "*.{fasta,fasta.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@prototaxites"
 maintainers:

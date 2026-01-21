@@ -4,8 +4,8 @@ process ODGI_VIZ {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/odgi:0.8.4--py310h6cc9453_0':
-        'biocontainers/odgi:0.8.4--py310h6cc9453_0' }"
+        'https://depot.galaxyproject.org/singularity/odgi:0.9.0--py312h5e9d817_1':
+        'biocontainers/odgi:0.9.0--py312h5e9d817_1' }"
 
     input:
     tuple val(meta), path(graph)

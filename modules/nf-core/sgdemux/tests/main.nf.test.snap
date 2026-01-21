@@ -1,0 +1,314 @@
+{
+    "test_sgdemux": {
+        "content": [
+            [
+                "Undetermined_S25_L001_R1_001.fastq.gz",
+                "Undetermined_S25_L001_R2_001.fastq.gz",
+                "out_L001_R1_001.fastq.gz",
+                "out_L001_R2_001.fastq.gz",
+                "s10_S10_L001_R1_001.fastq.gz",
+                "s10_S10_L001_R2_001.fastq.gz",
+                "s11_S11_L001_R1_001.fastq.gz",
+                "s11_S11_L001_R2_001.fastq.gz",
+                "s12_S12_L001_R1_001.fastq.gz",
+                "s12_S12_L001_R2_001.fastq.gz",
+                "s13_S13_L001_R1_001.fastq.gz",
+                "s13_S13_L001_R2_001.fastq.gz",
+                "s14_S14_L001_R1_001.fastq.gz",
+                "s14_S14_L001_R2_001.fastq.gz",
+                "s15_S15_L001_R1_001.fastq.gz",
+                "s15_S15_L001_R2_001.fastq.gz",
+                "s16_S16_L001_R1_001.fastq.gz",
+                "s16_S16_L001_R2_001.fastq.gz",
+                "s17_S17_L001_R1_001.fastq.gz",
+                "s17_S17_L001_R2_001.fastq.gz",
+                "s18_S18_L001_R1_001.fastq.gz",
+                "s18_S18_L001_R2_001.fastq.gz",
+                "s19_S19_L001_R1_001.fastq.gz",
+                "s19_S19_L001_R2_001.fastq.gz",
+                "s1_S1_L001_R1_001.fastq.gz",
+                "s1_S1_L001_R2_001.fastq.gz",
+                "s20_S20_L001_R1_001.fastq.gz",
+                "s20_S20_L001_R2_001.fastq.gz",
+                "s21_S21_L001_R1_001.fastq.gz",
+                "s21_S21_L001_R2_001.fastq.gz",
+                "s22_S22_L001_R1_001.fastq.gz",
+                "s22_S22_L001_R2_001.fastq.gz",
+                "s23_S23_L001_R1_001.fastq.gz",
+                "s23_S23_L001_R2_001.fastq.gz",
+                "s24_S24_L001_R1_001.fastq.gz",
+                "s24_S24_L001_R2_001.fastq.gz",
+                "s2_S2_L001_R1_001.fastq.gz",
+                "s2_S2_L001_R2_001.fastq.gz",
+                "s3_S3_L001_R1_001.fastq.gz",
+                "s3_S3_L001_R2_001.fastq.gz",
+                "s4_S4_L001_R1_001.fastq.gz",
+                "s4_S4_L001_R2_001.fastq.gz",
+                "s5_S5_L001_R1_001.fastq.gz",
+                "s5_S5_L001_R2_001.fastq.gz",
+                "s6_S6_L001_R1_001.fastq.gz",
+                "s6_S6_L001_R2_001.fastq.gz",
+                "s7_S7_L001_R1_001.fastq.gz",
+                "s7_S7_L001_R2_001.fastq.gz",
+                "s8_S8_L001_R1_001.fastq.gz",
+                "s8_S8_L001_R2_001.fastq.gz",
+                "s9_S9_L001_R1_001.fastq.gz",
+                "s9_S9_L001_R2_001.fastq.gz"
+            ],
+            [
+                [
+                    {
+                        "id": "sim-data"
+                    },
+                    "metrics.tsv:md5,7627e4bd2a56ea551fd74b4a2b5cb4b2"
+                ]
+            ],
+            "most_frequent_unmatched.tsv",
+            [
+                [
+                    {
+                        "id": "sim-data"
+                    },
+                    "per_project_metrics.tsv:md5,7393bc580c8ed8431107ad3dd00a7d2a"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "sim-data"
+                    },
+                    "per_sample_metrics.tsv:md5,fb8ce024ad2508e7b22a4af65fe44358"
+                ]
+            ],
+            "sample_barcode_hop_metrics.tsv",
+            [
+                "versions.yml:md5,8511631726c9c6432f398333aa234bda"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.5"
+        },
+        "timestamp": "2025-05-26T09:38:17.405081826"
+    },
+    "test_sgdemux -- stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "sim-data"
+                        },
+                        [
+                            "out_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "out_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s10_S10_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s10_S10_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s11_S11_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s11_S11_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s12_S12_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s12_S12_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s13_S13_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s13_S13_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s14_S14_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s14_S14_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s15_S15_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s15_S15_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s16_S16_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s16_S16_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s17_S17_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s17_S17_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s18_S18_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s18_S18_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s19_S19_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s19_S19_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s1_S1_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s1_S1_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s20_S20_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s20_S20_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s21_S21_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s21_S21_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s22_S22_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s22_S22_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s23_S23_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s23_S23_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s24_S24_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s24_S24_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s2_S2_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s2_S2_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s3_S3_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s3_S3_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s4_S4_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s4_S4_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s5_S5_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s5_S5_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s6_S6_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s6_S6_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s7_S7_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s7_S7_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s8_S8_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s8_S8_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s9_S9_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s9_S9_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "sim-data"
+                        },
+                        "metrics.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "sim-data"
+                        },
+                        "most_frequent_unmatched.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "sim-data"
+                        },
+                        "per_project_metrics.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "4": [
+                    [
+                        {
+                            "id": "sim-data"
+                        },
+                        "per_sample_metrics.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "5": [
+                    [
+                        {
+                            "id": "sim-data"
+                        },
+                        "sample_barcode_hop_metrics.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "6": [
+                    "versions.yml:md5,8511631726c9c6432f398333aa234bda"
+                ],
+                "metrics": [
+                    [
+                        {
+                            "id": "sim-data"
+                        },
+                        "metrics.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "most_frequent_unmatched": [
+                    [
+                        {
+                            "id": "sim-data"
+                        },
+                        "most_frequent_unmatched.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "per_project_metrics": [
+                    [
+                        {
+                            "id": "sim-data"
+                        },
+                        "per_project_metrics.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "per_sample_metrics": [
+                    [
+                        {
+                            "id": "sim-data"
+                        },
+                        "per_sample_metrics.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "sample_barcode_hop_metrics": [
+                    [
+                        {
+                            "id": "sim-data"
+                        },
+                        "sample_barcode_hop_metrics.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "sample_fastq": [
+                    [
+                        {
+                            "id": "sim-data"
+                        },
+                        [
+                            "out_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "out_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s10_S10_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s10_S10_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s11_S11_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s11_S11_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s12_S12_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s12_S12_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s13_S13_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s13_S13_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s14_S14_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s14_S14_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s15_S15_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s15_S15_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s16_S16_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s16_S16_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s17_S17_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s17_S17_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s18_S18_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s18_S18_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s19_S19_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s19_S19_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s1_S1_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s1_S1_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s20_S20_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s20_S20_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s21_S21_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s21_S21_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s22_S22_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s22_S22_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s23_S23_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s23_S23_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s24_S24_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s24_S24_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s2_S2_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s2_S2_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s3_S3_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s3_S3_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s4_S4_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s4_S4_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s5_S5_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s5_S5_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s6_S6_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s6_S6_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s7_S7_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s7_S7_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s8_S8_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s8_S8_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s9_S9_L001_R1_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "s9_S9_L001_R2_001.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,8511631726c9c6432f398333aa234bda"
+                ]
+            },
+            {
+                "SGDEMUX": {
+                    "sgdemux": "1.1.1"
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.5"
+        },
+        "timestamp": "2025-05-26T09:28:48.807628224"
+    }
+}

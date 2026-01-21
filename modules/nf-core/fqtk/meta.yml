@@ -21,13 +21,20 @@ input:
         type: file
         description: Tsv file, with two columns sample_id and barcode
         pattern: "*.{tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+    - fastq_folder:
+        type: file
+        description: Directory containing fastq files that will be staged as 'input'
+          folder
+        pattern: "*"
+        ontologies: []
     - fastq_readstructure_pairs:
         type: map
-        description: List of lists i.e. [[<fastq file name>, <read structure>, <absolute
-          path to fastq directory>],...]
+        description: List of lists i.e. [[<fastq file name>, <read structure>],...]
 output:
-  - sample_fastq:
-      - meta:
+  sample_fastq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,8 +43,10 @@ output:
           type: file
           description: Demultiplexed per-sample FASTQ files
           pattern: "output/*R*.fastq.gz"
-  - metrics:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  metrics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,8 +56,9 @@ output:
           description: |
             Demultiplexing summary stats; sample_id, barcode templates, frac_templates, ratio_to_mean, ratio_to_best
           pattern: "output/demux-metrics.txt"
-  - most_frequent_unmatched:
-      - meta:
+          ontologies: []
+  most_frequent_unmatched:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -58,11 +68,15 @@ output:
           description: |
             File containing unmatched fastq records
           pattern: "output/unmatched*.fq.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nh13"
   - "@sam-white04"

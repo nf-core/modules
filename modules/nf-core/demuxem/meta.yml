@@ -32,25 +32,25 @@ input:
         description: |
           Path to file containing input HTO (antibody tag) count matrix in CSV format.
         pattern: "*.{csv}"
-  - - output_name:
-        type: string
-        description: |
-          Output name. All outputs will use it as the prefix.
-  - - generate_gender_plot:
-        type: string
-        description: |
-          Generate violin plots using gender-specific genes (e.g. Xist). It is a comma-separated list of gene names.
-  - - genome:
-        type: string
-        description: |
-          Reference genome name. If not provided, the tools infers it from the expression matrix file
-  - - generate_diagnostic_plots:
-        type: string
-        description: |
-          Generate diagnostic plots, including the background/signal between HTO counts, estimated background probabilities, HTO distributions.
+  - output_name:
+      type: string
+      description: |
+        Output name. All outputs will use it as the prefix.
+  - generate_gender_plot:
+      type: string
+      description: |
+        Generate violin plots using gender-specific genes (e.g. Xist). It is a comma-separated list of gene names.
+  - genome:
+      type: string
+      description: |
+        Reference genome name. If not provided, the tools infers it from the expression matrix file
+  - generate_diagnostic_plots:
+      type: string
+      description: |
+        Generate diagnostic plots, including the background/signal between HTO counts, estimated background probabilities, HTO distributions.
 output:
-  - zarr:
-      - meta:
+  zarr:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,8 +60,10 @@ output:
           description: |
             RNA expression matrix with demultiplexed sample identities in Zarr format.
           pattern: "*_demux.zarr.zip"
-  - out_zarr:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3987 # ZIP format
+  out_zarr:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -71,11 +73,15 @@ output:
           description: |
             DemuxEM-calculated results in Zarr format, containing two datasets, one for HTO and one for RNA.
           pattern: "*.out.demuxEM.zarr.zip"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3987 # ZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mari-ga"
   - "@maxozo"

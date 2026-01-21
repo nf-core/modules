@@ -28,25 +28,27 @@ input:
         type: file
         description: (coordinate) sorted BAM/SAM file
         pattern: "*.{bam,sam}"
-  - - mt_id:
-        type: string
-        description: Identifier of the contig/chromosome of interest (e.g. chromosome,
-          contig) as in the aligned against reference FASTA file, e.g. mt or chrMT for
-          mitochondria
+        ontologies: []
+  - mt_id:
+      type: string
+      description: Identifier of the contig/chromosome of interest (e.g. chromosome,
+        contig) as in the aligned against reference FASTA file, e.g. mt or chrMT for
+        mitochondria
 output:
-  - mtnucratio:
-      - meta:
+  mtnucratio:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.mtnucratio":
           type: file
-          description: Text file containing metrics (mtreads, mt_cov_avg, nucreads, nuc_cov_avg,
-            mt_nuc_ratio)
+          description: Text file containing metrics (mtreads, mt_cov_avg, nucreads,
+            nuc_cov_avg, mt_nuc_ratio)
           pattern: "*.mtnucratio"
-  - json:
-      - meta:
+          ontologies: []
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -56,11 +58,15 @@ output:
           description: JSON file, containing metadata map with sample name, tool name
             and version, and metrics as in txt file
           pattern: "*.json"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@louperelo"
 maintainers:

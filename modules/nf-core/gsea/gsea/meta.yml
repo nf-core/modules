@@ -22,14 +22,17 @@ input:
         type: file
         description: GCT file with expression values
         pattern: "*.{gct}"
+        ontologies: []
     - cls:
         type: file
         description: CL file with the classes of the samples in the GCT file
         pattern: "*.{gct}"
+        ontologies: []
     - gene_sets:
         type: file
         description: GMX or GMT file with gene sets
         pattern: "*.{gmx,gmt}"
+        ontologies: []
   - - reference:
         type: string
         description: |
@@ -40,15 +43,19 @@ input:
         description: |
           String indicating which of the classes in the cls file should be used
           as the target level of the comparison.
-  - - chip:
+  - - meta2:
+        type: map
+        description: Groovy map
+    - chip:
         type: file
         description: |
           optional Broad-style chip file mapping identifiers in gct to
           those in gene_sets
         pattern: "*.{chip}"
+        ontologies: []
 output:
-  - rpt:
-      - meta:
+  rpt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
@@ -56,8 +63,9 @@ output:
           type: file
           description: File containing parameter settings used
           pattern: "*.rpt"
-  - index_html:
-      - meta:
+          ontologies: []
+  index_html:
+    - - meta:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
@@ -65,8 +73,9 @@ output:
           type: file
           description: Top level report HTML file
           pattern: "index.html"
-  - heat_map_corr_plot:
-      - meta:
+          ontologies: []
+  heat_map_corr_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
@@ -74,8 +83,9 @@ output:
           type: file
           description: HTML file combining heatmap and rank correlation plot
           pattern: "heat_map_corr_plot.html"
-  - report_tsvs_ref:
-      - meta:
+          ontologies: []
+  report_tsvs_ref:
+    - - meta:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
@@ -83,17 +93,21 @@ output:
           type: file
           description: Main TSV results report file for the reference group.
           pattern: "gsea_report_for_reference*.tsv"
-  - report_htmls_ref:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  report_htmls_ref:
+    - - meta:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
       - "*gsea_report_for_${reference}.html":
           type: file
-          description: Main HTML results report file for the reference group. sample groups
+          description: Main HTML results report file for the reference group. sample
+            groups
           pattern: "gsea_report_for_reference*.html"
-  - report_tsvs_target:
-      - meta:
+          ontologies: []
+  report_tsvs_target:
+    - - meta:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
@@ -101,8 +115,10 @@ output:
           type: file
           description: Main TSV results report file for the target group.
           pattern: "gsea_report_for_target*.tsv"
-  - report_htmls_target:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  report_htmls_target:
+    - - meta:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
@@ -110,8 +126,9 @@ output:
           type: file
           description: Main HTML results report file for the target group.
           pattern: "gsea_report_for_target*.html"
-  - ranked_gene_list:
-      - meta:
+          ontologies: []
+  ranked_gene_list:
+    - - meta:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
@@ -119,8 +136,10 @@ output:
           type: file
           description: TSV file with ranked gene list and scores
           pattern: "ranked_gene_list*.tsv"
-  - gene_set_sizes:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  gene_set_sizes:
+    - - meta:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
@@ -128,8 +147,10 @@ output:
           type: file
           description: TSV file with gene set sizes
           pattern: "gene_set_sizes.tsv"
-  - histogram:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  histogram:
+    - - meta:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
@@ -137,8 +158,9 @@ output:
           type: file
           description: Plot showing number of gene sets by enrichment score
           pattern: "global_es_histogram.png"
-  - heatmap:
-      - meta:
+          ontologies: []
+  heatmap:
+    - - meta:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
@@ -146,8 +168,9 @@ output:
           type: file
           description: Heat Map of the top 50 features for each phenotype in test
           pattern: "heat_map_1.png"
-  - pvalues_vs_nes_plot:
-      - meta:
+          ontologies: []
+  pvalues_vs_nes_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
@@ -155,12 +178,9 @@ output:
           type: file
           description: Plot showing FDR q-value by normalised enrichment score
           pattern: "pvalues_vs_nes_plot"
-      - ues_vs_nes_plot:
-          type: file
-          description: Plot showing FDR q-value by normalised enrichment score
-          pattern: "pvalues_vs_nes_plot"
-  - ranked_list_corr:
-      - meta:
+          ontologies: []
+  ranked_list_corr:
+    - - meta:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
@@ -168,8 +188,9 @@ output:
           type: file
           description: Ranked Gene List Correlation Profile
           pattern: "ranked_list_corr_2.png"
-  - butterfly_plot:
-      - meta:
+          ontologies: []
+  butterfly_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
@@ -177,38 +198,39 @@ output:
           type: file
           description: Butterfly plot with gene rank plotted against score
           pattern: "butterfly_plot.png"
-  - gene_set_tsv:
-      - meta:
+          ontologies: []
+  gene_set_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
-      - "gene_sets_*.tsv":
+      - gene_sets_*.tsv:
           type: list
-          description: Where -make_sets is not set to false, TSV files, one file for each
-            gene set, with detail on enrichment for each gene
+          description: Where -make_sets is not set to false, TSV files, one file for
+            each gene set, with detail on enrichment for each gene
           pattern: "gene_sets_*.tsv"
-  - gene_set_html:
-      - meta:
+  gene_set_html:
+    - - meta:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
-      - "gene_sets_*.html":
+      - gene_sets_*.html:
           type: list
           description: Where -make_sets is not set to false, HTML files, one file for
             each gene set, with detail on enrichment for each gene
           pattern: "gene_sets_*.html"
-  - gene_set_heatmap:
-      - meta:
+  gene_set_heatmap:
+    - - meta:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
-      - "gene_sets_*.png":
+      - gene_sets_*.png:
           type: list
           description: Where -make_sets is not set to false, PNG-format heatmaps, one
             file for each gene set, showing expression for each gene
           pattern: "gene_sets_*.png"
-  - snapshot:
-      - meta:
+  snapshot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
@@ -217,8 +239,8 @@ output:
           description: HTML files, one each for positive and negative enrichment, collecting
             elements of gene_set_enplot
           pattern: "*_snapshot*.html"
-  - gene_set_enplot:
-      - meta:
+  gene_set_enplot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
@@ -227,8 +249,8 @@ output:
           description: Where -make_sets is not set to false, PNG-format enrichment (barcode)
             plots, one file for each gene set, showing how genes contribute to enrichment.
           pattern: "enplot*.png"
-  - gene_set_dist:
-      - meta:
+  gene_set_dist:
+    - - meta:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
@@ -237,8 +259,8 @@ output:
           description: Where -make_sets is not set to false, PNG-format enrichment score
             distributions plots, one file for each gene set.
           pattern: "gset_rnd_es_dist*.png"
-  - archive:
-      - meta:
+  archive:
+    - - meta:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
@@ -246,11 +268,15 @@ output:
           type: file
           description: Where -zip_report is set, a zip archive containing all outputs
           pattern: "*.zip"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3987 # ZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@pinin4fjords"
 maintainers:

@@ -25,20 +25,15 @@ input:
         type: file
         description: Input BAM file
         pattern: "*.{bam}"
+        ontologies: []
     - bai:
         type: file
         description: Input BAM index file
         pattern: "*.{bam.bai}"
-  - - pgx_genes:
-        type: list
-        description: List of PGx genes supported by PyPGx to include in variant calling.
-  - - assembly_version:
-        type: string
-        description: Genome assembly version to use.
-        pattern: "{GRCh37,GRCh38}"
+        ontologies: []
 output:
-  - coverage:
-      - meta:
+  coverage:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,12 +45,14 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
           pattern: "*.{zip}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
-  - "@jorivansteenbrugge"
+  - "@jorisvansteenbrugge"
 maintainers:
-  - "@jorivansteenbrugge"
+  - "@jorisvansteenbrugge"

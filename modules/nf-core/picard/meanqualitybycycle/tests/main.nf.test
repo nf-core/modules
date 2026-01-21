@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process PICARD_MEANQUALITYBYCYCLE"
+    script "../main.nf"
+    process "PICARD_MEANQUALITYBYCYCLE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "picard"
+    tag "picard/meanqualitybycycle"
+
+    test("test-picard-meanqualitybycycle") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					file(process.out.metrics[0][1]).readLines()[5..8],
+					file(process.out.pdf[0][1]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-picard-meanqualitybycycle-stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

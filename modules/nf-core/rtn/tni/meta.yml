@@ -27,50 +27,61 @@ input:
         type: file
         description: expression matrix in TSV format
         pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - tni:
-      - meta:
+  tni:
+    - - meta:
           type: file
           description: RDS R Object with the TNI object
           pattern: "tni.rds"
+          ontologies: []
       - tni.rds:
           type: file
           description: RDS R Object with the TNI object
           pattern: "tni.rds"
-  - tni_perm:
-      - meta:
+          ontologies: []
+  tni_perm:
+    - - meta:
           type: file
-          description: RDS R Object with the TNI object after permutation
-          pattern: "tni_permutated.rds"
+          description: RDS R Object with the TNI object
+          pattern: "tni.rds"
+          ontologies: []
       - tni_permutated.rds:
           type: file
           description: RDS R Object with the TNI object after permutation
           pattern: "tni_permutated.rds"
-  - tni_bootstrap:
-      - meta:
+          ontologies: []
+  tni_bootstrap:
+    - - meta:
           type: file
-          description: RDS R Object with the TNI object after permutation and bootstrap
-          pattern: "tni_bootstrapped.rds"
+          description: RDS R Object with the TNI object
+          pattern: "tni.rds"
+          ontologies: []
       - tni_bootstrapped.rds:
           type: file
           description: RDS R Object with the TNI object after permutation and bootstrap
           pattern: "tni_bootstrapped.rds"
-  - tni_filtered:
-      - meta:
+          ontologies: []
+  tni_filtered:
+    - - meta:
           type: file
-          description: RDS R Object with the TNI object after permutation, bootstrap and
-            filtering
-          pattern: "tni_filtered.rds"
+          description: RDS R Object with the TNI object
+          pattern: "tni.rds"
+          ontologies: []
       - tni_filtered.rds:
           type: file
-          description: RDS R Object with the TNI object after permutation, bootstrap and
-            filtering
+          description: RDS R Object with the TNI object after permutation, bootstrap
+            and filtering
           pattern: "tni_filtered.rds"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mribeirodantas"
 maintainers:

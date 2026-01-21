@@ -23,6 +23,7 @@ input:
         type: file
         description: GTF file
         pattern: "*.{gtf}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -32,9 +33,10 @@ input:
         type: file
         description: Genome fasta file
         pattern: "*.{fasta,fa}"
+        ontologies: []
 output:
-  - gtf:
-      - meta:
+  gtf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,11 +45,14 @@ output:
           type: file
           description: Filtered GTF file
           pattern: "*.{gtf}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nictru"
 maintainers:

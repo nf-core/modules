@@ -22,11 +22,11 @@ process ASHLAR {
     script:
     def args          = task.ext.args           ?: ''
     def prefix        = task.ext.prefix         ?: "${meta.id}"
-    def dfp           = opt_dfp                 ? "--dfp $opt_dfp" : ""
-    def ffp           = opt_ffp                 ? "--ffp $opt_ffp" : ""
-    def num_files     = images instanceof List  ? images.size()    : 1
-    def opt_dfp_size  = opt_dfp instanceof List ? opt_dfp.size()   : 1
-    def opt_ffp_size  = opt_ffp instanceof List ? opt_ffp.size()   : 1
+    def dfp           = opt_dfp                 ? "--dfp ${opt_dfp}" : ""
+    def ffp           = opt_ffp                 ? "--ffp ${opt_ffp}" : ""
+    def num_files     = images instanceof List  ? images.size()      : 1
+    def opt_dfp_size  = opt_dfp instanceof List ? opt_dfp.size()     : 1
+    def opt_ffp_size  = opt_ffp instanceof List ? opt_ffp.size()     : 1
     def dfp_validated = (opt_dfp_size == 0 || opt_dfp_size == 1 || opt_dfp_size == num_files) ? true : false
     def ffp_validated = (opt_ffp_size == 0 || opt_ffp_size == 1 || opt_ffp_size == num_files) ? true : false
 
@@ -34,13 +34,14 @@ process ASHLAR {
     if ( !ffp_validated ) { error "Please input only zero, one, or N ffp files, where N is the number of input images" }
 
     """
+    export JAVA_TOOL_OPTIONS='-XX:+PerfDisableSharedMem'
 
     ashlar \\
         -o ${prefix}.ome.tif \\
-        $images \\
-        $args \\
-        $dfp \\
-        $ffp
+        ${images} \\
+        ${args} \\
+        ${dfp} \\
+        ${ffp}
 
     sed -i -E 's/UUID="urn:uuid:[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}"/                                                    /g' ${prefix}.ome.tif
 
@@ -52,9 +53,9 @@ process ASHLAR {
 
     stub:
     def prefix        = task.ext.prefix         ?: "${meta.id}"
-    def num_files     = images instanceof List  ? images.size()    : 1
-    def opt_dfp_size  = opt_dfp instanceof List ? opt_dfp.size()   : 1
-    def opt_ffp_size  = opt_ffp instanceof List ? opt_ffp.size()   : 1
+    def num_files     = images instanceof List  ? images.size()  : 1
+    def opt_dfp_size  = opt_dfp instanceof List ? opt_dfp.size() : 1
+    def opt_ffp_size  = opt_ffp instanceof List ? opt_ffp.size() : 1
     def dfp_validated = (opt_dfp_size == 0 || opt_dfp_size == 1 || opt_dfp_size == num_files) ? true : false
     def ffp_validated = (opt_ffp_size == 0 || opt_ffp_size == 1 || opt_ffp_size == num_files) ? true : false
 
@@ -62,6 +63,8 @@ process ASHLAR {
     if ( !ffp_validated ) { error "Please input only zero, one, or N ffp files, where N is the number of input images" }
 
     """
+    export JAVA_TOOL_OPTIONS='-XX:+PerfDisableSharedMem'
+
     touch ${prefix}.ome.tif
 
     cat <<-END_VERSIONS > versions.yml

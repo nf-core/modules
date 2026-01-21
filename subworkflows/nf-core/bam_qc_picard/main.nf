@@ -12,29 +12,31 @@ workflow BAM_QC_PICARD {
     ch_fasta                // channel: [ val(meta), fasta ]
     ch_fasta_fai            // channel: [ val(meta), fasta_fai ]
     ch_fasta_dict           // channel: [ val(meta), fasta_dict ]
+    ch_fasta_gzi            // channel: [ val(meta), fasta_gzi ]
 
     main:
-    ch_versions = Channel.empty()
-    ch_coverage_metrics = Channel.empty()
+    ch_versions = channel.empty()
+    ch_coverage_metrics = channel.empty()
 
-    ch_bam_bai = ch_bam_bai_bait_target.map{meta, bam, bai, bait, target -> return [meta,bam,bai]}
+    ch_bam_bai = ch_bam_bai_bait_target.map{meta, bam, bai, _bait, _target -> return [meta,bam,bai]}
 
     PICARD_COLLECTMULTIPLEMETRICS( ch_bam_bai, ch_fasta, ch_fasta_fai )
-    ch_versions = ch_versions.mix(PICARD_COLLECTMULTIPLEMETRICS.out.versions.first())
+    ch_versions = ch_versions.mix(PICARD_COLLECTMULTIPLEMETRICS.out.versions)
 
     ch_bam_bai_bait_target_branched = ch_bam_bai_bait_target.branch {
-        hsmetrics  : it.size == 5 && it[3] != [] && it[4] != []
-            return it
+        meta, bam, bai, bait, target ->
+        hsmetrics  : bait != [] && target != []
+            return [ meta, bam, bai, bait, target ]
         wgsmetrics : true
-            return [ it[0], it[1], it[2] ]
+            return [ meta, bam, bai ]
     }
 
-    PICARD_COLLECTHSMETRICS( ch_bam_bai_bait_target_branched.hsmetrics, ch_fasta, ch_fasta_fai, ch_fasta_dict )
+    PICARD_COLLECTHSMETRICS( ch_bam_bai_bait_target_branched.hsmetrics, ch_fasta, ch_fasta_fai, ch_fasta_dict, ch_fasta_gzi )
     ch_coverage_metrics = ch_coverage_metrics.mix(PICARD_COLLECTHSMETRICS.out.metrics)
-    ch_versions = ch_versions.mix(PICARD_COLLECTHSMETRICS.out.versions.first())
+    // PICARD_COLLECTHSMETRICS emits version as a topic channel
 
     PICARD_COLLECTWGSMETRICS( ch_bam_bai_bait_target_branched.wgsmetrics, ch_fasta, ch_fasta_fai, [] )
-    ch_versions = ch_versions.mix(PICARD_COLLECTWGSMETRICS.out.versions.first())
+    ch_versions = ch_versions.mix(PICARD_COLLECTWGSMETRICS.out.versions)
     ch_coverage_metrics = ch_coverage_metrics.mix(PICARD_COLLECTWGSMETRICS.out.metrics)
 
     emit:

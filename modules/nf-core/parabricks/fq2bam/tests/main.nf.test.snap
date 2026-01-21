@@ -24,13 +24,22 @@
                     
                 ],
                 "3": [
-                    "versions.yml:md5,55d1e67ef8fa9d0ea3065363a653ffef"
+                    
                 ],
                 "4": [
                     
                 ],
                 "5": [
                     
+                ],
+                "6": [
+                    
+                ],
+                "7": [
+                    "compatible_versions.yml:md5,01a6599f855da953f58c26a0c1df301e"
+                ],
+                "8": [
+                    "versions.yml:md5,0c47791a7efece8e797f064b663ef855"
                 ],
                 "bai": [
                     [
@@ -53,6 +62,15 @@
                 "bqsr_table": [
                     
                 ],
+                "compatible_versions": [
+                    "compatible_versions.yml:md5,01a6599f855da953f58c26a0c1df301e"
+                ],
+                "crai": [
+                    
+                ],
+                "cram": [
+                    
+                ],
                 "duplicate_metrics": [
                     
                 ],
@@ -60,20 +78,25 @@
                     
                 ],
                 "versions": [
-                    "versions.yml:md5,55d1e67ef8fa9d0ea3065363a653ffef"
+                    "versions.yml:md5,0c47791a7efece8e797f064b663ef855"
                 ]
             },
             {
                 "PARABRICKS_FQ2BAM": {
-                    "pbrun": "4.4.0-1"
+                    "pbrun": "4.6.0-1"
                 }
+            },
+            {
+                "PARABRICKS_FQ2BAM": null,
+                "pbrun_version": "4.6.0-1",
+                "compatible_with": "BWA mem: 0.7.15, Picard: 2.18.25"
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.2"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.8"
         },
-        "timestamp": "2024-12-16T12:16:33.055785098"
+        "timestamp": "2025-10-13T16:46:45.735206352"
     },
     "sarscov2 - fastq - pe - stub": {
         "content": [
@@ -100,13 +123,22 @@
                     
                 ],
                 "3": [
-                    "versions.yml:md5,55d1e67ef8fa9d0ea3065363a653ffef"
+                    
                 ],
                 "4": [
                     
                 ],
                 "5": [
                     
+                ],
+                "6": [
+                    
+                ],
+                "7": [
+                    "compatible_versions.yml:md5,01a6599f855da953f58c26a0c1df301e"
+                ],
+                "8": [
+                    "versions.yml:md5,0c47791a7efece8e797f064b663ef855"
                 ],
                 "bai": [
                     [
@@ -129,6 +161,15 @@
                 "bqsr_table": [
                     
                 ],
+                "compatible_versions": [
+                    "compatible_versions.yml:md5,01a6599f855da953f58c26a0c1df301e"
+                ],
+                "crai": [
+                    
+                ],
+                "cram": [
+                    
+                ],
                 "duplicate_metrics": [
                     
                 ],
@@ -136,57 +177,175 @@
                     
                 ],
                 "versions": [
-                    "versions.yml:md5,55d1e67ef8fa9d0ea3065363a653ffef"
+                    "versions.yml:md5,0c47791a7efece8e797f064b663ef855"
                 ]
             },
             {
                 "PARABRICKS_FQ2BAM": {
-                    "pbrun": "4.4.0-1"
+                    "pbrun": "4.6.0-1"
                 }
+            },
+            {
+                "PARABRICKS_FQ2BAM": null,
+                "pbrun_version": "4.6.0-1",
+                "compatible_with": "BWA mem: 0.7.15, Picard: 2.18.25"
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.2"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.8"
         },
-        "timestamp": "2024-12-16T12:16:48.158061416"
+        "timestamp": "2025-10-13T16:47:45.14187671"
     },
     "sarscov2 - fastq - pe": {
         "content": [
             "2d64e4363d9f3c0e2167fce49d5087cf",
             "test.bam.bai",
             [
-                "versions.yml:md5,55d1e67ef8fa9d0ea3065363a653ffef"
+                "versions.yml:md5,0c47791a7efece8e797f064b663ef855"
             ],
             {
                 "PARABRICKS_FQ2BAM": {
-                    "pbrun": "4.4.0-1"
+                    "pbrun": "4.6.0-1"
                 }
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.2"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.8"
         },
-        "timestamp": "2024-12-16T12:25:23.63061876"
+        "timestamp": "2025-10-13T16:47:32.891223581"
+    },
+    "sarscov2 - fastq - se - cram": {
+        "content": [
+            "30c325e1e032eb1782a280d34c0fb1c7",
+            "test.cram.crai",
+            [
+                "versions.yml:md5,0c47791a7efece8e797f064b663ef855"
+            ],
+            {
+                "PARABRICKS_FQ2BAM": {
+                    "pbrun": "4.6.0-1"
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.8"
+        },
+        "timestamp": "2025-10-13T16:48:32.435485918"
+    },
+    "sarscov2 - fastq - pe - cram - stub": {
+        "content": [
+            {
+                "0": [
+                    
+                ],
+                "1": [
+                    
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.cram:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.cram.crai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "4": [
+                    
+                ],
+                "5": [
+                    
+                ],
+                "6": [
+                    
+                ],
+                "7": [
+                    "compatible_versions.yml:md5,01a6599f855da953f58c26a0c1df301e"
+                ],
+                "8": [
+                    "versions.yml:md5,0c47791a7efece8e797f064b663ef855"
+                ],
+                "bai": [
+                    
+                ],
+                "bam": [
+                    
+                ],
+                "bqsr_table": [
+                    
+                ],
+                "compatible_versions": [
+                    "compatible_versions.yml:md5,01a6599f855da953f58c26a0c1df301e"
+                ],
+                "crai": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.cram.crai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "cram": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.cram:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "duplicate_metrics": [
+                    
+                ],
+                "qc_metrics": [
+                    
+                ],
+                "versions": [
+                    "versions.yml:md5,0c47791a7efece8e797f064b663ef855"
+                ]
+            },
+            {
+                "PARABRICKS_FQ2BAM": {
+                    "pbrun": "4.6.0-1"
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.8"
+        },
+        "timestamp": "2025-10-13T16:48:43.255740964"
     },
     "SRR389222 - fastq - se": {
         "content": [
             "3d5b94990c7fdf90a682edb5ee0f59de",
             "test.bam.bai",
             [
-                "versions.yml:md5,55d1e67ef8fa9d0ea3065363a653ffef"
+                "versions.yml:md5,0c47791a7efece8e797f064b663ef855"
             ],
             {
                 "PARABRICKS_FQ2BAM": {
-                    "pbrun": "4.4.0-1"
+                    "pbrun": "4.6.0-1"
                 }
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.2"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.8"
         },
-        "timestamp": "2024-12-16T12:24:32.45197929"
+        "timestamp": "2025-10-13T16:46:33.272405432"
     }
 }

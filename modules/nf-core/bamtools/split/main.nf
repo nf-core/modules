@@ -35,4 +35,17 @@ process BAMTOOLS_SPLIT {
         bamtools: \$( bamtools --version | grep -e 'bamtools' | sed 's/^.*bamtools //' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.split1.bam
+    touch ${prefix}.unmapped.bam
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bamtools: \$( bamtools --version | grep -e 'bamtools' | sed 's/^.*bamtools //' )
+    END_VERSIONS
+    """
+
 }

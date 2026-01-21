@@ -35,6 +35,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.aggregated_classification,
+                    process.out.marker_classification,
                     process.out.taxonomy,
                     process.out.provirus,
                     process.out.compositions,

@@ -31,50 +31,63 @@ input:
           List containing 2 or more index files (optional)
           e.g. [ 'file1.tbi', 'file2.tbi' ]
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{vcf.gz}"
-      - ${prefix}.vcf.gz:
+      - ${prefix}.${extension}:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{vcf.gz}"
-  - tbi:
-      - meta:
+          pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.${extension}.tbi:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.tbi"
-      - ${prefix}.vcf.gz.tbi:
+  csi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.tbi"
-  - csi:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-          pattern: "*.csi"
-      - ${prefix}.vcf.gz.csi:
+      - ${prefix}.${extension}.csi:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.csi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions_bcftools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@abhi18av"
   - "@nvnieuwk"

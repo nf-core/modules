@@ -22,9 +22,10 @@ input:
         type: file
         description: FASTA formatted assembly file
         pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
+        ontologies: []
 output:
-  - log:
-      - meta:
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -33,8 +34,9 @@ output:
           type: file
           description: ectyper log output
           pattern: "*.log"
-  - tsv:
-      - meta:
+          ontologies: []
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,8 +45,10 @@ output:
           type: file
           description: ectyper serotyping results in TSV format
           pattern: "*.tsv"
-  - txt:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,11 +57,14 @@ output:
           type: file
           description: Allele report generated from BLAST results
           pattern: "*.tst"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rpetit3"
 maintainers:

@@ -10,9 +10,9 @@ nextflow_process {
     tag "parabricks"
     tag "gpu"
 
-    test("human - bam") {
+    config "./nextflow.config"
 
-        config "./nextflow.config"
+    test("human - bam") {
 
         when {
             params {
@@ -96,8 +96,7 @@ nextflow_process {
     // }
 
     // test("human - bam - intervals") {
-
-    //     config "./nextflow.config"
+    //     // Invalid tumor sample name input, exiting.
 
     //     when {
     //         params {
@@ -227,6 +226,9 @@ nextflow_process {
         options '-stub'
 
         when {
+            params {
+                module_args = "--mutect-low-memory"
+            }
             process {
                 """
                 input[0] = [
@@ -250,7 +252,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot( process.out ).match() }
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions.get(0)).yaml,
+                    path(process.out.compatible_versions.get(0)).yaml
+                    ).match() }
             )
         }
 
@@ -258,12 +264,11 @@ nextflow_process {
 
     test("human - bam - pon - stub") {
 
-        config "./nextflow.config"
         options '-stub'
 
         when {
             params {
-                module_args = "--pon $panel_of_normals --mutect-low-memory"
+                module_args = "--pon ${panel_of_normals} --mutect-low-memory"
             }
             process {
                 """

@@ -12,30 +12,56 @@ process SGDEMUX {
     tuple val(meta), path(sample_sheet), path(fastqs_dir)
 
     output:
-    tuple val(meta), path('output/*_R*.fastq.gz')                   , emit: sample_fastq
-    tuple val(meta), path('output/metrics.tsv')                     , emit: metrics
-    tuple val(meta), path('output/most_frequent_unmatched.tsv')     , emit: most_frequent_unmatched
-    tuple val(meta), path('output/per_project_metrics.tsv')         , emit: per_project_metrics
-    tuple val(meta), path('output/per_sample_metrics.tsv')          , emit: per_sample_metrics
-    tuple val(meta), path('output/sample_barcode_hop_metrics.tsv')  , emit: sample_barcode_hop_metrics
-    path "versions.yml"                                             , emit: versions
+    tuple val(meta), path("${prefix}/*_R*.fastq.gz")                   , emit: sample_fastq
+    tuple val(meta), path("${prefix}/metrics.tsv")                     , emit: metrics
+    tuple val(meta), path("${prefix}/most_frequent_unmatched.tsv")     , emit: most_frequent_unmatched
+    tuple val(meta), path("${prefix}/per_project_metrics.tsv")         , emit: per_project_metrics
+    tuple val(meta), path("${prefix}/per_sample_metrics.tsv")          , emit: per_sample_metrics
+    tuple val(meta), path("${prefix}/sample_barcode_hop_metrics.tsv")  , emit: sample_barcode_hop_metrics
+    path "versions.yml"                                                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p output/
     sgdemux \\
         --sample-metadata ${sample_sheet} \\
         --fastqs ${fastqs_dir} \\
-        --output-dir output \\
+        --output-dir ${prefix} \\
         --demux-threads ${task.cpus} \\
         --compressor-threads ${task.cpus} \\
         --writer-threads ${task.cpus} \\
         ${args}
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        sgdemux: \$(echo \$(sgdemux --version 2>&1) | cut -d " " -f2)
+    END_VERSIONS
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    mkdir -p ${prefix}
+
+    for sample in \$(cut -d, -f2 ${sample_sheet} | tail -n +2 ); do
+        uppercase_sample=\$(echo \$sample | tr '[:lower:]' '[:upper:]')
+        echo | gzip > ${prefix}/\${sample}_\${uppercase_sample}_L001_R1_001.fastq.gz
+        echo | gzip > ${prefix}/\${sample}_\${uppercase_sample}_L001_R2_001.fastq.gz
+    done
+
+    echo | gzip > ${prefix}/out_L001_R1_001.fastq.gz
+    echo | gzip > ${prefix}/out_L001_R2_001.fastq.gz
+
+    touch ${prefix}/metrics.tsv
+    touch ${prefix}/most_frequent_unmatched.tsv
+    touch ${prefix}/per_project_metrics.tsv
+    touch ${prefix}/per_sample_metrics.tsv
+    touch ${prefix}/sample_barcode_hop_metrics.tsv
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         sgdemux: \$(echo \$(sgdemux --version 2>&1) | cut -d " " -f2)

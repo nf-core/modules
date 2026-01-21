@@ -50,4 +50,20 @@ process SNIPPY_CORE {
         snippy-core: \$(echo \$(snippy-core --version 2>&1) | sed 's/snippy-core //')
     END_VERSIONS
     """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir samples/
+    touch ${prefix}.aln
+    touch ${prefix}.full.aln
+    touch ${prefix}.tab
+    touch ${prefix}.vcf
+    touch ${prefix}.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        snippy-core: \$(echo \$(snippy-core --version 2>&1) | sed 's/snippy-core //')
+    END_VERSIONS
+    """
 }

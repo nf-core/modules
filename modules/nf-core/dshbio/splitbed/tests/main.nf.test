@@ -18,7 +18,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-				    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true) ]
+				    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true) ]
 				]
 
                 """
@@ -41,7 +41,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-				    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true) ]
+				    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true) ]
 				]
 
                 """

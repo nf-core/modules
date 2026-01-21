@@ -1,0 +1,185 @@
+nextflow_process {
+
+    name "Test Process DEEPTOOLS_BIGWIGCOMPARE"
+    script "../main.nf"
+    process "DEEPTOOLS_BIGWIGCOMPARE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "deeptools"
+    tag "deeptools/bigwigcompare"
+
+    test("homo_sapiens - 2 bigwig files") {
+
+        when {
+            process {
+                """
+                def bigwig1 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bigwig/test_S2.RPKM.bw', checkIfExists: true)
+                def bigwig2 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bigwig/test_S3.RPKM.bw', checkIfExists: true)
+
+                input[0] = [
+                    [ id:'test' ],
+                    bigwig1,
+                    bigwig2
+                ]
+                input[1] = [
+                    [ id:'no_blacklist' ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.output,
+                                  process.out.versions)
+                                  .match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens - 2 bigwig files - bedgraph output") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                deeptools_bigwigcompare_args = '--outFileFormat bedgraph'
+            }
+            process {
+                """
+                def bigwig1 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bigwig/test_S2.RPKM.bw', checkIfExists: true)
+                def bigwig2 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bigwig/test_S3.RPKM.bw', checkIfExists: true)
+
+                input[0] = [
+                    [ id:'test' ],
+                    bigwig1,
+                    bigwig2
+                ]
+                input[1] = [
+                    [ id:'no_blacklist' ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.output,
+                                  process.out.versions)
+                                  .match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens - 2 bigwig files - with blacklist") {
+
+        when {
+            process {
+                """
+                def bigwig1 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bigwig/test_S2.RPKM.bw', checkIfExists: true)
+                def bigwig2 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bigwig/test_S3.RPKM.bw', checkIfExists: true)
+                def blacklist = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.blacklist_intervals.bed', checkIfExists: true)
+
+                input[0] = [
+                    [ id:'test' ],
+                    bigwig1,
+                    bigwig2
+                ]
+                input[1] = [
+                    [ id:'blacklist' ],
+                    blacklist
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.output,
+                                  process.out.versions)
+                                  .match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens - 2 bigwig files - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                def bigwig1 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bigwig/test_S2.RPKM.bw', checkIfExists: true)
+                def bigwig2 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bigwig/test_S3.RPKM.bw', checkIfExists: true)
+
+                input[0] = [
+                    [ id:'test' ],
+                    bigwig1,
+                    bigwig2
+                ]
+                input[1] = [
+                    [ id:'no_blacklist' ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.output,
+                                  process.out.versions)
+                                  .match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens - 2 bigwig files - bedgraph output - stub") {
+
+        options "-stub"
+        config "./nextflow.config"
+
+        when {
+            params {
+                deeptools_bigwigcompare_args = '--outFileFormat bedgraph'
+            }
+            process {
+                """
+                def bigwig1 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bigwig/test_S2.RPKM.bw', checkIfExists: true)
+                def bigwig2 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bigwig/test_S3.RPKM.bw', checkIfExists: true)
+
+                input[0] = [
+                    [ id:'test' ],
+                    bigwig1,
+                    bigwig2
+                ]
+                input[1] = [
+                    [ id:'no_blacklist' ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.output,
+                                  process.out.versions)
+                                  .match()
+                }
+            )
+        }
+    }
+}

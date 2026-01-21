@@ -36,6 +36,7 @@ nextflow_process {
                     input[0] = PLINK_VCF.out.bim
                     input[1] = Channel.value('BEGIN {OFS="\t"}  (\$5\$6 == "GC" || \$5\$6 == "CG" || \$5\$6 == "AT" || \$5\$6 == "TA")  {print \$2}')
                         .collectFile(name:"program.txt")
+                    input[2] = false
                     """
                 }
             }

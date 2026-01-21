@@ -1,33 +1,35 @@
 process SEQKIT_TRANSLATE {
-    tag "$meta.id"
-    label 'process_single'
+    tag "${meta.id}"
+    label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqkit:2.8.2--h9ee0642_1':
-        'biocontainers/seqkit:2.8.2--h9ee0642_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/seqkit:2.9.0--h9ee0642_0'
+        : 'biocontainers/seqkit:2.9.0--h9ee0642_0'}"
 
     input:
     tuple val(meta), path(fastx)
 
     output:
     tuple val(meta), path("${prefix}.*"), emit: fastx
-    path "versions.yml"                 , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args        = task.ext.args ?: ''
-    def args2       = task.ext.args2 ?: ''
-    prefix          = task.ext.prefix ?: "${meta.id}"
-    def extension   = "fastq"
-    if ("$fastx" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz|.+\.fsa|.+\.fsa.gz/ ) {
-        extension   = "fasta"
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def extension = "fastq"
+    if ("${fastx}" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz|.+\.fsa|.+\.fsa.gz/) {
+        extension = "fasta"
     }
-    extension       = fastx.toString().endsWith('.gz') ? "${extension}.gz" : extension
-    def call_gzip   = extension.endsWith('.gz') ? "| gzip -c $args2" : ''
-    if("${prefix}.${extension}" == "$fastx") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    extension = fastx.toString().endsWith('.gz') ? "${extension}.gz" : extension
+    def call_gzip = extension.endsWith('.gz') ? "| gzip -c ${args2}" : ''
+    if ("${prefix}.${extension}" == "${fastx}") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     seqkit \\
         translate \\
@@ -44,13 +46,15 @@ process SEQKIT_TRANSLATE {
     """
 
     stub:
-    prefix          = task.ext.prefix ?: "${meta.id}"
-    def extension   = "fastq"
-    if ("$fastx" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz|.+\.fsa|.+\.fsa.gz/ ) {
-        extension   = "fasta"
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def extension = "fastq"
+    if ("${fastx}" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz|.+\.fsa|.+\.fsa.gz/) {
+        extension = "fasta"
     }
     extension = fastx.toString().endsWith('.gz') ? "${extension}.gz" : extension
-    if("${prefix}.${extension}" == "$fastx") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${prefix}.${extension}" == "${fastx}") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     touch ${prefix}.${extension}
 

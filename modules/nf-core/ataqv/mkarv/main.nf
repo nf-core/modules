@@ -20,12 +20,23 @@ process ATAQV_MKARV {
     def args = task.ext.args ?: ''
     """
     mkarv \\
-        $args \\
-        --concurrency $task.cpus \\
+        ${args} \\
+        --concurrency ${task.cpus} \\
         --force \\
         ./html/ \\
         jsons/*
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        # mkarv: \$( mkarv --version ) # Use this when version string has been fixed
+        ataqv: \$( ataqv --version )
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    mkdir -p html
+    touch html/index.html
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         # mkarv: \$( mkarv --version ) # Use this when version string has been fixed

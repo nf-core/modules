@@ -21,76 +21,53 @@ input:
         type: file
         description: A histogram files from the program FastK
         pattern: "*.hist"
+        ontologies: []
     - fastk_ktab:
         type: file
         description: ktab files from the program FastK
         pattern: "*.ktab*"
+        ontologies: []
 output:
-  - filled_ploidy_plot_png:
-      - meta:
+  filled_ploidy_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.fi.png":
+      - "*.fi.{png,pdf}":
           type: file
-          description: A filled ploidy plot in PNG format
-          pattern: "*.fi.png"
-  - filled_ploidy_plot_pdf:
-      - meta:
+          description: A filled ploidy plot in or PDF format
+          pattern: "*.fi.{png,pdf}"
+          ontologies: []
+  line_ploidy_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.fi.pdf":
+      - "*.ln.{png,pdf}":
           type: file
-          description: A filled ploidy plot in PDF format
-          pattern: "*.fi.pdf"
-  - line_ploidy_plot_png:
-      - meta:
+          description: A line ploidy plot in PNG or PDF format
+          pattern: "*.ln.{png,pdf}"
+          ontologies: []
+  stacked_ploidy_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.ln.png":
+      - "*.st.{png,pdf}":
           type: file
-          description: A line ploidy plot in PNG format
-          pattern: "*.ln.png"
-  - line_ploidy_plot_pdf:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.ln.pdf":
-          type: file
-          description: A lin4 ploidy plot in PDF format
-          pattern: "*.ln.pdf"
-  - stacked_ploidy_plot_png:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.st.png":
-          type: file
-          description: A stacked ploidy plot in PNG format
-          pattern: "*.st.png"
-  - stacked_ploidy_plot_pdf:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.st.pdf":
-          type: file
-          description: A stacked ploidy plot in PDF format
-          pattern: "*.st.pdf"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: A stacked ploidy plot in PNG or PDFformat
+          pattern: "*.st.{png,pdf}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mahesh-panchal"
 maintainers:

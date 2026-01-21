@@ -23,9 +23,10 @@ input:
         type: file
         description: fasta file to index
         pattern: "*.{fasta,fa,fna}"
+        ontologies: []
 output:
-  - index:
-      - meta:
+  index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -33,11 +34,13 @@ output:
       - ${prefix}:
           type: directory
           description: Genmap index directory
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jianhong"
   - "@nvnieuwk"

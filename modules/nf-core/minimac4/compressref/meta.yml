@@ -1,0 +1,62 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "minimac4_compressref"
+description: Compression of a reference panel for genotype imputation to `.msav` format
+keywords:
+  - haplotypes
+  - reference compression
+  - genomics
+tools:
+  - "minimac4":
+      description: "Computationally efficient genotype imputation"
+      homepage: "https://github.com/statgen/Minimac4"
+      documentation: "https://github.com/statgen/Minimac4"
+      tool_dev_url: "https://github.com/statgen/Minimac4"
+      doi: "10.1038/ng.3656"
+      licence: ["GPL v3-or-later"]
+      identifier: biotools:minimac4
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - ref:
+        type: file
+        description: Variant reference panel file
+        pattern: "*.{vcf,vcf.gz,bcf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+          - edam: "http://edamontology.org/format_3020"
+    - ref_index:
+        type: file
+        description: Index file for the reference panel
+        pattern: "*.{tbi,csi}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3700"
+
+output:
+  msav:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.msav":
+          type: file
+          description: Multy-sample variant compressed file
+          pattern: "*.{msav}"
+
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@LouisLeNezet"
+maintainers:
+  - "@LouisLeNezet"

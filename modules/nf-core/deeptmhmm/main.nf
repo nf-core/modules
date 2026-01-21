@@ -27,6 +27,7 @@ process DEEPTMHMM {
     def fasta_name = fasta.name.replace(".gz", "")
 
     """
+    export XDG_CACHE_HOME=/tmp/.cache
     if [ "$is_compressed" == "true" ]; then
         gzip -c -d $fasta > $fasta_name
     fi

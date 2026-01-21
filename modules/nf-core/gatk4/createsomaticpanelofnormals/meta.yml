@@ -24,6 +24,7 @@ input:
     - genomicsdb:
         type: file
         description: GenomicsDB database
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -33,6 +34,7 @@ input:
         type: file
         description: The reference fasta file
         pattern: "*.fasta"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -42,6 +44,7 @@ input:
         type: file
         description: Index of reference fasta file
         pattern: "*.fasta.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -51,30 +54,34 @@ input:
         type: file
         description: GATK sequence dictionary
         pattern: "*.dict"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
-          type: file
-          description: panel of normal as compressed vcf file
-          pattern: "*.vcf.gz"
+  vcf:
+    - - meta:
+          type: map
+          description: A Groovy map containing sample information
       - "*.vcf.gz":
           type: file
           description: panel of normal as compressed vcf file
           pattern: "*.vcf.gz"
-  - tbi:
-      - meta:
-          type: file
-          description: Tabix index of vcf file
-          pattern: "*vcf.gz.tbi"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tbi:
+    - - meta:
+          type: map
+          description: A Groovy map containing sample information
       - "*.tbi":
           type: file
           description: Tabix index of vcf file
           pattern: "*vcf.gz.tbi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@GCJMackenzie"
 maintainers:

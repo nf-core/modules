@@ -25,14 +25,17 @@ input:
         type: file
         description: BAM/CRAM file
         pattern: "*.bam/cram"
+        ontologies: []
     - index:
         type: file
         description: Index of BAM/CRAM file
         pattern: "*.bai/crai"
+        ontologies: []
     - intervals:
         type: file
         description: Interval file for targeted regions
         pattern: "*.bed"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -42,6 +45,7 @@ input:
         type: file
         description: The reference fasta file
         pattern: "*.fasta"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -51,6 +55,7 @@ input:
         type: file
         description: Index of reference fasta file
         pattern: "*.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -59,6 +64,7 @@ input:
     - gzi:
         type: file
         description: GZI index of reference fasta file
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -69,9 +75,10 @@ input:
         type: file
         description: BED file containing PAR regions
         pattern: "*.bed"
+        ontologies: []
 output:
-  - examples:
-      - meta:
+  examples:
+    - - meta:
           type: list
           description: |
             Tuple containing sample metadata and examples that can be used for calling
@@ -79,20 +86,31 @@ output:
           type: list
           description: |
             Tuple containing sample metadata and examples that can be used for calling
-  - gvcf:
-      - meta:
+  gvcf:
+    - - meta:
           type: list
           description: |
-            Tuple containing sample metadata and the GVCF data in tfrecord format
+            Tuple containing sample metadata and examples that can be used for calling
       - ${prefix}.gvcf.tfrecord-*-of-*.gz:
           type: list
           description: |
             Tuple containing sample metadata and the GVCF data in tfrecord format
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing the DeepVariant software version
-          pattern: "versions.yml"
+  small_model_calls:
+    - - meta:
+          type: list
+          description: |
+            Tuple containing sample metadata and examples that can be used for calling
+      - ${prefix}_call_variant_outputs.examples.tfrecord-*-of-*.gz:
+          type: list
+          description: |
+            Optional variant calls from the small model, if enabled, in tfrecord format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing the DeepVariant software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@abhi18av"
   - "@ramprasadn"

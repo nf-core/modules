@@ -1,0 +1,131 @@
+nextflow_process {
+
+    name "Test Process SVABA"
+
+    script "../main.nf"
+    process "SVABA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "svaba"
+    tag "bwa"
+    tag "bwa/index"
+    config './nextflow.config'
+
+    setup {
+        run("BWA_INDEX") {
+            script "../../bwa/index/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id:'fasta'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("tumour_only") {
+
+        when {
+            process {
+                """
+                input[0] = [[id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true),
+                    [],
+                    []
+                    ]
+                input[1] = [[id:'fasta'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)]
+                input[2] = [[id:'fasta'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)]
+                input[3] = BWA_INDEX.out.index
+                input[4] = [[id:'dbsnp'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz', checkIfExists:true)]
+                input[5] = [[id:'dbsnp'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz.tbi', checkIfExists:true)]
+                input[6] = [[],[]]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.raw_calls,
+                    path(process.out.log.get(0).get(1)).readLines().contains("...assembled 1 contigs for c_1_1_25001"),
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("tumour_normal") {
+
+        when {
+            process {
+                """
+                input[0] = [[id:'test'],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai', checkIfExists:true)
+                    ]
+                input[1] = [[id:'fasta'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)]
+                input[2] = [[id:'fasta'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)]
+                input[3] = BWA_INDEX.out.index
+                input[4] = [[id:'dbsnp'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz', checkIfExists:true)]
+                input[5] = [[id:'dbsnp'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz.tbi', checkIfExists:true)]
+                input[6] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.raw_calls,
+                    path(process.out.log.get(0).get(1)).readLines().contains("...assembled 1 contigs for c_1_1_25001"),
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+
+    }
+
+
+    test("tumour_only -- stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [[id:'test'],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true),
+                    [],
+                    []
+                    ]
+                input[1] = [[id:'fasta'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)]
+                input[2] = [[id:'fasta'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)]
+                input[3] = BWA_INDEX.out.index
+                input[4] = [[id:'dbsnp'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz', checkIfExists:true)]
+                input[5] = [[id:'dbsnp'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz.tbi', checkIfExists:true)]
+                input[6] = [[],[]]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
+            )
+        }
+    }
+
+}

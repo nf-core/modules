@@ -9,8 +9,6 @@ process PYPGX_PREPAREDEPTHOFCOVERAGE {
 
     input:
     tuple val(meta), path(bam), path(bai)
-    val(pgx_genes)
-    val(assembly_version)
 
     output:
     tuple val(meta), path('*.zip'), emit: coverage
@@ -22,14 +20,10 @@ process PYPGX_PREPAREDEPTHOFCOVERAGE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def genes = "--genes ${pgx_genes.join(' ')}" ?: ''
-    def assembly = assembly_version ?: "GRCh38"
 
     """
     pypgx prepare-depth-of-coverage \\
         ${args} \\
-        ${genes} \\
-        --assembly ${assembly} \\
         ${prefix}.zip \\
         $bam
 

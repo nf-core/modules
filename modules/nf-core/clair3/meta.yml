@@ -1,0 +1,159 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "clair3"
+description: Clair3 is a germline small variant caller for long-reads
+keywords:
+  - germline
+  - variant
+  - Indel
+  - SNV
+tools:
+  - "clair3":
+      description: "Clair3 is a small variant caller for long-reads. Compare to PEPPER
+        (r0.4), Clair3 (v0.1) shows a better SNP F1-score with ≤30-fold of ONT data
+        (precisionFDA Truth Challenge V2), and a better Indel F1-score, while runs generally
+        four times faster. Clair3 makes the best of both worlds of using pileup or full-alignment
+        as input for deep-learning based long-read small variant calling. Clair3 is
+        simple and modular for easy deployment and integration."
+      homepage: "https://github.com/HKU-BAL/Clair3"
+      documentation: "https://github.com/HKU-BAL/Clair3"
+      tool_dev_url: "https://github.com/HKU-BAL/Clair3"
+      doi: "10.1038/s43588-022-00387-x"
+      licence: ["BSD-3-clause"]
+      identifier: biotools:clair3
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_25722"
+          - edam: "http://edamontology.org/format_2573"
+          - edam: "http://edamontology.org/format_3462"
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.bai"
+        ontologies: []
+    - packaged_model:
+        type: string
+        description: string containing the name of a prepackaged Clair3 model full list
+          of models and their descriptions is provided at https://github.com/HKU-BAL/Clair3?tab=readme-ov-file#pre-trained-models
+    - user_model:
+        type: directory
+        description: directory containing Clair3 model files
+    - platform:
+        type: string
+        description: val in ['hifi','ont', 'ilmn'] to indicate pacbio, ONT, or illumina
+          respectively
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - reference:
+        type: file
+        description: reference fasta file
+        pattern: "*.fasta"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - index:
+        type: file
+        description: reference index file
+        pattern: "*.fai"
+        ontologies: []
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+          pattern: "*.{vcf,vcf.gz}"
+      - "${prefix}merge_output.vcf.gz":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+          pattern: "*.{vcf,vcf.gz}"
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+          pattern: "*.{vcf,vcf.gz}"
+      - "${prefix}merge_output.vcf.gz.tbi":
+          type: file
+          description: index for vcf files
+          pattern: "*.{vcf.tbi,vcf.tbi.gz}"
+          ontologies: []
+  phased_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+          pattern: "*.{vcf,vcf.gz}"
+      - "${prefix}phased_merge_output.vcf.gz":
+          type: file
+          description: phased vcf
+          pattern: "*.{vcf,vcf.gz}"
+          ontologies: []
+  phased_tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+          pattern: "*.{vcf,vcf.gz}"
+      - "${prefix}phased_merge_output.vcf.gz.tbi":
+          type: file
+          description: index for vcf files
+          pattern: "*.{vcf.tbi,vcf.tbi.gz}"
+          ontologies: []
+  gvcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+          pattern: "*.{vcf,vcf.gz}"
+      - "${prefix}merge_output.gvcf.gz":
+          type: file
+          description: gvcf file
+          pattern: "*.{gvcf,gvcf.gz}"
+          ontologies: []
+  gtbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+          pattern: "*.{gvcf.tbi,gvcf.gz.tbi}"
+      - "${prefix}merge_output.gvcf.gz.tbi":
+          type: file
+          description: index for gvcf file
+          pattern: "*.{vcf.tbi,vcf.tbi.gz}"
+          ontologies: []
+
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@robert-a-forsyth"
+maintainers:
+  - "@robert-a-forsyth"

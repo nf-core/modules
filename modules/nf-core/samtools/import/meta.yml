@@ -28,9 +28,11 @@ input:
         type: file
         description: fastq data to be converted to SAM/BAM/CRAM
         pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
 output:
-  - sam:
-      - meta:
+  sam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,8 +41,9 @@ output:
           type: file
           description: SAM file
           pattern: "*.sam"
-  - bam:
-      - meta:
+          ontologies: []
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,8 +52,9 @@ output:
           type: file
           description: Unaligned BAM file
           pattern: "*.bam"
-  - cram:
-      - meta:
+          ontologies: []
+  cram:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -59,11 +63,14 @@ output:
           type: file
           description: Unaligned CRAM file
           pattern: "*.cram"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@matthdsm"
 maintainers:

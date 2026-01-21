@@ -22,7 +22,7 @@ workflow BAM_DEDUP_UMI {
     ch_transcript_fasta   // channel: [ val(meta), path(fasta) ]
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     if (umi_dedup_tool != "umicollapse" && umi_dedup_tool != "umitools"){
         error("Unknown umi_dedup_tool '${umi_dedup_tool}'")
@@ -65,7 +65,7 @@ workflow BAM_DEDUP_UMI {
             ch_sorted_transcriptome_bam
         )
         UMI_DEDUP_TRANSCRIPTOME = BAM_DEDUP_STATS_SAMTOOLS_UMICOLLAPSE_TRANSCRIPTOME
-        ch_dedup_log = ch_dedup_log.mix(UMI_DEDUP_GENOME.out.dedup_stats)
+        ch_dedup_log = ch_dedup_log.mix(UMI_DEDUP_TRANSCRIPTOME.out.dedup_stats)
 
     } else if (umi_dedup_tool == "umitools") {
         BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS_TRANSCRIPTOME (
@@ -73,13 +73,14 @@ workflow BAM_DEDUP_UMI {
             umitools_dedup_stats
         )
         UMI_DEDUP_TRANSCRIPTOME = BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS_TRANSCRIPTOME
-        ch_dedup_log = ch_dedup_log.mix(UMI_DEDUP_GENOME.out.deduplog)
+        ch_dedup_log = ch_dedup_log.mix(UMI_DEDUP_TRANSCRIPTOME.out.deduplog)
     }
 
     // 3. Restore name sorting
     SAMTOOLS_SORT (
         UMI_DEDUP_TRANSCRIPTOME.out.bam,
-        ch_fasta
+        ch_fasta,
+        ''
     )
 
     // 4. Run prepare_for_rsem.py on paired-end BAM files
@@ -111,7 +112,7 @@ workflow BAM_DEDUP_UMI {
         .mix(UMI_DEDUP_GENOME.out.flagstat)
         .mix(UMI_DEDUP_GENOME.out.idxstats)
         .transpose()
-        .map{it[1]}
+        .map{ item -> item[1] }
 
     // Record versions
 

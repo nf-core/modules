@@ -34,15 +34,17 @@ input:
         description: Input SAM/BAM/CRAM file without running popscle/dsc_pileup, must
           be sorted by coordinates and indexed.
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - donor_genotype:
         type: file
         description: Input VCF/BCF file, containing the individual genotypes (GT), posterior
           probability (GP), or genotype likelihood (PL) to assign each barcode to a
           specific sample (or a pair of samples) in the VCF file.
         pattern: "*.{vcf,bcf}"
+        ontologies: []
 output:
-  - demuxlet_result:
-      - meta:
+  demuxlet_result:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,11 +54,14 @@ output:
           description: Result of demuxlet containing the best guess of the sample identity,
             with detailed statistics to reach to the best guess.
           pattern: "*.best"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mari-ga"
   - "@maxozo"

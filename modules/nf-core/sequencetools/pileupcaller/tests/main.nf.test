@@ -1,0 +1,122 @@
+nextflow_process {
+
+    name "Test Process SEQUENCETOOLS_PILEUPCALLER"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "SEQUENCETOOLS_PILEUPCALLER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sequencetools"
+    tag "sequencetools/pileupcaller"
+
+    test("freqsum") {
+        when {
+            params {
+                module_args = "--majorityCall --sampleNames 'test' "
+            }
+            process {
+                """
+                input[0] = [[id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/mpileup/test.mpileup.gz', checkIfExists:true)
+                    ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr_21.snp', checkIfExists:true)
+                input[2] = []
+                """
+            }
+        }
+        then {
+            process.success
+            assertAll(
+                { assert snapshot(
+                    path(process.out.freqsum[0][1]).linesGzip[0..4],
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+    test("eigenstrat") {
+        when {
+            params {
+                module_args = "--majorityCall --sampleNames 'test' --eigenstratOut 'test' "
+            }
+            process {
+                """
+                input[0] = [[id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/mpileup/test.mpileup.gz', checkIfExists:true)
+                    ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr_21.snp', checkIfExists:true)
+                input[2] = []
+                """
+            }
+        }
+        then {
+            process.success
+            assertAll(
+                { assert snapshot(
+                    file(process.out.eigenstrat[0][1]).name,
+                    process.out.eigenstrat[0][2],
+                    process.out.eigenstrat[0][3],
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+    test("plink") {
+        when {
+            params {
+                module_args = "--majorityCall --sampleNames 'test' --plinkOut 'test' "
+            }
+            process {
+                """
+                input[0] = [[id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/mpileup/test.mpileup.gz', checkIfExists:true)
+                    ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr_21.snp', checkIfExists:true)
+                input[2] = []
+                """
+            }
+        }
+        then {
+            process.success
+            assertAll(
+                { assert snapshot(
+                    file(process.out.plink[0][1]).name,
+                    process.out.plink[0][2],
+                    process.out.plink[0][3],
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+    test("freqsum - stub") {
+        options '-stub'
+        when {
+            params {
+                module_args = "--majorityCall --sampleNames 'test' "
+            }
+            process {
+                """
+                input[0] = [[id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/mpileup/test.mpileup.gz', checkIfExists:true)
+                    ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr_21.snp', checkIfExists:true)
+                input[2] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

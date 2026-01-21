@@ -1,6 +1,9 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
 dependencies:
   # renovate: datasource=conda depName=bioconda/mosdepth
-  - mosdepth=0.3.8
+  - htslib=1.22.1
+  - mosdepth=0.3.11=h0ec343a_1

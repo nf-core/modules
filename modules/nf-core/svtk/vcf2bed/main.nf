@@ -34,4 +34,17 @@ process SVTK_VCF2BED {
         svtk: ${VERSION}
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '0.0.20190615' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+
+    """
+    touch ${prefix}.bed
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        svtk: ${VERSION}
+    END_VERSIONS
+    """
 }

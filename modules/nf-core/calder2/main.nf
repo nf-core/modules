@@ -1,5 +1,5 @@
 process CALDER2 {
-    tag '$meta.id'
+    tag "$meta.id"
     label 'process_high'
 
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.

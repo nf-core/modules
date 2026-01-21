@@ -33,20 +33,38 @@ input:
         description: |
           cache version
 output:
-  - cache:
-      - meta:
+  cache:
+    - - meta:
           type: file
           description: cache
           pattern: "*"
+          ontologies: []
       - prefix:
           type: file
           description: cache
           pattern: "*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_ensemblvep:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - ensemblvep:
+          type: string
+          description: The tool name
+      - "vep --help | sed -n '/ensembl-vep/s/.*: //p'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - ensemblvep:
+          type: string
+          description: The tool name
+      - "vep --help | sed -n '/ensembl-vep/s/.*: //p'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@maxulysse"
 maintainers:

@@ -1,0 +1,139 @@
+nextflow_process {
+
+    name "Test Process SPARSE_SIGNATURES"
+    script "../main.nf"
+    process "SPARSE_SIGNATURES"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sparsesignatures"
+
+    test("test_sparsesignatures_GRCh37") {
+
+        config "./nextflow.config"
+
+        when {
+
+            params {
+              module_args = '[K:2:3, nmf_runs:3, iterations:5, max_iterations_lasso:80, cross_validation_repetitions:3, cross_validation_iterations:3, cross_validation_entries:0.01, lambda_values_alpha:c(0.00, 0.01), lambda_values_beta:c(0.01, 0.05), lambda_rate_alpha:0, num_processes:all, seed:42]'
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test_grch37'],
+                    file(params.modules_testdata_base_path + 'delete_me/sparsesignatures/test_GRCh37/MSeq_Set06_joint_table.tsv', checkIfExists: true)
+                ]
+                input[1] = "GRCh37"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // Snapshot only stable deterministic outputs
+                { assert snapshot(
+                    process.out.signatures_mutCounts_rds,
+                    process.out.signatures_cv_rds,
+                    process.out.signatures_bestConf_rds,
+                    process.out.versions
+                ).match() },
+                // Check nondeterministic files exist
+                { assert file(process.out.signatures_nmfOut_rds[0][1]).exists() },
+                { assert file(process.out.signatures_plot_pdf[0][1]).exists() },
+                { assert file(process.out.signatures_plot_rds[0][1]).exists() }
+            )
+        }
+
+    }
+
+
+    test("test_sparsesignatures - GRCh37  - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_grch37'], // meta map
+                    file(params.modules_testdata_base_path + 'delete_me/sparsesignatures/test_GRCh37/MSeq_Set06_joint_table.tsv', checkIfExists: true)
+                ]
+                input[1] = "GRCh37"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+
+    test("test_sparsesignatures_GRCh38") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                module_args = '[K:2:3, nmf_runs:3, iterations:5, max_iterations_lasso:80, cross_validation_repetitions:3, cross_validation_iterations:3, cross_validation_entries:0.01, lambda_values_alpha:c(0.00, 0.01), lambda_values_beta:c(0.01, 0.05), lambda_rate_alpha:0, num_processes:all, seed:42]'
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test_grch38' ], // meta map
+                    file(params.modules_testdata_base_path + 'delete_me/sparsesignatures/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true)
+                ]
+                input[1] = "GRCh38"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.signatures_mutCounts_rds,
+                    process.out.signatures_cv_rds,
+                    process.out.signatures_bestConf_rds,
+                    process.out.versions
+                ).match() },
+                { assert file(process.out.signatures_nmfOut_rds[0][1]).exists() },
+                { assert file(process.out.signatures_plot_pdf[0][1]).exists() },
+                { assert file(process.out.signatures_plot_rds[0][1]).exists() }
+            )
+        }
+    }
+
+
+    test("test_sparsesignatures - GRCh38 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_grch38' ],
+                    file(params.modules_testdata_base_path + 'delete_me/sparsesignatures/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true)
+                ]
+                input[1] = "GRCh38"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

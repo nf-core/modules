@@ -31,26 +31,32 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - bai:
         type: file
         description: BAM/CRAM/SAM index file
         pattern: "*.{bai,crai,sai}"
+        ontologies: []
 output:
-  - csv:
-      - meta:
+  csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - pydamage_results/*_pydamage_results.csv:
+      - ${prefix}_pydamage_results.csv:
           type: file
           description: PyDamage results as csv files
           pattern: "*.csv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@maxibor"
 maintainers:

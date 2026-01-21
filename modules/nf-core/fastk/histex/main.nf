@@ -3,35 +3,35 @@ process FASTK_HISTEX {
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    container 'ghcr.io/nbisweden/fastk_genescopefk_merquryfk:1.2'
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b5/b5b07773b60921f43e2839edab692377dcd725d4041adff5520838154e46f487/data' :
+        'community.wave.seqera.io/library/fastk:1.2--580652dfcc8e7a12' }"
 
     input:
     tuple val(meta), path(histogram)
 
     output:
-    tuple val(meta), path("*.hist"), emit: hist
-    path "versions.yml"            , emit: versions
+    tuple val(meta), path("*.hist.txt"), emit: hist
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('fastk'), eval('echo 1.2'), emit: versions_fastk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "FASTK_HISTEX module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def FASTK_VERSION = 'f18a4e6d2207539f7b84461daebc54530a9559b0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def args          = task.ext.args ?: ''
+    def prefix        = task.ext.prefix ?: "${meta.id}"
     """
     Histex \\
         $args \\
         $histogram \\
-        > ${prefix}.hist
+        > ${prefix}.hist.txt
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastk: $FASTK_VERSION
-    END_VERSIONS
+    stub:
+    def prefix        = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.hist.txt
     """
 }

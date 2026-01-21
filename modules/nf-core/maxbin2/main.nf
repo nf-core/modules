@@ -30,11 +30,13 @@ process MAXBIN2 {
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (reads && abund) { error("ERROR: MaxBin2 can only accept one of `reads` or `abund`, no both. Check input.") }
     def associate_files = ""
-    if ( reads ) {
+    if (reads)  {
         associate_files = "-reads $reads"
-    } else if ( abund instanceof List ) {
-        associate_files = "-abund ${abund[0]}"
-        for (i in 2..abund.size()) { associate_files += " -abund$i ${abund[i-1]}" }
+    } else if (abund instanceof List) {
+        associate_files = (1..abund.size()).collect { n ->
+            def arg_n = n == 1 ? "" : "${n}"
+            return "-abund${arg_n} ${abund[n - 1]}"
+        }.join(" ")
     } else {
         associate_files = "-abund $abund"
     }
@@ -48,6 +50,24 @@ process MAXBIN2 {
         -out $prefix
 
     gzip *.fasta *.noclass *.tooshort *log *.marker
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        maxbin2: \$( run_MaxBin.pl -v | head -n 1 | sed 's/MaxBin //' )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if (reads && abund) { error("ERROR: MaxBin2 can only accept one of `reads` or `abund`, no both. Check input.") }
+    """
+    echo "" | gzip > ${prefix}.log.gz
+    echo "" | gzip > ${prefix}.marker.gz
+    echo "" | gzip > ${prefix}.marker_of_each_bin.gz
+    echo "" | gzip > ${prefix}.noclass.gz
+    touch ${prefix}.summary
+    echo "" | gzip > ${prefix}.tooshort.gz
+    echo "" | gzip > ${prefix}.001.fasta.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -26,30 +26,38 @@ input:
     - input_img:
         type: file
         description: Input img file containing image stack to classify
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information for ilp file
-          e.g. [ id:'test', single_end:false ]
-    - ilp:
-        type: file
-        description: Trained ilastik pixel classification .ilp project file
-        pattern: "*.{ilp}"
+        ontologies: []
+    - output_format:
+        type: string
+        description: String specifying the output format passed as the file extension
+          to the output file specified with the `output_filename_format` parameter.
+    - export_source:
+        type: string
+        description: String passed to the `export_source` parameter - valid options
+          are 'probabilities', '"simple segmentation"', 'uncertainty', 'features', 'labels']
+  - ilp:
+      type: file
+      description: Trained ilastik pixel classification .ilp project file
+      pattern: "*.{ilp}"
+      ontologies: []
 output:
-  - output:
-      - meta:
+  output:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.${suffix}":
+      - "*.${output_format}":
           type: file
           description: Output file from ilastik pixel classification.
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@FloWuenne"
 maintainers:

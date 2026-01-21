@@ -39,6 +39,7 @@ input:
         type: file
         description: Fasta file of reference genome
         pattern: "*.fasta"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -48,6 +49,7 @@ input:
         type: file
         description: Index of fasta file
         pattern: "*.fasta.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -57,30 +59,51 @@ input:
         type: file
         description: Sequence dictionary of fastea file
         pattern: "*.dict"
+        ontologies: []
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - gzi:
+        type: file
+        description: Genome index file only needed when the genome file was compressed
+          with the BGZF algorithm.
+        pattern: "*.gzi"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: file
           description: Compressed VCF file
           pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
       - "*.vcf.gz":
           type: file
           description: Compressed VCF file
           pattern: "*.vcf.gz"
-  - tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tbi:
+    - - meta:
           type: file
-          description: Index of VCF file
-          pattern: "*.vcf.gz.tbi"
+          description: Compressed VCF file
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
       - "*.tbi":
           type: file
           description: Index of VCF file
           pattern: "*.vcf.gz.tbi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kevinmenden"
   - "@ramprasadn"

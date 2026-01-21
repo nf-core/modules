@@ -23,9 +23,10 @@ input:
     - input:
         type: file
         description: file to compress or to decompress
+        ontologies: []
 output:
-  - output:
-      - meta:
+  output:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,21 +35,25 @@ output:
           type: file
           description: Output compressed/decompressed file
           pattern: "*."
-  - gzi:
-      - meta:
+          ontologies: []
+  gzi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${output}.gzi:
+      - "*.gzi":
           type: file
           description: Optional gzip index file for compressed inputs
           pattern: "*.gzi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@joseespinosa"
   - "@drpatelh"

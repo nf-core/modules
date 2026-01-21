@@ -25,25 +25,29 @@ input:
         type: file
         description: Coordinates where reads map
         pattern: "*.{classification_res}"
+        ontologies: []
     - meta_file:
         type: file
         description: Statistics for mapping result
         pattern: "*.{classification_res.meta}"
+        ontologies: []
     - meta_unmappedreadsLengths:
         type: file
         description: Statistics for length of unmapped reads
         pattern: "*.{classification_res.meta.unmappedReadsLengths}"
+        ontologies: []
     - para_file:
         type: file
         description: Log with parameters
         pattern: "*.{classification_res.parameters}"
-  - - database_folder:
-        type: directory
-        description: Path to MetaMaps database
-        pattern: "*"
+        ontologies: []
+  - database_folder:
+      type: directory
+      description: Path to MetaMaps database
+      pattern: "*"
 output:
-  - wimp:
-      - meta:
+  wimp:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,8 +56,9 @@ output:
           type: file
           description: Sample composition at different taxonomic levels
           pattern: "*.{classification_res.EM.WIMP}"
-  - evidence_unknown_species:
-      - meta:
+          ontologies: []
+  evidence_unknown_species:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,8 +67,9 @@ output:
           type: file
           description: Statistics on read identities and zero-coverage regions
           pattern: "*.{classification_res.EM.evidenceUnknownSpecies}"
-  - reads2taxon:
-      - meta:
+          ontologies: []
+  reads2taxon:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -72,8 +78,9 @@ output:
           type: file
           description: Taxon ID assignment of reads
           pattern: "*.{classification_res.EM.reads2Taxon}"
-  - em:
-      - meta:
+          ontologies: []
+  em:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -82,8 +89,9 @@ output:
           type: file
           description: The final and complete set of approximate read mappings
           pattern: "*.{classification_res.EM}"
-  - contig_coverage:
-      - meta:
+          ontologies: []
+  contig_coverage:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -92,8 +100,9 @@ output:
           type: file
           description: Read coverage for contigs
           pattern: "*.{classification_res.EM.contigCoverage}"
-  - length_and_id:
-      - meta:
+          ontologies: []
+  length_and_id:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -102,8 +111,9 @@ output:
           type: file
           description: Read length and estimated identity for all reads
           pattern: "*.{classification_res.EM.lengthAndIdentitiesPerMappingUnit}"
-  - krona:
-      - meta:
+          ontologies: []
+  krona:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -112,11 +122,14 @@ output:
           type: file
           description: Taxon ID assignment of reads in Krona format
           pattern: "*.{classification_res.EM.reads2Taxon.krona}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@henningonsbring"
   - "@sofstam"

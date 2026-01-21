@@ -25,17 +25,21 @@ input:
         type: file
         description: FASTA or FASTQ files
         pattern: "*.{fa,fasta,fq,fastq,fq.gz,fastq.gz}"
-  - - fasta:
-        type: file
-        description: Reference genome FASTA file used to construct Segemehl
-        pattern: "*.{fa,fasta}"
-  - - index:
-        type: file
-        description: Segemehl Index file from SEGEMEHL_INDEX
-        pattern: "*.idx"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - fasta:
+      type: file
+      description: Reference genome FASTA file used to construct Segemehl
+      pattern: "*.{fa,fasta}"
+      ontologies: []
+  - index:
+      type: file
+      description: Segemehl Index file from SEGEMEHL_INDEX
+      pattern: "*.idx"
+      ontologies: []
 output:
-  - alignment:
-      - meta:
+  alignment:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,8 +50,9 @@ output:
             File containing genomic alignments in SAM format
               (please add "-b" flag to task.ext.args for BAM)
           pattern: "*.{sam,bam}"
-  - trans_alignments:
-      - meta:
+          ontologies: []
+  trans_alignments:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -58,8 +63,9 @@ output:
             Custom text file containing all single split alignments predicted to be in trans
               (optional, only if -S flag is set in task.ext.args)
           pattern: "*.trns.txt"
-  - multi_bed:
-      - meta:
+          ontologies: []
+  multi_bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -71,8 +77,9 @@ output:
             in the split read alignments.
               (optional, only if -S flag is set in task.ext.args)
           pattern: "*.mult.bed"
-  - single_bed:
-      - meta:
+          ontologies: []
+  single_bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -84,11 +91,14 @@ output:
             in the split read alignments.
               (optional, only if -S flag is set in task.ext.args)
           pattern: "*.sngl.bed"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@BarryDigby"
   - "@nictru"

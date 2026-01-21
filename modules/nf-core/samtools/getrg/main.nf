@@ -4,8 +4,8 @@ process SAMTOOLS_GETRG {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.21--h50ea8bc_0' :
-        'biocontainers/samtools:1.21--h50ea8bc_0' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.22.1--h96c455f_0' :
+        'biocontainers/samtools:1.22.1--h96c455f_0' }"
 
     input:
     tuple val(meta), path(input)
@@ -18,29 +18,28 @@ process SAMTOOLS_GETRG {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    """
-    samtools \\
-        view \\
-        -H \\
-        $args \\
-        $input \\
-    | grep '^@RG' > readgroups.txt
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/samtools/splitheader
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
+Reason:
+This module has been renamed to samtools/splitheader, which has the same functionality but
+extends the outputs to include other types of SAM header.
+"""
+    def args = task.ext.args ?: ''
+    assert false: deprecation_message
+    """
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    """
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/samtools/splitheader
 
-    echo -e "@RG\\tID:${prefix}\\tSM:${prefix}\\tPL:ILLUMINA" > readgroups.txt
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
+Reason:
+This module has been renamed to samtools/splitheader, which has the same functionality but
+extends the outputs to include other types of SAM header.
+"""
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    assert false: deprecation_message
+    """
     """
 }

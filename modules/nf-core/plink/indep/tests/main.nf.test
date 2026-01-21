@@ -1,0 +1,59 @@
+nextflow_process {
+
+    name "Test Process PLINK_INDEP"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "PLINK_INDEP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plink"
+    tag "plink/indep"
+    tag "plink/vcf"
+
+    test("test_plink_indep") {
+
+        setup {
+            run("PLINK_VCF") {
+                script "../../vcf/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id:'test',single_end:false], // meta map
+                        file("https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz", checkIfExists:true)
+                        ]
+                    """
+                }
+            }
+        }
+        when {
+            params {
+                module_args = '--make-bed --biallelic-only strict --vcf-half-call missing --allow-extra-chr'
+            }
+            process {
+                """
+                bed_ch = PLINK_VCF.out.bed
+                bim_ch = PLINK_VCF.out.bim
+                fam_ch = PLINK_VCF.out.fam
+
+                ch_bed_bim_fam = bed_ch.join(bim_ch).join(fam_ch)
+
+                ch_window_size = Channel.value(50)
+                ch_variant_count = Channel.value(5)
+                ch_variance_inflation_factor = Channel.value(1.5)
+
+                input[0] = ch_bed_bim_fam
+                input[1] = ch_window_size
+                input[2] = ch_variant_count
+                input[3] = ch_variance_inflation_factor
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

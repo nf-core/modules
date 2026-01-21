@@ -27,9 +27,10 @@ input:
         type: file
         description: Genome file in .gbk or .gbff format.
         pattern: "*.{gbk,gbff}"
+        ontologies: []
 output:
-  - coordinates:
-      - meta:
+  coordinates:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,8 +41,10 @@ output:
             Coordinates of each prophage identified in the genome,
             and their att sites (if found).
           pattern: "*.{tsv}"
-  - gbk:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  gbk:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,8 +56,9 @@ output:
             but we have inserted the prophage information, including att
             sites into the record.
           pattern: "*.{gbk,gbff}"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -63,8 +67,9 @@ output:
           type: file
           description: File containing the PhiSpy execution log
           pattern: "*.{log}"
-  - information:
-      - meta:
+          ontologies: []
+  information:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -75,8 +80,10 @@ output:
             File containing all the genes of the genome, one per line.
             The tenth column describes how likely the gene is a phage gene.
           pattern: "*.{tsv}"
-  - bacteria_fasta:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  bacteria_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -85,8 +92,9 @@ output:
           type: file
           description: Genome with prophage regions masked with N.
           pattern: "*.{fasta}"
-  - bacteria_gbk:
-      - meta:
+          ontologies: []
+  bacteria_gbk:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -95,8 +103,9 @@ output:
           type: file
           description: Genome sequences identified as bacterial.
           pattern: "*.{gbk}"
-  - phage_fasta:
-      - meta:
+          ontologies: []
+  phage_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -105,8 +114,9 @@ output:
           type: file
           description: Phage sequences extracted from the genome.
           pattern: "*.{fasta}"
-  - phage_gbk:
-      - meta:
+          ontologies: []
+  phage_gbk:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -115,8 +125,9 @@ output:
           type: file
           description: Phage sequences extracted from the genome.
           pattern: "*.{gbk}"
-  - prophage_gff:
-      - meta:
+          ontologies: []
+  prophage_gff:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -125,8 +136,9 @@ output:
           type: file
           description: Prophage information in GFF3 format.
           pattern: "*.{gff3}"
-  - prophage_tbl:
-      - meta:
+          ontologies: []
+  prophage_tbl:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -136,8 +148,9 @@ output:
           description: |
             File containing prophage number and its location in the genome.
           pattern: "*.{tbl}"
-  - prophage_tsv:
-      - meta:
+          ontologies: []
+  prophage_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -148,11 +161,15 @@ output:
             A file containing simpler version of the coordinates file,
             with only prophage number, contig, start and stop.
           pattern: "*.{tsv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jvfe"
 maintainers:

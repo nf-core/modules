@@ -1,0 +1,89 @@
+nextflow_process {
+
+    name "Test Process PICARD_COLLECTALIGNMENTSUMMARYMETRICS"
+    script "../main.nf"
+    process "PICARD_COLLECTALIGNMENTSUMMARYMETRICS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "picard"
+    tag "picard/collectalignmentsummarymetrics"
+
+    test("test-picard-collectalignmentsummarymetrics") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ]
+                input[1] = [[], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.metrics[0][1]).readLines()[5..8],
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-picard-collectalignmentsummarymetrics - with reference") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.metrics[0][1]).readLines()[5..8],
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-picard-collectalignmentsummarymetrics-stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ]
+                input[1] = [[], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

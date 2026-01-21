@@ -26,24 +26,33 @@ input:
           e.g. [ id:'test' ]
     - image:
         type: file
-        description: Tiff file to be used for dark and flat field illumination correction
-        pattern: "*.{tiff,tif}"
+        description: BioFormats-compatible image file to be used for dark and flat field illumination correction
+        pattern: "*.{ome.tiff,ome.tif,rcpnl,btf,nd2,tiff,tif,czi}"
+        ontologies: []
 output:
-  - fields:
-      - meta:
+  profiles:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.tiff":
+      - "*-dfp.ome.tif":
           type: file
-          description: Tiff fields for dark and flat field illumination correction
-          pattern: "*.{tiff,tif}"
-  - versions:
-      - versions.yml:
+          description: OME-TIFF fields for dark field illumination correction
+          pattern: "*.{ome.tif}"
+          ontologies: []
+      - "*-ffp.ome.tif":
           type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: OME-TIFF fields for flat field illumination correction
+          pattern: "*.{ome.tif}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@FloWuenne"
 maintainers:

@@ -23,22 +23,25 @@ input:
         type: file
         description: Input fasta file
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontologies: []
 output:
-  - db:
-      - meta:
+  db:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${meta.id}:
+      - ${prefix}:
           type: directory
           description: Output directory containing blast database files
           pattern: "*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@joseespinosa"
   - "@drpatelh"
@@ -46,3 +49,4 @@ maintainers:
   - "@joseespinosa"
   - "@drpatelh"
   - "@vagkaratzas"
+  - "@DLBPointon"

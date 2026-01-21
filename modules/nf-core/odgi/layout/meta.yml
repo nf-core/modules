@@ -25,21 +25,24 @@ input:
         type: file
         description: Pangenome graph in GFA v1.0 format or in ODGI binary format
         pattern: "*.{gfa,og}"
+        ontologies:
+          - edam: http://edamontology.org/format_3975 # GFA 1
 output:
-  - lay:
-      - meta:
+  lay:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.lay":
           type: file
-          description: File containing a 2D layout of a pangenome graph in a binary format.
-            Usually ends with '.lay'. Optional output specified by the `--out FILE` argument.
-            Either this or the TSV layout output must be specified.
+          description: File containing a 2D layout of a pangenome graph in a binary
+            format. Usually ends with '.lay'. Optional output specified by the `--out
+            FILE` argument. Either this or the TSV layout output must be specified.
           pattern: "*.{lay}"
-  - tsv:
-      - meta:
+          ontologies: []
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,11 +53,15 @@ output:
             Optional output specified by the `--tsv FILE` argument. Either this or the
             binary layout output must be specified.
           pattern: "*.{tsv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@subwaystation"
 maintainers:

@@ -29,6 +29,9 @@ input:
         type: file
         description: Input sequences in FASTA format
         pattern: "*.{fa,fasta}"
+        ontologies:
+          - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta2:
         type: map
         description: |
@@ -38,6 +41,8 @@ input:
         type: file
         description: Input guide tree in Newick format
         pattern: "*.{dnd}"
+        ontologies:
+          - edam: http://edamontology.org/format_2006 # PHYLOGENETIC TREE
   - - meta3:
         type: map
         description: |
@@ -47,20 +52,23 @@ input:
         type: file
         description: T_coffee template file that maps sequences to the accessory information
           files to be used.
-        pattern: "*"
+        ontologies:
+          - edam: http://edamontology.org/format_1476 # PDB
     - accessory_information:
         type: file
         description: Accessory files to be used in the alignment. For example, it could
           be protein structures or secondary structures.
-        pattern: "*"
-  - - compress:
-        type: boolean
-        description: Flag representing whether the output MSA should be compressed.
-          Set to true to enable/false to disable compression. Compression is done using
-          pigz, and is multithreaded.
+        ontologies:
+          - edam: http://edamontology.org/format_1476 # PDB
+          - edam: http://edamontology.org/format_1477 # mmCIF
+  - compress:
+      type: boolean
+      description: Flag representing whether the output MSA should be compressed. Set
+        to true to enable/false to disable compression. Compression is done using pigz,
+        and is multithreaded.
 output:
-  - alignment:
-      - meta:
+  alignment:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -69,8 +77,12 @@ output:
           type: file
           description: Alignment file in FASTA format. May be gzipped.
           pattern: "*.aln{.gz,}"
-  - lib:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
+            - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+            - edam: http://edamontology.org/format_1984 # FASTA-ALN
+  lib:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -79,11 +91,14 @@ output:
           type: file
           description: optional output, the library generated from the MSA file.
           pattern: "*.*lib"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@luisas"
   - "@JoseEspinosa"

@@ -23,21 +23,25 @@ input:
         type: file
         description: VCF file
         pattern: "*.{vcf}"
+        ontologies: []
     - tbi:
         type: file
         description: tabix index file
         pattern: "*.{tbi}"
+        ontologies: []
     - fasta:
         type: file
         description: FASTA reference file
         pattern: "*.{fasta,fa}"
+        ontologies: []
     - mask:
         type: file
         description: BED file used for masking
         pattern: "*.{bed}"
+        ontologies: []
 output:
-  - fasta:
-      - meta:
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,11 +50,28 @@ output:
           type: file
           description: FASTA reference consensus file
           pattern: "*.{fasta,fa}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_bcftools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@joseespinosa"
   - "@drpatelh"

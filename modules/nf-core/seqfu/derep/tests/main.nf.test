@@ -10,7 +10,7 @@ nextflow_process {
     tag "seqfu/derep"
 
     test("derep - 3 fastas") {
- 
+
         when {
             process {
                 """
@@ -36,7 +36,7 @@ nextflow_process {
 
     }
     test("derep - conflict") {
- 
+
         when {
             process {
                 """

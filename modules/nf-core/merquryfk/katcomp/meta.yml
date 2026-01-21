@@ -21,84 +21,69 @@ input:
         type: file
         description: A histogram files from the program FastK
         pattern: "*.hist"
+        ontologies: []
     - fastk1_ktab:
         type: file
         description: Histogram ktab files from the program FastK (option -t)
         pattern: "*.ktab*"
+        ontologies: []
     - fastk2_hist:
         type: file
         description: A histogram files from the program FastK
         pattern: "*.hist"
+        ontologies: []
     - fastk2_ktab:
         type: file
         description: Histogram ktab files from the program FastK (option -t)
         pattern: "*.ktab*"
+        ontologies: []
 output:
-  - filled_png:
-      - meta:
+  filled:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.fi.png":
+          pattern: "*.fi.{png,pdf}"
+      - "*.fi.{png,pdf}":
           type: file
-          description: Comparison of Kmers between sample 1 and 2 in filled PNG format.
-          pattern: "*.fi.png"
-  - line_png:
-      - meta:
+          description: |
+            Comparison of Kmers between sample 1 and 2 in filled PNG or PDF format.
+          pattern: "*.fi.{png,pdf}"
+          ontologies: []
+  line:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.ln.png":
+          pattern: "*.fi.{png,pdf}"
+      - "*.ln.{png,pdf}":
           type: file
-          description: Comparison of Kmers between sample 1 and 2 in line PNG format.
-          pattern: "*.ln.png"
-  - stacked_png:
-      - meta:
+          description: |
+            Comparison of Kmers between sample 1 and 2 in line PNG or PDF format.
+          pattern: "*.ln.{png,pdf}"
+          ontologies: []
+  stacked:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.st.png":
+          pattern: "*.fi.{png,pdf}"
+      - "*.st.{png,pdf}":
           type: file
-          description: Comparison of Kmers between sample 1 and 2 in stacked PNG format.
-          pattern: "*.st.png"
-  - filled_pdf:
-      - meta:
-          type: map
           description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.fi.pdf":
-          type: file
-          description: Comparison of Kmers between sample 1 and 2 in filled PDF format.
-          pattern: "*.fi.pdf"
-  - line_pdf:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.ln.pdf":
-          type: file
-          description: Comparison of Kmers between sample 1 and 2 in line PDF format.
-          pattern: "*.ln.pdf"
-  - stacked_pdf:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.st.pdf":
-          type: file
-          description: Comparison of Kmers between sample 1 and 2 in stacked PDF format.
-          pattern: "*.st.pdf"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+            Comparison of Kmers between sample 1 and 2 in stacked PNG or PDF format.
+          pattern: "*.st.{png,pdf}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mahesh-panchal"
 maintainers:

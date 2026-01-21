@@ -1,0 +1,143 @@
+nextflow_process {
+
+    name "Test Process TRUVARI_BENCH"
+
+    script "../main.nf"
+    process "TRUVARI_BENCH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "truvari"
+    tag "truvari/bench"
+
+    test("without bed") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz.tbi', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv2.vcf.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv2.vcf.gz.tbi', checkIfExists:true),
+                    []
+                    ]
+                input[1] = [
+                    [id:'fasta'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                    ]
+                input[2] = [
+                    [id:'fai'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    path(process.out.fn_vcf[0][1]).vcf.summary,
+                    file(process.out.fn_tbi[0][1]).name,
+                    path(process.out.fp_vcf[0][1]).vcf.summary,
+                    file(process.out.fp_tbi[0][1]).name,
+                    path(process.out.tp_base_vcf[0][1]).vcf.summary,
+                    file(process.out.tp_base_tbi[0][1]).name,
+                    path(process.out.tp_comp_vcf[0][1]).vcf.summary,
+                    file(process.out.tp_comp_tbi[0][1]).name,
+                    path(process.out.versions[0]).yaml,
+                    file(process.out.log[0][1]).name,
+                    process.out.summary,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+
+    test("with bed") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz.tbi', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv2.vcf.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv2.vcf.gz.tbi', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists:true)
+                    ]
+                input[1] = [
+                    [id:'fasta'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                    ]
+                input[2] = [
+                    [id:'fai'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    path(process.out.fn_vcf[0][1]).vcf.summary,
+                    file(process.out.fn_tbi[0][1]).name,
+                    path(process.out.fp_vcf[0][1]).vcf.summary,
+                    file(process.out.fp_tbi[0][1]).name,
+                    path(process.out.tp_base_vcf[0][1]).vcf.summary,
+                    file(process.out.tp_base_tbi[0][1]).name,
+                    path(process.out.tp_comp_vcf[0][1]).vcf.summary,
+                    file(process.out.tp_comp_tbi[0][1]).name,
+                    path(process.out.versions[0]).yaml,
+                    file(process.out.log[0][1]).name,
+                    process.out.summary,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+
+    test("without bed -- stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz.tbi', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv2.vcf.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv2.vcf.gz.tbi', checkIfExists:true),
+                    []
+                    ]
+                input[1] = [
+                    [id:'fasta'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                    ]
+                input[2] = [
+                    [id:'fai'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
+            )
+        }
+    }
+
+}

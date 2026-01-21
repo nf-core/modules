@@ -1,0 +1,89 @@
+nextflow_process {
+
+    name "Test Process CHEWBBACA_ALLELECALL"
+    script "../main.nf"
+    process "CHEWBBACA_ALLELECALL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "chewbbaca"
+    tag "chewbbaca/allelecall"
+    tag "chewbbaca/createschema"
+
+    setup {
+        run("CHEWBBACA_CREATESCHEMA") {
+            script "../../createschema/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'sarscov2' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = []
+                input[2] = []
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = CHEWBBACA_CREATESCHEMA.out.schema
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.stats,
+                    process.out.contigs_info,
+                    process.out.alleles,
+                    process.out.paralogous_counts,
+                    process.out.paralogous_loci,
+                    process.out.cds_coordinates,
+                    process.out.invalid_cds,
+                    process.out.loci_summary_stats,
+                    file(process.out.log[0][1]).name,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = CHEWBBACA_CREATESCHEMA.out.schema
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+}

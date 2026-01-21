@@ -1,0 +1,109 @@
+nextflow_process {
+
+    name "Test Process HLALA_TYPING"
+
+    script "../main.nf"
+    process "HLALA_TYPING"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hlala"
+    tag "hlala/typing"
+    tag "hlala/preparegraph"
+    tag "samtools/index"
+    tag "untar"
+
+    /*
+    // This test is commented out as it takes a few hours to complete on 10cpus
+    // Unfortunately no working small datasets are available for the moment for this tool
+    test("homo_sapiens - cram bai graph") {
+        setup {
+            run ("UNTAR") {
+                script ("../../../untar/main.nf")
+                process {
+                    """
+                    input[0] = [
+                        [ id: 'PRG_test'],
+                        file("http://www.well.ox.ac.uk/downloads/PRG_MHC_GRCh38_withIMGT.tar.gz", checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run ("HLALA_PREPAREGRAPH") {
+                script ("../../preparegraph/main.nf")
+                process {
+                    """
+                    input[0] = UNTAR.out.untar
+                    """
+                }
+            }
+            run ("SAMTOOLS_INDEX") {
+                script ("../../../samtools/index/main.nf")
+                process {
+                    """
+                    input[0] = [
+                        [ id: 'test'],
+                        file("https://dl.dropboxusercontent.com/s/xr99u3vqaimk4vo/NA12878.mini.cram", checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id: 'test'],
+                    file("https://dl.dropboxusercontent.com/s/xr99u3vqaimk4vo/NA12878.mini.cram", checkIfExists: true)
+                ]).combine(
+                    SAMTOOLS_INDEX.out.bai.map{ it[1] }
+                ).combine(
+                    HLALA_PREPAREGRAPH.out.graph.map{ it[1] }
+                )
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    bam(process.out.extraction[0][1]).getReadsMD5(),
+                    process.out.extraction_index,
+                    bam(process.out.extraction_mapped[0][1]).getReadsMD5(),
+                    bam(process.out.extraction_unmpapped[0][1]).getReadsMD5(),
+                    process.out.hla,
+                    process.out.fastq,
+                    process.out.reads_per_level,
+                    bam(process.out.remapped[0][1]).getReadsMD5(),
+                    process.out.remapped_index
+                ).match() }
+            )
+        }
+    }
+    */
+
+    test("homo_sapiens - cram bai graph -- stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    []
+                ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

@@ -18,16 +18,18 @@ tools:
       licence: ["Modified GPL v3"]
       identifier: ""
 output:
-  - iphop_db:
-      - iphop_db/:
-          type: directory
-          description: Directory containing downloaded and md5 checked iPHoP database
-          pattern: "iphop_db/"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  iphop_db:
+    - iphop_db/:
+        type: directory
+        description: Directory containing downloaded and md5 checked iPHoP database
+        pattern: "iphop_db/"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@CarsonJM"
 maintainers:

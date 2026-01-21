@@ -5,14 +5,14 @@ process FREYJA_UPDATE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/freyja:1.5.0--pyhdfd78af_0':
-        'biocontainers/freyja:1.5.0--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/freyja:2.0.1--pyhdfd78af_0' :
+        'biocontainers/freyja:2.0.1--pyhdfd78af_0' }"
 
     input:
     val db_name
 
     output:
-    path "${db_name}/usher_barcodes.csv"   , emit: barcodes
+    path "${db_name}/usher_barcodes.feather"   , emit: barcodes
     path "${db_name}/lineages.yml"         , emit: lineages_topology
     path "${db_name}/curated_lineages.json", emit: lineages_meta
     path "versions.yml"                    , emit: versions

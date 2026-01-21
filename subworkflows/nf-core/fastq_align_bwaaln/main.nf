@@ -42,7 +42,7 @@ workflow FASTQ_ALIGN_BWAALN {
     // Drop the index_meta, as the id of the index is now kept within the read meta.
     ch_preppedinput_for_bwaaln = ch_prepped_input
                         .multiMap {
-                            meta, reads, meta_index, index ->
+                            meta, reads, _meta_index, index ->
                                 reads: [ meta, reads ]
                                 index: [ meta, index ]
                         }
@@ -50,8 +50,8 @@ workflow FASTQ_ALIGN_BWAALN {
 
     // Set as independent channel to allow repeated joining but _with_ sample specific metadata
     // to ensure right reference goes with right sample
-    ch_reads_newid = ch_prepped_input.map{ meta, reads, meta_index, index -> [ meta, reads ] }
-    ch_index_newid = ch_prepped_input.map{ meta, reads, meta_index, index -> [ meta, index ] }
+    ch_reads_newid = ch_prepped_input.map{ meta, reads, _meta_index, _index -> [ meta, reads ] }
+    ch_index_newid = ch_prepped_input.map{ meta, _reads, _meta_index, index -> [ meta, index ] }
 
     // Alignment and conversion to bam
     BWA_ALN ( ch_preppedinput_for_bwaaln.reads, ch_preppedinput_for_bwaaln.index )
@@ -60,7 +60,7 @@ workflow FASTQ_ALIGN_BWAALN {
     ch_sai_for_bam = ch_reads_newid
                         .join ( BWA_ALN.out.sai )
                         .branch {
-                            meta, reads, sai ->
+                            meta, _reads, _sai ->
                                 pe: !meta.single_end
                                 se: meta.single_end
                         }

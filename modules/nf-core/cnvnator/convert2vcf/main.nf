@@ -4,8 +4,8 @@ process CNVNATOR_CONVERT2VCF {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cnvnator:0.4.1--py310h2dce045_7':
-        'biocontainers/cnvnator:0.4.1--py310h2dce045_7' }"
+        'https://depot.galaxyproject.org/singularity/cnvnator:0.4.1--py312h99c8fb2_11':
+        'biocontainers/cnvnator:0.4.1--py312h99c8fb2_11' }"
 
     input:
     tuple val(meta), path(calls)
@@ -36,6 +36,8 @@ process CNVNATOR_CONVERT2VCF {
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo ${args}
+
     touch ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml

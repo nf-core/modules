@@ -1,0 +1,51 @@
+name: "sylphtax_merge"
+description: Merge multiple taxonomic profiles from sylphtaxt/taxprof into a tsv table
+keywords:
+  - sylph
+  - metagenomics
+  - merge
+tools:
+  - sylphtax:
+      description: Integrating taxonomic information into the sylph metagenome profiler.
+      homepage: https://github.com/bluenote-1577/sylph-tax?tab=readme-ov-file
+      documentation: https://sylph-docs.github.io/sylph-tax/
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - sylphtax_reports:
+        type: file
+        description: Output taxonomic profile from sylph-tax taxprof command.
+        pattern: "*.{sylphmpa}"
+        ontologies: []
+  - data_type:
+      type: string
+      description: Can be ANI, relative abundance, or sequence abundance.
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: Output profile with the merged taxonomic profiles in tsv format.
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@sofstam"
+maintainers:
+  - "@sofstam"

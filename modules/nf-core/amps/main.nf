@@ -12,11 +12,11 @@ process AMPS {
     val filter
 
     output:
-    path "results/heatmap_overview_Wevid.json" , emit: json
-    path "results/heatmap_overview_Wevid.pdf"  , emit: summary_pdf
-    path "results/heatmap_overview_Wevid.tsv"  , emit: tsv
-    path "results/pdf_candidate_profiles/"     , emit: candidate_pdfs
-    path "versions.yml"                        , emit: versions
+    path "results/heatmap_overview_Wevid.json", emit: json
+    path "results/heatmap_overview_Wevid.pdf" , emit: summary_pdf
+    path "results/heatmap_overview_Wevid.tsv" , emit: tsv
+    path "results/pdf_candidate_profiles/"    , emit: candidate_pdfs
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,12 +25,26 @@ process AMPS {
     def args = task.ext.args ?: ''
     """
     postprocessing.AMPS.r \\
-        -r $maltextract_results \\
-        -n $taxon_list \\
-        -m $filter \\
-        -t $task.cpus \\
+        -r ${maltextract_results} \\
+        -n ${taxon_list} \\
+        -m ${filter} \\
+        -t ${task.cpus} \\
         -j \\
-        $args
+        ${args}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        amps: \$(echo \$(hops --version 2>&1) | sed 's/HOPS version//')
+    END_VERSIONS
+    """
+
+    stub:
+
+    """
+    mkdir -p results/pdf_candidate_profiles
+    touch results/heatmap_overview_Wevid.json
+    touch results/heatmap_overview_Wevid.pdf
+    touch results/heatmap_overview_Wevid.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

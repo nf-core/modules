@@ -139,7 +139,8 @@ opt <- list(
     domain_scope = 'annotated',
     min_diff = 1,
     round_digits = -1,
-    palette_name = 'Blues'
+    palette_name = 'Blues',
+    archive = 'gprofiler'
 )
 
 opt_types <- lapply(opt, class)
@@ -190,6 +191,7 @@ for (file_input in c('de_file')) {
 
 library(gprofiler2)
 library(ggplot2)
+library(yaml)
 
 ################################################
 ################################################
@@ -223,9 +225,6 @@ if (nrow(de.genes) > 0) {
     if (!is.null(sources)) {
         sources <-  strsplit(opt\$sources, split = ",")[[1]]
     }
-    if (!is.null(sources)) {
-        sources <-  strsplit(opt\$sources, split = ",")[[1]]
-    }
 
     if (!is.null(opt\$token)) {
 
@@ -235,7 +234,9 @@ if (nrow(de.genes) > 0) {
     } else if (!is.null(opt\$organism)) {
 
         # Next, check if organism was provided. Get the GMT file from gprofiler and save both the full file as well as the filtered one to metadata
-        gmt_url <- paste0("https://biit.cs.ut.ee/gprofiler//static/gprofiler_full_", opt\$organism, ".ENSG.gmt")
+        base_url <- paste0("https://biit.cs.ut.ee/", opt\$archive)
+        gmt_url <- paste0(base_url, "//static/gprofiler_full_", opt\$organism, ".ENSG.gmt")
+        set_base_url(base_url)
         tryCatch(
             {
                 gmt_path <- paste0("gprofiler_full_", opt\$organism, ".ENSG.gmt")
@@ -447,14 +448,23 @@ sink()
 r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
 gprofiler2.version <- as.character(packageVersion('gprofiler2'))
 ggplot2.version <- as.character(packageVersion('ggplot2'))
-writeLines(
-    c(
-        '"$task.process":',
-        paste('    r-base:', r.version),
-        paste('    r-ggplot2:', ggplot2.version),
-        paste('    r-gprofiler2:', gprofiler2.version)
+if (is.null(opt\$token) & !is.null(opt\$organism)) {
+    gprofiler_data.version <- as.yaml(get_version_info(opt\$organism))
+} else {
+    gprofiler_data.version <- as.yaml(get_version_info())
+}
+# The YAML comes out a bit messy for the gprofiler data, not nested correctly
+# when we use writeLines and gprofiler_data, so I write it via yaml
+write_yaml(
+    list(
+    '"$task.process"'=list(
+        "r-ggplot2"=ggplot2.version,
+        "r-gprofiler2"=gprofiler2.version,
+        "gprofiler-data"=gprofiler_data.version
+        )
     ),
-'versions.yml')
+    file='versions.yml'
+)
 
 ################################################
 ################################################

@@ -13,29 +13,50 @@ tools:
       documentation: https://github.com/amkozlov/raxml-ng/wiki
       tool_dev_url: https://github.com/amkozlov/raxml-ng
       doi: 10.1093/bioinformatics/btz305
-      licence: ["GPL v2-or-later"]
+      license: ["GPL v2-or-later"]
       identifier: ""
 input:
-  - - alignment:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information (e.g. [ id:'sample1' ])
+    - alignment:
         type: file
         description: A FASTA format multiple sequence alignment file
         pattern: "*.{fasta,fas,fa,mfa}"
+        ontologies: []
+    - model:
+        type: string
+        description: The substitution model to use for the phylogenetic inference
+
 output:
-  - phylogeny:
+  phylogeny:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+          pattern: "*.{raxml.bestTree}"
       - "*.raxml.bestTree":
           type: file
           description: A phylogeny in Newick format
           pattern: "*.{raxml.bestTree}"
-  - phylogeny_bootstrapped:
-      - "*.raxml.support":
+          ontologies: []
+  phylogeny_bootstrapped:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+          pattern: "*.{raxml.bestTree}"
+      - "*.raxml.bootstraps":
           type: file
           description: A phylogeny in Newick format with bootstrap values
-          pattern: "*.{raxml.support}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          pattern: "*.{raxml.bootstraps}"
+          optional: true
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@avantonder"
   - "@aunderwo"

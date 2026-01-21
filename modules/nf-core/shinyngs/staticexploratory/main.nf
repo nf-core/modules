@@ -4,11 +4,11 @@ process SHINYNGS_STATICEXPLORATORY {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-shinyngs:2.0.0--r43hdfd78af_0' :
-        'biocontainers/r-shinyngs:2.0.0--r43hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d0/d0937af0a2b5efe1c18565ef320956e630a03c00c6d75ea5df92ec9f9ff2d14e/data' :
+        'community.wave.seqera.io/library/r-shinyngs:2.3.0--140cda6231347fbb' }"
 
     input:
-    tuple val(meta), path(sample), path(feature_meta), path(assay_files)
+    tuple val(meta), path(sample), path(feature_meta), path(assay_files), val(variable)
 
     output:
     tuple val(meta), path("*/png/boxplot.png")                  , emit: boxplots_png
@@ -37,7 +37,7 @@ process SHINYNGS_STATICEXPLORATORY {
         --sample_metadata "$sample" \\
         --feature_metadata "$feature_meta" \\
         --assay_files "${assay_files.join(',')}" \\
-        --contrast_variable "${meta.id}" \\
+        --contrast_variable "$variable" \\
         --outdir "$prefix" \\
         $args
 

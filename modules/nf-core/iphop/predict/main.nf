@@ -21,7 +21,7 @@ process IPHOP_PREDICT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     export PERL5LIB=/usr/local/lib/perl5/site_perl/5.22.0
@@ -44,8 +44,8 @@ process IPHOP_PREDICT {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args      = task.ext.args   ?: ''
+    def prefix    = task.ext.prefix ?: "${meta.id}"
     def min_score = args.contains('--min_score') ? args.split('--min_score ')[1] : '90'
     """
     mkdir -p iphop_results

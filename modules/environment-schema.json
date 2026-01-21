@@ -7,9 +7,11 @@
         "channels": {
             "type": "array",
             "items": {
-                "enum": ["bioconda", "conda-forge"]
-            },
-            "minItems": 2
+                "type": "string",
+                "not": {
+                    "const": "default"
+                }
+            }
         },
         "dependencies": {
             "type": "array",

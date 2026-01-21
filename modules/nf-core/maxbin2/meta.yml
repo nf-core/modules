@@ -29,18 +29,21 @@ input:
         type: file
         description: Multi FASTA file containing assembled contigs of a given sample
         pattern: "*.fasta"
+        ontologies: []
     - reads:
         type: file
         description: Reads used to assemble contigs in FASTA or FASTQ format. Do not
           supply at the same time as abundance files.
         pattern: "*.fasta"
+        ontologies: []
     - abund:
         type: list
-        description: One or more contig abundance files, i.e. average depth of reads against each contig. See MaxBin2
-          README for details. Do not supply at the same time as read files.
+        description: One or more contig abundance files, i.e. average depth of reads
+          against each contig. See MaxBin2 README for details. Do not supply at the
+          same time as read files.
 output:
-  - binned_fastas:
-      - meta:
+  binned_fastas:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,8 +52,10 @@ output:
           type: file
           description: Binned contigs, one per bin designated with numeric IDs
           pattern: "*.fasta.gz"
-  - summary:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,8 +65,9 @@ output:
           description: Summary file describing which contigs are being classified into
             which bin
           pattern: "*.summary"
-  - abundance:
-      - meta:
+          ontologies: []
+  abundance:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -71,8 +77,9 @@ output:
           description: Abundance of each bin if multiple abundance files were supplied
             which bin
           pattern: "*.abundance"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -81,8 +88,10 @@ output:
           type: file
           description: Log file recording the core steps of MaxBin algorithm
           pattern: "*.log.gz"
-  - marker_counts:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  marker_counts:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -91,19 +100,23 @@ output:
           type: file
           description: Marker counts
           pattern: "*.marker.gz"
-  - unbinned_fasta:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  unbinned_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.noclass.gz":
           type: file
-          description: All sequences that pass the minimum length threshold but are not
-            classified successfully.
+          description: All sequences that pass the minimum length threshold but are
+            not classified successfully.
           pattern: "*.noclass.gz"
-  - tooshort_fasta:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tooshort_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -112,8 +125,10 @@ output:
           type: file
           description: All sequences that do not meet the minimum length threshold.
           pattern: "*.tooshort.gz"
-  - marker_bins:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  marker_bins:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -122,8 +137,10 @@ output:
           type: file
           description: Marker bins
           pattern: "*_bin.tar.gz"
-  - marker_genes:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  marker_genes:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -132,11 +149,15 @@ output:
           type: file
           description: Marker genes
           pattern: "*_gene.tar.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

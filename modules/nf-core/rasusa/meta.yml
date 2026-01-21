@@ -22,15 +22,16 @@ input:
     - reads:
         type: file
         description: List of input paired-end FastQ files
+        ontologies: []
     - genome_size:
         type: string
         description: Genome size of the species
-  - - depth_cutoff:
-        type: integer
-        description: Depth of coverage cutoff
+  - depth_cutoff:
+      type: integer
+      description: Depth of coverage cutoff
 output:
-  - reads:
-      - meta:
+  reads:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,11 +40,15 @@ output:
           type: file
           description: Reads with subsampled coverage
           pattern: "*.fastq.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@thanhleviet"
 maintainers:

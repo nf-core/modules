@@ -1,73 +1,13 @@
 {
-    "test_cat_fastq_single_end": {
+    "test_cat_fastq_paired_end_no_files - stub": {
         "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.merged.fastq.gz:md5,ee314a9bd568d06617171b0c85f508da"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,6ef4fd28546a005865b9454bbedbf81a"
-                ],
-                "reads": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.merged.fastq.gz:md5,ee314a9bd568d06617171b0c85f508da"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,6ef4fd28546a005865b9454bbedbf81a"
-                ]
-            }
+            "  Could not find any FASTQ file pairs to concatenate in the process input"
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
         },
-        "timestamp": "2024-10-19T20:02:07.519211144"
-    },
-    "test_cat_fastq_single_end_same_name": {
-        "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.merged.fastq.gz:md5,3ad9406595fafec8172368f9cd0b6a22"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,6ef4fd28546a005865b9454bbedbf81a"
-                ],
-                "reads": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.merged.fastq.gz:md5,3ad9406595fafec8172368f9cd0b6a22"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,6ef4fd28546a005865b9454bbedbf81a"
-                ]
-            }
-        ],
-        "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-10-19T20:02:31.618628921"
+        "timestamp": "2025-02-25T17:14:51.248685461"
     },
     "test_cat_fastq_single_end_single_file": {
         "content": [
@@ -82,7 +22,11 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,6ef4fd28546a005865b9454bbedbf81a"
+                    [
+                        "CAT_FASTQ",
+                        "cat",
+                        "9.5"
+                    ]
                 ],
                 "reads": [
                     [
@@ -93,16 +37,20 @@
                         "test.merged.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,6ef4fd28546a005865b9454bbedbf81a"
+                "versions_cat": [
+                    [
+                        "CAT_FASTQ",
+                        "cat",
+                        "9.5"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-10-19T20:02:57.904149581"
+        "timestamp": "2025-12-10T14:31:42.84401526"
     },
     "test_cat_fastq_paired_end_same_name": {
         "content": [
@@ -120,7 +68,11 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,6ef4fd28546a005865b9454bbedbf81a"
+                    [
+                        "CAT_FASTQ",
+                        "cat",
+                        "9.5"
+                    ]
                 ],
                 "reads": [
                     [
@@ -134,51 +86,20 @@
                         ]
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,6ef4fd28546a005865b9454bbedbf81a"
+                "versions_cat": [
+                    [
+                        "CAT_FASTQ",
+                        "cat",
+                        "9.5"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-10-19T20:02:44.577183829"
-    },
-    "test_cat_fastq_single_end - stub": {
-        "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.merged.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,6ef4fd28546a005865b9454bbedbf81a"
-                ],
-                "reads": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.merged.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,6ef4fd28546a005865b9454bbedbf81a"
-                ]
-            }
-        ],
-        "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-10-19T20:03:10.603734777"
+        "timestamp": "2025-12-10T14:31:36.820489323"
     },
     "test_cat_fastq_paired_end_same_name - stub": {
         "content": [
@@ -196,7 +117,11 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,6ef4fd28546a005865b9454bbedbf81a"
+                    [
+                        "CAT_FASTQ",
+                        "cat",
+                        "9.5"
+                    ]
                 ],
                 "reads": [
                     [
@@ -210,16 +135,169 @@
                         ]
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,6ef4fd28546a005865b9454bbedbf81a"
+                "versions_cat": [
+                    [
+                        "CAT_FASTQ",
+                        "cat",
+                        "9.5"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-10-19T20:03:46.041808828"
+        "timestamp": "2025-12-10T14:32:06.262192935"
+    },
+    "test_cat_fastq_single_end": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.merged.fastq.gz:md5,ee314a9bd568d06617171b0c85f508da"
+                    ]
+                ],
+                "1": [
+                    [
+                        "CAT_FASTQ",
+                        "cat",
+                        "9.5"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.merged.fastq.gz:md5,ee314a9bd568d06617171b0c85f508da"
+                    ]
+                ],
+                "versions_cat": [
+                    [
+                        "CAT_FASTQ",
+                        "cat",
+                        "9.5"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2025-12-10T14:31:18.859169785"
+    },
+    "test_cat_fastq_single_end_same_name": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.merged.fastq.gz:md5,3ad9406595fafec8172368f9cd0b6a22"
+                    ]
+                ],
+                "1": [
+                    [
+                        "CAT_FASTQ",
+                        "cat",
+                        "9.5"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.merged.fastq.gz:md5,3ad9406595fafec8172368f9cd0b6a22"
+                    ]
+                ],
+                "versions_cat": [
+                    [
+                        "CAT_FASTQ",
+                        "cat",
+                        "9.5"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2025-12-10T14:31:30.942615287"
+    },
+    "test_cat_fastq_single_end - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.merged.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "1": [
+                    [
+                        "CAT_FASTQ",
+                        "cat",
+                        "9.5"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.merged.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_cat": [
+                    [
+                        "CAT_FASTQ",
+                        "cat",
+                        "9.5"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2025-12-10T14:31:48.827990633"
+    },
+    "test_cat_fastq_paired_end_no_files": {
+        "content": [
+            "  Could not find any FASTQ file pairs to concatenate in the process input"
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
+        },
+        "timestamp": "2025-02-25T17:14:40.806088747"
+    },
+    "test_cat_fastq_single_end_no_files - stub": {
+        "content": [
+            "  Could not find any FASTQ files to concatenate in the process input"
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
+        },
+        "timestamp": "2025-02-25T17:14:45.852365218"
     },
     "test_cat_fastq_single_end_same_name - stub": {
         "content": [
@@ -234,7 +312,11 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,6ef4fd28546a005865b9454bbedbf81a"
+                    [
+                        "CAT_FASTQ",
+                        "cat",
+                        "9.5"
+                    ]
                 ],
                 "reads": [
                     [
@@ -245,16 +327,20 @@
                         "test.merged.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,6ef4fd28546a005865b9454bbedbf81a"
+                "versions_cat": [
+                    [
+                        "CAT_FASTQ",
+                        "cat",
+                        "9.5"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-10-19T20:03:34.13865402"
+        "timestamp": "2025-12-10T14:32:00.586584379"
     },
     "test_cat_fastq_paired_end": {
         "content": [
@@ -272,7 +358,11 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,6ef4fd28546a005865b9454bbedbf81a"
+                    [
+                        "CAT_FASTQ",
+                        "cat",
+                        "9.5"
+                    ]
                 ],
                 "reads": [
                     [
@@ -286,16 +376,30 @@
                         ]
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,6ef4fd28546a005865b9454bbedbf81a"
+                "versions_cat": [
+                    [
+                        "CAT_FASTQ",
+                        "cat",
+                        "9.5"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-10-19T20:02:19.64383573"
+        "timestamp": "2025-12-10T14:31:25.159365603"
+    },
+    "test_cat_fastq_single_end_no_files": {
+        "content": [
+            "  Could not find any FASTQ files to concatenate in the process input"
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
+        },
+        "timestamp": "2025-02-25T17:14:35.695192409"
     },
     "test_cat_fastq_paired_end - stub": {
         "content": [
@@ -313,7 +417,11 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,6ef4fd28546a005865b9454bbedbf81a"
+                    [
+                        "CAT_FASTQ",
+                        "cat",
+                        "9.5"
+                    ]
                 ],
                 "reads": [
                     [
@@ -327,16 +435,20 @@
                         ]
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,6ef4fd28546a005865b9454bbedbf81a"
+                "versions_cat": [
+                    [
+                        "CAT_FASTQ",
+                        "cat",
+                        "9.5"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-10-19T20:03:22.597246066"
+        "timestamp": "2025-12-10T14:31:54.850702874"
     },
     "test_cat_fastq_single_end_single_file - stub": {
         "content": [
@@ -351,7 +463,11 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,6ef4fd28546a005865b9454bbedbf81a"
+                    [
+                        "CAT_FASTQ",
+                        "cat",
+                        "9.5"
+                    ]
                 ],
                 "reads": [
                     [
@@ -362,15 +478,19 @@
                         "test.merged.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,6ef4fd28546a005865b9454bbedbf81a"
+                "versions_cat": [
+                    [
+                        "CAT_FASTQ",
+                        "cat",
+                        "9.5"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-10-19T20:03:58.44849001"
+        "timestamp": "2025-12-10T14:32:11.746498148"
     }
 }

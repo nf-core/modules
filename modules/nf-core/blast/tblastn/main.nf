@@ -4,8 +4,8 @@ process BLAST_TBLASTN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/blast:2.15.0--pl5321h6f7f691_1':
-        'biocontainers/blast:2.15.0--pl5321h6f7f691_1' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0c/0c86cbb145786bf5c24ea7fb13448da5f7d5cd124fd4403c1da5bc8fc60c2588/data':
+        'community.wave.seqera.io/library/blast:2.17.0--d4fb881691596759' }"
 
     input:
     tuple val(meta) , path(fasta)

@@ -1,0 +1,53 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "repeatmasker_rmouttogff3"
+description: A utility script to assist to convert old RepeatMasker *.out files to
+  version 3 gff files.
+keywords:
+  - sort
+  - repeatmasker
+  - genomics
+tools:
+  - repeatmasker:
+      description: |
+        RepeatMasker is a program that screens DNA sequences for interspersed
+        repeats and low complexity DNA sequences
+      homepage: "https://www.repeatmasker.org/"
+      documentation: "https://www.repeatmasker.org/webrepeatmaskerhelp.html"
+      tool_dev_url: "https://github.com/rmhubley/RepeatMasker"
+      licence: ["Open Software License v. 2.1"]
+      identifier: biotools:repeatmasker
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - out:
+        type: file
+        description: RepeatMasker out file
+        pattern: "*.{out}"
+        ontologies: []
+output:
+  gff3:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.gff3":
+          type: file
+          description: Sorted BAM/CRAM/SAM file
+          pattern: "*.{gff3}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@GallVp"
+maintainers:
+  - "@GallVp"

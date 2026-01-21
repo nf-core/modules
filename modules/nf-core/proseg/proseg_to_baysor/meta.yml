@@ -1,0 +1,72 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "proseg_to_baysor"
+description: Convert proseg outputs to baysor format for import to Xenium explorer
+keywords:
+  - segmentation
+  - spatial
+  - transcriptomics
+tools:
+  - "proseg":
+      description: "Proseg (probabilistic segmentation) is a cell segmentation method for in situ spatial transcriptomics."
+      homepage: "https://github.com/dcjones/proseg"
+      documentation: "https://github.com/dcjones/proseg"
+      tool_dev_url: "https://github.com/dcjones/proseg"
+      doi: "10.1038/s41592-025-02697-0"
+      licence: ["GPLv3"]
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information
+    - transcript_metadata:
+        type: file
+        description: Transcript ids, genes, revised positions, assignment probability, etc.
+        pattern: "*transcript-metadata.csv.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3989 # GZIP format
+  - - meta2:
+        type: map
+        description: Groovy Map containing sample information
+    - cell_polygons:
+        type: file
+        description: "Path to the cell polygons file."
+        pattern: "*cell-polygons.geojson.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3464 # JSON
+          - edam: http://edamontology.org/format_3989 # GZIP format
+
+output:
+  baysor_cell_polygons:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*baysor-cell-polygons.geojson":
+          type: file
+          description: "Path to the cell polygons file."
+          pattern: "*baysor-cell-polygons.geojson"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  baysor_transcript_metadata:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*baysor-transcript-metadata.csv":
+          type: file
+          description: Transcript ids, genes, revised positions, assignment probability, etc.
+          pattern: "*baysor-transcript-metadata.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+
+authors:
+  - "@derrik-gratz"
+maintainers:
+  - "@derrik-gratz"

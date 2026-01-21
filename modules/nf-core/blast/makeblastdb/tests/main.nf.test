@@ -27,7 +27,6 @@ nextflow_process {
 
                     def all_files = ( new File(process.out.db[0][1]) ).listFiles()
                     def stable_file_names = [
-                        'genome.fasta',
                         'genome.fasta.ndb',
                         'genome.fasta.nhr',
                         'genome.fasta.not',
@@ -67,7 +66,6 @@ nextflow_process {
 
                     def all_files = ( new File(process.out.db[0][1]) ).listFiles()
                     def stable_file_names = [
-                        'genome.fasta',
                         'genome.fasta.ndb',
                         'genome.fasta.nhr',
                         'genome.fasta.not',

@@ -1,0 +1,60 @@
+name: "picard_collectalignmentsummarymetrics"
+description: Collect metrics about the alignment summary of a paired-end library.
+keywords:
+  - metrics
+  - alignment
+  - statistics
+  - bam
+tools:
+  - "picard":
+      description: "Java tools for working with NGS data in the BAM format"
+      homepage: "https://broadinstitute.github.io/picard/"
+      documentation: "https://broadinstitute.github.io/picard/"
+      tool_dev_url: "https://github.com/broadinstitute/picard"
+      licence: ["MIT"]
+      identifier: biotools:picard_tools
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Fasta file
+        pattern: "*.{fasta}"
+        ontologies: []
+output:
+  metrics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: Standard alignment summary metrics
+          pattern: "*.txt"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@mikefeixu"
+  - "@FerriolCalvet"
+maintainers:
+  - "@mikefeixu"

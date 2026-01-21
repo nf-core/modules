@@ -1,0 +1,71 @@
+nextflow_process {
+
+    name "Test Process PROSEG"
+    script "../main.nf"
+    process "PROSEG"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "proseg"
+    tag "proseg/proseg"
+    tag "segmentation"
+    tag "cell_segmentation"
+
+    test("proseg - transcripts.csv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test_run_proseg"],
+                    file(params.modules_testdata_base_path + "spatial_omics/xenium/homo_sapiens/spatial_gene_expression.csv", checkIfExists: true)
+                ]
+                input[1] = 'xenium'
+                input[2] = ['csv.gz', 'csv.gz', 'csv.gz']
+                """
+            }
+        }
+
+        then {
+            def lines = path(process.out.transcript_metadata[0][1]).linesGzip.size()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml,
+                    "transcript metadata lines: $lines",
+                    "transcript metadata header: ${path(process.out.transcript_metadata[0][1]).linesGzip[0]}",
+                    "cell metadata header: ${path(process.out.cell_metadata[0][1]).linesGzip[0]}",
+                    "cell_polygons - minimum file size > 5kb: ${file(process.out.cell_polygons[0][1]).length() >= 5000}",
+                    "cell_polygons_layers - minimum file size > 5kb: ${file(process.out.cell_polygons_layers[0][1]).length() >= 5000}",
+                    path(process.out.expected_counts[0][1]).linesGzip[0]
+                ).match() }
+            )
+        }
+    }
+
+    test("proseg stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test_run_proseg"],
+                    file(params.modules_testdata_base_path + "spatial_omics/xenium/homo_sapiens/spatial_gene_expression.csv", checkIfExists: true)
+                ]
+                input[1] = 'xenium'
+                input[2] = ['csv.gz', 'csv.gz', 'csv.gz']
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions) }
+            )
+        }
+    }
+}

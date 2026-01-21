@@ -1,0 +1,94 @@
+nextflow_process {
+
+    name "Test Process GTDBTK_CLASSIFYWF"
+    script "../main.nf"
+    process "GTDBTK_GTDBTONCBIMAJORITYVOTE"
+    config './nextflow.config'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gtdbtk"
+    tag "gtdbtk/classifywf"
+    tag "gtdbtk/gtdbtoncbimajorityvote"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+            """
+            input[0] = [
+                        [ id:'mockup' ], // meta map
+                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/mag/databases/gtdbtk/gtdbtk_mockup_20250422.tar.gz', checkIfExists: true)
+            ]
+            """
+            }
+        }
+
+        run("GTDBTK_CLASSIFYWF") {
+            script "../../classifywf/main.nf"
+            process {
+            """
+            input[0] = [
+                    [ id:'test', single_end:false, assembler:'SPADES' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true),
+                    ]
+                ]
+            input[1] = UNTAR.out.untar
+            input[2] = false
+            """
+            }
+        }
+    }
+
+    test("E. coli - genome fasta") {
+
+        when {
+            params {
+                module_args_gtdbtk = "--extension fa --skip_ani_screen"
+            }
+
+            process {
+                """
+                input[0] = GTDBTK_CLASSIFYWF.out.gtdb_outdir.map { meta, outfiles -> [meta, outfiles, meta.idgot ] }
+                input[1] = [[id: "ar53"], file("https://data.ace.uq.edu.au/public/gtdb/data/releases/release226/226.0/ar53_metadata_r226.tsv.gz", checkIfExists: true)]
+                input[2] = [[id: "bac120"], file("https://data.ace.uq.edu.au/public/gtdb/data/releases/release226/226.0/bac120_metadata_r226.tsv.gz", checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("E. coli - genome fasta - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args_gtdbtk = "--extension fa --skip_ani_screen"
+            }
+
+            process {
+                """
+                input[0] = GTDBTK_CLASSIFYWF.out.gtdb_outdir.map { meta, outfiles -> [meta, outfiles, meta.id] }
+                input[1] = [[id: "ar53"], file("https://data.ace.uq.edu.au/public/gtdb/data/releases/release226/226.0/ar53_metadata_r226.tsv.gz")]
+                input[2] = [[id: "bac120"], file("https://data.ace.uq.edu.au/public/gtdb/data/releases/release226/226.0/bac120_metadata_r226.tsv.gz")]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

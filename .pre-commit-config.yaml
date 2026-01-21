@@ -3,34 +3,60 @@ repos:
     rev: "v3.1.0"
     hooks:
       - id: prettier
+        entry: prettier --experimental-cli --write --ignore-unknown --no-cache
+        exclude: |
+          (?x)^(
+              .*\.snap$
+          )$
         additional_dependencies:
-          - prettier@3.3.3
+          - prettier@3.7.3
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+        exclude: |
+          (?x)^(
+              .*\.snap$
+          )$
+      - id: end-of-file-fixer
+        exclude: |
+          (?x)^(
+              .*\.snap$
+          )$
+
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.29.4
+    rev: 0.35.0
     hooks:
       - id: check-jsonschema
-        # match meta.ymls in one of the subdirectories of modules/nf-core
+        name: "Match meta.ymls in one of the subdirectories of modules/nf-core"
         files: ^modules/nf-core/.*/meta\.yml$
+        types: [yaml]
         args: ["--schemafile", "modules/yaml-schema.json"]
       - id: check-jsonschema
-        # match meta.ymls in one of the subdirectories of subworkflows/nf-core
+        name: "Validate environment.ymls against schema"
+        files: ^modules/nf-core/.*/environment\.yml$
+        types: [yaml]
+        args: ["--schemafile", "modules/environment-schema.json"]
+      - id: check-jsonschema
+        name: "Match meta.ymls in one of the subdirectories of subworkflows/nf-core"
         files: ^subworkflows/nf-core/.*/meta\.yml$
+        types: [yaml]
         args: ["--schemafile", "subworkflows/yaml-schema.json"]
       - id: check-github-workflows
+
   # use ruff for python files
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.7.3
+    rev: v0.14.7
     hooks:
       - id: ruff
         files: \.py$
         args: [--fix, --exit-non-zero-on-fix, "--select", "I,E1,E4,E7,E9,F,UP,N"] # sort imports and fix (rules taken from nf-core/tools)
       - id: ruff-format # formatter
-  - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
-    rev: "3.0.3"
+    # NOTE This runs with Docker instead of the binary. Hoping anyone messing with Dockerfiles has Docker installed
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.14.0
     hooks:
-      - id: editorconfig-checker
-        alias: ec
-  - repo: https://github.com/nf-core/tools
-    rev: pre-commit
-    hooks:
-      - id: lint-subworkflows
+      - id: hadolint-docker
+        args: ["--failure-threshold", "error"]

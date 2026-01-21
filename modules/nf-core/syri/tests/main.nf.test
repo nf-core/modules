@@ -1,0 +1,86 @@
+nextflow_process {
+
+    name "Test Process SYRI"
+    script "../main.nf"
+    config './nextflow.config'
+    process "SYRI"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "syri"
+    tag "minimap2/align"
+
+    setup {
+        run("MINIMAP2_ALIGN") {
+            script "../../minimap2/align"
+
+            params {
+                minimap2_args = '-x asm5 --eqx'
+            }
+
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome2.fasta', checkIfExists: true)
+                ]
+                input[2] = true     // bam_format
+                input[3] = 'bai'    // bam_index_extension
+                input[4] = false    // cigar_paf_format
+                input[5] = false    // cigar_bam
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - genome") {
+
+        when {
+            process {
+                """
+                input[0] = MINIMAP2_ALIGN.out.bam
+                input[1] = [ [], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                input[2] = [ [], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome2.fasta', checkIfExists: true) ]
+                input[3] = 'B'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - genome - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = MINIMAP2_ALIGN.out.bam
+                input[1] = [ [], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                input[2] = [ [], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome2.fasta', checkIfExists: true) ]
+                input[3] = 'B'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

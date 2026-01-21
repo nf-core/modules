@@ -8,27 +8,40 @@ process KHMER_UNIQUEKMERS {
         'biocontainers/khmer:3.0.0a3--py37haa7609a_2' }"
 
     input:
-    path fasta
-    val  kmer_size
+    tuple val(meta), path(fasta)
+    val kmer_size
 
     output:
-    path "report.txt"  , emit: report
-    path "kmers.txt"   , emit: kmers
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.report.txt")  , emit: report
+    tuple val(meta), path("*.kmers.txt")   , emit: kmers
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     unique-kmers.py \\
         -k $kmer_size \\
-        -R report.txt \\
+        -R ${prefix}.report.txt \\
         $args \\
         $fasta
 
-    grep ^number report.txt | sed 's/^.*:.[[:blank:]]//g' > kmers.txt
+    grep ^number ${prefix}.report.txt | sed 's/^.*:.[[:blank:]]//g' > ${prefix}.kmers.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        khmer: \$( unique-kmers.py --version 2>&1 | grep ^khmer | sed 's/^khmer //;s/ .*\$//' )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.report.txt
+    touch ${prefix}.kmers.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -4,8 +4,8 @@ process BLAST_BLASTP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/blast:2.15.0--pl5321h6f7f691_1':
-        'biocontainers/blast:2.15.0--pl5321h6f7f691_1' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0c/0c86cbb145786bf5c24ea7fb13448da5f7d5cd124fd4403c1da5bc8fc60c2588/data':
+        'community.wave.seqera.io/library/blast:2.17.0--d4fb881691596759' }"
 
     input:
     tuple val(meta) , path(fasta)
@@ -13,10 +13,10 @@ process BLAST_BLASTP {
     val out_ext
 
     output:
-    tuple val(meta), path("*.xml"), optional: true, emit: xml
-    tuple val(meta), path("*.tsv"), optional: true, emit: tsv
-    tuple val(meta), path("*.csv"), optional: true, emit: csv
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.xml*") , emit: xml, optional: true
+    tuple val(meta), path("*.tsv*") , emit: tsv, optional: true
+    tuple val(meta), path("*.csv*") , emit: csv, optional: true
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,30 +26,37 @@ process BLAST_BLASTP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed = fasta.getExtension() == "gz" ? true : false
     def fasta_name = is_compressed ? fasta.getBaseName() : fasta
-    switch ( out_ext ) {
-        case "xml": outfmt = 5; break
-        case "tsv": outfmt = 6; break
-        case "csv": outfmt = 10; break
-        default:
-            outfmt = '6';
-            out_ext = 'tsv';
-            log.warn("Unknown output file format provided (${out_ext}): selecting BLAST default of tabular BLAST output (tsv)");
-            break
+    def uncompress_input = is_compressed ? "gzip -c -d ${fasta} > ${fasta_name}" : ''
+
+    def outfmt = 6
+    if ( "$out_ext" ==~ /^xml(\.gz)?$/ ) {
+        outfmt = 5
+    } else if ( "$out_ext" ==~ /^tsv(\.gz)?$/ ) {
+        outfmt = 6
+    } else if ( "$out_ext" ==~ /^csv(\.gz)?$/ ) {
+        outfmt = 10
+    } else {
+        out_ext = 'tsv'
+        outfmt = 6
+        log.warn("Unknown output file format provided (${out_ext}): selecting BLAST default of tabular BLAST output (tsv)")
     }
 
+    def out_ext_sans_gz = "$out_ext" - ~/\.gz$/
+    def compress_output = "$out_ext" ==~ /^\w+\.gz$/ ? "gzip ${prefix}.${out_ext_sans_gz}" : ''
+
     """
-    if [ "${is_compressed}" == "true" ]; then
-        gzip -c -d ${fasta} > ${fasta_name}
-    fi
+    $uncompress_input
 
     DB=`find -L ./ -name "*.phr" | sed 's/\\.phr\$//'`
     blastp \\
         -query ${fasta_name} \\
-        -out ${prefix}.${out_ext} \\
+        -out ${prefix}.${out_ext_sans_gz} \\
         -db \$DB \\
         -num_threads ${task.cpus} \\
         -outfmt ${outfmt} \\
         ${args}
+
+    $compress_output
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -60,19 +67,27 @@ process BLAST_BLASTP {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    switch ( out_ext ) {
-        case "xml": outfmt = 5; break
-        case "tsv": outfmt = 6; break
-        case "csv": outfmt = 10; break
-        default:
-            outfmt = '6';
-            out_ext = 'tsv';
-            log.warn("Unknown output file format provided (${out_ext}): selecting BLAST default of tabular BLAST output (tsv)");
-            break
+
+    def outfmt = 6
+    if ( "$out_ext" ==~ /^xml(\.gz)?$/ ) {
+        outfmt = 5
+    } else if ( "$out_ext" ==~ /^tsv(\.gz)?$/ ) {
+        outfmt = 6
+    } else if ( "$out_ext" ==~ /^csv(\.gz)?$/ ) {
+        outfmt = 10
+    } else {
+        out_ext = 'tsv'
+        outfmt = 6
+        log.warn("Unknown output file format provided (${out_ext}): selecting BLAST default of tabular BLAST output (tsv)")
     }
 
+    def out_ext_sans_gz = "$out_ext" - ~/\.gz$/
+    def compress_output = "$out_ext" ==~ /^\w+\.gz$/ ? "gzip ${prefix}.${out_ext_sans_gz}" : ''
+
     """
-    touch ${prefix}.${out_ext}
+    touch ${prefix}.${out_ext_sans_gz}
+
+    $compress_output
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

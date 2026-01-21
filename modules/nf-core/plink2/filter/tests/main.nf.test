@@ -1,0 +1,191 @@
+nextflow_process {
+
+    name "Test Process PLINK2_FILTER"
+    script "../main.nf"
+    process "PLINK2_FILTER"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plink2"
+    tag "plink2/filter"
+
+    test("plink1_input - var_filter") {
+
+        when {
+            params {
+                module_args = '--geno 0.05 --double-id'
+            }
+            process {
+
+                """
+
+                input[0] = [
+                    [id:"test"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("plink2_input - var_filter") {
+
+
+        when {
+            params {
+                module_args = '--geno 0.05 --double-id'
+            }
+            process {
+
+                """
+
+                input[0] = [
+                        [id:"test"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("plink1_input - maf_filter") {
+
+        when {
+            params {
+                module_args = '--max-alleles 2 --double-id --maf 0.01'
+            }
+            process {
+
+                """
+
+                input[0] = [
+                    [id:"test"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("plink2_input - maf_filter") {
+
+
+        when {
+            params {
+                module_args = '--max-alleles 2 --double-id --maf 0.01'
+            }
+            process {
+
+                """
+
+                input[0] = [
+                        [id:"test"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("plink1_input - var_filter - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--geno 0.05 --double-id'
+            }
+            process {
+                """
+
+                input[0] = [
+                    [id:"test"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("plink2_input - var_filter - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--geno 0.05 --double-id'
+            }
+            process {
+                """
+                input[0] = [
+                        [id:"test"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

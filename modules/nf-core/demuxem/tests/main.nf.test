@@ -15,7 +15,7 @@ nextflow_process {
         when {
             process {
                 """
-                
+
                 input[0] = [
                     [ id:'sample1'],
                     file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/438-21-raw_feature_bc_matrix.h5",checkIfExists: true),
@@ -34,7 +34,7 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.zarr.get(0).get(1)).exists() },
                 { assert path(process.out.out_zarr.get(0).get(1)).exists() },
-                
+
             )
         }
 
@@ -47,7 +47,7 @@ nextflow_process {
         when {
             process {
                 """
-                
+
                 input[0] = [
                     [ id:'sample1'],
                     file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/438-21-raw_feature_bc_matrix.h5",checkIfExists: true),

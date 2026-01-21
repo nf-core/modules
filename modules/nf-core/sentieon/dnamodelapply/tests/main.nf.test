@@ -1,0 +1,86 @@
+nextflow_process {
+
+    name "Test Process SENTIEON_DNAMODELAPPLY"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "SENTIEON_DNAMODELAPPLY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sentieon"
+    tag "sentieon/dnascope"
+    tag "sentieon/dnamodelapply"
+
+    setup {
+        run("SENTIEON_DNASCOPE") {
+            script "../../dnascope/main.nf"
+
+            process {
+                """
+                input[0] = [
+                    [id:'test',single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true),
+                    []// no intervals
+                    ]
+                input[1] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)]
+                input[2] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)]
+                input[3] = [[:],[]]
+                input[4] = [[:],[]]
+                input[5] = [[:],file("https://s3.amazonaws.com/sentieon-release/other/SentieonDNAscopeModel1.1.model", checkIfExists:true)]
+                input[6] = 'CONSERVATIVE'
+                input[7] = 'variant'
+                input[8] = false
+                """
+            }
+        }
+    }
+
+    test("apply model") {
+
+        when {
+            process {
+                """
+                input[0] = SENTIEON_DNASCOPE.out.vcf.join(SENTIEON_DNASCOPE.out.vcf_tbi)
+                input[1] = [[id:'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)]
+                input[2] = [[id:'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)]
+                input[3] = [[:],file("https://s3.amazonaws.com/sentieon-release/other/SentieonDNAscopeModel1.1.model", checkIfExists:true)]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.summary,
+                    file(process.out.tbi[0][1]).name,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+
+    test("apply model -- stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = SENTIEON_DNASCOPE.out.vcf.join(SENTIEON_DNASCOPE.out.vcf_tbi)
+                input[1] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)]
+                input[2] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)]
+                input[3] = [[:],file("https://s3.amazonaws.com/sentieon-release/other/SentieonDNAscopeModel1.1.model", checkIfExists:true)]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

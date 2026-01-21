@@ -4,6 +4,7 @@ nextflow_process {
     name "Test Process PYPGX_CREATEINPUTVCF"
     script "../main.nf"
     process "PYPGX_CREATEINPUTVCF"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -24,8 +25,6 @@ nextflow_process {
                     [id: 'GRCh37'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/GRCh37_chr22.fasta.gz', checkIfExists: true)
                 ]
-                input[2] = ["CYP2D6"]
-                input[3] = "GRCh37"
                 """
             }
         }
@@ -60,8 +59,6 @@ nextflow_process {
                     [id: 'test_genome'],
                     []
                 ]
-                input[2] = []
-                input[3] = ""
                 """
             }
         }

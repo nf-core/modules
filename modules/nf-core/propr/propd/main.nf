@@ -4,8 +4,8 @@ process PROPR_PROPD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b6/b65f7192866fbd9a947df15b104808abb720e7a224bbe3ca8f7f8f680f52c97a/data' :
-        'community.wave.seqera.io/library/bioconductor-limma_r-propr:f52f1d4fea746393' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/10/10bcda8d87b62771528894e1c03e0f38780e48f37e1bda146e81001a0d0054aa/data' :
+        'community.wave.seqera.io/library/bioconductor-limma_r-propr:4b3195a14835ef20' }"
 
     input:
     tuple val(meta), val(contrast_variable), val(reference), val(target)

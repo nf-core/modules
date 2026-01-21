@@ -23,9 +23,12 @@ input:
         type: file
         description: CSV/TSV formatted files
         pattern: "*.{csv,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - csv:
-      - meta:
+  csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,11 +37,16 @@ output:
           type: file
           description: Joined CSV/TSV file
           pattern: "*.{csv,tsv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "version.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "version.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@anoronh4"
 maintainers:

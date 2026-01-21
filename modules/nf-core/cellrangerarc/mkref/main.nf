@@ -4,11 +4,6 @@ process CELLRANGERARC_MKREF {
 
     container "nf-core/cellranger-arc:2.0.2"
 
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "CELLRANGERARC_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-
     input:
     path fasta
     path gtf
@@ -25,6 +20,10 @@ process CELLRANGERARC_MKREF {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "CELLRANGERARC_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def fast_name = fasta.name
     def gtf_name = gtf.name
     def motifs_name = motifs.name
@@ -76,6 +75,22 @@ process CELLRANGERARC_MKREF {
         --config=config \\
         --nthreads=${task.cpus} \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cellrangerarc: \$(echo \$( cellranger-arc --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
+    END_VERSIONS
+    """
+
+    stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "CELLRANGERARC_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
+    def args = task.ext.args ?: ''
+    """
+    mkdir -p "${reference_name}/"
+    touch config
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

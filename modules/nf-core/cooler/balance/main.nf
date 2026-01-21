@@ -4,8 +4,8 @@ process COOLER_BALANCE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cooler:0.9.2--pyh7cba7a3_0' :
-        'biocontainers/cooler:0.9.2--pyh7cba7a3_0' }"
+        'https://depot.galaxyproject.org/singularity/cooler:0.10.4--pyhdfd78af_0' :
+        'biocontainers/cooler:0.10.4--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(cool), val(resolution)
@@ -31,6 +31,19 @@ process COOLER_BALANCE {
         -p ${task.cpus} \\
         ${prefix}.${extension}${suffix}
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cooler: \$(cooler --version 2>&1 | sed 's/cooler, version //')
+    END_VERSIONS
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    suffix = resolution ? "::/resolutions/$resolution" : ""
+    extension = cool.getExtension()
+    def creation_cmd = suffix.endsWith(".gz") ? "echo '' | gzip -c >" : "touch"
+    """
+    ${creation_cmd} ${prefix}.${extension}${suffix}
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         cooler: \$(cooler --version 2>&1 | sed 's/cooler, version //')

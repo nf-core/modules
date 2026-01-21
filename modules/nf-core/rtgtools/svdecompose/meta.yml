@@ -1,0 +1,72 @@
+name: "rtgtools_svdecompose"
+description: The svdecompose tool of RTG tools. It is used to decompose structural
+  variants to BNDs
+keywords:
+  - svdecompose
+  - structural
+  - vcf
+  - rtg-tools
+tools:
+  - "rtgtools":
+      description: "RealTimeGenomics Tools -- Utilities for accurate VCF comparison
+        and manipulation"
+      homepage: "https://www.realtimegenomics.com/products/rtg-tools"
+      documentation: "https://cdn.jsdelivr.net/gh/RealTimeGenomics/rtg-tools@master/installer/resources/tools/RTGOperationsManual.pdf"
+      tool_dev_url: "https://github.com/RealTimeGenomics/rtg-tools"
+      licence: ["BSD"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - input:
+        type: file
+        description: A VCF with called variants to decompose variants
+        pattern: "*.{vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+    - tbi:
+        type: file
+        description: The index of the VCF with called variants to decompose variants
+        pattern: "*.{vcf.gz.tbi}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3616"
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test']
+      - "*.vcf.gz":
+          type: file
+          description: A VCF file with SVTYPE BND variants
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test']
+      - "*.vcf.gz.tbi":
+          type: file
+          description: Index of VCF file with SVTYPE BND variants
+          pattern: "*.vcf.gz.tbi"
+          ontologies:
+            - edam: "http://edamontology.org/format_3616"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@kubranarci"
+maintainers:
+  - "@kubranarci"

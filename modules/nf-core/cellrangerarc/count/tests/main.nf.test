@@ -1,0 +1,171 @@
+nextflow_process {
+
+    name "Test Process CELLRANGERARC_COUNT"
+    script "../main.nf"
+    process "CELLRANGERARC_COUNT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cellrangerarc"
+    tag "cellrangerarc/mkref"
+    tag "cellrangerarc/count"
+    tag "unzip"
+
+    setup {
+        run("UNZIP") {
+            script "../../../unzip/main.nf"
+
+            process {
+                """
+                input[0] = [[],file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.fa.gz',checkIfExists:true)]
+                """
+            }
+        }
+        run("CELLRANGERARC_MKREF") {
+            script "../../mkref/main.nf"
+
+            process {
+                """
+                input[0] = UNZIP.out.unzipped_archive.map{it[1]}+"/chr19.fa"
+                input[1] = file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.filtered.gtf.gz',checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_motifs.txt',checkIfExists:true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/cellranger_arc_mkref_test_mm39_chr19_config.json',checkIfExists:true)
+                input[4] = "cellrangerarc_reference"
+                """
+            }
+        }
+    }
+    test("test_cellrangerarc_count") {
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [[id:'test'],['gex','atac'],['SRR18907480_chr19_sub','SRR18907481_chr19_sub'],
+                    [file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907480_chr19_sub_S1_L001_R1_001.fastq.gz',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907480_chr19_sub_S1_L001_R2_001.fastq.gz',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907481_chr19_sub_S1_L001_R1_001.fastq.gz',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907481_chr19_sub_S1_L001_R2_001.fastq.gz',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907481_chr19_sub_S1_L001_I2_001.fastq.gz',checkIfExists:true)
+                    ]
+                    ]
+                input[1] = CELLRANGERARC_MKREF.out.reference
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    def all_files = process.out.outs[0][1]
+
+                    def stable_file_names = [
+                        'analysis/clustering/atac/graphclust/clusters.csv',
+                        'analysis/clustering/atac/graphclust/differential_accessibility.csv',
+                        'analysis/clustering/atac/graphclust/differential_expression.csv',
+                        'analysis/clustering/atac/kmeans_2_clusters/clusters.csv',
+                        'analysis/clustering/atac/kmeans_2_clusters/differential_accessibility.csv',
+                        'analysis/clustering/atac/kmeans_2_clusters/differential_expression.csv',
+                        'analysis/clustering/atac/kmeans_3_clusters/clusters.csv',
+                        'analysis/clustering/atac/kmeans_3_clusters/differential_accessibility.csv',
+                        'analysis/clustering/atac/kmeans_3_clusters/differential_expression.csv',
+                        'analysis/clustering/atac/kmeans_4_clusters/clusters.csv',
+                        'analysis/clustering/atac/kmeans_4_clusters/differential_accessibility.csv',
+                        'analysis/clustering/atac/kmeans_4_clusters/differential_expression.csv',
+                        'analysis/clustering/atac/kmeans_5_clusters/clusters.csv',
+                        'analysis/clustering/atac/kmeans_5_clusters/differential_accessibility.csv',
+                        'analysis/clustering/atac/kmeans_5_clusters/differential_expression.csv',
+                        'analysis/clustering/gex/graphclust/clusters.csv',
+                        'analysis/clustering/gex/graphclust/differential_accessibility.csv',
+                        'analysis/clustering/gex/graphclust/differential_expression.csv',
+                        'analysis/clustering/gex/kmeans_2_clusters/clusters.csv',
+                        'analysis/clustering/gex/kmeans_2_clusters/differential_accessibility.csv',
+                        'analysis/clustering/gex/kmeans_2_clusters/differential_expression.csv',
+                        'analysis/clustering/gex/kmeans_3_clusters/clusters.csv',
+                        'analysis/clustering/gex/kmeans_3_clusters/differential_accessibility.csv',
+                        'analysis/clustering/gex/kmeans_3_clusters/differential_expression.csv',
+                        'analysis/clustering/gex/kmeans_4_clusters/clusters.csv',
+                        'analysis/clustering/gex/kmeans_4_clusters/differential_accessibility.csv',
+                        'analysis/clustering/gex/kmeans_4_clusters/differential_expression.csv',
+                        'analysis/clustering/gex/kmeans_5_clusters/clusters.csv',
+                        'analysis/clustering/gex/kmeans_5_clusters/differential_accessibility.csv',
+                        'analysis/clustering/gex/kmeans_5_clusters/differential_expression.csv',
+                        'analysis/dimensionality_reduction/atac/lsa_components.csv',
+                        'analysis/dimensionality_reduction/atac/lsa_dispersion.csv',
+                        'analysis/dimensionality_reduction/atac/lsa_features_selected.csv',
+                        'analysis/dimensionality_reduction/atac/lsa_projection.csv',
+                        'analysis/dimensionality_reduction/atac/lsa_variance.csv',
+                        'analysis/dimensionality_reduction/atac/tsne_projection.csv',
+                        'analysis/dimensionality_reduction/atac/umap_projection.csv',
+                        'analysis/dimensionality_reduction/gex/pca_components.csv',
+                        'analysis/dimensionality_reduction/gex/pca_dispersion.csv',
+                        'analysis/dimensionality_reduction/gex/pca_features_selected.csv',
+                        'analysis/dimensionality_reduction/gex/pca_projection.csv',
+                        'analysis/dimensionality_reduction/gex/pca_variance.csv',
+                        'analysis/dimensionality_reduction/gex/tsne_projection.csv',
+                        'analysis/dimensionality_reduction/gex/umap_projection.csv',
+                        'analysis/feature_linkage/feature_linkage.bedpe',
+                        'analysis/tf_analysis/filtered_tf_bc_matrix/barcodes.tsv.gz',
+                        'analysis/tf_analysis/filtered_tf_bc_matrix/matrix.mtx.gz',
+                        'analysis/tf_analysis/filtered_tf_bc_matrix/motifs.tsv',
+                        'analysis/tf_analysis/peak_motif_mapping.bed',
+                        'atac_cut_sites.bigwig',
+                        'atac_peak_annotation.tsv',
+                        'filtered_feature_bc_matrix/barcodes.tsv.gz',
+                        'filtered_feature_bc_matrix/features.tsv.gz',
+                        'filtered_feature_bc_matrix/matrix.mtx.gz',
+                        'gex_molecule_info.h5',
+                        'gex_possorted_bam.bam',
+                        'gex_possorted_bam.bam.bai',
+                        'per_barcode_metrics.csv',
+                        'raw_feature_bc_matrix/barcodes.tsv.gz',
+                        'raw_feature_bc_matrix/features.tsv.gz',
+                        'raw_feature_bc_matrix/matrix.mtx.gz',
+                        'summary.csv',
+                    ]
+
+                    def stable_files = all_files.findAll { file ->
+                        // Check if the file path ends with any of the stable file paths
+                        return stable_file_names.any { stable_path ->
+                            file.toString().endsWith(stable_path)
+                        }
+                    }.toSorted()
+
+                    assert snapshot(
+                        stable_files,
+                        process.out.versions[0]
+                    ).match()
+
+                    def unstable_file_names = [
+                        'analysis/feature_linkage/feature_linkage_matrix.h5',
+                        'analysis/tf_analysis/filtered_tf_bc_matrix.h5',
+                        'atac_fragments.tsv.gz',
+                        'atac_fragments.tsv.gz.tbi',
+                        'atac_peaks.bed',
+                        'atac_possorted_bam.bam',
+                        'atac_possorted_bam.bam.bai',
+                        'cloupe.cloupe',
+                        'filtered_feature_bc_matrix.h5',
+                        'raw_feature_bc_matrix.h5',
+                        'web_summary.html'
+                    ]
+
+                    def unstable_files = all_files.findAll { file ->
+                        return unstable_file_names.any { unstable_path ->
+                            file.toString().endsWith(unstable_path)
+                        }
+                    }.toSorted()
+
+                    unstable_files.each { filePath ->
+                        def fileObj = file(filePath)
+                        assert fileObj.exists(): "File ${filePath} does not exist"
+                    }
+                }
+            )
+        }
+    }
+// No stub test, as the stub test for `UNZIP` doesn't actually extract the archive.
+// This breaks the downstream stub tests as a fasta file is required.
+}

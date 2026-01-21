@@ -1,0 +1,140 @@
+nextflow_process {
+
+    name "Test Process PLOTSR"
+    script "../main.nf"
+    config './nextflow.config'
+    process "PLOTSR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plotsr"
+    tag "minimap2/align"
+    tag "syri"
+
+    setup {
+        run("MINIMAP2_ALIGN") {
+            script "../../minimap2/align"
+
+            params {
+                minimap2_args = '-x asm5 --eqx'
+            }
+
+            process {
+                """
+                def genome2_cleanid     = file('genome2_cleanid.fasta')
+                genome2_cleanid.text    = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome2.fasta', checkIfExists: true).text.replace(/>chr22:16600000-16800000/, '>chr22')
+
+                input[0] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [id: 'reference'],
+                    genome2_cleanid
+                ]
+                input[2] = true     // bam_format
+                input[3] = 'bai'    // bam_index_extension
+                input[4] = false    // cigar_paf_format
+                input[5] = false    // cigar_bam
+                """
+            }
+        }
+
+        run("SYRI") {
+            script "../../syri"
+            process {
+                """
+                def genome2_cleanid     = file('genome2_cleanid.fasta')
+                genome2_cleanid.text    = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome2.fasta', checkIfExists: true).text.replace(/>chr22:16600000-16800000/, '>chr22')
+
+                input[0] = MINIMAP2_ALIGN.out.bam
+                input[1] = [ [], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                input[2] = [ [], genome2_cleanid ]
+                input[3] = 'B'
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - genome") {
+
+        when {
+            process {
+                """
+                def genome2_cleanid     = file('genome2_cleanid.fasta')
+                def fastas              = [
+                    [ [ id: 'test']         , file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ],
+                    [ [ id: 'reference' ]   , genome2_cleanid ]
+                ]
+                def genome_header_txt   = "#file	name	tags\\n"
+                def genomes             = file('genomes.txt')
+                genomes.text            = genome_header_txt + fastas.collect { meta, fasta -> "\${fasta.name}\\t\${meta.id}\\tlw:1.5" }.join('\\n')
+
+                input[0] = SYRI.out.syri
+                input[1] = [ [], fastas.collect { meta, fasta -> fasta } ]
+
+                input[2] = [ [], genomes ]
+                input[3] = [ [], [] ]
+                input[4] = [ [], [] ]
+                input[5] = [ [], [] ]
+                input[6] = [ [], [] ]
+                input[7] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    file(process.out.png[0][1]).name,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - genome - stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                def genome2_cleanid     = file('genome2_cleanid.fasta')
+                def fastas              = [
+                    [ [ id: 'test']         , file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ],
+                    [ [ id: 'reference' ]   , genome2_cleanid ]
+                ]
+                def genome_header_txt   = "#file	name	tags\\n"
+                def genomes             = file('genomes.txt')
+                genomes.text            = genome_header_txt + fastas.collect { meta, fasta -> "\${fasta.name}\\t\${meta.id}\\tlw:1.5" }.join('\\n')
+
+                input[0] = SYRI.out.syri
+                input[1] = [ [], fastas.collect { meta, fasta -> fasta } ]
+
+                input[2] = [ [], genomes ]
+                input[3] = [ [], [] ]
+                input[4] = [ [], [] ]
+                input[5] = [ [], [] ]
+                input[6] = [ [], [] ]
+                input[7] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+
+    }
+
+}

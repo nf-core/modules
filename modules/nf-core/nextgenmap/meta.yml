@@ -30,14 +30,16 @@ input:
         description: |
           List of input FastQ files of size 1, if meta.single_end is true, and 2
           if meta.single_end is false.
-  - - fasta:
-        type: file
-        description: |
-          Genomic reference fasta file
-        pattern: "*.{fa,fa.gz,fas,fas.gz,fna,fna.gz,fasta,fasta.gz}"
+        ontologies: []
+  - fasta:
+      type: file
+      description: |
+        Genomic reference fasta file
+      pattern: "*.{fa,fa.gz,fas,fas.gz,fna,fna.gz,fasta,fasta.gz}"
+      ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information. First item of tuple with
@@ -49,11 +51,14 @@ output:
             Output BAM file containing read alignments. Second item of tuple with
             meta, above
           pattern: "*.{bam}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@cmatkhan"
 maintainers:

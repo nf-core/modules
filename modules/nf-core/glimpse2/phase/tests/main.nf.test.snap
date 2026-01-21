@@ -1,119 +1,186 @@
 {
-    "CRAM": {
-        "content": [
-            [
-                "versions.yml:md5,c68de03046a6503cdbcf3a1495fc512f"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-13T16:58:34.365910006"
-    },
-    "List_versions": {
-        "content": [
-            [
-                "versions.yml:md5,c68de03046a6503cdbcf3a1495fc512f"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-07-09T20:35:30.97466287"
-    },
-    "Should run with a bamlist to rename samples": {
+    "homo_sapiens - bam region - panel": {
         "content": [
             [
                 [
-                    "NA12878",
-                    "NA19401"
+                    {
+                        "id": "input"
+                    },
+                    "input_chr22_16650000-16750000.vcf",
+                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=266, phased=true, phasedAutodetect=false]",
+                    "23026b2111d5b93194ebbb5de09d654d"
                 ]
             ],
             [
-                "VcfFile [chromosomes=[chr21], sampleCount=2, variantCount=4719, phased=true]"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.3"
-        },
-        "timestamp": "2024-10-22T15:23:37.368119579"
-    },
-    "VCF": {
-        "content": [
+                [
+                    {
+                        "id": "input"
+                    },
+                    "input_chr22_16650000-16750000_stats_coverage.txt.gz:md5,39bf5e7c67e377207656104f64fea657"
+                ]
+            ],
             [
                 "versions.yml:md5,c68de03046a6503cdbcf3a1495fc512f"
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
         },
-        "timestamp": "2024-03-13T16:58:05.013609832"
+        "timestamp": "2025-11-26T20:59:49.43898101"
     },
-    "List_coverage": {
+    "homo_sapiens - [bam, bam] region - panel": {
         "content": [
             [
                 [
                     {
                         "id": "input"
                     },
-                    "input_chr21_16650000-16750000_stats_coverage.txt.gz:md5,ac61370fc14738b103e160b7298727b9"
+                    "input_chr22_16650000-16750000.vcf",
+                    "VcfFile [chromosomes=[chr22], sampleCount=2, variantCount=266, phased=true, phasedAutodetect=false]",
+                    "f06d12e3c16a8edc313ad564836008"
                 ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-07-09T20:35:30.943277837"
-    },
-    "BAM_coverage": {
-        "content": [
+            ],
             [
                 [
                     {
                         "id": "input"
                     },
-                    "input_chr21_16650000-16750000_stats_coverage.txt.gz:md5,9be7101ef4f599416c22fd6160c3b146"
+                    "input_chr22_16650000-16750000_stats_coverage.txt.gz:md5,fa1b295b071c1b8670c013577a982139"
                 ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-13T16:58:13.527360464"
-    },
-    "CRAM_coverage": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "input"
-                    },
-                    "input_chr21_16650000-16750000_stats_coverage.txt.gz:md5,a2bee17d81568dba62ce4dd430947d29"
-                ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-13T16:58:34.264826731"
-    },
-    "BAM": {
-        "content": [
+            ],
             [
                 "versions.yml:md5,c68de03046a6503cdbcf3a1495fc512f"
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
         },
-        "timestamp": "2024-03-13T16:58:13.58159608"
+        "timestamp": "2025-11-26T21:03:14.8627618"
+    },
+    "homo_sapiens - vcf region - panel": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "input"
+                    },
+                    "input_chr22_16650000-16750000.vcf",
+                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=266, phased=true, phasedAutodetect=false]",
+                    "d8e9e1ec4d9d229536a23f2f69a469de"
+                ]
+            ],
+            [
+                
+            ],
+            [
+                "versions.yml:md5,c68de03046a6503cdbcf3a1495fc512f"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-11-26T20:58:13.192800596"
+    },
+    "homo_sapiens - cram region - panel - fasta": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "input"
+                    },
+                    "input_chr22_16650000-16750000.vcf",
+                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=266, phased=true, phasedAutodetect=false]",
+                    "d8e9e1ec4d9d229536a23f2f69a469de"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "input"
+                    },
+                    "input_chr22_16650000-16750000_stats_coverage.txt.gz:md5,c9558dd66680731d5a360818480c1998"
+                ]
+            ],
+            [
+                "versions.yml:md5,c68de03046a6503cdbcf3a1495fc512f"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-11-26T21:00:40.288219943"
+    },
+    "homo_sapiens - [bam, bam] region sample rename - panel": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "input"
+                    },
+                    "input_chr22_16650000-16750000.vcf",
+                    "VcfFile [chromosomes=[chr22], sampleCount=2, variantCount=266, phased=true, phasedAutodetect=false]",
+                    "f2aff70c52df2f69d9bc1f4bf63fcb5c"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "input"
+                    },
+                    "input_chr22_16650000-16750000_stats_coverage.txt.gz:md5,b21fbf77322b281c5cf4822edadd844c"
+                ]
+            ],
+            [
+                "versions.yml:md5,c68de03046a6503cdbcf3a1495fc512f"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-11-26T21:05:13.564441099"
+    },
+    "homo_sapiens - vcf region - panel -- stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "input"
+                        },
+                        "input_chr22_16650000-16750000.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    
+                ],
+                "2": [
+                    "versions.yml:md5,c68de03046a6503cdbcf3a1495fc512f"
+                ],
+                "phased_variants": [
+                    [
+                        {
+                            "id": "input"
+                        },
+                        "input_chr22_16650000-16750000.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "stats_coverage": [
+                    
+                ],
+                "versions": [
+                    "versions.yml:md5,c68de03046a6503cdbcf3a1495fc512f"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-11-26T21:01:07.257765596"
     }
 }

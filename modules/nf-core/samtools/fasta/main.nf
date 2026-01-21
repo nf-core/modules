@@ -4,8 +4,8 @@ process SAMTOOLS_FASTA {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.21--h50ea8bc_0' :
-        'biocontainers/samtools:1.21--h50ea8bc_0' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.22.1--h96c455f_0' :
+        'biocontainers/samtools:1.22.1--h96c455f_0' }"
 
     input:
     tuple val(meta), path(input)
@@ -28,6 +28,7 @@ process SAMTOOLS_FASTA {
         meta.single_end ? "-1 ${prefix}_1.fasta.gz -s ${prefix}_singleton.fasta.gz" :
         "-1 ${prefix}_1.fasta.gz -2 ${prefix}_2.fasta.gz -s ${prefix}_singleton.fasta.gz"
     """
+    # Note: --threads value represents *additional* CPUs to allocate (total CPUs = 1 + --threads).
     samtools \\
         fasta \\
         $args \\

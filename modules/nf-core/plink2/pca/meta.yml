@@ -1,0 +1,93 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "plink2_pca"
+description: Perform PCA analysis using PLINK
+keywords:
+  - plink2
+  - pca
+  - plink2_pca
+
+tools:
+  - plink2:
+      description: |
+        Whole genome association analysis toolset, designed to perform a range
+        of basic, large-scale analyses in a computationally efficient manner
+      homepage: http://www.cog-genomics.org/plink/2.0/
+      documentation: http://www.cog-genomics.org/plink/2.0/general_usage
+      doi: "10.1186/s13742-015-0047-8"
+      licence: ["GPL v3"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - npcs:
+        type: integer
+        description: Number of PCs to compute
+    - use_approx:
+        type: boolean
+        description: If true, use the approximate method
+    - pgen:
+        type: file
+        description: PLINK 2 binary genotype table
+        pattern: "*.{pgen}"
+        ontologies: []
+    - psam:
+        type: file
+        description: PLINK 2 sample information file
+        pattern: "*.{psam}"
+        ontologies: []
+    - pvar:
+        type: file
+        description: PLINK 2 variant information file
+        pattern: "*.{pvar}"
+
+        ontologies: []
+output:
+  evecfile:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.eigenvec"
+      - "*.eigenvec":
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.eigenvec"
+  evfile:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.eigenvec"
+      - "*.eigenval":
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.eigenval"
+  logfile:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.eigenvec"
+      - "*.log":
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.log"
+  versions:
+    - versions.yml:
+        type: file
+        description: |
+          File containing the version of the program
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@bruno-ariano"
+maintainers:
+  - "@bruno-ariano"

@@ -1,0 +1,80 @@
+nextflow_process {
+
+    name "Test Process MYLOASM"
+    script "../main.nf"
+    process "MYLOASM"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "myloasm"
+
+    test("homo_sapiens - pacbio - hifi - fastq") {
+        when {
+            params {
+                module_args = '--hifi'
+            }
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test_hifi' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists:true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.results[0][1]).list().size(),
+                    process.out.contigs,
+                    process.out.gfa,
+                    process.out.contigs_alt,
+                    path(process.out.contigs_dup[0][1]).exists(),
+                    path(process.out.mapping[0][1]).linesGzip.size(),
+                    path(process.out.log[0][1]).readLines().any{ it.contains('Assembly completed') },
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - pacbio - hifi - fastq - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--hifi'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_stub' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists:true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.contigs,
+                    process.out.gfa,
+                    process.out.contigs_alt,
+                    process.out.contigs_dup,
+                    process.out.mapping,
+                    process.out.log,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+
+    }
+
+}

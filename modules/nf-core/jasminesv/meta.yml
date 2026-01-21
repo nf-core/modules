@@ -29,11 +29,16 @@ input:
         type: list
         description: Optional - The BAM files from which the VCFs were created
         pattern: "*.bam"
+    - bais:
+        type: list
+        description: Optional - The BAM index files from which the VCFs were created
+        pattern: "*.bai"
     - sample_dists:
         type: file
         description: Optional - A txt file containing the distance thresholds for each
           sample
         pattern: "*.txt"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -43,6 +48,7 @@ input:
         type: file
         description: Optional - The reference FASTA file used to create the VCFs
         pattern: "*.{fasta,fa}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -53,14 +59,16 @@ input:
         description: Optional - The index of the reference FASTA file used to create
           the VCFs
         pattern: "*.fai"
-  - - chr_norm:
-        type: file
-        description: Optional - A txt file containing the chromosomes and their aliases
-          for normalization
-        pattern: "*.txt"
+        ontologies: []
+  - chr_norm:
+      type: file
+      description: Optional - A txt file containing the chromosomes and their aliases
+        for normalization
+      pattern: "*.txt"
+      ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -69,11 +77,50 @@ output:
           type: file
           description: The merged VCF file
           pattern: "*.vcf.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_jasminesv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - jasminesv:
+          type: string
+          description: The name of the tool
+      - jasmine 2>&1 | grep "version" | sed "s/Jasmine version //":
+          type: eval
+          description: The version of the tool
+  versions_bgzip:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bgzip:
+          type: string
+          description: The name of the tool
+      - bgzip --version | head -1 | sed -e "s/bgzip (htslib) //":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - jasminesv:
+          type: string
+          description: The name of the tool
+      - jasmine 2>&1 | grep "version" | sed "s/Jasmine version //":
+          type: eval
+          description: The version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bgzip:
+          type: string
+          description: The name of the tool
+      - bgzip --version | head -1 | sed -e "s/bgzip (htslib) //":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@nvnieuwk"
 maintainers:

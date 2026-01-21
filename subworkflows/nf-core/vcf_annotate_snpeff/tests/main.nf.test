@@ -1,0 +1,78 @@
+nextflow_workflow {
+
+    name "Test Subworkflow VCF_ANNOTATE_SNPEFF"
+    script "../main.nf"
+    workflow "VCF_ANNOTATE_SNPEFF"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/vcf_annotate_snpeff"
+    tag "snpeff/snpeff"
+    tag "tabix/bgziptabix"
+
+    config "./nextflow.config"
+
+    test("WBcel235.99 - test.vcf.gz") {
+
+        when {
+            workflow {
+                """
+                snpeff_cache = Channel.of([
+                    [ id:'WBcel235.99' ],
+                    file('s3://annotation-cache/snpeff_cache/WBcel235.99/')
+                ]).collect()
+
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
+                ])
+                input[1] = "WBcel235.99"
+                input[2] = snpeff_cache
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
+                    workflow.out.reports.collect { it.collect { it instanceof String ? file(it).name : it } },
+                    workflow.out.summary.collect { it.collect { it instanceof String ? file(it).name : it } },
+                    workflow.out.genes_txt.collect { it.collect { it instanceof String ? file(it).name : it } },
+                    workflow.out.versions.collect { it instanceof String ? path(it).yaml : it }
+                ).match()}
+            )
+        }
+    }
+
+    test("WBcel235.99 - test.vcf.gz - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                snpeff_cache = Channel.of([
+                    [ id:'WBcel235.99' ],
+                    file("${projectDir}")
+                ]).collect()
+
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
+                ])
+                input[1] = "WBcel235.99"
+                input[2] = snpeff_cache
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+}

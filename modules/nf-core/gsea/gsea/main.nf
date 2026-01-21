@@ -10,7 +10,7 @@ process GSEA_GSEA {
     input:
     tuple val(meta), path(gct), path(cls), path(gene_sets)
     tuple val(reference), val(target)
-    path(chip) // Optional identifier mapping file
+    tuple val(meta2), path(chip) // Optional identifier mapping file
 
     output:
     tuple val(meta), path("*.rpt")                             , emit: rpt
@@ -45,7 +45,6 @@ process GSEA_GSEA {
     def rpt_label = prefix.replaceAll('\\.$', '') // Remove any trailing dots from prefix when passed as report label, so GSEA doesn't produce double-dotted top-level outputs
     def chip_command = chip ? "-chip $chip -collapse true" : ''
     def VERSION = '4.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    if (!(args ==~ /.*-rnd_seed.*/)) {args += " -rnd_seed 10"}
 
     """
     # Run GSEA
