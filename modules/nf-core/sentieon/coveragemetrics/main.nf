@@ -57,6 +57,8 @@ process SENTIEON_COVERAGEMETRICS {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
+    // Glob that matches any version of 'sample_library_platform_center'.
+    partitions_output = "{sample,}{_library,}{_platform,}{_center,}{_readgroup,}"
     """
     touch ${prefix}
     touch ${prefix}.sample_interval_statistics
