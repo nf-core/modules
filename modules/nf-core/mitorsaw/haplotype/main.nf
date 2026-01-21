@@ -38,12 +38,11 @@ process MITORSAW_HAPLOTYPE {
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*${prefix}.bam"),                                   emit: bam
     tuple val(meta), path("*${prefix}.vcf.gz"), path("*${prefix}.vcf.gz.tbi"), emit: vcf
     tuple val(meta), path("${prefix}.json"),                                   emit: stats,          optional: true
-    tuple val(meta), path("*${debug_output}/${prefix}.coverage_stats.json"),   emit: coverage_stats, optional: true
-    tuple val(meta), path("*${debug_output}/${prefix}.xml"),                   emit: igv_session,    optional: true
-    tuple val(meta), path("*${debug_output}/${prefix}.fa"),                    emit: hap_seq,        optional: true
+    tuple val(meta), path("*${prefix}.coverage_stats.json"),                   emit: coverage_stats, optional: true
+    tuple val(meta), path("*${prefix}.xml"),                                   emit: igv_session,    optional: true
+    tuple val(meta), path("*${prefix}.fa"),                                    emit: hap_seq,        optional: true
 
     // TODO nf-core: List additional required output channels/values here
     // TODO nf-core: Update the command here to obtain the version number of the software used in this module
@@ -74,7 +73,7 @@ process MITORSAW_HAPLOTYPE {
         $args \\
         --reference ${fasta} \\
         --bam ${bam} \\
-        --output-vcf ${prefix}.vcf \\
+        --output-vcf ${prefix}.vcf.gz \\
         ${output_hap_stats} \\
         ${include_debug_output}
     """
@@ -92,7 +91,7 @@ process MITORSAW_HAPLOTYPE {
     """
     echo $args
 
-    touch ${prefix}.vcf
-    touch ${prefix}.json
+    touch ${prefix}.vcf.gz
+    touch ${prefix}.vcf.gz.tbi
     """
 }
