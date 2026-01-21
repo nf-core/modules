@@ -75,8 +75,6 @@ process SENTIEON_VARCAL {
         ${labels_command} \\
         ${args} \\
         ${prefix}.recal
-
-    
     """
 
     stub:
@@ -86,7 +84,5 @@ process SENTIEON_VARCAL {
     touch ${prefix}.idx
     touch ${prefix}.tranches
     touch ${prefix}plots.R
-
-    
     """
 }

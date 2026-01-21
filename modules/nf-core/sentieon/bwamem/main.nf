@@ -47,7 +47,7 @@ process SENTIEON_BWAMEM {
         rm -f "${prefix}.bai"
     fi
     """
-    
+
     stub:
     prefix = task.ext.prefix ?: "${meta.id}.bam"
     index = prefix.tokenize('.')[-1] == "bam" ? "bai" : "crai"
