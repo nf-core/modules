@@ -37,7 +37,7 @@ process BLOBTK_PLOT {
     }
 
     def resource = online_path ?: local_path
-    def prefix   = task.ext.prefix ?: "${meta.id}"
+    prefix       = task.ext.prefix ?: "${meta.id}"
 
     """
     blobtk plot \\
@@ -52,7 +52,7 @@ process BLOBTK_PLOT {
     """
 
     stub:
-    def prefix  = task.ext.prefix ?: "${meta.id}"
+    prefix      = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.png
 
