@@ -55,7 +55,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.bam":
+      - ${prefix}.bam:
           type: file
           description: Output BAM file
           pattern: "*.{bam}"
@@ -68,7 +68,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.bai":
           type: file
-          description: An optional BAM index file
+          description: An optional bam index file
           pattern: "*.{bai}"
           ontologies: []
   cram:
