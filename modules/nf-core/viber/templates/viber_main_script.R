@@ -39,22 +39,24 @@ library(ggpubr)
 
 samples = substr("$tumour_samples", 2, nchar("$tumour_samples")-1)
 samples = strsplit(samples, ", ")[[1]]
-print("$meta.patient")
-print("$tumour_samples")
-print("$rds_join")
-print(samples)
+
+cli::cli_text("Patient {$meta.patient} with samples {$tumour_samples}.")
+cli::cli_text("Input file: {$rds_join}.")
 
 if ( grepl(".rds\$", tolower("$rds_join")) ) {
     input_obj = readRDS("$rds_join")
     if (class(input_obj) == "m_cnaqc") {
         shared = input_obj %>% get_sample(sample=samples, which_obj="shared")
         joint_table = lapply(names(shared),
-                        function(sample_name)
-                        shared[[sample_name]] %>%
-                            CNAqc::subset_by_segment_karyotype("1:1") %>%
-                            CNAqc::Mutations() %>%
-                            dplyr::mutate(sample_id=sample_name)
-                        ) %>% dplyr::bind_rows()
+                        function(sample_name) {
+                          table_s = shared[[sample_name]] %>%
+                              CNAqc::subset_by_segment_karyotype("1:1") %>%
+                              CNAqc::Mutations() %>%
+                              dplyr::mutate(sample_id=sample_name)
+                          if (nrow(table_s) == 0) {
+                            cli::cli_alert_warning("Sample {sample_name} has no diploid mutations!")
+                          }
+                        }) %>% dplyr::bind_rows()
         } else {
           cli::cli_alert_warning("Object of class {class(input_obj)} not supported.")
           return()
@@ -63,7 +65,11 @@ if ( grepl(".rds\$", tolower("$rds_join")) ) {
   joint_table = read.csv("$rds_join")
 }
 
-print("Subset joint done")
+if (nrow(joint_table) == 0) {
+  cli::cli_alert_warning("No samples contain diploid mutations!")
+}
+
+cli::cli_text("Joint table created.")
 
 ## Read input joint table
 input_tab = joint_table %>%
@@ -90,12 +96,12 @@ nv = reads_data %>%
 # Standard fit
 viber_K = as.integer(opt[["K"]])
 
-message("Starting standard fit")
+cli::cli_text("Starting standard fit")
 st_fit = VIBER::variational_fit(nv, dp,
                                 K=viber_K,
                                 data=reads_data)
 st_fit[["description"]]="$meta.patient"
-message("End standard fit")
+cli::cli_text("End standard fit")
 best_fit = best_fit_heuristic = st_fit
 
 # If all clusters are removed -> keep the origianl best fit
