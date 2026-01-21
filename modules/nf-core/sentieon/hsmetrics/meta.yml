@@ -82,7 +82,7 @@ output:
       - sentieon:
           type: string
           description: The tool name
-      - 'sentieon driver --version | sed "s/.*-//g"':
+      - sentieon driver --version | sed 's/.*-//g':
           type: string
           description: The command used to generate the version of the tool
 
@@ -94,7 +94,7 @@ topics:
       - sentieon:
           type: string
           description: The tool name
-      - 'sentieon driver --version | sed "s/.*-//g"':
+      - sentieon driver --version | sed 's/.*-//g':
           type: string
           description: The command used to generate the version of the tool
 authors:

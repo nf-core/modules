@@ -23,7 +23,7 @@ process SENTIEON_HSMETRICS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input = bam.sort().collect {bam_ -> "-i ${bam_}" }.join(' ')
+    def input = bam.sort().collect {in -> "-i ${in}" }.join(' ')
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64
         ? "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; "
         : ""
