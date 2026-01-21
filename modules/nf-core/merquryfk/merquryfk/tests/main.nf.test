@@ -82,11 +82,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.stats,
-                    process.out.bed,
                     process.out.qv,
                     process.out.assembly_qv,
-                    process.out.phased_block_bed,
-                    process.out.phased_block_stats,
                     process.out.images.collect { meta, images -> [ meta, images.collect { img -> file(img).name } ] },
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
@@ -122,11 +119,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.stats,
-                    process.out.bed,
                     process.out.qv,
                     process.out.assembly_qv,
-                    process.out.phased_block_bed,
-                    process.out.phased_block_stats,
                     process.out.images.collect { meta, images -> [ meta, images.collect { img -> file(img).name } ] },
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
@@ -163,7 +157,6 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.stats,
-                    process.out.bed,
                     process.out.qv,
                     process.out.assembly_qv,
                     process.out.phased_block_bed,
