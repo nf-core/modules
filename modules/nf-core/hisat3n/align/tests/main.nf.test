@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process HISAT3N_ALIGN"
     script "../main.nf"
     process "HISAT3N_ALIGN"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -10,7 +11,7 @@ nextflow_process {
     tag "hisat3n/align"
     tag "hisat3n/build"
 
-    test("ecoli - single-end") {
+    test("sarscov2 - single-end") {
 
         setup {
             run("HISAT3N_BUILD") {
@@ -19,7 +20,7 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [id:'genome'],
-                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ])
                 """
                 }
@@ -31,7 +32,7 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:true ],
-                    [ file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = HISAT3N_BUILD.out.index
                 """
@@ -41,13 +42,16 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.summary).match("se_summary") },
-                { assert snapshot(process.out.versions_hisat3n).match("se_versions") }
+                { assert snapshot(
+                    sam(process.out.sam[0][1]).getStatistics(),
+                    process.out.versions_hisat3n
+                ).match("se") },
+                { assert path(process.out.summary[0][1]).exists() }
             )
         }
     }
 
-    test("ecoli - single-end - stub") {
+    test("sarscov2 - single-end - stub") {
         options "-stub"
 
         setup {
@@ -57,7 +61,7 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [id:'genome'],
-                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ])
                 """
                 }
@@ -69,7 +73,7 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:true ],
-                    [ file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = HISAT3N_BUILD.out.index
                 """
@@ -84,7 +88,7 @@ nextflow_process {
         }
     }
 
-    test("ecoli - paired-end") {
+    test("sarscov2 - paired-end") {
 
         setup {
             run("HISAT3N_BUILD") {
@@ -93,7 +97,7 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [id:'genome'],
-                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ])
                 """
                 }
@@ -105,8 +109,8 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ],
-                    [ file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
-                      file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                      file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = HISAT3N_BUILD.out.index
                 """
@@ -116,13 +120,16 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.summary).match("pe_summary") },
-                { assert snapshot(process.out.versions_hisat3n).match("pe_versions") }
+                { assert snapshot(
+                    sam(process.out.sam[0][1]).getStatistics(),
+                    process.out.versions_hisat3n
+                ).match("pe") },
+                { assert path(process.out.summary[0][1]).exists() }
             )
         }
     }
 
-    test("ecoli - paired-end - stub") {
+    test("sarscov2 - paired-end - stub") {
         options "-stub"
 
         setup {
@@ -132,7 +139,7 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [id:'genome'],
-                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ])
                 """
                 }
@@ -144,8 +151,8 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ],
-                    [ file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
-                      file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                      file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = HISAT3N_BUILD.out.index
                 """
