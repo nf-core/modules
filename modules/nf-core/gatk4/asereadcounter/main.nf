@@ -50,7 +50,6 @@ process GATK4_ASEREADCOUNTER {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     touch ${prefix}_ase.csv
     """

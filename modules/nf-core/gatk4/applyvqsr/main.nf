@@ -43,8 +43,6 @@ process GATK4_APPLYVQSR {
         --recal-file ${recal} \\
         --tmp-dir . \\
         ${args}
-
-
     """
 
     stub:
@@ -52,7 +50,5 @@ process GATK4_APPLYVQSR {
     """
     echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
-
-
     """
 }
