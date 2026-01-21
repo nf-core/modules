@@ -95,44 +95,40 @@ nextflow_process {
 
     }
 
-//    Once I fixed this test, I discovered it experiences a library loading error when running in trio mode.
-//    Not sure if this is a problem with the inputs (it is not a real trio dataset), or something more general.
-//    Disabling this test for now until it can be fixed.
+    test("homo_sapiens - Illumina - trio") {
 
-//    test("homo_sapiens - Illumina - trio") {
-//
-//        config "./nextflow.config"
-//
-//        when {
-//
-//            process {
-//                """
-//                input[0] = FASTK_FASTK.out.hist.join(FASTK_FASTK.out.ktab).map { meta, hist, ktab ->
-//                        [ meta, hist, ktab, file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true), [] ]
-//                    }
-//                input[1] = MERQURYFK_HAPMAKER.out.mat_hap_ktab
-//                input[2] = MERQURYFK_HAPMAKER.out.pat_hap_ktab
-//                """
-//            }
-//        }
-//
-//        then {
-//            assertAll(
-//                { assert process.success },
-//                { assert snapshot(
-//                    process.out.stats,
-//                    process.out.bed,
-//                    process.out.qv,
-//                    process.out.assembly_qv,
-//                    process.out.phased_block_bed,
-//                    process.out.phased_block_stats,
-//                    process.out.images.collect { meta, images -> [ meta, images.collect { img -> file(img).name } ] },
-//                    process.out.findAll { key, val -> key.startsWith("versions")}
-//                ).match() }
-//            )
-//        }
-//
-//    }
+        config "./nextflow.config"
+
+        when {
+
+            process {
+                """
+                input[0] = FASTK_FASTK.out.hist.join(FASTK_FASTK.out.ktab).map { meta, hist, ktab ->
+                        [ meta, hist, ktab, file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true), [] ]
+                    }
+                input[1] = MERQURYFK_HAPMAKER.out.mat_hap_ktab
+                input[2] = MERQURYFK_HAPMAKER.out.pat_hap_ktab
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.stats,
+                    process.out.bed,
+                    process.out.qv,
+                    process.out.assembly_qv,
+                    process.out.phased_block_bed,
+                    process.out.phased_block_stats,
+                    process.out.images.collect { meta, images -> [ meta, images.collect { img -> file(img).name } ] },
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
 
     test("homo_sapiens - Illumina - stub") {
 
