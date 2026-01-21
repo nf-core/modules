@@ -15,7 +15,7 @@ process PREPARECOVANDBAF {
     tuple val(meta), path("*.cov.bed.gz.tbi") , emit: cov_tbi
     tuple val(meta), path("*.baf.bed.gz")     , emit: baf_gz
     tuple val(meta), path("*.baf.bed.gz.tbi") , emit: baf_tbi
-    path "versions.yml"                       , emit: versions
+    path "versions.yml"                       , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
