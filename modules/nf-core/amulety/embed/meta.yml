@@ -1,15 +1,14 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "amulety_translate"
-description: A module to translate BCR and TCR nucleotide sequences into amino acid
-  sequences using amulety and igblast.
+name: "amulety_embed"
+description: A module to create embeddings of B-cell receptor (BCR) or T-cell receptor
+  (TCR) amino acid sequences using amulety.
 keywords:
-  - immunology
+  - embeddings
   - BCR
-  - TCR
-  - translation
-  - amino acid
-  - nucleotide
+  - antibody
+  - GPU-accelerated
   - immunoinformatics
+  - immunology
 tools:
   - "amulety":
       description: "Python package to create embeddings of BCR and TCR amino acid sequences."
@@ -19,15 +18,6 @@ tools:
       doi: "10.1101/2025.03.21.644583"
       licence: ["GPL v3"]
       identifier: ""
-  - "igblast":
-      description: "A tool for immunoglobulin (IG, BCR) and T cell receptor (TCR) V
-        domain sequences blasting."
-      homepage: "https://www.ncbi.nlm.nih.gov/igblast/"
-      documentation: "https://ncbi.github.io/igblast/"
-      tool_dev_url: "https://github.com/ncbi/igblast"
-      doi: "10.1093/nar/gkt382"
-      licence: ["United States Government Work"]
-      identifier: biotools:igblast
 
 input:
   - - meta:
@@ -41,23 +31,28 @@ input:
         pattern: "*.{tsv}"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
-  - reference_igblast:
-      type: file
-      description: Built reference databases for igblast
+  - chain:
+      type: string
+      description: |
+        The chain to use for the embeddings. Can be either 'H' (high diversity chain: BCR heavy or TCR beta or delta),
+        'L' (low diversity chain: BCR light or TCR alpha or gamma) or 'HL'/'LH' (BCR heavy + light, and TCR alpha + beta or gamma + delta).
+      enum: ["L", "H", "HL", "LH"]
+  - model:
+      type: string
+      description: |
+        The embedding model to use. Options are detailed on the amulety documentation.
 
-      ontologies: []
 output:
-  repertoire_translated:
+  embedding:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*_translated.tsv":
+      - "*.tsv":
           type: file
-          description: TSV with BCR/TCR amino acid sequences in AIRR rearrangement format
+          description: TSV with embeddings of BCR or TCR amino acid sequences.
           pattern: "*.tsv"
-
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   versions_amulety:
@@ -70,17 +65,6 @@ output:
       - "amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+'":
           type: string
           description: The command used to generate the version of the tool
-  versions_igblastn:
-    - - ${task.process}:
-          type: string
-          description: The process the versions were collected from
-      - igblastn:
-          type: string
-          description: The tool name
-      - "igblastn -version | grep -o 'igblast[0-9\\. ]\\+' | grep -o '[0-9\\. ]\\+'":
-          type: string
-          description: The command used to generate the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -92,16 +76,6 @@ topics:
       - "amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+'":
           type: string
           description: The command used to generate the version of the tool
-    - - ${task.process}:
-          type: string
-          description: The process the versions were collected from
-      - igblastn:
-          type: string
-          description: The tool name
-      - "igblastn -version | grep -o 'igblast[0-9\\. ]\\+' | grep -o '[0-9\\. ]\\+'":
-          type: string
-          description: The command used to generate the version of the tool
-
 authors:
   - "@ggabernet"
 maintainers:
