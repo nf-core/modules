@@ -13,9 +13,9 @@ process BCFTOOLS_NORM {
 
     output:
     tuple val(meta), path("*.{vcf,vcf.gz,bcf,bcf.gz}"), emit: vcf
-    tuple val(meta), path("*.tbi"),                     emit: tbi, optional: true
-    tuple val(meta), path("*.csi"),                     emit: csi, optional: true
-    path "versions.yml",                                emit: versions
+    tuple val(meta), path("*.tbi"), emit: tbi, optional: true
+    tuple val(meta), path("*.csi"), emit: csi, optional: true
+    tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,11 +23,15 @@ process BCFTOOLS_NORM {
     script:
     def args = task.ext.args ?: '--output-type z'
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
-                    args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
-                    args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
-                    args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
-                    "vcf.gz"
+    def extension = args.contains("--output-type b") || args.contains("-Ob")
+        ? "bcf.gz"
+        : args.contains("--output-type u") || args.contains("-Ou")
+            ? "bcf"
+            : args.contains("--output-type z") || args.contains("-Oz")
+                ? "vcf.gz"
+                : args.contains("--output-type v") || args.contains("-Ov")
+                    ? "vcf"
+                    : "vcf.gz"
     """
     bcftools norm \\
         --fasta-ref ${fasta} \\
@@ -35,21 +39,20 @@ process BCFTOOLS_NORM {
         ${args} \\
         --threads ${task.cpus} \\
         ${vcf}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: '--output-type z'
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
-                    args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
-                    args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
-                    args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
-                    "vcf.gz"
+    def extension = args.contains("--output-type b") || args.contains("-Ob")
+        ? "bcf.gz"
+        : args.contains("--output-type u") || args.contains("-Ou")
+            ? "bcf"
+            : args.contains("--output-type z") || args.contains("-Oz")
+                ? "vcf.gz"
+                : args.contains("--output-type v") || args.contains("-Ov")
+                    ? "vcf"
+                    : "vcf.gz"
     def index = ''
     if (extension in ['vcf.gz', 'bcf', 'bcf.gz']) {
         if (['--write-index=tbi', '-W=tbi'].any { arg -> args.contains(arg) } && extension == 'vcf.gz') {
@@ -64,10 +67,5 @@ process BCFTOOLS_NORM {
     """
     ${create_cmd} ${prefix}.${extension}
     ${create_index}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
-    END_VERSIONS
     """
 }
