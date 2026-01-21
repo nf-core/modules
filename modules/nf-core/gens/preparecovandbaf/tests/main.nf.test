@@ -2,17 +2,15 @@
 // nf-core modules test preparegensinputdata
 nextflow_process {
 
-    name "Test Process PREPAREGENSINPUTDATA"
+    name "Test Process PREPARECOVANDBAF"
     script "../main.nf"
-    process "PREPAREGENSINPUTDATA"
+    process "PREPARECOVANDBAF"
 
     tag "modules"
     tag "modules_nfcore"
     tag "preparegensinputdata"
 
-    // def testdata_base  = "https://raw.githubusercontent.com/Jakob37/nf-core-test-datasets/refs/heads/preparegensinputdata/"
-
-    test("preparegensinputdata - general test") {
+    test("preparecovandbaf - general test") {
 
         when {
             process {
@@ -42,9 +40,7 @@ nextflow_process {
 
     }
 
-    test("preparegensinputdata - general test - stub") {
-
-        // options "-stub --modules_testdata_base_path=${testdata_base}"
+    test("preparecovandbaf - general test - stub") {
 
         options "-stub"
 

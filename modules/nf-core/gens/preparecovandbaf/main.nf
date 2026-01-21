@@ -1,4 +1,4 @@
-process PREPAREGENSINPUTDATA {
+process PREPARECOVANDBAF {
     tag "$meta.id"
     label 'process_single'
 
@@ -35,7 +35,7 @@ process PREPAREGENSINPUTDATA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        preparegensinputdata: \$(generate_cov_and_baf --version)
+        preparecovandbaf: \$(generate_cov_and_baf --version)
     END_VERSIONS
     """
 
@@ -49,7 +49,7 @@ process PREPAREGENSINPUTDATA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        preparegensinputdata: \$(generate_cov_and_baf --version)
+        preparecovandbaf: \$(generate_cov_and_baf --version)
     END_VERSIONS
     """
 }
