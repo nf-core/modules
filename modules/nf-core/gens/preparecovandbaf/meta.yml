@@ -1,4 +1,4 @@
-name: "gens_preparecovandbaf"
+name: "preparecovandbaf"
 description: Tools for preparing inputs for visualization in Gens
 keywords:
   - gens
@@ -51,64 +51,59 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-      - coverage_bed:
+      - "*.cov.bed.gz":
           type: file
-          description: BGzipped bed file with coverage information
-          pattern: "*.cov.bed.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          description: Coverage bed (bgzipped)
+
   cov_tbi:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-      - coverage_bed_tbi:
+      - "*.cov.bed.gz.tbi":
           type: file
-          description: Tabix index for cov_gz
-          pattern: "*.cov.bed.gz.tbi"
-          ontologies: []
+          description: Tabix index for coverage bed
+
   baf_gz:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-      - baf_bed:
+      - "*.baf.bed.gz":
           type: file
-          description: BGzipped bed file with B-allele frequency information
-          pattern: "*.cov.bed.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          description: BAF bed (bgzipped)
+
   baf_tbi:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-      - baf_bed_tbi:
+      - "*.baf.bed.gz.tbi":
           type: file
-          description: Tabix index for baf_gz
-          pattern: "*.cov.bed.gz.tbi"
-          ontologies: []
+          description: Tabix index for BAF bed
+
   versions_preparecovandbaf:
-    - - ${task.process}:
+    - - "${task.process}":
           type: string
           description: The process the versions were collected from
-      - preparecovandbaf:
+      - "preparecovandbaf":
           type: string
           description: The tool name
       - "generate_cov_and_baf --version":
           type: string
           description: The command used to generate the version of the tool
+
 topics:
   versions:
-    - - ${task.process}:
+    - - "${task.process}":
           type: string
           description: The process the versions were collected from
-      - preparecovandbaf:
+      - "preparecovandbaf":
           type: string
           description: The tool name
       - "generate_cov_and_baf --version":
-          type: string
-          description: The command used to generate the version of the tool
+          type: eval
+          description: The expression used to obtain the tool version
 authors:
   - "@jakob37"
 maintainers:
