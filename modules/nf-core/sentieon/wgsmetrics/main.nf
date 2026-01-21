@@ -5,7 +5,7 @@ process SENTIEON_WGSMETRICS {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/73e9111552beb76e2ad3adad89eb75bed162d7c5b85b2433723ecb4fc96a02674a/data'
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/73e9111552beb76e2ad3ad89eb75bed162d7c5b85b2433723ecb4fc96a02674a/data'
         : 'community.wave.seqera.io/library/sentieon:202503.02--def60555294d04fa'}"
 
     input:
