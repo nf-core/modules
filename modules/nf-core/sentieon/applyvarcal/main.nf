@@ -41,8 +41,6 @@ process SENTIEON_APPLYVARCAL {
         --tranches_file ${tranches} \\
         ${args2} \\
         ${prefix}.vcf.gz
-
-    
     """
 
     stub:
@@ -50,7 +48,5 @@ process SENTIEON_APPLYVARCAL {
     """
     echo | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
-
-    
     """
 }

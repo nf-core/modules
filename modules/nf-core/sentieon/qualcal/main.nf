@@ -30,8 +30,8 @@ process SENTIEON_QUALCAL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_list = input.collect { "-i ${it}" }.join(' ')
-    def knownSites = known_sites ? known_sites.collect { "-k ${it}" }.join(' ') : ""
+    def input_list = input.collect {in -> "-i ${in}" }.join(' ')
+    def knownSites = known_sites ? known_sites.collect {in -> "-k ${in}" }.join(' ') : ""
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64
         ? "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; "
         : ""

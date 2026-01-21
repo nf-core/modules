@@ -34,7 +34,7 @@ process SENTIEON_HAPLOTYPER {
     def args2 = task.ext.args2 ?: '' // options for the vcf generation
     def args3 = task.ext.args3 ?: '' // options for the gvcf generation
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_list = input instanceof List ? input.collect { "-i ${it}" }.join(' ') : "-i ${input}"
+    def input_list = input instanceof List ? input.collect {in -> "-i ${in}" }.join(' ') : "-i ${input}"
     def dbsnp_command = dbsnp ? "-d ${dbsnp} " : ""
     def interval_command = intervals ? "--interval ${intervals}" : ""
     def recal_table_command = recal_table ? "-q ${recal_table}" : ""

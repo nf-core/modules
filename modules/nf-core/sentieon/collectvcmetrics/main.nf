@@ -40,7 +40,6 @@ process SENTIEON_COLLECTVCMETRICS {
         -d ${dbsnp} \\
         ${args2} \\
         ${prefix}
-
     """
 
     stub:
@@ -48,6 +47,5 @@ process SENTIEON_COLLECTVCMETRICS {
     """
     touch ${prefix}.variant_calling_detail_metrics
     touch ${prefix}.variant_calling_summary_metrics
-
     """
 }

@@ -35,7 +35,7 @@ process SENTIEON_TNSCOPE {
     def dbsnp_str = dbsnp ? "--dbsnp ${dbsnp}" : ''
     def pon_str = pon ? "--pon ${pon}" : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def inputs = input.collect { "-i ${it}" }.join(" ")
+    def inputs = input.collect {in -> "-i ${in}" }.join(" ")
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64
         ? "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; "
         : ""
@@ -55,7 +55,6 @@ process SENTIEON_TNSCOPE {
         ${dbsnp_str} \\
         ${pon_str} \\
         ${prefix}.vcf.gz
-
     """
 
     stub:
@@ -63,6 +62,5 @@ process SENTIEON_TNSCOPE {
     """
     echo | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
-
     """
 }
