@@ -47,32 +47,28 @@ input:
         type: file
         description: Reference genome index file
         pattern: "*.fai"
+  - include_hap_stats:
+      type: boolean
+      description: Whether to include haplotype statistics output file
+      default: false
+  - debug_output:
+      type: directory
+      description: Path to debug output files
+      default: false
 
 output:
   ### TODO nf-core: Add a description of all of the variables used as output
-  bam:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "*.bam":
-          type: file
-          description: Sorted BAM/CRAM/SAM file
-          pattern: "*.bam"
-          ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
   vcf:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.vcf.gz":
+      - ${prefix}.vcf.gz:
           type: file
           description: Bgzipped VCF file
           pattern: "*.vcf.gz"
-      - "*.vcf.gz.tbi":
+      - ${prefix}.vcf.gz.tbi:
           type: file
           description: Bgzipped VCF index file
           pattern: "*.vcf.gz.tbi"
@@ -82,7 +78,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.json":
+      - ${prefix}.json:
           type: file
           description: Mitorsaw statistics in JSON format
           pattern: "*.json"
@@ -92,7 +88,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.coverage_stats.json":
+      - ${prefix}.coverage_stats.json:
           type: file
           description: Coverage statistics in JSON format
           pattern: "*.coverage_stats.json"
@@ -102,7 +98,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.xml":
+      - ${prefix}.xml:
           type: file
           description: IGV session file in XML format
           pattern: "*.xml"
@@ -112,7 +108,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.fa":
+      - ${prefix}.fa:
           type: file
           description: Haplotype sequences in FASTA format
           pattern: "*.fa"
@@ -126,7 +122,6 @@ output:
       - mitorsaw --version:
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:

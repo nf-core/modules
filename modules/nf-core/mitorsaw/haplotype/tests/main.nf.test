@@ -22,73 +22,32 @@ nextflow_process {
         when {
             process {
                 """
-                // TODO nf-core: define inputs of the process here. Example:
-
                 input[0] = [
-                    [ id:'test', single_end:true ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/200080.GRCh38.haplotagged.chrM.downsampled.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/200080.GRCh38.haplotagged.chrM.downsampled.bam.bai', checkIfExists: true),
                 ]
                 input[1] = [
                     [ id:'test'],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/raredisease/reference/Homo_sapiens_assembly38_chr20_chrM.fasta', checkIfExists: true)
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/raredisease/reference/Homo_sapiens_assembly38_chr20_chrM.fasta.fai', checkIfExists: true)
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/raredisease/reference/Homo_sapiens_assembly38_chr20_chrM.fasta', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/raredisease/reference/Homo_sapiens_assembly38_chr20_chrM.fasta.fai', checkIfExists: true),
                 ]
                 input[2] = false
                 input[3] = []
-
                 """
             }
         }
 
         then {
-            assert process.success
+
             assertAll(
+                { assert process.success },
                 { assert snapshot(
                     process.out,
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
                 //TODO nf-core: Add all required assertions to verify the test output.
                 // See https://nf-co.re/docs/contributing/tutorials/nf-test_assertions for more information and examples.
-            )
-        }
-
-    }
-
-    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used but keep the " - stub" suffix.
-    test("homo_sapiens - bam - stub") {
-
-        options "-stub"
-
-        when {
-            process {
-                """
-                // TODO nf-core: define inputs of the process here. Example:
-
-                input[0] = [
-                    [ id:'test', single_end:true ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/200080.GRCh38.haplotagged.chrM.downsampled.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/200080.GRCh38.haplotagged.chrM.downsampled.bam.bai', checkIfExists: true),
-                ]
-                input[1] = [
-                    [ id:'test'],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/raredisease/reference/Homo_sapiens_assembly38_chr20_chrM.fasta', checkIfExists: true)
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/raredisease/reference/Homo_sapiens_assembly38_chr20_chrM.fasta.fai', checkIfExists: true)
-                ]
-                input[2] = false
-                input[3] = []
-
-                """
-            }
-        }
-
-        then {
-            assert process.success
-            assertAll(
-                { assert snapshot(
-                    process.out,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
             )
         }
 
@@ -104,28 +63,25 @@ nextflow_process {
         when {
             process {
                 """
-                // TODO nf-core: define inputs of the process here. Example:
-
                 input[0] = [
-                    [ id:'test', single_end:true ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/200080.GRCh38.haplotagged.chrM.downsampled.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/200080.GRCh38.haplotagged.chrM.downsampled.bam.bai', checkIfExists: true),
                 ]
                 input[1] = [
                     [ id:'test'],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/raredisease/reference/Homo_sapiens_assembly38_chr20_chrM.fasta', checkIfExists: true)
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/raredisease/reference/Homo_sapiens_assembly38_chr20_chrM.fasta.fai', checkIfExists: true)
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/raredisease/reference/Homo_sapiens_assembly38_chr20_chrM.fasta', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/raredisease/reference/Homo_sapiens_assembly38_chr20_chrM.fasta.fai', checkIfExists: true),
                 ]
                 input[2] = true
                 input[3] = []
-
                 """
             }
         }
 
         then {
-            assert process.success
             assertAll(
+                { assert process.success },
                 { assert snapshot(
                     process.out,
                     process.out.findAll { key, val -> key.startsWith("versions")}
@@ -137,38 +93,38 @@ nextflow_process {
 
     }
 
+
     // TODO nf-core: Change the test name preferably indicating the test-data and file-format used but keep the " - stub" suffix.
-    test("homo_sapiens - bam - hap_stats - stub") {
+    test("homo_sapiens - bam - stub") {
 
         options "-stub"
+        tag "stuv"
 
         when {
             process {
                 """
-                // TODO nf-core: define inputs of the process here. Example:
-
                 input[0] = [
-                    [ id:'test', single_end:true ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/200080.GRCh38.haplotagged.chrM.downsampled.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/200080.GRCh38.haplotagged.chrM.downsampled.bam.bai', checkIfExists: true),
                 ]
                 input[1] = [
                     [ id:'test'],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/raredisease/reference/Homo_sapiens_assembly38_chr20_chrM.fasta', checkIfExists: true)
-                    file(params.modules_testdata_base_path + 'reference/Homo_sapiens_assembly38_chr20_chrM.fasta.fai', checkIfExists: true)
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/raredisease/reference/Homo_sapiens_assembly38_chr20_chrM.fasta', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/raredisease/reference/Homo_sapiens_assembly38_chr20_chrM.fasta.fai', checkIfExists: true),
                 ]
-                input[2] = true
+                input[2] = false
                 input[3] = []
-
                 """
             }
         }
 
         then {
-            assert process.success
             assertAll(
+                { assert process.success },
                 { assert snapshot(
-                    process.out,
+                    file(process.out.vcf.get(0).get(1)).name,
+                    file(process.out.vcf.get(0).get(2)).name,
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
