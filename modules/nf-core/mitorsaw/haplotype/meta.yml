@@ -1,0 +1,144 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+# # TODO nf-core: Add a description of the module and list keywords
+name: "mitorsaw_haplotype"
+description: Mitorsaw analyse mitochondrial variants and identifies heteroplasmy and homoplasmy
+keywords:
+  - heteroplasmy
+  - homoplasmy
+  - mitochondrial
+  - mitorsaw
+  - haplotype
+tools:
+  ## TODO nf-core: Add a description and other details for the software below
+  - mitorsaw:
+      description: "A tool for mitochondrial analysis for HiFi sequencing data"
+      homepage: "https://github.com/PacificBiosciences/mitorsaw"
+      documentation: "https://github.com/PacificBiosciences/mitorsaw/tree/main/docs"
+      tool_dev_url: "https://github.com/PacificBiosciences/mitorsaw"
+      licence: ["Pacific Biosciences Software License Agreement"]
+
+input:
+  ### TODO nf-core: Add a description of all of the variables used as input
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Sorted BAM file
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+    - bai:
+        type: file
+        description: BAM index file (optional but recommended)
+        pattern: "*.bai"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'genome' ]`
+    - fasta:
+        type: file
+        description: Reference genome in FASTA format
+        pattern: "*.{fa,fasta}"
+    - fai:
+        type: file
+        description: Reference genome index file
+        pattern: "*.fai"
+
+output:
+  ### TODO nf-core: Add a description of all of the variables used as output
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: Sorted BAM/CRAM/SAM file
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.vcf.gz":
+          type: file
+          description: Bgzipped VCF file
+          pattern: "*.vcf.gz"
+      - "*.vcf.gz.tbi":
+          type: file
+          description: Bgzipped VCF index file
+          pattern: "*.vcf.gz.tbi"
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.json":
+          type: file
+          description: Mitorsaw statistics in JSON format
+          pattern: "*.json"
+  coverage_stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.coverage_stats.json":
+          type: file
+          description: Coverage statistics in JSON format
+          pattern: "*.coverage_stats.json"
+  igv_session:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.xml":
+          type: file
+          description: IGV session file in XML format
+          pattern: "*.xml"
+  hap_seq:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.fa":
+          type: file
+          description: Haplotype sequences in FASTA format
+          pattern: "*.fa"
+  versions_mitorsaw:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mitorsaw:
+          type: string
+          description: The name of the tool
+      - mitorsaw --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mitorsaw:
+          type: string
+          description: The name of the tool
+      - mitorsaw --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@eliottBo"
+maintainers:
+  - "@eliottBo"

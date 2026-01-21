@@ -15,15 +15,15 @@
 // TODO nf-core: Optional inputs are not currently supported by Nextflow. However, using an empty
 //               list (`[]`) instead of a file can be used to work around this issue.
 
-process MITORSAW {
+process MITORSAW_HAPLOTYPE {
     tag "$meta.id"
     label 'process_single'
 
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'biocontainers/YOUR-TOOL-HERE' }"
+        'https://depot.galaxyproject.org/singularity/mitorsaw:0.2.7--h9ee0642_0':
+        'biocontainers/mitorsaw:0.2.7--h9ee0642_0' }"
 
     input:// TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
     //               MUST be provided as an input via a Groovy Map called "meta".
@@ -31,11 +31,20 @@ process MITORSAW {
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(bai)    // channel: [ val(meta), path(bam), path(bai) ]
+    tuple val(meta2), path(fasta), path(fai) // channel: [ val(meta2), path(fasta), path(fai) ]
+    val(include_hap_stats)                   // value: [ true | false ], optional: true
+    path(debug_output)     // channel: path(debug_output), optional: true
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*${prefix}.bam"),                                   emit: bam
+    tuple val(meta), path("*${prefix}.vcf.gz"), path("*${prefix}.vcf.gz.tbi"), emit: vcf
+    tuple val(meta), path("${prefix}.json"),                                   emit: stats,          optional: true
+    tuple val(meta), path("*${debug_output}/${prefix}.coverage_stats.json"),   emit: coverage_stats, optional: true
+    tuple val(meta), path("*${debug_output}/${prefix}.xml"),                   emit: igv_session,    optional: true
+    tuple val(meta), path("*${debug_output}/${prefix}.fa"),                    emit: hap_seq,        optional: true
+
     // TODO nf-core: List additional required output channels/values here
     // TODO nf-core: Update the command here to obtain the version number of the software used in this module
     // TODO nf-core: If multiple software packages are used in this module, all MUST be added here
@@ -46,8 +55,11 @@ process MITORSAW {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
+
+    def output_hap_stats     = include_hap_stats ? "--output-hap-stats ${prefix}.json" : ''
+    def include_debug_output = debug_output      ? "--output-debug ${debug_output}"    : ''
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
     //               If the software is unable to output a version number on the command-line then it can be manually specified
     //               e.g. https://github.com/nf-core/modules/blob/master/modules/nf-core/homer/annotatepeaks/main.nf
@@ -58,16 +70,18 @@ process MITORSAW {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    mitorsaw \\
+    mitorsaw haplotype \\
         $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        $bam
+        --reference ${fasta} \\
+        --bam ${bam} \\
+        --output-vcf ${prefix}.vcf \\
+        ${output_hap_stats} \\
+        ${include_debug_output}
     """
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix   = task.ext.prefix ?: "${meta.id}"
     // TODO nf-core: A stub section should mimic the execution of the original module as best as possible
     //               Have a look at the following examples:
     //               Simple example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bcftools/annotate/main.nf#L47-L63
@@ -78,6 +92,7 @@ process MITORSAW {
     """
     echo $args
 
-    touch ${prefix}.bam
+    touch ${prefix}.vcf
+    touch ${prefix}.json
     """
 }
