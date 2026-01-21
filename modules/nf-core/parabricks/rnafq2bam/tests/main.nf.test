@@ -101,8 +101,9 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf', checkIfExists: true)
                 ])
-				input[2] = BWA_INDEX.out.index
-                input[3] = PARABRICKS_STARGENOMEGENERATE.out.index
+                // Remove inputs for stub test
+				input[2] = [[],[]]
+                input[3] = [[],[]]
                 """
             }
         }
@@ -174,8 +175,9 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf', checkIfExists: true)
                 ])
-				input[2] = BWA_INDEX.out.index
-                input[3] = PARABRICKS_STARGENOMEGENERATE.out.index
+                // Remove inputs for stub test
+				input[2] = [[],[]]
+                input[3] = [[],[]]
                 """
             }
         }
