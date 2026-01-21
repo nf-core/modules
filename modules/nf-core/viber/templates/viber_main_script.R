@@ -40,8 +40,8 @@ library(ggpubr)
 samples = substr("$tumour_samples", 2, nchar("$tumour_samples")-1)
 samples = strsplit(samples, ", ")[[1]]
 
-cli::cli_text("Patient {$meta.patient} with samples {$tumour_samples}.")
-cli::cli_text("Input file: {$rds_join}.")
+cli::cli_text("Patient $meta.patient with samples $tumour_samples.")
+cli::cli_text("Input file: $rds_join.")
 
 if ( grepl(".rds\$", tolower("$rds_join")) ) {
     input_obj = readRDS("$rds_join")
@@ -56,6 +56,7 @@ if ( grepl(".rds\$", tolower("$rds_join")) ) {
                           if (nrow(table_s) == 0) {
                             cli::cli_alert_warning("Sample {sample_name} has no diploid mutations!")
                           }
+                          return(table_s)
                         }) %>% dplyr::bind_rows()
         } else {
           cli::cli_alert_warning("Object of class {class(input_obj)} not supported.")
