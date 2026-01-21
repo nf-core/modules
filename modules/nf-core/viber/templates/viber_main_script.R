@@ -1,5 +1,7 @@
 #!/usr/bin/env Rscript
 
+options(easypar.parallel=FALSE)
+
 parse_args = function(x) {
     x = gsub("\\\\[","",x)
     x = gsub("\\\\]","",x)
