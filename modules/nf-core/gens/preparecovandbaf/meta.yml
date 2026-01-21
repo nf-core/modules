@@ -46,7 +46,7 @@ output:
       - "*.cov.bed.gz":
           type: file
           description: BGzipped bed file with coverage information
-          pattern: "*.{bed.gz}"
+          pattern: "*.cov.bed.gz"
   - cov_tbi:
       - meta:
           type: map
@@ -55,7 +55,7 @@ output:
       - "*.cov.bed.gz.tbi":
           type: file
           description: Tabix index for cov_gz
-          pattern: "*.{bed.gz.tbi}"
+          pattern: "*.cov.bed.gz.tbi"
   - baf_gz:
       - meta:
           type: map
@@ -64,7 +64,7 @@ output:
       - "*.cov.bed.gz":
           type: file
           description: BGzipped bed file with coverage information
-          pattern: "*.{bed.gz}"
+          pattern: "*.baf.bed.gz"
   - baf_tbi:
       - meta:
           type: map
@@ -73,7 +73,7 @@ output:
       - "*.cov.bed.gz.tbi":
           type: file
           description: Tabix index for baf_gz
-          pattern: "*.{bed.gz.tbi}"
+          pattern: "*.baf.bed.gz.tbi"
   - versions:
       - "versions.yml":
           type: file
