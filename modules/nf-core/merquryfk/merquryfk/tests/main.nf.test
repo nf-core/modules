@@ -19,7 +19,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/merquryfk/Child.Reads.fasta.gz', checkIfExists: true)
                 ]
                 """
             }
@@ -31,7 +31,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test_mat', single_end:false ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/merquryfk/Mother.Reads.fasta.gz', checkIfExists: true),
                 ]
                 """
             }
@@ -43,7 +43,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test_pat', single_end:false ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/merquryfk/Father.Reads.fasta.gz', checkIfExists: true),
                 ]
                 """
             }
@@ -61,7 +61,7 @@ nextflow_process {
         }
     }
 
-    test("homo_sapiens - Illumina") {
+    test("MerquryFK - Synthetic trio data - hap1 only - no trio") {
 
         config "./nextflow.config"
 
@@ -69,7 +69,7 @@ nextflow_process {
             process {
                 """
                 input[0] = FASTK_FASTK.out.hist.join(FASTK_FASTK.out.ktab).map { meta, hist, ktab ->
-                        [ meta, hist, ktab, file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true), [] ]
+                        [ meta, hist, ktab, file(params.modules_testdata_base_path + 'delete_me/merquryfk/Hap1.fasta.gz', checkIfExists: true), [] ]
                     }
                 input[1] = [[:], []]
                 input[2] = [[:], []]
@@ -95,7 +95,47 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - Illumina - trio") {
+    test("MerquryFK - Synthetic trio data - both haps - no trio") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = FASTK_FASTK.out.hist.join(FASTK_FASTK.out.ktab).map { meta, hist, ktab ->
+                        [
+                            meta,
+                            hist,
+                            ktab,
+                            file(params.modules_testdata_base_path + 'delete_me/merquryfk/Hap1.fasta.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'delete_me/merquryfk/Hap2.fasta.gz', checkIfExists: true),
+                        ]
+                    }
+                input[1] = [[:], []]
+                input[2] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.stats,
+                    process.out.bed,
+                    process.out.qv,
+                    process.out.assembly_qv,
+                    process.out.phased_block_bed,
+                    process.out.phased_block_stats,
+                    process.out.images.collect { meta, images -> [ meta, images.collect { img -> file(img).name } ] },
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+    test("MerquryFK - Synthetic trio data - both haps - trio") {
 
         config "./nextflow.config"
 
@@ -104,7 +144,13 @@ nextflow_process {
             process {
                 """
                 input[0] = FASTK_FASTK.out.hist.join(FASTK_FASTK.out.ktab).map { meta, hist, ktab ->
-                        [ meta, hist, ktab, file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true), [] ]
+                        [
+                            meta,
+                            hist,
+                            ktab,
+                            file(params.modules_testdata_base_path + 'delete_me/merquryfk/Hap1.fasta.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'delete_me/merquryfk/Hap2.fasta.gz', checkIfExists: true),
+                        ]
                     }
                 input[1] = MERQURYFK_HAPMAKER.out.mat_hap_ktab
                 input[2] = MERQURYFK_HAPMAKER.out.pat_hap_ktab
@@ -139,7 +185,13 @@ nextflow_process {
             process {
                 """
                 input[0] = FASTK_FASTK.out.hist.join(FASTK_FASTK.out.ktab).map { meta, hist, ktab ->
-                        [ meta, hist, ktab, file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true), [] ]
+                        [
+                            meta,
+                            hist,
+                            ktab,
+                            file(params.modules_testdata_base_path + 'delete_me/merquryfk/Hap1.fasta.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'delete_me/merquryfk/Hap2.fasta.gz', checkIfExists: true),
+                        ]
                     }
                 input[1] = [[:], []]
                 input[2] = [[:], []]
