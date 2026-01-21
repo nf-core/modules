@@ -16,15 +16,15 @@ process PARABRICKS_FQ2BAM {
     val output_fmt
 
     output:
-    tuple val(meta), path("*.bam"),                   emit: bam,                 optional:true
-    tuple val(meta), path("*.bai"),                   emit: bai,                 optional:true
-    tuple val(meta), path("*.cram"),                  emit: cram,                optional:true
-    tuple val(meta), path("*.crai"),                  emit: crai,                optional:true
-    tuple val(meta), path("*.table"),                 emit: bqsr_table,          optional:true
-    tuple val(meta), path("*_qc_metrics"),            emit: qc_metrics,          optional:true
-    tuple val(meta), path("*.duplicate-metrics.txt"), emit: duplicate_metrics,   optional:true
-    path "compatible_versions.yml",                   emit: compatible_versions, optional:true
-    tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:'"), topic: versions, emit: versions_parabricks
+    tuple val(meta), path("*.bam"), emit: bam, optional: true
+    tuple val(meta), path("*.bai"), emit: bai, optional: true
+    tuple val(meta), path("*.cram"), emit: cram, optional: true
+    tuple val(meta), path("*.crai"), emit: crai, optional: true
+    tuple val(meta), path("*.table"), emit: bqsr_table, optional: true
+    tuple val(meta), path("*_qc_metrics"), emit: qc_metrics, optional: true
+    tuple val(meta), path("*.duplicate-metrics.txt"), emit: duplicate_metrics, optional: true
+    path "compatible_versions.yml", emit: compatible_versions, optional: true
+    tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions_parabricks
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,17 +34,17 @@ process PARABRICKS_FQ2BAM {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error("Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
-    def args   = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def in_fq_command = meta.single_end ? "--in-se-fq ${reads}" : "--in-fq ${reads}"
-    def extension     = "${output_fmt}"
+    def extension = "${output_fmt}"
 
-    def known_sites_command    = known_sites   ? (known_sites instanceof List ? known_sites.collect { knownSite ->  "--knownSites ${knownSite}" }.join(' ') : "--knownSites ${known_sites}") : ""
-    def known_sites_output_cmd = known_sites   ? "--out-recal-file ${prefix}.table" : ""
-    def intervals_command  = intervals     ? (intervals instanceof List ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : "--interval-file ${intervals}") : ""
+    def known_sites_command = known_sites ? (known_sites instanceof List ? known_sites.collect { knownSite -> "--knownSites ${knownSite}" }.join(' ') : "--knownSites ${known_sites}") : ""
+    def known_sites_output_cmd = known_sites ? "--out-recal-file ${prefix}.table" : ""
+    def intervals_command = intervals ? (intervals instanceof List ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : "--interval-file ${intervals}") : ""
 
-    def num_gpus   = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
+    def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
     """
     INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
     cp ${fasta} \$INDEX
