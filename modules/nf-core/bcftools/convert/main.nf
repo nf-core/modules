@@ -96,7 +96,7 @@ process BCFTOOLS_CONVERT {
 
     if (args.contains('--haplegendsample')) {
         def args_split = args.split(' ')
-        hap = args_split.findIndexOf { it == '--haplegendsample' }
+        hap = args_split.findIndexOf { arg -> arg == '--haplegendsample' }
         prefix = args_split[hap + 1]
     }
     """

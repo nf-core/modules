@@ -39,8 +39,8 @@ process BCFTOOLS_PLUGINFILLTAGS {
                     ? "vcf"
                     : "vcf.gz"
 
-    input.collect {
-        assert it.name != "${prefix}.${extension}" : "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    input.collect { input_ ->
+        assert input_.name != "${prefix}.${extension}" : "Input and output names are the same, set prefix in module configuration to disambiguate!"
     }
 
     """

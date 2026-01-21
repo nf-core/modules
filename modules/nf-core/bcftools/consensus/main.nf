@@ -32,9 +32,7 @@ process BCFTOOLS_CONSENSUS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def masking = mask ? "-m ${mask}" : ""
     """
     touch ${prefix}.fa
     """

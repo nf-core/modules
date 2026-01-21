@@ -33,7 +33,7 @@ process BCFTOOLS_CONCAT {
                 : args.contains("--output-type v") || args.contains("-Ov")
                     ? "vcf"
                     : "vcf"
-    def input = vcfs.sort { it.toString() }.join(" ")
+    def input = vcfs.sort { vcf -> vcf.toString() }.join(" ")
     """
     ${create_input_index}
 

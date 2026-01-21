@@ -18,9 +18,7 @@ process BCFTOOLS_SPLIT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     bcftools index -s ${vcf} |\\
     cut -f 1 | \\
@@ -31,7 +29,6 @@ process BCFTOOLS_SPLIT {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     touch "${prefix}.chr1.vcf.gz"
     touch "${prefix}.chr2.vcf.gz"
