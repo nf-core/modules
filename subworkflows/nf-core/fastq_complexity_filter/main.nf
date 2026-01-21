@@ -44,8 +44,8 @@ workflow FASTQ_COMPLEXITY_FILTER {
 
     emit:
     filtered_reads = ch_filtered_reads // channel: [ val(meta), [ fastq.gz ] ]
-    logfile        = ch_log            // channel: [ val(meta), [ {log,txt} ] ]
-    report         = ch_report         // channel: [ val(meta), [ {summary,html,zip} ] ]
-    versions       = ch_versions       // channel: [ versions.yml ]
+    logfile        = ch_log            // channel: [ val(meta), [ {txt} ] ]
+    report         = ch_report         // channel: [ val(meta), [ {html} ] ]
     multiqc_files  = ch_multiqc_files
+    versions       = ch_versions       // channel: [ versions.yml ]
 }
