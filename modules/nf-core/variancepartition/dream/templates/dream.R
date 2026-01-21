@@ -238,14 +238,13 @@ print(form)
 
 # Parallel processing setup
 threads <- as.numeric(opt\$threads)
-param <- SnowParam(threads, "SOCK", progressbar = TRUE)
 
 # Optionally apply voom
 if (as.logical(opt\$apply_voom)) {
     # Standard usage of limma/voom
     dge <- DGEList(countMatrix)
     dge <- calcNormFactors(dge)
-    vobjDream <- voomWithDreamWeights(dge, form, metadata, BPPARAM = param)
+    vobjDream <- voomWithDreamWeights(dge, form, metadata, BPPARAM = MulticoreParam(threads))
 
     # Write normalized counts matrix to a TSV file
      normalized_counts <- vobjDream\$E

@@ -4,14 +4,14 @@ include { BCFTOOLS_INDEX  } from '../../../modules/nf-core/bcftools/index'
 
 workflow BAM_IMPUTE_QUILT {
     take:
-    ch_input      // channel (mandatory):   [ [id], [bam], [bai], bampaths, bamnames ]
+    ch_input // channel (mandatory):   [ [id], [bam], [bai], bampaths, bamnames ]
     ch_hap_legend // channel (mandatory):   [ [panel, chr], hap, legend ]
-    ch_posfile    // channel (mandatory):   [ [panel, chr], posfile ]
-    ch_chunks     // channel (optional) :   [ [panel, chr], chr, start, end ]
-    ch_map        // channel (optional) :   [ [panel, chr], map ]
-    ch_fasta      // channel (optional) :   [ [genome], fa, fai ]
-    n_gen         // integer: Number of generations since founding or mixing
-    buffer        // integer: Buffer of region to perform imputation over
+    ch_posfile // channel (mandatory):   [ [panel, chr], posfile ]
+    ch_chunks // channel (optional) :   [ [panel, chr], chr, start, end ]
+    ch_map // channel (optional) :   [ [panel, chr], map ]
+    ch_fasta // channel (optional) :   [ [genome], fa, fai ]
+    n_gen // integer: Number of generations since founding or mixing
+    buffer // integer: Buffer of region to perform imputation over
 
     main:
 
@@ -36,10 +36,21 @@ workflow BAM_IMPUTE_QUILT {
             }
             [
                 metaPC + metaI + ["regionout": regionout],
-                bam, bai, bampath, bamname,
-                hap, legend,
-                posfile, [], [],
-                chr, start, end, n_gen, buffer, gmap
+                bam,
+                bai,
+                bampath,
+                bamname,
+                hap,
+                legend,
+                posfile,
+                [],
+                [],
+                chr,
+                start,
+                end,
+                n_gen,
+                buffer,
+                gmap,
             ]
         }
 
@@ -59,7 +70,6 @@ workflow BAM_IMPUTE_QUILT {
     ch_versions = ch_versions.mix(GLIMPSE2_LIGATE.out.versions.first())
 
     BCFTOOLS_INDEX(GLIMPSE2_LIGATE.out.merged_variants)
-    ch_versions = ch_versions.mix(BCFTOOLS_INDEX.out.versions.first())
 
     // Join imputed and index files
     ch_vcf_index = GLIMPSE2_LIGATE.out.merged_variants.join(
@@ -70,5 +80,5 @@ workflow BAM_IMPUTE_QUILT {
 
     emit:
     vcf_index = ch_vcf_index // channel:   [ [id, chr], vcf, tbi ]
-    versions  = ch_versions  // channel:   [ versions.yml ]
+    versions  = ch_versions // channel:   [ versions.yml ]
 }
