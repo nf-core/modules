@@ -34,6 +34,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.getVariantsAsStrings(100),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match() }
             )
         }
@@ -64,6 +65,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.getVariantsAsStrings(100),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match() }
             )
         }
@@ -100,6 +102,7 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.gvcf[0][1]).name,
                     path(process.out.gvcf[0][1]).vcf.getVariantsAsStrings(100),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -137,6 +140,7 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.gvcf[0][1]).name,
                     path(process.out.gvcf[0][1]).vcf.getVariantsAsStrings(100),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
