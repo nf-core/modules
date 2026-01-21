@@ -15,7 +15,7 @@ process PREPARECOVANDBAF {
     tuple val(meta), path("*.cov.bed.gz.tbi") , emit: cov_tbi
     tuple val(meta), path("*.baf.bed.gz")     , emit: baf_gz
     tuple val(meta), path("*.baf.bed.gz.tbi") , emit: baf_tbi
-    path "versions.yml"                       , emit: versions_preparecovandbaf, topic: versions
+    path val("${task.process}"), val('preparecovandbaf'), eval("generate_cov_and_baf --version"), topic: versions, emit: versions_preparecovandbaf
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,11 +32,6 @@ process PREPARECOVANDBAF {
         --bgzip_tabix_output \\
         $args \\
         --outdir .
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        preparecovandbaf: \$(generate_cov_and_baf --version)
-    END_VERSIONS
     """
 
     stub:
@@ -46,10 +41,5 @@ process PREPARECOVANDBAF {
     touch ${prefix}.cov.bed.gz.tbi
     echo "" | gzip > ${prefix}.baf.bed.gz
     touch ${prefix}.baf.bed.gz.tbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        preparecovandbaf: \$(generate_cov_and_baf --version)
-    END_VERSIONS
     """
 }
