@@ -158,7 +158,7 @@ jobs:
         run: nf-core modules lint ${{ matrix.module }}
 
       - name: Nextflow lint module ${{ matrix.module }}
-        run: export NXF_SYNTAX_PARSER=v2; nextflow lint modules/nf-core/${{ matrix.module }}
+        run: NXF_SYNTAX_PARSER=v2 nextflow lint modules/nf-core/${{ matrix.module }}
 
   nf-core-lint-subworkflows:
     runs-on:
@@ -193,7 +193,7 @@ jobs:
         run: nf-core subworkflows lint ${{ matrix.subworkflow }}
 
       - name: Nextflow lint subworkflow ${{ matrix.subworkflow }}
-        run: export NXF_SYNTAX_PARSER=v2; nextflow lint subworkflows/nf-core/${{ matrix.subworkflow }}
+        run: NXF_SYNTAX_PARSER=v2 nextflow lint subworkflows/nf-core/${{ matrix.subworkflow }}
 
   confirm-pass-lint:
     runs-on:
