@@ -54,7 +54,6 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     process.out.bai,
-                    process.out.versions
                 ).match() }
             )
         }

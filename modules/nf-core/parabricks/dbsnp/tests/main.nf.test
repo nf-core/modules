@@ -30,7 +30,6 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.versions
                     ).match()
                 }
             )
@@ -60,7 +59,6 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    path(process.out.versions.get(0)).yaml,
                     path(process.out.compatible_versions.get(0)).yaml
                     ).match() }
             )

@@ -42,8 +42,6 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     file(process.out.bai[0][1]).name,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
                 ).match() }
             )
         }
@@ -79,7 +77,6 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    path(process.out.versions.get(0)).yaml,
                     path(process.out.compatible_versions.get(0)).yaml
                     ).match() }
             )
@@ -119,8 +116,6 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     file(process.out.bai[0][1]).name,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
                 ).match() }
             )
         }
@@ -158,11 +153,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                    ).match()
-                }
+                { assert snapshot(process.out).match() }
             )
         }
     }
@@ -201,8 +192,6 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     file(process.out.bai[0][1]).name,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
                 ).match() }
             )
         }
@@ -240,11 +229,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                    ).match()
-                }
+                { assert snapshot(process.out).match() }
             )
         }
     }
@@ -286,8 +271,6 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     file(process.out.bai[0][1]).name,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
                 ).match() }
             )
         }
@@ -328,11 +311,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                    ).match()
-                }
+                { assert snapshot(process.out).match() }
             )
         }
     }
@@ -368,8 +347,6 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     file(process.out.bai[0][1]).name,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
                 ).match() }
             )
         }
@@ -403,11 +380,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                    ).match()
-                }
+                { assert snapshot(process.out).match() }
             )
         }
     }
@@ -446,8 +419,6 @@ nextflow_process {
                         fasta,
                         ).getReadsMD5(),
                     file(process.out.crai[0][1]).name,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
                 ).match() }
             )
         }
@@ -481,11 +452,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                    ).match()
-                }
+                { assert snapshot(process.out).match() }
             )
         }
     }
@@ -524,8 +491,6 @@ nextflow_process {
                         fasta,
                         ).getReadsMD5(),
                     file(process.out.crai[0][1]).name,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
                 ).match() }
             )
         }
@@ -559,11 +524,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                    ).match()
-                }
+                { assert snapshot(process.out).match() }
             )
         }
     }

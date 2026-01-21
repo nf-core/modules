@@ -17,7 +17,7 @@ process PARABRICKS_APPLYBQSR {
     output:
     tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path("*.bai"), emit: bai
-    path "versions.yml",            emit: versions
+    tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions_parabricks
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,11 +42,6 @@ process PARABRICKS_APPLYBQSR {
         --num-threads ${task.cpus} \\
         ${num_gpus} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 
     stub:
@@ -54,10 +49,5 @@ process PARABRICKS_APPLYBQSR {
     """
     touch ${prefix}.bam
     touch ${prefix}.bam.bai
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 }

@@ -19,7 +19,7 @@ process PARABRICKS_RNAFQ2BAM {
     tuple val(meta), path("Chimeric.out.junction"),                 emit: junction,             optional: true
     tuple val(meta), path("*_qc_metrics"),                          emit: qc_metrics,           optional:true
     tuple val(meta), path("*.duplicate-metrics.txt"),               emit: duplicate_metrics,    optional:true
-    path "versions.yml",                                            emit: versions
+    tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions_parabricks
 
     when:
     task.ext.when == null || task.ext.when
@@ -52,11 +52,6 @@ process PARABRICKS_RNAFQ2BAM {
     if [[ "${args}" == *"--out-chim-type"* ]]; then
         mv ${prefix}/Chimeric.out.junction .
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 
     stub:
@@ -75,11 +70,5 @@ process PARABRICKS_RNAFQ2BAM {
     ${chimeric_output}
     ${qc_metrics_output}
     ${duplicate_metrics_output}
-
-    # Capture the full version output once and store it in a variable
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 }

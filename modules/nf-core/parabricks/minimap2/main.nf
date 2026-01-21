@@ -23,7 +23,7 @@ process PARABRICKS_MINIMAP2 {
     tuple val(meta), path("*_qc_metrics"),            emit: qc_metrics,          optional: true
     tuple val(meta), path("*.duplicate-metrics.txt"), emit: duplicate_metrics,   optional: true
     path "compatible_versions.yml",                   emit: compatible_versions, optional: true
-    path "versions.yml",                              emit: versions
+    tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions_parabricks
 
     when:
     task.ext.when == null || task.ext.when
@@ -65,11 +65,6 @@ process PARABRICKS_MINIMAP2 {
         ${intervals_command} \\
         ${num_gpus} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 
     stub:
@@ -103,10 +98,5 @@ process PARABRICKS_MINIMAP2 {
         compatible_with:
         \$(echo "\$pbrun_version_output" | tr '\\t' ' ' | awk -F':' '/Compatible With:/,/^---/ { if (\$0 !~ /Compatible With:/ && \$0 !~ /^---\$/ && index(\$0,":")>0) { key=\$1; val=\$2; gsub(/^[ ]+|[ ]+\$/, "", key); gsub(/^[ ]+|[ ]+\$/, "", val); printf "  %s: %s\\n", key, val } }')
     EOF
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 }
