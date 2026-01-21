@@ -23,29 +23,33 @@ process GLIMPSE2_PHASE {
 
     output:
     tuple val(meta), path("*.{vcf,vcf.gz,bcf,bgen}"), emit: phased_variants
-    tuple val(meta), path("*.txt.gz")               , emit: stats_coverage, optional: true
-    path "versions.yml"                             , emit: versions
+    tuple val(meta), path("*.txt.gz"), emit: stats_coverage, optional: true
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def region = input_region    ? "${output_region.replace(":", "_")}" : "${reference}"
-    def args   = task.ext.args   ?: ""
+    def region = input_region ? "${output_region.replace(":", "_")}" : "${reference}"
+    def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}_${region}"
     def suffix = task.ext.suffix ?: "vcf.gz"
 
-    def map_command          = map             ? "--map ${map}"                     : ""
-    def samples_file_command = samples_file    ? "--samples-file ${samples_file}"   : ""
-    def fasta_command        = fasta_reference ? "--fasta ${fasta_reference}"       : ""
-    def input_region_cmd     = input_region    ? "--input-region ${input_region}"   : ""
-    def output_region_cmd    = output_region   ? "--output-region ${output_region}" : ""
+    def map_command = map ? "--map ${map}" : ""
+    def samples_file_command = samples_file ? "--samples-file ${samples_file}" : ""
+    def fasta_command = fasta_reference ? "--fasta ${fasta_reference}" : ""
+    def input_region_cmd = input_region ? "--input-region ${input_region}" : ""
+    def output_region_cmd = output_region ? "--output-region ${output_region}" : ""
 
-    def input_type = input.collect{
-        it.toString().endsWithAny("cram", "bam")          ? "bam" :
-        it.toString().endsWithAny("vcf", "bcf", "vcf.gz") ? "gl"  :
-        it.getExtension()
-    }.unique()
+    def input_type = input
+        .collect { input_ ->
+            input_.toString().endsWithAny("cram", "bam")
+                ? "bam"
+                : input_.toString().endsWithAny("vcf", "bcf", "vcf.gz")
+                    ? "gl"
+                    : input_.getExtension()
+        }
+        .unique()
 
     if (input_type.size() > 1 | !(input_type.contains("gl") | input_type.contains("bam"))) {
         error("Input files must be of the same type and either .bam/.cram or .vcf/.vcf.gz/.bcf format. Found: ${input_type}")
@@ -99,7 +103,7 @@ process GLIMPSE2_PHASE {
     """
 
     stub:
-    def region = input_region    ? "${output_region.replace(":", "_")}" : "${reference}"
+    def region = input_region ? "${output_region.replace(":", "_")}" : "${reference}"
     def prefix = task.ext.prefix ?: "${meta.id}_${region}"
     def suffix = task.ext.suffix ?: "vcf.gz"
     def create_cmd = suffix.endsWith(".gz") ? "echo | gzip > ${prefix}.${suffix}" : "touch ${prefix}.${suffix}"
