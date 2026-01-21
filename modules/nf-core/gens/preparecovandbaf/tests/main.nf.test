@@ -3,14 +3,15 @@
 nextflow_process {
 
     name "Test Process PREPARECOVANDBAF"
-    script "../main.nf"
+    script "modules/nf-core/gens/preparecovandbaf/main.nf"
     process "PREPARECOVANDBAF"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "preparecovandbaf"
+    tag "gens"
+    tag "gens/preparecovandbaf"
 
-    test("preparecovandbaf - general test") {
+    test("gens_preparecovandbaf") {
 
         when {
             process {
@@ -40,7 +41,7 @@ nextflow_process {
 
     }
 
-    test("preparecovandbaf - general test - stub") {
+    test("gens_preparecovandbaf - stub") {
 
         options "-stub"
 
