@@ -22,12 +22,17 @@ process SAMTOOLS_COVERAGE {
     script:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def reference = fasta ? "--reference ${fasta}" : ""
+
+    if (input.name.endsWith('.cram') && (!fasta || !fai)) {
+        error "CRAM input file provided but no reference FASTA and/or FAI index for said reference, both are required for CRAM input."
+    }
     """
     samtools \\
         coverage \\
         $args \\
         -o ${prefix}.txt \\
-        --reference ${fasta} \\
+        $reference \\
         $input
 
     cat <<-END_VERSIONS > versions.yml

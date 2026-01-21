@@ -2,11 +2,13 @@ nextflow_process {
     name "Test Process EMU_ABUNDANCE"
     script "../main.nf"
     process "EMU_ABUNDANCE"
+
     tag "modules"
     tag "untar"
     tag "modules_nfcore"
     tag "emu"
     tag "emu/abundance"
+
     config "./nextflow.config"
 
     setup {
@@ -14,13 +16,13 @@ nextflow_process {
             script "modules/nf-core/untar/main.nf"
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = [
                     [],
                     file(
                         params.modules_testdata_base_path + "genomics/prokaryotes/streptococcus_agalactiae/genome/emu.tar.gz",
                         checkIfExists: true
                     )
-                ])
+                ]
                 """
             }
         }
@@ -33,9 +35,10 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [ id:'test' ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/streptococcus_agalactiae/nanopore/fastq/test.fastq.gz', checkIfExists: true)
-                        ]
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/streptococcus_agalactiae/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+                ]
                 input[1] = UNTAR.out.untar.map{ it[1] }
                 """
             }
@@ -48,8 +51,8 @@ nextflow_process {
                     process.out.report,
                     process.out.assignment_report,
                     process.out.samfile,
-                    file(process.out.unclassified_fa[0][1]).name,
-                    file(process.out.unmapped_fa[0][1]).name,
+                    file(process.out.unclassified[0][1]).name,
+                    file(process.out.unmapped[0][1]).name,
                     process.out.versions,
                 ).match() }
             )

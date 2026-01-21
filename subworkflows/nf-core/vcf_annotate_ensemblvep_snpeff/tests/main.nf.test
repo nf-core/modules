@@ -52,11 +52,11 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
-                    workflow.out.vep_reports.collect { it instanceof String ? file(it).name : it },
+                    workflow.out.vep_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },
-                    workflow.out.versions.collect { it instanceof String ? file(it).name : it }
+                    workflow.out.versions.collect { it instanceof String ? path(it).yaml : it }
                 ).match()}
             )
         }
@@ -68,8 +68,8 @@ nextflow_workflow {
             workflow {
                 """
                 snpeff_cache = Channel.of([
-                    [ id:'WBcel235.105' ],
-                    file('s3://annotation-cache/snpeff_cache/WBcel235.105/')
+                    [ id:'WBcel235.99' ],
+                    file('s3://annotation-cache/snpeff_cache/WBcel235.99/')
                 ]).collect()
 
                 input[0] = Channel.of([
@@ -93,7 +93,7 @@ nextflow_workflow {
                 input[4] = "113"
                 input[5] = []
                 input[6] = []
-                input[7] = "WBcel235.105"
+                input[7] = "WBcel235.99"
                 input[8] = snpeff_cache
                 input[9] = ["snpeff"]
                 input[10] = 5
@@ -106,11 +106,11 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
-                    workflow.out.vep_reports.collect { it instanceof String ? file(it).name : it },
+                    workflow.out.vep_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },
-                    workflow.out.versions.collect { it instanceof String ? file(it).name : it }
+                    workflow.out.versions.collect { it instanceof String ? path(it).yaml : it }
                 ).match()}
             )
         }
@@ -122,8 +122,8 @@ nextflow_workflow {
             workflow {
                 """
                 snpeff_cache = Channel.of([
-                    [ id:'WBcel235.105' ],
-                    file('s3://annotation-cache/snpeff_cache/WBcel235.105/')
+                    [ id:'WBcel235.99' ],
+                    file('s3://annotation-cache/snpeff_cache/WBcel235.99/')
                 ]).collect()
                 vep_cache = Channel.of(file('s3://annotation-cache/vep_cache/113_WBcel235/')).collect()
 
@@ -142,7 +142,7 @@ nextflow_workflow {
                 input[4] = "113"
                 input[5] = vep_cache
                 input[6] = []
-                input[7] = "WBcel235.105"
+                input[7] = "WBcel235.99"
                 input[8] = snpeff_cache
                 input[9] = ["snpeff", "ensemblvep"]
                 input[10] = 5
@@ -155,11 +155,11 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
-                    workflow.out.vep_reports.collect { it instanceof String ? file(it).name : it },
+                    workflow.out.vep_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },
-                    workflow.out.versions.collect { it instanceof String ? file(it).name : it }
+                    workflow.out.versions.collect { it instanceof String ? path(it).yaml : it }
                 ).match()}
             )
         }
@@ -200,11 +200,11 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
-                    workflow.out.vep_reports.collect { it instanceof String ? file(it).name : it },
+                    workflow.out.vep_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },
-                    workflow.out.versions.collect { it instanceof String ? file(it).name : it }
+                    workflow.out.versions.collect { it instanceof String ? path(it).yaml : it }
                 ).match()}
             )
         }
@@ -245,11 +245,11 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
-                    workflow.out.vep_reports.collect { it instanceof String ? file(it).name : it },
+                    workflow.out.vep_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },
-                    workflow.out.versions.collect { it instanceof String ? file(it).name : it }
+                    workflow.out.versions.collect { it instanceof String ? path(it).yaml : it }
                 ).match()}
             )
         }

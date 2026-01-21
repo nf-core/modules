@@ -4,8 +4,8 @@ process MODKIT_PILEUP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ont-modkit:0.4.4--hcdda2d0_0':
-        'biocontainers/ont-modkit:0.4.4--hcdda2d0_0' }"
+        'https://depot.galaxyproject.org/singularity/ont-modkit:0.6.0--hcdda2d0_0':
+        'biocontainers/ont-modkit:0.6.0--hcdda2d0_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -13,8 +13,7 @@ process MODKIT_PILEUP {
     tuple val(meta3), path(bed)
 
     output:
-    tuple val(meta), path("*.bed")     , emit: bed     , optional: true
-    tuple val(meta), path("*.bedgraph"), emit: bedgraph, optional: true
+    tuple val(meta), path("*.bed.gz")  , emit: bedgz   , optional: true
     tuple val(meta), path("*.log")     , emit: log     , optional: true
     path "versions.yml"                , emit: versions
 
@@ -31,6 +30,8 @@ process MODKIT_PILEUP {
     modkit \\
         pileup \\
         $args \\
+        --bgzf \\
+        --bgzf-threads ${task.cpus} \\
         --threads ${task.cpus} \\
         --prefix ${prefix} \\
         $reference \\
@@ -45,7 +46,7 @@ process MODKIT_PILEUP {
             fi
         done
     else
-        mv ${prefix}.tmp ${prefix}.bed
+        mv ${prefix}.tmp ${prefix}.bed.gz
     fi
 
     cat <<-END_VERSIONS > versions.yml
@@ -58,8 +59,9 @@ process MODKIT_PILEUP {
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.bed
-    touch ${prefix}.bedgraph
+    echo $args
+
+    echo | gzip > ${prefix}.bed.gz
     touch ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml

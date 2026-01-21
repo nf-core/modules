@@ -29,7 +29,7 @@ process PROSEG_TO_BAYSOR {
         --output-transcript-metadata ${prefix}-baysor-transcript-metadata.csv \\
         --output-cell-polygons ${prefix}-baysor-cell-polygons.geojson \\
         ${args}
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         proseg: \$(proseg --version | sed 's/proseg //')

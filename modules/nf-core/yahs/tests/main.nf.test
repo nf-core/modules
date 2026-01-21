@@ -8,48 +8,24 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "yahs"
-    tag "samtools/view"
-
-    setup {
-            run("SAMTOOLS_VIEW") {
-            script "../../samtools/view"
-            process {
-                """
-                input[0] = Channel.of([
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
-                    []
-                ])
-                input[1] = Channel.of([
-                    [ id:'genome' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                ])
-                input[2] = []
-                input[3] = []
-                """
-            }
-            }
-        }
 
     test("homo_sapiens - bam - fasta - fai") {
 
         when {
 
             params {
-                samtools_view_args = "--output-fmt bam"
-                yahs_args = "--no-contig-ec"
+                yahs_args = ""
             }
 
             process {
                 """
-                input[0] = SAMTOOLS_VIEW.out.bam
-                    .map { meta, bam ->
-                        [ meta,
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
-                        bam
-                        ]
-                    }
+                input[0] = [
+                    [ id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    []
+                ]
                 """
             }
         }
@@ -57,7 +33,72 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.scaffolds_fasta,
+                    process.out.scaffolds_agp,
+                    process.out.initial_break_agp,
+                    process.out.round_agp,
+                    process.out.binary,
+                    process.out.versions,
+                ).match() },
+                { file(process.out.log.get(0).get(1)).readLines().last().contains("Real time") }
+            )
+        }
+    }
+
+    test("homo_sapiens - bam - fasta - fai - agp") {
+
+        setup {
+
+            run("YAHS", alias: "YAHS_INIT") {
+                script "../main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id: "test" ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                        []
+                    ]
+                    """
+                }
+            }
+
+        }
+
+        when {
+
+            params {
+                yahs_args = "--no-contig-ec"
+            }
+
+            process {
+                """
+                input[0] = channel.of(
+                    [
+                        [ id: "test" ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    ]
+                ).combine(YAHS_INIT.out.scaffolds_agp, by: 0)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.scaffolds_fasta,
+                    process.out.scaffolds_agp,
+                    process.out.initial_break_agp,
+                    process.out.round_agp,
+                    process.out.binary,
+                    process.out.versions,
+                ).match() },
+                { file(process.out.log.get(0).get(1)).readLines().last().contains("Real time") }
             )
         }
     }
@@ -69,20 +110,18 @@ nextflow_process {
         when {
 
             params {
-                samtools_view_args = "--output-fmt bam"
                 yahs_args = ""
             }
 
             process {
                 """
-                input[0] = SAMTOOLS_VIEW.out.bam
-                    .map { meta, bam ->
-                        [ meta,
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
-                        bam
-                        ]
-                    }
+                input[0] = [
+                    [ id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    []
+                ]
                 """
             }
         }

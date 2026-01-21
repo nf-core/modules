@@ -34,7 +34,7 @@ input:
         description: Index of sorted BAM/CRAM file(s)
         pattern: "*.{bai,crai,csi}"
         ontologies: []
-    - snps:
+    - snvs:
         type: file
         description: VCF file with SNPs (and INDELs)
         pattern: "*.{vcf,vcf.gz}"
@@ -70,15 +70,39 @@ input:
         pattern: "*.fai"
         ontologies: []
 output:
-  vcf:
+  snv_vcf:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.vcf.gz":
+      - "${prefix}.vcf.gz":
           type: file
-          description: Compressed VCF file with phased variants
+          description: Compressed VCF file with phased SNVs and indels
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  sv_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "${prefix}_SV.vcf.gz":
+          type: file
+          description: Compressed VCF file with phased SVs
+          pattern: "*_SV.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  mod_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "${prefix}_mod.vcf.gz":
+          type: file
+          description: Compressed VCF file with phased modifications
           pattern: "*.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format

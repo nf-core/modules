@@ -125,11 +125,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'sample1', single_end:false ]
-      - "*.bam":
+      - "*.spliced.bam":
           type: file
           description: |
             BAM file after filtering original BAM file by removing alignments associated with bad junctions
-          pattern: "*.bam"
+          pattern: "*.spliced.bam"
           ontologies:
             - edam: "http://edamontology.org/format_2572"
   spliced_bai:
@@ -138,11 +138,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'sample1', single_end:false ]
-      - "*.bai":
+      - "*.spliced.bam.bai":
           type: file
           description: |
             Index of the output BAM file
-          pattern: "*.bai"
+          pattern: "*spliced.bam.bai"
           ontologies:
             - edam: "http://edamontology.org/format_3327"
   versions:

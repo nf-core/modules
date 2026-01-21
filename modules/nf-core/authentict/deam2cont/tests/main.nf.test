@@ -1,21 +1,21 @@
 nextflow_process {
 
     name "Test Process AUTHENTICT_DEAM2CONT"
-    
+
     script "../main.nf"
     process "AUTHENTICT_DEAM2CONT"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "authentict"
     tag "authentict/deam2cont"
     tag "samtools"
     tag "samtools/calmd"
-   
+
     setup {
         run("SAMTOOLS_CALMD") {
             script "../../../samtools/calmd/main.nf"
-            
+
             process {
                 """
                 input[0] = [

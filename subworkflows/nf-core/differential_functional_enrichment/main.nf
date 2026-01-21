@@ -8,7 +8,7 @@ include { CUSTOM_TABULARTOGSEACLS  } from '../../../modules/nf-core/custom/tabul
 include { CUSTOM_TABULARTOGSEACHIP } from '../../../modules/nf-core/custom/tabulartogseachip/main.nf'
 include { GSEA_GSEA                } from '../../../modules/nf-core/gsea/gsea/main.nf'
 include { PROPR_GREA               } from "../../../modules/nf-core/propr/grea/main.nf"
-include { DECOUPLER                } from '../../../modules/nf-core/decoupler/decoupler/main.nf'
+include { DECOUPLER_DECOUPLER                } from '../../../modules/nf-core/decoupler/decoupler/main'
 
 // Combine meta maps, including merging non-identical values of shared keys (e.g. 'id')
 def mergeMaps(meta, meta2){
@@ -51,7 +51,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
             features:
                 [ meta_with_method, features_sheet, features_id, features_symbol]
         }
-    
+
     // In the case of GSEA, it needs additional files coming from other channels that other methods don't use
     // here we define the input channel for the GSEA section
 
@@ -123,7 +123,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // Perform enrichment analysis with DECOUPLER
     // ----------------------------------------------------
 
-    DECOUPLER(
+    DECOUPLER_DECOUPLER(
         ch_input_for_other.input.filter{ it[0].functional_method == 'decoupler' },
         ch_input_for_other.genesets.filter{ it[0].functional_method == 'decoupler'},
         ch_input_for_other.features.filter{ it[0].functional_method == 'decoupler'}
@@ -146,7 +146,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
         .mix(CUSTOM_TABULARTOGSEACLS.out.versions)
         .mix(CUSTOM_TABULARTOGSEACHIP.out.versions)
         .mix(GSEA_GSEA.out.versions)
-        .mix(DECOUPLER.out.versions)
+        .mix(DECOUPLER_DECOUPLER.out.versions)
         .mix(PROPR_GREA.out.versions)
 
     emit:
@@ -162,9 +162,10 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     gsea_report           = GSEA_GSEA.out.report_tsvs_ref.join(GSEA_GSEA.out.report_tsvs_target)
 
     // decoupler-specific outputs
-    decoupler_dc_estimate = DECOUPLER.out.dc_estimate
-    decoupler_dc_pvals = DECOUPLER.out.dc_pvals
-    decoupler_png = DECOUPLER.out.png
+    decoupler_dc_estimate = DECOUPLER_DECOUPLER.out.dc_estimate
+    decoupler_dc_pvals = DECOUPLER_DECOUPLER.out.dc_pvals
+    decoupler_png = DECOUPLER_DECOUPLER.out.png
+
 
     // grea-specific outputs
     grea_results          = PROPR_GREA.out.results

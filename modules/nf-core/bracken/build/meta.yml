@@ -23,10 +23,22 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - kraken2db:
-        type: directory
-        description: A Kraken2 database directory
-        pattern: "*/"
+    - k2d:
+        type: file
+        description: Kraken2 k2d binary database files
+        pattern: "*.k2d"
+    - map:
+        type: file
+        description: Kraken2 k2d binary database taxonomy to sequencing mapping file
+        pattern: "*.map"
+    - library:
+        type: file
+        description: Kraken2 masked FASTA files used to build the database
+        pattern: "*.fasta"
+    - taxonomy:
+        type: file
+        description: Kraken2 nodes.dmp, names.dmp, and .accession2taxid taxonomy files
+        pattern: "*.{dmp,accession2taxid}"
 output:
   db:
     - - meta:
@@ -34,20 +46,45 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - kraken2db:
+      - bracken-database/:
           type: directory
-          description: A Kraken2 database directory with required bracken files inside
-          pattern: "*/"
-  bracken_files:
+          description: |
+            Directory contains the database that can be used to perform taxonomic classification
+
+            IMPORTANT: this output directory will be hardcoded as 'bracken-database/' inside the module
+            to prevent issues of containers following symlinks in symlinks.
+
+            To give a user the option to provide custom name for the database directory within a pipeline, you should
+            customise this name using during pipeline output publication via the pipeline's publishDir or workflow output customisation options.
+          pattern: "bracken-database/"
+          ontologies:
+            - edam: http://edamontology.org/data_1049 # Directory
+  db_separated:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${kraken2db}/database*:
-          type: directory
-          description: Bracken files required to extend the Kraken2 database
-          pattern: "*/"
+      - bracken-database/database*:
+          type: file
+          description: Bracken kmer distribution files
+          pattern: "database*"
+      - bracken-database/*k2d:
+          type: file
+          description: Kraken2 k2d binary database files
+          pattern: "*.k2d"
+      - bracken-database/*map:
+          type: file
+          description: Kraken2 k2d binary database taxonomy to sequencing mapping file
+          pattern: "*.map"
+      - bracken-database/library/added/*:
+          type: file
+          description: Kraken2 masked FASTA files used to build the database
+          pattern: "*.fasta"
+      - bracken-database/taxonomy/*:
+          type: file
+          description: Kraken2 nodes.dmp, names.dmp, and .accession2taxid taxonomy files
+          pattern: "*.{dmp,accession2taxid}"
   versions:
     - versions.yml:
         type: file

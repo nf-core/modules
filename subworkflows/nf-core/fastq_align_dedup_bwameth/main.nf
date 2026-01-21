@@ -18,14 +18,13 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
     use_gpu              // boolean: whether to use GPU or CPU for bwameth alignment
 
     main:
-
-    ch_alignment                     = Channel.empty()
-    ch_alignment_index               = Channel.empty()
-    ch_samtools_flagstat             = Channel.empty()
-    ch_samtools_stats                = Channel.empty()
-    ch_picard_metrics                = Channel.empty()
-    ch_multiqc_files                 = Channel.empty()
-    ch_versions                      = Channel.empty()
+    ch_alignment         = channel.empty()
+    ch_alignment_index   = channel.empty()
+    ch_samtools_flagstat = channel.empty()
+    ch_samtools_stats    = channel.empty()
+    ch_picard_metrics    = channel.empty()
+    ch_multiqc_files     = channel.empty()
+    ch_versions          = channel.empty()
 
     /*
      * Align with bwameth
@@ -64,7 +63,6 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
         ''
     )
     ch_alignment = SAMTOOLS_SORT.out.bam
-    ch_versions  = ch_versions.mix(SAMTOOLS_SORT.out.versions)
 
     /*
      * Run samtools index on alignment
@@ -92,7 +90,6 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
         [[:],[]] // [ [meta], [fasta]]
     )
     ch_samtools_stats = SAMTOOLS_STATS.out.stats
-    ch_versions       = ch_versions.mix(SAMTOOLS_STATS.out.versions)
 
     if (!skip_deduplication) {
         /*
@@ -119,17 +116,17 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
     /*
      * Collect MultiQC inputs
      */
-    ch_multiqc_files = ch_picard_metrics.collect{ meta, metrics -> metrics }
-                        .mix(ch_samtools_flagstat.collect{ meta, flagstat -> flagstat })
-                        .mix(ch_samtools_stats.collect{ meta, stats -> stats  })
+    ch_multiqc_files = ch_picard_metrics.collect{ _meta, metrics -> metrics }
+                        .mix(ch_samtools_flagstat.collect{ _meta, flagstat -> flagstat })
+                        .mix(ch_samtools_stats.collect{ _meta, stats -> stats  })
 
 
     emit:
-    bam                           = ch_alignment                     // channel: [ val(meta), [ bam ]       ]
-    bai                           = ch_alignment_index               // channel: [ val(meta), [ bai ]       ]
-    samtools_flagstat             = ch_samtools_flagstat             // channel: [ val(meta), [ flagstat ]  ]
-    samtools_stats                = ch_samtools_stats                // channel: [ val(meta), [ stats ]     ]
-    picard_metrics                = ch_picard_metrics                // channel: [ val(meta), [ metrics ]   ]
-    multiqc                       = ch_multiqc_files                 // channel: [ *{html,txt}              ]
-    versions                      = ch_versions                      // channel: [ versions.yml             ]
+    bam               = ch_alignment                     // channel: [ val(meta), [ bam ]       ]
+    bai               = ch_alignment_index               // channel: [ val(meta), [ bai ]       ]
+    samtools_flagstat = ch_samtools_flagstat             // channel: [ val(meta), [ flagstat ]  ]
+    samtools_stats    = ch_samtools_stats                // channel: [ val(meta), [ stats ]     ]
+    picard_metrics    = ch_picard_metrics                // channel: [ val(meta), [ metrics ]   ]
+    multiqc           = ch_multiqc_files                 // channel: [ *{html,txt}              ]
+    versions          = ch_versions                      // channel: [ versions.yml             ]
 }

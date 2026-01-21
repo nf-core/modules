@@ -11,11 +11,11 @@ on:
 
 env:
   # renovate: datasource=github-releases depName=seqeralabs/wave-cli versioning=semver
-  WAVE_VERSION: "1.5.0"
+  WAVE_VERSION: "1.7.0"
   # renovate: datasource=github-releases depName=askimed/nf-test versioning=semver
-  NFT_VER: "0.9.2"
+  NFT_VER: "0.9.3"
   # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
-  NXF_VER: "24.10.1"
+  NXF_VER: "25.10.2"
 
 jobs:
   generate-matrix:
@@ -27,7 +27,7 @@ jobs:
       conda-matrix: ${{ steps.conda-diff.outputs.all_changed_files }}
       dockerfile-matrix: ${{ steps.docker-diff.outputs.all_changed_files }}
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
       - name: Find conda differences
         id: conda-diff
@@ -63,7 +63,7 @@ jobs:
         profile: [docker, singularity]
         platform: ["linux/amd64", "linux/arm64"]
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
       - name: Install wave-cli
         run: |
@@ -103,7 +103,7 @@ jobs:
         # profile: [docker]
         platform: ["linux/amd64", "linux/arm64"]
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
       - name: Install wave-cli
         run: |

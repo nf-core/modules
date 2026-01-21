@@ -25,12 +25,12 @@ process RAW2OMETIFF {
         ${zarr_dir} \\
         ${prefix}.ome.tiff \\
         --max_workers $task.cpus \\
-        $args 
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         raw2ometiff: \$(raw2ometiff --version |& sed -n '1s/Version = //p')
-        bio-formats: \$(bioformats2raw --version |& sed -n '2s/Bio-Formats version = //p')
+        bio-formats: \$(raw2ometiff --version |& sed -n '2s/Bio-Formats version = //p')
     END_VERSIONS
     """
 
@@ -43,7 +43,7 @@ process RAW2OMETIFF {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         raw2ometiff: \$(raw2ometiff --version |& sed -n '1s/Version = //p')
-        bio-formats: \$(bioformats2raw --version |& sed -n '2s/Bio-Formats version = //p')
+        bio-formats: \$(raw2ometiff --version |& sed -n '2s/Bio-Formats version = //p')
     END_VERSIONS
     """
 }

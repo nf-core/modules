@@ -10,7 +10,7 @@ process GATK4_MUTECT2 {
     input:
     tuple val(meta), path(input), path(input_index), path(intervals)
     tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fai)
+    tuple val(meta3), path(fai), path(gzi)
     tuple val(meta4), path(dict)
     path alleles
     path alleles_tbi
@@ -32,7 +32,7 @@ process GATK4_MUTECT2 {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def inputs = input.collect { "--input ${it}" }.join(" ")
+    def inputs = input.collect { vcf_ -> "--input ${vcf_}" }.join(" ")
     def interval_command = intervals ? "--intervals ${intervals}" : ""
     def pon_command = panel_of_normals ? "--panel-of-normals ${panel_of_normals}" : ""
     def gr_command = germline_resource ? "--germline-resource ${germline_resource}" : ""

@@ -7,10 +7,10 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # renovate: datasource=github-releases depName=askimed/nf-test versioning=semver
-  NFT_VER: "0.9.2"
+  NFT_VER: "0.9.3"
   NXF_ANSI_LOG: false
   # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
-  NXF_VER: "24.10.2"
+  NXF_VER: "25.10.2"
 
 jobs:
   update-sentieon-snapshot:
@@ -26,12 +26,12 @@ jobs:
     steps:
       # indication that the snapshot is being updated
       - name: React on comment
-        uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
         with:
           comment-id: ${{ github.event.comment.id }}
           reactions: eyes
       # Use the @nf-core-bot token to check out so we can push later
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
         with:
           token: ${{ secrets.nf_core_bot_auth_token }}
 
@@ -41,7 +41,7 @@ jobs:
           echo "test_path=$(echo ${{ github.event.comment.body }} | grep -oP 'path:\s*\K[^ ]+')" >> $GITHUB_OUTPUT
 
       - name: if test path is empty, exit
-        uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
         if: steps.get-test-path.outputs.test_path == ''
         with:
           comment-id: ${{ github.event.comment.id }}
@@ -58,7 +58,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.nf_core_bot_auth_token }}
 
-      - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5
+      - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5
         with:
           distribution: "temurin"
           java-version: "17"
@@ -69,9 +69,9 @@ jobs:
           version: "${{ env.NXF_VER }}"
 
       - name: Set up Python
-        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6
         with:
-          python-version: "3.13"
+          python-version: "3.14"
 
       - name: Set up nf-test
         uses: nf-core/setup-nf-test@v1

@@ -81,8 +81,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        path(process.out.fastq[0][1][0]).linesGzip.size(),
-                        path(process.out.fastq[0][1][1]).linesGzip.size(),
+                        process.out.fastq,
                         process.out.versions,
                         path(process.out.versions.get(0)).yaml,
                         path(process.out.json[0][1]).readLines().any{ it.contains('\"reads_removed\": 0')}

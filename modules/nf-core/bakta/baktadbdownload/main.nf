@@ -2,13 +2,13 @@ process BAKTA_BAKTADBDOWNLOAD {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bakta:1.10.4--pyhdfd78af_0' :
-        'biocontainers/bakta:1.10.4--pyhdfd78af_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/bakta:1.11.4--pyhdfd78af_0'
+        : 'biocontainers/bakta:1.11.4--pyhdfd78af_0'}"
 
     output:
-    path "db*"              , emit: db
-    path "versions.yml"     , emit: versions
+    path "db*", emit: db
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -18,7 +18,7 @@ process BAKTA_BAKTADBDOWNLOAD {
     """
     bakta_db \\
         download \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -31,7 +31,7 @@ process BAKTA_BAKTADBDOWNLOAD {
     """
     echo "bakta_db \\
         download \\
-        $args"
+        ${args}"
 
     mkdir db
 

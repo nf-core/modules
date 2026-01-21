@@ -1,47 +1,46 @@
 process GENOMAD_ENDTOEND {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/genomad:1.11.0--pyhdfd78af_0':
-        'biocontainers/genomad:1.11.0--pyhdfd78af_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bb/bbaadac0c5d49bb7c664d9d3651521aa638b795cdbab7eb9493ec66350508f97/data'
+        : 'community.wave.seqera.io/library/genomad:1.11.2--1e14efa5dfbf0dc3'}"
 
     input:
-    tuple val(meta) , path(fasta)
-    path  genomad_db
+    tuple val(meta), path(fasta)
+    path genomad_db
 
     output:
-    tuple val(meta), path("*_aggregated_classification/*_aggregated_classification.tsv")    , emit: aggregated_classification   , optional: true
-    tuple val(meta), path("*_marker_classification/*_marker_classification.tsv")            , emit: marker_classification       , optional: true
-    tuple val(meta), path("*_annotate/*_taxonomy.tsv")                                      , emit: taxonomy
-    tuple val(meta), path("*_find_proviruses/*_provirus.tsv")                               , emit: provirus
-    tuple val(meta), path("*_score_calibration/*_compositions.tsv")                         , emit: compositions                , optional: true
-    tuple val(meta), path("*_score_calibration/*_calibrated_aggregated_classification.tsv") , emit: calibrated_classification   , optional: true
-    tuple val(meta), path("*_summary/*_plasmid.fna.gz")                                     , emit: plasmid_fasta
-    tuple val(meta), path("*_summary/*_plasmid_genes.tsv")                                  , emit: plasmid_genes
-    tuple val(meta), path("*_summary/*_plasmid_proteins.faa.gz")                            , emit: plasmid_proteins
-    tuple val(meta), path("*_summary/*_plasmid_summary.tsv")                                , emit: plasmid_summary
-    tuple val(meta), path("*_summary/*_virus.fna.gz")                                       , emit: virus_fasta
-    tuple val(meta), path("*_summary/*_virus_genes.tsv")                                    , emit: virus_genes
-    tuple val(meta), path("*_summary/*_virus_proteins.faa.gz")                              , emit: virus_proteins
-    tuple val(meta), path("*_summary/*_virus_summary.tsv")                                  , emit: virus_summary
-    path "versions.yml"                                                                     , emit: versions
+    tuple val(meta), path("*_aggregated_classification/*_aggregated_classification.tsv")   , emit: aggregated_classification, optional: true
+    tuple val(meta), path("*_marker_classification/*_marker_classification.tsv")           , emit: marker_classification, optional: true
+    tuple val(meta), path("*_annotate/*_taxonomy.tsv")                                     , emit: taxonomy
+    tuple val(meta), path("*_find_proviruses/*_provirus.tsv")                              , emit: provirus
+    tuple val(meta), path("*_score_calibration/*_compositions.tsv")                        , emit: compositions, optional: true
+    tuple val(meta), path("*_score_calibration/*_calibrated_aggregated_classification.tsv"), emit: calibrated_classification, optional: true
+    tuple val(meta), path("*_summary/*_plasmid.fna.gz")                                    , emit: plasmid_fasta
+    tuple val(meta), path("*_summary/*_plasmid_genes.tsv")                                 , emit: plasmid_genes
+    tuple val(meta), path("*_summary/*_plasmid_proteins.faa.gz")                           , emit: plasmid_proteins
+    tuple val(meta), path("*_summary/*_plasmid_summary.tsv")                               , emit: plasmid_summary
+    tuple val(meta), path("*_summary/*_virus.fna.gz")                                      , emit: virus_fasta
+    tuple val(meta), path("*_summary/*_virus_genes.tsv")                                   , emit: virus_genes
+    tuple val(meta), path("*_summary/*_virus_proteins.faa.gz")                             , emit: virus_proteins
+    tuple val(meta), path("*_summary/*_virus_summary.tsv")                                 , emit: virus_summary
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     genomad \\
         end-to-end \\
-        $fasta \\
+        ${fasta} \\
         ./ \\
-        $genomad_db \\
-        --threads $task.cpus \\
-        $args
+        ${genomad_db} \\
+        --threads ${task.cpus} \\
+        ${args}
 
     gzip ./**/*.fna
     gzip ./**/*.faa
@@ -54,9 +53,10 @@ process GENOMAD_ENDTOEND {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def filename = "${fasta}"[0..<"${fasta}".lastIndexOf('.')]
     """
+    echo ${args}
+
     mkdir ${filename}_aggregated_classification
     touch ${filename}_aggregated_classification/${filename}_aggregated_classification.tsv
     mkdir ${filename}_annotate

@@ -1,0 +1,72 @@
+nextflow_process {
+
+    name "Test Process SAMCLIP"
+    script "../main.nf"
+    process "SAMCLIP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samclip"
+
+    test("test-data - NA12878.chr22.bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'NA12878_chr22' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam', checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [ id:'chr22_ref' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("test-data - NA12878.chr22.bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'NA12878_chr22' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam', checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [ id:'chr22_ref' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out,
+                        process.out.versions.collect{ path(it).yaml }
+                    ).match() }
+            )
+        }
+
+    }
+
+}

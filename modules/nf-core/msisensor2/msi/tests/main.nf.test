@@ -8,23 +8,21 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "msisensor2"
-    tag "msisensor2/scan"
     tag "msisensor2/msi"
     tag "untar"
 
-    test("homo_sapiens tumor_only - bam - scan") {
+    test("homo_sapiens tumor_only - bam - models") {
 
         setup {
-            run("MSISENSOR2_SCAN") {
-                script "../../scan/main.nf"
-
+            run("UNTAR") {
+                script "../../../untar/main.nf"
                 process {
-                    """
-                    input[0] = [
-                        [ id:'test' ],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                    ]
-                    """
+                """
+                input[0] = [
+                            [ id:'models_hg19_17sites' ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/msisensor2/models_hg19_17sites.tar.gz', checkIfExists: true)
+                ]
+                """
                 }
             }
         }
@@ -34,60 +32,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true),
-                    [],
-                    [],
-                    [],
-                ]
-                input[1] = MSISENSOR2_SCAN.out.scan.map{ _meta, scan -> scan }
-                input[2] = []
-                """
-            }
-        }
-        then {
-            assert process.success
-            assertAll(
-                { assert snapshot(
-                    process.out.msi,
-                    process.out.distribution,
-                    file(process.out.somatic[0][1]).name, // Empty file
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                ).match() }
-            )
-        }
-    }
-
-    test("homo_sapiens tumor_only - bam - models") {
-
-    setup {
-        run("UNTAR") {
-            script "../../../untar/main.nf"
-            process {
-            """
-            input[0] = [
-                        [ id:'models_hg19_17sites' ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/msisensor2/models_hg19_17sites.tar.gz', checkIfExists: true)
-            ]
-            """
-            }
-        }
-    }
-
-        when {
-            process {
-                """
-                input[0] = [
-                    [id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test_msisensor2.hg19.bam',checkIfExists:true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test_msisensor2.hg19.bam.bai',checkIfExists:true),
-                    [],
-                    [],
-                    [],
                     ]
-                input[1] = []
-                input[2] = UNTAR.out.untar.map{ _meta, untar -> untar }
+                input[1] = UNTAR.out.untar
+
                 """
             }
         }
@@ -116,12 +65,8 @@ nextflow_process {
                     [id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true),
-                    [],
-                    [],
-                    [],
                 ]
-                input[1] = []
-                input[2] = []
+                input[1] = [[:], []]
                 """
             }
         }
@@ -130,89 +75,6 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
-            )
-        }
-    }
-
-    test("homo_sapiens tumor_normal - bams - scan") {
-
-        setup {
-            run("MSISENSOR2_SCAN") {
-                script "../../scan/main.nf"
-
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test' ],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
-        }
-
-        when {
-            process {
-                """
-                input[0] = [
-                    [id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam',checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai',checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam',checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai',checkIfExists:true),
-                    [],
-                    ]
-                input[1] = MSISENSOR2_SCAN.out.scan.map{ _meta, scan -> scan }
-                input[2] = []
-                """
-            }
-        }
-        then {
-            assert process.success
-            assertAll(
-                { assert snapshot(
-                    process.out.msi,
-                    process.out.distribution,
-                    file(process.out.somatic[0][1]).name, // Empty file
-                    file(process.out.germline[0][1]).name, // Empty file
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                ).match() }
-            )
-        }
-    }
-
-    test("homo_sapiens tumor_normal - bams - stub") {
-
-        options "-stub"
-
-        when {
-            process {
-                """
-                input[0] = [
-                    [id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam',checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai',checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam',checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai',checkIfExists:true),
-                    [],
-                    ]
-                input[1] = []
-                input[2] = []
-                """
-            }
-        }
-        then {
-            assert process.success
-            assertAll(
-                { assert snapshot(
-                    process.out.msi,
-                    process.out.distribution,
-                    file(process.out.somatic[0][1]).name, // Empty file
-                    file(process.out.germline[0][1]).name, // Empty file
-                    process.out.versions,
                     path(process.out.versions[0]).yaml
                 ).match() }
             )

@@ -1,0 +1,261 @@
+nextflow_process {
+
+    name "Test Process METHBAT_PROFILE"
+    script "../main.nf"
+    process "METHBAT_PROFILE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "methbat"
+    tag "methbat/profile"
+    tag "pbcpgtools"
+    tag "pbcpgtools/alignedbamtocpgscores"
+
+    setup {
+        run("PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES") {
+            script "../../../pbcpgtools/alignedbamtocpgscores/main.nf"
+            process {
+                """
+                input[0] = channel.fromList([
+                                tuple([ id:'test' ], // meta map
+                                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam', checkIfExists: true),
+                                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true))
+                            ])
+                """
+            }
+        }
+
+        run("PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES", alias: "PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES_PHASED") {
+            script "../../../pbcpgtools/alignedbamtocpgscores/main.nf"
+            process {
+                """
+                input[0] = channel.fromList([
+                                tuple([ id:'test' ], // meta map
+                                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.phased.bam', checkIfExists: true),
+                                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.phased.bam.bai', checkIfExists: true))
+                            ])
+                """
+            }
+        }
+    }
+
+    test("pacbio - bam - notphased") {
+
+        when {
+            params{
+                module_args = ""
+            }
+            process {
+
+                """
+                input[0] = PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.combined_bed
+                    .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.combined_bed_index)
+                    .map { meta, combined_bed, combined_index -> [ meta, [combined_bed, combined_index] ]
+                    }
+
+                input[1] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/tsv/methbat_background_profile_small.tsv', checkIfExists: true)
+                ]
+                """
+
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out,
+                        process.out.versions.collect{ path(it).yaml }
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("pacbio - bam - phased") {
+
+        when {
+            params{
+                module_args = ""
+            }
+            process {
+
+                """
+                input[0] = PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES_PHASED.out.combined_bed
+                    .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES_PHASED.out.combined_bed_index)
+                    .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES_PHASED.out.hap1_bed)
+                    .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES_PHASED.out.hap1_bed_index)
+                    .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES_PHASED.out.hap2_bed)
+                    .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES_PHASED.out.hap2_bed_index)
+                    .map { meta, combined_bed, combined_index, hap1_bed, hap1_index, hap2_bed, hap2_index ->
+                    [ meta, [combined_bed, combined_index, hap1_bed, hap1_index, hap2_bed, hap2_index] ] }
+
+                input[1] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/tsv/methbat_background_profile_small.tsv', checkIfExists: true)
+                ]
+                """
+
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out,
+                        process.out.versions.collect{ path(it).yaml }
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("pacbio - bam - optionalbed") {
+
+        when {
+            params{
+                module_args = "--output-asm-bed test.bed"
+            }
+            process {
+
+                """
+                input[0] = PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.combined_bed
+                    .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.combined_bed_index)
+                    .map { meta, combined_bed, combined_index -> [ meta, [combined_bed, combined_index] ] }
+
+                input[1] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/tsv/methbat_background_profile_small.tsv', checkIfExists: true)
+                ]
+                """
+
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.region_profile,
+                    file(process.out.asm_bed[0][1]).name, // Check filename only
+                    process.out.versions,
+                    process.out.versions.collect{ path(it).yaml }
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("pacbio - bam - withlabels") {
+
+        when {
+            params{
+                module_args = "--profile-label MALE --profile-label FEMALE"
+            }
+            process {
+
+                """
+                input[0] = PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.combined_bed
+                    .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.combined_bed_index)
+                    .map { meta, combined_bed, combined_index -> [ meta, [combined_bed, combined_index] ] }
+
+                input[1] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/tsv/methbat_background_profile_small.tsv', checkIfExists: true)
+                ]
+                """
+
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out,
+                        process.out.versions.collect{ path(it).yaml }
+                    ).match() },
+                { assert path(process.out.region_profile[0][1]).text.contains('MALE') },
+                { assert path(process.out.region_profile[0][1]).text.contains('FEMALE') }
+            )
+        }
+
+    }
+
+    test("pacbio - bam - optionalbed - stub") {
+
+        options "-stub"
+
+        when {
+            params{
+                module_args = "--output-asm-bed test.bed"
+            }
+            process {
+
+                """
+                input[0] = PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.combined_bed
+                    .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.combined_bed_index)
+                    .map { meta, combined_bed, combined_index -> [ meta, [combined_bed, combined_index] ] }
+
+                input[1] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/tsv/methbat_background_profile_small.tsv', checkIfExists: true)
+                ]
+                """
+
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out,
+                        process.out.versions.collect{ path(it).yaml }
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("pacbio - bam - stub") {
+
+        options "-stub"
+
+        when {
+            params{
+                module_args = ""
+            }
+            process {
+
+                """
+                input[0] = PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.combined_bed
+                    .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.combined_bed_index)
+                    .map { meta, combined_bed, combined_index -> [ meta, [combined_bed, combined_index] ] }
+
+                input[1] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/tsv/methbat_background_profile_small.tsv', checkIfExists: true)
+                ]
+                """
+
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out,
+                        process.out.versions.collect{ path(it).yaml }
+                    ).match() }
+            )
+        }
+
+    }
+
+}

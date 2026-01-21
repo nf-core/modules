@@ -1,5 +1,5 @@
 name: "beagle5_beagle"
-description: Beagle v5.2 is a software package for phasing genotypes and for imputing
+description: Beagle v5.5 is a software package for phasing genotypes and for imputing
   ungenotyped markers.
 keywords:
   - phasing
@@ -9,8 +9,8 @@ tools:
   - "beagle5":
       description: "Beagle is a software package for phasing genotypes and for imputing
         ungenotyped markers."
-      homepage: "https://faculty.washington.edu/browning/beagle/b5_2.html"
-      documentation: "https://faculty.washington.edu/browning/beagle/beagle_5.2_13Oct21.pdf"
+      homepage: "https://faculty.washington.edu/browning/beagle/beagle.html"
+      documentation: "https://faculty.washington.edu/browning/beagle/beagle_5.5_17Dec24.pdf"
       doi: "10.1016/j.ajhg.2021.08.005; doi:10.1016/j.ajhg.2018.07.015"
       licence: ["GPL v3"]
       identifier: ""
@@ -25,27 +25,42 @@ input:
         description: target VCF input file to be imputed and or phased
         pattern: "*.{vcf,vcf.gz}"
         ontologies: []
-  - refpanel:
-      type: file
-      description: target reference panel
-      ontologies: []
-  - genmap:
-      type: file
-      description: a PLINK format genetic map with cM units
-      pattern: "*.{map,map.gz,map.zip}"
-      ontologies: []
-  - exclsamples:
-      type: file
-      description: text file containing samples one sample per line to be excluded from
-        the analysis
-      pattern: "*.*"
-      ontologies: []
-  - exclmarkers:
-      type: file
-      description: text file containing markers one marker per line to be excluded from
-        the analysis
-      pattern: "*.*"
-      ontologies: []
+    - vcf_index:
+        type: file
+        description: target VCF input file index
+        pattern: "*.{vcf,vcf.gz}.{tbi,csi}"
+        ontologies: []
+    - refpanel:
+        type: file
+        description: target reference panel
+        ontologies: []
+        pattern: "*.{vcf,vcf.gz}"
+    - refpanel_index:
+        type: file
+        description: target reference panel index
+        ontologies: []
+        pattern: "*.{vcf,vcf.gz}.{tbi,csi}"
+    - genmap:
+        type: file
+        description: a PLINK format genetic map with cM units
+        pattern: "*.{map,map.gz,map.zip}"
+        ontologies: []
+    - exclsamples:
+        type: file
+        description: text file containing samples one sample per line to be excluded from
+          the analysis
+        pattern: "*.*"
+        ontologies: []
+    - exclmarkers:
+        type: file
+        description: text file containing markers one marker per line to be excluded from
+          the analysis
+        pattern: "*.*"
+        ontologies: []
+    - region:
+        type: string
+        description: Region to perform imputation
+        pattern: "(chr)?\\d*:\\d*-\\d*"
 output:
   vcf:
     - - meta:

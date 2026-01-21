@@ -12,21 +12,21 @@ nextflow_workflow {
 
     config "./nextflow.config"
 
-    test("WBcel235.105 - test.vcf.gz") {
+    test("WBcel235.99 - test.vcf.gz") {
 
         when {
             workflow {
                 """
                 snpeff_cache = Channel.of([
-                    [ id:'WBcel235.105' ],
-                    file('s3://annotation-cache/snpeff_cache/WBcel235.105/')
+                    [ id:'WBcel235.99' ],
+                    file('s3://annotation-cache/snpeff_cache/WBcel235.99/')
                 ]).collect()
 
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
                 ])
-                input[1] = "WBcel235.105"
+                input[1] = "WBcel235.99"
                 input[2] = snpeff_cache
                 """
             }
@@ -40,13 +40,13 @@ nextflow_workflow {
                     workflow.out.reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.summary.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.genes_txt.collect { it.collect { it instanceof String ? file(it).name : it } },
-                    workflow.out.versions.collect { it }
+                    workflow.out.versions.collect { it instanceof String ? path(it).yaml : it }
                 ).match()}
             )
         }
     }
 
-    test("WBcel235.105 - test.vcf.gz - stub") {
+    test("WBcel235.99 - test.vcf.gz - stub") {
 
         options "-stub"
 
@@ -54,7 +54,7 @@ nextflow_workflow {
             workflow {
                 """
                 snpeff_cache = Channel.of([
-                    [ id:'WBcel235.105' ],
+                    [ id:'WBcel235.99' ],
                     file("${projectDir}")
                 ]).collect()
 
@@ -62,7 +62,7 @@ nextflow_workflow {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
                 ])
-                input[1] = "WBcel235.105"
+                input[1] = "WBcel235.99"
                 input[2] = snpeff_cache
                 """
             }
