@@ -115,7 +115,6 @@ workflow FASTA_GXF_BUSCO_PLOT {
     )
 
     ch_proteins                                 = EXTRACT_PROTEINS.out.gffread_fasta
-    ch_versions                                 = ch_versions.mix(EXTRACT_PROTEINS.out.versions.first())
 
     // MODULE: BUSCO_BUSCO as BUSCO_ANNOTATION
     ch_busco_annotation_inputs                  = ch_proteins
