@@ -18,13 +18,13 @@ process SENTIEON_GVCFTYPER {
     output:
     tuple val(meta), path("*.vcf.gz"),     emit: vcf_gz
     tuple val(meta), path("*.vcf.gz.tbi"), emit: vcf_gz_tbi
-    path ("versions.yml"),                 emit: versions
+    tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_genotyped"
     def gvcfs_input = '-v ' + gvcfs.join(' -v ')
     def dbsnp_cmd = dbsnp ? "--dbsnp ${dbsnp}" : ""
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64
@@ -35,10 +35,6 @@ process SENTIEON_GVCFTYPER {
 
     sentieon driver -r ${fasta} --algo GVCFtyper ${gvcfs_input} ${dbsnp_cmd} ${prefix}.vcf.gz
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 
     stub:
@@ -47,9 +43,5 @@ process SENTIEON_GVCFTYPER {
     echo "" | gzip >${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 }

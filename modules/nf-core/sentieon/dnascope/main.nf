@@ -26,7 +26,7 @@ process SENTIEON_DNASCOPE {
     // these output-files have to have the extension ".vcf.gz", otherwise the subsequent GATK-MergeVCFs will fail.
     tuple val(meta), path("*.g.vcf.gz"),              emit: gvcf,     optional: true
     tuple val(meta), path("*.g.vcf.gz.tbi"),          emit: gvcf_tbi, optional: true
-    path "versions.yml",                              emit: versions
+    tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
     task.ext.when == null || task.ext.when
@@ -63,12 +63,14 @@ process SENTIEON_DNASCOPE {
     """
     ${sentieonLicense}
 
-    sentieon driver ${args} -r ${fasta} -t ${task.cpus} -i ${bam} ${interval} ${vcf_cmd} ${gvcf_cmd}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
+    sentieon driver \\
+        ${args} \\
+        -r ${fasta} \\
+        -t ${task.cpus} \\
+        -i ${bam} \\
+        ${interval} \\
+        ${vcf_cmd} \\
+        ${gvcf_cmd}
     """
 
     stub:
@@ -79,10 +81,5 @@ process SENTIEON_DNASCOPE {
     echo | gzip > ${prefix}.unfiltered.vcf.gz
     touch ${prefix}.unfiltered.vcf.gz.tbi
     ${gvcf_cmd}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g" )
-    END_VERSIONS
     """
 }

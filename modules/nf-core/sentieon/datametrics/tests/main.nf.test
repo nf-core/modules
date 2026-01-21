@@ -12,6 +12,9 @@ nextflow_process {
 
     test("metrics - no plots") {
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
@@ -42,6 +45,9 @@ nextflow_process {
 
     test("metrics - with plots") {
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
@@ -76,7 +82,7 @@ nextflow_process {
                     file(process.out.qd_plot[0][1]).name,
                     file(process.out.is_plot[0][1]).name,
                     file(process.out.gc_plot[0][1]).name,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
@@ -88,6 +94,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [

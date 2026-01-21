@@ -17,7 +17,7 @@ process SENTIEON_TNFILTER {
     tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi
     tuple val(meta), path("*.vcf.gz.stats"), emit: stats
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,11 +44,6 @@ process SENTIEON_TNFILTER {
     ${segments_command} \\
     ${orientation_priors_command} \\
     ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 
     stub:
@@ -57,10 +52,5 @@ process SENTIEON_TNFILTER {
     echo | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
     touch ${prefix}.vcf.gz.stats
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 }

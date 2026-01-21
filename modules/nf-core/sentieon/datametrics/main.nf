@@ -25,7 +25,7 @@ process SENTIEON_DATAMETRICS {
     tuple val(meta), path('*qd_metrics.pdf'),  emit: qd_plot, optional: true
     tuple val(meta), path('*is_metrics.pdf'),  emit: is_plot, optional: true
     tuple val(meta), path('*gc_metrics.pdf'),  emit: gc_plot, optional: true
-    path "versions.yml",                       emit: versions
+    tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
     task.ext.when == null || task.ext.when
@@ -59,11 +59,6 @@ process SENTIEON_DATAMETRICS {
         sentieon plot QualDistribution -o ${prefix}_qd_metrics.pdf  ${prefix}_qd_metrics.txt
         sentieon plot InsertSizeMetricAlgo -o ${prefix}_is_metrics.pdf ${prefix}_is_metrics.txt
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 
     stub:
@@ -83,10 +78,5 @@ process SENTIEON_DATAMETRICS {
         touch ${prefix}_qd_metrics.pdf
         touch ${prefix}_is_metrics.pdf
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 }

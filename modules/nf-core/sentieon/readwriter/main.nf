@@ -17,7 +17,7 @@ process SENTIEON_READWRITER {
     tuple val(meta), path("${prefix}"),                             emit: output
     tuple val(meta), path("${prefix}.${index}"),                    emit: index
     tuple val(meta), path("${prefix}"), path("${prefix}.${index}"), emit: output_index
-    path "versions.yml",                                            emit: versions
+    tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
     task.ext.when == null || task.ext.when
@@ -52,10 +52,6 @@ process SENTIEON_READWRITER {
         ${args2} \\
         ${prefix}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 
     stub:
@@ -66,9 +62,5 @@ process SENTIEON_READWRITER {
     touch ${prefix}
     touch ${prefix}.${index}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 }
