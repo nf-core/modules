@@ -34,7 +34,6 @@ process PARABRICKS_RNAFQ2BAM {
 
     def in_fq_command = meta.single_end ? "--in-se-fq ${reads}" : "--in-fq ${reads}"
     def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
-
     """
     INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
     cp ${fasta} \$INDEX
