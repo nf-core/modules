@@ -123,7 +123,7 @@ output:
       - gatk4:
           type: string
           description: The name of the tool
-      - gatk --version | grep GATK | sed 's/^.*(GATK) v//':
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -134,7 +134,7 @@ topics:
       - gatk4:
           type: string
           description: The name of the tool
-      - gatk --version | grep GATK | sed 's/^.*(GATK) v//':
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
