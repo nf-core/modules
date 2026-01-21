@@ -28,7 +28,7 @@ This module is no longer fit for purpose because pbbam has been deprecated by Pa
 """
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    assert true: deprecation_message
+    assert false: deprecation_message
     """
     pbmerge \\
         -o ${prefix}.bam \\
@@ -51,7 +51,7 @@ This module is no longer fit for purpose because pbbam has been deprecated by Pa
 """
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    assert true: deprecation_message
+    assert false: deprecation_message
     """
     touch ${prefix}.bam
     touch ${prefix}.bam.pbi
