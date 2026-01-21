@@ -149,6 +149,7 @@ nextflow_process {
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     file(process.out.bai[0][1]).name,
                     file(process.out.junction[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
