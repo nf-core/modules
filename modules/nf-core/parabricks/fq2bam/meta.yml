@@ -33,7 +33,7 @@ input:
           Groovy Map containing fasta information
     - fasta:
         type: file
-        description: reference fasta file - must be unzipped
+        description: (optional for BAM, required for CRAM) reference fasta file - must be unzipped
         pattern: "*.fasta"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
