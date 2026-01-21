@@ -39,8 +39,8 @@ input:
         pattern: "*.{tsv,tsv.gz}"
 
 output:
-  - cov_gz:
-      - meta:
+  cov_gz:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,8 +48,8 @@ output:
           type: file
           description: BGzipped bed file with coverage information
           pattern: "*.cov.bed.gz"
-  - cov_tbi:
-      - meta:
+  cov_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,8 +57,8 @@ output:
           type: file
           description: Tabix index for cov_gz
           pattern: "*.cov.bed.gz.tbi"
-  - baf_gz:
-      - meta:
+  baf_gz:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,8 +66,8 @@ output:
           type: file
           description: BGzipped bed file with coverage information
           pattern: "*.baf.bed.gz"
-  - baf_tbi:
-      - meta:
+  baf_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -75,13 +75,13 @@ output:
           type: file
           description: Tabix index for baf_gz
           pattern: "*.baf.bed.gz.tbi"
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: "http://edamontology.org/format_3750" # YAML
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 
 authors:
   - "@jakob37"
