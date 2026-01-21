@@ -49,9 +49,16 @@ nextflow_workflow {
             }
         }
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    bam(workflow.out.bam.get(0).get(1)).getReadsMD5(),
+                    file(workflow.out.bai.get(0).get(1)).name,
+                    workflow.out.stats,
+                    workflow.out.flagstat,
+                    workflow.out.idxstats,
+                    workflow.out.versions.collect{ path(it).yaml }
+                    ).match() }
             )
         }
     }
@@ -79,9 +86,16 @@ nextflow_workflow {
             }
         }
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    bam(workflow.out.bam.get(0).get(1)).getReadsMD5(),
+                    file(workflow.out.bai.get(0).get(1)).name,
+                    workflow.out.stats,
+                    workflow.out.flagstat,
+                    workflow.out.idxstats,
+                    workflow.out.versions.collect{ path(it).yaml }
+                    ).match() }
             )
         }
     }

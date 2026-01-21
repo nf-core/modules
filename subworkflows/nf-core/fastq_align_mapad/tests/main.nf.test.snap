@@ -1,20 +1,9 @@
 {
     "sarscov2 - bam - single_end": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true,
-                        "key_read_ref": "test_genome",
-                        "id_index": "genome"
-                    },
-                    "test.sorted.bam.bai:md5,a14a162090589149cfa5813dee5a6fd2"
-                ]
-            ],
-            [
-                
-            ],
+            "c9400322149ce77109e940bff78cbed4",
+            "4886256830f17154f868a33c47d7cb23",
+            "test.sorted.bam.bai",
             [
                 [
                     {
@@ -49,16 +38,27 @@
                 ]
             ],
             [
-                "versions.yml:md5,2ccc5e0c31fc7352109ab3361dc2e5fa",
-                "versions.yml:md5,5895b8c25147b7d44d2be79cb512d347",
-                "versions.yml:md5,80071a3b6216b49ca3382bdbac6ad8ad",
-                "versions.yml:md5,b2ce2b3181bdafd3de613c6251e39988"
+                {
+                    "FASTQ_ALIGN_MAPAD:MAPAD_MAP": {
+                        "mapad": "0.45.0"
+                    }
+                },
+                {
+                    "FASTQ_ALIGN_MAPAD:BAM_SORT_STATS_SAMTOOLS:BAM_STATS_SAMTOOLS:SAMTOOLS_IDXSTATS": {
+                        "samtools": "1.22.1"
+                    }
+                },
+                {
+                    "FASTQ_ALIGN_MAPAD:BAM_SORT_STATS_SAMTOOLS:BAM_STATS_SAMTOOLS:SAMTOOLS_FLAGSTAT": {
+                        "samtools": "1.22.1"
+                    }
+                }
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-11-27T11:54:04.374333"
+        "timestamp": "2026-01-06T13:00:14.816887565"
     }
 }
