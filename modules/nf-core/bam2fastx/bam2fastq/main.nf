@@ -27,7 +27,7 @@ This module is no longer fit for purpose because bam2fastx has been deprecated b
 """
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    assert true: deprecation_message
+    assert false: deprecation_message
     """
     bam2fastq \\
         $args \\

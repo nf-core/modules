@@ -24,7 +24,7 @@ WARNING: This module has been deprecated.
 Reason:
 This module is no longer recommended for use. It is recommended to use nf-core/modules/untar
 """
-    assert true: deprecation_message
+    assert false: deprecation_message
     def args  = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     prefix    = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.baseName.toString().replaceFirst(/\.tar$/, ""))
@@ -52,7 +52,7 @@ WARNING: This module has been deprecated.
 Reason:
 This module is no longer recommended for use. It is recommended to use nf-core/modules/untar
 """
-    assert true: deprecation_message
+    assert false: deprecation_message
     prefix    = task.ext.prefix ?: "${meta.id}"
     """
     mkdir $prefix
