@@ -37,7 +37,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     file(process.out.wgs_metrics[0][1]).readLines()[1..5],
-                    process.out.versions_sentieon
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
