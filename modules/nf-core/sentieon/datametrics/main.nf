@@ -5,8 +5,8 @@ process SENTIEON_DATAMETRICS {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/20/2050c5321a5426e31b9ed1e3e98356913fe3c316a7ef02c4fb872983a730db6f/data'
-        : 'community.wave.seqera.io/library/sentieon_gnuplot:a6da525a6c9ce6e3'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ae/ae67a134620c3af22c8563a2913c4639caa0d75ce25764e7b10c996b242aa023/data'
+        : 'community.wave.seqera.io/library/sentieon_gnuplot:41931fca35668c97'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
