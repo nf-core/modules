@@ -8,7 +8,7 @@ include { UMITOOLS_EXTRACT                   } from '../../../modules/nf-core/um
 // adapter removal and merging
 include { FASTQ_REMOVEADAPTERS_MERGE         } from '../fastq_removeadapters_merge/main'
 // complexity filtering
-include { PRINSEQPLUSPLUS                    } from '../../../modules/nf-core/prinseqplusplus/main'
+include { FASTQ_COMPLEXITY_FILTER            } from '../fastq_complexity_filter/main'
 // deduplication
 include { BBMAP_CLUMPIFY                     } from '../../../modules/nf-core/bbmap/clumpify/main'
 // host decontamination
@@ -43,6 +43,7 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
     val_fastp_save_trimmed_fail    // boolean: [mandatory] // only for fastp
     // complexity filtering
     skip_complexity_filtering      // boolean
+    val_complexity_filter_tool     // string:  [mandatory] tool_name // choose from: ["prinseqplusplus", "bbduk", "fastp"]
     // deduplication
     skip_deduplication             // boolean
     // host decontamination
@@ -74,7 +75,8 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
     ch_adapterremoval_discarded_reads = channel.empty()
     ch_adapterremoval_logfile         = channel.empty()
     ch_adapterremoval_report          = channel.empty()
-    ch_prinseq_log                    = channel.empty()
+    ch_complexity_filter_log          = channel.empty()
+    ch_complexity_filter_report       = channel.empty()
     ch_clumpify_log                   = channel.empty()
     ch_hostile_reference              = channel.empty()
     ch_hostile_json                   = channel.empty()
@@ -148,10 +150,12 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
 
     // complexity filtering
     if (!skip_complexity_filtering) {
-        PRINSEQPLUSPLUS( ch_reads )
-        ch_reads       = PRINSEQPLUSPLUS.out.good_reads
-        ch_prinseq_log = PRINSEQPLUSPLUS.out.log
-        ch_versions    = ch_versions.mix(PRINSEQPLUSPLUS.out.versions.first())
+        FASTQ_COMPLEXITY_FILTER( ch_reads, val_complexity_filter_tool )
+        ch_reads                    = FASTQ_COMPLEXITY_FILTER.out.filtered_reads
+        ch_complexity_filter_log    = FASTQ_COMPLEXITY_FILTER.out.logfile
+        ch_complexity_filter_report = FASTQ_COMPLEXITY_FILTER.out.report
+        ch_multiqc_files            = ch_multiqc_files.mix(FASTQ_COMPLEXITY_FILTER.out.multiqc_files)
+        ch_versions                 = ch_versions.mix(FASTQ_COMPLEXITY_FILTER.out.versions)
     }
 
     // deduplication
@@ -208,18 +212,18 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
     reads = ch_reads // channel: [ val(meta), [ fastq ] ]
 
     // statistics
-    pre_stats_fastqc_html    = ch_pre_stats_fastqc_html
-    pre_stats_fastqc_zip     = ch_pre_stats_fastqc_zip
-    pre_stats_seqfu_check    = ch_pre_stats_seqfu_check
-    pre_stats_seqfu_stats    = ch_pre_stats_seqfu_stats
-    pre_stats_seqkit_stats   = ch_pre_stats_seqkit_stats
-    pre_stats_seqtk_stats    = ch_pre_stats_seqtk_stats
-    post_stats_fastqc_html   = ch_post_stats_fastqc_html
-    post_stats_fastqc_zip    = ch_post_stats_fastqc_zip
-    post_stats_seqfu_check   = ch_post_stats_seqfu_check
-    post_stats_seqfu_stats   = ch_post_stats_seqfu_stats
-    post_stats_seqkit_stats  = ch_post_stats_seqkit_stats
-    post_stats_seqtk_stats   = ch_post_stats_seqtk_stats
+    pre_stats_fastqc_html   = ch_pre_stats_fastqc_html
+    pre_stats_fastqc_zip    = ch_pre_stats_fastqc_zip
+    pre_stats_seqfu_check   = ch_pre_stats_seqfu_check
+    pre_stats_seqfu_stats   = ch_pre_stats_seqfu_stats
+    pre_stats_seqkit_stats  = ch_pre_stats_seqkit_stats
+    pre_stats_seqtk_stats   = ch_pre_stats_seqtk_stats
+    post_stats_fastqc_html  = ch_post_stats_fastqc_html
+    post_stats_fastqc_zip   = ch_post_stats_fastqc_zip
+    post_stats_seqfu_check  = ch_post_stats_seqfu_check
+    post_stats_seqfu_stats  = ch_post_stats_seqfu_stats
+    post_stats_seqkit_stats = ch_post_stats_seqkit_stats
+    post_stats_seqtk_stats  = ch_post_stats_seqtk_stats
 
     // barcoding
     umi_log = ch_umi_log
@@ -230,7 +234,8 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
     adapterremoval_report          = ch_adapterremoval_report
 
     // complexity filtering
-    prinseq_log = ch_prinseq_log
+    complexity_filter_log    = ch_complexity_filter_log
+    complexity_filter_report = ch_complexity_filter_report
 
     // deduplication
     clumpify_log = ch_clumpify_log
@@ -241,6 +246,6 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
     deacon_index      = ch_deacon_index
     deacon_summary    = ch_deacon_summary
 
-    versions      = ch_versions      // channel: [ versions.yml ]
     multiqc_files = ch_multiqc_files
+    versions      = ch_versions      // channel: [ versions.yml ]
 }
