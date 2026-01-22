@@ -21,8 +21,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotc.ann.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true),
                     '33280000',
-                    file("${projectDir}/modules/nf-core/tmb/pytmb/tests/haplotc.yml", checkIfExists: true),
-                    file("${projectDir}/modules/nf-core/tmb/pytmb/tests/snpeff.yml", checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'generic/config/pytmb_haplotc.yml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/config/pytmb_snpeff.yml', checkIfExists: true)
                 ]
                 """
             }
@@ -84,8 +84,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotc.ann.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true),
                     [],
-                    file("${projectDir}/modules/nf-core/tmb/pytmb/tests/haplotc.yml", checkIfExists: true),
-                    file("${projectDir}/modules/nf-core/tmb/pytmb/tests/snpeff.yml", checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'generic/config/pytmb_haplotc.yml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/config/pytmb_snpeff.yml', checkIfExists: true)
                 ]
                 """
             }
@@ -118,8 +118,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotc.ann.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true),
                     [],
-                    file("${projectDir}/modules/nf-core/tmb/pytmb/tests/haplotc.yml", checkIfExists: true),
-                    file("${projectDir}/modules/nf-core/tmb/pytmb/tests/snpeff.yml", checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'generic/config/pytmb_haplotc.yml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/config/pytmb_snpeff.yml', checkIfExists: true)
                 ]
                 """
             }
