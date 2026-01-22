@@ -41,7 +41,7 @@ process SENTIEON_TNHAPLOTYPER2 {
     def gr_command = germline_resource ? "--germline_vcf ${germline_resource}" : ""
     def interval_command = intervals ? "--interval ${intervals}" : ""
     def pon_command = panel_of_normals ? "--pon ${panel_of_normals}" : ""
-    def inputs = input.collect { "-i ${it}" }.join(" ")
+    def inputs = input.collect {in ->  "-i ${in}" }.join(" ")
     def orientation_bias_cmd = ""
     def contamination_cmd = ""
 

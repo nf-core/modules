@@ -27,7 +27,7 @@ process SENTIEON_READWRITER {
 
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
-    def input_str = input.sort { it.getName() }.collect { "-i ${it}" }.join(' ')
+    def input_str = input.sort {in -> in.getName() }.collect {in ->  "-i ${in}" }.join(' ')
     def reference = fasta ? "-r ${fasta}" : ''
 
     // bam -> bam: prefix = "<filename>.bam"

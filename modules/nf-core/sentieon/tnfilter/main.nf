@@ -27,8 +27,8 @@ process SENTIEON_TNFILTER {
     def args2 = task.ext.args2 ?: '' // options for --algo TNfilter
     def prefix = task.ext.prefix ?: "${meta.id}_filtered"
     def contamination_command = contamination ? " --contamination ${contamination} " : ''
-    def segments_command = segments ? segments.collect { "--tumor_segments ${it}" }.join(' ') : ''
-    def orientation_priors_command = orientation_priors ? orientation_priors.collect { "--orientation_priors ${it}" }.join(' ') : ''
+    def segments_command = segments ? segments.collect {in -> "--tumor_segments ${in}" }.join(' ') : ''
+    def orientation_priors_command = orientation_priors ? orientation_priors.collect {in -> "--orientation_priors ${in}" }.join(' ') : ''
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64
         ? "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; "
         : ""
