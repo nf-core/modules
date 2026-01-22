@@ -207,58 +207,34 @@
     "metrics - with plots": {
         "content": [
             [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test_mq_metrics.txt:md5,430ef955be763dbf789877f2677d30e2"
-                ]
+                "CYCLE\tMEAN_QUALITY",
+                "1\t32.000000",
+                "2\t31.350000"
             ],
             [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test_qd_metrics.txt:md5,bb43223aca9214832b21f5e0318cea47"
-                ]
+                "QUALITY\tCOUNT_OF_Q",
+                "14\t1926",
+                "21\t290"
             ],
             [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test_gc_summary.txt:md5,6aa3d989ebaa1c378b377dd9ac205593"
-                ]
+                "ACCUMULATION_LEVEL\tREADS_USED\tWINDOW_SIZE\tTOTAL_CLUSTERS\tALIGNED_READS\tAT_DROPOUT\tGC_DROPOUT\tGC_NC_0_19\tGC_NC_20_39\tGC_NC_40_59\tGC_NC_60_79\tGC_NC_80_100\tSAMPLE\tLIBRARY\tREAD_GROUP",
+                "All Reads\tALL\t100\t100\t197\t13.446552\t1.184718\t0.000000\t0.860384\t1.258132\t0.000000\t0.000000\t\t\t",
+                ""
             ],
             [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test_gc_metrics.txt:md5,923ef8b5ed12332894e337cea16d6ae6"
-                ]
+                "ACCUMULATION_LEVEL\tREADS_USED\tGC\tWINDOWS\tREAD_STARTS\tMEAN_BASE_QUALITY\tNORMALIZED_COVERAGE\tERROR_BAR_WIDTH\tSAMPLE\tLIBRARY\tREAD_GROUP",
+                "All Reads\tALL\t0\t0\t0\t0\t0.000000\t0.000000\t\t\t",
+                "All Reads\tALL\t1\t0\t0\t0\t0.000000\t0.000000\t\t\t"
             ],
             [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test_aln_metrics.txt:md5,464cfea7c9ec8519230d4b96de5c08ed"
-                ]
+                "CATEGORY\tTOTAL_READS\tPF_READS\tPCT_PF_READS\tPF_NOISE_READS\tPF_READS_ALIGNED\tPCT_PF_READS_ALIGNED\tPF_ALIGNED_BASES\tPF_HQ_ALIGNED_READS\tPF_HQ_ALIGNED_BASES\tPF_HQ_ALIGNED_Q20_BASES\tPF_HQ_MEDIAN_MISMATCHES\tPF_MISMATCH_RATE\tPF_HQ_ERROR_RATE\tPF_INDEL_RATE\tMEAN_READ_LENGTH\tREADS_ALIGNED_IN_PAIRS\tPCT_READS_ALIGNED_IN_PAIRS\tBAD_CYCLES\tSTRAND_BALANCE\tPCT_CHIMERAS\tPCT_ADAPTER",
+                "FIRST_OF_PAIR\t100\t100\t1.000000\t0\t100\t1.000000\t13884\t99\t13735\t12777\t0.000000\t0.004178\t0.004223\t0.000432\t138.970000\t97\t0.970000\t0\t0.480000\t0.000000\t0.000000",
+                "SECOND_OF_PAIR\t100\t100\t1.000000\t0\t97\t0.970000\t13517\t97\t13517\t12630\t0.000000\t0.002885\t0.002885\t0.000296\t137.480000\t97\t1.000000\t0\t0.515464\t0.000000\t0.000000"
             ],
             [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test_is_metrics.txt:md5,495e5068bacf1a06c64e6c6234af6b6f"
-                ]
+                "MEDIAN_INSERT_SIZE\tMEDIAN_ABSOLUTE_DEVIATION\tMIN_INSERT_SIZE\tMAX_INSERT_SIZE\tMEAN_INSERT_SIZE\tSTANDARD_DEVIATION\tREAD_PAIRS\tPAIR_ORIENTATION\tWIDTH_OF_10_PERCENT\tWIDTH_OF_20_PERCENT\tWIDTH_OF_30_PERCENT\tWIDTH_OF_40_PERCENT\tWIDTH_OF_50_PERCENT\tWIDTH_OF_60_PERCENT\tWIDTH_OF_70_PERCENT\tWIDTH_OF_80_PERCENT\tWIDTH_OF_90_PERCENT\tWIDTH_OF_99_PERCENT",
+                "209.000000\t46.000000\t77\t364\t207.659794\t66.769018\t97\tFR\t25\t49\t59\t77\t93\t123\t145\t183\t223\t311",
+                ""
             ],
             "test_mq_metrics.pdf",
             "test_qd_metrics.pdf",
@@ -278,150 +254,41 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-01-22T07:23:59.146709397"
+        "timestamp": "2026-01-22T09:03:59.651830757"
     },
     "metrics - no plots": {
         "content": [
+            [
+                "CYCLE\tMEAN_QUALITY",
+                "1\t32.000000",
+                "2\t31.350000"
+            ],
+            [
+                "QUALITY\tCOUNT_OF_Q",
+                "14\t1926",
+                "21\t290"
+            ],
+            [
+                "ACCUMULATION_LEVEL\tREADS_USED\tWINDOW_SIZE\tTOTAL_CLUSTERS\tALIGNED_READS\tAT_DROPOUT\tGC_DROPOUT\tGC_NC_0_19\tGC_NC_20_39\tGC_NC_40_59\tGC_NC_60_79\tGC_NC_80_100\tSAMPLE\tLIBRARY\tREAD_GROUP",
+                "All Reads\tALL\t100\t100\t197\t13.446552\t1.184718\t0.000000\t0.860384\t1.258132\t0.000000\t0.000000\t\t\t",
+                ""
+            ],
+            [
+                "ACCUMULATION_LEVEL\tREADS_USED\tGC\tWINDOWS\tREAD_STARTS\tMEAN_BASE_QUALITY\tNORMALIZED_COVERAGE\tERROR_BAR_WIDTH\tSAMPLE\tLIBRARY\tREAD_GROUP",
+                "All Reads\tALL\t0\t0\t0\t0\t0.000000\t0.000000\t\t\t",
+                "All Reads\tALL\t1\t0\t0\t0\t0.000000\t0.000000\t\t\t"
+            ],
+            [
+                "CATEGORY\tTOTAL_READS\tPF_READS\tPCT_PF_READS\tPF_NOISE_READS\tPF_READS_ALIGNED\tPCT_PF_READS_ALIGNED\tPF_ALIGNED_BASES\tPF_HQ_ALIGNED_READS\tPF_HQ_ALIGNED_BASES\tPF_HQ_ALIGNED_Q20_BASES\tPF_HQ_MEDIAN_MISMATCHES\tPF_MISMATCH_RATE\tPF_HQ_ERROR_RATE\tPF_INDEL_RATE\tMEAN_READ_LENGTH\tREADS_ALIGNED_IN_PAIRS\tPCT_READS_ALIGNED_IN_PAIRS\tBAD_CYCLES\tSTRAND_BALANCE\tPCT_CHIMERAS\tPCT_ADAPTER",
+                "FIRST_OF_PAIR\t100\t100\t1.000000\t0\t100\t1.000000\t13884\t99\t13735\t12777\t0.000000\t0.004178\t0.004223\t0.000432\t138.970000\t97\t0.970000\t0\t0.480000\t0.000000\t0.000000",
+                "SECOND_OF_PAIR\t100\t100\t1.000000\t0\t97\t0.970000\t13517\t97\t13517\t12630\t0.000000\t0.002885\t0.002885\t0.000296\t137.480000\t97\t1.000000\t0\t0.515464\t0.000000\t0.000000"
+            ],
+            [
+                "MEDIAN_INSERT_SIZE\tMEDIAN_ABSOLUTE_DEVIATION\tMIN_INSERT_SIZE\tMAX_INSERT_SIZE\tMEAN_INSERT_SIZE\tSTANDARD_DEVIATION\tREAD_PAIRS\tPAIR_ORIENTATION\tWIDTH_OF_10_PERCENT\tWIDTH_OF_20_PERCENT\tWIDTH_OF_30_PERCENT\tWIDTH_OF_40_PERCENT\tWIDTH_OF_50_PERCENT\tWIDTH_OF_60_PERCENT\tWIDTH_OF_70_PERCENT\tWIDTH_OF_80_PERCENT\tWIDTH_OF_90_PERCENT\tWIDTH_OF_99_PERCENT",
+                "209.000000\t46.000000\t77\t364\t207.659794\t66.769018\t97\tFR\t25\t49\t59\t77\t93\t123\t145\t183\t223\t311",
+                ""
+            ],
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_mq_metrics.txt:md5,430ef955be763dbf789877f2677d30e2"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_qd_metrics.txt:md5,bb43223aca9214832b21f5e0318cea47"
-                    ]
-                ],
-                "10": [
-                    [
-                        "SENTIEON_DATAMETRICS",
-                        "sentieon",
-                        "202503.01"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_gc_summary.txt:md5,6aa3d989ebaa1c378b377dd9ac205593"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_gc_metrics.txt:md5,923ef8b5ed12332894e337cea16d6ae6"
-                    ]
-                ],
-                "4": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_aln_metrics.txt:md5,464cfea7c9ec8519230d4b96de5c08ed"
-                    ]
-                ],
-                "5": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_is_metrics.txt:md5,495e5068bacf1a06c64e6c6234af6b6f"
-                    ]
-                ],
-                "6": [
-                    
-                ],
-                "7": [
-                    
-                ],
-                "8": [
-                    
-                ],
-                "9": [
-                    
-                ],
-                "aln_metrics": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_aln_metrics.txt:md5,464cfea7c9ec8519230d4b96de5c08ed"
-                    ]
-                ],
-                "gc_metrics": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_gc_metrics.txt:md5,923ef8b5ed12332894e337cea16d6ae6"
-                    ]
-                ],
-                "gc_plot": [
-                    
-                ],
-                "gc_summary": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_gc_summary.txt:md5,6aa3d989ebaa1c378b377dd9ac205593"
-                    ]
-                ],
-                "is_metrics": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_is_metrics.txt:md5,495e5068bacf1a06c64e6c6234af6b6f"
-                    ]
-                ],
-                "is_plot": [
-                    
-                ],
-                "mq_metrics": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_mq_metrics.txt:md5,430ef955be763dbf789877f2677d30e2"
-                    ]
-                ],
-                "mq_plot": [
-                    
-                ],
-                "qd_metrics": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_qd_metrics.txt:md5,bb43223aca9214832b21f5e0318cea47"
-                    ]
-                ],
-                "qd_plot": [
-                    
-                ],
                 "versions_sentieon": [
                     [
                         "SENTIEON_DATAMETRICS",
@@ -435,6 +302,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-01-22T07:23:50.40294074"
+        "timestamp": "2026-01-22T09:03:50.571798469"
     }
 }
