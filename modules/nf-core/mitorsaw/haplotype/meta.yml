@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-# # TODO nf-core: Add a description of the module and list keywords
 name: "mitorsaw_haplotype"
-description: Mitorsaw analyse mitochondrial variants and identifies heteroplasmy and homoplasmy
+description: Mitorsaw analyses mitochondrial variants and identifies heteroplasmy and homoplasmy
 keywords:
   - heteroplasmy
   - homoplasmy
@@ -9,7 +7,6 @@ keywords:
   - mitorsaw
   - haplotype
 tools:
-  ## TODO nf-core: Add a description and other details for the software below
   - mitorsaw:
       description: "A tool for mitochondrial analysis for HiFi sequencing data"
       homepage: "https://github.com/PacificBiosciences/mitorsaw"
@@ -18,7 +15,6 @@ tools:
       licence: ["Pacific Biosciences Software License Agreement"]
 
 input:
-  ### TODO nf-core: Add a description of all of the variables used as input
   - - meta:
         type: map
         description: |
@@ -57,7 +53,6 @@ input:
       default: false
 
 output:
-  ### TODO nf-core: Add a description of all of the variables used as output
   vcf:
     - - meta:
           type: map
