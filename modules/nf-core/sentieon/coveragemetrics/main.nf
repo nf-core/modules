@@ -4,9 +4,9 @@ process SENTIEON_COVERAGEMETRICS {
     label 'sentieon'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/73e9111552beb76e2ad3ad89eb75bed162d7c5b85b2433723ecb4fc96a02674a/data'
-        : 'community.wave.seqera.io/library/sentieon:202503.02--def60555294d04fa'}"
+        container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+            ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/20/2050c5321a5426e31b9ed1e3e98356913fe3c316a7ef02c4fb872983a730db6f/data'
+            : 'community.wave.seqera.io/library/sentieon_gnuplot:a6da525a6c9ce6e3'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
