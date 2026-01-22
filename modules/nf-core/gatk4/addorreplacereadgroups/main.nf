@@ -13,10 +13,10 @@ process GATK4_ADDORREPLACEREADGROUPS {
     tuple val(meta3), path(fasta_index)
 
     output:
-    tuple val(meta), path("*.bam"),  emit: bam,  optional: true
-    tuple val(meta), path("*.bai"),  emit: bai,  optional: true
+    tuple val(meta), path("*.bam"), emit: bam, optional: true
+    tuple val(meta), path("*.bai"), emit: bai, optional: true
     tuple val(meta), path("*.cram"), emit: cram, optional: true
-    path "versions.yml",             emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -47,11 +47,6 @@ process GATK4_ADDORREPLACEREADGROUPS {
         ${create_index} \\
         --INPUT ${bam} \\
         --OUTPUT ${prefix}.${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk AddOrReplaceReadGroups --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -67,10 +62,5 @@ process GATK4_ADDORREPLACEREADGROUPS {
     """
     touch ${prefix}.${suffix}
     ${create_index}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk AddOrReplaceReadGroups --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }
