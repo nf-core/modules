@@ -52,31 +52,27 @@ process MITORSAW_HAPLOTYPE {
     def args                  = task.ext.args        ?: ''
     prefix                    = task.ext.prefix      ?: "${meta.id}"
     def touch_hap_stats       = include_hap_stats    ? "touch ${prefix}.json" : ''
-    def coverage_stats        = "${prefix}_debug/coverage_stats.json"
-    def sequences_chrM        = "${prefix}_debug/sequences_chrM.fa"
-    def custom_alignments_bam = "${prefix}_debug/mito_igv_custom/custom_alignments.bam"
-    def custom_alignments_bai = "${prefix}_debug/mito_igv_custom/custom_alignments.bam.bai"
-    def igv_session           = "${prefix}_debug/mito_igv_custom/custom_igv_session.xml"
-    def custom_ref_fa         = "${prefix}_debug/mito_igv_custom/custom_reference.fa"
-    def custom_ref_fai        = "${prefix}_debug/mito_igv_custom/custom_reference.fa.fai"
-    def custom_regions        = "${prefix}_debug/mito_igv_custom/custom_regions.bed"
-
-    if (include_debug_output) {
-        make_dirs = "mkdir -p ${prefix}_debug/mito_igv_custom"
-        touch_debug_files = "touch ${coverage_stats} ${sequences_chrM} ${custom_alignments_bam} ${custom_alignments_bai} ${igv_session} ${custom_ref_fa} ${custom_ref_fai} ${custom_regions}"
-    }
-    else {
-        make_dirs = ''
-        touch_debug_files = ''
-    }
-
+    def debugDir              = "${prefix}_debug"
+    def igvDir                = "${debugDir}/mito_igv_custom"
+    def mkdir_debug = include_debug_output ? "mkdir -p ${igvDir}" : ''
+    def debug_files           = [
+        "${debugDir}/coverage_stats.json",
+        "${debugDir}/sequences_chrM.fa",
+        "${igvDir}/custom_alignments.bam",
+        "${igvDir}/custom_alignments.bam.bai",
+        "${igvDir}/custom_igv_session.xml",
+        "${igvDir}/custom_reference.fa",
+        "${igvDir}/custom_reference.fa.fai",
+        "${igvDir}/custom_regions.bed"
+    ]
+    def touch_debug_files = include_debug_output ? "touch ${debug_files.join(' ')}" : ''
     """
     echo $args
 
     echo | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
     ${touch_hap_stats}
-    ${make_dirs}
+    ${mkdir_debug}
     ${touch_debug_files}
     """
 }
