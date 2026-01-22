@@ -76,6 +76,7 @@ run_mobster_fit = function(joint_table, descr) {
                 tail = eval(parse(text=opt[["tail"]])),
                 pi_cutoff = as.numeric(opt[["pi_cutoff"]]),
                 N_cutoff = as.integer(opt[["n_cutoff"]]),
+                parallel = FALSE,
                 description = descr)
 }
 
