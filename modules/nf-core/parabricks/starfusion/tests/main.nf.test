@@ -128,7 +128,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [[],[]]
+                input[0] = [[ id:'test', single_end:true ],[]]
                 // PARABRICKS_RNAFQ2BAM.out.junction
 				input[1] = PARABRICKS_STARFUSION_BUILD.out.reference
                 """
