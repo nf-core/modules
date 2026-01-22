@@ -53,7 +53,7 @@ workflow FASTQ_QC_STATS {
     if (!skip_seqtk_comp) {
         SEQTK_COMP ( ch_reads )
         ch_seqtk_stats = SEQTK_COMP.out.seqtk_stats
-        ch_versions    = ch_versions.mix(SEQTK_COMP.out.versions.first())
+        // SEQTK_COMP emits version as a topic channel
     }
 
     emit:
