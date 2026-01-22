@@ -16,7 +16,6 @@ tools:
       doi: "10.1038/s41592-023-01940-w"
       licence: ["GPL v3"]
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -37,6 +36,7 @@ input:
         type: file
         description: CheckM2 database
         ontologies: []
+
 output:
   checkm2_output:
     - - meta:
@@ -60,12 +60,27 @@ output:
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_checkm2_predict:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - checkm2:
+          type: string
+          description: The name of the tool
+      - "checkm2 --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - checkm2:
+          type: string
+          description: The tool name
+      - "checkm2 --version":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@dialvarezs"
+  - "@eit-maxlcummins"
