@@ -1,7 +1,3 @@
-import org.yaml.snakeyaml.Yaml
-import org.yaml.snakeyaml.DumperOptions
-
-
 /**
  * Multiline code blocks need to have the same indentation level
  * as the `script:` section. This function re-indents code to the specified level.
@@ -18,9 +14,9 @@ def indent_code_block(code, n_spaces) {
  * @returns a line to be inserted in the bash script.
  */
 def dump_params_yml(params) {
-    DumperOptions options = new DumperOptions();
-    options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-    def yaml = new Yaml(options)
+    def options = new org.yaml.snakeyaml.DumperOptions();
+    options.setDefaultFlowStyle(org.yaml.snakeyaml.DumperOptions.FlowStyle.BLOCK);
+    def yaml = new org.yaml.snakeyaml.Yaml(options)
     def yaml_str = yaml.dump(params)
 
     // Writing the .params.yml file directly as follows does not work.

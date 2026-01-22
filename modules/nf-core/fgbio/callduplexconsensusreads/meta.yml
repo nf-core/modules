@@ -1,6 +1,6 @@
 name: "fgbio_callduplexconsensusreads"
-description: Uses FGBIO CallDuplexConsensusReads to call duplex consensus sequences
-  from reads generated from the same double-stranded source molecule.
+description: Uses FGBIO CallDuplexConsensusReads to call duplex consensus
+  sequences from reads generated from the same double-stranded source molecule.
 keywords:
   - umi
   - duplex
@@ -27,8 +27,9 @@ input:
         ontologies: []
   - min_reads:
       type: string
-      description: Minimum number of raw/original reads to build each consensus read.  Can
-        be a space delimited list of 1-3 values.  See fgbio documentation for more details.
+      description: Minimum number of raw/original reads to build each consensus
+        read.  Can be a space delimited list of 1-3 values.  See fgbio
+        documentation for more details.
   - min_baseq:
       type: integer
       description: Ignore bases in raw reads that have Q below this value
@@ -39,18 +40,33 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}.bam:
+      - "${prefix}.bam":
           type: file
           description: consensus BAM file
-          pattern: "*.bam"
+          pattern: "${prefix}.bam"
           ontologies: []
+  versions_fgbio:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fgbio:
+          type: string
+          description: The tool name
+      - 'fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\[.*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fgbio:
+          type: string
+          description: The tool name
+      - 'fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\[.*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@lescai"
 maintainers:
