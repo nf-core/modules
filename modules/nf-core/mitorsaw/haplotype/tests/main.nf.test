@@ -23,12 +23,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ],
+                    [ id:'sample_1' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/200080.GRCh38.haplotagged.chrM.downsampled.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/200080.GRCh38.haplotagged.chrM.downsampled.bam.bai', checkIfExists: true),
                 ]
                 input[1] = [
-                    [ id:'test'],
+                    [ id:'sample_1'],
                     file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/raredisease/reference/Homo_sapiens_assembly38_chr20_chrM.fasta', checkIfExists: true),
                     file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/raredisease/reference/Homo_sapiens_assembly38_chr20_chrM.fasta.fai', checkIfExists: true),
                 ]
@@ -64,12 +64,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ],
+                    [ id:'sample_1' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/200080.GRCh38.haplotagged.chrM.downsampled.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/200080.GRCh38.haplotagged.chrM.downsampled.bam.bai', checkIfExists: true),
                 ]
                 input[1] = [
-                    [ id:'test'],
+                    [ id:'sample_1'],
                     file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/raredisease/reference/Homo_sapiens_assembly38_chr20_chrM.fasta', checkIfExists: true),
                     file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/raredisease/reference/Homo_sapiens_assembly38_chr20_chrM.fasta.fai', checkIfExists: true),
                 ]
@@ -103,12 +103,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ],
+                    [ id:'sample_1' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/200080.GRCh38.haplotagged.chrM.downsampled.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/200080.GRCh38.haplotagged.chrM.downsampled.bam.bai', checkIfExists: true),
                 ]
                 input[1] = [
-                    [ id:'test'],
+                    [ id:'sample_1'],
                     file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/raredisease/reference/Homo_sapiens_assembly38_chr20_chrM.fasta', checkIfExists: true),
                     file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/raredisease/reference/Homo_sapiens_assembly38_chr20_chrM.fasta.fai', checkIfExists: true),
                 ]
@@ -141,12 +141,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ],
+                    [ id:'sample_1' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/200080.GRCh38.haplotagged.chrM.downsampled.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/200080.GRCh38.haplotagged.chrM.downsampled.bam.bai', checkIfExists: true),
                 ]
                 input[1] = [
-                    [ id:'test'],
+                    [ id:'sample_1'],
                     file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/raredisease/reference/Homo_sapiens_assembly38_chr20_chrM.fasta', checkIfExists: true),
                     file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/raredisease/reference/Homo_sapiens_assembly38_chr20_chrM.fasta.fai', checkIfExists: true),
                 ]
