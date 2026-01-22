@@ -51,9 +51,9 @@ input:
       type: boolean
       description: Whether to include haplotype statistics output file
       default: false
-  - debug_output:
-      type: directory
-      description: Path to debug output files
+  - include_debug_output:
+      type: boolean
+      description: Whether to generate debug output files
       default: false
 
 output:
@@ -88,30 +88,68 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - ${prefix}.coverage_stats.json:
+      - ${prefix}_debug/coverage_stats.json:
           type: file
           description: Coverage statistics in JSON format
-          pattern: "*.coverage_stats.json"
+          pattern: "coverage_stats.json"
+  sequences_chrM:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_debug/sequences_chrM.fa:
+          type: file
+          description: Haplotype sequences in FASTA format
+          pattern: "sequences_chrM.fa"
+  custom_alignments:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_debug/mito_igv_custom/custom_alignments.bam:
+          type: file
+          description: Custom alignments in BAM format
+          pattern: "custom_alignments.bam"
+      - ${prefix}_debug/mito_igv_custom/custom_alignments.bam.bai:
+          type: file
+          description: Custom alignments index file
+          pattern: "custom_alignments.bam.bai"
   igv_session:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - ${prefix}.xml:
+      - ${prefix}_debug/mito_igv_custom/custom_igv_session.xml:
           type: file
           description: IGV session file in XML format
-          pattern: "*.xml"
-  hap_seq:
+          pattern: "custom_igv_session.xml"
+  custom_ref:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - ${prefix}.fa:
+      - ${prefix}_debug/mito_igv_custom/custom_reference.fa:
           type: file
-          description: Haplotype sequences in FASTA format
-          pattern: "*.fa"
+          description: Custom reference genome in FASTA format
+          pattern: "custom_reference.fa"
+      - ${prefix}_debug/mito_igv_custom/custom_reference.fa.fai:
+          type: file
+          description: Custom reference genome index file
+          pattern: "custom_reference.fa.fai"
+  custom_regions:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_debug/mito_igv_custom/custom_regions.bed:
+          type: file
+          description: Custom regions in BED format
+          pattern: "custom_regions.bed"
   versions_mitorsaw:
     - - ${task.process}:
           type: string

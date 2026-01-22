@@ -38,14 +38,14 @@ process MITORSAW_HAPLOTYPE {
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*${prefix}.vcf.gz"), path("*${prefix}.vcf.gz.tbi"),                                                                       emit: vcf
-    tuple val(meta), path("${prefix}.json"),                                                                                                         emit: stats,             optional: true
-    tuple val(meta), path("${prefix}_debug/coverage_stats.json"),                                                                                    emit: coverage_stats,    optional: true
-    tuple val(meta), path("${prefix}_debug/sequences_chrM.fa"),                                                                                      emit: sequences_chrM,    optional: true
+    tuple val(meta), path("*${prefix}.vcf.gz"), path("*${prefix}.vcf.gz.tbi"),                                                                         emit: vcf
+    tuple val(meta), path("${prefix}.json"),                                                                                                           emit: stats,             optional: true
+    tuple val(meta), path("${prefix}_debug/coverage_stats.json"),                                                                                      emit: coverage_stats,    optional: true
+    tuple val(meta), path("${prefix}_debug/sequences_chrM.fa"),                                                                                        emit: sequences_chrM,    optional: true
     tuple val(meta), path("${prefix}_debug/mito_igv_custom/custom_alignments.bam"), path("${prefix}_debug/mito_igv_custom/custom_alignments.bam.bai"), emit: custom_alignments, optional: true
-    tuple val(meta), path("${prefix}_debug/mito_igv_custom/custom_igv_session.xml"),                                                                  emit: igv_session,       optional: true
+    tuple val(meta), path("${prefix}_debug/mito_igv_custom/custom_igv_session.xml"),                                                                   emit: igv_session,       optional: true
     tuple val(meta), path("${prefix}_debug/mito_igv_custom/custom_reference.fa"), path("${prefix}_debug/mito_igv_custom/custom_reference.fa.fai"),     emit: custom_ref,        optional: true
-    tuple val(meta), path("${prefix}_debug/mito_igv_custom/custom_regions.bed"),                                                                      emit: custom_regions,    optional: true
+    tuple val(meta), path("${prefix}_debug/mito_igv_custom/custom_regions.bed"),                                                                       emit: custom_regions,    optional: true
 
     // TODO nf-core: List additional required output channels/values here
     // TODO nf-core: Update the command here to obtain the version number of the software used in this module
