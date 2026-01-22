@@ -29,7 +29,7 @@ input:
           - edam: http://edamontology.org/format_3475 # TSV
     - gvcf:
         type: file
-        description: GVCF
+        description: GVCF. It is used to calculate B-allele frequencies at the sites specified in baf_positions. It can be generated using any SNV-caller.
         pattern: "*.vcf.gz"
         ontologies:
           - edam: http://edamontology.org/format_3989 # GZIP format
