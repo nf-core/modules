@@ -1,8 +1,8 @@
-include { BAM_SORT_STATS_SAMTOOLS                           } from '../../nf-core/bam_sort_stats_samtools/main'
+include { BAM_SORT_STATS_SAMTOOLS       } from '../../nf-core/bam_sort_stats_samtools/main'
 include { FASTQ_ALIGN_BWA               } from '../../nf-core/fastq_align_bwa/main'
 include { PICARD_ADDORREPLACEREADGROUPS } from '../../../modules/nf-core/picard/addorreplacereadgroups/main'
 include { PICARD_MARKDUPLICATES         } from '../../../modules/nf-core/picard/markduplicates/main'
-include { PARABRICKS_FQ2BAM                                 } from '../../../modules/nf-core/parabricks/fq2bam/main'
+include { PARABRICKS_FQ2BAM             } from '../../../modules/nf-core/parabricks/fq2bam/main'
 include { SAMTOOLS_INDEX                } from '../../../modules/nf-core/samtools/index/main'
 
 workflow FASTQ_ALIGN_DEDUP_BWAMEM {
