@@ -41,7 +41,6 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
             output_fmt          // string: output format
         )
         ch_alignment = PARABRICKS_FQ2BAM.out.bam
-        ch_versions  = ch_versions.mix(PARABRICKS_FQ2BAM.out.versions.first())
 
         BAM_SORT_STATS_SAMTOOLS (
             ch_alignment,
@@ -62,7 +61,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
             ch_fasta
         )
         ch_alignment        = FASTQ_ALIGN_BWA.out.bam             // channel: [ val(meta), [ bam ] ]
-    ch_alignment_index  = FASTQ_ALIGN_BWA.out.bai         // channel: [ val(meta), [ bai ] ]
+        ch_alignment_index  = FASTQ_ALIGN_BWA.out.bai         // channel: [ val(meta), [ bai ] ]
         ch_stats            = FASTQ_ALIGN_BWA.out.stats       // channel: [ val(meta), path(stats) ]
         ch_flagstat         = FASTQ_ALIGN_BWA.out.flagstat    // channel: [ val(meta), path(flagstat) ]
         ch_idxstats         = FASTQ_ALIGN_BWA.out.idxstats    // channel: [ val(meta), path(idxstats) ]
