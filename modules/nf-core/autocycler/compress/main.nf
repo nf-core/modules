@@ -14,7 +14,7 @@ process AUTOCYCLER_COMPRESS {
     output:
     tuple val(meta), path("$prefix/*.gfa"),  emit: gfa
     tuple val(meta), path("$prefix/*.yaml"), emit: stats
-    path "versions.yml",                     emit: versions
+    tuple val("${task.process}"), val("autocycler"), eval("autocycler --version |  sed 's/^[^ ]* //'"), emit: versions_autocycler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,11 +28,6 @@ process AUTOCYCLER_COMPRESS {
         -t $task.cpus \\
         -i . \\
         -a ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        autocycler: \$(autocycler --version |  sed 's/^[^ ]* //')
-    END_VERSIONS
     """
 
     stub:
@@ -42,10 +37,5 @@ process AUTOCYCLER_COMPRESS {
     mkdir $prefix
     touch ${prefix}/input_assemblies.gfa
     touch ${prefix}/input_assemblies.yaml
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        autocycler: \$(autocycler --version |  sed 's/^[^ ]* //')
-    END_VERSIONS
     """
 }

@@ -13,7 +13,7 @@ process AUTOCYCLER_TRIM {
     output:
     tuple val(meta), path("$prefix/*.gfa"),  emit: gfa
     tuple val(meta), path("$prefix/*.yaml"), emit: stats
-    path "versions.yml",                     emit: versions
+    tuple val("${task.process}"), val("autocycler"), eval("autocycler --version |  sed 's/^[^ ]* //'"), emit: versions_autocycler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,11 +29,6 @@ process AUTOCYCLER_TRIM {
 
     mkdir $prefix
     mv 2_trimmed.{gfa,yaml} $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        autocycler: \$(autocycler --version |  sed 's/^[^ ]* //')
-    END_VERSIONS
     """
 
     stub:
@@ -44,10 +39,5 @@ process AUTOCYCLER_TRIM {
     mkdir $prefix
     touch $prefix/2_trimmed.gfa
     touch $prefix/2_trimmed.yaml
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        autocycler: \$(autocycler --version |  sed 's/^[^ ]* //')
-    END_VERSIONS
     """
 }

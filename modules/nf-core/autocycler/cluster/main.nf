@@ -17,7 +17,7 @@ process AUTOCYCLER_CLUSTER {
     tuple val(meta), path("$prefix/clustering/*.tsv"),            emit: tsv
     tuple val(meta), path("$prefix/clustering/*.phylip"),         emit: pairwisedistances
     tuple val(meta), path("$prefix/clustering/*.yaml"),           emit: stats
-    path "versions.yml",                                          emit: versions
+    tuple val("${task.process}"), val("autocycler"), eval("autocycler --version |  sed 's/^[^ ]* //'"), emit: versions_autocycler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,11 +32,6 @@ process AUTOCYCLER_CLUSTER {
 
     mkdir $prefix
     mv clustering $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        autocycler: \$(autocycler --version |  sed 's/^[^ ]* //')
-    END_VERSIONS
     """
 
     stub:
@@ -48,10 +43,5 @@ process AUTOCYCLER_CLUSTER {
     touch $prefix/clustering/clustering.{newick,yaml,tsv}
     touch $prefix/clustering/pairwise_distances.phylip
     touch $prefix/clustering/qc_pass/cluster_000/0_untrimmed.{gfa,yaml}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        autocycler: \$(autocycler --version |  sed 's/^[^ ]* //')
-    END_VERSIONS
     """
 }

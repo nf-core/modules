@@ -14,7 +14,7 @@ process AUTOCYCLER_RESOLVE {
     tuple val(meta), path("$prefix/3_bridged.gfa"), emit: bridged
     tuple val(meta), path("$prefix/4_merged.gfa"),  emit: merged
     tuple val(meta), path("$prefix/5_final.gfa"),   emit: resolved
-    path "versions.yml",                            emit: versions
+    tuple val("${task.process}"), val("autocycler"), eval("autocycler --version |  sed 's/^[^ ]* //'"), emit: versions_autocycler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,11 +31,6 @@ process AUTOCYCLER_RESOLVE {
     mv 3_bridged.gfa $prefix
     mv 4_merged.gfa $prefix
     mv 5_final.gfa $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        autocycler: \$(autocycler --version |  sed 's/^[^ ]* //')
-    END_VERSIONS
     """
 
     stub:
@@ -46,10 +41,5 @@ process AUTOCYCLER_RESOLVE {
     touch $prefix/3_bridged.gfa
     touch $prefix/4_merged.gfa
     touch $prefix/5_final.gfa
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        autocycler: \$(autocycler --version |  sed 's/^[^ ]* //')
-    END_VERSIONS
     """
 }
