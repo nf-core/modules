@@ -103,13 +103,6 @@ output:
             Report containing unaligned contigs, only when a reference fasta is provided
           pattern: "${prefix}_unaligned.tsv"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
   versions_quast:
     - - ${task.process}:
           type: string
