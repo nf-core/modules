@@ -13,7 +13,7 @@ process BAMCMP {
     output:
     tuple val(meta), path("${prefix}.bam") , emit: primary_filtered_bam
     tuple val(meta), path("${prefix2}.bam"), emit: contamination_bam
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val('bamcmp'), val('2.2'), topic: versions, emit: versions_bamcmp
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,8 +35,6 @@ process BAMCMP {
     if ("${prefix}.bam"    == "${prefix2}.bam" ) {
         error "Output names for the two bam files are identical, use \"task.ext.prefix\" and \"task.ext.prefix2\" to disambiguate!"
     }
-
-    def VERSION = '2.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     bamcmp \\
         -1 $primary_aligned_bam \\
@@ -44,15 +42,9 @@ process BAMCMP {
         -A ${prefix}.bam \\
         -B ${prefix2}.bam \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bamcmp: $VERSION
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}_primary"
     prefix2 = task.ext.prefix2 ?: "${meta.id}_contaminant"
 
@@ -67,11 +59,6 @@ process BAMCMP {
     """
     touch ${prefix}.bam
     touch ${prefix2}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ngscheckmate: \$(ncm.py --help | sed "7!d;s/ *Ensuring Sample Identity v//g")
-    END_VERSIONS
     """
 
 }
