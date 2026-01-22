@@ -5,8 +5,8 @@ process SENTIEON_READWRITER {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f1dfe59ef66d7326b43db9ab1f39ce6220b358a311078c949a208f9c9815d4e/data'
-        : 'community.wave.seqera.io/library/sentieon:202503.01--1863def31ed8e4d5'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/73e9111552beb76e2ad3ad89eb75bed162d7c5b85b2433723ecb4fc96a02674a/data'
+        : 'community.wave.seqera.io/library/sentieon:202503.02--def60555294d04fa'}"
 
     input:
     tuple val(meta), path(input), path(index)
@@ -17,7 +17,7 @@ process SENTIEON_READWRITER {
     tuple val(meta), path("${prefix}"),                             emit: output
     tuple val(meta), path("${prefix}.${index}"),                    emit: index
     tuple val(meta), path("${prefix}"), path("${prefix}.${index}"), emit: output_index
-    path "versions.yml",                                            emit: versions
+    tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,7 +27,7 @@ process SENTIEON_READWRITER {
 
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
-    def input_str = input.sort { it.getName() }.collect { "-i ${it}" }.join(' ')
+    def input_str = input.sort {in -> in.getName() }.collect {in ->  "-i ${in}" }.join(' ')
     def reference = fasta ? "-r ${fasta}" : ''
 
     // bam -> bam: prefix = "<filename>.bam"
@@ -52,10 +52,6 @@ process SENTIEON_READWRITER {
         ${args2} \\
         ${prefix}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 
     stub:
@@ -66,9 +62,5 @@ process SENTIEON_READWRITER {
     touch ${prefix}
     touch ${prefix}.${index}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 }
