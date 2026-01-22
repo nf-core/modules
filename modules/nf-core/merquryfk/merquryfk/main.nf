@@ -2,7 +2,6 @@ process MERQURYFK_MERQURYFK {
     tag "$meta.id"
     label 'process_medium'
 
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3f/3fefda33017e34e77a61dd82f8a2884414cdcb222269d9ca72a543bfeb4604b6/data' :
