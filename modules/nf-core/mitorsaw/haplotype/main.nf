@@ -1,43 +1,21 @@
-// TODO nf-core: If in doubt look at other nf-core/modules to see how we are doing things! :)
-//               https://github.com/nf-core/modules/tree/master/modules/nf-core/
-//               You can also ask for help via your pull request or on the #modules channel on the nf-core Slack workspace:
-//               https://nf-co.re/join
-// TODO nf-core: A module file SHOULD only define input and output files as command-line parameters.
-//               All other parameters MUST be provided using the "task.ext" directive, see here:
-//               https://www.nextflow.io/docs/latest/process.html#ext
-//               where "task.ext" is a string.
-//               Any parameters that need to be evaluated in the context of a particular sample
-//               e.g. single-end/paired-end data MUST also be defined and evaluated appropriately.
-// TODO nf-core: Software that can be piped together SHOULD be added to separate module files
-//               unless there is a run-time, storage advantage in implementing in this way
-//               e.g. it's ok to have a single module for bwa to output BAM instead of SAM:
-//                 bwa mem | samtools view -B -T ref.fasta
-// TODO nf-core: Optional inputs are not currently supported by Nextflow. However, using an empty
-//               list (`[]`) instead of a file can be used to work around this issue.
-
 process MITORSAW_HAPLOTYPE {
     tag "$meta.id"
     label 'process_single'
 
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mitorsaw:0.2.7--h9ee0642_0':
         'biocontainers/mitorsaw:0.2.7--h9ee0642_0' }"
 
-    input:// TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
-    //               MUST be provided as an input via a Groovy Map called "meta".
-    //               This information may not be required in some instances e.g. indexing reference genome files:
-    //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
-    // TODO nf-core: Where applicable please provide/convert compressed files as input/output
-    //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
+    input:
+
     tuple val(meta), path(bam), path(bai)    // channel: [ val(meta), path(bam), path(bai) ]
     tuple val(meta2), path(fasta), path(fai) // channel: [ val(meta2), path(fasta), path(fai) ]
     val(include_hap_stats)                   // value: [ true | false ], optional: true
     val(include_debug_output)                       // boolean: [ true | false ], optional: true
 
     output:
-    // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
+
     tuple val(meta), path("*${prefix}.vcf.gz"), path("*${prefix}.vcf.gz.tbi"),                                                                         emit: vcf
     tuple val(meta), path("${prefix}.json"),                                                                                                           emit: stats,             optional: true
     tuple val(meta), path("${prefix}_debug/coverage_stats.json"),                                                                                      emit: coverage_stats,    optional: true
@@ -47,11 +25,7 @@ process MITORSAW_HAPLOTYPE {
     tuple val(meta), path("${prefix}_debug/mito_igv_custom/custom_reference.fa"), path("${prefix}_debug/mito_igv_custom/custom_reference.fa.fai"),     emit: custom_ref,        optional: true
     tuple val(meta), path("${prefix}_debug/mito_igv_custom/custom_regions.bed"),                                                                       emit: custom_regions,    optional: true
 
-    // TODO nf-core: List additional required output channels/values here
-    // TODO nf-core: Update the command here to obtain the version number of the software used in this module
-    // TODO nf-core: If multiple software packages are used in this module, all MUST be added here
-    //               by copying the line below and replacing the current tool with the extra tool(s)
-    tuple val("${task.process}"), val('mitorsaw'), eval("mitorsaw --version"), topic: versions, emit: versions_mitorsaw
+    tuple val("${task.process}"), val('mitorsaw'), eval("mitorsaw --version | cut -d' ' -f2 | cut -d'-' -f1"), topic: versions, emit: versions_mitorsaw
 
     when:
     task.ext.when == null || task.ext.when
