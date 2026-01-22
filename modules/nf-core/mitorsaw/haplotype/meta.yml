@@ -58,7 +58,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
+            e.g. [ id:'sample1' ]
       - ${prefix}.vcf.gz:
           type: file
           description: Bgzipped VCF file
@@ -72,7 +72,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
+            e.g. [ id:'sample1' ]
       - ${prefix}.json:
           type: file
           description: Mitorsaw statistics in JSON format
@@ -82,7 +82,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
+            e.g. [ id:'sample1' ]
       - ${prefix}_debug/coverage_stats.json:
           type: file
           description: Coverage statistics in JSON format
@@ -92,7 +92,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
+            e.g. [ id:'sample1' ]
       - ${prefix}_debug/sequences_chrM.fa:
           type: file
           description: Haplotype sequences in FASTA format
@@ -102,7 +102,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
+            e.g. [ id:'sample1' ]
       - ${prefix}_debug/mito_igv_custom/custom_alignments.bam:
           type: file
           description: Custom alignments in BAM format
@@ -116,7 +116,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
+            e.g. [ id:'sample1' ]
       - ${prefix}_debug/mito_igv_custom/custom_igv_session.xml:
           type: file
           description: IGV session file in XML format
@@ -126,7 +126,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
+            e.g. [ id:'sample1' ]
       - ${prefix}_debug/mito_igv_custom/custom_reference.fa:
           type: file
           description: Custom reference genome in FASTA format
@@ -140,7 +140,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
+            e.g. [ id:'sample1' ]
       - ${prefix}_debug/mito_igv_custom/custom_regions.bed:
           type: file
           description: Custom regions in BED format
@@ -152,7 +152,7 @@ output:
       - mitorsaw:
           type: string
           description: The name of the tool
-      - mitorsaw --version:
+      - mitorsaw --version | cut -d' ' -f2 | cut -d'-' -f1:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -163,7 +163,7 @@ topics:
       - mitorsaw:
           type: string
           description: The name of the tool
-      - mitorsaw --version:
+      - mitorsaw --version | cut -d' ' -f2 | cut -d'-' -f1:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
