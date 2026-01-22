@@ -38,18 +38,34 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*/"
+  versions_tar:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tar:
+          type: string
+          description: The name of the tool
+      - "tar --version | head -n 1 | cut -f4 -d ' '":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tar:
+          type: string
+          description: The name of the tool
+      - "tar --version | head -n 1 | cut -f4 -d ' '":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@joseespinosa"
   - "@drpatelh"
   - "@matthdsm"
   - "@jfy133"
+  - "@eit-maxlcummins"
 maintainers:
   - "@joseespinosa"
   - "@drpatelh"
