@@ -70,6 +70,12 @@ output:
           pattern: "*.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3016 # VCF
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
       - "*${prefix}.vcf.gz.tbi":
           type: file
           description: Index file for the compressed VCF file
@@ -110,7 +116,7 @@ output:
           description: Haplotype sequences in FASTA format
           pattern: "sequences_chrM.fa"
           ontologies: []
-  custom_alignments:
+  custom_alignments_bam:
     - - meta:
           type: map
           description: |
@@ -121,6 +127,12 @@ output:
           description: Custom alignments in BAM format
           pattern: "custom_alignments.bam"
           ontologies: []
+  custom_alignments_bai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
       - ${prefix}_debug/mito_igv_custom/custom_alignments.bam.bai:
           type: file
           description: Custom alignments index file
@@ -138,7 +150,7 @@ output:
           pattern: "custom_igv_session.xml"
           ontologies:
             - edam: http://edamontology.org/format_2332 # XML
-  custom_ref:
+  custom_ref_fa:
     - - meta:
           type: map
           description: |
@@ -149,6 +161,12 @@ output:
           description: Custom reference genome in FASTA format
           pattern: "custom_reference.fa"
           ontologies: []
+  custom_ref_fai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
       - ${prefix}_debug/mito_igv_custom/custom_reference.fa.fai:
           type: file
           description: Custom reference genome index file
@@ -172,7 +190,7 @@ output:
       - mitorsaw:
           type: string
           description: The name of the tool
-      - mitorsaw --version | cut -d' ' -f2 | cut -d'-' -f1:
+      - mitorsaw --version | sed 's/mitorsaw //':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -183,7 +201,7 @@ topics:
       - mitorsaw:
           type: string
           description: The name of the tool
-      - mitorsaw --version | cut -d' ' -f2 | cut -d'-' -f1:
+      - mitorsaw --version | sed 's/mitorsaw //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
