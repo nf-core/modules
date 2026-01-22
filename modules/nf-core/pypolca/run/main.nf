@@ -15,7 +15,7 @@ process PYPOLCA_RUN {
     tuple val(meta), path("${prefix}/*_corrected.fasta"), emit: polished
     tuple val(meta), path("${prefix}/*.vcf")            , emit: vcf
     tuple val(meta), path("${prefix}/*.report")         , emit: report
-    path "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('pypolca'), eval('pypolca --version'), emit: versions_pypolca, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,11 +36,6 @@ process PYPOLCA_RUN {
         -o ${prefix} \\
         --prefix ${prefix} \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pypolca: \$(pypolca --version)
-    END_VERSIONS
     """
 
     stub:
@@ -53,10 +48,5 @@ process PYPOLCA_RUN {
     touch $prefix/${prefix}_corrected.fasta
     touch $prefix/${prefix}.vcf
     touch $prefix/${prefix}.report
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pypolca: \$(pypolca --version)
-    END_VERSIONS
     """
 }
