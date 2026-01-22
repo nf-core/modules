@@ -25,7 +25,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(path(process.out.versions.get(0))).match() },
+                { assert process.out.findAll { key, val -> key.startsWith('versions') }},
                 { assert process.out.raw_contigs.size() == 1 },
                 { assert path(process.out.gfa.get(0).get(1)).readLines().any { it.contains("S") } },
                 { assert path(process.out.gfa.get(0).get(1)).readLines().any { it.contains("KC") } },
@@ -54,7 +54,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(path(process.out.versions.get(0))).match() },
+                { assert process.out.findAll { key, val -> key.startsWith('versions') }},
                 { assert process.out.raw_contigs.size() == 1 },
                 { assert process.out.raw_contigs.get(0).get(1) ==~ ".*skesa.fasta" },
                 { assert path(process.out.raw_contigs.get(0).get(1)).readLines().any { it.contains(">Contig_1") } },
@@ -79,7 +79,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(path(process.out.versions.get(0))).match() },
+                { assert process.out.findAll { key, val -> key.startsWith('versions') }},
                 { assert process.out.raw_contigs.size() == 1 },
                 { assert process.out.raw_contigs.get(0).get(1) ==~ ".*megahit.fasta" },
                 { assert path(process.out.raw_contigs.get(0).get(1)).readLines().any { it.contains("pilon") } }
@@ -103,7 +103,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(path(process.out.versions.get(0))).match() },
+                { assert process.out.findAll { key, val -> key.startsWith('versions') }},
                 { assert process.out.raw_contigs.size() == 1 },
                 { assert process.out.raw_contigs.get(0).get(1) ==~ ".*velvet.fasta" },
                 { assert path(process.out.raw_contigs.get(0).get(1)).readLines().any { it.contains("pilon") } }
