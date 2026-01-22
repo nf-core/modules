@@ -12,9 +12,6 @@ nextflow_process {
 
     test("metrics - no plots") {
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = [
@@ -39,12 +36,12 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    path(process.out.mq_metrics[0][1]).readLines()[1..3],
-                    path(process.out.qd_metrics[0][1]).readLines()[1..3],
-                    path(process.out.gc_summary[0][1]).readLines()[1..3],
-                    path(process.out.gc_metrics[0][1]).readLines()[1..3],
-                    path(process.out.aln_metrics[0][1]).readLines()[1..3],
-                    path(process.out.is_metrics[0][1]).readLines()[1..3],
+                    path(process.out.mq_metrics[0][1]).readLines()[1..3].join("\n").md5(),
+                    path(process.out.qd_metrics[0][1]).readLines()[1..3].join("\n").md5(),
+                    path(process.out.gc_summary[0][1]).readLines()[1..3].join("\n").md5(),
+                    path(process.out.gc_metrics[0][1]).readLines()[1..3].join("\n").md5(),
+                    path(process.out.aln_metrics[0][1]).readLines()[1..3].join("\n").md5(),
+                    path(process.out.is_metrics[0][1]).readLines()[1..3].join("\n").md5(),
                     process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
@@ -54,9 +51,6 @@ nextflow_process {
 
     test("metrics - with plots") {
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = [
@@ -81,12 +75,12 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    path(process.out.mq_metrics[0][1]).readLines()[1..3],
-                    path(process.out.qd_metrics[0][1]).readLines()[1..3],
-                    path(process.out.gc_summary[0][1]).readLines()[1..3],
-                    path(process.out.gc_metrics[0][1]).readLines()[1..3],
-                    path(process.out.aln_metrics[0][1]).readLines()[1..3],
-                    path(process.out.is_metrics[0][1]).readLines()[1..3],
+                    path(process.out.mq_metrics[0][1]).readLines()[1..3].join("\n").md5(),
+                    path(process.out.qd_metrics[0][1]).readLines()[1..3].join("\n").md5(),
+                    path(process.out.gc_summary[0][1]).readLines()[1..3].join("\n").md5(),
+                    path(process.out.gc_metrics[0][1]).readLines()[1..3].join("\n").md5(),
+                    path(process.out.aln_metrics[0][1]).readLines()[1..3].join("\n").md5(),
+                    path(process.out.is_metrics[0][1]).readLines()[1..3].join("\n").md5(),
                     file(process.out.mq_plot[0][1]).name,
                     file(process.out.qd_plot[0][1]).name,
                     file(process.out.is_plot[0][1]).name,
@@ -103,9 +97,6 @@ nextflow_process {
         options "-stub"
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = [
