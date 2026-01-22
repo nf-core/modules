@@ -93,12 +93,49 @@ nextflow_process {
 
     }
 
+    test("homo_sapiens - bam - debug_files") {
+
+        // TODO nf-core: If you are created a test for a chained module
+        // (the module requires running more than one process to generate the required output)
+        // add the 'setup' method here.
+        // You can find more information about how to use a 'setup' method in the docs (https://nf-co.re/docs/contributing/modules#steps-for-creating-nf-test-for-chained-modules).
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/200080.GRCh38.haplotagged.chrM.downsampled.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/200080.GRCh38.haplotagged.chrM.downsampled.bam.bai', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test'],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/raredisease/reference/Homo_sapiens_assembly38_chr20_chrM.fasta', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/raredisease/reference/Homo_sapiens_assembly38_chr20_chrM.fasta.fai', checkIfExists: true),
+                ]
+                input[2] = false
+                input[3] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+                //TODO nf-core: Add all required assertions to verify the test output.
+                // See https://nf-co.re/docs/contributing/tutorials/nf-test_assertions for more information and examples.
+            )
+        }
+
+    }
 
     // TODO nf-core: Change the test name preferably indicating the test-data and file-format used but keep the " - stub" suffix.
     test("homo_sapiens - bam - stub") {
 
         options "-stub"
-        tag "stuv"
 
         when {
             process {
