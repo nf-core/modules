@@ -18,6 +18,40 @@ env:
   NXF_VER: "25.10.2"
 
 jobs:
+  fork-warning:
+    name: Warn about container changes from forks
+    runs-on: ubuntu-latest
+    # Only run on fork PRs that modify container files
+    if: github.event.pull_request.head.repo.full_name != github.repository
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+
+      - name: Find changed container files
+        id: changed-files
+        uses: tj-actions/changed-files@ed68ef82c095e0d48ec87eccea555d944a631a4c # v46
+        with:
+          files: |
+            modules/**/environment.yml
+            modules/**/Dockerfile
+
+      - name: Warning about container builds
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          echo "⚠️  WARNING: This PR modifies container files but comes from a fork."
+          echo ""
+          echo "🚫 Container builds will NOT run automatically due to security restrictions."
+          echo ""
+          echo "📋 A maintainer will need to:"
+          echo "   1. Review the changes carefully"
+          echo "   2. Push changes to a branch in nf-core/modules, or"
+          echo "   3. Manually trigger container builds after merge"
+          echo ""
+          echo "📁 Files that would trigger container builds:"
+          echo "${{ steps.changed-files.outputs.all_changed_files }}" | tr ' ' '\n' | sed 's/^/   - /'
+          echo ""
+          echo "ℹ️  This check exists to prevent unauthorized access to build secrets."
+          exit 1
+
   generate-matrix:
     name: generate-matrix
     runs-on: ubuntu-latest
