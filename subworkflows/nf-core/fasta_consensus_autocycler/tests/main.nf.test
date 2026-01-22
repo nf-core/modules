@@ -5,30 +5,34 @@ nextflow_workflow {
     name "Test Subworkflow FASTA_CONSENSUS_AUTOCYCLER"
     script "../main.nf"
     workflow "FASTA_CONSENSUS_AUTOCYCLER"
+    config "./nextflow.config"
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/fasta_consensus_autocycler"
-    // TODO nf-core: Add tags for all modules used within this subworkflow. Example:
-    tag "samtools"
-    tag "samtools/sort"
-    tag "samtools/index"
+    tag "autocycler"
+    tag "autocycler/compress"
+    tag "autocycler/cluster"
+    tag "autocycler/trim"
+    tag "autocycler/resolve"
+    tag "autocycler/combine"
 
 
-    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used
-    test("sarscov2 - bam - single_end") {
+    test("sarscov2 - grouped contigs - fasta") {
 
         when {
             workflow {
                 """
-                // TODO nf-core: define inputs of the workflow here. Example:
-                input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                input[0] = Channel.of(
                     [
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome-ena.fasta', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                        [ id:'test' ], // meta map
+                        [
+                            // file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome-ena.fasta', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
+                        ]
                     ]
-                ]
+                )
                 """
             }
         }
@@ -37,7 +41,6 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(workflow.out).match()}
-                //TODO nf-core: Add all required assertions to verify the test output.
             )
         }
     }
