@@ -40,7 +40,6 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
             [] // known sites
         )
         ch_alignment = PARABRICKS_FQ2BAMMETH.out.bam
-        ch_versions  = ch_versions.mix(PARABRICKS_FQ2BAMMETH.out.versions)
     } else {
         /*
         * Align with CPU version of bwameth
