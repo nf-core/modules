@@ -11,8 +11,8 @@ process KRAKENTOOLS_EXTRACTKRAKENREADS {
     input:
     val taxid // Separated by spaces
     tuple val(meta), path(classified_reads_assignment)
-    tuple val(meta), path(classified_reads_fastq)
-    tuple val(meta), path(report)
+    tuple val(meta2), path(classified_reads_fastq)
+    tuple val(meta3), path(report)
 
     output:
     tuple val(meta), path("*.{fastq.gz,fasta.gz}"), emit: extracted_kraken2_reads

@@ -50,10 +50,10 @@ process CNVNATOR_CNVNATOR {
     def args      = task.ext.args   ?: ''
     prefix        = task.ext.prefix ?: bam ? "${meta.id}" : "${meta2.id}"
     output_meta   = bam             ? meta                : meta2
-    def calls_cmd = args.contains("-call") ? "touch ${prefix}.tab" : ''
+    def calls_cmd_opt = args.contains("-call") ? "touch ${prefix}.tab" : ''
     """
     touch ${prefix}.root
-    $calls_cmd
+    $calls_cmd_opt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
