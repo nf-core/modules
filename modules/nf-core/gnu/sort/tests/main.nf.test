@@ -27,12 +27,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() },
-                { assert snapshot(
-                            file(process.out.sorted[0][1]).name,
-                            process.out.findAll { key, val -> key.startsWith('versions') }
-                                ).match("genome_sort")
-                }
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -55,12 +50,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() },
-                { assert snapshot(
-                            file(process.out.sorted[0][1]).name,
-                            process.out.findAll { key, val -> key.startsWith('versions') }
-                                ).match("interval_sort")
-                }
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -84,12 +74,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() },
-                { assert snapshot(
-                            file(process.out.sorted[0][1]).name,
-                            process.out.findAll { key, val -> key.startsWith('versions') }
-                                ).match("csv_sort")
-                }
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -114,7 +99,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(process.out).match() }
             )
         }
 
