@@ -58,6 +58,7 @@ process PICARD_MARKDUPLICATES {
     if ("$reads" == "${prefix}.${suffix}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${prefix}.${suffix}
+    touch ${prefix}.${suffix}.bai
     touch ${prefix}.MarkDuplicates.metrics.txt
 
     cat <<-END_VERSIONS > versions.yml
