@@ -4,8 +4,8 @@ process MODKIT_CALLMODS {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/ont-modkit:0.5.0--hcdda2d0_2'
-        : 'biocontainers/ont-modkit:0.5.0--hcdda2d0_2'}"
+        ? 'https://depot.galaxyproject.org/singularity/ont-modkit:0.6.1--hcdda2d0_0'
+        : 'biocontainers/ont-modkit:0.6.1--hcdda2d0_0'}"
 
     input:
     tuple val(meta), path(bam)
@@ -13,7 +13,7 @@ process MODKIT_CALLMODS {
     output:
     tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path("*.log"), emit: log
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('modkit'), eval("modkit --version | sed 's/modkit //'"), emit: versions_modkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,11 +32,6 @@ process MODKIT_CALLMODS {
         ${prefix}.bam \\
         --threads ${task.cpus} \\
         --log-filepath ./${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        modkit: \$( modkit --version | sed 's/modkit //' )
-    END_VERSIONS
     """
 
     stub:
@@ -45,13 +40,8 @@ process MODKIT_CALLMODS {
 
     """
     echo ${args}
-    
+
     touch ${prefix}.bam
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        modkit: \$( modkit --version | sed 's/modkit //' )
-    END_VERSIONS
     """
 }

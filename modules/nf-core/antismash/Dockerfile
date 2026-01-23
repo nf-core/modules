@@ -11,4 +11,3 @@ RUN download-antismash-databases && antismash --prepare-data && antismash --chec
 
 RUN python -c "from antismash.modules.nrps_pks import prepare_data; prepare_data()" && \
     cp /usr/local/lib/python3.11/site-packages/antismash/modules/nrps_pks/data/terminals/*.brawn_cache /usr/local/lib/python3.11/site-packages/antismash/modules/nrps_pks/data/
-

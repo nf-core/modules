@@ -24,7 +24,7 @@ process DEEPTOOLS_BAMCOVERAGE {
     script:
     def args      = task.ext.args ?: ''
     def prefix    = task.ext.prefix ?: "${meta.id}"
-    def blacklist_cmd = blacklist ? "--blackListFileName ${blacklist}" : ""        
+    def blacklist_cmd = blacklist ? "--blackListFileName ${blacklist}" : ""
     def extension = args.contains("--outFileFormat bedgraph") || args.contains("-of bedgraph") ? "bedgraph" : "bigWig"
 
     // cram_input is currently not working with deeptools

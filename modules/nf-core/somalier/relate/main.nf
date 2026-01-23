@@ -23,7 +23,7 @@ process SOMALIER_RELATE {
 
     script:
     def args = task.ext.args ?: ''
-    def input_list = extract.collect{"$it"}.join(' ')
+    def input_list = extract.join(' ')
     def prefix = task.ext.prefix ?: "$meta.id"
     def sample_groups_command = sample_groups ? "-g $sample_groups" : ""
     def ped_command = ped ? "-p $ped" : ""

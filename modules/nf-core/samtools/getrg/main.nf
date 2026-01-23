@@ -18,29 +18,28 @@ process SAMTOOLS_GETRG {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    """
-    samtools \\
-        view \\
-        -H \\
-        $args \\
-        $input \\
-    | grep '^@RG' > readgroups.txt
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/samtools/splitheader
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
+Reason:
+This module has been renamed to samtools/splitheader, which has the same functionality but
+extends the outputs to include other types of SAM header.
+"""
+    def args = task.ext.args ?: ''
+    assert false: deprecation_message
+    """
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    """
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/samtools/splitheader
 
-    echo -e "@RG\\tID:${prefix}\\tSM:${prefix}\\tPL:ILLUMINA" > readgroups.txt
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
+Reason:
+This module has been renamed to samtools/splitheader, which has the same functionality but
+extends the outputs to include other types of SAM header.
+"""
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    assert false: deprecation_message
+    """
     """
 }

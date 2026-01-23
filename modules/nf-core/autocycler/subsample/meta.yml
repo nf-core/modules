@@ -1,0 +1,76 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "autocycler_subsample"
+description: Downsample long-read sequencing data to the requested coverage using Autocycler.
+keywords:
+  - autocycler
+  - subsampling
+  - long-read
+tools:
+  - autocycler:
+      description: "A tools for generating consensus long-read assemblies for bacterial genomes."
+      homepage: "https://github.com/rrwick/Autocycler/wiki"
+      documentation: "https://github.com/rrwick/Autocycler/wiki"
+      tool_dev_url: "https://github.com/rrwick/Autocycler"
+      doi: "10.1093/bioinformatics/btaf474"
+      licence: ["GPL-3.0"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - reads:
+        type: file
+        description: |
+          Long-read sequencing reads for the sample in FASTQ format (compressed or uncompressed).
+        pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1930" # FASTQ
+  - genome_size:
+      type: integer
+      description: Expected genome size in bases used to calculate the target sequencing depth.
+
+output:
+  subsampled_reads:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "$prefix/*.fastq.gz":
+          type: file
+          description: Subsampled reads produced by Autocycler.
+          pattern: "*/*.fastq.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_1930" # FASTQ
+            - edam: "http://edamontology.org/format_3989" # GZIP
+  versions_autocycler:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - autocycler:
+          type: string
+          description: The name of the tool
+      - "autocycler --version |  sed 's/^[^ ]* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - autocycler:
+          type: string
+          description: The name of the tool
+      - "autocycler --version |  sed 's/^[^ ]* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@dwells-eit"
+  - "@eit-maxlcummins"
+maintainers:
+  - "@dwells-eit"

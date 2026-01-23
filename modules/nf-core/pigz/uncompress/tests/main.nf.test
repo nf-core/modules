@@ -29,11 +29,11 @@ nextflow_process {
         }
 
     }
-    
+
     test("Should run without failures - stub") {
-        
+
         options "-stub"
-        
+
         when {
             params {
                 outdir = "$outputDir"

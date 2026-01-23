@@ -34,7 +34,7 @@ process FCSGX_RUNGX {
         exit 1
     fi
     # Clean up shared memory on exit
-    trap "rm -rf "${database}" EXIT
+    trap "rm -rf ${database}" EXIT
     # Copy DB to RAM-disk when supplied. Otherwise, rungx is very slow.
     rclone copy ${gxdb} ${database}
 

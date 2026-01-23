@@ -12,10 +12,9 @@ workflow BAM_STATS_SAMTOOLS {
     ch_fasta   // channel: [ val(meta), path(fasta) ]
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     SAMTOOLS_STATS ( ch_bam_bai, ch_fasta )
-    ch_versions = ch_versions.mix(SAMTOOLS_STATS.out.versions)
 
     SAMTOOLS_FLAGSTAT ( ch_bam_bai )
     ch_versions = ch_versions.mix(SAMTOOLS_FLAGSTAT.out.versions)

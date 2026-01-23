@@ -24,90 +24,6 @@
             "uniqueItems": true,
             "minItems": 3
         },
-        "authors": {
-            "type": "array",
-            "description": "Authors of the module",
-            "items": {
-                "type": "string"
-            }
-        },
-        "maintainers": {
-            "type": "array",
-            "description": "Maintainers of the module",
-            "items": {
-                "type": "string"
-            }
-        },
-        "extra_args": {
-            "type": "array",
-            "description": "Extra arguments for the module",
-            "items": {
-                "type" : "object",
-                "properties": {
-                    "description": {
-                        "type": "string",
-                        "description": "Description of the argument"
-                    }
-                }
-            }
-        },
-        "input": {
-            "type": "array",
-            "description": "Input channels for the module",
-            "items": {
-                "oneOf": [{
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "patternProperties": {
-                            ".*": {
-                                "$ref": "#/definitions/elementProperties"
-                            }
-                        }
-                    }
-                },
-                {
-                    "type": "object",
-                    "patternProperties": {
-                        ".*": {
-                            "$ref": "#/definitions/elementProperties"
-                        }
-                    }}
-                ]
-            }
-        },
-        "output": {
-            "type": "object",
-            "description": "Output channels for the module",
-            "patternProperties": {
-                ".*": {
-                    "type": "array",
-                    "items": {
-                        "oneOf": [
-                            {
-                                "type": "object",
-                                "patternProperties": {
-                                    ".*": {
-                                        "$ref": "#/definitions/elementProperties"
-                                    }
-                                }
-                            },
-                            {
-                                "type": "array",
-                                "items": {
-                                    "type": "object",
-                                    "patternProperties": {
-                                        ".*": {
-                                            "$ref": "#/definitions/elementProperties"
-                                        }
-                                    }
-                                }
-                            }
-                        ]
-                    }
-                }
-            }
-        },
         "tools": {
             "type": "array",
             "description": "Tools used by the module",
@@ -124,17 +40,17 @@
                             "homepage": {
                                 "type": "string",
                                 "description": "Homepage of the tool",
-                                "pattern": "^(http|https)://.*$"
+                                "pattern": "^https?://.*$"
                             },
                             "documentation": {
                                 "type": "string",
                                 "description": "Documentation of the tool",
-                                "pattern": "^(http|https|ftp)://.*$"
+                                "pattern": "^(https?|ftp)://.*$"
                             },
                             "tool_dev_url": {
                                 "type": "string",
                                 "description": "URL of the development version of the tool's documentation",
-                                "pattern": "^(http|https)://.*$"
+                                "pattern": "^https?://.*$"
                             },
                             "doi": {
                                 "description": "DOI of the tool",
@@ -160,17 +76,9 @@
                                 "message": "Licence must be an array of one or more entries, e.g. [\"MIT\"]"
                             },
                             "identifier": {
+                                "type": "string",
                                 "description": "bio.tools identifier of the tool",
-                                "anyOf": [
-                                    {
-                                        "type": "string",
-                                        "pattern": "^biotools:.*$"
-                                    },
-                                    {
-                                        "type": "string",
-                                        "maxLength": 0
-                                    }
-                                ]
+                                "pattern": "^(biotools:.*)?$"
                             }
                         },
                         "required": ["description"],
@@ -191,16 +99,141 @@
                     }
                 }
             }
+        },
+        "extra_args": {
+            "type": "array",
+            "description": "Extra arguments for the module",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "description": {
+                        "type": "string",
+                        "description": "Description of the argument"
+                    }
+                }
+            }
+        },
+        "input": {
+            "type": "array",
+            "description": "Input channels for the module",
+            "items": {
+                "oneOf": [
+                    {
+                        "$ref": "#/definitions/channelElement"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/channelElement"
+                        }
+                    }
+                ]
+            }
+        },
+        "output": {
+            "type": "object",
+            "description": "Output channels for the module",
+            "patternProperties": {
+                ".*": {
+                    "$ref": "#/definitions/channelArray"
+                }
+            }
+        },
+        "topics": {
+            "type": "object",
+            "description": "Topics of the module",
+            "patternProperties": {
+                ".*": {
+                    "$ref": "#/definitions/channelArray"
+                }
+            }
+        },
+        "authors": {
+            "type": "array",
+            "description": "Authors of the module",
+            "items": {
+                "type": "string"
+            }
+        },
+        "maintainers": {
+            "type": "array",
+            "description": "Maintainers of the module",
+            "items": {
+                "type": "string"
+            }
+        },
+        "containers": {
+            "type": "object",
+            "description": "Container images for the module",
+            "properties": {
+                "docker": {
+                    "type": "object",
+                    "description": "Docker containers for different architectures",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/container"
+                    }
+                },
+                "singularity": {
+                    "type": "object",
+                    "description": "Singularity containers for different architectures",
+                    "additionalProperties": {
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/container"
+                            },
+                            {
+                                "properties": {
+                                    "name": {
+                                        "pattern": "^oras://.*$"
+                                    }
+                                },
+                                "required": ["https"]
+                            }
+                        ]
+                    }
+                },
+                "conda": {
+                    "type": "object",
+                    "description": "Conda lock files for different architectures",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/condaLockFile"
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "channelElement": {
+            "type": "object",
+            "patternProperties": {
+                ".*": {
+                    "$ref": "#/definitions/elementProperties"
+                }
+            }
+        },
+        "channelArray": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "$ref": "#/definitions/channelElement"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/channelElement"
+                        }
+                    }
+                ]
+            }
+        },
         "elementProperties": {
             "type": "object",
             "properties": {
                 "type": {
                     "type": "string",
                     "description": "Type of the channel element",
-                    "enum": ["map", "file", "directory", "string", "integer", "float", "boolean", "list"]
+                    "enum": ["map", "file", "directory", "string", "integer", "float", "boolean", "list", "eval"]
                 },
                 "description": {
                     "type": "string",
@@ -227,13 +260,49 @@
                         "patternProperties": {
                             ".*": {
                                 "type": "string",
-                                "pattern": "^(http|https)://.*"
+                                "pattern": "^https?://.*"
                             }
                         }
                     }
                 }
             },
             "required": ["type", "description"]
+        },
+        "container": {
+            "type": "object",
+            "description": "Container information for Docker or Singularity",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Container name/URI"
+                },
+                "https": {
+                    "type": "string",
+                    "description": "HTTPS URL to download the container (only for Singularity)",
+                    "pattern": "^https://.*$"
+                },
+                "build_id": {
+                    "type": "string",
+                    "description": "Build ID of the container"
+                },
+                "scan_id": {
+                    "type": "string",
+                    "description": "Security scan ID of the container (only for Docker)"
+                }
+            },
+            "required": ["name", "build_id"]
+        },
+        "condaLockFile": {
+            "type": "object",
+            "description": "Conda lock file information",
+            "properties": {
+                "lock_file": {
+                    "type": "string",
+                    "description": "URL to the conda lock file",
+                    "pattern": "^https://.*$"
+                }
+            },
+            "required": ["lock_file"]
         }
     },
     "required": ["name", "description", "keywords", "authors", "output", "tools"]

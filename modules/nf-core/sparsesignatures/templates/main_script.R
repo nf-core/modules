@@ -7,7 +7,7 @@ parse_args <- function(x) {
   # Remove brackets
   x = gsub("\\\\[","",x)
   x = gsub("\\\\]","",x)
- 
+
   # Split into key:value pairs
   args_list = unlist(strsplit(x, ", (?=[^)]*(?:\\\\(|\$))", perl=TRUE))
 
@@ -75,7 +75,7 @@ load_genome = function(genome, input_data) {
     if (genome == "GRCh37") {
         library(BSgenome.Hsapiens.1000genomes.hs37d5)
         bsg = BSgenome.Hsapiens.1000genomes.hs37d5::hs37d5
-        
+
 	if (any(grepl("^chr", input_data[["chrom"]]))) {
             input_data <- input_data %>% mutate(chrom = str_remove(chrom, "^chr"))
         }
@@ -83,11 +83,11 @@ load_genome = function(genome, input_data) {
     } else if (genome == "GRCh38") {
         library(BSgenome.Hsapiens.UCSC.hg38)
         bsg = BSgenome.Hsapiens.UCSC.hg38
-        
+
 	if (all(!grepl("^chr", input_data[["chrom"]]))) {
             input_data <- input_data %>% mutate(chrom = paste0("chr", chrom))
         }
-        
+
     }
     return(list(bsg = bsg, input_data = input_data))
 }

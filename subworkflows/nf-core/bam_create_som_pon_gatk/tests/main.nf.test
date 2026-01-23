@@ -33,8 +33,8 @@ nextflow_workflow {
                 // ch_fasta
                 input[1] = Channel.value([ [ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)])
                 // ch_fai
-                input[2] = Channel.value([ 
-                        [ id:'genome' ], 
+                input[2] = Channel.value([
+                        [ id:'genome' ],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true),
                         [] ]
                 )
@@ -51,6 +51,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
+                { assert snapshot(workflow.out.versions).match("versions") },
                 { assert snapshot(file(workflow.out.mutect2_vcf.get(0).get(1)).name).match("test1.vcf.gz") },
                 { assert snapshot(file(workflow.out.mutect2_index.get(0).get(1)).name).match("test1.vcf.gz.tbi") },
                 { assert snapshot(file(workflow.out.mutect2_stats.get(0).get(1)).name).match("test1.vcf.gz.stats") },

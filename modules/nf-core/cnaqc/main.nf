@@ -8,7 +8,7 @@ process CNAQC {
         'biocontainers/r-cnaqc:1.1.3--r44hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(snv_rds), path(cna_rds), val(tumour_sample) 
+    tuple val(meta), path(snv_rds), path(cna_rds), val(tumour_sample)
 
     output:
     tuple val(meta), path("*_qc.rds"),                                  emit: qc_rds

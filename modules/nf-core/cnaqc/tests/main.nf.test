@@ -11,12 +11,12 @@ nextflow_process {
     test("test_cnaqc") {
 
         config "./nextflow.config"
-        
+
         when {
             process {
                 """
                 input[0] = [
-                    [ id: 'test' ], 
+                    [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'delete_me/cnaqc/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_snv.rds', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'delete_me/cnaqc/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_cna.rds', checkIfExists: true),
                     'HCC1395_HCC1395T'
@@ -28,27 +28,27 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
- 
+
                 { assert snapshot(
-                    process.out.versions, 
+                    process.out.versions,
                     process.out.qc_rds.collect { file(it[1]).getName() },
                     process.out.data_plot_rds.collect { file(it[1]).getName() },
                     process.out.qc_plot_rds.collect { file(it[1]).getName() },
-                    process.out.plot_pdf_data.collect { file(it[1]).getName() }, 
+                    process.out.plot_pdf_data.collect { file(it[1]).getName() },
                     process.out.plot_pdf_qc.collect { file(it[1]).getName() }
-                ).match() }, 
+                ).match() },
 
                 // Check nondeterministic files exist
                 { assert file(process.out.qc_rds[0][1]).exists() },
                 { assert file(process.out.data_plot_rds[0][1]).exists() },
                 { assert file(process.out.qc_plot_rds[0][1]).exists() },
-                { assert file(process.out.plot_pdf_data[0][1]).exists() }, 
-                { assert file(process.out.plot_pdf_qc[0][1]).exists() } //, 
+                { assert file(process.out.plot_pdf_data[0][1]).exists() },
+                { assert file(process.out.plot_pdf_qc[0][1]).exists() } //,
 
                 // { assert path(process.out.qc_rds[0][1]).exists() },
                 // { assert path(process.out.data_plot_rds[0][1]).exists() },
                 // { assert path(process.out.qc_plot_rds[0][1]).exists() },
-                // { assert path(process.out.plot_pdf_data[0][1]).exists() }, 
+                // { assert path(process.out.plot_pdf_data[0][1]).exists() },
                 // { assert path(process.out.plot_pdf_qc[0][1]).exists() }
 
             )
@@ -64,7 +64,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id: 'test' ], 
+                    [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'delete_me/cnaqc/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_snv.rds', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'delete_me/cnaqc/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_cna.rds', checkIfExists: true),
                     'HCC1395_HCC1395T'
@@ -77,12 +77,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out,
-                path(process.out.versions[0]).yaml).match() }, 
+                path(process.out.versions[0]).yaml).match() },
             )
         }
 
     }
 
 }
-
-

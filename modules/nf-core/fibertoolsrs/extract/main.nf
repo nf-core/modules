@@ -45,7 +45,7 @@ process FIBERTOOLSRS_EXTRACT {
 
     """
     echo $args
-    
+
     echo "" | gzip > ${prefix}.bed.gz
 
     cat <<-END_VERSIONS > versions.yml

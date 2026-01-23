@@ -1,0 +1,81 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "deacon_filter"
+description: Filter DNA sequences using index of reference genome
+keywords:
+  - filter
+  - index
+  - fasta
+  - fastq
+  - genome
+  - reference
+  - minimizer
+  - decontamination
+tools:
+  - "deacon":
+      description: "Fast alignment-free sequence filter"
+      homepage: "https://github.com/bede/deacon"
+      documentation: "https://github.com/bede/deacon#readme"
+      tool_dev_url: "https://github.com/bede/deacon"
+      doi: "10.1093/bioinformatics/btae004"
+      licence: ["MIT"]
+      identifier: "biotools:deacon"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test', single_end:false ]
+    - index:
+        type: file
+        description: Deacon minimizer index file
+        pattern: "*.idx"
+        ontologies:
+          - edam: "http://edamontology.org/data_3210" # Genome index
+    - reads:
+        type: file
+        description: List of input FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
+        pattern: "*.{fastq,fastq.gz,fqs,fqs.gz,fq,fq.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1930" # FASTQ
+
+output:
+  fastq_filtered:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing reference information.
+            e.g. [ id:'test', single_end:false ]
+      - "${prefix}*.fq.gz":
+          type: file
+          description: List of output filtered FastQ files of size 1 and 2, for single-end and paired-end data, respectively.
+          pattern: "*.fq.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_1930" # FASTQ
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing reference information.
+            e.g. [ id:'test', single_end:false ]
+      - "${prefix}.json":
+          type: file
+          description: JSON file containing summary of results.
+          pattern: "*.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464" # JSON
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+
+authors:
+  - "@Baksic-Ivan"
+  - "@Omer0191"
+maintainers:
+  - "@Baksic-Ivan"
+  - "@Omer0191"
+  - "@vagkaratzas"
