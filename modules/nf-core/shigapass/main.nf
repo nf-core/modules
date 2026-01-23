@@ -23,8 +23,7 @@ process SHIGAPASS {
     prefix    = task.ext.prefix ?: "${meta.id}"
     def dbPath = (
         workflow.containerEngine == 'singularity' ||
-        workflow.containerEngine == 'apptainer'  ||
-        task.ext.singularity_pull_docker_container
+        workflow.containerEngine == 'apptainer'
     ) ?
         "/usr/local/share/shigapass-1.5.0/db" :
         "\$CONDA_PREFIX/share/shigapass-1.5.0/db"
