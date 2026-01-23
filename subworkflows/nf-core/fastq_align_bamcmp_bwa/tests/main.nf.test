@@ -56,7 +56,7 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(
                     file(workflow.out.bam[0][1]).name,
-                    workflow.out.bai,
+                    file(workflow.out.bai[0][1]).name,
                     workflow.out.csi,
                     workflow.out.stats,
                     workflow.out.flagstat,
