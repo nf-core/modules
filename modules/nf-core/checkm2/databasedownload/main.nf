@@ -30,7 +30,11 @@ process CHECKM2_DATABASEDOWNLOAD {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: '--user-agent="Wget/1.21.4"' // Modify to wget - default user agent gets blocked by zenodo. Enables users to overwrite --user-agent
+    def args = task.ext.args ?: ''
+    // Append user-agent if not already present
+    if( !args.contains('--user-agent') ) {
+        args = args ? "${args} --user-agent=\"Wget/1.21.4\"" : '--user-agent="Wget/1.21.4"'
+    }
     zenodo_id  = db_zenodo_id ?: 14897628  // Default to version 3 if no ID provided
     api_data   = downloadZenodoApiEntry(zenodo_id)
     db_version = api_data.metadata.version
