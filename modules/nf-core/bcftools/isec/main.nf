@@ -8,7 +8,7 @@ process BCFTOOLS_ISEC {
         : 'community.wave.seqera.io/library/bcftools_htslib:0a3fa2654b52006f'}"
 
     input:
-    tuple val(meta), path(vcfs), path(tbis)
+    tuple val(meta), path(vcfs), path(tbis), path(file_list), path(targets_file), path(regions_file)
 
     output:
     tuple val(meta), path("${prefix}", type: "dir"), emit: results
@@ -20,11 +20,18 @@ process BCFTOOLS_ISEC {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    targets_file_args = targets_file ? "-T ${targets_file}" : ''
+    regions_file_args = regions_file ? "-R ${regions_file}" : ''
+    vcf_files = file_list ? "-f ${file_list}" : "${vcfs}"
+
     """
     bcftools isec  \\
         ${args} \\
+        ${targets_file_args} \\
+        ${regions_file_args} \\
         -p ${prefix} \\
-        ${vcfs}    """
+        ${vcf_files} \\
+    """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"

@@ -32,6 +32,18 @@ input:
         description: |
           List containing the tbi index files corresponding to the vcf/bcf input files
           e.g. [ 'file1.vcf.tbi', 'file2.vcf.tbi' ]
+    - file_list:
+        type: file
+        description: |
+          Optional text file containing the list of VCF/BCF files to be processed by bcftools isec, one per line.
+    - targets_file:
+        type: file
+        description: |
+          Optional BED file containing target regions to restrict the analysis to.
+    - regions_file:
+        type: file
+        description: |
+          Optional file containing regions to restrict the analysis to.
 output:
   results:
     - - meta:
