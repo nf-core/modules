@@ -1,4 +1,4 @@
-process VEMBRANE_TABLE {
+process VEMBRANE_SORT {
     tag "${meta.id}"
     label 'process_low'
 
@@ -12,7 +12,7 @@ process VEMBRANE_TABLE {
     val expression
 
     output:
-    tuple val(meta), path("*.tsv"), emit: table
+    tuple val(meta), path("*.{vcf,bcf,bcf.gz}"), emit: vcf
     tuple val("${task.process}"), val('vembrane'), eval("vembrane --version | sed '1!d;s/.* //'"), topic: versions, emit: versions_vembrane
 
     when:
@@ -21,27 +21,34 @@ process VEMBRANE_TABLE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = args.contains('--output-fmt bcf')
+        ? 'bcf'
+        : args.contains('--output-fmt bcf.gz') ? 'bcf.gz' : 'vcf'
     """
-    vembrane table \\
+    vembrane sort \\
         ${args} \\
-        --output ${prefix}.tsv \\
+        --output ${prefix}.${suffix} \\
         '${expression}' \\
         ${vcf}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vembrane: \$(vembrane --version | sed '1!d;s/.* //')
+        vembrane: \$(vembrane --version 2>&1 | head -n1 | sed 's/vembrane //')
     END_VERSIONS
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = args.contains('--output-fmt bcf')
+        ? 'bcf'
+        : args.contains('--output-fmt bcf.gz') ? 'bcf.gz' : 'vcf'
     """
-    touch ${prefix}.tsv
+    touch ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vembrane: \$(vembrane --version | sed '1!d;s/.* //')
+        vembrane: \$(vembrane --version 2>&1 | head -n1 | sed 's/vembrane //')
     END_VERSIONS
     """
 }
