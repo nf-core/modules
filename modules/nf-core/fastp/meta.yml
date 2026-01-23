@@ -121,7 +121,7 @@ output:
       - fastp:
           type: string
           description: The name of the tool
-      - "fastp --version 2>&1 | sed -e \"s/fastp //g\"":
+      - 'fastp --version 2>&1 | sed -e "s/fastp //g"':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -132,7 +132,7 @@ topics:
       - fastp:
           type: string
           description: The name of the tool
-      - "fastp --version 2>&1 | sed -e \"s/fastp //g\"":
+      - 'fastp --version 2>&1 | sed -e "s/fastp //g"':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
