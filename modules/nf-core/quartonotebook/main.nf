@@ -42,7 +42,7 @@ process QUARTONOTEBOOK {
     //  - Allows passing nested maps instead of just single values
     //  - Allows running with the language-agnostic `--execute-params`
     def yamlBuilder = new groovy.yaml.YamlBuilder()
-    yamlBuilder(notebook_parameters)
+    yamlBuilder.call(notebook_parameters)
     def yaml_content = yamlBuilder.toString().tokenize('\n').join("\n    ")
     """
     # Dump parameters to yaml file

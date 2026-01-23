@@ -114,18 +114,78 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
   report:
-    - "*.html":
-        type: file
-        description: VEP report file
-        pattern: "*.html"
-        ontologies: []
+    - - meta:
+          type: map
+          description: |
+            Map with sample information
+      - ${task.process}:
+          type: string
+          description: The process
+      - ensemblvep:
+          type: string
+          description: The tool name
+      - "*.html":
+          type: file
+          description: VEP report file
+          pattern: "*.html"
+          ontologies: []
+  versions_ensemblvep:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - ensemblvep:
+          type: string
+          description: The tool name
+      - "vep --help | sed -n '/ensembl-vep/s/.*: //p'":
+          type: string
+          description: The command used to generate the version of the tool
+  versions_tabix:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - tabix:
+          type: string
+          description: The tool name
+      - tabix -h 2>&1 | grep -oP 'Version:\s*\K[^\s]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  multiqc_files:
+    - - meta:
+          type: map
+          description: |
+            Map with sample information
+      - ${task.process}:
+          type: string
+          description: The process
+      - ensemblvep:
+          type: string
+          description: The tool name
+      - "*.html":
+          type: file
+          description: VEP report file
+          pattern: "*.html"
+          ontologies: []
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - ensemblvep:
+          type: string
+          description: The tool name
+      - "vep --help | sed -n '/ensembl-vep/s/.*: //p'":
+          type: string
+          description: The command used to generate the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - tabix:
+          type: string
+          description: The tool name
+      - tabix -h 2>&1 | grep -oP 'Version:\s*\K[^\s]+':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@maxulysse"
   - "@matthdsm"

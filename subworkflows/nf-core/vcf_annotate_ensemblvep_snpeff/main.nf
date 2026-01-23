@@ -49,7 +49,6 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
             [],
             [],
         )
-        ch_versions = ch_versions.mix(BCFTOOLS_PLUGINSCATTER.out.versions.first())
 
         // If BCFTOOLS_PLUGINSCATTER created multiple files we return a list of vcfs and the size of that list
         // Otherwise, a single vcf and the value 1
@@ -94,8 +93,6 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
             ch_fasta,
             ch_vep_extra_files,
         )
-        ch_versions = ch_versions.mix(ENSEMBLVEP_VEP.out.versions.first())
-
         ch_vep_output = ENSEMBLVEP_VEP.out.vcf
         ch_vep_reports = ENSEMBLVEP_VEP.out.report
     }
@@ -149,13 +146,9 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
 
         BCFTOOLS_CONCAT(ch_concat_input)
 
-        ch_versions = ch_versions.mix(BCFTOOLS_CONCAT.out.versions.first())
-
         // Sort the concatenate output (bcftools concat is unable to do this on its own)
 
         BCFTOOLS_SORT(BCFTOOLS_CONCAT.out.vcf)
-
-        ch_versions = ch_versions.mix(BCFTOOLS_SORT.out.versions.first())
 
         ch_ready_vcfs = BCFTOOLS_SORT.out.vcf
     }

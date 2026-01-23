@@ -41,8 +41,7 @@ nextflow_workflow {
                     // Not capturing the content of the VCF files as vep produce an empty VCF for this test
                     // Which is kinda expected as vep annotates a sarscov2 vcf with WBcel235
                     workflow.out.vcf_tbi.collect { [it[0], file(it[1]).name, file(it[2]).name] },
-                    workflow.out.reports.collect { it instanceof String ? file(it).name : it },
-                    workflow.out.versions.collect { it }
+                    workflow.out.reports.collect { it.collect {it instanceof String ? file(it).name : it }}
                 ).match() }
             )
         }
@@ -75,7 +74,10 @@ nextflow_workflow {
         then {
             assert workflow.success
             assertAll(
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    workflow.out.reports,
+                    workflow.out.vcf_tbi
+                ).match() }
             )
         }
     }
