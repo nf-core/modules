@@ -32,7 +32,7 @@ input:
           respectively.
         pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1930
+          - edam: http://edamontology.org/format_1930 #FASTQ
   - - meta2:
         type: map
         description: |
@@ -55,7 +55,7 @@ output:
           description: Output SAM file containing read alignments
           pattern: "*.sam"
           ontologies:
-            - edam: http://edamontology.org/format_2573
+            - edam: http://edamontology.org/format_2573 #SAM
   summary:
     - - meta:
           type: map
