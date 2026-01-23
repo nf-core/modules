@@ -37,7 +37,6 @@ workflow FASTA_INDEX_DNA {
                     .map{meta, index, alt -> [meta, index + alt]}
                 )
 
-            ch_versions = ch_versions.mix(BWAMEM1_INDEX.out.versions)
             break
         case 'bwamem2':
             BWAMEM2_INDEX(ch_fasta)                                              // If aligner is bwa-mem2
