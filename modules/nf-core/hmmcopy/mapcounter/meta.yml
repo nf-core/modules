@@ -1,14 +1,14 @@
 name: hmmcopy_mapcounter
-description: mapCounter function from HMMcopy utilities, used to generate mappability
-  in non-overlapping windows from a bigwig file
+description: mapCounter function from HMMcopy utilities, used to generate
+  mappability in non-overlapping windows from a bigwig file
 keywords:
   - hmmcopy
   - mapcounter
   - cnv
 tools:
   - hmmcopy:
-      description: C++ based programs for analyzing BAM files and preparing read counts
-        -- used with bioconductor-hmmcopy
+      description: C++ based programs for analyzing BAM files and preparing read
+        counts -- used with bioconductor-hmmcopy
       homepage: https://github.com/shahcompbio/hmmcopy_utils
       documentation: https://github.com/shahcompbio/hmmcopy_utils
       tool_dev_url: https://github.com/shahcompbio/hmmcopy_utils
@@ -22,8 +22,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - bigwig:
         type: file
-        description: BigWig file with the mappability score of the genome, for instance
-          made with generateMap function.
+        description: BigWig file with the mappability score of the genome, for
+          instance made with generateMap function.
         pattern: "*.wig"
         ontologies: []
 output:
@@ -35,16 +35,33 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.wig":
           type: file
-          description: wig file containing mappability of each window of the genome
+          description: wig file containing mappability of each window of the
+            genome
           pattern: "*.wig"
           ontologies: []
+  versions_hmmcopy:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hmmcopy:
+          type: string
+          description: The name of the tool
+      - echo 0.1.1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hmmcopy:
+          type: string
+          description: The name of the tool
+      - echo 0.1.1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@sppearce"
 maintainers:
