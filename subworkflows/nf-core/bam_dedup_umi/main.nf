@@ -23,6 +23,9 @@ workflow BAM_DEDUP_UMI {
 
     main:
     ch_versions = channel.empty()
+    ch_tsv_edit_distance    = channel.empty()
+    ch_tsv_per_umi          = channel.empty()
+    ch_tsv_umi_per_position = channel.empty()
 
     if (umi_dedup_tool != "umicollapse" && umi_dedup_tool != "umitools"){
         error("Unknown umi_dedup_tool '${umi_dedup_tool}'")
@@ -43,6 +46,9 @@ workflow BAM_DEDUP_UMI {
         )
         UMI_DEDUP_GENOME = BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS_GENOME
         ch_dedup_log = UMI_DEDUP_GENOME.out.deduplog
+        ch_tsv_edit_distance    = UMI_DEDUP_GENOME.out.tsv_edit_distance
+        ch_tsv_per_umi          = UMI_DEDUP_GENOME.out.tsv_per_umi
+        ch_tsv_umi_per_position = UMI_DEDUP_GENOME.out.tsv_umi_per_position
     }
 
     // Co-ordinate sort, index and run stats on transcriptome BAM. This takes
@@ -74,6 +80,9 @@ workflow BAM_DEDUP_UMI {
         )
         UMI_DEDUP_TRANSCRIPTOME = BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS_TRANSCRIPTOME
         ch_dedup_log = ch_dedup_log.mix(UMI_DEDUP_TRANSCRIPTOME.out.deduplog)
+        ch_tsv_edit_distance    = ch_tsv_edit_distance.mix(UMI_DEDUP_TRANSCRIPTOME.out.tsv_edit_distance)
+        ch_tsv_per_umi          = ch_tsv_per_umi.mix(UMI_DEDUP_TRANSCRIPTOME.out.tsv_per_umi)
+        ch_tsv_umi_per_position = ch_tsv_umi_per_position.mix(UMI_DEDUP_TRANSCRIPTOME.out.tsv_umi_per_position)
     }
 
     // 3. Restore name sorting
@@ -121,13 +130,16 @@ workflow BAM_DEDUP_UMI {
         .mix(UMITOOLS_PREPAREFORRSEM.out.versions)
 
     emit:
-    bam                = UMI_DEDUP_GENOME.out.bam                                                // channel: [ val(meta), path(bam) ]
-    bai                = bam_csi_index ? UMI_DEDUP_GENOME.out.csi : UMI_DEDUP_GENOME.out.bai     // channel: [ val(meta), path(bai) ]
-    dedup_log          = ch_dedup_log                                                            // channel: [ val(meta), path(log) ]
-    stats              = UMI_DEDUP_GENOME.out.stats.mix(UMI_DEDUP_TRANSCRIPTOME.out.stats)       // channel: [ val(meta), path(stats)]
-    flagstat           = UMI_DEDUP_GENOME.out.flagstat.mix(UMI_DEDUP_TRANSCRIPTOME.out.flagstat) // channel: [ val(meta), path(flagstat)]
-    idxstats           = UMI_DEDUP_GENOME.out.idxstats.mix(UMI_DEDUP_TRANSCRIPTOME.out.idxstats) // channel: [ val(meta), path(idxstats)]
-    multiqc_files      = ch_multiqc_files                                                        // channel: file
-    transcriptome_bam  = ch_dedup_transcriptome_bam                                              // channel: [ val(meta), path(bam) ]
-    versions            = ch_versions                                                            // channel: [ path(versions.yml) ]
+    bam                  = UMI_DEDUP_GENOME.out.bam                                                // channel: [ val(meta), path(bam) ]
+    bai                  = bam_csi_index ? UMI_DEDUP_GENOME.out.csi : UMI_DEDUP_GENOME.out.bai     // channel: [ val(meta), path(bai) ]
+    dedup_log            = ch_dedup_log                                                            // channel: [ val(meta), path(log) ]
+    stats                = UMI_DEDUP_GENOME.out.stats.mix(UMI_DEDUP_TRANSCRIPTOME.out.stats)       // channel: [ val(meta), path(stats)]
+    flagstat             = UMI_DEDUP_GENOME.out.flagstat.mix(UMI_DEDUP_TRANSCRIPTOME.out.flagstat) // channel: [ val(meta), path(flagstat)]
+    idxstats             = UMI_DEDUP_GENOME.out.idxstats.mix(UMI_DEDUP_TRANSCRIPTOME.out.idxstats) // channel: [ val(meta), path(idxstats)]
+    tsv_edit_distance    = ch_tsv_edit_distance                                                    // channel: [ val(meta), path(tsv) ]
+    tsv_per_umi          = ch_tsv_per_umi                                                          // channel: [ val(meta), path(tsv) ]
+    tsv_umi_per_position = ch_tsv_umi_per_position                                                 // channel: [ val(meta), path(tsv) ]
+    multiqc_files        = ch_multiqc_files                                                        // channel: file
+    transcriptome_bam    = ch_dedup_transcriptome_bam                                              // channel: [ val(meta), path(bam) ]
+    versions             = ch_versions                                                             // channel: [ path(versions.yml) ]
 }
