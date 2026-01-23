@@ -19,10 +19,6 @@ output:
       description: |
         One channel entry per scattered BED file (all BED files from the same source are transposed but contain the same meta)
         Structure: [ val(meta), path(bed), val(scatter_count) ]
-  - versions:
-      description: |
-        Files containing software versions
-        Structure: [ path(versions.yml) ]
 authors:
   - "@nvnieuwk"
 maintainers:

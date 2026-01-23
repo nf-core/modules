@@ -1,10 +1,3 @@
-def deprecation_message = """
-WARNING: This module has been deprecated. Please use nf-core/pbtk/bam2fastq
-
-Reason:
-This module is no longer fit for purpose because bam2fastx has been deprecated by PacificBiosciences
-
-"""
 process BAM2FASTX_BAM2FASTQ {
     tag "$meta.id"
     label 'process_medium'
@@ -25,9 +18,16 @@ process BAM2FASTX_BAM2FASTQ {
     task.ext.when == null || task.ext.when
 
     script:
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/pbtk/bam2fastq
+
+Reason:
+This module is no longer fit for purpose because bam2fastx has been deprecated by PacificBiosciences
+
+"""
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    assert true: deprecation_message
+    assert false: deprecation_message
     """
     bam2fastq \\
         $args \\

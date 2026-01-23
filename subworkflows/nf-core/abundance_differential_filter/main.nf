@@ -2,13 +2,14 @@
 // Perform differential analysis
 //
 
-include { LIMMA_DIFFERENTIAL                  } from '../../../modules/nf-core/limma/differential/main'
-include { LIMMA_DIFFERENTIAL as LIMMA_NORM    } from '../../../modules/nf-core/limma/differential/main'
-include { DESEQ2_DIFFERENTIAL                 } from '../../../modules/nf-core/deseq2/differential/main'
-include { DESEQ2_DIFFERENTIAL as DESEQ2_NORM  } from '../../../modules/nf-core/deseq2/differential/main'
-include { PROPR_PROPD                         } from '../../../modules/nf-core/propr/propd/main'
-include { CUSTOM_FILTERDIFFERENTIALTABLE      } from '../../../modules/nf-core/custom/filterdifferentialtable/main'
-include { VARIANCEPARTITION_DREAM             } from '../../../modules/nf-core/variancepartition/dream/main'
+include { LIMMA_DIFFERENTIAL                    } from '../../../modules/nf-core/limma/differential/main'
+include { LIMMA_DIFFERENTIAL as LIMMA_NORM      } from '../../../modules/nf-core/limma/differential/main'
+include { DESEQ2_DIFFERENTIAL                   } from '../../../modules/nf-core/deseq2/differential/main'
+include { DESEQ2_DIFFERENTIAL as DESEQ2_NORM    } from '../../../modules/nf-core/deseq2/differential/main'
+include { PROPR_PROPD                           } from '../../../modules/nf-core/propr/propd/main'
+include { CUSTOM_FILTERDIFFERENTIALTABLE        } from '../../../modules/nf-core/custom/filterdifferentialtable/main'
+include { VARIANCEPARTITION_DREAM               } from '../../../modules/nf-core/variancepartition/dream/main'
+include { VARIANCEPARTITION_DREAM as DREAM_NORM } from '../../../modules/nf-core/variancepartition/dream/main'
 
 // Combine meta maps, including merging non-identical values of shared keys (e.g. 'id')
 def mergeMaps(meta, meta2){
@@ -149,11 +150,22 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // Run DREAM
     // ----------------------------------------------------
 
+    // NOTE that we run DREAM_NORM just once to generate a normalised matrix.
+    // As explained above, this is done to avoid obtaining a subset matrix
+    // from VARIANCEPARTITION_DREAM.
+
+    // Also NOTE that VARIANCEPARTITION_DREAM don't use the normalized matrix from
+    // DREAM_NORM directly. It internally runs normalization + DE analysis.
     // Prepare DREAM inputs
     dream_inputs = inputs.contrasts_for_diff_with_formula
         .filter { meta, _variable, _reference, _target, _formula, _comparison ->
             meta.differential_method == 'dream'
         }
+
+    DREAM_NORM(
+        norm_inputs.contrasts_for_norm_with_formula.filter{it[0].differential_method == 'dream'},
+        norm_inputs.samples_and_matrix.filter{it[0].differential_method == 'dream'}
+    )
 
     VARIANCEPARTITION_DREAM(
         dream_inputs,
@@ -173,6 +185,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     ch_normalised_matrix = DESEQ2_NORM.out.normalised_counts
         .mix(LIMMA_NORM.out.normalised_counts)
+        .mix(DREAM_NORM.out.normalised_counts)
 
     ch_model = DESEQ2_DIFFERENTIAL.out.model
         .mix(LIMMA_DIFFERENTIAL.out.model)
