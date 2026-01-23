@@ -57,15 +57,15 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
   versions_miniasm:
-  - - "${task.process}":
-       type: string
-       description: The name of the process
-    - miniasm:
-       type: string
-       description: The name of the tool
-    - miniasm -V 2>&1:
-       type: eval
-       description: The expression to obtain the version of the tool
+	  - - "${task.process}":
+	       type: string
+	       description: The name of the process
+	    - miniasm:
+	       type: string
+	       description: The name of the tool
+	    - miniasm -V 2>&1:
+	       type: eval
+	       description: The expression to obtain the version of the tool
 topics:
   versions_miniasm:
     - - "${task.process}":
