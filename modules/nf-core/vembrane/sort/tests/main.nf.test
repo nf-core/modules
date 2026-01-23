@@ -113,7 +113,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test_numeric' ], // meta map  
+                    [ id:'test_numeric' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true)
                 ]
                 input[1] = 'POS % 1000'
