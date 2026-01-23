@@ -79,7 +79,7 @@ nextflow_process {
                     bam(process.out.primary_filtered_bam[0][1]).getReadsMD5(),
                     bam(process.out.contamination_bam[0][1]).getReadsMD5(),
                     process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() }  
+                ).match() }
             )
         }
 
