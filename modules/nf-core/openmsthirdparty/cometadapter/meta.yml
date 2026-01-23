@@ -75,7 +75,7 @@ output:
       - CometAdapter:
           type: string
           description: The name of the tool
-      - "CometAdapter 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
+      - "CometAdapter --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
           type: eval
           description: The expression to obtain the version of the tool
   versions_comet:
