@@ -70,7 +70,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*unmapped*fastq.gz": 
+      - "*unmapped*fastq.gz":
           type: file
           description: Output reads that do not map to any reference
           pattern: "*unmapped*fastq.gz"
@@ -117,7 +117,7 @@ output:
       - bbmap:
           type: string
           description: The tool name
-      - bbversion.sh | grep -v "Duplicate cpuset: 
+      - bbversion.sh | grep -v "Duplicate cpuset:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -128,7 +128,7 @@ topics:
       - bbmap:
           type: string
           description: The tool name
-      - bbversion.sh | grep -v "Duplicate cpuset: 
+      - bbversion.sh | grep -v "Duplicate cpuset:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
