@@ -14,7 +14,7 @@ process METAMDBG_ASM {
     output:
     tuple val(meta), path("*.contigs.fasta.gz"), emit: contigs
     tuple val(meta), path("*.metaMDBG.log")    , emit: log
-    tuple val("${task.process}"), val('metamdbg'), eval('metaMDBG | grep "Version" | sed \'s/ Version: //\''), emit: versions_metamdbg, topic: versions
+    tuple val("${task.process}"), val('metamdbg'), eval('metaMDBG | sed -n "s/.*Version: //p"'), emit: versions_metamdbg, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
