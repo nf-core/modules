@@ -70,7 +70,17 @@ output:
           description: The tool name
       - "2.2":
           type: string
-          description: The version used 
+          description: The version used (constant)
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -82,6 +92,15 @@ topics:
       - "2.2":
           type: string
           description: The version used (constant)
+    - - ${task.process}:
+        type: string
+        description: The process the versions were collected from
+      - samtools:
+        type: string
+        description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+        type: string
+        description: The command used to generate the version of the tool
 authors:
   - "@kmurat1"
   - "@sppearce"
