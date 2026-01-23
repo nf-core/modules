@@ -19,8 +19,8 @@ workflow FASTA_INDEX_DNA {
 
     main:
 
-    ch_aligner_index    = Channel.empty()
-    ch_versions         = Channel.empty()
+    ch_aligner_index    = channel.empty()
+    ch_versions         = channel.empty()
 
     if (val_aligner != "snap") {
         ch_altliftover
