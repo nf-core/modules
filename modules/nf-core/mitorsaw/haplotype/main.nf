@@ -52,18 +52,18 @@ process MITORSAW_HAPLOTYPE {
     def args                  = task.ext.args        ?: ''
     prefix                    = task.ext.prefix      ?: "${meta.id}"
     def touch_hap_stats       = include_hap_stats    ? "touch ${prefix}.json" : ''
-    def debugDir              = "${prefix}_debug"
-    def igvDir                = "${debugDir}/mito_igv_custom"
-    def mkdir_debug = include_debug_output ? "mkdir -p ${igvDir}" : ''
+    def debug_dir             = "${prefix}_debug"
+    def igv_dir               = "${debug_dir}/mito_igv_custom"
+    def mkdir_debug           = include_debug_output ? "mkdir -p ${igv_dir}"  : ''
     def debug_files           = [
-        "${debugDir}/coverage_stats.json",
-        "${debugDir}/sequences_chrM.fa",
-        "${igvDir}/custom_alignments.bam",
-        "${igvDir}/custom_alignments.bam.bai",
-        "${igvDir}/custom_igv_session.xml",
-        "${igvDir}/custom_reference.fa",
-        "${igvDir}/custom_reference.fa.fai",
-        "${igvDir}/custom_regions.bed"
+        "${debug_dir}/coverage_stats.json",
+        "${debug_dir}/sequences_chrM.fa",
+        "${igv_dir}/custom_alignments.bam",
+        "${igv_dir}/custom_alignments.bam.bai",
+        "${igv_dir}/custom_igv_session.xml",
+        "${igv_dir}/custom_reference.fa",
+        "${igv_dir}/custom_reference.fa.fai",
+        "${igv_dir}/custom_regions.bed"
     ]
     def touch_debug_files = include_debug_output ? "touch ${debug_files.join(' ')}" : ''
     """
