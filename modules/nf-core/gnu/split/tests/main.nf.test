@@ -34,7 +34,7 @@ nextflow_process {
                     }
                 },
                 // check the version file matches
-                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }) }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match('versions_split_csv') }
             )
         }
     }
@@ -64,7 +64,7 @@ nextflow_process {
                     }
                 },
                 // check the version file matches
-                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }) }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match('versions_split_fastq_gz') }
             )
         }
     }
@@ -95,7 +95,7 @@ nextflow_process {
                     }
                 },
                 // check the version file matches
-                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }) }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match('versions_split_stub') }
             )
         }
     }
