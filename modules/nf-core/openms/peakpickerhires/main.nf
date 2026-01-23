@@ -12,7 +12,7 @@ process OPENMS_PEAKPICKERHIRES {
 
     output:
     tuple val(meta), path("*.mzML"), emit: mzml
-    tuple val("${task.process}"), val('openms'), eval("FileInfo --help 2>&1 | grep -E '^Version' | sed 's/^.*Version: //; s/-.*\$//' | sed 's/ -*//; s/ .*\$//'"), emit: versions_openms, topic: versions
+    tuple val("${task.process}"), val('openms'), eval("FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'"), emit: versions_openms, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
