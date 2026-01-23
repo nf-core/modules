@@ -1,5 +1,6 @@
 name: bbmap_bbsplit
-description: Split sequencing reads by mapping them to multiple references simultaneously
+description: Split sequencing reads by mapping them to multiple references
+  simultaneously
 keywords:
   - align
   - map
@@ -8,8 +9,8 @@ keywords:
   - reference
 tools:
   - bbmap:
-      description: BBMap is a short read aligner, as well as various other bioinformatic
-        tools.
+      description: BBMap is a short read aligner, as well as various other
+        bioinformatic tools.
       homepage: https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/
       documentation: https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/
       licence: ["UC-LBL license (see package)"]
@@ -40,7 +41,8 @@ input:
         description: List of other reference ids apart from the primary
     - other_ref_paths:
         type: list
-        description: Path to other references paths corresponding to "other_ref_names"
+        description: Path to other references paths corresponding to
+          "other_ref_names"
   - only_build_index:
       type: string
       description: true = only build index; false = mapping
@@ -60,6 +62,18 @@ output:
           type: file
           description: Output reads that map to the primary reference
           pattern: "*primary*fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  unmapped_fastq:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*unmapped*fastq.gz": 
+          type: file
+          description: Output reads that do not map to any reference
+          pattern: "*unmapped*fastq.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
   all_fastq:
@@ -103,10 +117,9 @@ output:
       - bbmap:
           type: string
           description: The tool name
-      - bbversion.sh | grep -v "Duplicate cpuset":
+      - bbversion.sh | grep -v "Duplicate cpuset: 
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -115,10 +128,9 @@ topics:
       - bbmap:
           type: string
           description: The tool name
-      - bbversion.sh | grep -v "Duplicate cpuset":
+      - bbversion.sh | grep -v "Duplicate cpuset: 
           type: eval
           description: The expression to obtain the version of the tool
-
 authors:
   - "@joseespinosa"
   - "@drpatelh"
