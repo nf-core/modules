@@ -4,8 +4,8 @@ process BAMCMP {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bamcmp:2.2--h05f6578_0' :
-        'biocontainers/bamcmp:2.2--h05f6578_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6e/6e5ee3676abe7e65f65eca55e8dbc76f4dd195a44679cd1a785943d7a0d598f1/data' :
+        'community.wave.seqera.io/library/bamcmp_samtools:2f211ea999bb54f5' }"
 
     input:
     tuple val(meta), path(primary_aligned_bam), path(contaminant_aligned_bam)
@@ -39,9 +39,14 @@ process BAMCMP {
     bamcmp \\
         -1 $primary_aligned_bam \\
         -2 $contaminant_aligned_bam \\
-        -A ${prefix}.bam \\
-        -B ${prefix2}.bam \\
+        -A ${prefix}.sam \\
+        -B ${prefix2}.sam \\
         $args
+
+    # Convert SAM outputs to BAM to ensure proper BAM format
+    samtools view -b -o ${prefix}.bam ${prefix}.sam
+    samtools view -b -o ${prefix2}.bam ${prefix2}.sam
+    rm ${prefix}.sam ${prefix2}.sam
     """
 
     stub:
