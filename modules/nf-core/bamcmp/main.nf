@@ -13,8 +13,8 @@ process BAMCMP {
     output:
     tuple val(meta), path("${prefix}.bam") , emit: primary_filtered_bam
     tuple val(meta), path("${prefix2}.bam"), emit: contamination_bam
-    tuple val("${task.process}"), val('bamcmp'), val('2.2'), topic: versions, emit: versions_bamcmp
-    tuple val("${task.process}"), val('samtools'), eval('samtools version | sed "1!d;s/.* //"'), topic: versions, emit: versions_samtools
+    tuple val("${task.process}"), val('bamcmp'), eval('echo 2.2'), topic: versions, emit: versions_bamcmp
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
