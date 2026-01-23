@@ -18,7 +18,7 @@ process QUAST {
     tuple val(meta), path("${prefix}_transcriptome.tsv") , optional: true , emit: transcriptome
     tuple val(meta), path("${prefix}_misassemblies.tsv") , optional: true , emit: misassemblies
     tuple val(meta), path("${prefix}_unaligned.tsv")     , optional: true , emit: unaligned
-    path "versions.yml"                                  , emit: versions
+    tuple val("${task.process}"), val('quast'), eval('quast.py --version 2>&1 | grep "QUAST" | sed \'s/^.*QUAST v//; s/ .*\$//\''), emit: versions_quast, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,10 +42,6 @@ process QUAST {
     [ -f  ${prefix}/contigs_reports/misassemblies_report.tsv         ] && ln -s ${prefix}/contigs_reports/misassemblies_report.tsv ${prefix}_misassemblies.tsv
     [ -f  ${prefix}/contigs_reports/unaligned_report.tsv             ] && ln -s ${prefix}/contigs_reports/unaligned_report.tsv ${prefix}_unaligned.tsv
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        quast: \$(quast.py --version 2>&1 | grep "QUAST" | sed 's/^.*QUAST v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -128,9 +124,5 @@ process QUAST {
         touch $prefix/genome_stats/features_frcurve_plot.pdf
     fi
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        quast: \$(quast.py --version 2>&1 | grep "QUAST" | sed 's/^.*QUAST v//; s/ .*\$//')
-    END_VERSIONS
     """
 }
