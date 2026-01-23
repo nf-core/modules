@@ -18,6 +18,7 @@ process BBMAP_BBSPLIT {
     output:
     path "bbsplit_index"                      , optional:true, emit: index
     tuple val(meta), path('*primary*fastq.gz'), optional:true, emit: primary_fastq
+    tuple val(meta), path('*unmapped*fastq.gz'), optional:true, emit: unmapped_fastq
     tuple val(meta), path('*fastq.gz')        , optional:true, emit: all_fastq
     tuple val(meta), path('*txt')             , optional:true, emit: stats
     tuple val(meta), path('*.log')            , optional:true, emit: log
