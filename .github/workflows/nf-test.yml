@@ -171,6 +171,40 @@ jobs:
           total_shards: ${{ env.TOTAL_SHARDS }}
           paths: "${{ join(fromJson(steps.filter.outputs.filtered_paths), ' ') }}"
 
+      - name: Configure AWS credentials for CO2 reports
+        if: always() && steps.filter.outputs.filtered_paths != '[]'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.CO2_REPORTS_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CO2_REPORTS_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.CO2_REPORTS_AWS_REGION }}
+
+      - name: Upload CO2 footprint reports to S3
+        if: always() && steps.filter.outputs.filtered_paths != '[]'
+        shell: bash
+        run: |
+          # Find all CO2 footprint trace files
+          CO2_FILES=$(find . -name "co2footprint_trace*.txt" -type f)
+
+          if [ -n "$CO2_FILES" ]; then
+            # Get current date and sanitize branch name
+            DATE=$(date +%Y-%m-%d)
+            BRANCH_NAME=$(echo "${{ github.head_ref || github.ref_name }}" | sed 's/[^a-zA-Z0-9._-]/_/g')
+
+            # S3 destination path
+            S3_BASE="s3://nf-core-co2-reports/modules/${DATE}/${BRANCH_NAME}/${{ matrix.profile }}/${{ matrix.shard }}"
+
+            # Upload each CO2 trace file
+            for file in $CO2_FILES; do
+              filename=$(basename "$file")
+              aws s3 cp "$file" "${S3_BASE}/${filename}" --no-progress
+              echo "Uploaded: $file -> ${S3_BASE}/${filename}"
+            done
+          else
+            echo "ERROR: No CO2 footprint trace files found"
+            exit 1
+          fi
+
   confirm-pass-nf-test:
     runs-on:
       - runs-on=${{ github.run_id }}-confirm-pass-nf-test
