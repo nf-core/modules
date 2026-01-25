@@ -1,45 +1,5 @@
 {
-    "optional_versions": {
-        "content": [
-            [
-                [
-                    "VIRALCONSENSUS",
-                    "viralconsensus",
-                    "viral_consensus v1.0.0"
-                ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-14T15:23:45.652845"
-    },
-    "primer": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.consensus.fa:md5,67220b967a5ebe4827f1ff418fd73654"
-                ]
-            ],
-            [
-                [
-                    "VIRALCONSENSUS",
-                    "viralconsensus",
-                    "viral_consensus v1.0.0"
-                ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-14T15:23:40.272776"
-    },
-    "stub": {
+    "sarscov2 - bam - stub": {
         "content": [
             {
                 "0": [
@@ -90,9 +50,35 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-01-14T15:23:48.828319"
+        "timestamp": "2026-01-24T19:54:20.412415"
     },
-    "basic": {
+    "sarscov2 - bam - with primer bed": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.consensus.fa:md5,67220b967a5ebe4827f1ff418fd73654"
+                ]
+            ],
+            {
+                "versions_viralconsensus": [
+                    [
+                        "VIRALCONSENSUS",
+                        "viralconsensus",
+                        "viral_consensus v1.0.0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-01-24T19:56:36.892682"
+    },
+    "sarscov2 - bam - basic": {
         "content": [
             [
                 [
@@ -102,18 +88,62 @@
                     "test.consensus.fa:md5,c1a43a011177eff31a4afa9fb8612c7b"
                 ]
             ],
-            [
-                [
-                    "VIRALCONSENSUS",
-                    "viralconsensus",
-                    "viral_consensus v1.0.0"
+            {
+                "versions_viralconsensus": [
+                    [
+                        "VIRALCONSENSUS",
+                        "viralconsensus",
+                        "viral_consensus v1.0.0"
+                    ]
                 ]
-            ]
+            }
         ],
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-01-14T15:23:36.859097"
+        "timestamp": "2026-01-24T19:56:33.226459"
+    },
+    "sarscov2 - bam - with optional outputs": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.consensus.fa:md5,8002717bf92a11fb4cf1bc97089063e3"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.pos_counts.tsv:md5,94284ee424c75e13761452b4a18e4ad3"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.ins_counts.json:md5,b144d1a3bbb6c56dfc6376a198645d57"
+                ]
+            ],
+            {
+                "versions_viralconsensus": [
+                    [
+                        "VIRALCONSENSUS",
+                        "viralconsensus",
+                        "viral_consensus v1.0.0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-01-24T19:56:42.830597"
     }
 }
