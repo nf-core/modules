@@ -1,0 +1,50 @@
+name: bigslice_run
+description: Executes BiG-SLiCE clustering analysis on prepared BGC data using pre-trained machine learning models
+keywords:
+  - biosynthetic gene cluster
+  - BGC
+  - clustering
+  - machine learning
+  - comparative genomics
+  - secondary metabolites
+  - bigslice
+
+tools:
+  - bigslice:
+      description: A highly scalable, user-interactive tool for the large scale analysis of Biosynthetic Gene Clusters data
+      homepage: https://github.com/medema-group/BiG-SLiCE
+      documentation: https://github.com/medema-group/BiG-SLiCE/wiki
+      tool_dev_url: https://github.com/medema-group/BiG-SLiCE
+      doi: "10.1038/s41467-021-21428-1"
+      licence: ["AGPL v3"]
+
+input:
+  - input_dir:
+      type: directory
+      description: |
+        Structured input directory created by BIGSLICE_PREP_INPUT containing:
+        - datasets.tsv: dataset configuration
+        - BGC GenBank files organized by sample
+        - taxonomy information
+      pattern: "input/"
+  - models_dir:
+      type: directory
+      description: |
+        BiG-SLiCE pre-trained models directory.
+        Download from: https://github.com/medema-group/BiG-SLiCE/releases
+        Example: bigslice-models.2022-11-30.tar.gz
+      pattern: "*/"
+
+output:
+  - outdir:
+      type: directory
+      description: |
+        Complete BiG-SLiCE output directory containing:
+        - result/: clustering results and analysis data
+        - app/: interactive web application for visualization
+        - start_server.sh: script to launch web interface
+      pattern: "output/"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
