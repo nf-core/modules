@@ -44,7 +44,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     file(process.out.sai[0][1]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match() }
             )
         }
