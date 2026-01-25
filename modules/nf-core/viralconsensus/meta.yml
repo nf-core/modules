@@ -43,6 +43,14 @@ input:
       pattern: "*.bed"
       ontologies:
         - edam: http://edamontology.org/format_3003
+  - save_pos_counts:
+      type: boolean
+      description: |
+        Save per-position counts to a TSV file
+  - save_ins_counts:
+      type: boolean
+      description: |
+        Save insertion counts to a JSON file
 
 output:
   fasta:
@@ -66,7 +74,7 @@ output:
       - "*.pos_counts.tsv":
           type: file
           description: Per-position base counts (optional, enabled via
-            task.ext.save_pos_counts)
+            save_pos_counts input)
           pattern: "*.pos_counts.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475
@@ -79,7 +87,7 @@ output:
       - "*.ins_counts.json":
           type: file
           description: Insertion counts (optional, enabled via
-            task.ext.save_ins_counts)
+            save_ins_counts input)
           pattern: "*.ins_counts.json"
           ontologies:
             - edam: http://edamontology.org/format_3464

@@ -11,6 +11,8 @@ process VIRALCONSENSUS {
     tuple val(meta), path(bam)
     path fasta
     path primer_bed
+    val save_pos_counts
+    val save_ins_counts
 
     output:
     tuple val(meta), path("*.consensus.fa"), emit: fasta
@@ -25,8 +27,8 @@ process VIRALCONSENSUS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def primer_arg = primer_bed ? "-p ${primer_bed}" : ''
-    def pos_counts_arg = task.ext.save_pos_counts ? "-op ${prefix}.pos_counts.tsv" : ''
-    def ins_counts_arg = task.ext.save_ins_counts ? "-oi ${prefix}.ins_counts.json" : ''
+    def pos_counts_arg = save_pos_counts ? "-op ${prefix}.pos_counts.tsv" : ''
+    def ins_counts_arg = save_ins_counts ? "-oi ${prefix}.ins_counts.json" : ''
     """
     viral_consensus \\
         -i $bam \\
@@ -40,8 +42,8 @@ process VIRALCONSENSUS {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def touch_pos_counts = task.ext.save_pos_counts ? "touch ${prefix}.pos_counts.tsv" : ''
-    def touch_ins_counts = task.ext.save_ins_counts ? "touch ${prefix}.ins_counts.json" : ''
+    def touch_pos_counts = save_pos_counts ? "touch ${prefix}.pos_counts.tsv" : ''
+    def touch_ins_counts = save_ins_counts ? "touch ${prefix}.ins_counts.json" : ''
     """
     touch ${prefix}.consensus.fa
     $touch_pos_counts
