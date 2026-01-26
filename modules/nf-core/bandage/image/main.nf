@@ -13,7 +13,7 @@ process BANDAGE_IMAGE {
     output:
     tuple val(meta), path('*.png'), emit: png
     tuple val(meta), path('*.svg'), emit: svg
-    tuple val("${task.process}"), val('bandage'), eval('export QT_QPA_PLATFORM=offscreen; Bandage --version 2>&1| sed "s/^Version: //p"'), emit: versions_bandage, topic: versions
+    tuple val("${task.process}"), val('bandage'), eval('M=offscreen; Bandage --version 2>&1| grep Version | sed "s/^Version: //"'), emit: versions_bandage, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
