@@ -37,7 +37,6 @@ process BWA_SAMSE {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     touch ${prefix}.bam
     """

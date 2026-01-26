@@ -33,11 +33,11 @@ process BWA_SAMPE {
         \$INDEX \\
         $sai \\
         $reads | samtools sort -@ ${task.cpus} -O bam - > ${prefix}.bam
+
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     touch ${prefix}.bam
     """
