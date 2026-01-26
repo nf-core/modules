@@ -22,7 +22,16 @@ process PBMARKDUP {
     script:
     def args     = task.ext.args  ?: ''
     prefix       = task.ext.prefix ?: "${meta.id}"
-    suffix       = input[0].getExtension()             // To allow multiple input types
+    // To allow multiple input types/files: (compressed) fasta, fastq, bam; Determine suffix from input file names
+    suffix        =                                     
+        input.find { 
+            it.name ==~ /.*\.(fasta|fa|fna)(\.gz)?$/ }?.with { f ->
+            f.name.tokenize('.').takeRight(f.name.endsWith('.gz') ? 2 : 1).join('.')
+        } ?:
+        input.find { it.name ==~ /.*\.(fastq|fq)(\.gz)?$/ }?.with { f ->
+            f.name.tokenize('.').takeRight(f.name.endsWith('.gz') ? 2 : 1).join('.')
+        } ?:
+        input[0].extension
     dupfile_name = args.contains('--dup-file') ? (args =~ /--dup-file\s+(\S+)/)[0][1] : ''
     def log_args = args.contains('--log-level') ? " > ${prefix}.pbmarkdup.log" : ''
     def file_list = input.collect { it.getName() }.join(' ')
@@ -58,7 +67,16 @@ process PBMARKDUP {
     stub:
     def args      = task.ext.args  ?: ''
     prefix        = task.ext.prefix ?: "${meta.id}"
-    suffix        = input[0].getExtension()             // To allow multiple input types
+    // To allow multiple input types/files: (compressed) fasta, fastq, bam; Determine suffix from input file names
+    suffix        =                                     
+        input.find { 
+            it.name ==~ /.*\.(fasta|fa|fna)(\.gz)?$/ }?.with { f ->
+            f.name.tokenize('.').takeRight(f.name.endsWith('.gz') ? 2 : 1).join('.')
+        } ?:
+        input.find { it.name ==~ /.*\.(fastq|fq)(\.gz)?$/ }?.with { f ->
+            f.name.tokenize('.').takeRight(f.name.endsWith('.gz') ? 2 : 1).join('.')
+        } ?:
+        input[0].extension     
     dupfile_name  = args.contains('--dup-file') ? (args =~ /--dup-file\s+(\S+)/)[0][1] : ''
     def log_args  = args.contains('--log-level') ? " > ${prefix}.pbmarkdup.log" : ''
     def file_list = input.collect { it.getName() }.join(' ')
