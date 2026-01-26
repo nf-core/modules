@@ -2,6 +2,7 @@ process STAINWARPY_REGISTER {
     tag "$meta.id"
     label 'process_single'
 
+    conda "${moduleDir}/environment.yml"
     container "community.wave.seqera.io/library/stainwarpy:0.2.3--2c8b18a5e6d93e4a"
 
     input:
