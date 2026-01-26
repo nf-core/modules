@@ -1,0 +1,74 @@
+name: traitar3_pfamannotation
+description: Annotate protein sequences with Pfam families using HMMER for traitar3
+keywords:
+  - annotation
+  - pfam
+  - hmmer
+  - traitar3
+  - phenotype
+tools:
+  - traitar3:
+      description: Microbial trait analyzer - Pfam annotation component
+      homepage: https://github.com/nick-youngblut/traitar3
+      documentation: https://github.com/nick-youngblut/traitar3/blob/master/README.md
+      tool_dev_url: https://github.com/nick-youngblut/traitar3
+      licence: ["GPL v3"]
+      identifier: ""
+  - hmmer:
+      description: Biosequence analysis using profile hidden Markov models
+      homepage: http://hmmer.org/
+      documentation: http://hmmer.org/documentation.html
+      tool_dev_url: https://github.com/EddyRivasLab/hmmer
+      doi: "10.1371/journal.pcbi.1002195"
+      licence: ["BSD"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - faa:
+        type: file
+        description: Protein sequences in FASTA format
+        pattern: "*.{faa,fasta,fa}"
+        ontologies: []
+  - pfam_hmm:
+      type: file
+      description: Pfam-A HMM database file (e.g., Pfam-A.hmm)
+      pattern: "*.hmm"
+      ontologies: []
+output:
+  domtblout:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.domtblout.gz":
+          type: file
+          description: Domain table output from HMMER in compressed format
+          pattern: "*.domtblout.gz"
+          ontologies: []
+  output:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt.gz":
+          type: file
+          description: Human readable output from HMMER in compressed format
+          pattern: "*.txt.gz"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@copilot"
+maintainers:
+  - "@copilot"
