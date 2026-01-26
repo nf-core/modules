@@ -1,12 +1,12 @@
 
 process PRETEXTMAP {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-f3591ce8609c7b3b33e5715333200aa5c163aa61%3A44321ab4d64f0b6d0c93abbd1406369d1b3da684':
-        'community.wave.seqera.io/library/pretextmap_samtools_pip_htlib:ea913e7946e65c1a' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e9/e9e6a49d9810ef0101a4a003afeda9b32c1d0d06b196ec13a5c9f5919bd1869e/data':
+        'community.wave.seqera.io/library/htslib_pretextmap_samtools:6d973e19ac7b0a1f' }"
 
     input:
     tuple val(meta), path(input)
