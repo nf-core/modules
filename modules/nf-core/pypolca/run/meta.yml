@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "pypolca_run"
 description: Short read polisher for long read assemblies
 keywords:
@@ -12,6 +11,7 @@ tools:
       documentation: "https://github.com/gbouras13/pypolca?tab=readme-ov-file#usage"
       doi: "10.1099/mgen.0.001254"
       licence: ["MIT"]
+      identifier: ""
 
 input:
   - - meta:
@@ -21,7 +21,8 @@ input:
           e.g. `[ id:'sample1' ]`
     - reads:
         type: file
-        description: List of short reads for assembly polishing. Length 1 for single-end and 2 for paired-end
+        description: List of short reads for assembly polishing. Length 1 for
+          single-end and 2 for paired-end
         pattern: "*.{fastq,fq}.gz"
         ontologies:
           - edam: "http://edamontology.org/format_1930" # FASTQ
@@ -44,7 +45,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "${prefix}/*_corrected.fasta":
+      - ${prefix}/*_corrected.fasta:
           type: file
           description: Polished assembly
           pattern: "*.{fasta}"
@@ -56,7 +57,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "${prefix}/*.vcf":
+      - ${prefix}/*.vcf:
           type: file
           description: variant calls
           pattern: "*.vcf"
@@ -68,19 +69,35 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "${prefix}/*.report":
+      - ${prefix}/*.report:
           type: file
           description: Pypolca report
           pattern: "*.report"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # Textual
+
+  versions_pypolca:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pypolca:
+          type: string
+          description: The name of the tool
+      - pypolca --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pypolca:
+          type: string
+          description: The name of the tool
+      - pypolca --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
   - "@dwells-eit"
