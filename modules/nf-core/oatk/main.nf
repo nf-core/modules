@@ -23,7 +23,7 @@ process OATK {
     tuple val(meta), path("*annot_pltd.txt"), emit: annot_pltd_txt, optional: true
     tuple val(meta), path("*utg.final.gfa") , emit: final_gfa, optional: true
     tuple val(meta), path("*utg.gfa")       , emit: initial_gfa, optional: true
-    tuple val(meta), path("*.log")          , emit: log, optional: true
+    tuple val(meta), path("*.log")          , emit: log
     tuple val("${task.process}"), val('oatk'), eval("oatk --version 2>&1"), topic: versions, emit: versions_oatk
 
     when:
@@ -41,8 +41,8 @@ process OATK {
         $pltd_hmm_arg \\
         -t $task.cpus \\
         -o ${prefix} \\
-        ${reads}
-        2> >( tee ${prefix}.log >&2 )
+        ${reads} \\
+        2>| >(tee ${prefix}.log >&2)
     """
 
     stub:
@@ -63,5 +63,7 @@ process OATK {
 
     touch ${prefix}.utg.gfa
     touch ${prefix}.utg.final.gfa
+
+    touch ${prefix}.log
     """
 }
