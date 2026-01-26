@@ -9,8 +9,8 @@ process OATK {
 
     input:
     tuple val(meta), path(reads)
-    tuple path(mito_hmm), path(mito_hmm_h3f), path(mito_hmm_h3i), path(mito_hmm_h3m), path(mito_hmm_h3p)
-    tuple path(pltd_hmm), path(pltd_hmm_h3f), path(pltd_hmm_h3i), path(pltd_hmm_h3m), path(pltd_hmm_h3p)
+    tuple val(meta), path(mito_hmm_files)
+    tuple val(meta), path(pltd_hmm_files)
 
     output:
     tuple val(meta), path("*mito.ctg.fasta"), emit: mito_fasta, optional: true

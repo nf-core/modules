@@ -24,11 +24,14 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/eukaryotes/deilephila_porcellus/mito/ilDeiPorc1.HiFi.reads.fa', checkIfExists: true)
                 ]
                 input[1] = [
-                    file("https://raw.githubusercontent.com/c-zhou/OatkDB/main/v20230921/insecta_mito.fam", checkIfExists: true),
-                    file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/insecta_mito.fam.h3f", checkIfExists: true),
-                    file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/insecta_mito.fam.h3i", checkIfExists: true),
-                    file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/insecta_mito.fam.h3m", checkIfExists: true),
-                    file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/insecta_mito.fam.h3p", checkIfExists: true)
+                    [id: "mito"],
+                    [
+                        file("https://raw.githubusercontent.com/c-zhou/OatkDB/main/v20230921/insecta_mito.fam", checkIfExists: true),
+                        file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/insecta_mito.fam.h3f", checkIfExists: true),
+                        file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/insecta_mito.fam.h3i", checkIfExists: true),
+                        file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/insecta_mito.fam.h3m", checkIfExists: true),
+                        file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/insecta_mito.fam.h3p", checkIfExists: true)
+                    ]
                 ]
                 input[2] = [[],[],[],[],[]]
                 """
@@ -69,11 +72,14 @@ nextflow_process {
                 ]
                 input[1] = [[],[],[],[],[]]
                 input[2] = [
-                    file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam", checkIfExists: true),
-                    file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3f", checkIfExists: true),
-                    file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3i", checkIfExists: true),
-                    file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3m", checkIfExists: true),
-                    file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3p", checkIfExists: true)
+                    [id:"pltd"],
+                    [
+                        file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam", checkIfExists: true),
+                        file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3f", checkIfExists: true),
+                        file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3i", checkIfExists: true),
+                        file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3m", checkIfExists: true),
+                        file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3p", checkIfExists: true)
+                    ]
                 ]
                 """
             }
@@ -115,18 +121,24 @@ nextflow_process {
                     ]
                 ]
                 input[1] = [
-                    file("https://raw.githubusercontent.com/c-zhou/OatkDB/main/v20230921/insecta_mito.fam", checkIfExists: true),
-                    file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/insecta_mito.fam.h3f", checkIfExists: true),
-                    file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/insecta_mito.fam.h3i", checkIfExists: true),
-                    file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/insecta_mito.fam.h3m", checkIfExists: true),
-                    file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/insecta_mito.fam.h3p", checkIfExists: true)
+                    [id: "mito"],
+                    [
+                        file("https://raw.githubusercontent.com/c-zhou/OatkDB/main/v20230921/insecta_mito.fam", checkIfExists: true),
+                        file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/insecta_mito.fam.h3f", checkIfExists: true),
+                        file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/insecta_mito.fam.h3i", checkIfExists: true),
+                        file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/insecta_mito.fam.h3m", checkIfExists: true),
+                        file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/insecta_mito.fam.h3p", checkIfExists: true)
+                    ]
                 ]
                 input[2] = [
-                    file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam", checkIfExists: true),
-                    file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3f", checkIfExists: true),
-                    file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3i", checkIfExists: true),
-                    file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3m", checkIfExists: true),
-                    file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3p", checkIfExists: true)
+                    [id:"pltd"],
+                    [
+                        file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam", checkIfExists: true),
+                        file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3f", checkIfExists: true),
+                        file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3i", checkIfExists: true),
+                        file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3m", checkIfExists: true),
+                        file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3p", checkIfExists: true)
+                    ]
                 ]
                 """
             }
@@ -172,11 +184,14 @@ nextflow_process {
                 ]
                 input[1] = [[],[],[],[],[]]
                 input[2] = [
-                    file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam", checkIfExists: true),
-                    file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3f", checkIfExists: true),
-                    file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3i", checkIfExists: true),
-                    file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3m", checkIfExists: true),
-                    file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3p", checkIfExists: true)
+                    [id:"pltd"],
+                    [
+                        file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam", checkIfExists: true),
+                        file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3f", checkIfExists: true),
+                        file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3i", checkIfExists: true),
+                        file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3m", checkIfExists: true),
+                        file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3p", checkIfExists: true)
+                    ]
                 ]
                 """
             }

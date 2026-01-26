@@ -28,55 +28,29 @@ input:
         description: HiFi reads in FASTA format
         pattern: "*.{fasta,fasta.gz,fa,fa.gz}"
         ontologies: []
-  - - mito_hmm:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'Cladonia_norvegica' ]
+    - mito_hmm_files:
         type: file
-        description: mitochondria gene annotation HMM profile database
-        pattern: "*.{fa,fam}"
+        description: |
+          HMM profile for mitochondrial gene annotation, with corresponding
+          .h3i, h3f, .h3p, .h3m files from hmmpress
+        pattern: "*.{fam,h3i,h3f,h3p,h3m}"
         ontologies: []
-    - mito_hmm_h3f:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'Cladonia_norvegica' ]
+    - pltd_hmm_files:
         type: file
-        description: mitochondria gene annotation HMM profile binary auxfile
-        pattern: "*.{h3f}"
-        ontologies: []
-    - mito_hmm_h3i:
-        type: file
-        description: mitochondria gene annotation HMM profile binary auxfile
-        pattern: "*.{h3i}"
-        ontologies: []
-    - mito_hmm_h3m:
-        type: file
-        description: mitochondria gene annotation HMM profile binary auxfile
-        pattern: "*.{h3m}"
-        ontologies: []
-    - mito_hmm_h3p:
-        type: file
-        description: mitochondria gene annotation HMM profile binary auxfile
-        pattern: "*.{h3p}"
-        ontologies: []
-  - - pltd_hmm:
-        type: file
-        description: plastid gene annotation HMM profile database
-        pattern: "*.{fa,fam}"
-        ontologies: []
-    - pltd_hmm_h3f:
-        type: file
-        description: plastid gene annotation HMM profile binary auxfile
-        pattern: "*.{h3f}"
-        ontologies: []
-    - pltd_hmm_h3i:
-        type: file
-        description: plastid gene annotation HMM profile binary auxfile
-        pattern: "*.{h3i}"
-        ontologies: []
-    - pltd_hmm_h3m:
-        type: file
-        description: plastid gene annotation HMM profile binary auxfile
-        pattern: "*.{h3m}"
-        ontologies: []
-    - pltd_hmm_h3p:
-        type: file
-        description: plastid gene annotation HMM profile binary auxfile
-        pattern: "*.{h3p}"
+        description: |
+          HMM profile for plastid gene annotation, with corresponding
+          .h3i, h3f, .h3p, .h3m files from hmmpress
+        pattern: "*.{fam,h3i,h3f,h3p,h3m}"
         ontologies: []
 output:
   mito_fasta:
