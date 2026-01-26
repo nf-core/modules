@@ -15,7 +15,7 @@ workflow FASTQ_ALIGN_BWAALN {
 
     main:
 
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     // WARNING: You must specify in your prefix `meta.id_index` in your `modules.conf`
     // to ensure that you do not overwrite multiple BAM files from one sample mapped
@@ -55,7 +55,6 @@ workflow FASTQ_ALIGN_BWAALN {
 
     // Alignment and conversion to bam
     BWA_ALN ( ch_preppedinput_for_bwaaln.reads, ch_preppedinput_for_bwaaln.index )
-    ch_versions = ch_versions.mix( BWA_ALN.out.versions.first() )
 
     ch_sai_for_bam = ch_reads_newid
                         .join ( BWA_ALN.out.sai )
@@ -84,10 +83,8 @@ workflow FASTQ_ALIGN_BWAALN {
 
 
     BWA_SAMPE ( ch_sai_for_bam_pe.reads, ch_sai_for_bam_pe.index )
-    ch_versions = ch_versions.mix( BWA_SAMPE.out.versions.first() )
 
     BWA_SAMSE ( ch_sai_for_bam_se.reads, ch_sai_for_bam_se.index )
-    ch_versions = ch_versions.mix( BWA_SAMSE.out.versions.first() )
 
     ch_bam_for_index = BWA_SAMPE.out.bam.mix( BWA_SAMSE.out.bam )
 
