@@ -36,7 +36,6 @@ process YTE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     VERSION = "1.9.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping
     """

@@ -43,7 +43,6 @@ process TOULLIGQC {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}
