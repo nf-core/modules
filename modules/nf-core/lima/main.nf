@@ -19,8 +19,8 @@ process LIMA {
 
     tuple val(meta), path("*.bam")              , optional: true, emit: bam
     tuple val(meta), path("*.bam.pbi")          , optional: true, emit: pbi
-    tuple val(meta), path("*.{fa, fasta}")      , optional: true, emit: fasta
-    tuple val(meta), path("*.{fa.gz, fasta.gz}"), optional: true, emit: fastagz
+    tuple val(meta), path("*.{fa,fasta}")      , optional: true, emit: fasta
+    tuple val(meta), path("*.{fa.gz,fasta.gz}"), optional: true, emit: fastagz
     tuple val(meta), path("*.fastq")            , optional: true, emit: fastq
     tuple val(meta), path("*.fastq.gz")         , optional: true, emit: fastqgz
     tuple val(meta), path("*.xml")              , optional: true, emit: xml
