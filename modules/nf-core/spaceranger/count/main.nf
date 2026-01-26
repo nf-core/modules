@@ -2,7 +2,7 @@ process SPACERANGER_COUNT {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/spaceranger:3.1.3"
+    container "nf-core/spaceranger:9c5e7dc93c32448e"
 
     input:
     tuple val(meta), path(reads), path(image), val(slide), val(area), path(cytaimage), path(darkimage), path(colorizedimage), path(alignment), path(slidefile)
@@ -24,13 +24,13 @@ process SPACERANGER_COUNT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     // Add flags for optional inputs on demand.
-    def probeset = probeset ? "--probe-set=\"${probeset}\"" : ""
-    def alignment = alignment ? "--loupe-alignment=\"${alignment}\"" : ""
-    def slidefile = slidefile ? "--slidefile=\"${slidefile}\"" : ""
-    def image = image ? "--image=\"${image}\"" : ""
-    def cytaimage = cytaimage ? "--cytaimage=\"${cytaimage}\"" : ""
-    def darkimage = darkimage ? "--darkimage=\"${darkimage}\"" : ""
-    def colorizedimage = colorizedimage ? "--colorizedimage=\"${colorizedimage}\"" : ""
+    probeset = probeset ? "--probe-set=\"${probeset}\"" : ""
+    alignment = alignment ? "--loupe-alignment=\"${alignment}\"" : ""
+    slidefile = slidefile ? "--slidefile=\"${slidefile}\"" : ""
+    image = image ? "--image=\"${image}\"" : ""
+    cytaimage = cytaimage ? "--cytaimage=\"${cytaimage}\"" : ""
+    darkimage = darkimage ? "--darkimage=\"${darkimage}\"" : ""
+    colorizedimage = colorizedimage ? "--colorizedimage=\"${colorizedimage}\"" : ""
     if (slide.matches("visium-(.*)") && area == "" && slidefile == "") {
         slide_and_area = "--unknown-slide=\"${slide}\""
     } else {
