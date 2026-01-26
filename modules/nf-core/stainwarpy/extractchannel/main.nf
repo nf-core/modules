@@ -1,0 +1,33 @@
+process STAINWARPY_EXTRACTCHANNEL {
+    tag "$meta.id"
+    label 'process_single'
+
+    container "community.wave.seqera.io/library/pip_stainwarpy:d2ff09a87c79896b"
+
+    input:
+    tuple val(meta), path(multiplx_img)
+
+    output:
+    tuple val(meta), path("multiplexed_single_channel_img.ome.tif")    , emit: single_ch_image
+    tuple val("${task.process}"), val('stainwarpy'), eval("stainwarpy --version | sed 's/.* //'"), emit: versions_stainwarpy_extractchannel, topic: versions
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+
+    """
+    stainwarpy \\
+        extract-channel \\
+        ${multiplx_img} \\
+        . \\
+        ${args}
+    """
+
+    stub:
+
+    """
+    touch multiplexed_single_channel_img.ome.tif
+    """
+}
