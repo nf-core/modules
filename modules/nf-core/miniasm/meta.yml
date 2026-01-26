@@ -60,7 +60,7 @@ output:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
-      - fastqc:
+      - miniasm:
           type: string
           description: The tool name
       - miniasm -V 2>&1:
