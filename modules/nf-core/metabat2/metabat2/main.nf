@@ -16,7 +16,7 @@ process METABAT2_METABAT2 {
     tuple val(meta), path("*.unbinned.fa.gz"), optional: true, emit: unbinned
     tuple val(meta), path("*.tsv.gz"), optional: true, emit: membership
     tuple val(meta), path("*[!lowDepth|tooShort|unbinned].fa.gz"), optional: true, emit: fasta
-    tuple val("${task.process}"), val('metabat2'), eval('metabat2 --help 2>&1 | sed -n "2s/.*:\([0-9]*\.[0-9]*\).*/\1/p"'), emit: versions_metabat2, topic: versions
+    tuple val("${task.process}"), val('metabat2'), eval('metabat2 --help 2>&1 | sed -n "2s/.*:\\([0-9]*\\.[0-9]*\\).*/\\1/p"'), emit: versions_metabat2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
