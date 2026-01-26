@@ -12,17 +12,13 @@ workflow FASTA_CONSENSUS_AUTOCYCLER {
 
     main:
 
-    ch_versions = Channel.empty()
-
     AUTOCYCLER_COMPRESS (
         ch_grouped_contigs
     )
-    ch_versions = ch_versions.mix(AUTOCYCLER_COMPRESS.out.versions.first())
 
     AUTOCYCLER_CLUSTER (
         AUTOCYCLER_COMPRESS.out.gfa
     )
-    ch_versions = ch_versions.mix(AUTOCYCLER_CLUSTER.out.versions.first())
 
     AUTOCYCLER_CLUSTER.out.clusters
     .flatMap { meta, gfa_list ->
@@ -38,12 +34,10 @@ workflow FASTA_CONSENSUS_AUTOCYCLER {
     AUTOCYCLER_TRIM(
         ch_clusters
     )
-    ch_versions = ch_versions.mix(AUTOCYCLER_TRIM.out.versions.first())
 
     AUTOCYCLER_RESOLVE(
         AUTOCYCLER_TRIM.out.gfa
     )
-    ch_versions = ch_versions.mix(AUTOCYCLER_RESOLVE.out.versions.first())
 
     // Rename resolved gfa files to include cluster ID and avoid filename collisions
     RENAME(
@@ -64,7 +58,6 @@ workflow FASTA_CONSENSUS_AUTOCYCLER {
     AUTOCYCLER_COMBINE(
         ch_assembly_clusters
     )
-    ch_versions = ch_versions.mix(AUTOCYCLER_COMBINE.out.versions.first())
 
     ch_consensus_assembly       = AUTOCYCLER_COMBINE.out.fasta // channel: [ val(meta), fasta ]
     ch_consensus_assembly_graph = AUTOCYCLER_COMBINE.out.gfa   // channel: [ val(meta), gfa ]
@@ -73,8 +66,6 @@ workflow FASTA_CONSENSUS_AUTOCYCLER {
     emit:
     consensus_assembly       = ch_consensus_assembly       // channel: [ val(meta), fasta ]
     consensus_assembly_graph = ch_consensus_assembly_graph // channel: [ val(meta), gfa ]
-
-    versions = ch_versions                                 // channel: [ versions.yml ]
 }
 
 process RENAME {
