@@ -8,9 +8,9 @@ process OATK {
         'biocontainers/oatk:1.0' }"
 
     input:
-    tuple val(meta), path(reads)
-    tuple val(meta), path(mito_hmm_files)
-    tuple val(meta), path(pltd_hmm_files)
+    tuple val(meta) , path(reads)
+    tuple val(meta2), path(mito_hmm_files)
+    tuple val(meta3), path(pltd_hmm_files)
 
     output:
     tuple val(meta), path("*mito.ctg.fasta"), emit: mito_fasta, optional: true
@@ -32,14 +32,14 @@ process OATK {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def mito_hmm_arg = mito_hmm ? '-m ' + mito_hmm : ""
-    def pltd_hmm_arg = pltd_hmm ? '-p ' + pltd_hmm : ""
+    def mito_hmm_arg = mito_hmm_files ? '-m ' + mito_hmm_files.find { hmm -> hmm.getExtension() =~ /fam|hmm/ } : ""
+    def pltd_hmm_arg = pltd_hmm_files ? '-p ' + pltd_hmm_files.find { hmm -> hmm.getExtension() =~ /fam|hmm/ } : ""
     """
     oatk \\
         $args \\
         $mito_hmm_arg \\
         $pltd_hmm_arg \\
-        -t $task.cpus \\
+        -t ${task.cpus} \\
         -o ${prefix} \\
         ${reads} \\
         2>| >(tee ${prefix}.log >&2)

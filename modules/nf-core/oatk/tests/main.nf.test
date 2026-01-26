@@ -33,7 +33,7 @@ nextflow_process {
                         file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/insecta_mito.fam.h3p", checkIfExists: true)
                     ]
                 ]
-                input[2] = [[],[],[],[],[]]
+                input[2] = [[:], []]
                 """
             }
         }
@@ -70,7 +70,7 @@ nextflow_process {
                     [id:"ddAraThal4"],
                     file(params.modules_testdata_base_path + 'genomics/eukaryotes/arabidopsis_thaliana/plastid/ddAraThal4.HiFi.reads.fasta', checkIfExists: true)
                 ]
-                input[1] = [[],[],[],[],[]]
+                input[1] = [[:], []]
                 input[2] = [
                     [id:"pltd"],
                     [
@@ -182,7 +182,7 @@ nextflow_process {
                     [id:"ddAraThal4"],
                     file(params.modules_testdata_base_path + 'genomics/eukaryotes/arabidopsis_thaliana/plastid/ddAraThal4.HiFi.reads.fasta', checkIfExists: true)
                 ]
-                input[1] = [[],[],[],[],[]]
+                input[1] = [[:], []]
                 input[2] = [
                     [id:"pltd"],
                     [
