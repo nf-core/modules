@@ -24,7 +24,6 @@ workflow VCF_FILTER_BCFTOOLS_ENSEMBLVEP {
             [],
             [],
         )
-        ch_versions = ch_versions.mix(BCFTOOLS_VIEW.out.versions)
 
         ch_vcf = BCFTOOLS_VIEW.out.vcf
         ch_tbi = BCFTOOLS_VIEW.out.tbi

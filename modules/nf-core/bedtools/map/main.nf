@@ -1,11 +1,11 @@
 process BEDTOOLS_MAP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bedtools:2.31.1--hf5e1c6e_0' :
-        'biocontainers/bedtools:2.31.1--hf5e1c6e_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/bedtools:2.31.1--hf5e1c6e_0'
+        : 'biocontainers/bedtools:2.31.1--hf5e1c6e_0'}"
 
     input:
     tuple val(meta), path(intervals1), path(intervals2)
@@ -13,7 +13,7 @@ process BEDTOOLS_MAP {
 
     output:
     tuple val(meta), path("*.${extension}"), emit: mapped
-    path  "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('bedtools'), eval("bedtools --version | sed -e 's/bedtools v//g'"), topic: versions, emit: versions_bedtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,36 +23,26 @@ process BEDTOOLS_MAP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     extension = intervals1.getExtension()
     def sizes = chrom_sizes ? "-g ${chrom_sizes}" : ''
-    if ("$intervals1" == "${prefix}.${extension}" ||
-        "$intervals2" == "${prefix}.${extension}")
-        error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${intervals1}" == "${prefix}.${extension}" || "${intervals2}" == "${prefix}.${extension}") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     bedtools \\
         map \\
-        -a $intervals1 \\
-        -b $intervals2 \\
-        $args \\
-        $sizes \\
+        -a ${intervals1} \\
+        -b ${intervals2} \\
+        ${args} \\
+        ${sizes} \\
         > ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bedtools: \$(bedtools --version | sed -e "s/bedtools v//g")
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     extension = intervals1.getExtension()
-    if ("$intervals1" == "${prefix}.${extension}" ||
-        "$intervals2" == "${prefix}.${extension}")
-        error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${intervals1}" == "${prefix}.${extension}" || "${intervals2}" == "${prefix}.${extension}") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     touch ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bedtools: \$(bedtools --version | sed -e "s/bedtools v//g")
-    END_VERSIONS
     """
 }
