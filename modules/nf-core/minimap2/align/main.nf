@@ -20,7 +20,7 @@ process MINIMAP2_ALIGN {
     tuple val(meta), path("*.paf")                       , optional: true, emit: paf
     tuple val(meta), path("*.bam")                       , optional: true, emit: bam
     tuple val(meta), path("*.bam.${bam_index_extension}"), optional: true, emit: index
-    path "versions.yml"                                  , emit: versions
+    tuple val("${task.process}"), val("minimap2"), eval("minimap2 --version"), topic: versions, emit: versions_minimap2
 
     when:
     task.ext.when == null || task.ext.when
@@ -52,11 +52,6 @@ process MINIMAP2_ALIGN {
         $bam_output
 
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        minimap2: \$(minimap2 --version 2>&1)
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -70,9 +65,5 @@ process MINIMAP2_ALIGN {
     touch $output_file
     ${bam_index}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        minimap2: \$(minimap2 --version 2>&1)
-    END_VERSIONS
     """
 }
