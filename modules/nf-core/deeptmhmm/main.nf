@@ -45,8 +45,6 @@ process DEEPTMHMM {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-
     """
     mkdir biolib_results
     touch biolib_results/TMRs.gff3
