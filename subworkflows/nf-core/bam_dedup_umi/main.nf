@@ -144,6 +144,10 @@ workflow BAM_DEDUP_UMI {
     tsv_per_umi              = ch_tsv_per_umi          // channel: [ val(meta), path(tsv) ]
     tsv_umi_per_position     = ch_tsv_umi_per_position // channel: [ val(meta), path(tsv) ]
     multiqc_files            = ch_multiqc_files                                                        // channel: file
-    transcriptome_bam    = ch_dedup_transcriptome_bam                                              // channel: [ val(meta), path(bam) ]
-    versions             = ch_versions                                                            // channel: [ path(versions.yml) ]
+    transcriptome_bam            = ch_dedup_transcriptome_bam                                          // channel: [ val(meta), path(bam) ] - final output
+    transcriptome_dedup_bam      = UMI_DEDUP_TRANSCRIPTOME.out.bam                                     // channel: [ val(meta), path(bam) ] - after dedup, before name sort
+    transcriptome_sorted_bam     = SAMTOOLS_SORT.out.bam                                               // channel: [ val(meta), path(bam) ] - name-sorted
+    transcriptome_sorted_bam_bai = UMI_DEDUP_TRANSCRIPTOME.out.bai                                     // channel: [ val(meta), path(bai) ] - coordinate-sorted dedup index
+    transcriptome_filtered_bam   = UMITOOLS_PREPAREFORRSEM.out.bam                                     // channel: [ val(meta), path(bam) ] - paired-end filtered
+    versions                     = ch_versions                                                         // channel: [ path(versions.yml) ]
 }
