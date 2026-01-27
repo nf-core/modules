@@ -24,10 +24,10 @@ workflow FASTQ_ALIGN_DNA {
 
     main:
 
-        ch_bam_index    = Channel.empty()
-        ch_bam          = Channel.empty()
-        ch_reports      = Channel.empty()
-        ch_versions     = Channel.empty()
+        ch_bam_index    = channel.empty()
+        ch_bam          = channel.empty()
+        ch_reports      = channel.empty()
+        ch_versions     = channel.empty()
 
         // Align fastq files to reference genome and (optionally) sort
         if (aligner == 'bowtie2') {
@@ -37,9 +37,8 @@ workflow FASTQ_ALIGN_DNA {
         }
         else if (aligner == 'bwamem'){
                 BWAMEM1_MEM  (ch_reads, ch_aligner_index, ch_fasta, sort)        // If aligner is bwa-mem
-                ch_bam = ch_bam.mix(BWAMEM1_MEM.out.bam)
-                ch_bam_index = ch_bam_index.mix(BWAMEM1_MEM.out.csi)
-                ch_versions = ch_versions.mix(BWAMEM1_MEM.out.versions)
+                ch_bam = ch_bam.mix(BWAMEM1_MEM.out.output)
+                ch_bam_index = ch_bam_index.mix(BWAMEM1_MEM.out.index)
         }
         else if (aligner == 'bwamem2'){
                 BWAMEM2_MEM  (ch_reads, ch_aligner_index, ch_fasta, sort)       // If aligner is bwa-mem2
