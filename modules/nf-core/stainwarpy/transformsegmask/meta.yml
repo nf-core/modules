@@ -25,7 +25,9 @@ input:
         type: file
         description: H&E stained image file
         pattern: "*.{ome.tif,ome.tiff,tif,tiff}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3727"
+          - edam: "http://edamontology.org/format_3591"
   - - meta2:
         type: map
         description: |
@@ -35,7 +37,9 @@ input:
         type: file
         description: Multiplexed image file
         pattern: "*.{ome.tif,ome.tiff,tif,tiff}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3727"
+          - edam: "http://edamontology.org/format_3591"
   - - meta3:
         type: map
         description: |
@@ -45,7 +49,9 @@ input:
         type: file
         description: Segmentation mask file
         pattern: "*.{ome.tif,ome.tiff,tif,tiff,npy}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3727"
+          - edam: "http://edamontology.org/format_3591"
   - - meta4:
         type: map
         description: |
@@ -76,7 +82,8 @@ output:
           type: file
           description: Transformed segmentation mask in OME-TIFF format
           pattern: "transformed_segmentation_mask.ome.tif"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3727"
   versions_stainwarpy_transformsegmask:
     - - "${task.process}":
           type: string
