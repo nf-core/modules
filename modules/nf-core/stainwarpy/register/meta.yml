@@ -24,7 +24,9 @@ input:
         type: file
         description: H&E stained image file
         pattern: "*.{ome.tif,ome.tiff,tif,tiff}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3727"
+          - edam: "http://edamontology.org/format_3591"
   - - meta2:
         type: map
         description: |
@@ -34,7 +36,9 @@ input:
         type: file
         description: Multiplexed image file
         pattern: "*.{ome.tif,ome.tiff,tif,tiff}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3727"
+          - edam: "http://edamontology.org/format_3591"
   - fixed_img:
       type: string
       description: Which image to use as fixed image for registration. Options - 'hne' or 'multiplexed'
@@ -55,7 +59,8 @@ output:
           type: file
           description: Registered final channel image in OME-TIFF format
           pattern: "0_final_channel_image.ome.tif"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3727"
   reg_metrics_tform:
     - - meta:
           type: map
@@ -66,7 +71,8 @@ output:
           type: file
           description: Registration metrics and transformation map in JSON format
           pattern: "registration_metrics_tform_map.json"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3464"
   tform_map:
     - - meta:
           type: map
