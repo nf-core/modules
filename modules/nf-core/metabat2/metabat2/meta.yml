@@ -67,8 +67,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.unbinned.fa.gz":
           type: file
-          description: Contigs that pass length and depth filtering but could not be
-            binned
+          description: Contigs that pass length and depth filtering but could not
+            be binned
           pattern: "*.unbinned.fa.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -96,13 +96,29 @@ output:
           pattern: "*.fa.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_metabat2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metabat2:
+          type: string
+          description: The name of the tool
+      - metabat2 --help 2>&1 | sed -n "2s/.*:\([0-9]*\.[0-9]*\).*/\1/p":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metabat2:
+          type: string
+          description: The name of the tool
+      - metabat2 --help 2>&1 | sed -n "2s/.*:\([0-9]*\.[0-9]*\).*/\1/p":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@maxibor"
   - "@jfy133"
