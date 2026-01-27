@@ -8,8 +8,9 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "traitar"
+    tag "gunzip"
 
-    // Real data test 
+    // Real data test
     test("traitar - proteomes") {
 
         config "./nf-test.config"
@@ -33,8 +34,8 @@ nextflow_process {
                     process.out.versions_traitar,
                     process.out.gene_prediction.collect { meta, files -> files.collect { file(it).name } },
                     process.out.pfam_annotation.collect { meta, files -> files.collect { file(it).name } },
-                    process.out.predictions_combined.collect { meta, files -> files.collect { file(it).name } },
-                    process.out.predictions_single_votes.collect { meta, files -> files.collect { file(it).name } },
+                    process.out.predictions_combined.collect { meta, files -> file(files).name },
+                    process.out.predictions_single_votes.collect { meta, files -> file(files).name },
                     process.out.predictions_flat.collect { meta, files -> files.collect { file(it).name } },
                     process.out.predictions_raw.collect { meta, files -> files.collect { file(it).name } }
                 ).match() }
@@ -70,7 +71,7 @@ nextflow_process {
     test("traitar - unzipped input - stub") {
 
         options "-stub"
-        
+
         setup {
             run("GUNZIP") {
                 script "../../gunzip/main.nf"
