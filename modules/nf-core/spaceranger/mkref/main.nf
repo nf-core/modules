@@ -5,13 +5,13 @@ process SPACERANGER_MKREF {
     container "nf-core/spaceranger:9c5e7dc93c32448e"
 
     input:
-    path fasta
-    path gtf
-    val reference_name
+    path(fasta)
+    path(gtf)
+    val(reference_name)
 
     output:
-    path "${reference_name}", emit: reference
-    path "versions.yml"     , emit: versions
+    path("${reference_name}"), emit: reference
+    tuple val("${task.process}"), val('spaceranger'), eval('spaceranger -V | sed -e "s/spaceranger spaceranger-//g"'), emit: versions_spaceranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,17 +35,12 @@ process SPACERANGER_MKREF {
         --localmem=${task.memory.toGiga()} \\
         --nthreads=${task.cpus} \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        spaceranger: \$(spaceranger -V | sed -e "s/spaceranger spaceranger-//g")
-    END_VERSIONS
     """
 
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "SPACERANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error "SPACERANGER_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     """
     mkdir -p $reference_name
@@ -68,10 +63,5 @@ process SPACERANGER_MKREF {
     touch ${reference_name}/sjdbList.fromGTF.out.tab
     touch ${reference_name}/sjdbList.out.tab
     touch ${reference_name}/transcriptInfo.tab
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        spaceranger: \$(spaceranger -V | sed -e "s/spaceranger spaceranger-//g")
-    END_VERSIONS
     """
 }
