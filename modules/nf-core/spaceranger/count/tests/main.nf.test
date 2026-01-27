@@ -68,7 +68,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     process.out.outs.get(0).get(1).findAll { file(it).name !in [
                         'web_summary.html',
                         'scalefactors_json.json',
@@ -147,7 +147,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
@@ -207,7 +209,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     process.out.outs.get(0).get(1).findAll { file(it).name !in [
                         'web_summary.html',
                         'scalefactors_json.json',
