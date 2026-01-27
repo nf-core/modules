@@ -23,7 +23,7 @@ process QUARTONOTEBOOK {
     tuple val(meta), path("params.yml")                                                        , emit: params_yaml
     tuple val(meta), path("${notebook_parameters.artifact_dir}/*")                             , emit: artifacts  , optional: true
     tuple val(meta), path("_extensions")                                                       , emit: extensions , optional: true
-    tuple val("${task.process}"), val('quarto')   , eval('quarto -v')                          , emit: versions_quarto, topic: versions
+    tuple val("${task.process}"), val('quarto'), eval('quarto -v'), emit: versions_quarto, topic: versions
     tuple val("${task.process}"), val('papermill'), eval('papermill --version | cut -f1 -d" "'), emit: versions_papermill, topic: versions
 
     when:
