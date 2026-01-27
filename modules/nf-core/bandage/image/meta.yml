@@ -37,7 +37,8 @@ output:
           type: file
           description: Bandage image in PNG format
           pattern: "*.png"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3603 # PNG
   svg:
     - - meta:
           type: map
