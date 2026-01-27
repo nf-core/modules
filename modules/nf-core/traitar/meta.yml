@@ -25,17 +25,15 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - proteins:
+    - fasta:
         type: file
-        description: Protein sequences in FASTA format (or nucleotide sequences if input_type
-          is from_nucleotides)
-        pattern: "*.{fa,fasta,faa,fna}"
+        description: Input sequences in FASTA format (nucleotides, genes, or annotation summary), can be gzipped
+        pattern: "*.{fa,fasta,faa,fna,fa.gz,fasta.gz,faa.gz,fna.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_1929"
   - input_type:
       type: string
-      description: Input type specifying the format of input sequences (from_nucleotides,
-        from_genes, or from_nucleotides)
+      description: Input type specifying the format of input sequences (from_nucleotides, from_genes, or from_annotation_summary)
 
 output:
   predictions_combined:

@@ -4,11 +4,11 @@ process TRAITAR {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/hmmer_prodigal_pandas_pip_pruned:d2b59b60c4871d7e' :
-        'community.wave.seqera.io/library/hmmer_prodigal_pandas_pip_pruned:a83f0296374a52e6' }"
+        'community.wave.seqera.io/library/hmmer_prodigal_pandas_parallel_pruned:ccae2eabc2a54ac8' :
+        'oras://community.wave.seqera.io/library/hmmer_prodigal_pandas_parallel_pruned:037d2876329f6fcf' }"
 
     input:
-    tuple val(meta), path(proteins)
+    tuple val(meta), path(fasta)
     val input_type
 
     output:
@@ -26,27 +26,28 @@ process TRAITAR {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_file = proteins.name.endsWith('.gz') ? proteins.name[0..-4] : proteins.name
+    def input_file = fasta.name.endsWith('.gz') ? fasta.name[0..-4] : fasta.name
 
     // Validate input_type against allowed values
-    if (!['from_genes', 'from_proteins', 'from_nucleotides'].contains(input_type)) {
-        error("Invalid input_type: ${input_type}. Must be one of: 'from_genes', 'from_proteins', 'from_nucleotides'")
+    if (!['from_genes', 'from_nucleotides', 'from_annotation_summary'].contains(input_type)) {
+        error("Invalid input_type: ${input_type}. Must be one of: 'from_genes', 'from_nucleotides', 'from_annotation_summary'")
     }
 
     """
-    mkdir -p input_dir pfam_data
+    mkdir -p input_dir
 
     # Decompress if necessary, otherwise link the file
-    if [[ "${proteins}" == *.gz ]]; then
-        gunzip -c "${proteins}" > "input_dir/${input_file}"
+    if [[ "${fasta}" == *.gz ]]; then
+        gunzip -c "${fasta}" > "input_dir/${input_file}"
     else
-        ln -s "\$(readlink -f ${proteins})" "input_dir/${input_file}"
+        mkdir -p input_dir
+        ln -s "\$(readlink -f ${fasta})" "input_dir/${input_file}"
     fi
 
     # Create sample file (tab-separated: filename, sample_name)
     cat > samples.txt <<-EOF
     sample_file_name\tsample_name
-    ${input_file}\t${meta.id}
+    ${input_file}\t${prefix}
     EOF
 
     # Download PFAM data for traitar annotation
@@ -58,8 +59,8 @@ process TRAITAR {
         input_dir \\
         samples.txt \\
         ${input_type} \\
-        ${prefix} \
-        -c 1 \\
+        ${prefix} \\
+        -c ${task.cpus} \\
         --overwrite \\
         ${args}
     """
@@ -73,8 +74,8 @@ process TRAITAR {
 
     touch ${prefix}/phenotype_prediction/predictions_majority-vote_combined.txt
     touch ${prefix}/phenotype_prediction/predictions_single-votes_combined.txt
-    touch ${prefix}/annotation/pfam/${meta.id}_filtered_best.dat
-    touch ${prefix}/annotation/pfam/${meta.id}_domtblout.dat
+    touch ${prefix}/annotation/pfam/${prefix}_filtered_best.dat  
+    touch ${prefix}/annotation/pfam/${prefix}_domtblout.dat 
     touch ${prefix}/annotation/pfam/summary.dat
     touch ${prefix}/predictions_raw.txt
     touch ${prefix}/predictions_majority-vote.txt
@@ -82,10 +83,20 @@ process TRAITAR {
     touch ${prefix}/predictions_conservative-vote.txt
     touch ${prefix}/phenotype_prediction/predictions_flat_majority-votes_combined.txt
     touch ${prefix}/phenotype_prediction/predictions_flat_single-votes_combined.txt
-    touch ${prefix}/gene_prediction/${meta.id}.faa
-    touch ${prefix}/gene_prediction/${meta.id}.gff
+    # Stub gene prediction with headers
+    echo -e ">gene_001\\nMETLQKSTVVA" > ${prefix}/gene_prediction/${prefix}.faa
+    echo -e "##gff-version 3\\ngene_001\\t.\\tCDS\\t1\\t30\\t.\\t+\\t0\\t." > ${prefix}/gene_prediction/${prefix}.gff
 
-    # Get version for stub test
-    traitar --version 2>&1 | tail -1 > version.txt
+    # Stub PFAM annotation files with headers
+    echo "target_name accession tlen query_name accession qlen evalue bitscore" > ${prefix}/annotation/pfam/${prefix}_domtblout.dat
+    echo "accession description" > ${prefix}/annotation/pfam/${prefix}_filtered_best.dat
+    echo "done" > ${prefix}/annotation/pfam/summary.dat
+
+    # Add minimal content to phenotype and gene prediction files
+    echo -e "header1\\theader2\\n${prefix}\\tvalue" > ${prefix}/phenotype_prediction/predictions_majority-vote_combined.txt
+    echo -e "header1\\theader2\\n${prefix}\\tvalue" > ${prefix}/phenotype_prediction/predictions_single-votes_combined.txt
+    echo -e ">gene1\\nMKTL" > ${prefix}/gene_prediction/${prefix}.faa
+    echo -e "domain1\\tdescription" > ${prefix}/annotation/pfam/${prefix}_filtered_best.dat
+
     """
 }
