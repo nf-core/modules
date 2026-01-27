@@ -22,7 +22,7 @@ process BCFTOOLS_ISEC {
     prefix = task.ext.prefix ?: "${meta.id}"
     targets_file_args = targets_file ? "-T ${targets_file}" : ''
     regions_file_args = regions_file ? "-R ${regions_file}" : ''
-    vcf_files = file_list ? "-f ${file_list}" : "${vcfs}"
+    vcf_files = file_list ? "-l ${file_list}" : "${vcfs}"
 
     """
     bcftools isec  \\
