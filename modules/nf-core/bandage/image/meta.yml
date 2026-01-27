@@ -48,7 +48,8 @@ output:
           type: file
           description: Bandage image in SVG format
           pattern: "*.svg"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3604" # SVG
   versions_bandage:
     - - ${task.process}:
           type: string
