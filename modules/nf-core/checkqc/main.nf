@@ -44,7 +44,6 @@ process CHECKQC {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     """
     touch checkqc_report.json
 
