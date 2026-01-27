@@ -48,10 +48,10 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
     skip_deduplication             // boolean
     // host decontamination
     skip_decontamination           // boolean
-    ch_fasta                       // channel: [ val(meta), [ fasta ] ] (optional)
-    ch_reference                   // channel: [ val(reference_name), path(reference_dir) ] (optional)
-    val_index_name                 // val (optional)
-    val_decontaminator             // string (enum): 'hostile' or 'deacon'
+    ch_decontamination_fasta       // channel: [ val(meta), [ fasta ] ] (optional)
+    ch_decontamination_reference   // channel: [ val(reference_name), path(reference_dir) ] (optional)
+    val_decontamination_index_name // val (optional)
+    val_decontamination_tool       // string (enum): 'hostile' or 'deacon'
     // final concatenation
     skip_final_concatenation       // boolean
 
@@ -170,10 +170,10 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
     if (!skip_decontamination) {
         FASTQ_DECONTAMINATE_DEACON_HOSTILE (
             ch_reads,
-            ch_fasta,
-            ch_reference,
-            val_index_name,
-            val_decontaminator
+            ch_decontamination_fasta,
+            ch_decontamination_reference,
+            val_decontamination_index_name,
+            val_decontamination_tool
         )
         ch_reads             = FASTQ_DECONTAMINATE_DEACON_HOSTILE.out.fastq_filtered
         ch_hostile_reference = FASTQ_DECONTAMINATE_DEACON_HOSTILE.out.reference

@@ -91,10 +91,10 @@ nextflow_workflow {
                         [ id:'test', single_end:true ],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
-                )                    // ch_fasta
-                input[23] = []       // ch_reference
-                input[24] = []       // val_index_name
-                input[25] = 'deacon' // val_decontaminator
+                )                    // ch_decontamination_fasta
+                input[23] = []       // ch_decontamination_reference
+                input[24] = []       // val_decontamination_index_name
+                input[25] = 'deacon' // val_decontamination_tool
                 input[26] = true     // skip_final_concatenation
                 """
             }
@@ -156,10 +156,10 @@ nextflow_workflow {
                         [ id:'test', single_end:true ],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
-                )                             // ch_fasta
-                input[23] = []                // ch_reference
-                input[24] = []                // val_index_name
-                input[25] = 'deacon'          // val_decontaminator
+                )                             // ch_decontamination_fasta
+                input[23] = []                // ch_decontamination_reference
+                input[24] = []                // val_decontamination_index_name
+                input[25] = 'deacon'          // val_decontamination_tool
                 input[26] = false             // skip_final_concatenation
                 """
             }
@@ -214,10 +214,10 @@ nextflow_workflow {
                 input[19] = ""         // val_complexity_filter_tool
                 input[20] = false      // skip_deduplication
                 input[21] = true       // skip_decontamination
-                input[22] = []         // ch_fasta
-                input[23] = []         // ch_reference
-                input[24] = []         // val_index_name
-                input[25] = ''         // val_decontaminator
+                input[22] = []         // ch_decontamination_fasta
+                input[23] = []         // ch_decontamination_reference
+                input[24] = []         // val_decontamination_index_name
+                input[25] = ''         // val_decontamination_tool
                 input[26] = false      // skip_final_concatenation
                 """
             }
@@ -289,10 +289,10 @@ nextflow_workflow {
                 input[19] = ""                 // val_complexity_filter_tool
                 input[20] = true               // skip_deduplication
                 input[21] = true               // skip_decontamination
-                input[22] = []                 // ch_fasta
-                input[23] = []                 // ch_reference
-                input[24] = []                 // val_index_name
-                input[25] = ''                 // val_decontaminator
+                input[22] = []                 // ch_decontamination_fasta
+                input[23] = []                 // ch_decontamination_reference
+                input[24] = []                 // val_decontamination_index_name
+                input[25] = ''                 // val_decontamination_tool
                 input[26] = false              // skip_final_concatenation
                 """
             }
@@ -344,10 +344,10 @@ nextflow_workflow {
                 input[19] = ""    // val_complexity_filter_tool
                 input[20] = true  // skip_deduplication
                 input[21] = true  // skip_decontamination
-                input[22] = []    // ch_fasta
-                input[23] = []    // ch_reference
-                input[24] = []    // val_index_name
-                input[25] = ""    // val_decontaminator
+                input[22] = []    // ch_decontamination_fasta
+                input[23] = []    // ch_decontamination_reference
+                input[24] = []    // val_decontamination_index_name
+                input[25] = ""    // val_decontamination_tool
                 input[26] = true  // skip_final_concatenation
                 """
             }
@@ -399,10 +399,10 @@ nextflow_workflow {
                 input[19] = ""    // val_complexity_filter_tool
                 input[20] = true  // skip_deduplication
                 input[21] = true  // skip_decontamination
-                input[22] = []    // ch_fasta
-                input[23] = []    // ch_reference
-                input[24] = []    // val_index_name
-                input[25] = ""    // val_decontaminator
+                input[22] = []    // ch_decontamination_fasta
+                input[23] = []    // ch_decontamination_reference
+                input[24] = []    // val_decontamination_index_name
+                input[25] = ""    // val_decontamination_tool
                 input[26] = true  // skip_final_concatenation
                 """
             }

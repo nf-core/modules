@@ -155,22 +155,22 @@ input:
       type: boolean
       description: |
         Skip host decontamination step
-  - ch_fasta:
+  - ch_decontamination_fasta:
       type: file
       description: |
         Reference genome FASTA file for decontamination (optional)
         Structure: [ val(meta), [ path(fasta) ] ]
       pattern: "*.{fasta,fa,fna}"
-  - ch_reference:
+  - ch_decontamination_reference:
       type: directory
       description: |
         Pre-built reference index directory for decontamination (optional)
         Structure: [ val(reference_name), path(reference_dir) ]
-  - val_index_name:
+  - val_decontamination_index_name:
       type: string
       description: |
         Name for the decontamination index (optional)
-  - val_decontaminator:
+  - val_decontamination_tool:
       type: string
       description: |
         Decontamination tool to use ('hostile' or 'deacon')
