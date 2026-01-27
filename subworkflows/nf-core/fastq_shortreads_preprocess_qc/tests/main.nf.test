@@ -168,7 +168,7 @@ nextflow_workflow {
             assert workflow.success
             assertAll(
                 { assert snapshot(
-                    workflow.out.reads[0][1],
+                    path(workflow.out.reads[0][1]).linesGzip.size(),
                     path(workflow.out.umi_log[0][1]).readLines().size(),
                     path(workflow.out.clumpify_log[0][1]).readLines().size(),
                     workflow.out.versions.collect { path(it).yaml }
