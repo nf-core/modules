@@ -9,12 +9,42 @@ nextflow_process {
     tag "modules_nfcore"
     tag "traitar"
 
-    // Real data test - run locally with: nf-test test tests/main.nf.test --profile=+singularity
-    // Commented out for CI: non-deterministic output across conda/container environments
-    /*
+    // Real data test 
     test("traitar - proteomes") {
 
         config "./nf-test.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_sample' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true),
+                ]
+                input[1] = 'from_nucleotides'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions_traitar,
+                    process.out.gene_prediction.collect { meta, files -> files.collect { file(it).name } },
+                    process.out.pfam_annotation.collect { meta, files -> files.collect { file(it).name } },
+                    process.out.predictions_combined.collect { meta, files -> files.collect { file(it).name } },
+                    process.out.predictions_single_votes.collect { meta, files -> files.collect { file(it).name } },
+                    process.out.predictions_flat.collect { meta, files -> files.collect { file(it).name } },
+                    process.out.predictions_raw.collect { meta, files -> files.collect { file(it).name } }
+                ).match() }
+            )
+        }
+    }
+
+    test("traitar - stub") {
+
+        options "-stub"
 
         when {
             process {
@@ -36,19 +66,29 @@ nextflow_process {
         }
 
     }
-    */
 
-    test("traitar - stub") {
+    test("traitar - unzipped input - stub") {
 
         options "-stub"
+        
+        setup {
+            run("GUNZIP") {
+                script "../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test_sample_unzipped' ],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
 
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test_sample' ],
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: false),
-                ]
+                input[0] = GUNZIP.out.gunzip
                 input[1] = 'from_nucleotides'
                 """
             }
