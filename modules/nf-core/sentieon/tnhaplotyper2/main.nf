@@ -5,8 +5,8 @@ process SENTIEON_TNHAPLOTYPER2 {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f1dfe59ef66d7326b43db9ab1f39ce6220b358a311078c949a208f9c9815d4e/data'
-        : 'community.wave.seqera.io/library/sentieon:202503.01--1863def31ed8e4d5'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/73e9111552beb76e2ad3ad89eb75bed162d7c5b85b2433723ecb4fc96a02674a/data'
+        : 'community.wave.seqera.io/library/sentieon:202503.02--def60555294d04fa'}"
 
     input:
     tuple val(meta), path(input), path(input_index), path(intervals)
@@ -27,7 +27,7 @@ process SENTIEON_TNHAPLOTYPER2 {
     tuple val(meta), path("*.stats"),                  emit: stats
     tuple val(meta), path("*.vcf.gz"),                 emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi"),             emit: index
-    path "versions.yml",                               emit: versions
+    tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,7 +41,7 @@ process SENTIEON_TNHAPLOTYPER2 {
     def gr_command = germline_resource ? "--germline_vcf ${germline_resource}" : ""
     def interval_command = intervals ? "--interval ${intervals}" : ""
     def pon_command = panel_of_normals ? "--pon ${panel_of_normals}" : ""
-    def inputs = input.collect { "-i ${it}" }.join(" ")
+    def inputs = input.collect {in ->  "-i ${in}" }.join(" ")
     def orientation_bias_cmd = ""
     def contamination_cmd = ""
 
@@ -72,28 +72,17 @@ process SENTIEON_TNHAPLOTYPER2 {
         ${prefix}.vcf.gz \\
         ${orientation_bias_cmd} \\
         ${contamination_cmd}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def orientation = emit_orientation_data ? "touch ${prefix}.orientation_data.tsv" : ""
     def contamination = emit_contamination_data ? "touch ${prefix}.{contamination_data.tsv,segments}" : ""
-
     """
     echo | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
     touch ${prefix}.vcf.gz.stats
     ${orientation}
     ${contamination}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g" )
-    END_VERSIONS
     """
 }
