@@ -25,7 +25,9 @@ input:
         type: file
         description: Multiplexed image file
         pattern: "*.{ome.tif,ome.tiff,tif,tiff}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3727"
+          - edam: "http://edamontology.org/format_3591"
 
 output:
   single_ch_image:
@@ -38,7 +40,8 @@ output:
           type: file
           description: Single channel extracted image file in OME-TIFF format
           pattern: "multiplexed_single_channel_img.ome.tif"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3727"
   versions_stainwarpy_extractchannel:
     - - "${task.process}":
           type: string

@@ -3,7 +3,9 @@ process STAINWARPY_EXTRACTCHANNEL {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "community.wave.seqera.io/library/stainwarpy:0.2.3--2c8b18a5e6d93e4a"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'oras://community.wave.seqera.io/library/stainwarpy:0.2.3--5966e23f2f7d254a' :
+        'community.wave.seqera.io/library/stainwarpy:0.2.3--2c8b18a5e6d93e4a'}"
 
     input:
     tuple val(meta), path(multiplx_img)
