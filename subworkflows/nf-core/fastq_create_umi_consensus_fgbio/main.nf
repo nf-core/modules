@@ -61,7 +61,6 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
 
         if(!bwa_index){
             BWAMEM1_INDEX ( fasta )
-            ch_versions = ch_versions.mix(BWAMEM1_INDEX.out.versions)
         }
 
         // sets bwaindex to correct input
