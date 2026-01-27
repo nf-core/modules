@@ -42,12 +42,27 @@ output:
           pattern: "*.{mzML,mzML.gz,mgf,mgf.gz,parquet,parquet.gz}"
           ontologies: []
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - thermorawfileparser:
+          type: string
+          description: The tool name
+      - "ThermoRawFileParser.sh --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - thermorawfileparser:
+          type: string
+          description: The tool name
+      - "ThermoRawFileParser.sh --version":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jonasscheid"
 maintainers:
