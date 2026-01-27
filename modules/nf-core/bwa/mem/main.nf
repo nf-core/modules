@@ -57,7 +57,7 @@ process BWA_MEM {
                     sort_bam && args2.contains("-O cram")? "cram":
                     !sort_bam && args2.contains("-C")    ? "cram":
                     "bam"
-    def index_cmd = extension == "bam"  ? "touch ${prefix}.csi" : 
+    def index_cmd = extension == "bam"  ? "touch ${prefix}.csi" :
                      extension == "cram" ? "touch ${prefix}.crai" : ""
     """
     touch ${prefix}.${extension}
