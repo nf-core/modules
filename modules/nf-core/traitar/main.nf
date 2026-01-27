@@ -74,8 +74,8 @@ process TRAITAR {
 
     touch ${prefix}/phenotype_prediction/predictions_majority-vote_combined.txt
     touch ${prefix}/phenotype_prediction/predictions_single-votes_combined.txt
-    touch ${prefix}/annotation/pfam/${prefix}_filtered_best.dat  
-    touch ${prefix}/annotation/pfam/${prefix}_domtblout.dat 
+    touch ${prefix}/annotation/pfam/${prefix}_filtered_best.dat
+    touch ${prefix}/annotation/pfam/${prefix}_domtblout.dat
     touch ${prefix}/annotation/pfam/summary.dat
     touch ${prefix}/predictions_raw.txt
     touch ${prefix}/predictions_majority-vote.txt
