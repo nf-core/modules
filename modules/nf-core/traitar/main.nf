@@ -4,8 +4,8 @@ process TRAITAR {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'community.wave.seqera.io/library/hmmer_prodigal_pandas_parallel_pruned:ccae2eabc2a54ac8' :
-        'oras://community.wave.seqera.io/library/hmmer_prodigal_pandas_parallel_pruned:037d2876329f6fcf' }"
+        'docker://community.wave.seqera.io/library/hmmer_prodigal_pandas_parallel_pruned:ccae2eabc2a54ac8' :
+        'community.wave.seqera.io/library/hmmer_prodigal_pandas_parallel_pruned:ccae2eabc2a54ac8' }"
 
     input:
     tuple val(meta), path(fasta)
