@@ -25,7 +25,6 @@ nextflow_workflow {
                     [
                         [ id:'test' ], // meta map
                         [
-                            // file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome-ena.fasta', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
                         ]

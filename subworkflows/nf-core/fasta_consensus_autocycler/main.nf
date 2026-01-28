@@ -21,15 +21,15 @@ workflow FASTA_CONSENSUS_AUTOCYCLER {
     )
 
     AUTOCYCLER_CLUSTER.out.clusters
-    .flatMap { meta, gfa_list ->
-        ( gfa_list instanceof List ? gfa_list: [gfa_list] )
-        .collect { gfa -> [meta, gfa] } // Separate gfas, each with a meta
-    }
-    .map { meta, file ->
-        def cluster_id = (file.parent.name) // Add cluster id to meta
-        tuple( meta + [cluster: cluster_id], file )
-    }
-    .set{ ch_clusters } // channel: [ val(meta), gfa]
+        .flatMap { meta, gfa_list ->
+            ( gfa_list instanceof List ? gfa_list: [gfa_list] )
+            .collect { gfa -> [meta, gfa] } // Separate gfas, each with a meta
+        }
+        .map { meta, file ->
+            def cluster_id = (file.parent.name) // Add cluster id to meta
+            [ meta + [cluster: cluster_id], file ]
+        }
+        .set{ ch_clusters } // channel: [ val(meta), gfa]
 
     AUTOCYCLER_TRIM(
         ch_clusters
@@ -47,13 +47,13 @@ workflow FASTA_CONSENSUS_AUTOCYCLER {
 
     // Group clusters based on meta, ignoring cluster id
     RENAME.out.renamed
-    .map{   meta, file ->
-        def new_meta = meta.clone()
-        new_meta.remove("cluster")
-        tuple( new_meta, file)
-    }
-    .groupTuple()
-    .set{ ch_assembly_clusters } // channel: [ meta, [ cluster1, cluster2, ... ] ]
+        .map{   meta, file ->
+            def new_meta = meta.clone()
+            new_meta.remove("cluster")
+            tuple( new_meta, file)
+        }
+        .groupTuple()
+        .set{ ch_assembly_clusters } // channel: [ meta, [ cluster1, cluster2, ... ] ]
 
     AUTOCYCLER_COMBINE(
         ch_assembly_clusters
