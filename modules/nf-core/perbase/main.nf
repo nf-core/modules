@@ -4,8 +4,8 @@ process PERBASE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/eb/eb5fad22cc063bd389d2a62d7710721cac547aff657c37be0f7afb4a66420b66/data':
-        'community.wave.seqera.io/library/perbase:1.0.0--913516700ed7b57e' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cb/cbbc9b2585d5abbef69ca0b379353616e16c6b7b8aafdb0c8a2bee9c63747d8f/data':
+        'community.wave.seqera.io/library/perbase:1.2.0--8d7275913f5d0463' }"
 
     input:
     tuple val(meta) , path(bam)  , path(index), path(bed)
