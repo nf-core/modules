@@ -9,7 +9,7 @@ process SPACERANGER_MKGTF {
 
     output:
     path("*.gtf"), emit: gtf
-    tuple val("${task.process}"), val('spaceranger'), eval('spaceranger -V | sed -e "s/spaceranger spaceranger-//g"'), emit: versions_spaceranger, topic: versions
+    tuple val("${task.process}"), val('spaceranger'), eval('spaceranger -V | sed  "s/spaceranger spaceranger-//"'), emit: versions_spaceranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
