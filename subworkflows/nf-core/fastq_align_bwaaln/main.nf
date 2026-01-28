@@ -90,7 +90,6 @@ workflow FASTQ_ALIGN_BWAALN {
 
     // Index all
     SAMTOOLS_INDEX ( ch_bam_for_index )
-    ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
 
     // Remove superfluous internal maps to minimise clutter as much as possible
     ch_bam_for_emit = ch_bam_for_index.map{ meta, bam -> [meta - meta.subMap('key_read_ref'), bam] }
