@@ -6,10 +6,10 @@ include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_LIGATE } from '../../../modules/nf-co
 
 workflow VCF_IMPUTE_BEAGLE5 {
     take:
-    ch_input  // channel (mandatory): [ [id], vcf, tbi ]
-    ch_panel  // channel (mandatory): [ [panel, chr], vcf, tbi ]
+    ch_input // channel (mandatory): [ [id], vcf, tbi ]
+    ch_panel // channel (mandatory): [ [panel, chr], vcf, tbi ]
     ch_chunks // channel (optional) : [ [panel, chr], regionout ]
-    ch_map    // channel (optional) : [ [chr], map]
+    ch_map // channel (optional) : [ [chr], map]
 
     main:
     ch_versions = channel.empty()
@@ -17,8 +17,9 @@ workflow VCF_IMPUTE_BEAGLE5 {
     // Branch input files based on format
     ch_input
         .branch { _meta, vcf, _tbi ->
-            bcf: vcf.name.contains('.bcf')
-            vcf: vcf.name.contains('.vcf')
+            def vcfStr = vcf.toString()
+            bcf: vcfStr.endsWith('.bcf') || vcfStr.endsWith('.bcf.gz')
+            vcf: vcfStr.endsWith('.vcf') || vcfStr.endsWith('.vcf.gz')
             other: true
         }
         .set { ch_input_branched }
@@ -30,9 +31,10 @@ workflow VCF_IMPUTE_BEAGLE5 {
     // Convert BCF to VCF if necessary
     BCFTOOLS_VIEW(
         ch_input_branched.bcf,
-        [], [], []
+        [],
+        [],
+        [],
     )
-    ch_versions = ch_versions.mix(BCFTOOLS_VIEW.out.versions.first())
 
     // Combine VCF files
     ch_ready_vcf = ch_input_branched.vcf.mix(
@@ -64,10 +66,13 @@ workflow VCF_IMPUTE_BEAGLE5 {
         .map { metaI, input_vcf, input_index, metaPC, panel_vcf, panel_index, map, regionout, regionsize ->
             [
                 metaI + metaPC + ["regionout": regionout, "regionsize": regionsize],
-                input_vcf, input_index,
-                panel_vcf, panel_index,
+                input_vcf,
+                input_index,
+                panel_vcf,
+                panel_index,
                 map,
-                [], [],
+                [],
+                [],
                 regionout,
             ]
         }
@@ -78,7 +83,6 @@ workflow VCF_IMPUTE_BEAGLE5 {
 
     // Index the imputed VCF files
     BCFTOOLS_INDEX_PHASE(BEAGLE5_BEAGLE.out.vcf)
-    ch_versions = ch_versions.mix(BCFTOOLS_INDEX_PHASE.out.versions.first())
 
     // Ligate all phased files in one and index it
     ligate_input = BEAGLE5_BEAGLE.out.vcf
@@ -91,7 +95,8 @@ workflow VCF_IMPUTE_BEAGLE5 {
             def keysToKeep = meta.keySet() - ['regionout', 'regionsize']
             [
                 groupKey(meta.subMap(keysToKeep), meta.regionsize),
-                vcf, index,
+                vcf,
+                index,
             ]
         }
         .groupTuple()
@@ -105,7 +110,6 @@ workflow VCF_IMPUTE_BEAGLE5 {
     ch_versions = ch_versions.mix(GLIMPSE2_LIGATE.out.versions.first())
 
     BCFTOOLS_INDEX_LIGATE(GLIMPSE2_LIGATE.out.merged_variants)
-    ch_versions = ch_versions.mix(BCFTOOLS_INDEX_LIGATE.out.versions.first())
 
     // Join imputed and index files
     ch_vcf_index = GLIMPSE2_LIGATE.out.merged_variants.join(
@@ -116,5 +120,5 @@ workflow VCF_IMPUTE_BEAGLE5 {
 
     emit:
     vcf_index = ch_vcf_index // channel: [ [id, chr, tools], vcf, index ]
-    versions  = ch_versions  // channel: [ versions.yml ]
+    versions  = ch_versions // channel: [ versions.yml ]
 }

@@ -42,7 +42,7 @@ nextflow_process {
                     file(process.out.recal[0][1]).readLines()[0..5],
                     file(process.out.idx[0][1]).name,
                     process.out.tranches,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
@@ -91,7 +91,7 @@ nextflow_process {
                     file(process.out.recal[0][1]).readLines()[0..5],
                     file(process.out.idx[0][1]).name,
                     process.out.tranches,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
@@ -137,8 +137,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
+                    process.out
                     ).match()
                 }
             )

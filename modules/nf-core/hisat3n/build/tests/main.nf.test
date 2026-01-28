@@ -1,0 +1,54 @@
+nextflow_process {
+
+    name "Test Process HISAT3N_BUILD"
+    script "../main.nf"
+    process "HISAT3N_BUILD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hisat3n"
+    tag "hisat3n/build"
+
+    test("sarscov2 - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fasta - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

@@ -59,14 +59,30 @@ output:
           type: file
           description: Log file describing the metaMDBG run.
           ontologies: []
+  versions_metamdbg:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - metamdbg:
+          type: string
+          description: Name of the tool
+      - 'metaMDBG | sed -n "s/.*Version: //p"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - metamdbg:
+          type: string
+          description: Name of the tool
+      - 'metaMDBG | sed -n "s/.*Version: //p"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@prototaxites"
+  - "@eit-maxlcummins"
 maintainers:
   - "@prototaxites"

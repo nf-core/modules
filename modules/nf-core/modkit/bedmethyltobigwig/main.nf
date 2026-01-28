@@ -4,8 +4,8 @@ process MODKIT_BEDMETHYLTOBIGWIG {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ont-modkit:0.6.0--hcdda2d0_0':
-        'biocontainers/ont-modkit:0.6.0--hcdda2d0_0' }"
+        'https://depot.galaxyproject.org/singularity/ont-modkit:0.6.1--hcdda2d0_0':
+        'biocontainers/ont-modkit:0.6.1--hcdda2d0_0' }"
 
     input:
     tuple val(meta),  path(bedmethyl)
@@ -14,38 +14,30 @@ process MODKIT_BEDMETHYLTOBIGWIG {
 
     output:
     tuple val(meta), path("*.bw"), emit: bw
-    path "versions.yml"          , emit: versions
+    tuple val("${task.process}"), val('modkit'), eval("modkit --version | sed 's/modkit //'"), emit: versions_modkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def mods = modcodes instanceof List ? modcodes.join(',') : modcodes
+    def args      = task.ext.args ?: ''
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def mods      = modcodes instanceof List ? modcodes.join(',') : modcodes
+    def input_cmd = bedmethyl.getName().endsWith('.gz') ? "gzip -cd" : "cat"
     """
-    modkit bedmethyl tobigwig \\
+    $input_cmd $bedmethyl |\\
+        modkit bedmethyl tobigwig \\
         $args \\
         --nthreads $task.cpus \\
         --sizes $chromsizes \\
         --mod-codes $mods \\
-        $bedmethyl \\
+        - \\
         ${prefix}.bw
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        modkit: \$(modkit --version | sed 's/modkit //')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bw
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        modkit: \$(modkit --version | sed 's/modkit //')
-    END_VERSIONS
     """
 }
