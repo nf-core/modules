@@ -65,11 +65,13 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - '"${prefix}", type: "dir"':
+      - ${prefix}:
           type: directory
-          description: Folder containing the set operations results perform on the
-            vcf files
-          pattern: "${prefix}"
+          description: Directory containing the output files from bcftools isec
+          pattern: "${prefix}/"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+            - edam: "http://edamontology.org/format_3570" # BCF
   versions_bcftools:
     - - ${task.process}:
           type: string
