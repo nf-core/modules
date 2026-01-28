@@ -47,7 +47,6 @@ process SPACERANGER_MKREF {
 
     touch ${reference_name}/genome.fa
     touch ${reference_name}/genome.fa.fai
-    touch ${reference_name}/genes.gtf.gz
     touch ${reference_name}/reference.json
     touch ${reference_name}/Genome
     touch ${reference_name}/SA
@@ -63,5 +62,10 @@ process SPACERANGER_MKREF {
     touch ${reference_name}/sjdbList.fromGTF.out.tab
     touch ${reference_name}/sjdbList.out.tab
     touch ${reference_name}/transcriptInfo.tab
+
+    # Create properly compressed `genes.gtf.gz` rather than just with `touch` so
+    # that it works with testing without breaking; nf-test tries opening `.gz`
+    # files as compressed, which doesn't work with just `touch`
+    gzip -n -c /dev/null > ${reference_name}/genes.gtf.gz
     """
 }
