@@ -26,12 +26,14 @@ input:
         type: file
         description: Illumina RunInfo.xml file
         pattern: "RunInfo.xml"
-        ontologies: [http://edamontology.org/format_2332] # XML format
+        ontologies:
+         - edam: http://edamontology.org/format_2332 # XML format
     - interop_bin:
         type: file
         description: Illumina InterOp binary files
         pattern: "InterOp/*.bin"
-        ontologies: [http://edamontology.org/format_2333] # Binary format
+        ontologies:
+         - edam: http://edamontology.org/format_2333 # Binary format
   - extra_multiqc_files:
       type: file
       description: |
@@ -74,13 +76,13 @@ input:
         - edam: http://edamontology.org/format_3475 # TSV
 output:
   report:
-    - "*.html":
+    - ".html":
         type: file
         description: MultiQC report file
         pattern: ".html"
         ontologies: []
   data:
-    - "*_data":
+    - "_data":
         type: directory
         description: MultiQC data dir
         pattern: "multiqc_data"

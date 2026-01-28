@@ -6,9 +6,8 @@ nextflow_process {
 
     tag "modules"
     tag "modules_nfcore"
+    tag "untar"
     tag "multiqc_sav"
-
-    config "./nextflow.config"
 
     test("NovaSeq6000") {
         setup {

@@ -3,8 +3,8 @@ process MULTIQC_SAV {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/34/34e733a9ae16a27e80fe00f863ea1479c96416017f24a907996126283e7ecd4d/data' :
-        'community.wave.seqera.io/library/multiqc:1.33--ee7739d47738383b' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5d/5d745674ad0e37f8eccbf52c0e2c1f0e9aaebc9dd4b548bca803db08e800b7d3/data' :
+        'community.wave.seqera.io/library/multiqc_multiqc_sav:b7474a8ef88d6535' }"
 
     input:
     tuple val(meta), path(runinfo_xml), path(interop_bin, stageAs: "InterOp/*")
