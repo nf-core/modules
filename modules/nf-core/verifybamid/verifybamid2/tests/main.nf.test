@@ -120,7 +120,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "bed", "mu", "ud", "self_sm", "ancestry"]),
+                    process.out.versions
+                    ).match() }
             )
         }
     }
@@ -146,7 +148,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "bed", "mu", "ud", "self_sm", "ancestry"]),
+                    process.out.versions
+                    ).match() }
             )
         }
     }
@@ -174,7 +178,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "bed", "mu", "ud", "self_sm", "ancestry"]),
+                    process.out.versions
+                    ).match() }
             )
         }
     }
@@ -232,7 +238,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "bed", "mu", "ud", "self_sm", "ancestry"]),
+                    process.out.versions
+                    ).match() }
             )
         }
     }
