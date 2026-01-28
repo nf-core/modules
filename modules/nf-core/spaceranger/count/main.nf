@@ -11,7 +11,7 @@ process SPACERANGER_COUNT {
 
     output:
     tuple val(meta), path("outs/**"), emit: outs
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('spaceranger'), eval('spaceranger -V | sed "s/spaceranger spaceranger-//"'), emit: versions_spaceranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -51,11 +51,6 @@ process SPACERANGER_COUNT {
         $slidefile \\
         $args
     mv ${prefix}/outs outs
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        spaceranger: \$(spaceranger -V | sed -e "s/spaceranger spaceranger-//g")
-    END_VERSIONS
     """
 
     stub:
@@ -66,10 +61,5 @@ process SPACERANGER_COUNT {
     """
     mkdir -p outs/
     touch outs/fake_file.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        spaceranger: \$(spaceranger -V | sed -e "s/spaceranger spaceranger-//g")
-    END_VERSIONS
     """
 }

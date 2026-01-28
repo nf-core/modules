@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "spaceranger_mkref"
-description: Module to build the reference needed by the 10x Genomics Space Ranger
-  tool. Uses the spaceranger mkref command.
+description: Module to build the reference needed by the 10x Genomics Space
+  Ranger tool. Uses the spaceranger mkref command.
 keywords:
   - reference
   - mkref
@@ -41,15 +40,33 @@ output:
   reference:
     - ${reference_name}:
         type: directory
-        description: Folder containing all the reference indices needed by Space Ranger
+        description: Folder containing all the reference indices needed by Space
+          Ranger
+  versions_spaceranger:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - spaceranger:
+          type: string
+          description: The name of the tool
+      - spaceranger -V | sed "s/spaceranger spaceranger-//":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software version
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - spaceranger:
+          type: string
+          description: The name of the tool
+      - spaceranger -V | sed "s/spaceranger spaceranger-//":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@grst"
 maintainers:
   - "@grst"
+  - "@fasterius"

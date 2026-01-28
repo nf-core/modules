@@ -68,7 +68,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     process.out.outs.get(0).get(1).findAll { file(it).name !in [
                         'web_summary.html',
                         'scalefactors_json.json',
@@ -90,7 +90,7 @@ nextflow_process {
         }
     }
 
-    test("spaceranger v1 (stub) - homo_sapiens - fasta - gtf - fastq - tif - csv") {
+    test("spaceranger v1 - homo_sapiens - fasta - gtf - fastq - tif - csv - stub") {
 
         setup {
             run("SPACERANGER_MKGTF") {
@@ -147,7 +147,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
+                { assert snapshot(process.out).match() }
             )
         }
     }
@@ -207,7 +207,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     process.out.outs.get(0).get(1).findAll { file(it).name !in [
                         'web_summary.html',
                         'scalefactors_json.json',
