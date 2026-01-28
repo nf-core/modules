@@ -4,7 +4,7 @@ process RUNDBCAN_DATABASE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/dbcan:5.2.4--pyhdfd78af_0' :
-        'biocontainers/dbcan:5.2.4--pyhdfd78af_0' }"
+        'biocontainers/dbcan:5.2.5--pyhdfd78af_0' }"
 
     output:
     path "dbcan_db"    , emit: dbcan_db
