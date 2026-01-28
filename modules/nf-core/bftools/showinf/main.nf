@@ -25,11 +25,12 @@ process BFTOOLS_SHOWINF {
     export BF_FLAGS='-XX:+PerfDisableSharedMem'
     showinf -nopix -no-upgrade -omexml-only \\
         $args \\
-        $image > ${prefix}.xml
+        $image | gzip > ${prefix}.xml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         showinf: \$(showinf -version | head -n1 | cut -d' ' -f2)
+        gzip: \$(gzip -V | head -n1)
     END_VERSIONS
     """
 
@@ -38,11 +39,12 @@ process BFTOOLS_SHOWINF {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo '<?xml version="1.0" encoding="UTF-8">' > ${prefix}.xml
+    echo '<?xml version="1.0" encoding="UTF-8">' | gzip > ${prefix}.xml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         showinf: \$(showinf -version | head -n1 | cut -d' ' -f2)
+        gzip: \$(gzip -V | head -n1)
     END_VERSIONS
     """
 }
