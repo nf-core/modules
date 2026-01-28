@@ -11,8 +11,8 @@ process BFTOOLS_SHOWINF {
     tuple val(meta), path(image)
 
     output:
-    tuple val(meta), path("*.xml"), emit: xml
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.xml.gz"), emit: xml
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,7 +25,7 @@ process BFTOOLS_SHOWINF {
     export BF_FLAGS='-XX:+PerfDisableSharedMem'
     showinf -nopix -no-upgrade -omexml-only \\
         $args \\
-        $image | gzip > ${prefix}.xml
+        $image | gzip > ${prefix}.xml.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -39,7 +39,7 @@ process BFTOOLS_SHOWINF {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo '<?xml version="1.0" encoding="UTF-8">' | gzip > ${prefix}.xml
+    echo '<?xml version="1.0" encoding="UTF-8">' | gzip > ${prefix}.xml.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
