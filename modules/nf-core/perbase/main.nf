@@ -13,7 +13,7 @@ process PERBASE {
 
     output:
     tuple val(meta), path("*.tsv.gz"), emit: tsv
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('perbase'), eval('perbase --version |& sed "1!d ; s/perbase //"'), emit: versions_perbase, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,11 +33,6 @@ process PERBASE {
         --threads $task.cpus \\
         --bgzip \\
         --output ${prefix}.tsv.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        perbase: \$(perbase --version |& sed '1!d ; s/perbase //')
-    END_VERSIONS
     """
 
     stub:
@@ -45,10 +40,5 @@ process PERBASE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.tsv.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        perbase: \$(perbase --version |& sed '1!d ; s/perbase //')
-    END_VERSIONS
     """
 }
