@@ -92,7 +92,7 @@ output:
         description: Plots created by MultiQC
         pattern: "*_data"
         ontologies: []
-  versions:
+  versions_multiqc:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
@@ -102,6 +102,10 @@ output:
       - multiqc --version | sed "s/.* //g":
           type: eval
           description: The expression to obtain the version of the tool
+  versions_multiqc_sav:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
       - multiqc_sav:
           type: string
           description: The tool name

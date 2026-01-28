@@ -19,7 +19,8 @@ process MULTIQC_SAV {
     path "*.html"      , emit: report
     path "*_data"      , emit: data
     path "*_plots"     , optional:true, emit: plots
-    tuple val("${task.process}"), val('multiqc'), eval('multiqc --version | sed "s/.* //g"'), val('multiqc_sav'), eval('python -c "import multiqc_sav; print(multiqc_sav.__version__)"'), emit: versions
+    tuple val("${task.process}"), val('multiqc'), eval('multiqc --version | sed "s/.* //g"'), emit: versions_multiqc
+    tuple val("${task.process}"), val('multiqc_sav'), eval('python -c "import multiqc_sav; print(multiqc_sav.__version__)"'), emit: versions_multiqc_sav
     // MultiQC should not push its versions to the `versions` topic. Its input depends on the versions topic to be resolved thus outputting to the topic will let the pipeline hang forever
 
     when:
