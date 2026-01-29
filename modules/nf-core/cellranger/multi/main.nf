@@ -123,8 +123,8 @@ process CELLRANGER_MULTI {
     vdj_options_r1_length = vdj_options_use && meta_vdj.options.containsKey("r1-length") ? "r1-length,${meta_vdj.options["r1-length"]}" : ''
     vdj_options_r2_length = vdj_options_use && meta_vdj.options.containsKey("r2-length") ? "r2-length,${meta_vdj.options["r2-length"]}" : ''
 
-    fb_options_r1_length = fb_options_use && meta_fb.options.containsKey("r1-length") ? "r1-length,${meta_fb.options["r1-length"]}" : ''
-    fb_options_r2_length = fb_options_use && meta_fb.options.containsKey("r2-length") ? "r2-length,${meta_fb.options["r2-length"]}" : ''
+    fb_options_r1_length = fb_options_use && fb_options.options.containsKey("r1-length") ? "r1-length,${fb_options.options["r1-length"]}" : ''
+    fb_options_r2_length = fb_options_use && fb_options.options.containsKey("r2-length") ? "r2-length,${fb_options.options["r2-length"]}" : ''
 
     // point config to FASTQs
     // After renaming it gets in 'fastq_all' folder
