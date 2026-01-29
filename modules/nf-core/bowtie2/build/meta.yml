@@ -1,31 +1,31 @@
 name: bowtie2_build
 description: Builds bowtie index for reference genome
 keywords:
-- build
-- index
-- fasta
-- genome
-- reference
+  - build
+  - index
+  - fasta
+  - genome
+  - reference
 tools:
-- bowtie2:
-    description: |
-      Bowtie 2 is an ultrafast and memory-efficient tool for aligning
-      sequencing reads to long reference sequences.
-    homepage: http://bowtie-bio.sourceforge.net/bowtie2/index.shtml
-    documentation: http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml
-    doi: 10.1038/nmeth.1923
-    licence: ["GPL-3.0-or-later"]
-    identifier: ""
-input:
-- - meta:
-      type: map
+  - bowtie2:
       description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Input genome fasta file
-      ontologies: []
+        Bowtie 2 is an ultrafast and memory-efficient tool for aligning
+        sequencing reads to long reference sequences.
+      homepage: http://bowtie-bio.sourceforge.net/bowtie2/index.shtml
+      documentation: http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml
+      doi: 10.1038/nmeth.1923
+      licence: ["GPL-3.0-or-later"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input genome fasta file
+        ontologies: []
 output:
   index:
     - - meta:
@@ -62,8 +62,8 @@ topics:
           description: The expression to obtain the version of the tool
 
 authors:
-- "@joseespinosa"
-- "@drpatelh"
+  - "@joseespinosa"
+  - "@drpatelh"
 maintainers:
-- "@joseespinosa"
-- "@drpatelh"
+  - "@joseespinosa"
+  - "@drpatelh"
