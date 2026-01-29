@@ -4,8 +4,8 @@ process RUNDBCAN_EASYCGC {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/dbcan:5.1.2--pyhdfd78af_0' :
-        'biocontainers/dbcan:5.1.2--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/dbcan:5.2.4--pyhdfd78af_0' :
+        'biocontainers/dbcan:5.2.5--pyhdfd78af_0' }"
 
     input:
     tuple val(meta),  path(input_raw_data)
@@ -15,12 +15,12 @@ process RUNDBCAN_EASYCGC {
     output:
     tuple val(meta), path("${prefix}_overview.tsv")            , emit: cazyme_annotation
     tuple val(meta), path("${prefix}_dbCAN_hmm_results.tsv")   , emit: dbcanhmm_results
-    tuple val(meta), path("${prefix}_dbCANsub_hmm_results.tsv"), emit: dbcansub_results
+    tuple val(meta), path("${prefix}_dbCANsub_hmm_results.tsv"), emit: dbcansub_results, optional: true
     tuple val(meta), path("${prefix}_diamond.out")             , emit: dbcandiamond_results
     tuple val(meta), path("${prefix}_cgc.gff")                 , emit: cgc_gff
     tuple val(meta), path("${prefix}_cgc_standard_out.tsv")    , emit: cgc_standard_out
     tuple val(meta), path("${prefix}_diamond.out.tc")          , emit: diamond_out_tc
-    tuple val(meta), path("${prefix}_TF_hmm_results.tsv")      , emit: tf_hmm_results
+    tuple val(meta), path("${prefix}_TF_hmm_results.tsv")      , emit: tf_hmm_results, optional: true
     tuple val(meta), path("${prefix}_STP_hmm_results.tsv")     , emit: stp_hmm_results
     path  "versions.yml"                                       , emit: versions
 
@@ -42,14 +42,18 @@ process RUNDBCAN_EASYCGC {
 
     mv overview.tsv             ${prefix}_overview.tsv
     mv dbCAN_hmm_results.tsv    ${prefix}_dbCAN_hmm_results.tsv
-    mv dbCANsub_hmm_results.tsv ${prefix}_dbCANsub_hmm_results.tsv
+    if [ -f dbCANsub_hmm_results.tsv ]; then
+        mv dbCANsub_hmm_results.tsv ${prefix}_dbCANsub_hmm_results.tsv
+    fi
     mv diamond.out              ${prefix}_diamond.out
     mv cgc.gff                  ${prefix}_cgc.gff
     mv cgc_standard_out.tsv     ${prefix}_cgc_standard_out.tsv
     mv diamond.out.tc           ${prefix}_diamond.out.tc
-    mv TF_hmm_results.tsv       ${prefix}_TF_hmm_results.tsv
     mv STP_hmm_results.tsv      ${prefix}_STP_hmm_results.tsv
     mv total_cgc_info.tsv       ${prefix}_total_cgc_info.tsv
+    if [ -f TF_hmm_results.tsv ]; then
+        mv TF_hmm_results.tsv   ${prefix}_TF_hmm_results.tsv
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
