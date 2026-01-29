@@ -136,7 +136,6 @@ workflow FASTA_INDEX_METHYLSEQ {
                 ch_fasta
             )
             ch_bwamem_index = BWA_INDEX.out.index
-            ch_versions = ch_versions.mix(BWA_INDEX.out.versions)
         }
     }
 
