@@ -11,12 +11,12 @@ process AUTOCYCLER_CLUSTER {
     tuple val(meta), path(gfa)
 
     output:
-    tuple val(meta), path("$prefix/clustering/qc_pass/*/*.gfa"),  emit: clusters
-    tuple val(meta), path("$prefix/clustering/qc_pass/*/*.yaml"), emit: clusterstats
-    tuple val(meta), path("$prefix/clustering/*.newick"),         emit: newick
-    tuple val(meta), path("$prefix/clustering/*.tsv"),            emit: tsv
-    tuple val(meta), path("$prefix/clustering/*.phylip"),         emit: pairwisedistances
-    tuple val(meta), path("$prefix/clustering/*.yaml"),           emit: stats
+    tuple val(meta), path("clustering/$prefix/qc_pass/*/*.gfa"),  emit: clusters
+    tuple val(meta), path("clustering/$prefix/qc_pass/*/*.yaml"), emit: clusterstats
+    tuple val(meta), path("clustering/$prefix/*.newick"),         emit: newick
+    tuple val(meta), path("clustering/$prefix/*.tsv"),            emit: tsv
+    tuple val(meta), path("clustering/$prefix/*.phylip"),         emit: pairwisedistances
+    tuple val(meta), path("clustering/$prefix/*.yaml"),           emit: stats
     tuple val("${task.process}"), val("autocycler"), eval("autocycler --version |  sed 's/^[^ ]* //'"), emit: versions_autocycler, topic: versions
 
     when:
@@ -31,7 +31,8 @@ process AUTOCYCLER_CLUSTER {
         -a .
 
     mkdir $prefix
-    mv clustering $prefix
+    mv clustering/* $prefix
+    mv $prefix clustering
     """
 
     stub:
@@ -39,9 +40,9 @@ process AUTOCYCLER_CLUSTER {
     prefix   = task.ext.prefix ?: "${meta.id}"
 
     """
-    mkdir $prefix/clustering/qc_pass/cluster_000 -p
-    touch $prefix/clustering/clustering.{newick,yaml,tsv}
-    touch $prefix/clustering/pairwise_distances.phylip
-    touch $prefix/clustering/qc_pass/cluster_000/0_untrimmed.{gfa,yaml}
+    mkdir clustering/$prefix/qc_pass/cluster_000 -p
+    touch clustering/$prefix/clustering.{newick,yaml,tsv}
+    touch clustering/$prefix/pairwise_distances.phylip
+    touch clustering/$prefix/qc_pass/cluster_000/0_untrimmed.{gfa,yaml}
     """
 }

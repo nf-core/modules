@@ -11,9 +11,9 @@ process AUTOCYCLER_RESOLVE {
     tuple val(meta), path(gfa)
 
     output:
-    tuple val(meta), path("$prefix/3_bridged.gfa"), emit: bridged
-    tuple val(meta), path("$prefix/4_merged.gfa"),  emit: merged
-    tuple val(meta), path("$prefix/5_final.gfa"),   emit: resolved
+    tuple val(meta), path("resolve/${prefix}/${prefix}_3_bridged.gfa"), emit: bridged
+    tuple val(meta), path("resolve/${prefix}/${prefix}_4_merged.gfa"),  emit: merged
+    tuple val(meta), path("resolve/${prefix}/${prefix}_5_final.gfa"),   emit: resolved
     tuple val("${task.process}"), val("autocycler"), eval("autocycler --version |  sed 's/^[^ ]* //'"), emit: versions_autocycler, topic: versions
 
     when:
@@ -27,19 +27,19 @@ process AUTOCYCLER_RESOLVE {
         $args \\
         -c .
 
-    mkdir $prefix
-    mv 3_bridged.gfa $prefix
-    mv 4_merged.gfa $prefix
-    mv 5_final.gfa $prefix
+    mkdir resolve/$prefix -p
+    mv 3_bridged.gfa resolve/${prefix}/${prefix}_3_bridged.gfa
+    mv 4_merged.gfa  resolve/${prefix}/${prefix}_4_merged.gfa
+    mv 5_final.gfa   resolve/${prefix}/${prefix}_5_final.gfa
     """
 
     stub:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir $prefix
-    touch $prefix/3_bridged.gfa
-    touch $prefix/4_merged.gfa
-    touch $prefix/5_final.gfa
+    mkdir -p resolve/$prefix
+    touch resolve/${prefix}/${prefix}_3_bridged.gfa
+    touch resolve/${prefix}/${prefix}_4_merged.gfa
+    touch resolve/${prefix}/${prefix}_5_final.gfa
     """
 }

@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fasta_consensus_autocycler"
+description: Generate consensus assemblies and assembly graphs from grouped contig FASTA files using autocycler
+keywords:
+  - autocycler
+  - consensus
+  - assembly
+  - fasta
+components:
+  - autocycler/compress
+  - autocycler/cluster
+  - autocycler/trim
+  - autocycler/resolve
+  - autocycler/combine
+input:
+  - ch_grouped_contigs:
+      type: file
+      description: |
+        The input channel containing grouped contig FASTA files
+        Structure: [ val(meta), [ fasta, fasta, ... ] ]
+      pattern: "*.{fasta,fa,fna}"
+output:
+  - consensus_assembly:
+      type: file
+      description: |
+        Channel containing consensus assembly FASTA files
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*/consensus_assembly.fasta"
+  - consensus_assembly_graph:
+      type: file
+      description: |
+        Channel containing consensus assembly graphs
+        Structure: [ val(meta), path(gfa) ]
+      pattern: "*/consensus_assembly.gfa"
+authors:
+  - "@dwells-eit"
+maintainers:
+  - "@dwells-eit"
