@@ -4,7 +4,7 @@ process AMULETY_TRANSLATE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bd/bdc2f42370e0aa9a3f0b2a50ad4c613d07a76d2923cc4d2741b1a64a2cca552b/data':
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/53/53bd60c3aa7a937df11e4a3cbf66a274edd1d580aac1ef49a0c8d96d13d1f1fa/data':
         'community.wave.seqera.io/library/amulety_igblast_wget:e477bc17f7c35e7c' }"
 
     input:
