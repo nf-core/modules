@@ -16,10 +16,11 @@ process DEEPVARIANT_RUNDEEPVARIANT {
     tuple val(meta5), path(par_bed)
 
     output:
-    tuple val(meta), path("${prefix}.vcf.gz")       , emit: vcf
-    tuple val(meta), path("${prefix}.vcf.gz.tbi")   , emit: vcf_tbi
-    tuple val(meta), path("${prefix}.g.vcf.gz")     , emit: gvcf
-    tuple val(meta), path("${prefix}.g.vcf.gz.tbi") , emit: gvcf_tbi
+    tuple val(meta), path("${prefix}.vcf.gz")            , emit: vcf
+    tuple val(meta), path("${prefix}.vcf.gz.tbi")        , emit: vcf_tbi
+    tuple val(meta), path("${prefix}.g.vcf.gz")          , emit: gvcf
+    tuple val(meta), path("${prefix}.g.vcf.gz.tbi")      , emit: gvcf_tbi
+    tuple val(meta), path("${prefix}.visual_report.html"), emit: report, optional: true
     tuple val("${task.process}"), val('deepvariant'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //; s/ .*\$//'"), topic: versions, emit: versions_deepvariant
 
     when:
