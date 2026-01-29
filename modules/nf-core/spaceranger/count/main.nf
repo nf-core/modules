@@ -11,7 +11,7 @@ process SPACERANGER_COUNT {
 
     output:
     tuple val(meta), path("outs/**"), emit: outs
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('spaceranger'), eval('spaceranger -V | sed "s/spaceranger spaceranger-//"'), emit: versions_spaceranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,13 +24,13 @@ process SPACERANGER_COUNT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     // Add flags for optional inputs on demand.
-    def probeset = probeset ? "--probe-set=\"${probeset}\"" : ""
-    def alignment = alignment ? "--loupe-alignment=\"${alignment}\"" : ""
-    def slidefile = slidefile ? "--slidefile=\"${slidefile}\"" : ""
-    def image = image ? "--image=\"${image}\"" : ""
-    def cytaimage = cytaimage ? "--cytaimage=\"${cytaimage}\"" : ""
-    def darkimage = darkimage ? "--darkimage=\"${darkimage}\"" : ""
-    def colorizedimage = colorizedimage ? "--colorizedimage=\"${colorizedimage}\"" : ""
+    probeset = probeset ? "--probe-set=\"${probeset}\"" : ""
+    alignment = alignment ? "--loupe-alignment=\"${alignment}\"" : ""
+    slidefile = slidefile ? "--slidefile=\"${slidefile}\"" : ""
+    image = image ? "--image=\"${image}\"" : ""
+    cytaimage = cytaimage ? "--cytaimage=\"${cytaimage}\"" : ""
+    darkimage = darkimage ? "--darkimage=\"${darkimage}\"" : ""
+    colorizedimage = colorizedimage ? "--colorizedimage=\"${colorizedimage}\"" : ""
     if (slide.matches("visium-(.*)") && area == "" && slidefile == "") {
         slide_and_area = "--unknown-slide=\"${slide}\""
     } else {
@@ -51,11 +51,6 @@ process SPACERANGER_COUNT {
         $slidefile \\
         $args
     mv ${prefix}/outs outs
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        spaceranger: \$(spaceranger -V | sed -e "s/spaceranger spaceranger-//g")
-    END_VERSIONS
     """
 
     stub:
@@ -66,10 +61,5 @@ process SPACERANGER_COUNT {
     """
     mkdir -p outs/
     touch outs/fake_file.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        spaceranger: \$(spaceranger -V | sed -e "s/spaceranger spaceranger-//g")
-    END_VERSIONS
     """
 }

@@ -25,11 +25,10 @@ process FQTK {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     // Join the absolute path from UNTAR.out.untar to the fastq file names
-    fastqs = fastq_readstructure_pairs.collect{"input/" + it[0]}.join(" ")
+    fastqs = fastq_readstructure_pairs.collect{ fastq, _structure -> "input/" + fastq }.join(" ")
     // Create a list of read structures, Example: 8B 8B 150T
-    read_structures = fastq_readstructure_pairs.collect{it[1]}.join(" ")
+    read_structures = fastq_readstructure_pairs.collect{ _fastq, structure -> structure }.join(" ")
 
     """
     mkdir output
