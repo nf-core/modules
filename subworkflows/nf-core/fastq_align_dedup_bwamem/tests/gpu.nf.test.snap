@@ -92,7 +92,7 @@
         },
         "timestamp": "2026-01-22T12:59:49.469708332"
     },
-    "Sarscov2 fasta - SE - skip deduplication - with GPU parabricks/fq2bam - stub": {
+    "Sarscov2 fasta - SE - deduplicate - with GPU parabricks/fq2bam - stub": {
         "content": [
             {
                 "0": [
@@ -244,8 +244,8 @@
             },
             [
                 {
-                    "FASTQ_ALIGN_DEDUP_BWAMEM:PICARD_MARKDUPLICATES": {
-                        "picard": "3.4.0"
+                    "FASTQ_ALIGN_DEDUP_BWAMEM:BAM_SORT_STATS_SAMTOOLS:BAM_STATS_SAMTOOLS:SAMTOOLS_FLAGSTAT": {
+                        "samtools": "1.22.1"
                     }
                 },
                 {
@@ -254,8 +254,8 @@
                     }
                 },
                 {
-                    "FASTQ_ALIGN_DEDUP_BWAMEM:BAM_SORT_STATS_SAMTOOLS:BAM_STATS_SAMTOOLS:SAMTOOLS_FLAGSTAT": {
-                        "samtools": "1.22.1"
+                    "FASTQ_ALIGN_DEDUP_BWAMEM:PICARD_MARKDUPLICATES": {
+                        "picard": "3.4.0"
                     }
                 }
             ]
