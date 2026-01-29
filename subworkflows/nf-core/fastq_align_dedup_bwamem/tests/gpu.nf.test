@@ -73,7 +73,7 @@ nextflow_workflow {
                     workflow.out.samtools_index_stats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions.collect().sort()
+                    workflow.out.versions.collect().sort { a, b -> path(a).md5 <=> path(b).md5 }
                     ).match()
                 }
             )
@@ -117,7 +117,7 @@ nextflow_workflow {
                     workflow.out.samtools_index_stats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions.collect().sort()
+                    workflow.out.versions.collect().sort { a, b -> path(a).md5 <=> path(b).md5 }
                     ).match()
                 }
             )
@@ -165,7 +165,7 @@ nextflow_workflow {
                     workflow.out.samtools_index_stats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions.collect().sort()
+                    workflow.out.versions.collect().sort { a, b -> path(a).md5 <=> path(b).md5 }
                     ).match()
                 }
             )
@@ -200,20 +200,17 @@ nextflow_workflow {
         }
 
         then {
-            def stableOut = workflow.out.collectEntries { k, v ->
-                if (k in ['versions', '7']) {
-                    [k, (v instanceof List ? v.collect().sort() : v)]
-                } else {
-                    [k, v]
-                }
-            }
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    stableOut,
-                    workflow.out.versions.collect{ path(it).yaml }.sort { a, b -> a.toString() <=> b.toString() }
-                ).match()
-                }
+                    workflow.out.bam,
+                    workflow.out.bai,
+                    workflow.out.samtools_flagstat,
+                    workflow.out.samtools_stats,
+                    workflow.out.samtools_index_stats,
+                    workflow.out.picard_metrics,
+                    workflow.out.versions.collect().sort { a, b -> path(a).md5 <=> path(b).md5 }
+                ).match() }
             )
         }
     }
