@@ -1,0 +1,77 @@
+// nf-core modules test traitar
+nextflow_process {
+
+    name "Test Process TRAITAR"
+    script "../main.nf"
+    process "TRAITAR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "traitar"
+    tag "traitar/run"
+    tag "traitar/pfamget"
+
+    setup {
+        run("TRAITAR_PFAMGET") {
+            script "../../pfamget/main.nf"
+            process {
+                """
+                input[0] = []
+                """
+            }
+        }
+    }
+
+    // Real data test
+    test("traitar - proteomes") {
+
+        config "./nf-test.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_sample' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true),
+                ]
+                input[1] = 'from_nucleotides'
+                input[2] = TRAITAR_PFAMGET.out.pfam_db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("traitar - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_sample' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true),
+                ]
+                input[1] = 'from_nucleotides'
+                input[2] = file("pfam_data")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
