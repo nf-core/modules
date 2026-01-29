@@ -1,0 +1,44 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTA_CONSENSUS_AUTOCYCLER"
+    script "../main.nf"
+    workflow "FASTA_CONSENSUS_AUTOCYCLER"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fasta_consensus_autocycler"
+    tag "autocycler"
+    tag "autocycler/compress"
+    tag "autocycler/cluster"
+    tag "autocycler/trim"
+    tag "autocycler/resolve"
+    tag "autocycler/combine"
+
+
+    test("sarscov2 - grouped contigs - fasta") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test' ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
+                        ]
+                    ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+}
