@@ -10,6 +10,7 @@ process TRAITAR {
     input:
     tuple val(meta), path(fasta)
     val input_type
+    path pfam_db
 
     output:
     tuple val(meta), path("*/phenotype_prediction/predictions_majority-vote_combined.txt"), emit: predictions_combined
@@ -50,12 +51,10 @@ process TRAITAR {
     ${input_file}\t${prefix}
     EOF
 
-    # Download PFAM data for traitar annotation
-    traitar pfam pfam_data
 
     # Run traitar phenotype analysis
     traitar phenotype \\
-        pfam_data \\
+        ${pfam_db} \\
         input_dir \\
         samples.txt \\
         ${input_type} \\

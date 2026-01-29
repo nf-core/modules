@@ -1,0 +1,48 @@
+nextflow_process {
+
+    name "Test Process TRAITAR_PFAMGET"
+    script "../main.nf"
+    process "TRAITAR_PFAMGET"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "traitar"
+    tag "traitar/pfamget"
+
+    test("Download PFAM database - default version") {
+
+        when {
+            process {
+                """
+                input[0] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("Download PFAM database - default version - stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
