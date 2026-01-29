@@ -11,9 +11,9 @@ process AUTOCYCLER_TRIM {
     tuple val(meta), path(gfa)
 
     output:
-    tuple val(meta), path("$prefix/*.gfa"),  emit: gfa
-    tuple val(meta), path("$prefix/*.yaml"), emit: stats
-    path "versions.yml",                     emit: versions
+    tuple val(meta), path("trim/$prefix/*.gfa"),  emit: gfa
+    tuple val(meta), path("trim/$prefix/*.yaml"), emit: stats
+    tuple val("${task.process}"), val("autocycler"), eval("autocycler --version |  sed 's/^[^ ]* //'"), emit: versions_autocycler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,13 +27,8 @@ process AUTOCYCLER_TRIM {
         --threads $task.cpus \\
         -c .
 
-    mkdir $prefix
-    mv 2_trimmed.{gfa,yaml} $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        autocycler: \$(autocycler --version |  sed 's/^[^ ]* //')
-    END_VERSIONS
+    mkdir -p trim/$prefix
+    mv 2_trimmed.{gfa,yaml} trim/$prefix
     """
 
     stub:
@@ -41,13 +36,8 @@ process AUTOCYCLER_TRIM {
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
 
-    mkdir $prefix
-    touch $prefix/2_trimmed.gfa
-    touch $prefix/2_trimmed.yaml
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        autocycler: \$(autocycler --version |  sed 's/^[^ ]* //')
-    END_VERSIONS
+    mkdir -p trim/$prefix
+    touch trim/$prefix/2_trimmed.gfa
+    touch trim/$prefix/2_trimmed.yaml
     """
 }
