@@ -87,7 +87,7 @@ nextflow_process {
                     """
                     input[0] = Channel.of([
                         [ id:'test', single_end:true ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/sarscov2_mus-musculus.fastq.gz', checkIfExists: true)
                     ])
                     input[1] = BBMAP_BBSPLIT_INDEX.out.index
                     input[2] = []
@@ -103,6 +103,7 @@ nextflow_process {
                 { assert path(process.out.log[0][1]).text.contains("If you wish to regenerate the index") },
                 { assert snapshot(
                     process.out.primary_fastq,
+                    process.out.unmapped_fastq,
                     process.out.stats,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()}
