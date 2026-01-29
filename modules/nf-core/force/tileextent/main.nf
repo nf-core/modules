@@ -14,7 +14,8 @@ process FORCE_TILEEXTENT {
 
     output:
     path "tile_allow.txt", emit: tile_allow
-    path "versions.yml"  , emit: versions
+    tuple val("${task.process}"), val('force'), eval('force-tile-extent -v'), emit: versions_force, topic: versions
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,21 +25,11 @@ process FORCE_TILEEXTENT {
     """
     force-tile-extent -d tmp/ -a tile_allow.txt $aoi
     rm -r tmp
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        force: \$(force-tile-extent -v)
-    END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     """
     touch tile_allow.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        force: \$(force-tile-extent -v)
-    END_VERSIONS
     """
 }
