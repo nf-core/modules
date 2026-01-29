@@ -1,68 +1,41 @@
 {
     "Should run with alternative .fa reference input -stub": {
         "content": [
-            {
-                "ancestry": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.Ancestry"
-                    ]
-                ],
-                "bed": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.bed"
-                    ]
-                ],
-                "log": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.log"
-                    ]
-                ],
-                "mu": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.mu"
-                    ]
-                ],
-                "self_sm": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.selfSM"
-                    ]
-                ],
-                "ud": [
-                    
-                ],
-                "versions": [
-                    "versions.yml:md5,199f2e02b570926d6a249055c917c6b1"
+            "test.log",
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.genome.vcf.bed:md5,47106c764019ee359b1936410e2efa1e"
                 ]
-            },
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.genome.vcf.mu:md5,0810db02af2a176fa5ddc0f404911b66"
+                ]
+            ],
+            [
+                
+            ],
+            [
+                
+            ],
             [
                 "versions.yml:md5,199f2e02b570926d6a249055c917c6b1"
-            ]
+            ],
+            "test.genome.vcf.UD"
         ],
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.04.2"
         },
-        "timestamp": "2026-01-29T09:44:26.472131778"
+        "timestamp": "2026-01-29T10:49:41.246340567"
     },
     "Should run with panel input": {
         "content": [
@@ -209,41 +182,68 @@
     },
     "Should run with alternative .fa reference input": {
         "content": [
-            "test.log",
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.genome.vcf.bed:md5,47106c764019ee359b1936410e2efa1e"
+            {
+                "ancestry": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.Ancestry"
+                    ]
+                ],
+                "bed": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bed"
+                    ]
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.log"
+                    ]
+                ],
+                "mu": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.mu"
+                    ]
+                ],
+                "self_sm": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.selfSM"
+                    ]
+                ],
+                "ud": [
+                    
+                ],
+                "versions": [
+                    "versions.yml:md5,199f2e02b570926d6a249055c917c6b1"
                 ]
-            ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.genome.vcf.mu:md5,0810db02af2a176fa5ddc0f404911b66"
-                ]
-            ],
-            [
-                
-            ],
-            [
-                
-            ],
+            },
             [
                 "versions.yml:md5,199f2e02b570926d6a249055c917c6b1"
-            ],
-            "test.genome.vcf.UD"
+            ]
         ],
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.04.2"
         },
-        "timestamp": "2026-01-29T09:43:58.944447328"
+        "timestamp": "2026-01-29T10:50:08.737266706"
     },
     "Should run with SVD input": {
         "content": [
