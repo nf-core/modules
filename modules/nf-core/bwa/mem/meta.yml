@@ -60,57 +60,71 @@ input:
       description: use samtools sort (true) or samtools view (false)
       pattern: "true or false"
 output:
-  bam:
+  output:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - "*.bam":
+      - "*.{sam,bam,cram}":
           type: file
-          description: Output BAM file containing read alignments
-          pattern: "*.{bam}"
+          description: Output SAM/BAM/CRAM file containing read alignments
+          pattern: "*.{sam,bam,cram}"
           ontologies:
             - edam: "http://edamontology.org/format_2572" # BAM
-  cram:
-    - - meta:
-          type: file
-          description: Output BAM file containing read alignments
-          ontologies: []
-      - "*.cram":
-          type: file
-          description: Output CRAM file containing read alignments
-          pattern: "*.{cram}"
-          ontologies:
             - edam: "http://edamontology.org/format_3462" # CRAM
-  csi:
+  index:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - "*.csi":
+      - "*.{csi,bai,crai}":
           type: file
-          description: Optional index file for BAM file
-          pattern: "*.{csi}"
+          description: Optional index file for BAM/CRAM file
+          pattern: "*.{csi,bai,crai}"
           ontologies: []
-  crai:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample information
-      - "*.crai":
-          type: file
-          description: Optional index file for CRAM file
-          pattern: "*.{crai}"
-          ontologies: []
+  versions_bwa:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bwa:
+          type: string
+          description: The tool name
+      - 'bwa 2>&1 | sed -n "s/^Version: //p"':
+          type: string
+          description: The command used to generate the version of the tool
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bwa:
+          type: string
+          description: The tool name
+      - 'bwa 2>&1 | sed -n "s/^Version: //p"':
+          type: string
+          description: The command used to generate the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
+
 authors:
   - "@drpatelh"
   - "@jeremy1805"
   - "@matthdsm"
 maintainers:
-  - "@drpatelh"
   - "@jeremy1805"
   - "@matthdsm"
