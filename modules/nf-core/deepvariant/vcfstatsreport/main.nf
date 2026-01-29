@@ -12,7 +12,7 @@ process DEEPVARIANT_VCFSTATSREPORT {
 
     output:
     tuple val(meta), path("${prefix}.visual_report.html"), emit: report
-    path "versions.yml"                                  , emit: versions
+    tuple val("${task.process}"), val('deepvariant_vcfstatsreport'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //; s/ .*\$//'"), topic: versions, emit: versions_deepvariant_vcfstatsreport
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,10 +29,6 @@ process DEEPVARIANT_VCFSTATSREPORT {
         --input_vcf=${vcf} \\
         --outfile_base ${prefix}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepvariant: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
     """
 
     stub:
@@ -44,9 +40,5 @@ process DEEPVARIANT_VCFSTATSREPORT {
     """
     touch ${prefix}.visual_report.html
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepvariant: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
     """
 }

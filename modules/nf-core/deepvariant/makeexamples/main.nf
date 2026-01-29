@@ -16,7 +16,7 @@ process DEEPVARIANT_MAKEEXAMPLES {
     tuple val(meta), path("${prefix}.examples.tfrecord-*-of-*.gz{,.example_info.json}"),    emit: examples
     tuple val(meta), path("${prefix}.gvcf.tfrecord-*-of-*.gz"),        emit: gvcf
     tuple val(meta), path("${prefix}_call_variant_outputs.examples.tfrecord-*-of-*.gz",  arity: "0..*"),        emit: small_model_calls
-    path "versions.yml",  emit: versions
+    tuple val("${task.process}"), val('deepvariant_makeexamples'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //; s/ .*\$//'"), topic: versions, emit: versions_deepvariant_makeexamples
 
     when:
     task.ext.when == null || task.ext.when
