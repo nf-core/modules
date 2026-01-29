@@ -52,6 +52,16 @@ output:
       - tabix -h 2>&1 | grep -oP 'Version:\s*\K[^\s]+':
           type: eval
           description: The expression to obtain the version of the tool
+  versions_bgzip:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bgzip:
+          type: string
+          description: The tool name
+      - bgzip -h 2>&1 | sed 's/^.*Version: //;s/Usage:.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 
 topics:
   versions:
@@ -62,6 +72,15 @@ topics:
           type: string
           description: The tool name
       - tabix -h 2>&1 | grep -oP 'Version:\s*\K[^\s]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bgzip:
+          type: string
+          description: The tool name
+      - bgzip -h 2>&1 | sed 's/^.*Version: //;s/Usage:.*//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
