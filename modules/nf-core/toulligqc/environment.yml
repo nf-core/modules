@@ -4,5 +4,9 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - bioconda::toulligqc=2.7.1
+  - conda-forge::python=3.11
+  - conda-forge::numpy<2
+  - conda-forge::pandas<2.2
+  - conda-forge::matplotlib<3.9
   - conda-forge::plotly=5.24.0
+  - bioconda::toulligqc=2.7.1
