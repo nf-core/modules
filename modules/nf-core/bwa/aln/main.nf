@@ -13,7 +13,7 @@ process BWA_ALN {
 
     output:
     tuple val(meta), path("*.sai"), emit: sai
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('bwa'), eval('bwa 2>&1 | sed -n "s/^Version: //p"'), topic: versions, emit: versions_bwa
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,11 +32,6 @@ process BWA_ALN {
             -f ${prefix}.sai \\
             \$INDEX \\
             ${reads}
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            bwa: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
-        END_VERSIONS
         """
     } else {
         """
@@ -55,11 +50,6 @@ process BWA_ALN {
             -f ${prefix}.2.sai \\
             \$INDEX \\
             ${reads[1]}
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            bwa: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
-        END_VERSIONS
         """
     }
 
@@ -69,21 +59,11 @@ process BWA_ALN {
     if (meta.single_end) {
         """
         touch ${prefix}.sai
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            bwa: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
-        END_VERSIONS
         """
     } else {
         """
         touch ${prefix}.1.sai
         touch ${prefix}.2.sai
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            bwa: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
-        END_VERSIONS
         """
     }
 }
