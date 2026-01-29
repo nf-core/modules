@@ -1,5 +1,6 @@
 name: tabix_bgziptabix
-description: bgzip a sorted tab-delimited genome file and then create tabix index
+description: bgzip a sorted tab-delimited genome file and then create tabix
+  index
 keywords:
   - bgzip
   - compress
@@ -59,7 +60,7 @@ output:
       - bgzip:
           type: string
           description: The tool name
-      - bgzip -h 2>&1 | sed 's/^.*Version: //;s/Usage:.*//':
+      - bgzip --version | sed '1!d;s/.* //':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -80,9 +81,10 @@ topics:
       - bgzip:
           type: string
           description: The tool name
-      - bgzip -h 2>&1 | sed 's/^.*Version: //;s/Usage:.*//':
+      - bgzip --version | sed '1!d;s/.* //':
           type: eval
           description: The expression to obtain the version of the tool
+
 authors:
   - "@maxulysse"
   - "@DLBPointon"
