@@ -92,7 +92,7 @@ process CELLRANGER_MULTI {
     frna_csv_text  = include_frna && frna_sampleinfo.size() > 0    ? frna_sampleinfo    : ''
 
     // the feature barcodes section get options for either CRISPR or antibody capture assays
-    fb_options     = meta_ab?.options ? meta_ab.options : (meta_crispr?.options ? meta_crispr.options : [])
+    fb_options     = ab_fastqs.first().getName() != 'fastqs' && meta_ab?.options ? meta_ab : (crispr_fastqs.first().getName() != 'fastqs' && meta_crispr?.options ? meta_crispr : [:])
 
     // collect options for each section
     // these are pulled from the meta maps
