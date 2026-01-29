@@ -39,14 +39,8 @@ workflow FASTA_CONSENSUS_AUTOCYCLER {
         AUTOCYCLER_TRIM.out.gfa
     )
 
-    // Rename resolved gfa files to include cluster ID and avoid filename collisions
-    RENAME(
-        AUTOCYCLER_RESOLVE.out.resolved,
-        AUTOCYCLER_RESOLVE.out.resolved.map{meta, file -> "${meta.id}_${meta.cluster}"}
-    )
-
     // Group clusters based on meta, ignoring cluster id
-    RENAME.out.renamed
+    AUTOCYCLER_RESOLVE.out.resolved
         .map{   meta, file ->
             def new_meta = meta.clone()
             new_meta.remove("cluster")
@@ -66,20 +60,4 @@ workflow FASTA_CONSENSUS_AUTOCYCLER {
     emit:
     consensus_assembly       = ch_consensus_assembly       // channel: [ val(meta), fasta ]
     consensus_assembly_graph = ch_consensus_assembly_graph // channel: [ val(meta), gfa ]
-}
-
-process RENAME {
-  tag "$meta.id"
-
-  input:
-    tuple val(meta), path(file)
-    val key
-
-  output:
-    tuple val(meta), path("${key}_${file}"), emit: renamed
-
-  script:
-  """
-  ln -s ${file} "${key}_${file}"
-  """
 }
