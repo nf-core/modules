@@ -34,8 +34,8 @@ process AUTOCYCLER_COMPRESS {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir compress
-    touch compress/${prefix}_input_assemblies.gfa
-    touch compress/${prefix}_input_assemblies.yaml
+    mkdir -p compress/$prefix
+    touch compress/${prefix}/input_assemblies.gfa
+    touch compress/${prefix}/input_assemblies.yaml
     """
 }

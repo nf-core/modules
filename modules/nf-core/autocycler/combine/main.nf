@@ -38,7 +38,7 @@ process AUTOCYCLER_COMBINE {
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir $prefix
+    mkdir -p combine/$prefix
     touch combine/${prefix}/consensus_assembly.{fasta,gfa,yaml}
     """
 }

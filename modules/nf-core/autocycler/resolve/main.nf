@@ -37,7 +37,7 @@ process AUTOCYCLER_RESOLVE {
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir resolve
+    mkdir -p resolve/$prefix
     touch resolve/${prefix}/${prefix}_3_bridged.gfa
     touch resolve/${prefix}/${prefix}_4_merged.gfa
     touch resolve/${prefix}/${prefix}_5_final.gfa
