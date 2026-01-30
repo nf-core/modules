@@ -27,9 +27,14 @@ input:
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
         ontologies: []
+    - index:
+        type: file
+        description: CSI/BAI/CRAI file. Optional. Only required when using the '-r' parameter.
+        pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - intervals:
         type: file
-        description: Interval FILE
+        description: Interval FILE. Optional.
         pattern: "*.bed"
         ontologies: []
   - - meta2:
@@ -39,7 +44,7 @@ input:
           e.g. [ id:'test' ]
     - fasta:
         type: file
-        description: FASTA reference file
+        description: FASTA reference file. Optional.
         pattern: "*.{fasta,fa}"
         ontologies: []
 output:
@@ -82,3 +87,4 @@ authors:
   - "@joseespinosa"
 maintainers:
   - "@joseespinosa"
+  - "@krannich479"

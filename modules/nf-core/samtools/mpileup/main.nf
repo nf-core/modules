@@ -4,12 +4,14 @@ process SAMTOOLS_MPILEUP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.22.1--h96c455f_0' :
-        'biocontainers/samtools:1.22.1--h96c455f_0' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.23--h96c455f_0' :
+        'biocontainers/samtools:1.23--h96c455f_0' }"
 
     input:
-    tuple val(meta), path(input), path(intervals)
-    tuple val(meta2), path(fasta)
+    tuple val(meta), path(input)       // sam/bam/cram
+    tuple val(meta), path(index)       // csi/bai/crai - optional, only required when using '-r'
+    tuple val(meta), path(intervals)   // optional
+    tuple val(meta2), path(fasta)      // optional
 
     output:
     tuple val(meta), path("*.mpileup.gz"), emit: mpileup
