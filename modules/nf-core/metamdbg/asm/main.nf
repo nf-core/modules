@@ -8,7 +8,7 @@ process METAMDBG_ASM {
         'biocontainers/metamdbg:1.2--h077b44d_0' }"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(reads, arity: '1..*')
     val(input_type)
 
     output:
@@ -42,6 +42,7 @@ process METAMDBG_ASM {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo ${args}
     touch ${prefix}.metaMDBG.log
     touch ${prefix}.contigs.fasta.gz
     """
