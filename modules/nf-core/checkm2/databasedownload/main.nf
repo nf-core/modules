@@ -51,6 +51,9 @@ process CHECKM2_DATABASEDOWNLOAD {
     tar -xzf checkm2_database.tar.gz
     db_path=\$(find -name *.dmnd)
     mv \$db_path checkm2_db_v${db_version}.dmnd
+
+    # cleanup
+    rm -f checkm2_database.tar.gz
     """
 
     stub:
