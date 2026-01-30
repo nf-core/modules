@@ -1,4 +1,4 @@
-name: "pharmcat_report"
+name: "pharmcat_pharmcat"
 description: PharmCAT (Pharmacogenomics Clinical Annotation Tool) is a bioinformatics
   tool that analyzes genetic variants to predict drug response and tailor medical
   treatment to an individual patient’s genetic profile.
@@ -28,6 +28,8 @@ input:
         pattern: "*.vcf.{gz,bgz}"
         ontologies:
           - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_3016 # VCF format
+          - edam: http://edamontology.org/format_3615 # BGZIP format
 output:
   html:
     - - meta:
@@ -39,7 +41,8 @@ output:
           type: file
           description: PharmCAT HTML report
           pattern: "*.html"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2331 # HTML format
   json:
     - - meta:
           type: map
@@ -50,7 +53,8 @@ output:
           type: file
           description: PharmCAT JSON report
           pattern: "*.json"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON format
   json_input_reporter_parser:
     - - meta:
           type: map
@@ -61,7 +65,8 @@ output:
           type: file
           description: PharmCAT JSON input for report parser
           pattern: "*.report.json"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON format
   versions:
     - versions.yml:
         type: file
@@ -70,6 +75,6 @@ output:
         ontologies:
           - edam: http://edamontology.org/format_3750  # YAML
 authors:
-  - "@PharmGKB"
+  - "@rkmishra3893"
 maintainers:
-  - "@PharmGKB"
+  - "@rkmishra3893"

@@ -16,9 +16,9 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'test' ],
-                    file('../test_data/test2.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotc.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotc.vcf.gz.tbi', checkIfExists: true)
                 ]
-                
                 """
             }
         }
@@ -40,10 +40,10 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id: 'test' ], 
-                    file('../test_data/test2.vcf.gz', checkIfExists: true),
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotc.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotc.vcf.gz.tbi', checkIfExists: true)
                 ]
-                
                 """
             }
         }

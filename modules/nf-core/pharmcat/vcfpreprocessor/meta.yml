@@ -29,6 +29,13 @@ input:
         ontologies:
           - edam: http://edamontology.org/format_3016  # VCF format
           - edam: http://edamontology.org/format_3989  # GZIP format
+    - vcf_idx:
+        type: file
+        description: Index file for the input VCF
+        pattern: "*.vcf.gz.tbi"
+        ontologies:
+          - edam: http://edamontology.org/format_3016  # VCF format
+          - edam: http://edamontology.org/format_3989  # GZIP format
 output:
   preprocessor_bgz:
     - - meta:
@@ -39,10 +46,11 @@ output:
       - "*.vcf.bgz":
           type: file
           description: BGZIP-compressed VCF after preprocessing
-          pattern: "*.vcf.bgz"
+          pattern: "*.vcf.{gz,bgz}"
           ontologies:
-            - edam: http://edamontology.org/format_3016
-            - edam: http://edamontology.org/format_3989
+          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_3016 # VCF format
+          - edam: http://edamontology.org/format_3615 # BGZIP format
   missing_pgx_var:
     - - meta:
           type: map
@@ -54,7 +62,7 @@ output:
           description: VCF containing missing PGx variants
           pattern: "*.missing_pgx_var.vcf"
           ontologies:
-            - edam: http://edamontology.org/format_3016
+            - edam: http://edamontology.org/format_3016 # VCF format
   versions:
     - versions.yml:
         type: file
@@ -64,6 +72,6 @@ output:
           - edam: http://edamontology.org/format_3750 # YAML
 
 authors:
-  - "@PharmGKB"
+  - "@rkmishra3893"
 maintainers:
-  - "@PharmGKB"
+  - "@rkmishra3893"

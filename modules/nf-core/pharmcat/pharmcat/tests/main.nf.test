@@ -1,13 +1,13 @@
 nextflow_process {
 
-    name "Test Process PHARMCAT_REPORT"
+    name "Test Process PHARMCAT_PHARMCAT"
     script "../main.nf"
-    process "PHARMCAT_REPORT"
+    process "PHARMCAT_PHARMCAT"
 
     tag "modules"
     tag "modules_nfcore"
     tag "pharmcat"
-    tag "pharmcat/report"
+    tag "pharmcat/pharmcat"
 
     test("pharmcat - vcf") {
 
@@ -16,7 +16,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'test' ],
-                    file('../test_data/test2.preprocessed.vcf.bgz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotc.vcf.gz', checkIfExists: true)
                 ]
                 """
             }
@@ -38,7 +38,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'test' ],
-                    file('../test_data/test2.preprocessed.vcf.bgz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotc.vcf.gz', checkIfExists: true)
                 ]
                 """
             }

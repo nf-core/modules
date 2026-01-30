@@ -1,20 +1,20 @@
-process PHARMCAT_REPORT {
+process PHARMCAT_PHARMCAT {
     tag "${meta.id}"
-    label 'process_low'
+    label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'docker://pgkb/pharmcat:3.0.1' :
-        'docker.io/pgkb/pharmcat:3.0.1' }"
+        'docker://pgkb/pharmcat:3.1.1' :
+        'docker.io/pgkb/pharmcat:3.1.1' }"
 
     input:
     tuple val(meta), path(bgz_file)
 
     output:
-    tuple val(meta), path("*.html"), emit: html
-    tuple val(meta), path("*.json"), emit: json
+    tuple val(meta), path("*.html"),        emit: html
+    tuple val(meta), path("*.json"),        emit: json
     tuple val(meta), path("*.report.json"), emit: json_input_reporter_parser
-    path "versions.yml", emit: versions
+    path "versions.yml",                    emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +22,6 @@ process PHARMCAT_REPORT {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     pharmcat \\
         --matcher-vcf ${bgz_file} \\
@@ -39,12 +38,10 @@ process PHARMCAT_REPORT {
     
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
-    mkdir -p report
-    echo "<html><body>Stub report</body></html>" > ${prefix}.html
-    echo '{}' > ${prefix}.json
-    echo '{"report": "stub"}' > ${prefix}.report.json
+    touch ${prefix}.html
+    touch ${prefix}.json
+    touch ${prefix}.report.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
