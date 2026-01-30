@@ -33,7 +33,7 @@ process PHARMCAT_VCFPREPROCESSOR {
         pharmcat: \$(pharmcat --version)
     END_VERSIONS
     """
-    
+
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -47,4 +47,3 @@ process PHARMCAT_VCFPREPROCESSOR {
     END_VERSIONS
     """
 }
-

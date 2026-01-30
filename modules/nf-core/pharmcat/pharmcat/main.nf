@@ -35,7 +35,7 @@ process PHARMCAT_PHARMCAT {
         pharmcat: \$(pharmcat --version)
     END_VERSIONS
     """
-    
+
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
@@ -49,4 +49,3 @@ process PHARMCAT_PHARMCAT {
     END_VERSIONS
     """
 }
-

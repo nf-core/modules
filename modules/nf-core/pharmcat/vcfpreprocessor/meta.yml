@@ -27,15 +27,15 @@ input:
         description: Compressed input VCF file for PharmCAT preprocessing
         pattern: "*.vcf.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3016  # VCF format
-          - edam: http://edamontology.org/format_3989  # GZIP format
+          - edam: http://edamontology.org/format_3016 # VCF format
+          - edam: http://edamontology.org/format_3989 # GZIP format
     - vcf_idx:
         type: file
         description: Index file for the input VCF
         pattern: "*.vcf.gz.tbi"
         ontologies:
-          - edam: http://edamontology.org/format_3016  # VCF format
-          - edam: http://edamontology.org/format_3989  # GZIP format
+          - edam: http://edamontology.org/format_3016 # VCF format
+          - edam: http://edamontology.org/format_3989 # GZIP format
 output:
   preprocessor_bgz:
     - - meta:
@@ -48,9 +48,9 @@ output:
           description: BGZIP-compressed VCF after preprocessing
           pattern: "*.vcf.{gz,bgz}"
           ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
-          - edam: http://edamontology.org/format_3016 # VCF format
-          - edam: http://edamontology.org/format_3615 # BGZIP format
+            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3016 # VCF format
+            - edam: http://edamontology.org/format_3615 # BGZIP format
   missing_pgx_var:
     - - meta:
           type: map
