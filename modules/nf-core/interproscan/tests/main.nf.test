@@ -80,7 +80,7 @@ nextflow_process {
                     process.out.xml,
                     process.out.json,
                     path(process.out.gff3[0][1]).readLines()[0..4,6..-1],
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                     ).match()
                 }
             )
@@ -111,7 +111,7 @@ nextflow_process {
                     process.out.xml,
                     process.out.json,
                     path(process.out.gff3[0][1]).readLines()[0..4,6..-1],
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                     ).match()
                 }
             )
