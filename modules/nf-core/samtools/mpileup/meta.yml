@@ -1,5 +1,6 @@
 name: samtools_mpileup
-description: Generate text pileup output for one or multiple BAM files. Each input file produces a separate group of pileup columns in the output.
+description: Generate text pileup output for one or multiple BAM files. Each
+  input file produces a separate group of pileup columns in the output.
 keywords:
   - mpileup
   - bam
@@ -27,11 +28,22 @@ input:
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
         ontologies: []
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
     - index:
         type: file
-        description: CSI/BAI/CRAI file. Optional. Only required when using the '-r' parameter.
+        description: CSI/BAI/CRAI file. Optional. Only required when using the
+          '-r' parameter.
         pattern: "*.{bam,cram,sam}"
         ontologies: []
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
     - intervals:
         type: file
         description: Interval FILE. Optional.
@@ -40,7 +52,7 @@ input:
   - - meta2:
         type: map
         description: |
-          Groovy Map containing sample information
+          Groovy Map containing reference information
           e.g. [ id:'test' ]
     - fasta:
         type: file
@@ -62,26 +74,24 @@ output:
   versions_samtools:
     - - ${task.process}:
           type: string
-          description: Name of the process
+          description: The process the versions were collected from
       - samtools:
           type: string
-          description: Name of the tool
-      - samtools --version | head -1 | sed -e "s/samtools //":
-          type: eval
-          description: The expression to obtain the version of the tool
-
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
 topics:
   versions:
     - - ${task.process}:
           type: string
-          description: Name of the process
+          description: The process the versions were collected from
       - samtools:
           type: string
-          description: Name of the tool
-      - samtools --version | head -1 | sed -e "s/samtools //":
-          type: eval
-          description: The expression to obtain the version of the tool
-
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@drpatelh"
   - "@joseespinosa"
