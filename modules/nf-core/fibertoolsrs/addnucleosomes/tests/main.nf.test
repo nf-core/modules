@@ -1,0 +1,58 @@
+nextflow_process {
+
+    name "Test Process FIBERTOOLSRS_ADDNUCLEOSOMES"
+    script "../main.nf"
+    process "FIBERTOOLSRS_ADDNUCLEOSOMES"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fibertoolsrs"
+    tag "fibertoolsrs/addnucleosomes"
+
+    test("homo_sapiens - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

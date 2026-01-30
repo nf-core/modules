@@ -19,12 +19,12 @@ nextflow_process {
                 input[0] = [
                     [ id:'test3' ], // meta map
                     [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true)
                     ],
                     [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz.tbi', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz.csi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi', checkIfExists: true)
                     ]
                 ]
                 """
@@ -37,7 +37,6 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
     test("homo_sapiens - [[vcf1, vcf2], [tbi1, tbi2]] - vcf_gz_index") {
@@ -50,12 +49,12 @@ nextflow_process {
                 input[0] = [
                     [ id:'test3' ], // meta map
                     [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true)
                     ],
                     [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz.tbi', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz.csi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi', checkIfExists: true)
                     ]
                 ]
                 """
@@ -69,12 +68,11 @@ nextflow_process {
                     process.out.vcf,
                     process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name } },
                     process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() },
                 { assert process.out.csi[0][1].endsWith(".csi") }
             )
         }
-
     }
 
     test("homo_sapiens - [[vcf1, vcf2], [tbi1, tbi2]] - vcf_gz_index_csi") {
@@ -87,12 +85,12 @@ nextflow_process {
                 input[0] = [
                     [ id:'test3' ], // meta map
                     [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true)
                     ],
                     [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz.tbi', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz.csi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi', checkIfExists: true)
                     ]
                 ]
                 """
@@ -106,12 +104,11 @@ nextflow_process {
                     process.out.vcf,
                     process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name } },
                     process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() },
                 { assert process.out.csi[0][1].endsWith(".csi") }
             )
         }
-
     }
 
     test("homo_sapiens - [[vcf1, vcf2], [tbi1, tbi2]] - vcf_gz_index_tbi") {
@@ -124,12 +121,12 @@ nextflow_process {
                 input[0] = [
                     [ id:'test3' ], // meta map
                     [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true)
                     ],
                     [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz.tbi', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz.csi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi', checkIfExists: true)
                     ]
                 ]
                 """
@@ -143,12 +140,11 @@ nextflow_process {
                     process.out.vcf,
                     process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name } },
                     process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() },
                 { assert process.out.tbi[0][1].endsWith(".tbi") }
             )
         }
-
     }
 
 
@@ -162,8 +158,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test3' ], // meta map
                     [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true)
                     ],
                     []
                 ]
@@ -177,7 +173,6 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
     test("homo_sapiens - [[vcf1, vcf2], [tbi1, tbi2]] - stub") {
@@ -191,12 +186,12 @@ nextflow_process {
                 input[0] = [
                     [ id:'test3' ], // meta map
                     [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true)
                     ],
                     [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz.tbi', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz.csi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi', checkIfExists: true)
                     ]
                 ]
                 """
@@ -209,7 +204,6 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
     test("homo_sapiens - [[vcf1, vcf2], [tbi1, tbi2]] - vcf_gz_index - stub") {
@@ -223,12 +217,12 @@ nextflow_process {
                 input[0] = [
                     [ id:'test3' ], // meta map
                     [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true)
                     ],
                     [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz.tbi', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz.csi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi', checkIfExists: true)
                     ]
                 ]
                 """
@@ -242,7 +236,6 @@ nextflow_process {
                 { assert process.out.csi[0][1].endsWith(".csi") }
             )
         }
-
     }
 
     test("homo_sapiens - [[vcf1, vcf2], [tbi1, tbi2]] - vcf_gz_index_csi - stub") {
@@ -256,12 +249,12 @@ nextflow_process {
                 input[0] = [
                     [ id:'test3' ], // meta map
                     [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true)
                     ],
                     [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz.tbi', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz.csi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi', checkIfExists: true)
                     ]
                 ]
                 """
@@ -275,7 +268,6 @@ nextflow_process {
                 { assert process.out.csi[0][1].endsWith(".csi") }
             )
         }
-
     }
 
     test("homo_sapiens - [[vcf1, vcf2], [tbi1, tbi2]] - vcf_gz_index_tbi - stub") {
@@ -289,12 +281,12 @@ nextflow_process {
                 input[0] = [
                     [ id:'test3' ], // meta map
                     [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true)
                     ],
                     [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz.tbi', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz.csi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi', checkIfExists: true)
                     ]
                 ]
                 """
@@ -308,7 +300,6 @@ nextflow_process {
                 { assert process.out.tbi[0][1].endsWith(".tbi") }
             )
         }
-
     }
 
 

@@ -1,4 +1,4 @@
-name: "decoupler"
+name: "decoupler_decoupler"
 
 description: |
   decoupler is a package containing different statistical methods
@@ -41,21 +41,31 @@ input:
         pattern: "*.tsv"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
-  - net:
-      type: file
-      description: |
-        The prior knowledge network linking the features of the
-        expression matrix to a process/component (e.g. gene set,
-        transcription factor, kinase, etc.)
-      pattern: "*.tsv"
-      ontologies:
-        - edam: http://edamontology.org/format_3475 # TSV
-  - gtf:
-      type: file
-      description: |
-        Annotation file in GTF format
-      pattern: "*.gtf"
-      ontologies: []
+  - - meta2:
+        type: map
+        description: Groovy map
+    - net:
+        type: file
+        description: |
+          The prior knowledge network linking the features of the
+          expression matrix to a process/component (e.g. gene set,
+          transcription factor, kinase, etc.)
+        pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - - meta3:
+        type: map
+        description: Groovy map
+    - annot:
+        type: file
+        description: |
+          Annotation file in TSV format containing gene ID to gene name mappings.
+          Used specifically for mapping Ensembl IDs to gene names.
+          Expected format: two columns with gene_id and gene_name headers.
+        pattern: "*.tsv"
+        required: false
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
   dc_estimate:
     - - meta:
@@ -90,12 +100,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:‘test’, single_end ]
-      - "*decoupler_plot.png":
+      - "*estimate_decoupler_plot.png":
           type: file
           description: |
             The file containing the plots associated to the estimation
             results of the enrichment(s)
-          pattern: "*decoupler_plot.png"
+          pattern: "*estimate_decoupler_plot.png"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   versions:

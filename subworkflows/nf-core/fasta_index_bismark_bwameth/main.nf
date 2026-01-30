@@ -13,19 +13,20 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
     bwameth_index    // channel: [ val(meta), [ bwameth index ] ]
     aligner          // string: bismark, bismark_hisat or bwameth
     collecthsmetrics // boolean: whether to run picard collecthsmetrics
+    use_mem2         // boolean: generate mem2 index if no index provided, and bwameth is selected
 
     main:
 
-    ch_fasta         = Channel.empty()
-    ch_fasta_index   = Channel.empty()
-    ch_bismark_index = Channel.empty()
-    ch_bwameth_index = Channel.empty()
-    ch_versions      = Channel.empty()
+    ch_fasta         = channel.empty()
+    ch_fasta_index   = channel.empty()
+    ch_bismark_index = channel.empty()
+    ch_bwameth_index = channel.empty()
+    ch_versions      = channel.empty()
 
     // Check if fasta file is gzipped and decompress if needed
     fasta
-        .branch {
-            gzipped: it[1].toString().endsWith('.gz')
+        .branch { _meta, file ->
+            gzipped: file.toString().endsWith('.gz')
             unzipped: true
         }
         .set { ch_fasta_branched }
@@ -35,7 +36,6 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
     )
 
     ch_fasta    = ch_fasta_branched.unzipped.mix(GUNZIP.out.gunzip)
-    ch_versions = ch_versions.mix(GUNZIP.out.versions)
 
     // Aligner: bismark or bismark_hisat
     if( aligner =~ /bismark/ ){
@@ -45,8 +45,8 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
         if (bismark_index) {
             // Handle channel-based bismark index
             bismark_index
-                .branch {
-                    gzipped: it[1].toString().endsWith('.gz')
+                .branch { _meta, file ->
+                    gzipped: file.toString().endsWith('.gz')
                     unzipped: true
                 }
                 .set { ch_bismark_index_branched }
@@ -74,8 +74,8 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
         if (bwameth_index) {
             // Handle channel-based bwameth index
             bwameth_index
-                .branch {
-                    gzipped: it[1].toString().endsWith('.gz')
+                .branch { _meta, file ->
+                    gzipped: file.toString().endsWith('.gz')
                     unzipped: true
                 }
                 .set { ch_bwameth_index_branched }
@@ -87,10 +87,17 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
             ch_bwameth_index = ch_bwameth_index_branched.unzipped.mix(UNTAR.out.untar)
             ch_versions      = ch_versions.mix(UNTAR.out.versions)
         } else {
-            BWAMETH_INDEX (
-                ch_fasta,
-                false
-            )
+            if (use_mem2) {
+                BWAMETH_INDEX (
+                    ch_fasta,
+                    true
+                )
+            } else {
+                BWAMETH_INDEX (
+                    ch_fasta,
+                    false
+                )
+            }
             ch_bwameth_index = BWAMETH_INDEX.out.index
             ch_versions      = ch_versions.mix(BWAMETH_INDEX.out.versions)
         }
@@ -110,7 +117,7 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
                 false
             )
             ch_fasta_index = SAMTOOLS_FAIDX.out.fai
-            ch_versions    = ch_versions.mix(SAMTOOLS_FAIDX.out.versions)
+            // samtools/faidx version emitted into the topic channel
         }
     }
 

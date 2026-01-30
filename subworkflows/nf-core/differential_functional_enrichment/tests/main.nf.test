@@ -19,6 +19,8 @@ nextflow_workflow {
     tag "custom/tabulartogseachip"
     tag "subworkflows/abundance_differential_filter"
     tag "abundance_differential_filter"
+    tag "decoupler_basic"
+    tag "decoupler/decoupler"
 
     test("test gprofiler2 - mouse") {
         tag 'gprofiler2_basic'
@@ -39,7 +41,12 @@ nextflow_workflow {
                 input[0] = ch_input
                 input[1] = Channel.of([[], [], [], [], [], []])
                 input[2] = Channel.of([[], []])
-                input[3] = Channel.of([[], [], [], []])
+                input[3] = Channel.of([
+                    ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
+                    [],  //
+                    '',  //
+                    ''   //
+                ])
                 """
             }
         }
@@ -114,10 +121,15 @@ nextflow_workflow {
                         [meta, results, [], [], 'gprofiler2']
                     }
 
+                ch_featuresheet = ch_input
+                    .map { meta, file, genesets, background, method ->
+                        [meta, [], '', '']
+                    }
+
                 input[0] = ch_input
                 input[1] = Channel.of([[], [], [], [], [], []])
                 input[2] = Channel.of([[], []])
-                input[3] = Channel.of([[], [], [], []])
+                input[3] = ch_featuresheet
                 """
             }
         }
@@ -303,11 +315,14 @@ nextflow_workflow {
                     .map { meta, results, genesets ->
                         [meta, results, genesets, [], 'grea']
                     }
-
+                ch_featuresheet = ch_input
+                    .map { meta, file, genesets, background, method ->
+                        [meta, [], '', '']
+                    }
                 input[0] = ch_input
                 input[1] = Channel.of([[], [], [], [], [], []])
                 input[2] = Channel.of([[], []])
-                input[3] = Channel.of([[], [], [], []])
+                input[3] = ch_featuresheet
                 """
             }
         }
@@ -463,6 +478,73 @@ nextflow_workflow {
 
     }
 
+    test("deseq2 + decoupler - mouse") {
+        tag "deseq2+decoupler"
+        tag "decoupler_basic"
+        config "./decoupler.config"
+
+        when {
+            workflow {
+                """
+                ch_input = Channel.of([
+                    [
+                        'id':'treatment_mCherry_hND6',
+                        'method_differential':'deseq2',
+                        'params': [
+                            'differential_method': 'deseq2'
+                        ]
+                    ],
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/treatment_mCherry_hND6_.deseq2.results.tsv", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/progeny/mouse_network.tsv", checkIfExists: true),
+                    [],
+                    'decoupler'
+                ])
+
+                ch_contrasts = Channel.of([[], [], [], [], [], []])
+                ch_samplesheet = Channel.of([[], []])
+                ch_featuresheet = Channel.of([
+                    [
+                        'id':'treatment_mCherry_hND6',
+                        'method_differential':'deseq2',
+                        'params': [
+                            'differential_method': 'deseq2'
+                        ]
+                    ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/differentialabundance/modules_testdata/Mus_musculus.anno.tsv", checkIfExists: true),
+                    'gene_id',
+                    'gene_name'
+                ])
+
+                input[0] = ch_input
+                input[1] = ch_contrasts
+                input[2] = ch_samplesheet
+                input[3] = ch_featuresheet
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.decoupler_dc_estimate.size() > 0 },
+                { assert workflow.out.decoupler_dc_pvals.size() > 0 },
+                { assert workflow.out.decoupler_png.size() > 0 },
+                { assert snapshot(
+                    workflow.out.decoupler_dc_estimate.collect { meta, files ->
+                        [meta.id, files.collect { path(it).getFileName().toString() }.sort()]
+                    },
+                    workflow.out.decoupler_dc_pvals.collect { meta, files ->
+                        [meta.id, files.collect { path(it).getFileName().toString() }.sort()]
+                    },
+                    workflow.out.decoupler_png.collect { meta, files ->
+                        [meta.id, files.collect { path(it).getFileName().toString() }.sort()]
+                    },
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
     test("stub") {
         tag 'gprofiler2_basic'
         config './gprofiler2.config'
@@ -482,7 +564,12 @@ nextflow_workflow {
                 input[0] = ch_input
                 input[1] = Channel.of([[], [], [], [], [], []])
                 input[2] = Channel.of([[], []])
-                input[3] = Channel.of([[], [], [], []])
+                input[3] = Channel.of([
+                    ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
+                    [],
+                    '',
+                    ''
+                ])
                 """
             }
         }

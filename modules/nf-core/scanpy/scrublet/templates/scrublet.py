@@ -7,10 +7,12 @@ import os
 os.environ["MPLCONFIGDIR"] = "./tmp/mpl"
 os.environ["NUMBA_CACHE_DIR"] = "./tmp/numba"
 
-import scanpy as sc
 import platform
+
+import scanpy as sc
 import yaml
 from threadpoolctl import threadpool_limits
+
 threadpool_limits(int("${task.cpus}"))
 sc.settings.n_jobs = int("${task.cpus}")
 
@@ -35,12 +37,7 @@ adata.write_h5ad(f"{prefix}.h5ad")
 
 # Versions
 
-versions = {
-    "${task.process}": {
-        "python": platform.python_version(),
-        "scanpy": sc.__version__
-    }
-}
+versions = {"${task.process}": {"python": platform.python_version(), "scanpy": sc.__version__}}
 
 with open("versions.yml", "w") as f:
     yaml.dump(versions, f)

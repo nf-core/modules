@@ -29,17 +29,15 @@ env:
   NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
-  NXF_VER: "24.10.1"
+  NXF_VER: "25.10.2"
 
 jobs:
   pre-commit:
     runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
-      - uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
-        with:
-          extra_args: ""
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+      - name: Run prek
+        uses: j178/prek-action@91fd7d7cf70ae1dee9f4f44e7dfa5d1073fe6623 # v1
 
   ###################
   # nf-core linting #
@@ -64,7 +62,7 @@ jobs:
           sudo rm -rf ./* || true
           sudo rm -rf ./.* || true
 
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
         with:
           fetch-depth: 2 # To retrieve the preceding commit.
 
@@ -80,27 +78,27 @@ jobs:
           list-files: "json"
 
       - name: Get module name
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         id: module_names
         with:
           script: |
             return [...new Set(${{ steps.filter.outputs.modules_files }}
-              .filter(x => x.endsWith('main.nf'))
+              .filter(x => x.endsWith('main.nf') || x.endsWith('.nf.test.snap'))
               .map(path => path
                 .replace('modules/nf-core/', '')
-                .replace(/\/main\.nf$/, '')
+                .replace(/\/(main\.nf|tests\/.*)$/, '')
               )
             )];
       - name: Get subworkflow name
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         id: subworkflow_names
         with:
           script: |
             return [...new Set(${{ steps.filter.outputs.subworkflows_files }}
-              .filter(x => x.endsWith('main.nf'))
+              .filter(x => x.endsWith('main.nf') || x.endsWith('.nf.test.snap'))
               .map(path => path
                 .replace('subworkflows/nf-core/', '')
-                .replace(/\/main\.nf$/, '')
+                .replace(/\/(main\.nf|tests\/.*)$/, '')
               )
             )];
 
@@ -128,13 +126,13 @@ jobs:
         run: |
           sudo rm -rf ./* || true
           sudo rm -rf ./.* || true
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - name: Set up Python
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
         with:
-          python-version: "3.13"
+          python-version: "3.14"
 
-      - uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
+      - uses: actions/cache@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5
         id: cache-pip
         with:
           path: ~/.cache/pip
@@ -145,7 +143,7 @@ jobs:
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4
+      - uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5
         with:
           distribution: "temurin"
           java-version: "17"
@@ -176,11 +174,11 @@ jobs:
         run: |
           sudo rm -rf ./* || true
           sudo rm -rf ./.* || true
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - name: Set up Python
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
         with:
-          python-version: "3.13"
+          python-version: "3.14"
 
       - name: Set up Nextflow
         uses: nf-core/setup-nextflow@v2

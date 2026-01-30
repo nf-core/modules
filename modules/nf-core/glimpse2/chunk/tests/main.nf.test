@@ -43,7 +43,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
                     "chr22:16570000-16610000",
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/phaseimpute/hum_data/reference_genome/GRCh38_22.map", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.glimpse.map", checkIfExists: true)
                 ]
                 input[1]= "recursive"
                 """

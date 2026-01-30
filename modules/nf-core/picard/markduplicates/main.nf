@@ -4,8 +4,8 @@ process PICARD_MARKDUPLICATES {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:3.3.0--hdfd78af_0' :
-        'biocontainers/picard:3.3.0--hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/0861295baa7c01fc593a9da94e82b44a729dcaf8da92be8e565da109aa549b25/data' :
+        'community.wave.seqera.io/library/picard:3.4.0--e9963040df0a9bf6' }"
 
     input:
     tuple val(meta), path(reads)
@@ -58,6 +58,7 @@ process PICARD_MARKDUPLICATES {
     if ("$reads" == "${prefix}.${suffix}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${prefix}.${suffix}
+    touch ${prefix}.${suffix}.bai
     touch ${prefix}.MarkDuplicates.metrics.txt
 
     cat <<-END_VERSIONS > versions.yml

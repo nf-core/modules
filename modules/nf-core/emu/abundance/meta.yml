@@ -58,26 +58,26 @@ output:
           type: file
           description: Sam alignment file
           pattern: "*{.sam}"
-  unclassified_fa:
+  unclassified:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}_unclassified_mapped.fasta:
+      - ${prefix}_unclassified_mapped.*:
           type: file
           description: Output file with unclassified sequences
-          pattern: "*{.fasta}"
-  unmapped_fa:
+          pattern: "*{.fasta,.fastq}"
+  unmapped:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}_unmapped.fasta:
+      - ${prefix}_unmapped.*:
           type: file
           description: Output file with unmapped sequences
-          pattern: "*{.fasta}"
+          pattern: "*{.fasta,.fastq}"
   versions:
     - versions.yml:
         type: file

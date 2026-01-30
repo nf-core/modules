@@ -1,8 +1,8 @@
 nextflow_process {
 
-    name "Test Process DECOUPLER"
+    name "Test Process DECOUPLER_DECOUPLER"
     script "../main.nf"
-    process "DECOUPLER"
+    process "DECOUPLER_DECOUPLER"
     config "./nextflow.config"
 
     tag "modules"
@@ -14,7 +14,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = "--min_n 2 --transpose TRUE --ensembl_ids TRUE --methods mlm"
+                module_args = "--min_n 2 --transpose TRUE --ensembl_ids TRUE --methods mlm --features_id_col gene_id --features_symbol_col gene_name"
             }
             process {
                 """
@@ -23,9 +23,12 @@ nextflow_process {
                     file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/treatment_mCherry_hND6_.deseq2.results.tsv", checkIfExists: true)
                 ]
                 input[1] = [
+                    ['id':'network'],
                     file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/progeny/mouse_network.tsv", checkIfExists: true)
                 ]
-                input[2] = [file("https://ftp.ensembl.org/pub/release-81/gtf/mus_musculus/Mus_musculus.GRCm38.81.gtf.gz", checkIfExists: true)]
+                input[2] = [
+                    ['id':'annot'],
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/Mus_musculus.anno.feature_metadata.tsv", checkIfExists: true)]
                 """
             }
         }
@@ -63,7 +66,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = "--min_n 1"
+                module_args = "--min_n 1 --features_id_col gene_id --features_symbol_col gene_name"
             }
 
             process {
@@ -73,9 +76,12 @@ nextflow_process {
                     file(params.test_data['generic']['tsv']['expression'], checkIfExists: true)
                 ]
                 input[1] = [
+                    ['id':'network'],
                     file(params.test_data['generic']['tsv']['network'], checkIfExists: true)
                 ]
-                input[2] = [file("https://ftp.ensembl.org/pub/release-81/gtf/mus_musculus/Mus_musculus.GRCm38.81.gtf.gz", checkIfExists: true)]
+                input[2] = [
+                    ['id':'annot'],
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/Mus_musculus.anno.feature_metadata.tsv", checkIfExists: true)]
                 """
             }
         }
@@ -114,7 +120,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = "--min_n 1"
+                module_args = "--min_n 1 --features_id_col gene_id --features_symbol_col gene_name"
             }
             process {
                 """
@@ -123,9 +129,12 @@ nextflow_process {
                     file(params.test_data['generic']['tsv']['expression'], checkIfExists: true)
                 ]
                 input[1] = [
+                    ['id':'network'],
                     file(params.test_data['generic']['tsv']['network'], checkIfExists: true)
                 ]
-                input[2] = [file("https://ftp.ensembl.org/pub/release-81/gtf/mus_musculus/Mus_musculus.GRCm38.81.gtf.gz", checkIfExists: true)]
+                input[2] = [
+                    ['id':'annot'],
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/Mus_musculus.anno.feature_metadata.tsv", checkIfExists: true)]
                 """
             }
         }

@@ -1,0 +1,83 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "clusty"
+description: Clusty is a tool for large-scale clustering using sparse distance
+  matrices, suitable for datasets with millions of objects.
+keywords:
+  - cluster
+  - network
+  - contig
+  - scaffold
+  - alignment
+  - protein
+tools:
+  - "clusty":
+      description: "Clusty is a tool for large-scale data clustering."
+      homepage: "https://github.com/refresh-bio/clusty"
+      documentation: "https://github.com/refresh-bio/clusty"
+      tool_dev_url: "https://github.com/refresh-bio/clusty"
+      doi: "10.1038/s41592-025-02701-7"
+      licence: ["GPL v3-or-later"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - distances:
+        type: file
+        description: pairwise distances file (e.g., TSV format)
+        pattern: "*.tsv"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - objects:
+        type: file
+        description: Optional TSV file containing object identifiers
+        pattern: "*.tsv"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+
+output:
+  assignments:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.tsv":
+          type: file
+          description: TSV file with cluster assignments
+          pattern: "*.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions_clusty:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - clusty:
+          type: string
+          description: The name of the tool
+      - "echo $(clusty --version 2>&1":
+          type: string
+          description: The version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - clusty:
+          type: string
+          description: The name of the tool
+      - "echo $(clusty --version 2>&1":
+          type: string
+          description: The version of the tool
+authors:
+  - "@Joon-Klaps"
+maintainers:
+  - "@Joon-Klaps"

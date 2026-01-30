@@ -1,19 +1,19 @@
 nextflow_process {
 
     name "Test Process COOLER_MERGE"
-    
+
     script "../main.nf"
     process "COOLER_MERGE"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "cooler"
     tag "cooler/merge"
-    
+
     test("test_cooler_merge") {
-        
+
         when {
-            
+
             process {
                 """
                 input[0] = [
@@ -36,12 +36,12 @@ nextflow_process {
             )
         }
     }
-    
-    
+
+
     test("test_cooler_merge - stub") {
         options '-stub'
         when {
-            
+
             process {
                 """
                 input[0] = [

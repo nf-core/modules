@@ -4,8 +4,8 @@ process VCFANNO {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d6/d6a1af15acc0fbec648812e07ccb4c1c39a926f3a98031a50f51c5b859e543e1/data':
-        'community.wave.seqera.io/library/htslib_vcfanno:398cde9953538855' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a2/a2ebcf552e7f71001f2d7234ae673cb8afd5384a25c18ecbff9e17ab94ab5e37/data':
+        'community.wave.seqera.io/library/htslib_vcfanno:e69f840c34045096' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(specific_resources)
@@ -47,7 +47,7 @@ process VCFANNO {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml

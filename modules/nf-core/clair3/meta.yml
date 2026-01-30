@@ -79,7 +79,7 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
           pattern: "*.{vcf,vcf.gz}"
-      - "*merge_output.vcf.gz":
+      - "${prefix}merge_output.vcf.gz":
           type: map
           description: |
             Groovy Map containing sample information
@@ -92,7 +92,7 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
           pattern: "*.{vcf,vcf.gz}"
-      - "*merge_output.vcf.gz.tbi":
+      - "${prefix}merge_output.vcf.gz.tbi":
           type: file
           description: index for vcf files
           pattern: "*.{vcf.tbi,vcf.tbi.gz}"
@@ -104,7 +104,7 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
           pattern: "*.{vcf,vcf.gz}"
-      - "*phased_merge_output.vcf.gz":
+      - "${prefix}phased_merge_output.vcf.gz":
           type: file
           description: phased vcf
           pattern: "*.{vcf,vcf.gz}"
@@ -116,11 +116,36 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
           pattern: "*.{vcf,vcf.gz}"
-      - "*phased_merge_output.vcf.gz.tbi":
+      - "${prefix}phased_merge_output.vcf.gz.tbi":
           type: file
           description: index for vcf files
           pattern: "*.{vcf.tbi,vcf.tbi.gz}"
           ontologies: []
+  gvcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+          pattern: "*.{vcf,vcf.gz}"
+      - "${prefix}merge_output.gvcf.gz":
+          type: file
+          description: gvcf file
+          pattern: "*.{gvcf,gvcf.gz}"
+          ontologies: []
+  gtbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+          pattern: "*.{gvcf.tbi,gvcf.gz.tbi}"
+      - "${prefix}merge_output.gvcf.gz.tbi":
+          type: file
+          description: index for gvcf file
+          pattern: "*.{vcf.tbi,vcf.tbi.gz}"
+          ontologies: []
+
   versions:
     - versions.yml:
         type: file

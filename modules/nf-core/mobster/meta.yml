@@ -28,7 +28,8 @@ input:
           e.g. `[ id:'sample1' ]`
     - rds_join:
         type: file
-        description: Either a .rds object of class mCNAqc or a .csv mutations table
+        description: Either a .rds object of class mCNAqc or a .csv mutations
+          table
         pattern: "*.{rds,csv}"
         ontologies:
           - edam: "http://edamontology.org/format_3752" # csv
@@ -39,10 +40,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*_mobster_st_fit.rds":
+      - "*_mobster_fit.rds":
           type: file
           description: Full mobster fit as an .rds object
-          pattern: "*_mobster_st_fit.rds"
+          pattern: "*_mobster_fit.rds"
           ontologies: []
   mobster_best_rds:
     - - meta:
@@ -50,21 +51,21 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*_mobster_st_best_fit.rds":
+      - "*_mobster_best_fit.rds":
           type: file
           description: Best mobster fit as an .rds object
-          pattern: "*_mobster_st_best_fit.rds"
+          pattern: "*_mobster_best_fit.rds"
           ontologies: []
-  mobster_plots_rds:
+  mobster_best_plots_rds:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*_plots.rds":
+      - "*_mobster_best_plots.rds":
           type: file
           description: Final plots as an .rds object
-          pattern: "*_plots.rds"
+          pattern: "*_mobster_best_plots.rds"
           ontologies: []
   mobster_report_rds:
     - - meta:
@@ -72,10 +73,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*_REPORT_plots_mobster.rds":
+      - "*_mobster_report.rds":
           type: file
           description: Final report plots as an .rds object
-          pattern: "*_REPORT_plots_mobster.rds"
+          pattern: "*_mobster_report.rds"
           ontologies: []
   mobster_report_pdf:
     - - meta:
@@ -83,10 +84,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*_REPORT_plots_mobster.pdf":
+      - "*_mobster_report.pdf":
           type: file
           description: Final report plots as a .pdf file
-          pattern: "*_REPORT_plots_mobster.pdf"
+          pattern: "*_mobster_report.pdf"
           ontologies:
             - edam: "http://edamontology.org/format_3508" # pdf
   mobster_report_png:
@@ -95,10 +96,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*_REPORT_plots_mobster.png":
+      - "*_mobster_report.png":
           type: file
           description: Final report plots as a .png file
-          pattern: "*_REPORT_plots_mobster.png"
+          pattern: "*_mobster_report.png"
           ontologies:
             - edam: "http://edamontology.org/format_3603" # png
   versions:

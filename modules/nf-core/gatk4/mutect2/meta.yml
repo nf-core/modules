@@ -46,7 +46,7 @@ input:
     - fasta:
         type: file
         description: The reference fasta file
-        pattern: "*.fasta"
+        pattern: "*.{fasta,fasta.gz}"
         ontologies: []
   - - meta3:
         type: map
@@ -56,7 +56,12 @@ input:
     - fai:
         type: file
         description: Index of reference fasta file
-        pattern: "*.fasta.fai"
+        pattern: "*.{fasta.fai,fasta.fai.gz}"
+        ontologies: []
+    - gzi:
+        type: file
+        description: Index of bgzipped reference fasta file
+        pattern: "*.fasta.gz.gzi"
         ontologies: []
   - - meta4:
         type: map
@@ -68,6 +73,17 @@ input:
         description: GATK sequence dictionary
         pattern: "*.dict"
         ontologies: []
+  - alleles:
+      type: file
+      description: vcf file to be used to force-call alleles.
+      pattern: "*.vcf.gz"
+      ontologies:
+        - edam: http://edamontology.org/format_3989 # GZIP format
+  - alleles_tbi:
+      type: file
+      description: Index file for alleles to be force-called.
+      pattern: "*.vcf.gz.tbi"
+      ontologies: []
   - germline_resource:
       type: file
       description: Population vcf of germline sequencing, containing allele fractions.

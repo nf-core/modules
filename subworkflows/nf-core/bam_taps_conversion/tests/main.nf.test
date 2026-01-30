@@ -1,0 +1,51 @@
+nextflow_workflow {
+
+    name "Test Subworkflow BAM_TAPS_CONVERSION"
+    script "../main.nf"
+    workflow "BAM_TAPS_CONVERSION"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/bam_taps_conversion"
+    tag "rastair"
+    tag "taps"
+    tag "methylation"
+    tag "rastair/mbias"
+    tag "rastair/mbiasparser"
+    tag "rastair/call"
+    tag "rastair/methylkit"
+
+    test("sarscov2 paired-end methylated [bam] / sarscov2 genome [fasta]") {
+
+        when {
+            workflow {
+                """
+                // Define the input channels required by the BAM_TAPS_CONVERSION workflow
+                input[0] = Channel.of([
+                    [ id:'test' ],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
+                ])
+                input[1] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai", checkIfExists: true)
+                ])
+                input[2] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+                ])
+                input[3] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta.fai", checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}

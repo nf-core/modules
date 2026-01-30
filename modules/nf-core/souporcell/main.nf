@@ -8,14 +8,14 @@ process SOUPORCELL {
         'community.wave.seqera.io/library/souporcell_gxx:f648658dde2cdd53' }"
 
     input:
-    tuple val(meta), path(bam), path(barcodes)
+    tuple val(meta), path(bam), path(barcodes), val(clusters)
     tuple val(meta2), path(fasta)
-    val(clusters)
 
     output:
-    tuple val(meta), path("*/*.vcf"), emit: vcf
-    tuple val(meta), path("*/*.tsv"), emit: tsv
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*/clusters.tsv")         , emit: clusters
+    tuple val(meta), path("*/cluster_genotypes.vcf"), emit: vcf
+    tuple val(meta), path("*/ambient_rna.txt")      , emit: ambient_rna
+    path "versions.yml"                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,6 +23,7 @@ process SOUPORCELL {
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ""
+    def VERSION = '2.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions. (See this issue: https://github.com/wheaton5/souporcell/issues/262)
     """
     mkdir -p temp
     export TMPDIR=./temp
@@ -37,21 +38,23 @@ process SOUPORCELL {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        souporcell: \$(souporcell_pipeline.py --version 2>&1 || echo "N/A")
+        souporcell: $VERSION
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '2.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions. (See this issue: https://github.com/wheaton5/souporcell/issues/262)
     """
     mkdir -p ${prefix}
 
-    touch ${prefix}/cluster_genotypes.vcf
     touch ${prefix}/clusters.tsv
+    touch ${prefix}/cluster_genotypes.vcf
+    touch ${prefix}/ambient_rna.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        souporcell: \$(souporcell --version)
+        souporcell: $VERSION
     END_VERSIONS
     """
 }

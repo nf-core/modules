@@ -46,7 +46,7 @@ process HLALA_TYPING {
         --workingDir . \\
         --maxThreads $task.cpus \\
         $args
-    
+
     mkdir -p results
     mv ${prefix}/ results/
 

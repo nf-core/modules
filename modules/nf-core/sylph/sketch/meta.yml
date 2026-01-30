@@ -41,15 +41,13 @@ output:
       - my_sketches/*.sylsp:
           type: map
           description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            Output sylph sketch files of input reads for profiling
           pattern: "my_sketches/*.sylsp"
       - database.syldb:
           type: map
           description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-          pattern: "my_sketches/*.sylsp"
+            Output sylph database files for profiling against database
+          pattern: "*.syldb"
   versions:
     - versions.yml:
         type: file

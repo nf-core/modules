@@ -1,0 +1,116 @@
+name: update-sentieon-snapshot
+run-name: update sentieon snapshot (automated)
+on:
+  issue_comment:
+    types: [created]
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # renovate: datasource=github-releases depName=askimed/nf-test versioning=semver
+  NFT_VER: "0.9.3"
+  NXF_ANSI_LOG: false
+  # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
+  NXF_VER: "25.10.2"
+
+jobs:
+  update-sentieon-snapshot:
+    # Only run if comment is on a PR with the main repo, and if it contains the magic keywords
+    if: >
+      contains(github.event.comment.html_url, '/pull/') &&
+      contains(github.event.comment.body, '@nf-core-bot update sentieon snapshot') &&
+      github.repository == 'nf-core/modules'
+    runs-on:
+      - runs-on=${{ github.run_id }}-nf-test-changes
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
+    steps:
+      # indication that the snapshot is being updated
+      - name: React on comment
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
+        with:
+          comment-id: ${{ github.event.comment.id }}
+          reactions: eyes
+      # Use the @nf-core-bot token to check out so we can push later
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+        with:
+          token: ${{ secrets.nf_core_bot_auth_token }}
+
+      - name: Get the test path from the comment (after "@nf-core-bot update sentieon snapshot path:")
+        id: get-test-path
+        run: |
+          echo "test_path=$(echo ${{ github.event.comment.body }} | grep -oP 'path:\s*\K[^ ]+')" >> $GITHUB_OUTPUT
+
+      - name: if test path is empty, exit
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
+        if: steps.get-test-path.outputs.test_path == ''
+        with:
+          comment-id: ${{ github.event.comment.id }}
+          reactions: "-1"
+
+      - name: if test path is empty, exit
+        if: steps.get-test-path.outputs.test_path == ''
+        run: exit 0
+
+      # Action runs on the issue comment, so we don't get the PR by default
+      # Use the gh cli to check out the PR
+      - name: Checkout Pull Request
+        run: gh pr checkout ${{ github.event.issue.number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.nf_core_bot_auth_token }}
+
+      - uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Set up Nextflow
+        uses: nf-core/setup-nextflow@v2
+        with:
+          version: "${{ env.NXF_VER }}"
+
+      - name: Set up Python
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
+        with:
+          python-version: "3.14"
+
+      - name: Set up nf-test
+        uses: nf-core/setup-nf-test@v1
+        with:
+          version: "${{ env.NFT_VER }}"
+          install-pdiff: true
+
+      # Set up secrets
+      - name: Set up Nextflow secrets
+        env:
+          SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
+          SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
+        if: env.SENTIEON_ENCRYPTION_KEY != '' && env.SENTIEON_LICENSE_MESSAGE != ''
+        shell: bash
+        run: |
+          python -m pip install cryptography
+          nextflow secrets set SENTIEON_AUTH_DATA $(python3 modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
+      - name: Update sentieon snapshot
+        id: update-sentieon-snapshot
+        env:
+          SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
+          SENTIEON_AUTH_MECH: "GitHub Actions - token"
+        run: |
+          nf-test test \
+          --profile=docker \
+          --verbose \
+          --ci \
+          --update-snapshot \
+          --clean-snapshot \
+          --filter process,workflow \
+          --tag sentieon \
+          ${{ steps.get-test-path.outputs.test_path }}
+
+      - name: Commit & push changes
+        run: |
+          git config user.email "core@nf-co.re"
+          git config user.name "nf-core-bot"
+          git config push.default upstream
+          git add .
+          git status
+          git commit -m "[automated] Update sentieon snapshot"
+          git push
