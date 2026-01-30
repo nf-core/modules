@@ -12,7 +12,7 @@ process DEEPVARIANT_VCFSTATSREPORT {
 
     output:
     tuple val(meta), path("${prefix}.visual_report.html"), emit: report
-    tuple val("${task.process}"), val('deepvariant_vcfstatsreport'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //; s/ .*\$//'"), topic: versions, emit: versions_deepvariant_vcfstatsreport
+    tuple val("${task.process}"), val('deepvariant_vcfstatsreport'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //'"), topic: versions, emit: versions_deepvariant_vcfstatsreport
 
     when:
     task.ext.when == null || task.ext.when

@@ -45,7 +45,7 @@ output:
       - deepvariant_vcfstatsreport:
           type: string
           description: The tool name
-      - /opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //; s/ .*\$//':
+      - /opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -57,7 +57,7 @@ topics:
       - deepvariant_vcfstatsreport:
           type: string
           description: The tool name
-      - /opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //; s/ .*\$//':
+      - /opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

@@ -115,7 +115,7 @@ output:
       - bgzip:
           type: string
           description: The tool name
-      - bgzip -h 2>&1 | sed 's/^.*Version: //;s/Usage:.*//':
+      - bgzip --version | sed '1!d;s/.* //':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -135,10 +135,9 @@ topics:
       - bgzip:
           type: string
           description: The tool name
-      - bgzip -h 2>&1 | sed 's/^.*Version: //;s/Usage:.*//':
+      - bgzip --version | sed '1!d;s/.* //':
           type: eval
           description: The expression to obtain the version of the tool
-
 authors:
   - "@jemten"
 maintainers:

@@ -21,7 +21,7 @@ process DEEPVARIANT_RUNDEEPVARIANT {
     tuple val(meta), path("${prefix}.g.vcf.gz")          , emit: gvcf
     tuple val(meta), path("${prefix}.g.vcf.gz.tbi")      , emit: gvcf_tbi
     tuple val(meta), path("${prefix}.visual_report.html"), emit: report, optional: true
-    tuple val("${task.process}"), val('deepvariant'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //; s/ .*\$//'"), topic: versions, emit: versions_deepvariant
+    tuple val("${task.process}"), val('deepvariant'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //'"), topic: versions, emit: versions_deepvariant
 
     when:
     task.ext.when == null || task.ext.when
