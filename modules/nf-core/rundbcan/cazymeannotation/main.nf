@@ -4,8 +4,8 @@ process RUNDBCAN_CAZYMEANNOTATION {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/dbcan:5.1.2--pyhdfd78af_0' :
-        'biocontainers/dbcan:5.1.2--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/dbcan:5.2.4--pyhdfd78af_0' :
+        'biocontainers/dbcan:5.2.5--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(input_raw_data)
@@ -14,7 +14,7 @@ process RUNDBCAN_CAZYMEANNOTATION {
     output:
     tuple val(meta), path("${prefix}_overview.tsv")            , emit: cazyme_annotation
     tuple val(meta), path("${prefix}_dbCAN_hmm_results.tsv")   , emit: dbcanhmm_results
-    tuple val(meta), path("${prefix}_dbCANsub_hmm_results.tsv"), emit: dbcansub_results
+    tuple val(meta), path("${prefix}_dbCANsub_hmm_results.tsv"), emit: dbcansub_results, optional: true
     tuple val(meta), path("${prefix}_diamond.out")             , emit: dbcandiamond_results
     path  "versions.yml"                                       , emit: versions
 
@@ -34,7 +34,9 @@ process RUNDBCAN_CAZYMEANNOTATION {
 
     mv overview.tsv ${prefix}_overview.tsv
     mv dbCAN_hmm_results.tsv ${prefix}_dbCAN_hmm_results.tsv
-    mv dbCANsub_hmm_results.tsv ${prefix}_dbCANsub_hmm_results.tsv
+    if [ -f dbCANsub_hmm_results.tsv ]; then
+        mv dbCANsub_hmm_results.tsv ${prefix}_dbCANsub_hmm_results.tsv
+    fi
     mv diamond.out ${prefix}_diamond.out
 
     cat <<-END_VERSIONS > versions.yml
