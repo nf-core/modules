@@ -42,9 +42,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-            
+
                 { assert process.out.examples[0][0] == [id:'test', single_end:false] },
-                { assert process.out.gvcf[0][0] == [id:'test', single_end:false] },                
+                { assert process.out.gvcf[0][0] == [id:'test', single_end:false] },
                 { assert process.out.examples[0][1].size() == 4 },
                 { assert snapshot(
                     process.out.examples[0][1].collect { file(it).name }
