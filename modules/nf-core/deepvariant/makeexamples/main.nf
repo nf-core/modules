@@ -42,11 +42,6 @@ process DEEPVARIANT_MAKEEXAMPLES {
         ${par_regions} \\
         ${args} \\
         --task {}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepvariant_makeexamples: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
     """
 
     stub:
@@ -59,10 +54,5 @@ process DEEPVARIANT_MAKEEXAMPLES {
         touch ${prefix}.examples.tfrecord-\$i-of-\$SHARD_COUNT.tfrecord.gz.example_info.json
         echo "" | gzip > ${prefix}.gvcf.tfrecord-\$i-of-\$SHARD_COUNT.tfrecord.gz
     done
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepvariant_makeexamples: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
     """
 }
