@@ -23,14 +23,12 @@ workflow FASTQ_ALIGN_BAMCMP_BWA {
     //
 
     BWA_MEM_PRIMARY ( ch_reads, ch_primary_index, ch_fasta, true )
-    ch_versions = ch_versions.mix(BWA_MEM_PRIMARY.out.versions)
 
     //
     // Map reads with BWA to the contaminant index, must be queryname sorted (controlled by config)
     //
 
     BWA_MEM_CONTAMINANT ( ch_reads, ch_contaminant_index, [[], [] ], true )
-    ch_versions = ch_versions.mix(BWA_MEM_CONTAMINANT.out.versions)
 
     //
     // Use BAMCMP to retain only reads which map better to the primary genome.
@@ -39,14 +37,14 @@ workflow FASTQ_ALIGN_BAMCMP_BWA {
     // so they would be retained if they map badly to the primary genome, but with MAPQ > 0.
     //
 
-    ch_both_bams = BWA_MEM_PRIMARY.out.bam.join(BWA_MEM_CONTAMINANT.out.bam, by: [0], failOnDuplicate:true, failOnMismatch:true)
+    ch_both_bams = BWA_MEM_PRIMARY.out.output.join(BWA_MEM_CONTAMINANT.out.output, by: [0], failOnDuplicate:true, failOnMismatch:true)
 
     BAMCMP(ch_both_bams)
     //
     // Sort, index primary unfiltered BAM file and run samtools stats, flagstat and idxstats
     //
 
-    BAM_SORT_STATS_SAMTOOLS_UNFILTERED ( BWA_MEM_PRIMARY.out.bam, ch_fasta )
+    BAM_SORT_STATS_SAMTOOLS_UNFILTERED ( BWA_MEM_PRIMARY.out.output, ch_fasta )
     ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS_UNFILTERED.out.versions)
 
     //

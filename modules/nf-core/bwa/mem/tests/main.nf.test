@@ -45,11 +45,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.cram,
-                    process.out.csi,
-                    process.out.crai,
-                    process.out.versions,
-                    bam(process.out.bam[0][1]).getReadsMD5()
+                    process.out.index,
+                    process.out.findAll { key, val -> key.startsWith("versions") },
+                    bam(process.out.output[0][1]).getReadsMD5()
                     ).match()
                 }
             )
@@ -79,10 +77,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.cram,
-                    process.out.csi,
-                    process.out.crai,
-                    process.out.versions,
+                    process.out.index,
+                    process.out.findAll { key, val -> key.startsWith("versions") },
                     bam(process.out.bam[0][1]).getReadsMD5()
                     ).match()
                 }
@@ -114,11 +110,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.cram,
-                    process.out.csi,
-                    process.out.crai,
-                    process.out.versions,
-                    bam(process.out.bam[0][1]).getReadsMD5()
+                    process.out.index,
+                    process.out.findAll { key, val -> key.startsWith("versions") },
+                    bam(process.out.output[0][1]).getReadsMD5()
                     ).match()
                 }
             )
@@ -149,11 +143,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.cram,
-                    process.out.csi,
-                    process.out.crai,
-                    process.out.versions,
-                    bam(process.out.bam[0][1]).getReadsMD5()
+                    process.out.index,
+                    process.out.findAll { key, val -> key.startsWith("versions") },
+                    bam(process.out.output[0][1]).getReadsMD5()
                     ).match()
                 }
             )
@@ -184,11 +176,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.cram,
-                    process.out.csi,
-                    process.out.crai,
-                    process.out.versions,
-                    bam(process.out.bam[0][1]).getReadsMD5()
+                    process.out.index,
+                    process.out.findAll { key, val -> key.startsWith("versions") },
+                    bam(process.out.output[0][1]).getReadsMD5()
                     ).match()
                 }
             )
