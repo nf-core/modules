@@ -1,78 +1,205 @@
 {
-    "test1-gvcf-filenames": {
-        "content": [
-            [
-                "test.gvcf.tfrecord-00000-of-00002.gz",
-                "test.gvcf.tfrecord-00001-of-00002.gz"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-31T23:53:48.957681837"
-    },
-    "test2-examples-filenames": {
-        "content": [
-            [
-                "test.examples.tfrecord-00000-of-00002.gz",
-                "test.examples.tfrecord-00000-of-00002.gz.example_info.json",
-                "test.examples.tfrecord-00001-of-00002.gz",
-                "test.examples.tfrecord-00001-of-00002.gz.example_info.json"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-31T23:54:44.363794603"
-    },
     "homo_sapiens - [bam, bai] - fasta_gz - fasta_gz_fai": {
         "content": [
-            [
-                [
-                    "DEEPVARIANT_MAKEEXAMPLES",
-                    "deepvariant_makeexamples",
-                    "1.9.0"
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.examples.tfrecord-00000-of-00002.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.examples.tfrecord-00000-of-00002.gz.example_info.json:md5,4e531b5cf51b19015c3a5dc271a5aa57",
+                            "test.examples.tfrecord-00001-of-00002.gz:md5,0ee82e65b76540604ac5fdd659cef966",
+                            "test.examples.tfrecord-00001-of-00002.gz.example_info.json:md5,d68b79650fcf5c7e8ab3cb4da43394c6"
+                        ]
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.gvcf.tfrecord-00000-of-00002.gz:md5,4ee6b18d74c7801627fb6ea00fa00a16",
+                            "test.gvcf.tfrecord-00001-of-00002.gz:md5,ab8f359a7971eebc565d1429fdf3d8dd"
+                        ]
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test_call_variant_outputs.examples.tfrecord-00000-of-00002.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_call_variant_outputs.examples.tfrecord-00001-of-00002.gz:md5,18f95fb406da6326377a382803732dbf"
+                        ]
+                    ]
+                ],
+                "3": [
+                    [
+                        "DEEPVARIANT_MAKEEXAMPLES",
+                        "deepvariant_makeexamples",
+                        "1.9.0"
+                    ]
+                ],
+                "examples": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.examples.tfrecord-00000-of-00002.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.examples.tfrecord-00000-of-00002.gz.example_info.json:md5,4e531b5cf51b19015c3a5dc271a5aa57",
+                            "test.examples.tfrecord-00001-of-00002.gz:md5,0ee82e65b76540604ac5fdd659cef966",
+                            "test.examples.tfrecord-00001-of-00002.gz.example_info.json:md5,d68b79650fcf5c7e8ab3cb4da43394c6"
+                        ]
+                    ]
+                ],
+                "gvcf": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.gvcf.tfrecord-00000-of-00002.gz:md5,4ee6b18d74c7801627fb6ea00fa00a16",
+                            "test.gvcf.tfrecord-00001-of-00002.gz:md5,ab8f359a7971eebc565d1429fdf3d8dd"
+                        ]
+                    ]
+                ],
+                "small_model_calls": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test_call_variant_outputs.examples.tfrecord-00000-of-00002.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_call_variant_outputs.examples.tfrecord-00001-of-00002.gz:md5,18f95fb406da6326377a382803732dbf"
+                        ]
+                    ]
+                ],
+                "versions_deepvariant_makeexamples": [
+                    [
+                        "DEEPVARIANT_MAKEEXAMPLES",
+                        "deepvariant_makeexamples",
+                        "1.9.0"
+                    ]
                 ]
-            ]
+            }
         ],
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-02-01T01:24:32.69898336"
-    },
-    "test1-examples-filenames": {
-        "content": [
-            [
-                "test.examples.tfrecord-00000-of-00002.gz",
-                "test.examples.tfrecord-00000-of-00002.gz.example_info.json",
-                "test.examples.tfrecord-00001-of-00002.gz",
-                "test.examples.tfrecord-00001-of-00002.gz.example_info.json"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-31T23:53:48.936091158"
+        "timestamp": "2026-02-01T01:50:46.821701699"
     },
     "homo_sapiens - [bam, bai] - fasta - fai": {
         "content": [
-            [
-                [
-                    "DEEPVARIANT_MAKEEXAMPLES",
-                    "deepvariant_makeexamples",
-                    "1.9.0"
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.examples.tfrecord-00000-of-00002.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.examples.tfrecord-00000-of-00002.gz.example_info.json:md5,4e531b5cf51b19015c3a5dc271a5aa57",
+                            "test.examples.tfrecord-00001-of-00002.gz:md5,79e52e862045974f82b7f3e73cf13b50",
+                            "test.examples.tfrecord-00001-of-00002.gz.example_info.json:md5,d68b79650fcf5c7e8ab3cb4da43394c6"
+                        ]
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.gvcf.tfrecord-00000-of-00002.gz:md5,c87a6106d48d92993dda5cab91fd68f4",
+                            "test.gvcf.tfrecord-00001-of-00002.gz:md5,ab8b55dcbd10e1f7dbcc91f1e6932eae"
+                        ]
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test_call_variant_outputs.examples.tfrecord-00000-of-00002.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_call_variant_outputs.examples.tfrecord-00001-of-00002.gz:md5,31f1a15b8404bee635a357a5e8b76a1e"
+                        ]
+                    ]
+                ],
+                "3": [
+                    [
+                        "DEEPVARIANT_MAKEEXAMPLES",
+                        "deepvariant_makeexamples",
+                        "1.9.0"
+                    ]
+                ],
+                "examples": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.examples.tfrecord-00000-of-00002.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.examples.tfrecord-00000-of-00002.gz.example_info.json:md5,4e531b5cf51b19015c3a5dc271a5aa57",
+                            "test.examples.tfrecord-00001-of-00002.gz:md5,79e52e862045974f82b7f3e73cf13b50",
+                            "test.examples.tfrecord-00001-of-00002.gz.example_info.json:md5,d68b79650fcf5c7e8ab3cb4da43394c6"
+                        ]
+                    ]
+                ],
+                "gvcf": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.gvcf.tfrecord-00000-of-00002.gz:md5,c87a6106d48d92993dda5cab91fd68f4",
+                            "test.gvcf.tfrecord-00001-of-00002.gz:md5,ab8b55dcbd10e1f7dbcc91f1e6932eae"
+                        ]
+                    ]
+                ],
+                "small_model_calls": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test_call_variant_outputs.examples.tfrecord-00000-of-00002.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_call_variant_outputs.examples.tfrecord-00001-of-00002.gz:md5,31f1a15b8404bee635a357a5e8b76a1e"
+                        ]
+                    ]
+                ],
+                "versions_deepvariant_makeexamples": [
+                    [
+                        "DEEPVARIANT_MAKEEXAMPLES",
+                        "deepvariant_makeexamples",
+                        "1.9.0"
+                    ]
                 ]
-            ]
+            }
         ],
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-02-01T01:22:51.191244701"
+        "timestamp": "2026-02-01T01:48:52.936709301"
     },
     "stub": {
         "content": [
@@ -175,59 +302,103 @@
     },
     "homo_sapiens - [cram, crai, genome_bed] - fasta - fai": {
         "content": [
-            [
-                [
-                    "DEEPVARIANT_MAKEEXAMPLES",
-                    "deepvariant_makeexamples",
-                    "1.9.0"
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.examples.tfrecord-00000-of-00002.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.examples.tfrecord-00000-of-00002.gz.example_info.json:md5,4e531b5cf51b19015c3a5dc271a5aa57",
+                            "test.examples.tfrecord-00001-of-00002.gz:md5,4f6f7643e0b36c85ebeb3bb6c71a9375",
+                            "test.examples.tfrecord-00001-of-00002.gz.example_info.json:md5,d68b79650fcf5c7e8ab3cb4da43394c6"
+                        ]
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.gvcf.tfrecord-00000-of-00002.gz:md5,349f0b39ac1e8cd6375f09570f139050",
+                            "test.gvcf.tfrecord-00001-of-00002.gz:md5,7380f773b91e6ea2fe9d6b125ee66da9"
+                        ]
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test_call_variant_outputs.examples.tfrecord-00000-of-00002.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_call_variant_outputs.examples.tfrecord-00001-of-00002.gz:md5,31f1a15b8404bee635a357a5e8b76a1e"
+                        ]
+                    ]
+                ],
+                "3": [
+                    [
+                        "DEEPVARIANT_MAKEEXAMPLES",
+                        "deepvariant_makeexamples",
+                        "1.9.0"
+                    ]
+                ],
+                "examples": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.examples.tfrecord-00000-of-00002.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.examples.tfrecord-00000-of-00002.gz.example_info.json:md5,4e531b5cf51b19015c3a5dc271a5aa57",
+                            "test.examples.tfrecord-00001-of-00002.gz:md5,4f6f7643e0b36c85ebeb3bb6c71a9375",
+                            "test.examples.tfrecord-00001-of-00002.gz.example_info.json:md5,d68b79650fcf5c7e8ab3cb4da43394c6"
+                        ]
+                    ]
+                ],
+                "gvcf": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.gvcf.tfrecord-00000-of-00002.gz:md5,349f0b39ac1e8cd6375f09570f139050",
+                            "test.gvcf.tfrecord-00001-of-00002.gz:md5,7380f773b91e6ea2fe9d6b125ee66da9"
+                        ]
+                    ]
+                ],
+                "small_model_calls": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test_call_variant_outputs.examples.tfrecord-00000-of-00002.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_call_variant_outputs.examples.tfrecord-00001-of-00002.gz:md5,31f1a15b8404bee635a357a5e8b76a1e"
+                        ]
+                    ]
+                ],
+                "versions_deepvariant_makeexamples": [
+                    [
+                        "DEEPVARIANT_MAKEEXAMPLES",
+                        "deepvariant_makeexamples",
+                        "1.9.0"
+                    ]
                 ]
-            ]
+            }
         ],
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-02-01T01:23:42.734288351"
-    },
-    "test3-gvcf-filenames": {
-        "content": [
-            [
-                "test.gvcf.tfrecord-00000-of-00002.gz",
-                "test.gvcf.tfrecord-00001-of-00002.gz"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-31T23:55:39.906670844"
-    },
-    "test3-examples-filenames": {
-        "content": [
-            [
-                "test.examples.tfrecord-00000-of-00002.gz",
-                "test.examples.tfrecord-00000-of-00002.gz.example_info.json",
-                "test.examples.tfrecord-00001-of-00002.gz",
-                "test.examples.tfrecord-00001-of-00002.gz.example_info.json"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-31T23:55:39.87641505"
-    },
-    "test2-gvcf-filenames": {
-        "content": [
-            [
-                "test.gvcf.tfrecord-00000-of-00002.gz",
-                "test.gvcf.tfrecord-00001-of-00002.gz"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-31T23:54:44.401480542"
+        "timestamp": "2026-02-01T01:49:46.888820421"
     }
 }
