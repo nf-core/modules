@@ -39,7 +39,7 @@ nextflow_process {
             script "../../../../../modules/nf-core/foldmason/createdb/main.nf"
             process {
                 """
-                input[0] = UNTAR.out.untar.map { meta,dir -> [meta, file(dir).listFiles().collect()]}
+                input[0] = UNTAR.out.untar.map { meta,dir -> [meta, file(dir).listFiles().sort().collect()]}
                 """
             }
         }
@@ -57,7 +57,7 @@ nextflow_process {
                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
                             ]
                 input[1] = FOLDMASON_CREATEDB.out.db.collect{ meta, db -> db }.map{ db -> [[ id: 'test'], db]}
-                input[2] = UNTAR.out.untar.map { meta,dir -> [meta, file(dir).listFiles().collect()]}
+                input[2] = UNTAR.out.untar.map { meta,dir -> [meta, file(dir).listFiles().sort().collect()]}
                 input[3] = FAMSA_GUIDETREE.out.tree.collect{ meta, tree -> tree }.map{ tree -> [[ id: 'test_tree'], tree]}
                 """
             }
@@ -83,7 +83,7 @@ nextflow_process {
                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
                             ]
                 input[1] = FOLDMASON_CREATEDB.out.db.collect{ meta, db -> db }.map{ db -> [[ id: 'test'], db]}
-                input[2] = UNTAR.out.untar.map { meta,dir -> [meta, file(dir).listFiles().collect()]}
+                input[2] = UNTAR.out.untar.map { meta,dir -> [meta, file(dir).listFiles().sort().collect()]}
                 input[3] = FAMSA_GUIDETREE.out.tree.collect{ meta, tree -> tree }.map{ tree -> [[ id: 'test_tree'], tree]}
                 """
             }
