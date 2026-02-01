@@ -87,7 +87,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.tab,
-                    process.out.versions,
+                    process.out.versions_cnvnator_cnvnator,
                     process.out.root.collect{ file(it[1]).name }
                 ).match()}
             )
