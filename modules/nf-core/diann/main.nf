@@ -84,7 +84,7 @@ process DIANN {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "DIANN module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def prefix = task.ext.prefix ?: "${meta.id}" ?: "diann"
+    prefix = task.ext.prefix ?: "${meta.id}" ?: "diann"
 
     """
     # Library outputs

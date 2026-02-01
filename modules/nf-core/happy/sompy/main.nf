@@ -32,7 +32,7 @@ process HAPPY_SOMPY {
     def targets = targets_bed ? "-T ${targets_bed}" : ""
     def false_positives = false_positives_bed ? "--false-positives ${false_positives_bed}" : ""
     def ambiguous = ambiguous_beds ? "--ambiguous ${ambiguous_beds}" : ""
-    def bams = bams ? "--bam ${bams}" : ""
+    def bams_opt = bams ? "--bam ${bams}" : ""
     def VERSION = '0.3.14' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     som.py \\
@@ -44,7 +44,7 @@ process HAPPY_SOMPY {
         ${targets} \\
         ${false_positives} \\
         ${ambiguous} \\
-        ${bams} \\
+        ${bams_opt} \\
         -o ${prefix}
 
     cat <<-END_VERSIONS > versions.yml

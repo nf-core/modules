@@ -21,7 +21,7 @@ process IGVREPORTS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def fasta = fasta ? "--fasta ${fasta}" : ""
+    def fasta_opt = fasta ? "--fasta ${fasta}" : ""
     // If tracks is not null, create a string of the track paths
     def track_arg = tracks ? "--tracks "+ tracks.collect { it.toString() }.join(' ') : ""
     // if "--tracks" is in the args, then add track_string immediately after it in
@@ -34,7 +34,7 @@ process IGVREPORTS {
     """
     create_report $sites \
     $args \
-    $fasta \
+    $fasta_opt \
     $track_arg \
     --output ${prefix}_report.html
 
