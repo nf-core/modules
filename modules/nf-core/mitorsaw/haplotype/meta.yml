@@ -1,0 +1,210 @@
+name: "mitorsaw_haplotype"
+description: Mitorsaw analyses mitochondrial variants and identifies
+  heteroplasmy and homoplasmy
+keywords:
+  - heteroplasmy
+  - homoplasmy
+  - mitochondrial
+  - mitorsaw
+  - haplotype
+tools:
+  - mitorsaw:
+      description: "A tool for mitochondrial analysis for HiFi sequencing data"
+      homepage: "https://github.com/PacificBiosciences/mitorsaw"
+      documentation: "https://github.com/PacificBiosciences/mitorsaw/tree/main/docs"
+      tool_dev_url: "https://github.com/PacificBiosciences/mitorsaw"
+      licence: ["Pacific Biosciences Software License Agreement"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Sorted BAM file
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.bai"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'genome' ]`
+    - fasta:
+        type: file
+        description: Reference genome in FASTA format
+        pattern: "*.{fa,fasta}"
+        ontologies: []
+    - fai:
+        type: file
+        description: Reference genome index file
+        pattern: "*.fai"
+        ontologies: []
+  - include_hap_stats:
+      type: boolean
+      description: Whether to include haplotype statistics output file
+      default: false
+  - include_debug_output:
+      type: boolean
+      description: Whether to generate debug output files
+      default: false
+
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - "*${prefix}.vcf.gz":
+          type: file
+          description: Compressed VCF file containing haplotype information
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3016 # VCF
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - "*${prefix}.vcf.gz.tbi":
+          type: file
+          description: Index file for the compressed VCF file
+          pattern: "*.vcf.gz.tbi"
+          ontologies: []
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}.json:
+          type: file
+          description: Mitorsaw statistics in JSON format
+          pattern: "*.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  coverage_stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}_debug/coverage_stats.json:
+          type: file
+          description: Coverage statistics in JSON format
+          pattern: "coverage_stats.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  sequences_chrM:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}_debug/sequences_chrM.fa:
+          type: file
+          description: Haplotype sequences in FASTA format
+          pattern: "sequences_chrM.fa"
+          ontologies: []
+  custom_alignments_bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}_debug/mito_igv_custom/custom_alignments.bam:
+          type: file
+          description: Custom alignments in BAM format
+          pattern: "custom_alignments.bam"
+          ontologies: []
+  custom_alignments_bai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}_debug/mito_igv_custom/custom_alignments.bam.bai:
+          type: file
+          description: Custom alignments index file
+          pattern: "custom_alignments.bam.bai"
+          ontologies: []
+  igv_session:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}_debug/mito_igv_custom/custom_igv_session.xml:
+          type: file
+          description: IGV session file in XML format
+          pattern: "custom_igv_session.xml"
+          ontologies:
+            - edam: http://edamontology.org/format_2332 # XML
+  custom_ref_fa:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}_debug/mito_igv_custom/custom_reference.fa:
+          type: file
+          description: Custom reference genome in FASTA format
+          pattern: "custom_reference.fa"
+          ontologies: []
+  custom_ref_fai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}_debug/mito_igv_custom/custom_reference.fa.fai:
+          type: file
+          description: Custom reference genome index file
+          pattern: "custom_reference.fa.fai"
+          ontologies: []
+  custom_regions:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}_debug/mito_igv_custom/custom_regions.bed:
+          type: file
+          description: Custom regions in BED format
+          pattern: "custom_regions.bed"
+          ontologies: []
+  versions_mitorsaw:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mitorsaw:
+          type: string
+          description: The name of the tool
+      - mitorsaw --version | sed 's/mitorsaw //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mitorsaw:
+          type: string
+          description: The name of the tool
+      - mitorsaw --version | sed 's/mitorsaw //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@eliottBo"
+maintainers:
+  - "@eliottBo"
