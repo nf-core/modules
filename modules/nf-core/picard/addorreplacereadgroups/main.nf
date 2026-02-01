@@ -16,7 +16,7 @@ process PICARD_ADDORREPLACEREADGROUPS {
     tuple val(meta), path("*.bam") , emit: bam,  optional: true
     tuple val(meta), path("*.bai") , emit: bai,  optional: true
     tuple val(meta), path("*.cram"), emit: cram, optional: true
-    path "versions.yml"            , emit: versions
+    tuple val("${task.process}"), val('picard'), eval("picard AddOrReplaceReadGroups --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:"), topic: versions, emit: versions_picard
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,10 +44,6 @@ process PICARD_ADDORREPLACEREADGROUPS {
         --INPUT ${reads} \\
         --OUTPUT ${prefix}.${suffix}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(picard AddOrReplaceReadGroups --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
     """
 
     stub:
@@ -57,9 +53,5 @@ process PICARD_ADDORREPLACEREADGROUPS {
     """
     touch ${prefix}.${suffix}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(picard AddOrReplaceReadGroups --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
     """
 }
