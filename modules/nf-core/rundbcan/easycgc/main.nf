@@ -15,7 +15,7 @@ process RUNDBCAN_EASYCGC {
     output:
     tuple val(meta), path("${prefix}_overview.tsv")            , emit: cazyme_annotation
     tuple val(meta), path("${prefix}_dbCAN_hmm_results.tsv")   , emit: dbcanhmm_results
-    tuple val(meta), path("${prefix}_dbCANsub_hmm_results.tsv"), emit: dbcansub_results, optional: true
+    tuple val(meta), path("${prefix}_dbCANsub_hmm_results.tsv"), emit: dbcansub_results
     tuple val(meta), path("${prefix}_diamond.out")             , emit: dbcandiamond_results
     tuple val(meta), path("${prefix}_cgc.gff")                 , emit: cgc_gff
     tuple val(meta), path("${prefix}_cgc_standard_out.tsv")    , emit: cgc_standard_out
@@ -42,9 +42,7 @@ process RUNDBCAN_EASYCGC {
 
     mv overview.tsv             ${prefix}_overview.tsv
     mv dbCAN_hmm_results.tsv    ${prefix}_dbCAN_hmm_results.tsv
-    if [ -f dbCANsub_hmm_results.tsv ]; then
-        mv dbCANsub_hmm_results.tsv ${prefix}_dbCANsub_hmm_results.tsv
-    fi
+    mv dbCANsub_hmm_results.tsv ${prefix}_dbCANsub_hmm_results.tsv
     mv diamond.out              ${prefix}_diamond.out
     mv cgc.gff                  ${prefix}_cgc.gff
     mv cgc_standard_out.tsv     ${prefix}_cgc_standard_out.tsv
