@@ -55,7 +55,7 @@ output:
       - qualimap:
           type: string
           description: The name of the tool
-      - "qualimap 2>&1 | grep 'QualiMap v.' | sed 's/QualiMap v.//'":
+      - "qualimap 2>&1 | sed -n 's/.*QualiMap v.\\(.*\\)/\\1/p'":
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -67,7 +67,7 @@ topics:
       - qualimap:
           type: string
           description: The name of the tool
-      - "qualimap 2>&1 | grep 'QualiMap v.' | sed 's/QualiMap v.//'":
+      - "qualimap 2>&1 | sed -n 's/.*QualiMap v.\\(.*\\)/\\1/p'":
           type: eval
           description: The expression to obtain the version of the tool
 
