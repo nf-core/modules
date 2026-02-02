@@ -66,7 +66,7 @@ output:
       - hisat2:
           type: string
           description: The name of the tool
-      - "hisat2 --version | sed -n 's/.*version \\\\([^ ]*\\\\).*/\\\\1/p'":
+      - "hisat2 --version | sed -n 's/.*version \\([^ ]*\\).*/\\1/p'":
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -78,7 +78,7 @@ topics:
       - hisat2:
           type: string
           description: The name of the tool
-      - "hisat2 --version | sed -n 's/.*version \\\\([^ ]*\\\\).*/\\\\1/p'":
+      - "hisat2 --version | sed -n 's/.*version \\([^ ]*\\).*/\\1/p'":
           type: eval
           description: The expression to obtain the version of the tool
 
