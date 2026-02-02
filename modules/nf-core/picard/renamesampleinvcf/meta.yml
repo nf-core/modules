@@ -36,7 +36,8 @@ output:
           type: file
           description: VCF file
           pattern: "*.{vcf,vcf.gz}"
-          ontologies: []  versions_picard:
+          ontologies: []
+  versions_picard:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
