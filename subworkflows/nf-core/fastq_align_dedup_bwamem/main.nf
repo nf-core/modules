@@ -87,7 +87,6 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
             ch_fasta,
             ch_fasta_index
         )
-        ch_versions = ch_versions.mix(PICARD_MARKDUPLICATES.out.versions.first())
 
         /*
          * Run samtools index on deduplicated alignment
