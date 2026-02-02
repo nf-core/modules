@@ -96,13 +96,19 @@ output:
           pattern: "*per_position.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  versions_umitools:
+    description: Software version reported by umitools
+    - - task_process:
+          type: string
+          description: Nextflow task process name
+      - tool_name:
+          type: string
+          description: Tool name
+      - version_string:
+          type: string
+          description: Version string
+topics:
+  - versions
 authors:
   - "@drpatelh"
   - "@grst"
