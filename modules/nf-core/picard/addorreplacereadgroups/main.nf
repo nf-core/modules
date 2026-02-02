@@ -16,7 +16,7 @@ process PICARD_ADDORREPLACEREADGROUPS {
     tuple val(meta), path("*.bam") , emit: bam,  optional: true
     tuple val(meta), path("*.bai") , emit: bai,  optional: true
     tuple val(meta), path("*.cram"), emit: cram, optional: true
-    tuple val("${task.process}"), val('picard'), eval("picard AddOrReplaceReadGroups --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:"), topic: versions, emit: versions_picard
+    tuple val("${task.process}"), val('picard'), eval("picard AddOrReplaceReadGroups --version 2>&1 | sed -n 's/.*Version://p'"), topic: versions, emit: versions_picard
 
     when:
     task.ext.when == null || task.ext.when
