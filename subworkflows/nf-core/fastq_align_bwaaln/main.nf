@@ -15,8 +15,6 @@ workflow FASTQ_ALIGN_BWAALN {
 
     main:
 
-    ch_versions = channel.empty()
-
     // WARNING: You must specify in your prefix `meta.id_index` in your `modules.conf`
     // to ensure that you do not overwrite multiple BAM files from one sample mapped
     // against multiple references. This meta map is added by the subworkflow but can be removed
@@ -102,6 +100,4 @@ workflow FASTQ_ALIGN_BWAALN {
     bam      = ch_bam_for_emit     // channel: [ val(meta), path(bam) ]
     bai      = ch_bai_for_emit     // channel: [ val(meta), path(bai) ]
     csi      = ch_csi_for_emit     // channel: [ val(meta), path(csi) ]
-
-    versions = ch_versions         // channel: [ path(versions.yml) ]
 }
