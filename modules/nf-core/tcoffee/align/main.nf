@@ -17,7 +17,9 @@ process TCOFFEE_ALIGN {
     tuple val(meta), path("*.aln{.gz,}"), emit: alignment
     // in the args there might be the request to generate a lib file, so the following is an optional output
     tuple val(meta), path("*.*lib")     , emit: lib, optional : true
-    path "versions.yml"                 , emit: versions
+
+    tuple val("${task.process}"), val('tcoffee'), eval('t_coffee -version | awk -F"[ _.]" -v OFS="." \'{print \\$4,\\$5,\\$6}\''), emit: versions_tcoffee, topic: versions
+    tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,12 +44,6 @@ process TCOFFEE_ALIGN {
         -thread ${task.cpus} \
         -outfile $outfile \
         $write_output
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' )
-    END_VERSIONS
     """
 
     stub:
@@ -58,11 +54,5 @@ process TCOFFEE_ALIGN {
     export TMP_4_TCOFFEE="./"
     export HOME="./"
     touch ${prefix}.aln${compress ? '.gz':''}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' )
-    END_VERSIONS
     """
 }
