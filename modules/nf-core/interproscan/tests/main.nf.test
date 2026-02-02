@@ -10,7 +10,7 @@ nextflow_process {
     tag "aria2"
     tag "untar"
 
-    test("T1024 - faa - test database") {
+    test("l_asparaginase - faa - test database") {
         config "./nextflow_database.config"
 
         setup {
@@ -20,7 +20,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test' ],
-                        params.modules_testdata_base_path + '../../proteinannotator/testdata/interproscan/interproscan_test.tar.gz'
+                        params.modules_testdata_base_path + 'proteomics/interproscan/interproscan_test.tar.gz' // https URL
                     ]
                     """
                 }
@@ -41,7 +41,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + '../../proteinannotator/testdata/sequences/T1024.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/interproscan/l_arginase.faa', checkIfExists: true)
                 ]
                 input[1] = UNTAR.out.untar.map{ f -> f[1] }
                 """
@@ -51,7 +51,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match()}
+                { assert snapshot(
+                    path(process.out.tsv[0][1]).readLines()[0]
+                        .contains("GI|225038609|EFDID|719595|FULL	079fff43a0270e432d339ea71b6f0acf	350	SFLD	SFLDS00057	Glutaminase/Asparaginase	17	347	0.0	T"),
+                    process.out.xml,
+                    process.out.json,
+                    path(process.out.gff3[0][1]).readLines()[0..4,6..-1],
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match()}
             )
         }
 
@@ -81,8 +88,7 @@ nextflow_process {
                     process.out.json,
                     path(process.out.gff3[0][1]).readLines()[0..4,6..-1],
                     process.out.findAll { key, val -> key.startsWith("versions")}
-                    ).match()
-                }
+                ).match()}
             )
         }
 
@@ -112,8 +118,7 @@ nextflow_process {
                     process.out.json,
                     path(process.out.gff3[0][1]).readLines()[0..4,6..-1],
                     process.out.findAll { key, val -> key.startsWith("versions")}
-                    ).match()
-                }
+                ).match()}
             )
         }
 
