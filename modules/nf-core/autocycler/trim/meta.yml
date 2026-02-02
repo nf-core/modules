@@ -35,10 +35,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "$prefix/*.gfa":
+      - "trim/$prefix/*.gfa":
           type: file
           description: Trimmed assembly graphs emitted by Autocycler.
-          pattern: "*.gfa"
+          pattern: "trim/*/*.gfa"
           ontologies:
             - edam: "http://edamontology.org/format_3975" #GFA1
   stats:
@@ -47,10 +47,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "$prefix/*.yaml":
+      - "trim/$prefix/*.yaml":
           type: file
           description: Trimming statistics for each cluster.
-          pattern: "*.yaml"
+          pattern: "trim/*/*.yaml"
           ontologies:
             - edam: "http://edamontology.org/format_3750" # YAML
   versions_autocycler:
