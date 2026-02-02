@@ -107,7 +107,6 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
         ch_alignment       = PICARD_MARKDUPLICATES.out.bam
         ch_alignment_index = SAMTOOLS_INDEX_DEDUPLICATED.out.bai
         ch_picard_metrics  = PICARD_MARKDUPLICATES.out.metrics
-        ch_versions        = ch_versions.mix(SAMTOOLS_INDEX_DEDUPLICATED.out.versions)
     }
 
     /*
