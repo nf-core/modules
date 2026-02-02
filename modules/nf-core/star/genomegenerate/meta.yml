@@ -52,7 +52,7 @@ output:
       - star:
           type: string
           description: The name of the tool
-      - STAR --version | sed -e "s/STAR_//g":
+      - "STAR --version | sed -e 's/STAR_//g'":
           type: eval
           description: The expression to obtain the version of the tool
   versions_samtools:
@@ -62,7 +62,7 @@ output:
       - samtools:
           type: string
           description: The name of the tool
-      - samtools --version | head -1 | sed 's/samtools //':
+      - "samtools --version | head -1 | sed 's/samtools //'":
           type: eval
           description: The expression to obtain the version of the tool
   versions_gawk:
@@ -72,7 +72,7 @@ output:
       - gawk:
           type: string
           description: The name of the tool
-      - gawk --version | head -1 | sed 's/GNU Awk //; s/,.*//':
+      - "gawk --version | head -1 | sed 's/GNU Awk //; s/,.*//'":
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -84,7 +84,7 @@ topics:
       - star:
           type: string
           description: The name of the tool
-      - STAR --version | sed -e "s/STAR_//g":
+      - "STAR --version | sed -e 's/STAR_//g'":
           type: eval
           description: The expression to obtain the version of the tool
     - - ${task.process}:
@@ -93,7 +93,7 @@ topics:
       - samtools:
           type: string
           description: The name of the tool
-      - samtools --version | head -1 | sed 's/samtools //':
+      - "samtools --version | head -1 | sed 's/samtools //'":
           type: eval
           description: The expression to obtain the version of the tool
     - - ${task.process}:
@@ -102,7 +102,7 @@ topics:
       - gawk:
           type: string
           description: The name of the tool
-      - gawk --version | head -1 | sed 's/GNU Awk //; s/,.*//':
+      - "gawk --version | head -1 | sed 's/GNU Awk //; s/,.*//'":
           type: eval
           description: The expression to obtain the version of the tool
 

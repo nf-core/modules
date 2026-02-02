@@ -51,7 +51,7 @@ output:
       - sylph-tax:
           type: string
           description: The name of the tool
-      - sylph-tax --version 2>&1 | tail -1:
+      - "sylph-tax --version 2>&1 | tail -1":
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -63,7 +63,7 @@ topics:
       - sylph-tax:
           type: string
           description: The name of the tool
-      - sylph-tax --version 2>&1 | tail -1:
+      - "sylph-tax --version 2>&1 | tail -1":
           type: eval
           description: The expression to obtain the version of the tool
 
