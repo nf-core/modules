@@ -28,22 +28,12 @@ input:
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
         ontologies: []
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test' ]
     - index:
         type: file
         description: CSI/BAI/CRAI file. Optional. Only required when using the
           '-r' parameter.
-        pattern: "*.{bam,cram,sam}"
+        pattern: "*.{bai,crai,csi}"
         ontologies: []
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test' ]
     - intervals:
         type: file
         description: Interval FILE. Optional.
@@ -57,7 +47,7 @@ input:
     - fasta:
         type: file
         description: FASTA reference file. Optional.
-        pattern: "*.{fasta,fa}"
+        pattern: "*.{fasta,fa,fna}"
         ontologies: []
 output:
   mpileup:
