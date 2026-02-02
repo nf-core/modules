@@ -49,6 +49,12 @@ input:
         description: FASTA reference file. Optional.
         pattern: "*.{fasta,fa,fna}"
         ontologies: []
+    - faidx:
+        type: file
+        description: FAI file. Optional. Only required (recommended) when using the
+          '-f' parameter.
+        pattern: "*.{fai}"
+        ontologies: []
 output:
   mpileup:
     - - meta:

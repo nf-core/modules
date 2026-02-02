@@ -9,7 +9,7 @@ process SAMTOOLS_MPILEUP {
 
     input:
     tuple val(meta), path(input), path(index), path(intervals)
-    tuple val(meta2), path(fasta)
+    tuple val(meta2), path(fasta), path(faidx)
 
     output:
     tuple val(meta), path("*.mpileup.gz"), emit: mpileup
