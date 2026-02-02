@@ -174,8 +174,24 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
 
     // final concatenation
     if (!skip_final_concatenation) {
-        CAT_FASTQ ( ch_reads )
+        ch_reads_for_cat_branch = ch_reads
+            .groupTuple()
+            .map { meta, reads ->
+                [meta, reads.flatten()]
+            }
+            .branch { meta, reads ->
+                cat: (meta.single_end && reads.size() > 1) || (!meta.single_end && reads.size() > 2)
+                skip: true
+            }
+
+        CAT_FASTQ(ch_reads_for_cat_branch.cat)
+
         ch_reads = CAT_FASTQ.out.reads
+            .mix(ch_reads_for_cat_branch.skip)
+            .map { meta, reads ->
+                def new_reads = meta.single_end ? reads[0] : reads.flatten()
+                [meta, new_reads]
+            }
     }
 
     // post-statistics
