@@ -11,7 +11,7 @@ process DEEPVARIANT_CALLVARIANTS {
 
     output:
     tuple val(meta), path("${prefix}.call-*-of-*.tfrecord.gz"), emit: call_variants_tfrecords
-    tuple val("${task.process}"), val('deepvariant_callvariants'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //'"), topic: versions, emit: versions_deepvariant_callvariants
+    tuple val("${task.process}"), val('deepvariant'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //'"), topic: versions, emit: versions_deepvariant
 
     when:
     task.ext.when == null || task.ext.when

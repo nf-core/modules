@@ -16,7 +16,7 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     tuple val(meta), path("${prefix}.vcf.gz.{tbi,csi}")   , emit: vcf_index
     tuple val(meta), path("${prefix}.g.vcf.gz")           , emit: gvcf
     tuple val(meta), path("${prefix}.g.vcf.gz.{tbi,csi}") , emit: gvcf_index
-    tuple val("${task.process}"), val('deepvariant_postprocessvariants'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //'"), topic: versions, emit: versions_deepvariant_postprocessvariants
+    tuple val("${task.process}"), val('deepvariant'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //'"), topic: versions, emit: versions_deepvariant
 
     when:
     task.ext.when == null || task.ext.when

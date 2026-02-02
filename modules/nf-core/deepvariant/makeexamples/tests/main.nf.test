@@ -50,7 +50,7 @@ nextflow_process {
                     process.out.examples[0][1].collect { file(it).name }
                 ).match("test1-examples-filenames") },
                 { assert process.out.gvcf[0][1].size() == 2 },
-                { assert snapshot(process.out.versions_deepvariant_makeexamples).match("test1-versions") },
+                { assert snapshot(process.out.versions_deepvariant).match("test1-versions") },
                 { assert snapshot(
                     process.out.gvcf[0][1].collect { file(it).name }
                 ).match("test1-gvcf-filenames") }
@@ -97,7 +97,7 @@ nextflow_process {
                     process.out.examples[0][1].collect { file(it).name }
                 ).match("test2-examples-filenames") },
                 { assert process.out.gvcf[0][1].size() == 2 },
-                { assert snapshot(process.out.versions_deepvariant_makeexamples).match("test2-versions") },
+                { assert snapshot(process.out.versions_deepvariant).match("test2-versions") },
                 { assert snapshot(
                     process.out.gvcf[0][1].collect { file(it).name }
                 ).match("test2-gvcf-filenames") }
@@ -145,7 +145,7 @@ nextflow_process {
                     process.out.examples[0][1].collect { file(it).name }
                 ).match("test3-examples-filenames") },
                 { assert process.out.gvcf[0][1].size() == 2 },
-                { assert snapshot(process.out.versions_deepvariant_makeexamples).match("test3-versions") },
+                { assert snapshot(process.out.versions_deepvariant).match("test3-versions") },
                 { assert snapshot(
                     process.out.gvcf[0][1].collect { file(it).name }
                 ).match("test3-gvcf-filenames") }
@@ -194,7 +194,7 @@ nextflow_process {
                     process.out.examples[0][1].collect { file(it).name }
                 ).match("test4-examples-filenames") },
                 { assert process.out.gvcf[0][1].size() == 2 },
-                { assert snapshot(process.out.versions_deepvariant_makeexamples).match("test4-versions") },
+                { assert snapshot(process.out.versions_deepvariant).match("test4-versions") },
                 { assert snapshot(
                     process.out.gvcf[0][1].collect { file(it).name }
                 ).match("test4-gvcf-filenames") }

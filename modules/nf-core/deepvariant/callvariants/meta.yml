@@ -36,11 +36,11 @@ output:
           type: list
           description: |
             Each output contains: unique ID string from input channel, meta, tfrecord file with variant calls.
-  versions_deepvariant_callvariants:
+  versions_deepvariant:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
-      - deepvariant_callvariants:
+      - deepvariant:
           type: string
           description: The tool name
       - /opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //':
@@ -52,7 +52,7 @@ topics:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
-      - deepvariant_callvariants:
+      - deepvariant:
           type: string
           description: The tool name
       - /opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //':

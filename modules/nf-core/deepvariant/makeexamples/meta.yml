@@ -104,11 +104,11 @@ output:
           type: list
           description: |
             Optional variant calls from the small model, if enabled, in tfrecord format
-  versions_deepvariant_makeexamples:
+  versions_deepvariant:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
-      - deepvariant_makeexamples:
+      - deepvariant:
           type: string
           description: The tool name
       - /opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //':
@@ -120,7 +120,7 @@ topics:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
-      - deepvariant_makeexamples:
+      - deepvariant:
           type: string
           description: The tool name
       - /opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //':

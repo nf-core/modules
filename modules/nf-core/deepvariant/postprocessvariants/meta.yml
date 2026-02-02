@@ -124,11 +124,11 @@ output:
           description: Index for GVCF
           pattern: "*.g.vcf.gz.{tbi,csi}"
           ontologies: []
-  versions_deepvariant_postprocessvariants:
+  versions_deepvariant:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
-      - deepvariant_postprocessvariants:
+      - deepvariant:
           type: string
           description: The tool name
       - /opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //':
@@ -140,7 +140,7 @@ topics:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
-      - deepvariant_postprocessvariants:
+      - deepvariant:
           type: string
           description: The tool name
       - /opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //':
