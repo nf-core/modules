@@ -48,7 +48,7 @@ process UPP_ALIGN {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         upp: \$(run_upp.py -v | grep "run_upp" | cut -f2 -d" ")
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' )
     END_VERSIONS
     """
 
@@ -66,7 +66,7 @@ process UPP_ALIGN {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         upp: \$(run_upp.py -v | grep "run_upp" | cut -f2 -d" ")
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' )
     END_VERSIONS
     """
 }

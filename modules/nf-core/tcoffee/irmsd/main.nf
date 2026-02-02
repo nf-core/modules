@@ -36,7 +36,7 @@ process TCOFFEE_IRMSD {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' )
     END_VERSIONS
     """
 
@@ -51,7 +51,7 @@ process TCOFFEE_IRMSD {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' )
     END_VERSIONS
     """
 }

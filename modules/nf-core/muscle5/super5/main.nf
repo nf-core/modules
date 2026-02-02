@@ -44,7 +44,7 @@ process MUSCLE5_SUPER5 {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         muscle: \$(muscle -version | head -n 1 | cut -d ' ' -f 2 | sed 's/.linux64//')
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' )
     END_VERSIONS
     """
 
@@ -57,7 +57,7 @@ process MUSCLE5_SUPER5 {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         muscle: \$(muscle -version | head -n 1 | cut -d ' ' -f 2 | sed 's/.linux64//')
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' )
     END_VERSIONS
     """
 }

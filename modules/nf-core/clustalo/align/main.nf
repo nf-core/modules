@@ -52,7 +52,7 @@ process CLUSTALO_ALIGN {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         clustalo: \$( clustalo --version )
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' )
     END_VERSIONS
     """
 
@@ -65,7 +65,7 @@ process CLUSTALO_ALIGN {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         clustalo: \$( clustalo --version )
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' )
     END_VERSIONS
     """
 }

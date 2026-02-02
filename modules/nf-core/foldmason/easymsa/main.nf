@@ -42,7 +42,7 @@ process FOLDMASON_EASYMSA {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         foldmason: \$(foldmason | grep "foldmason Version:" | cut -d":" -f 2 | awk '{\$1=\$1;print}')
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' )
     END_VERSIONS
     """
 
@@ -56,7 +56,7 @@ process FOLDMASON_EASYMSA {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         foldmason: \$(foldmason | grep "foldmason Version:" | cut -d":" -f 2 | awk '{\$1=\$1;print}')
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' )
     END_VERSIONS
     """
 }

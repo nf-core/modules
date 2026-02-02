@@ -39,7 +39,7 @@ process MAGUS_ALIGN {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         MAGUS: \$(magus --version)
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' )
     END_VERSIONS
     """
 
@@ -52,7 +52,7 @@ process MAGUS_ALIGN {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         MAGUS: \$(magus --version)
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' )
     END_VERSIONS
     """
 }
