@@ -14,8 +14,8 @@ process STAR_GENOMEGENERATE {
     output:
     tuple val(meta), path("star")  , emit: index
     tuple val("${task.process}"), val('star'), eval('STAR --version | sed -e "s/STAR_//g"'), emit: versions_star, topic: versions
-    tuple val("${task.process}"), val('samtools'), eval('echo $(samtools --version 2>&1) | sed "s/^.*samtools //; s/Using.*\$//"'), emit: versions_samtools, topic: versions
-    tuple val("${task.process}"), val('gawk'), eval('echo $(gawk --version 2>&1) | sed "s/^.*GNU Awk //; s/, .*\$//"'), emit: versions_gawk, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools --version | head -1 | sed 's/samtools //'"), emit: versions_samtools, topic: versions
+    tuple val("${task.process}"), val('gawk'), eval("gawk --version | head -1 | sed 's/GNU Awk //; s/,.*//'"), emit: versions_gawk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
