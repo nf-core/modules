@@ -30,7 +30,6 @@ process BFTOOLS_SHOWINF {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         showinf: \$(showinf -version | head -n1 | cut -d' ' -f2)
-        gzip: \$(gzip -V | head -n1)
     END_VERSIONS
     """
 
@@ -44,7 +43,6 @@ process BFTOOLS_SHOWINF {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         showinf: \$(showinf -version | head -n1 | cut -d' ' -f2)
-        gzip: \$(gzip -V | head -n1)
     END_VERSIONS
     """
 }
