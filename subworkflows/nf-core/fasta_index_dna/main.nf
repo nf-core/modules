@@ -32,7 +32,6 @@ workflow FASTA_INDEX_DNA {
     if (val_aligner == 'bowtie2') {
         BOWTIE2_BUILD(ch_fasta)
         ch_aligner_index = BOWTIE2_BUILD.out.index
-        ch_versions = BOWTIE2_BUILD.out.versions
     } else if (val_aligner == 'bwamem') {
         BWAMEM1_INDEX(ch_fasta)
         ch_aligner_index = BWAMEM1_INDEX.out.index
