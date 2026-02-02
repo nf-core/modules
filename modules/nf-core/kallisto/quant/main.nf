@@ -19,7 +19,7 @@ process KALLISTO_QUANT {
     tuple val(meta), path("${prefix}")        , emit: results
     tuple val(meta), path("*.run_info.json")  , emit: json_info
     tuple val(meta), path("*.log")            , emit: log
-    tuple val("${task.process}"), val('kallisto'), eval("kallisto version | sed 's/kallisto, version //'"), emit: versions_kallisto, topic: versions
+    tuple val("${task.process}"), val('kallisto'), eval("kallisto version | sed 's/.*version //'"), emit: versions_kallisto, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

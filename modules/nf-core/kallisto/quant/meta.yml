@@ -97,7 +97,7 @@ output:
       - kallisto:
           type: string
           description: The name of the tool
-      - "kallisto version | sed 's/kallisto, version //'":
+      - "kallisto version | sed 's/.*version //'":
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -109,7 +109,7 @@ topics:
       - kallisto:
           type: string
           description: The name of the tool
-      - "kallisto version | sed 's/kallisto, version //'":
+      - "kallisto version | sed 's/.*version //'":
           type: eval
           description: The expression to obtain the version of the tool
 
