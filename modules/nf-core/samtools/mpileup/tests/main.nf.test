@@ -62,13 +62,13 @@ nextflow_process {
 
     test("bam - region - bai") {
         config "./nextflow.config"
-        
+
         when {
             params {
                 module_args     = "-r MT192765.1"
                 module_prefix   = "test"
             }
-            process {                
+            process {
                 """
                 input[0] = [
                     [ id:'test' ],
