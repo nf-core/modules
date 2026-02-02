@@ -14,6 +14,7 @@ process ENSEMBLVEP_FILTERVEP {
     output:
     tuple val(meta), path("*.${extension}"), emit: output
     tuple val("${task.process}"), val('ensemblvep'), eval("vep --help | sed -n '/ensembl-vep/s/.*: //p'"), topic: versions, emit: versions_ensemblvep
+    tuple val("${task.process}"), val('perl-math-cdf'), eval("perl -MMath::CDF -e 'print \$Math::CDF::VERSION'"), topic: versions, emit: versions_perlmathcdf
 
     when:
     task.ext.when == null || task.ext.when

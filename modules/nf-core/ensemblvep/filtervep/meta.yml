@@ -54,6 +54,16 @@ output:
       - "vep --help | sed -n '/ensembl-vep/s/.*: //p'":
           type: string
           description: The command used to generate the version of the tool
+  versions_perlmathcdf:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - perl-math-cdf:
+          type: string
+          description: The tool name
+      - "perl -MMath::CDF -e 'print $Math::CDF::VERSION'":
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -65,6 +75,15 @@ topics:
       - "vep --help | sed -n '/ensembl-vep/s/.*: //p'":
           type: string
           description: The command used to generate the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - perl-math-cdf:
+          type: string
+          description: The tool name
+      - "perl -MMath::CDF -e 'print $Math::CDF::VERSION'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ramprasadn"
 maintainers:

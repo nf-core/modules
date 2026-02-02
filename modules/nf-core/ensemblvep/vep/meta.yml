@@ -149,6 +149,16 @@ output:
       - tabix -h 2>&1 | grep -oP 'Version:\s*\K[^\s]+':
           type: eval
           description: The expression to obtain the version of the tool
+  versions_perlmathcdf:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - perl-math-cdf:
+          type: string
+          description: The tool name
+      - "perl -MMath::CDF -e 'print $Math::CDF::VERSION'":
+          type: eval
+          description: The expression to obtain the version of the tool
 
 topics:
   multiqc_files:
@@ -184,6 +194,15 @@ topics:
           type: string
           description: The tool name
       - tabix -h 2>&1 | grep -oP 'Version:\s*\K[^\s]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - perl-math-cdf:
+          type: string
+          description: The tool name
+      - "perl -MMath::CDF -e 'print $Math::CDF::VERSION'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
