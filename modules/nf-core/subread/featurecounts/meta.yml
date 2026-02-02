@@ -63,7 +63,7 @@ output:
       - subread:
           type: string
           description: The name of the tool
-      - echo $(featureCounts -v 2>&1) | sed -e "s/featureCounts v//g":
+      - featureCounts -v 2>&1 | sed 's/featureCounts v//':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -75,7 +75,7 @@ topics:
       - subread:
           type: string
           description: The name of the tool
-      - echo $(featureCounts -v 2>&1) | sed -e "s/featureCounts v//g":
+      - featureCounts -v 2>&1 | sed 's/featureCounts v//':
           type: eval
           description: The expression to obtain the version of the tool
 
