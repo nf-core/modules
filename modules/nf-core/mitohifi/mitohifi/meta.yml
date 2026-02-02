@@ -253,6 +253,16 @@ output:
           pattern: "*.log"
           ontologies:
             - edam: http://edamontology.org/data_3671 # Text
+  all_files:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - "*":
+        type: file
+        description: All files output by Mitohifi in a single channel.
+        ontologies: []
   versions_mitohifi:
     - - ${task.process}:
           type: string
