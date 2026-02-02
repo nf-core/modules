@@ -11,7 +11,61 @@
                 
             ],
             [
-                
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.stats:md5,f65552b84f1a36c9ded508c03a493158"
+                ]
+            ],
+            null,
+            [
+                "test.deduped.sorted.MarkDuplicates.metrics.txt"
+            ],
+            [
+                "test.deduped.sorted.MarkDuplicates.metrics.txt",
+                "test.flagstat",
+                "test.idxstats",
+                "test.stats"
+            ],
+            [
+                "versions.yml:md5,6fa0c192669339220d5c5735739188ac",
+                "versions.yml:md5,a9219fb9e547afce565465f665ee1551",
+                "versions.yml:md5,f4fe0da11267a12623a80a44d8841870"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-02-02T12:36:13.360723482"
+    },
+    "Sarscov2 fasta - PE - skip deduplication - with GPU parabricks/fq2bam": {
+        "content": [
+            [
+                "2d64e4363d9f3c0e2167fce49d5087cf"
+            ],
+            [
+                "test.sorted.bam.bai"
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.flagstat:md5,18d602435a02a4d721b78d1812622159"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.stats:md5,75934f2a51780a80d2ab4674301a018d"
+                ]
             ],
             null,
             [
@@ -148,6 +202,66 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-02-02T12:07:45.433376607"
+        "timestamp": "2026-01-29T16:25:47.407090956"
+    },
+    "Sarscov2 fasta - SE - deduplicate - with GPU parabricks/fq2bam - stub": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.deduped.sorted.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.deduped.sorted.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.flagstat:md5,67394650dbae96d1a4fcc70484822159"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.stats:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ]
+            ],
+            null,
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.deduped.sorted.MarkDuplicates.metrics.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ]
+            ],
+            [
+                "versions.yml:md5,6fa0c192669339220d5c5735739188ac",
+                "versions.yml:md5,a9219fb9e547afce565465f665ee1551",
+                "versions.yml:md5,f4fe0da11267a12623a80a44d8841870"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-02-02T12:39:27.048093254"
     }
 }
