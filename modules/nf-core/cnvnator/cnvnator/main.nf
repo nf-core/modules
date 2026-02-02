@@ -16,7 +16,7 @@ process CNVNATOR_CNVNATOR {
     output:
     tuple val(output_meta), path("${prefix}.root"), emit: root
     tuple val(output_meta), path("${prefix}.tab") , emit: tab, optional: true
-    tuple val("${task.process}"), val('cnvnator'), eval("cnvnator 2>&1 | sed -n '3p' | sed 's/CNVnator v//'"), topic: versions, emit: versions_cnvnator_cnvnator
+    tuple val("${task.process}"), val('cnvnator'), eval("cnvnator 2>&1 | sed -n '3s/CNVnator v//p'"), topic: versions, emit: versions_cnvnator
 
     when:
     task.ext.when == null || task.ext.when

@@ -37,14 +37,14 @@ output:
           description: CNVnator calls in vcf format
           pattern: "*.vcf"
           ontologies: []
-  versions_cnvnator_convert2vcf:
+  versions_cnvnator:
     - - ${task.process}:
           type: string
           description: The name of the process
       - cnvnator:
           type: string
           description: The name of the tool
-      - cnvnator 2>&1 | sed -n '3p' | sed 's/CNVnator v//':
+      - cnvnator 2>&1 | sed -n '3s/CNVnator v//p':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -56,9 +56,10 @@ topics:
       - cnvnator:
           type: string
           description: The name of the tool
-      - cnvnator 2>&1 | sed -n '3p' | sed 's/CNVnator v//':
+      - cnvnator 2>&1 | sed -n '3s/CNVnator v//p':
           type: eval
           description: The expression to obtain the version of the tool
+
 
 authors:
   - "@ramprasadn"

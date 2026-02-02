@@ -12,7 +12,7 @@ process CNVNATOR_CONVERT2VCF {
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
-    tuple val("${task.process}"), val('cnvnator'), eval("cnvnator 2>&1 | sed -n '3p' | sed 's/CNVnator v//'"), topic: versions, emit: versions_cnvnator_convert2vcf
+    tuple val("${task.process}"), val('cnvnator'), eval("cnvnator 2>&1 | sed -n '3s/CNVnator v//p'"), topic: versions, emit: versions_cnvnator
 
     when:
     task.ext.when == null || task.ext.when
