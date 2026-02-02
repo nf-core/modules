@@ -61,7 +61,6 @@ workflow FASTA_INDEX_METHYLSEQ {
             )
 
             ch_bismark_index = ch_bismark_index_branched.unzipped.mix(UNTAR_BISMARK.out.untar)
-            ch_versions      = ch_versions.mix(UNTAR_BISMARK.out.versions)
         } else {
 
             if( aligner == "bismark_hisat") {
@@ -99,7 +98,6 @@ workflow FASTA_INDEX_METHYLSEQ {
             )
 
             ch_bwameth_index = ch_bwameth_index_branched.unzipped.mix(UNTAR_BWAMETH.out.untar)
-            ch_versions      = ch_versions.mix(UNTAR_BWAMETH.out.versions)
         } else {
             BWAMETH_INDEX (
                 ch_fasta,
@@ -129,7 +127,6 @@ workflow FASTA_INDEX_METHYLSEQ {
             )
 
             ch_bwamem_index = ch_bwamem_index_branched.unzipped.mix(UNTAR_BISMARK.out.untar)
-            ch_versions     = ch_versions.mix(UNTAR_BISMARK.out.versions)
         } else {
             log.info "BWA index not provided. Generating BWA index from FASTA file."
             BWA_INDEX (
