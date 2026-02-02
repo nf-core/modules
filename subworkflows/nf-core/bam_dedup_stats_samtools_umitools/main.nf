@@ -19,7 +19,6 @@ workflow BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS {
     // UMI-tools dedup
     //
     UMITOOLS_DEDUP ( ch_bam_bai, val_get_dedup_stats )
-    ch_versions = ch_versions.mix(UMITOOLS_DEDUP.out.versions.first())
 
     //
     // Index BAM file and run samtools stats, flagstat and idxstats
