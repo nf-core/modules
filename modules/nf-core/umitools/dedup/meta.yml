@@ -97,18 +97,27 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   versions_umitools:
-    description: Software version reported by umitools
-    - - task_process:
+    - - ${task.process}:
           type: string
-          description: Nextflow task process name
-      - tool_name:
+          description: The name of the process
+      - umitools:
           type: string
-          description: Tool name
-      - version_string:
-          type: string
-          description: Version string
+          description: The name of the tool
+      - "umi_tools --version | sed 's/UMI-tools version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 topics:
-  - versions
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - umitools:
+          type: string
+          description: The name of the tool
+      - "umi_tools --version | sed 's/UMI-tools version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@drpatelh"
   - "@grst"
