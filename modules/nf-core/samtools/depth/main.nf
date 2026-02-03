@@ -8,7 +8,7 @@ process SAMTOOLS_DEPTH {
         'biocontainers/samtools:1.22.1--h96c455f_0' }"
 
     input:
-    tuple val(meta1), path(bam)
+    tuple val(meta1), path(bam), path(index)
     tuple val(meta2), path(intervals)
 
     output:
