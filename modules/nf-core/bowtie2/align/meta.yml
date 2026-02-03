@@ -140,7 +140,7 @@ output:
       - samtools:
           type: string
           description: The name of the tool
-      - "samtools --version | sed -n '1s/samtools //p'":
+      - "samtools version | sed '1!d;s/.* //'":
           type: eval
           description: The expression to obtain the version of samtools
   versions_pigz:
