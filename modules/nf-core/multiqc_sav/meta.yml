@@ -99,10 +99,10 @@ output:
           pattern: "multiqc_data"
   plots:
     - - meta:
-            type: map
-            description: |
-              Groovy Map containing sample information
-              e.g. [ id:'sample1', single_end:false ]
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1', single_end:false ]
       - "*_plots":
           type: file
           description: Plots created by MultiQC
