@@ -5,14 +5,15 @@ include { SAMTOOLS_VIEW  } from '../../../modules/nf-core/samtools/view'
 workflow BAM_SUBSAMPLEDEPTH_SAMTOOLS {
 
     take:
-    ch_bam_bai_depth    // channel: [ val(meta), path(bam), path(bai), val(depth) ]
-    ch_fasta            // channel: [ val(meta), path(fasta) ]
+    ch_bam_bai    // channel: [ val(meta), path(bam), path(bai) ]
+    ch_depth      // channel: [ val(meta), val(depth)]
+    ch_fasta      // channel: [ val(meta), path(fasta) ]
 
     main:
     ch_versions      = Channel.empty()
 
     // Compute mean depth
-    SAMTOOLS_DEPTH(ch_bam_bai_depth.map{ meta, bam, _bai, _depth -> tuple(meta, bam) }, [[], []])
+    SAMTOOLS_DEPTH(ch_bam_bai, [[], []])
     ch_versions = ch_versions.mix(SAMTOOLS_DEPTH.out.versions.first())
 
     // Use GAWK to get mean depth
@@ -25,11 +26,11 @@ workflow BAM_SUBSAMPLEDEPTH_SAMTOOLS {
         .map{ meta, row ->
             [ meta, row[0] as Float ]
         }
-
-    // Add all necessary channel for downsampling
-    ch_input_subsample = ch_bam_bai_depth
+    
+    ch_input_subsample = ch_bam_bai
         .join(ch_mean_depth)
-        .map{ meta, bam, index, depth, mean ->
+        .combine(ch_depth)
+        .map{ meta, bam, index, mean, depth ->
             [ meta + ['subsample_fraction': depth as Float / mean, 'depth': depth ], bam, index ]
         }
 
@@ -42,8 +43,11 @@ workflow BAM_SUBSAMPLEDEPTH_SAMTOOLS {
     )
 
     // Aggregate bam and index
-    ch_bam_subsampled = SAMTOOLS_VIEW.out.bam.mix(SAMTOOLS_VIEW.out.cram, SAMTOOLS_VIEW.out.sam)
-        .join(SAMTOOLS_VIEW.out.bai.mix(SAMTOOLS_VIEW.out.crai, SAMTOOLS_VIEW.out.csi))
+    ch_bam_subsampled = SAMTOOLS_VIEW.out.bam
+        .mix(SAMTOOLS_VIEW.out.cram, SAMTOOLS_VIEW.out.sam)
+        .join(SAMTOOLS_VIEW.out.bai
+            .mix(SAMTOOLS_VIEW.out.crai, SAMTOOLS_VIEW.out.csi)
+        )
 
     emit:
     bam_subsampled    = ch_bam_subsampled             // channel: [ val(meta), path(bam), path(csi) ]
