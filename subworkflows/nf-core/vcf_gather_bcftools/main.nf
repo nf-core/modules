@@ -48,7 +48,6 @@ workflow VCF_GATHER_BCFTOOLS {
     BCFTOOLS_CONCAT(ch_concat_input.more)
 
     ch_vcf_concat = ch_concat_input.one
-        .map{ it -> [it[0], it[1][0]] }
         .mix(BCFTOOLS_CONCAT.out.vcf)
 
     if (val_sort) {
