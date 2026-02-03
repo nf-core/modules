@@ -24,22 +24,22 @@ nextflow_process {
         when {
             process {
                 """
-                ch_sav_in = UNTAR.out.untar.map{ meta, untar -> 
+                ch_sav_in = UNTAR.out.untar.map{ meta, untar ->
                     def xml = []
-                    untar.eachFileRecurse { file -> 
+                    untar.eachFileRecurse { file ->
                         if (file.fileName.toString() == 'RunInfo.xml') {
                             xml << file
                         }
                     }
 
                     def interop = []
-                    untar.eachFileRecurse { file -> 
+                    untar.eachFileRecurse { file ->
                         if (file.parent.name == 'InterOp' && file.fileName.toString().endsWith(".bin")) {
                             interop << file
                         }
                     }
                     return [meta, xml, interop]
-                }.view()
+                }
 
                 input[0] = ch_sav_in
                 input[1] = []
@@ -81,22 +81,22 @@ nextflow_process {
         when {
             process {
                 """
-                ch_sav_in = UNTAR.out.untar.map{ meta, untar -> 
+                ch_sav_in = UNTAR.out.untar.map{ meta, untar ->
                     def xml = []
-                    untar.eachFileRecurse { file -> 
+                    untar.eachFileRecurse { file ->
                         if (file.fileName.toString() == 'RunInfo.xml') {
                             xml << file
                         }
                     }
 
                     def interop = []
-                    untar.eachFileRecurse { file -> 
+                    untar.eachFileRecurse { file ->
                         if (file.parent.name == 'InterOp' && file.fileName.toString().endsWith(".bin")) {
                             interop << file
                         }
                     }
                     return [meta, xml, interop]
-                }.view()
+                }
 
                 input[0] = ch_sav_in
                 input[1] = []
