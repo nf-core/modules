@@ -178,7 +178,6 @@ nextflow_process {
     }
 
     test("cram_to_bam") {
-        tag "test"
         when {
             params {
                 samtools_args = "--output-fmt bam"

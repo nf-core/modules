@@ -13,7 +13,6 @@ nextflow_process {
     tag "cellrangerarc/mkfastq"
 
     test("cellrangerarc_mkfastq - simple atac") {
-        tag "test"
         setup {
             run("UNTAR") {
                 script "../../../untar/main.nf"
