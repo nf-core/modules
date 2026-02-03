@@ -10,7 +10,7 @@ workflow BAM_SUBSAMPLEDEPTH_SAMTOOLS {
     ch_fasta      // channel: [ val(meta), path(fasta) ]
 
     main:
-    ch_versions      = Channel.empty()
+    ch_versions = Channel.empty()
 
     // Compute mean depth
     SAMTOOLS_DEPTH(ch_bam_bai, [[], []])
