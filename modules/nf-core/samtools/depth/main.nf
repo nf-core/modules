@@ -13,7 +13,7 @@ process SAMTOOLS_DEPTH {
 
     output:
     tuple val(meta1), path("*.tsv"), emit: tsv
-    tuple val("${task.process}"), val('samtools'), eval('samtools --version | head -1 | sed -e "s/samtools //"'), emit: versions_samtools, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval('samtools version | sed "1!d;s/.* //"'), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
