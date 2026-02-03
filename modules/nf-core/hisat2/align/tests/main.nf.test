@@ -63,7 +63,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(process.out.summary).match("se_summary") },
                 { assert snapshot(process.out.fastq).match("se_fastq") },
-                { assert snapshot(process.out.versions).match("se_versions") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("se_versions") }
             )
         }
     }
@@ -179,7 +179,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(process.out.summary).match("pe_summary") },
                 { assert snapshot(process.out.fastq).match("pe_fastq") },
-                { assert snapshot(process.out.versions).match("pe_versions") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("pe_versions") }
             )
         }
     }
@@ -281,7 +281,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(process.out.summary).match("se_no_ss_summary") },
                 { assert snapshot(process.out.fastq).match("se_no_ss_fastq") },
-                { assert snapshot(process.out.versions).match("se_no_ss_versions") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("se_no_ss_versions") }
             )
         }
     }
@@ -369,7 +369,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(process.out.summary).match("pe_no_ss_summary") },
                 { assert snapshot(process.out.fastq).match("pe_no_ss_fastq") },
-                { assert snapshot(process.out.versions).match("pe_no_ss_versions") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("pe_no_ss_versions") }
             )
         }
     }
