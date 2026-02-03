@@ -12,9 +12,6 @@ workflow BAM_SORT_STATS_SAMTOOLS {
     ch_fasta // channel: [ val(meta), path(fasta) ]
 
     main:
-
-    ch_versions = channel.empty()
-
     SAMTOOLS_SORT ( ch_bam, ch_fasta, '' )
 
     SAMTOOLS_INDEX ( SAMTOOLS_SORT.out.bam )
@@ -33,7 +30,6 @@ workflow BAM_SORT_STATS_SAMTOOLS {
         .set { ch_bam_bai }
 
     BAM_STATS_SAMTOOLS ( ch_bam_bai, ch_fasta )
-    ch_versions = ch_versions.mix(BAM_STATS_SAMTOOLS.out.versions)
 
     emit:
     bam      = SAMTOOLS_SORT.out.bam           // channel: [ val(meta), [ bam ] ]
@@ -43,6 +39,4 @@ workflow BAM_SORT_STATS_SAMTOOLS {
     stats    = BAM_STATS_SAMTOOLS.out.stats    // channel: [ val(meta), [ stats ] ]
     flagstat = BAM_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), [ flagstat ] ]
     idxstats = BAM_STATS_SAMTOOLS.out.idxstats // channel: [ val(meta), [ idxstats ] ]
-
-    versions = ch_versions                     // channel: [ versions.yml ]
 }
