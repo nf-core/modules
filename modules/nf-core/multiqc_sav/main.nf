@@ -16,9 +16,9 @@ process MULTIQC_SAV {
     path(sample_names)
 
     output:
-    path "*.html" , emit: report
-    path "*_data" , emit: data
-    path "*_plots", emit: plots, optional:true
+    tuple val(meta), path("*.html") , emit: report
+    tuple val(meta), path("*_data") , emit: data
+    tuple val(meta), path("*_plots"), emit: plots, optional:true
     tuple val("${task.process}"), val('multiqc')    , eval('multiqc --version | sed "s/.* //g"')                            , emit: versions
     tuple val("${task.process}"), val('multiqc_sav'), eval('python -c "import multiqc_sav; print(multiqc_sav.__version__)"'), emit: versions_multiqc_sav
     tuple val("${task.process}"), val('interop')    , eval('python -c "import interop; print(interop.__version__)"')        , emit: versions_interop

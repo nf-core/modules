@@ -55,8 +55,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.report[0] ==~ ".*/multiqc_report.html" },
-                { assert process.out.data[0] ==~ ".*/multiqc_data" },
+                { assert process.out.report[0][1] ==~ ".*/multiqc_report.html" },
+                { assert process.out.data[0][1] ==~ ".*/multiqc_data" },
                 { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions")}).match() }
             )
         }
@@ -112,8 +112,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.report[0] ==~ ".*/multiqc_report.html" },
-                { assert process.out.data[0] ==~ ".*/multiqc_data" },
+                { assert process.out.report[0][1] ==~ ".*/multiqc_report.html" },
+                { assert process.out.data[0][1] ==~ ".*/multiqc_data" },
                 { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions")}).match() }
             )
         }
