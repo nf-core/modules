@@ -12,7 +12,7 @@ process TCOFFEE_ALNCOMPARE {
 
     output:
     tuple val(meta), path("*.scores"), emit: scores
-    tuple val("${task.process}"), val('tcoffee'), eval('t_coffee -version | awk -F"[ _.]" -v OFS="." \'{print \\$4,\\$5,\\$6}\''), emit: versions_tcoffee, topic: versions
+    tuple val("${task.process}"), val('tcoffee'), eval('t_coffee -version | awk \'{gsub("Version_", ""); print \\$3}\''), emit: versions_tcoffee, topic: versions
     tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
     when:
