@@ -1,6 +1,7 @@
 name: "gatk4_collectreadcounts"
-description: Collects read counts at specified intervals. The count for each interval
-  is calculated by counting the number of read starts that lie in the interval.
+description: Collects read counts at specified intervals. The count for each
+  interval is calculated by counting the number of read starts that lie in the
+  interval.
 keywords:
   - collectreadcounts
   - bam
@@ -8,11 +9,11 @@ keywords:
   - gatk4
 tools:
   - gatk4:
-      description: Genome Analysis Toolkit (GATK4). Developed in the Data Sciences Platform
-        at the Broad Institute, the toolkit offers a wide variety of tools with a primary
-        focus on variant discovery and genotyping. Its powerful processing engine and
-        high-performance computing features make it capable of taking on projects of
-        any size.
+      description: Genome Analysis Toolkit (GATK4). Developed in the Data Sciences
+        Platform at the Broad Institute, the toolkit offers a wide variety of
+        tools with a primary focus on variant discovery and genotyping. Its
+        powerful processing engine and high-performance computing features make it
+        capable of taking on projects of any size.
       homepage: https://gatk.broadinstitute.org/hc/en-us
       documentation: https://gatk.broadinstitute.org/hc/en-us/articles/360037593911-CombineGVCFs
       tool_dev_url: https://github.com/broadinstitute/gatk
@@ -93,14 +94,28 @@ output:
           description: The read counts in TSV format
           pattern: "*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
+  versions_gatk4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:
