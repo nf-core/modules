@@ -17,12 +17,10 @@ tools:
       licence: ["GPL-3.0-or-later"]
       identifier: ""
 input:
-  - genome_names:
-      type: string
-      description: List of names for each index
   - indexes:
-      type: directory
-      description: Bowtie2 genome directories containing index files
+      type: list
+      description: Flattened list of meta maps and index directory paths
+      help: "This type of channel input can be created by running the .collate() operator on the [meta, index_dir] output of bowtie/bwa/minimap index modules."
 output:
   database:
     - FastQ_Screen_Genomes:
@@ -39,3 +37,4 @@ output:
 authors:
   - "@snesic"
   - "@JPejovicApis"
+  - "@pmoris"
