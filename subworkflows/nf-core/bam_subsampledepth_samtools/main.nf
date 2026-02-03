@@ -14,7 +14,6 @@ workflow BAM_SUBSAMPLEDEPTH_SAMTOOLS {
 
     // Compute mean depth
     SAMTOOLS_DEPTH(ch_bam_bai, [[], []])
-    ch_versions = ch_versions.mix(SAMTOOLS_DEPTH.out.versions.first())
 
     // Use GAWK to get mean depth
     GAWK(SAMTOOLS_DEPTH.out.tsv, [], false)
