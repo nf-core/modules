@@ -54,14 +54,14 @@ process RMATS_PREP {
         --tmp ${prefix}_rmats_tmp \\
         --od ${prefix}_rmats_prep
 
-    for file in `ls ${prefix_rmats}_tmp/*.rmats`
+    for file in `ls ${prefix}_rmats_tmp/*.rmats`
     do
-    cp ${prefix_rmats}_tmp/${file} ${prefix_}prep_${file}
+    cp ${prefix}_rmats_tmp/\${file} ${prefix}_prep_\${file}
     done
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        rmats: \$(rmats.py --version)
+        rmats: \$(echo \$(rmats.py --version) | sed -e "s/v//g")
     END_VERSIONS
     """
 
