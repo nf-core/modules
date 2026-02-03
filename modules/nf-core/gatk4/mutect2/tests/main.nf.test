@@ -65,7 +65,7 @@ nextflow_process {
                         process.out.tbi.collect { file(it[1]).getName() },
                         process.out.stats,
                         process.out.f1r2,
-                        process.out.versions,
+                        process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
@@ -127,7 +127,7 @@ nextflow_process {
                         process.out.tbi.collect { file(it[1]).getName() },
                         process.out.stats,
                         process.out.f1r2.collect { file(it[1]).getName() },
-                        process.out.versions
+                        process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
@@ -178,7 +178,7 @@ nextflow_process {
                         process.out.tbi.collect { file(it[1]).getName() },
                         process.out.stats,
                         process.out.f1r2,
-                        process.out.versions
+                        process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
@@ -229,7 +229,7 @@ nextflow_process {
                         process.out.tbi.collect { file(it[1]).getName() },
                         process.out.stats,
                         process.out.f1r2,
-                        process.out.versions
+                        process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
@@ -280,7 +280,7 @@ nextflow_process {
                         process.out.tbi.collect { file(it[1]).getName() },
                         process.out.stats,
                         process.out.f1r2,
-                        process.out.versions
+                        process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
@@ -331,7 +331,7 @@ nextflow_process {
                         process.out.tbi.collect { file(it[1]).getName() },
                         process.out.stats,
                         process.out.f1r2,
-                        process.out.versions
+                        process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
@@ -382,7 +382,7 @@ nextflow_process {
                         process.out.tbi.collect { file(it[1]).getName() },
                         process.out.stats,
                         process.out.f1r2,
-                        process.out.versions
+                        process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
@@ -501,7 +501,7 @@ nextflow_process {
                         process.out.tbi.collect { file(it[1]).getName() },
                         process.out.stats,
                         process.out.f1r2,
-                        process.out.versions,
+                        process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
@@ -552,7 +552,7 @@ nextflow_process {
                         process.out.tbi.collect { file(it[1]).getName() },
                         process.out.stats,
                         process.out.f1r2,
-                        process.out.versions
+                        process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
