@@ -41,6 +41,7 @@ nextflow_process {
     test("genomes - checkm2 qc_table") {
 
         setup {
+        
             run("GAWK") {
                 script "../../gawk/main.nf"
                 process {
