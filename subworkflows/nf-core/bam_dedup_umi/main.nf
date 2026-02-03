@@ -129,7 +129,6 @@ workflow BAM_DEDUP_UMI {
 
     ch_versions = UMI_DEDUP_GENOME.out.versions
         .mix(BAM_SORT_STATS_SAMTOOLS.out.versions)
-        .mix(UMITOOLS_PREPAREFORRSEM.out.versions)
 
     emit:
     bam                        = UMI_DEDUP_GENOME.out.bam                                                // channel: [ val(meta), path(bam) ]
