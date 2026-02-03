@@ -159,12 +159,30 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - tool:
+      - bowtie2:
           type: string
           description: The name of the tool
-      - version:
+      - "bowtie2 --version 2>&1 | sed -n '1s/.*bowtie2-align-s version //p'":
           type: eval
-          description: The expression to obtain the version of the tool
+          description: The expression to obtain the version of bowtie2
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - "samtools --version | sed -n '1s/samtools //p'":
+          type: eval
+          description: The expression to obtain the version of samtools
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - "pigz --version 2>&1 | sed 's/pigz //'":
+          type: eval
+          description: The expression to obtain the version of pigz
 
 authors:
   - "@joseespinosa"
