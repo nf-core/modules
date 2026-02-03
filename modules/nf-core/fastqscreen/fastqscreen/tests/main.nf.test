@@ -64,6 +64,28 @@ nextflow_process {
 
     }
 
+    test("sarscov2 - human - aligner validation") {
+
+        when {
+            process {
+                """
+                input[0] =  [[ id:'test', single_end:true ],
+                             [file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
+                            ]
+                input[1] = FASTQSCREEN_BUILDFROMINDEX.out.database
+                input[2] = 'invalid'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+            )
+        }
+
+    }
+
     test("sarscov2 - human - tags") {
         config './nextflow.config'
         when {
