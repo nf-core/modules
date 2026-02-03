@@ -30,7 +30,7 @@ input:
         OPTIONAL:
         A string array of the common meta keys to use to group the vcfs.
         Please make sure all VCFs that need to be concatenated have the same value in the
-        the meta fields specified.
+        the meta fields specified - the subworkflow will error if a required key is missing from a meta map.
   - sort:
       type: boolean
       description: |
