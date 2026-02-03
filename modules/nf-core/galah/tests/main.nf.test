@@ -62,7 +62,8 @@ nextflow_process {
                     file("https://github.com/nf-core/test-datasets/raw/refs/heads/magmap/testdata/GCF_004296495.1_ASM429649v1_genomic.fna.gz", checkIfExists: true)]
                 ])
                 .combine(GAWK.out.output, by: 0)
-                .map { meta, bins, tsv -> [ meta, bins, tsv, "checkm2" ] }
+                // rename 'test' to 'input' to avoid name collision
+                .map { meta, bins, tsv -> [ meta + [id: "input"], bins, tsv, "checkm2" ] }
                 """
             }
         }
