@@ -14,7 +14,7 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     tuple val(meta), path("*_genotyped_intervals.vcf.gz"), emit: intervals, optional: true
     tuple val(meta), path("*_genotyped_segments.vcf.gz"),  emit: segments,  optional: true
     tuple val(meta), path("*_denoised.vcf.gz"),            emit: denoised,  optional: true
-    path "versions.yml",                                   emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
