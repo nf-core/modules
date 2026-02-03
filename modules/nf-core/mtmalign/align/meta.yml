@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "mtmalign_align"
 description: Aligns protein structures using mTM-align
 keywords:
@@ -32,8 +33,8 @@ input:
           or uncompressed. They should contain exactly one chain!
         pattern: "*.{pdb}"
         ontologies:
-          - edam: http://edamontology.org/format_1476
-          - edam: http://edamontology.org/format_1477
+          - edam: http://edamontology.org/format_1476 # PDB
+          - edam: http://edamontology.org/format_1477 # mmCIF
   - compress:
       type: boolean
       description: Flag representing whether the output MSA should be compressed.
@@ -51,9 +52,9 @@ output:
           description: Alignment in FASTA format. May be gzipped or uncompressed.
           pattern: "*.aln{.gz,}"
           ontologies:
-            - edam: http://edamontology.org/format_2554
-            - edam: http://edamontology.org/format_1921
-            - edam: http://edamontology.org/format_1984
+            - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
+            - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+            - edam: http://edamontology.org/format_1984 # FASTA-ALN
   structure:
     - - meta:
           type: map
@@ -66,7 +67,7 @@ output:
             uncompressed.
           pattern: "${prefix}.pdb{.gz,}"
           ontologies:
-            - edam: http://edamontology.org/format_1476
+            - edam: http://edamontology.org/format_1476 # PDB
   versions_mtmalign:
     - - ${task.process}:
           type: string

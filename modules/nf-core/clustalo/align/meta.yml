@@ -31,8 +31,8 @@ input:
         description: Input sequences in FASTA format
         pattern: "*.{fa,fasta,faa,fna}"
         ontologies:
-          - edam: http://edamontology.org/format_1919
-          - edam: http://edamontology.org/format_1929
+          - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta2:
         type: map
         description: |
@@ -43,37 +43,37 @@ input:
         description: Input guide tree in Newick format
         pattern: "*.{dnd}"
         ontologies:
-          - edam: http://edamontology.org/format_2006
+          - edam: http://edamontology.org/format_2006 # PHYLOGENETIC TREE
   - hmm_in:
       type: file
       description: HMM file for profile alignment
       pattern: "*.hmm"
       ontologies:
-        - edam: http://edamontology.org/format_1391
+        - edam: http://edamontology.org/format_1391 # HMMER-ALN
   - hmm_batch:
       type: file
       description: specify HMMs for individual sequences
       pattern: "*.hmm"
       ontologies:
-        - edam: http://edamontology.org/format_1391
+        - edam: http://edamontology.org/format_1391 # HMMER-ALN
   - profile1:
       type: file
       description: Pre-aligned multiple sequence file 1
       pattern: "*.{alnfaa,faa,fa,fasta}"
       ontologies:
-        - edam: http://edamontology.org/format_1929
-        - edam: http://edamontology.org/format_2554
-        - edam: http://edamontology.org/format_1921
-        - edam: http://edamontology.org/format_1984
+        - edam: http://edamontology.org/format_1929 # FASTA
+        - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
+        - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+        - edam: http://edamontology.org/format_1984 # FASTA-ALN
   - profile2:
       type: file
       description: Pre-aligned multiple sequence file 2
       pattern: "*.{alnfaa,faa,fa,fasta}"
       ontologies:
-        - edam: http://edamontology.org/format_1929
-        - edam: http://edamontology.org/format_2554
-        - edam: http://edamontology.org/format_1921
-        - edam: http://edamontology.org/format_1984
+        - edam: http://edamontology.org/format_1929 # FASTA
+        - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
+        - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+        - edam: http://edamontology.org/format_1984 # FASTA-ALN
   - compress:
       type: boolean
       description: Flag representing whether the output MSA should be compressed.
@@ -91,9 +91,9 @@ output:
           description: Alignment file, in gzipped fasta format
           pattern: "*.aln{.gz,}"
           ontologies:
-            - edam: http://edamontology.org/format_2554
-            - edam: http://edamontology.org/format_1921
-            - edam: http://edamontology.org/format_1984
+            - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
+            - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+            - edam: http://edamontology.org/format_1984 # FASTA-ALN
   versions_clustalo:
     - - ${task.process}:
           type: string
