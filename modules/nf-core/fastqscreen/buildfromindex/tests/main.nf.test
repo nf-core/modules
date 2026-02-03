@@ -9,6 +9,7 @@ nextflow_process {
     tag "fastqscreen"
     tag "fastqscreen/buildfromindex"
     tag "bowtie2/build"
+    tag "bwa/index"
 
     setup {
 
@@ -18,7 +19,19 @@ nextflow_process {
                 """
                 input[0] =  Channel.from([
                                     [[id: "sarscov2"], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)],
-                                    [[id: "human"]   , file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)]
+                                    [[id: "human"], file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)]
+                            ])
+                """
+            }
+        }
+
+        run("BWA_INDEX") {
+            script "../../../bwa/index/main.nf"
+            process {
+                """
+                input[0] =  Channel.from([
+                                    [[id: "sarscov2"], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)],
+                                    [[id: "human"], file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)]
                             ])
                 """
             }
@@ -32,7 +45,27 @@ nextflow_process {
             process {
                 """
                 input[0] = BOWTIE2_BUILD.out.index.map{meta, index -> meta.id}.collect()
-                input[1] = BOWTIE2_BUILD.out.index.map{meta, index -> index}.collect()
+                input[1] = ""   // should default to bowtie2
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.database, process.out.versions).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - human - bwa") {
+
+        when {
+            process {
+                """
+                input[0] = BWA_INDEX.out.index.collect()
+                input[1] = "bwa"
                 """
             }
         }
@@ -53,8 +86,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = BOWTIE2_BUILD.out.index.map{meta, index -> meta.id}.collect()
-                input[1] = BOWTIE2_BUILD.out.index.map{meta, index -> index}.collect()
+                input[0] = BOWTIE2_BUILD.out.index.collect()
+                input[1] = ""
                 """
             }
         }
