@@ -11,8 +11,8 @@ process BFTOOLS_SHOWINF {
     tuple val(meta), path(image)
 
     output:
-    tuple val(meta), path("*.xml.gz"), emit: xml
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.xml.gz")                                                                , emit: xml
+    tuple val("${task.process}"), val("bftools"), eval("showinf -version | head -n1 | cut -d' ' -f2"), emit: versions_bftools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,11 +26,6 @@ process BFTOOLS_SHOWINF {
     showinf -nopix -no-upgrade -omexml-only \\
         $args \\
         $image | gzip > ${prefix}.xml.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        showinf: \$(showinf -version | head -n1 | cut -d' ' -f2)
-    END_VERSIONS
     """
 
     stub:
@@ -39,10 +34,5 @@ process BFTOOLS_SHOWINF {
 
     """
     echo '<?xml version="1.0" encoding="UTF-8">' | gzip > ${prefix}.xml.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        showinf: \$(showinf -version | head -n1 | cut -d' ' -f2)
-    END_VERSIONS
     """
 }
