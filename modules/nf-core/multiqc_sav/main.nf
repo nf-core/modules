@@ -55,4 +55,3 @@ process MULTIQC_SAV {
     touch multiqc_report.html
     """
 }
-
