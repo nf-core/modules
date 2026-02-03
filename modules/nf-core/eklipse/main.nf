@@ -23,6 +23,9 @@ process EKLIPSE {
     task.ext.when == null || task.ext.when
 
     script:
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "EKLIPSE module does not seem to currently work when testing using conda (2026-02-03)"
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def ref_gb_path = ref_gb ? "$ref_gb" : "/usr/local/bin/data/NC_012920.1.gb"
@@ -44,6 +47,9 @@ process EKLIPSE {
     """
 
     stub:
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "EKLIPSE module does not seem to currently work when testing using conda (2026-02-03)"
+    }
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = "1.8"
     """
