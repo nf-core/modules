@@ -12,7 +12,7 @@ process BFTOOLS_SHOWINF {
 
     output:
     tuple val(meta), path("*.xml.gz")                                                                , emit: xml
-    tuple val("${task.process}"), val("bftools"), eval("showinf -version | head -n1 | cut -d' ' -f2"), emit: versions_bftools, topic: versions
+    tuple val("${task.process}"), val("bftools"), eval("showinf -version | sed -n '1s/[^ ]* //p'"), emit: versions_bftools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
