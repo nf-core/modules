@@ -38,7 +38,7 @@ output:
       - aria2:
           type: string
           description: The tool name
-      - "'aria2c --version 2>&1 | sed '1s/[^ ]* [^ ]* //; q''":
+      - "aria2c --version 2>&1 | sed '1s/[^ ]* [^ ]* //; q'":
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -50,7 +50,7 @@ topics:
       - aria2:
           type: string
           description: The tool name
-      - "'aria2c --version 2>&1 | sed '1s/[^ ]* [^ ]* //; q''":
+      - "aria2c --version 2>&1 | sed '1s/[^ ]* [^ ]* //; q'":
           type: eval
           description: The expression to obtain the version of the tool
 

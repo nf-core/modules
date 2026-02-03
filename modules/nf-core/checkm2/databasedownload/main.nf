@@ -24,7 +24,7 @@ process CHECKM2_DATABASEDOWNLOAD {
 
     output:
     tuple val(meta), path("checkm2_db_v${db_version}.dmnd"), emit: database
-    tuple val("${task.process}"), val('aria2'), eval('aria2c --version 2>&1 | sed '1s/[^ ]* [^ ]* //; q''), topic: versions, emit: versions_checkm2_databasedownload
+    tuple val("${task.process}"), val('aria2'), eval("aria2c --version 2>&1 | sed '1s/[^ ]* [^ ]* //; q'"), topic: versions, emit: versions_checkm2_databasedownload
 
     when:
     task.ext.when == null || task.ext.when
