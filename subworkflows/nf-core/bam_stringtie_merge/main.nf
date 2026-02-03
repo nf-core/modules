@@ -16,7 +16,6 @@ workflow BAM_STRINGTIE_MERGE {
         bam_sorted,
         ch_chrgtf.map { _meta, gtf -> [ gtf ] }
     )
-    ch_versions = ch_versions.mix(STRINGTIE_STRINGTIE.out.versions)
 
     STRINGTIE_STRINGTIE.out.transcript_gtf
         .map { it[1] }
