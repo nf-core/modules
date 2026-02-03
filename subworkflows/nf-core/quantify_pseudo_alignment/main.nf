@@ -54,7 +54,6 @@ workflow QUANTIFY_PSEUDO_ALIGNMENT {
         )
         ch_pseudo_results = KALLISTO_QUANT.out.results
         ch_pseudo_multiqc = KALLISTO_QUANT.out.log
-        ch_versions = ch_versions.mix(KALLISTO_QUANT.out.versions.first())
     }
 
     CUSTOM_TX2GENE (
