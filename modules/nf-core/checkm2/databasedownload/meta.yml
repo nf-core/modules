@@ -38,9 +38,10 @@ output:
       - aria2:
           type: string
           description: The tool name
-      - aria2c --version 2>&1 | head -n 1 | cut -f3 -d " ":
-          type: string
-          description: The command used to generate the version of the tool
+      - "'aria2c --version 2>&1 | sed '1s/[^ ]* [^ ]* //; q''":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -49,9 +50,10 @@ topics:
       - aria2:
           type: string
           description: The tool name
-      - 'aria2c --version 2>&1 | head -n 1 | cut -f3 -d " "':
-          type: string
-          description: The command used to generate the version of the tool
+      - "'aria2c --version 2>&1 | sed '1s/[^ ]* [^ ]* //; q''":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@dialvarezs"
   - "@eit-maxlcummins"
