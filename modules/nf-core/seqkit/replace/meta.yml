@@ -56,12 +56,12 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - tool:
+      - seqkit:
           type: string
           description: The name of the tool
-      - version:
+      - "seqkit version | sed 's/seqkit v//'":
           type: eval
-          description: The expression to obtain the version of the tool
+          description: The expression to obtain the version of seqkit
 
 authors:
   - "@mjcipriano"
