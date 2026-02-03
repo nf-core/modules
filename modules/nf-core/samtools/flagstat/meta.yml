@@ -63,12 +63,12 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - tool:
+      - samtools:
           type: string
           description: The name of the tool
-      - version:
+      - "samtools --version | sed -n '1s/samtools //p'":
           type: eval
-          description: The expression to obtain the version of the tool
+          description: The expression to obtain the version of samtools
 
 authors:
   - "@drpatelh"
