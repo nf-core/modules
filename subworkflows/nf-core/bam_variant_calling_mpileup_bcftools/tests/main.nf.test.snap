@@ -1,0 +1,94 @@
+{
+    "Compute genotype likelihood with merging and two chromosomes": {
+        "content": [
+            [
+                "versions.yml:md5,3b0fee3aa670345abd0d2f9058050d65",
+                "versions.yml:md5,5c1d0190110ff1887f49323dec613345",
+                "versions.yml:md5,627428fc0c462d764ef59f3f58cb4202",
+                "versions.yml:md5,85e298b4e9dd35ea49f5696b117f759b"
+            ],
+            [
+                [
+                    {
+                        "id": "all",
+                        "panel_id": "1000GP",
+                        "chr": "all",
+                        "variantcaller": "bcftools"
+                    },
+                    "all_all.annotate.vcf.gz",
+                    "all_all.annotate.vcf.gz.tbi"
+                ]
+            ],
+            [
+                "VcfFile [chromosomes=[chr21, chr22], sampleCount=2, variantCount=1739, phased=false, phasedAutodetect=false]"
+            ],
+            [
+                {
+                    "BAM_GL_BCFTOOLS:BCFTOOLS_ANNOTATE": {
+                        "bcftools": 1.21
+                    }
+                },
+                {
+                    "BAM_GL_BCFTOOLS:BCFTOOLS_MERGE": {
+                        "bcftools": 1.21
+                    }
+                },
+                {
+                    "BAM_GL_BCFTOOLS:BCFTOOLS_MPILEUP": {
+                        "bcftools": 1.21
+                    }
+                },
+                {
+                    "BAM_GL_BCFTOOLS:VCF_CONCATENATE_BCFTOOLS:BCFTOOLS_CONCAT": {
+                        "bcftools": 1.21
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-12-20T17:05:10.755124761"
+    },
+    "Compute genotype likelihood with only one input": {
+        "content": [
+            [
+                "versions.yml:md5,3b0fee3aa670345abd0d2f9058050d65",
+                "versions.yml:md5,627428fc0c462d764ef59f3f58cb4202"
+            ],
+            [
+                [
+                    {
+                        "id": "NA12878",
+                        "panel_id": "1000GP",
+                        "chr": "all",
+                        "variantcaller": "bcftools"
+                    },
+                    "NA12878_all.annotate.vcf.gz",
+                    "NA12878_all.annotate.vcf.gz.tbi"
+                ]
+            ],
+            [
+                "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=903, phased=false, phasedAutodetect=false]"
+            ],
+            [
+                {
+                    "BAM_GL_BCFTOOLS:BCFTOOLS_ANNOTATE": {
+                        "bcftools": 1.21
+                    }
+                },
+                {
+                    "BAM_GL_BCFTOOLS:BCFTOOLS_MPILEUP": {
+                        "bcftools": 1.21
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-12-20T17:50:42.161993968"
+    }
+}

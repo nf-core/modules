@@ -1,0 +1,116 @@
+nextflow_workflow {
+
+    name "Test Subworkflow BAM_VARIANT_CALLING_MPILEUP_BCFTOOLS"
+    script "../main.nf"
+    config "./nextflow.config"
+
+    workflow "BAM_VARIANT_CALLING_MPILEUP_BCFTOOLS"
+
+    tag "subworkflows"
+    tag "subworkflows_local"
+    tag "subworkflows/bam_variant_calling_mpileup_bcftools"
+    tag "bam_variant_calling_mpileup_bcftools"
+
+    tag "gawk"
+    tag "tabix"
+    tag "tabix/bgzip"
+    tag "bcftools"
+    tag "bcftools/mpileup"
+    tag "bcftools/annotate"
+
+    test("Compute genotype likelihood with merging and two chromosomes") {
+        when {
+            workflow {
+                """
+                input[0] = channel.fromList([
+                    [
+                        [id: "NA12878"],
+                        file(params.pipelines_testdata_base_path + "hum_data/individuals/NA12878/NA12878.s.bam", checkIfExist:true),
+                        file(params.pipelines_testdata_base_path + "hum_data/individuals/NA12878/NA12878.s.bam.bai", checkIfExist:true),
+                    ],
+                    [
+                        [id: "NA19401"],
+                        file(params.pipelines_testdata_base_path + "hum_data/individuals/NA19401/NA19401.s.bam", checkIfExist:true),
+                        file(params.pipelines_testdata_base_path + "hum_data/individuals/NA19401/NA19401.s.bam.bai", checkIfExist:true),
+                    ],
+                ])
+                input[1] = channel.of(
+                [
+                    [panel_id: "1000GP", chr: "22"],
+                    file(params.pipelines_testdata_base_path + "hum_data/panel/chr22/1000GP.chr22.posfile", checkIfExist:true)
+                ],
+                [
+                    [panel_id: "1000GP", chr: "21"],
+                    file(params.pipelines_testdata_base_path + "hum_data/panel/chr21/1000GP.chr21.posfile", checkIfExist:true)
+                ])
+                input[2] = channel.of([
+                    [id: "GRCh38"],
+                    file(params.pipelines_testdata_base_path + "hum_data/reference_genome/GRCh38.s.fa.gz", checkIfExist:true),
+                    file(params.pipelines_testdata_base_path + "hum_data/reference_genome/GRCh38.s.fa.gz.fai", checkIfExist:true),
+                ]).collect()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.versions,
+                    workflow.out.vcf_index.collect{[
+                        it[0],
+                        path(it[1]).getFileName().toString(),
+                        path(it[2]).getFileName().toString()
+                    ] },
+                    workflow.out.vcf_index.collect{
+                        path(it[1]).vcf.summary
+                    },
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+
+    test("Compute genotype likelihood with only one input") {
+        when {
+            workflow {
+                """
+                input[0] = channel.fromList([
+                    [
+                        [id: "NA12878"],
+                        file(params.pipelines_testdata_base_path + "hum_data/individuals/NA12878/NA12878.s.bam", checkIfExist:true),
+                        file(params.pipelines_testdata_base_path + "hum_data/individuals/NA12878/NA12878.s.bam.bai", checkIfExist:true),
+                    ],
+                ])
+                input[1] = channel.of([
+                        [panel_id: "1000GP", chr: "22"],
+                        file(params.pipelines_testdata_base_path + "hum_data/panel/chr22/1000GP.chr22.posfile", checkIfExist:true)
+                    ]).collect()
+                input[2] = channel.of([
+                    [id: "GRCh38"],
+                    file(params.pipelines_testdata_base_path + "hum_data/reference_genome/GRCh38.s.fa.gz", checkIfExist:true),
+                    file(params.pipelines_testdata_base_path + "hum_data/reference_genome/GRCh38.s.fa.gz.fai", checkIfExist:true),
+                ]).collect()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.versions,
+                    workflow.out.vcf_index.collect{[
+                        it[0],
+                        path(it[1]).getFileName().toString(),
+                        path(it[2]).getFileName().toString()
+                    ] },
+                    workflow.out.vcf_index.collect{
+                        path(it[1]).vcf.summary
+                    },
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+}

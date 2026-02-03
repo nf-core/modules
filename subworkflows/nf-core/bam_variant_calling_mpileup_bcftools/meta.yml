@@ -1,0 +1,88 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "BAM_GL_BCFTOOLS"
+description: |
+  Subworkflow to compute genotype likelihoods from BAM files using
+  bcftools/mpileup and bcftools/call variants using bcftools call
+  by chromosomes.
+  The resulting VCF files are then merged by chromosomes and
+  annotated with bcftools/annotate to give an ID for each variants.
+keywords:
+  - BAM
+  - genotype likelihoods
+  - bcftools
+components:
+  - gawk
+  - tabix/bgzip
+  - bcftools/mpileup
+  - bcftools/merge
+  - bcftools/annotate
+input:
+  - ch_bam:
+      description: Channel with input data
+      structure:
+        - meta:
+          type: map
+          description: Metadata map
+        - bam:
+          type: file
+          description: Input BAM file
+          pattern: "*.bam"
+        - index:
+          type: file
+          description: Input BAM index file
+          pattern: "*.{bai,csi}"
+  - ch_posfile:
+      description: Channel with position to call variants by chromosomes
+      structure:
+        - meta:
+          type: map
+          description: |
+            Metadata map that will be combined with the input data map
+            Need to have the "chr" as chromosome name and "panel_id" as panel name
+        - legend:
+          type: file
+          description: Region to extract from the BAM file
+          pattern: "*.legend[.gz]+"
+  - ch_fasta:
+      description: Channel with reference genome data
+      structure:
+        - meta:
+          type: map
+          description: Metadata map
+        - fasta:
+          type: file
+          description: FASTA file of the reference genome
+          pattern: "*.fa[sta]+"
+        - fai:
+          type: file
+          description: FASTA index file of the reference genome
+          pattern: "*.fai"
+output:
+  - vcf_tbi:
+      description: Channel with one VCF files by chromosomes
+      structure:
+        - meta:
+          type: map
+          description: |
+            Metadata map combined with the ch_posfile data map.
+        - vcf:
+          type: file
+          description: VCF file with all individuals merged by chromosomes
+          pattern: "*.{vcf,bcf,vcf.gz}"
+        - index:
+          type: file
+          description: VCF index file
+          pattern: "*.{tbi,csi}"
+  - versions:
+      description: Channel containing software versions file
+      structure:
+        - versions.yml:
+            type: file
+            description: File containing versions of the software used
+  - multiqc_files:
+      description: Channel containing stat files of bcftools mpileup and call
+      type: file
+authors:
+  - "@louislenezet"
+maintainers:
+  - "@louislenezet"
