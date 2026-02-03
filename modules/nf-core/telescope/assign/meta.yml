@@ -1,54 +1,76 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-# # TODO nf-core: Add a description of the module and list keywords
 name: "telescope_assign"
-description: write your description here
+description: The telescope assign program finds overlapping reads between an alignment (SAM/BAM) and an annotation (GTF)
+    then reassigns reads using a statistical model.
 keywords:
-  - sort
-  - example
-  - genomics
+  - EM
+  - single-locus
+  - transcriptomics
 tools:
-  ## TODO nf-core: Add a description and other details for the software below
   - "telescope":
       description: "Single locus resolution of Transposable ELEment expression."
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: https://github.com/mlbendall/telescope
+      documentation: https://github.com/mlbendall/telescope
+      tool_dev_url: https://github.com/mlbendall/telescope
+      doi: https://doi.org/10.1371/journal.pcbi.1006453
       licence: ["MIT"]
       identifier: null
 
 input:
-  ### TODO nf-core: Add a description of all of the variables used as input
-  - - meta:
+  - - meta_bam:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
     - bam:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
+        description: Sorted BAM/CRAM/SAM file, File must be collated so that all
+                     alignments for a read pair appear sequentially in the
+                     file
+        pattern: "*.{bam,sam}"
         ontologies:
           - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
           - edam: "http://edamontology.org/format_3462" # SAM
 
+  - - meta_gtf:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[id:'sample1' ]`
+    - gtf:
+        type: file
+        description: Annotation file which includes TE loci.
+        pattern: "*.{gtf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2306" # GTF
+
 output:
-  ### TODO nf-core: Add a description of all of the variables used as output
   bam:
-    - - meta:
+    - - meta_bam:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.bam":
+      - "*{updated,other}.bam":
           type: file
-          description: Sorted BAM/CRAM/SAM file
-          pattern: "*.{bam,cram,sam}"
+          description: The updated SAM file contains those fragments that has at least 1 initial
+              alignment to a transposable element.
+          pattern: "*{updated,other}.bam"
           ontologies:
             - edam: "http://edamontology.org/format_2572" # BAM
-            - edam: "http://edamontology.org/format_2573" # CRAM
             - edam: "http://edamontology.org/format_3462" # SAM
+  tsv:
+    - - meta_bam:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.tsv":
+          type: file
+          description: Statistical report associated with the run
+          pattern: "*.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # tsv
   versions:
     - "versions.yml":
         type: file
