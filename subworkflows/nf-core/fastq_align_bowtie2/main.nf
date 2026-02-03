@@ -27,7 +27,6 @@ workflow FASTQ_ALIGN_BOWTIE2 {
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
     //
     BAM_SORT_STATS_SAMTOOLS ( BOWTIE2_ALIGN.out.bam, ch_fasta )
-    ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS.out.versions)
 
     emit:
     bam_orig         = BOWTIE2_ALIGN.out.bam          // channel: [ val(meta), aligned ]
