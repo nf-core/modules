@@ -34,6 +34,12 @@ input:
       type: directory
       description: fastq screen database folder containing config file and index folders
       pattern: "FastQ_Screen_Genomes"
+  - aligner:
+      type: string
+      description: |
+        Aligner to use for mapping reads. Options: 'bowtie', 'bowtie2', 'bwa', 'minimap2'.
+        If not specified, FastQ Screen will use its default aligner (bowtie2).
+      pattern: "bowtie|bowtie2|bwa|minimap2"
 output:
   txt:
     - - meta:
@@ -84,3 +90,5 @@ output:
 authors:
   - "@snesic"
   - "@JPejovicApis"
+contributors:
+  - "@pmoris"
