@@ -18,12 +18,10 @@ workflow BAM_MARKDUPLICATES_PICARD {
     ch_versions = channel.empty()
 
     PICARD_MARKDUPLICATES ( ch_reads, ch_fasta, ch_fai )
-    ch_versions = ch_versions.mix(PICARD_MARKDUPLICATES.out.versions.first())
 
     ch_markdup = PICARD_MARKDUPLICATES.out.bam.mix(PICARD_MARKDUPLICATES.out.cram)
 
     SAMTOOLS_INDEX ( ch_markdup )
-    ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
 
     ch_reads_index = ch_markdup
         .join(SAMTOOLS_INDEX.out.bai,  by: [0], remainder: true)
