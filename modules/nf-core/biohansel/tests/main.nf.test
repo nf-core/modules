@@ -66,6 +66,7 @@ nextflow_process {
     }
 
     test("test_biohansel_assembly") {
+        tag "test"
         when {
             params {
                 module_args = "--scheme typhi"
