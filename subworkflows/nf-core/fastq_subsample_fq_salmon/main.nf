@@ -18,14 +18,13 @@ workflow FASTQ_SUBSAMPLE_FQ_SALMON {
 
     main:
 
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     //
     // Create Salmon index if required
     //
     if (make_index) {
         ch_index = SALMON_INDEX ( ch_genome_fasta, ch_transcript_fasta ).index
-        ch_versions = ch_versions.mix(SALMON_INDEX.out.versions)
     }
 
     //
@@ -40,7 +39,6 @@ workflow FASTQ_SUBSAMPLE_FQ_SALMON {
     def lib_type = 'A'
     def alignment_mode = false
     SALMON_QUANT ( FQ_SUBSAMPLE.out.fastq, ch_index, ch_gtf, ch_transcript_fasta, alignment_mode, lib_type )
-    ch_versions = ch_versions.mix(SALMON_QUANT.out.versions.first())
 
     emit:
     index             = ch_index                           // channel: [ index ]

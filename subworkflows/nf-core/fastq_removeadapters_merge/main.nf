@@ -88,7 +88,6 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
         ch_discarded_reads = ch_discarded_reads.mix(FASTP.out.reads_fail.transpose()) // .transpose() because paired reads have 3 fail files in an array
         ch_log             = FASTP.out.log
         ch_report          = FASTP.out.html
-        ch_versions        = ch_versions.mix(FASTP.out.versions.first())
         ch_multiqc_files   = ch_multiqc_files.mix(FASTP.out.json)
     } else if (val_adapter_tool == "adapterremoval") {
         ch_adapterremoval_in = ch_input_reads

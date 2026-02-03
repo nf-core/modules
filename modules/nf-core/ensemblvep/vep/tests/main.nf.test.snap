@@ -1,12 +1,20 @@
 {
     "test_ensemblvep_vep_fasta_tab_gz": {
         "content": [
+            "test.tab.gz",
             {
                 "versions_ensemblvep": [
                     [
                         "ENSEMBLVEP_VEP",
                         "ensemblvep",
                         "115.2"
+                    ]
+                ],
+                "versions_perlmathcdf": [
+                    [
+                        "ENSEMBLVEP_VEP",
+                        "perl-math-cdf",
+                        ""
                     ]
                 ],
                 "versions_tabix": [
@@ -22,16 +30,25 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-01-07T17:42:48.122899762"
+        "timestamp": "2026-01-16T13:49:54.784347273"
     },
     "test_ensemblvep_vep_fasta_vcf - stub (not really but linting complains otherwise)": {
         "content": [
+            "test.vcf.gz,variantsMD5:d41d8cd98f00b204e9800998ecf8427e",
+            "test.vcf.gz.tbi",
             {
                 "versions_ensemblvep": [
                     [
                         "ENSEMBLVEP_VEP",
                         "ensemblvep",
                         "115.2"
+                    ]
+                ],
+                "versions_perlmathcdf": [
+                    [
+                        "ENSEMBLVEP_VEP",
+                        "perl-math-cdf",
+                        ""
                     ]
                 ],
                 "versions_tabix": [
@@ -41,14 +58,12 @@
                         "1.21"
                     ]
                 ]
-            },
-            "d41d8cd98f00b204e9800998ecf8427e",
-            "test.vcf.gz.tbi"
+            }
         ],
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-01-07T17:42:30.949059448"
+        "timestamp": "2026-01-16T13:49:36.798576341"
     }
 }
