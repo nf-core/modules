@@ -31,7 +31,6 @@ workflow FASTQ_SUBSAMPLE_FQ_SALMON {
     // Sub-sample FastQ files with fq
     //
     FQ_SUBSAMPLE ( ch_reads )
-    ch_versions = ch_versions.mix(FQ_SUBSAMPLE.out.versions.first())
 
     //
     // Pseudo-alignment with Salmon
