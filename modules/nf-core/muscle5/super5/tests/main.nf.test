@@ -27,7 +27,7 @@ nextflow_process {
                         { assert process.success },
                         { assert snapshot(
                                 process.out.alignment,
-                                process.out.versions
+                                process.out.findAll { key, val -> key.startsWith('versions') }
                             ).match("alignment - uncompressed")
                         },
                         )
@@ -51,7 +51,7 @@ nextflow_process {
                         { assert process.success },
                         { assert snapshot(
                                 process.out.alignment,
-                                process.out.versions
+                                process.out.findAll { key, val -> key.startsWith('versions') }
                             ).match("alignment - compressed")
                         },
                         )
@@ -75,7 +75,7 @@ nextflow_process {
                         { assert process.success },
                         { assert snapshot(
                                 process.out.alignment,
-                                process.out.versions
+                                process.out.findAll { key, val -> key.startsWith('versions') }
                             ).match("perm-all")
                         },
                         )
