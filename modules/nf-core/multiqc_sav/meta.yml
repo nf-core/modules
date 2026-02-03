@@ -113,7 +113,18 @@ output:
       - python -c "import multiqc_sav; print(multiqc_sav.__version__)":
           type: eval
           description: The expression to obtain the version of the tool
+  versions_interop:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - interop:
+          type: string
+          description: The tool name
+      - python -c "import interop; print(interop.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@matthdsm"
+  - "@delfiterradas"
 maintainers:
   - "@matthdsm"
