@@ -25,14 +25,12 @@ workflow FASTQ_SUBSAMPLE_FQ_SALMON {
     //
     if (make_index) {
         ch_index = SALMON_INDEX ( ch_genome_fasta, ch_transcript_fasta ).index
-        ch_versions = ch_versions.mix(SALMON_INDEX.out.versions)
     }
 
     //
     // Sub-sample FastQ files with fq
     //
     FQ_SUBSAMPLE ( ch_reads )
-    ch_versions = ch_versions.mix(FQ_SUBSAMPLE.out.versions.first())
 
     //
     // Pseudo-alignment with Salmon

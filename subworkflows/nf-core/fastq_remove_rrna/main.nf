@@ -88,7 +88,6 @@ workflow FASTQ_REMOVE_RRNA {
             ch_filtered_reads
         )
 
-        ch_versions = ch_versions.mix(SEQKIT_STATS.out.versions.first())
         ch_seqkit_stats = SEQKIT_STATS.out.stats
         ch_multiqc_files = ch_multiqc_files.mix(SEQKIT_STATS.out.stats)
 
@@ -124,7 +123,6 @@ workflow FASTQ_REMOVE_RRNA {
             SEQKIT_REPLACE(
                 ch_rrna_with_meta
             )
-            ch_versions = ch_versions.mix(SEQKIT_REPLACE.out.versions)
             ch_seqkit_prefixed = SEQKIT_REPLACE.out.fastx
 
             // Step 2: Convert U to T in sequences (RNA to DNA)
@@ -135,7 +133,6 @@ workflow FASTQ_REMOVE_RRNA {
             SEQKIT_REPLACE_U2T(
                 ch_prefixed_fastas
             )
-            ch_versions = ch_versions.mix(SEQKIT_REPLACE_U2T.out.versions)
             ch_seqkit_converted = SEQKIT_REPLACE_U2T.out.fastx
 
             // Collect processed files (already prefixed and U->T converted)
@@ -150,7 +147,6 @@ workflow FASTQ_REMOVE_RRNA {
             )
             ch_bowtie2_index = BOWTIE2_BUILD.out.index.first()
             ch_bowtie2_index_out = BOWTIE2_BUILD.out.index
-            ch_versions = ch_versions.mix(BOWTIE2_BUILD.out.versions.first())
         }
 
         // Branch reads by single-end vs paired-end for different filtering strategies
@@ -173,7 +169,6 @@ workflow FASTQ_REMOVE_RRNA {
 
         ch_bowtie2_log = BOWTIE2_ALIGN.out.log
         ch_multiqc_files = ch_multiqc_files.mix(BOWTIE2_ALIGN.out.log)
-        ch_versions = ch_versions.mix(BOWTIE2_ALIGN.out.versions)
 
         // For paired-end reads: bowtie2's --un-conc-gz outputs pairs that didn't
         // align concordantly, which INCLUDES pairs where one mate aligned.
@@ -188,7 +183,6 @@ workflow FASTQ_REMOVE_RRNA {
 
         ch_bowtie2_log = ch_bowtie2_log.mix(BOWTIE2_ALIGN_PE.out.log)
         ch_multiqc_files = ch_multiqc_files.mix(BOWTIE2_ALIGN_PE.out.log)
-        ch_versions = ch_versions.mix(BOWTIE2_ALIGN_PE.out.versions)
 
         // Filter BAM for read pairs where BOTH mates are unmapped (flag 12 = 4 + 8)
         // This removes any pair where at least one mate aligned to rRNA
@@ -205,8 +199,6 @@ workflow FASTQ_REMOVE_RRNA {
             SAMTOOLS_VIEW_BOWTIE2.out.bam,
             false  // not interleaved
         )
-
-        ch_versions = ch_versions.mix(SAMTOOLS_FASTQ_BOWTIE2.out.versions)
 
         // Combine single-end and paired-end results
         BOWTIE2_ALIGN.out.fastq
