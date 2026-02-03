@@ -45,7 +45,7 @@ workflow VCF_GATHER_BCFTOOLS {
         }
 
     // Concatenate vcf with more than one record
-    BCFTOOLS_CONCAT(ch_concat_input.more.map{ it -> it[0..2] } )
+    BCFTOOLS_CONCAT(ch_concat_input.more)
 
     ch_vcf_concat = ch_concat_input.one
         .map{ it -> [it[0], it[1][0]] }
