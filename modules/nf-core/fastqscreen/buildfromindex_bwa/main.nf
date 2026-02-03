@@ -7,8 +7,7 @@ process FASTQSCREEN_BUILDFROMINDEX_BWA {
         'biocontainers/fastq-screen:0.15.3--pl5321hdfd78af_0'}"
 
     input:
-    tuple val(meta_index), path(bwa_index)
-    tuple val(meta_fasta), path(fasta)
+    path(bwa_indices, stageAs: "index_?/*")  // List of [index_dir] from BWA_INDEX.out.index.map{ meta, dir -> dir }.collect()
 
     output:
     path("FastQ_Screen_Genomes"), emit: database
@@ -18,41 +17,21 @@ process FASTQSCREEN_BUILDFROMINDEX_BWA {
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix = task.ext.prefix ?: "${meta_fasta.id}"
-    def dir = "FastQ_Screen_Genomes"
-    def fasta_name = fasta.name
-    def fasta_ext = fasta.extension
+    def index_dir = "FastQ_Screen_Genomes"
     """
-    mkdir -p ${dir}/${prefix}
+    mkdir -p ${index_dir}
 
-    # Copy fasta file
-    cp ${fasta} ${dir}/${prefix}/
-
-    # Copy BWA index files
-    # cp ${bwa_index}/* ${dir}/${prefix}/
-
-    # Copy and optionally rename BWA index files, since
-    # fastq-screen expects the filename of the index files to
-    # include the full filename of the fasta (including its extensions)
-    # E.g. genome.amb -> genome.fasta.amb
-    for index_file in ${bwa_index}/*; do
-        if [[ \${index_file} =~ "\\.${fasta_ext}\\." ]]; then
-            cp \${index_file} ${dir}/${prefix}
-        else
-            cp \${index_file} ${dir}/${prefix}/${fasta_name}.\${index_file##*.}
-        fi
+    # Copy all index files to the same directory
+    for idx_dir in ${bwa_indices}; do
+        cp -r "\$idx_dir/"* ${index_dir}/
     done
 
-    # Verify index was created correctly and matches fasta
-    if [ ! -f "${dir}/${prefix}/${fasta_name}.amb" ]; then
-        echo "ERROR: BWA index filenames (${bwa_index}) do not match fasta name (${fasta_name})."
-        exit 1
-    fi
-
-    # Generate config
-    cat > ${dir}/fastq_screen.conf <<EOF
-    DATABASE ${prefix} ${dir}/${prefix}/${fasta.name}
-    EOF
+    # Build config by scanning copied directories
+    echo "# FastQ Screen Configuration" > ${index_dir}/fastq_screen.conf
+    for genome in ${index_dir}/*.amb; do
+        genome_name=\$(basename "\$genome")
+        echo "DATABASE\t\${genome_name}\t${index_dir}/\${genome_name%.amb}" >> ${index_dir}/fastq_screen.conf
+    done
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -61,10 +40,10 @@ process FASTQSCREEN_BUILDFROMINDEX_BWA {
     """
 
     stub:
-    dir = "FastQ_Screen_Genomes"
+    index_dir = "FastQ_Screen_Genomes"
     """
-    mkdir $dir
-    touch $dir/fastq_screen.conf
+    mkdir ${index_dir}
+    touch ${index_dir}/fastq_screen.conf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
