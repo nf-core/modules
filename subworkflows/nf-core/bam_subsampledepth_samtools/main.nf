@@ -26,7 +26,7 @@ workflow BAM_SUBSAMPLEDEPTH_SAMTOOLS {
         .map{ meta, row ->
             [ meta, row[0] as Float ]
         }
-    
+
     ch_input_subsample = ch_bam_bai
         .join(ch_mean_depth)
         .combine(ch_depth)
