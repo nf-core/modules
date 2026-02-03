@@ -12,7 +12,7 @@ process GATK4_INTERVALLISTTOOLS {
 
     output:
     tuple val(meta), path("*_split/*/*.interval_list"), emit: interval_list
-    path "versions.yml",                                emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -49,10 +49,6 @@ process GATK4_INTERVALLISTTOOLS {
         os.rename(interval, newName)
     CODE
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -67,9 +63,5 @@ process GATK4_INTERVALLISTTOOLS {
     touch ${prefix}_split/temp_0003_of_6/3scattered.interval_list
     touch ${prefix}_split/temp_0004_of_6/4scattered.interval_list
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }
