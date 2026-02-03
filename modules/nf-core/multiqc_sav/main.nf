@@ -3,8 +3,8 @@ process MULTIQC_SAV {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5d/5d745674ad0e37f8eccbf52c0e2c1f0e9aaebc9dd4b548bca803db08e800b7d3/data' :
-        'community.wave.seqera.io/library/multiqc_multiqc_sav:b7474a8ef88d6535' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/36/3634362a0bf5a0530a6459bdba392622262d6de6cc0062e9a293bacc3098b323/data' :
+        'community.wave.seqera.io/library/multiqc_multiqc_sav_pip_interop:b142653b3920c82b' }"
 
     input:
     tuple val(meta), path(runinfo_xml), path(interop_bin, stageAs: "InterOp/*")
@@ -16,10 +16,10 @@ process MULTIQC_SAV {
     path(sample_names)
 
     output:
-    path "*.html"      , emit: report
-    path "*_data"      , emit: data
-    path "*_plots"     , optional:true, emit: plots
-    tuple val("${task.process}"), val('multiqc'), eval('multiqc --version | sed "s/.* //g"'), emit: versions_multiqc
+    path "*.html" , emit: report
+    path "*_data" , emit: data
+    path "*_plots", emit: plots, optional:true
+    tuple val("${task.process}"), val('multiqc'), eval('multiqc --version | sed "s/.* //g"')                                , emit: versions_multiqc
     tuple val("${task.process}"), val('multiqc_sav'), eval('python -c "import multiqc_sav; print(multiqc_sav.__version__)"'), emit: versions_multiqc_sav
     // MultiQC should not push its versions to the `versions` topic. Its input depends on the versions topic to be resolved thus outputting to the topic will let the pipeline hang forever
 
@@ -55,3 +55,4 @@ process MULTIQC_SAV {
     touch multiqc_report.html
     """
 }
+

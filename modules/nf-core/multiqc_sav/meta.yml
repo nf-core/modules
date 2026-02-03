@@ -1,5 +1,6 @@
 name: multiqc_sav
-description: Aggregate results from bioinformatics analyses across many samples into a single report, with support for multiqc_sav plugin
+description: Aggregate results from bioinformatics analyses across many samples
+  into a single report, with support for multiqc_sav plugin
 keywords:
   - QC
   - bioinformatics tools
@@ -27,13 +28,13 @@ input:
         description: Illumina RunInfo.xml file
         pattern: "RunInfo.xml"
         ontologies:
-         - edam: http://edamontology.org/format_2332 # XML format
+          - edam: http://edamontology.org/format_2332 # XML format
     - interop_bin:
         type: file
         description: Illumina InterOp binary files
         pattern: "InterOp/*.bin"
         ontologies:
-         - edam: http://edamontology.org/format_2333 # Binary format
+          - edam: http://edamontology.org/format_2333 # Binary format
   - extra_multiqc_files:
       type: file
       description: |
@@ -47,8 +48,8 @@ input:
         - edam: http://edamontology.org/format_3750 # YAML
   - extra_multiqc_config:
       type: file
-      description: Second optional config yml for MultiQC. Will override common sections
-        in multiqc_config.
+      description: Second optional config yml for MultiQC. Will override common
+        sections in multiqc_config.
       pattern: "*.{yml,yaml}"
       ontologies:
         - edam: http://edamontology.org/format_3750 # YAML
@@ -76,13 +77,13 @@ input:
         - edam: http://edamontology.org/format_3475 # TSV
 output:
   report:
-    - ".html":
+    - "*.html":
         type: file
         description: MultiQC report file
         pattern: ".html"
         ontologies: []
   data:
-    - "_data":
+    - "*_data":
         type: directory
         description: MultiQC data dir
         pattern: "multiqc_data"

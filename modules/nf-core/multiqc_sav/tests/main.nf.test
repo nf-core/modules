@@ -20,25 +20,26 @@ nextflow_process {
                 }
             }
         }
-        
+
         when {
             process {
                 """
                 ch_sav_in = UNTAR.out.untar.map{ meta, untar -> 
-                    def xml = untar.eachFileRecurse { file -> 
-                        if (file.name == 'RunInfo.xml') {
-                            return file
+                    def xml = []
+                    untar.eachFileRecurse { file -> 
+                        if (file.fileName.toString() == 'RunInfo.xml') {
+                            xml << file
                         }
-                    }.findAll{ it != null }[0]
+                    }
 
                     def interop = []
                     untar.eachFileRecurse { file -> 
-                        if (file.parentFile.name == 'InterOp') {
+                        if (file.parent.name == 'InterOp' && file.fileName.toString().endsWith(".bin")) {
                             interop << file
                         }
                     }
                     return [meta, xml, interop]
-                }
+                }.view()
 
                 input[0] = ch_sav_in
                 input[1] = []
@@ -60,5 +61,61 @@ nextflow_process {
             )
         }
 
+    }
+
+    test("NovaSeq6000 - stub") {
+
+        options "-stub"
+
+        setup {
+            run("UNTAR") {
+                script "../../untar/main.nf"
+                process {
+                """
+                input[0] = [[ id: 'NovaSeq6000' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bcl/200624_A00834_0183_BHMTFYDRXX.tar.gz', checkIfExists: true)]
+                """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                ch_sav_in = UNTAR.out.untar.map{ meta, untar -> 
+                    def xml = []
+                    untar.eachFileRecurse { file -> 
+                        if (file.fileName.toString() == 'RunInfo.xml') {
+                            xml << file
+                        }
+                    }
+
+                    def interop = []
+                    untar.eachFileRecurse { file -> 
+                        if (file.parent.name == 'InterOp' && file.fileName.toString().endsWith(".bin")) {
+                            interop << file
+                        }
+                    }
+                    return [meta, xml, interop]
+                }.view()
+
+                input[0] = ch_sav_in
+                input[1] = []
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.report[0] ==~ ".*/multiqc_report.html" },
+                { assert process.out.data[0] ==~ ".*/multiqc_data" },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions")}).match() }
+            )
+        }
     }
 }
