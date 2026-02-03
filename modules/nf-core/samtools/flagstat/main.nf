@@ -12,7 +12,7 @@ process SAMTOOLS_FLAGSTAT {
 
     output:
     tuple val(meta), path("*.flagstat"), emit: flagstat
-    tuple val("${task.process}"), val('samtools'), eval("samtools --version | sed -n '1s/samtools //p'"), emit: versions_samtools, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
