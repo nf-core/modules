@@ -21,7 +21,6 @@ workflow FASTQ_ALIGN_BOWTIE2 {
     // Map reads with Bowtie2
     //
     BOWTIE2_ALIGN ( ch_reads, ch_index, ch_fasta, save_unaligned, sort_bam )
-    ch_versions = ch_versions.mix(BOWTIE2_ALIGN.out.versions)
 
     //
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
