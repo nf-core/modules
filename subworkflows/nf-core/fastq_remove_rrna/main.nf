@@ -123,7 +123,6 @@ workflow FASTQ_REMOVE_RRNA {
             SEQKIT_REPLACE(
                 ch_rrna_with_meta
             )
-            ch_versions = ch_versions.mix(SEQKIT_REPLACE.out.versions)
             ch_seqkit_prefixed = SEQKIT_REPLACE.out.fastx
 
             // Step 2: Convert U to T in sequences (RNA to DNA)
@@ -134,7 +133,6 @@ workflow FASTQ_REMOVE_RRNA {
             SEQKIT_REPLACE_U2T(
                 ch_prefixed_fastas
             )
-            ch_versions = ch_versions.mix(SEQKIT_REPLACE_U2T.out.versions)
             ch_seqkit_converted = SEQKIT_REPLACE_U2T.out.fastx
 
             // Collect processed files (already prefixed and U->T converted)
