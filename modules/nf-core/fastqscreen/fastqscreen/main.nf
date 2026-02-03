@@ -1,3 +1,4 @@
+// Adapted from https://github.com/nf-core/modules/blob/master/modules/nf-core/fastqscreen/fastqscreen/main.nf  commit 522b950
 process FASTQSCREEN_FASTQSCREEN {
     tag "$meta.id"
     label 'process_medium'
@@ -10,6 +11,7 @@ process FASTQSCREEN_FASTQSCREEN {
     input:
     tuple val(meta), path(reads)  // .fastq files
     path database
+    val aligner // 'bowtie', 'bowtie2', 'bwa', 'minimap2' or empty (defaults to minimap2)
 
     output:
     tuple val(meta), path("*.txt")     , emit: txt
@@ -25,9 +27,15 @@ process FASTQSCREEN_FASTQSCREEN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ""
 
+    def valid_aligners = ['bowtie', 'bowtie2', 'bwa', 'minimap2']
+    if (aligner && !(aligner in valid_aligners)) {
+        error "Invalid aligner option: '${aligner}'. Must be one of: ${valid_aligners.join(', ')}, or empty for FastQ Screen's default (bowtie2)."
+    }
+    def aligner_arg = aligner ? "--aligner ${aligner}" : ''
+
     """
     fastq_screen --threads ${task.cpus} \\
-        --aligner bowtie2 \\
+        ${aligner_arg} \\
         --conf ${database}/fastq_screen.conf \\
         $reads \\
         $args \\
