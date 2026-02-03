@@ -180,7 +180,6 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         FQ_LINT(
             ch_filtered_reads
         )
-        ch_versions = ch_versions.mix(FQ_LINT.out.versions.first())
         ch_lint_log_raw = FQ_LINT.out.lint
         ch_filtered_reads = ch_filtered_reads.join(FQ_LINT.out.lint.map { meta, _lint -> meta })
     }
