@@ -17,7 +17,7 @@ process MTMALIGN_ALIGN {
     tuple val(meta), path("${prefix}.aln${compress ? '.gz' : ''}"), emit: alignment
     tuple val(meta), path("${prefix}.pdb${compress ? '.gz' : ''}"), emit: structure
     // mtm-align -v prints the wrong version (20180725), so extract it from the cosmetic output in the help message
-    tuple val("${task.process}"), val('mtm-align'), eval('mtm-align -h | grep -e "Version [[:digit:]]*" | grep -oe "[[:digit:]]*"'), emit: versions_mtmalign, topic: versions
+    tuple val("${task.process}"), val('mtm-align'), eval('mtm-align -h | sed -n "s/.*Version \\([0-9]*\\).*/\\1/p"'), emit: versions_mtmalign, topic: versions
     tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
     when:
