@@ -205,8 +205,6 @@ workflow FASTQ_REMOVE_RRNA {
             false  // not interleaved
         )
 
-        ch_versions = ch_versions.mix(SAMTOOLS_FASTQ_BOWTIE2.out.versions)
-
         // Combine single-end and paired-end results
         BOWTIE2_ALIGN.out.fastq
             .mix(SAMTOOLS_FASTQ_BOWTIE2.out.fastq)
