@@ -116,7 +116,7 @@ output:
       - gawk:
           type: string
           description: The name of the tool
-      - '"gawk --version | sed -n ''1{s/GNU Awk //;s/':
+      - gawk --version | sed -n '1s/GNU Awk \([0-9.]*\).*/\1/p':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -293,7 +293,7 @@ topics:
       - gawk:
           type: string
           description: The name of the tool
-      - '"gawk --version | sed -n ''1{s/GNU Awk //;s/':
+      - gawk --version | sed -n '1s/GNU Awk \([0-9.]*\).*/\1/p':
           type: eval
           description: The expression to obtain the version of the tool
 
