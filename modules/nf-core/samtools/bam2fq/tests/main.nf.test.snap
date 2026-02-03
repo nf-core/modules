@@ -48,24 +48,8 @@
                         "id": "test"
                     },
                     [
-                        [
-                            "@922332\tRX:Z:ATTTCAG-TATTATT",
-                            "GAGAGGATCTCGTGTAGAAATTGCTTTGAGCTGTTCTTTGTCATTTTCCCTTAATTCATTGTCTCTAGCTAGTCTGTTACTCTGTAAAATAAAATAATAAGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTTAAGGTCAGTG",
-                            "+",
-                            "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE<EEEEEEEEEEEAEAEE6AAEEEEE/EAAAA<AEEEEAAEEAAAA<EEE/",
-                            "@928177\tRX:Z:ACATAAA-TGAGATT",
-                            "AAAAGTATATAAGTAATACATATTTATAAATCTATTAAGAAAGCAAGTAATATGTACCTTAAGAATTTAATGGGAAAATAATTAGACTTACTTTAAATGCCAAAAGAAAAAGTGCCCAATCCTTTGATTAGTCAATGCTTTCT",
-                            "+"
-                        ],
-                        [
-                            "@922332\tRX:Z:ATTTCAG-TATTATT",
-                            "TATTTTACAGAGTAACAGACTAGCTAGAGACAATGAATTAAGGGAAAATGACAAAGAACAGCTCAAAGCAATTTCTACACGAGATCCTCTCTCTGAAATAGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAACCGCGAT",
-                            "+",
-                            "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEA<AEEE<<<<AAEEEEEEEEEEA<EEEAEAE//A<AAE<6",
-                            "@928177\tRX:Z:ACATAAA-TGAGATT",
-                            "TTACTGAAGAAAGCATTGACTAATCAAAGGATTGGGCACTTTTTCTTTTGGCATTTAAAGTAAGTCTAATTATTTTCCCATTAAATTCTTAAGGTACATATTACTTGCTTTCTTAATAGATTTATAAATATGTATTACTTATA",
-                            "+"
-                        ],
+                        "test_1.fq.gz:md5,2e4f2a6f06308e4b3eb8004b4044c949",
+                        "test_2.fq.gz:md5,bd81294b4907edab904d9692d79096f1",
                         "test_other.fq.gz",
                         "test_singleton.fq.gz"
                     ]
@@ -83,39 +67,48 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.3"
         },
-        "timestamp": "2026-02-03T19:38:36.826485469"
+        "timestamp": "2026-02-03T20:20:56.460729242"
     },
     "bam": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
+            {
+                "0": [
                     [
-                        "@922332/1\tRX:Z:ATTTCAG-TATTATT",
-                        "GAGAGGATCTCGTGTAGAAATTGCTTTGAGCTGTTCTTTGTCATTTTCCCTTAATTCATTGTCTCTAGCTAGTCTGTTACTCTGTAAAATAAAATAATAAGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTTAAGGTCAGTG",
-                        "+",
-                        "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE<EEEEEEEEEEEAEAEE6AAEEEEE/EAAAA<AEEEEAAEEAAAA<EEE/",
-                        "@922332/2\tRX:Z:ATTTCAG-TATTATT",
-                        "TATTTTACAGAGTAACAGACTAGCTAGAGACAATGAATTAAGGGAAAATGACAAAGAACAGCTCAAAGCAATTTCTACACGAGATCCTCTCTCTGAAATAGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAACCGCGAT",
-                        "+"
+                        {
+                            "id": "test"
+                        },
+                        "test_interleaved.fq.gz:md5,d733e66d29a4b366bf9df8c42f845256"
+                    ]
+                ],
+                "1": [
+                    [
+                        "SAMTOOLS_BAM2FQ",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_interleaved.fq.gz:md5,d733e66d29a4b366bf9df8c42f845256"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_BAM2FQ",
+                        "samtools",
+                        "1.22.1"
                     ]
                 ]
-            ],
-            [
-                [
-                    "SAMTOOLS_BAM2FQ",
-                    "samtools",
-                    "1.22.1"
-                ]
-            ]
+            }
         ],
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.3"
         },
-        "timestamp": "2026-02-03T19:33:36.359773183"
+        "timestamp": "2026-02-03T20:20:50.171319024"
     },
     "bam_split -- stub": {
         "content": [
