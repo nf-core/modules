@@ -27,7 +27,6 @@ workflow VCF_GATHER_BCFTOOLS {
             [groupKey(newMeta, count), meta, vcf, index]
         }
         .groupTuple()
-        .view()
         .ifEmpty {
             error("ERROR: grouping operation resulted in an empty channel.")
         }
