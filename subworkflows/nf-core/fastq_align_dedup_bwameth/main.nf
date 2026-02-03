@@ -78,7 +78,6 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
         ch_alignment.join(ch_alignment_index)
     )
     ch_samtools_flagstat = SAMTOOLS_FLAGSTAT.out.flagstat
-    ch_versions          = ch_versions.mix(SAMTOOLS_FLAGSTAT.out.versions)
 
     /*
      * Run samtools stats

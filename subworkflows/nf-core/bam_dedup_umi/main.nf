@@ -22,7 +22,6 @@ workflow BAM_DEDUP_UMI {
     ch_transcript_fasta   // channel: [ val(meta), path(fasta) ]
 
     main:
-    ch_versions = channel.empty()
     ch_tsv_edit_distance    = channel.empty()
     ch_tsv_per_umi          = channel.empty()
     ch_tsv_umi_per_position = channel.empty()
@@ -125,11 +124,6 @@ workflow BAM_DEDUP_UMI {
         .transpose()
         .map{ item -> item[1] }
 
-    // Record versions
-
-    ch_versions = UMI_DEDUP_GENOME.out.versions
-        .mix(BAM_SORT_STATS_SAMTOOLS.out.versions)
-
     emit:
     bam                        = UMI_DEDUP_GENOME.out.bam                                                // channel: [ val(meta), path(bam) ]
     bai                        = bam_csi_index ? UMI_DEDUP_GENOME.out.csi : UMI_DEDUP_GENOME.out.bai     // channel: [ val(meta), path(bai) ]
@@ -148,5 +142,4 @@ workflow BAM_DEDUP_UMI {
     transcriptome_sorted_bam   = SAMTOOLS_SORT.out.bam                                                   // channel: [ val(meta), path(bam) ] - name-sorted
     transcriptome_sorted_bam_bai = UMI_DEDUP_TRANSCRIPTOME.out.bai                                       // channel: [ val(meta), path(bai) ] - coordinate-sorted dedup index
     transcriptome_filtered_bam = UMITOOLS_PREPAREFORRSEM.out.bam                                         // channel: [ val(meta), path(bam) ] - paired-end filtered
-    versions                   = ch_versions                                                             // channel: [ path(versions.yml) ]
 }

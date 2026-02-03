@@ -17,8 +17,6 @@ workflow FASTQ_ALIGN_STAR {
 
     main:
 
-    ch_versions = Channel.empty()
-
     //
     // Map reads with STAR
     //
@@ -28,7 +26,6 @@ workflow FASTQ_ALIGN_STAR {
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
     //
     BAM_SORT_STATS_SAMTOOLS_GENOME ( STAR_ALIGN.out.bam, ch_fasta )
-    ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS_GENOME.out.versions)
 
     //
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
@@ -38,7 +35,6 @@ workflow FASTQ_ALIGN_STAR {
     //
 
     BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME ( STAR_ALIGN.out.bam_transcript, ch_transcripts_fasta )
-    ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME.out.versions)
 
     emit:
 
@@ -62,6 +58,4 @@ workflow FASTQ_ALIGN_STAR {
     stats_transcript    = BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME.out.stats    // channel: [ val(meta), path(stats) ]
     flagstat_transcript = BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME.out.flagstat // channel: [ val(meta), path(flagstat) ]
     idxstats_transcript = BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME.out.idxstats // channel: [ val(meta), path(idxstats) ]
-
-    versions            = ch_versions                        // channel: [ path(versions.yml) ]
 }

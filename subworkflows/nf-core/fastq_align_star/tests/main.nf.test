@@ -66,8 +66,7 @@ nextflow_workflow {
                     workflow.out.tab,
                     workflow.out.stats,
                     workflow.out.flagstat,
-                    workflow.out.idxstats,
-                    workflow.out.versions
+                    workflow.out.idxstats
                 ).match() },
                 { assert path(workflow.out.bai.get(0).get(1)).exists() },
                 { assert path(workflow.out.log_out.get(0).get(1)).exists() },
@@ -117,8 +116,7 @@ nextflow_workflow {
                     workflow.out.tab,
                     workflow.out.stats,
                     workflow.out.flagstat,
-                    workflow.out.idxstats,
-                    workflow.out.versions
+                    workflow.out.idxstats
                 ).match() },
                 { assert path(workflow.out.bai.get(0).get(1)).exists() },
                 { assert path(workflow.out.log_out.get(0).get(1)).exists() },
@@ -184,8 +182,7 @@ nextflow_workflow {
                     workflow.out.idxstats,
                     workflow.out.stats_transcript,
                     workflow.out.flagstat_transcript,
-                    workflow.out.idxstats_transcript,
-                    workflow.out.versions
+                    workflow.out.idxstats_transcript
                 ).match() },
                 { assert path(workflow.out.bai.get(0).get(1)).exists() },
                 { assert path(workflow.out.bai_transcript.get(0).get(1)).exists() },
@@ -237,8 +234,7 @@ nextflow_workflow {
                     workflow.out.stats,
                     workflow.out.flagstat,
                     workflow.out.idxstats,
-                    workflow.out.stats_transcript,
-                    workflow.out.versions
+                    workflow.out.stats_transcript
                 ).match() },
                 { assert path(workflow.out.bai.get(0).get(1)).exists() },
                 { assert path(workflow.out.log_out.get(0).get(1)).exists() },
