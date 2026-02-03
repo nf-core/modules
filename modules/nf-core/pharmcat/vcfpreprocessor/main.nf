@@ -4,8 +4,8 @@ process PHARMCAT_VCFPREPROCESSOR {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'docker://pgkb/pharmcat:3.1.1' :
-        'docker.io/pgkb/pharmcat:3.1.1' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2b/2b27c134f2226e65c3be9687fdcd6dfb5eebb7998bf1ad89ff396c914fe6d81a/data' :
+        'community.wave.seqera.io/library/pharmcat3:3.1.1--876b7152770ba008' }"
 
     input:
     tuple val(meta), path(vcf_file), path(vcf_idx)
