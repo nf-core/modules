@@ -65,12 +65,12 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - tool:
+      - umitools:
           type: string
           description: The name of the tool
-      - version:
+      - "umi_tools --version | sed -n '/version:/s/.*: //p'":
           type: eval
-          description: The expression to obtain the version of the tool
+          description: The expression to obtain the version of umitools
 
 authors:
   - "@drpatelh"
