@@ -49,10 +49,6 @@ process GATK4_COLLECTREADCOUNTS {
         --tmp-dir . \\
         ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -66,9 +62,5 @@ process GATK4_COLLECTREADCOUNTS {
     """
     touch ${prefix}.${extension}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }
