@@ -29,12 +29,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(
-                file(process.out.bam[0][1]).name,
-                process.out.stats,
-                process.out.rejects_bam,
-                process.out.versions
-            ).match()
+            assert snapshot(sanitizeOutput(process.out, unstableKeys:["bam"])).match()
         }
     }
 
@@ -59,12 +54,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(
-                file(process.out.bam[0][1]).name,
-                process.out.stats,
-                process.out.rejects_bam,
-                process.out.versions
-            ).match()
+            assert snapshot(sanitizeOutput(process.out, unstableKeys:["bam"])).match()
         }
     }
 
@@ -88,12 +78,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(
-                file(process.out.bam[0][1]).name,
-                process.out.stats,
-                process.out.rejects_bam,
-                process.out.versions
-            ).match()
+            assert snapshot(sanitizeOutput(process.out, unstableKeys:["bam"])).match()
         }
     }
 }

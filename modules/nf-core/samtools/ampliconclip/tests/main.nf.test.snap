@@ -1,68 +1,113 @@
 {
     "sarscov2 - bam, bed, save_cliprejects": {
         "content": [
-            "test.clipallowed.bam",
-            [
-                
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.cliprejects.bam:md5,3740ac9ac1b4e7b9e7447a5dc49cdfc1"
+            {
+                "bam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.clipallowed.bam"
+                    ]
+                ],
+                "rejects_bam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.cliprejects.bam:md5,3740ac9ac1b4e7b9e7447a5dc49cdfc1"
+                    ]
+                ],
+                "stats": [
+                    
+                ],
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_AMPLICONCLIP",
+                        "samtools",
+                        "1.22.1"
+                    ]
                 ]
-            ],
-            null
+            }
         ],
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.3"
         },
-        "timestamp": "2026-02-03T17:33:44.727245157"
+        "timestamp": "2026-02-03T18:48:13.503343922"
     },
     "sarscov2 - bam, bed, save_cliprejects, save_clipstats": {
         "content": [
-            "test.clipallowed.bam",
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.clipstats.txt:md5,2143cb7e8b5b7fcd3b12403fce17f10a"
+            {
+                "bam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.clipallowed.bam"
+                    ]
+                ],
+                "rejects_bam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.cliprejects.bam:md5,cd5bab882d453f9b66c61d8c87adbe35"
+                    ]
+                ],
+                "stats": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.clipstats.txt:md5,2143cb7e8b5b7fcd3b12403fce17f10a"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_AMPLICONCLIP",
+                        "samtools",
+                        "1.22.1"
+                    ]
                 ]
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.cliprejects.bam:md5,cd5bab882d453f9b66c61d8c87adbe35"
-                ]
-            ],
-            null
+            }
         ],
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.3"
         },
-        "timestamp": "2026-02-03T17:33:50.461125727"
+        "timestamp": "2026-02-03T18:48:22.022422559"
     },
     "sarscov2 - bam, bed": {
         "content": [
-            "test.clipallowed.bam",
-            [
-                
-            ],
-            [
-                
-            ],
-            null
+            {
+                "bam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.clipallowed.bam"
+                    ]
+                ],
+                "rejects_bam": [
+                    
+                ],
+                "stats": [
+                    
+                ],
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_AMPLICONCLIP",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ]
+            }
         ],
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.3"
         },
-        "timestamp": "2026-02-03T17:33:39.39040081"
+        "timestamp": "2026-02-03T18:47:59.908894092"
     }
 }
