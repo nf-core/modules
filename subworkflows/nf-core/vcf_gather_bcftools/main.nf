@@ -36,9 +36,8 @@ workflow VCF_GATHER_BCFTOOLS {
                 m.findAll { k, v -> !(k in arr_common_meta) }
             }
             def newMeta = arr_common_meta ? key.target + [metas: cleanedMetas] : meta[0]
-            
             def out_tuple = [newMeta, vcf, index]
-            
+
             one: vcf.size() == 1
                 return out_tuple
             more: vcf.size() > 1
