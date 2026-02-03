@@ -17,7 +17,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true)
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                    []
                 ]
 				input[1] = [[],[]]
                 """
@@ -37,7 +38,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true)
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                    []
                 ]
 				input[1] = [
                     [ id:'bed' ],
@@ -60,7 +62,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true)
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                    []
                 ]
 				input[1] = [[],[]]
                 """
