@@ -1,75 +1,171 @@
 {
-    "bam_reads": {
+    "bam -- stub": {
         "content": [
-            [
-                "@922332/1\tRX:Z:ATTTCAG-TATTATT",
-                "GAGAGGATCTCGTGTAGAAATTGCTTTGAGCTGTTCTTTGTCATTTTCCCTTAATTCATTGTCTCTAGCTAGTCTGTTACTCTGTAAAATAAAATAATAAGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTTAAGGTCAGTG",
-                "+",
-                "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE<EEEEEEEEEEEAEAEE6AAEEEEE/EAAAA<AEEEEAAEEAAAA<EEE/",
-                "@922332/2\tRX:Z:ATTTCAG-TATTATT",
-                "TATTTTACAGAGTAACAGACTAGCTAGAGACAATGAATTAAGGGAAAATGACAAAGAACAGCTCAAAGCAATTTCTACACGAGATCCTCTCTCTGAAATAGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAACCGCGAT",
-                "+"
-            ]
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_interleaved.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "1": [
+                    [
+                        "SAMTOOLS_BAM2FQ",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_interleaved.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_BAM2FQ",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.04.3"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-02-02T16:31:45.253104"
+        "timestamp": "2026-02-03T19:33:49.018824366"
     },
-    "bam_split_reads": {
+    "bam_split": {
         "content": [
             [
                 [
-                    "@922332\tRX:Z:ATTTCAG-TATTATT",
-                    "GAGAGGATCTCGTGTAGAAATTGCTTTGAGCTGTTCTTTGTCATTTTCCCTTAATTCATTGTCTCTAGCTAGTCTGTTACTCTGTAAAATAAAATAATAAGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTTAAGGTCAGTG",
-                    "+",
-                    "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE<EEEEEEEEEEEAEAEE6AAEEEEE/EAAAA<AEEEEAAEEAAAA<EEE/",
-                    "@928177\tRX:Z:ACATAAA-TGAGATT",
-                    "AAAAGTATATAAGTAATACATATTTATAAATCTATTAAGAAAGCAAGTAATATGTACCTTAAGAATTTAATGGGAAAATAATTAGACTTACTTTAAATGCCAAAAGAAAAAGTGCCCAATCCTTTGATTAGTCAATGCTTTCT",
-                    "+"
-                ],
+                    {
+                        "id": "test"
+                    },
+                    [
+                        [
+                            "@922332\tRX:Z:ATTTCAG-TATTATT",
+                            "GAGAGGATCTCGTGTAGAAATTGCTTTGAGCTGTTCTTTGTCATTTTCCCTTAATTCATTGTCTCTAGCTAGTCTGTTACTCTGTAAAATAAAATAATAAGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTTAAGGTCAGTG",
+                            "+",
+                            "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE<EEEEEEEEEEEAEAEE6AAEEEEE/EAAAA<AEEEEAAEEAAAA<EEE/",
+                            "@928177\tRX:Z:ACATAAA-TGAGATT",
+                            "AAAAGTATATAAGTAATACATATTTATAAATCTATTAAGAAAGCAAGTAATATGTACCTTAAGAATTTAATGGGAAAATAATTAGACTTACTTTAAATGCCAAAAGAAAAAGTGCCCAATCCTTTGATTAGTCAATGCTTTCT",
+                            "+"
+                        ],
+                        [
+                            "@922332\tRX:Z:ATTTCAG-TATTATT",
+                            "TATTTTACAGAGTAACAGACTAGCTAGAGACAATGAATTAAGGGAAAATGACAAAGAACAGCTCAAAGCAATTTCTACACGAGATCCTCTCTCTGAAATAGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAACCGCGAT",
+                            "+",
+                            "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEA<AEEE<<<<AAEEEEEEEEEEA<EEEAEAE//A<AAE<6",
+                            "@928177\tRX:Z:ACATAAA-TGAGATT",
+                            "TTACTGAAGAAAGCATTGACTAATCAAAGGATTGGGCACTTTTTCTTTTGGCATTTAAAGTAAGTCTAATTATTTTCCCATTAAATTCTTAAGGTACATATTACTTGCTTTCTTAATAGATTTATAAATATGTATTACTTATA",
+                            "+"
+                        ],
+                        "test_other.fq.gz",
+                        "test_singleton.fq.gz"
+                    ]
+                ]
+            ],
+            [
                 [
-                    "@922332\tRX:Z:ATTTCAG-TATTATT",
-                    "TATTTTACAGAGTAACAGACTAGCTAGAGACAATGAATTAAGGGAAAATGACAAAGAACAGCTCAAAGCAATTTCTACACGAGATCCTCTCTCTGAAATAGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAACCGCGAT",
-                    "+",
-                    "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEA<AEEE<<<<AAEEEEEEEEEEA<EEEAEAE//A<AAE<6",
-                    "@928177\tRX:Z:ACATAAA-TGAGATT",
-                    "TTACTGAAGAAAGCATTGACTAATCAAAGGATTGGGCACTTTTTCTTTTGGCATTTAAAGTAAGTCTAATTATTTTCCCATTAAATTCTTAAGGTACATATTACTTGCTTTCTTAATAGATTTATAAATATGTATTACTTATA",
-                    "+"
+                    "SAMTOOLS_BAM2FQ",
+                    "samtools",
+                    "1.22.1"
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-03T19:38:36.826485469"
+    },
+    "bam": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    [
+                        "@922332/1\tRX:Z:ATTTCAG-TATTATT",
+                        "GAGAGGATCTCGTGTAGAAATTGCTTTGAGCTGTTCTTTGTCATTTTCCCTTAATTCATTGTCTCTAGCTAGTCTGTTACTCTGTAAAATAAAATAATAAGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTTAAGGTCAGTG",
+                        "+",
+                        "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE<EEEEEEEEEEEAEAEE6AAEEEEE/EAAAA<AEEEEAAEEAAAA<EEE/",
+                        "@922332/2\tRX:Z:ATTTCAG-TATTATT",
+                        "TATTTTACAGAGTAACAGACTAGCTAGAGACAATGAATTAAGGGAAAATGACAAAGAACAGCTCAAAGCAATTTCTACACGAGATCCTCTCTCTGAAATAGATCGGAAGAGCACACGTCTGAACTCCAGTCACGAACCGCGAT",
+                        "+"
+                    ]
+                ]
+            ],
+            [
+                [
+                    "SAMTOOLS_BAM2FQ",
+                    "samtools",
+                    "1.22.1"
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-03T19:33:36.359773183"
+    },
+    "bam_split -- stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test_1.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test_2.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test_other.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test_singleton.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
                 ],
-                "test_other.fq.gz",
-                "test_singleton.fq.gz"
-            ]
+                "1": [
+                    [
+                        "SAMTOOLS_BAM2FQ",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test_1.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test_2.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test_other.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test_singleton.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_BAM2FQ",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.04.3"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-02-02T16:31:52.011467"
-    },
-    "bam_versions": {
-        "content": [
-            [
-                "versions.yml:md5,5068e4dc42dc51a9687520704a885abc"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-10T12:57:35.545802"
-    },
-    "bam_split_versions": {
-        "content": [
-            [
-                "versions.yml:md5,5068e4dc42dc51a9687520704a885abc"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-10T12:57:40.025765"
+        "timestamp": "2026-02-03T19:33:54.968635658"
     }
 }
