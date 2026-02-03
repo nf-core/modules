@@ -27,6 +27,7 @@ workflow VCF_GATHER_BCFTOOLS {
             [groupKey(newMeta, count), meta, vcf, index]
         }
         .groupTuple()
+        .view()
         .ifEmpty {
             error("ERROR: grouping operation resulted in an empty channel.")
         }
@@ -35,17 +36,19 @@ workflow VCF_GATHER_BCFTOOLS {
                 m.findAll { k, v -> !(k in arr_common_meta) }
             }
             def newMeta = arr_common_meta ? key.target + [metas: cleanedMetas] : meta[0]
+            def out_tuple = [newMeta, vcf, index]
 
             one: vcf.size() == 1
-                return [newMeta, vcf[0]]
+                return out_tuple
             more: vcf.size() > 1
-                return [newMeta, vcf, index]
+                return out_tuple
         }
 
     // Concatenate vcf with more than one record
     BCFTOOLS_CONCAT(ch_concat_input.more)
 
     ch_vcf_concat = ch_concat_input.one
+        .map{ meta, vcf, _index -> [meta, vcf.get(0)] }
         .mix(BCFTOOLS_CONCAT.out.vcf)
 
     if (val_sort) {
