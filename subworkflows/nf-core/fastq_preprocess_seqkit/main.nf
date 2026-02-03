@@ -49,7 +49,6 @@ workflow FASTQ_PREPROCESS_SEQKIT {
     if (!skip_seqkit_replace) {
         SEQKIT_REPLACE( ch_reads_split )
         ch_reads_split = SEQKIT_REPLACE.out.fastx
-        ch_versions    = ch_versions.mix(SEQKIT_REPLACE.out.versions.first())
     }
 
     if (!skip_seqkit_rmdup) {

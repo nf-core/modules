@@ -19,7 +19,6 @@ workflow FASTQ_FIND_MIRNA_MIRDEEP2 {
     ch_versions = ch_versions.mix(SEQKIT_FQ2FA.out.versions)
 
     SEQKIT_REPLACE ( SEQKIT_FQ2FA.out.fasta )
-    ch_versions = ch_versions.mix(SEQKIT_REPLACE.out.versions)
 
     MIRDEEP2_MAPPER ( SEQKIT_REPLACE.out.fastx, ch_bowtie_index )
     ch_versions = ch_versions.mix(MIRDEEP2_MAPPER.out.versions)
