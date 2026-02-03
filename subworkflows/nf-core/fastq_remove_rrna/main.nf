@@ -150,7 +150,6 @@ workflow FASTQ_REMOVE_RRNA {
             )
             ch_bowtie2_index = BOWTIE2_BUILD.out.index.first()
             ch_bowtie2_index_out = BOWTIE2_BUILD.out.index
-            ch_versions = ch_versions.mix(BOWTIE2_BUILD.out.versions.first())
         }
 
         // Branch reads by single-end vs paired-end for different filtering strategies
@@ -205,8 +204,6 @@ workflow FASTQ_REMOVE_RRNA {
             SAMTOOLS_VIEW_BOWTIE2.out.bam,
             false  // not interleaved
         )
-
-        ch_versions = ch_versions.mix(SAMTOOLS_FASTQ_BOWTIE2.out.versions)
 
         // Combine single-end and paired-end results
         BOWTIE2_ALIGN.out.fastq
