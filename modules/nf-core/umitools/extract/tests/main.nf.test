@@ -27,7 +27,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.reads.collect { it.collect { it instanceof Map ? it : file(it).name }},
                     process.out.log.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -75,7 +75,7 @@ nextflow_process {
                     file(process.out.reads[0][1][0]).name,
                     file(process.out.reads[0][1][1]).name,
                     process.out.log.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
