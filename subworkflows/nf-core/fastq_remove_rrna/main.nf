@@ -171,7 +171,6 @@ workflow FASTQ_REMOVE_RRNA {
 
         ch_bowtie2_log = BOWTIE2_ALIGN.out.log
         ch_multiqc_files = ch_multiqc_files.mix(BOWTIE2_ALIGN.out.log)
-        ch_versions = ch_versions.mix(BOWTIE2_ALIGN.out.versions)
 
         // For paired-end reads: bowtie2's --un-conc-gz outputs pairs that didn't
         // align concordantly, which INCLUDES pairs where one mate aligned.
@@ -186,7 +185,6 @@ workflow FASTQ_REMOVE_RRNA {
 
         ch_bowtie2_log = ch_bowtie2_log.mix(BOWTIE2_ALIGN_PE.out.log)
         ch_multiqc_files = ch_multiqc_files.mix(BOWTIE2_ALIGN_PE.out.log)
-        ch_versions = ch_versions.mix(BOWTIE2_ALIGN_PE.out.versions)
 
         // Filter BAM for read pairs where BOTH mates are unmapped (flag 12 = 4 + 8)
         // This removes any pair where at least one mate aligned to rRNA
