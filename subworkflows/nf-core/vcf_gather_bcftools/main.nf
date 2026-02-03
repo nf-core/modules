@@ -32,7 +32,7 @@ workflow VCF_GATHER_BCFTOOLS {
             error("ERROR: grouping operation resulted in an empty channel.")
         }
         .map { key, meta, vcf, index ->
-            cleanedMetas = meta.collect { m -> 
+            cleanedMetas = meta.collect { m ->
                 m.findAll { k, v -> !(k in arr_common_meta) }
             }
             newMeta = arr_common_meta ? key.target + [metas: cleanedMetas] : meta[0]
