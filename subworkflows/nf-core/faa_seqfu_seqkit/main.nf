@@ -23,7 +23,6 @@ workflow FAA_SEQFU_SEQKIT {
         ch_versions = ch_versions.mix( SEQKIT_SEQ.out.versions )
 
         SEQKIT_REPLACE( SEQKIT_SEQ.out.fastx )
-        ch_versions = ch_versions.mix( SEQKIT_REPLACE.out.versions )
 
         SEQKIT_RMDUP( SEQKIT_REPLACE.out.fastx )
         ch_fasta    = SEQKIT_RMDUP.out.fastx
