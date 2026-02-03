@@ -31,18 +31,18 @@ workflow VCF_GATHER_BCFTOOLS {
         .ifEmpty {
             error("ERROR: grouping operation resulted in an empty channel.")
         }
-        .map { key, meta, vcf, index ->
-            cleanedMetas = meta.collect { m ->
+        .branch { key, meta, vcf, index ->
+            def cleanedMetas = meta.collect { m ->
                 m.findAll { k, v -> !(k in arr_common_meta) }
             }
-            newMeta = arr_common_meta ? key.target + [metas: cleanedMetas] : meta[0]
-            [
-                newMeta, vcf, index, vcf.size()
-            ]
-        } // Compute number of records
-        .branch{ it ->
-            one: it[3] == 1
-            more: it[3] > 1
+            def newMeta = arr_common_meta ? key.target + [metas: cleanedMetas] : meta[0]
+            
+            def out_tuple = [newMeta, vcf, index]
+            
+            one: vcf.size() == 1
+                return out_tuple
+            more: vcf.size() > 1
+                return out_tuple
         }
 
     // Concatenate vcf with more than one record
