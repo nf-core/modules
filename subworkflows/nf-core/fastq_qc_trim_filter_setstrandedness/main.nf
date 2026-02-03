@@ -180,7 +180,6 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         FQ_LINT(
             ch_filtered_reads
         )
-        ch_versions = ch_versions.mix(FQ_LINT.out.versions.first())
         ch_lint_log_raw = FQ_LINT.out.lint
         ch_filtered_reads = ch_filtered_reads.join(FQ_LINT.out.lint.map { meta, _lint -> meta })
     }
@@ -211,7 +210,6 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         ch_umi_log         = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.umi_log
         ch_umi_reads       = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.umi_reads
 
-        ch_versions = ch_versions.mix(FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.versions)
         ch_multiqc_files = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.fastqc_zip
             .mix(FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_zip)
             .mix(FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_log)
@@ -248,7 +246,6 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         ch_umi_log          = FASTQ_FASTQC_UMITOOLS_FASTP.out.umi_log
         ch_umi_reads        = FASTQ_FASTQC_UMITOOLS_FASTP.out.umi_reads
 
-        ch_versions = ch_versions.mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.versions)
         ch_multiqc_files = FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_raw_zip
             .mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_trim_zip)
             .mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_json)

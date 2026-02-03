@@ -88,7 +88,6 @@ workflow FASTQ_REMOVE_RRNA {
             ch_filtered_reads
         )
 
-        ch_versions = ch_versions.mix(SEQKIT_STATS.out.versions.first())
         ch_seqkit_stats = SEQKIT_STATS.out.stats
         ch_multiqc_files = ch_multiqc_files.mix(SEQKIT_STATS.out.stats)
 
@@ -204,8 +203,6 @@ workflow FASTQ_REMOVE_RRNA {
             SAMTOOLS_VIEW_BOWTIE2.out.bam,
             false  // not interleaved
         )
-
-        ch_versions = ch_versions.mix(SAMTOOLS_FASTQ_BOWTIE2.out.versions)
 
         // Combine single-end and paired-end results
         BOWTIE2_ALIGN.out.fastq
