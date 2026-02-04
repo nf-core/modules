@@ -19,7 +19,7 @@ process GATK4_SHIFTFASTA {
     tuple val(meta), path("*_shift.dict"),        emit: dict, optional: true
     tuple val(meta), path("*.intervals"),         emit: intervals, optional: true
     tuple val(meta), path("*.shifted.intervals"), emit: shift_intervals, optional: true
-    path "versions.yml",                          emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -45,11 +45,6 @@ process GATK4_SHIFTFASTA {
         ${args} \\
         ${seq_dict} \\
         --tmp-dir .
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -60,10 +55,5 @@ process GATK4_SHIFTFASTA {
     touch test.shifted.intervals
     touch test_shift.fasta
     touch test_shift.fasta.fai
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }
