@@ -34,7 +34,7 @@ nextflow_process {
                     process.out.undetermined.collect { meta, fastq -> file(fastq).name },
                     process.out.undetermined_idx,
                     process.out.reports.collect { meta, reports -> reports.findAll {report -> file(report).name }},
-                    process.out.logs.collect { meta, logs -> logs.sort() },
+                    process.out.logs.collect { meta, logs -> logs.sort().findAll { log -> file(log).name} },
                     process.out.interop.collect { meta, interop ->
                                                 interop.findAll { interopfile ->
                                                 file(interopfile).name != "IndexMetricsOut.bin" } },
@@ -75,7 +75,7 @@ nextflow_process {
                     process.out.undetermined.collect { meta, fastq -> file(fastq).name },
                     process.out.undetermined_idx,
                     process.out.reports.collect { meta, reports -> reports.findAll {report -> file(report).name }},
-                    process.out.logs.collect { meta, logs -> logs.sort() },
+                    process.out.logs.collect { meta, logs -> logs.sort().findAll { log -> file(log).name} },
                     process.out.interop,
                     process.out.interop.collect { meta, interop ->
                                                 interop.findAll { interopfile ->
