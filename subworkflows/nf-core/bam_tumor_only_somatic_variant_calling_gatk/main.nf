@@ -79,7 +79,6 @@ workflow BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK {
 
     versions = versions.mix(GATK4_CALCULATECONTAMINATION.out.versions)
     versions = versions.mix(GATK4_GETPILEUPSUMMARIES.out.versions)
-    versions = versions.mix(GATK4_MUTECT2.out.versions)
 
     emit:
     contamination_table = GATK4_CALCULATECONTAMINATION.out.contamination.collect() // channel: [ val(meta), [ contamination ] ]
