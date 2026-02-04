@@ -11,6 +11,7 @@ nextflow_process {
     tag "telescope/assign"
 
     test("basic run - bam") {
+        config "./nextflow.config"
 
         when {
             process {
@@ -47,8 +48,10 @@ nextflow_process {
 
     // TODO nf-core: Change the test name preferably indicating the test-data and file-format used but keep the " - stub" suffix.
     test("basic_run - bam - stub") {
-
+        
         options "-stub"
+
+        config "./nextflow.config"
 
         when {
             process {
