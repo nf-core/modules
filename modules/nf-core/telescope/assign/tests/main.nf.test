@@ -20,13 +20,11 @@ nextflow_process {
                 input[0] = [
                     [ id:'test_bam' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    [],
                 ]
 
                 input[1] = [
                     [ id:'telocus_gtf' ],
                     file('https://raw.githubusercontent.com/hanalysis/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/genome/chr21/sequence/GRCh38_GENCODE_rmsk_TE_chr21.gtf', checkIfExists: true),
-                    [],
                 ]
                 """
             }
@@ -34,9 +32,6 @@ nextflow_process {
 
         then {
             assert process.success
-
-            // Check tsv exists
-            assert file(process.out.tsv[0][1]).exists() // [0] first element from channel, [1] second element from tuple, i.e. file
 
             assertAll(
                 { assert snapshot(

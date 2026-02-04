@@ -11,9 +11,8 @@ process TELESCOPE_ASSIGN {
 
     output:
     tuple val(meta_bam), path("*{updated,other}.bam"), emit: bam, optional: true // only for --updated_sam
-     tuple val(meta_bam), path("*{updated,other}.sam"), emit: sam, optional: true // only for --updated_sam
-    tuple val(meta_bam), path("*.tsv"), emit: tsv
-
+    tuple val(meta_bam), path("*{updated,other}.sam"), emit: sam, optional: true // only for --updated_sam
+    tuple val(meta_bam), path("*.tsv"), emit: tsv, optional: true // for when there's no alignments
     path "versions.yml"           , emit: versions
 
     when:
@@ -24,10 +23,14 @@ process TELESCOPE_ASSIGN {
     def prefix = task.ext.prefix ?: "${meta_bam.id}"
 
     """
+    
+    echo -n "" > telescope.log
+
     telescope \\
         assign \\
-        $meta_bam \\
-        $meta_gtf \\
+        $bam \\
+        $gtf \\
+        --logfile telescope.log
         $args
 
     cat <<-END_VERSIONS > versions.yml
