@@ -1,5 +1,4 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-# # TODO nf-core: Add a description of the module and list keywords
 name: "tetranscripts"
 description: Runs TEtranscripts which summarises transposable element content of
   a bam file.
@@ -29,9 +28,10 @@ input:
         type: file
         description: A BAM file for the treatment condition
         pattern: "*.{bam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
 
         # Control BAM
-        ontologies: []
   - - meta_c:
         type: map
         description: |
@@ -41,9 +41,10 @@ input:
         type: file
         description: A BAM file for the control condition
         pattern: "*.{bam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
 
         # Genome GTF
-        ontologies: []
   - - meta_ggtf:
         type: map
         description: |
@@ -53,9 +54,10 @@ input:
         type: file
         description: A GTF file for alignment to the genome
         pattern: "*.{gtf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2306"
 
         # TE GTF
-        ontologies: []
   - - meta_tegtf:
         type: map
         description: |
@@ -66,8 +68,8 @@ input:
         type: file
         description: A curated GTF file for alignment to transposable elements
         pattern: "*.{gtf}"
-
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_2306"
 output:
   countTable:
     - - meta_t:
@@ -79,7 +81,6 @@ output:
           type: file
           description: Counts table of transposable element families
           pattern: "*.cntTable"
-
           ontologies: []
   log2fc:
     - - meta_t:
@@ -94,13 +95,55 @@ output:
 
           ontologies:
             - edam: http://edamontology.org/format_3999 # R script
+
+  analysis:
+    - - meta_t:
+          type: map
+          description: |
+            Groovy map containing treatment sample information.
+            e.g. `id:'sample1' ]`
+      - "*_analysis.txt":
+          type: file
+          description: DESeq2 analysis file
+          pattern: "*_analysis.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # text format
+
+  sigdiff:
+    - - meta_t:
+          type: map
+          description: |
+            Groovy map containing treatment sample information.
+            e.g. `id:'sample1' ]`
+      - "*_gene_TE.txt":
+          type: file
+          description: DESeq2 analysis file
+          pattern: "*_gene_TE.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # text format
+
+  versions_tetranscripts:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - tetranscripts:
+          type: string
+          description: The tool name
+      - "tetranscripts version | sed '1!d;s/.* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: versions.yml
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - tetranscripts:
+          type: string
+          description: The tool name
+      - "tetranscripts version | sed '1!d;s/.* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@hanalysis"
 maintainers:

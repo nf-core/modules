@@ -1,0 +1,78 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "vembrane_filter"
+description: Filter VCF files with vembrane
+keywords:
+  - filter
+  - vcf
+  - bcf
+  - genomics
+  - variant
+  - annotation
+tools:
+  - "vembrane":
+      description: "Filter VCF/BCF files with Python expressions."
+      homepage: "https://github.com/vembrane/vembrane/tree/main"
+      documentation: "https://github.com/vembrane/vembrane/blob/main/docs/filter.md"
+      tool_dev_url: "https://github.com/vembrane/vembrane.git"
+      doi: "10.1093/bioinformatics/btac810"
+      licence: ["MIT"]
+      identifier: biotools:vembrane/filter
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - vcf:
+        type: file
+        description: |
+          Path to the VCF/BCF file to be filtered.
+          e.g. 'file.vcf', 'file.vcf.gz', 'file.bcf', 'file.bcf.gz'
+        pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+        ontologies: []
+  - expression:
+      type: string
+      description: |
+        The filter expression can be any valid python expression that evaluates to a value of type bool.
+        e.g. 'ANN["SYMBOL"] == "CDH2"'
+      ontologies: []
+
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.{vcf,bcf,bcf.gz}":
+          type: file
+          description: Filtered VCF output file
+          pattern: "*.{vcf,bcf,bcf.gz}"
+          ontologies: []
+  versions_vembrane:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - vembrane:
+          type: string
+          description: The tool name
+      - "vembrane --version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - vembrane:
+          type: string
+          description: The tool name
+      - "vembrane --version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
+authors:
+  - "@trangdo-hsc"
+  - "@mkatsanto"
+maintainers:
+  - "@trangdo-hsc"

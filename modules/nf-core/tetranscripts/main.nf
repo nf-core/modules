@@ -1,25 +1,24 @@
-nextflow.preview.types = true
-
-process TETRANSCRIPTS
-{
+process TETRANSCRIPTS {
     tag "$meta_c.id"
     label 'process_single'
+
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/tetranscripts:2.2.3--pyh7cba7a3_0':
         'biocontainers/tetranscripts:2.2.3--pyh7cba7a3_0' }"
 
     input:
-    (meta_t, bam_t, bai_t): Tuple<Map,Path,Path?>
-    (meta_c, bam_c, bai_c): Tuple<Map,Path,Path?>
-    (meta_ggtf, g_gtf): Tuple<Map,Path>
-    (meta_tegtf, te_gtf): Tuple<Map,Path>
+    tuple val(meta_t), path(bam_t)
+    tuple val(meta_c), path(bam_c)
+    tuple val(meta_ggtf), path(g_gtf)
+    tuple val(meta_tegtf), path(te_gtf)
 
     output:
-    countTable= files('*.cntTable')
-    log2fc= files('*.R')
-    versions= file('versions.yml')
-    DGE= file('*.txt', optional: true)
+    tuple val(meta_t), path("*.cntTable"), emit: countTable
+    tuple val(meta_t), path("*.R"), emit: log2fc
+    tuple val(meta_t), path("*_analysis.txt"), emit: analysis, optional: true
+    tuple val(meta_t), path("*_gene_TE.txt"), emit: sigdiff, optional: true
+    tuple val("${task.process}"), val('tetranscripts'), eval("tetranscripts version | sed '1!d;s/.* //'"), emit: versions_tetranscripts, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,10 +38,6 @@ process TETRANSCRIPTS
 	--project ${prefix} \\
         $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tetranscripts: \$(TEtranscripts --version)
-END_VERSIONS
     """
 
     stub:
@@ -50,13 +45,11 @@ END_VERSIONS
     def prefix = task.ext.prefix ?: "${meta_c.id}"
     """
     echo $args
-    
+
     touch ${prefix}.R
     touch ${prefix}.cntTable
+    touch ${prefix}_gene_TE_analysis.txt
+    touch ${prefix}_sigdiff_gene_TE.txt
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tetranscripts: \$(TEtranscripts --version)
-    END_VERSIONS
     """
 }

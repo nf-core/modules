@@ -13,7 +13,7 @@ process VEMBRANE_TABLE {
 
     output:
     tuple val(meta), path("*.tsv"), emit: table
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('vembrane'), eval("vembrane --version | sed '1!d;s/.* //'"), topic: versions, emit: versions_vembrane
 
     when:
     task.ext.when == null || task.ext.when

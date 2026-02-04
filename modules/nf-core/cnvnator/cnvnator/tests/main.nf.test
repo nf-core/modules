@@ -17,8 +17,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [id:'test',single_end:false],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam', checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam.bai', checkIfExists:true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.bam.bai', checkIfExists:true)
                     ]
                 input[1] = [[:],[]]
                 input[2] = [[:],[]]
@@ -87,7 +87,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.tab,
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith("versions") },
                     process.out.root.collect{ file(it[1]).name }
                 ).match()}
             )
@@ -119,7 +119,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    process.out.versions.collect{ path(it).yaml }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }

@@ -1,18 +1,22 @@
 name: cutadapt
-description: Perform adapter/quality trimming on sequencing reads
+description: Removes adapter sequences from sequencing reads
 keywords:
+  - adapter
+  - primers
+  - poly-A tails
   - trimming
-  - adapter trimming
-  - adapters
-  - quality trimming
+  - fastq
 tools:
-  - cuatadapt:
+  - cutadapt:
       description: |
-        Cutadapt finds and removes adapter sequences, primers, poly-A tails and other types of unwanted sequence from your high-throughput sequencing reads.
-      documentation: https://cutadapt.readthedocs.io/en/stable/index.html
+        Cutadapt finds and removes adapter sequences, primers, poly-A tails
+        and other types of unwanted sequence from your high-throughput sequencing reads.
+      homepage: https://cutadapt.readthedocs.io/en/stable/index.html
+      documentation: https://github.com/marcelm/cutadapt
       doi: 10.14806/ej.17.1.200
       licence: ["MIT"]
       identifier: biotools:cutadapt
+
 input:
   - - meta:
         type: map
@@ -24,7 +28,9 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
-        ontologies: []
+        pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1930" # FASTQ
 output:
   reads:
     - - meta:
@@ -37,6 +43,7 @@ output:
           description: The trimmed/modified fastq reads
           pattern: "*fastq.gz"
           ontologies:
+            - edam: "http://edamontology.org/format_1930" # FASTQ
             - edam: http://edamontology.org/format_3989 # GZIP format
   log:
     - - meta:
@@ -46,19 +53,37 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.log":
           type: file
-          description: cuatadapt log file
+          description: cutadapt log file
           pattern: "*cutadapt.log"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual format
+  versions_cutadapt:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cutadapt:
+          type: string
+          description: The name of the tool
+      - cutadapt --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cutadapt:
+          type: string
+          description: The name of the tool
+      - cutadapt --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@drpatelh"
   - "@kevinmenden"
 maintainers:
   - "@drpatelh"
   - "@kevinmenden"
+  - "@vagkaratzas"

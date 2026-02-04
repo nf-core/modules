@@ -9,29 +9,29 @@ nextflow_workflow {
     tag "subworkflows_nfcore"
     tag "subworkflows/fastq_align_dedup_bwamem"
     tag "subworkflows/fastq_align_bwa"
+    tag "bwa"
     tag "bwa/index"
     tag "bwa/mem"
+    tag "parabricks/fq2bam"
     tag "samtools"
     tag "samtools/sort"
     tag "samtools/index"
+    tag "samtools/idxstats"
     tag "samtools/flagstat"
     tag "samtools/stats"
-    tag "samtools/idxstats"
     tag "bam_sort_stats_samtools"
     tag "fastq_align_bwa"
     tag "picard/markduplicates"
     tag "picard/addorreplacereadgroups"
-    tag "untar"
 
     setup {
         run("BWA_INDEX") {
             script "../../../../modules/nf-core/bwa/index/main.nf"
             process {
                 """
-                input[0] = [
-                    [ id:'genome' ],
+                input[0] = Channel.value([ [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ]
+                ])
                 """
             }
         }
@@ -56,8 +56,11 @@ nextflow_workflow {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
                 input[3] = BWA_INDEX.out.index
-                input[4] = false // skip_deduplication
-                input[5] = false // use_gpu
+                input[4] = false            // skip_deduplication
+                input[5] = false            // use_gpu
+                input[6] = "bam"            // output_fmt
+                input[7] = [[:], [] ]       // interval_file
+                input[8] = [[:], [] ]       // known_sites
                 """
             }
         }
@@ -70,10 +73,10 @@ nextflow_workflow {
                     workflow.out.bai.collect { meta, bai -> file(bai).name },
                     workflow.out.samtools_flagstat,
                     workflow.out.samtools_stats,
-                    workflow.out.samtools_index_stats,
+                    workflow.out.samtools_idxstats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
+                    workflow.out.versions.collect().sort { a, b -> path(a).md5 <=> path(b).md5 }
                     ).match() }
             )
         }
@@ -86,7 +89,7 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = Channel.of([
-                            [ id:'test', single_end:true ],
+                            [ id:'test', single_end:false ],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                 ])
@@ -99,8 +102,11 @@ nextflow_workflow {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
                 input[3] = BWA_INDEX.out.index
-                input[4] = false // skip_deduplication
-                input[5] = false // use_gpu
+                input[4] = false            // skip_deduplication
+                input[5] = false            // use_gpu
+                input[6] = "bam"            // output_fmt
+                input[7] = [[:], [] ]       // interval_file
+                input[8] = [[:], [] ]       // known_sites
                 """
             }
         }
@@ -113,10 +119,10 @@ nextflow_workflow {
                     workflow.out.bai.collect { meta, bai -> file(bai).name },
                     workflow.out.samtools_flagstat,
                     workflow.out.samtools_stats,
-                    workflow.out.samtools_index_stats,
+                    workflow.out.samtools_idxstats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
+                    workflow.out.versions.collect().sort { a, b -> path(a).md5 <=> path(b).md5 }
                     ).match() }
             )
         }
@@ -129,7 +135,7 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = Channel.of([
-                            [ id:'test', single_end:true ],
+                            [ id:'test', single_end:false ],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                 ])
@@ -142,8 +148,11 @@ nextflow_workflow {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
                 input[3] = BWA_INDEX.out.index
-                input[4] = true // skip_deduplication
-                input[5] = false // use_gpu
+                input[4] = true             // skip_deduplication
+                input[5] = false            // use_gpu
+                input[6] = "bam"            // output_fmt
+                input[7] = [[:], [] ]       // interval_file
+                input[8] = [[:], [] ]       // known_sites
                 """
             }
         }
@@ -156,10 +165,10 @@ nextflow_workflow {
                     workflow.out.bai.collect { meta, bai -> file(bai).name },
                     workflow.out.samtools_flagstat,
                     workflow.out.samtools_stats,
-                    workflow.out.samtools_index_stats,
+                    workflow.out.samtools_idxstats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
+                    workflow.out.versions.collect().sort { a, b -> path(a).md5 <=> path(b).md5 }
                     ).match() }
             )
         }
@@ -184,8 +193,11 @@ nextflow_workflow {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
                 input[3] = BWA_INDEX.out.index
-                input[4] = false // skip_deduplication
-                input[5] = false // use_gpu
+                input[4] = false            // skip_deduplication
+                input[5] = false            // use_gpu
+                input[6] = "bam"            // output_fmt
+                input[7] = [[:], [] ]       // interval_file
+                input[8] = [[:], [] ]       // known_sites
                 """
             }
         }
@@ -193,12 +205,16 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-               { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect{ path(it).yaml }
+                { assert snapshot(
+                    workflow.out.bam,
+                    workflow.out.bai,
+                    workflow.out.samtools_flagstat,
+                    workflow.out.samtools_stats,
+                    workflow.out.samtools_idxstats,
+                    workflow.out.picard_metrics,
+                    workflow.out.versions.collect().sort { a, b -> path(a).md5 <=> path(b).md5 }
                 ).match() }
             )
         }
     }
-
 }

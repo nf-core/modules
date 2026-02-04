@@ -14,6 +14,7 @@ process VARIANCEPARTITION_DREAM {
     output:
     tuple val(meta), path("*.dream.results.tsv")        , emit: results
     tuple val(meta), path("*.dream.model.txt")          , emit: model
+    tuple val(meta), path("*.normalised_counts.tsv")    , emit: normalised_counts, optional: true
     path "versions.yml"                                 , emit: versions
 
     when:

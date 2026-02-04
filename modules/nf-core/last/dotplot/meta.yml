@@ -28,8 +28,8 @@ input:
         ontologies: []
     - annot_b:
         type: file
-        description: Annotation file in BED, Repeamasker, genePred or AGP format for
-          the second (vertical) sequence
+        description: Annotation file in BED, Repeamasker, genePred or AGP format
+          for the second (vertical) sequence
         pattern: "*.{bed,bed.gz,out,out.gz,rmsk.txt,rmsk.txt.gz,genePred,genePred.gz,gff,gff.gz,gtf,gtf.gz,gap.txt,gap.txt.gz}"
         ontologies: []
   - - meta2:
@@ -39,8 +39,8 @@ input:
           e.g. `[ id:'sample2', single_end:false ]`
     - annot_a:
         type: file
-        description: Annotation file in BED, Repeamasker, genePred or AGP format for
-          the first (horizontal) sequence
+        description: Annotation file in BED, Repeamasker, genePred or AGP format
+          for the first (horizontal) sequence
         pattern: "*.{bed,bed.gz,out,out.gz,rmsk.txt,rmsk.txt.gz,genePred,genePred.gz,gff,gff.gz,gtf,gtf.gz,gap.txt,gap.txt.gz}"
         ontologies: []
   - format:
@@ -50,35 +50,38 @@ input:
       type: boolean
       description: Remove isolated alignments using the `maf-linked` software.
 output:
-  gif:
+  plot:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.gif":
+      - "*.{gif,png}":
           type: file
-          description: Pairwise alignment dot plot image, in GIF format.
-          pattern: "*.gif"
+          description: Pairwise alignment dot plot image, in GIF or PNG format.
+          pattern: "*.{gif,png}"
           ontologies: []
-  png:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.png":
-          type: file
-          description: Pairwise alignment dot plot image, in PNG format.
-          pattern: "*.png"
-          ontologies: []
+  versions_last:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - last:
+          type: string
+          description: The name of the tool
+      - "lastal --version | sed 's/lastal //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - last:
+          type: string
+          description: The name of the tool
+      - "lastal --version | sed 's/lastal //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@charles-plessy"
 maintainers:

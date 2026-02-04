@@ -31,7 +31,6 @@ nextflow_process {
                 input[3] = [[], []]
                 input[4] = [[], []]
 
-
                 """
             }
         }
@@ -42,7 +41,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.versions,
                     file(process.out.candidate_sv_bcf[0][1]).name,
-                    process.out.candidate_sv_bcf_csi,
+                    file(process.out. candidate_sv_bcf_csi[0][1]).name,
                     process.out.depth_mpack,
                     process.out.contig_alignment_bam,
                     process.out.contig_alignment_bam_csi,
@@ -51,10 +50,7 @@ nextflow_process {
                     process.out.copynum_bedgraph,
                     process.out.genome_gclevels,
                     process.out.sample_gcbias,
-                    process.out.depth_mpack,
-                    process.out.sample_gcbias,
                 ).match() }
-
             )
         }
     }
