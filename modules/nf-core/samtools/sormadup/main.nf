@@ -9,7 +9,7 @@ process SAMTOOLS_SORMADUP {
 
     input:
     tuple val(meta), path(input)
-    tuple val(meta2), path(fasta)
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*.bam")      , emit: bam,  optional: true
@@ -33,9 +33,6 @@ process SAMTOOLS_SORMADUP {
                     args5.contains("--output-fmt cram") ? "cram" :
                     "bam"
     def reference = fasta ? "--reference ${fasta}" : ""
-    // memory per thread for samtools sort
-    // set to 50% of the memory per thread, but at least 768M (samtools default)
-    def sort_memory = Math.max(768,(task.memory.mega/task.cpus*0.50).intValue())
 
     """
     samtools cat \\
@@ -64,7 +61,6 @@ process SAMTOOLS_SORMADUP {
         -u \\
         -T ${prefix}.sort \\
         --threads $task.cpus \\
-        -m ${sort_memory}M \\
         - \\
     | \\
     samtools markdup \\

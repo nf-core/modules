@@ -88,6 +88,11 @@ input:
         description: Reference genome file
         pattern: "*.{fasta,fa,fna}"
         ontologies: []
+    - fai:
+        type: file
+        description: Reference genome index file
+        pattern: "*.fai"
+        ontologies: []
 output:
   bam:
     - - meta:
