@@ -26,42 +26,39 @@ input:
           e.g. `[ id:'test' ]`
     - vcf:
         type: file
-        description: |
-          In create mode: VCF file to build database from.
-          In annotate mode: VCF file to annotate.
+        description: VCF file to annotate (annotate mode only)
         pattern: "*.{vcf,vcf.gz}"
     - vcf_tbi:
         type: file
-        description: Tabix index for input VCF (optional in annotate mode)
-        pattern: "*.{tbi}"
-    - fields:
-        type: string
+        description: Tabix index for input VCF (optional)
+        pattern: "*.tbi"
+  - - db_vcf:
+        type: file
         description: |
-          Comma-separated list of INFO fields to include in database (create mode only).
-          Use empty string in annotate mode.
-  - - databases:
-        type: file
-        description: List of annotation VCF database files (annotate mode only, empty list for create mode)
+          VCF database file(s). In create mode: VCF to build database from.
+          In annotate mode: VCF database(s) for annotation.
         pattern: "*.{vcf,vcf.gz}"
-    - dbs_tbis:
+    - db_vcf_tbi:
         type: file
-        description: List of tabix indices for database files (annotate mode only)
-        pattern: "*.{tbi}"
-    - db_vardbs:
+        description: Tabix index for database VCF file(s)
+        pattern: "*.tbi"
+    - db_vardb:
         type: directory
-        description: List of pre-built .snpsift.vardb directories (annotate mode only)
+        description: Pre-built .snpsift.vardb directory (annotate mode, used instead of db_vcf if provided)
         pattern: "*.snpsift.vardb"
     - db_fields:
         type: list
-        description: List of comma-separated INFO fields for each database (annotate mode only)
+        description: |
+          INFO field names to use. In create mode: fields to include in database.
+          In annotate mode: fields to annotate with. Can be list or semicolon-delimited string.
     - db_prefixes:
-        type: list
-        description: List of prefixes to add to annotated field names (annotate mode only)
+        type: string
+        description: Prefix to add to annotated field names (annotate mode only)
   - - create:
         type: boolean
         description: |
-          Set to true to create a database from the input VCF.
-          Set to false (default) to annotate the input VCF using the provided databases.
+          Set to true to create a database from db_vcf.
+          Set to false (default) to annotate vcf using the provided databases.
 output:
   database:
     - - meta:
