@@ -9,7 +9,7 @@ process VIRALCONSENSUS {
 
     input:
     tuple val(meta), path(bam)
-    path fasta
+    tuple val(meta2), path(fasta)
     path primer_bed
     val save_pos_counts
     val save_ins_counts
