@@ -33,7 +33,7 @@ nextflow_process {
                     process.out.fastq_idx,
                     process.out.undetermined.collect { meta, fastq -> file(fastq).name },
                     process.out.undetermined_idx,
-                    process.out.reports,
+                    process.out.reports.collect { meta, reports -> reports.findAll {report -> file(report).name }},
                     process.out.logs.collect { meta, logs -> logs.sort() },
                     process.out.interop.collect { meta, interop ->
                                                 interop.findAll { interopfile ->
@@ -74,7 +74,7 @@ nextflow_process {
                     process.out.fastq_idx,
                     process.out.undetermined.collect { meta, fastq -> file(fastq).name },
                     process.out.undetermined_idx,
-                    process.out.reports,
+                    process.out.reports.collect { meta, reports -> reports.findAll {report -> file(report).name }},
                     process.out.logs.collect { meta, logs -> logs.sort() },
                     process.out.interop,
                     process.out.interop.collect { meta, interop ->
