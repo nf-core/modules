@@ -84,11 +84,18 @@ output:
           type: file
           description: Tabix index for annotated VCF (annotate mode only, optional)
           pattern: "*.vcf.gz.tbi"
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - snpsift:
+          type: string
+          description: The tool name
+      - "SnpSift split -h 2>&1 | head -1 | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@friederike-hanssen"
 maintainers:
