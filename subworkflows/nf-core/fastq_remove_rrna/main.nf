@@ -45,7 +45,6 @@ workflow FASTQ_REMOVE_RRNA {
 
     main:
 
-    ch_versions = channel.empty()
     ch_multiqc_files = channel.empty()
     ch_filtered_reads = ch_reads
 
@@ -216,5 +215,4 @@ workflow FASTQ_REMOVE_RRNA {
     bowtie2_index    = ch_bowtie2_index_out // channel: [ val(meta), [ index ] ]
     seqkit_prefixed  = ch_seqkit_prefixed  // channel: [ val(meta), [ fasta ] ]
     seqkit_converted = ch_seqkit_converted // channel: [ val(meta), [ fasta ] ]
-    versions         = ch_versions         // channel: [ versions.yml ]
 }
