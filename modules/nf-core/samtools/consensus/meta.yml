@@ -31,6 +31,11 @@ input:
         description: Sorted BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
         ontologies: []
+    - index:
+        type: file
+        description: BAM/CRAM index file
+        pattern: "*.{bai,crai}"
+        ontologies: []
 output:
   fasta:
     - - meta:

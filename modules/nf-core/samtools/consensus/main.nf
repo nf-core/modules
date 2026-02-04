@@ -8,7 +8,7 @@ process SAMTOOLS_CONSENSUS {
         'biocontainers/samtools:1.22.1--h96c455f_0' }"
 
     input:
-    tuple val(meta), path(input)
+    tuple val(meta), path(input), path(index)
 
     output:
     tuple val(meta), path("*.fasta") , emit: fasta , optional: true
