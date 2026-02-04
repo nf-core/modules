@@ -30,10 +30,10 @@ process GMMDEMUX {
     script:
     def args           = task.ext.args ?: ''
     def prefix         = task.ext.prefix ?: "${meta.id}"
-    def skip           = skip ? "--skip $skip" : ""
+    def skip_opt           = skip ? "--skip $skip" : ""
     def examine_cells  = examine ? "--examine $examine" : ""
     def VERSION        = '0.2.2.3' // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    def type_report    = type_report ? "-f ." : "-s ."
+    def type_report_opt    = type_report ? "-f ." : "-s ."
     def summary_rep    = summary_report ? "-r ${prefix}_summary_report.txt" : ""
     """
     if [[ ${summary_report} == true ]]; then
@@ -41,9 +41,9 @@ process GMMDEMUX {
     fi
 
     GMM-demux $args \\
-        $type_report \\
+        $type_report_opt \\
         $summary_rep \\
-        $skip \\
+        $skip_opt \\
         $examine_cells \\
         $hto_matrix \\
         $hto_names \\
