@@ -42,7 +42,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions,
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions")},
                                   path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
                                   file(process.out.tbi.get(0).get(1)).name).match() },
             )
@@ -83,7 +83,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions,
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") },
                                   path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
                                   file(process.out.tbi.get(0).get(1)).name).match() },
             )
@@ -124,7 +124,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions,
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") },
                                   path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
                                   file(process.out.tbi.get(0).get(1)).name).match() },
             )
