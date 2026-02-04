@@ -13,38 +13,26 @@ process HMMCOPY_GENERATEMAP {
 
     output:
     tuple val(meta), path("*.bw"), emit: bigwig
-    path "versions.yml"          , emit: versions
+    tuple val("${task.process}"), val('hmmcopy'), eval("echo 0.1.1"), topic: versions, emit: versions_hmmcopy
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def VERSION = '0.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     # build required indexes
-    generateMap.pl -b \\
-        $args \\
+    generateMap.pl -b \
+        $args \
         $fasta
 
     # run
-    generateMap.pl \\
-        $args \\
+    generateMap.pl \
+        $args \
         $fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmcopy: \$(echo $VERSION)
-    END_VERSIONS
     """
     stub:
-    def VERSION = '0.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${fasta}.map.bw
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmcopy: \$(echo $VERSION)
-    END_VERSIONS
     """
 }

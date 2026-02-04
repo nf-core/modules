@@ -4,8 +4,8 @@ process CNVNATOR_CNVNATOR {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cnvnator:0.4.1--py312h99c8fb2_11':
-        'biocontainers/cnvnator:0.4.1--py312h99c8fb2_11' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a5/a54de0a286dcc6f73972be37104995ba96e37ef404f9d2bff294a7e8be5b7a92/data':
+        'community.wave.seqera.io/library/cnvnator:0.4.1--5a467cfadbbc668d' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -16,7 +16,7 @@ process CNVNATOR_CNVNATOR {
     output:
     tuple val(output_meta), path("${prefix}.root"), emit: root
     tuple val(output_meta), path("${prefix}.tab") , emit: tab, optional: true
-    path "versions.yml"                           , emit: versions
+    tuple val("${task.process}"), val('cnvnator'), eval("cnvnator 2>&1 | sed -n '3s/CNVnator v//p'"), topic: versions, emit: versions_cnvnator
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,7 +31,7 @@ process CNVNATOR_CNVNATOR {
     } else {
         reference = ''
     }
-    calls_cmd = args.contains("-call") ? "> ${prefix}.tab" : ''
+    def calls_cmd = args.contains("-call") ? "> ${prefix}.tab" : ''
     """
     cnvnator \\
         -root ${prefix}.root \\
@@ -39,11 +39,6 @@ process CNVNATOR_CNVNATOR {
         $reference \\
         $input_cmd \\
         $calls_cmd
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        CNVnator: \$(echo \$(cnvnator 2>&1 | sed -n '3p' | sed 's/CNVnator v//'))
-    END_VERSIONS
     """
 
     stub:
@@ -55,9 +50,5 @@ process CNVNATOR_CNVNATOR {
     touch ${prefix}.root
     $calls_cmd
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        CNVnator: \$(echo \$(cnvnator 2>&1 | sed -n '3p' | sed 's/CNVnator v//'))
-    END_VERSIONS
     """
 }

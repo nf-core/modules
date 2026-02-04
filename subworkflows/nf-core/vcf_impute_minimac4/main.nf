@@ -65,7 +65,6 @@ workflow VCF_IMPUTE_MINIMAC4 {
 
     // Index the output VCF file
     BCFTOOLS_INDEX_PHASE(MINIMAC4_IMPUTE.out.vcf)
-    ch_versions = ch_versions.mix(BCFTOOLS_INDEX_PHASE.out.versions.first())
 
     // Ligate all phased files in one and index it
     ligate_input = MINIMAC4_IMPUTE.out.vcf
@@ -84,7 +83,6 @@ workflow VCF_IMPUTE_MINIMAC4 {
     ch_versions = ch_versions.mix(GLIMPSE2_LIGATE.out.versions.first())
 
     BCFTOOLS_INDEX_LIGATE(GLIMPSE2_LIGATE.out.merged_variants)
-    ch_versions = ch_versions.mix(BCFTOOLS_INDEX_LIGATE.out.versions.first())
 
     // Join imputed and index files
     ch_vcf_index = GLIMPSE2_LIGATE.out.merged_variants.join(

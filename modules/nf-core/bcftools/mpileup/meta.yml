@@ -94,10 +94,9 @@ output:
       - bcftools:
           type: string
           description: The tool name
-      - "bcftools --version | sed -n '1s/.* //p'":
+      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
           type: string
           description: The command used to generate the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -106,10 +105,9 @@ topics:
       - bcftools:
           type: string
           description: The tool name
-      - "bcftools --version | sed -n '1s/.* //p'":
+      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
           type: string
           description: The command used to generate the version of the tool
-
 authors:
   - "@joseespinosa"
 maintainers:

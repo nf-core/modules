@@ -14,7 +14,7 @@ process GATK4_GERMLINECNVCALLER {
     tuple val(meta), path("*-cnv-model/*-calls"), emit: cohortcalls, optional: true
     tuple val(meta), path("*-cnv-model/*-model"), emit: cohortmodel, optional: true
     tuple val(meta), path("*-cnv-calls/*-calls"), emit: casecalls,   optional: true
-    path "versions.yml",                          emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -51,10 +51,6 @@ process GATK4_GERMLINECNVCALLER {
         ${intervals_command} \\
         ${model_command}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -64,9 +60,5 @@ process GATK4_GERMLINECNVCALLER {
     mkdir -p ${prefix}-cnv-model/${prefix}-model
     mkdir -p ${prefix}-cnv-model/${prefix}-calls
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

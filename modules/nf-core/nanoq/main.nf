@@ -35,7 +35,6 @@ process NANOQ {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}_filtered"
     """
     echo "" | gzip > ${prefix}.${output_format}

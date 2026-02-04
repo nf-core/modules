@@ -1,0 +1,128 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "t1k_build"
+description: A module to create a reference database and coordinate files for
+  T1K.
+keywords:
+  - polymorphic
+  - genes
+  - HLA
+  - Kir
+tools:
+  - "t1k":
+      description: "T1K is a versatile methods to genotype highly polymorphic genes
+        (e.g. KIR, HLA) with RNA-seq, WGS or WES data."
+      homepage: "https://github.com/mourisl/T1K/blob/v1.0.9/README.md"
+      documentation: "https://github.com/mourisl/T1K/blob/v1.0.9/README.md"
+      tool_dev_url: "https://github.com/mourisl/T1K"
+      doi: "10.1101/gr.277585.122"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - ena:
+        type: file
+        description: EMBL-ENA dat file.
+        pattern: "*.dat"
+    - fasta:
+        type: file
+        description: FASTA file containing gene sequences.
+        pattern: "*.fa"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+    - annotation:
+        type: file
+        description: Gene annotation in GTF format.
+        pattern: "*.gtf"
+        ontologies:
+          - edam: "http://edamontology.org/format_2532" # GTF
+output:
+  rna_sequences:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_rna_seq.fa":
+          type: file
+          description: RNA gene sequences file output.
+          pattern: "*_rna_seq.fa"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929" # FASTA
+  dna_sequences:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_dna_seq.fa":
+          type: file
+          description: DNA gene sequences file output.
+          pattern: "*_dna_seq.fa"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929" # FASTA
+  rna_coordinates:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_rna_coord.fa":
+          type: file
+          description: A fasta file with the coordinates of the gene alleles in the
+            header as created form the t1k/build
+          pattern: "*_rna_coord.fa"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  dna_coordinates:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_dna_coord.fa":
+          type: file
+          description: A fasta file with the coordinates of the gene alleles in the
+            header as created form the t1k/build
+          pattern: "*_dna_coord.fa"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  database:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.dat":
+          type: file
+          description: EMBL-ENA dat file.
+          pattern: "*.dat"
+  versions_t1k:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - t1k:
+          type: string
+          description: The name of the tool
+      - run-t1k 2>&1 | head -n 1 | cut -d '-' -f 1 | cut -d v -f 2:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - t1k:
+          type: string
+          description: The name of the tool
+      - run-t1k 2>&1 | head -n 1 | cut -d '-' -f 1 | cut -d v -f 2:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@georgiakes"
+maintainers:
+  - "@georgiakes"

@@ -12,7 +12,8 @@ process SAMTOOLS_BGZIP {
 
     output:
     tuple val(meta), path("${output}"), emit: fasta
-    path "versions.yml"               , emit: versions
+    // samtools-bgzip has no --version option so let's use lastal from the same suite
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,11 +38,6 @@ process SAMTOOLS_BGZIP {
         *)
             bgzip -c $args -@${task.cpus} $fasta > ${output} ;;
     esac
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -50,11 +46,5 @@ process SAMTOOLS_BGZIP {
     """
     [ "\$(basename $fasta)" == "\$(basename ${output})" ] && echo "Filename collision (\$basename $fasta)" && exit 1
     echo '' | bgzip > ${output}
-
-    cat <<-END_VERSIONS > versions.yml
-
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }
