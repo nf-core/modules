@@ -29,10 +29,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(
-                process.out.fastq,
-                process.out.versions_samtools
-            ).match()
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }
@@ -57,10 +54,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(
-                process.out.fastq_other,
-                process.out.versions_samtools
-            ).match()
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }
@@ -85,10 +79,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(
-                process.out.fastq,
-                process.out.versions_samtools
-            ).match()
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }
@@ -113,12 +104,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(
-                process.out.fastq_interleaved,
-                process.out.fastq_singleton,
-                process.out.fastq,
-                process.out.versions_samtools
-            ).match()
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }
@@ -142,10 +128,7 @@ nextflow_process {
         }
 
         then {
-            assert snapshot(
-                process.out.fastq,
-                process.out.versions_samtools
-            ).match()
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }
@@ -169,10 +152,7 @@ nextflow_process {
         }
 
         then {
-            assert snapshot(
-                process.out.fastq_other,
-                process.out.versions_samtools
-            ).match()
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }
@@ -196,10 +176,7 @@ nextflow_process {
         }
 
         then {
-            assert snapshot(
-                process.out.fastq,
-                process.out.versions_samtools
-            ).match()
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }
@@ -223,12 +200,7 @@ nextflow_process {
         }
 
         then {
-            assert snapshot(
-                process.out.fastq_interleaved,
-                process.out.fastq_singleton,
-                process.out.fastq,
-                process.out.versions_samtools
-            ).match()
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }
