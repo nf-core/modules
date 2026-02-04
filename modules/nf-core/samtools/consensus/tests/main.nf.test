@@ -14,7 +14,7 @@ nextflow_process {
 
         when {
             params {
-                samtools_args2 = ""
+                samtools_args = ""
             }
             process {
                 """
@@ -37,7 +37,7 @@ nextflow_process {
     test("sarscov2 - bam - fastq") {
         when {
             params {
-                samtools_args2 = "-f fastq"
+                samtools_args = "-f fastq"
             }
             process {
                 """
@@ -59,7 +59,7 @@ nextflow_process {
 
         when {
             params {
-                samtools_args2 = "-f pileup"
+                samtools_args = "-f pileup"
             }
             process {
                 """
@@ -84,7 +84,7 @@ nextflow_process {
 
         when {
             params {
-                samtools_args2 = ""
+                samtools_args = ""
             }
             process {
                 """
