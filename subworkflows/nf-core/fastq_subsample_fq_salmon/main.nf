@@ -18,8 +18,6 @@ workflow FASTQ_SUBSAMPLE_FQ_SALMON {
 
     main:
 
-    ch_versions = channel.empty()
-
     //
     // Create Salmon index if required
     //
@@ -47,6 +45,4 @@ workflow FASTQ_SUBSAMPLE_FQ_SALMON {
     results           = SALMON_QUANT.out.results           // channel: [ val(meta), results_dir ]
     json_info         = SALMON_QUANT.out.json_info         // channel: [ val(meta), json_info
     lib_format_counts = SALMON_QUANT.out.lib_format_counts // channel: [ val(meta), json_info
-
-    versions          = ch_versions                        // channel: [ versions.yml ]
 }
