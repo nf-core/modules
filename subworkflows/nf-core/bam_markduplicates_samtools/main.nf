@@ -20,7 +20,6 @@ workflow BAM_MARKDUPLICATES_SAMTOOLS {
 
 
     SAMTOOLS_COLLATE ( ch_bam, ch_fasta )
-    ch_versions = ch_versions.mix(SAMTOOLS_COLLATE.out.versions)
 
     SAMTOOLS_FIXMATE ( SAMTOOLS_COLLATE.out.bam )
     ch_versions = ch_versions.mix(SAMTOOLS_FIXMATE.out.versions)
