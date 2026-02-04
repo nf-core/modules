@@ -24,7 +24,7 @@ nextflow_process {
         when {
             process {
                 """
-                ch_sav_in = UNTAR.out.untar.map{ meta, untar ->
+                ch_sav_in = UNTAR.out.untar.map{ _meta, untar ->
                     def xml = []
                     untar.eachFileRecurse { file ->
                         if (file.fileName.toString() == 'RunInfo.xml') {
@@ -38,7 +38,7 @@ nextflow_process {
                             interop << file
                         }
                     }
-                    return [meta, xml, interop]
+                    return [xml, interop]
                 }
 
                 input[0] = ch_sav_in
@@ -55,8 +55,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.report[0][1] ==~ ".*/multiqc_report.html" },
-                { assert process.out.data[0][1] ==~ ".*/multiqc_data" },
+                { assert process.out.report[0] ==~ ".*/multiqc_report.html" },
+                { assert process.out.data[0] ==~ ".*/multiqc_data" },
                 { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions")}).match() }
             )
         }
@@ -81,7 +81,7 @@ nextflow_process {
         when {
             process {
                 """
-                ch_sav_in = UNTAR.out.untar.map{ meta, untar ->
+                ch_sav_in = UNTAR.out.untar.map{ _meta, untar ->
                     def xml = []
                     untar.eachFileRecurse { file ->
                         if (file.fileName.toString() == 'RunInfo.xml') {
@@ -95,7 +95,7 @@ nextflow_process {
                             interop << file
                         }
                     }
-                    return [meta, xml, interop]
+                    return [xml, interop]
                 }
 
                 input[0] = ch_sav_in
@@ -112,8 +112,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.report[0][1] ==~ ".*/multiqc_report.html" },
-                { assert process.out.data[0][1] ==~ ".*/multiqc_data" },
+                { assert process.out.report[0] ==~ ".*/multiqc_report.html" },
+                { assert process.out.data[0] ==~ ".*/multiqc_data" },
                 { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions")}).match() }
             )
         }
