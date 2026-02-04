@@ -1,5 +1,5 @@
 {
-    "Impute with stitch one individual, no renaming, posfile, no chunks, no map, no fasta": {
+    "Impute with stitch one individual, no renaming, posfile, no chunks whole chromosome, no map, no fasta": {
         "content": [
             [
                 [
@@ -17,17 +17,10 @@
                 ]
             ],
             [
-                "versions.yml:md5,597985efae796d9efe8b1005c4b0bb18",
                 "versions.yml:md5,8b0020b997bad45e9e3cf0d9b868a3b2",
-                "versions.yml:md5,c32cdf9d543fe0fe8f0cfeade5ceade2",
-                "versions.yml:md5,d9282aba3ae921597b3a7387e17e220d"
+                "versions.yml:md5,c32cdf9d543fe0fe8f0cfeade5ceade2"
             ],
             [
-                {
-                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_2": {
-                        "bcftools": 1.22
-                    }
-                },
                 {
                     "BAM_IMPUTE_STITCH:STITCH": {
                         "r-base": "4.4.2",
@@ -38,19 +31,14 @@
                     "BAM_IMPUTE_STITCH:GLIMPSE2_LIGATE": {
                         "glimpse2": "2.0.0"
                     }
-                },
-                {
-                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_1": {
-                        "bcftools": 1.22
-                    }
                 }
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-11-27T09:22:32.971453937"
+        "timestamp": "2026-01-20T12:38:36.431704104"
     },
     "homo_sapiens - empty channels - stub": {
         "content": [
@@ -74,10 +62,8 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,597985efae796d9efe8b1005c4b0bb18",
                     "versions.yml:md5,8b0020b997bad45e9e3cf0d9b868a3b2",
-                    "versions.yml:md5,c32cdf9d543fe0fe8f0cfeade5ceade2",
-                    "versions.yml:md5,d9282aba3ae921597b3a7387e17e220d"
+                    "versions.yml:md5,c32cdf9d543fe0fe8f0cfeade5ceade2"
                 ],
                 "vcf_index": [
                     [
@@ -98,18 +84,11 @@
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,597985efae796d9efe8b1005c4b0bb18",
                     "versions.yml:md5,8b0020b997bad45e9e3cf0d9b868a3b2",
-                    "versions.yml:md5,c32cdf9d543fe0fe8f0cfeade5ceade2",
-                    "versions.yml:md5,d9282aba3ae921597b3a7387e17e220d"
+                    "versions.yml:md5,c32cdf9d543fe0fe8f0cfeade5ceade2"
                 ]
             },
             [
-                {
-                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_2": {
-                        "bcftools": 1.22
-                    }
-                },
                 {
                     "BAM_IMPUTE_STITCH:STITCH": {
                         "r-base": "4.4.2",
@@ -120,19 +99,14 @@
                     "BAM_IMPUTE_STITCH:GLIMPSE2_LIGATE": {
                         "glimpse2": "2.0.0"
                     }
-                },
-                {
-                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_1": {
-                        "bcftools": 1.22
-                    }
                 }
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-11-21T22:32:30.735092649"
+        "timestamp": "2026-01-20T12:39:01.503600654"
     },
     "Impute with stitch two individual bam, renaming, posfile, chunks, map, no fasta": {
         "content": [
@@ -168,11 +142,6 @@
             ],
             [
                 {
-                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_2": {
-                        "bcftools": 1.22
-                    }
-                },
-                {
                     "BAM_IMPUTE_STITCH:STITCH": {
                         "r-base": "4.4.2",
                         "r-stitch": "1.7.3"
@@ -182,18 +151,13 @@
                     "BAM_IMPUTE_STITCH:GLIMPSE2_LIGATE": {
                         "glimpse2": "2.0.0"
                     }
-                },
-                {
-                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_1": {
-                        "bcftools": 1.22
-                    }
                 }
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-11-27T10:28:44.112173975"
+        "timestamp": "2026-01-20T12:38:50.644956655"
     }
 }

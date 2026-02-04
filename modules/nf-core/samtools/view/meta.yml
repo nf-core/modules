@@ -147,9 +147,10 @@ output:
       - samtools:
           type: string
           description: Name of the tool
-      - samtools --version | head -1 | sed -e "s/samtools //:
-          type: string
-          description: Version of samtools used
+      - samtools version | sed "1!d;s/.* //":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -158,9 +159,10 @@ topics:
       - samtools:
           type: string
           description: Name of the tool
-      - samtools --version | head -1 | sed -e "s/samtools //:
-          type: string
-          description: Version of samtools used
+      - samtools version | sed "1!d;s/.* //":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@drpatelh"
   - "@joseespinosa"

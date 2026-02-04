@@ -57,8 +57,8 @@ nextflow_process {
                     """
                     input[0] = [
                         [id:"NA12878"],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz.csi', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz.csi', checkIfExists: true)
                     ]
                     input[1] = [
                         [id: "hg38"],

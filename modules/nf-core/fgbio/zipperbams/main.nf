@@ -4,8 +4,8 @@ process FGBIO_ZIPPERBAMS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b4/b4047e3e517b57fae311eab139a12f0887d898b7da5fceeb2a1029c73b9e3904/data' :
-        'community.wave.seqera.io/library/fgbio:2.5.21--368dab1b4f308243' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fe/fe9479adc5e6e0a1c125d346fdfa0dd313834249e9c55c40e8d44ec3a48c6559/data' :
+        'community.wave.seqera.io/library/fgbio:3.1.1--6c9a88faf1d62b6c' }"
 
     input:
     tuple val(meta), path(unmapped_bam)
@@ -15,14 +15,13 @@ process FGBIO_ZIPPERBAMS {
 
     output:
     tuple val(meta), path("${prefix}.bam"), emit: bam
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('fgbio'), eval('fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\\[.*$//"'), topic: versions, emit: versions_fgbio
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args  = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
     def compression = task.ext.compression ?: '0'
     prefix = task.ext.prefix ?: "${meta.id}_zipped"
     def mem_gb = 8
@@ -49,12 +48,6 @@ process FGBIO_ZIPPERBAMS {
         --ref ${fasta} \\
         ${args} \\
         --output ${prefix}.bam
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fgbio: \$( echo \$(fgbio --version 2>&1 | tr -d '[:cntrl:]' ) | sed -e 's/^.*Version: //;s/\\[.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -64,10 +57,5 @@ process FGBIO_ZIPPERBAMS {
 
     """
     touch ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fgbio: \$( echo \$(fgbio --version 2>&1 | tr -d '[:cntrl:]' ) | sed -e 's/^.*Version: //;s/\\[.*\$//')
-    END_VERSIONS
     """
 }

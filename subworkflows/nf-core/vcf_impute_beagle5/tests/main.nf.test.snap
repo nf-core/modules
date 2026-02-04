@@ -1,0 +1,165 @@
+{
+    "Impute with beagle5 one vcf - panel - whole chromosome - no map - one chromosomes": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "NA12878",
+                        "panel": "1000GP",
+                        "chr": "chr22"
+                    },
+                    "NA12878_chr22.ligate.vcf.gz",
+                    "NA12878_chr22.ligate.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=903, phased=true, phasedAutodetect=true]",
+                    [
+                        "NA12878"
+                    ],
+                    "9cab6e975108d5f6dbb7773b794711c2"
+                ]
+            ],
+            [
+                "versions.yml:md5,3ba3affc995d9a03ef59f8cf9e7fac38",
+                "versions.yml:md5,ff3101d4f934dc550b466d79e092707c"
+            ],
+            [
+                {
+                    "VCF_IMPUTE_BEAGLE5:BEAGLE5_BEAGLE": {
+                        "beagle": "5.5rev27Feb25.75f"
+                    }
+                },
+                {
+                    "VCF_IMPUTE_BEAGLE5:GLIMPSE2_LIGATE": {
+                        "glimpse2": "2.0.0"
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-01-20T12:51:45.007606874"
+    },
+    "homo_sapiens - empty channels - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "NA12878",
+                            "chr": "chr21",
+                            "panel": "1000GP"
+                        },
+                        "NA12878_chr21.ligate.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "NA12878_chr21.ligate.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ],
+                    [
+                        {
+                            "id": "NA12878",
+                            "chr": "chr22",
+                            "panel": "1000GP"
+                        },
+                        "NA12878_chr22.ligate.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "NA12878_chr22.ligate.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,3ba3affc995d9a03ef59f8cf9e7fac38",
+                    "versions.yml:md5,ff3101d4f934dc550b466d79e092707c"
+                ],
+                "vcf_index": [
+                    [
+                        {
+                            "id": "NA12878",
+                            "chr": "chr21",
+                            "panel": "1000GP"
+                        },
+                        "NA12878_chr21.ligate.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "NA12878_chr21.ligate.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ],
+                    [
+                        {
+                            "id": "NA12878",
+                            "chr": "chr22",
+                            "panel": "1000GP"
+                        },
+                        "NA12878_chr22.ligate.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "NA12878_chr22.ligate.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,3ba3affc995d9a03ef59f8cf9e7fac38",
+                    "versions.yml:md5,ff3101d4f934dc550b466d79e092707c"
+                ]
+            },
+            [
+                {
+                    "VCF_IMPUTE_BEAGLE5:BEAGLE5_BEAGLE": {
+                        "beagle": "5.5rev27Feb25.75f"
+                    }
+                },
+                {
+                    "VCF_IMPUTE_BEAGLE5:GLIMPSE2_LIGATE": {
+                        "glimpse2": "2.0.0"
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-01-20T12:52:12.525105661"
+    },
+    "Impute with beagle5 one bcf gz - panel - map - chunks - two chrosomes": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "NA12878",
+                        "chr": "chr21",
+                        "panel": "1000GP"
+                    },
+                    "NA12878_chr21.ligate.vcf.gz",
+                    "NA12878_chr21.ligate.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr21], sampleCount=1, variantCount=836, phased=true, phasedAutodetect=true]",
+                    [
+                        "NA12878"
+                    ],
+                    "70c852b39eb228a54fabc564d7e536e4"
+                ],
+                [
+                    {
+                        "id": "NA12878",
+                        "chr": "chr22",
+                        "panel": "1000GP"
+                    },
+                    "NA12878_chr22.ligate.vcf.gz",
+                    "NA12878_chr22.ligate.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=903, phased=true, phasedAutodetect=true]",
+                    [
+                        "NA12878"
+                    ],
+                    "9cab6e975108d5f6dbb7773b794711c2"
+                ]
+            ],
+            [
+                {
+                    "VCF_IMPUTE_BEAGLE5:BEAGLE5_BEAGLE": {
+                        "beagle": "5.5rev27Feb25.75f"
+                    }
+                },
+                {
+                    "VCF_IMPUTE_BEAGLE5:GLIMPSE2_LIGATE": {
+                        "glimpse2": "2.0.0"
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-01-20T12:52:01.71528115"
+    }
+}
