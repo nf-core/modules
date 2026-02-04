@@ -1,5 +1,5 @@
 process BCL2FASTQ {
-    tag {"$meta.lane" ? "$meta.id"+"."+"$meta.lane" : "$meta.id" }
+    tag { "${meta.lane}" ? "${meta.id}" + "." + "${meta.lane}" : "${meta.id}" }
     label 'process_high'
 
     container "nf-core/bcl2fastq:2.20.0.422"
@@ -24,7 +24,7 @@ process BCL2FASTQ {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "BCL2FASTQ module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("BCL2FASTQ module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
@@ -38,27 +38,27 @@ process BCL2FASTQ {
 
     if ${input_tar}; then
         ## Ensures --strip-components only applied when top level of tar contents is a directory
-        ## If just files or multiple directories, place all in $input_dir
+        ## If just files or multiple directories, place all in ${input_dir}
 
         if [[ \$(tar -taf ${run_dir} | grep -o -P "^.*?\\/" | uniq | wc -l) -eq 1 ]]; then
             tar \\
-                -C $input_dir --strip-components 1 \\
+                -C ${input_dir} --strip-components 1 \\
                 -xavf \\
-                $args2 \\
-                $run_dir \\
-                $args3
+                ${args2} \\
+                ${run_dir} \\
+                ${args3}
         else
             tar \\
-                -C $input_dir \\
+                -C ${input_dir} \\
                 -xavf \\
-                $args2 \\
-                $run_dir \\
-                $args3
+                ${args2} \\
+                ${run_dir} \\
+                ${args3}
         fi
     fi
 
     bcl2fastq \\
-        $args \\
+        ${args} \\
         --output-dir output \\
         --runfolder-dir ${input_dir} \\
         --sample-sheet ${samplesheet} \\
