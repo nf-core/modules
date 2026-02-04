@@ -10,6 +10,7 @@ nextflow_process {
     tag "traitar"
     tag "traitar/run"
     tag "traitar/pfamget"
+    tag "gunzip"
 
     setup {
         run("TRAITAR_PFAMGET") {
@@ -36,6 +37,47 @@ nextflow_process {
                 ]
                 input[1] = 'from_nucleotides'
                 input[2] = TRAITAR_PFAMGET.out.pfam_db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions_traitar,
+                    process.out.predictions_combined.collect { meta, filepath -> [ meta, file(filepath).name ] },
+                    process.out.predictions_single.collect { meta, filepath -> [ meta, file(filepath).name ] },
+                    process.out.predictions_flat.collect { meta, filepaths -> [ meta, filepaths.collect { file(it).name } ] }
+                ).match() }
+            )
+        }
+    }
+
+    test("traitar - unzipped input - stub") {
+
+        options "-stub"
+
+        setup {
+            run("GUNZIP") {
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test_sample_unzipped' ],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = 'from_nucleotides'
+                input[2] = file("pfam_data")
                 """
             }
         }
