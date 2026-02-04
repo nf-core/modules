@@ -14,7 +14,7 @@ process SAMTOOLS_CONSENSUS {
     tuple val(meta), path("*.fasta") , emit: fasta , optional: true
     tuple val(meta), path("*.fastq") , emit: fastq , optional: true
     tuple val(meta), path("*.pileup"), emit: pileup, optional: true
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,11 +34,6 @@ process SAMTOOLS_CONSENSUS {
         -@ $task.cpus \\
         -o ${prefix}.${extension} \\
         $input
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -51,10 +46,5 @@ process SAMTOOLS_CONSENSUS {
 
     """
     touch ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }
