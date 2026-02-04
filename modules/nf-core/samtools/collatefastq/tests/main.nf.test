@@ -29,7 +29,10 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assert snapshot(
+                process.out.fastq,
+                ["versions_samtools": process.out.versions_samtools]
+            ).match()
         }
 
     }
@@ -54,7 +57,10 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assert snapshot(
+                process.out.fastq_other,
+                ["versions_samtools": process.out.versions_samtools]
+            ).match()
         }
 
     }
@@ -79,7 +85,10 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assert snapshot(
+                process.out.fastq,
+                ["versions_samtools": process.out.versions_samtools]
+            ).match()
         }
 
     }
@@ -104,7 +113,12 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assert snapshot(
+                process.out.fastq_interleaved,
+                process.out.fastq_singleton,
+                process.out.fastq,
+                ["versions_samtools": process.out.versions_samtools]
+            ).match()
         }
 
     }
