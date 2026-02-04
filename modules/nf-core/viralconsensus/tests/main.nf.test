@@ -28,10 +28,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.fasta,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() }
+                { assert snapshot(process.out.fasta).match() }
             )
         }
     }
@@ -56,10 +53,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.fasta,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() }
+                { assert snapshot(process.out.fasta).match() }
             )
         }
     }
@@ -92,8 +86,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.fasta,
                     process.out.pos_counts,
-                    process.out.ins_counts,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    process.out.ins_counts
                 ).match() }
             )
         }
