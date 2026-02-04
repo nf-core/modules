@@ -1,0 +1,36 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "pvactools_installvepplugin"
+description: Download vep plugins required by pVACseq
+keywords:
+  - neoantigen
+  - cancer
+  - immunotherapy
+  - genomics
+tools:
+  - "pvactools":
+      description: "A cancer immunotherapy pipeline for identifying and prioritizing neoantigens from a VCF file."
+      homepage: "https://pvactools.readthedocs.io/en/latest/index.html"
+      documentation: "https://pvactools.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/griffithlab/pVACtools"
+      doi: "10.1158/2326-6066.CIR-19-0401"
+      licence: ["BSD 3-Clause Clear License"]
+      identifier: ""
+
+output:
+  - vep_plugins_dir:
+      - "VEP_plugins":
+          type: directory
+          description: Directory with all required VEP plugins
+          pattern: "VEP_plugins"
+
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@KondratievaOlesya"
+maintainers:
+  - "@KondratievaOlesya"
