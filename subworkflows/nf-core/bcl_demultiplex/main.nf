@@ -6,7 +6,7 @@
 
 include { BCLCONVERT  } from "../../../modules/nf-core/bclconvert/main"
 include { BCL2FASTQ   } from "../../../modules/nf-core/bcl2fastq/main"
-include { MULTIQC_SAV } from "../../../modules/nf-core/multiqc_sav/main"
+include { MULTIQCSAV } from "../../../modules/nf-core/multiqcsav/main"
 
 workflow BCL_DEMULTIPLEX {
     take:
@@ -127,11 +127,11 @@ workflow BCL_DEMULTIPLEX {
         }
         .set { ch_fastq_with_meta }
 
-    // MODULE: multiqc_sav
+    // MODULE: multiqcsav
     // Generate MultiQC report for demultiplexing step
     def ch_sav_input = ch_runinfo.join(ch_interop)
     def ch_mqc_input = ch_reports.mix(ch_stats).map { _meta, files -> files.flatten() }
-    MULTIQC_SAV(
+    MULTIQCSAV(
         ch_sav_input,
         ch_mqc_input,
         [],
@@ -148,7 +148,7 @@ workflow BCL_DEMULTIPLEX {
     stats          = ch_stats
     interop        = ch_interop
     logs           = ch_logs
-    multiqc_report = MULTIQC_SAV.out.report
-    multiqc_data   = MULTIQC_SAV.out.data
-    multiqc_plots  = MULTIQC_SAV.out.plots
+    multiqc_report = MULTIQCSAV.out.report
+    multiqc_data   = MULTIQCSAV.out.data
+    multiqc_plots  = MULTIQCSAV.out.plots
 }
