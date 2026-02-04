@@ -16,7 +16,8 @@ tools:
       documentation: "http://www.htslib.org/doc/samtools-bedcov.html"
       tool_dev_url: "https://github.com/samtools/samtools"
       doi: "10.1093/bioinformatics/btp352"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:samtools
 input:
   - - meta:
@@ -29,15 +30,15 @@ input:
         description: Sorted BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
         ontologies:
-          - edam: "http://edamontology.org/format_2573" # SAM
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: http://edamontology.org/format_3462 # CRAM
+          - edam: "http://edamontology.org/format_2573"
+          - edam: "http://edamontology.org/format_2572"
+          - edam: http://edamontology.org/format_3462
     - input_index:
         type: file
         description: BAM/CRAM index file
         pattern: "*.{bai,crai}"
         ontologies:
-          - edam: "http://edamontology.org/format_3327" # BAI
+          - edam: "http://edamontology.org/format_3327"
   - - meta2:
         type: map
         description: |
@@ -48,7 +49,7 @@ input:
         description: Interval BED file
         pattern: "*.bed"
         ontologies:
-          - edam: "http://edamontology.org/format_3003" # BED
+          - edam: "http://edamontology.org/format_3003"
   - - meta3:
         type: map
         description: |
@@ -59,8 +60,8 @@ input:
         description: Reference genome file
         pattern: "*.{fa,fasta}"
         ontologies:
-          - edam: "http://edamontology.org/data_2044" # Sequence
-          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/data_2044"
+          - edam: "http://edamontology.org/format_1929"
   - - meta4:
         type: map
         description: |
@@ -88,14 +89,28 @@ output:
             then (if given -d), N columns of bases-at-depth-X, then (if given -c) N columns of read counts.
           pattern: "*.tsv"
           ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: "http://edamontology.org/format_3475"
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ToonRosseel"
 maintainers:
