@@ -31,12 +31,17 @@ input:
         pattern: "*.{bam,sam,cram}"
         ontologies:
           - edam: http://edamontology.org/format_2572
-  - fasta:
-      type: file
-      description: Reference genome sequence in FASTA format
-      pattern: "*.{fa,fasta,fna}"
-      ontologies:
-        - edam: http://edamontology.org/format_1929
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'sarscov2' ]
+    - fasta:
+        type: file
+        description: Reference genome sequence in FASTA format
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929
   - primer_bed:
       type: file
       description: Optional BED file with primer coordinates for trimming
