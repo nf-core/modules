@@ -486,8 +486,7 @@ nextflow_workflow {
                 { assert bowtie2RrnaCount == 10 },   // 10 reads aligned to rRNA reference
                 { assert snapshot(
                     selines.join('\n').md5(),
-                    processed_ribo_removal_lint_report.md5(),
-                    workflow.out.versions
+                    processed_ribo_removal_lint_report.md5()
                 ).match() }
             )
         }
