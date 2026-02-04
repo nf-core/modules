@@ -10,6 +10,7 @@ keywords:
 components:
   - bcl2fastq
   - bclconvert
+  - multiqc_sav
 input:
   - meta:
       type: map
@@ -52,10 +53,18 @@ output:
       type: file
       description: Demultiplexing logs (bclconvert only)
       pattern: "Logs/*"
-  - versions:
+  - multiqc_report:
       type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      description: MultiQC report in HTML format
+      pattern: "*.html"
+  - multiqc_data:
+      type: file
+      description: MultiQC data directory
+      pattern: "multiqc_data/"
+  - multiqc_plots:
+      type: file
+      description: MultiQC plots directory
+      pattern: "multiqc_plots/"
 authors:
   - "@matthdsm"
 maintainers:
