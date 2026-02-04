@@ -99,13 +99,37 @@ output:
           description: Interop files
           pattern: "*.{bin}"
           ontologies: []
+  runinfo:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "output/**/RunInfo.xml":
+          type: file
+          description: RunInfo.xml file
+          pattern: "RunInfo.xml"
+          ontologies:
+            - edam: http://edamontology.org/format_2332 # XML
+  versions_bclconvert:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bclconvert:
+          type: string
+          description: The name of the tool
+      - bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bclconvert:
+          type: string
+          description: The name of the tool
+      - bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@matthdsm"
 maintainers:
