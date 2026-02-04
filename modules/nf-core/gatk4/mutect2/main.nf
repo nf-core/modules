@@ -24,7 +24,7 @@ process GATK4_MUTECT2 {
     tuple val(meta), path("*.tbi"),         emit: tbi
     tuple val(meta), path("*.stats"),       emit: stats
     tuple val(meta), path("*.f1r2.tar.gz"), emit: f1r2, optional: true
-    path "versions.yml",                    emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -57,11 +57,6 @@ process GATK4_MUTECT2 {
         ${interval_command} \\
         --tmp-dir . \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -71,10 +66,5 @@ process GATK4_MUTECT2 {
     touch ${prefix}.vcf.gz.tbi
     touch ${prefix}.vcf.gz.stats
     echo "" | gzip > ${prefix}.f1r2.tar.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

@@ -112,7 +112,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith("versions") },
                     file(process.out.intervals[0][1]).name,
                     file(process.out.segments[0][1]).name,
                     file(process.out.denoised[0][1]).name,
@@ -141,7 +141,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith("versions") },
                     file(process.out.intervals[0][1]).name,
                     file(process.out.segments[0][1]).name,
                     file(process.out.denoised[0][1]).name,
