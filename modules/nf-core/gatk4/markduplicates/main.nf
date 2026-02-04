@@ -25,13 +25,17 @@ process GATK4_MARKDUPLICATES {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}.bam"
+    def args2 = task.ext.args2 ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}.bam"
+    
+    def output_format = prefix.tokenize('.')[-1] == 'cram' ? "cram" : "bam"
+    def output_flag = output_format == 'cram' ? "-Ch" : "-bh"
 
-    // If the extension is CRAM, then change it to BAM
-    prefix_bam = prefix.tokenize('.')[-1] == 'cram' ? "${prefix.substring(0, prefix.lastIndexOf('.'))}.bam" : prefix
+    def output_index = output_format == 'cram' ? "${prefix}.crai" : "${prefix}.bai"
 
     def input_list = bam.collect { "--INPUT ${it}" }.join(' ')
     def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
+    def reference2 = fasta ? "-T ${fasta}" : ""
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -41,24 +45,21 @@ process GATK4_MARKDUPLICATES {
         avail_mem = (task.memory.mega * 0.8).intValue()
     }
 
+    if (!fasta && output_format == 'cram') error "Fasta reference is required for CRAM output"
+
     // Using samtools and not Markduplicates to compress to CRAM speeds up computation:
     // https://medium.com/@acarroll.dna/looking-at-trade-offs-in-compression-levels-for-genomics-tools-eec2834e8b94
     """
     gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         MarkDuplicates \\
         ${input_list} \\
-        --OUTPUT ${prefix_bam} \\
+        --COMPRESSION_LEVEL 0 \\
+        --OUTPUT /dev/stdout \\
         --METRICS_FILE ${prefix}.metrics \\
         --TMP_DIR . \\
         ${reference} \\
-        ${args}
-
-    # If cram files are wished as output, the run samtools for conversion
-    if [[ ${prefix} == *.cram ]]; then
-        samtools view -Ch -T ${fasta} -o ${prefix} ${prefix_bam}
-        rm ${prefix_bam}
-        samtools index ${prefix}
-    fi
+        ${args} \\
+        | samtools view ${args2} ${output_flag} ${reference2} -o ${prefix}##idx##${output_index} --write-index
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
