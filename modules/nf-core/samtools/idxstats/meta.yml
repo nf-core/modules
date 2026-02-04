@@ -17,7 +17,8 @@ tools:
       homepage: http://www.htslib.org/
       documentation: http://www.htslib.org/doc/samtools.html
       doi: 10.1093/bioinformatics/btp352
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:samtools
 input:
   - - meta:
@@ -54,10 +55,9 @@ output:
       - samtools:
           type: string
           description: The name of the tool
-      - "samtools --version | sed -n '1s/samtools //p'":
+      - samtools version | sed '1!d;s/.* //':
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -66,10 +66,9 @@ topics:
       - samtools:
           type: string
           description: The name of the tool
-      - "samtools --version | sed -n '1s/samtools //p'":
+      - samtools version | sed '1!d;s/.* //':
           type: eval
           description: The expression to obtain the version of the tool
-
 authors:
   - "@drpatelh"
 maintainers:
