@@ -27,7 +27,6 @@ process FASTQSCREEN_FASTQSCREEN {
 
     """
     fastq_screen --threads ${task.cpus} \\
-        --aligner bowtie2 \\
         --conf ${database}/fastq_screen.conf \\
         $reads \\
         $args \\
