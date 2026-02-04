@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "samtools_sormadup"
 description: Collate/Fixmate/Sort/Markdup SAM/BAM/CRAM file
 keywords:
@@ -20,7 +19,8 @@ tools:
       homepage: http://www.htslib.org/
       documentation: http://www.htslib.org/doc/samtools.html
       doi: 10.1093/bioinformatics/btp352
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       args_id: "$args"
       identifier: biotools:samtools
   - samtools_collate:
@@ -31,7 +31,8 @@ tools:
       homepage: http://www.htslib.org/
       documentation: http://www.htslib.org/doc/samtools.html
       doi: 10.1093/bioinformatics/btp352
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       args_id: "$args2"
       identifier: biotools:samtools
   - samtools_fixmate:
@@ -42,7 +43,8 @@ tools:
       homepage: http://www.htslib.org/
       documentation: http://www.htslib.org/doc/samtools.html
       doi: 10.1093/bioinformatics/btp352
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       args_id: "$args3"
       identifier: biotools:samtools
   - samtools_sort:
@@ -53,7 +55,8 @@ tools:
       homepage: http://www.htslib.org/
       documentation: http://www.htslib.org/doc/samtools.html
       doi: 10.1093/bioinformatics/btp352
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       args_id: "$args4"
       identifier: biotools:samtools
   - samtools_markdup:
@@ -64,7 +67,8 @@ tools:
       homepage: http://www.htslib.org/
       documentation: http://www.htslib.org/doc/samtools.html
       doi: 10.1093/bioinformatics/btp352
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       args_id: "$args5"
       identifier: biotools:samtools
 input:
@@ -157,9 +161,8 @@ output:
           type: string
           description: The tool name
       - "samtools version | sed '1!d;s/.* //'":
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -169,7 +172,7 @@ topics:
           type: string
           description: The tool name
       - "samtools version | sed '1!d;s/.* //'":
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@matthdsm"
