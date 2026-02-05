@@ -44,6 +44,7 @@ process MERQURYFK_HAPMAKER {
     input_mat = matktab ? "${matktab.find{ path -> path.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}" : ''
     input_pat = patktab ? "${patktab.find{ path -> path.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}" : ''
     """
+    echo ${args}
     touch ${input_mat}.hap.ktab
     touch .${input_mat}.hap.ktab.1
     touch ${input_pat}.hap.ktab
