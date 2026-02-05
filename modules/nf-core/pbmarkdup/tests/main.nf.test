@@ -45,7 +45,7 @@ nextflow_process {
         when {
 
             params {
-                pbmarkdup_args = "--clobber --dup-file ${prefix}.dup.bam --log-level INFO"
+                pbmarkdup_args = "--clobber --dup-file test.dup.bam --log-level INFO"
             }
 
             process {
@@ -72,10 +72,10 @@ nextflow_process {
 
     }
 
-    test("homo sapiens - Multiple input types - with dupfile logfile and remove duplicates") {
+    test("acropora cervicornis - Multiple input types - with dupfile logfile and remove duplicates") {
         when {
             params {
-                pbmarkdup_args = "--clobber --dup-file ${prefix}.dup.fastq --log-level INFO"
+                pbmarkdup_args = "--clobber --dup-file test.dup.fastq.gz --log-level INFO"
             }
 
             process {
@@ -84,7 +84,7 @@ nextflow_process {
                     [
                         [ id:'test' ], // meta map
                         [
-                            file(params.modules_testdata_base_path + 'genomics/eukaryotes/acropora_cervicornis/m84093_241116_151316_s2.hifi_reads.bc2028.subset.1.fastq', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/eukaryotes/acropora_cervicornis/m84093_241116_151316_s2.hifi_reads.bc2028.subset.1.fastq.gz', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/eukaryotes/acropora_cervicornis/m84093_241116_151316_s2.hifi_reads.bc2028.subset.2.bam', checkIfExists: true)
                         ]
                     ]

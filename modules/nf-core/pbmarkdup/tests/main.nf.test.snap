@@ -15,7 +15,7 @@
                         {
                             "id": "test"
                         },
-                        "null.dup.bam:md5,3b74225ad5f7e9e1cbafc45132ad82fb"
+                        "test.dup.bam:md5,3b74225ad5f7e9e1cbafc45132ad82fb"
                     ]
                 ],
                 "2": [
@@ -34,7 +34,7 @@
                         {
                             "id": "test"
                         },
-                        "null.dup.bam:md5,3b74225ad5f7e9e1cbafc45132ad82fb"
+                        "test.dup.bam:md5,3b74225ad5f7e9e1cbafc45132ad82fb"
                     ]
                 ],
                 "log": [
@@ -62,7 +62,72 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2026-01-26T16:07:38.506123115"
+        "timestamp": "2026-02-05T11:18:50.001030328"
+    },
+    "acropora cervicornis - Multiple input types - with dupfile logfile and remove duplicates": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "/nfs/treeoflife-01/teams/tolit/users/hh14/nf-core_modules/.nf-test/tests/7b69d200fff49e3e41e85e8d0eb38b36/work/c9/b442fc7d5028eeb2cf319b0363140b/test.fastq.gz"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "/nfs/treeoflife-01/teams/tolit/users/hh14/nf-core_modules/.nf-test/tests/7b69d200fff49e3e41e85e8d0eb38b36/work/c9/b442fc7d5028eeb2cf319b0363140b/test.dup.fastq.gz"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.pbmarkdup.log:md5,f4425079aa4a44d8e5a3e46ddb760fbb"
+                    ]
+                ],
+                "3": [
+                    "versions.yml:md5,832e36b56615fb29a94b16e4db32b8db"
+                ],
+                "dupfile": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "/nfs/treeoflife-01/teams/tolit/users/hh14/nf-core_modules/.nf-test/tests/7b69d200fff49e3e41e85e8d0eb38b36/work/c9/b442fc7d5028eeb2cf319b0363140b/test.dup.fastq.gz"
+                    ]
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.pbmarkdup.log:md5,f4425079aa4a44d8e5a3e46ddb760fbb"
+                    ]
+                ],
+                "markduped": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "/nfs/treeoflife-01/teams/tolit/users/hh14/nf-core_modules/.nf-test/tests/7b69d200fff49e3e41e85e8d0eb38b36/work/c9/b442fc7d5028eeb2cf319b0363140b/test.fastq.gz"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,832e36b56615fb29a94b16e4db32b8db"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2026-02-05T11:19:05.172992907"
     },
     "deilephila porcellus - stub": {
         "content": [
@@ -107,7 +172,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2026-01-26T16:17:29.606905496"
+        "timestamp": "2026-02-05T11:19:15.042132519"
     },
     "deilephila porcellus - fasta": {
         "content": [
@@ -152,71 +217,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2026-01-26T16:16:09.847582484"
-    },
-    "homo sapiens - Multiple input types - with dupfile logfile and remove duplicates": {
-        "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.fastq:md5,cd9f8069b2c4af0428341cd4359e11a4"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "null.dup.fastq:md5,502d23ffacacfb9e8aec0bdaf85efed6"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.pbmarkdup.log:md5,f4425079aa4a44d8e5a3e46ddb760fbb"
-                    ]
-                ],
-                "3": [
-                    "versions.yml:md5,832e36b56615fb29a94b16e4db32b8db"
-                ],
-                "dupfile": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "null.dup.fastq:md5,502d23ffacacfb9e8aec0bdaf85efed6"
-                    ]
-                ],
-                "log": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.pbmarkdup.log:md5,f4425079aa4a44d8e5a3e46ddb760fbb"
-                    ]
-                ],
-                "markduped": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.fastq:md5,cd9f8069b2c4af0428341cd4359e11a4"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,832e36b56615fb29a94b16e4db32b8db"
-                ]
-            }
-        ],
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
-        },
-        "timestamp": "2026-02-05T02:11:49.434072995"
+        "timestamp": "2026-02-05T11:18:34.646551741"
     }
 }
