@@ -41,16 +41,13 @@ nextflow_workflow {
         }
 
         then {
-            assertAll(
-                { assert workflow.success },
-                { assert snapshot(
-                    workflow.out.bam_subsampled.collect{ meta, bam_file, bai_file -> [
-                        meta, bam_file, bai_file,
-                        bam(bam_file).getReads().size()
-                    ]},
-                    workflow.out.versions.collect { path(it).yaml }
-                ).match() }
-            )
+            assert workflow.success
+            assert snapshot(
+                workflow.out.bam_subsampled.collect{ meta, bam_file, bai_file -> [
+                    meta, bam_file, bai_file,
+                    bam(bam_file).getReads().size()
+                ]}
+            ).match()
         }
     }
 }
