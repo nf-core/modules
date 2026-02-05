@@ -110,7 +110,6 @@ output:
           type: eval
           description: The expression to obtain the version of the tool
 
-
 topics:
   versions:
   - - ${task.process}:
@@ -122,6 +121,7 @@ topics:
     - SnpSift split -h 2>&1 | head -1 | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g':
         type: eval
         description: The expression to obtain the version of the tool
+
 authors:
 - "@friederike-hanssen"
 maintainers:
