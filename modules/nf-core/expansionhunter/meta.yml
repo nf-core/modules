@@ -105,7 +105,7 @@ output:
       - expansionhunter:
           type: string
           description: The tool name
-      - ExpansionHunter --version 2>&1 | head -1 | sed 's/^.*ExpansionHunter v//':
+      - ExpansionHunter --version | head -1 | sed -n 's/^.*ExpansionHunter v//; s/]//p':
           type: eval
           description: The expression to obtain the version of the tool
   versions_bgzip:
@@ -126,7 +126,7 @@ topics:
       - expansionhunter:
           type: string
           description: The tool name
-      - ExpansionHunter --version 2>&1 | head -1 | sed 's/^.*ExpansionHunter v//':
+      - ExpansionHunter --version | head -1 | sed -n 's/^.*ExpansionHunter v//; s/]//p':
           type: eval
           description: The expression to obtain the version of the tool
     - - ${task.process}:

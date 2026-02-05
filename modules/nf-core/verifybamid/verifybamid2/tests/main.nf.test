@@ -60,7 +60,7 @@ nextflow_process {
                     process.out.mu,
                     process.out.self_sm,
                     process.out.ancestry,
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith("versions") },
                     file(process.out.ud[0][1]).name
                     ).match() }
             )
@@ -91,7 +91,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.log[0][1]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -120,8 +120,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "bed", "mu", "ud", "self_sm", "ancestry"]),
-                    process.out.versions
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "bed", "mu", "ud", "self_sm", "ancestry"])
                     ).match() }
             )
         }
@@ -148,8 +147,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "bed", "mu", "ud", "self_sm", "ancestry"]),
-                    process.out.versions
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "bed", "mu", "ud", "self_sm", "ancestry"])
                     ).match() }
             )
         }
@@ -178,8 +176,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "bed", "mu", "ud", "self_sm", "ancestry"]),
-                    process.out.versions
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "bed", "mu", "ud", "self_sm", "ancestry"])
                     ).match() }
             )
         }
@@ -210,7 +207,7 @@ nextflow_process {
                     process.out.mu,
                     process.out.self_sm,
                     process.out.ancestry,
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith("versions") },
                     file(process.out.ud[0][1]).name
                     ).match() }
             )
@@ -238,8 +235,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "bed", "mu", "ud", "self_sm", "ancestry"]),
-                    process.out.versions
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "bed", "mu", "ud", "self_sm", "ancestry"])
                     ).match() }
             )
         }
