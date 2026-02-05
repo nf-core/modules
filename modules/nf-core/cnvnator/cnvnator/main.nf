@@ -9,7 +9,7 @@ process CNVNATOR_CNVNATOR {
 
     input:
     tuple val(meta), path(bam), path(bai)
-    tuple val(meta2), path(root)
+    tuple val(meta2), path(root, stageAs: 'input.root')
     tuple val(meta3), path(fasta)
     tuple val(meta4), path(fai)
     val step
@@ -26,32 +26,29 @@ process CNVNATOR_CNVNATOR {
     def args      = task.ext.args   ?: ''
     def input_cmd = bam             ? "-tree ${bam}"      : ''
     output_meta   = bam             ? meta                : meta2
-    prefix        = task.ext.prefix ?: bam ? "${meta.id}" : "${meta2.id}"
+    prefix        = task.ext.prefix ?: "${output_meta.id}"
     if (fasta) {
         reference = fasta.isDirectory() ? "-d ${fasta}" : "-fasta ${fasta}"
     } else {
         reference = ''
     }
     def calls_cmd = args.contains("-call") ? "> ${prefix}.tab" : ''
-    def mv_cmd    = "mv ${prefix}.root ${prefix}_${step}.root"
-    def steps     = ["his", "stat", "partition", "call"]
-    def cp_cmd    = steps.contains(step) ? "cp ${root} ${prefix}.root" : ""
+    def mv_cmd    = "mv input.root ${prefix}_${step}.root"
     """
-    ${cp_cmd}
     cnvnator \\
-        -root ${prefix}.root \\
-        $args \\
-        $reference \\
-        $input_cmd \\
-        $calls_cmd
+        -root input.root \\
+        ${args} \\
+        ${reference} \\
+        ${input_cmd} \\
+        ${calls_cmd}
     ${mv_cmd}
     """
 
     stub:
     def args      = task.ext.args   ?: ''
-    prefix        = task.ext.prefix ?: bam ? "${meta.id}" : "${meta2.id}"
     output_meta   = bam             ? meta                : meta2
-    def touch_cmd = args.contains("-call") ? "touch ${prefix}.tab" : "touch ${prefix}_${step}.root"
+    prefix        = task.ext.prefix ?: "${output_meta.id}"
+    def touch_cmd = step.equals("call") ? "touch ${prefix}.tab" : "touch ${prefix}_${step}.root"
     """
     ${touch_cmd}
     """
