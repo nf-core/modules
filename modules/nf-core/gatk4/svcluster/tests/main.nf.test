@@ -39,8 +39,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     file(process.out.clustered_vcf[0][1]).name,
                     process.out.clustered_vcf_index[0][1],

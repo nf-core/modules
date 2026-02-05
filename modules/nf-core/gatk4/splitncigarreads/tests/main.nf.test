@@ -23,8 +23,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     file(process.out.bam[0][1]).name,
                     process.out.versions
@@ -49,8 +49,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     file(process.out.bam[0][1]).name,
                     process.out.versions
@@ -77,8 +77,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     file(process.out.bam[0][1]).name,
                     process.out.versions
