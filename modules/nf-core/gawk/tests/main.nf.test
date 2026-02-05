@@ -19,7 +19,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[1] = []
@@ -29,10 +29,8 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
     }
 
@@ -45,7 +43,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[1] = Channel.of('BEGIN { FS = OFS = "\t"}; { print \$1, "0", \$2 }').collectFile(name:"program.awk")
@@ -55,10 +53,8 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
     }
 
@@ -71,7 +67,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[1] = []
@@ -81,10 +77,8 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
     }
 
@@ -97,7 +91,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     [file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'generic/txt/species_names.txt', checkIfExists: true)]
                 ]
@@ -108,10 +102,8 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
     }
 
@@ -124,7 +116,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_chrM.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz', checkIfExists: true)]
                 ]
@@ -135,10 +127,8 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
     }
 
@@ -151,7 +141,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[1] = []
@@ -161,10 +151,8 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
     }
 
@@ -178,7 +166,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'hello' ], // meta map
+                    [ id:'hello' ],
                     [file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'generic/txt/species_names.txt', checkIfExists: true)]
                 ]
@@ -189,10 +177,8 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.failed },
-                { assert process.errorReport.contains("Input and output names are the same, set prefix in module configuration to disambiguate!") }
-            )
+            assert process.failed
+            assert process.errorReport.contains("Input and output names are the same, set prefix in module configuration to disambiguate!")
         }
     }
 }

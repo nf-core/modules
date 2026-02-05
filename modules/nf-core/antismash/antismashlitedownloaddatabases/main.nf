@@ -12,13 +12,13 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
     These files are also emitted as output channels in this module to enable the antismash-lite module to use them as mount volumes to the docker/singularity containers.
     */
 
-    containerOptions {
+    containerOptions (
         ['singularity', 'apptainer'].contains(workflow.containerEngine)
             ? "-B ${database_css}:/usr/local/lib/python3.10/site-packages/antismash/outputs/html/css,${database_detection}:/usr/local/lib/python3.10/site-packages/antismash/detection,${database_modules}:/usr/local/lib/python3.10/site-packages/antismash/modules"
             : workflow.containerEngine == 'docker'
                 ? "-v \$PWD/${database_css}:/usr/local/lib/python3.10/site-packages/antismash/outputs/html/css -v \$PWD/${database_detection}:/usr/local/lib/python3.10/site-packages/antismash/detection -v \$PWD/${database_modules}:/usr/local/lib/python3.10/site-packages/antismash/modules"
                 : ''
-    }
+    )
 
     input:
     path database_css
