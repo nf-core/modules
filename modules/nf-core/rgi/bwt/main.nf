@@ -58,13 +58,12 @@ process RGI_BWT {
 
     rgi \\
         bwt \\
-        ${args} \\
+        ${args2} \\
         --local \\
         --threads ${task.cpus} \\
         --output_file ${prefix} \\
         --read_one ${read_one} \\
         ${ read_two ? "--read_two ${read_two}" : "" }
-
 
     mkdir temp/
     for FILE in *.xml *.fsa *.{nhr,nin,nsq} *.draft *.potentialGenes *{variant,rrna,protein,predictedGenes,overexpression,homolog}.json; do [[ -e \$FILE ]] && mv \$FILE temp/; done
