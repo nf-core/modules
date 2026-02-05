@@ -5,8 +5,8 @@ process FASTQSCREEN_FASTQSCREEN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fastq-screen:0.15.3--pl5321hdfd78af_0':
-        'biocontainers/fastq-screen:0.15.3--pl5321hdfd78af_0'}"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/19/19cd241b503facdddc020294a0996a5c8b2570f19ea57b3f404618ac5988a87f/data':
+        'community.wave.seqera.io/library/bowtie2_bowtie_bwa_fastq-screen_minimap2:db243c473e0c4a39'}"
 
     input:
     tuple val(meta), path(reads)  // .fastq files
