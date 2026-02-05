@@ -12,9 +12,10 @@ process CNVNATOR_CNVNATOR {
     tuple val(meta2), path(root)
     tuple val(meta3), path(fasta)
     tuple val(meta4), path(fai)
+    val step
 
     output:
-    tuple val(output_meta), path("${prefix}.root"), emit: root
+    tuple val(output_meta), path("${output_meta.id}_${step}.root"), emit: root, optional: true
     tuple val(output_meta), path("${prefix}.tab") , emit: tab, optional: true
     tuple val("${task.process}"), val('cnvnator'), eval("cnvnator 2>&1 | sed -n '3s/CNVnator v//p'"), topic: versions, emit: versions_cnvnator
 
@@ -32,23 +33,26 @@ process CNVNATOR_CNVNATOR {
         reference = ''
     }
     def calls_cmd = args.contains("-call") ? "> ${prefix}.tab" : ''
+    def mv_cmd    = "mv ${prefix}.root ${prefix}_${step}.root"
+    def steps     = ["his", "stat", "partition", "call"]
+    def cp_cmd    = steps.contains(step) ? "cp ${root} ${prefix}.root" : ""
     """
+    ${cp_cmd}
     cnvnator \\
         -root ${prefix}.root \\
         $args \\
         $reference \\
         $input_cmd \\
         $calls_cmd
+    ${mv_cmd}
     """
 
     stub:
     def args      = task.ext.args   ?: ''
     prefix        = task.ext.prefix ?: bam ? "${meta.id}" : "${meta2.id}"
     output_meta   = bam             ? meta                : meta2
-    def calls_cmd_opt = args.contains("-call") ? "touch ${prefix}.tab" : ''
+    def touch_cmd = args.contains("-call") ? "touch ${prefix}.tab" : "touch ${prefix}_${step}.root"
     """
-    touch ${prefix}.root
-    $calls_cmd_opt
-
+    ${touch_cmd}
     """
 }

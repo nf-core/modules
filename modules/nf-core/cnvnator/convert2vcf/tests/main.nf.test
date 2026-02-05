@@ -25,6 +25,7 @@ nextflow_process {
                 input[1] = [[:],[]]
                 input[2] = [[:],[]]
                 input[3] = [[:],[]]
+                input[4] = "rd"
                 """
             }
         }
@@ -38,6 +39,7 @@ nextflow_process {
                 input[1] = CNVNATOR_RD.out.root
                 input[2] = [[:],[]]
                 input[3] = [[:],[]]
+                input[4] = "hist"
                 """
             }
         }
@@ -51,6 +53,7 @@ nextflow_process {
                 input[1] = CNVNATOR_HIST.out.root
                 input[2] = [[:],[]]
                 input[3] = [[:],[]]
+                input[4] = "stat"
                 """
             }
         }
@@ -64,6 +67,7 @@ nextflow_process {
                 input[1] = CNVNATOR_STAT.out.root
                 input[2] = [[:],[]]
                 input[3] = [[:],[]]
+                input[4] = "partition"
                 """
             }
         }
@@ -77,6 +81,7 @@ nextflow_process {
                 input[1] = CNVNATOR_PARTITION.out.root
                 input[2] = [[:],[]]
                 input[3] = [[:],[]]
+                input[4] = "call"
                 """
             }
         }
@@ -85,13 +90,6 @@ nextflow_process {
     test("test_cnvnator_convert2vcf") {
 
         when {
-            params {
-                cnvnator_rd_args = '-chrom chr22'
-                cnvnator_hist_args = '-his 1000'
-                cnvnator_stat_args = '-stat 1000'
-                cnvnator_partition_args = '-partition 1000'
-                cnvnator_call_args = '-call 1000'
-            }
             process {
                 """
                 input[0] = CNVNATOR_CALL.out.tab
@@ -113,13 +111,6 @@ nextflow_process {
     test("test_cnvnator_convert2vcf -- stub") {
         options '-stub'
         when {
-            params {
-                cnvnator_rd_args = '-chrom chr22'
-                cnvnator_hist_args = '-his 1000'
-                cnvnator_stat_args = '-stat 1000'
-                cnvnator_partition_args = '-partition 1000'
-                cnvnator_call_args = '-call 1000'
-            }
             process {
                 """
                 input[0] = CNVNATOR_CALL.out.tab
