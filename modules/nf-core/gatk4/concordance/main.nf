@@ -18,7 +18,7 @@ process GATK4_CONCORDANCE {
     tuple val(meta), path('*.tsv'), emit: summary
     tuple val(meta), path("*.tpfn.vcf"), emit: tpfn
     tuple val(meta), path("*.tpfp.vcf"), emit: tpfp
-    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | grep GATK | sed 's/^.*(GATK) v//'"), topic: versions, emit: versions_gatk4
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
