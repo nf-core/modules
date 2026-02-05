@@ -19,7 +19,7 @@ process FASTPLONG {
     tuple val(meta), path('*.html')           , emit: html
     tuple val(meta), path('*.log')            , emit: log
     tuple val(meta), path('*.fail.fastq.gz')  , optional:true, emit: reads_fail
-    path "versions.yml"                       , emit: versions
+    tuple val("${task.process}"), val('fastplong'), eval('fastplong --version 2>&1 | sed -e "s/fastplong //g"'), emit: versions_fastplong, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,12 +43,6 @@ process FASTPLONG {
         --report_title $report_title\\
         $args \\
         2> >(tee ${prefix}.fastplong.log >&2)
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastplong: \$(fastplong --version 2>&1 | sed -e "s/fastplong //g")
-    END_VERSIONS
     """
 
     stub:
@@ -64,10 +58,5 @@ process FASTPLONG {
     touch ${prefix}.fastplong.json
     touch ${prefix}.fastplong.html
     touch ${prefix}.fastplong.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastplong: \$(fastplong --version 2>&1 | sed -e "s/fastplong //g")
-    END_VERSIONS
     """
 }

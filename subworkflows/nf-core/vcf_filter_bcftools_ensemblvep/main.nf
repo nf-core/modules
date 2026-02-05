@@ -24,7 +24,6 @@ workflow VCF_FILTER_BCFTOOLS_ENSEMBLVEP {
             [],
             [],
         )
-        ch_versions = ch_versions.mix(BCFTOOLS_VIEW.out.versions)
 
         ch_vcf = BCFTOOLS_VIEW.out.vcf
         ch_tbi = BCFTOOLS_VIEW.out.tbi
@@ -40,7 +39,6 @@ workflow VCF_FILTER_BCFTOOLS_ENSEMBLVEP {
         TABIX_BGZIPTABIX(
             ENSEMBLVEP_FILTERVEP.out.output
         )
-        ch_versions = ch_versions.mix(TABIX_BGZIPTABIX.out.versions)
 
         ch_vcf = TABIX_BGZIPTABIX.out.gz_index.map { meta, vcf, _tbi -> [meta, vcf] }
         ch_tbi = TABIX_BGZIPTABIX.out.gz_index.map { meta, _vcf, tbi -> [meta, tbi] }
@@ -49,5 +47,4 @@ workflow VCF_FILTER_BCFTOOLS_ENSEMBLVEP {
     emit:
     vcf      = ch_vcf // channel: [ val(meta), path(vcf) ]
     tbi      = ch_tbi // channel: [ val(meta), path(tbi) ]
-    versions = ch_versions // channel: [ path(versions.yml) ]
 }
