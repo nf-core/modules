@@ -13,7 +13,7 @@ process GATK4_MERGEVCFS {
 
     output:
     tuple val(meta), path('*.vcf.gz'), emit: vcf
-    tuple val(meta), path("*.tbi"),    emit: tbi
+    tuple val(meta), path("*.tbi"), emit: tbi
     tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
@@ -22,7 +22,7 @@ process GATK4_MERGEVCFS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_list = vcf.collect { "--INPUT ${it}" }.join(' ')
+    def input_list = vcf.collect { vcf_ -> "--INPUT ${vcf_}" }.join(' ')
     def reference_command = dict ? "--SEQUENCE_DICTIONARY ${dict}" : ""
 
     def avail_mem = 3072
@@ -40,7 +40,6 @@ process GATK4_MERGEVCFS {
         ${reference_command} \\
         --TMP_DIR . \\
         ${args}
-
     """
 
     stub:
@@ -48,6 +47,5 @@ process GATK4_MERGEVCFS {
     """
     touch ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
-
     """
 }
