@@ -62,8 +62,7 @@ nextflow_workflow {
                     file(workflow.out.mutect2_tbi[0][1]).name,
                     workflow.out.mutect2_vcf.collect { meta, vcf -> [meta, "${file(vcf).name},variantsMD5:${path(vcf).vcf.variantsMD5}"] },
                     workflow.out.pileup_table,
-                    workflow.out.segmentation_table,
-                    workflow.out.versions
+                    workflow.out.segmentation_table
                 ).match() }
             )
         }

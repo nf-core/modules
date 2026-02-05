@@ -13,7 +13,7 @@ process GATK4_SELECTVARIANTS {
     output:
     tuple val(meta), path("*.vcf.gz"),     emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi
-    path "versions.yml",                   emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when

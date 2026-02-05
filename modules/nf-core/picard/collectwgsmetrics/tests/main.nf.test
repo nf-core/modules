@@ -38,7 +38,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.metrics[0][1]).text.contains('coverage	high_quality_coverage_count'),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
@@ -73,7 +73,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.metrics[0][1]).text.contains('coverage	high_quality_coverage_count'),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )

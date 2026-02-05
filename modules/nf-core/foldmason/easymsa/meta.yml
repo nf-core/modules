@@ -13,9 +13,9 @@ tools:
       documentation: "https://github.com/steineggerlab/foldmason"
       tool_dev_url: "https://github.com/steineggerlab/foldmason"
       doi: "10.1101/2024.08.01.606130"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:foldmason
-
 input:
   - - meta:
         type: map
@@ -43,9 +43,9 @@ input:
           - edam: http://edamontology.org/format_1910 # NEWICK
   - compress:
       type: boolean
-      description: Flag representing whether the output MSA should be compressed. Set
-        to true to enable/false to disable compression. Compression is done using pigz,
-        and is multithreaded.
+      description: Flag representing whether the output MSA should be compressed.
+        Set to true to enable/false to disable compression. Compression is done
+        using pigz, and is multithreaded.
 output:
   msa_3di:
     - - meta:
@@ -55,8 +55,8 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "${prefix}_3di.fa${compress ? '.gz' : ''}":
           type: file
-          description: Fasta file containing the multiple sequence alignment with 3Di
-            alphabet
+          description: Fasta file containing the multiple sequence alignment with
+            3Di alphabet
           pattern: "*.{fa}"
           ontologies:
             - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
@@ -70,20 +70,53 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "${prefix}_aa.fa${compress ? '.gz' : ''}":
           type: file
-          description: Fasta file containing the multiple sequence alignment with Amino
-            Acid alphabet
+          description: Fasta file containing the multiple sequence alignment with
+            Amino Acid alphabet
           pattern: "*.{fa}"
           ontologies:
             - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
             - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
             - edam: http://edamontology.org/format_1984 # FASTA-ALN
+  versions_foldmason:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - foldmason:
+          type: string
+          description: The name of the tool
+      - foldmason version:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_pigz:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - foldmason:
+          type: string
+          description: The name of the tool
+      - foldmason version:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@luisas"
 maintainers:

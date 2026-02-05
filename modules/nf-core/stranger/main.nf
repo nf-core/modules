@@ -4,8 +4,8 @@ process STRANGER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bc/bc075f106c93d3bb9c786c73f897c8cb005962e4c31c08226bd55eef742e9025/data':
-        'community.wave.seqera.io/library/tabix_pip_stranger:9685bd298256c94b' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/90/90f7f35b37e9e31c8680c18ef59c76e74500f44664887b3c1131daf07ff3043f/data':
+        'community.wave.seqera.io/library/htslib_pip_stranger:de13e0cf88d77b50' }"
 
     input:
     tuple val(meta), path(vcf)
@@ -15,7 +15,7 @@ process STRANGER {
     tuple val(meta), path("*.vcf.gz")    , emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi
     tuple val("${task.process}"), val('stranger'), eval("stranger --version | sed 's/stranger, version //g'"), topic: versions, emit: versions_stranger
-    tuple val("${task.process}"), val('tabix'), eval("tabix --version | sed -n 's/^.*htslib) //p'"), topic: versions, emit: versions_tabix
+    tuple val("${task.process}"), val('tabix'), eval("tabix -h 2>&1 | grep -oP 'Version:\\s*\\K[^\\s]+'"), topic: versions, emit: versions_tabix
 
     when:
     task.ext.when == null || task.ext.when

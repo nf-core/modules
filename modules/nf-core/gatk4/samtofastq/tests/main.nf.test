@@ -28,7 +28,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					path(process.out.fastq[0][1]).linesGzip[3..7],
-					process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
 					).match()
 				}
             )
@@ -53,7 +53,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					process.out.fastq[0][1].collect { path(it).linesGzip[3..7] },
-					process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
 					).match()
 				}
             )
@@ -78,7 +78,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					process.out.fastq[0][1].collect { file(it).name },
-					process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
 					).match()
 				}
             )

@@ -5,8 +5,8 @@ process SAM2LCA_ANALYZE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sam2lca:1.1.2--pyhdfd78af_1':
-        'biocontainers/sam2lca:1.1.2--pyhdfd78af_1' }"
+        'https://depot.galaxyproject.org/singularity/sam2lca:1.1.4--pyhdfd78af_0':
+        'biocontainers/sam2lca:1.1.4--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -25,11 +25,11 @@ process SAM2LCA_ANALYZE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def make_db = database ? "" : "mkdir sam2lca_db"
-    def database = database ? "${database}" : "sam2lca_db"
+    def database_path = database ? "${database}" : "sam2lca_db"
     """
     $make_db
     sam2lca \\
-        -d $database \\
+        -d $database_path \\
         analyze \\
         $args \\
         -o ${prefix} \\
@@ -37,12 +37,11 @@ process SAM2LCA_ANALYZE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sam2lca: \$(echo \$(sam2lca --version 2>&1) | sed 's/^sam2lca, version //' ))
+        sam2lca: \$(sam2lca --version | sed 's/.*version //')
     END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.csv
@@ -50,7 +49,7 @@ process SAM2LCA_ANALYZE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sam2lca: \$(echo \$(sam2lca --version 2>&1) | sed 's/^sam2lca, version //' ))
+        sam2lca: \$(sam2lca --version | sed 's/.*version //')
     END_VERSIONS
     """
 }
