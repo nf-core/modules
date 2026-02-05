@@ -17,10 +17,14 @@ tools:
       licence: ["GPL-3.0-or-later"]
       identifier: ""
 input:
-  - indexes:
+  - genome_names:
       type: list
-      description: Flattened list of meta maps and index directory paths
-      help: "This type of channel input can be created by running the .collect() operator on the [meta, index_dir] output of bowtie/bwa/minimap index modules."
+      description: List of names for each index
+      help: "This type of channel input can be created by running the .collect { meta, _index_dir -> meta.id } operator on the [meta, index_dir] output of bowtie/bwa/minimap index modules."
+  - index_paths:
+      type: list
+      description: List of directories containing genome index files
+      help: "This type of channel input can be created by running the .collect { _meta, index_dir -> index_dir } operator on the [meta, index_dir] output of bowtie/bwa/minimap index modules."
   - aligner:
       type: string
       description: |
