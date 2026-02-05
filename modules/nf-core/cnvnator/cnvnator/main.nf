@@ -31,9 +31,9 @@ process CNVNATOR_CNVNATOR {
     } else {
         reference = ''
     }
-    step = args.contains("-call") ? "_call" 
-            : args.contains("-stat") ? "_stat" 
-            : args.contains("-his") ? "_his" 
+    step = args.contains("-call") ? "_call"
+            : args.contains("-stat") ? "_stat"
+            : args.contains("-his") ? "_his"
             : args.contains("-partition") ? "_partition" : "_rd"
     def calls_cmd = args.contains("-call") ? "> ${prefix}.tab" : ''
     def mv_cmd    = args.contains("-call") ? "" : "mv input.root ${prefix}${step}.root"
@@ -51,9 +51,9 @@ process CNVNATOR_CNVNATOR {
     def args      = task.ext.args   ?: ''
     output_meta   = bam             ? meta                : meta2
     prefix        = task.ext.prefix ?: "${output_meta.id}"
-    step = args.contains("-call") ? "_call" 
-            : args.contains("-stat") ? "_stat" 
-            : args.contains("-his") ? "_his" 
+    step = args.contains("-call") ? "_call"
+            : args.contains("-stat") ? "_stat"
+            : args.contains("-his") ? "_his"
             : args.contains("-partition") ? "_partition" : "_rd"
     def touch_cmd = args.contains("-call") ? "touch ${prefix}.tab" : "touch ${prefix}${step}.root"
     """
