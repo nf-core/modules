@@ -14,8 +14,9 @@ process SNPSIFT_ANNMEM {
 
     output:
     tuple val(meta), path("*.snpsift.vardb"), emit: database, optional: true
-    tuple val(meta), path("*.vcf.gz"), path("*.vcf.gz.tbi"), emit: vcf, optional: true
-    tuple val("${task.process}"), val('snpsift'), eval("SnpSift split -h 2>&1 | head -1 | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g'"), topic: 'versions'
+    tuple val(meta), path("*.vcf.gz"), emit: vcf, optional: true
+    tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi, optional: true
+    tuple val("${task.process}"), val('snpsift'), eval("SnpSift split -h 2>&1 | head -1 | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g'"), emit: versions_snpsift, topic: 'versions'
 
     when:
     task.ext.when == null || task.ext.when
