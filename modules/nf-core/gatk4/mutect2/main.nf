@@ -20,11 +20,11 @@ process GATK4_MUTECT2 {
     path panel_of_normals_tbi
 
     output:
-    tuple val(meta), path("*.vcf.gz"),      emit: vcf
-    tuple val(meta), path("*.tbi"),         emit: tbi
-    tuple val(meta), path("*.stats"),       emit: stats
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    tuple val(meta), path("*.tbi"), emit: tbi
+    tuple val(meta), path("*.stats"), emit: stats
     tuple val(meta), path("*.f1r2.tar.gz"), emit: f1r2, optional: true
-    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | grep GATK | sed 's/^.*(GATK) v//'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,7 +36,7 @@ process GATK4_MUTECT2 {
     def interval_command = intervals ? "--intervals ${intervals}" : ""
     def pon_command = panel_of_normals ? "--panel-of-normals ${panel_of_normals}" : ""
     def gr_command = germline_resource ? "--germline-resource ${germline_resource}" : ""
-    def a_command = alleles ? "--alleles ${alleles}": ""
+    def a_command = alleles ? "--alleles ${alleles}" : ""
 
     def avail_mem = 3072
     if (!task.memory) {
