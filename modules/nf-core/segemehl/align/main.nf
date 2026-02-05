@@ -25,7 +25,7 @@ process SEGEMEHL_ALIGN {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def reads = meta.single_end ? "-q ${reads}" : "-q ${reads[0]} -p ${reads[1]}"
+    def reads_opt = meta.single_end ? "-q ${reads}" : "-q ${reads[0]} -p ${reads[1]}"
     suffix = ( args.contains("-b") || args.contains("--bamabafixoida") ) ? "bam" : "sam"
     """
     mkdir -p $prefix
@@ -34,7 +34,7 @@ process SEGEMEHL_ALIGN {
         -t $task.cpus \\
         -d $fasta \\
         -i $index \\
-        $reads \\
+        $reads_opt \\
         $args \\
         -o ${prefix}/${prefix}.${suffix}
 

@@ -14,7 +14,8 @@ process TCOFFEE_TCS {
     output:
     tuple val(meta), path("*.tcs")   , emit: tcs
     tuple val(meta), path("*.scores"), emit: scores
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('tcoffee'), eval('t_coffee -version | awk \'{gsub("Version_", ""); print \\$3}\''), emit: versions_tcoffee, topic: versions
+    tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -51,12 +52,6 @@ process TCOFFEE_TCS {
     # Add values
     scores=\$(grep 'SCORE=' ${prefix}.tcs | cut -d '=' -f 2 )
     echo "${values},\$scores" >> "${prefix}.scores"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
-    END_VERSIONS
     """
 
     stub:
@@ -67,11 +62,5 @@ process TCOFFEE_TCS {
     export TEMP='./'
     touch ${prefix}.tcs
     touch ${prefix}.scores
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
-    END_VERSIONS
     """
 }
