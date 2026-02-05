@@ -14,10 +14,10 @@ process GATK4_GENOMICSDBIMPORT {
     val input_map
 
     output:
-    tuple val(meta), path("${prefix}"),       emit: genomicsdb,   optional: true
-    tuple val(meta), path("${updated_db}"),   emit: updatedb,     optional: true
+    tuple val(meta), path("${prefix}"), emit: genomicsdb, optional: true
+    tuple val(meta), path("${updated_db}"), emit: updatedb, optional: true
     tuple val(meta), path("*.interval_list"), emit: intervallist, optional: true
-    path "versions.yml",                      emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | grep GATK | sed 's/^.*(GATK) v//'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -61,11 +61,6 @@ process GATK4_GENOMICSDBIMPORT {
         ${interval_command} \\
         --tmp-dir . \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -96,10 +91,5 @@ process GATK4_GENOMICSDBIMPORT {
     ${stub_genomicsdb}
     ${stub_interval}
     ${stub_update}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }
