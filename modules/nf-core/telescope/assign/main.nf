@@ -10,10 +10,10 @@ process TELESCOPE_ASSIGN {
     tuple val(meta_gtf), path(gtf)
 
     output:
-    stdout
     tuple val(meta_bam), path("*{updated,other}.bam"), emit: bam, optional: true // only for --updated_sam
     tuple val(meta_bam), path("*{updated,other}.sam"), emit: sam, optional: true // only for --updated_sam
     tuple val(meta_bam), path("*.tsv"), emit: tsv, optional: true // for when there's no alignments
+    tuple val(meta_bam), path("*.log"), emit: log, optional: true
     path "versions.yml"           , emit: versions
 
     when:
@@ -31,7 +31,8 @@ process TELESCOPE_ASSIGN {
         assign \\
         $bam \\
         $gtf \\
-        $args
+        $args \\
+        > telescope.log 2>&1
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

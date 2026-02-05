@@ -32,7 +32,9 @@ nextflow_process {
 
         then {
             assert process.success
-            assert process.out.stdout.contains("telescope assign complete")
+            def logFile = path(process.out.log[0][1])
+            assert logFile.exists()
+            assert logFile.readLines().last().contains("telescope assign complete")
 
             assertAll(
                 { assert snapshot(
