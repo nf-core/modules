@@ -15,10 +15,10 @@ process GATK4_CONCORDANCE {
     tuple val(meta5), path(dict)
 
     output:
-    tuple val(meta), path('*.tsv'),      emit: summary
+    tuple val(meta), path('*.tsv'), emit: summary
     tuple val(meta), path("*.tpfn.vcf"), emit: tpfn
     tuple val(meta), path("*.tpfp.vcf"), emit: tpfp
-    path "versions.yml",                 emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | grep GATK | sed 's/^.*(GATK) v//'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,7 +26,7 @@ process GATK4_CONCORDANCE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def bed = intervals ? "--intervals $intervals" : ""
+    def bed = intervals ? "--intervals ${intervals}" : ""
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -38,20 +38,15 @@ process GATK4_CONCORDANCE {
     """
     gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         Concordance \\
-        -R $fasta \\
-        -eval $vcf \\
-        --truth $truth \\
+        -R ${fasta} \\
+        -eval ${vcf} \\
+        --truth ${truth} \\
         --summary ${prefix}.summary.tsv \\
         -tpfn ${prefix}.tpfn.vcf \\
         -tpfp ${prefix}.tpfp.vcf \\
-        $bed \\
+        ${bed} \\
         --tmp-dir . \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -60,10 +55,5 @@ process GATK4_CONCORDANCE {
     touch ${prefix}.summary.tsv
     touch ${prefix}.tpfp.vcf
     touch ${prefix}.tpfn.vcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }
