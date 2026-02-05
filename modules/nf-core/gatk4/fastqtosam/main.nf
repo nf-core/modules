@@ -12,7 +12,7 @@ process GATK4_FASTQTOSAM {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | grep GATK | sed 's/^.*(GATK) v//'"), topic: versions, emit: versions_gatk4
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when

@@ -16,7 +16,7 @@ process GATK4_CNNSCOREVARIANTS {
     output:
     tuple val(meta), path("*cnn.vcf.gz"), emit: vcf
     tuple val(meta), path("*cnn.vcf.gz.tbi"), emit: tbi
-    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | grep GATK | sed 's/^.*(GATK) v//'"), topic: versions, emit: versions_gatk4
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
