@@ -106,7 +106,7 @@ output:
       - snpsift:
           type: string
           description: The name of the tool
-      - SnpSift split -h 2>&1 | head -1 | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g':
+      - SnpSift -version 2>&1 | grep -oE '[0-9]+\.[0-9]+[a-z]?':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -117,7 +117,7 @@ topics:
       - snpsift:
           type: string
           description: The tool name
-      - SnpSift split -h 2>&1 | head -1 | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g':
+      - SnpSift -version 2>&1 | grep -oE '[0-9]+\.[0-9]+[a-z]?':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
