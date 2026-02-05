@@ -66,50 +66,49 @@ input:
       Set to false (default) to annotate vcf using the provided databases.
 output:
   database:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test' ]`
-      - "*.snpsift.vardb":
-          type: directory
-          description: SnpSift vardb directory (create mode only, optional)
-          pattern: "*.snpsift.vardb"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - '*.snpsift.vardb':
+        type: directory
+        description: SnpSift vardb directory (create mode only, optional)
+        pattern: "*.snpsift.vardb"
   vcf:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test' ]`
-      - "*.vcf.gz":
-          type: file
-          description: Annotated VCF file (annotate mode only, optional)
-          pattern: "*.vcf.gz"
-          ontologies:
-          - edam: http://edamontology.org/format_3989
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - '*.vcf.gz':
+        type: file
+        description: Annotated VCF file (annotate mode only, optional)
+        pattern: "*.vcf.gz"
+        ontologies:
+        - edam: http://edamontology.org/format_3989
   tbi:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test' ]`
-      - "*.vcf.gz.tbi":
-          type: file
-          description: Tabix index for annotated VCF (annotate mode only,
-            optional)
-          pattern: "*.vcf.gz.tbi"
-          ontologies: []
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - '*.vcf.gz.tbi':
+        type: file
+        description: Tabix index for annotated VCF (annotate mode only,
+          optional)
+        pattern: "*.vcf.gz.tbi"
+        ontologies: []
   versions_snpsift:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - untar:
-          type: string
-          description: The name of the tool
-      - SnpSift split -h 2>&1 | head -1 | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g':
-          type: eval
-          description: The expression to obtain the version of the tool
-
+  - - ${task.process}:
+        type: string
+        description: The name of the process
+    - snpsift:
+        type: string
+        description: The name of the tool
+    - SnpSift split -h 2>&1 | head -1 | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g':
+        type: eval
+        description: The expression to obtain the version of the tool
 topics:
   versions:
   - - ${task.process}:
@@ -121,7 +120,6 @@ topics:
     - SnpSift split -h 2>&1 | head -1 | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g':
         type: eval
         description: The expression to obtain the version of the tool
-
 authors:
 - "@friederike-hanssen"
 maintainers:
