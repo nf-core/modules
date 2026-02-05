@@ -18,7 +18,7 @@ process GLIMPSE2_CONCORDANCE {
     tuple val(meta), path("*.rsquare.grp.txt.gz"), emit: rsquare_grp
     tuple val(meta), path("*.rsquare.spl.txt.gz"), emit: rsquare_spl
     tuple val(meta), path("*_r2_sites.txt.gz")   , emit: rsquare_per_site, optional: true
-    path "versions.yml"                          , emit: versions
+    tuple val("${task.process}"), val('glimpse2'), eval("GLIMPSE2_concordance --help | sed -n '/Version.*v/s/.*v\\([0-9.]*\\).*/\\1/p'"), topic: versions, emit: versions_glimpse2
 
     when:
     task.ext.when == null || task.ext.when
@@ -58,29 +58,20 @@ process GLIMPSE2_CONCORDANCE {
         --input input.txt \\
         --thread ${task.cpus} \\
         --output ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        glimpse2: "\$(GLIMPSE2_concordance --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def args   = task.ext.args   ?: ""
 
-    def rsquare_per_site_cmd = args.contains("--out-r2-per-site") ? "touch ${prefix}_r2_sites.txt.gz" : ""
-    """
-    echo "" | gzip > ${prefix}.error.cal.txt.gz
-    echo "" | gzip > ${prefix}.error.grp.txt.gz
-    echo "" | gzip > ${prefix}.error.spl.txt.gz
-    echo "" | gzip > ${prefix}.rsquare.grp.txt.gz
-    echo "" | gzip > ${prefix}.rsquare.spl.txt.gz
-    ${rsquare_per_site_cmd}
+    def rsquare_per_site_cmd = args.contains("--out-r2-per-site") ? "echo | gzip > ${prefix}_r2_sites.txt.gz" : ""
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        glimpse2: "\$(GLIMPSE2_concordance --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
-    END_VERSIONS
+    """
+    echo | gzip > ${prefix}.error.cal.txt.gz
+    echo | gzip > ${prefix}.error.grp.txt.gz
+    echo | gzip > ${prefix}.error.spl.txt.gz
+    echo | gzip > ${prefix}.rsquare.grp.txt.gz
+    echo | gzip > ${prefix}.rsquare.spl.txt.gz
+    ${rsquare_per_site_cmd}
     """
 }
