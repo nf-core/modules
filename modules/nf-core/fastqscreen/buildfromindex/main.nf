@@ -7,9 +7,8 @@ process FASTQSCREEN_BUILDFROMINDEX {
         'biocontainers/fastq-screen:0.15.3--pl5321hdfd78af_0'}"
 
     input:
-    val(genome_names)                       // Flattened list of [index_dir] from INDEX_MODULE.out.index.collect { meta, _index_dir -> meta.id }
-    path(index_paths, stageAs: "index_?/*") // Flattened list of [index_dir] from INDEX_MODULE.out.index.collect { _meta, index_dir -> index_dir }
-    val(aligner)     // 'bwa', 'bowtie', 'bowtie2', or 'minimap2'
+    val(indexes)    // Flattened list of meta, path pairs from INDEX_MODULE.out.index.collect()
+    val(aligner)    // 'bwa', 'bowtie', 'bowtie2', or 'minimap2'
 
     output:
     path("FastQ_Screen_Genomes"), emit: database
@@ -22,24 +21,8 @@ process FASTQSCREEN_BUILDFROMINDEX {
     // Default to bowtie2, since this is also the default of FastQ Screen itself
     aligner = aligner ?: "bowtie2"
 
-    def genome_dir = "FastQ_Screen_Genomes"
-
-    // Validation: Check for duplicate genome names
-    def unique_genomes = genome_names.unique()
-    if (unique_genomes.size() != genome_names.size()) {
-        def duplicates = genome_names.findAll { name ->
-            genome_names.count(name) > 1
-        }.unique()
-        error "Duplicate genome names detected: ${duplicates.join(', ')}. Each genome must have a unique name."
-    }
-
-    // Validation: Check that number of genomes matches number of index paths
-    if (genome_names.size() != index_paths.size()) {
-        error "Mismatch: ${genome_names.size()} genome names provided but ${index_paths.size()} index paths. They must match."
-    }
-
-    // convert to space-separated input for bash; avoids literal list values to be passed (e.g. `"[GRCh38.chr21.fa," "PlasmoDB-68_Pfalciparum3D7_Genome]"`)
-    genome_names = genome_names.collect { "\"$it\"" }.join(' ')
+    // Convert flat collected [meta,path,...] list into tuples [[meta,path],[meta,path],...]
+    def genome_index_tuples = indexes.collate(2)
 
     // Map aligner to a representative index file extension (used to detect basename)
     def index_extensions = [
@@ -53,52 +36,52 @@ process FASTQSCREEN_BUILDFROMINDEX {
         error "Unsupported aligner: ${aligner}. Supported: bwa, bowtie, bowtie2, minimap2"
     }
     """
-    mkdir ${genome_dir}
+    GENOME_DIR="FastQ_Screen_Genomes"
+    mkdir -p "\${GENOME_DIR}"
 
-    # Build config header
-    echo "# FastQ Screen Configuration - ${aligner} indices" > ${genome_dir}/fastq_screen.conf
+    # Add FastQ Screen config header
+    echo "# FastQ Screen Configuration - ${aligner} indices" > "\${GENOME_DIR}/fastq_screen.conf"
 
-    # Copy all index files to the same directory
-    for idx in ${index_paths}; do
-        cp "\${idx}/"* ${genome_dir}
-    done
+    # Loop through genome, index directory pairs
+    while read GENOME INDEX_DIR; do
 
-    # Create database lines in fastqscreen.conf based on supplied genome names
-    for genome in ${genome_names}; do
-        echo "DATABASE\t\${genome}\t${genome_dir}/\${genome}" >> ${genome_dir}/fastq_screen.conf
-    done
+        # copy index files to FastQ Screen database subdirectory
+        OUTPUT_DIR="\$GENOME_DIR/\$GENOME"
+        mkdir -p "\$OUTPUT_DIR"
+        cp -r "\$INDEX_DIR/"* "\$OUTPUT_DIR/"
 
-    # Perform sanity checks
-    # Note: these checks only check for the presence of correctly named files, but does
-    # not guarantee that they are matched appropriately with their genomes
-    for genome in ${genome_names}; do
+        #
+        # Alternative approach that skips validation
+        # Append to config using meta.id directly
+        # echo -e "DATABASE\t\$GENOME\t\$OUTPUT_DIR" >> "\$GENOME_DIR/fastq_screen.conf"
+        #
 
-        index_file=\$(find "${genome_dir}" -type f -name "\${genome}${extension_pattern}" | head -n1)
-
-        # Check if the expected index files are present based on the chosen aligner
-        # Use a representative file to detect the index basename (should match genome name)
-        # All index files for a genome should share the same basename prefix
-        if [ -z "\${index_file}" ]; then
-            echo "ERROR: No ${aligner} index file (\${genome}${extension_pattern}) found in ${genome_dir}."
+        # Find a representative index file to validate basename
+        INDEX_FILE=\$(find "\$OUTPUT_DIR" -type f -name "*${extension_pattern}" | head -n1)
+        if [ -z "\$INDEX_FILE" ]; then
+            echo "ERROR: No ${aligner} index file (*${extension_pattern}) found in \$OUTPUT_DIR"
             exit 1
         fi
 
-        # Check if the basename of the index files matches the genome basename
-        # by removing the extension
-        # Note: basename approach does not work for bowtie where there
-        # could be two different extensions based on the size of the genome.
-        # Because of the potential presence of dots in genome names, we cannot use
-        # \${index_basename%%.*} to remove everything after the first dot either.
-        if [ "${aligner}" == "bowtie" ]; then
-            index_basename=\$(basename "\${index_file}" | sed 's/\\.1\\.ebwtl\\?\$//')
+        # Extract basename
+        if [ "${aligner}" = "bowtie" ]; then
+            INDEX_BASE=\$(basename "\$INDEX_FILE" | sed 's/\\.1\\.ebwtl\\?\$//')
         else
-            index_basename=\$(basename "\${index_file}" ${extension_pattern})
+            INDEX_BASE=\$(basename "\$INDEX_FILE" ${extension_pattern})
         fi
-        if [ "\${index_basename}" != "\${genome}" ]; then
-            echo "ERROR: Filename of index files (\${index_file} - \${index_basename}) does not match the expected genome name (\${genome})."
+
+        # Validate that basename matches genome
+        if [ "\$INDEX_BASE" != "\$GENOME" ]; then
+            echo "ERROR: Index file basename (\$INDEX_BASE) does not match genome name (\$GENOME)"
             exit 1
         fi
-    done
+
+        # Append genome and index path to FastQ Screen config
+        echo -e "DATABASE\t\$GENOME\t\$OUTPUT_DIR/\$INDEX_BASE" >> "\$GENOME_DIR/fastq_screen.conf"
+
+    done <<'EOF'
+${genome_index_tuples.collect { meta, idx -> "${meta.id} ${idx}" }.join("\n")}
+EOF
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
