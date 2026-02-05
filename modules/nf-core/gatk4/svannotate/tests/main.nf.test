@@ -45,7 +45,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.vcf.collect { meta, vcf -> [ meta, file(vcf.toString()).name]},
                     process.out.tbi.collect { meta, tbi -> [ meta, file(tbi.toString()).name] },
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -80,7 +80,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.vcf.collect { meta, vcf -> [ meta, file(vcf.toString()).name]},
                     process.out.tbi.collect { meta, tbi -> [ meta, file(tbi.toString()).name] },
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }

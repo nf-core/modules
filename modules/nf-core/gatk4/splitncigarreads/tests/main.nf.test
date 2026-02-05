@@ -27,12 +27,11 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     file(process.out.bam[0][1]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
         }
-
     }
 
     test("test_gatk4_splitncigarreads_intervals") {
@@ -53,12 +52,11 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     file(process.out.bam[0][1]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
         }
-
     }
 
     test("test_gatk4_splitncigarreads_stub") {
@@ -81,12 +79,10 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     file(process.out.bam[0][1]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
         }
-
     }
-
 }

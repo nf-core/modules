@@ -42,12 +42,13 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(process.out.versions,
-                                  path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
-                                  file(process.out.tbi.get(0).get(1)).name).match() },
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    file(process.out.tbi[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("gatk4_variantfiltration - human - vcf - fasta.gz") {
@@ -83,12 +84,13 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(process.out.versions,
-                                  path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
-                                  file(process.out.tbi.get(0).get(1)).name).match() },
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    file(process.out.tbi[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("gatk4_variantfiltration - human - vcf.gz - fasta") {
@@ -124,12 +126,12 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(process.out.versions,
-                                  path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
-                                  file(process.out.tbi.get(0).get(1)).name).match() },
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    file(process.out.tbi[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
-
 }
