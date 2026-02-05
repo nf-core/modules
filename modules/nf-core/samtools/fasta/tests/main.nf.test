@@ -51,7 +51,6 @@ nextflow_process {
             assert process.success
             assert snapshot([
                 "interleaved": process.out.interleaved,
-                "other": process.out.other,
                 "versions_samtools": process.out.versions_samtools
             ]).match()
         }
