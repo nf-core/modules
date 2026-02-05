@@ -38,13 +38,13 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
 					bam(process.out.bam[0][1]).getReadsMD5(),
 					process.out.cram,
 					process.out.sam,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+					process.out.versions
 					).match()
 				}
             )
@@ -79,13 +79,13 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
 					process.out.bam,
 					bam(process.out.cram[0][1]).getHeaderMD5(),
 					process.out.sam,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+					process.out.versions
 					).match()
 				}
             )
