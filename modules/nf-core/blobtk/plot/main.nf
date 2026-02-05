@@ -6,7 +6,7 @@ process BLOBTK_PLOT {
     // Adding a check would overly complicate the module so for now
     // we can ignore errors, with the knowledge it would only kill
     // runs in which the blobdir doesn't have the right data.
-    errorStrategy = 'ignore'
+    errorStrategy 'ignore'
 
     tag "$prefix"
     label 'process_single'

@@ -36,9 +36,9 @@ process MERQURYFK_MERQURYFK {
 
     def args        = task.ext.args ?: ''
     prefix          = task.ext.prefix ?: "${meta.id}"
-    def fk_ktab     = fastk_ktab ? "${fastk_ktab.find{ it.toString().endsWith(".ktab") }}" : ''
-    def mat_hapktab = mathaptab  ? "${mathaptab.find{ it.toString().endsWith(".ktab") }}"  : ''
-    def pat_hapktab = pathaptab  ? "${pathaptab.find{ it.toString().endsWith(".ktab") }}"  : ''
+    def fk_ktab     = fastk_ktab ? "${fastk_ktab.find{ path -> path.toString().endsWith(".ktab") }}" : ''
+    def mat_hapktab = mathaptab  ? "${mathaptab.find{ path -> path.toString().endsWith(".ktab") }}"  : ''
+    def pat_hapktab = pathaptab  ? "${pathaptab.find{ path -> path.toString().endsWith(".ktab") }}"  : ''
     """
     MerquryFK \\
         $args \\

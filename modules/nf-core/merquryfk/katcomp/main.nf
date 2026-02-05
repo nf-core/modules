@@ -25,8 +25,8 @@ process MERQURYFK_KATCOMP {
     script:
     def args      = task.ext.args ?: ''
     def prefix    = task.ext.prefix ?: "${meta.id}"
-    def input_fk1 = fastk1_ktab.find{ it.toString().endsWith(".ktab") }.getBaseName()
-    def input_fk2 = fastk2_ktab.find{ it.toString().endsWith(".ktab") }.getBaseName()
+    def input_fk1 = fastk1_ktab.find{ path -> path.toString().endsWith(".ktab") }.getBaseName()
+    def input_fk2 = fastk2_ktab.find{ path -> path.toString().endsWith(".ktab") }.getBaseName()
     """
     KatComp \\
         $args \\

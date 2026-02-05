@@ -28,7 +28,7 @@ process MERQURYFK_PLOIDYPLOT {
     PloidyPlot \\
         $args \\
         -T$task.cpus \\
-        ${fastk_ktab.find{ it.toString().endsWith(".ktab") }} \\
+        ${fastk_ktab.find{ path -> path.toString().endsWith(".ktab") }} \\
         ${prefix}
     """
 
