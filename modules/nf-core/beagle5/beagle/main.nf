@@ -15,7 +15,7 @@ process BEAGLE5_BEAGLE {
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val(meta), path("*.log")   , emit: log
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('beagle'), eval("beagle 2>&1 | sed -n 's/.*version \\([^)]*\\).*/\\1/p'"), topic: versions, emit: versions_beagle
 
     when:
     task.ext.when == null || task.ext.when
@@ -48,11 +48,6 @@ process BEAGLE5_BEAGLE {
         ${region_cmd} \\
         ${excludesamples_command} \\
         ${excludemarkers_command}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        beagle: \$(beagle 2>&1 |head -n1 | sed -rn 's/beagle\\.(.*)\\.jar \\(version (.*)\\)/\\2rev\\1/p')
-    END_VERSIONS
     """
 
     stub:
@@ -60,10 +55,5 @@ process BEAGLE5_BEAGLE {
     """
     echo | gzip > ${prefix}.vcf.gz
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        beagle: \$(beagle 2>&1 |head -n1 | sed -rn 's/beagle\\.(.*)\\.jar \\(version (.*)\\)/\\2rev\\1/p')
-    END_VERSIONS
     """
 }
