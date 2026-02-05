@@ -47,21 +47,18 @@ nextflow_workflow {
         }
 
         then {
-            assertAll(
-                { assert workflow.success },
-                { assert snapshot(
-                    workflow.out.versions,
-                    workflow.out.chunks,
-                    workflow.out.vcf_index.collect{ meta, vcf, index -> [
-                        meta,
-                        path(vcf).getFileName().toString(),
-                        path(index).getFileName().toString(),
-                        path(vcf).vcf.summary,
-                        path(vcf).vcf.header.getGenotypeSamples().sort(),
-                        path(vcf).vcf.variantsMD5
-                    ]}
-                ).match() }
-            )
+            assert workflow.success
+            assert snapshot(
+                workflow.out.chunks,
+                workflow.out.vcf_index.collect{ meta, vcf, index -> [
+                    meta,
+                    path(vcf).getFileName().toString(),
+                    path(index).getFileName().toString(),
+                    path(vcf).vcf.summary,
+                    path(vcf).vcf.header.getGenotypeSamples().sort(),
+                    path(vcf).vcf.variantsMD5
+                ]}
+            ).match()
         }
 
     }
@@ -99,21 +96,18 @@ nextflow_workflow {
         }
 
         then {
-            assertAll(
-                { assert workflow.success },
-                { assert snapshot(
-                    workflow.out.versions,
-                    workflow.out.chunks,
-                    workflow.out.vcf_index.collect{ meta, vcf, index -> [
-                        meta,
-                        path(vcf).getFileName().toString(),
-                        path(index).getFileName().toString(),
-                        path(vcf).vcf.summary,
-                        path(vcf).vcf.header.getGenotypeSamples().sort(),
-                        path(vcf).vcf.variantsMD5
-                    ]}
-                ).match() }
-            )
+            assert workflow.success
+            assert snapshot(
+                workflow.out.chunks,
+                workflow.out.vcf_index.collect{ meta, vcf, index -> [
+                    meta,
+                    path(vcf).getFileName().toString(),
+                    path(index).getFileName().toString(),
+                    path(vcf).vcf.summary,
+                    path(vcf).vcf.header.getGenotypeSamples().sort(),
+                    path(vcf).vcf.variantsMD5
+                ]}
+            ).match()
         }
 
     }
@@ -135,10 +129,8 @@ nextflow_workflow {
             }
         }
         then {
-            assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
-            )
+            assert workflow.success
+            assert snapshot(sanitizeOutput(workflow.out)).match()
         }
     }
 
@@ -159,10 +151,8 @@ nextflow_workflow {
             }
         }
         then {
-            assertAll(
-                { assert workflow.failed },
-                { assert workflow.errorMessage.contains("ERROR: Cannot provide pre-defined chunks (regionin) when chunk=true. Please either set chunk=false to use provided chunks, or remove input chunks to enable automatic chunking.") }
-            )
+            assert workflow.failed
+            assert workflow.errorMessage.contains("ERROR: Cannot provide pre-defined chunks (regionin) when chunk=true. Please either set chunk=false to use provided chunks, or remove input chunks to enable automatic chunking.")
         }
     }
 
@@ -180,10 +170,8 @@ nextflow_workflow {
             }
         }
         then {
-            assertAll(
-                { assert workflow.failed },
-                { assert workflow.errorMessage.contains("ERROR: ch_chunks channel is empty. Please provide a valid channel or set chunk parameter to true.") }
-            )
+            assert workflow.failed
+            assert workflow.errorMessage.contains("ERROR: ch_chunks channel is empty. Please provide a valid channel or set chunk parameter to true.")
         }
     }
 
@@ -204,10 +192,8 @@ nextflow_workflow {
             }
         }
         then {
-            assertAll(
-                { assert workflow.failed },
-                { assert workflow.errorMessage.contains("ERROR: join operation resulted in an empty channel. Please provide a valid ch_chunks and ch_map channel as input.") }
-            )
+            assert workflow.failed
+            assert workflow.errorMessage.contains("ERROR: join operation resulted in an empty channel. Please provide a valid ch_chunks and ch_map channel as input.")
         }
     }
 
