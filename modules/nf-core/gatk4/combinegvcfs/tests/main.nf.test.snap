@@ -12,7 +12,11 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,f7a2070095861683febdc7fcd817af38"
+                    [
+                        "GATK4_COMBINEGVCFS",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
                 ],
                 "combined_gvcf": [
                     [
@@ -23,16 +27,20 @@
                         "test.combined.g.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,f7a2070095861683febdc7fcd817af38"
+                "versions_gatk4": [
+                    [
+                        "GATK4_COMBINEGVCFS",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-09-15T13:27:50.740117145"
+        "timestamp": "2026-01-21T15:59:02.41699694"
     },
     "test_gatk4_combinegvcfs": {
         "content": [
@@ -168,14 +176,20 @@
                 "chr22\t4606\t.\tT\t<NON_REF>\t.\t.\tEND=4607\tGT:DP:GQ:MIN_DP:PL\t./.:2:6:2:0,6,49",
                 "chr22\t4608\t.\tA\t<NON_REF>\t.\t.\tEND=40001\tGT:DP:GQ:MIN_DP:PL\t./.:0:0:0:0,0,0"
             ],
-            [
-                "versions.yml:md5,f7a2070095861683febdc7fcd817af38"
-            ]
+            {
+                "versions_gatk4": [
+                    [
+                        "GATK4_COMBINEGVCFS",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-09-15T13:27:40.343979152"
+        "timestamp": "2026-01-21T15:58:50.696011"
     }
 }

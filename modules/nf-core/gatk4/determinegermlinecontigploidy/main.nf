@@ -24,10 +24,10 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def intervals = bed ? "--intervals ${bed}" : ""
-    def exclude = exclude_beds ? exclude_beds.collect { "--exclude-intervals ${it}" }.join(" ") : ""
+    def exclude = exclude_beds ? exclude_beds.collect { bed_ -> "--exclude-intervals ${bed_}" }.join(" ") : ""
     def contig_ploidy = contig_ploidy_table ? "--contig-ploidy-priors ${contig_ploidy_table}" : ""
     def model = ploidy_model ? "--model ${ploidy_model}" : ""
-    def input_list = counts.collect { "--input ${it}" }.join(" ")
+    def input_list = counts.collect { count -> "--input ${count}" }.join(" ")
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -53,7 +53,6 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
         ${model} \\
         --tmp-dir . \\
         ${args}
-
     """
 
     stub:
@@ -61,6 +60,5 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     """
     touch ${prefix}-calls
     touch ${prefix}-model
-
     """
 }

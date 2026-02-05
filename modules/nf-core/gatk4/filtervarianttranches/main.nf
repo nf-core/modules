@@ -16,9 +16,9 @@ process GATK4_FILTERVARIANTTRANCHES {
     path dict
 
     output:
-    tuple val(meta), path("*.vcf.gz"),     emit: vcf
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi
-    path "versions.yml",                   emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,7 +26,7 @@ process GATK4_FILTERVARIANTTRANCHES {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def resource_list = resources.collect { "--resource ${it}" }.join(' ')
+    def resource_list = resources.collect { resource -> "--resource ${resource}" }.join(' ')
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -43,11 +43,6 @@ process GATK4_FILTERVARIANTTRANCHES {
         --output ${prefix}.filtered.vcf.gz \\
         --tmp-dir . \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -56,10 +51,5 @@ process GATK4_FILTERVARIANTTRANCHES {
     """
     echo "" | gzip -c > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }
