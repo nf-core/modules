@@ -31,8 +31,21 @@ env:
   NXF_VER: "25.10.2"
 
 jobs:
+  optimize_ci:
+    runs-on: ubuntu-latest
+    outputs:
+      skip: ${{ steps.check_skip.outputs.skip }}
+    steps:
+      - name: Optimize CI
+        id: check_skip
+        uses: withgraphite/graphite-ci-action@main
+        with:
+          graphite_token: ${{ secrets.GRAPHITE_CI_OPTIMIZER_TOKEN }}
+
   nf-test-changes:
     name: nf-test-changes
+    needs: optimize_ci
+    if: needs.optimize_ci.outputs.skip == 'false'
     runs-on:
       - runs-on=${{ github.run_id }}-nf-test-changes
       - runner=4cpu-linux-x64
@@ -94,8 +107,8 @@ jobs:
       - runner=4cpu-linux-${{ matrix.arch }}
       - image=ubuntu24-full-${{ matrix.arch }}
     name: "${{ matrix.arch }} | ${{ matrix.profile }} | ${{ matrix.shard }}"
-    needs: [nf-test-changes]
-    if: ${{ needs.nf-test-changes.outputs.total_shards != '0' }}
+    needs: [optimize_ci, nf-test-changes]
+    if: ${{ needs.optimize_ci.outputs.skip == 'false' && needs.nf-test-changes.outputs.total_shards != '0' }}
     strategy:
       fail-fast: false
       matrix:
@@ -176,7 +189,7 @@ jobs:
       - runs-on=${{ github.run_id }}-confirm-pass-nf-test
       - runner=4cpu-linux-x64
       - image=ubuntu22-full-x64
-    needs: [nf-test]
+    needs: [optimize_ci, nf-test]
     if: always()
     steps:
       - name: One or more tests failed

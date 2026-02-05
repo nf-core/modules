@@ -32,7 +32,20 @@ env:
   NXF_VER: "25.10.2"
 
 jobs:
+  optimize_ci:
+    runs-on: ubuntu-latest
+    outputs:
+      skip: ${{ steps.check_skip.outputs.skip }}
+    steps:
+      - name: Optimize CI
+        id: check_skip
+        uses: withgraphite/graphite-ci-action@main
+        with:
+          graphite_token: ${{ secrets.GRAPHITE_CI_OPTIMIZER_TOKEN }}
+
   pre-commit:
+    needs: optimize_ci
+    if: needs.optimize_ci.outputs.skip == 'false'
     runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
@@ -46,6 +59,8 @@ jobs:
   # https://github.com/nf-core/tools/pull/3141
   nf-core-changes:
     name: nf-core-changes
+    needs: optimize_ci
+    if: needs.optimize_ci.outputs.skip == 'false'
     runs-on:
       - runs-on=${{ github.run_id }}-nf-core-changes
       - runner=4cpu-linux-x64
@@ -115,8 +130,8 @@ jobs:
       - runner=4cpu-linux-x64
       - image=ubuntu22-full-x64
     name: nf-core lint modules
-    needs: nf-core-changes
-    if: ${{ needs.nf-core-changes.outputs.modules_files != '[]' }}
+    needs: [optimize_ci, nf-core-changes]
+    if: ${{ needs.optimize_ci.outputs.skip == 'false' && needs.nf-core-changes.outputs.modules_files != '[]' }}
     strategy:
       fail-fast: false
       matrix:
@@ -163,8 +178,8 @@ jobs:
       - runner=4cpu-linux-x64
       - image=ubuntu22-full-x64
     name: nf-core lint subworkflows
-    needs: nf-core-changes
-    if: ${{ needs.nf-core-changes.outputs.subworkflows_files != '[]' }}
+    needs: [optimize_ci, nf-core-changes]
+    if: ${{ needs.optimize_ci.outputs.skip == 'false' && needs.nf-core-changes.outputs.subworkflows_files != '[]' }}
     strategy:
       fail-fast: false
       matrix:
@@ -194,7 +209,7 @@ jobs:
       - runs-on=${{ github.run_id }}-confirm-pass-lint
       - runner=2cpu-linux-x64
       - image=ubuntu22-full-x64
-    needs: [nf-core-lint-modules, nf-core-lint-subworkflows]
+    needs: [optimize_ci, nf-core-lint-modules, nf-core-lint-subworkflows]
     if: always()
     steps:
       - name: All tests ok
