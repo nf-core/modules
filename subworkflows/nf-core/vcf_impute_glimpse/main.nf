@@ -14,8 +14,6 @@ workflow VCF_IMPUTE_GLIMPSE {
 
     main:
 
-    ch_versions = channel.empty()
-
     if (chunk == true) {
         // Error if pre-defined chunks are provided when chunking is activated
         ch_chunks
@@ -23,7 +21,6 @@ workflow VCF_IMPUTE_GLIMPSE {
             .ifEmpty { error("ERROR: Cannot provide pre-defined chunks (regionin) when chunk=true. Please either set chunk=false to use provided chunks, or remove input chunks to enable automatic chunking.") }
 
         GLIMPSE_CHUNK(ch_ref)
-        ch_versions = ch_versions.mix(GLIMPSE_CHUNK.out.versions.first())
 
         ch_chunks = GLIMPSE_CHUNK.out.chunk_chr
             .splitCsv(header: ['ID', 'Chr', 'RegionIn', 'RegionOut', 'Size1', 'Size2'], sep: "\t", skip: 0)
@@ -52,7 +49,6 @@ workflow VCF_IMPUTE_GLIMPSE {
         ]}
 
     GLIMPSE_PHASE(phase_input)
-    ch_versions = ch_versions.mix(GLIMPSE_PHASE.out.versions.first())
 
     BCFTOOLS_INDEX_PHASE(GLIMPSE_PHASE.out.phased_variants)
 
@@ -70,7 +66,6 @@ workflow VCF_IMPUTE_GLIMPSE {
         .groupTuple()
 
     GLIMPSE_LIGATE(ligate_input)
-    ch_versions = ch_versions.mix(GLIMPSE_LIGATE.out.versions.first())
 
     BCFTOOLS_INDEX_LIGATE(GLIMPSE_LIGATE.out.merged_variants)
 
@@ -84,5 +79,4 @@ workflow VCF_IMPUTE_GLIMPSE {
     emit:
     chunks    = ch_chunks    // channel: [ val(meta), regionin, regionout ]
     vcf_index = ch_vcf_index // channel: [ val(meta), vcf, index ]
-    versions  = ch_versions  // channel: [ versions.yml ]
 }
