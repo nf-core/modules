@@ -45,9 +45,9 @@ process FASTQSCREEN_BUILDFROMINDEX {
         # All index files for a genome should share the same basename prefix
         # Note: since we are searching in the original input staged files (which are symlinks)
         # the -L flag is required
-        INDEX_FILE=\$(find -L "\$INDEX_DIR" -type f -name "*${extension_pattern}" | head -n1)
+        INDEX_FILE=\$(find -L "\${INDEX_DIR}" -type f -name "*${extension_pattern}" | head -n1)
         if [ -z "\$INDEX_FILE" ]; then
-            echo "ERROR: No ${aligner} index file matching ${extension_pattern} found in \$INDEX_DIR."
+            echo "ERROR: No ${aligner} index file matching ${extension_pattern} found in \${INDEX_DIR}."
             exit 1
         fi
 
@@ -59,14 +59,14 @@ process FASTQSCREEN_BUILDFROMINDEX {
         fi
 
         # Create output directory
-        OUTPUT_DIR="\$GENOME_DIR/\$GENOME"
-        mkdir -p "\$OUTPUT_DIR"
+        OUTPUT_DIR="\${GENOME_DIR}/\${GENOME}"
+        mkdir -p "\${OUTPUT_DIR}"
 
         # Copy index files into the output directory
-        cp -r "\$INDEX_DIR/"* "\$OUTPUT_DIR/"
+        cp -r "\${INDEX_DIR}/"* "\$OUTPUT_DIR/"
 
         # Append genome and index path to FastQ Screen config
-        echo -e "DATABASE\t\$GENOME\t\$OUTPUT_DIR" >> "\$GENOME_DIR/fastq_screen.conf"
+        echo -e "DATABASE\t\${GENOME}\t\${OUTPUT_DIR}/\${GENOME}" >> "\${GENOME_DIR}/fastq_screen.conf"
     done
 
     cat <<-END_VERSIONS > versions.yml
