@@ -14,8 +14,7 @@ tools:
       homepage: https://gatk.broadinstitute.org/hc/en-us
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: 10.1158/1538-7445.AM2017-3590
-      licence:
-        - "Apache-2.0"
+      licence: ["Apache-2.0"]
       identifier: ""
 input:
   - - meta:
@@ -47,7 +46,7 @@ output:
       - gatk4:
           type: string
           description: The name of the tool
-      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+      - gatk --version | grep GATK | sed 's/^.*(GATK) v//':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -58,7 +57,7 @@ topics:
       - gatk4:
           type: string
           description: The name of the tool
-      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+      - gatk --version | grep GATK | sed 's/^.*(GATK) v//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
