@@ -17,16 +17,10 @@ tools:
       licence: ["GPL-3.0-or-later"]
       identifier: ""
 input:
-  - indexes:
+  - index_paths:
       type: list
-      description: Flattened list of genome names and directories containing genome index files
-      help: "This type of channel input can be created by running the .collect() operator on the [meta, index_dir] output of bowtie/bwa/minimap index modules."
-  - aligner:
-      type: string
-      description: |
-        Aligner to use for mapping reads. Options: 'bowtie', 'bowtie2', 'bwa', 'minimap2'.
-        If not specified, FastQ Screen will use its default aligner (bowtie2).
-      pattern: "bowtie|bowtie2|bwa|minimap2"
+      description: Flattened list of index directory paths
+      help: "This type of channel input can be created by running the .collect { _meta, index_dir -> index_dir } operator on the [meta, index_dir] output of bowtie/bwa/minimap index modules."
 output:
   database:
     - FastQ_Screen_Genomes:

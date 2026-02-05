@@ -7,7 +7,7 @@ process FASTQSCREEN_BUILDFROMINDEX {
         'biocontainers/fastq-screen:0.15.3--pl5321hdfd78af_0'}"
 
     input:
-    val(indexes)    // Flattened list of meta, path pairs from INDEX_MODULE.out.index.collect()
+    path(index_paths, stageAs: "index_?/*")  // Flattened list of [index_dir] from INDEX_MODULE.out.index.collect{ _meta, dir -> dir }
     val(aligner)    // 'bwa', 'bowtie', 'bowtie2', or 'minimap2'
 
     output:
@@ -20,9 +20,6 @@ process FASTQSCREEN_BUILDFROMINDEX {
     script:
     // Default to bowtie2, since this is also the default of FastQ Screen itself
     aligner = aligner ?: "bowtie2"
-
-    // Convert flat collected [meta,path,...] list into tuples [[meta,path],[meta,path],...]
-    def genome_index_tuples = indexes.collate(2)
 
     // Map aligner to a representative index file extension (used to detect basename)
     def index_extensions = [
@@ -42,46 +39,35 @@ process FASTQSCREEN_BUILDFROMINDEX {
     # Add FastQ Screen config header
     echo "# FastQ Screen Configuration - ${aligner} indices" > "\${GENOME_DIR}/fastq_screen.conf"
 
-    # Loop through genome, index directory pairs
-    while read GENOME INDEX_DIR; do
+    for INDEX_DIR in ${index_paths}; do
 
-        # copy index files to FastQ Screen database subdirectory
+        # Validate that at least one index file exists given the specified aligner
+        # All index files for a genome should share the same basename prefix
+        # Note: since we are searching in the original input staged files (which are symlinks)
+        # the -L flag is required
+        INDEX_FILE=\$(find -L "\$INDEX_DIR" -type f -name "*${extension_pattern}" | head -n1)
+        if [ -z "\$INDEX_FILE" ]; then
+            echo "ERROR: No ${aligner} index file matching ${extension_pattern} found in \$INDEX_DIR."
+            exit 1
+        fi
+
+        # Use the representative file to detect the genome name
+        if [ "${aligner}" == "bowtie" ]; then
+            GENOME=\$(basename "\${INDEX_FILE}" | sed 's/\\.1\\.ebwtl\\?\$//')
+        else
+            GENOME=\$(basename "\${INDEX_FILE}" ${extension_pattern})
+        fi
+
+        # Create output directory
         OUTPUT_DIR="\$GENOME_DIR/\$GENOME"
         mkdir -p "\$OUTPUT_DIR"
+
+        # Copy index files into the output directory
         cp -r "\$INDEX_DIR/"* "\$OUTPUT_DIR/"
 
-        #
-        # Alternative approach that skips validation
-        # Append to config using meta.id directly
-        # echo -e "DATABASE\t\$GENOME\t\$OUTPUT_DIR" >> "\$GENOME_DIR/fastq_screen.conf"
-        #
-
-        # Find a representative index file to validate basename
-        INDEX_FILE=\$(find "\$OUTPUT_DIR" -type f -name "*${extension_pattern}" | head -n1)
-        if [ -z "\$INDEX_FILE" ]; then
-            echo "ERROR: No ${aligner} index file (*${extension_pattern}) found in \$OUTPUT_DIR"
-            exit 1
-        fi
-
-        # Extract basename
-        if [ "${aligner}" = "bowtie" ]; then
-            INDEX_BASE=\$(basename "\$INDEX_FILE" | sed 's/\\.1\\.ebwtl\\?\$//')
-        else
-            INDEX_BASE=\$(basename "\$INDEX_FILE" ${extension_pattern})
-        fi
-
-        # Validate that basename matches genome
-        if [ "\$INDEX_BASE" != "\$GENOME" ]; then
-            echo "ERROR: Index file basename (\$INDEX_BASE) does not match genome name (\$GENOME)"
-            exit 1
-        fi
-
         # Append genome and index path to FastQ Screen config
-        echo -e "DATABASE\t\$GENOME\t\$OUTPUT_DIR/\$INDEX_BASE" >> "\$GENOME_DIR/fastq_screen.conf"
-
-    done <<'EOF'
-${genome_index_tuples.collect { meta, idx -> "${meta.id} ${idx}" }.join("\n")}
-EOF
+        echo -e "DATABASE\t\$GENOME\t\$OUTPUT_DIR" >> "\$GENOME_DIR/fastq_screen.conf"
+    done
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
