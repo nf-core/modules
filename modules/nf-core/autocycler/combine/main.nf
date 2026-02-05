@@ -35,7 +35,6 @@ process AUTOCYCLER_COMBINE {
     """
 
     stub:
-    def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p combine/$prefix
