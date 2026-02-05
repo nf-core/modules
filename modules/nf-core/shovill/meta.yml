@@ -79,14 +79,30 @@ output:
           pattern: "contigs.{fastg,gfa,LastGraph}"
           ontologies:
             - edam: http://edamontology.org/format_3975 # GFA 1
+  versions_shovill:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - shovill:
+          type: string
+          description: The name of the tool
+      - shovill --version 2>&1 | sed "s/^.*shovill //":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - shovill:
+          type: string
+          description: The name of the tool
+      - shovill --version 2>&1 | sed "s/^.*shovill //":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rpetit3"
+  - "@eit-maxlcummins"
 maintainers:
   - "@rpetit3"

@@ -106,11 +106,9 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_GATK {
     )
 
     versions = versions.mix(GATK4_CALCULATECONTAMINATION.out.versions)
-    versions = versions.mix(GATK4_FILTERMUTECTCALLS.out.versions)
     versions = versions.mix(GATK4_GETPILEUPSUMMARIES_NORMAL.out.versions)
     versions = versions.mix(GATK4_GETPILEUPSUMMARIES_TUMOR.out.versions)
     versions = versions.mix(GATK4_LEARNREADORIENTATIONMODEL.out.versions)
-    versions = versions.mix(GATK4_MUTECT2.out.versions)
 
     emit:
     artifact_priors     = GATK4_LEARNREADORIENTATIONMODEL.out.artifactprior // channel: [ val(meta), path(artifactprior) ]

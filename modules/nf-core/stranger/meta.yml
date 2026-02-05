@@ -63,7 +63,7 @@ output:
       - stranger:
           type: string
           description: The name of the tool
-      - '"stranger --version | sed ''s/stranger':
+      - stranger --version | sed 's/stranger, version //g':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -73,8 +73,8 @@ output:
           description: The name of the process
       - tabix:
           type: string
-          description: The name of the tool
-      - tabix --version | sed -n 's/^.*htslib) //p':
+          description: The tool name
+      - tabix -h 2>&1 | grep -oP 'Version:\s*\K[^\s]+':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -86,7 +86,7 @@ topics:
       - stranger:
           type: string
           description: The name of the tool
-      - '"stranger --version | sed ''s/stranger':
+      - stranger --version | sed 's/stranger, version //g':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -95,8 +95,8 @@ topics:
           description: The name of the process
       - tabix:
           type: string
-          description: The name of the tool
-      - tabix --version | sed -n 's/^.*htslib) //p':
+          description: The tool name
+      - tabix -h 2>&1 | grep -oP 'Version:\s*\K[^\s]+':
           type: eval
           description: The expression to obtain the version of the tool
 
