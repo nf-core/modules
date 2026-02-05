@@ -32,6 +32,7 @@ nextflow_process {
 
         then {
             assert process.success
+            assert process.out.stdout.contains("telescope assign complete")
 
             assertAll(
                 { assert snapshot(
@@ -45,7 +46,7 @@ nextflow_process {
 
     // TODO nf-core: Change the test name preferably indicating the test-data and file-format used but keep the " - stub" suffix.
     test("basic_run - bam - stub") {
-        
+
         options "-stub"
 
         config "./nextflow.config"
