@@ -90,6 +90,13 @@ nextflow_process {
     test("test_cnvnator_convert2vcf") {
 
         when {
+            params {
+                cnvnator_rd_args = '-chrom chr22'
+                cnvnator_hist_args = '-his 1000'
+                cnvnator_stat_args = '-stat 1000'
+                cnvnator_partition_args = '-partition 1000'
+                cnvnator_args = '-call 1000'
+            }
             process {
                 """
                 input[0] = CNVNATOR_CALL.out.tab
@@ -111,6 +118,13 @@ nextflow_process {
     test("test_cnvnator_convert2vcf -- stub") {
         options '-stub'
         when {
+            params {
+                cnvnator_rd_args = '-chrom chr22'
+                cnvnator_hist_args = '-his 1000'
+                cnvnator_stat_args = '-stat 1000'
+                cnvnator_partition_args = '-partition 1000'
+                cnvnator_args = '-call 1000'
+            }
             process {
                 """
                 input[0] = CNVNATOR_CALL.out.tab

@@ -12,7 +12,7 @@ process CNVNATOR_CNVNATOR {
     tuple val(meta2), path(root, stageAs:'input/')
     tuple val(meta3), path(fasta)
     tuple val(meta4), path(fai)
-    val step
+    val step // Without this parameter Nextflow can't distinguish between different steps, and resume becomes unreliable across the workflow chain
 
     output:
     tuple val(output_meta), path("${prefix}.root"), emit: root, optional: true
