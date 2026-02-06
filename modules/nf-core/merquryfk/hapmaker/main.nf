@@ -27,9 +27,9 @@ process MERQURYFK_HAPMAKER {
 
     script:
     def args        = task.ext.args ?: ''
-    input_mat       = matktab   ? "${matktab.find{ it.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}"   : ''
-    input_pat       = patktab   ? "${patktab.find{ it.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}"   : ''
-    def input_child = childktab ? "${childktab.find{ it.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}" : ''
+    input_mat       = matktab   ? "${matktab.find{ path -> path.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}"   : ''
+    input_pat       = patktab   ? "${patktab.find{ path -> path.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}"   : ''
+    def input_child = childktab ? "${childktab.find{ path -> path.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}" : ''
     """
     HAPmaker \\
         $args \\
@@ -41,9 +41,10 @@ process MERQURYFK_HAPMAKER {
 
     stub:
     def args  = task.ext.args ?: ''
-    input_mat = matktab ? "${matktab.find{ it.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}" : ''
-    input_pat = patktab ? "${patktab.find{ it.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}" : ''
+    input_mat = matktab ? "${matktab.find{ path -> path.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}" : ''
+    input_pat = patktab ? "${patktab.find{ path -> path.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}" : ''
     """
+    echo ${args}
     touch ${input_mat}.hap.ktab
     touch .${input_mat}.hap.ktab.1
     touch ${input_pat}.hap.ktab

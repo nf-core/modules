@@ -35,7 +35,11 @@
                     ]
                 ],
                 "4": [
-                    "versions.yml:md5,8bd8c66c2f1a7854faa29781761642c2"
+                    [
+                        "INTERPROSCAN",
+                        "interproscan",
+                        "5.59-91.0"
+                    ]
                 ],
                 "gff3": [
                     [
@@ -61,8 +65,12 @@
                         "test.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,8bd8c66c2f1a7854faa29781761642c2"
+                "versions_interproscan": [
+                    [
+                        "INTERPROSCAN",
+                        "interproscan",
+                        "5.59-91.0"
+                    ]
                 ],
                 "xml": [
                     [
@@ -75,10 +83,67 @@
             }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.1"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-05-27T12:51:27.943051636"
+        "timestamp": "2026-01-30T12:47:47.991445105"
+    },
+    "l_asparaginase - faa - test database": {
+        "content": [
+            true,
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.xml:md5,7248992d9c1618cf7baa7515ae79ce32"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.json:md5,e0d127dd8a952cbd798999851d1338e6"
+                ]
+            ],
+            [
+                "##gff-version 3",
+                "##feature-ontology http://song.cvs.sourceforge.net/viewvc/song/ontology/sofa.obo?revision=1.269",
+                "##interproscan-version 5.59-91.0",
+                "##sequence-region GI|225038609|EFDID|719595|FULL 1 350",
+                "GI|225038609|EFDID|719595|FULL\t.\tpolypeptide\t1\t350\t.\t+\t.\tID=GI|225038609|EFDID|719595|FULL;md5=079fff43a0270e432d339ea71b6f0acf",
+                "##FASTA",
+                ">GI|225038609|EFDID|719595|FULL",
+                "MDKLLWNKKEISVSERISMKRIVMINTGGTFSSQRGENGLSPKLTGTQIRNFLGEFEEDL",
+                "ELSTEDYCALDSSNITPEDWVQLADKISQIIYSCDGVVIIHGTDTMAYTASMLSFMLQNL",
+                "PIPVVLTGSQLPIGVPMSDAVNNCRCAVQMAASGLGGVYVAFDHKLMLGCRTSKVRTVSF",
+                "NAFESINYPYVGEVNALGMQLYPTRLSKPTGEFQLQTAYSDKIAVLKLFPGMRPDLFSFL",
+                "QEKGYEGIYIEGFGLGGVPFVKNDITEEISKASKAGIPILVGSQCSYEGSNLGIYETGLR",
+                "VLESGGIPVHDMTQEAIVTKLMWCLGQTKDREKIHQLFHTNLIQEVTLPY",
+                ">match$1_17_347",
+                "ISMKRIVMINTGGTFSSQRGENGLSPKLTGTQIRNFLGEFEEDLELSTEDYCALDSSNIT",
+                "PEDWVQLADKISQIIYSCDGVVIIHGTDTMAYTASMLSFMLQNLPIPVVLTGSQLPIGVP",
+                "MSDAVNNCRCAVQMAASGLGGVYVAFDHKLMLGCRTSKVRTVSFNAFESINYPYVGEVNA",
+                "LGMQLYPTRLSKPTGEFQLQTAYSDKIAVLKLFPGMRPDLFSFLQEKGYEGIYIEGFGLG",
+                "GVPFVKNDITEEISKASKAGIPILVGSQCSYEGSNLGIYETGLRVLESGGIPVHDMTQEA",
+                "IVTKLMWCLGQTKDREKIHQLFHTNLIQEVT"
+            ],
+            {
+                "versions_interproscan": [
+                    [
+                        "INTERPROSCAN",
+                        "interproscan",
+                        "5.59-91.0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-02T10:26:22.006759729"
     },
     "sarscov2 - proteome_fasta_gz": {
         "content": [
@@ -132,15 +197,21 @@
                 ">match$1_1176_1203",
                 "VVNIQKEIDRLNEVAKNLNESLIDLQEL"
             ],
-            [
-                "versions.yml:md5,8bd8c66c2f1a7854faa29781761642c2"
-            ]
+            {
+                "versions_interproscan": [
+                    [
+                        "INTERPROSCAN",
+                        "interproscan",
+                        "5.59-91.0"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.1"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-05-27T12:51:14.476645388"
+        "timestamp": "2026-01-30T12:47:40.77682478"
     },
     "sarscov2 - proteome_fasta": {
         "content": [
@@ -194,14 +265,20 @@
                 ">match$1_1176_1203",
                 "VVNIQKEIDRLNEVAKNLNESLIDLQEL"
             ],
-            [
-                "versions.yml:md5,8bd8c66c2f1a7854faa29781761642c2"
-            ]
+            {
+                "versions_interproscan": [
+                    [
+                        "INTERPROSCAN",
+                        "interproscan",
+                        "5.59-91.0"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.1"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-05-27T12:50:27.562653728"
+        "timestamp": "2026-01-30T12:47:11.858565893"
     }
 }

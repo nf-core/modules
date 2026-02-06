@@ -11,8 +11,8 @@ process SAMTOOLS_GETRG {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), file("readgroups.txt"),    emit: readgroup
-    path  "versions.yml",                       emit: versions
+    tuple val(meta), file("readgroups.txt"), emit: readgroup
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,7 +25,6 @@ Reason:
 This module has been renamed to samtools/splitheader, which has the same functionality but
 extends the outputs to include other types of SAM header.
 """
-    def args = task.ext.args ?: ''
     assert false: deprecation_message
     """
     """
@@ -38,7 +37,6 @@ Reason:
 This module has been renamed to samtools/splitheader, which has the same functionality but
 extends the outputs to include other types of SAM header.
 """
-    def prefix = task.ext.prefix ?: "${meta.id}"
     assert false: deprecation_message
     """
     """

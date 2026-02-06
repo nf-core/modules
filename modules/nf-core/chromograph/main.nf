@@ -19,7 +19,7 @@ process CHROMOGRAPH {
 
     output:
     tuple val(meta), path("*.png"), emit: plots, optional: true
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('chromograph'), eval("chromograph --version | sed 's/.* //'")   , topic: versions   , emit: versions_chromograph
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,10 +46,6 @@ process CHROMOGRAPH {
         ${sites_param} \\
         --outd .
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        chromograph: \$(chromograph --version | sed 's/.* //' )
-    END_VERSIONS
     """
 
     stub:
@@ -65,10 +61,6 @@ process CHROMOGRAPH {
     ${touchCmd(euploidy, regions)}
     ${touchCmd(euploidy, sites)}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        chromograph: \$(chromograph --version | sed 's/.* //' )
-    END_VERSIONS
     """
 }
 
