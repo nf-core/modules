@@ -12,7 +12,7 @@ process VARLOCIRAPTOR_CALLVARIANTS {
 
     output:
     tuple val(meta), path("*.bcf"), emit: bcf
-    tuple val("${task.process}"), val('varlociraptor'), eval("varlociraptor --version | sed -E 's/.*varlociraptor[: ]+([^[:space:]:]+).*/\\1/'"), topic: versions, emit: versions_varlociraptor
+    tuple val("${task.process}"), val('varlociraptor'), eval("varlociraptor --version | sed 's/^varlociraptor //'"), topic: versions, emit: versions_varlociraptor
 
     when:
     task.ext.when == null || task.ext.when
