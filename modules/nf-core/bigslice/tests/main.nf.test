@@ -1,0 +1,90 @@
+nextflow_process {
+
+    name "Test Process BIGSLICE"
+    script "../main.nf"
+    process "BIGSLICE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bigslice"
+    tag "aria2"
+    tag "untar"
+
+    setup {
+        run("ARIA2") {
+            script "../../aria2/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test_hmm_db' ],
+                    'https://github.com/medema-group/bigslice/releases/download/v2.0.0rc/bigslice-models.2022-11-30.tar.gz' // https URL
+                ]
+                """
+            }
+        }
+
+        run("UNTAR") {
+            script "../../untar/main.nf"
+                process {
+                """
+                input[0] = ARIA2.out.downloaded_file
+                """
+            }
+        }
+    }
+
+    test("gbk") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('/home/vangelis/Desktop/Projects/modules/modules/nf-core/bigslice/tests/fixtures', checkIfExists: true),
+                ]
+                input[1] = UNTAR.out.untar.map{ f -> f[1] }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.db,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+    test("gbk - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('/home/vangelis/Desktop/Projects/modules/modules/nf-core/bigslice/tests/fixtures', checkIfExists: true),
+                ]
+                input[1] = UNTAR.out.untar.map{ f -> f[1] }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+}
