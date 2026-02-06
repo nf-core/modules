@@ -36,7 +36,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--num-gpus 1 --low-memory --read-files-command zcat --x3'
+                module_args = '--low-memory --read-files-command zcat --x3'
                 // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
                 // Parabricks’s rnafq2bam requires 24GB of memory.
                 // Using --low-memory for testing
@@ -111,7 +111,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--num-gpus 1 --low-memory --read-files-command zcat --out-chim-type Junctions --min-chim-segment 15 --x3'
+                module_args = '--low-memory --read-files-command zcat --out-chim-type Junctions --min-chim-segment 15 --x3'
                 // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
                 // Parabricks’s rnafq2bam requires 24GB of memory.
                 // Using --low-memory for testing
