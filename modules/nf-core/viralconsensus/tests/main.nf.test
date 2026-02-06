@@ -31,7 +31,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.fasta).match() }
+                { assert snapshot(process.out).match() }
             )
         }
     }
@@ -59,7 +59,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.fasta).match() }
+                { assert snapshot(process.out).match() }
             )
         }
     }
@@ -92,11 +92,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.fasta,
-                    process.out.pos_counts,
-                    process.out.ins_counts
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
     }
