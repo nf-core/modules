@@ -44,9 +44,11 @@ process CDHIT_CDHITEST {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "${sequences}" ==~ /(.*f[astn]*a(.gz)?$)/ ? "fa" : "fq"
     """
+    echo "${args}"
     touch ${prefix}.${suffix}
     touch ${prefix}.${suffix}.clstr
     """
