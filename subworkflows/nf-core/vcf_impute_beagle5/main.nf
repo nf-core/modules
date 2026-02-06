@@ -12,7 +12,6 @@ workflow VCF_IMPUTE_BEAGLE5 {
     ch_map // channel (optional) : [ [chr], map]
 
     main:
-    ch_versions = channel.empty()
 
     // Branch input files based on format
     ch_input
@@ -106,7 +105,6 @@ workflow VCF_IMPUTE_BEAGLE5 {
         }
 
     GLIMPSE2_LIGATE(ligate_input)
-    ch_versions = ch_versions.mix(GLIMPSE2_LIGATE.out.versions.first())
 
     BCFTOOLS_INDEX_LIGATE(GLIMPSE2_LIGATE.out.merged_variants)
 
@@ -119,5 +117,4 @@ workflow VCF_IMPUTE_BEAGLE5 {
 
     emit:
     vcf_index = ch_vcf_index // channel: [ [id, chr, tools], vcf, index ]
-    versions  = ch_versions // channel: [ versions.yml ]
 }
