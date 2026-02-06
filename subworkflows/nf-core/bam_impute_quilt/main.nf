@@ -15,8 +15,6 @@ workflow BAM_IMPUTE_QUILT {
 
     main:
 
-    ch_versions = channel.empty()
-
     // Make final channel with parameters
     ch_parameters = ch_hap_legend
         .combine(ch_posfile, by: 0)
@@ -78,5 +76,4 @@ workflow BAM_IMPUTE_QUILT {
 
     emit:
     vcf_index = ch_vcf_index // channel:   [ [id, chr], vcf, tbi ]
-    versions  = ch_versions // channel:   [ versions.yml ]
 }
