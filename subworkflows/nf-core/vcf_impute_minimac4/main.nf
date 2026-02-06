@@ -14,8 +14,6 @@ workflow VCF_IMPUTE_MINIMAC4 {
 
     main:
 
-    ch_versions = channel.empty()
-
     ch_panel_branched = ch_panel.branch { _meta, file, _index ->
         def name = file.toString()
         vcf: name.matches(/.*\.(vcf|bcf)(\.gz)?$/)
@@ -90,5 +88,4 @@ workflow VCF_IMPUTE_MINIMAC4 {
 
     emit:
     vcf_index = ch_vcf_index // channel: [ [id, panel, chr], vcf, index ]
-    versions  = ch_versions  // channel: [ versions.yml ]
 }
