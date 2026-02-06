@@ -23,7 +23,6 @@ process SNPSIFT_ANNMEM {
     def args     = task.ext.args ?: ''
     def prefix   = task.ext.prefix ?: "${meta.id}"
     def dbs      = db_vcf instanceof List ? db_vcf : [db_vcf]
-    def vardbs   = db_vardb instanceof List ? db_vardb : [db_vardb]
     def all_fields = db_fields instanceof List ? db_fields : [db_fields]
     def prefixes = db_prefixes instanceof List ? db_prefixes : [db_prefixes]
 
