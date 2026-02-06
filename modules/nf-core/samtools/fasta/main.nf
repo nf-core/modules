@@ -12,11 +12,11 @@ process SAMTOOLS_FASTA {
     val(interleave)
 
     output:
-    tuple val(meta), path("*_{1,2}.fasta.gz")      , optional:true, emit: fasta
-    tuple val(meta), path("*_interleaved.fasta.gz"), optional:true, emit: interleaved
-    tuple val(meta), path("*_singleton.fasta.gz")  , optional:true, emit: singleton
-    tuple val(meta), path("*_other.fasta.gz")      , optional:true, emit: other
-    path "versions.yml"                            , emit: versions
+    tuple val(meta), path("*_{1,2}.fasta.gz")      , emit: fasta      , optional:true
+    tuple val(meta), path("*_interleaved.fasta.gz"), emit: interleaved, optional:true
+    tuple val(meta), path("*_singleton.fasta.gz")  , emit: singleton  , optional:true
+    tuple val(meta), path("*_other.fasta.gz")      , emit: other      , optional:true
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,10 +36,24 @@ process SAMTOOLS_FASTA {
         -0 ${prefix}_other.fasta.gz \\
         $input \\
         $output
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def outputs = []
+    if (interleave && !meta.single_end) {
+        outputs << "echo | gzip > ${prefix}_interleaved.fasta.gz"
+    } else if (meta.single_end) {
+        outputs << "echo | gzip > ${prefix}_1.fasta.gz"
+        outputs << "echo | gzip > ${prefix}_singleton.fasta.gz"
+    } else {
+        outputs << "echo | gzip > ${prefix}_1.fasta.gz"
+        outputs << "echo | gzip > ${prefix}_2.fasta.gz"
+        outputs << "echo | gzip > ${prefix}_singleton.fasta.gz"
+    }
+    outputs << "echo | gzip > ${prefix}_other.fasta.gz"
+
+    """
+    ${outputs.join('\n')}
     """
 }

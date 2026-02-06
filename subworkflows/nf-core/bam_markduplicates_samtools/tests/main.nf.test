@@ -32,13 +32,8 @@ nextflow_workflow {
             }
         }
         then {
-            assertAll(
-                { assert workflow.success },
-                { assert snapshot(
-                    bam(workflow.out.bam[0][1]).getReadsMD5(),
-                    workflow.out.versions
-                ).match() }
-            )
+            assert workflow.success
+            assert snapshot(bam(workflow.out.bam[0][1]).getReadsMD5()).match()
         }
     }
 
@@ -59,13 +54,8 @@ nextflow_workflow {
             }
         }
         then {
-            assertAll(
-                { assert workflow.success },
-                { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect { path(it).yaml }
-                ).match() }
-            )
+            assert workflow.success
+            assert snapshot(sanitizeOutput(workflow.out)).match()
         }
     }
 }
