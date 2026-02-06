@@ -13,7 +13,7 @@ process CDHIT_CDHITEST {
     output:
     tuple val(meta), path("*.{fa,fq}")    ,emit: fasta
     tuple val(meta), path("*.clstr")      ,emit: clusters
-    tuple val("${task.process}"), val('cdhit'), eval("cd-hit-est -h | head -n 1 | sed 's/^.*====== CD-HIT version //;s/ (built on .*) ======//'"), topic: versions, emit: versions_
+    tuple val("${task.process}"), val('cdhit'), eval("cd-hit-est -h | head -n 1 | sed 's/^.*====== CD-HIT version //;s/ (built on .*) ======//'"), topic: versions, emit: versions_cdhitest
 
     when:
     task.ext.when == null || task.ext.when
