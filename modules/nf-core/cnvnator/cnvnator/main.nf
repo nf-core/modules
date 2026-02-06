@@ -9,13 +9,13 @@ process CNVNATOR_CNVNATOR {
 
     input:
     tuple val(meta), path(bam), path(bai)
-    tuple val(meta2), path(root)
+    tuple val(meta2), path(root, stageAs:'input/')
     tuple val(meta3), path(fasta)
     tuple val(meta4), path(fai)
     val step
 
     output:
-    tuple val(output_meta), path("${prefix}_${step}.root"), emit: root, optional: true
+    tuple val(output_meta), path("${prefix}.root"), emit: root, optional: true
     tuple val(output_meta), path("${prefix}.tab") , emit: tab, optional: true
     tuple val("${task.process}"), val('cnvnator'), eval("cnvnator 2>&1 | sed -n '3s/CNVnator v//p'"), topic: versions, emit: versions_cnvnator
 
@@ -33,9 +33,7 @@ process CNVNATOR_CNVNATOR {
         reference = ''
     }
     def calls_cmd = args.contains("-call") ? "> ${prefix}.tab" : ''
-    mv_cmd    = "mv ${prefix}.root ${prefix}_${step}.root"
-    steps     = ["his", "stat", "partition", "call"]
-    cp_cmd    = steps.contains(step) ? "cp ${root} ${prefix}.root" :""
+    cp_cmd    = root ? "cp input/* ${prefix}.root" :""
     """
     ${cp_cmd}
     cnvnator \\
@@ -44,7 +42,6 @@ process CNVNATOR_CNVNATOR {
         ${reference} \\
         ${input_cmd} \\
         ${calls_cmd}
-    ${mv_cmd}
     """
 
     stub:
