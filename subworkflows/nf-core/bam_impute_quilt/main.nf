@@ -66,7 +66,6 @@ workflow BAM_IMPUTE_QUILT {
         .groupTuple()
 
     GLIMPSE2_LIGATE(ligate_input)
-    ch_versions = ch_versions.mix(GLIMPSE2_LIGATE.out.versions.first())
 
     BCFTOOLS_INDEX(GLIMPSE2_LIGATE.out.merged_variants)
 
