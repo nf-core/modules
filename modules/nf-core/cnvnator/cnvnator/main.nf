@@ -48,7 +48,7 @@ process CNVNATOR_CNVNATOR {
     def args      = task.ext.args   ?: ''
     output_meta   = bam             ? meta                : meta2
     prefix        = task.ext.prefix ?: "${output_meta.id}"
-    def touch_cmd = args.contains("-call") ? "touch ${prefix}.tab" : "touch ${prefix}_${step}.root"
+    def touch_cmd = args.contains("-call") ? "touch ${prefix}.tab" : "touch ${prefix}.root"
     """
     ${touch_cmd}
     """
