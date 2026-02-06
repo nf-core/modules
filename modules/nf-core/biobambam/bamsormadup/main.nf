@@ -3,7 +3,9 @@ process BIOBAMBAM_BAMSORMADUP {
     label "process_medium"
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ? 'https://depot.galaxyproject.org/singularity/biobambam:2.0.183--h9f5acd7_1' : 'biocontainers/biobambam:2.0.183--h9f5acd7_1'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/biobambam:2.0.183--h9f5acd7_1' :
+        'biocontainers/biobambam:2.0.183--h9f5acd7_1'}"
 
     input:
     tuple val(meta) , path(bams, stageAs: "?/*")
