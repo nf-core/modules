@@ -21,7 +21,7 @@ process BAMCLIPPER {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def _prefix = task.ext.prefix ?: "${meta.id}" // WARN: Software does not allow to change output name
     def VERSION = '1.0.0' // WARN: Version information not provided by tool on CLI
     """
     bamclipper.sh \\
@@ -38,7 +38,6 @@ process BAMCLIPPER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.0.0'
     """

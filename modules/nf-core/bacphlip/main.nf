@@ -20,7 +20,7 @@ process BACPHLIP {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def _prefix = task.ext.prefix ?: "${meta.id}" // WARN: Software does not allow to change output name
     def VERSION = '0.9.6' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     bacphlip \\

@@ -19,7 +19,7 @@ process BWAMETH_INDEX {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def _args = task.ext.args ?: '' // WARN: Software does not take external argument
     def index_cmd = use_mem2 ? "index-mem2" : "index"
     """
 
@@ -34,7 +34,6 @@ process BWAMETH_INDEX {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     """
     rm $fasta
 

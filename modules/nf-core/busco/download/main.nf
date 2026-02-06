@@ -19,7 +19,7 @@ process BUSCO_DOWNLOAD {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${lineage}"
+    def _prefix = task.ext.prefix ?: "${lineage}" // WARN: Software does not allow to change output name
     """
     busco \\
         --download $lineage \\
@@ -32,7 +32,6 @@ process BUSCO_DOWNLOAD {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     """
     mkdir busco_downloads
 

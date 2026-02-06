@@ -20,7 +20,7 @@ process BISMARK_DEDUPLICATE {
 
     script:
     def args    = task.ext.args ?: ''
-    def prefix  = task.ext.prefix ?: "${meta.id}"
+    def _prefix  = task.ext.prefix ?: "${meta.id}" // WARN: Software does not allow to change output name
     def seqtype = meta.single_end ? '-s' : '-p'
     """
     deduplicate_bismark \\
