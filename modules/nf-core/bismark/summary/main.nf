@@ -21,7 +21,6 @@ process BISMARK_SUMMARY {
     task.ext.when == null || task.ext.when
 
     script:
-    def _args = task.ext.args ?: ''  // WARN: Software does not take external argument
     """
     bismark2summary ${bam.join(' ')}
 

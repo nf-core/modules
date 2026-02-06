@@ -19,7 +19,6 @@ process BUSCO_DOWNLOAD {
 
     script:
     def args = task.ext.args ?: ''
-    def _prefix = task.ext.prefix ?: "${lineage}" // WARN: Software does not allow to change output name
     """
     busco \\
         --download $lineage \\
