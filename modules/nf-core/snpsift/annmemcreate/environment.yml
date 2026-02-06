@@ -1,8 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
 dependencies:
-  # renovate: datasource=conda depName=bioconda/varlociraptor
-  - bioconda::varlociraptor=8.9.3
+  - bioconda::htslib=1.23
+  - bioconda::snpsift=5.4.0a
