@@ -79,7 +79,6 @@ workflow VCF_IMPUTE_BEAGLE5 {
 
     // Run BEAGLE5 imputation
     BEAGLE5_BEAGLE(ch_beagle_input)
-    ch_versions = ch_versions.mix(BEAGLE5_BEAGLE.out.versions.first())
 
     // Index the imputed VCF files
     BCFTOOLS_INDEX_PHASE(BEAGLE5_BEAGLE.out.vcf)

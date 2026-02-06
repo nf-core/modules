@@ -16,7 +16,7 @@ process GATK4_VARIANTFILTRATION {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    tuple val(meta), path("*.tbi"),    emit: tbi
+    tuple val(meta), path("*.tbi"), emit: tbi
     tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
