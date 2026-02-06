@@ -29,7 +29,6 @@ process GATK4_INTERVALLISTTOOLS {
         avail_mem = (task.memory.mega * 0.8).intValue()
     }
     """
-
     mkdir ${prefix}_split
 
     gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
@@ -48,7 +47,6 @@ process GATK4_INTERVALLISTTOOLS {
         newName = os.path.join(directory, str(i + 1) + filename)
         os.rename(interval, newName)
     CODE
-
     """
 
     stub:
@@ -62,6 +60,5 @@ process GATK4_INTERVALLISTTOOLS {
     touch ${prefix}_split/temp_0002_of_6/2scattered.interval_list
     touch ${prefix}_split/temp_0003_of_6/3scattered.interval_list
     touch ${prefix}_split/temp_0004_of_6/4scattered.interval_list
-
     """
 }
