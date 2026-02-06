@@ -77,21 +77,21 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             def dir = new File(process.out.plots[0][1])
             def list = []
             dir.eachFileRecurse { file -> list << file.getName() }
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.tbi,
                     list.sort(),
                     process.out.rdata,
-                    process.out.versions,
                     process.out.vcf.collect{ meta, vcf -> [
                         meta,
                         path(vcf).vcf.header.getGenotypeSamples().sort(),
                         path(vcf).vcf.variantsMD5
-                    ]}
+                    ]},
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -120,17 +120,17 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             def dir = new File(process.out.plots[0][1])
             def list = []
             dir.eachFileRecurse { file -> list << file.getName() }
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.vcf,
                     process.out.tbi,
                     list.sort(),
                     process.out.rdata,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -160,17 +160,17 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.tbi,
                     process.out.rdata,
-                    process.out.versions,
                     process.out.vcf.collect{ meta, vcf -> [
                         meta,
                         path(vcf).vcf.header.getGenotypeSamples().sort(),
                         path(vcf).vcf.variantsMD5
-                    ]}
+                    ]},
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -213,19 +213,20 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.tbi,
                     process.out.rdata,
-                    process.out.versions,
                     process.out.vcf.collect{ meta, vcf -> [
                         meta,
                         path(vcf).vcf.header.getGenotypeSamples().sort(),
                         path(vcf).vcf.variantsMD5
-                    ]}
+                    ]},
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
     }
+
 }
