@@ -30,16 +30,14 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                            file(process.out.metrics[0][1]).name,
-                            process.out.versions
-                        ).match()
-                }
+                    file(process.out.metrics[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("homo_sapiens - cram") {
@@ -63,16 +61,14 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                            file(process.out.metrics[0][1]).name,
-                            process.out.versions
-                        ).match()
-                }
+                    file(process.out.metrics[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("homo sapiens - bam - stub") {
@@ -98,16 +94,13 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                            file(process.out.metrics[0][1]).name,
-                            process.out.versions
-                        ).match()
-                }
+                    file(process.out.metrics[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
-
 }
