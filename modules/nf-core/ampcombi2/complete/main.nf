@@ -22,7 +22,7 @@ process AMPCOMBI2_COMPLETE {
     def args = task.ext.args ?: ''
     """
     ampcombi complete \\
-        --summaries_files '${summaries.collect{"$it"}.join("' '")}' \\
+        --summaries_files '${summaries.collect{file_path -> "$file_path"}.join("' '")}' \\
         ${args}
 
     cat <<-END_VERSIONS > versions.yml

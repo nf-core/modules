@@ -52,7 +52,6 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
 
     // in order to map uBAM using BWA MEM, we need to convert uBAM to FASTQ
     BAM2FASTQ_PRE ( FASTQTOBAM.out.bam, false )
-    ch_versions = ch_versions.mix(BAM2FASTQ_PRE.out.versions)
 
     // the user can choose here to use either bwa-mem (default) or bwa-mem2
     aligned_bam = channel.empty()
@@ -126,7 +125,6 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     // now the consensus uBAM needs to be converted into FASTQ again
     // to be aligned
     BAM2FASTQ_POST ( FILTERCONSENSUS.out.bam, false )
-    ch_versions = ch_versions.mix(BAM2FASTQ_POST.out.versions)
 
     if (aligner == "bwa-mem") {
         // index made available through previous steps

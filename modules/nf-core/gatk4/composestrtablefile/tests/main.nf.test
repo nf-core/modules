@@ -24,15 +24,14 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     file(process.out.str_table[0]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
         }
     }
-
 }
