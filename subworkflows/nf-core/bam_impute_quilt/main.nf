@@ -55,7 +55,6 @@ workflow BAM_IMPUTE_QUILT {
         }
 
     QUILT_QUILT(ch_bam_params, ch_fasta)
-    ch_versions = ch_versions.mix(QUILT_QUILT.out.versions.first())
 
     // Ligate all phased files in one and index it
     ligate_input = QUILT_QUILT.out.vcf
