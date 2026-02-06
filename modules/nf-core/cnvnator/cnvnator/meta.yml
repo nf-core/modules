@@ -60,6 +60,9 @@ input:
         description: Path to a fasta file index
         pattern: "*.fai"
         ontologies: []
+  - - step:
+        type: string
+        description: One of "his", "rd", "call", "stat", and "partition"
 output:
   root:
     - - output_meta:

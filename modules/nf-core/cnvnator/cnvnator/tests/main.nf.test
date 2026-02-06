@@ -23,6 +23,7 @@ nextflow_process {
                 input[1] = [[:],[]]
                 input[2] = [[:],[]]
                 input[3] = [[:],[]]
+                input[4] = "rd"
                 """
             }
         }
@@ -35,6 +36,7 @@ nextflow_process {
                 input[1] = CNVNATOR_RD.out.root
                 input[2] = [[:],[]]
                 input[3] = [[:],[]]
+                input[4] = "his"
                 """
             }
         }
@@ -47,6 +49,7 @@ nextflow_process {
                 input[1] = CNVNATOR_HIST.out.root
                 input[2] = [[:],[]]
                 input[3] = [[:],[]]
+                input[4] = "stat"
                 """
             }
         }
@@ -59,6 +62,7 @@ nextflow_process {
                 input[1] = CNVNATOR_STAT.out.root
                 input[2] = [[:],[]]
                 input[3] = [[:],[]]
+                input[4] = "partition"
                 """
             }
         }
@@ -79,6 +83,7 @@ nextflow_process {
                 input[1] = CNVNATOR_PARTITION.out.root
                 input[2] = [[:],[]]
                 input[3] = [[:],[]]
+                input[4] = "call"
                 """
             }
         }
@@ -86,7 +91,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.tab,
+                    process.out,
                     process.out.findAll { key, val -> key.startsWith("versions") },
                     process.out.root.collect{ file(it[1]).name }
                 ).match()}
@@ -111,6 +116,7 @@ nextflow_process {
                 input[1] = CNVNATOR_PARTITION.out.root
                 input[2] = [[:],[]]
                 input[3] = [[:],[]]
+                input[4] = "call"
                 """
             }
         }
@@ -118,7 +124,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.tab,
+                    process.out,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )

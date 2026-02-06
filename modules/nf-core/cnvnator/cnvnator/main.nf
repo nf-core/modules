@@ -12,9 +12,10 @@ process CNVNATOR_CNVNATOR {
     tuple val(meta2), path(root)
     tuple val(meta3), path(fasta)
     tuple val(meta4), path(fai)
+    val step
 
     output:
-    tuple val(output_meta), path("${prefix}${step}.root"), emit: root, optional: true
+    tuple val(output_meta), path("${prefix}_${step}.root"), emit: root, optional: true
     tuple val(output_meta), path("${prefix}.tab") , emit: tab, optional: true
     tuple val("${task.process}"), val('cnvnator'), eval("cnvnator 2>&1 | sed -n '3s/CNVnator v//p'"), topic: versions, emit: versions_cnvnator
 
@@ -31,17 +32,14 @@ process CNVNATOR_CNVNATOR {
     } else {
         reference = ''
     }
-    step = args.contains("-call") ? "_call"
-            : args.contains("-stat") ? "_stat"
-            : args.contains("-his") ? "_his"
-            : args.contains("-partition") ? "_partition" : "_rd"
     def calls_cmd = args.contains("-call") ? "> ${prefix}.tab" : ''
-    def cp_cmd    = root ? "cp ${root} input.root" :""
-    def mv_cmd    = args.contains("-call") ? "" : "mv input.root ${prefix}${step}.root"
+    mv_cmd    = "mv ${prefix}.root ${prefix}_${step}.root"
+    steps     = ["his", "stat", "partition", "call"]
+    cp_cmd    = steps.contains(step) ? "cp ${root} ${prefix}.root" :""
     """
     ${cp_cmd}
     cnvnator \\
-        -root input.root \\
+        -root ${prefix}.root \\
         ${args} \\
         ${reference} \\
         ${input_cmd} \\
@@ -53,11 +51,7 @@ process CNVNATOR_CNVNATOR {
     def args      = task.ext.args   ?: ''
     output_meta   = bam             ? meta                : meta2
     prefix        = task.ext.prefix ?: "${output_meta.id}"
-    step = args.contains("-call") ? "_call"
-            : args.contains("-stat") ? "_stat"
-            : args.contains("-his") ? "_his"
-            : args.contains("-partition") ? "_partition" : "_rd"
-    def touch_cmd = args.contains("-call") ? "touch ${prefix}.tab" : "touch ${prefix}${step}.root"
+    def touch_cmd = args.contains("-call") ? "touch ${prefix}.tab" : "touch ${prefix}_${step}.root"
     """
     ${touch_cmd}
     """
