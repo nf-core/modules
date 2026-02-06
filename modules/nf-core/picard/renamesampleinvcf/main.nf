@@ -13,7 +13,7 @@ process PICARD_RENAMESAMPLEINVCF {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('picard'), eval("picard RenameSampleInVcf --version 2>&1 | sed -n 's/^Version:*//p'"), topic: versions, emit: versions_picard
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,19 +37,11 @@ process PICARD_RENAMESAMPLEINVCF {
         --OUTPUT ${prefix}_renam.vcf.gz \\
         $extended_args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(picard RenameSampleInVcf --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}_renam.vcf.gz
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(picard RenameSampleInVcf --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
     """
 }

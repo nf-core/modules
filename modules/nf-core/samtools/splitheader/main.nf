@@ -14,7 +14,7 @@ process SAMTOOLS_SPLITHEADER {
     tuple val(meta), path("*_readgroups.txt"), emit: readgroup
     tuple val(meta), path("*_programs.txt")  , emit: programs
     tuple val(meta), path("*_sequences.txt") , emit: sequences
-    path  "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,11 +33,6 @@ process SAMTOOLS_SPLITHEADER {
         >( grep '^@PG' > ${prefix}_programs.txt ) \
         >( grep '^@SQ' > ${prefix}_sequences.txt ) \
      > /dev/null
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -46,10 +41,5 @@ process SAMTOOLS_SPLITHEADER {
     echo -e "@RG\\tID:${prefix}\\tSM:${prefix}\\tPL:ILLUMINA" > ${prefix}_readgroups.txt
     echo -e "@PG\\tID:samtools.4\\tPN:samtools\\tPP:samtools.3\\tVN:1.22.1\\tCL:samtools view -H ${input}" > ${prefix}_programs.txt
     echo -e "@SQ\\tSN:chr1\\tLN:10000" > ${prefix}_sequences.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }

@@ -15,7 +15,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_raw_matrix.h5ad', checkIfExists: true)
                 ])
@@ -36,7 +36,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.value([
+                input[0] = channel.value([
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_raw_matrix.h5ad', checkIfExists: true)
                 ])

@@ -40,7 +40,6 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
             [] // known sites
         )
         ch_alignment = PARABRICKS_FQ2BAMMETH.out.bam
-        ch_versions  = ch_versions.mix(PARABRICKS_FQ2BAMMETH.out.versions)
     } else {
         /*
         * Align with CPU version of bwameth
@@ -71,7 +70,6 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
         ch_alignment
     )
     ch_alignment_index = SAMTOOLS_INDEX_ALIGNMENTS.out.bai
-    ch_versions        = ch_versions.mix(SAMTOOLS_INDEX_ALIGNMENTS.out.versions)
 
     /*
      * Run samtools flagstat
@@ -80,7 +78,6 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
         ch_alignment.join(ch_alignment_index)
     )
     ch_samtools_flagstat = SAMTOOLS_FLAGSTAT.out.flagstat
-    ch_versions          = ch_versions.mix(SAMTOOLS_FLAGSTAT.out.versions)
 
     /*
      * Run samtools stats
@@ -109,8 +106,6 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
         ch_alignment       = PICARD_MARKDUPLICATES.out.bam
         ch_alignment_index = SAMTOOLS_INDEX_DEDUPLICATED.out.bai
         ch_picard_metrics  = PICARD_MARKDUPLICATES.out.metrics
-        ch_versions        = ch_versions.mix(PICARD_MARKDUPLICATES.out.versions)
-        ch_versions        = ch_versions.mix(SAMTOOLS_INDEX_DEDUPLICATED.out.versions)
     }
 
     /*

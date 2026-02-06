@@ -27,7 +27,6 @@ workflow FASTQ_ALIGN_BWA {
     //
 
     BAM_SORT_STATS_SAMTOOLS ( BWA_MEM.out.bam, ch_fasta )
-    ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS.out.versions)
 
     emit:
     bam_orig = BWA_MEM.out.bam                      // channel: [ val(meta), path(bam) ]

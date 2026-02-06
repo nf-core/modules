@@ -29,13 +29,13 @@ process HMMER_HMMFETCH {
     def prefix  = task.ext.prefix ?: "${meta.id}"
     def keyarg  = key ?: ''
     def kfopt   = keyfile ? '-f' : ''
-    def index   = ! key && ! keyfile ? '--index' : ''
+    def index_opt   = ! key && ! keyfile ? '--index' : ''
     def outfile = ! key && ! keyfile ? '' : "> ${prefix}.hmm"
 
     """
     hmmfetch \\
         $kfopt \\
-        $index \\
+        $index_opt \\
         $args \\
         $hmm \\
         $keyarg \\

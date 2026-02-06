@@ -15,8 +15,6 @@ workflow FASTQ_ALIGN_BWAALN {
 
     main:
 
-    ch_versions = Channel.empty()
-
     // WARNING: You must specify in your prefix `meta.id_index` in your `modules.conf`
     // to ensure that you do not overwrite multiple BAM files from one sample mapped
     // against multiple references. This meta map is added by the subworkflow but can be removed
@@ -55,7 +53,6 @@ workflow FASTQ_ALIGN_BWAALN {
 
     // Alignment and conversion to bam
     BWA_ALN ( ch_preppedinput_for_bwaaln.reads, ch_preppedinput_for_bwaaln.index )
-    ch_versions = ch_versions.mix( BWA_ALN.out.versions.first() )
 
     ch_sai_for_bam = ch_reads_newid
                         .join ( BWA_ALN.out.sai )
@@ -84,16 +81,13 @@ workflow FASTQ_ALIGN_BWAALN {
 
 
     BWA_SAMPE ( ch_sai_for_bam_pe.reads, ch_sai_for_bam_pe.index )
-    ch_versions = ch_versions.mix( BWA_SAMPE.out.versions.first() )
 
     BWA_SAMSE ( ch_sai_for_bam_se.reads, ch_sai_for_bam_se.index )
-    ch_versions = ch_versions.mix( BWA_SAMSE.out.versions.first() )
 
     ch_bam_for_index = BWA_SAMPE.out.bam.mix( BWA_SAMSE.out.bam )
 
     // Index all
     SAMTOOLS_INDEX ( ch_bam_for_index )
-    ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
 
     // Remove superfluous internal maps to minimise clutter as much as possible
     ch_bam_for_emit = ch_bam_for_index.map{ meta, bam -> [meta - meta.subMap('key_read_ref'), bam] }
@@ -106,6 +100,4 @@ workflow FASTQ_ALIGN_BWAALN {
     bam      = ch_bam_for_emit     // channel: [ val(meta), path(bam) ]
     bai      = ch_bai_for_emit     // channel: [ val(meta), path(bai) ]
     csi      = ch_csi_for_emit     // channel: [ val(meta), path(csi) ]
-
-    versions = ch_versions         // channel: [ path(versions.yml) ]
 }
