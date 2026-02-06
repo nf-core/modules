@@ -27,7 +27,7 @@ input:
         ontologies:
           - edam: http://edamontology.org/format_3989 # GZIP format
           - edam: http://edamontology.org/format_1930 # FASTQ
-  - - meta1:
+  - - meta2:
         type: map
         description: |
           Groovy Map containing fasta information
@@ -37,60 +37,220 @@ input:
         pattern: "*.fasta"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing index information
-    - index:
-        type: file
-        description: reference BWA index
-        pattern: "*.{amb,ann,bwt,pac,sa}"
-        ontologies: []
   - - meta3:
         type: map
         description: |
           Groovy Map containing genome lib dir information
-    - genome_lib_dir:
+    - index:
         type: directory
         description: Path to a genome resource library directory. The indexing
           required to run STAR should be completed by the user beforehand.
         pattern: "*"
         ontologies: []
+  - qc_metrics:
+      type: boolean
+      description: Optionally report QC metrics
+  - mark_duplicates:
+      type: boolean
+      description: Optionally mark duplicates 
 output:
+  log_final:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*Log.final.out":
+          type: file
+          description: STAR final log file
+          pattern: "*Log.final.out"
+          ontologies: []
+  log_out:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*Log.out":
+          type: file
+          description: STAR lot out file
+          pattern: "*Log.out"
+          ontologies: []
+  log_progress:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*Log.progress.out":
+          type: file
+          description: STAR log progress file
+          pattern: "*Log.progress.out"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
   bam:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.bam":
+      - "${prefix}.bam":
           type: file
-          description: Sorted BAM file
-          pattern: "*.bam"
-          ontologies:
-            - edam: http://edamontology.org/format_2572 # BAM
+          description: Output BAM file containing read alignments
+          pattern: "*.{bam}"
+          ontologies: []
   bai:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.bai":
+      - "${prefix}.bam.bai":
           type: file
-          description: index corresponding to sorted BAM file
-          pattern: "*.bai"
+          description: Output BAM index file
+          pattern: "*.{bam}.{bai}"
+          ontologies: []
+  bam_sorted:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.sortedByCoord.out.bam:
+          type: file
+          description: Sorted BAM file of read alignments (optional)
+          pattern: "*sortedByCoord.out.bam"
+          ontologies: []
+  bam_sorted_aligned:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.Aligned.sortedByCoord.out.bam:
+          type: file
+          description: Sorted BAM file of read alignments (optional)
+          pattern: "*.Aligned.sortedByCoord.out.bam"
+          ontologies: []
+  bam_transcript:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*toTranscriptome.out.bam":
+          type: file
+          description: Output BAM file of transcriptome alignment (optional)
+          pattern: "*toTranscriptome.out.bam"
+          ontologies: []
+  bam_unsorted:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*Aligned.unsort.out.bam":
+          type: file
+          description: Unsorted BAM file of read alignments (optional)
+          pattern: "*Aligned.unsort.out.bam"
+          ontologies: []
+  fastq:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*fastq.gz":
+          type: file
+          description: Unmapped FastQ files (optional)
+          pattern: "*fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3327 # BAI
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tab:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tab":
+          type: file
+          description: STAR output tab file(s) (optional)
+          pattern: "*.tab"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  spl_junc_tab:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.SJ.out.tab":
+          type: file
+          description: STAR output splice junction tab file
+          pattern: "*.SJ.out.tab"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  read_per_gene_tab:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.ReadsPerGene.out.tab":
+          type: file
+          description: STAR output read per gene tab file
+          pattern: "*.ReadsPerGene.out.tab"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   junction:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "Chimeric.out.junction":
+      - "*.out.junction":
           type: file
-          description: Chimeric junction output file
-          pattern: "Chimeric.out.junction"
+          description: STAR chimeric junction output file (optional)
+          pattern: "*.out.junction"
+          ontologies: []
+  sam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.out.sam":
+          type: file
+          description: STAR output SAM file(s) (optional)
+          pattern: "*.out.sam"
+          ontologies: []
+  wig:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.wig":
+          type: file
+          description: STAR output wiggle format file(s) (optional)
+          pattern: "*.wig"
+          ontologies: []
+  bedgraph:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bg":
+          type: file
+          description: STAR output bedGraph format file(s) (optional)
+          pattern: "*.bg"
           ontologies: []
   qc_metrics:
     - - meta:
@@ -99,9 +259,10 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*_qc_metrics":
-          type: directory
-          description: (optional) optional directory of qc metrics
-          pattern: "*_qc_metrics"
+          type: file
+          description: Path of the directory where QC metrics will be generated. (optional)
+          pattern: "${prefix}_qc_metrics"
+          ontologies: []
   duplicate_metrics:
     - - meta:
           type: map
@@ -110,31 +271,9 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.duplicate-metrics.txt":
           type: file
-          description: (optional) metrics calculated from marking duplicates in the
-            bam file
-          pattern: "*.duplicate-metrics.txt"
+          description: Path of duplicate metrics file after marking duplicates. (optional)
+          pattern: "${prefix}.duplicate-metrics.txt"
           ontologies: []
-  versions_parabricks:
-    - - ${task.process}:
-          type: string
-          description: The process the versions were collected from
-      - parabricks:
-          type: string
-          description: The tool name
-      - "pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'":
-          type: string
-          description: The command used to generate the version of the tool
-topics:
-  versions:
-    - - ${task.process}:
-          type: string
-          description: The process the versions were collected from
-      - parabricks:
-          type: string
-          description: The tool name
-      - "pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'":
-          type: string
-          description: The command used to generate the version of the tool
 authors:
   - "@gburnett-nvidia"
 maintainers:
