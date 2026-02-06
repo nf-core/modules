@@ -1,5 +1,5 @@
 process BCLCONVERT {
-    tag {"$meta.lane" ? "$meta.id"+"."+"$meta.lane" : "$meta.id" }
+    tag { "${meta.lane}" ? "${meta.id}" + "." + "${meta.lane}" : "${meta.id}" }
     label 'process_high'
 
     container "nf-core/bclconvert:4.4.6"
@@ -15,7 +15,8 @@ process BCLCONVERT {
     tuple val(meta), path("output/Reports")                           , emit: reports
     tuple val(meta), path("output/Logs")                              , emit: logs
     tuple val(meta), path("output/InterOp/*.bin")                     , emit: interop         , optional:true
-    path("versions.yml")                                              , emit: versions
+    tuple val(meta), path("output/**/RunInfo.xml")                    , emit: runinfo
+    tuple val("${task.process}"), val('bclconvert'), eval("bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //'"), topic: versions, emit: versions_bclconvert
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +24,7 @@ process BCLCONVERT {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "BCLCONVERT module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("BCLCONVERT module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
@@ -37,27 +38,27 @@ process BCLCONVERT {
 
     if ${input_tar}; then
         ## Ensures --strip-components only applied when top level of tar contents is a directory
-        ## If just files or multiple directories, place all in $input_dir
+        ## If just files or multiple directories, place all in ${input_dir}
 
         if [[ \$(tar -taf ${run_dir} | grep -o -P "^.*?\\/" | uniq | wc -l) -eq 1 ]]; then
             tar \\
-                -C $input_dir --strip-components 1 \\
+                -C ${input_dir} --strip-components 1 \\
                 -xavf \\
-                $args2 \\
-                $run_dir \\
-                $args3
+                ${args2} \\
+                ${run_dir} \\
+                ${args3}
         else
             tar \\
-                -C $input_dir \\
+                -C ${input_dir} \\
                 -xavf \\
-                $args2 \\
-                $run_dir \\
-                $args3
+                ${args2} \\
+                ${run_dir} \\
+                ${args3}
         fi
     fi
 
     bcl-convert \\
-        $args \\
+        ${args} \\
         --output-directory output \\
         --bcl-input-directory ${input_dir} \\
         --sample-sheet ${samplesheet}
@@ -65,11 +66,6 @@ process BCLCONVERT {
     # copy the InterOp folder contents to ensure it gets picked up when using fusion
     mkdir -p output/InterOp/
     cp -n **/InterOp/*.bin output/InterOp/
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bclconvert: \$(bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //')
-    END_VERSIONS
     """
 
     stub:
@@ -102,10 +98,5 @@ process BCLCONVERT {
     touch output/InterOp/IndexMetricsOut.bin
     touch output/InterOp/QMetricsOut.bin
     touch output/InterOp/TileMetricsOut.bin
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bclconvert: \$(bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //')
-    END_VERSIONS
     """
-
 }
