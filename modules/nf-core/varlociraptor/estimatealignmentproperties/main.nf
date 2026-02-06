@@ -12,7 +12,7 @@ process VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES {
 
     output:
     tuple val(meta), path("*.alignment-properties.json"), emit: alignment_properties_json
-    tuple val("${task.process}"), val('varlociraptor'), eval("varlociraptor --version | sed -E 's/.*varlociraptor[: ]+([^[:space:]:]+).*/\\1/'"), topic: versions, emit: versions_varlociraptor
+    tuple val("${task.process}"), val('varlociraptor'), eval("varlociraptor --version | sed 's/^varlociraptor //'"), topic: versions, emit: versions_varlociraptor
 
     when:
     task.ext.when == null || task.ext.when

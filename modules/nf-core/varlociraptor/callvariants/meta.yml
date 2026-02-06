@@ -58,7 +58,7 @@ output:
       - varlociraptor:
           type: string
           description: The tool name
-      - "varlociraptor --version | sed -E 's/.*varlociraptor[: ]+([^[:space:]:]+).*/\\1/'":
+      - "varlociraptor --version | sed 's/^varlociraptor //'":
           type: string
           description: The command used to generate the version of the tool
 topics:
@@ -69,7 +69,7 @@ topics:
       - varlociraptor:
           type: string
           description: The tool name
-      - "varlociraptor --version | sed -E 's/.*varlociraptor[: ]+([^[:space:]:]+).*/\\1/'":
+      - "varlociraptor --version | sed 's/^varlociraptor //'":
           type: string
           description: The command used to generate the version of the tool
 authors:
