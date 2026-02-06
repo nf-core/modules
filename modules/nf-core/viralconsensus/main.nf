@@ -18,7 +18,7 @@ process VIRALCONSENSUS {
     tuple val(meta), path("*.consensus.fa"), emit: fasta
     tuple val(meta), path("*.pos_counts.tsv"), optional: true, emit: pos_counts
     tuple val(meta), path("*.ins_counts.json"), optional: true, emit: ins_counts
-    tuple val("${task.process}"), val('viralconsensus'), eval("viral_consensus --version 2>&1 | head -n1 | sed 's/ViralConsensus //'"), topic: versions, emit: versions_viralconsensus
+    tuple val("${task.process}"), val('viralconsensus'), eval("viral_consensus --version 2>&1 | sed 's/.*v//'"), topic: versions, emit: versions_viralconsensus
 
     when:
     task.ext.when == null || task.ext.when
