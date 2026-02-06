@@ -31,7 +31,7 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.contigs[0][1]).name,
                     file(process.out.log[0][1]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() },
                 { assert path(process.out.log[0][1]).readLines().last().contains("Done!") }
             )
@@ -59,7 +59,7 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.contigs[0][1]).name,
                     file(process.out.log[0][1]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() },
                 { assert path(process.out.log[0][1]).readLines().last().contains("Done!") }
             )
@@ -108,7 +108,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("stub_versions") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("stub_versions") }
             )
         }
 

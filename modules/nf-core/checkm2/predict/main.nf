@@ -14,7 +14,7 @@ process CHECKM2_PREDICT {
     output:
     tuple val(meta), path("${prefix}")                   , emit: checkm2_output
     tuple val(meta), path("${prefix}_checkm2_report.tsv"), emit: checkm2_tsv
-    path("versions.yml")                                 , emit: versions
+    tuple val("${task.process}"), val('checkm2'), eval('checkm2 --version'), topic: versions, emit: versions_checkm2_predict
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,11 +32,6 @@ process CHECKM2_PREDICT {
         ${args}
 
     cp ${prefix}/quality_report.tsv ${prefix}_checkm2_report.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        checkm2: \$(checkm2 --version)
-    END_VERSIONS
     """
 
     stub:
@@ -44,10 +39,5 @@ process CHECKM2_PREDICT {
     """
     mkdir ${prefix}/
     touch ${prefix}_checkm2_report.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        checkm2: \$(checkm2 --version)
-    END_VERSIONS
     """
 }

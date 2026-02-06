@@ -67,7 +67,6 @@ workflow FASTQ_TRIM_FASTP_FASTQC {
         ch_trim_log          = FASTP.out.log
         ch_trim_reads_fail   = FASTP.out.reads_fail
         ch_trim_reads_merged = FASTP.out.reads_merged
-        ch_versions       = ch_versions.mix(FASTP.out.versions.first())
 
         //
         // Filter empty FastQ files after adapter trimming so FastQC doesn't fail

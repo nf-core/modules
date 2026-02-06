@@ -5,7 +5,7 @@ process AMULETY_BALMPAIRED {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ae/aea48b124541c99138bf28ece7a27bcad3398aa2dc9812c4804b2ae0fd919024/data':
+        'oras://community.wave.seqera.io/library/amulety_wget:d69a2bc09a42a8b2':
         'community.wave.seqera.io/library/amulety_wget:2ecd2554d8d6f58e' }"
 
     input:
@@ -20,30 +20,24 @@ process AMULETY_BALMPAIRED {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    TRANSFORMERS_CACHE="./cache" amulety \\
-        balm-paired \\
-        ${args} \\
-        ${tsv} \\
-        ${chain} \\
-        ${prefix}.tsv
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/amulety/embed instead
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        amulety: \$( amulety --help 2>&1 | grep -o "version [0-9\\.]\\+" | grep -o "[0-9\\.]\\+" )
-    END_VERSIONS
-    """
+Reason:
+This module is no longer fit for purpose because the syntax for amulety has been updated in version 2.x.
+The new 'embed' command now covers the embedding functionality for all embeddings.
+
+"""
+    assert false: deprecation_message
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    touch ${prefix}.tsv
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/amulety/embed instead
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        amulety: \$( amulety --help 2>&1 | grep -o "version [0-9\\.]\\+" | grep -o "[0-9\\.]\\+" )
-    END_VERSIONS
-    """
+Reason:
+This module is no longer fit for purpose because the syntax for amulety has been updated in version 2.x.
+The new 'embed' command now covers the embedding functionality for all embeddings.
+
+"""
+    assert false: deprecation_message
 }
