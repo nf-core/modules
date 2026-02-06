@@ -189,7 +189,7 @@ output:
       - glimpse2:
           type: string
           description: The name of the tool
-      - "GLIMPSE2_concordance --help | sed -n '/Version.*v/s/.*v\\([0-9.]*\\).*/\\1/p'":
+      - GLIMPSE2_concordance --help | grep -oE 'v[0-9.]+' | cut -c2-:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -200,7 +200,7 @@ topics:
       - glimpse2:
           type: string
           description: The name of the tool
-      - "GLIMPSE2_concordance --help | sed -n '/Version.*v/s/.*v\\([0-9.]*\\).*/\\1/p'":
+      - GLIMPSE2_concordance --help | grep -oE 'v[0-9.]+' | cut -c2-:
           type: eval
           description: The expression to obtain the version of the tool
 authors:

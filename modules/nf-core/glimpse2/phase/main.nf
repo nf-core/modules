@@ -24,7 +24,7 @@ process GLIMPSE2_PHASE {
     output:
     tuple val(meta), path("*.{vcf,vcf.gz,bcf,bgen}"), emit: phased_variants
     tuple val(meta), path("*.txt.gz"), emit: stats_coverage, optional: true
-    tuple val("${task.process}"), val('glimpse2'), eval("GLIMPSE2_phase --help | sed -n '/Version.*v/s/.*v\\([0-9.]*\\).*/\\1/p'"), topic: versions, emit: versions_glimpse2
+    tuple val("${task.process}"), val('glimpse2'), eval("GLIMPSE2_phase --help | grep -oE 'v[0-9.]+' | cut -c2-"), topic: versions, emit: versions_glimpse2
 
     when:
     task.ext.when == null || task.ext.when
