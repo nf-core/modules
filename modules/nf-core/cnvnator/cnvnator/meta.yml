@@ -60,7 +60,7 @@ input:
         description: Path to a fasta file index
         pattern: "*.fai"
         ontologies: []
-  - - step:
+  - step:
         type: string
         description: One of "his", "rd", "call", "stat", and "partition"
 output:
@@ -70,7 +70,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-      - ${prefix}${step}.root:
+      - ${prefix}_${step}.root:
           type: file
           description: A ROOT file
           pattern: "*.root"
