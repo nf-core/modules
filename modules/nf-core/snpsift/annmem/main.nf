@@ -31,7 +31,7 @@ process SNPSIFT_ANNMEM {
     // SnpSift finds it automatically next to the VCF as {vcf}.snpsift.vardb/
     def dbfile_args = dbs.withIndex().collect { db, i ->
         def f = all_fields[i]
-        def fields = f instanceof List ? f.join(',') : f?.replace(';', ',')
+        def fields = f instanceof List ? f.join(',') : f
         def p = prefixes[i]
         "-dbfile ${db}${fields ? " -fields ${fields}" : ''}${p ? " -prefix ${p}" : ''}"
     }

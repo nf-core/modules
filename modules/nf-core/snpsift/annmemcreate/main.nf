@@ -19,7 +19,7 @@ process SNPSIFT_ANNMEMCREATE {
 
     script:
     def args   = task.ext.args ?: ''
-    def fields = db_fields instanceof List ? db_fields.join(',') : db_fields?.replace(';', ',')
+    def fields = db_fields instanceof List ? db_fields.join(',') : db_fields
 
     """
     SnpSift \\
