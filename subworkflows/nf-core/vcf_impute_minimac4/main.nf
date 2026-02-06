@@ -29,7 +29,6 @@ workflow VCF_IMPUTE_MINIMAC4 {
 
     // Compress reference panel to MSAV format
     MINIMAC4_COMPRESSREF(ch_panel_branched.vcf)
-    ch_versions = ch_versions.mix(MINIMAC4_COMPRESSREF.out.versions.first())
 
     ch_panel_msav = MINIMAC4_COMPRESSREF.out.msav.mix(
         ch_panel_branched.msav.map { meta, file, _index -> [meta, file] }
@@ -61,7 +60,6 @@ workflow VCF_IMPUTE_MINIMAC4 {
         }
     // Perform imputation
     MINIMAC4_IMPUTE(ch_minimac4_input)
-    ch_versions = ch_versions.mix(MINIMAC4_IMPUTE.out.versions.first())
 
     // Index the output VCF file
     BCFTOOLS_INDEX_PHASE(MINIMAC4_IMPUTE.out.vcf)
