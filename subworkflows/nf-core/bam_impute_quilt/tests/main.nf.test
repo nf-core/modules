@@ -56,7 +56,7 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out.vcf_index.collect{ meta, vcf, index -> [
-                        meta,
+                        // meta, unstable order of the keys
                         path(vcf).getFileName().toString(),
                         path(index).getFileName().toString(),
                         path(vcf).vcf.summary,
