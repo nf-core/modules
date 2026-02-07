@@ -39,7 +39,6 @@ process BLAST_MAKEBLASTDB {
     """
 
     stub:
-    def args           = task.ext.args ?: ''
     prefix             = task.ext.prefix ?: "${meta.id}"
     def is_compressed  = fasta.getExtension() == "gz" ? true : false
     def fasta_name     = is_compressed ? fasta.getBaseName() : fasta
