@@ -36,7 +36,6 @@ process BUSCO_PHYLOGENOMICS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '20240919' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """

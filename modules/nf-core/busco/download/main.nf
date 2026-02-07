@@ -19,7 +19,6 @@ process BUSCO_DOWNLOAD {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${lineage}"
     """
     busco \\
         --download $lineage \\
@@ -32,7 +31,6 @@ process BUSCO_DOWNLOAD {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     """
     mkdir busco_downloads
 
