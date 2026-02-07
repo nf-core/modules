@@ -33,7 +33,6 @@ process VIENNARNA_RNACOFOLD {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     """
     touch ${rnacofold_fasta.baseName}.csv
     touch ${rnacofold_fasta.baseName}.ps
