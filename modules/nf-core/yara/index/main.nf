@@ -23,7 +23,8 @@ process YARA_INDEX {
     """
     yara_indexer \\
         $fasta \\
-        -o ${fasta}
+        -o ${fasta} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
