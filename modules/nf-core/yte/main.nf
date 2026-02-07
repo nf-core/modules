@@ -28,7 +28,7 @@ process YTE {
     VERSION = "1.9.4"
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping
     """
-    yte ${mapping_cmd} < ${template} > ${prefix}.yaml
+    yte ${mapping_cmd} ${args} < ${template} > ${prefix}.yaml
     """
 
     stub:

@@ -24,6 +24,7 @@ process VIENNARNA_RNACOFOLD {
     RNAcofold < ${rnacofold_fasta} \\
         --jobs=${task.cpus} \\
         --output-format="D" \\
+        ${args} \\
         > ${rnacofold_fasta.baseName}.csv
 
     cat <<-END_VERSIONS > versions.yml
