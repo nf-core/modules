@@ -59,7 +59,6 @@ process WITTYER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     if ("$truth_vcf" == "${prefix}.vcf") {
         error "Input and output names are the same, set prefix in module configuration to disambiguate!"
