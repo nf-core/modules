@@ -58,7 +58,7 @@ nextflow_process {
             script "../../../samtools/index/main.nf"
             process {
                 """
-                input[0] = BWA_MEM.out.bam
+                input[0] = BWA_MEM.out.output
                 """
             }
         }
@@ -99,7 +99,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = BWA_MEM.out.bam.join(SAMTOOLS_INDEX.out.bai, by: [0])
+                input[0] = BWA_MEM.out.output.join(SAMTOOLS_INDEX.out.bai, by: [0])
                 input[1] = true
                 input[2] = false
                 """
@@ -124,7 +124,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = BWA_MEM.out.bam.join(SAMTOOLS_INDEX.out.bai, by: [0])
+                input[0] = BWA_MEM.out.output.join(SAMTOOLS_INDEX.out.bai, by: [0])
                 input[1] = true
                 input[2] = true
                 """
