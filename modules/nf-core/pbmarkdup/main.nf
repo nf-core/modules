@@ -22,8 +22,25 @@ process PBMARKDUP {
     script:
     def args     = task.ext.args  ?: ''
     prefix       = task.ext.prefix ?: "${meta.id}"
-    suffix       = input[0].getExtension()             // To allow multiple input types
+    // To allow multiple input types/files: (compressed) fasta, fastq, bam; Determine suffix from input file names
+    suffix        =
+        input.find {
+            it.name ==~ /.*\.(fasta|fa|fna)(\.gz)?$/ }?.with { f ->
+            f.name.tokenize('.').takeRight(f.name.endsWith('.gz') ? 2 : 1).join('.')
+        } ?:
+        input.find { it.name ==~ /.*\.(fastq|fq)(\.gz)?$/ }?.with { f ->
+            f.name.tokenize('.').takeRight(f.name.endsWith('.gz') ? 2 : 1).join('.')
+        } ?:
+        input[0].extension
     dupfile_name = args.contains('--dup-file') ? (args =~ /--dup-file\s+(\S+)/)[0][1] : ''
+    // PBmarkdup does not automatically gzip output files, even if the output file name ends with .gz.
+    // Gzip the duplicate file in that case
+    def compress_dup_args = (dupfile_name && dupfile_name.endsWith('.gz')) ?
+        """
+        if ! gzip -t "${dupfile_name}" 2>/dev/null; then
+            gzip -c "${dupfile_name}" > tmp.dup.gz && mv "tmp.dup.gz" "${dupfile_name}"
+        fi
+        """ : ''
     def log_args = args.contains('--log-level') ? " > ${prefix}.pbmarkdup.log" : ''
     def file_list = input.collect { it.getName() }.join(' ')
 
@@ -46,8 +63,14 @@ process PBMARKDUP {
         -j ${task.cpus} \\
         ${file_list} \\
         ${prefix}.${suffix} \\
-        $args \\
+        ${args} \\
         ${log_args}
+
+    if [[ ${prefix}.${suffix} == *.gz ]] && ! gzip -t "${prefix}.${suffix}" 2>/dev/null; then
+        gzip -c "${prefix}.${suffix}" > tmp.gz && mv "tmp.gz" "${prefix}.${suffix}"
+    fi
+
+    ${compress_dup_args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -58,7 +81,16 @@ process PBMARKDUP {
     stub:
     def args      = task.ext.args  ?: ''
     prefix        = task.ext.prefix ?: "${meta.id}"
-    suffix        = input[0].getExtension()             // To allow multiple input types
+    // To allow multiple input types/files: (compressed) fasta, fastq, bam; Determine suffix from input file names
+    suffix        =
+        input.find {
+            it.name ==~ /.*\.(fasta|fa|fna)(\.gz)?$/ }?.with { f ->
+            f.name.tokenize('.').takeRight(f.name.endsWith('.gz') ? 2 : 1).join('.')
+        } ?:
+        input.find { it.name ==~ /.*\.(fastq|fq)(\.gz)?$/ }?.with { f ->
+            f.name.tokenize('.').takeRight(f.name.endsWith('.gz') ? 2 : 1).join('.')
+        } ?:
+        input[0].extension
     dupfile_name  = args.contains('--dup-file') ? (args =~ /--dup-file\s+(\S+)/)[0][1] : ''
     def log_args  = args.contains('--log-level') ? " > ${prefix}.pbmarkdup.log" : ''
     def file_list = input.collect { it.getName() }.join(' ')
