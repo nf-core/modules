@@ -54,10 +54,11 @@ nextflow_process {
                 ])
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true)
                 ])
-				input[2] = BWA_INDEX.out.index
-                input[3] = PARABRICKS_STARGENOMEGENERATE.out.index
+                input[2] = PARABRICKS_STARGENOMEGENERATE.out.index
+                input[3] = false
+                input[4] = false
                 """
             }
         }
