@@ -64,6 +64,7 @@ process MINIMAP2_ALIGN {
     """
     touch $output_file
     ${bam_index}
+    echo ${target}
 
     """
 }
