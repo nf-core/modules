@@ -25,8 +25,8 @@ process RASTAIR_MBIASPARSER {
     plot_mbias.R --pdf -o ${prefix}.rastair_mbias_processed.pdf ${rastair_mbias_txt} > ${prefix}.rastair_mbias_processed.txt
 
     parse_mbias.R ${prefix}.rastair_mbias_processed.txt ${prefix}.rastair_mbias_processed.csv
-    export trim_OT=\$(head -n 1 ${prefix}.rastair_mbias_processed.csv)
-    export trim_OB=\$(head -n 2 ${prefix}.rastair_mbias_processed.csv | tail -n 1)
+    export TRIM_OT=\$(head -n 1 ${prefix}.rastair_mbias_processed.csv)
+    export TRIM_OB=\$(head -n 2 ${prefix}.rastair_mbias_processed.csv | tail -n 1)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
