@@ -15,7 +15,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = "--assay-names raw,normalised --contrast_stats_assay 2"
+                module_args = "--assay_names raw,normalised"
             }
             process {
                 """
@@ -33,7 +33,7 @@ nextflow_process {
                 expression_differential.copyTo('second_contrast_stats.tsv')
                 second_contrast_stats = file('second_contrast_stats.tsv')
 
-                contrast_stats_assay = Channel.value(1)
+                contrast_stats_assay = Channel.value(2)
 
                 input[0] = [ [ "id":"SRP254919" ], expression_sample_sheet,  expression_feature_meta, [ raw_expression_matrix_file, normalised_expression_matrix_file ] ]
                 input[1] = [ [ "id":"SRP254919" ], expression_contrasts, [ expression_differential, second_contrast_stats  ] ]
@@ -58,7 +58,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = "--contrast_stats_assay 1"
+                module_args = ""
             }
             process {
                 """
@@ -100,6 +100,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = ""
+            }
             process {
                 """
                 expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'

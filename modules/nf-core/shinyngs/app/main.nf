@@ -53,11 +53,10 @@ process SHINYNGS_APP {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: meta.id
 
     """
-    mkdir -p $prefix
+    mkdir -p ${prefix}
     touch ${prefix}/data.rds
     touch ${prefix}/app.R
 
