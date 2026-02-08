@@ -4,11 +4,6 @@ process WITTYER {
 
     container "nf-core/modules/wittyer:4c55c27c711b558f"
 
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "WITTYER module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-
     input:
     tuple val(meta), path(query_vcf), path(truth_vcf), path(bed), path(wittyer_config)
 
@@ -22,6 +17,10 @@ process WITTYER {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "WITTYER module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args  = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     // you can not define both bed and wittyer_config
@@ -59,7 +58,10 @@ process WITTYER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "WITTYER module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def prefix = task.ext.prefix ?: "${meta.id}"
     if ("$truth_vcf" == "${prefix}.vcf") {
         error "Input and output names are the same, set prefix in module configuration to disambiguate!"
