@@ -1,0 +1,35 @@
+nextflow_process {
+
+    name "Test Process GAPSEQ_DRAFT"
+    script "../main.nf"
+    process "GAPSEQ_DRAFT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gapseq"
+    tag "gapseq/draft"
+
+    test("test draft model creation - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id: 'test' ],
+                    file('test-all-Pathways.tbl'),
+                    file('test-Transporter.tbl')
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
