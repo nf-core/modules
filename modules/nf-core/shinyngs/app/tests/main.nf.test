@@ -4,6 +4,8 @@ nextflow_process {
     script "../main.nf"
     process "SHINYNGS_APP"
 
+    config './nextflow.config'
+
     tag "modules"
     tag "modules_nfcore"
     tag "shinyngs"
@@ -11,9 +13,10 @@ nextflow_process {
 
     test("mouse - multi matrix") {
 
-        config './nextflow.config'
-
         when {
+            params {
+                module_args = "--assay-names raw,normalised --contrast_stats_assay 2"
+            }
             process {
                 """
                 expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
@@ -53,9 +56,10 @@ nextflow_process {
 
     test("mouse - single matrix") {
 
-        config './nextflow.config'
-
         when {
+            params {
+                module_args = "--contrast_stats_assay 1"
+            }
             process {
                 """
                 expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
