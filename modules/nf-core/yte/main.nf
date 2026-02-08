@@ -27,7 +27,7 @@ process YTE {
     def mapping_cmd = map_file ? "--variable-file ${map_file}" : "--variables " + map.collect { k, v -> "${k}=${v}" }.join(' ')
     VERSION = "1.9.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping
     """
-    yte ${mapping_cmd} < ${template} > ${prefix}.yaml
+    yte ${mapping_cmd} ${args} < ${template} > ${prefix}.yaml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
