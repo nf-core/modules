@@ -98,9 +98,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.cleaned_assembly == [] },
                 { assert snapshot(
                     [
+                        process.out.cleaned_assembly[0][1],
                         process.out.adaptor_report[0][1],
                         process.out.log[0][1],
                         process.out.pipeline_args[0][1],

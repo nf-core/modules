@@ -6,8 +6,6 @@ process PHAROKKA_INSTALLDATABASES {
         'https://depot.galaxyproject.org/singularity/pharokka:1.7.3--pyhdfd78af_0':
         'biocontainers/pharokka:1.7.3--pyhdfd78af_0' }"
 
-    input:
-
     output:
     path("${prefix}/")      , emit: pharokka_db
     path "versions.yml"     , emit: versions
@@ -44,7 +42,7 @@ process PHAROKKA_INSTALLDATABASES {
     touch $prefix/CARD_h
     touch $prefix/CARD_h.dbtype
     touch $prefix/CARD_h.index
-    touch $prefix/VFDB_setB_pro.fas.gz
+    echo | gzip > $prefix/VFDB_setB_pro.fas.gz
     touch $prefix/VFDBclusterRes_cluster.tsv
     touch $prefix/VFDBclusterRes_rep_seq.fasta
     touch $prefix/all_phrogs.h3m
