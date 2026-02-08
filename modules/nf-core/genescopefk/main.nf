@@ -3,7 +3,7 @@ process GENESCOPEFK {
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    container 'ghcr.io/nbisweden/fastk_genescopefk_merquryfk:1.2'
+    container 'ghcr.io/nbisweden/fastk_genescopefk_merquryfk:1.3'
 
     input:
     tuple val(meta), path(fastk_histex_histogram)
@@ -37,7 +37,7 @@ process GENESCOPEFK {
         --output . \\
         --name_prefix ${prefix}
 
-    printf -v KMERCOV "%.2f" \$( grep "^kmercov" *_model.txt | cut -d" " -f2 )
+    KMERCOV=\$( awk '/^kmercov/ {printf "%.2f", \$2}' *_model.txt )
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -57,7 +57,7 @@ process GENESCOPEFK {
     touch "${prefix}_transformed_linear_plot.png"
     touch "${prefix}_transformed_log_plot.png"
 
-    printf -v KMERCOV "%.2f" \$( grep "^kmercov" *_model.txt | cut -d" " -f2 )
+    KMERCOV=\$( awk '/^kmercov/ {printf "%.2f", \$2}' *_model.txt )
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
