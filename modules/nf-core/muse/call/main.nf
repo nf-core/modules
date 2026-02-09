@@ -13,7 +13,7 @@ process MUSE_CALL {
 
     output:
     tuple val(meta), path("*.MuSE.txt"), emit: txt
-    path "versions.yml",                 emit: versions
+    tuple val("${task.process}"), val('muse'),  eval("MuSE --version | sed -e 's/MuSE, version //g' | sed -e 's/MuSE v//g'"), topic: versions, emit: versions_muse
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,21 +30,13 @@ process MUSE_CALL {
         -n ${task.cpus} \\
         ${tumor_bam}    \\
         ${normal_bam}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        MuSE: \$( MuSE --version | sed -e "s/MuSE, version //g" | sed -e "s/MuSE v//g")
-    END_VERSIONS
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo ${args}
     touch ${prefix}.MuSE.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        MuSE: \$( MuSE --version | sed -e "s/MuSE, version //g" | sed -e "s/MuSE v//g")
-    END_VERSIONS
     """
 }
