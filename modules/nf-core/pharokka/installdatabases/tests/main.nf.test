@@ -20,7 +20,8 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.pharokka_db[0]).listFiles()
                         .findAll { !it.name.startsWith("VERSION_") }
-                        .sort()
+                        .sort(),
+                    process.out.versions
                 ).match() }
             )
         }
