@@ -33,13 +33,13 @@ output:
           type: map
           description: |
             Groovy Map containing reference information.
-            e.g. [ id:'test', single_end:false ]
-      - bwa:
-          type: map
+            e.g. [ id:'test' ]
+      - ${prefix}:
+          type: directory
           description: |
-            Groovy Map containing reference information.
+            Directory containing bwa index files.
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{amb,ann,bwt,pac,sa}"
+          pattern: "${prefix}/*.{amb,ann,bwt,pac,sa}"
           ontologies:
             - edam: "http://edamontology.org/data_3210" # Genome index
   versions_bwa:
