@@ -58,6 +58,18 @@ output:
           pattern: "*{updated,other}.bam"
           ontologies:
             - edam: "http://edamontology.org/format_2572" # BAM
+  sam:
+    - - meta_bam:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*{updated,other}.sam":
+          type: file
+          description: The updated SAM file contains those fragments that has at least 1 initial
+              alignment to a transposable element.
+          pattern: "*{updated,other}.bam"
+          ontologies:
             - edam: "http://edamontology.org/format_3462" # SAM
   tsv:
     - - meta_bam:
@@ -71,6 +83,16 @@ output:
           pattern: "*.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # tsv
+  log:
+   - - meta_bam:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      "*.log":
+          type: file
+          description: Log file for telescope run output.
+          pattern: "*.log"
   versions:
     - "versions.yml":
         type: file
