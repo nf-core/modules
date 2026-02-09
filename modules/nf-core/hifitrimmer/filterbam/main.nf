@@ -1,5 +1,3 @@
-// Adapte from https://github.com/nf-core/modules/tree/master/modules/nf-core/pb/hifitrimmer/filterbam
-
 process HIFITRIMMER_FILTERBAM {
    tag "$meta.id"
    label 'process_medium'
@@ -26,7 +24,7 @@ process HIFITRIMMER_FILTERBAM {
    def args = task.ext.args ?: ''
    def args2 = task.ext.args2 ?: ''
    def suffix = args.contains('-f') ? "fastq.gz"  : "fasta.gz"
-   def input_convert = !input.name.endsWith('bam') ? "<(samtools import ${input} ${args2} -@ $task.cpus)" : input
+   def input_convert = !input.name.endsWith('bam') ? "<(samtools import ${input} ${args2} -@ ${task.cpus})" : input
    """
    hifi_trimmer filter_bam \\
       -t ${task.cpus} \\
@@ -37,6 +35,7 @@ process HIFITRIMMER_FILTERBAM {
    """
 
    stub:
+   def args = task.ext.args ?: ''
    def prefix = task.ext.prefix ?: "${meta.id}"
    def suffix = args.contains('-f') ? "fastq.gz"  : "fasta.gz"
    """
