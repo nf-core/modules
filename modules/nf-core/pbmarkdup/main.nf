@@ -14,7 +14,7 @@ process PBMARKDUP {
     tuple val(meta), path("${prefix}.${suffix}"), emit: markduped
     tuple val(meta), path("${dupfile_name}")    , emit: dupfile   , optional: true
     tuple val(meta), path("*.pbmarkdup.log")    , emit: log       , optional: true
-    path "versions.yml"                         , emit: versions
+    tuple val("${task.process}"), val("pbmarkdup"), eval("pbmarkdup --version | cut -d' ' -f2"), emit: versions_pbmarkdup, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -71,11 +71,6 @@ process PBMARKDUP {
     fi
 
     ${compress_dup_args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pbmarkdup: \$(echo \$(pbmarkdup --version 2>&1) | awk 'BEFORE{FS=" "}{print \$2}')
-    END_VERSIONS
     """
 
     stub:
@@ -96,10 +91,5 @@ process PBMARKDUP {
     def file_list = input.collect { it.getName() }.join(' ')
     """
     touch ${prefix}.${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pbmarkdup: \$(echo \$(pbmarkdup --version 2>&1) | awk 'BEFORE{FS=" "}{print \$2}')
-    END_VERSIONS
     """
 }
