@@ -101,6 +101,21 @@ output:
       - telescope:
           type: string
           description: The tool name
+      - "telescope version | sed '1!d;s/.* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - telescope:
+          type: string
+          description: The tool name
+      - "telescope version | sed '1!d;s/.* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
   - "@hanalysis"
