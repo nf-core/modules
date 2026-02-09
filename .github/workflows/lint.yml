@@ -154,11 +154,11 @@ jobs:
       - name: Install nf-core tools development version
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
 
-      - name: Lint module ${{ matrix.module }}
+      - name: nf-core lint module ${{ matrix.module }}
         run: nf-core modules lint ${{ matrix.module }}
 
       - name: Nextflow lint module ${{ matrix.module }}
-        run: nextflow lint ${{ matrix.module }}
+        run: nextflow lint modules/nf-core/${{ matrix.module }}
 
   nf-core-lint-subworkflows:
     runs-on:
@@ -189,11 +189,11 @@ jobs:
       - name: Install nf-core tools development version
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
 
-      - name: Lint subworkflow ${{ matrix.subworkflow }}
+      - name: nf-core lint subworkflow ${{ matrix.subworkflow }}
         run: nf-core subworkflows lint ${{ matrix.subworkflow }}
 
       - name: Nextflow lint module ${{ matrix.subworkflow }}
-        run: nextflow lint ${{ matrix.subworkflow }}
+        run: nextflow lint subworkflows/nf-core/${{ matrix.subworkflow }}
 
   confirm-pass-lint:
     runs-on:
