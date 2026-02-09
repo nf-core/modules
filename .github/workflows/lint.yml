@@ -158,7 +158,19 @@ jobs:
         run: nf-core modules lint ${{ matrix.module }}
 
       - name: Nextflow lint module ${{ matrix.module }}
-        run: nextflow lint modules/nf-core/${{ matrix.module }}
+        run: |
+          output=$(nextflow lint modules/nf-core/${{ matrix.module }} 2>&1)
+          echo "$output"
+          echo "::warning name=result::$output"
+
+          # Check for warnings or errors
+          if [[ "$output" == *"Warn"* || "$output" == *"Error"* ]]; then
+            echo "Linting issues found:"
+            echo "$output"
+            exit 1  # Exit with non-zero code to indicate failure
+          else
+            echo "No linting issues found."
+          fi
 
   nf-core-lint-subworkflows:
     runs-on:
@@ -193,7 +205,19 @@ jobs:
         run: nf-core subworkflows lint ${{ matrix.subworkflow }}
 
       - name: Nextflow lint module ${{ matrix.subworkflow }}
-        run: nextflow lint subworkflows/nf-core/${{ matrix.subworkflow }}
+        run: |
+          output=$(nextflow lint subworkflows/nf-core/${{ matrix.subworkflow }} 2>&1)
+          echo "$output"
+          echo "::warning name=result::$output"
+
+          # Check for warnings or errors
+          if [[ "$output" == *"Warn"* || "$output" == *"Error"* ]]; then
+            echo "Linting issues found:"
+            echo "$output"
+            exit 1  # Exit with non-zero code to indicate failure
+          else
+            echo "No linting issues found."
+          fi
 
   confirm-pass-lint:
     runs-on:
