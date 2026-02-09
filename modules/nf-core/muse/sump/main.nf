@@ -8,8 +8,7 @@ process MUSE_SUMP {
         : 'community.wave.seqera.io/library/htslib_muse:9a4b9cb78c211f1e'}"
 
     input:
-    tuple val(meta), path(muse_call_txt)
-    tuple val(meta2), path(ref_vcf), path(ref_vcf_tbi)
+    tuple val(meta), path(muse_call_txt), path(ref_vcf), path(ref_vcf_tbi)
 
     output:
     tuple val(meta), path("*.vcf.gz"),     emit: vcf

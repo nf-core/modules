@@ -8,8 +8,7 @@ process MUSE_CALL {
         : 'community.wave.seqera.io/library/muse:6637291dcbb0bdb8'}"
 
     input:
-    tuple val(meta), path(tumor_bam), path(tumor_bai), path(normal_bam), path(normal_bai)
-    tuple val(meta2), path(reference)
+    tuple val(meta), path(tumor_bam), path(tumor_bai), path(normal_bam), path(normal_bai), path(reference)
 
     output:
     tuple val(meta), path("*.MuSE.txt"), emit: txt
