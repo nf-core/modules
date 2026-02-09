@@ -1,18 +1,18 @@
 process GATK4_INTERVALLISTTOOLS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b28daf5d9bb2f0d129dcad1b7410e0dd8a9b087aaf3ec7ced929b1f57624ad98/data':
-        'community.wave.seqera.io/library/gatk4_gcnvkernel:e48d414933d188cd' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ced519873646379e287bc28738bdf88e975edd39a92e7bc6a34bccd37153d9d0/data'
+        : 'community.wave.seqera.io/library/gatk4_gcnvkernel:edb12e4f0bf02cd3'}"
 
     input:
     tuple val(meta), path(intervals)
 
     output:
     tuple val(meta), path("*_split/*/*.interval_list"), emit: interval_list
-    path "versions.yml"                               , emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,20 +23,20 @@ process GATK4_INTERVALLISTTOOLS {
 
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[GATK IntervalListTools] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        log.info('[GATK IntervalListTools] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue()
     }
     """
-
     mkdir ${prefix}_split
 
     gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         IntervalListTools \\
-        --INPUT $intervals \\
+        --INPUT ${intervals} \\
         --OUTPUT ${prefix}_split \\
         --TMP_DIR . \\
-        $args
+        ${args}
 
     python3 <<CODE
     import glob, os
@@ -47,11 +47,6 @@ process GATK4_INTERVALLISTTOOLS {
         newName = os.path.join(directory, str(i + 1) + filename)
         os.rename(interval, newName)
     CODE
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -65,10 +60,5 @@ process GATK4_INTERVALLISTTOOLS {
     touch ${prefix}_split/temp_0002_of_6/2scattered.interval_list
     touch ${prefix}_split/temp_0003_of_6/3scattered.interval_list
     touch ${prefix}_split/temp_0004_of_6/4scattered.interval_list
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

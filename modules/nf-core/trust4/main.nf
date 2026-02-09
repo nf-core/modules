@@ -11,9 +11,11 @@ process TRUST4 {
     tuple val(meta), path(bam), path(reads)
     path(fasta)
     path(vdj_reference)
+    path(barcode_whitelist)
     val(cell_barcode_read)
     val(umi_read)
-    path(barcode_whitelist)
+    val(read_format)
+
 
     output:
     tuple val(meta), path("*.tsv")                  , emit: tsv
@@ -40,7 +42,7 @@ process TRUST4 {
     def (forward, reverse) = reads.collate(2).transpose()
     def paired_end_mode = reads && (meta.single_end == false) ? "-1 ${forward[0]} -2 ${reverse[0]}" : ''
     // read format is optional
-    def readFormat = params.read_format ? "--readFormat ${params.read_format}" : ''
+    def readFormat = read_format ? "--readFormat ${read_format}" : ''
     // barcodeWhitelist is optional
     def barcodeWhitelist  = barcode_whitelist ? "--barcodeWhitelist ${barcode_whitelist}" : ""
     // add barcode information if present
@@ -86,7 +88,6 @@ process TRUST4 {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_airr.tsv

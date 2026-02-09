@@ -2,13 +2,14 @@
 // Perform differential analysis
 //
 
-include { LIMMA_DIFFERENTIAL                  } from '../../../modules/nf-core/limma/differential/main'
-include { LIMMA_DIFFERENTIAL as LIMMA_NORM    } from '../../../modules/nf-core/limma/differential/main'
-include { DESEQ2_DIFFERENTIAL                 } from '../../../modules/nf-core/deseq2/differential/main'
-include { DESEQ2_DIFFERENTIAL as DESEQ2_NORM  } from '../../../modules/nf-core/deseq2/differential/main'
-include { PROPR_PROPD                         } from '../../../modules/nf-core/propr/propd/main'
-include { CUSTOM_FILTERDIFFERENTIALTABLE      } from '../../../modules/nf-core/custom/filterdifferentialtable/main'
-include { VARIANCEPARTITION_DREAM             } from '../../../modules/nf-core/variancepartition/dream/main'
+include { LIMMA_DIFFERENTIAL                    } from '../../../modules/nf-core/limma/differential/main'
+include { LIMMA_DIFFERENTIAL as LIMMA_NORM      } from '../../../modules/nf-core/limma/differential/main'
+include { DESEQ2_DIFFERENTIAL                   } from '../../../modules/nf-core/deseq2/differential/main'
+include { DESEQ2_DIFFERENTIAL as DESEQ2_NORM    } from '../../../modules/nf-core/deseq2/differential/main'
+include { PROPR_PROPD                           } from '../../../modules/nf-core/propr/propd/main'
+include { CUSTOM_FILTERDIFFERENTIALTABLE        } from '../../../modules/nf-core/custom/filterdifferentialtable/main'
+include { VARIANCEPARTITION_DREAM               } from '../../../modules/nf-core/variancepartition/dream/main'
+include { VARIANCEPARTITION_DREAM as DREAM_NORM } from '../../../modules/nf-core/variancepartition/dream/main'
 
 // Combine meta maps, including merging non-identical values of shared keys (e.g. 'id')
 def mergeMaps(meta, meta2){
@@ -46,6 +47,8 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
             [ meta_for_diff, [ 'fc_threshold': fc_threshold, 'stat_threshold': stat_threshold ]]
         contrasts_for_norm:
             [ meta_with_method, variable, reference, target ]
+        contrasts_for_norm_with_formula:
+            [ meta_with_method, variable, reference, target, formula, comparison ]
         // these are optional files
         // return empty file if not available
         transcript_length:
@@ -87,14 +90,14 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // LIMMA_NORM directly. It internally runs normalization + DE analysis.
 
     LIMMA_NORM(
-        norm_inputs.contrasts_for_norm.filter{it[0].differential_method == 'limma'},
+        norm_inputs.contrasts_for_norm_with_formula.filter{it[0].differential_method == 'limma'},
         norm_inputs.samples_and_matrix.filter{it[0].differential_method == 'limma'}
     )
 
     ch_versions = ch_versions.mix(LIMMA_NORM.out.versions.first())
 
     LIMMA_DIFFERENTIAL(
-        inputs.contrasts_for_diff.filter{ it[0].differential_method == 'limma' },
+        inputs.contrasts_for_diff_with_formula.filter{ it[0].differential_method == 'limma' },
         inputs.samples_and_matrix.filter{ it[0].differential_method == 'limma' }
     )
 
@@ -112,7 +115,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // DESEQ2_NORM directly. It internally runs normalization + DE analysis.
 
     DESEQ2_NORM(
-        norm_inputs.contrasts_for_norm.filter{it[0].differential_method == 'deseq2'},
+        norm_inputs.contrasts_for_norm_with_formula.filter{it[0].differential_method == 'deseq2'},
         norm_inputs.samples_and_matrix.filter{it[0].differential_method == 'deseq2'},
         norm_inputs.control_features.filter{it[0].differential_method == 'deseq2'},
         norm_inputs.transcript_length.filter{it[0].differential_method == 'deseq2'}
@@ -121,7 +124,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     ch_versions = ch_versions.mix(DESEQ2_NORM.out.versions.first())
 
     DESEQ2_DIFFERENTIAL(
-        inputs.contrasts_for_diff.filter{it[0].differential_method == 'deseq2'},
+        inputs.contrasts_for_diff_with_formula.filter{it[0].differential_method == 'deseq2'},
         inputs.samples_and_matrix.filter{it[0].differential_method == 'deseq2'},
         inputs.control_features.filter{it[0].differential_method == 'deseq2'},
         inputs.transcript_length.filter{it[0].differential_method == 'deseq2'}
@@ -147,11 +150,22 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // Run DREAM
     // ----------------------------------------------------
 
-    // DREAM only runs with formula
+    // NOTE that we run DREAM_NORM just once to generate a normalised matrix.
+    // As explained above, this is done to avoid obtaining a subset matrix
+    // from VARIANCEPARTITION_DREAM.
+
+    // Also NOTE that VARIANCEPARTITION_DREAM don't use the normalized matrix from
+    // DREAM_NORM directly. It internally runs normalization + DE analysis.
+    // Prepare DREAM inputs
     dream_inputs = inputs.contrasts_for_diff_with_formula
-        .filter { meta, variable, reference, target, formula, comparison ->
-            meta.differential_method == 'dream' && formula != null
+        .filter { meta, _variable, _reference, _target, _formula, _comparison ->
+            meta.differential_method == 'dream'
         }
+
+    DREAM_NORM(
+        norm_inputs.contrasts_for_norm_with_formula.filter{it[0].differential_method == 'dream'},
+        norm_inputs.samples_and_matrix.filter{it[0].differential_method == 'dream'}
+    )
 
     VARIANCEPARTITION_DREAM(
         dream_inputs,
@@ -171,6 +185,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     ch_normalised_matrix = DESEQ2_NORM.out.normalised_counts
         .mix(LIMMA_NORM.out.normalised_counts)
+        .mix(DREAM_NORM.out.normalised_counts)
 
     ch_model = DESEQ2_DIFFERENTIAL.out.model
         .mix(LIMMA_DIFFERENTIAL.out.model)
@@ -197,8 +212,8 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
                     stat_column: 'adj.P.Val', stat_cardinality: '<='
                 ],
                 'propd' : [
-                    fc_column: 'lfc', fc_cardinality: '>=',
-                    stat_column: 'weighted_connectivity', stat_cardinality: '>='
+                    fc_column: 'LFC', fc_cardinality: '>=',
+                    stat_column: 'significant', stat_cardinality: '<='
                 ],
                 'dream' : [
                     fc_column: 'logFC', fc_cardinality: '>=',

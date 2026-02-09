@@ -26,6 +26,7 @@ input:
         description: Protein structure(s) in PDB, mmCIF or mmJSON format to compare
           against a foldseek database (also works with folder input)
         pattern: "*.{pdb,mmcif,mmjson}"
+        ontologies: []
   - - meta_db:
         type: map
         description: |
@@ -36,8 +37,8 @@ input:
         description: foldseek database from protein structures
         pattern: "*"
 output:
-  - aln:
-      - meta:
+  aln:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,10 +50,13 @@ output:
             Query, Target, Identity, Alignment length, Mismatches, Gap openings,
             Query start, Query end, Target start, Target end, E-value, Bit score
           pattern: "*.{m8}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@vagkaratzas"

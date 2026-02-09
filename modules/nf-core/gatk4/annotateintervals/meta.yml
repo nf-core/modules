@@ -28,6 +28,7 @@ input:
         type: file
         description: One or more interval files to annotate
         pattern: "*.{interval_list,list,bed}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -37,6 +38,7 @@ input:
         type: file
         description: The reference FASTA file
         pattern: "*.{fasta,fa}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -46,6 +48,7 @@ input:
         type: file
         description: The index of the reference FASTA file
         pattern: "*.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -55,6 +58,7 @@ input:
         type: file
         description: The sequence dictionary reference FASTA file
         pattern: "*.dict"
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -66,6 +70,7 @@ input:
           Optional - Umap single-read mappability track
           The track should correspond to the appropriate read length and overlapping intervals must be merged
         pattern: "*.bed(.gz)?"
+        ontologies: []
   - - meta6:
         type: map
         description: |
@@ -76,6 +81,7 @@ input:
         description: Optional - The index of the gzipped umap single-read mappability
           track
         pattern: "*.bed.gz.tbi"
+        ontologies: []
   - - meta7:
         type: map
         description: |
@@ -85,6 +91,7 @@ input:
         type: file
         description: Optional - Segmental-duplication track
         pattern: "*.bed(.gz)?"
+        ontologies: []
   - - meta8:
         type: map
         description: |
@@ -94,9 +101,10 @@ input:
         type: file
         description: Optional - The index of the gzipped segmental-duplication track
         pattern: "*.bed.gz.tbi"
+        ontologies: []
 output:
-  - annotated_intervals:
-      - meta:
+  annotated_intervals:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -106,16 +114,29 @@ output:
           description: The output TSV file with a SAM-style header containing the annotated
             intervals
           pattern: "*.tsv"
-      - s:
-          type: file
-          description: The output TSV file with a SAM-style header containing the annotated
-            intervals
-          pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_gatk4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

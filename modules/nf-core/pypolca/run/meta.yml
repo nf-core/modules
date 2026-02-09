@@ -1,0 +1,105 @@
+name: "pypolca_run"
+description: Short read polisher for long read assemblies
+keywords:
+  - polish
+  - python
+  - genomics
+tools:
+  - "pypolca":
+      description: "Standalone Python re-implementation of the POLCA polisher from MaSuRCA"
+      homepage: "https://github.com/gbouras13/pypolca"
+      documentation: "https://github.com/gbouras13/pypolca?tab=readme-ov-file#usage"
+      doi: "10.1099/mgen.0.001254"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - reads:
+        type: file
+        description: List of short reads for assembly polishing. Length 1 for
+          single-end and 2 for paired-end
+        pattern: "*.{fastq,fq}.gz"
+        ontologies:
+          - edam: "http://edamontology.org/format_1930" # FASTQ
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - contigs:
+        type: file
+        description: Genome assembly from long reads
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+
+output:
+  polished:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/*_corrected.fasta:
+          type: file
+          description: Polished assembly
+          pattern: "*.{fasta}"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929" # FASTA
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/*.vcf:
+          type: file
+          description: variant calls
+          pattern: "*.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # vcf
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/*.report:
+          type: file
+          description: Pypolca report
+          pattern: "*.report"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual
+
+  versions_pypolca:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pypolca:
+          type: string
+          description: The name of the tool
+      - pypolca --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pypolca:
+          type: string
+          description: The name of the tool
+      - pypolca --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@dwells-eit"
+maintainers:
+  - "@dwells-eit"

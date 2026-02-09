@@ -23,33 +23,42 @@ input:
         type: file
         description: Files containing site depths
         pattern: "*.sd.txt.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
     - site_depths_indices:
         type: file
         description: The indices of the site depth files
         pattern: "*.sd.txt.gz.tbi"
+        ontologies: []
   - - vcf:
         type: file
         description: Input VCF of SNPs marking loci for site depths
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
     - tbi:
         type: file
         description: Index of the input VCF of SNPs marking loci for site depths
         pattern: "*.vcf.gz.tbi"
-  - - fasta:
-        type: file
-        description: The reference FASTA file
-        pattern: "*.{fasta,fa}"
-  - - fasta_fai:
-        type: file
-        description: The index of the reference FASTA file
-        pattern: "*.fai"
-  - - dict:
-        type: file
-        description: The sequence dictionary of the reference FASTA file
-        pattern: "*.dict"
+        ontologies: []
+  - fasta:
+      type: file
+      description: The reference FASTA file
+      pattern: "*.{fasta,fa}"
+      ontologies: []
+  - fasta_fai:
+      type: file
+      description: The index of the reference FASTA file
+      pattern: "*.fai"
+      ontologies: []
+  - dict:
+      type: file
+      description: The sequence dictionary of the reference FASTA file
+      pattern: "*.dict"
+      ontologies: []
 output:
-  - baf:
-      - meta:
+  baf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -58,8 +67,10 @@ output:
           type: file
           description: The created BAF file
           pattern: "*.baf.txt.gz"
-  - baf_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  baf_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -68,11 +79,28 @@ output:
           type: file
           description: The index of the created BAF file
           pattern: "*.baf.txt.gz.tbi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_gatk4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

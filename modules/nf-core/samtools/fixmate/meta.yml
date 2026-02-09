@@ -38,8 +38,8 @@ input:
           - edam: http://edamontology.org/format_3462 # CRAM
           - edam: http://edamontology.org/format_2573 # SAM
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,15 +55,15 @@ output:
           pattern: "*.{bam}"
           ontologies:
             - edam: http://edamontology.org/format_2572
-  - cram:
-      - meta:
+  cram:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{cram}"
+          pattern: "*.{bam}"
           ontologies:
-            - edam: http://edamontology.org/format_3462
+            - edam: http://edamontology.org/format_2572
       - ${prefix}.cram:
           type: map
           description: |
@@ -72,15 +72,15 @@ output:
           pattern: "*.{cram}"
           ontologies:
             - edam: http://edamontology.org/format_3462
-  - sam:
-      - meta:
+  sam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{sam}"
+          pattern: "*.{bam}"
           ontologies:
-            - edam: http://edamontology.org/format_2573
+            - edam: http://edamontology.org/format_2572
       - ${prefix}.sam:
           type: map
           description: |
@@ -89,12 +89,27 @@ output:
           pattern: "*.{sam}"
           ontologies:
             - edam: http://edamontology.org/format_2573
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies: []
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@sppearce"
 maintainers:

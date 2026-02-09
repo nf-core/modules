@@ -25,10 +25,12 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - input_index:
         type: file
         description: BAM/CRAM index file
         pattern: "*.{bai,crai}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -38,6 +40,7 @@ input:
         type: file
         description: Reference genome file
         pattern: "*.{fa,fasta}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -47,23 +50,43 @@ input:
         type: file
         description: Reference genome index file
         pattern: "*.fai"
+        ontologies: []
 output:
-  - coverage:
-      - meta:
+  coverage:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.txt":
           type: file
-          description: Tabulated text containing the coverage at each position or region
-            or an ASCII-art histogram (with --histogram).
+          description: Tabulated text containing the coverage at each position or
+            region or an ASCII-art histogram (with --histogram).
           pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@LouisLeNezet"
 maintainers:

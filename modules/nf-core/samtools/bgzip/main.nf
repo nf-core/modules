@@ -4,15 +4,16 @@ process SAMTOOLS_BGZIP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.21--h50ea8bc_0' :
-        'biocontainers/samtools:1.21--h50ea8bc_0' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.22.1--h96c455f_0' :
+        'biocontainers/samtools:1.22.1--h96c455f_0' }"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("${output}"), emit: fasta
-    path "versions.yml"               , emit: versions
+    // samtools-bgzip has no --version option so let's use lastal from the same suite
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,11 +38,6 @@ process SAMTOOLS_BGZIP {
         *)
             bgzip -c $args -@${task.cpus} $fasta > ${output} ;;
     esac
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -50,11 +46,5 @@ process SAMTOOLS_BGZIP {
     """
     [ "\$(basename $fasta)" == "\$(basename ${output})" ] && echo "Filename collision (\$basename $fasta)" && exit 1
     echo '' | bgzip > ${output}
-
-    cat <<-END_VERSIONS > versions.yml
-
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }

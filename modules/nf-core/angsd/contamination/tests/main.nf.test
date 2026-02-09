@@ -34,7 +34,7 @@ nextflow_process {
             process {
                 """
                 input[0] = ANGSD_DOCOUNTS.out.icounts
-                input[1] = [ [id:'test2'], file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/angsd/HapMapChrX.gz")]
+                input[1] = [ [id:'test2'], file(params.modules_testdata_base_path + "/delete_me/angsd/HapMapChrX.gz")]
 
                 """
             }
@@ -55,7 +55,7 @@ nextflow_process {
             process {
                 """
                 input[0] = ANGSD_DOCOUNTS.out.icounts
-                input[1] = [ [id:'test2'], file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/angsd/HapMapChrX.gz")]
+                input[1] = [ [id:'test2'], file(params.modules_testdata_base_path + "/delete_me/angsd/HapMapChrX.gz")]
 
                 """
             }

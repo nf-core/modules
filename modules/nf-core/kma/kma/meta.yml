@@ -1,0 +1,147 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "kma_kma"
+description: Mapping raw reads directly against redundant databases via KMA alignment
+keywords:
+  - fastq
+  - reads
+  - alignment
+  - kma
+tools:
+  - "kma":
+      description: "Rapid and precise alignment of raw reads against redundant databases
+        with KMA"
+      homepage: "https://bitbucket.org/genomicepidemiology/kma/src/master/"
+      documentation: "https://bitbucket.org/genomicepidemiology/kma/src/master/"
+      tool_dev_url: "https://bitbucket.org/genomicepidemiology/kma/src/master/"
+      doi: "10.1186/s12859-018-2336-6"
+      licence: ["Apache-2.0"]
+      identifier: biotools:kma
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference index information
+          e.g. [ id:'reference' ]
+    - index:
+        type: file
+        description: kma database file generated via kma_index
+        pattern: "*.{comp.b,length.b,name,seq.b}"
+  - interleaved:
+      type: boolean
+      description: use one interleaved fastq file (true) or two paired fastq files (false)
+      pattern: "true or false"
+
+output:
+  res:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.res":
+          type: file
+          description: A result overview giving the most common statistics for each
+            mapped template.
+          pattern: "*.{res}"
+  fsa:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.fsa":
+          type: file
+          description: The consensus sequences drawn from the alignments.
+          pattern: "*.{fsa}"
+  aln:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.aln":
+          type: file
+          description: The consensus alignment of the reads against their template.
+          pattern: "*.{aln}"
+  frag:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.frag.gz":
+          type: file
+          description: |
+            Mapping information on each mapped read, where the columns are
+            read, number of equally well mapping templates, mapping score, start position,
+            end position (w.r.t. template), the chosen template.
+          pattern: "*.{frag.gz}"
+  matrix:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.mat.gz":
+          type: file
+          description: Base counts on each position in each template, (only if -matrix
+            is enabled).
+          pattern: "*.{mat.gz}"
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.vcf.gz":
+          type: file
+          description: Compressed VCF file containing positions different from the template
+            identified during KMA mapping against the reference database
+          pattern: "*.{vcf.gz}"
+  sam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.sam":
+          type: file
+          description: SAM alignment file containing detailed mapping information from
+            KMA mapping
+          pattern: "*.{sam}"
+  spa:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.spa":
+          type: file
+          description: |
+            Text file containing the top scoring references. Note that kma
+            (v1.4.15) can only use spare alignment if the kma index was also build with
+            the sparse option.
+          pattern: "*.{spa}"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@Krannich479"
+  - "@haidyi"
+maintainers:
+  - "@Krannich479"
+  - "@haidyi"

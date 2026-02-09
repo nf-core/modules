@@ -1,0 +1,75 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "mmseqs_easycluster"
+description: Cluster sequences using MMSeqs2 easy cluster.
+keywords:
+  - protein sequence
+  - databases
+  - clustering
+  - searching
+  - mmseqs2
+tools:
+  - "mmseqs":
+      description: "MMseqs2: ultra fast and sensitive sequence search and clustering
+        suite"
+      homepage: "https://github.com/soedinglab/MMseqs2"
+      documentation: "https://mmseqs.com/latest/userguide.pdf"
+      tool_dev_url: "https://github.com/soedinglab/MMseqs2"
+      doi: "10.1093/bioinformatics/btw006"
+      licence: ["GPL v3"]
+      identifier: biotools:mmseqs
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - sequence:
+        type: file
+        description: Input sequence file in FASTA/FASTQ format for clustering
+        ontologies:
+          - edam: http://edamontology.org/format_1920 # FASTA
+output:
+  representatives:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*rep_seq.fasta":
+          type: file
+          description: a fasta file containing the cluster representatives
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*all_seqs.fasta":
+          type: file
+          description: a fasta-like file per cluster
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.tsv":
+          type: file
+          description: an adjacency list file containing the clusters
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@Joon-Klaps"
+maintainers:
+  - "@Joon-Klaps"

@@ -14,26 +14,17 @@ workflow BAM_MARKDUPLICATES_SAMTOOLS {
     ch_bam   // channel: [ val(meta), [ bam ] ]
     ch_fasta // channel: [ val(meta), [ fasta ] ]
 
-
     main:
-    ch_versions = Channel.empty()
-
 
     SAMTOOLS_COLLATE ( ch_bam, ch_fasta )
-    ch_versions = ch_versions.mix(SAMTOOLS_COLLATE.out.versions)
 
     SAMTOOLS_FIXMATE ( SAMTOOLS_COLLATE.out.bam )
-    ch_versions = ch_versions.mix(SAMTOOLS_FIXMATE.out.versions)
 
-    SAMTOOLS_SORT ( SAMTOOLS_FIXMATE.out.bam, ch_fasta )
-    ch_versions = ch_versions.mix(SAMTOOLS_SORT.out.versions)
+    SAMTOOLS_SORT ( SAMTOOLS_FIXMATE.out.bam, ch_fasta, '' )
 
     SAMTOOLS_MARKDUP ( SAMTOOLS_SORT.out.bam, ch_fasta )
-    ch_versions = ch_versions.mix(SAMTOOLS_MARKDUP.out.versions)
-
 
     emit:
     bam      = SAMTOOLS_MARKDUP.out.bam        // channel: [ val(meta), [ bam ] ]
-    versions = ch_versions                     // channel: [ versions.yml ]
 
 }

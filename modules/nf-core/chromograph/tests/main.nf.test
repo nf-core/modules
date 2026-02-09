@@ -6,33 +6,152 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "chromograph"
+    config "./nextflow.config"
 
-    test("test_chromograph_sites") {
-
+    test("test_chromograph_sites_wig") {
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
-                input[0] = [[:],[]]
-                input[1] = [[:],[]]
-                input[2] = [[:],[]]
-                input[3] = [[:],[]]
-                input[4] = [[:],[]]
-                input[5] = [[:],[]]
+                input[0] = [[],[]]
+                input[1] = Channel.of(
+                    'fixedStep chrom=chr3 start=400601 step=100',
+                    '11',
+                    '22',
+                    '33')
+                    .collectFile(name: 'wig_input.wig', newLine: true)
+                    .map { file -> [ [ id: file.name ], file ] }
+                input[2] = [[],[]]
+                input[3] = [[],[]]
+                input[4] = [[],[]]
+                input[5] = [[],[]]
                 input[6] = [
-                        [ id:'test', single_end:false ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/updsites.bed', checkIfExists: true)
-                            ]
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/updsites.bed', checkIfExists: true)
+                ]
                 """
             }
         }
 
         then {
             assertAll(
-            {assert process.success},
-            {assert process.out.plots.get(0).get(1) ==~ ".*/test"}
+            { assert process.success },
+            { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test_chromograph_sites_wig_euploid") {
+        when {
+            params {
+                module_args = '--euploid'
+            }
+            process {
+                """
+                input[0] = [[],[]]
+                input[1] = Channel.of(
+                    'fixedStep chrom=chr3 start=400601 step=100',
+                    '11',
+                    '22',
+                    '33')
+                    .collectFile(name: 'wig_input.wig', newLine: true)
+                    .map { file -> [ [ id: file.name ], file ] }
+                input[2] = [[],[]]
+                input[3] = [[],[]]
+                input[4] = [[],[]]
+                input[5] = [[],[]]
+                input[6] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/updsites.bed', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test_chromograph_sites_wig_stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [[],[]]
+                input[1] = Channel.of(
+                    'fixedStep chrom=chr3 start=400601 step=100',
+                    '11',
+                    '22',
+                    '33')
+                    .collectFile(name: 'wig_input.wig', newLine: true)
+                    .map { file -> [ [ id: file.name ], file ] }
+                input[2] = [[],[]]
+                input[3] = [[],[]]
+                input[4] = [[],[]]
+                input[5] = [[],[]]
+                input[6] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/updsites.bed', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(process.out).match() }
             )
         }
 
     }
 
+    test("test_chromograph_sites_wig_euploid_stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--euploid'
+            }
+            process {
+                """
+                input[0] = [[],[]]
+                input[1] = Channel.of(
+                    'fixedStep chrom=chr3 start=400601 step=100',
+                    '11',
+                    '22',
+                    '33')
+                    .collectFile(name: 'wig_input.wig', newLine: true)
+                    .map { file -> [ [ id: file.name ], file ] }
+                input[2] = [[],[]]
+                input[3] = [[],[]]
+                input[4] = [[],[]]
+                input[5] = [[],[]]
+                input[6] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/updsites.bed', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(process.out).match() }
+            )
+        }
+    }
 }

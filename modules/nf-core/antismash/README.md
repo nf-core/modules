@@ -25,13 +25,13 @@ Updating the antiSMASH version in the container and pushing the update to Docker
 3. Create and test the container:
 
    ```bash
-docker build . -t quay.io/nf-core/antismash:<version>
+   docker build . -t quay.io/nf-core/antismash:<version>_<build>
    ```
 
 4. Push the container to Quay:
 
    ```bash
-   docker push quay.io/nf-core/antismash:8.0.0
+   docker push quay.io/nf-core/antismash:<version>_<build>
    ```
 
 5. On [https://quay.io/organization/nf-core](https://quay.io/organization/nf-core), select the new repository, press actions and make public.

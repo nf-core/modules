@@ -4,8 +4,8 @@ process SAMTOOLS_FIXMATE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.21--h50ea8bc_0' :
-        'biocontainers/samtools:1.21--h50ea8bc_0' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.22.1--h96c455f_0' :
+        'biocontainers/samtools:1.22.1--h96c455f_0' }"
 
     input:
     tuple val(meta), path(input)
@@ -14,7 +14,7 @@ process SAMTOOLS_FIXMATE {
     tuple val(meta), path("${prefix}.bam") , emit: bam , optional: true
     tuple val(meta), path("${prefix}.cram"), emit: cram, optional: true
     tuple val(meta), path("${prefix}.sam") , emit: sam , optional: true
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,17 +28,13 @@ process SAMTOOLS_FIXMATE {
                     "bam"
     if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
+    # Note: --threads value represents *additional* CPUs to allocate (total CPUs = 1 + --threads).
     samtools \\
         fixmate  \\
         $args \\
         --threads ${task.cpus-1} \\
         $input \\
-        ${prefix}.${extension} \\
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
+        ${prefix}.${extension}
     """
 
     stub:
@@ -51,10 +47,5 @@ process SAMTOOLS_FIXMATE {
     if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }

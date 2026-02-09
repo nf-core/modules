@@ -7,13 +7,14 @@ keywords:
   - coverage
 tools:
   - samtools:
-      description: Tools for dealing with SAM, BAM and CRAM files; samtools depth –
-        computes the read depth at each position or region
+      description: Tools for dealing with SAM, BAM and CRAM files; samtools depth
+        – computes the read depth at each position or region
       homepage: http://www.htslib.org
       documentation: http://www.htslib.org/doc/samtools-depth.html
       tool_dev_url: https://github.com/samtools/samtools
       doi: "10.1093/bioinformatics/btp352"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:samtools
 input:
   - - meta1:
@@ -25,6 +26,12 @@ input:
         type: file
         description: sorted BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
+    - index:
+        type: file
+        description: BAM/CRAM index file
+        pattern: "*.{bai,crai}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -34,24 +41,43 @@ input:
         type: file
         description: list of positions or regions in specified bed file
         pattern: "*.{bed}"
+        ontologies: []
 output:
-  - tsv:
-      - meta1:
+  tsv:
+    - - meta1:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.tsv":
           type: file
-          description: The output of samtools depth has three columns - the name of the
-            contig or chromosome, the position and the number of reads aligned at that
-            position
+          description: The output of samtools depth has three columns - the name
+            of the contig or chromosome, the position and the number of reads
+            aligned at that position
           pattern: "*.{tsv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - samtools version | sed "1!d;s/.* //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - samtools version | sed "1!d;s/.* //":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@louperelo"
   - "@nevinwu"

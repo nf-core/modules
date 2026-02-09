@@ -1,0 +1,62 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "tiff_segmentation_vpt"
+description: Perform segmentation of MERSCOPE TIFF images using the vizgen-postprocessing tool
+keywords:
+  - segmentation
+  - imaging
+  - merscope
+  - vizgen
+  - tiff
+  - spatial
+components:
+  - vizgenpostprocessing/preparesegmentation
+  - vizgenpostprocessing/runsegmentationontile
+  - vizgenpostprocessing/compiletilesegmentation
+input:
+  - ch_input:
+      type: channel
+      description: |
+        The input channel containing image directory and transformation file
+        Structure: [ val(meta), path(image_dir), path(micron_to_mosaic_pixel_transform.csv) ]
+      pattern: "*"
+  - ch_algorithm_json:
+      type: channel
+      description: |
+        Channel containing algorithm configuration file
+        Structure: [ path(algorithm.json) ]
+      pattern: "*.json"
+  - ch_images_regex:
+      type: channel
+      description: |
+        Channel containing regex pattern for image matching
+        Structure: [ val(regex) ]
+      pattern: "*"
+  - ch_custom_weights:
+      type: channel
+      description: |
+        Channel containing custom weights for segmentation
+        Structure: [ path(custom_weights) ]
+      pattern: "*"
+output:
+  - micron_space_segmentation:
+      type: file
+      description: |
+        Channel containing micron space segmentation results
+        Structure: [ val(meta), path(parquet) ]
+      pattern: "*.parquet"
+  - mosaic_space_segmentation:
+      type: file
+      description: |
+        Channel containing mosaic space segmentation results
+        Structure: [ val(meta), path(parquet) ]
+      pattern: "*.parquet"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@mcmero"
+maintainers:
+  - "@mcmero"

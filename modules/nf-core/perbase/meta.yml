@@ -8,8 +8,8 @@ keywords:
 tools:
   - "perbase":
       description: "Per-base metrics on BAM/CRAM files."
-      homepage: "https://github.com/sstadick/perbase/blob/v0.10.2/README.md"
-      documentation: "https://github.com/sstadick/perbase/blob/v0.10.2/README.md"
+      homepage: "https://github.com/sstadick/perbase"
+      documentation: "https://github.com/sstadick/perbase"
       tool_dev_url: "https://github.com/sstadick/perbase"
       licence: ["MIT"]
       identifier: biotools:perbase
@@ -35,6 +35,13 @@ input:
         pattern: "*.{bai,crai}"
         ontologies:
           - edam: "http://edamontology.org/format_3327"
+    - bed:
+        type: file
+        description: bed file containing regions of interest, where only bases
+          from the given regions will be reported
+        pattern: "*.{bed}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
   - - meta2:
         type: map
         description: |
@@ -50,10 +57,10 @@ input:
         type: file
         description: FAI file (optional)
         pattern: "*.{fai}"
+        ontologies: []
 output:
-  - tsv:
-      #Only when we have meta
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,12 +72,14 @@ output:
           ontologies:
             - edam: "http://edamontology.org/format_3475"
 
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@camlloyd"
 maintainers:

@@ -1,0 +1,111 @@
+nextflow_process {
+
+    name "Test Process YTE"
+    script "../main.nf"
+    process "YTE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "yte"
+
+    test("yaml - map") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'template' ], // meta map
+                    file(params.modules_testdata_base_path + "generic/config/config_template.yte.yaml", checkIfExists: true),
+                    [],
+                    [ 'sex': 'female' ] // map
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("yaml - map - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'template' ], // meta map
+                    file(params.modules_testdata_base_path + "generic/config/config_template.yte.yaml", checkIfExists: true),
+                    [],
+                    [ 'sex': 'female' ] // map
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("yaml - map_file") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'template' ], // meta map
+                    file(params.modules_testdata_base_path + "generic/config/config_template.yte.yaml", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "generic/config/yte_map_file.yaml", checkIfExists: true),
+                    [] // map
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("yaml - map_file - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'template' ], // meta map
+                    file(params.modules_testdata_base_path + "generic/config/config_template.yte.yaml", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "generic/config/yte_map_file.yaml", checkIfExists: true),
+                    [] // map
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

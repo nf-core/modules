@@ -29,6 +29,7 @@ input:
         type: file
         description: BED file containing population-level SNPs to use
         pattern: "*.bed"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -38,6 +39,7 @@ input:
         type: file
         description: Genome fasta file
         pattern: "*.fasta"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -47,8 +49,8 @@ input:
         type: directory
         description: Folder of Bowtie genome index files
 output:
-  - pt:
-      - meta:
+  pt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -58,11 +60,29 @@ output:
           description: Generated binary pattern file, containing FASTQ strings to match
             from within raw data
           pattern: "*.pt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_ngscheckmate:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - ngscheckmate:
+          type: string
+          description: The tool name
+      - "ncm.py --help | sed '7!d;s/.* v//g'":
+          type: string
+          description: The command used to generate the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - ngscheckmate:
+          type: string
+          description: The tool name
+      - "ncm.py --help | sed '7!d;s/.* v//g'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@sppearce"
 maintainers:

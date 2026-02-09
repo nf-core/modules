@@ -14,7 +14,8 @@ tools:
       homepage: http://www.htslib.org/
       documentation: http://www.htslib.org/doc/samtools.html
       doi: 10.1093/bioinformatics/btp352
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:samtools
 input:
   - - meta:
@@ -26,19 +27,21 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
-  - - bed:
-        type: file
-        description: BED file of regions to be removed (e.g. amplicon primers)
-        pattern: "*.{bed}"
-  - - save_cliprejects:
-        type: boolean
-        description: Save filtered reads to a file
-  - - save_clipstats:
-        type: boolean
-        description: Save clipping stats to a file
+        ontologies: []
+  - bed:
+      type: file
+      description: BED file of regions to be removed (e.g. amplicon primers)
+      pattern: "*.{bed}"
+      ontologies: []
+  - save_cliprejects:
+      type: boolean
+      description: Save filtered reads to a file
+  - save_clipstats:
+      type: boolean
+      description: Save clipping stats to a file
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,8 +50,9 @@ output:
           type: file
           description: Clipped reads BAM file
           pattern: "*.{bam}"
-  - stats:
-      - meta:
+          ontologies: []
+  stats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,8 +61,9 @@ output:
           type: file
           description: Clipping statistics text file
           pattern: "*.{clipstats.txt}"
-  - rejects_bam:
-      - meta:
+          ontologies: []
+  rejects_bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,11 +72,28 @@ output:
           type: file
           description: Filtered reads BAM file
           pattern: "*.{cliprejects.bam}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@bjohnnyd"
 maintainers:

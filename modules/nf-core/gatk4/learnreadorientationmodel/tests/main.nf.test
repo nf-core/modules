@@ -12,27 +12,45 @@ nextflow_process {
     tag "gatk4/learnreadorientationmodel"
 
     test("test-gatk4-learnreadorientationmodel") {
-        
+
         when {
             process {
                 """
                 input[0] = [ [ id:'test' ], // meta map
 				[file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.f1r2.tar.gz', checkIfExists: true)] ]
-
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
 					path(process.out.artifactprior[0][1]).linesGzip[3..7],
-					process.out.versions
-					).match()
-				}
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }
-    
+
+    test("test-gatk4-learnreadorientationmodel - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+				[file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.f1r2.tar.gz', checkIfExists: true)] ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
 }

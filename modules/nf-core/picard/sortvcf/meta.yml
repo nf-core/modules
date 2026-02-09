@@ -22,6 +22,7 @@ input:
         type: file
         description: VCF file
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -31,6 +32,7 @@ input:
         type: file
         description: Reference genome fasta file
         pattern: "*.{fasta,fa}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -40,9 +42,10 @@ input:
         type: file
         description: Reference genome dictionary file
         pattern: "*.{dict}"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -51,11 +54,29 @@ output:
           type: file
           description: Sorted VCF file
           pattern: "*.{vcf}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_picard:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - picard:
+          type: string
+          description: The tool name
+      - "picard SortVcf --version 2>&1 | sed -n 's/^Version:*//p'":
+          type: string
+          description: The command used to generate the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - picard:
+          type: string
+          description: The tool name
+      - "picard SortVcf --version 2>&1 | sed -n 's/^Version:*//p'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@ramprasadn"
 maintainers:

@@ -39,8 +39,8 @@ input:
           When a model is supplied to tool will run in CASE mode.
         pattern: "*-calls/"
 output:
-  - intervals:
-      - meta:
+  intervals:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,12 +49,10 @@ output:
           type: file
           description: Intervals VCF file
           pattern: "*.vcf.gz"
-      - s:
-          type: file
-          description: Intervals VCF file
-          pattern: "*.vcf.gz"
-  - segments:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  segments:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -63,8 +61,10 @@ output:
           type: file
           description: Segments VCF file
           pattern: "*.vcf.gz"
-  - denoised:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  denoised:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,11 +73,29 @@ output:
           type: file
           description: Denoised copy ratio file
           pattern: "*.vcf.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_gatk4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ryanjameskennedy"
 maintainers:

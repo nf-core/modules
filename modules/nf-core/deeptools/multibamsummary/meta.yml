@@ -24,16 +24,31 @@ input:
         type: file
         description: One or more BAM files
         pattern: "*.{bam}"
+        ontologies: []
     - bais:
         type: file
         description: Corresponding BAM file indexes
         pattern: "*.bam.bai"
+        ontologies: []
     - labels:
         type: string
         description: User specified labels instead of default labels (file names).
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing blacklist metadata
+          e.g. [ id:'blacklist' ]
+    - blacklist:
+        type: file
+        description: BED/GTF file containing regions to exclude from analysis
+        pattern: "*.{bed,gtf}"
+        ontologies:
+          - edam: "http://edamontology.org/data_3002"
+          - edam: "http://edamontology.org/format_3003"
+        optional: true
 output:
-  - matrix:
-      - meta:
+  matrix:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,11 +59,14 @@ output:
             compressed numpy array of read coverage data used by plotCorrelation and plotPCA
             deeptool utilities
           pattern: "all_bam.bamSummary.npz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@tamara-hodgetts"
   - "@chris-cheshire"

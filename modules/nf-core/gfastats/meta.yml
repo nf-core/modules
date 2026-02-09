@@ -28,16 +28,18 @@ input:
         type: file
         description: Draft assembly file
         pattern: "*.{fasta,fastq,gfa}(.gz)?"
-  - - out_fmt:
-        type: string
-        description: Output format (fasta, fastq, gfa)
-  - - genome_size:
-        type: integer
-        description: estimated genome size (bp) for NG* statistics (optional).
-  - - target:
-        type: string
-        description: target specific sequence by header, optionally with coordinates
-          (optional).
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_3975 # GFA 1
+  - out_fmt:
+      type: string
+      description: Output format (fasta, fastq, gfa)
+  - genome_size:
+      type: integer
+      description: estimated genome size (bp) for NG* statistics (optional).
+  - target:
+      type: string
+      description: target specific sequence by header, optionally with coordinates (optional).
   - - meta2:
         type: map
         description: |
@@ -46,6 +48,7 @@ input:
     - agpfile:
         type: file
         description: converts input agp to path and replaces existing paths.
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -55,6 +58,7 @@ input:
         type: file
         description: generates output on a subset list of headers or coordinates in
           0-based bed format.
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -63,6 +67,7 @@ input:
     - exclude_bed:
         type: file
         description: opposite of --include-bed. They can be combined (no coordinates).
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -71,9 +76,10 @@ input:
     - instructions:
         type: file
         description: set of instructions provided as an ordered list.
+        ontologies: []
 output:
-  - assembly_summary:
-      - meta:
+  assembly_summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -82,8 +88,9 @@ output:
           type: file
           description: Assembly summary statistics file
           pattern: "*.assembly_summary"
-  - assembly:
-      - meta:
+          ontologies: []
+  assembly:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -92,11 +99,16 @@ output:
           type: file
           description: The assembly as modified by gfastats
           pattern: "*.{fasta,fastq,gfa}.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+            - edam: http://edamontology.org/format_3975 # GFA 1
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mahesh-panchal"
 maintainers:

@@ -1,0 +1,141 @@
+name: parabricks_rnafq2bam
+description: This tool is the equivalent of fq2bam for RNA-Seq samples,
+  receiving inputs in FASTQ format, performing alignment with the splice-aware
+  STAR algorithm, optionally marking of duplicate reads, and outputting an
+  aligned BAM file ready for variant and fusion calling.
+keywords:
+  - align
+  - star
+  - rna
+tools:
+  - "parabricks":
+      description: "NVIDIA Clara Parabricks GPU-accelerated genomics tools"
+      homepage: "https://www.nvidia.com/en-us/clara/genomics/"
+      documentation: "https://docs.nvidia.com/clara/parabricks/latest/index.html"
+      licence: ["https://docs.nvidia.com/clara/parabricks/latest/eula.html"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: fastq.gz files
+        pattern: "*.fastq.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - - meta1:
+        type: map
+        description: |
+          Groovy Map containing fasta information
+    - fasta:
+        type: file
+        description: reference fasta file - must be unzipped
+        pattern: "*.fasta"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing index information
+    - index:
+        type: file
+        description: reference BWA index
+        pattern: "*.{amb,ann,bwt,pac,sa}"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing genome lib dir information
+    - genome_lib_dir:
+        type: directory
+        description: Path to a genome resource library directory. The indexing
+          required to run STAR should be completed by the user beforehand.
+        pattern: "*"
+        ontologies: []
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bam":
+          type: file
+          description: Sorted BAM file
+          pattern: "*.bam"
+          ontologies:
+            - edam: http://edamontology.org/format_2572 # BAM
+  bai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bai":
+          type: file
+          description: index corresponding to sorted BAM file
+          pattern: "*.bai"
+          ontologies:
+            - edam: http://edamontology.org/format_3327 # BAI
+  junction:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "Chimeric.out.junction":
+          type: file
+          description: Chimeric junction output file
+          pattern: "Chimeric.out.junction"
+          ontologies: []
+  qc_metrics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_qc_metrics":
+          type: directory
+          description: (optional) optional directory of qc metrics
+          pattern: "*_qc_metrics"
+  duplicate_metrics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.duplicate-metrics.txt":
+          type: file
+          description: (optional) metrics calculated from marking duplicates in the
+            bam file
+          pattern: "*.duplicate-metrics.txt"
+          ontologies: []
+  versions_parabricks:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - parabricks:
+          type: string
+          description: The tool name
+      - "pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - parabricks:
+          type: string
+          description: The tool name
+      - "pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'":
+          type: string
+          description: The command used to generate the version of the tool
+authors:
+  - "@gburnett-nvidia"
+maintainers:
+  - "@gburnett-nvidia"

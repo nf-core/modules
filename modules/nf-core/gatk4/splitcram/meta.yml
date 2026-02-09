@@ -27,9 +27,10 @@ input:
         type: file
         description: The CRAM file to split
         pattern: "*.cram"
+        ontologies: []
 output:
-  - split_crams:
-      - meta:
+  split_crams:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,11 +39,28 @@ output:
           type: file
           description: A list of split CRAM files
           pattern: "*.cram"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_gatk4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

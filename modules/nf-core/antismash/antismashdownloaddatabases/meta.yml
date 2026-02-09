@@ -27,16 +27,18 @@ tools:
       identifier: biotools:antismash
 input: []
 output:
-  - database:
-      - antismash_db:
-          type: directory
-          description: Download directory for antiSMASH databases
-          pattern: "antismash_db"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  database:
+    - antismash_db:
+        type: directory
+        description: Download directory for antiSMASH databases
+        pattern: "antismash_db"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jasmezz"
 maintainers:

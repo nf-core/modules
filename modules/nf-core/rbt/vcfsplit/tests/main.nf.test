@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process RBT_VCFSPLIT"
+    script "../main.nf"
+    process "RBT_VCFSPLIT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rbt"
+    tag "rbt/vcfsplit"
+
+    test("sarscov2 - vcf") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/vcf/test.vcf", checkIfExists: true)
+                ]
+                input[1] = 6
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - vcf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/vcf/test.vcf", checkIfExists: true)
+                ]
+                input[1] = 6
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

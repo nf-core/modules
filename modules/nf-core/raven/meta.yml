@@ -25,9 +25,11 @@ input:
         type: file
         description: Input file in FASTA/FASTQ format.
         pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fa,fq,fa.gz,fq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
 output:
-  - fasta:
-      - meta:
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,8 +38,10 @@ output:
           type: file
           description: Assembled FASTA file
           pattern: "*.fasta.gz"
-  - gfa:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  gfa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,11 +50,31 @@ output:
           type: file
           description: Repeat graph
           pattern: "*.gfa.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_raven:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - raven:
+          type: string
+          description: The name of the tool
+      - raven --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - raven:
+          type: string
+          description: The name of the tool
+      - raven --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@fmalmeida"
 maintainers:

@@ -27,9 +27,12 @@ input:
         description: Input sequence biological sequence file (optionally gzipped) to
           be manipulated via program specified in `$args`.
         pattern: "*.{bed,gff,sam,vcf,fastq,fasta,tab,bed.gz,gff.gz,sam.gz,vcf.gz,fastq.gz,fasta.gz,tab.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - output:
-      - meta:
+  output:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,11 +43,15 @@ output:
             Manipulated and gzipped version of input sequence file following program specified in `args`.
             File name will be what is specified in `$prefix`. Do not include `.gz` suffix in `$prefix`! Output files` will be gzipped for you!
           pattern: "*.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

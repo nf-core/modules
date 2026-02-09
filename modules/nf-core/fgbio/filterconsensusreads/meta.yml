@@ -26,6 +26,7 @@ input:
         type: file
         description: BAM file
         pattern: "*.bam"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -35,19 +36,22 @@ input:
         type: file
         description: Fasta file containing genomic sequence information
         pattern: "*.bam"
-  - - min_reads:
-        type: integer
-        description: Minimum number of reads required to keep a consensus read
-  - - min_baseq:
-        type: file
-        description: Minimum base quality to consider
-  - - max_base_error_rate:
-        type: file
-        description: Maximum base error rate for a position before it is replaced with
-          an N.
+        ontologies: []
+  - min_reads:
+      type: integer
+      description: Minimum number of reads required to keep a consensus read
+  - min_baseq:
+      type: file
+      description: Minimum base quality to consider
+      ontologies: []
+  - max_base_error_rate:
+      type: file
+      description: Maximum base error rate for a position before it is replaced with
+        an N.
+      ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -56,11 +60,29 @@ output:
           type: file
           description: Filtered consensus BAM file
           pattern: "*.bam"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_fgbio:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fgbio:
+          type: string
+          description: The tool name
+      - 'fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\[.*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fgbio:
+          type: string
+          description: The tool name
+      - 'fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\[.*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@lescai"
 maintainers:

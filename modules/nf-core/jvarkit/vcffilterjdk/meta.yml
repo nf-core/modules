@@ -38,14 +38,18 @@ input:
         type: file
         description: Input VCF/BCF file
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+        ontologies: []
     - tbi:
         type: file
         description: Optional VCF/BCF index file
         pattern: "*.{tbi,csi}"
+        ontologies: []
     - regions_file:
         type: file
         description: Optional. Restrict to regions listed in a file
         pattern: "*.{bed,bed.gz,txt,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
   - - meta2:
         type: map
         description: |
@@ -55,6 +59,7 @@ input:
         type: file
         description: Fasta reference file
         pattern: "*.fasta"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -64,6 +69,7 @@ input:
         type: file
         description: Fasta file index
         pattern: "*.fasta.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -73,6 +79,7 @@ input:
         type: file
         description: GATK sequence dictionary
         pattern: "*.dict"
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -83,6 +90,8 @@ input:
         description: File containing custom user code . May be empty if script if provided
           via `task.ext.args2`.
         pattern: "*.{code,script,txt,tsv,java,js}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
   - - meta6:
         type: map
         description: |
@@ -92,9 +101,11 @@ input:
         type: file
         description: Optional jvarkit pedigree.
         pattern: "*.{tsv,ped,pedigree}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing VCF information
@@ -103,8 +114,9 @@ output:
           type: file
           description: VCF filtered output file
           pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-  - tbi:
-      - meta:
+          ontologies: []
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing VCF information
@@ -113,8 +125,9 @@ output:
           type: file
           description: Alternative VCF file index
           pattern: "*.tbi"
-  - csi:
-      - meta:
+          ontologies: []
+  csi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing VCF information
@@ -123,11 +136,14 @@ output:
           type: file
           description: Default VCF file index
           pattern: "*.csi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@lindenb"
 maintainers:

@@ -1,6 +1,6 @@
 name: openms_idripper
-description: Split a merged identification file into their originating identification
-  files
+description: Split a merged identification file into their originating
+  identification files
 keywords:
   - split
   - idXML
@@ -27,9 +27,10 @@ input:
         type: file
         description: Merged idXML file
         pattern: "*.{idXML}"
+        ontologies: []
 output:
-  - idxmls:
-      - meta:
+  idxmls:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,11 +39,30 @@ output:
           type: file
           description: Multiple idXML files
           pattern: "*.{idXML}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_openms:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - openms:
+          type: string
+          description: The name of the tool
+      - "FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - openms:
+          type: string
+          description: The name of the tool
+      - "FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@jonasscheid"
 maintainers:

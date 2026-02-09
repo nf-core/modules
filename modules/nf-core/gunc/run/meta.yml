@@ -26,13 +26,15 @@ input:
         type: file
         description: A list of FASTA files containing contig (bins)
         pattern: "*.fa"
-  - - db:
-        type: file
-        description: GUNC database file
-        pattern: "*.dmnd"
+        ontologies: []
+  - db:
+      type: file
+      description: GUNC database file
+      pattern: "*.dmnd"
+      ontologies: []
 output:
-  - maxcss_level_tsv:
-      - meta:
+  maxcss_level_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -41,8 +43,10 @@ output:
           type: file
           description: Output file with results for the maximum CSS level
           pattern: "*.tsv"
-  - all_levels_tsv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  all_levels_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -51,11 +55,15 @@ output:
           type: file
           description: Optional output file with results for each taxonomic level
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

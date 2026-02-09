@@ -12,9 +12,9 @@ tools:
       documentation: "https://github.com/smirarab/sepp/blob/master/README.UPP.md"
       tool_dev_url: "https://github.com/smirarab/sepp/tree/master"
       doi: "10.1093/bioinformatics/btad007"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -25,6 +25,9 @@ input:
         type: file
         description: Input sequences in FASTA format
         pattern: "*.{fa,fasta}"
+        ontologies:
+          - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta2:
         type: map
         description: |
@@ -34,27 +37,68 @@ input:
         type: file
         description: Input guide tree in Newick format
         pattern: "*.{dnd}"
-  - - compress:
-        type: boolean
-        description: Flag representing whether the output MSA should be compressed.
-          Set to true to enable/false to disable compression.
+        ontologies:
+          - edam: http://edamontology.org/format_2006 # PHYLOGENETIC TREE
+  - compress:
+      type: boolean
+      description: Flag representing whether the output MSA should be compressed.
+        Set to true to enable/false to disable compression.
 output:
-  - alignment:
-      - meta:
+  alignment:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test']`
       - "*.aln{.gz,}":
           type: file
-          description: Alignment file, in FASTA format. May be gzipped or uncompressed,
-            depending on if compress is set to true or false
+          description: Alignment file, in FASTA format. May be gzipped or
+            uncompressed, depending on if compress is set to true or false
           pattern: "*.aln{.gz,}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
+            - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+            - edam: http://edamontology.org/format_1984 # FASTA-ALN
+  versions_upp:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - upp:
+          type: string
+          description: The name of the tool
+      - run_upp.py -v | grep "run_upp" | cut -f2 -d" ":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_pigz:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - upp:
+          type: string
+          description: The name of the tool
+      - run_upp.py -v | grep "run_upp" | cut -f2 -d" ":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@luisas"
 maintainers:

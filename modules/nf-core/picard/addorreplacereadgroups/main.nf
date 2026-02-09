@@ -4,8 +4,8 @@ process PICARD_ADDORREPLACEREADGROUPS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:3.3.0--hdfd78af_0' :
-        'biocontainers/picard:3.3.0--hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/0861295baa7c01fc593a9da94e82b44a729dcaf8da92be8e565da109aa549b25/data' :
+        'community.wave.seqera.io/library/picard:3.4.0--e9963040df0a9bf6' }"
 
     input:
     tuple val(meta), path(reads)
@@ -16,7 +16,7 @@ process PICARD_ADDORREPLACEREADGROUPS {
     tuple val(meta), path("*.bam") , emit: bam,  optional: true
     tuple val(meta), path("*.bai") , emit: bai,  optional: true
     tuple val(meta), path("*.cram"), emit: cram, optional: true
-    path "versions.yml"            , emit: versions
+    tuple val("${task.process}"), val('picard'), eval("picard AddOrReplaceReadGroups --version 2>&1 | sed -n 's/.*Version://p'"), topic: versions, emit: versions_picard
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,10 +44,6 @@ process PICARD_ADDORREPLACEREADGROUPS {
         --INPUT ${reads} \\
         --OUTPUT ${prefix}.${suffix}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(picard AddOrReplaceReadGroups --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
     """
 
     stub:
@@ -57,9 +53,5 @@ process PICARD_ADDORREPLACEREADGROUPS {
     """
     touch ${prefix}.${suffix}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(picard AddOrReplaceReadGroups --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
     """
 }

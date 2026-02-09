@@ -27,9 +27,10 @@ input:
     - fasta:
         type: file
         description: Input genome fasta file
+        ontologies: []
 output:
-  - index:
-      - meta:
+  index:
+    - - meta:
           type: directory
           description: Directory containing biscuit genome index
           pattern: "index"
@@ -37,11 +38,13 @@ output:
           type: directory
           description: Directory containing biscuit genome index
           pattern: "index"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@njspix"
 maintainers:

@@ -1,13 +1,163 @@
 {
-    "versions": {
+    "Dragonflye with raven": {
         "content": [
             [
-                "versions.yml:md5,308f2552548d82b74ed923e3b7fd0c87"
-            ]
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "raven.fasta:md5,5e4c032b868945c1309dd1d2d793072e"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "raven-unpolished.gfa:md5,dea0c9d418c1c53243b9575e50bd14fa"
+                ]
+            ],
+            [
+                "test.fa",
+                "test.reoriented.fa"
+            ],
+            "dragonflye.log",
+            [
+                "versions.yml:md5,d6f07368b1d590e4fb56eb988c2e7823"
+            ],
+            {
+                "DRAGONFLYE": {
+                    "dragonflye": "1.2.1"
+                }
+            }
         ],
-        "timestamp": "2023-11-10 13:25:06.318835345+0100"
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.4"
+        },
+        "timestamp": "2025-06-23T10:05:13.597388838"
     },
-    "miniasm_raw_contigs": {
+    "Dragonflye no assembler -- stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.fa:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.reoriented.fa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "dragonflye.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "flye.fasta:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "flye-unpolished.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "4": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "flye-info.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "5": [
+                    "versions.yml:md5,d6f07368b1d590e4fb56eb988c2e7823"
+                ],
+                "contigs": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.fa:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.reoriented.fa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "gfa": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "flye-unpolished.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "dragonflye.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "raw_contigs": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "flye.fasta:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "txt": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "flye-info.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,d6f07368b1d590e4fb56eb988c2e7823"
+                ]
+            },
+            {
+                "DRAGONFLYE": {
+                    "dragonflye": "1.2.1"
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.4"
+        },
+        "timestamp": "2025-06-23T10:34:54.634495049"
+    },
+    "Dragonflye with miniasm": {
         "content": [
             [
                 [
@@ -17,12 +167,7 @@
                     },
                     "miniasm.fasta:md5,6b8903ba09592df99f43ed05fda488f6"
                 ]
-            ]
-        ],
-        "timestamp": "2023-10-19T08:04:24.843252417"
-    },
-    "miniasm_gfa": {
-        "content": [
+            ],
             [
                 [
                     {
@@ -31,11 +176,28 @@
                     },
                     "miniasm-unpolished.gfa:md5,40ab03a417eafab0cb4ac2c32bd006e1"
                 ]
-            ]
+            ],
+            [
+                "test.fa",
+                "test.reoriented.fa"
+            ],
+            "dragonflye.log",
+            [
+                "versions.yml:md5,d6f07368b1d590e4fb56eb988c2e7823"
+            ],
+            {
+                "DRAGONFLYE": {
+                    "dragonflye": "1.2.1"
+                }
+            }
         ],
-        "timestamp": "2023-10-19T08:04:24.863920486"
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.4"
+        },
+        "timestamp": "2025-06-23T10:04:20.671794101"
     },
-    "hybrid_raw_contigs": {
+    "Dragonflye hybrid": {
         "content": [
             [
                 [
@@ -43,14 +205,9 @@
                         "id": "test",
                         "single_end": false
                     },
-                    "miniasm.fasta:md5,2975f61771d44f9f5758be05391e95bb"
+                    "miniasm.fasta:md5,b3b05ee807e75ae035ff55d876da607f"
                 ]
-            ]
-        ],
-        "timestamp": "2023-11-10 13:55:33.902108477+0100"
-    },
-    "hybrid_gfa": {
-        "content": [
+            ],
             [
                 [
                     {
@@ -59,8 +216,131 @@
                     },
                     "miniasm-unpolished.gfa:md5,582c59bd7eb9af1fec673d4ecf1772e9"
                 ]
-            ]
+            ],
+            [
+                "test.fa",
+                "test.reoriented.fa"
+            ],
+            "dragonflye.log",
+            [
+                "versions.yml:md5,d6f07368b1d590e4fb56eb988c2e7823"
+            ],
+            {
+                "DRAGONFLYE": {
+                    "dragonflye": "1.2.1"
+                }
+            }
         ],
-        "timestamp": "2023-11-10 13:54:30.857934106+0100"
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.4"
+        },
+        "timestamp": "2025-06-23T10:07:25.076076568"
+    },
+    "Dragonflye hybrid -- stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.fa:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.reoriented.fa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "dragonflye.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "miniasm.fasta:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "miniasm-unpolished.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "4": [
+                    
+                ],
+                "5": [
+                    "versions.yml:md5,d6f07368b1d590e4fb56eb988c2e7823"
+                ],
+                "contigs": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.fa:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.reoriented.fa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "gfa": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "miniasm-unpolished.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "dragonflye.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "raw_contigs": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "miniasm.fasta:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "txt": [
+                    
+                ],
+                "versions": [
+                    "versions.yml:md5,d6f07368b1d590e4fb56eb988c2e7823"
+                ]
+            },
+            {
+                "DRAGONFLYE": {
+                    "dragonflye": "1.2.1"
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.4"
+        },
+        "timestamp": "2025-06-23T10:34:49.339461552"
     }
 }

@@ -12,8 +12,9 @@ tools:
       documentation: "https://github.com/weizhongli/cdhit/wiki"
       tool_dev_url: "https://github.com/weizhongli/cdhit"
       doi: "10.1093/bioinformatics/btl158"
-      licence: ["GPL v2"]
-      identifier: ""
+      licence:
+        - "GPL v2"
+      identifier: "biotools:cd-hit"
 input:
   - - meta:
         type: map
@@ -24,9 +25,10 @@ input:
         type: file
         description: fasta file of sequences to be clustered
         pattern: "*.{fa,fasta}"
+        ontologies: []
 output:
-  - fasta:
-      - meta:
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,8 +37,9 @@ output:
           type: file
           description: fasta file of the representative sequences for each cluster
           pattern: "*.{fasta}"
-  - clusters:
-      - meta:
+          ontologies: []
+  clusters:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,11 +48,28 @@ output:
           type: file
           description: List of clusters
           pattern: "*.{clstr}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_cdhit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cdhit:
+          type: string
+          description: The name of the tool
+      - cd-hit -h | sed -n '1s/.*version \([0-9.]*\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cdhit:
+          type: string
+          description: The name of the tool
+      - cd-hit -h | sed -n '1s/.*version \([0-9.]*\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@timslittle"
   - "@Puumanamana"

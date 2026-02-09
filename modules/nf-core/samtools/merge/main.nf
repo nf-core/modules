@@ -4,8 +4,8 @@ process SAMTOOLS_MERGE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.21--h50ea8bc_0' :
-        'biocontainers/samtools:1.21--h50ea8bc_0' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.22.1--h96c455f_0' :
+        'biocontainers/samtools:1.22.1--h96c455f_0' }"
 
     input:
     tuple val(meta), path(input_files, stageAs: "?/*")
@@ -18,8 +18,7 @@ process SAMTOOLS_MERGE {
     tuple val(meta), path("${prefix}.cram"), optional:true, emit: cram
     tuple val(meta), path("*.csi")         , optional:true, emit: csi
     tuple val(meta), path("*.crai")        , optional:true, emit: crai
-    path  "versions.yml"                                  , emit: versions
-
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,6 +29,7 @@ process SAMTOOLS_MERGE {
     def file_type = input_files instanceof List ? input_files[0].getExtension() : input_files.getExtension()
     def reference = fasta ? "--reference ${fasta}" : ""
     """
+    # Note: --threads value represents *additional* CPUs to allocate (total CPUs = 1 + --threads).
     samtools \\
         merge \\
         --threads ${task.cpus-1} \\
@@ -37,11 +37,6 @@ process SAMTOOLS_MERGE {
         ${reference} \\
         ${prefix}.${file_type} \\
         $input_files
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -53,10 +48,5 @@ process SAMTOOLS_MERGE {
     """
     touch ${prefix}.${file_type}
     ${index}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }

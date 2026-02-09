@@ -24,7 +24,7 @@ process AMPCOMBI2_CLUSTER {
     """
     ampcombi cluster \\
         --ampcombi_summary ${summary_file} \\
-        $args \\
+        ${args} \\
         --threads ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
@@ -34,7 +34,6 @@ process AMPCOMBI2_CLUSTER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     """
     touch Ampcombi_summary_cluster.tsv
     touch Ampcombi_summary_cluster_representative_seq.tsv

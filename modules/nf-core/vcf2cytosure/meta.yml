@@ -25,6 +25,7 @@ input:
         type: file
         description: VCF file with structural variants
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -34,6 +35,7 @@ input:
         type: file
         description: Bed file with coverage data
         pattern: "*.bed"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -42,6 +44,7 @@ input:
     - cns:
         type: file
         description: CN file from CNVkit, not compatible with coverage_bed file
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -53,13 +56,15 @@ input:
           VCF file with SNVs to calculate probe coverage,
           not compatible with coverage_bed
           pattern: "*.{vcf,vcf.gz}"
-  - - blacklist_bed:
-        type: file
-        description: Bed file with regions to exclude
-        pattern: "*.bed"
+        ontologies: []
+  - blacklist_bed:
+      type: file
+      description: Bed file with regions to exclude
+      pattern: "*.bed"
+      ontologies: []
 output:
-  - cgh:
-      - meta:
+  cgh:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -68,10 +73,27 @@ output:
           type: file
           description: SV:s in CytoSure format
           pattern: "*.cgh"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_vcf2cytosure:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcf2cytosure:
+          type: string
+          description: The name of the tool
+      - vcf2cytosure --version 2>&1 | sed -n 's/.*cytosure //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcf2cytosure:
+          type: string
+          description: The name of the tool
+      - vcf2cytosure --version 2>&1 | sed -n 's/.*cytosure //p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jemten"

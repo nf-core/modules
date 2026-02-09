@@ -1,0 +1,90 @@
+// nf-core modules test dbcan
+nextflow_process {
+
+    name "Test Process RUNDBCAN_EASYSUBSTRATE"
+    script "../main.nf"
+    process "RUNDBCAN_EASYSUBSTRATE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rundbcan"
+    tag "rundbcan/database"
+    tag "rundbcan/easysubstrate"
+
+    test("easysubstrate - simplified") {
+
+        setup {
+            run("RUNDBCAN_DATABASE"){
+                script "../../database/main.nf"
+                process {
+                    """
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
+                    "prodigal"
+                ]
+                input[2] = RUNDBCAN_DATABASE.out.dbcan_db
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.cazyme_annotation,
+                    process.out.dbcanhmm_results,
+                    process.out.dbcansub_results,
+                    process.out.dbcandiamond_results,
+                    process.out.cgc_gff,
+                    process.out.cgc_standard_out,
+                    process.out.diamond_out_tc,
+                    process.out.tf_hmm_results,
+                    process.out.stp_hmm_results,
+                    process.out.total_cgc_info,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("easysubstrate - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[id: 'stub'], file('stub')]
+                input[1] = [[id: 'stub'], file('stub.gff'), "prodigal"]
+                input[2] = file('stub_db')
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
+            )
+        }
+    }
+}

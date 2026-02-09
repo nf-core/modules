@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "vcf2zarr_convert"
+description: Convert VCF data to the VCF Zarr specification reliably, in
+  parallel or distributed over a cluster
+keywords:
+  - vcf
+  - zarr
+  - convert
+tools:
+  - "vcf2zarr":
+      description: "Convert bioinformatics data to Zarr"
+      homepage: "https://sgkit-dev.github.io/bio2zarr/vcf2zarr/overview.html"
+      documentation: "https://sgkit-dev.github.io/bio2zarr/"
+      tool_dev_url: "https://github.com/sgkit-dev/bio2zarr"
+      doi: "10.1101/2024.06.11.598241"
+      licence: ["Apache-2.0"]
+      identifier: biotools:bio2zarr
+
+input:
+  # Only when we have meta
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+
+    - vcf:
+        type: file
+        description: Input VCF file
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+
+output:
+  vcz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.vcz":
+          type: directory
+          description: Output VCF Zarr store
+          pattern: "*.{vcz}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3915"
+
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@camlloyd"
+maintainers:
+  - "@camlloyd"

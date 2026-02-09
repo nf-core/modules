@@ -20,20 +20,24 @@ tools:
       licence: ["MIT"]
       identifier: ""
 input:
-  - - ids:
-        type: list
-        description: List of supported database ids e.g. SRA / GEO / ENA
+  - ids:
+      type: list
+      description: List of supported database ids e.g. SRA / GEO / ENA
 output:
-  - json:
-      - "*.json":
-          type: file
-          description: JSON file containing metadata for ids
-          pattern: "*.{json}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  json:
+    - "*.json":
+        type: file
+        description: JSON file containing metadata for ids
+        pattern: "*.{json}"
+        ontologies:
+          - edam: http://edamontology.org/format_3464 # JSON
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@drpatelh"
 maintainers:

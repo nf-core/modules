@@ -1,6 +1,6 @@
 process LAST_SPLIT {
     tag "$meta.id"
-    label 'process_high'
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
@@ -13,7 +13,8 @@ process LAST_SPLIT {
     output:
     tuple val(meta), path("*.maf.gz"), emit: maf
     tuple val(meta), path("*.tsv")   , emit: multiqc
-    path "versions.yml"              , emit: versions
+    // last-dotplot has no --version option so let's use lastal from the same suite
+    tuple val("${task.process}"), val('last'), eval("lastal --version | sed 's/lastal //'"), emit: versions_last, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,13 +26,39 @@ process LAST_SPLIT {
     """
     set -o pipefail
 
+    # LAST reports genome sizes and sequence number at the beginning and end of the MAF files it outputs.
+    function get_genome_stats() { awk '
+        BEGIN { OFS = "\\t" }
+        function extract(line, regex,   s) {
+            if (match(line, regex)) {
+                s = substr(line, RSTART, RLENGTH)
+                sub(/^[^=]*=/, "", s)   # strip up to "="
+                return s
+            }
+            return ""
+        }
+        /^# Reference sequences=/ {
+            ref_seq     = extract(\$0, "^# Reference sequences=[0-9]+")
+            ref_letters = extract(\$0,                "letters=[0-9]+")
+        }
+        /^# Query sequences=/ {
+            qry_seq     = extract(\$0, "^# Query sequences=[0-9]+")
+            qry_letters = extract(\$0,            "letters=[0-9]+")
+        }
+        END {
+            print "TargetSequences", "TargetLength", "QuerySequences", "QueryLength"    # Header for MultiQC
+            print ref_seq+0,         ref_letters+0,  qry_seq+0,         qry_letters+0   # Data in TSV format
+        }'
+    }
+
+    # The MAF files do not report number of matches directly, but we can compute it easily via conversion to PSL format and then extract them.
     function calculate_psl_metrics() {
         awk 'BEGIN {
-            FS="\t";  # Set field separator as tab
+            OFS="\\t";
+            FS="\\t";  # Set field separator as tab
             totalMatches = 0;
             totalAlignmentLength = 0;
             totalAlignedBases = 0;
-            print "Sample\tTotalAlignmentLength\tPercentIdentity\tPercentIdentityNoGaps";  # Header for MultiQC
         }
         {
             totalMatches         += \$1 +       \$3            ;  # Sum matches          and repMatches
@@ -41,20 +68,21 @@ process LAST_SPLIT {
         END {
             percentIdentity       = (totalAlignmentLength > 0) ? (totalMatches / totalAlignmentLength * 100) : 0;
             percentIdentityNoGaps = (totalAlignmentLength > 0) ? (totalMatches / totalAlignedBases    * 100) : 0;
-            print "$meta.id" "\t" totalAlignmentLength "\t" percentIdentity "\t" percentIdentityNoGaps;  # Data in TSV format
+            print "Sample",  "TotalAlignmentLength", "PercentIdentity", "PercentIdentityNoGaps";  # Header for MultiQC
+            print "$meta.id", totalAlignmentLength,   percentIdentity,   percentIdentityNoGaps;   # Data in TSV format
         }'
     }
 
+    # The MAF files can be really big, so we stream them in the awk functions and gzip instead of reading them each time.
     zcat < $maf |
         last-split $args |
-        tee >(gzip --no-name  > ${prefix}.maf.gz) |
+        tee >(get_genome_stats > ${prefix}.genomestats.txt) |
+        tee >(gzip --no-name   > ${prefix}.maf.gz) |
         maf-convert psl |
-        calculate_psl_metrics > ${prefix}.tsv
+        calculate_psl_metrics  > ${prefix}.alignmentstats.txt
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        last: \$(last-split --version 2>&1 | sed 's/last-split //')
-    END_VERSIONS
+    # Combine the two stats file into one for MultiQC.
+    paste ${prefix}.alignmentstats.txt ${prefix}.genomestats.txt > ${prefix}.tsv
     """
 
     stub:
@@ -64,10 +92,5 @@ process LAST_SPLIT {
     """
     echo stub | gzip --no-name > ${prefix}.maf.gz
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        last: \$(last-split --version 2>&1 | sed 's/last-split //')
-    END_VERSIONS
     """
 }

@@ -25,9 +25,10 @@ input:
         type: file
         description: List of input FastQ files
         pattern: "*.{fastq.gz}"
+        ontologies: []
 output:
-  - reads:
-      - meta:
+  reads:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,10 +37,27 @@ output:
           type: file
           description: Filtered FastQ files
           pattern: "*.{fastq.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_seqtk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqtk:
+          type: string
+          description: The name of the tool
+      - "seqtk 2>&1 | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqtk:
+          type: string
+          description: The name of the tool
+      - "seqtk 2>&1 | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@laramiellindsey"

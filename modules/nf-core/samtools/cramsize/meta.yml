@@ -25,9 +25,10 @@ input:
         type: file
         description: CRAM file
         pattern: "*.cram"
+        ontologies: []
 output:
-  - size:
-      - meta:
+  size:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,10 +37,27 @@ output:
           type: file
           description: Size information file
           pattern: "*.size"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@limrp"

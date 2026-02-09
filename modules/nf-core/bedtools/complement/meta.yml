@@ -25,13 +25,15 @@ input:
         type: file
         description: Input BED file
         pattern: "*.{bed}"
-  - - sizes:
-        type: file
-        description: File which defines the chromosome lengths for a given genome
-        pattern: "*.{sizes}"
+        ontologies: []
+  - sizes:
+      type: file
+      description: File which defines the chromosome lengths for a given genome
+      pattern: "*.{sizes}"
+      ontologies: []
 output:
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -41,11 +43,28 @@ output:
           description: Bed file with all genomic intervals that are not covered by at
             least one record from the input file.
           pattern: "*.{bed}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_bedtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bedtools:
+          type: string
+          description: The name of the tool
+      - "bedtools --version | sed -e 's/bedtools v//g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bedtools:
+          type: string
+          description: The name of the tool
+      - "bedtools --version | sed -e 's/bedtools v//g'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@edmundmiller"
   - "@sruthipsuresh"

@@ -23,23 +23,27 @@ input:
         type: file
         description: A Newick formatted tree based on multiple sequence alignment
         pattern: "*.{newick,treefile,dnd}"
+        ontologies: []
     - msa:
         type: file
         description: A multiple sequence alignment in FASTA format
         pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
+        ontologies: []
 output:
-  - emsim:
-      - meta:
+  emsim:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.emsim.txt":
           type: file
-          description: Bootstrapped values for the three parameters R/theta, nu and delta
+          description: Bootstrapped values for the three parameters R/theta, nu and
+            delta
           pattern: "*.emsim.txt"
-  - em:
-      - meta:
+          ontologies: []
+  em:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,8 +52,9 @@ output:
           type: file
           description: Point estimates for R/theta, nu, delta and the branch lengths
           pattern: "*.em.txt"
-  - status:
-      - meta:
+          ontologies: []
+  status:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -58,8 +63,9 @@ output:
           type: file
           description: List of reconstructed recombination events
           pattern: "*.importation_status.txt"
-  - newick:
-      - meta:
+          ontologies: []
+  newick:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -68,8 +74,9 @@ output:
           type: file
           description: Tree with all nodes labelled
           pattern: "*.labelled_tree.newick"
-  - fasta:
-      - meta:
+          ontologies: []
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -78,8 +85,9 @@ output:
           type: file
           description: Sequence reconstructed by maximum likelihood
           pattern: "*.ML_sequence.fasta"
-  - pos_ref:
-      - meta:
+          ontologies: []
+  pos_ref:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -88,11 +96,14 @@ output:
           type: file
           description: CSV mapping input sequence files to the sequences in the *.ML_sequence.fasta
           pattern: "*.position_cross_reference.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rpetit3"
 maintainers:

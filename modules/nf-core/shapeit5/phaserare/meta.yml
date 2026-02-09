@@ -28,52 +28,48 @@ input:
         description: |
           Genotypes to be phased in plain VCF/BCF format.
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+        ontologies: []
     - input_index:
         type: file
         description: Index file of the input_plain VCF/BCF file containing genotype
           likelihoods.
         pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
+        ontologies: []
     - pedigree:
         type: file
         description: |
           Pedigree information in the following format: offspring father mother.
         pattern: "*.{txt, tsv}"
+        ontologies: []
     - input_region:
         type: string
         description: |
           Region to be considered in --input-plain (e.g. chr20:1000000-2000000 or chr20).
           For chrX, please treat PAR and non-PAR regions as different choromosome in order to avoid mixing ploidy.
         pattern: "chrXX:leftBufferPosition-rightBufferPosition"
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
     - scaffold:
         type: file
         description: Scaffold of haplotypes in VCF/BCF format.
         pattern: "*.{vcf.gz,bcf.gz}"
+        ontologies: []
     - scaffold_index:
         type: file
         description: Index file of the scaffold file.
         pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
+        ontologies: []
     - scaffold_region:
         type: string
         description: |
           Region to be considered in --scaffold (e.g. chr20:1000000-2000000 or chr20).
         pattern: "chrXX:leftBufferPosition-rightBufferPosition"
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
     - map:
         type: file
-        description: File containing the genetic map.
+        description: File containing the genetic map in Glimpse format.
         pattern: "*.gmap"
+        ontologies: []
 output:
-  - phased_variant:
-      - meta:
+  phased_variant:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -82,11 +78,14 @@ output:
           type: file
           description: Phased variants in VCF/BCF format.
           pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@LouisLeNezet"
 maintainers:

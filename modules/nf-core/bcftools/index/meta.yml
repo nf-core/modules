@@ -30,9 +30,10 @@ input:
         type: file
         description: VCF file (optionally GZIPPED)
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
 output:
-  - csi:
-      - meta:
+  csi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -41,8 +42,9 @@ output:
           type: file
           description: Default VCF file index file
           pattern: "*.csi"
-  - tbi:
-      - meta:
+          ontologies: []
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,11 +54,28 @@ output:
           description: Alternative VCF file index file for larger files (activated with
             -t parameter)
           pattern: "*.tbi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software version
-          pattern: "versions.yml"
+          ontologies: []
+  versions_bcftools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@jfy133"
 maintainers:

@@ -16,7 +16,18 @@ tools:
       doi: "10.1038/s41592-024-02197-7"
       licence: ["BSD"]
       identifier: ""
+  - CometAdapter:
+      description: "Annotates MS/MS spectra using Comet."
+      homepage: "https://openms.de"
+      documentation: "https://openms.readthedocs.io/en/latest/index.html"
+      identifier: ""
+  - Comet:
+      description: "Comet is an open source tandem mass spectrometry (MS/MS) sequence
+        database search tool."
+      homepage: "http://comet-ms.sourceforge.net/"
+      documentation: "http://comet-ms.sourceforge.net/"
 
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -27,13 +38,15 @@ input:
         type: file
         description: File containing mass spectra in mzML format
         pattern: "*.{mzML}"
+        ontologies: []
     - fasta:
         type: file
         description: Protein sequence database containing targets and decoys
         pattern: "*.{fasta}"
+        ontologies: []
 output:
-  - idxml:
-      - meta:
+  idxml:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -42,8 +55,9 @@ output:
           type: file
           description: File containing target and decoy hits in idXML format
           pattern: "*.{idXML}"
-  - pin:
-      - meta:
+          ontologies: []
+  pin:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,11 +66,50 @@ output:
           type: file
           description: TSV file tailored as Percolator input (pin) file
           pattern: "*.{tsv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_cometadapter:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - CometAdapter:
+          type: string
+          description: The name of the tool
+      - "CometAdapter --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_comet:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - Comet:
+          type: string
+          description: The name of the tool
+      - comet 2>&1 | sed -n 's/.*Comet version " *\(.*\)".*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - CometAdapter:
+          type: string
+          description: The name of the tool
+      - "CometAdapter --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - Comet:
+          type: string
+          description: The name of the tool
+      - comet 2>&1 | sed -n 's/.*Comet version " *\(.*\)".*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@jonasscheid"
 maintainers:

@@ -13,7 +13,8 @@ tools:
       homepage: http://www.htslib.org/
       documentation: http://www.htslib.org/doc/samtools.html
       doi: 10.1093/bioinformatics/btp352
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:samtools
 input:
   - - meta:
@@ -25,9 +26,10 @@ input:
         type: file
         description: FASTA file, compressed or not.
         pattern: "*.{fa,fa.gz,fa.bz2,fa.xz,fasta,fasta.gz,fasta.bz2,fasta.xz}"
+        ontologies: []
 output:
-  - fasta:
-      - meta:
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,11 +41,27 @@ output:
             A FASTA file compressed with the BGZF algorithm.  It will be
             the original file if it was already BGZF-compressed.
           pattern: "*.{fa.gz,fasta.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@charles-plessy"
 maintainers:

@@ -1,0 +1,77 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fasta_vclust_prefilter_align_cluster"
+description: |
+  Subworkflow that runs a three-stage VCLUST pipeline: 1) create a prefilter
+  of candidate sequence pairs with `vclust prefilter`, 2) compute pairwise
+  alignments and similarity metrics with `vclust align`, and 3) generate
+  threshold-based clusters with `vclust cluster`.
+keywords:
+  - fasta
+  - vclust
+  - cluster
+  - prefilter
+  - align
+components:
+  - vclust/prefilter
+  - vclust/align
+  - vclust/cluster
+input:
+  - ch_fasta:
+      type: file
+      description: |
+        Input channel containing FASTA files to cluster. Each entry is a two-item
+        tuple: [ val(meta), path(fasta) ] where `meta` is a Groovy map (e.g.
+        [ id:'sample1' ]) and `fasta` is the path to the FASTA file.
+      pattern: "*.{fasta,fna,fa}"
+  - save_alignment:
+      type: boolean
+      description: |
+        Whether to save pairwise alignments produced by `vclust align`.
+      default: false
+  - metric:
+      type: string
+      description: |
+        Similarity metric to use for clustering. Allowed values: 'tani', 'gani',
+        or 'ani'.
+      enum: ["tani", "gani", "ani"]
+  - tani:
+      type: float
+      description: |
+        Minimum total ANI threshold.
+  - gani:
+      type: float
+      description: |
+        Minimum global ANI threshold.
+  - ani:
+      type: float
+      description: |
+        Minimum ANI threshold.
+output:
+  - versions:
+      type: file
+      description: File containing software versions used by the subworkflow
+      pattern: "versions.yml"
+  - fasta:
+      type: file
+      description: |
+        Input FASTA file forwarded from the workflow. Each output is associated
+        with its input sample/meta tuple.
+      pattern: "*.{fasta,fna,fa}"
+  - clusters:
+      type: file
+      description: |
+        TSV file containing clustering assignments produced by `vclust cluster`.
+        Format: genome identifier followed by 0-based cluster identifier.
+      pattern: "*.tsv"
+  - alignment:
+      type: file
+      description: Optional pairwise alignment file(s) produced by `vclust align`.
+      pattern: "*.aln.tsv"
+  - ids:
+      type: file
+      description: IDs file produced by `vclust align` mapping sequence IDs and part counts.
+      pattern: "*.ids.tsv"
+authors:
+  - "@Joon-Klaps"
+maintainers:
+  - "@Joon-Klaps"

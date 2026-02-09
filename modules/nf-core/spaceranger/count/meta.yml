@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "spaceranger_count"
-description: Module to use the 10x Space Ranger pipeline to process 10x spatial transcriptomics
-  data
+description: Module to use the 10x Space Ranger pipeline to process 10x spatial
+  transcriptomics data
 keywords:
   - align
   - count
@@ -37,10 +36,12 @@ input:
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
         pattern: "${Sample_Name}_S1_L00${Lane_Number}_${I1,I2,R1,R2}_001.fastq.gz"
+        ontologies: []
     - image:
         type: file
         description: Brightfield tissue H&E image in JPEG or TIFF format.
         pattern: "*.{tif,tiff,jpg,jpeg}"
+        ontologies: []
     - slide:
         type: string
         description: Visium slide ID used for the sample.
@@ -54,12 +55,14 @@ input:
           frame in TIFF format. The size of this image is set at 3k in both dimensions and this image should
           not be modified any way before passing it as input to either Space Ranger or Loupe Browser.
         pattern: "*.{tif,tiff}"
+        ontologies: []
     - darkimage:
         type: file
         description: |
           Optional for dark background fluorescence microscope image input. Multi-channel, dark-background fluorescence
           image as either a single, multi-layer TIFF file or as multiple TIFF or JPEG files.
         pattern: "*.{tif,tiff,jpg,jpeg}"
+        ontologies: []
     - colorizedimage:
         type: file
         description: |
@@ -67,39 +70,67 @@ input:
           A color composite of one or more fluorescence image channels saved as a single-page,
           single-file color TIFF or JPEG.
         pattern: "*.{tif,tiff,jpg,jpeg}"
+        ontologies: []
     - alignment:
         type: file
         description: OPTIONAL - Path to manual image alignment.
         pattern: "*.json"
+        ontologies:
+          - edam: http://edamontology.org/format_3464 # JSON
     - slidefile:
         type: file
         description: OPTIONAL - Path to slide specifications.
         pattern: "*.json"
-  - - reference:
-        type: directory
-        description: Folder containing all the reference indices needed by Space Ranger
-  - - probeset:
-        type: file
-        description: OPTIONAL - Probe set specification.
-        pattern: "*.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3464 # JSON
+  - reference:
+      type: directory
+      description: Folder containing all the reference indices needed by Space
+        Ranger
+  - probeset:
+      type: file
+      description: OPTIONAL - Probe set specification.
+      pattern: "*.csv"
+      ontologies:
+        - edam: http://edamontology.org/format_3752 # CSV
 output:
-  - outs:
-      - meta:
+  outs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - outs/**:
           type: file
-          description: Files containing the outputs of Space Ranger, see official 10X
-            Genomics documentation for a complete list
+          description: Files containing the outputs of Space Ranger, see official
+            10X Genomics documentation for a complete list
           pattern: "outs/*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_spaceranger:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - spaceranger:
+          type: string
+          description: The name of the tool
+      - spaceranger -V | sed "s/spaceranger spaceranger-//":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - spaceranger:
+          type: string
+          description: The name of the tool
+      - spaceranger -V | sed "s/spaceranger spaceranger-//":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@grst"
 maintainers:
   - "@grst"
+  - "@fasterius"

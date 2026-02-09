@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "fusioncatcher_build"
 description: Build references for fusioncatcher
@@ -15,32 +14,35 @@ tools:
       tool_dev_url: https://github.com/ndaniel/fusioncatcher/
       doi: "10.1101/011650"
       licence: ["GPL v3"]
+      identifier: biotools:fusioncatcher
 
 input:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
 
 output:
-  - reference:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - ${prefix}:
-        type: file
-        description: Diretory containing the fusioncatcher reference files
+  reference:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}:
+          type: file
+          description: Diretory containing the fusioncatcher reference files
 
-  - versions:
-    - "versions.yml":
+          ontologies: []
+  versions:
+    - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

@@ -33,49 +33,63 @@ input:
         type: file
         description: extract file(s) from Somalier extract
         pattern: "*.somalier"
+        ontologies: []
     - ped:
         type: file
         description: optional path to a ped or fam file indicating the expected relationships
           among samples
         pattern: "*.{ped,fam}"
-  - - sample_groups:
-        type: file
-        description: optional path to expected groups of samples such as tumor normal
-          pairs specified as comma-separated groups per line
-        pattern: "*.{txt,csv}"
+        ontologies: []
+  - sample_groups:
+      type: file
+      description: optional path to expected groups of samples such as tumor normal
+        pairs specified as comma-separated groups per line
+      pattern: "*.{txt,csv}"
+      ontologies:
+        - edam: http://edamontology.org/format_3752 # CSV
 output:
-  - html:
-      - meta:
+  html:
+    - - meta:
           type: file
           description: html file
           pattern: "*.html"
+          ontologies: []
       - "*.html":
           type: file
           description: html file
           pattern: "*.html"
-  - pairs_tsv:
-      - meta:
+          ontologies: []
+  pairs_tsv:
+    - - meta:
           type: file
-          description: tsv file with output stats for pairs of samples
-          pattern: "*.pairs.tsv"
+          description: html file
+          pattern: "*.html"
+          ontologies: []
       - "*.pairs.tsv":
           type: file
           description: tsv file with output stats for pairs of samples
           pattern: "*.pairs.tsv"
-  - samples_tsv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  samples_tsv:
+    - - meta:
           type: file
-          description: tsv file with sample-level information
-          pattern: "*.samples.tsv"
+          description: html file
+          pattern: "*.html"
+          ontologies: []
       - "*.samples.tsv":
           type: file
           description: tsv file with sample-level information
           pattern: "*.samples.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ashotmarg"
   - "@nvnieuwk"

@@ -27,15 +27,11 @@ output:
   - bam_subsampled:
       type: file
       description: |
-        Channel containing subsampled BAM/CRAM/SAM files and their indexes
+        Channel containing subsampled BAM/CRAM/SAM files and their indexes.
+        depth and subsample_fraction parameter will be added to the meta map.
+        The later will be used to set the `--subsample` parameter in SAMTOOLS/VIEW command.
         Structure: [ val(meta), path(bam), path(csi) ]
       pattern: "*.{bam,cram,sam}"
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
 authors:
   - "@louislenezet"
 maintainers:

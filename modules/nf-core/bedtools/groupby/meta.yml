@@ -25,12 +25,13 @@ input:
         type: file
         description: Input BED file
         pattern: "*.{bed}"
-  - - summary_col:
-        type: string
-        description: Column to summarize
+        ontologies: []
+  - summary_col:
+      type: string
+      description: Column to summarize
 output:
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,11 +40,28 @@ output:
           type: file
           description: Grouped by bed file with combined features
           pattern: "*.{bed}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_bedtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bedtools:
+          type: string
+          description: The name of the tool
+      - "bedtools --version | sed -e 's/bedtools v//g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bedtools:
+          type: string
+          description: The name of the tool
+      - "bedtools --version | sed -e 's/bedtools v//g'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mashehu"
 maintainers:

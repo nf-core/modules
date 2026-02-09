@@ -27,18 +27,22 @@ input:
         type: file
         description: VCF/GVCF file to query
         pattern: "*.{gvcf,vcf}.gz"
+        ontologies: []
     - truth_vcf:
         type: file
         description: gold standard VCF file
         pattern: "*.{gvcf,vcf}.gz"
+        ontologies: []
     - regions_bed:
         type: file
         description: Sparse regions to restrict the analysis to
         pattern: "*.bed"
+        ontologies: []
     - targets_bed:
         type: file
         description: Dense regions to restrict the analysis to
         pattern: "*.bed"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -48,6 +52,7 @@ input:
         type: file
         description: FASTA file of the reference genome
         pattern: "*.{fa,fasta}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -57,6 +62,7 @@ input:
         type: file
         description: The index of the reference FASTA
         pattern: "*.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -67,6 +73,7 @@ input:
         description: False positive / confident call regions. Calls outside these regions
           will be labelled as UNK.
         pattern: "*.{bed,bed.gz}"
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -76,6 +83,7 @@ input:
         type: file
         description: Ambiguous regions
         pattern: "*.{bed,bed.gz}"
+        ontologies: []
   - - meta6:
         type: map
         description: |
@@ -85,20 +93,23 @@ input:
         type: file
         description: one or more BAM files for feature table extraction
         pattern: "*.bam"
+        ontologies: []
 output:
-  - features:
-      - meta:
+  features:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.features.csv":
           type: file
-          description: One or more than one (if AF count is on ) CSV file containing feature
-            information
+          description: One or more than one (if AF count is on ) CSV file containing
+            feature information
           pattern: "*.features.csv"
-  - metrics:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  metrics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -107,8 +118,10 @@ output:
           type: file
           description: One or more than one (if AF count is on ) JSON file with metrics
           pattern: "*.metrics.json"
-  - stats:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  stats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -118,10 +131,14 @@ output:
           description: One or more than one (if AF count is on ) CSV file with benchmark
             stats
           pattern: "*.stats.csv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kubranarci"

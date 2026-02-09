@@ -1,0 +1,296 @@
+{
+    "homo_sapiens - vcf no list and no sample, panel vcf region, no chunks, no map, no fasta, chunk recursive + splitreference": {
+        "content": [
+            [
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "chr22:16570065-16609999",
+                    "chr22:16570065-16592222"
+                ],
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "chr22:16570065-16609999",
+                    "chr22:16592223-16609999"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "input_vcf",
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "input_vcf_22.vcf.gz",
+                    "input_vcf_22.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=903, phased=true, phasedAutodetect=false]",
+                    [
+                        "NA12878"
+                    ],
+                    "b9ccc0359ccca0714fca43367538de47"
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-06T10:10:30.916186609"
+    },
+    "homo_sapiens - bam no list and no sample, panel vcf region, no chunks, no map, no fasta, chunk sequential + splitreference": {
+        "content": [
+            [
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "chr22:1-16609999",
+                    "chr22:1-16590520"
+                ],
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "chr22:16570065-1248956422",
+                    "chr22:16590521-1248956422"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "input_bam",
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "input_bam_22.vcf.gz",
+                    "input_bam_22.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=903, phased=true, phasedAutodetect=true]",
+                    [
+                        "NA12878.chr22.1X"
+                    ],
+                    "661a9923af273601dbf0e7a3a666ebd0"
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-06T10:11:17.930222928"
+    },
+    "homo_sapiens - empty channels, chunk sequential + splitreference - stub": {
+        "content": [
+            {
+                "chunks": [
+                    [
+                        {
+                            "panel": "ref_panel",
+                            "chr": "21"
+                        },
+                        "0",
+                        "0"
+                    ],
+                    [
+                        {
+                            "panel": "ref_panel",
+                            "chr": "22"
+                        },
+                        "0",
+                        "0"
+                    ]
+                ],
+                "vcf_index": [
+                    [
+                        {
+                            "id": "allid",
+                            "panel": "ref_panel",
+                            "chr": "21"
+                        },
+                        "allid_21.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "allid_21.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ],
+                    [
+                        {
+                            "id": "allid",
+                            "panel": "ref_panel",
+                            "chr": "22"
+                        },
+                        "allid_22.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "allid_22.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-06T10:11:56.126233708"
+    },
+    "homo_sapiens - vcf no list with sample, panel vcf region, chunks, map, no fasta, no chunking + no splitreference": {
+        "content": [
+            [
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "chr22:16570065-16597215",
+                    "chr22:16570065-16592216"
+                ],
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "chr22:16587172-16609999",
+                    "chr22:16592229-16609999"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "input_vcf",
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "input_vcf_22.vcf.gz",
+                    "input_vcf_22.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=903, phased=true, phasedAutodetect=false]",
+                    [
+                        "NA12878"
+                    ],
+                    "a0d696cbdb219c168b6d54fc28c5f7dd"
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-06T10:11:00.840325908"
+    },
+    "homo_sapiens - vcf no list with sample, panel vcf region, chunks, map, no fasta, no chunking + splitreference": {
+        "content": [
+            [
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "chr22:16570065-16597215",
+                    "chr22:16570065-16592216"
+                ],
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "chr22:16587172-16609999",
+                    "chr22:16592229-16609999"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "input_vcf",
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "input_vcf_22.vcf.gz",
+                    "input_vcf_22.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=903, phased=true, phasedAutodetect=false]",
+                    [
+                        "NA12878"
+                    ],
+                    "a0d696cbdb219c168b6d54fc28c5f7dd"
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-06T10:10:46.674407683"
+    },
+    "homo_sapiens - bam list and sample, panel vcf region, chunks, map, no fasta, no chunking + splitreference": {
+        "content": [
+            [
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "21"
+                    },
+                    "chr21:16570065-16597215",
+                    "chr21:16570065-16592216"
+                ],
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "21"
+                    },
+                    "chr21:16587172-16609999",
+                    "chr21:16592229-16609999"
+                ],
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "chr22:16570065-16597215",
+                    "chr22:16570065-16592216"
+                ],
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "chr22:16587172-16609999",
+                    "chr22:16592229-16609999"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "allid",
+                        "panel": "ref_panel",
+                        "chr": "21"
+                    },
+                    "allid_21.vcf.gz",
+                    "allid_21.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr21], sampleCount=2, variantCount=836, phased=true, phasedAutodetect=true]",
+                    [
+                        "Sample1",
+                        "Sample2"
+                    ]
+                ],
+                [
+                    {
+                        "id": "allid",
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "allid_22.vcf.gz",
+                    "allid_22.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr22], sampleCount=2, variantCount=903, phased=true, phasedAutodetect=true]",
+                    [
+                        "Sample1",
+                        "Sample2"
+                    ]
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-06T10:11:40.633686791"
+    }
+}

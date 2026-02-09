@@ -25,13 +25,15 @@ input:
         type: file
         description: idXML identification file
         pattern: "*.idXML"
+        ontologies: []
     - fasta:
         type: file
         description: Input sequence database in FASTA format
         pattern: "*.fasta"
+        ontologies: []
 output:
-  - indexed_idxml:
-      - meta:
+  indexed_idxml:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,11 +42,30 @@ output:
           type: file
           description: Refreshed idXML identification file
           pattern: "*.idXML"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_openms:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - openms:
+          type: string
+          description: The name of the tool
+      - "FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - openms:
+          type: string
+          description: The name of the tool
+      - "FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@jonasscheid"
 maintainers:

@@ -26,9 +26,10 @@ input:
         type: file
         description: Fasta file containing protein sequences
         pattern: "*.{fasta}"
+        ontologies: []
 output:
-  - decoy_fasta:
-      - meta:
+  decoy_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,11 +38,30 @@ output:
           type: file
           description: Fasta file containing proteins and decoy proteins
           pattern: "*.{fasta}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_openms:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - openms:
+          type: string
+          description: The tool name
+      - "FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - openms:
+          type: string
+          description: The tool name
+      - "FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@jonasscheid"
 maintainers:

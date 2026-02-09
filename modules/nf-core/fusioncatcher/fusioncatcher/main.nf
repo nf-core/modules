@@ -37,7 +37,7 @@ process FUSIONCATCHER_FUSIONCATCHER {
         --output=. \\
         --data=${reference} \\
         --threads=${task.cpus} \\
-        --Xmx=${avail_mem} \\
+        --Xmx=${avail_mem}M \\
         ${args}
 
     mv final-list_candidate-fusion-genes.txt ${prefix}.fusion-genes.txt

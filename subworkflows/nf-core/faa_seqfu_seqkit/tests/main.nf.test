@@ -1,0 +1,65 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FAA_SEQFU_SEQKIT"
+    script "../main.nf"
+    workflow "FAA_SEQFU_SEQKIT"
+    config './nextflow.config'
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/faa_seqfu_seqkit"
+    tag "seqfu/stats"
+    tag "seqkit/seq"
+    tag "seqkit/rmdup"
+    tag "seqkit/replace"
+
+    test("faa") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id: 'test_faa' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome_test.faa', checkIfExists: true)
+                ])
+                input[1] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
+    test("faa - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id: 'test_stub' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome_test.faa', checkIfExists: true)
+                ])
+                input[1] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }.unique()
+                ).match() }
+            )
+        }
+    }
+
+}

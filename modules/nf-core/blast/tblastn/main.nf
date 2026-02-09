@@ -4,8 +4,8 @@ process BLAST_TBLASTN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/52/5222a42b366a0468a4c795f5057c2b8cfe39489548f8bd807e8ac0f80069bad5/data':
-        'community.wave.seqera.io/library/blast:2.16.0--540f4b669b0a0ddd' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0c/0c86cbb145786bf5c24ea7fb13448da5f7d5cd124fd4403c1da5bc8fc60c2588/data':
+        'community.wave.seqera.io/library/blast:2.17.0--d4fb881691596759' }"
 
     input:
     tuple val(meta) , path(fasta)
@@ -48,7 +48,6 @@ process BLAST_TBLASTN {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt

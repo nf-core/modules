@@ -4,8 +4,10 @@ process BUSCO_BUSCO {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c6/c607f319867d96a38c8502f751458aa78bbd18fe4c7c4fa6b9d8350e6ba11ebe/data'
-        : 'community.wave.seqera.io/library/busco_sepp:f2dbc18a2f7a5b64'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/41/4137d65ab5b90d2ae4fa9d3e0e8294ddccc287e53ca653bb3c63b8fdb03e882f/data'
+        : 'community.wave.seqera.io/library/busco:6.0.0--a9a1426105f81165'}"
+    // Note: one test had to be disabled when switching to Busco 6.0.0, cf https://github.com/nf-core/modules/pull/8781/files
+    // Try to restore it when upgrading Busco to a later version
 
     input:
     tuple val(meta), path(fasta, stageAs: 'tmp_input/*')
@@ -107,6 +109,12 @@ process BUSCO_BUSCO {
     mv ${prefix}-busco/batch_summary.txt ${prefix}-busco.batch_summary.txt
     mv ${prefix}-busco/*/short_summary.*.{json,txt} . || echo "Short summaries were not available: No genes were found."
     mv ${prefix}-busco/logs/busco.log ${prefix}-busco.log
+
+    if grep 'Run failed; check logs' ${prefix}-busco.batch_summary.txt > /dev/null
+    then
+        echo "Busco run failed"
+        exit 1
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

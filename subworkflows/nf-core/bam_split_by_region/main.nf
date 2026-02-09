@@ -46,14 +46,12 @@ workflow BAM_SPLIT_BY_REGION {
 
     // The specified region is put into ext.args2 from the meta. See nextflow.config of the subworkflow.
     SAMTOOLS_VIEW(ch_bam_for_splitting, [[],[]], [], [])
-    ch_versions = ch_versions.mix(SAMTOOLS_VIEW.out.versions.first())
 
     //
     // Index the output bams
     //
 
     SAMTOOLS_INDEX(SAMTOOLS_VIEW.out.bam)
-    ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
 
     //
     // Emit channel in the same format as was taken in by joining each bam with its bai.

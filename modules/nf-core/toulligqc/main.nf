@@ -4,8 +4,8 @@ process TOULLIGQC {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/toulligqc:2.5.6--pyhdfd78af_0':
-        'biocontainers/toulligqc:2.5.6--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/toulligqc:2.7.1--pyhdfd78af_0':
+        'biocontainers/toulligqc:2.7.1--pyhdfd78af_0'}"
 
     input:
 
@@ -17,7 +17,7 @@ process TOULLIGQC {
     tuple val(meta), path("*/*.html")                   , emit: report_html, optional: true
     tuple val(meta), path("*/images/*.html")            , emit: plots_html
     tuple val(meta), path("*/images/plotly.min.js")     , emit: plotly_js
-    path "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('toulligqc'), eval('toulligqc --version'), emit: versions_toulligqc, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,15 +35,9 @@ process TOULLIGQC {
         $input_file \\
         --output-directory ${prefix} \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        toulligqc: \$(toulligqc --version)
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}
@@ -54,10 +48,5 @@ process TOULLIGQC {
     touch ${prefix}/images/PHRED_score_density_distribution.html
     touch ${prefix}/images/Read_count_histogram.html
     touch ${prefix}/images/plotly.min.js
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        toulligqc: \$(toulligqc --version)
-    END_VERSIONS
     """
 }

@@ -20,22 +20,23 @@ tools:
       args_id: "$args"
       identifier: biotools:kraken2
 input:
-  - - cleaning:
-        type: boolean
-        description: activate or deactivate (true or false) cleaning of intermediate
-          files
+  - cleaning:
+      type: boolean
+      description: activate or deactivate (true or false) cleaning of intermediate files
 output:
-  - db:
-      - $prefix:
-          type: directory
-          description: Directory containing the Kraken2 'standard' database that can be
-            used to perform taxonomic classification
-          pattern: "*/"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  db:
+    - $prefix:
+        type: directory
+        description: Directory containing the Kraken2 'standard' database that can be
+          used to perform taxonomic classification
+        pattern: "*/"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@egreenberg7"
 maintainers:

@@ -20,23 +20,24 @@ process ATLAS_RECAL {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def PMD = empiric ? "pmdFile=${empiric}" : ""
-    def ALLELES = alleles ? "alleleFile=${alleles}" : ""
-    def INVARIANTS = invariant_sites ? "window=${invariant_sites}" : ""
-    def READGROUPS = readgroups ? "poolReadGroups=${readgroups}" : ""
+
+    def PMD        = empiric         ? "pmdFile=${empiric}"           : ""
+    def ALLELES    = alleles         ? "alleleFile=${alleles}"        : ""
+    def INVARIANTS = invariant_sites ? "window=${invariant_sites}"    : ""
+    def READGROUPS = readgroups      ? "poolReadGroups=${readgroups}" : ""
 
     """
     atlas \\
         task=recal \\
-        bam=$bam \\
-        $PMD \\
-        $READGROUPS \\
-        $ALLELES \\
-        $INVARIANTS \\
-        out=$prefix \\
-        $args
+        bam=${bam} \\
+        ${PMD} \\
+        ${READGROUPS} \\
+        ${ALLELES} \\
+        ${INVARIANTS} \\
+        out=${prefix} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

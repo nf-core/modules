@@ -14,16 +14,20 @@ tools:
       licence: ["GPL v3"]
       identifier: biotools:AnnotSV
 output:
-  - annotations:
-      - AnnotSV_annotations:
-          type: file
-          description: A folder containing the annotations
-          pattern: "AnnotSV_annotations"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  annotations:
+    - AnnotSV_annotations:
+        type: file
+        description: A folder containing the annotations
+        pattern: "AnnotSV_annotations"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

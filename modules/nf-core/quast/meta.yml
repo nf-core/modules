@@ -24,6 +24,7 @@ input:
         type: file
         description: |
           Fasta file containing the assembly of interest
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -33,6 +34,7 @@ input:
         type: file
         description: |
           The genome assembly to be evaluated. Has to contain at least a non-empty string dummy value.
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -40,11 +42,12 @@ input:
           e.g. [ id:'test', single_end:false ]
     - gff:
         type: file
-        description: The genome GFF file. Has to contain at least a non-empty string
-          dummy value.
+        description: The genome GFF file. Has to contain at least a non-empty
+          string dummy value.
+        ontologies: []
 output:
-  - results:
-      - meta:
+  results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,8 +56,8 @@ output:
           type: directory
           description: |
             Directory containing the results of the QUAST analysis
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -63,44 +66,66 @@ output:
           type: file
           description: TSV file
           pattern: "${prefix}.tsv"
-  - transcriptome:
-      - meta:
-          type: file
+          ontologies: []
+  transcriptome:
+    - - meta:
+          type: map
           description: |
-            Report containing all the alignments of transcriptome to the assembly, only when a reference fasta is provided
-          pattern: "${prefix}_transcriptome.tsv"
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - ${prefix}_transcriptome.tsv:
           type: file
           description: |
             Report containing all the alignments of transcriptome to the assembly, only when a reference fasta is provided
           pattern: "${prefix}_transcriptome.tsv"
-  - misassemblies:
-      - meta:
-          type: file
+          ontologies: []
+  misassemblies:
+    - - meta:
+          type: map
           description: |
-            Report containing misassemblies, only when a reference fasta is provided
-          pattern: "${prefix}_misassemblies.tsv"
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - ${prefix}_misassemblies.tsv:
           type: file
           description: |
             Report containing misassemblies, only when a reference fasta is provided
           pattern: "${prefix}_misassemblies.tsv"
-  - unaligned:
-      - meta:
-          type: file
+          ontologies: []
+  unaligned:
+    - - meta:
+          type: map
           description: |
-            Report containing unaligned contigs, only when a reference fasta is provided
-          pattern: "${prefix}_unaligned.tsv"
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - ${prefix}_unaligned.tsv:
           type: file
           description: |
             Report containing unaligned contigs, only when a reference fasta is provided
           pattern: "${prefix}_unaligned.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_quast:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - quast:
+          type: string
+          description: The name of the tool
+      - quast.py --version 2>&1 | grep "QUAST" | sed 's/^.*QUAST v//; s/ .*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - quast:
+          type: string
+          description: The name of the tool
+      - quast.py --version 2>&1 | grep "QUAST" | sed 's/^.*QUAST v//; s/ .*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@drpatelh"
   - "@kevinmenden"

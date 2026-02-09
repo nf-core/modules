@@ -29,30 +29,30 @@ input:
         type: file
         description: Sorted tumor BAM file
         pattern: "*.bam"
+        ontologies: []
     - tumor_bai:
         type: file
         description: Index file for the tumor BAM file
         pattern: "*.bai"
+        ontologies: []
     - normal_bam:
         type: file
         description: Sorted matched normal BAM file
         pattern: "*.bam"
+        ontologies: []
     - normal_bai:
         type: file
         description: Index file for the normal BAM file
         pattern: "*.bai"
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing reference information.
-          e.g. `[ id:'test' ]`
+        ontologies: []
     - reference:
         type: file
         description: reference genome file
         pattern: ".fasta"
+        ontologies: []
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -61,11 +61,28 @@ output:
           type: file
           description: position-specific summary statistics
           pattern: "*.MuSE.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_muse:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - muse:
+          type: string
+          description: The tool name
+      - "MuSE --version | sed -e 's/MuSE, version //g' | sed -e 's/MuSE v//g'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - muse:
+          type: string
+          description: The tool name
+      - "MuSE --version | sed -e 's/MuSE, version //g' | sed -e 's/MuSE v//g'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@famosab"
 maintainers:

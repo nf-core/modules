@@ -21,6 +21,7 @@ input:
         type: file
         description: VCF file
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -30,6 +31,7 @@ input:
         type: file
         description: dictionary for fasta file
         pattern: "*.{dict}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -39,6 +41,7 @@ input:
         type: file
         description: fasta file
         pattern: "*.fasta"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -47,9 +50,10 @@ input:
     - chain:
         type: file
         description: The liftover chain file
+        ontologies: []
 output:
-  - vcf_lifted:
-      - meta:
+  vcf_lifted:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
@@ -57,8 +61,9 @@ output:
           type: file
           description: VCF file containing successfully lifted variants
           pattern: "*.{lifted.vcf.gz}"
-  - vcf_unlifted:
-      - meta:
+          ontologies: []
+  vcf_unlifted:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
@@ -66,11 +71,30 @@ output:
           type: file
           description: VCF file containing unsuccessfully lifted variants
           pattern: "*.{unlifted.vcf.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_picard:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - picard:
+          type: string
+          description: The tool name
+      - "picard LiftoverVcf --version 2>&1 | sed -n 's/^Version:*//p'":
+          type: string
+          description: The command used to generate the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - picard:
+          type: string
+          description: The tool name
+      - "picard LiftoverVcf --version 2>&1 | sed -n 's/^Version:*//p'":
+          type: string
+          description: The command used to generate the version of the tool
+
 authors:
   - "@lucpen"
   - "@ramprasadn"

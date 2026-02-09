@@ -42,10 +42,10 @@ process FLASH {
 
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
 
-    touch ${prefix}.fastq.gz
+    echo "" | gzip > ${prefix}.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -4,9 +4,9 @@ process HISAT2_BUILD {
     label 'process_high_memory'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/hisat2:2.2.1--h1b792b2_3'
-        : 'biocontainers/hisat2:2.2.1--h1b792b2_3'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d2/d2ec9b73c6b92e99334c6500b1b622edaac316315ac1708f0b425df3131d0a83/data' :
+        'community.wave.seqera.io/library/hisat2_samtools:6be64e12472a7b75' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -15,7 +15,7 @@ process HISAT2_BUILD {
 
     output:
     tuple val(meta), path("hisat2"), emit: index
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('hisat2'), eval("hisat2 --version | sed -n 's/.*version \\([^ ]*\\).*/\\1/p'"), emit: versions_hisat2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -55,20 +55,10 @@ process HISAT2_BUILD {
         ${args} \\
         ${fasta} \\
         hisat2/${fasta.baseName}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hisat2: \$(hisat2 --version | grep -o 'version [^ ]*' | cut -d ' ' -f 2)
-    END_VERSIONS
     """
 
     stub:
     """
     mkdir hisat2
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hisat2: \$(hisat2 --version | grep -o 'version [^ ]*' | cut -d ' ' -f 2)
-    END_VERSIONS
     """
 }

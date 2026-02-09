@@ -23,7 +23,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                            process.out.versions,
+                            process.out.findAll { key, val -> key.startsWith('versions') },
                             path(process.out.report[0][1])
                                 .list()
                                 .collect { getRecursiveFileNames(it, process.out.report[0][1]) }
@@ -51,7 +51,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                            process.out.versions,
+                            process.out.findAll { key, val -> key.startsWith('versions') },
                             path(process.out.report[0][1])
                                 .list()
                                 .collect { getRecursiveFileNames(it, process.out.report[0][1]) }

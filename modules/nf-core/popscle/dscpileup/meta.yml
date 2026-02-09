@@ -31,14 +31,16 @@ input:
         description: Input SAM/BAM/CRAM file produced by the standard 10x sequencing
           platform, or any other barcoded single cell RNA-seq.
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - vcf:
         type: file
         description: Input VCF/BCF file files containing (AC) and (AN) from referenced
           population (e.g. 1000g).
         pattern: "*.{vcf,bcf}"
+        ontologies: []
 output:
-  - cel:
-      - meta:
+  cel:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,8 +50,10 @@ output:
           description: Contains the relation between numerated barcode ID and barcode
             and the number of SNP and number of UMI for each barcoded droplet.
           pattern: "*.cel.gz"
-  - plp:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  plp:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -59,19 +63,23 @@ output:
           description: Contains the overlapping SNP and the corresponding read and base
             quality for each barcode ID.
           pattern: "*.plp.gz"
-  - var:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  var:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1']`
       - "*.var.gz":
           type: file
-          description: Contains the position, reference allele and allele frequency for
-            each SNP.
+          description: Contains the position, reference allele and allele frequency
+            for each SNP.
           pattern: "*.var.gz"
-  - umi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  umi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -80,11 +88,15 @@ output:
           type: file
           description: Contains the position covered by each umi.
           pattern: "*.umi.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mari-ga"
   - "@maxozo"

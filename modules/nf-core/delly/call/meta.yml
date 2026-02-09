@@ -25,24 +25,29 @@ input:
         description: BAM/CRAM file from alignment must be sorted, indexed, and duplicate
           marked
         pattern: "*.{bam,cram}"
+        ontologies: []
     - input_index:
         type: file
         description: Index of the BAM/CRAM file
         pattern: "*.{bai,crai}"
+        ontologies: []
     - vcf:
         type: file
         description: A BCF/VCF file to genotype with Delly. If this is supplied, the
           variant calling will be skipped
         pattern: "*.{vcf.gz,bcf}"
+        ontologies: []
     - vcf_index:
         type: file
         description: The index of the BCF/VCF file
         pattern: "*.{tbi,csi}"
+        ontologies: []
     - exclude_bed:
         type: file
         description: An optional bed file containing regions to exclude from the called
           VCF
         pattern: "*.bed"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -52,6 +57,7 @@ input:
         type: file
         description: The reference fasta file
         pattern: "*.{fasta,fa}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -61,9 +67,10 @@ input:
         type: file
         description: Index of reference fasta file to identify split-reads
         pattern: "*.fai"
+        ontologies: []
 output:
-  - bcf:
-      - meta:
+  bcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,8 +80,9 @@ output:
           description: Called variants in BCF/VCF format. Specify either "bcf" or "vcf"
             in ext.suffix to define the output type
           pattern: "*.{bcf,vcf.gz}"
-  - csi:
-      - meta:
+          ontologies: []
+  csi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -84,11 +92,14 @@ output:
           description: A generated csi index that matches the bcf output (not generated
             for vcf files)
           pattern: "*.{bcf.csi}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@projectoriented"
   - "@nvnieuwk"

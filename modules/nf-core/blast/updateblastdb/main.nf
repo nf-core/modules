@@ -4,8 +4,8 @@ process BLAST_UPDATEBLASTDB {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/blast:2.16.0--h66d330f_4':
-        'biocontainers/blast:2.16.0--h66d330f_4' }"
+        'https://depot.galaxyproject.org/singularity/blast:2.17.0--h66d330f_0':
+        'biocontainers/blast:2.17.0--h66d330f_0' }"
 
     input:
     tuple val(meta), val(name)
@@ -36,7 +36,6 @@ process BLAST_UPDATEBLASTDB {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}

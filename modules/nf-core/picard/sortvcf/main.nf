@@ -4,8 +4,8 @@ process PICARD_SORTVCF {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:3.3.0--hdfd78af_0' :
-        'biocontainers/picard:3.3.0--hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/0861295baa7c01fc593a9da94e82b44a729dcaf8da92be8e565da109aa549b25/data' :
+        'community.wave.seqera.io/library/picard:3.4.0--e9963040df0a9bf6' }"
 
     input:
     tuple val(meta), path(vcf)
@@ -14,7 +14,7 @@ process PICARD_SORTVCF {
 
     output:
     tuple val(meta), path("*_sorted.vcf.gz"), emit: vcf
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('picard'), eval("picard SortVcf --version 2>&1 | sed -n 's/^Version:*//p'"), topic: versions, emit: versions_picard
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,23 +40,13 @@ process PICARD_SORTVCF {
         $seq_dict \\
         $reference \\
         --OUTPUT ${prefix}_sorted.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(picard SortVcf --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_sorted.vcf.gz
+    echo "" | gzip > ${prefix}_sorted.vcf.gz
     touch ${prefix}.bam.bai
     touch ${prefix}.MarkDuplicates.metrics.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(picard SortVcf --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
     """
 }

@@ -1,5 +1,6 @@
 name: "openms_idfilter"
-description: Filters peptide/protein identification results by different criteria.
+description: Filters peptide/protein identification results by different
+  criteria.
 keywords:
   - filter
   - idXML
@@ -26,13 +27,15 @@ input:
         type: file
         description: Peptide-spectrum matches.
         pattern: "*.{idXML,consensusXML}"
+        ontologies: []
     - filter_file:
         type: file
         description: Optional idXML file to filter on/out peptides or proteins
         patter: "*.{idXML,fasta}"
+        ontologies: []
 output:
-  - filtered:
-      - meta:
+  filtered:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -41,11 +44,30 @@ output:
           type: file
           description: Filtered peptide-spectrum matches.
           pattern: "*.{idXML,consensusXML}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_openms:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - openms:
+          type: string
+          description: The name of the tool
+      - "FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - openms:
+          type: string
+          description: The name of the tool
+      - "FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@jonasscheid"
 maintainers:

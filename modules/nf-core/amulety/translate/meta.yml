@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "amulety_translate"
-description: A module to translate BCR and TCR nucleotide sequences into amino acid sequences using amulety and igblast.
+description: A module to translate BCR and TCR nucleotide sequences into amino acid
+  sequences using amulety and igblast.
 keywords:
   - immunology
   - BCR
@@ -17,14 +17,17 @@ tools:
       documentation: "https://amulety.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/immcantation/amulety"
       doi: "10.1101/2025.03.21.644583"
-      licence: ['GPL v3']
+      licence: ["GPL v3"]
+      identifier: ""
   - "igblast":
-      description: "A tool for immunoglobulin (IG, BCR) and T cell receptor (TCR) V domain sequences blasting."
+      description: "A tool for immunoglobulin (IG, BCR) and T cell receptor (TCR) V
+        domain sequences blasting."
       homepage: "https://www.ncbi.nlm.nih.gov/igblast/"
       documentation: "https://ncbi.github.io/igblast/"
       tool_dev_url: "https://github.com/ncbi/igblast"
       doi: "10.1093/nar/gkt382"
-      licence: ['United States Government Work']
+      licence: ["United States Government Work"]
+      identifier: biotools:igblast
 
 input:
   - - meta:
@@ -36,27 +39,68 @@ input:
         type: file
         description: TSV with BCR/TCR nucleotide sequences in AIRR rearrangement format
         pattern: "*.{tsv}"
-  - - reference_igblast:
-        type: file
-        description: Built reference databases for igblast
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - reference_igblast:
+      type: file
+      description: Built reference databases for igblast
 
+      ontologies: []
 output:
-  - repertoire_translated:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*_translated.tsv":
-        type: file
-        description: TSV with BCR/TCR amino acid sequences in AIRR rearrangement format
-        pattern: "*.tsv"
+  repertoire_translated:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_translated.tsv":
+          type: file
+          description: TSV with BCR/TCR amino acid sequences in AIRR rearrangement format
+          pattern: "*.tsv"
 
-  - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_amulety:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - amulety:
+          type: string
+          description: The tool name
+      - "amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+'":
+          type: string
+          description: The command used to generate the version of the tool
+  versions_igblastn:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - igblastn:
+          type: string
+          description: The tool name
+      - "igblastn -version | grep -o 'igblast[0-9\\. ]\\+' | grep -o '[0-9\\. ]\\+'":
+          type: string
+          description: The command used to generate the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - amulety:
+          type: string
+          description: The tool name
+      - "amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+'":
+          type: string
+          description: The command used to generate the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - igblastn:
+          type: string
+          description: The tool name
+      - "igblastn -version | grep -o 'igblast[0-9\\. ]\\+' | grep -o '[0-9\\. ]\\+'":
+          type: string
+          description: The command used to generate the version of the tool
 
 authors:
   - "@ggabernet"

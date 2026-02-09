@@ -1,30 +1,43 @@
 {
     "human - bam - paired_end - interleaved - stub": {
         "content": [
-            [
-                
-            ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test_singleton.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+            {
+                "fastq": [
+                    
+                ],
+                "fastq_interleaved": [
+                    
+                ],
+                "fastq_other": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_other.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "fastq_singleton": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_singleton.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_COLLATEFASTQ",
+                        "samtools",
+                        "1.22.1"
+                    ]
                 ]
-            ],
-            [
-                
-            ],
-            [
-                "versions.yml:md5,6359bf4b480f99e14e14b9e7dcb2fd5a"
-            ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-09-16T07:50:35.483719031"
+        "timestamp": "2026-02-04T16:41:43.331405135"
     },
     "human - bam - single_end": {
         "content": [
@@ -37,71 +50,124 @@
                     "test_other.fq.gz:md5,a6c101a06b5c9d5f8b91c0acd4ac5045"
                 ]
             ],
-            [
-                "versions.yml:md5,6359bf4b480f99e14e14b9e7dcb2fd5a"
-            ]
+            {
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_COLLATEFASTQ",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-09-16T07:49:31.667042764"
+        "timestamp": "2026-02-04T16:48:46.902270558"
     },
     "human - bam - paired_end -stub": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
+            {
+                "fastq": [
                     [
-                        "test_1.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                        "test_2.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test_1.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test_2.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
+                ],
+                "fastq_interleaved": [
+                    
+                ],
+                "fastq_other": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_other.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "fastq_singleton": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_singleton.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_COLLATEFASTQ",
+                        "samtools",
+                        "1.22.1"
                     ]
                 ]
-            ],
-            [
-                "versions.yml:md5,6359bf4b480f99e14e14b9e7dcb2fd5a"
-            ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-09-16T07:50:04.607920717"
+        "timestamp": "2026-02-04T16:41:25.643664629"
     },
     "human - cram - stub": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
+            {
+                "fastq": [
                     [
-                        "test_1.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                        "test_2.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test_1.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test_2.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
+                ],
+                "fastq_interleaved": [
+                    
+                ],
+                "fastq_other": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_other.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "fastq_singleton": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_singleton.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_COLLATEFASTQ",
+                        "samtools",
+                        "1.22.1"
                     ]
                 ]
-            ],
-            [
-                "versions.yml:md5,6359bf4b480f99e14e14b9e7dcb2fd5a"
-            ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-09-16T07:50:25.354607106"
+        "timestamp": "2026-02-04T16:41:37.344120117"
     },
     "human - cram": {
         "content": [
             [
                 [
                     {
-                        "id": "test",
-                        "single_end": false
+                        "id": "test"
                     },
                     [
                         "test_1.fq.gz:md5,1cf671980643af6c1148ae5e8e94e350",
@@ -109,23 +175,28 @@
                     ]
                 ]
             ],
-            [
-                "versions.yml:md5,6359bf4b480f99e14e14b9e7dcb2fd5a"
-            ]
+            {
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_COLLATEFASTQ",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-09-16T07:49:43.12646213"
+        "timestamp": "2026-02-04T16:48:54.799596794"
     },
     "human - bam - paired_end - interleaved": {
         "content": [
             [
                 [
                     {
-                        "id": "test",
-                        "single_end": false
+                        "id": "test"
                     },
                     "test_interleaved.fq:md5,4f2b93d492f0442fa89b02532c9b3530"
                 ]
@@ -136,44 +207,76 @@
             [
                 
             ],
-            [
-                "versions.yml:md5,6359bf4b480f99e14e14b9e7dcb2fd5a"
-            ]
+            {
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_COLLATEFASTQ",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-09-16T07:49:53.799565712"
+        "timestamp": "2026-02-04T16:49:02.602175137"
     },
     "human - bam - single_end - stub": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test_other.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+            {
+                "fastq": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_1.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "fastq_interleaved": [
+                    
+                ],
+                "fastq_other": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_other.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "fastq_singleton": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_singleton.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_COLLATEFASTQ",
+                        "samtools",
+                        "1.22.1"
+                    ]
                 ]
-            ],
-            [
-                "versions.yml:md5,6359bf4b480f99e14e14b9e7dcb2fd5a"
-            ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-09-16T07:50:15.487972669"
+        "timestamp": "2026-02-04T16:41:31.465171686"
     },
     "human - bam - paired_end": {
         "content": [
             [
                 [
                     {
-                        "id": "test",
-                        "single_end": false
+                        "id": "test"
                     },
                     [
                         "test_1.fq.gz:md5,1cf671980643af6c1148ae5e8e94e350",
@@ -181,14 +284,20 @@
                     ]
                 ]
             ],
-            [
-                "versions.yml:md5,6359bf4b480f99e14e14b9e7dcb2fd5a"
-            ]
+            {
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_COLLATEFASTQ",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-09-16T07:49:19.805942524"
+        "timestamp": "2026-02-04T16:48:38.993394984"
     }
 }

@@ -21,13 +21,16 @@ input:
         type: file
         description: FAI (FASTA index) file of the target reference
         pattern: "*.{fai}"
-  - - chain:
-        type: file
-        description: Chain file to index.
-        pattern: "*.{chain}"
+        ontologies: []
+  - chain:
+      type: file
+      description: Chain file to index.
+      pattern: "*.{chain}"
+      ontologies:
+        - edam: http://edamontology.org/format_3982 # CHAIN
 output:
-  - clft:
-      - meta:
+  clft:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,11 +39,14 @@ output:
           type: file
           description: Clft file of indexed chain
           pattern: "*.{clft}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@lgrochowalski"
 maintainers:

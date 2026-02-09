@@ -25,10 +25,12 @@ input:
         type: file
         description: BAM/CRAM file
         pattern: "*.{bam,cram}"
+        ontologies: []
     - bai:
         type: file
         description: Index of BAM/CRAM file
         pattern: "*.{bai,crai}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -38,6 +40,7 @@ input:
         type: file
         description: Reference genome
         pattern: "*.{fna,fa,fasta}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -47,6 +50,7 @@ input:
         type: file
         description: Reference genome index
         pattern: "*.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -56,9 +60,11 @@ input:
         type: file
         description: JSON file with repeat expansion sites to genotype
         pattern: "*.json"
+        ontologies:
+          - edam: http://edamontology.org/format_3464 # JSON
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,8 +73,10 @@ output:
           type: file
           description: VCF with repeat expansions
           pattern: "*.vcf.gz"
-  - json:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -77,8 +85,10 @@ output:
           type: file
           description: JSON with repeat expansions
           pattern: "*.json.gz"
-  - bam:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -87,11 +97,47 @@ output:
           type: file
           description: BAM/CRAM file
           pattern: "*.{bam,cram}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_expansionhunter:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - expansionhunter:
+          type: string
+          description: The tool name
+      - ExpansionHunter --version | head -1 | sed -n 's/^.*ExpansionHunter v//; s/]//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_bgzip:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bgzip:
+          type: string
+          description: The tool name
+      - bgzip --version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - expansionhunter:
+          type: string
+          description: The tool name
+      - ExpansionHunter --version | head -1 | sed -n 's/^.*ExpansionHunter v//; s/]//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bgzip:
+          type: string
+          description: The tool name
+      - bgzip --version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jemten"
 maintainers:

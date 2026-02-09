@@ -1,0 +1,103 @@
+nextflow_process {
+
+    name "Test Process MOBSTER"
+    script "../main.nf"
+    process "MOBSTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mobster"
+
+    test("test rds input") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                meta = [ id : "test", patient : "P1", tumour_sample : "HCC1395_HCC1395T" ]
+                joinCNAqc_rds = file(params.modules_testdata_base_path + "delete_me/mobster/HCC1395_WXS_HCC1395_multi_cnaqc_ALL.rds", checkIfExists: true)
+                input[0] = tuple(meta, joinCNAqc_rds)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() },
+                { assert file(process.out.mobster_rds[0][1]).exists() },
+                { assert file(process.out.mobster_best_rds[0][1]).exists() },
+                { assert file(process.out.mobster_best_plots_rds[0][1]).exists() },
+                { assert file(process.out.mobster_report_rds[0][1]).exists() },
+                { assert file(process.out.mobster_report_pdf[0][1]).exists() },
+                { assert file(process.out.mobster_report_png[0][1]).exists() }
+            )
+        }
+    }
+
+    test("test rds input - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                meta = [ id : "test", patient : "P1", tumour_sample : "HCC1395_HCC1395T" ]
+                joinCNAqc_rds = file(params.modules_testdata_base_path + "delete_me/mobster/HCC1395_WXS_HCC1395_multi_cnaqc_ALL.rds", checkIfExists: true)
+                input[0] = tuple(meta, joinCNAqc_rds)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test csv input") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                meta = [ id : "test", patient : "P1", tumour_sample : "HCC1395_HCC1395T" ]
+                joinCNAqc_rds = file(params.modules_testdata_base_path + "delete_me/mobster/HCC1395_WXS_HCC1395_joint_table.csv", checkIfExists: true)
+                input[0] = tuple(meta, joinCNAqc_rds)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() },
+                { assert file(process.out.mobster_rds[0][1]).exists() },
+                { assert file(process.out.mobster_best_rds[0][1]).exists() },
+                { assert file(process.out.mobster_best_plots_rds[0][1]).exists() },
+                { assert file(process.out.mobster_report_rds[0][1]).exists() },
+                { assert file(process.out.mobster_report_pdf[0][1]).exists() },
+                { assert file(process.out.mobster_report_png[0][1]).exists() }
+            )
+        }
+    }
+
+    test("test csv input - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                meta = [ id : "test", patient : "P1", tumour_sample : "HCC1395_HCC1395T" ]
+                joinCNAqc_rds = file(params.modules_testdata_base_path + "delete_me/mobster/HCC1395_WXS_HCC1395_joint_table.csv", checkIfExists: true)
+                input[0] = tuple(meta, joinCNAqc_rds)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

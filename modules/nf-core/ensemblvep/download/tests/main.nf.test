@@ -10,13 +10,13 @@ nextflow_process {
     tag "ensemblvep"
     tag "ensemblvep/download"
 
-    test("celegans - download") {
+    test("ENSEMBLVEP download cache for 115_WBcel235") {
 
         when {
             process {
                 """
                 input[0] = Channel.of([
-                    [id:"113_WBcel235"],
+                    [id:"115_WBcel235"],
                     params.vep_genome,
                     params.vep_species,
                     params.vep_cache_version
@@ -26,14 +26,17 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.cache,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }
 
-    test("celegans - download - stub") {
+    test("ENSEMBLVEP download cache for 115_WBcel235 - stub") {
 
         options "-stub"
 
@@ -41,7 +44,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([
-                    [id:"113_WBcel235"],
+                    [id:"115_WBcel235"],
                     params.vep_genome,
                     params.vep_species,
                     params.vep_cache_version
@@ -51,9 +54,12 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.cache,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }

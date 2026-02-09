@@ -51,13 +51,15 @@ input:
         type: file
         description: BAM/BED/SAM file
         pattern: "*.{bam,bed,sam}"
-  - - fasta:
-        type: file
-        description: Fasta file of reference genome
-        pattern: "*.fasta"
+        ontologies: []
+  - fasta:
+      type: file
+      description: Fasta file of reference genome
+      pattern: "*.fasta"
+      ontologies: []
 output:
-  - tagdir:
-      - meta:
+  tagdir:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,8 +68,8 @@ output:
           type: directory
           description: The "Tag Directory"
           pattern: "*_tagdir"
-  - taginfo:
-      - meta:
+  taginfo:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -76,11 +78,13 @@ output:
           type: directory
           description: The tagInfo.txt included to ensure there's proper output
           pattern: "*_tagdir/tagInfo.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@edmundmiller"
 maintainers:

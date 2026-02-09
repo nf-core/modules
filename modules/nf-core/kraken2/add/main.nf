@@ -4,8 +4,8 @@ process KRAKEN2_ADD {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/mulled-v2-8706a1dd73c6cc426e12dd4dd33a5e917b3989ae:c8cbdc8ff4101e6745f8ede6eb5261ef98bdaff4-0'
-        : 'biocontainers/mulled-v2-8706a1dd73c6cc426e12dd4dd33a5e917b3989ae:c8cbdc8ff4101e6745f8ede6eb5261ef98bdaff4-0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f827dcea51be6b5c32255167caa2dfb65607caecdc8b067abd6b71c267e2e82/data'
+        : 'community.wave.seqera.io/library/kraken2_coreutils_pigz:920ecc6b96e2ba71'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -15,7 +15,9 @@ process KRAKEN2_ADD {
     path seqid2taxid, stageAs: "seqid2taxid.map"
 
     output:
-    tuple val(meta), path("${prefix}"), emit: db
+    tuple val(meta), path("${prefix}/library/added/*", includeInputs: true), emit: library_added_files
+    tuple val(meta), path("${prefix}/seqid2taxid.map", includeInputs: true), optional: true, emit: seqid2taxid_map
+    tuple val(meta), path("${prefix}/taxonomy/*", includeInputs: true), emit: taxonomy_files
     path "versions.yml", emit: versions
 
     when:
@@ -49,7 +51,9 @@ process KRAKEN2_ADD {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir "${prefix}"
+    echo "${args}"
+    mkdir -p "${prefix}"/library/added "${prefix}"/taxonomy
+    touch "${prefix}"/library/added/test.txt "${prefix}"/seqid2taxid.map "${prefix}"/taxonomy/{nodes,names}.dmp
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

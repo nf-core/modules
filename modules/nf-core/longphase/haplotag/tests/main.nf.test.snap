@@ -19,7 +19,7 @@
                     ]
                 ],
                 "2": [
-                    "versions.yml:md5,3c169b598f6e15332b6d7ec1d6d96810"
+                    "versions.yml:md5,2dfda84762159ad14ca71803b3139183"
                 ],
                 "bam": [
                     [
@@ -38,20 +38,20 @@
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,3c169b598f6e15332b6d7ec1d6d96810"
+                    "versions.yml:md5,2dfda84762159ad14ca71803b3139183"
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2024-08-09T09:40:30.738831707"
+        "timestamp": "2025-10-22T11:47:07.246878607"
     },
     "[ bam, bai, snps, [], [] ], fasta, fai": {
         "content": [
             [
-                "versions.yml:md5,3c169b598f6e15332b6d7ec1d6d96810"
+                "versions.yml:md5,2dfda84762159ad14ca71803b3139183"
             ],
             [
                 "@HD\tVN:1.6\tSO:coordinate",
@@ -59,15 +59,15 @@
                 "@RG\tID:test\tSM:test",
                 "@PG\tID:minimap2\tPN:minimap2\tVN:2.28-r1209\tCL:minimap2 -y -x map-ont --secondary=no -R @RG\\tID:test\\tSM:test -t 30 -a genome.mmi test.bam_other.fastq.gz",
                 "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.19.2\tCL:samtools sort -@ 29 -o test.bam_other.fastq.gz.bam --write-index",
-                "@PG\tID:longphase\tPN:longphase\tPP:samtools\tVN:1.7.3\tCL:longphase haplotag --threads 2 -o test --reference genome.fasta --snp-file test.genome.vcf.gz --bam test.sorted.bam "
+                "@PG\tID:longphase\tPN:longphase\tPP:samtools\tVN:2.0\tCL:longphase haplotag --threads 2 -o test --reference genome.fasta --snp-file test.genome.vcf.gz --bam test.sorted.bam "
             ],
             "721264eb2824a3146b331f2532d10180"
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2024-07-25T09:12:34.848038423"
+        "timestamp": "2025-10-22T11:46:50.605854269"
     },
     "[ bam, bai, snps, [], [] ], fasta, fai -stub": {
         "content": [
@@ -84,7 +84,7 @@
                     
                 ],
                 "2": [
-                    "versions.yml:md5,3c169b598f6e15332b6d7ec1d6d96810"
+                    "versions.yml:md5,2dfda84762159ad14ca71803b3139183"
                 ],
                 "bam": [
                     [
@@ -98,20 +98,20 @@
                     
                 ],
                 "versions": [
-                    "versions.yml:md5,3c169b598f6e15332b6d7ec1d6d96810"
+                    "versions.yml:md5,2dfda84762159ad14ca71803b3139183"
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2024-08-09T09:40:20.836809553"
+        "timestamp": "2025-10-22T11:47:03.645623933"
     },
     "[ bam, bai, snps, svs, [] ], fasta, fai": {
         "content": [
             [
-                "versions.yml:md5,3c169b598f6e15332b6d7ec1d6d96810"
+                "versions.yml:md5,2dfda84762159ad14ca71803b3139183"
             ],
             [
                 "@HD\tVN:1.6\tSO:coordinate",
@@ -119,41 +119,41 @@
                 "@RG\tID:test\tSM:test",
                 "@PG\tID:minimap2\tPN:minimap2\tVN:2.28-r1209\tCL:minimap2 -y -x map-ont --secondary=no -R @RG\\tID:test\\tSM:test -t 30 -a genome.mmi test.bam_other.fastq.gz",
                 "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.19.2\tCL:samtools sort -@ 29 -o test.bam_other.fastq.gz.bam --write-index",
-                "@PG\tID:longphase\tPN:longphase\tPP:samtools\tVN:1.7.3\tCL:longphase haplotag --threads 2 -o test --reference genome.fasta --snp-file test.genome.vcf.gz --bam test.sorted.bam --sv-file NA24385_sv.vcf.gz "
+                "@PG\tID:longphase\tPN:longphase\tPP:samtools\tVN:2.0\tCL:longphase haplotag --threads 2 -o test --reference genome.fasta --snp-file test.genome.vcf.gz --bam test.sorted.bam --sv-file NA24385_sv.vcf.gz "
             ],
             "721264eb2824a3146b331f2532d10180"
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2024-10-04T13:39:33.50395694"
+        "timestamp": "2025-10-22T11:47:00.022853298"
     },
     "[ bam, bai, snps, [], [] ], fasta, fai - log & cram": {
         "content": [
             [
-                "versions.yml:md5,3c169b598f6e15332b6d7ec1d6d96810"
+                "versions.yml:md5,2dfda84762159ad14ca71803b3139183"
             ],
             [
                 [
                     {
                         "id": "test"
                     },
-                    "test.log:md5,6203f10696f4b0909f0d327c021df773"
+                    "test.log:md5,4ca65dc87cc5c362e8a5fa26a47a896b"
                 ]
             ],
             [
                 "@RG\tID:test\tSM:test",
                 "@PG\tID:minimap2\tPN:minimap2\tVN:2.28-r1209\tCL:minimap2 -y -x map-ont --secondary=no -R @RG\\tID:test\\tSM:test -t 30 -a genome.mmi test.bam_other.fastq.gz",
                 "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.19.2\tCL:samtools sort -@ 29 -o test.bam_other.fastq.gz.bam --write-index",
-                "@PG\tID:longphase\tPN:longphase\tPP:samtools\tVN:1.7.3\tCL:longphase haplotag --log --cram --threads 2 -o test --reference genome.fasta --snp-file test.genome.vcf.gz --bam test.sorted.bam "
+                "@PG\tID:longphase\tPN:longphase\tPP:samtools\tVN:2.0\tCL:longphase haplotag --log --cram --threads 2 -o test --reference genome.fasta --snp-file test.genome.vcf.gz --bam test.sorted.bam "
             ],
             "721264eb2824a3146b331f2532d10180"
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2024-07-25T09:45:54.254102844"
+        "timestamp": "2025-10-22T11:46:55.93374635"
     }
 }

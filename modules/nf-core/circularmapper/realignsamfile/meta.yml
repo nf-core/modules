@@ -28,6 +28,7 @@ input:
         type: file
         description: BAM/SAM file
         pattern: "*.{bam,sam}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -36,6 +37,7 @@ input:
     - fasta:
         type: file
         description: Input elongated genome fasta
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -55,9 +57,10 @@ input:
         type: file
         description: File listing the chromosomes that were elongated
         pattern: "*_elongated"
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,11 +69,29 @@ output:
           type: file
           description: Realigned BAM file
           pattern: "*.bam"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_circularmapper:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - circularmapper:
+          type: string
+          description: The tool name
+      - "1.93.5":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - circularmapper:
+          type: string
+          description: The tool name
+      - "1.93.5":
+          type: string
+          description: The command used to generate the version of the tool
+
 authors:
   - "@shyama-mama"
   - "@jbv2"
