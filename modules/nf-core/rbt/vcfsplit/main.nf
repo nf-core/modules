@@ -1,15 +1,15 @@
 process RBT_VCFSPLIT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/rust-bio-tools:0.42.2--h4458251_1':
-        'biocontainers/rust-bio-tools:0.42.2--h4458251_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/rust-bio-tools:0.42.2--h4458251_1'
+        : 'biocontainers/rust-bio-tools:0.42.2--h4458251_1'}"
 
     input:
     tuple val(meta), path(vcf)
-    val(numchunks)
+    val numchunks
 
     output:
     tuple val(meta), path("*.bcf"), emit: bcfchunks
