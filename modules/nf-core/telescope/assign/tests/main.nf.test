@@ -36,11 +36,10 @@ nextflow_process {
             assert logFile.exists()
             assert logFile.readLines().last().contains("telescope assign complete")
 
-            assertAll(
-                { assert snapshot(
+
+                assert snapshot(
                     process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
-            )
+                ).match()
         }
 
     }
