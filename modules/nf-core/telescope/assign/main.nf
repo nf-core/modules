@@ -14,7 +14,7 @@ process TELESCOPE_ASSIGN {
     tuple val(meta_bam), path("*{updated,other}.sam"), emit: sam, optional: true // only for --updated_sam
     tuple val(meta_bam), path("*.tsv"), emit: tsv, optional: true // for when there's no alignments
     tuple val(meta_bam), path("*.log"), emit: log, optional: true
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('telescope'), eval("telescope version | sed '1!d;s/.* //'"), emit: versions_telescope, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,10 +34,6 @@ process TELESCOPE_ASSIGN {
         $args \\
         > telescope.log 2>&1
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        telescope: \$(telescope --version)
-    END_VERSIONS
     """
 
     stub:
@@ -53,9 +49,5 @@ process TELESCOPE_ASSIGN {
     touch ${prefix}-other.sam
     touch ${prefix}-telescope_report.tsv
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        telescope: \$(telescope --version)
-    END_VERSIONS
     """
 }

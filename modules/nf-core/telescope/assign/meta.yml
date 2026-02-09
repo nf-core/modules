@@ -93,13 +93,14 @@ output:
           type: file
           description: Log file for telescope run output.
           pattern: "*.log"
-  versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+
+  versions_telescope:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - telescope:
+          type: string
+          description: The tool name
 
 authors:
   - "@hanalysis"
