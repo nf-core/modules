@@ -56,6 +56,8 @@ process GENOMESCOPE2 {
     touch ${prefix}_fitted_hist.png
     touch ${prefix}_lookup_table.txt
 
+    echo ${args}
+
     cat <<-END_VERSIONS > versions.yml
     '${task.process}':
         genomescope2: \$( genomescope2 -v | sed 's/GenomeScope //' )
