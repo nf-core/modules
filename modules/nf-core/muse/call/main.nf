@@ -12,7 +12,7 @@ process MUSE_CALL {
 
     output:
     tuple val(meta), path("*.MuSE.txt"), emit: txt
-    tuple val("${task.process}"), val('muse'),  eval("MuSE --version | sed 's/MuSE\(, version \| v\)//g'"), topic: versions, emit: versions_muse
+    tuple val("${task.process}"), val('muse'),  eval("MuSE --version | sed -e 's/MuSE, version //g' | sed -e 's/MuSE v//g'"), topic: versions, emit: versions_muse
 
     when:
     task.ext.when == null || task.ext.when
