@@ -74,7 +74,6 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
 
         if(!bwa_index){
             BWAMEM2_INDEX ( fasta )
-            ch_versions = ch_versions.mix(BWAMEM2_INDEX.out.versions)
         }
 
         // sets bwaindex to correct input
@@ -83,7 +82,6 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
         // the aligner should be set with the following parameters "-p -K 150000000 -Y"
         // to be configured in ext.args of your config
         BWAMEM2_MEM_PRE ( BAM2FASTQ_PRE.out.fastq, bwaindex, fasta, false )
-        ch_versions = ch_versions.mix(BWAMEM2_MEM_PRE.out.versions)
         aligned_bam = BWAMEM2_MEM_PRE.out.bam
     }
 
@@ -135,7 +133,6 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     } else {
         // index made available through previous steps
         BWAMEM2_MEM_POST ( BAM2FASTQ_POST.out.fastq, bwaindex, fasta, false )
-        ch_versions = ch_versions.mix(BWAMEM2_MEM_POST.out.versions)
         aligned_bam_post = BWAMEM2_MEM_POST.out.bam
     }
 
