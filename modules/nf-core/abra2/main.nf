@@ -18,7 +18,7 @@ process ABRA2 {
     output:
     tuple val(meta), path("*.bam"),     emit: bam
     tuple val(meta), path("*.bam.bai"), emit: bai, optional: true
-    path "versions.yml",                emit: versions
+    tuple val("${task.process}"), val('abra2'), eval("abra2 2>&1 | grep 'Abra version:' | sed 's/.*Abra version: //'"), topic: versions, emit: versions_abra2
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,11 +43,6 @@ process ABRA2 {
         ${gtf_arg} \\
         ${known_indels_arg} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        abra2: \$(abra2 2>&1 | grep 'Abra version:' | sed 's/.*Abra version: //')
-    END_VERSIONS
     """
 
     stub:
@@ -55,10 +50,5 @@ process ABRA2 {
     """
     touch ${prefix}.abra.bam
     touch ${prefix}.abra.bam.bai
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        abra2: \$(abra2 2>&1 | grep 'Abra version:' | sed 's/.*Abra version: //')
-    END_VERSIONS
     """
 }
