@@ -40,5 +40,6 @@ process HIFITRIMMER_FILTERBAM {
    def suffix = args.contains('-f') ? "fastq.gz"  : "fasta.gz"
    """
    echo "stub" | gzip > ${prefix}.${suffix}
+   echo ${args}
    """
 }
