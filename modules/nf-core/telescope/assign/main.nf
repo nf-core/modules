@@ -24,7 +24,7 @@ process TELESCOPE_ASSIGN {
     def prefix = task.ext.prefix ?: "${meta_bam.id}"
 
     """
-    
+
     echo -n "" > telescope.log
 
     telescope \\

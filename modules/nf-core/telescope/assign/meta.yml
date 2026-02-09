@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "telescope_assign"
 description: The telescope assign program finds overlapping reads between an alignment (SAM/BAM) and an annotation (GTF)
-    then reassigns reads using a statistical model.
+  then reassigns reads using a statistical model.
 keywords:
   - EM
   - single-locus
@@ -25,8 +25,8 @@ input:
     - bam:
         type: file
         description: Sorted BAM/CRAM/SAM file, File must be collated so that all
-                     alignments for a read pair appear sequentially in the
-                     file
+          alignments for a read pair appear sequentially in the
+          file
         pattern: "*.{bam,sam}"
         ontologies:
           - edam: "http://edamontology.org/format_2572" # BAM
@@ -54,7 +54,7 @@ output:
       - "*{updated,other}.bam":
           type: file
           description: The updated SAM file contains those fragments that has at least 1 initial
-              alignment to a transposable element.
+            alignment to a transposable element.
           pattern: "*{updated,other}.bam"
           ontologies:
             - edam: "http://edamontology.org/format_2572" # BAM
@@ -67,7 +67,7 @@ output:
       - "*{updated,other}.sam":
           type: file
           description: The updated SAM file contains those fragments that has at least 1 initial
-              alignment to a transposable element.
+            alignment to a transposable element.
           pattern: "*{updated,other}.bam"
           ontologies:
             - edam: "http://edamontology.org/format_3462" # SAM
