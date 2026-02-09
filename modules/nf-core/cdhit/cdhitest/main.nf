@@ -15,7 +15,6 @@ process CDHIT_CDHITEST {
     tuple val(meta), path("*.clstr")      ,emit: clusters
     tuple val("${task.process}"), val('cdhit'), eval("cd-hit-est -h | sed -n '1s/.*version \\([0-9.]*\\).*/\\1/p'"), topic: versions, emit: versions_cdhitest
 
-
     when:
     task.ext.when == null || task.ext.when
 
