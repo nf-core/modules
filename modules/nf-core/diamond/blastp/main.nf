@@ -119,7 +119,6 @@ process DIAMOND_BLASTP {
 
     """
     touch ${prefix}.${out_ext}
-    echo ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
