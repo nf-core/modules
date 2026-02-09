@@ -4,8 +4,8 @@ process ABRA2 {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/abra2:2.24--hdcf5f25_3'
-        : 'biocontainers/abra2:2.24--hdcf5f25_3'}"
+        ? 'oras://community.wave.seqera.io/library/abra2:2.24--4f7b268017d626b8'
+        : 'community.wave.seqera.io/library/abra2:2.24--1d9acdc762079672'} "
 
     input:
     tuple val(meta), path(bams), path(bais)
