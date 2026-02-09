@@ -13,7 +13,7 @@ process CDHIT_CDHITEST {
     output:
     tuple val(meta), path("*.{fa,fq}")    ,emit: fasta
     tuple val(meta), path("*.clstr")      ,emit: clusters
-    tuple val("${task.process}"), val('cdhit'), eval("cd-hit-est -h | head -n 1 | sed 's/^.*====== CD-HIT version //;s/ (built on .*) ======//'"), topic: versions, emit: versions_cdhitest
+    tuple val("${task.process}"), val('cdhit'), eval("cd-hit-est -h | sed -n '1s/.*version \\([0-9.]*\\).*/\\1/p'"), topic: versions, emit: versions_cdhitest
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,11 +36,6 @@ process CDHIT_CDHITEST {
         -o ${prefix}.${suffix} \\
         -M $avail_mem \\
         -T $task.cpus
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cdhit: \$(cd-hit-est -h | head -n 1 | sed 's/^.*====== CD-HIT version //;s/ (built on .*) ======//' )
-    END_VERSIONS
     """
 
     stub:

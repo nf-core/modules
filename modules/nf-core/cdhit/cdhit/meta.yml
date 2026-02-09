@@ -14,7 +14,7 @@ tools:
       doi: "10.1093/bioinformatics/btl158"
       licence:
         - "GPL v2"
-      identifier: ""
+      identifier: "biotools:cd-hit"
 input:
   - - meta:
         type: map
@@ -49,13 +49,6 @@ output:
           description: List of clusters
           pattern: "*.{clstr}"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750
   versions_cdhit:
     - - ${task.process}:
           type: string
@@ -63,7 +56,7 @@ output:
       - cdhit:
           type: string
           description: The name of the tool
-      - "cd-hit-est -h | head -n 1 | sed 's/^.*====== CD-HIT version //;s/ (builton .*) ======//'":
+      - cd-hit -h | sed -n '1s/.*version \([0-9.]*\).*/\1/p':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -74,7 +67,7 @@ topics:
       - cdhit:
           type: string
           description: The name of the tool
-      - "cd-hit-est -h | head -n 1 | sed 's/^.*====== CD-HIT version //;s/ (builton .*) ======//'":
+      - cd-hit -h | sed -n '1s/.*version \([0-9.]*\).*/\1/p':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
