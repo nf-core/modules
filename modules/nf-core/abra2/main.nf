@@ -4,7 +4,7 @@ process ABRA2 {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'oras://community.wave.seqera.io/library/abra2:2.24--4f7b268017d626b8'
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1c/1ce5e46000b343d8ec352a19ac8b067d69efacc0d82ba98346b837fc2fd9b321/data'
         : 'community.wave.seqera.io/library/abra2:2.24--1d9acdc762079672'} "
 
     input:
