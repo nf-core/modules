@@ -84,12 +84,12 @@ output:
           ontologies:
             - edam: "http://edamontology.org/format_3475" # tsv
   log:
-   - - meta_bam:
+    - - meta_bam:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      "*.log":
+      - "*.log":
           type: file
           description: Log file for telescope run output.
           pattern: "*.log"
