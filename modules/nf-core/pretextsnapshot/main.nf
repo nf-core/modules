@@ -1,5 +1,5 @@
 process PRETEXTSNAPSHOT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -12,7 +12,7 @@ process PRETEXTSNAPSHOT {
 
     output:
     tuple val(meta), path('*.{jpeg,png,bmp}'), emit: image
-    path "versions.yml" , emit: versions
+    tuple val("${task.process}"), val('PretextSnapshot'), eval('PretextSnapshot --version 2>&1) | sed "s/^.*PretextSnapshot Version //"'), emit: versions_pretextsnapshot, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,19 +26,12 @@ process PRETEXTSNAPSHOT {
         --map $pretext_map \\
         --prefix $prefix \\
         --folder .
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pretextsnapshot: \$(echo \$(PretextSnapshot --version 2>&1) | sed 's/^.*PretextSnapshot Version //' )
-    END_VERSIONS
     """
+
+
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}_"
     """
     touch ${prefix}scaffold_{1,2,3,4}.png
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pretextsnapshot: \$(echo \$(PretextSnapshot --version 2>&1) | sed 's/^.*PretextSnapshot Version //' )
-    END_VERSIONS
     """
 }
