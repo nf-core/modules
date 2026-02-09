@@ -17,7 +17,7 @@ nextflow_process {
                 input[0] = [[ id:'test', single_end:false ], // meta map
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.gz', checkIfExists: true)
                             ]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.header', checkIfExists: true)
+                input[1] = channel.of("chr22").collectFile(name: "chr22.header", newLine: true)
                 """
             }
         }
@@ -39,7 +39,7 @@ nextflow_process {
                 input[0] = [[ id:'test', single_end:false ], // meta map
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                             ]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.header', checkIfExists: true)
+                input[1] = channel.of("chr22").collectFile(name: "chr22.header", newLine: true)
                 """
             }
         }
@@ -54,7 +54,9 @@ nextflow_process {
     }
 
     test("with_pattern") {
+
         config "./nextflow.config"
+
         when {
             process {
                 """
