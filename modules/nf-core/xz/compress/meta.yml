@@ -39,13 +39,6 @@ output:
           description: The compressed file
           pattern: "*.xz"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750
   versions_xz:
     - - ${task.process}:
           type: string
@@ -53,7 +46,7 @@ output:
       - xz:
           type: string
           description: The name of the tool
-      - xz --version | sed '1!d;s/[^0-9.]*//g':
+      - xz --version | sed '1!d;s/\([^0-9.]*\)//g':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -64,7 +57,7 @@ topics:
       - xz:
           type: string
           description: The name of the tool
-      - xz --version | sed '1!d;s/[^0-9.]*//g':
+      - xz --version | sed '1!d;s/\([^0-9.]*\)//g':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
