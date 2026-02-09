@@ -13,14 +13,14 @@ process BWA_INDEX {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${task.ext.prefix ?: meta.id}/"), emit: index
+    tuple val(meta), path("${task.ext.prefix ?: meta.id ?: fasta.baseName}/"), emit: index
     tuple val("${task.process}"), val('bwa'), eval('bwa 2>&1 | sed -n "s/^Version: //p"'), topic: versions, emit: versions_bwa
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: meta.id ?: "${fasta.baseName}"
     def args   = task.ext.args ?: ''
     def genome = "${fasta.baseName}"
     """
