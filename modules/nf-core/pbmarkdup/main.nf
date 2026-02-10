@@ -24,9 +24,9 @@ process PBMARKDUP {
     prefix       = task.ext.prefix ?: "${meta.id}"
     // To allow multiple input types/files: (compressed) fasta, fastq, bam; Determine suffix from input file names
     // To allow multiple input types/files: (compressed) fasta, fastq, bam; Determine suffix from input file names
-    // if any input file is a FASTA, the output would be FASTA; 
+    // if any input file is a FASTA, the output would be FASTA;
         // if it is compressed, get both `.fasta` and `.gz` as suffix (2 last right tokens)
-    // else if any input file is a FASTQ, the output would be FASTQ; 
+    // else if any input file is a FASTQ, the output would be FASTQ;
         // if it is compressed, get both `.fastq` and `.gz` as suffix (2 last right tokens)
     // else use the extension of the first input file as suffix
     suffix        =
