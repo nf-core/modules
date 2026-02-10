@@ -20,7 +20,6 @@ process CELLRANGER_COUNT {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "CELLRANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     template "cellranger_count.py"
 
