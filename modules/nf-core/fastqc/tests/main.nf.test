@@ -27,10 +27,12 @@ nextflow_process {
                 // NOTE The report contains the date inside it, which means that the md5sum is stable per day, but not longer than that. So you can't md5sum it.
                 // looks like this: <div id="header_filename">Mon 2 Oct 2023<br/>test.gz</div>
                 // https://github.com/nf-core/modules/pull/3903#issuecomment-1743620039
-                { assert process.out.html[0][1] ==~ ".*/test_fastqc.html" },
-                { assert process.out.zip[0][1] ==~ ".*/test_fastqc.zip" },
-                { assert path(process.out.html[0][1]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
-                { assert snapshot(sanitizeOutput(process.out).findAll { key, val -> key != 'html' && key != 'zip' }).match() }
+                { assert path(process.out.html[0][3]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
+                { assert snapshot(
+                    file(process.out.html[0][3]).name,
+                    file(process.out.zip[0][3]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }
@@ -52,13 +54,15 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert process.out.html[0][1][0] ==~ ".*/test_1_fastqc.html" },
-                { assert process.out.html[0][1][1] ==~ ".*/test_2_fastqc.html" },
-                { assert process.out.zip[0][1][0] ==~ ".*/test_1_fastqc.zip" },
-                { assert process.out.zip[0][1][1] ==~ ".*/test_2_fastqc.zip" },
-                { assert path(process.out.html[0][1][0]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
-                { assert path(process.out.html[0][1][1]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
-                { assert snapshot(sanitizeOutput(process.out).findAll { key, val -> key != 'html' && key != 'zip' }).match() }
+                { assert path(process.out.html[0][3][0]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
+                { assert path(process.out.html[0][3][1]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
+                { assert snapshot(
+                    file(process.out.html[0][3][0]).name,
+                    file(process.out.html[0][3][1]).name,
+                    file(process.out.zip[0][3][0]).name,
+                    file(process.out.zip[0][3][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }
@@ -79,10 +83,12 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert process.out.html[0][1] ==~ ".*/test_fastqc.html" },
-                { assert process.out.zip[0][1] ==~ ".*/test_fastqc.zip" },
-                { assert path(process.out.html[0][1]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
-                { assert snapshot(sanitizeOutput(process.out).findAll { key, val -> key != 'html' && key != 'zip' }).match() }
+                { assert path(process.out.html[0][3]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
+                { assert snapshot(
+                    file(process.out.html[0][3]).name,
+                    file(process.out.zip[0][3]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }
@@ -103,10 +109,12 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert process.out.html[0][1] ==~ ".*/test_fastqc.html" },
-                { assert process.out.zip[0][1] ==~ ".*/test_fastqc.zip" },
-                { assert path(process.out.html[0][1]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
-                { assert snapshot(sanitizeOutput(process.out).findAll { key, val -> key != 'html' && key != 'zip' }).match() }
+                { assert path(process.out.html[0][3]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
+                { assert snapshot(
+                    file(process.out.html[0][3]).name,
+                    file(process.out.zip[0][3]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }
@@ -130,19 +138,21 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert process.out.html[0][1][0] ==~ ".*/test_1_fastqc.html" },
-                { assert process.out.html[0][1][1] ==~ ".*/test_2_fastqc.html" },
-                { assert process.out.html[0][1][2] ==~ ".*/test_3_fastqc.html" },
-                { assert process.out.html[0][1][3] ==~ ".*/test_4_fastqc.html" },
-                { assert process.out.zip[0][1][0] ==~ ".*/test_1_fastqc.zip" },
-                { assert process.out.zip[0][1][1] ==~ ".*/test_2_fastqc.zip" },
-                { assert process.out.zip[0][1][2] ==~ ".*/test_3_fastqc.zip" },
-                { assert process.out.zip[0][1][3] ==~ ".*/test_4_fastqc.zip" },
-                { assert path(process.out.html[0][1][0]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
-                { assert path(process.out.html[0][1][1]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
-                { assert path(process.out.html[0][1][2]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
-                { assert path(process.out.html[0][1][3]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
-                { assert snapshot(sanitizeOutput(process.out).findAll { key, val -> key != 'html' && key != 'zip' }).match() }
+                { assert path(process.out.html[0][3][0]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
+                { assert path(process.out.html[0][3][1]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
+                { assert path(process.out.html[0][3][2]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
+                { assert path(process.out.html[0][3][3]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
+                { assert snapshot(
+                    file(process.out.html[0][3][0]).name,
+                    file(process.out.html[0][3][1]).name,
+                    file(process.out.html[0][3][2]).name,
+                    file(process.out.html[0][3][3]).name,
+                    file(process.out.zip[0][3][0]).name,
+                    file(process.out.zip[0][3][1]).name,
+                    file(process.out.zip[0][3][2]).name,
+                    file(process.out.zip[0][3][3]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }
@@ -163,10 +173,12 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert process.out.html[0][1] ==~ ".*/mysample_fastqc.html" },
-                { assert process.out.zip[0][1] ==~ ".*/mysample_fastqc.zip" },
-                { assert path(process.out.html[0][1]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
-                { assert snapshot(sanitizeOutput(process.out).findAll { key, val -> key != 'html' && key != 'zip' }).match() }
+                { assert path(process.out.html[0][3]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
+                { assert snapshot(
+                    file(process.out.html[0][3]).name,
+                    file(process.out.zip[0][3]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }

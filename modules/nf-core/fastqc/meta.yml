@@ -16,7 +16,8 @@ tools:
         overrepresented sequences.
       homepage: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
       documentation: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/
-      licence: ["GPL-2.0-only"]
+      licence:
+        - "GPL-2.0-only"
       identifier: biotools:fastqc
 input:
   - - meta:
@@ -37,6 +38,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+      - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fastqc:
+          type: string
+          description: The tool name
       - "*.html":
           type: file
           description: FastQC report
@@ -48,6 +55,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+      - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fastqc:
+          type: string
+          description: The tool name
       - "*.zip":
           type: file
           description: FastQC report archive
@@ -63,7 +76,6 @@ output:
       - fastqc --version | sed "/FastQC v/!d; s/.*v//":
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -75,6 +87,35 @@ topics:
       - fastqc --version | sed "/FastQC v/!d; s/.*v//":
           type: eval
           description: The expression to obtain the version of the tool
+  multiqc_files:
+    - - meta:
+          type: string
+          description: The name of the process
+      - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fastqc:
+          type: string
+          description: The tool name
+      - "*.html":
+          type: file
+          description: FastQC report
+          pattern: "*_{fastqc.html}"
+          ontologies: []
+    - - meta:
+          type: string
+          description: The name of the process
+      - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fastqc:
+          type: string
+          description: The tool name
+      - "*.zip":
+          type: file
+          description: FastQC report archive
+          pattern: "*_{fastqc.zip}"
+          ontologies: []
 authors:
   - "@drpatelh"
   - "@grst"
