@@ -20,7 +20,7 @@ process BWA_INDEX {
     task.ext.when == null || task.ext.when
 
     script:
-    prefix = task.ext.prefix ?: meta.id ?: "${fasta.baseName}"
+    prefix = task.ext.prefix ?: ( meta.id ? "${meta.id}" : "${fasta.baseName}" )
     def args   = task.ext.args ?: ''
     def genome = "${fasta.baseName}"
     """
@@ -33,7 +33,7 @@ process BWA_INDEX {
     """
 
     stub:
-    prefix = task.ext.prefix ?: meta.id ?: "${fasta.baseName}"
+    prefix = task.ext.prefix ?: ( meta.id ? "${meta.id}" : "${fasta.baseName}" )
     def genome = "${fasta.baseName}"
     """
     mkdir ${prefix}
