@@ -35,7 +35,7 @@ process PARABRICKS_RNAFQ2BAM {
     tuple val(meta), path("${prefix}_qc_metrics"),                              emit: qc_metrics,           optional:true
     tuple val(meta), path("${prefix}.duplicate-metrics.txt"),                   emit: duplicate_metrics,    optional:true
     tuple val("${task.process}"), val("parabricks"), eval("pbrun version 2>&1 | grep -Po '(?<=^pbrun: ).*'"),   emit: versions_parabricks,  topic: versions
-    
+
     when:
     task.ext.when == null || task.ext.when
 
