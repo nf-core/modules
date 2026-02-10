@@ -2,7 +2,7 @@ process WITTYER {
     tag "$meta.id"
     label 'process_single'
 
-    container "nf-core/wittyer:4c55c27c711b558f"
+    container "nf-core/wittyer:0.5.2"
 
     input:
     tuple val(meta), path(query_vcf), path(truth_vcf), path(bed), path(wittyer_config)
