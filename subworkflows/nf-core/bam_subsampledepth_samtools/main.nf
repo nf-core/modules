@@ -7,7 +7,7 @@ workflow BAM_SUBSAMPLEDEPTH_SAMTOOLS {
     take:
     ch_bam_bai    // channel: [ val(meta), path(bam), path(bai) ]
     ch_depth      // channel: [ val(meta), val(depth)]
-    ch_fasta      // channel: [ val(meta), path(fasta) ]
+    ch_fasta      // channel: [ val(meta), path(fasta), path(fai) ]
 
     main:
 

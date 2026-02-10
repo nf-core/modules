@@ -116,7 +116,8 @@ nextflow_process {
                     ])
                     input[1] = channel.of([
                         [id: 'Hg38'],
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz", checkIfExists: true)
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz", checkIfExists: true),
+                        []
                     ])
                     input[2] = []
                     input[3] = "crai"
