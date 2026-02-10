@@ -35,6 +35,8 @@ process ASHLAR {
 
     """
     export JAVA_TOOL_OPTIONS='-XX:+PerfDisableSharedMem'
+    export XDG_CACHE_HOME=.cache
+    export MPLCONFIGDIR=.matplotlib
 
     ashlar \\
         -o ${prefix}.ome.tif \\
