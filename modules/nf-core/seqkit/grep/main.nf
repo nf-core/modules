@@ -14,7 +14,7 @@ process SEQKIT_GREP {
 
     output:
     tuple val(meta), path("*.{fa,fq}.gz")  , emit: filter
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val('seqkit'), eval('seqkit version | sed "s/seqkit v//"'), emit: versions_seqkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,11 +34,6 @@ process SEQKIT_GREP {
         ${pattern_file} \\
         ${sequence} \\
         -o ${prefix}.${suffix}.gz \\
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$( seqkit version | sed 's/seqkit v//' )
-    END_VERSIONS
     """
 
     stub:
@@ -48,11 +43,7 @@ process SEQKIT_GREP {
     def suffix = task.ext.suffix ?: "${sequence}" ==~ /(.*f[astn]*a(.gz)?$)/ ? "fa" : "fq"
 
     """
+    echo ${args}
     echo "" | gzip > ${prefix}.${suffix}.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$( seqkit version | sed 's/seqkit v//' )
-    END_VERSIONS
     """
 }
