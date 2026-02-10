@@ -7,11 +7,8 @@ process TRAITAR_PFAMGET {
         'docker://community.wave.seqera.io/library/hmmer_prodigal_pandas_parallel_pruned:ccae2eabc2a54ac8' :
         'community.wave.seqera.io/library/hmmer_prodigal_pandas_parallel_pruned:ccae2eabc2a54ac8' }"
 
-    input:
-    val pfam_version
-
     output:
-    path "pfam_data"    , emit: pfam_db
+    path "pfam_data", emit: pfam_db
     tuple val("${task.process}"), val('traitar'), eval('traitar --version 2>&1 | tail -1'), topic: versions, emit: versions_traitar
 
     when:
@@ -19,8 +16,9 @@ process TRAITAR_PFAMGET {
 
     script:
     """
-    # Download PFAM database
     traitar pfam pfam_data
+
+    TRAITAR_VERSION=\$(traitar --version 2>&1 | tail -1)
     """
 
     stub:

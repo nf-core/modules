@@ -15,18 +15,11 @@ nextflow_process {
     setup {
         run("TRAITAR_PFAMGET") {
             script "../../pfamget/main.nf"
-            process {
-                """
-                input[0] = []
-                """
-            }
         }
     }
 
     // Real data test
-    test("traitar - proteomes") {
-
-        config "./nf-test.config"
+    test("traitar - genome - fna.gz") {
 
         when {
             process {
@@ -113,7 +106,5 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
 }

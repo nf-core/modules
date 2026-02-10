@@ -11,14 +11,6 @@ nextflow_process {
 
     test("Download PFAM database - default version") {
 
-        when {
-            process {
-                """
-                input[0] = []
-                """
-            }
-        }
-
         then {
             assertAll(
                 { assert process.success },
@@ -28,15 +20,8 @@ nextflow_process {
     }
 
     test("Download PFAM database - default version - stub") {
-        options '-stub'
 
-        when {
-            process {
-                """
-                input[0] = []
-                """
-            }
-        }
+        options "-stub"
 
         then {
             assertAll(

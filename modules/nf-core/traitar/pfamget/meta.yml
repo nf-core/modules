@@ -13,13 +13,7 @@ tools:
       documentation: "https://github.com/hzi-bifo/traitar3"
       tool_dev_url: "https://github.com/hzi-bifo/traitar3"
       licence: ["GPL v3"]
-      identifier: ""
-
-input:
-  - pfam_version:
-      type: string
-      description: |
-        Optional PFAM version to download. If not provided, downloads latest version.
+      identifier: "biotools:traitar"
 
 output:
   pfam_db:
@@ -34,9 +28,9 @@ output:
       - traitar:
           type: string
           description: The name of the tool
-      - traitar --version 2>&1 | tail -1:
+      - "traitar --version 2>&1 | tail -1":
           type: eval
-          description: Version extraction command
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
