@@ -29,7 +29,7 @@ input:
           for details.
         pattern: "*.{pairs,tsv}"
         ontologies:
-          - edam: "http://edamontology.org/format_3475"
+          - edam: "http://edamontology.org/format_3475" # TSV
   - - meta2:
         type: map
         description: |
@@ -49,7 +49,7 @@ input:
           Incompatible with genome_id option.
         pattern: "*.{tsv}"
         ontologies:
-          - edam: "http://edamontology.org/format_3475"
+          - edam: "http://edamontology.org/format_3475" # TSV
 output:
   hic:
     - - meta:
