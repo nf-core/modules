@@ -37,13 +37,13 @@ process SHINYNGS_APP {
 
     """
     make_app_from_files.R \\
-        --sample_metadata $sample \\
-        --feature_metadata $feature_meta \\
-        --assay_files ${assay_files.join(',')} \\
-        --contrast_file $contrasts \\
-        --contrast_stats_assay $contrast_stats_assay \\
-        --differential_results ${differential_results.join(',')} \\
-        --output_dir $prefix \\
+        --sample_metadata "$sample" \\
+        --feature_metadata "$feature_meta" \\
+        --assay_files "${assay_files.join(',')}" \\
+        --contrast_file "$contrasts" \\
+        --contrast_stats_assay "$contrast_stats_assay" \\
+        --differential_results "${differential_results.join(',')}" \\
+        --output_dir "$prefix" \\
         $args \\
 
     cat <<-END_VERSIONS > versions.yml
@@ -57,9 +57,9 @@ process SHINYNGS_APP {
     def prefix = task.ext.prefix ?: meta.id
 
     """
-    mkdir -p $prefix
-    touch ${prefix}/data.rds
-    touch ${prefix}/app.R
+    mkdir -p "$prefix"
+    touch "${prefix}/data.rds"
+    touch "${prefix}/app.R"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
