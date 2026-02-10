@@ -34,7 +34,7 @@ nextflow_process {
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
-                    .combine([[]])
+                    .combine(channel.of([[]]))
                 input[1] = false
                 """
             }
