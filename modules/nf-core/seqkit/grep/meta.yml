@@ -28,7 +28,7 @@ input:
           Fasta or fastq file containing sequences to be filtered
         pattern: "*.{fa,fna,faa,fasta,fq,fastq}[.gz]"
         ontologies:
-          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_1930
   - pattern:
       type: file
       description: >
@@ -36,7 +36,7 @@ input:
         specified within the args using '-p pattern_string'
       pattern: "*.{txt,tsv}"
       ontologies:
-        - edam: http://edamontology.org/format_3475 # TSV
+        - edam: http://edamontology.org/format_3475
 output:
   filter:
     - - meta:
@@ -44,13 +44,11 @@ output:
           description: >
             Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
-      - "*.{fa,fq}.gz":
+      - "*.{fa,fq,fa.gz,fq.gz}":
           type: file
           description: >
-            Fasta or fastq file containing the filtered sequences
-          pattern: "*.{fa,fq}[.gz]"
-          ontologies:
-            - edam: http://edamontology.org/format_1930 # FASTQ
+            Fasta or fastq file containing the filtered sequences. Will be gzipped if the input
+            file was gzipped.
   versions_seqkit:
     - - ${task.process}:
           type: string
