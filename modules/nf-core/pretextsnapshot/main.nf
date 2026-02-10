@@ -12,7 +12,7 @@ process PRETEXTSNAPSHOT {
 
     output:
     tuple val(meta), path('*.{jpeg,png,bmp}'), emit: image
-    tuple val("${task.process}"), val('PretextSnapshot'), eval('PretextSnapshot --version 2>&1) | sed "s/^.*PretextSnapshot Version //"'), emit: versions_pretextsnapshot, topic: versions
+    tuple val("${task.process}"), val('PretextSnapshot'), eval('PretextSnapshot --version | sed "s/^.*PretextSnapshot Version //"'), emit: versions_pretextsnapshot, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
