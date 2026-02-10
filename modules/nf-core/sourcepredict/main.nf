@@ -15,8 +15,9 @@ process SOURCEPREDICT {
     path(taxa_sqlite_traverse_pkl, stageAs: '.etetoolkit/*')
 
     output:
-    tuple val(meta), path("*.sourcepredict.csv")    , emit: report
-    path "versions.yml"                             , emit: versions
+    tuple val(meta), path("*.sourcepredict.csv"), emit: report
+    tuple val("${task.process}"), val('sourcepredict'), eval('python -c "import sourcepredict; print(sourcepredict.__version__)"'), topic: versions, emit: versions_sourcepredict
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,11 +36,6 @@ process SOURCEPREDICT {
         -t $task.cpus \\
         -o ${prefix}.sourcepredict.csv \\
         ${kraken_parse}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sourcepredict: \$(python -c "import sourcepredict; print(sourcepredict.__version__)")
-    END_VERSIONS
     """
 
     stub:
@@ -47,10 +43,5 @@ process SOURCEPREDICT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.sourcepredict.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sourcepredict: \$(python -c "import sourcepredict; print(sourcepredict.__version__)")
-    END_VERSIONS
     """
 }
