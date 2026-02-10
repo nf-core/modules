@@ -1,0 +1,77 @@
+// nf-core modules test telescope/assign
+nextflow_process {
+
+    name "Test Process TELESCOPE_ASSIGN"
+    script "../main.nf"
+    process "TELESCOPE_ASSIGN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "telescope"
+    tag "telescope/assign"
+
+    test("basic run - bam") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test_bam' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                ]
+
+                input[1] = [
+                    [ id:'telocus_gtf' ],
+                    file('https://raw.githubusercontent.com/hanalysis/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/genome/chr21/sequence/GRCh38_GENCODE_rmsk_TE_chr21.gtf', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def logFile = path(process.out.log[0][1])
+            assert logFile.exists()
+            assert logFile.readLines().last().contains("telescope assign complete")
+
+
+                assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match()
+        }
+
+    }
+
+    test("basic_run - bam - stub") {
+
+        options "-stub"
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test_bam' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                ]
+
+                input[1] = [
+                    [ id:'telocus_gtf' ],
+                    file('https://raw.githubusercontent.com/hanalysis/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/genome/chr21/sequence/GRCh38_GENCODE_rmsk_TE_chr21.gtf', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+                { assert snapshot(process.out).match() }
+        }
+
+    }
+
+}
