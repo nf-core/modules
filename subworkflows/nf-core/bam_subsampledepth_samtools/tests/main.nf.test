@@ -31,7 +31,11 @@ nextflow_workflow {
                         file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA19401/NA19401.s.bam.bai", checkIfExist:true),
                     ],
                 ])
-                input[1] = channel.of(2, 4)
+                input[1] = channel.of([
+                    [my_depth: "2x"], 2
+                ],[
+                    [my_depth: "4x"], 4
+                ])
                 input[2] = channel.of([
                     [id: "GRCh38"],
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/reference_genome/GRCh38.s.fa.gz", checkIfExist:true),
