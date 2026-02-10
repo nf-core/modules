@@ -13,7 +13,7 @@ process GATK4_DENOISEREADCOUNTS {
 
     output:
     tuple val(meta), path("*_standardizedCR.tsv"), emit: standardized
-    tuple val(meta), path("*_denoisedCR.tsv"),     emit: denoised
+    tuple val(meta), path("*_denoisedCR.tsv"), emit: denoised
     tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:

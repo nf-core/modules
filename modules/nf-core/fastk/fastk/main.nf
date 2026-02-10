@@ -5,8 +5,8 @@ process FASTK_FASTK {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b5/b5b07773b60921f43e2839edab692377dcd725d4041adff5520838154e46f487/data' :
-        'community.wave.seqera.io/library/fastk:1.2--580652dfcc8e7a12' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/02/02c05b2ec421debc83883ef9a211291e3220546c12f7c54cb78e66209cb2797d/data' :
+        'community.wave.seqera.io/library/fastk:1.2--4bc70c6cd0d420bd' }"
 
     input:
     tuple val(meta), path(reads)

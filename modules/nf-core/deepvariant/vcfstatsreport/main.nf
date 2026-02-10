@@ -27,8 +27,8 @@ process DEEPVARIANT_VCFSTATSREPORT {
     """
     /opt/deepvariant/bin/vcf_stats_report \\
         --input_vcf=${vcf} \\
-        --outfile_base ${prefix}
-
+        --outfile_base ${prefix} \\
+        ${args}
     """
 
     stub:

@@ -11,7 +11,7 @@ process BFTOOLS_SHOWINF {
     tuple val(meta), path(image)
 
     output:
-    tuple val(meta), path("*.xml.gz")                                                                , emit: xml
+    tuple val(meta), path("*.xml.gz")                                                             , emit: xml
     tuple val("${task.process}"), val("bftools"), eval("showinf -version | sed -n '1s/[^ ]* //p'"), emit: versions_bftools, topic: versions
 
     when:
@@ -29,7 +29,6 @@ process BFTOOLS_SHOWINF {
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """

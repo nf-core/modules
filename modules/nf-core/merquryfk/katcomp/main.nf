@@ -5,8 +5,8 @@ process MERQURYFK_KATCOMP {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3f/3fefda33017e34e77a61dd82f8a2884414cdcb222269d9ca72a543bfeb4604b6/data' :
-        'community.wave.seqera.io/library/fastk_merquryfk_r-argparse_r-cowplot_pruned:d61b120497d4185b' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/56/56641ad3d1130e668134edc752fdf0bed1cc31da3b3d74730aa6edf40527493a/data' :
+        'community.wave.seqera.io/library/merquryfk:1.2--f21b6c1cbbbbfe64' }"
 
     input:
     tuple val(meta), path(fastk1_hist), path(fastk1_ktab), path(fastk2_hist), path(fastk2_ktab)
@@ -25,8 +25,8 @@ process MERQURYFK_KATCOMP {
     script:
     def args      = task.ext.args ?: ''
     def prefix    = task.ext.prefix ?: "${meta.id}"
-    def input_fk1 = fastk1_ktab.find{ it.toString().endsWith(".ktab") }.getBaseName()
-    def input_fk2 = fastk2_ktab.find{ it.toString().endsWith(".ktab") }.getBaseName()
+    def input_fk1 = fastk1_ktab.find { path -> path.toString().endsWith(".ktab") }.getBaseName()
+    def input_fk2 = fastk2_ktab.find { path -> path.toString().endsWith(".ktab") }.getBaseName()
     """
     KatComp \\
         $args \\

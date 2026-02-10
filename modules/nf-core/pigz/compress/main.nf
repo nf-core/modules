@@ -27,7 +27,6 @@ process PIGZ_COMPRESS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     archive = raw_file.toString() + ".gz"
     """
     touch ${archive}
