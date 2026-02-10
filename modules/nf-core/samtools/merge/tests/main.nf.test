@@ -102,7 +102,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.gz.fai', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.gz.gzi', checkIfExists: true)
                 ]
-                """input[1] = [[],[],[],[]]
+                """
             }
         }
 
