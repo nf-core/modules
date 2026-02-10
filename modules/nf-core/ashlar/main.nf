@@ -4,8 +4,8 @@ process ASHLAR {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ashlar:1.18.0--pyhdfd78af_0' :
-        'biocontainers/ashlar:1.18.0--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/ashlar:1.19.0--pyhdfd78af_0' :
+        'biocontainers/ashlar:1.19.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(images, stageAs: 'image*/*')
