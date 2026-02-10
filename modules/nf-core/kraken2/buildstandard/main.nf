@@ -18,7 +18,7 @@ process KRAKEN2_BUILDSTANDARD {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "kraken2_standard_db"
-    runclean = cleaning ? "kraken2-build --clean --db ${db}" : ""
+    runclean = cleaning ? "kraken2-build --clean --db ${prefix}" : ""
     """
     kraken2-build \\
         --standard \\

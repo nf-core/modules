@@ -4,11 +4,6 @@ process CELLRANGERARC_MKGTF {
 
     container "nf-core/cellranger-arc:2.0.2"
 
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "CELLRANGERARC_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-
     input:
     path gtf
 
@@ -20,6 +15,10 @@ process CELLRANGERARC_MKGTF {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "CELLRANGERARC_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     """
     cellranger-arc \\
@@ -35,7 +34,10 @@ process CELLRANGERARC_MKGTF {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        exit 1, "CELLRANGERARC_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     """
     touch ${gtf.baseName}.filtered.gtf
 

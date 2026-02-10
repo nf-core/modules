@@ -11,7 +11,7 @@ workflow VCF_GATHER_BCFTOOLS {
     main:
 
     // Check if arr_common_meta is an array or list
-    if (!(arr_common_meta instanceof List || arr_common_meta instanceof Object[])) {
+    if (!(arr_common_meta instanceof List || arr_common_meta instanceof Collection)) {
         error("ERROR: arr_common_meta should be an array or list, got ${arr_common_meta.getClass()}")
     }
 
@@ -21,7 +21,7 @@ workflow VCF_GATHER_BCFTOOLS {
             if (missingKeys) {
                 error("ERROR: Keys ${missingKeys} from arr_common_meta not found in meta. Available keys: ${meta.keySet()}")
             }
-            newMeta = arr_common_meta ?
+            def newMeta = arr_common_meta ?
                 arr_common_meta.collectEntries { key -> [(key): meta[key]] } :
                 meta
             [groupKey(newMeta, count), meta, vcf, index]
