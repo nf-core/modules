@@ -13,7 +13,7 @@ process JUICERTOOLS_PRE {
 
     output:
     tuple val(meta), path("*.hic"), emit: hic
-    tuple val("${task.process}"), val('juicer_tools'), eval('juicer_tools -V | grep "Juicer Tools Version" | sed "s/Juicer Tools Version //"'), emit: versions_juicertools, topic: versions
+    tuple val("${task.process}"), val('juicer_tools'), eval('juicer_tools -V | grep "Version" | sed "s/Juicer Tools Version //"'), emit: versions_juicertools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

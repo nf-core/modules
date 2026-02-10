@@ -69,7 +69,7 @@ output:
       - juicer_tools:
           type: string
           description: The name of the tool
-      - juicer_tools -V | grep "Juicer Tools Version" | sed "s/Juicer Tools//":
+      - juicer_tools -V | grep "Version" | sed "s/Juicer Tools//":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -80,7 +80,7 @@ topics:
       - juicer_tools:
           type: string
           description: The name of the tool
-      - juicer_tools -V | grep "Juicer Tools Version" | sed "s/Juicer Tools//":
+      - juicer_tools -V | grep "Version" | sed "s/Juicer Tools//":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
