@@ -16,7 +16,8 @@ tools:
       documentation: "https://github.com/vgl-hub/gfastats/tree/main/instructions"
       tool_dev_url: "https://github.com/vgl-hub/gfastats"
       doi: "10.1093/bioinformatics/btac460"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:gfastats
 input:
   - - meta:
@@ -29,8 +30,8 @@ input:
         description: Draft assembly file
         pattern: "*.{fasta,fastq,gfa}(.gz)?"
         ontologies:
-          - edam: http://edamontology.org/format_1930 # FASTQ
-          - edam: http://edamontology.org/format_3975 # GFA 1
+          - edam: http://edamontology.org/format_1930
+          - edam: http://edamontology.org/format_3975
   - out_fmt:
       type: string
       description: Output format (fasta, fastq, gfa)
@@ -39,7 +40,8 @@ input:
       description: estimated genome size (bp) for NG* statistics (optional).
   - target:
       type: string
-      description: target specific sequence by header, optionally with coordinates (optional).
+      description: target specific sequence by header, optionally with coordinates
+        (optional).
   - - meta2:
         type: map
         description: |
@@ -56,8 +58,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - include_bed:
         type: file
-        description: generates output on a subset list of headers or coordinates in
-          0-based bed format.
+        description: generates output on a subset list of headers or coordinates
+          in 0-based bed format.
         ontologies: []
   - - meta4:
         type: map
@@ -66,7 +68,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - exclude_bed:
         type: file
-        description: opposite of --include-bed. They can be combined (no coordinates).
+        description: opposite of --include-bed. They can be combined (no
+          coordinates).
         ontologies: []
   - - meta5:
         type: map
@@ -100,15 +103,29 @@ output:
           description: The assembly as modified by gfastats
           pattern: "*.{fasta,fastq,gfa}.gz"
           ontologies:
-            - edam: http://edamontology.org/format_1930 # FASTQ
-            - edam: http://edamontology.org/format_3975 # GFA 1
+            - edam: http://edamontology.org/format_1930
+            - edam: http://edamontology.org/format_3975
+  versions_gfastats:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gfastats:
+          type: string
+          description: The name of the tool
+      - gfastats -v | sed '1!d;s/.*v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gfastats:
+          type: string
+          description: The name of the tool
+      - gfastats -v | sed '1!d;s/.*v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mahesh-panchal"
 maintainers:
