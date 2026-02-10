@@ -146,8 +146,7 @@ workflow FASTA_INDEX_METHYLSEQ {
         } else {
             log.info "Fasta index not provided. Generating fasta index from FASTA file."
             SAMTOOLS_FAIDX (
-                ch_fasta,
-                [[:], [], []],
+                ch_fasta.combine(channel.of([[]])),
                 false
             )
             ch_fasta_index = SAMTOOLS_FAIDX.out.fai
