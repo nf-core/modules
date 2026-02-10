@@ -34,8 +34,8 @@ process PINDEL_PINDEL {
     def args2 = task.ext.args2 ?: '500'
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    if (bam instanceof nextflow.util.BlankSeparatedList) {
-        error "pindel/pindel only takes a single bam file as input"
+    if (bam instanceof Collection) {
+        error "pindel/pindel only accepts a single BAM file as input, but received multiple files: ${bam}"
     }
 
     """

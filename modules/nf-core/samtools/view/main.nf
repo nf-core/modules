@@ -9,7 +9,7 @@ process SAMTOOLS_VIEW {
 
     input:
     tuple val(meta), path(input), path(index)
-    tuple val(meta2), path(fasta)
+    tuple val(meta2), path(fasta), path(fai)
     path qname
     val index_format
 
