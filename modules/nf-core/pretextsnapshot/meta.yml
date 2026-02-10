@@ -39,7 +39,7 @@ output:
           - "*.{jpeg,png,bmp}":
                 type: file
                 description: image of a hic contact map
-                pattern: "*.{png,jpg,bmp}"
+                pattern: "*.{jpeg,png,bmp}"
                 ontologies: []
     versions_pretextsnapshot:
         - - ${task.process}:
@@ -48,9 +48,22 @@ output:
           - PretextSnapshot:
                 type: string
                 description: Name of the tool
-          - PretextSnapshot --version | sed "s/^.*PretextSnapshot Version //":
+          - PretextSnapshot --version | sed 's/^.*PretextSnapshot Version //g':
                 type: eval
                 description: The expression to obtain the version of the tool
+
+topics:
+    versions:
+        - - ${task.process}:
+                type: string
+                description: The name of the process
+          - PretextSnapshot:
+                type: string
+                description: The name of the tool
+          - PretextSnapshot --version | sed 's/^.*PretextSnapshot Version //g':
+                type: eval
+                description: The expression to obtain the version of the tool
+
 authors:
     - "@epaule"
 maintainers:

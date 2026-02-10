@@ -4,15 +4,15 @@ process PRETEXTSNAPSHOT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pretextsnapshot:0.0.4--h7d875b9_0':
-        'biocontainers/pretextsnapshot:0.0.4--h7d875b9_0' }"
+        'https://depot.galaxyproject.org/singularity/pretextsnapshot:0.0.5--h9948957_0':
+        'biocontainers/pretextsnapshot:0.0.5--h9948957_0' }"
 
     input:
     tuple val(meta), path(pretext_map)
 
     output:
     tuple val(meta), path('*.{jpeg,png,bmp}'), emit: image
-    tuple val("${task.process}"), val('PretextSnapshot'), eval('PretextSnapshot --version | sed "s/^.*PretextSnapshot Version //"'), emit: versions_pretextsnapshot, topic: versions
+    tuple val("${task.process}"), val('PretextSnapshot'), eval("PretextSnapshot --version | sed 's/^.*PretextSnapshot Version //g'"), emit: versions_pretextsnapshot, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
