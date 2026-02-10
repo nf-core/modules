@@ -52,7 +52,7 @@ process PBMARKDUP {
         if (file_list.contains(dupfile_name))
             error """Duplicate file `${dupfile_name}` conflicts with an input file.
             Please change the duplicate file name `${dupfile_name}` or input file names."""
-            
+
         if ( !dupfile_name.endsWith("${suffix}") )
             error """Duplicate file `${dupfile_name}` does not have the same suffix as the output file `${prefix}.${suffix}`.
             Please change the duplicate file name `${dupfile_name}` to `${suffix}`."""
