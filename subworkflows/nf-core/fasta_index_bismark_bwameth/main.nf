@@ -111,7 +111,7 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
         } else {
             SAMTOOLS_FAIDX(
                 ch_fasta,
-                [[:], []],
+                [[:], [], []],
                 false
             )
             ch_fasta_index = SAMTOOLS_FAIDX.out.fai
