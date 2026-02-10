@@ -19,11 +19,11 @@ process CNVPYTOR_CALLCNVS {
     task.ext.when == null || task.ext.when
 
     script:
-    def bins_cmd = bin_sizes ? "-call $bin_sizes" : '-call 1000'
+    def bins = bin_sizes ? "-call $bin_sizes" : '-call 1000'
     """
     cnvpytor \\
         -root $pytor \\
-        $bins_cmd
+        $bin_sizes
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
