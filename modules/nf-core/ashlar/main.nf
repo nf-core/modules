@@ -14,7 +14,7 @@ process ASHLAR {
 
     output:
     tuple val(meta), path("*.ome.tif"), emit: tif
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('ashlar'), eval("ashlar --version | sed 's/^.*ashlar //'"), emit: versions_ashlar, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,11 +44,6 @@ process ASHLAR {
         ${ffp}
 
     sed -i -E 's/UUID="urn:uuid:[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}"/                                                    /g' ${prefix}.ome.tif
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ashlar: \$(ashlar --version | sed 's/^.*ashlar //' )
-    END_VERSIONS
     """
 
     stub:
@@ -66,10 +61,5 @@ process ASHLAR {
     export JAVA_TOOL_OPTIONS='-XX:+PerfDisableSharedMem'
 
     touch ${prefix}.ome.tif
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ashlar: \$(ashlar --version | sed 's/^.*ashlar //' )
-    END_VERSIONS
     """
 }
