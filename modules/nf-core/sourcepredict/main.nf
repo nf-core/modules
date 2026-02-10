@@ -17,6 +17,8 @@ process SOURCEPREDICT {
     output:
     tuple val(meta), path("*.sourcepredict.csv"), emit: report
     tuple val("${task.process}"), val('sourcepredict'), eval('python -c "import sourcepredict; print(sourcepredict.__version__)"'), topic: versions, emit: versions_sourcepredict
+    tuple val("${task.process}"), val('sourcepredict'), eval('python -V | sed "s/Python //g"'), topic: versions, emit: versions_python
+    tuple val("${task.process}"), val('sourcepredict'), eval('python -c "import sklearn; print(sklearn.__version__)"'), topic: versions, emit: versions_sklearn
 
 
     when:
