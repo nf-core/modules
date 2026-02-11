@@ -87,7 +87,7 @@ process CELLRANGERARC_MKREF {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "CELLRANGERARC_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
+
     """
     mkdir -p "${reference_name}/"
     touch config
