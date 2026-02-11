@@ -287,14 +287,12 @@ nextflow_process {
                         [ id:'test'], // meta map
                         file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome_gfp.gtf', checkIfExists: true)
                     ])
-                    input[1] = UNTAR.out.untar.flatMap { meta, dir ->
-                        def entries = []
-                        dir.toFile().eachDir { d ->
-                            d.eachFileMatch(~/.*\\.isoforms\\.results/) { f ->
-                                entries << [ meta, f.toPath() ]
-                            }
+                    input[1] = UNTAR.out.untar.map { meta, dir ->
+                        def results = []
+                        dir.eachFileRecurse { f ->
+                            if (f.name.endsWith('.isoforms.results')) results << f
                         }
-                        [ [ meta, entries.collect { it[1] } ] ]
+                        [ meta, results ]
                     }
                     input[2] = 'rsem'
                     input[3] = 'gene_id'
@@ -307,14 +305,12 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.flatMap { meta, dir ->
-                    def entries = []
-                    dir.toFile().eachDir { d ->
-                        d.eachFileMatch(~/.*\\.isoforms\\.results/) { f ->
-                            entries << [ meta, f.toPath() ]
-                        }
+                input[0] = UNTAR.out.untar.map { meta, dir ->
+                    def results = []
+                    dir.eachFileRecurse { f ->
+                        if (f.name.endsWith('.isoforms.results')) results << f
                     }
-                    [ [ meta, entries.collect { it[1] } ] ]
+                    [ meta, results ]
                 }
                 input[1] = CUSTOM_TX2GENE.out.tx2gene
                 input[2] = 'rsem'
