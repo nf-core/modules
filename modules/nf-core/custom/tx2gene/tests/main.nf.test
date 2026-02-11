@@ -97,8 +97,7 @@ nextflow_process {
                     """
                     input[0] = Channel.of([
                         [ id:'test'], // meta map
-                        // TODO: revert to params.modules_testdata_base_path once nf-core/test-datasets#1864 is merged
-                        file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/rsem-test-data/data/genomics/eukaryotes/saccharomyces_cerevisiae/rsem_results.tar.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/rsem_results.tar.gz', checkIfExists: true)
                     ])
                     """
                 }
