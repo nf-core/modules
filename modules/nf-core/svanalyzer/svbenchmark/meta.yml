@@ -127,12 +127,26 @@ output:
           description: Text file reporting RECALL, PRECISION and F1.
           pattern: "*.{report}"
           ontologies: []
+  versions_svanalyzer:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - svanalyzer:
+          type: string
+          description: The tool name
+      - "0.36":
+          type: string
+          description: Tool version used for the run. Version information not provided by tool on CLI. Please update this string when bumping container versions.
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - circularmapper:
+          type: string
+          description: The tool name
+      - "0.36":
+          type: string
+          description: Tool version used for the run. Version information not provided by tool on CLI. Please update this string when bumping container versions.
 authors:
   - "@kubranarci"
