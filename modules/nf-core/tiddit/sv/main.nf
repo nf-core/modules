@@ -40,7 +40,7 @@ process TIDDIT_SV {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf
-    touch ${prefix}.ploidies.tab
+    echo "" > ${prefix}.vcf
+    echo "" > ${prefix}.ploidies.tab
     """
 }
