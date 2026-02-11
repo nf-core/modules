@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process EARLGREY"
+    script "../main.nf"
+    process "EARLGREY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "earlgrey"
+
+    test("Should run without failures") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert path(process.out.output_directory.get(0).get(1)).exists() },
+                { assert path(process.out.fasta_files.get(0).get(1)).exists() },
+                { assert path(process.out.gff_files.get(0).get(1)).exists() },
+                { assert path(process.out.versions.get(0)).exists() }
+            )
+        }
+    }
+
+    test("Should run with stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert path(process.out.output_directory.get(0).get(1)).exists() },
+                { assert path(process.out.fasta_files.get(0).get(1)).exists() },
+                { assert path(process.out.gff_files.get(0).get(1)).exists() },
+                { assert path(process.out.versions.get(0)).exists() }
+            )
+        }
+    }
+}
