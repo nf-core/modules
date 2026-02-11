@@ -104,34 +104,92 @@
     },
     "Single-Read": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test.SE.paired.trim.fastq.gz:md5,e68abbd3b88f7ec12940a4f5c2b8bfb9"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test_trim.log:md5,e4c3f619e9b0e26847f8f3e3d9af319b"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test.summary:md5,24c973237557a1439c775ca19a5deaa5"
-                ]
-            ],
             {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.SE.paired.trim.fastq.gz:md5,e68abbd3b88f7ec12940a4f5c2b8bfb9"
+                    ]
+                ],
+                "1": [
+                    
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_trim.log:md5,e4c3f619e9b0e26847f8f3e3d9af319b"
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_out.log:md5,a219f12855e8152c871ab6c91e967b3f"
+                    ]
+                ],
+                "4": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.summary:md5,24c973237557a1439c775ca19a5deaa5"
+                    ]
+                ],
+                "5": [
+                    [
+                        "TRIMMOMATIC",
+                        "trimmomatic",
+                        "0.39"
+                    ]
+                ],
+                "out_log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_out.log:md5,a219f12855e8152c871ab6c91e967b3f"
+                    ]
+                ],
+                "summary": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.summary:md5,24c973237557a1439c775ca19a5deaa5"
+                    ]
+                ],
+                "trim_log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_trim.log:md5,e4c3f619e9b0e26847f8f3e3d9af319b"
+                    ]
+                ],
+                "trimmed_reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.SE.paired.trim.fastq.gz:md5,e68abbd3b88f7ec12940a4f5c2b8bfb9"
+                    ]
+                ],
+                "unpaired_reads": [
+                    
+                ],
                 "versions_trimmomatic": [
                     [
                         "TRIMMOMATIC",
@@ -145,41 +203,120 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.3"
         },
-        "timestamp": "2026-02-11T11:26:42.830886"
+        "timestamp": "2026-02-11T12:06:33.719974"
     },
     "Paired-Reads": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    [
-                        "test.paired.trim_1.fastq.gz:md5,a866e64f451745f176316d0df7d52b30",
-                        "test.paired.trim_2.fastq.gz:md5,725d4ab909b39291ab56b090cab32075"
-                    ]
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test_trim.log:md5,9629761761a34576b3484bf4174f681f"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.summary:md5,9698e5e5c060bbe64588998fe35f8d71"
-                ]
-            ],
             {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.paired.trim_1.fastq.gz:md5,a866e64f451745f176316d0df7d52b30",
+                            "test.paired.trim_2.fastq.gz:md5,725d4ab909b39291ab56b090cab32075"
+                        ]
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.unpaired.trim_1.fastq.gz:md5,f22935d14248bd936af8d5e3c27e72b2",
+                            "test.unpaired.trim_2.fastq.gz:md5,ce0d8e849e4677a186cd0566b2a6ea15"
+                        ]
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_trim.log:md5,9629761761a34576b3484bf4174f681f"
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_out.log:md5,374e929479fbb7d505cd43d853b3be77"
+                    ]
+                ],
+                "4": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.summary:md5,9698e5e5c060bbe64588998fe35f8d71"
+                    ]
+                ],
+                "5": [
+                    [
+                        "TRIMMOMATIC",
+                        "trimmomatic",
+                        "0.39"
+                    ]
+                ],
+                "out_log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_out.log:md5,374e929479fbb7d505cd43d853b3be77"
+                    ]
+                ],
+                "summary": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.summary:md5,9698e5e5c060bbe64588998fe35f8d71"
+                    ]
+                ],
+                "trim_log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_trim.log:md5,9629761761a34576b3484bf4174f681f"
+                    ]
+                ],
+                "trimmed_reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.paired.trim_1.fastq.gz:md5,a866e64f451745f176316d0df7d52b30",
+                            "test.paired.trim_2.fastq.gz:md5,725d4ab909b39291ab56b090cab32075"
+                        ]
+                    ]
+                ],
+                "unpaired_reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.unpaired.trim_1.fastq.gz:md5,f22935d14248bd936af8d5e3c27e72b2",
+                            "test.unpaired.trim_2.fastq.gz:md5,ce0d8e849e4677a186cd0566b2a6ea15"
+                        ]
+                    ]
+                ],
                 "versions_trimmomatic": [
                     [
                         "TRIMMOMATIC",
@@ -193,6 +330,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.3"
         },
-        "timestamp": "2026-02-11T11:26:50.360376"
+        "timestamp": "2026-02-11T12:06:41.184628"
     }
 }
