@@ -343,8 +343,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([ [], [] ])
-                input[1] = Channel.of([ [], [] ])
+                input[0] = Channel.of([ [id:'test'], [] ])
+                input[1] = Channel.of([ [id:'test'], [] ])
                 input[2] = 'rsem'
                 """
             }
