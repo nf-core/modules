@@ -7,7 +7,6 @@ nextflow_process {
     tag "gpu"
     tag "modules"
     tag "modules_nfcore"
-    tag "bwa/index"
     tag "parabricks"
     tag "parabricks/rnafq2bam"
     tag "parabricks/starfusion"
@@ -15,18 +14,6 @@ nextflow_process {
     tag "starfusion/build"
 
     setup {
-
-        run("BWA_INDEX") {
-            script "../../../bwa/index/main.nf"
-            process {
-                """
-                input[0] = Channel.of([
-                    [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                ])
-                """
-            }
-        }
 
         run("STAR_GENOMEGENERATE") {
             script "../../../star/genomegenerate/main.nf"
