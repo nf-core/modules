@@ -12,7 +12,7 @@ workflow BAM_MARKDUPLICATES_SAMTOOLS {
 
     take:
     ch_bam   // channel: [ val(meta), [ bam ] ]
-    ch_fasta // channel: [ val(meta), [ fasta ] ]
+    ch_fasta // channel: [ val(meta), [ fasta ], [fai] ]
 
     main:
 
@@ -20,7 +20,11 @@ workflow BAM_MARKDUPLICATES_SAMTOOLS {
 
     SAMTOOLS_FIXMATE ( SAMTOOLS_COLLATE.out.bam )
 
-    SAMTOOLS_SORT ( SAMTOOLS_FIXMATE.out.bam, ch_fasta, '' )
+    SAMTOOLS_SORT (
+        SAMTOOLS_FIXMATE.out.bam,
+        ch_fasta.map{meta, fasta, _fai -> [meta, fasta]},
+        ''
+    )
 
     SAMTOOLS_MARKDUP ( SAMTOOLS_SORT.out.bam, ch_fasta )
 

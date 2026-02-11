@@ -22,7 +22,7 @@ process SAMTOOLS_SAMPLES {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     // Wrapping fasta in a list in case there is exactly one (in that case it's a bare path)
-    def fasta_arg = fasta ? [fasta].flatten().collect { "-f $it" }.join(' ') : ''
+    def fasta_arg = fasta ? [fasta].flatten().collect { fasta_file -> "-f ${fasta_file}" }.join(' ') : ''
     def out_arg = "-o ${prefix}.tsv"
     def bai_arg = args.contains('-X') ? bai : ''
     """
