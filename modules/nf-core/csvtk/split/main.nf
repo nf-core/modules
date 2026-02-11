@@ -29,11 +29,12 @@ process CSVTK_SPLIT {
     sed -i.bak '/^##/d' $csv
     csvtk \\
         split \\
-        $args \\
-        --num-cpus $task.cpus \\
-        $delimiter \\
-        $out_delimiter \\
-        $csv
+        ${args} \\
+        --num-cpus ${task.cpus} \\
+        --out-prefix ${prefix} \\
+        ${delimiter} \\
+        ${out_delimiter} \\
+        ${csv}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
