@@ -228,10 +228,10 @@ nextflow_workflow {
                 { assert snapshot(
                     path(workflow.out.reads[0][1][0]).linesGzip.size(),
                     path(workflow.out.reads[0][1][1]).linesGzip.size(),
-                    workflow.out.pre_stats_fastqc_html[0][3].collect { f -> file(f).name },
-                    workflow.out.pre_stats_fastqc_zip[0][3].collect { f -> file(f).name },
-                    workflow.out.post_stats_fastqc_html[0][3].collect { f -> file(f).name },
-                    workflow.out.post_stats_fastqc_zip[0][3].collect { f -> file(f).name },
+                    workflow.out.pre_stats_fastqc_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                    workflow.out.pre_stats_fastqc_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                    workflow.out.post_stats_fastqc_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                    workflow.out.post_stats_fastqc_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
                     path(workflow.out.clumpify_log[0][1]).readLines().size(),
                     workflow.out.versions.collect { path(it).yaml }
                 ).match() }
