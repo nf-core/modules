@@ -24,8 +24,7 @@ input:
   # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
   - - meta:
         type: map
-        description: Groovy Map containing sample information. e.g. `[ id:'sample1'
-          ]`
+        description: Groovy Map containing sample information. e.g. `[ id:'sample1', single_end:false, strandness:'auto']`
     - genome_bam:
         type: file
         description: BAM file aligned to the genome
@@ -43,28 +42,15 @@ input:
       description: Read length in bases
 output:
   # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
-  q-value:
+  prep_rmats_file:
     - - meta:
           type: map
-          description: Groovy Map containing sample information. e.g. `[ id:'sample1'
-            ]`
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1'single_end:false, strandness:'auto']`
       - "*.{}":
           type: file
-          description: q-value file
-          pattern: "*.{}"
-          ontologies:
-            - edam: http://edamontology.org/data_3932 # Q-value
-  p-value:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample information. e.g. `[ id:'sample1'
-            ]`
-      - "*.{}":
-          type: file
-          description: p-value file
-          pattern: "*.{}"
-          ontologies:
-            - edam: http://edamontology.org/data_1669 # P-value
+          description: text file containing rmats processed splice junctions
+          pattern: "*.rmats"
+          ontologies: []
   versions:
     - versions.yml:
         type: file

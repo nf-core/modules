@@ -12,12 +12,15 @@ process RMATS_PREP {
     // TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
 
     tuple val(meta), path(genome_bam)
+    // TODO - post seems to need only the BAM *names*, not the actual files. Could we just get the first line of each file to get the names?
+    // for file in `ls multi_bam_rmats_prep_tmp/*.rmats`; do head -1 $file; done | tr '\n' ','
+    // TODO - for stats, it should be possible to parse the formula using patsy, but if we include PAIRADISE we might have R - just do this in R, first pass
     path reference_gtf
     val rmats_read_len
 
     output:
     // TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
-    tuple val(meta), path("${prefix}_prep*.rmats"), emit: prep_rmats_files
+    tuple val(meta), path("*.rmats"), emit: prep_rmats_file
     path "versions.yml", emit: versions
 
     when:
@@ -64,6 +67,8 @@ process RMATS_PREP {
         rmats: \$(echo \$(rmats.py --version) | sed -e "s/v//g")
     END_VERSIONS
     """
+
+    // NOTES for post - post requires the rmats files to be in the tmp directory, otherwise it fails
 
     stub:
     def args = task.ext.args ?: ''
