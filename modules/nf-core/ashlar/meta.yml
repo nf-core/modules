@@ -1,75 +1,75 @@
 name: "ashlar"
-description: Alignment by Simultaneous Harmonization of Layer/Adjacency 
+description: Alignment by Simultaneous Harmonization of Layer/Adjacency
   Registration
 keywords:
-- image_processing
-- alignment
-- registration
+  - image_processing
+  - alignment
+  - registration
 tools:
-- "ashlar":
-    description: "Alignment by Simultaneous Harmonization of Layer/Adjacency Registration"
-    homepage: "https://labsyspharm.github.io/ashlar/"
-    documentation: "https://labsyspharm.github.io/ashlar/"
-    doi: "10.1093/bioinformatics/btac544"
-    licence:
-    - "MIT"
-    identifier: biotools:ASHLAR
+  - "ashlar":
+      description: "Alignment by Simultaneous Harmonization of Layer/Adjacency Registration"
+      homepage: "https://labsyspharm.github.io/ashlar/"
+      documentation: "https://labsyspharm.github.io/ashlar/"
+      doi: "10.1093/bioinformatics/btac544"
+      licence:
+        - "MIT"
+      identifier: biotools:ASHLAR
 input:
-- - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - images:
-      type: file
-      description: Overlapping tile image data in formats from most commercial 
-        microscopes
-      pattern: "*.{ome.tiff,ome.tif,rcpnl,btf,nd2,tiff,tif,czi}"
-      ontologies: []
-- opt_dfp:
-    type: file
-    description: Optional dark field image data
-    ontologies: []
-- opt_ffp:
-    type: file
-    description: Optional flat field image data
-    ontologies: []
-output:
-  tif:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - '*.ome.tif':
+    - images:
         type: file
-        description: A pyramidal, tiled OME-TIFF file created from input images.
-        pattern: "*.ome.tif"
+        description: Overlapping tile image data in formats from most commercial
+          microscopes
+        pattern: "*.{ome.tiff,ome.tif,rcpnl,btf,nd2,tiff,tif,czi}"
         ontologies: []
+  - opt_dfp:
+      type: file
+      description: Optional dark field image data
+      ontologies: []
+  - opt_ffp:
+      type: file
+      description: Optional flat field image data
+      ontologies: []
+output:
+  tif:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.ome.tif":
+          type: file
+          description: A pyramidal, tiled OME-TIFF file created from input images.
+          pattern: "*.ome.tif"
+          ontologies: []
   versions_ashlar:
-  - - ${task.process}:
-        type: string
-        description: The name of the process
-    - ashlar:
-        type: string
-        description: The name of the tool
-    - ashlar --version | sed 's/^.*ashlar //':
-        type: eval
-        description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ashlar:
+          type: string
+          description: The name of the tool
+      - ashlar --version | sed 's/^.*ashlar //':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
-  - - ${task.process}:
-        type: string
-        description: The name of the process
-    - ashlar:
-        type: string
-        description: The name of the tool
-    - ashlar --version | sed 's/^.*ashlar //':
-        type: eval
-        description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ashlar:
+          type: string
+          description: The name of the tool
+      - ashlar --version | sed 's/^.*ashlar //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
-- "@RobJY"
-- "@jmuhlich"
+  - "@RobJY"
+  - "@jmuhlich"
 maintainers:
-- "@RobJY"
-- "@jmuhlich"
+  - "@RobJY"
+  - "@jmuhlich"
