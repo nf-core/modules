@@ -55,10 +55,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "0_final_channel_image.ome.tif":
+      - "*_transformed_image.ome.tif":
           type: file
           description: Registered final channel image in OME-TIFF format
-          pattern: "0_final_channel_image.ome.tif"
+          pattern: "*_transformed_image.ome.tif"
           ontologies:
             - edam: "http://edamontology.org/format_3727"
   reg_metrics_tform:
@@ -67,10 +67,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "registration_metrics_tform_map.json":
+      - "*_registration_metrics_tform_map.json":
           type: file
           description: Registration metrics and transformation map in JSON format
-          pattern: "registration_metrics_tform_map.json"
+          pattern: "*_registration_metrics_tform_map.json"
           ontologies:
             - edam: "http://edamontology.org/format_3464"
   tform_map:
@@ -79,10 +79,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "feature_based_transformation_map.npy":
+      - "*_feature_based_transformation_map.npy":
           type: file
           description: Feature-based transformation map in NPY format
-          pattern: "feature_based_transformation_map.npy"
+          pattern: "*_feature_based_transformation_map.npy"
           ontologies: []
   versions_stainwarpy_register:
     - - "${task.process}":
