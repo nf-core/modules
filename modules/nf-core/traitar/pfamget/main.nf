@@ -18,7 +18,6 @@ process TRAITAR_PFAMGET {
     """
     traitar pfam pfam_data
 
-    TRAITAR_VERSION=\$(traitar --version 2>&1 | tail -1)
     """
 
     stub:
