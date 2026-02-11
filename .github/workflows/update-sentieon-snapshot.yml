@@ -105,6 +105,10 @@ jobs:
           --tag sentieon \
           ${{ steps.get-test-path.outputs.test_path }}
 
+      - name: clean up
+        run: |
+          rm -rf setup-nextflow
+
       - name: Commit & push changes
         run: |
           git config user.email "core@nf-co.re"

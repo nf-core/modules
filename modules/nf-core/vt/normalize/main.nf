@@ -50,7 +50,6 @@ process VT_NORMALIZE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     if ("$vcf" == "${prefix}.vcf" || "$vcf" == "${prefix}.vcf.gz") {

@@ -20,7 +20,7 @@ process YTE {
     task.ext.when == null || task.ext.when
 
     script:
-    // No args because tool does not accept args, only stdin/stdout
+    def args  = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     // Use map_file if provided, otherwise use map to create key=value pairs for mapping command
@@ -28,7 +28,7 @@ process YTE {
     VERSION = "1.9.4"
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping
     """
-    yte ${mapping_cmd} < ${template} > ${prefix}.yaml
+    yte ${mapping_cmd} ${args} < ${template} > ${prefix}.yaml
     """
 
     stub:

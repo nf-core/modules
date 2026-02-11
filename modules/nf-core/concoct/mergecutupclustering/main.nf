@@ -36,7 +36,6 @@ process CONCOCT_MERGECUTUPCLUSTERING {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     if ("${clustering_csv}" == "${prefix}.csv") {
         error("Input and output names are the same, set prefix in module configuration to disambiguate!")

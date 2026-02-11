@@ -23,7 +23,7 @@ nextflow_process {
                 { assert process.success },
                 { assert file(process.out.db[0][1]).isDirectory() && file(process.out.db[0][1]).name.matches('test') },
                 { assert file(process.out.db[0][1]).listFiles().find{it.getName().contains('mito')} },
-                { assert snapshot(process.out.versions).match("versions_compressed") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match() }
             )
         }
 
@@ -46,7 +46,7 @@ nextflow_process {
                 { assert process.success },
                 { assert file(process.out.db[0][1]).isDirectory() && file(process.out.db[0][1]).name.matches('test') },
                 { assert file(process.out.db[0][1]).listFiles().find{it.getName() == 'mito.ndb'}!= null },
-                { assert snapshot(process.out.versions).match("versions_decompressed") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match() }
             )
         }
 
@@ -69,7 +69,7 @@ nextflow_process {
                 { assert process.success },
                 { assert file(process.out.db[0][1]).isDirectory() && file(process.out.db[0][1]).name.matches('test') },
                 { assert file(process.out.db[0][1]).listFiles().find{it.getName() == 'mito.ndb'}!= null },
-                { assert snapshot(process.out.versions).match("versions_stub") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match() }
             )
         }
 
