@@ -24,7 +24,7 @@ process WIPERTOOLS_FASTQGATHER {
 
     // Check if the output file name is in the list of input files
     if (fastq.any { file -> file.name == "${prefix}.fastq.gz" }) {
-        error 'Output file name "${prefix}.fastq.gz}" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
+        error 'Output file name "${prefix}.fastq.gz" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
     }
 
     """
@@ -45,7 +45,7 @@ process WIPERTOOLS_FASTQGATHER {
 
     // Check if the output file name is in the list of input files
     if (fastq.any { file -> file.name == "${prefix}.fastq.gz" }) {
-        error 'Output file name "${prefix}.fastq.gz}" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
+        error 'Output file name "${prefix}.fastq.gz" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
     }
     """
     echo "" | gzip > ${prefix}.fastq.gz
