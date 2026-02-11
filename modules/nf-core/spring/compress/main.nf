@@ -12,7 +12,7 @@ process SPRING_COMPRESS {
 
     output:
     tuple val(meta), path("*.spring"), emit: spring
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('spring'), val("$VERSION"), topic: versions, emit: versions_spring
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,7 +20,7 @@ process SPRING_COMPRESS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    VERSION = '1.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def input = meta.single_end ? "-i ${fastq1}" : "-i ${fastq1} ${fastq2}"
 
     """
@@ -31,23 +31,13 @@ process SPRING_COMPRESS {
         $args \\
         ${input} \\
         -o ${prefix}.spring
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        spring: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    VERSION = '1.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.spring
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        spring: ${VERSION}
-    END_VERSIONS
     """
 
 }
