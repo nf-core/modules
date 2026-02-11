@@ -1,0 +1,86 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "maaslin2"
+description: Performs Maaslin2 analysis on microbiome data
+keywords:
+  - microbiome
+  - differential abundance
+  - association
+tools:
+  - "maaslin2":
+      description: "MaAsLin2 is a comprehensive R package for efficiently determining multivariable association
+        between clinical metadata and microbial meta'omic features"
+      homepage: "https://huttenhower.sph.harvard.edu/maaslin/"
+      documentation: "https://github.com/biobakery/Maaslin2"
+      tool_dev_url: "https://github.com/biobakery/Maaslin2"
+      doi: "10.1371/journal.pcbi.1009442"
+      identifier: "biotools:MaAsLin2"
+input:
+  # Only when we have meta
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - input_data:
+        type: file
+        description: Input data file (tab-separated)
+        pattern: "*.txt"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+          - edam: "http://edamontology.org/data_2603" # Microbiome data
+    - input_metadata:
+        type: file
+        description: Input metadata file (tab-separated)
+        pattern: "*.txt"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+          - edam: "http://edamontology.org/data_2048" # Metadata
+    - input_path:
+        type: file
+        description: Input pathway file (tab-separated)
+        pattern: "*.txt"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+          - edam: "http://edamontology.org/data_2600" # Pathway or network data
+    - output_dir:
+        type: string
+        description: Output directory name
+    - fixed_effects:
+        type: string
+        description: Fixed effects for the Maaslin2 model
+    - reference:
+        type: string
+        description: Reference levels for categorical variables
+    - min_prevalence:
+        type: float
+        description: Minimum prevalence for features
+    - min_abundance:
+        type: float
+        description: Minimum abundance for features
+    - normalization:
+        type: string
+        description: Normalization method
+output:
+  - results:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${output_dir}":
+          type: directory
+          description: Directory containing Maaslin2 output files
+          pattern: "${output_dir}"
+          ontologies:
+            - edam: "http://edamontology.org/data_2603" # Microbiome data
+            - edam: "http://edamontology.org/operation_3501" # Differential abundance analysis
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@muneebdev7"
+maintainers:
+  - "@muneebdev7"
