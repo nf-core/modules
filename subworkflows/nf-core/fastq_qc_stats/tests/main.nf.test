@@ -95,10 +95,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    file(workflow.out.fastqc_html[0][3][0]).name,
-                    file(workflow.out.fastqc_zip[0][3][0]).name,
-                    file(workflow.out.fastqc_html[0][3][1]).name,
-                    file(workflow.out.fastqc_zip[0][3][1]).name,
+                    workflow.out.fastqc_html[0][3].collect { f -> file(f).name },
+                    workflow.out.fastqc_zip[0][3].collect { f -> file(f).name },
                     workflow.out.seqfu_check,
                     workflow.out.seqfu_stats,
                     workflow.out.seqfu_multiqc,
