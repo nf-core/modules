@@ -24,10 +24,11 @@ nextflow_workflow {
                     [id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true)
                 ]
-                input[1] = [
+                input[1] = channel.of([
                     [id:'fasta'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
-                ]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true),
+                    []
+                ])
                 """
             }
         }
@@ -46,10 +47,11 @@ nextflow_workflow {
                     [id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true)
                 ]
-                input[1] = [
+                input[1] = channel.of([
                     [id:'fasta'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
-                ]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true),
+                    []
+                ])
                 """
             }
         }
