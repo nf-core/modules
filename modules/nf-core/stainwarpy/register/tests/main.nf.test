@@ -73,12 +73,15 @@ nextflow_process {
         }
 
         then {
-            { assert snapshot(
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
                     process.out.reg_image,
                     process.out.reg_metrics_tform,
                     process.out.tform_map,
                     process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
+                    ).match() }
+            )
         }
 
     }
