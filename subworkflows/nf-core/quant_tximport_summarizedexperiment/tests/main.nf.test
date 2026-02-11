@@ -159,7 +159,7 @@ nextflow_workflow {
                 ]
                 input[1] = UNTAR.out.untar.flatMap { meta, dir ->
                     def entries = []
-                    dir.eachFileRecurse { f ->
+                    dir.toFile().eachFileRecurse { f ->
                         if (f.name.endsWith('.isoforms.results')) {
                             entries << [[ id: f.parentFile.name ], f.toPath()]
                         }
