@@ -1,5 +1,5 @@
 {
-    "with_file": {
+    "with_file - gzipped input": {
         "content": [
             {
                 "0": [
@@ -8,7 +8,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.fa.gz:md5,69bd44ef67566a76d6cbb8aa4a25ae35"
+                        "test.fa.gz:md5,f315020d899597c1b57e5fe9f60f4c3e"
                     ]
                 ],
                 "1": [
@@ -24,7 +24,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.fa.gz:md5,69bd44ef67566a76d6cbb8aa4a25ae35"
+                        "test.fa.gz:md5,f315020d899597c1b57e5fe9f60f4c3e"
                     ]
                 ],
                 "versions_seqkit": [
@@ -40,7 +40,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.3"
         },
-        "timestamp": "2026-02-09T12:31:26.96082"
+        "timestamp": "2026-02-09T15:05:38.467625"
     },
     "with_pattern": {
         "content": [
@@ -51,7 +51,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.fa.gz:md5,69bd44ef67566a76d6cbb8aa4a25ae35"
+                        "test.fa:md5,f315020d899597c1b57e5fe9f60f4c3e"
                     ]
                 ],
                 "1": [
@@ -67,7 +67,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.fa.gz:md5,69bd44ef67566a76d6cbb8aa4a25ae35"
+                        "test.fa:md5,f315020d899597c1b57e5fe9f60f4c3e"
                     ]
                 ],
                 "versions_seqkit": [
@@ -83,7 +83,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.3"
         },
-        "timestamp": "2026-02-09T12:31:39.637208"
+        "timestamp": "2026-02-09T15:07:44.861562"
     },
     "with_file - stub": {
         "content": [
@@ -126,6 +126,49 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.3"
         },
-        "timestamp": "2026-02-09T12:31:52.093388"
+        "timestamp": "2026-02-09T14:44:22.034952"
+    },
+    "with_file - ungzipped input": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.fa:md5,f315020d899597c1b57e5fe9f60f4c3e"
+                    ]
+                ],
+                "1": [
+                    [
+                        "SEQKIT_GREP",
+                        "seqkit",
+                        "2.9.0"
+                    ]
+                ],
+                "filter": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.fa:md5,f315020d899597c1b57e5fe9f60f4c3e"
+                    ]
+                ],
+                "versions_seqkit": [
+                    [
+                        "SEQKIT_GREP",
+                        "seqkit",
+                        "2.9.0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-09T15:05:42.517832"
     }
 }
