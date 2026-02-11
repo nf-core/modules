@@ -11,7 +11,7 @@ process BUSCO_GENERATEPLOT {
 
     output:
     path '*.png'        , emit: png
-    path "versions.yml" , emit: versions
+    tuple val("${task.process}"), val('busco'), eval("busco --version 2> /dev/null | sed 's/BUSCO //g'"), emit: versions_busco, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,21 +25,11 @@ process BUSCO_GENERATEPLOT {
         -wd busco
 
     mv ./busco/busco_figure.png ${prefix}.png
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        busco: \$( busco --version 2> /dev/null | sed 's/BUSCO //g' )
-    END_VERSIONS
     """
 
     stub:
     def prefix  = task.ext.prefix   ?: 'busco_figure'
     """
     touch ${prefix}.png
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        busco: \$( busco --version 2> /dev/null | sed 's/BUSCO //g' )
-    END_VERSIONS
     """
 }
