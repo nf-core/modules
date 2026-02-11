@@ -1,28 +1,4 @@
 {
-    "cram_bwa_version": {
-        "content": [
-            [
-                "versions.yml:md5,0ffcce416e40bcc98da2243f1d7e348a"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.0"
-        },
-        "timestamp": "2024-03-22T10:33:01.300519"
-    },
-    "cram_version": {
-        "content": [
-            [
-                "versions.yml:md5,0ffcce416e40bcc98da2243f1d7e348a"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.0"
-        },
-        "timestamp": "2024-03-22T10:27:12.52902"
-    },
     "sarscov2 - bam - stub": {
         "content": [
             {
@@ -43,7 +19,11 @@
                     ]
                 ],
                 "2": [
-                    "versions.yml:md5,0ffcce416e40bcc98da2243f1d7e348a"
+                    [
+                        "TIDDIT_SV",
+                        "tiddit",
+                        "3.9.4"
+                    ]
                 ],
                 "ploidy": [
                     [
@@ -61,39 +41,247 @@
                         "test.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,0ffcce416e40bcc98da2243f1d7e348a"
+                "versions_tiddit": [
+                    [
+                        "TIDDIT_SV",
+                        "tiddit",
+                        "3.9.4"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-03-22T10:21:51.950503"
+        "timestamp": "2026-02-11T10:35:42.452341"
     },
-    "bam_bwa_version": {
+    "sarscov2 - bam - bwa": {
         "content": [
-            [
-                "versions.yml:md5,0ffcce416e40bcc98da2243f1d7e348a"
-            ]
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf:md5,a1a096c7c2ba1b0287ebca93b0d24689"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.ploidies.tab:md5,c69e73fe090b260d379205935c64b63c"
+                    ]
+                ],
+                "2": [
+                    [
+                        "TIDDIT_SV",
+                        "tiddit",
+                        "3.9.4"
+                    ]
+                ],
+                "ploidy": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.ploidies.tab:md5,c69e73fe090b260d379205935c64b63c"
+                    ]
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf:md5,a1a096c7c2ba1b0287ebca93b0d24689"
+                    ]
+                ],
+                "versions_tiddit": [
+                    [
+                        "TIDDIT_SV",
+                        "tiddit",
+                        "3.9.4"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-03-22T10:31:40.918479"
+        "timestamp": "2026-02-11T10:42:04.834663"
     },
-    "bam_version": {
+    "human - cram - bwa": {
         "content": [
-            [
-                "versions.yml:md5,0ffcce416e40bcc98da2243f1d7e348a"
-            ]
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf:md5,829b1f7c4ddc3698a3678a6b4e0528c0"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.ploidies.tab:md5,13c4762ede32d319e8582cf7d6d77b71"
+                    ]
+                ],
+                "2": [
+                    [
+                        "TIDDIT_SV",
+                        "tiddit",
+                        "3.9.4"
+                    ]
+                ],
+                "ploidy": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.ploidies.tab:md5,13c4762ede32d319e8582cf7d6d77b71"
+                    ]
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf:md5,829b1f7c4ddc3698a3678a6b4e0528c0"
+                    ]
+                ],
+                "versions_tiddit": [
+                    [
+                        "TIDDIT_SV",
+                        "tiddit",
+                        "3.9.4"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-03-22T10:21:38.449053"
+        "timestamp": "2026-02-11T10:42:22.15446"
+    },
+    "sarscov2 - bam - no_bwa": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf:md5,7af39b47c17250541c4a75f4c06d0d0b"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.ploidies.tab:md5,c69e73fe090b260d379205935c64b63c"
+                    ]
+                ],
+                "2": [
+                    [
+                        "TIDDIT_SV",
+                        "tiddit",
+                        "3.9.4"
+                    ]
+                ],
+                "ploidy": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.ploidies.tab:md5,c69e73fe090b260d379205935c64b63c"
+                    ]
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf:md5,7af39b47c17250541c4a75f4c06d0d0b"
+                    ]
+                ],
+                "versions_tiddit": [
+                    [
+                        "TIDDIT_SV",
+                        "tiddit",
+                        "3.9.4"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-11T10:42:12.394551"
+    },
+    "human - cram - no_bwa": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf:md5,2da56c62a7c129db2a042945cc9cabd6"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.ploidies.tab:md5,13c4762ede32d319e8582cf7d6d77b71"
+                    ]
+                ],
+                "2": [
+                    [
+                        "TIDDIT_SV",
+                        "tiddit",
+                        "3.9.4"
+                    ]
+                ],
+                "ploidy": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.ploidies.tab:md5,13c4762ede32d319e8582cf7d6d77b71"
+                    ]
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf:md5,2da56c62a7c129db2a042945cc9cabd6"
+                    ]
+                ],
+                "versions_tiddit": [
+                    [
+                        "TIDDIT_SV",
+                        "tiddit",
+                        "3.9.4"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-11T10:42:30.172877"
     }
 }
