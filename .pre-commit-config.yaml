@@ -1,23 +1,4 @@
 repos:
-  - repo: local
-    hooks:
-      - id: conda-env-sorter
-        name: Sort dependencies in conda environment files.
-        entry: ./.github/scripts/conda_env_sorter.py
-        language: python
-        files: environment
-        types: [yaml]
-        additional_dependencies: ["ruamel.yaml"]
-      - id: nextflow-lint
-        name: Lint Nextflow scripts and fix formatting
-        entry: nextflow lint
-        language: system
-        files: '\.nf$|nextflow\.config$'
-        # FIXME Removed -format https://github.com/nextflow-io/nextflow/issues/6365
-        args: ["-sort-declarations", "-spaces", "4", "-harshil-alignment", "-output", "concise"]
-        pass_filenames: true
-        # FIXME Throws `ERROR ~ Unexpected error [ConcurrentModificationException]`
-        require_serial: true
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: "v3.1.0"
     hooks:
@@ -79,3 +60,11 @@ repos:
     hooks:
       - id: hadolint-docker
         args: ["--failure-threshold", "error"]
+
+  - repo: https://github.com/seqeralabs/nf-lint-pre-commit
+    rev: v0.2.0
+    hooks:
+      - id: nextflow-lint
+        files: '\.nf$|nextflow\.config$'
+        # TODO add formating at a later stage
+        # args: ["-format", "-sort-declarations", "-spaces", "4", "-harshil-alignment", "-output", "concise"]
