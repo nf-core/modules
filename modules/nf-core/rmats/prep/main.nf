@@ -21,6 +21,7 @@ process RMATS_PREP {
     output:
     // TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
     tuple val(meta), path("*.rmats"), emit: prep_rmats_file
+    tuple val(meta), path("*.txt"), emit: prep_read_outcomes_file
     path "versions.yml", emit: versions
 
     when:
@@ -47,19 +48,19 @@ process RMATS_PREP {
     """
     echo ${genome_bam} > ${prefix}.prep.b1.txt
 
-    rmats \\
+    rmats.py \\
         --task prep \\
         ${args} \\
         --nthread ${task.cpus} \\
-        -- b1 ${prefix}.prep.b1.txt \\
+        --b1 ${prefix}.prep.b1.txt \\
         --gtf ${reference_gtf} \\
         --readLength ${rmats_read_len} \\
         --tmp ${prefix}_rmats_tmp \\
         --od ${prefix}_rmats_prep
 
-    for file in `ls ${prefix}_rmats_tmp/*.rmats`
+    for file in `ls ${prefix}_rmats_tmp/*`
     do
-    cp ${prefix}_rmats_tmp/\${file} ${prefix}_prep_\${file}
+    cp \${file} ${prefix}_prep_\$(basename \${file})
     done
 
     cat <<-END_VERSIONS > versions.yml
@@ -84,6 +85,7 @@ process RMATS_PREP {
     echo ${args}
 
     touch ${prefix}.rmats
+    touch ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

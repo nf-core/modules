@@ -51,6 +51,15 @@ output:
           description: text file containing rmats processed splice junctions
           pattern: "*.rmats"
           ontologies: []
+  prep_read_outcomes_file:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1'single_end:false, strandness:'auto']`
+      - "*.{}":
+          type: file
+          description: text file containing the numbers of reads for each outcome (USED, NOT_PAIRED, etc.)
+          pattern: "*.txt"
+          ontologies: []
   versions:
     - versions.yml:
         type: file
