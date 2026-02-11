@@ -165,6 +165,7 @@ jobs:
           SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
           SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
           SENTIEON_AUTH_MECH: "GitHub Actions - token"
+          MIXCR_TESTING_LICENSE: ${{ secrets.MIXCR_TESTING_LICENSE }}
         with:
           profile: ${{ matrix.profile }}${{ runner.arch == 'ARM64' && ',arm64,wave' || '' }}
           shard: ${{ matrix.shard }}
