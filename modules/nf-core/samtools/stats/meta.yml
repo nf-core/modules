@@ -40,8 +40,8 @@ input:
           e.g. [ id:'genome' ]
     - fasta:
         type: file
-        description: Reference genome file
-        pattern: "*.{fa,fasta}"
+        description: Reference file the CRAM was created with (optional)
+        pattern: "*.{fasta,fa}"
         ontologies: []
 output:
   stats:
