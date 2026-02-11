@@ -23,7 +23,8 @@ process YARA_INDEX {
     """
     yara_indexer \\
         $fasta \\
-        -o ${fasta}
+        -o ${fasta} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -32,7 +33,6 @@ process YARA_INDEX {
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
     """
     touch ${fasta}.lf.{drp,drs,drv,pst}
     touch ${fasta}.rid.{concat,limits}
