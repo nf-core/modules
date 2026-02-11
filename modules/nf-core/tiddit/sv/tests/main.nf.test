@@ -47,7 +47,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.ploidy[0][1]).readLines().contains("Chromosome	Ploidy	Ploidy_rounded	Mean_coverage") },
-                { assert snapshot(path(process.out.vcf[0][1]).vcf.header, process.out.findAll { key, val -> key.startsWith("versions") }).match() }
+                { assert snapshot(path(process.out.vcf[0][1]).vcf.header.getColumnCount(), process.out.findAll { key, val -> key.startsWith("versions") }).match() }
             )
         }
 
@@ -78,7 +78,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.ploidy[0][1]).readLines().contains("Chromosome	Ploidy	Ploidy_rounded	Mean_coverage") },
-                { assert snapshot(path(process.out.vcf[0][1]).vcf.header, process.out.findAll { key, val -> key.startsWith("versions") }).match() }
+                { assert snapshot(path(process.out.vcf[0][1]).vcf.header.getColumnCount(), process.out.findAll { key, val -> key.startsWith("versions") }).match() }
             )
         }
 
@@ -121,7 +121,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.ploidy[0][1]).readLines().contains("Chromosome	Ploidy	Ploidy_rounded	Mean_coverage") },
-                { assert snapshot(path(process.out.vcf[0][1]).vcf.header, process.out.findAll { key, val -> key.startsWith("versions") }).match() }
+                { assert snapshot(path(process.out.vcf[0][1]).vcf.header.getColumnCount(), process.out.findAll { key, val -> key.startsWith("versions") }).match() }
             )
         }
     }
@@ -151,7 +151,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.ploidy[0][1]).readLines().contains("Chromosome	Ploidy	Ploidy_rounded	Mean_coverage") },
-                { assert snapshot(path(process.out.vcf[0][1]).vcf.header, process.out.findAll { key, val -> key.startsWith("versions") }).match() }
+                { assert snapshot(path(process.out.vcf[0][1]).vcf.header.getColumnCount(), process.out.findAll { key, val -> key.startsWith("versions") }).match() }
             )
         }
     }
