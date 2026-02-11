@@ -43,7 +43,6 @@ process STAINWARPY_REGISTER {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     touch ${prefix}_transformed_image.ome.tif
     touch ${prefix}_registration_metrics_tform_map.json
