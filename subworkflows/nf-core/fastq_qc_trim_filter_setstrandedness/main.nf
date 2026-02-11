@@ -189,8 +189,8 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         // Capture individual outputs for workflow outputs
         ch_fastqc_raw_html = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.fastqc_html
         ch_fastqc_raw_zip = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.fastqc_zip
-        ch_trim_html = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_html
-        ch_trim_zip = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_zip
+        ch_fastqc_trim_html = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_html
+        ch_fastqc_trim_zip = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_zip
         ch_trim_log = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_log
         ch_trim_unpaired = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_unpaired
         ch_umi_log = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.umi_log
