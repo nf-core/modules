@@ -7,7 +7,7 @@ workflow BAM_SUBSAMPLEDEPTH_SAMTOOLS {
     take:
     ch_bam_bai    // channel: [ val(meta), path(bam), path(bai) ]
     ch_depth      // channel: [ val(meta), val(depth)]
-    ch_fasta      // channel: [ val(meta), path(fasta) ]
+    ch_fasta      // channel: [ val(meta), path(fasta), path(fai) ]
 
     main:
 
@@ -27,8 +27,8 @@ workflow BAM_SUBSAMPLEDEPTH_SAMTOOLS {
     ch_input_subsample = ch_bam_bai
         .join(ch_mean_depth)
         .combine(ch_depth)
-        .map{ meta, bam, index, mean, depth ->
-            [ meta + ['subsample_fraction': depth as Float / mean, 'depth': depth ], bam, index ]
+        .map{ meta, bam, index, mean, metaD, depth ->
+            [ meta + metaD + ['subsample_fraction': depth as Float / mean, 'depth': depth ], bam, index ]
         }
 
     // Downsample

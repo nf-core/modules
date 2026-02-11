@@ -12,7 +12,7 @@ process XZ_DECOMPRESS {
 
     output:
     tuple val(meta), path("$decompressed_file"), emit: file
-    path "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val('xz'), eval('xz --version | sed \'1!d;s/\\([^0-9.]*\\)//g\''), topic: versions, emit: versions_xz
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,21 +27,13 @@ process XZ_DECOMPRESS {
     # Note 2: using several threads in xz --decompress will only work on files that contain multiple blocks with size
     # information in block headers.  All files compressed in multi-threaded mode meet this condition.
     xz -T ${task.cpus} --decompress --stdout ${args} ${archive} > ${decompressed_file}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        xz: \$(xz --version | head -n1 | awk '{print \$NF}')
-    END_VERSIONS
     """
 
     stub:
+    def args = task.ext.args ?: ''
     decompressed_file = archive.toString().replaceAll(".xz\$", "")
     """
+    echo "${args}"
     touch "${decompressed_file}"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        xz: \$(xz --version | head -n1 | awk '{print \$NF}')
-    END_VERSIONS
     """
 }
