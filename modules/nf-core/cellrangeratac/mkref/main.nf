@@ -41,7 +41,6 @@ process CELLRANGERATAC_MKREF {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "CELLRANGERATAC_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
     """
     mkdir -p "${reference_name}/"
     mkdir -p "${reference_name}/fasta/"
