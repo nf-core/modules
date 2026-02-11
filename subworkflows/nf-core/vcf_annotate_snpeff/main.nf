@@ -12,8 +12,6 @@ workflow VCF_ANNOTATE_SNPEFF {
     ch_snpeff_cache // channel: [ path(cache) ] (optional)
 
     main:
-    ch_versions = channel.empty()
-
     SNPEFF_SNPEFF(ch_vcf, val_snpeff_db, ch_snpeff_cache)
     TABIX_BGZIPTABIX(SNPEFF_SNPEFF.out.vcf)
 
@@ -23,5 +21,4 @@ workflow VCF_ANNOTATE_SNPEFF {
     reports   = SNPEFF_SNPEFF.out.report // channel: [ path(html) ]
     summary   = SNPEFF_SNPEFF.out.summary_html // channel: [ path(html) ]
     genes_txt = SNPEFF_SNPEFF.out.genes_txt // channel: [ path(genes.txt) ]
-    versions  = ch_versions // channel: [ path(versions.yml) ]
 }
