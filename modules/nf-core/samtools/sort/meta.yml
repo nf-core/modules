@@ -34,9 +34,13 @@ input:
           e.g. [ id:'genome' ]
     - fasta:
         type: file
-        description: Reference genome FASTA file
-        pattern: "*.{fa,fasta,fna}"
-        optional: true
+        description: Reference genome file
+        pattern: "*.{fa,fasta}"
+        ontologies: []
+    - fai:
+        type: file
+        description: Reference genome index file
+        pattern: "*.fai"
         ontologies: []
   - index_format:
       type: string

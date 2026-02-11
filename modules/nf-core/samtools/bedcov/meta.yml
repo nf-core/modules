@@ -53,21 +53,14 @@ input:
   - - meta3:
         type: map
         description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'genome']`
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
     - fasta:
         type: file
         description: Reference genome file
         pattern: "*.{fa,fasta}"
-        ontologies:
-          - edam: "http://edamontology.org/data_2044" # Sequence
-          - edam: "http://edamontology.org/format_1929" # FASTA
-  - - meta4:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'genome_index']`
-    - fasta_index:
+        ontologies: []
+    - fai:
         type: file
         description: Reference genome index file
         pattern: "*.fai"

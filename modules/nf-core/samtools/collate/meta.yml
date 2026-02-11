@@ -29,12 +29,17 @@ input:
   - - meta2:
         type: map
         description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
     - fasta:
         type: file
-        description: FASTA ref file
-        pattern: "*.fasta"
+        description: Reference genome file
+        pattern: "*.{fa,fasta}"
+        ontologies: []
+    - fai:
+        type: file
+        description: Reference genome index file
+        pattern: "*.fai"
         ontologies: []
 output:
   #Only when we have meta
