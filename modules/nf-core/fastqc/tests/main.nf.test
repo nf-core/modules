@@ -57,8 +57,8 @@ nextflow_process {
                 { assert path(process.out.html[0][3][0]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
                 { assert path(process.out.html[0][3][1]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
                 { assert snapshot(
-                    process.out.html[0][3].collect { f -> file(f).name }
-                    process.out.zip[0][3].collect { f -> file(f).name }
+                    process.out.html[0][3].collect { f -> file(f).name },
+                    process.out.zip[0][3].collect { f -> file(f).name },
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
@@ -141,14 +141,8 @@ nextflow_process {
                 { assert path(process.out.html[0][3][2]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
                 { assert path(process.out.html[0][3][3]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
                 { assert snapshot(
-                    file(process.out.html[0][3][0]).name,
-                    file(process.out.html[0][3][1]).name,
-                    file(process.out.html[0][3][2]).name,
-                    file(process.out.html[0][3][3]).name,
-                    file(process.out.zip[0][3][0]).name,
-                    file(process.out.zip[0][3][1]).name,
-                    file(process.out.zip[0][3][2]).name,
-                    file(process.out.zip[0][3][3]).name,
+                    process.out.html[0][3].collect { f -> file(f).name },
+                    process.out.zip[0][3].collect { f -> file(f).name },
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
