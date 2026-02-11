@@ -12,7 +12,7 @@ process BLAST_UPDATEBLASTDB {
 
     output:
     tuple val(meta), path(prefix), emit: db
-    path "versions.yml"          , emit: versions
+    tuple val("${task.process}"), val("updateblastdb"), eval("update_blastdb.pl -version 2>&1 | tail -n1 | rev | cut -f1 -d ' ' | rev"), topic: versions, emit: versions_updateblastdb
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,10 +29,6 @@ process BLAST_UPDATEBLASTDB {
 
     cd ..
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        updateblastdb: \$(update_blastdb.pl -version 2>&1 | tail -n1 | rev | cut -f1 -d ' ' | rev )
-    END_VERSIONS
     """
 
     stub:
@@ -41,9 +37,5 @@ process BLAST_UPDATEBLASTDB {
     mkdir ${prefix}
     touch ${prefix}/${name}.ndb
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        updateblastdb: \$(update_blastdb.pl -version 2>&1 | tail -n1 | rev | cut -f1 -d ' ' | rev )
-    END_VERSIONS
     """
 }
