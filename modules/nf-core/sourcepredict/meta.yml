@@ -25,7 +25,7 @@ input:
         description: Sink TAXID count table in csv format
         pattern: "*.csv"
         ontologies:
-          - edam: http://edamontology.org/format_3752
+          - edam: http://edamontology.org/format_3752 # CSV
   - sources:
       type: file
       description: Sources TAXID count table in csv format. Default can be
@@ -33,7 +33,7 @@ input:
         https://raw.githubusercontent.com/maxibor/sourcepredict/master/data/modern_gut_microbiomes_sources.csv
       pattern: "*.csv"
       ontologies:
-        - edam: http://edamontology.org/format_3752
+        - edam: http://edamontology.org/format_3752 # CSV
   - labels:
       type: file
       description: Labels for the sources table in csv format. Default can be
@@ -41,7 +41,7 @@ input:
         https://raw.githubusercontent.com/maxibor/sourcepredict/master/data/modern_gut_microbiomes_labels.csv
       pattern: "*.csv"
       ontologies:
-        - edam: http://edamontology.org/format_3752
+        - edam: http://edamontology.org/format_3752 # CSV
   - taxa_sqlite:
       type: file
       description: taxa.sqlite file downloaded with ete3 toolkit
@@ -65,7 +65,7 @@ output:
             each sample
           pattern: "*.sourcepredict.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752
+            - edam: http://edamontology.org/format_3752 # CSV
   versions_sourcepredict:
     - - ${task.process}:
           type: string
