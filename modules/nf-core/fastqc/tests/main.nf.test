@@ -22,15 +22,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll (
-                { assert process.success },
                 // NOTE The report contains the date inside it, which means that the md5sum is stable per day, but not longer than that. So you can't md5sum it.
                 // looks like this: <div id="header_filename">Mon 2 Oct 2023<br/>test.gz</div>
                 // https://github.com/nf-core/modules/pull/3903#issuecomment-1743620039
                 { assert path(process.out.html[0][3]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
                 { assert snapshot(
-                    file(process.out.html[0][3]).name,
-                    file(process.out.zip[0][3]).name,
+                    process.out.html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                    process.out.zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
@@ -52,13 +52,13 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll (
-                { assert process.success },
                 { assert path(process.out.html[0][3][0]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
                 { assert path(process.out.html[0][3][1]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
                 { assert snapshot(
-                    process.out.html[0][3].collect { f -> file(f).name },
-                    process.out.zip[0][3].collect { f -> file(f).name },
+                    process.out.html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                    process.out.zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
@@ -79,12 +79,12 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll (
-                { assert process.success },
                 { assert path(process.out.html[0][3]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
                 { assert snapshot(
-                    file(process.out.html[0][3]).name,
-                    file(process.out.zip[0][3]).name,
+                    process.out.html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                    process.out.zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
@@ -105,12 +105,12 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll (
-                { assert process.success },
                 { assert path(process.out.html[0][3]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
                 { assert snapshot(
-                    file(process.out.html[0][3]).name,
-                    file(process.out.zip[0][3]).name,
+                    process.out.html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                    process.out.zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
@@ -134,15 +134,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll (
-                { assert process.success },
                 { assert path(process.out.html[0][3][0]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
                 { assert path(process.out.html[0][3][1]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
                 { assert path(process.out.html[0][3][2]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
                 { assert path(process.out.html[0][3][3]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
                 { assert snapshot(
-                    process.out.html[0][3].collect { f -> file(f).name },
-                    process.out.zip[0][3].collect { f -> file(f).name },
+                    process.out.html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                    process.out.zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
@@ -163,12 +163,12 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll (
-                { assert process.success },
                 { assert path(process.out.html[0][3]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
                 { assert snapshot(
-                    file(process.out.html[0][3]).name,
-                    file(process.out.zip[0][3]).name,
+                    process.out.html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                    process.out.zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
@@ -190,9 +190,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll (
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -213,9 +213,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll (
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -235,9 +235,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll (
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -257,9 +257,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll (
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -282,9 +282,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll (
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -304,9 +304,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll (
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

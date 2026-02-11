@@ -1,10 +1,10 @@
 //
 // Read QC, UMI extraction and trimming
 //
-include { FASTQC as FASTQC_RAW  } from '../../../modules/nf-core/fastqc/main'
-include { FASTQC as FASTQC_TRIM } from '../../../modules/nf-core/fastqc/main'
-include { UMITOOLS_EXTRACT      } from '../../../modules/nf-core/umitools/extract/main'
-include { FASTP                 } from '../../../modules/nf-core/fastp/main'
+include { FASTP                 } from '../../../modules/nf-core/fastp'
+include { FASTQC as FASTQC_RAW  } from '../../../modules/nf-core/fastqc'
+include { FASTQC as FASTQC_TRIM } from '../../../modules/nf-core/fastqc'
+include { UMITOOLS_EXTRACT      } from '../../../modules/nf-core/umitools/extract'
 
 //
 // Function that parses fastp json output file to get total number of reads after trimming
@@ -37,14 +37,14 @@ def getFastpAdapterSequence(json_file) {
 
 workflow FASTQ_FASTQC_UMITOOLS_FASTP {
     take:
-    reads             // channel: [ val(meta), [ reads ], adapter_fasta ]
-    skip_fastqc       // boolean: true/false
-    with_umi          // boolean: true/false
-    skip_umi_extract  // boolean: true/false
-    umi_discard_read  // integer: 0, 1 or 2
-    skip_trimming     // boolean: true/false
+    reads // channel: [ val(meta), [ reads ], adapter_fasta ]
+    skip_fastqc // boolean: true/false
+    with_umi // boolean: true/false
+    skip_umi_extract // boolean: true/false
+    umi_discard_read // integer: 0, 1 or 2
+    skip_trimming // boolean: true/false
     save_trimmed_fail // boolean: true/false
-    save_merged       // boolean: true/false
+    save_merged // boolean: true/false
     min_trimmed_reads // integer: > 0
 
     main:
@@ -62,12 +62,11 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
     adapter_seq = channel.empty()
 
     // Split input channel for reads-only operations
-    reads_only = reads.map { meta, reads_files, _adapter_fasta -> [ meta, reads_files ] }
+    reads_only = reads.map { meta, reads_files, _adapter_fasta -> [meta, reads_files] }
 
     if (!skip_fastqc) {
-        FASTQC_RAW(
-            reads_only
-        )
+        FASTQC_RAW(reads_only)
+
         fastqc_raw_html = FASTQC_RAW.out.html
         fastqc_raw_zip = FASTQC_RAW.out.zip
     }
@@ -107,7 +106,7 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
             umi_reads_with_adapters,
             false,
             save_trimmed_fail,
-            save_merged
+            save_merged,
         )
         trim_json = FASTP.out.json
         trim_html = FASTP.out.html
@@ -134,9 +133,8 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
             .set { adapter_seq }
 
         if (!skip_fastqc) {
-            FASTQC_TRIM(
-                trim_reads
-            )
+            FASTQC_TRIM(trim_reads)
+
             fastqc_trim_html = FASTQC_TRIM.out.html
             fastqc_trim_zip = FASTQC_TRIM.out.zip
         }
@@ -144,17 +142,17 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
 
     emit:
     reads             = trim_reads // channel: [ val(meta), [ reads ] ]
-    fastqc_raw_html   // channel: [ val(meta), [ html ] ]
-    fastqc_raw_zip    // channel: [ val(meta), [ zip ] ]
-    umi_log           // channel: [ val(meta), [ log ] ]
-    umi_reads         // channel: [ val(meta), [ reads ] ]
-    adapter_seq       // channel: [ val(meta), [ adapter_seq] ]
-    trim_json         // channel: [ val(meta), [ json ] ]
-    trim_html         // channel: [ val(meta), [ html ] ]
-    trim_log          // channel: [ val(meta), [ log ] ]
-    trim_reads_fail   // channel: [ val(meta), [ fastq.gz ] ]
+    fastqc_raw_html // channel: [ val(meta), process, tool, [ html ] ]
+    fastqc_raw_zip // channel: [ val(meta), process, tool, [ zip ] ]
+    umi_log // channel: [ val(meta), [ log ] ]
+    umi_reads // channel: [ val(meta), [ reads ] ]
+    adapter_seq // channel: [ val(meta), [ adapter_seq] ]
+    trim_json // channel: [ val(meta), [ json ] ]
+    trim_html // channel: [ val(meta), [ html ] ]
+    trim_log // channel: [ val(meta), [ log ] ]
+    trim_reads_fail // channel: [ val(meta), [ fastq.gz ] ]
     trim_reads_merged // channel: [ val(meta), [ fastq.gz ] ]
-    trim_read_count   // channel: [ val(meta), val(count) ]
-    fastqc_trim_html  // channel: [ val(meta), [ html ] ]
-    fastqc_trim_zip   // channel: [ val(meta), [ zip ] ]
+    trim_read_count // channel: [ val(meta), val(count) ]
+    fastqc_trim_html // channel: [ val(meta), process, tool, [ html ] ]
+    fastqc_trim_zip // channel: [ val(meta), process, tool, [ zip ] ]
 }

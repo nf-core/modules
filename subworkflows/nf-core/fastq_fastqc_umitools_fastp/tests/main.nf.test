@@ -53,14 +53,14 @@ nextflow_workflow {
         then {
             assert workflow.success
             assertAll(
-                { assert workflow.out.fastqc_raw_html },
-                { assert workflow.out.fastqc_raw_zip },
-                { assert workflow.out.fastqc_trim_html },
-                { assert workflow.out.fastqc_trim_zip },
                 { assert workflow.out.trim_html },
                 { assert workflow.out.trim_log },
                 { assert snapshot(
                         workflow.out.adapter_seq,
+                        workflow.out.fastqc_raw_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                        workflow.out.fastqc_raw_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                        workflow.out.fastqc_trim_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                        workflow.out.fastqc_trim_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
                         workflow.out.reads,
                         workflow.out.trim_read_count,
                         workflow.out.trim_reads_fail,
@@ -169,12 +169,12 @@ nextflow_workflow {
         then {
             assert workflow.success
             assertAll(
-                { assert workflow.out.fastqc_raw_html },
-                { assert workflow.out.fastqc_raw_zip },
                 { assert workflow.out.trim_html },
                 { assert workflow.out.trim_log },
                 { assert snapshot(
                         workflow.out.adapter_seq,
+                        workflow.out.fastqc_raw_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                        workflow.out.fastqc_raw_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
                         workflow.out.reads,
                         workflow.out.trim_read_count,
                         workflow.out.trim_reads_fail,
@@ -225,14 +225,14 @@ nextflow_workflow {
         then {
             assert workflow.success
             assertAll(
-                { assert workflow.out.fastqc_raw_html },
-                { assert workflow.out.fastqc_raw_zip },
-                { assert workflow.out.fastqc_trim_html },
-                { assert workflow.out.fastqc_trim_zip },
                 { assert workflow.out.trim_html },
                 { assert workflow.out.trim_log },
                 { assert snapshot(
                         workflow.out.adapter_seq,
+                        workflow.out.fastqc_raw_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                        workflow.out.fastqc_raw_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                        workflow.out.fastqc_trim_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                        workflow.out.fastqc_trim_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
                         workflow.out.reads,
                         workflow.out.trim_read_count,
                         workflow.out.trim_reads_fail,
@@ -283,14 +283,14 @@ nextflow_workflow {
         then {
             assert workflow.success
             assertAll(
-                { assert workflow.out.fastqc_raw_html },
-                { assert workflow.out.fastqc_raw_zip },
-                { assert workflow.out.fastqc_trim_html },
-                { assert workflow.out.fastqc_trim_zip },
                 { assert workflow.out.trim_html },
                 { assert workflow.out.trim_log },
                 { assert snapshot(
                         workflow.out.adapter_seq,
+                        workflow.out.fastqc_raw_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                        workflow.out.fastqc_raw_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                        workflow.out.fastqc_trim_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                        workflow.out.fastqc_trim_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
                         workflow.out.reads,
                         workflow.out.trim_read_count,
                         workflow.out.trim_reads_fail,
@@ -341,8 +341,6 @@ nextflow_workflow {
         then {
             assert workflow.success
             assertAll(
-                { assert workflow.out.fastqc_raw_html },
-                { assert workflow.out.fastqc_raw_zip },
                 { assert !workflow.out.fastqc_trim_html },
                 { assert !workflow.out.fastqc_trim_zip },
                 { assert !workflow.out.trim_html },
@@ -350,7 +348,9 @@ nextflow_workflow {
                 { assert snapshot(
                         // If we skip trimming then input is output, so not snapshotting
                         workflow.out.adapter_seq,
-                        workflow.out.reads.get(0).get(0), // Reads meta map
+                        workflow.out.fastqc_raw_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                        workflow.out.fastqc_raw_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                        workflow.out.reads[0][0], // Reads meta map
                         workflow.out.trim_read_count,
                         workflow.out.trim_reads_fail,
                         workflow.out.trim_reads_merged,
@@ -400,14 +400,14 @@ nextflow_workflow {
         then {
             assert workflow.success
             assertAll(
-                { assert workflow.out.fastqc_raw_html },
-                { assert workflow.out.fastqc_raw_zip },
-                { assert workflow.out.fastqc_trim_html },
-                { assert workflow.out.fastqc_trim_zip },
                 { assert workflow.out.trim_html },
                 { assert workflow.out.trim_log },
                 { assert snapshot(
                         workflow.out.adapter_seq,
+                        workflow.out.fastqc_raw_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                        workflow.out.fastqc_raw_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                        workflow.out.fastqc_trim_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                        workflow.out.fastqc_trim_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
                         workflow.out.reads,
                         workflow.out.trim_read_count,
                         workflow.out.trim_reads_fail,
@@ -458,14 +458,14 @@ nextflow_workflow {
         then {
             assert workflow.success
             assertAll(
-                { assert workflow.out.fastqc_raw_html },
-                { assert workflow.out.fastqc_raw_zip },
-                { assert workflow.out.fastqc_trim_html },
-                { assert workflow.out.fastqc_trim_zip },
                 { assert workflow.out.trim_html },
                 { assert workflow.out.trim_log },
                 { assert snapshot(
                         workflow.out.adapter_seq,
+                        workflow.out.fastqc_raw_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                        workflow.out.fastqc_raw_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                        workflow.out.fastqc_trim_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                        workflow.out.fastqc_trim_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
                         workflow.out.reads,
                         workflow.out.trim_read_count,
                         workflow.out.trim_reads_fail,
@@ -517,14 +517,14 @@ nextflow_workflow {
         then {
             assert workflow.success
             assertAll(
-                { assert workflow.out.fastqc_raw_html },
-                { assert workflow.out.fastqc_raw_zip },
-                { assert workflow.out.fastqc_trim_html },
-                { assert workflow.out.fastqc_trim_zip },
                 { assert workflow.out.trim_html },
                 { assert workflow.out.trim_log },
                 { assert snapshot(
                         workflow.out.adapter_seq,
+                        workflow.out.fastqc_raw_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                        workflow.out.fastqc_raw_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                        workflow.out.fastqc_trim_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                        workflow.out.fastqc_trim_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
                         workflow.out.reads,
                         workflow.out.trim_read_count,
                         workflow.out.trim_reads_fail,
@@ -576,7 +576,7 @@ nextflow_workflow {
         then {
             assert workflow.success
             assertAll(
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }
@@ -621,7 +621,7 @@ nextflow_workflow {
         then {
             assert workflow.success
             assertAll(
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }
@@ -664,9 +664,9 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }
@@ -712,7 +712,7 @@ nextflow_workflow {
         then {
             assert workflow.success
             assertAll(
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }
@@ -757,7 +757,7 @@ nextflow_workflow {
         then {
             assert workflow.success
             assertAll(
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }
@@ -800,8 +800,8 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
                 { assert snapshot(
                     workflow.out.adapter_seq,
                     workflow.out.fastqc_raw_html,
@@ -859,7 +859,7 @@ nextflow_workflow {
         then {
             assert workflow.success
             assertAll(
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }
@@ -902,9 +902,9 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }
@@ -950,7 +950,7 @@ nextflow_workflow {
         then {
             assert workflow.success
             assertAll(
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }
