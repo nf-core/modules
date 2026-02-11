@@ -12,7 +12,7 @@ process BLAST_UPDATEBLASTDB {
 
     output:
     tuple val(meta), path(prefix), emit: db
-    tuple val("${task.process}"), val("update_blastdb.pl"), eval("update_blastdb.pl -version 2>&1 | tail -n1 | rev | cut -f1 -d ' ' | rev"), topic: versions, emit: versions_update_blastdb_pl
+    tuple val("${task.process}"), val("updateblastdb"), eval("update_blastdb.pl -version 2>&1 | tail -n1 | rev | cut -f1 -d ' ' | rev"), topic: versions, emit: versions_updateblastdb
 
     when:
     task.ext.when == null || task.ext.when
