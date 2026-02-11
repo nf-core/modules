@@ -78,10 +78,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "transformed_segmentation_mask.ome.tif":
+      - "*_transformed_segmentation_mask.ome.tif":
           type: file
           description: Transformed segmentation mask in OME-TIFF format
-          pattern: "transformed_segmentation_mask.ome.tif"
+          pattern: "*_transformed_segmentation_mask.ome.tif"
           ontologies:
             - edam: "http://edamontology.org/format_3727"
   versions_stainwarpy_transformsegmask:
