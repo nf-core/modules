@@ -67,21 +67,21 @@ workflow QUANTIFY_PSEUDO_ALIGNMENT {
     ch_versions = ch_versions.mix(QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.versions)
 
     emit:
-    results                       = ch_pseudo_results                                                       // channel: [ val(meta), results_dir ]
-    multiqc                       = ch_pseudo_multiqc                                                       // channel: [ val(meta), files_for_multiqc ]
-    tx2gene                       = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.tx2gene                         // channel: [ val(meta), tx2gene.tsv ]
+    results                       = ch_pseudo_results                                              // channel: [ val(meta), results_dir ]
+    multiqc                       = ch_pseudo_multiqc                                              // channel: [ val(meta), files_for_multiqc ]
+    tx2gene                       = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.tx2gene                // channel: [ val(meta), tx2gene.tsv ]
 
-    tpm_gene                      = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.tpm_gene                        //    path: *gene_tpm.tsv
-    counts_gene                   = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.counts_gene                     //    path: *gene_counts.tsv
-    lengths_gene                  = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.lengths_gene                    //    path: *gene_lengths.tsv
-    counts_gene_length_scaled     = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.counts_gene_length_scaled       //    path: *gene_counts_length_scaled.tsv
-    counts_gene_scaled            = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.counts_gene_scaled              //    path: *gene_counts_scaled.tsv
-    tpm_transcript                = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.tpm_transcript                  //    path: *transcript_tpm.tsv
-    counts_transcript             = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.counts_transcript               //    path: *transcript_counts.tsv
-    lengths_transcript            = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.lengths_transcript              //    path: *transcript_lengths.tsv
+    tpm_gene                      = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.tpm_gene               //    path: *gene_tpm.tsv
+    counts_gene                   = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.counts_gene            //    path: *gene_counts.tsv
+    lengths_gene                  = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.lengths_gene           //    path: *gene_lengths.tsv
+    counts_gene_length_scaled     = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.counts_gene_length_scaled //    path: *gene_counts_length_scaled.tsv
+    counts_gene_scaled            = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.counts_gene_scaled     //    path: *gene_counts_scaled.tsv
+    tpm_transcript                = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.tpm_transcript         //    path: *transcript_tpm.tsv
+    counts_transcript             = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.counts_transcript      //    path: *transcript_counts.tsv
+    lengths_transcript            = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.lengths_transcript     //    path: *transcript_lengths.tsv
 
-    merged_gene_rds_unified       = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.merged_gene_rds                 //    path: *.rds
-    merged_transcript_rds_unified = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.merged_transcript_rds           //    path: *.rds
+    merged_gene_rds_unified       = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.merged_gene_rds       //    path: *.rds
+    merged_transcript_rds_unified = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.merged_transcript_rds //    path: *.rds
 
-    versions                      = ch_versions                                                             // channel: [ versions.yml ]
+    versions                      = ch_versions                                                    // channel: [ versions.yml ]
 }
