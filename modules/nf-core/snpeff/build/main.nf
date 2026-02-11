@@ -12,7 +12,6 @@ process SNPEFF_BUILD {
     // TODO: optionally use , arity: '0..*' or typed inputs? See https://github.com/nextflow-io/nextflow/issues/5111 & https://github.com/nextflow-io/nextflow/issues/1694
     // TODO: optionally use stageAs to change name immediately without relying on the bash script to do it
     val annotation_format           // 'gff', 'gtf' or empty (falls back to detection in filename)
-    tuple val(meta_bed), path(bed)  // BED file for mitochondrial/apicoplast detection
     path snpeff_config_template     // TODO: instead of requiring users to supply this file, it could also be read from the snpEff install directory
     val db_name
 
