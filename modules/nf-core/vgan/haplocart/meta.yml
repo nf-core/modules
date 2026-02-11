@@ -1,0 +1,88 @@
+name: "vgan_haplocart"
+description: Human mtDNA haplogroup classification
+keywords:
+  - vgan
+  - haplotyping
+  - haplocart
+  - mtdna
+  - mitochondria
+  - pangenome
+  - haplogroup
+  - variation graph
+tools:
+  - vgan:
+      description: "Suite of tools for pangenomics built using vg"
+      homepage: "https://github.com/grenaud/vgan"
+      documentation: "https://github.com/grenaud/vgan"
+      tool_dev_url: "https://github.com/grenaud/vgan"
+      licence: ["GPL v3"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - reads:
+        type: file
+        description: Input file containing sequencing reads
+        pattern: "*.{fq,fq.gz,fastq,fastq.gz}"
+
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - is_interleaved: 
+      type: boolean
+      description: Whether the input FASTQ file is interleaved
+
+output:
+  txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.output.txt":
+          type: file
+          description: HaploCart output file with predicted mtDNA haplogroup
+          pattern: "*.output.txt"
+          ontologies: []
+  posterior:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.posterior.txt":
+          type: file
+          description: HaploCart posterior output file
+          pattern: "*.posterior.txt"
+          ontologies: []
+
+  versions_vgan:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "vgan":
+          type: string
+          description: The name of the tool
+      - "vgan version 2>&1 | sed 's/vgan version //;s/ (Mela)//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "vgan":
+          type: string
+          description: The name of the tool
+      - "vgan version 2>&1 | sed 's/vgan version //;s/ (Mela)//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@JoshuaDanielRubin"
+maintainers:
+  - "@JoshuaDanielRubin"
