@@ -30,7 +30,6 @@ process MSISENSOR2_MSI {
         -M ${models} \\
         -t ${tumor_bam} \\
         -o ${prefix}
-
     """
 
     stub:
