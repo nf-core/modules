@@ -18,7 +18,6 @@ process HMMER_HMMRANK {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
@@ -56,7 +55,6 @@ process HMMER_HMMRANK {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo \"profile\taccno\tprofile_desc\tevalue\tscore\trank\" | gzip -c > ${prefix}.hmmrank.tsv.gz
