@@ -46,7 +46,7 @@ process HICAP {
     """
 
     stub:
-    def fasta_name = fasta.getName().replace(".gz", "")
+    def fasta_name = fasta.getName().split('\\.')[0] // Get the base name without extension
     """
     touch ${fasta_name}.gbk
     touch ${fasta_name}.svg
