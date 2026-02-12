@@ -61,8 +61,13 @@ process "FASTANI"
                 def ql_file = new File(workDir.toString(), 'query.list')
                 def rl_file = new File(workDir.toString(), 'reference.list')
 
-                ql_file.text = q_stage.getAbsolutePath() + System.lineSeparator()
-                rl_file.text = r_stage.getAbsolutePath() + System.lineSeparator()
+                ql_file.text =
+                    q_stage.getAbsolutePath() + System.lineSeparator() +
+                    r_stage.getAbsolutePath() + System.lineSeparator()
+
+                rl_file.text =
+                    q_stage.getAbsolutePath() + System.lineSeparator() +
+                    r_stage.getAbsolutePath() + System.lineSeparator()
 
                 input[0] = [ [], [] ]
                 input[1] = [ [], [] ]
