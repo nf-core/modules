@@ -28,8 +28,8 @@ process GOLEFT_INDEXCOV {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     // indexcov uses BAM files or CRAI
-    def input_files = bams.findAll { it.name.endsWith(".bam") } + indexes.findAll { it.name.endsWith(".crai") }
-    def extranormalize = input_files.any { it.name.endsWith(".crai") } ? " --extranormalize " : ""
+    def input_files = bams.findAll {bam_file -> bam_file.name.endsWith(".bam") } + indexes.findAll {index_file -> index_file.name.endsWith(".crai") }
+    def extranormalize = input_files.any {input_file -> input_file.name.endsWith(".crai") } ? " --extranormalize " : ""
     """
     goleft indexcov \\
         --fai ${fai}  \\

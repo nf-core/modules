@@ -21,7 +21,6 @@ process GUNC_RUN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     ls input_files/* > input_files.txt
     gunc \\

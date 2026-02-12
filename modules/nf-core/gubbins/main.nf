@@ -41,7 +41,7 @@ process GUBBINS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+
     """
     mkdir numba_cache_dir
     export NUMBA_CACHE_DIR='./numba_cache_dir'

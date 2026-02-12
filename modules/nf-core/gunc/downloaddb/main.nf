@@ -29,7 +29,7 @@ process GUNC_DOWNLOADDB {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+
     """
     touch ${db_name}.dmnd
 

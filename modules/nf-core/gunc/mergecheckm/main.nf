@@ -23,10 +23,10 @@ process GUNC_MERGECHECKM {
     """
     gunc \\
         merge_checkm \\
-        $args \\
-        -g $gunc_file \\
-        -c $checkm_file \\
-        -o .
+        ${args} \\
+        -g ${gunc_file} \\
+        -c ${checkm_file} \\
+        -o ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
