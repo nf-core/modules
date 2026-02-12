@@ -57,8 +57,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 // not asserting optional outputs [bedgraph, control_cpn, gcprofile_cpn]
                 { assert snapshot(
                     // match file names
@@ -109,8 +109,8 @@ nextflow_process {
     //     }
 
     //     then {
+    //         assert process.success
     //         assertAll(
-    //             { assert process.success },
     //             { assert snapshot(sanitizeOutput(process.out)).match() }
     //         )
     //     }
@@ -152,8 +152,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }

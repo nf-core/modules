@@ -68,8 +68,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     path(process.out.bed[0][1]).readLines()[0],
                     process.out.findAll { key, val -> key.startsWith("versions")}
@@ -125,8 +125,8 @@ nextflow_process {
 //         }
 
 //         then {
+//             assert process.success
 //             assertAll(
-//                 { assert process.success },
 //                 { assert snapshot(process.out).match() }
 //             )
 //         }
@@ -149,8 +149,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
