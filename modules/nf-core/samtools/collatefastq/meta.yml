@@ -31,11 +31,16 @@ input:
         type: map
         description: |
           Groovy Map containing reference information
-          e.g. [ id:'test' ]
+          e.g. [ id:'genome' ]
     - fasta:
         type: file
-        description: Reference genome fasta file
-        pattern: "*.{fasta,fa}"
+        description: Reference genome file
+        pattern: "*.{fa,fasta}"
+        ontologies: []
+    - fai:
+        type: file
+        description: Reference genome index file
+        pattern: "*.fai"
         ontologies: []
   - interleave:
       type: boolean

@@ -10,8 +10,7 @@ process SAMTOOLS_BEDCOV {
     input:
     tuple val(meta), path(input), path(input_index)
     tuple val(meta2), path(bed)
-    tuple val(meta3), path(fasta)
-    tuple val(meta4), path(fasta_index)
+    tuple val(meta3), path(fasta), path(fasta_index)
 
     output:
     tuple val(meta), path("*.tsv"), emit: coverage

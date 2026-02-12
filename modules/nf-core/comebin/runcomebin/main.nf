@@ -56,7 +56,6 @@ process COMEBIN_RUNCOMEBIN {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}/comebin_res_bins
