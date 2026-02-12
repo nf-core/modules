@@ -24,30 +24,32 @@ input:
           e.g. `[ id:'test' ]`
     - test:
         type: file
-        description: A VCF-formatted file of structural variants to test (required)
+        description: A VCF-formatted file of structural variants to test
+          (required)
         pattern: "*.{vcf,vcf.gz}"
         ontologies: []
     - test_tbi:
         type: file
-        description: A VCF-formatted file index of structural variants to test only
-          for zipped files
+        description: A VCF-formatted file index of structural variants to test
+          only for zipped files
         pattern: "*.{vcf.gz.tbi}"
         ontologies: []
     - truth:
         type: file
-        description: A VCF-formatted file of variants to compare against (required)
+        description: A VCF-formatted file of variants to compare against
+          (required)
         pattern: "*.{vcf,vcf.gz}"
         ontologies: []
     - truth_tbi:
         type: file
-        description: A VCF-formatted file of variants to compare against only for zipped
-          files
+        description: A VCF-formatted file of variants to compare against only for
+          zipped files
         pattern: "*.{vcf.gz.tbi}"
         ontologies: []
     - bed:
         type: file
-        description: BED File of regions from which to include variants. Used to filter
-          both test and truth variants.
+        description: BED File of regions from which to include variants. Used to
+          filter both test and truth variants.
         pattern: "*.{bed}"
         ontologies: []
   - - meta2:
@@ -57,7 +59,8 @@ input:
           e.g. `[ id:'test2' ]`
     - fasta:
         type: file
-        description: The reference FASTA file for the supplied VCF file or files (required)
+        description: The reference FASTA file for the supplied VCF file or files
+          (required)
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
         ontologies: []
   - - meta3:
@@ -101,8 +104,8 @@ output:
             e.g. `[ id:'test']`
       - "*.distances":
           type: file
-          description: TSV file with genomic distances and size differences between
-            structural variants compared
+          description: TSV file with genomic distances and size differences
+            between structural variants compared
           pattern: "*.{distances}"
           ontologies: []
   log:
@@ -136,17 +139,21 @@ output:
           description: The tool name
       - "0.36":
           type: string
-          description: Tool version used for the run. Version information not provided by tool on CLI. Please update this string when bumping container versions.
+          description: Tool version used for the run. Version information not
+            provided by tool on CLI. Please update this string when bumping
+            container versions.
 topics:
   versions:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
-      - circularmapper:
+      - svanalyzer:
           type: string
-          description: The tool name
+          description: The tool name  
       - "0.36":
           type: string
-          description: Tool version used for the run. Version information not provided by tool on CLI. Please update this string when bumping container versions.
+          description: Tool version used for the run. Version information not
+            provided by tool on CLI. Please update this string when bumping
+            container versions.
 authors:
   - "@kubranarci"
