@@ -21,7 +21,6 @@ process FREYJA_UPDATE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     """
     mkdir -p $db_name
     freyja \\

@@ -19,7 +19,6 @@ process FOLDCOMP_DECOMPRESS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     foldcomp \\
         $args \\
@@ -34,7 +33,6 @@ process FOLDCOMP_DECOMPRESS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.pdb
