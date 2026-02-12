@@ -35,19 +35,16 @@ nextflow_workflow {
                 input[1] = channel.of([
                     [id: "1000GP", chr: "chr22"],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.hap.gz", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.legend.gz", checkIfExist:true)
-                ])
-                input[2] = channel.of([
-                    [id: "1000GP", chr: "chr22"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.legend.gz", checkIfExist:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.posfile", checkIfExist:true)
-                ]) // posfile
-                input[3] = channel.of(
+                ])
+                input[2] = channel.of(
                     [[chr: "chr22", id: "1000GP"], "chr22", [], []]
                 ) // chunks
-                input[4] = channel.of([ [id: "1000GP", chr: "chr22"], [] ]) // map
-                input[5] = channel.of([ [id: "GRCh38"], [], [] ]).collect() // fasta
-                input[6] = 100 // ngen
-                input[7] = [] // buffer
+                input[3] = channel.of([ [id: "1000GP", chr: "chr22"], [] ]) // map
+                input[4] = channel.of([ [id: "GRCh38"], [], [] ]).collect() // fasta
+                input[5] = 100 // ngen
+                input[6] = [] // buffer
                 """
             }
         }
@@ -97,35 +94,30 @@ nextflow_workflow {
                 [
                     [id: "1000GP", chr: "chr22"],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.hap.gz", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.legend.gz", checkIfExist:true)
-                ],[
-                    [id: "1000GP", chr: "chr21"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.hap.gz", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.legend.gz", checkIfExist:true)
-                ])
-                input[2] = channel.of([
-                    [id: "1000GP", chr: "chr22"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.legend.gz", checkIfExist:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.posfile", checkIfExist:true)
                 ],[
                     [id: "1000GP", chr: "chr21"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.hap.gz", checkIfExist:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.legend.gz", checkIfExist:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.posfile", checkIfExist:true)
-                ]) // posfile
-                input[3] = channel.of(
+                ])
+                input[2] = channel.of(
                     [[chr: "chr22", id: "1000GP"], "chr22", 16570065, 16592216],
                     [[chr: "chr22", id: "1000GP"], "chr22", 16592229, 16609999],
                     [[chr: "chr21", id: "1000GP"], "chr21", 16570065, 16592216],
                     [[chr: "chr21", id: "1000GP"], "chr21", 16592229, 16609999]
                 ) // chunks
-                input[4] = channel.of([
+                input[3] = channel.of([
                     [id: "1000GP", chr: "chr22"],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.stitch.map", checkIfExist:true)
                 ],[
                     [id: "1000GP", chr: "chr21"],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.stitch.map", checkIfExist:true)
                 ]) // map
-                input[5] = channel.of([ [id: "GRCh38"], [], [] ]).collect()
-                input[6] = 100
-                input[7] = 10000
+                input[4] = channel.of([ [id: "GRCh38"], [], [] ]).collect()
+                input[5] = 100
+                input[6] = 10000
                 """
             }
         }
@@ -161,26 +153,22 @@ nextflow_workflow {
                 ])
                 input[0] = ch_samples.combine(bampath).combine(bamname) // input
                 input[1] = channel.of(
-                    [[id: "1000GP", chr: "chr22"], [], []],
-                    [[id: "1000GP", chr: "chr21"], [], []]
-                ) // hap legend
+                    [[id: "1000GP", chr: "chr22"], [], [], []],
+                    [[id: "1000GP", chr: "chr21"], [], [], []]
+                ) // hap legend posfile
                 input[2] = channel.of(
-                    [[id: "1000GP", chr: "chr22"], []],
-                    [[id: "1000GP", chr: "chr21"], []]
-                ) // posfile
-                input[3] = channel.of(
                     [[chr: "chr22", id: "1000GP"], "chr22", 16570065, 16592216],
                     [[chr: "chr22", id: "1000GP"], "chr22", 16592229, 16609999],
                     [[chr: "chr21", id: "1000GP"], "chr21", 16570065, 16592216],
                     [[chr: "chr21", id: "1000GP"], "chr21", 16592229, 16609999]
                 ) // chunks
-                input[4] = channel.of(
+                input[3] = channel.of(
                     [[id: "1000GP", chr: "chr22"], []],
                     [[id: "1000GP", chr: "chr21"], []]
                 ) // map
-                input[5] = channel.of([ [id: "GRCh38"], [], [] ]).collect()
-                input[6] = 100
-                input[7] = 10000
+                input[4] = channel.of([ [id: "GRCh38"], [], [] ]).collect()
+                input[5] = 100
+                input[6] = 10000
                 """
             }
         }
@@ -207,26 +195,22 @@ nextflow_workflow {
                 ])
                 input[0] = ch_samples.combine(bampath).combine(bamname) // input
                 input[1] = channel.of(
-                    [[id: "1000GP", chr: "chr22"], [], []],
-                    [[id: "1000GP", chr: "chr21"], [], []]
+                    [[id: "otherpanel", chr: "chr22"], [], [], []], // Wrong panel given
+                    [[id: "1000GP", chr: "chr21"], [], [], []]
                 ) // hap legend
                 input[2] = channel.of(
-                    [[id: "otherpanel", chr: "chr22"], []], // Wrong panel given
-                    [[id: "1000GP", chr: "chr21"], []]
-                ) // posfile
-                input[3] = channel.of(
                     [[chr: "chr22", id: "1000GP"], "chr22", 16570065, 16592216],
                     [[chr: "chr22", id: "1000GP"], "chr22", 16592229, 16609999],
                     [[chr: "chr21", id: "1000GP"], "chr21", 16570065, 16592216],
                     [[chr: "chr21", id: "1000GP"], "chr21", 16592229, 16609999]
                 ) // chunks
-                input[4] = channel.of(
+                input[3] = channel.of(
                     [[id: "1000GP", chr: "chr22"], []],
                     [[id: "otherpanel", chr: "chr21"], []]  // Wrong panel given
                 ) // map
-                input[5] = channel.of([ [id: "GRCh38"], [], [] ]).collect()
-                input[6] = 100
-                input[7] = 10000
+                input[4] = channel.of([ [id: "GRCh38"], [], [] ]).collect()
+                input[5] = 100
+                input[6] = 10000
                 """
             }
         }
