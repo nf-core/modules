@@ -25,8 +25,8 @@ process CHEWBBACA_CREATESCHEMA {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def schema = "--n ${prefix}"
-    def prodigal_tf = prodigal_tf ? "--ptf ${prodigal_tf}" : ""
-    def cds = cds ? "--cds ${cds}" : ""
+    def prodigal_tf_opt = prodigal_tf ? "--ptf ${prodigal_tf}" : ""
+    def cds_opt = cds ? "--cds ${cds}" : ""
 
     """
     find ./input_genomes/ -name "*.gz" | sed 's/.gz//' | xargs -I {} bash -c 'gzip -cdf {}.gz > {}'
@@ -37,8 +37,8 @@ process CHEWBBACA_CREATESCHEMA {
         -o results \\
         $schema \\
         $args \\
-        $prodigal_tf \\
-        $cds \\
+        $prodigal_tf_opt \\
+        $cds_opt \\
         --cpu $task.cpus
 
     cat <<-END_VERSIONS > versions.yml
@@ -48,16 +48,14 @@ process CHEWBBACA_CREATESCHEMA {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def schema = "--n ${prefix}"
 
     """
-    mkdir -p results/$meta.id/short/
-    touch results/$meta.id/contigs-protein{1..*}.fasta
-    touch results/$meta.id/.genes_list
-    touch results/$meta.id/.schema_config
-    touch results/$meta.id/short/contigs-protein{1..*}_short.fasta
+    mkdir -p results/${prefix}/short/
+    touch results/${prefix}/contigs-protein{1..*}.fasta
+    touch results/${prefix}/.genes_list
+    touch results/${prefix}/.schema_config
+    touch results/${prefix}/short/contigs-protein{1..*}_short.fasta
     touch results/cds_coordinates.tsv
     touch results/invalid_cds.txt
 

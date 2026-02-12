@@ -72,7 +72,7 @@ output:
           type: map
           description: |
             Map with sample information
-      - "*.vcf.gz":
+      - ${prefix}.vcf.gz:
           type: file
           description: |
             annotated vcf (optional)
@@ -84,7 +84,7 @@ output:
           type: map
           description: |
             Map with sample information
-      - "*.vcf.gz.tbi":
+      - ${prefix}.vcf.gz.tbi:
           type: file
           description: |
             annotated vcf index (optional)
@@ -95,7 +95,7 @@ output:
           type: map
           description: |
             Map with sample information
-      - "*.tab.gz":
+      - ${prefix}.tab.gz:
           type: file
           description: |
             tab file with annotated variants (optional)
@@ -107,7 +107,7 @@ output:
           type: map
           description: |
             Map with sample information
-      - "*.json.gz":
+      - ${prefix}.json.gz:
           type: file
           description: |
             json file with annotated variants (optional)
@@ -157,7 +157,7 @@ output:
       - perl-math-cdf:
           type: string
           description: The tool name
-      - perl -MMath::CDF -e 'print \$Math::CDF::VERSION':
+      - perl -MMath::CDF -e 'print \\$Math::CDF::VERSION':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -202,7 +202,7 @@ topics:
       - perl-math-cdf:
           type: string
           description: The tool name
-      - perl -MMath::CDF -e 'print \$Math::CDF::VERSION':
+      - perl -MMath::CDF -e 'print \\$Math::CDF::VERSION':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

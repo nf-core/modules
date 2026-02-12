@@ -1,0 +1,94 @@
+nextflow_process {
+
+    name "Test Process SNPSIFT_ANNMEM"
+    script "../main.nf"
+    process "SNPSIFT_ANNMEM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "snpsift"
+    tag "snpsift/annmem"
+    tag "snpsift/annmemcreate"
+
+    setup {
+        run("SNPSIFT_ANNMEMCREATE") {
+            script "../../annmemcreate/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'db' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
+                    ['DP', 'VDB']
+                ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - vcf - annotate mode") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true)
+                ]
+                input[1] = SNPSIFT_ANNMEMCREATE.out.database.map { meta, vardb ->
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
+                        vardb,
+                        [],
+                        []
+                    ]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - vcf - annotate mode - stub") {
+
+        options "-stub"
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true)
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
+                    [],
+                    [],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

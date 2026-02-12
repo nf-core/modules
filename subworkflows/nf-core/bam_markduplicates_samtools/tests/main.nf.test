@@ -24,21 +24,17 @@ nextflow_workflow {
                     [id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true)
                 ]
-                input[1] = [
+                input[1] = channel.of([
                     [id:'fasta'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
-                ]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true),
+                    []
+                ])
                 """
             }
         }
         then {
-            assertAll(
-                { assert workflow.success },
-                { assert snapshot(
-                    bam(workflow.out.bam[0][1]).getReadsMD5(),
-                    workflow.out.versions
-                ).match() }
-            )
+            assert workflow.success
+            assert snapshot(bam(workflow.out.bam[0][1]).getReadsMD5()).match()
         }
     }
 
@@ -51,21 +47,17 @@ nextflow_workflow {
                     [id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true)
                 ]
-                input[1] = [
+                input[1] = channel.of([
                     [id:'fasta'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
-                ]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true),
+                    []
+                ])
                 """
             }
         }
         then {
-            assertAll(
-                { assert workflow.success },
-                { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect { path(it).yaml }
-                ).match() }
-            )
+            assert workflow.success
+            assert snapshot(sanitizeOutput(workflow.out)).match()
         }
     }
 }

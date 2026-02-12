@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1-labs
 FROM mcr.microsoft.com/dotnet/sdk:9.0@sha256:7d24e90a392e88eb56093e4eb325ff883ad609382a55d42f17fd557b997022ca as builder
 
 ADD https://github.com/Illumina/witty.er.git#v0.5.2 /src

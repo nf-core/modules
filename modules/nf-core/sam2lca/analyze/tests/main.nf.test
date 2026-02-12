@@ -34,6 +34,7 @@ nextflow_process {
                     file(process.out.csv[0][1]).name,
                     process.out.json,
                     process.out.bam,
+                    //path(process.out.versions[0]).yaml,
                     process.out.versions
                     ).match()
                 }

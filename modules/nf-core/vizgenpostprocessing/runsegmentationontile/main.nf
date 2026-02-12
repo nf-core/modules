@@ -35,7 +35,6 @@ process VIZGENPOSTPROCESSING_RUNSEGMENTATIONONTILE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}/result_tiles
