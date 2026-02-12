@@ -52,8 +52,8 @@ output:
       - deacon:
           type: string
           description: The name of the tool
-      - deacon --version | head -n1 | sed "s/deacon //g:
-          type: string
+      - deacon --version | head -n1 | sed "s/deacon //g":
+          type: eval
           description: The expression to obtain the version of the tool
 
 topics:
@@ -61,13 +61,12 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-    - deacon:
-        type: string
-        description: The name of the tool
-    - deacon --version | head -n1 | sed "s/deacon //g:
-        type: string
-        description: The expression to obtain the version of the tool
-
+      - deacon:
+          type: string
+          description: The name of the tool
+      - deacon --version | head -n1 | sed "s/deacon //g":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mberacochea"
 maintainers:
