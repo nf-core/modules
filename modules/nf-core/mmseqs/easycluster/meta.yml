@@ -27,7 +27,7 @@ input:
         type: file
         description: Input sequence file in FASTA/FASTQ format for clustering
         ontologies:
-          - edam: http://edamontology.org/format_1920
+          - edam: http://edamontology.org/format_1920 # FASTA
 output:
   representatives:
     - - meta:
@@ -39,7 +39,7 @@ output:
           type: file
           description: a fasta file containing the cluster representatives
           ontologies:
-            - edam: http://edamontology.org/format_1929
+            - edam: http://edamontology.org/format_1929 # FASTA
   fasta:
     - - meta:
           type: map
@@ -50,7 +50,7 @@ output:
           type: file
           description: a fasta-like file per cluster
           ontologies:
-            - edam: http://edamontology.org/format_1929
+            - edam: http://edamontology.org/format_1929 # FASTA
   tsv:
     - - meta:
           type: map
@@ -61,7 +61,7 @@ output:
           type: file
           description: an adjacency list file containing the clusters
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
   versions_mmseqs:
     - - ${task.process}:
           type: string
