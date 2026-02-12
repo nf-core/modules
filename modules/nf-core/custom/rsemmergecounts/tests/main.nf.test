@@ -60,7 +60,8 @@ nextflow_process {
                     process.out.counts_transcript,
                     process.out.tpm_transcript,
                     process.out.genes_long,
-                    process.out.isoforms_long
+                    process.out.isoforms_long,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }

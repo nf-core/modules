@@ -17,7 +17,7 @@ process CUSTOM_RSEMMERGECOUNTS {
     path "${prefix}.transcript_tpm.tsv"   , emit: tpm_transcript
     path "${prefix}.genes_long.tsv"       , emit: genes_long
     path "${prefix}.isoforms_long.tsv"    , emit: isoforms_long
-    tuple val("${task.process}"), val('sed'), eval("sed --version 2>&1 | sed '1!d;s/^.*) //'"), topic: versions
+    tuple val("${task.process}"), val('sed'), eval("sed --version 2>&1 | sed '1!d;s/^.*) //'"), emit: versions_sed, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

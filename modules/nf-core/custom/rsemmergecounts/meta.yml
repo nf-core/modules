@@ -16,18 +16,18 @@ tools:
       identifier: ""
 
 input:
-  - - "genes/*":
-        type: file
-        description: |
-          Collected RSEM gene-level results files across all samples.
-        pattern: "*.genes.results"
-        ontologies: []
-  - - "isoforms/*":
-        type: file
-        description: |
-          Collected RSEM isoform-level results files across all samples.
-        pattern: "*.isoforms.results"
-        ontologies: []
+  - "genes/*":
+      type: file
+      description: |
+        Collected RSEM gene-level results files across all samples.
+      pattern: "*.genes.results"
+      ontologies: []
+  - "isoforms/*":
+      type: file
+      description: |
+        Collected RSEM isoform-level results files across all samples.
+      pattern: "*.isoforms.results"
+      ontologies: []
 
 output:
   counts_gene:
@@ -82,6 +82,17 @@ output:
         pattern: "*.isoforms_long.tsv"
         ontologies:
           - edam: http://edamontology.org/format_3475
+
+  versions_sed:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sed:
+          type: string
+          description: The name of the tool
+      - "sed --version 2>&1 | sed '1!d;s/^.*) //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 
 topics:
   versions:
