@@ -22,12 +22,13 @@ process ISMAPPER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     ismap \\
-        $args \\
-        --t $task.cpus \\
+        ${args} \\
+        --t ${task.cpus} \\
         --output_dir results \\
-        --queries $query \\
-        --reference $reference \\
-        --reads $reads
+        --queries ${query} \\
+        --reference ${reference} \\
+        --reads ${reads} \\
+        --out_prefix ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
