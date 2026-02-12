@@ -11,8 +11,6 @@ workflow MMSEQS_CONTIG_TAXONOMY {
     databases_id       // channel: [mmseqs2_db_id]
 
     main:
-
-    ch_versions               = channel.empty()
     ch_mmseqs_db              = channel.empty()
     ch_taxonomy_querydb       = channel.empty()
     ch_taxonomy_querydb_taxdb = channel.empty()
