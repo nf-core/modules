@@ -14,7 +14,7 @@ process MMSEQS_EASYCLUSTER {
     tuple val(meta), path("*rep_seq.fasta"), emit: representatives
     tuple val(meta), path("*all_seqs.fasta"), emit: fasta
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('mmseqs'), eval('mmseqs version'), topic: versions, emit: versions_mmseqs
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,10 +31,6 @@ process MMSEQS_EASYCLUSTER {
         ${args} \\
         --threads ${task.cpus}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //')
-    END_VERSIONS
     """
 
     stub:
@@ -47,9 +43,5 @@ process MMSEQS_EASYCLUSTER {
     touch ${prefix}_rep_seq.fasta
     touch ${prefix}_all_seqs.fasta
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //')
-    END_VERSIONS
     """
 }
