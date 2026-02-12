@@ -88,7 +88,7 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success},
+                { assert process.success },
                 { assert snapshot(
                     process.out.transformed_seg_mask,
                     process.out.findAll { key, val -> key.startsWith("versions")}
