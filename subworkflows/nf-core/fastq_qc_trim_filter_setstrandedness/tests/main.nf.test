@@ -123,10 +123,8 @@ nextflow_workflow {
                     pelines1.join('\n').md5(),
                     pelines2.join('\n').md5(),
                     processed_ribo_removal_lint_report,
-                    file(workflow.out.fastqc_filtered_html[0][1][0]).name,
-                    file(workflow.out.fastqc_filtered_html[0][1][1]).name,
-                    file(workflow.out.fastqc_filtered_zip[0][1][0]).name,
-                    file(workflow.out.fastqc_filtered_zip[0][1][1]).name,
+                    workflow.out.fastqc_filtered_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                    workflow.out.fastqc_filtered_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
                 ).match() }
             )
         }
@@ -213,10 +211,8 @@ nextflow_workflow {
                     pelines1.join('\n').md5(),
                     pelines2.join('\n').md5(),
                     processed_ribo_removal_lint_report.md5(),
-                    file(workflow.out.fastqc_filtered_html[0][1][0]).name,
-                    file(workflow.out.fastqc_filtered_html[0][1][1]).name,
-                    file(workflow.out.fastqc_filtered_zip[0][1][0]).name,
-                    file(workflow.out.fastqc_filtered_zip[0][1][1]).name,
+                    workflow.out.fastqc_filtered_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                    workflow.out.fastqc_filtered_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
                 ).match() }
             )
         }
@@ -301,10 +297,8 @@ nextflow_workflow {
                     pelines1.join('\n').md5(),
                     pelines2.join('\n').md5(),
                     processed_ribo_removal_lint_report.md5(),
-                    file(workflow.out.fastqc_filtered_html[0][1][0]).name,
-                    file(workflow.out.fastqc_filtered_html[0][1][1]).name,
-                    file(workflow.out.fastqc_filtered_zip[0][1][0]).name,
-                    file(workflow.out.fastqc_filtered_zip[0][1][1]).name,
+                    workflow.out.fastqc_filtered_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                    workflow.out.fastqc_filtered_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
                 ).match() }
             )
         }
@@ -395,10 +389,8 @@ nextflow_workflow {
                     pelines1.join('\n').md5(),
                     pelines2.join('\n').md5(),
                     processed_ribo_removal_lint_report.md5(),
-                    file(workflow.out.fastqc_filtered_html[0][1][0]).name,
-                    file(workflow.out.fastqc_filtered_html[0][1][1]).name,
-                    file(workflow.out.fastqc_filtered_zip[0][1][0]).name,
-                    file(workflow.out.fastqc_filtered_zip[0][1][1]).name,
+                    workflow.out.fastqc_filtered_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                    workflow.out.fastqc_filtered_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
                 ).match() }
             )
         }
@@ -503,8 +495,8 @@ nextflow_workflow {
                 { assert snapshot(
                     selines.join('\n').md5(),
                     processed_ribo_removal_lint_report.md5(),
-                    file(workflow.out.fastqc_filtered_html[0][1]).name,
-                    file(workflow.out.fastqc_filtered_zip[0][1]).name,
+                    workflow.out.fastqc_filtered_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                    workflow.out.fastqc_filtered_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
                 ).match() }
             )
         }
