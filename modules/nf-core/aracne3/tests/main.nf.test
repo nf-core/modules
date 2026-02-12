@@ -1,0 +1,40 @@
+nextflow_process {
+
+    name "Test module ARACNE3"
+    script "../main.nf"
+    process "ARACNE3"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "aracne3"
+
+    test("aracne3_5samples_100regulators_5threads") {
+        config "./nextflow.config"
+
+        when {
+            params {
+                outdir = "./output"
+                aracne3_args = "--threads 5 --alpha 1 --seed 9001"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/aracne3/expression_matrix.tsv", checkIfExists: true),
+                ]
+                input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/aracne3/regulators.txt", checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.consensus_network.get(0).get(1)).match("tsv") },
+                { assert snapshot(process.out.subnets.get(0).get(1)).match(".tsv") },
+                { assert snapshot(process.out.versions).match("versions") },
+            )
+        }
+
+    }
+}
