@@ -12,7 +12,7 @@ process MMSEQS_TSV2EXPROFILEDB {
 
     output:
     path (database), emit: db_exprofile
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('mmseqs'), eval('mmseqs version'), topic: versions, emit: versions_mmseqs
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,10 +27,6 @@ process MMSEQS_TSV2EXPROFILEDB {
         "\${DB_PATH_NAME}_db" \\
         ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //')
-    END_VERSIONS
     """
 
     stub:
@@ -38,9 +34,5 @@ process MMSEQS_TSV2EXPROFILEDB {
     DB_PATH_NAME=\$(find -L "${database}/" -name "*_seq.tsv" | sed 's/_seq\\.tsv\$//')
     touch "\${DB_PATH_NAME}_db"
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //')
-    END_VERSIONS
     """
 }
