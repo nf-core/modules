@@ -1,0 +1,77 @@
+// nf-core modules test omerobifrost/push
+nextflow_process {
+
+    name "Test Process OMEROBIFROST_PUSH"
+    script "../main.nf"
+    process "OMEROBIFROST_PUSH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "omerobifrost"
+    tag "omerobifrost/push"
+
+    // TODO: change file paths to 'params.modules_testdata_base_path'
+
+    test("omero-bifrost push img-folder to OMERO") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_1'], // meta map
+                    file('/Users/luiskuhn/research/nidavellir/bifrost-repo/test/upload', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test_1'], // meta map
+                    '68',
+                ] 
+                input[2] = [
+                    [ id:'test_1'], // meta map
+                    file('/Users/luiskuhn/research/nidavellir/bifrost-repo/test/' + 'imaging_config.properties', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("omero-bifrost push img-folder to OMERO - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_1'], // meta map
+                    file('/Users/luiskuhn/research/nidavellir/bifrost-repo/test/upload', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test_1'], // meta map
+                    '68',
+                ] 
+                input[2] = [
+                    [ id:'test_1'], // meta map
+                    file('/Users/luiskuhn/research/nidavellir/bifrost-repo/test/' + 'imaging_config.properties', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
