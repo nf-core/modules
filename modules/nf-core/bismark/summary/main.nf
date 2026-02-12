@@ -21,7 +21,6 @@ process BISMARK_SUMMARY {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     """
     bismark2summary ${bam.join(' ')}
 
@@ -32,7 +31,6 @@ process BISMARK_SUMMARY {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     """
     touch bismark_summary_report.txt
     touch bismark_summary_report.html

@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "tcoffee_tcs"
-description: Compute the TCS score for a MSA or for a MSA plus a library file. Outputs
-  the tcs as it is and a csv with just the total TCS score.
+description: Compute the TCS score for a MSA or for a MSA plus a library file.
+  Outputs the tcs as it is and a csv with just the total TCS score.
 keywords:
   - alignment
   - MSA
@@ -14,13 +14,13 @@ tools:
       documentation: "https://tcoffee.readthedocs.io/en/latest/tcoffee_main_documentation.html"
       tool_dev_url: "https://github.com/cbcrg/tcoffee"
       doi: "10.1006/jmbi.2000.4042"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
   - "pigz":
       description: "Parallel implementation of the gzip algorithm."
       homepage: "https://zlib.net/pigz/"
       documentation: "https://zlib.net/pigz/pigz.pdf"
-
       identifier: ""
 input:
   - - meta:
@@ -30,8 +30,8 @@ input:
           e.g. [ id:'test', ... ]
     - msa:
         type: file
-        description: fasta file containing the alignment to be evaluated. May be gzipped
-          or uncompressed.
+        description: fasta file containing the alignment to be evaluated. May be
+          gzipped or uncompressed.
         pattern: "*.{aln,fa,fasta,fas}{.gz,}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
@@ -57,7 +57,8 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.tcs":
           type: file
-          description: The msa represented in tcs format, prepended with TCS scores
+          description: The msa represented in tcs format, prepended with TCS
+            scores
           pattern: "*.tcs"
           ontologies: []
   scores:
@@ -71,12 +72,45 @@ output:
           description: a file containing the score of the alignment in csv format
           pattern: "*.scores"
           ontologies: []
+  versions_tcoffee:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tcoffee:
+          type: string
+          description: The name of the tool
+      - t_coffee -version | awk '{gsub("Version_", ""); print \$3}':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_pigz:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tcoffee:
+          type: string
+          description: The name of the tool
+      - t_coffee -version | awk '{gsub("Version_", ""); print \$3}':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@alessiovignoli"

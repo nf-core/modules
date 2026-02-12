@@ -29,7 +29,6 @@ process CHECKV_DOWNLOADDATABASE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "checkv_db"
 
     """

@@ -16,7 +16,7 @@ process PICARD_LIFTOVERVCF {
     output:
     tuple val(meta), path("*.lifted.vcf.gz")  , emit: vcf_lifted
     tuple val(meta), path("*.unlifted.vcf.gz"), emit: vcf_unlifted
-    path "versions.yml"                       , emit: versions
+    tuple val("${task.process}"), val('picard'), eval("picard LiftoverVcf --version 2>&1 | sed -n 's/^Version:*//p'"), topic: versions, emit: versions_picard
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,10 +41,6 @@ process PICARD_LIFTOVERVCF {
         --REJECT ${prefix}.unlifted.vcf.gz \\
         --REFERENCE_SEQUENCE $fasta
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(echo \$(picard LiftoverVcf --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
     """
 
     stub:
@@ -53,9 +49,5 @@ process PICARD_LIFTOVERVCF {
     echo | gzip > ${prefix}.lifted.vcf.gz
     echo | gzip > ${prefix}.unlifted.vcf.gz
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(echo \$(picard LiftoverVcf --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
     """
 }

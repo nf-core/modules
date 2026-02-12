@@ -12,7 +12,7 @@ process RASTAIR_MBIASPARSER {
     output:
     tuple val(meta), path("*.rastair_mbias_processed.pdf"),         emit: mbias_processed_pdf, optional: true
     tuple val(meta), path("*.rastair_mbias_processed.csv"),         emit: mbias_processed_csv
-    tuple val(meta), env(trim_OT), env(trim_OB),                    emit: mbias_processed_str
+    tuple val(meta), env('TRIM_OT'), env('TRIM_OB'),                emit: mbias_processed_str
     path "versions.yml",                                            emit: versions
 
     when:
@@ -25,8 +25,8 @@ process RASTAIR_MBIASPARSER {
     plot_mbias.R --pdf -o ${prefix}.rastair_mbias_processed.pdf ${rastair_mbias_txt} > ${prefix}.rastair_mbias_processed.txt
 
     parse_mbias.R ${prefix}.rastair_mbias_processed.txt ${prefix}.rastair_mbias_processed.csv
-    trim_OT=\$(head -n 1 ${prefix}.rastair_mbias_processed.csv)
-    trim_OB=\$(head -n 2 ${prefix}.rastair_mbias_processed.csv | tail -n 1)
+    export TRIM_OT=\$(head -n 1 ${prefix}.rastair_mbias_processed.csv)
+    export TRIM_OB=\$(head -n 2 ${prefix}.rastair_mbias_processed.csv | tail -n 1)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
