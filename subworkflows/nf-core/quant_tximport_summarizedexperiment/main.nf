@@ -46,10 +46,10 @@ workflow QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT {
     // Build gene-level SummarizedExperiment
     //
     ch_gene_unified = TXIMETA_TXIMPORT.out.counts_gene
-        .join(TXIMETA_TXIMPORT.out.counts_gene_length_scaled)
-        .join(TXIMETA_TXIMPORT.out.counts_gene_scaled)
-        .join(TXIMETA_TXIMPORT.out.lengths_gene)
-        .join(TXIMETA_TXIMPORT.out.tpm_gene)
+        .join(TXIMETA_TXIMPORT.out.counts_gene_length_scaled, failOnMismatch: true, failOnDuplicate: true)
+        .join(TXIMETA_TXIMPORT.out.counts_gene_scaled, failOnMismatch: true, failOnDuplicate: true)
+        .join(TXIMETA_TXIMPORT.out.lengths_gene, failOnMismatch: true, failOnDuplicate: true)
+        .join(TXIMETA_TXIMPORT.out.tpm_gene, failOnMismatch: true, failOnDuplicate: true)
         .map { row -> tuple(row[0], row.tail()) }
 
     SE_GENE_UNIFIED (
@@ -63,8 +63,8 @@ workflow QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT {
     // Build transcript-level SummarizedExperiment
     //
     ch_transcript_unified = TXIMETA_TXIMPORT.out.counts_transcript
-        .join(TXIMETA_TXIMPORT.out.lengths_transcript)
-        .join(TXIMETA_TXIMPORT.out.tpm_transcript)
+        .join(TXIMETA_TXIMPORT.out.lengths_transcript, failOnMismatch: true, failOnDuplicate: true)
+        .join(TXIMETA_TXIMPORT.out.tpm_transcript, failOnMismatch: true, failOnDuplicate: true)
         .map { row -> tuple(row[0], row.tail()) }
 
     SE_TRANSCRIPT_UNIFIED (
