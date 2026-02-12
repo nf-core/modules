@@ -43,31 +43,4 @@ process FASTANI {
     touch ${prefix}.txt
     touch ${prefix}.matrix
     """
-    def prefix = task.ext.prefix ?: "${meta.id}"
-
-    if (meta.batch_input) {
-        """
-        fastANI \\
-            -ql $query \\
-            -rl $reference \\
-            -o ${prefix}.ani.txt
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            fastani: \$(fastANI --version 2>&1 | sed 's/version//;')
-        END_VERSIONS
-        """
-    } else {
-        """
-        fastANI \\
-            -q $query \\
-            -r $reference \\
-            -o ${prefix}.ani.txt
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            fastani: \$(fastANI --version 2>&1 | sed 's/version//;')
-        END_VERSIONS
-        """
-    }
 }
