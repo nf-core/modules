@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "pygenprop_build"
 description: |
   Generate a Micromeda file containing pathway annotations for one or more genomes.
@@ -32,7 +31,10 @@ input:
           - edam: "http://edamontology.org/format_3475" # TSV
   - gp_txt:
       type: file
-      description: Genome Properties flatfile (e.g. genomeProperties.txt)
+      description: |
+        Genome Properties flatfile (e.g. genomeProperties.txt)
+        This file can be found on the original archived repository link below:
+        https://raw.githubusercontent.com/ebi-pf-team/genome-properties/refs/heads/master/flatfiles/genomeProperties.txt
       pattern: "*.txt"
       ontologies:
         - edam: http://edamontology.org/format_2330 # TXT
