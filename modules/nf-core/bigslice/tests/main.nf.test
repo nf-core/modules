@@ -39,7 +39,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test_gbk' ],
-                    'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/' + 'genomics/prokaryotes/streptomyces_coelicolor/fixtures_bigslice_gbk.tar.gz' // https URL
+                    params.modules_testdata_base_path + 'genomics/prokaryotes/streptomyces_coelicolor/fixtures_bigslice_gbk.tar.gz' // https URL
                 ]
                 """
             }
@@ -61,7 +61,7 @@ nextflow_process {
             process {
                 """
                 input[0] = UNTAR_GBK.out.untar
-                input[1] = UNTAR_HMMDB.out.untar.map{ f -> f[1] }
+                input[1] = UNTAR_HMMDB.out.untar.map{ it -> it[1] }
                 """
             }
         }
@@ -87,7 +87,7 @@ nextflow_process {
             process {
                 """
                 input[0] = UNTAR_GBK.out.untar
-                input[1] = UNTAR_HMMDB.out.untar.map{ f -> f[1] }
+                input[1] = UNTAR_HMMDB.out.untar.map{ it -> it[1] }
                 """
             }
         }
