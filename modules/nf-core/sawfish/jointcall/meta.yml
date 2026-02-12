@@ -167,6 +167,17 @@ output:
           pattern: "*.json"
           ontologies:
             - edam: http://edamontology.org/format_3464 # JSON
+  maf_bw:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*/samples/*/maf.bw":
+          type: file
+          description: Sample SNV MAF BigWig file
+          pattern: "*.bw"
+          ontologies: []
   log:
     - - meta:
           type: map

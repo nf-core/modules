@@ -23,6 +23,7 @@ process SAWFISH_JOINTCALL {
     tuple val(meta), path("*/samples/*/copynum.bedgraph")          , emit: copynum_bedgraph          , optional: true
     tuple val(meta), path("*/samples/*/gc_bias_corrected_depth.bw"), emit: gc_bias_corrected_depth_bw, optional: true
     tuple val(meta), path("*/samples/*/copynum.summary.json")      , emit: copynum_summary           , optional: true
+    tuple val(meta), path("*/samples/*/maf.bw")                    , emit: maf_bw                    , optional: true
     tuple val(meta), path("*/sawfish.log")                         , emit: log
     path "versions.yml"                                            , emit: versions
 
