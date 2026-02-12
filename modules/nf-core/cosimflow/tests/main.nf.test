@@ -1,0 +1,42 @@
+nextflow_process {
+
+    name "Test Process COSIMFLOW"
+    script "../main.nf"
+    process "COSIMFLOW"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cosimflow"
+
+    test("Should run successfully with a simple CSV") {
+
+        when {
+            process {
+                """
+                // 1. Creamos un CSV dummy al vuelo para el test
+                def test_csv = file("test_data.csv")
+                test_csv.text = '''gene_id,sample_A,sample_B,sample_C
+                GENE_1,10.0,10.5,0.0
+                GENE_2,50.0,50.5,2.0
+                GENE_3,0.0,0.0,100.0
+                GENE_4,100.0,99.5,10.0'''
+                
+                // 2. Definimos el input: [ meta, archivo ]
+                input[0] = [ [id:'test_sample'], test_csv ]
+                """
+            }
+        }
+
+        then {
+            // 3. Verificamos que termine con éxito
+            assert process.success
+            
+            // 4. Verificamos que se generen los archivos
+            assert process.out.matrix
+            assert process.out.heatmap
+            assert process.out.versions
+        }
+
+    }
+
+}

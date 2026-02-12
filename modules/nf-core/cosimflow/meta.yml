@@ -1,0 +1,56 @@
+name: "cosimflow"
+description: Calculates the cosine similarity matrix between samples based on a gene expression matrix.
+keywords:
+  - similarity
+  - cosine
+  - clustering
+  - rnaseq
+  - heatmap
+tools:
+  - "r":
+      description: "R is a free software environment for statistical computing and graphics."
+      homepage: "https://www.r-project.org/"
+      documentation: "https://cran.r-project.org/manuals.html"
+      tool_dev_url: "https://github.com/miguelrosell/nf-cosimflow"
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information, e.g. [ id:'test' ].
+    - expression_matrix:
+        type: file
+        description: |
+          CSV or XLSX file containing the expression matrix. 
+          Rows should be features (genes) and columns should be samples.
+          First column must be gene IDs.
+        pattern: "*.{csv,xlsx}"
+
+output:
+  - matrix:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information, e.g. [ id:'test' ].
+      - "*_matrix.csv":
+          type: file
+          description: A square matrix (CSV) containing pairwise cosine similarity scores (0-1).
+          pattern: "*_matrix.csv"
+  - heatmap:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information, e.g. [ id:'test' ].
+      - "*_heatmap.png":
+          type: file
+          description: A PNG image visualizing the cosine similarity matrix as a heatmap.
+          pattern: "*_heatmap.png"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions.
+          pattern: "versions.yml"
+
+authors:
+  - "@miguelrosell"
