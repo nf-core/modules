@@ -15,7 +15,7 @@ process MSISENSOR2_MSI {
     tuple val(meta), path("${prefix}"), emit: msi
     tuple val(meta), path("${prefix}_dis"), emit: distribution
     tuple val(meta), path("${prefix}_somatic"), emit: somatic
-    tuple val("${task.process}"), val('msisensor2'), eval("msisensor2 2> >(grep Version) | sed 's/Version: v//g'"), topic: versions, emit: versions
+    tuple val("${task.process}"), val('msisensor2'), eval("msisensor2 2> >(grep Version) | sed 's/Version: v//g'"), topic: versions, emit: versions_msisensor2
 
     when:
     task.ext.when == null || task.ext.when
