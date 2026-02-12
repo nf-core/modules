@@ -67,25 +67,25 @@ output:
   versions_deacon:
     - - ${task.process}:
           type: string
-          description: The process the versions were collected from
+          description: The name of the process
       - deacon:
           type: string
-          description: The tool name
+          description: The name of the tool
       - deacon --version | head -n1 | sed "s/deacon //g:
           type: string
-          description: The command used to generate the version of the tool
+          description: The expression to obtain the version of the tool
 
 topics:
   versions:
     - - ${task.process}:
           type: string
-          description: The process the versions were collected from
+          description: The name of the process
     - deacon:
           type: string
-          description: The tool name
+          description: The name of the tool
     - deacon --version | head -n1 | sed "s/deacon //g:
           type: string
-          description: The command used to generate the version of the tool
+          description: The expression to obtain the version of the tool
 
 authors:
   - "@Baksic-Ivan"

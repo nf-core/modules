@@ -13,7 +13,7 @@ process DEACON_FILTER {
     output:
     tuple val(meta), path("${prefix}*.fq.gz"), emit: fastq_filtered
     tuple val(meta), path("${prefix}.json")  , emit: log
-    tuple val("${task.process}"), val('deacon'), eval('deacon --version | head -n1 | sed "s/deacon //g"'), emit: versions_fastqc, topic: versions
+    tuple val("${task.process}"), val('deacon'), eval('deacon --version | head -n1 | sed "s/deacon //g"'), emit: versions_deacon, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
