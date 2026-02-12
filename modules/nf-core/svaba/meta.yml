@@ -91,7 +91,7 @@ input:
         description: VCF file including dbSNP variants
         pattern: "*.vcf.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989
+          - edam: http://edamontology.org/format_3989 # GZIP format
   - - meta6:
         type: map
         description: |
@@ -114,7 +114,7 @@ input:
         description: Targeted intervals. Accepts BED file or Samtools-style string
         pattern: "*.bed|*.txt|*.tab"
         ontologies:
-          - edam: http://edamontology.org/format_3475
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
   sv:
     - - meta:
@@ -127,7 +127,7 @@ output:
           description: Filtered SVs for tumor only cases
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   indel:
     - - meta:
           type: map
@@ -139,7 +139,7 @@ output:
           description: Filtered Indels for tumor only cases
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   germ_indel:
     - - meta:
           type: map
@@ -151,7 +151,7 @@ output:
           description: Germline filtered Indels for tumor/normal paired samples
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   germ_sv:
     - - meta:
           type: map
@@ -163,7 +163,7 @@ output:
           description: Germline filtered SVs for tumor/normal paired samples
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   som_indel:
     - - meta:
           type: map
@@ -175,7 +175,7 @@ output:
           description: Somatic filtered Indels for tumor/normal paired samples
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   som_sv:
     - - meta:
           type: map
@@ -187,7 +187,7 @@ output:
           description: Somatic filtered SVs for tumor/normal paired samples
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   unfiltered_sv:
     - - meta:
           type: map
@@ -199,7 +199,7 @@ output:
           description: Unfiltered SVs for tumor only cases
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   unfiltered_indel:
     - - meta:
           type: map
@@ -211,7 +211,7 @@ output:
           description: Unfiltered Indels for tumor only cases
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   unfiltered_germ_indel:
     - - meta:
           type: map
@@ -223,7 +223,7 @@ output:
           description: Unfiltered germline Indels for tumor/normal paired samples
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   unfiltered_germ_sv:
     - - meta:
           type: map
@@ -235,7 +235,7 @@ output:
           description: Unfiltered germline SVs for tumor/normal paired samples
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   unfiltered_som_indel:
     - - meta:
           type: map
@@ -247,7 +247,7 @@ output:
           description: Unfiltered somatic Indels for tumor/normal paired samples
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   unfiltered_som_sv:
     - - meta:
           type: map
@@ -259,7 +259,7 @@ output:
           description: Unfiltered somatic SVs for tumor/normal paired samples
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   discordants:
     - - meta:
           type: map
@@ -272,7 +272,7 @@ output:
             with 2+ reads
           pattern: "*.txt.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   raw_calls:
     - - meta:
           type: map
@@ -284,7 +284,7 @@ output:
           description: Raw, unfiltered variants
           pattern: "*.txt.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   log:
     - - meta:
           type: map
@@ -296,7 +296,7 @@ output:
           description: Log file
           pattern: "*.txt.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   versions_svaba:
     - - ${task.process}:
           type: string

@@ -49,9 +49,9 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
+                { assert path(process.out.log[0][1]).readLines().contains("...assembled 1 contigs for c_1_1_25001")} ,
                 { assert snapshot(
                     process.out.raw_calls,
-                    path(process.out.log[0][1]).readLines().contains("...assembled 1 contigs for c_1_1_25001"),
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
@@ -82,9 +82,9 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
+                { assert path(process.out.log[0][1]).readLines().contains("...assembled 1 contigs for c_1_1_25001")} ,
                 { assert snapshot(
                     process.out.raw_calls,
-                    path(process.out.log[0][1]).readLines().contains("...assembled 1 contigs for c_1_1_25001"),
                     process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match() }
             )
