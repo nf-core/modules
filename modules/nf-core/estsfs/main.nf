@@ -20,7 +20,6 @@ process ESTSFS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def VERSION = '2.04' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     prefix = task.ext.prefix ?: "${meta.id}"
     """
@@ -33,7 +32,6 @@ process ESTSFS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '2.04' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
