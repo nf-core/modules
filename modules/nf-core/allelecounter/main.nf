@@ -25,10 +25,10 @@ process ALLELECOUNTER {
     def reference_options = fasta ? "-r $fasta": ""
     """
     alleleCounter \\
-        ${args} \\
-        -l ${loci} \\
-        -b ${input} \\
-        ${reference_options} \\
+        $args \\
+        -l $loci \\
+        -b $input \\
+        $reference_options \\
         -o ${prefix}.alleleCount
 
     cat <<-END_VERSIONS > versions.yml

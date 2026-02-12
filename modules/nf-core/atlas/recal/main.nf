@@ -31,13 +31,13 @@ process ATLAS_RECAL {
     """
     atlas \\
         task=recal \\
-        bam=${bam} \\
-        ${PMD} \\
-        ${READGROUPS} \\
-        ${ALLELES} \\
-        ${INVARIANTS} \\
-        out=${prefix} \\
-        ${args}
+        bam=$bam \\
+        $PMD \\
+        $READGROUPS \\
+        $ALLELES \\
+        $INVARIANTS \\
+        out=$prefix \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

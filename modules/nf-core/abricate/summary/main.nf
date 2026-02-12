@@ -22,7 +22,7 @@ process ABRICATE_SUMMARY {
     """
     abricate \\
         --summary \\
-        ${reports} > ${prefix}.txt
+        $reports > ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

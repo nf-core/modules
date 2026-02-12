@@ -24,8 +24,8 @@ process ARIA2 {
     """
     aria2c \\
         --check-certificate=false \\
-        ${args} \\
-        ${source_url}
+        $args \\
+        $source_url
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

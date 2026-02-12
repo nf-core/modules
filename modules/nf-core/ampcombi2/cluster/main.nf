@@ -24,7 +24,7 @@ process AMPCOMBI2_CLUSTER {
     """
     ampcombi cluster \\
         --ampcombi_summary ${summary_file} \\
-        ${args} \\
+        $args \\
         --threads ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml

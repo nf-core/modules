@@ -22,8 +22,8 @@ process AGRVATE {
     def args = task.ext.args   ?: ''
     """
     agrvate \\
-        ${args} \\
-        -i ${fasta}
+        $args \\
+        -i $fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

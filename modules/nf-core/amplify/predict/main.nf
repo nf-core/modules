@@ -25,7 +25,7 @@ process AMPLIFY_PREDICT {
     def custom_model_dir = model_dir ? "-md ${model_dir}" : ""
     """
     AMPlify \\
-        ${args} \\
+        $args \\
         ${custom_model_dir} \\
         -s '${faa}'
 

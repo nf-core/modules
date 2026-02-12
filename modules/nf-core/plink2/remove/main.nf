@@ -1,7 +1,7 @@
 process PLINK2_REMOVE {
     tag "$meta.id"
     label 'process_low'
-
+   
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plink2:2.00a5.10--h4ac6f70_0':

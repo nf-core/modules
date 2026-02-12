@@ -27,11 +27,11 @@ process AUTHENTICT_DEAM2CONT {
     def positions_file = positions ? "-p ${positions}" : ""
 
     """
-    samtools view ${args} ${bam} | AuthentiCT \\
+    samtools view $args $bam | AuthentiCT \\
         deam2cont \\
-        ${args2} \\
-        ${config_file} \\
-        ${positions_file} \\
+        $args2 \\
+        $config_file \\
+        $positions_file \\
         - \\
         > ${prefix}.txt
 

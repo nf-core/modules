@@ -8,11 +8,11 @@ process RAGTAG_PATCH {
         : 'biocontainers/ragtag:2.1.0--pyhb7b1952_0'}"
 
     input:
-    tuple val(meta), path(target, name: 'target/*')
+    tuple val(meta), path(target, name: 'target/*') 
     tuple val(meta2), path(query, name: 'query/*')
     tuple val(meta3), path(exclude)
     tuple val(meta4), path(skip)
-
+    
     output:
     tuple val(meta), path("*.patch.fasta"),         emit: patch_fasta
     tuple val(meta), path("*.patch.agp"),           emit: patch_agp

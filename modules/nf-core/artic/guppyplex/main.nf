@@ -23,11 +23,11 @@ process ARTIC_GUPPYPLEX {
     """
     artic \\
         guppyplex \\
-        ${args} \\
-        --directory ${fastq_dir} \\
+        $args \\
+        --directory $fastq_dir \\
         --output ${prefix}.fastq
 
-    pigz -p ${task.cpus} *.fastq
+    pigz -p $task.cpus *.fastq
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         artic: \$(artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//')
