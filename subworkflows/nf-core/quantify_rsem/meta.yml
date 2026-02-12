@@ -56,12 +56,12 @@ output:
       type: map
       description: |
         Groovy Map containing sample information. e.g. [ id:'test' ].
-  - counts_gene:
+  - raw_counts_gene:
       type: file
       description: |
         Per-sample RSEM gene-level results files.
       pattern: "*.genes.results"
-  - counts_transcript:
+  - raw_counts_transcript:
       type: file
       description: |
         Per-sample RSEM transcript-level results files.
@@ -111,6 +111,12 @@ output:
       description: |
         Gene-level matrix of abundance values in TPM from tximport.
       pattern: "*.gene_tpm.tsv"
+  - counts_gene:
+      type: file
+      description: |
+        Gene-level matrix of unadjusted estimated counts from tximport
+        (`countsFromAbundance = 'no'`).
+      pattern: "*.gene_counts.tsv"
   - counts_gene_length_scaled:
       type: file
       description: |
@@ -133,18 +139,24 @@ output:
       description: |
         Transcript-level matrix of abundance values in TPM from tximport.
       pattern: "*.transcript_tpm.tsv"
+  - counts_transcript:
+      type: file
+      description: |
+        Transcript-level matrix of unadjusted estimated counts from tximport
+        (`countsFromAbundance = 'no'`).
+      pattern: "*.transcript_counts.tsv"
   - lengths_transcript:
       type: file
       description: |
         Transcript-level matrix of length values from tximport.
       pattern: "*.transcript_lengths.tsv"
-  - merged_gene_rds:
+  - merged_gene_rds_unified:
       type: file
       description: |
         Serialised SummarizedExperiment object containing gene level
         abundance, count, and length matrices generated from tximport.
       pattern: "*.rds"
-  - merged_transcript_rds:
+  - merged_transcript_rds_unified:
       type: file
       description: |
         Serialised SummarizedExperiment object containing transcript level

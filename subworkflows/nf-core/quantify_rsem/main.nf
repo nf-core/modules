@@ -61,9 +61,9 @@ workflow QUANTIFY_RSEM {
     ch_versions = ch_versions.mix(QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.versions)
 
     emit:
-    // Per-sample outputs
-    counts_gene              = ch_counts_gene                                                        // channel: [ val(meta), counts ]
-    counts_transcript        = ch_counts_transcript                                                  // channel: [ val(meta), counts ]
+    // Per-sample RSEM outputs
+    raw_counts_gene          = ch_counts_gene                                                        // channel: [ val(meta), counts ]
+    raw_counts_transcript    = ch_counts_transcript                                                  // channel: [ val(meta), counts ]
     stat                     = ch_stat                                                               // channel: [ val(meta), stat ]
     logs                     = ch_logs                                                               // channel: [ val(meta), logs ]
 
@@ -75,17 +75,19 @@ workflow QUANTIFY_RSEM {
     merged_genes_long        = CUSTOM_RSEMMERGECOUNTS.out.genes_long                                 //    path: *.genes_long.tsv
     merged_isoforms_long     = CUSTOM_RSEMMERGECOUNTS.out.isoforms_long                              //    path: *.isoforms_long.tsv
 
-    // tximport outputs
+    // tximport outputs (consistent with quantify_pseudo_alignment)
     tpm_gene                  = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.tpm_gene                     //    path: *gene_tpm.tsv
+    counts_gene               = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.counts_gene                  //    path: *gene_counts.tsv
     counts_gene_length_scaled = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.counts_gene_length_scaled    //    path: *gene_counts_length_scaled.tsv
     counts_gene_scaled        = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.counts_gene_scaled           //    path: *gene_counts_scaled.tsv
     lengths_gene              = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.lengths_gene                 //    path: *gene_lengths.tsv
     tpm_transcript            = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.tpm_transcript               //    path: *transcript_tpm.tsv
+    counts_transcript         = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.counts_transcript            //    path: *transcript_counts.tsv
     lengths_transcript        = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.lengths_transcript           //    path: *transcript_lengths.tsv
 
     // SummarizedExperiment objects
-    merged_gene_rds           = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.merged_gene_rds              //    path: *.rds
-    merged_transcript_rds     = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.merged_transcript_rds        //    path: *.rds
+    merged_gene_rds_unified       = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.merged_gene_rds          //    path: *.rds
+    merged_transcript_rds_unified = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.merged_transcript_rds    //    path: *.rds
 
     // tx2gene
     tx2gene                   = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.tx2gene                      //    path: *tx2gene.tsv
