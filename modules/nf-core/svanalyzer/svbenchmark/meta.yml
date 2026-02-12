@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "svanalyzer_svbenchmark"
 description: "SVbenchmark compares a set of “test” structural variants in VCF format
   to a known truth set (also in VCF format) and outputs estimates of sensitivity and
@@ -13,8 +12,8 @@ tools:
       homepage: "https://svanalyzer.readthedocs.io/en/latest/index.html"
       documentation: "https://svanalyzer.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/nhansen/SVanalyzer"
-      license: "['CC0']"
-
+      licence:
+        - "CC0"
       identifier: ""
 input:
   - - meta:
@@ -139,9 +138,7 @@ output:
           description: The tool name
       - "0.36":
           type: string
-          description: Tool version used for the run. Version information not
-            provided by tool on CLI. Please update this string when bumping
-            container versions.
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -149,11 +146,9 @@ topics:
           description: The process the versions were collected from
       - svanalyzer:
           type: string
-          description: The tool name  
+          description: The tool name
       - "0.36":
           type: string
-          description: Tool version used for the run. Version information not
-            provided by tool on CLI. Please update this string when bumping
-            container versions.
+          description: The expression to obtain the version of the tool
 authors:
   - "@kubranarci"
