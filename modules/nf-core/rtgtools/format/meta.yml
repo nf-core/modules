@@ -29,13 +29,13 @@ input:
           file when using paired end FASTQ/FASTA data
         pattern: "*.{fasta,fa,fna,fastq,fastq.gz,fq,fq.gz,bam,sam}"
         ontologies:
-          - edam: http://edamontology.org/format_1930  # FASTQ
+          - edam: http://edamontology.org/format_1930 # FASTQ
     - input2:
         type: file
         description: The right input file when using paired end FASTQ/FASTA data
         pattern: "*.{fasta,fa,fna,fastq,fastq.gz,fq,fq.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1930  # FASTQ
+          - edam: http://edamontology.org/format_1930 # FASTQ
     - sam_rg:
         type: file
         description: A file containing a single readgroup header as a SAM header.
