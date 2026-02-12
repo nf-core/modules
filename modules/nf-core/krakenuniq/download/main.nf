@@ -32,7 +32,6 @@ process KRAKENUNIQ_DOWNLOAD {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     """
     mkdir ${pattern}
 

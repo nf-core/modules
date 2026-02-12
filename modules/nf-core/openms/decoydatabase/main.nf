@@ -30,7 +30,6 @@ process OPENMS_DECOYDATABASE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${fasta.baseName}_decoy"
 
     """
