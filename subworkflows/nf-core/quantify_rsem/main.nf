@@ -40,7 +40,7 @@ workflow QUANTIFY_RSEM {
     ch_logs              = ch_rsem_out.out.logs
 
     //
-    // Merge counts across samples (legacy RSEM merge - counts, TPM, long format)
+    // Merge counts across samples
     //
     CUSTOM_RSEMMERGECOUNTS (
         ch_counts_gene.collect{ tuple -> tuple[1] },
@@ -61,13 +61,13 @@ workflow QUANTIFY_RSEM {
     ch_versions = ch_versions.mix(QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.versions)
 
     emit:
-    // Per-sample RSEM outputs
+    // Per-sample outputs
     raw_counts_gene          = ch_counts_gene                                                        // channel: [ val(meta), counts ]
     raw_counts_transcript    = ch_counts_transcript                                                  // channel: [ val(meta), counts ]
     stat                     = ch_stat                                                               // channel: [ val(meta), stat ]
     logs                     = ch_logs                                                               // channel: [ val(meta), logs ]
 
-    // Legacy RSEM merge outputs
+    // RSEM merge outputs
     merged_counts_gene       = CUSTOM_RSEMMERGECOUNTS.out.counts_gene                                //    path: *.gene_counts.tsv
     merged_tpm_gene          = CUSTOM_RSEMMERGECOUNTS.out.tpm_gene                                   //    path: *.gene_tpm.tsv
     merged_counts_transcript = CUSTOM_RSEMMERGECOUNTS.out.counts_transcript                          //    path: *.transcript_counts.tsv
@@ -75,7 +75,7 @@ workflow QUANTIFY_RSEM {
     merged_genes_long        = CUSTOM_RSEMMERGECOUNTS.out.genes_long                                 //    path: *.genes_long.tsv
     merged_isoforms_long     = CUSTOM_RSEMMERGECOUNTS.out.isoforms_long                              //    path: *.isoforms_long.tsv
 
-    // tximport outputs (consistent with quantify_pseudo_alignment)
+    // tximport outputs
     tpm_gene                  = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.tpm_gene                     //    path: *gene_tpm.tsv
     counts_gene               = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.counts_gene                  //    path: *gene_counts.tsv
     counts_gene_length_scaled = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.counts_gene_length_scaled    //    path: *gene_counts_length_scaled.tsv
