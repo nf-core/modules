@@ -13,7 +13,7 @@ process JUICERTOOLS_PRE {
 
     output:
     tuple val(meta), path("*.hic"), emit: hic
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('juicer_tools'), eval('juicer_tools -V | grep "Version" | sed "s/Juicer Tools Version //"'), emit: versions_juicertools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,21 +37,11 @@ process JUICERTOOLS_PRE {
         ${pairs} \\
         ${prefix}.hic \\
         ${input_genome}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        juicer_tools: \$(juicer_tools -V | grep "Juicer Tools Version" | sed 's/Juicer Tools Version //')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.hic
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        juicer_tools: \$(juicer_tools -V | grep "Juicer Tools Version" | sed 's/Juicer Tools Version //')
-    END_VERSIONS
     """
 }

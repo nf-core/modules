@@ -17,11 +17,11 @@ process GATK4_VARIANTRECALIBRATOR {
     path dict
 
     output:
-    tuple val(meta), path("*.recal"),    emit: recal
-    tuple val(meta), path("*.idx"),      emit: idx
+    tuple val(meta), path("*.recal"), emit: recal
+    tuple val(meta), path("*.idx"), emit: idx
     tuple val(meta), path("*.tranches"), emit: tranches
-    tuple val(meta), path("*plots.R"),   emit: plots, optional: true
-    path "versions.yml",                 emit: versions
+    tuple val(meta), path("*plots.R"), emit: plots, optional: true
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -49,11 +49,6 @@ process GATK4_VARIANTRECALIBRATOR {
         --tmp-dir . \\
         ${labels_command} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -63,10 +58,5 @@ process GATK4_VARIANTRECALIBRATOR {
     touch ${prefix}.idx
     touch ${prefix}.tranches
     touch ${prefix}plots.R
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

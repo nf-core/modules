@@ -12,7 +12,7 @@ process GLIMPSE_LIGATE {
 
     output:
     tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: merged_variants
-    path "versions.yml"                               , emit: versions
+    tuple val("${task.process}"), val('glimpse'), eval("GLIMPSE_ligate --help | sed -n '/Version/s/.*: //p'"), topic: versions, emit: versions_glimpse
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,11 +29,6 @@ process GLIMPSE_LIGATE {
         --input all_files.txt \\
         --thread ${task.cpus} \\
         --output ${prefix}.${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        glimpse: "\$(GLIMPSE_ligate --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
-    END_VERSIONS
     """
 
     stub:
@@ -44,10 +39,5 @@ process GLIMPSE_LIGATE {
 
     """
     ${create_cmd} ${prefix}.${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        glimpse: "\$(GLIMPSE_ligate --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
-    END_VERSIONS
     """
 }

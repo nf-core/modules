@@ -1,6 +1,6 @@
 name: "custom_matrixfilter"
-description: filter a matrix based on a minimum value and numbers of samples that
-  must pass.
+description: filter a matrix based on a minimum value and numbers of samples
+  that must pass.
 keywords:
   - matrix
   - filter
@@ -58,8 +58,21 @@ output:
             e.g. [ id:'test' ]
       - "*.tests.tsv":
           type: file
-          description: Boolean matrix with pass/ fail status for each test on each feature
+          description: Boolean matrix with pass/ fail status for each test on each
+            feature
           pattern: "*.tests.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  thresholds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing information on experiment.
+            e.g. [ id:'test' ]
+      - "*.thresholds.tsv":
+          type: file
+          description: Table of filtering thresholds applied in matrix filtering
+          pattern: "*.thresholds.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   session_info:

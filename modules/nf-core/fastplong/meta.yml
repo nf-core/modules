@@ -55,8 +55,8 @@ output:
           type: file
           description: Trimmed and filtered reads
           pattern: "*fastplong.fastq.gz"
-
           ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
             - edam: http://edamontology.org/format_3989 # GZIP format
   json:
     - - meta:
@@ -66,7 +66,6 @@ output:
           type: file
           description: QC report in JSON format
           pattern: "*.json"
-
           ontologies:
             - edam: http://edamontology.org/format_3464 # JSON
   html:
@@ -87,7 +86,6 @@ output:
           type: file
           description: Log file generated during trimming
           pattern: "*.log"
-
           ontologies: []
   reads_fail:
     - - meta:
@@ -97,18 +95,32 @@ output:
           type: file
           description: Reads that failed quality/trimming filters
           pattern: "*fail.fastq.gz"
-
           ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
             - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_fastplong:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - fastplong:
+          type: string
+          description: The name of the tool
+      - 'fastplong --version 2>&1 | sed -e "s/fastplong //g"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - fastplong:
+          type: string
+          description: The name of the tool
+      - 'fastplong --version 2>&1 | sed -e "s/fastplong //g"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Lupphes"
+  - "@eit-maxlcummins"
 maintainers:
   - "@Lupphes"

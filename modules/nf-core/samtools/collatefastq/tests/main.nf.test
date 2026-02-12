@@ -15,24 +15,25 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                         [ id:'test', single_end:false ], // meta map
-                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
-                     ]
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ]
                 input[1] = [
-                         [ id:'test' ], // meta map
-                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                     ]
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    []
+                ]
                 input[2] = false
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.fastq,
-                                  process.out.versions).match() }
-            )
+            assert process.success
+            assert snapshot(
+                process.out.fastq,
+                ["versions_samtools": process.out.versions_samtools]
+            ).match()
         }
 
     }
@@ -43,24 +44,25 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                         [ id:'test', single_end:true ], // meta map
-                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true)
-                     ]
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true)
+                ]
                 input[1] = [
-                         [ id:'test' ], // meta map
-                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                     ]
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    []
+                ]
                 input[2] = false
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.fastq_other,
-                                  process.out.versions).match() }
-            )
+            assert process.success
+            assert snapshot(
+                process.out.fastq_other,
+                ["versions_samtools": process.out.versions_samtools]
+            ).match()
         }
 
     }
@@ -71,24 +73,25 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                         [ id:'test', single_end:false ], // meta map
-                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
-                     ]
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
+                ]
                 input[1] = [
-                         [ id:'test' ], // meta map
-                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                     ]
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    []
+                ]
                 input[2] = false
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.fastq,
-                                  process.out.versions).match() }
-            )
+            assert process.success
+            assert snapshot(
+                process.out.fastq,
+                ["versions_samtools": process.out.versions_samtools]
+            ).match()
         }
 
     }
@@ -99,26 +102,27 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                         [ id:'test', single_end:false ], // meta map
-                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
-                     ]
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ]
                 input[1] = [
-                         [ id:'test' ], // meta map
-                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                     ]
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    []
+                ]
                 input[2] = true
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.fastq_interleaved,
-                                  process.out.fastq_singleton,
-                                  process.out.fastq,
-                                  process.out.versions).match() }
-            )
+            assert process.success
+            assert snapshot(
+                process.out.fastq_interleaved,
+                process.out.fastq_singleton,
+                process.out.fastq,
+                ["versions_samtools": process.out.versions_samtools]
+            ).match()
         }
 
     }
@@ -129,24 +133,21 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                         [ id:'test', single_end:false ], // meta map
-                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
-                     ]
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ]
                 input[1] = [
-                         [ id:'test' ], // meta map
-                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                     ]
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    []
+                ]
                 input[2] = false
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.fastq,
-                                  process.out.versions).match() }
-            )
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }
@@ -157,24 +158,21 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                         [ id:'test', single_end:true ], // meta map
-                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true)
-                     ]
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true)
+                ]
                 input[1] = [
-                         [ id:'test' ], // meta map
-                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                     ]
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    []
+                ]
                 input[2] = false
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.fastq_other,
-                                  process.out.versions).match() }
-            )
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }
@@ -185,24 +183,21 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                         [ id:'test', single_end:false ], // meta map
-                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
-                     ]
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
+                ]
                 input[1] = [
-                         [ id:'test' ], // meta map
-                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                     ]
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    []
+                ]
                 input[2] = false
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.fastq,
-                                  process.out.versions).match() }
-            )
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }
@@ -213,30 +208,23 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                         [ id:'test', single_end:false ], // meta map
-                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
-                     ]
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ]
                 input[1] = [
-                         [ id:'test' ], // meta map
-                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                     ]
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    []
+                ]
                 input[2] = true
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.fastq_interleaved,
-                                  process.out.fastq_singleton,
-                                  process.out.fastq,
-                                  process.out.versions).match() }
-            )
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }
-
-
 
 }

@@ -1,0 +1,107 @@
+nextflow_process {
+
+    name "Test Process BIGSLICE"
+    script "../main.nf"
+    process "BIGSLICE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bigslice"
+    tag "aria2"
+    tag "untar"
+
+    setup {
+        run("ARIA2", alias: "ARIA2_HMMDB") {
+            script "../../aria2/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test_hmm_db' ],
+                    'https://github.com/medema-group/bigslice/releases/download/v2.0.0rc/bigslice-models.2022-11-30.tar.gz' // https URL
+                ]
+                """
+            }
+        }
+
+        run("UNTAR", alias: "UNTAR_HMMDB") {
+            script "../../untar/main.nf"
+                process {
+                """
+                input[0] = ARIA2_HMMDB.out.downloaded_file
+                """
+            }
+        }
+
+        run("ARIA2", alias: "ARIA2_GBK") {
+            script "../../aria2/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test_gbk' ],
+                    params.modules_testdata_base_path + 'genomics/prokaryotes/streptomyces_coelicolor/fixtures_bigslice_gbk.tar.gz' // https URL
+                ]
+                """
+            }
+        }
+
+        run("UNTAR", alias: "UNTAR_GBK") {
+            script "../../untar/main.nf"
+                process {
+                """
+                input[0] = ARIA2_GBK.out.downloaded_file
+                """
+            }
+        }
+    }
+
+    test("streptomyces_coelicolor - bigslice - gbk") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR_GBK.out.untar
+                input[1] = UNTAR_HMMDB.out.untar.map{ it -> it[1] }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    file(process.out.db[0][1]).name,
+                    process.out.fa[0][1].size(),
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+    test("streptomyces_coelicolor - bigslice - gbk - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = UNTAR_GBK.out.untar
+                input[1] = UNTAR_HMMDB.out.untar.map{ it -> it[1] }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+}

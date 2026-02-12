@@ -36,7 +36,6 @@ process BRACKEN_COMBINEBRACKENOUTPUTS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     // WARN: Version information not provided by tool on CLI.
     // Please update version string below when bumping container versions.

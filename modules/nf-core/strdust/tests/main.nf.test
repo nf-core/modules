@@ -28,8 +28,8 @@ nextflow_process {
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
-                input[1] = [[],[]]
-                input[2] = [[],[]]
+                    .combine(channel.of([[]]))
+                input[1] = false
                 """
             }
         }
