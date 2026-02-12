@@ -1,0 +1,63 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "paml_buildctl"
+description: PAML (Phylogenetic Analysis Using Maximum Likelihood) is a package
+  of programs for maximum likelihood analysis of protein and DNA sequences (Yang 1997).
+  PAML is useful if you are interested in the process of sequence evolution.
+  buildctl aims at building the settings file needed to run paml codeml providing
+  directly parameter values.
+keywords:
+  - evolution
+  - maximum likelihood
+  - selective pressure
+  - dNdS
+tools:
+  - "paml":
+      description: "BUILDCTL is the main tool used to create the control file for CODEML"
+      homepage: "https://evomics.org/resources/software/molecular-evolution-software/paml/"
+      documentation: "https://github.com/abacus-gene/paml/blob/master/doc/pamlDOC.pdf"
+      tool_dev_url: "https://github.com/abacus-gene/paml"
+      doi: 10.1093/molbev/msm088"
+      licence: ["GPL v3"]
+      identifier: biotools:paml
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'caseA' ]`
+
+    - phy:
+        type: file
+        description: A file containing the alignment. High preference for PHYLIP format.
+        pattern: "*.{phy,nuc,aa,nex,phylip}"
+
+  - - tree:
+        type: file
+        description: A file containing the phylogenetic tree of the sequences.
+        pattern: "*.{tree,tre,aa,nex}"
+
+output:
+  - ctl:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'caseA' ]`
+
+    - settings.ctl:
+        type: file
+        description: CODEML control file
+        pattern: "*.{ctl}"
+
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@RiccPicc"
+maintainers:
+  - "@RiccPicc"
