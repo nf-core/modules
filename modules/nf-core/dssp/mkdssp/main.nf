@@ -4,8 +4,8 @@ process DSSP_MKDSSP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0c/0c9b17fef652145b415471b727cdfd9ed18025bc3551cf296b227f6bafd8a5a1/data':
-        'community.wave.seqera.io/library/dssp:4.5.3--019c84afbb8c3190' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e4/e45865baee2b1563b471eb47b62f04ad6e49a862bcb815f8944b5bdba8cc33e1/data':
+        'community.wave.seqera.io/library/dssp:4.5.8--9dc7af262c1d3dd7' }"
 
     input:
     tuple val(meta), path(pdb)
@@ -35,7 +35,6 @@ process DSSP_MKDSSP {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.${format}
