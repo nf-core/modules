@@ -6,12 +6,14 @@ keywords:
   - ANI
 tools:
   - fastani:
-      description: FastANI is developed for fast alignment-free computation of whole-genome Average Nucleotide Identity (ANI).
+      description: FastANI is developed for fast alignment-free computation of
+        whole-genome Average Nucleotide Identity (ANI).
       homepage: https://github.com/ParBLiSS/FastANI
       documentation: https://github.com/ParBLiSS/FastANI
       tool_dev_url: https://github.com/ParBLiSS/FastANI
       doi: 10.1038/s41467-018-07641-9
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: biotools:fastani
 input:
   - - meta:
@@ -21,31 +23,35 @@ input:
           e.g. [ id:'test' ]
     - query:
         type: file
-        description: Fasta file to be used as the query. If provided, ql will be ignored.
+        description: Fasta file to be used as the query. If provided, ql will be
+          ignored.
         pattern: "*.{fasta,fna,fa}"
         ontologies:
-          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1929
   - - meta2:
         type: map
         description: Groovy Map containing sample information for the reference
     - reference:
         type: file
-        description: Fasta file to be used as the reference. If provided, rl will be ignored.
+        description: Fasta file to be used as the reference. If provided, rl will
+          be ignored.
         pattern: "*.{fasta,fna,fa}"
         ontologies:
-          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1929
   - ql:
       type: file
-      description: File containing a list of query fasta paths. query input takes precedence over this list if both are provided.
+      description: File containing a list of query fasta paths. query input takes
+        precedence over this list if both are provided.
       pattern: "*.txt"
       ontologies:
-        - edam: "http://edamontology.org/format_2330" # TXT
+        - edam: "http://edamontology.org/format_2330"
   - rl:
       type: file
-      description: File containing a list of reference fasta paths. reference input takes precedence over this list if both are provided.
+      description: File containing a list of reference fasta paths. reference
+        input takes precedence over this list if both are provided.
       pattern: "*.txt"
       ontologies:
-        - edam: "http://edamontology.org/format_2330" # TXT
+        - edam: "http://edamontology.org/format_2330"
 output:
   ani:
     - - meta:
@@ -58,7 +64,7 @@ output:
           description: ANI results file
           pattern: "*.txt"
           ontologies:
-            - edam: "http://edamontology.org/format_2330" # TXT
+            - edam: "http://edamontology.org/format_2330"
   visual:
     - - meta:
           type: map
@@ -71,7 +77,7 @@ output:
           description: FastANI visualization output
           pattern: "*.visual"
           ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: "http://edamontology.org/format_3475"
   matrix:
     - - meta:
           type: map
@@ -83,7 +89,7 @@ output:
           optional: true
           description: ANI matrix output
           ontologies:
-            - edam: "http://edamontology.org/format_3033" # MATRIX
+            - edam: "http://edamontology.org/format_3033"
   versions_fastani:
     - - ${task.process}:
           type: string
@@ -91,7 +97,18 @@ output:
       - fastani:
           type: string
           description: The name of the tool
-      - fastANI --version:
+      - fastANI --version 2>&1 | head -1 | sed "s/version\ //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fastani:
+          type: string
+          description: The name of the tool
+      - fastANI --version 2>&1 | head -1 | sed "s/version\ //":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
