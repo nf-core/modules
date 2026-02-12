@@ -1,0 +1,46 @@
+name: eider_querytoparquet
+description: Generic DuckDB query to Parquet format
+keywords:
+  - duckdb
+  - parquet
+  - sql
+  - query
+tools:
+  - eider:
+      description: |
+        Command line bioinformatics tools for DuckDB.
+      homepage: https://github.com/heuermh/eider
+      documentation: https://github.com/heuermh/eider
+      licence: ["Apache-2.0"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sql:
+        type: file
+        description: SQL query template
+        pattern: "*.{sql|sql.bgz|sql.gz|sql.zst}"
+output:
+  - parquet:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.parquet":
+          type: file
+          description: |
+            Query results in Parquet format
+          pattern: "*.{parquet}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@heuermh"
+maintainers:
+  - "@heuermh"
