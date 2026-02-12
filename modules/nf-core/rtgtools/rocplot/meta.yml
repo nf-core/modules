@@ -27,7 +27,7 @@ input:
         description: Input TSV ROC files created with RTGTOOLS_VCFEVAL
         pattern: "*.tsv.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989
+          - edam: http://edamontology.org/format_3989 # GZIP format
 output:
   png:
     - - meta:
@@ -58,7 +58,7 @@ output:
       - rgtools:
           type: string
           description: The name of the tool
-      - "rtg version | head -n 1 | sed 's/Product: RTG Tools //'":
+      - "rtg version | sed 's/Product: RTG Tools //; q'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -69,7 +69,7 @@ topics:
       - rgtools:
           type: string
           description: The name of the tool
-      - "rtg version | head -n 1 | sed 's/Product: RTG Tools //'":
+      - "rtg version | sed 's/Product: RTG Tools //; q'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:

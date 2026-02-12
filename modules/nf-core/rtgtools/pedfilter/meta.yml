@@ -47,7 +47,7 @@ output:
       - rgtools:
           type: string
           description: The name of the tool
-      - "rtg version | head -n 1 | sed 's/Product: RTG Tools //'":
+      - "rtg version | sed 's/Product: RTG Tools //; q'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -58,7 +58,7 @@ topics:
       - rgtools:
           type: string
           description: The name of the tool
-      - "rtg version | head -n 1 | sed 's/Product: RTG Tools //'":
+      - "rtg version | sed 's/Product: RTG Tools //; q'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:

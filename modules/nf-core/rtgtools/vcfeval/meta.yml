@@ -78,7 +78,7 @@ output:
           description: A VCF file for the true positive variants
           pattern: "*.tp.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   tp_tbi:
     - - meta:
           type: map
@@ -101,7 +101,7 @@ output:
           description: A VCF file for the false negative variants
           pattern: "*.fn.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   fn_tbi:
     - - meta:
           type: map
@@ -124,7 +124,7 @@ output:
           description: A VCF file for the false positive variants
           pattern: "*.fp.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   fp_tbi:
     - - meta:
           type: map
@@ -147,7 +147,7 @@ output:
           description: A VCF file for the true positive variants from the baseline
           pattern: "*.tp-baseline.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   baseline_tbi:
     - - meta:
           type: map
@@ -171,7 +171,7 @@ output:
           description: TSV files containing ROC data for the SNPs
           pattern: "*.snp_roc.tsv.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   non_snp_roc:
     - - meta:
           type: map
@@ -183,7 +183,7 @@ output:
           description: TSV files containing ROC data for all variants except SNPs
           pattern: "*.non_snp_roc.tsv.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   weighted_roc:
     - - meta:
           type: map
@@ -195,7 +195,7 @@ output:
           description: TSV files containing weighted ROC data for all variants
           pattern: "*.weighted_snp_roc.tsv.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   summary:
     - - meta:
           type: map
@@ -225,7 +225,7 @@ output:
       - rgtools:
           type: string
           description: The name of the tool
-      - "rtg version | head -n 1 | sed 's/Product: RTG Tools //'":
+      - "rtg version | sed 's/Product: RTG Tools //; q'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -236,7 +236,7 @@ topics:
       - rgtools:
           type: string
           description: The name of the tool
-      - "rtg version | head -n 1 | sed 's/Product: RTG Tools //'":
+      - "rtg version | sed 's/Product: RTG Tools //; q'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
