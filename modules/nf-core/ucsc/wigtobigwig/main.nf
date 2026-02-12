@@ -14,7 +14,8 @@ process UCSC_WIGTOBIGWIG {
 
     output:
     tuple val(meta), path("${prefix}.bw"), emit: bw
-    tuple val("${task.process}"), val('ucsc'), val("$VERSION"), topic: versions, emit: versions_ucsc
+    tuple val("${task.process}"), val('ucsc'), val(482), topic: versions, emit: versions_ucsc
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +23,6 @@ process UCSC_WIGTOBIGWIG {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    VERSION = '482' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     wigToBigWig \\
         $args \\
@@ -33,7 +33,6 @@ process UCSC_WIGTOBIGWIG {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    VERSION = '482' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.bw
     """
