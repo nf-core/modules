@@ -2,7 +2,7 @@ process CELLRANGER_MULTI {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/cellranger:9.0.1"
+    container "nf-core/cellranger:10.0.0"
 
     input:
     val meta
@@ -76,7 +76,7 @@ process CELLRANGER_MULTI {
     target_panel = gex_targetpanel_name != '' ? "target-panel,./$gex_targetpanel_name" : ''
 
     // fixed RNA reference (not sample info!) also goes under GEX section
-    frna_probeset = include_frna && gex_frna_probeset_name != '' ? "probe-set,./$gex_frna_probeset_name" : ''
+    frna_probeset = gex_frna_probeset_name != '' ? "probe-set,./$gex_frna_probeset_name" : ''
 
     // VDJ inner primer set
     primer_index = vdj_primer_index ? "inner-enrichment-primers,./references/primers/${vdj_primer_index.getName()}" : ''

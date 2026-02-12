@@ -14,13 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Use the @nf-core-bot token to check out so we can push later
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           token: ${{ secrets.nf_core_bot_auth_token }}
 
       # indication that the linting is being fixed
       - name: React on comment
-        uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
         with:
           comment-id: ${{ github.event.comment.id }}
           reactions: eyes
@@ -32,27 +32,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.nf_core_bot_auth_token }}
 
-      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
-
-      - name: Install Prettier
-        run: npm install -g prettier @prettier/plugin-php
-
-      # Check that we actually need to fix something
-      - name: Run 'prettier --check'
-        id: prettier_status
-        run: |
-          if prettier --check ${GITHUB_WORKSPACE}; then
-            echo "::set-output name=result::pass"
-          else
-            echo "::set-output name=result::fail"
-          fi
-      - name: Run 'prettier --write'
-        if: steps.prettier_status.outputs.result == 'fail'
-        run: prettier --write ${GITHUB_WORKSPACE}
+      - name: Run prek
+        id: prek
+        uses: j178/prek-action@0bb87d7f00b0c99306c8bcb8b8beba1eb581c037 # v1
+        continue-on-error: true
 
       - name: Post nothing-to-do comment
-        if: steps.prettier_status.outputs.result == 'pass'
-        uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4
+        if: steps.prek.outcome == 'success'
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
@@ -60,7 +47,7 @@ jobs:
             This is probably because the linting errors come from `nf-core lint` and have to be fixed manually (or with `nf-core lint --fix`).
 
       - name: Commit & push changes
-        if: steps.prettier_status.outputs.result == 'fail'
+        if: steps.prek.outcome == 'failure'
         run: |
           git config user.email "core@nf-co.re"
           git config user.name "nf-core-bot"

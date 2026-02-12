@@ -1,18 +1,20 @@
-# NVIDIA Clara Parabricks modules
+# NVIDIA Parabricks Modules
 
-These nf-core modules implement functionality of the NVIDIA Clara Parabricks programs for GPU-accelerated genomics tasks. Parabricks covers the functionality of alignment (replicating `bwa mem`), variant calling (replicating `gatk4` and `deepvariant`), and other common genomics tasks. Please see the [documentation](https://docs.nvidia.com/clara/parabricks/4.0.1/index.html) for additional details.
+These nf-core modules implement functionality of the NVIDIA Parabricks software for GPU-accelerated genomics tasks. Parabricks covers the functionality of alignment (Ex. `bwa mem`, `bwa meth` and `STAR`), variant and fusion calling (Ex. `deepvariant`, `mutectcaller`, and `starfusion`), and other common genomics tasks. Please see the [documentation](https://docs.nvidia.com/clara/parabricks/latest/index.html) for additional details.
 
 ## General considerations
 
-Parabricks is available only through a docker container: `nvcr.io/nvidia/clara/clara-parabricks:4.5.1-1`. The main entrypoint to the Parabricks is the command line program `pbrun`, which calls several sub-programs within the container. The Prabricks authors combined several common patterns into a single tool, such as `fq2bam` performing alignment, sorting, mark duplicates, and base quality score recalibration, all within a single command. Generally, the tools can be used for only a subset of the entire functionality as well.
+Parabricks is available only through a docker container: `nvcr.io/nvidia/clara/clara-parabricks:4.6.0-1`. The main entrypoint to the Parabricks is the command line program `pbrun`, which calls several sub-programs within the container. The Parabricks authors combined several common patterns into a single tool, such as `fq2bam` performing alignment, sorting, mark duplicates, and base quality score recalibration, all within a single command. Generally, the tools can be used for only a subset of the entire functionality as well.
 
-Parabricks tools must be run with at least one NVIDIA GPU with >16GB vRAM, and a usually require a large amount of resources (at least 8 threads and 30GB RAM). Please see the [resource requirements](https://docs.nvidia.com/clara/parabricks/4.0.1/GettingStarted.html) for more information. It is recommended to use fast local storage whenever possible to ensure the system is not bottlenecked by I/O.
+## Hardware Requirements
+
+Parabricks tools must be run with at least one NVIDIA GPU with at least 16GB vRAM, and a usually require a large amount of resources (at least 8 threads and 30GB RAM). Please see the [installation requirements](https://docs.nvidia.com/clara/parabricks/latest/gettingstarted/installationrequirements.html) for more information. It is recommended to use fast local storage whenever possible to ensure the system is not bottlenecked by I/O.
 
 To give docker or singularity access to GPUs present on the host system, add this line to the configuration file: `docker.runOptions = "--gpus all"` or `singularity.runOptions = "--nv"`.
 
 ## License
 
-As of version 4.0, Parabricks is available for general use. The license from NVIDIA states:
+As of version 4.0, Parabricks is available for free for general use. The license from NVIDIA states:
 
 ```
 A license is no longer required to use Clara Parabricks. The container works out of the box once downloaded.
@@ -26,11 +28,11 @@ Clara Parabricks is free for
 Users who would like to have Enterprise Support for Clara Parabricks can purchase NVIDIA AI Enterprise licenses, which provides full-stack support. To learn more about NVIDIA AI Enterprise, please visit https://www.nvidia.com/en-us/data-center/products/ai-enterprise/.
 ```
 
-## Specific tools
+## Notes on Specific tools
 
-### parabricks/fq2bam
+### fq2bam
 
-`fq2bam` performs alignment, sorting, (optional) marking of duplicates, and (optional) base quality score recalibration (BQSR). There is no option to control the number of threads used with this tool - all available threads on the system are used by default.
+The `fq2bam` module performs alignment, sorting, (optional) marking of duplicates, and (optional) base quality score recalibration (BQSR). There is no option to control the number of threads used with this tool - all available threads on the system are used by default.
 
 Alignment and coordinate sorting are always performed. Duplicate marking can be performed by passing the option `markdups=true`. Duplicate marking and BQSR can be performed by passing the options `markdups=true` and `known_sites=$KNOWN_SITES_FILE`.
 
@@ -38,12 +40,37 @@ Please see the `fq2bam/meta.yml` file for a detailed list of required and option
 
 For additional considerations, including information about how readgroups are added to the resulting bam files, see the [tool documentation](https://docs.nvidia.com/clara/parabricks/latest/Documentation/ToolDocs/man_fq2bam.html).
 
-## parabricks/stargenomegenerate
+## rnafq2bam
 
-The `parabricks/stargenomegenerate` module is near identical to the existing `star/genomegenerate` module, however it runs on with older version of STAR (2.7.2a) that is required for Parabricks compatibility. This module does not exist in any previous versions of the `nf-core/modules` and therefore must be included here. In the future, it's possible that Parabricks will update to a newer version of STAR and this accessory module may become obselete, but for now it is required pre-processing if the Genome Lib Dir has not already been generated with this vesion of STAR.
+Parabricks `rnafq2bam` is based on STAR version `2.7.2a` and the STAR index directory required as input for this module must also be generated using this version. An example for how to use the existing STAR genomegenerate module with Parabricks can be found in the [nextflow.config](./rnafq2bam/tests/nextflow.config) for the rnafq2bam tests.
 
-## Compatible with
+## starfusion
 
-Is added as optional output to the stub section to make the compatible CPU version available to the end user. This section is not given for the subtools `applybqsr`, `fq2bammeth`, `genotypegvcf`, or `rnafq2bam`.
+Parabricks `starfusion` is based on STAR-Fusion version `1.7.0` and the STAR-Fusion build indices required as input for this module must also be generated using this version. An example for how to use the existing STAR-Fusion build module with Parabricks can be found in the [nextflow.config](./starfusion/tests/nextflow.config) for the starfusion tests.
+
+## compatible_with.yaml
+
+The `compatible_with.yaml` is provided as an optional output to the stub section to make the compatible CPU version available to the end user. This section is not given for the subtools `applybqsr`, `fq2bammeth`, `genotypegvcf`, `rnafq2bam`, or `starfusion`.
 
 For the full list of compatible versions, check the [Parabricks documentation](https://docs.nvidia.com/clara/parabricks/latest/documentation/tooldocs/outputaccuracyandcompatiblecpusoftwareversions.html#).
+
+## Notes on Testing
+
+The following Parabricks modules require testing on a `g4dn.2xlarge` instead of the default `g4dn.xlarge` due to higher system memory requirements.
+
+- rnafq2bam
+- starfusion
+
+In [nf-test-gpu.yml](../../../.github/workflows/nf-test-gpu.yml), update the following line:
+
+```
+nf-test-gpu:
+    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=ubuntu24-gpu-x64"
+```
+
+Change it back before merging into master:
+
+```
+nf-test-gpu:
+    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.xlarge/image=ubuntu24-gpu-x64"
+```

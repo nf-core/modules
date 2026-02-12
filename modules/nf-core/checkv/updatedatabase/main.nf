@@ -37,10 +37,7 @@ process CHECKV_UPDATEDATABASE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix    = task.ext.prefix ?: "${meta.id}"
-    def checkv_db = db ?: ''
-    def update_sequence = fasta ?: ''
     """
     touch -p ${prefix}/**
 

@@ -45,7 +45,7 @@ process NGSBITS_UPDHUNTER {
 
     """
     echo ${args}
-    
+
     touch ${prefix}.tsv
     touch ${prefix}.igv
 

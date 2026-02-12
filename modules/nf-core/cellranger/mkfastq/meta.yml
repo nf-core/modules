@@ -1,6 +1,6 @@
 name: cellranger_mkfastq
-description: Module to create FASTQs needed by the 10x Genomics Cell Ranger tool.
-  Uses the cellranger mkfastq command.
+description: Module to create FASTQs needed by the 10x Genomics Cell Ranger
+  tool. Uses the cellranger mkfastq command.
 keywords:
   - reference
   - mkfastq
@@ -9,9 +9,9 @@ keywords:
   - bcl2fastq
 tools:
   - cellranger:
-      description: Cell Ranger by 10x Genomics is a set of analysis pipelines that process
-        Chromium single-cell data to align reads, generate feature-barcode matrices,
-        perform clustering and other secondary analysis, and more.
+      description: Cell Ranger by 10x Genomics is a set of analysis pipelines that
+        process Chromium single-cell data to align reads, generate feature-barcode
+        matrices, perform clustering and other secondary analysis, and more.
       homepage: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
       documentation: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
       tool_dev_url: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
@@ -39,10 +39,20 @@ output:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - "*_outs/outs/fastq_path/**/*.fastq.gz":
+      - "*_outs/outs/fastq_path/**/**_S[0-9]*_R?_00?.fastq.gz":
           type: file
-          description: Unaligned FastQ files
-          pattern: "*.fastq.gz"
+          description: Read FastQ files
+          pattern: "*_S[0-9]*_R?_00?.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  fastq_idx:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*_outs/outs/fastq_path/**/**_S[0-9]*_I?_00?.fastq.gz":
+          type: file
+          description: Index FastQ files
+          pattern: "*_S[0-9]*_I?_00?.fastq.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
   undetermined_fastq:

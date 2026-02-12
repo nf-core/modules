@@ -4,8 +4,8 @@ process DIAMOND_BLASTP {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/diamond:2.1.12--hdb4b4cc_1'
-        : 'biocontainers/diamond:2.1.12--hdb4b4cc_1'}"
+        ? 'https://depot.galaxyproject.org/singularity/diamond:2.1.16--h13889ed_0'
+        : 'biocontainers/diamond:2.1.16--h13889ed_0'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -81,6 +81,7 @@ process DIAMOND_BLASTP {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def out_ext = ""

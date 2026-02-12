@@ -1,6 +1,6 @@
 name: "quilt_quilt"
-description: QUILT is an R and C++ program for rapid genotype imputation from low-coverage
-  sequence using a large reference panel.
+description: QUILT is an R and C++ program for rapid genotype imputation from
+  low-coverage sequence using a large reference panel.
 keywords:
   - imputation
   - low-coverage
@@ -15,7 +15,8 @@ tools:
       documentation: "https://github.com/rwdavies/quilt"
       tool_dev_url: "https://github.com/rwdavies/quilt"
       doi: "10.1038/s41588-021-00877-0"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -35,59 +36,61 @@ input:
         ontologies: []
     - bamlist:
         type: file
-        description: (Optional) File with list of BAM/CRAM files to impute. One file
-          per line.
+        description: (Optional) File with list of BAM/CRAM files to impute. One
+          file per line.
         pattern: "*.{txt}"
         ontologies: []
     - samplename:
         type: file
-        description: (Optional) File with list of samples names in the same order as
-          in bamlist to impute. One file per line.
+        description: (Optional) File with list of samples names in the same order
+          as in bamlist to impute. One file per line.
         pattern: "*.{txt}"
         ontologies: []
     - reference_haplotype_file:
         type: file
-        description: (Mandatory) Reference haplotype file in IMPUTE format (file with
-          no header and no rownames, one row per SNP, one column per reference haplotype,
-          space separated, values must be 0 or 1)
+        description: (Mandatory) Reference haplotype file in IMPUTE format (file
+          with no header and no rownames, one row per SNP, one column per
+          reference haplotype, space separated, values must be 0 or 1)
         pattern: "*.{hap.gz}"
         ontologies: []
     - reference_legend_file:
         type: file
-        description: (Mandatory) Reference haplotype legend file in IMPUTE format (file
-          with one row per SNP, and a header including position for the physical position
-          in 1 based coordinates, a0 for the reference allele, and a1 for the alternate
-          allele).
+        description: (Mandatory) Reference haplotype legend file in IMPUTE format
+          (file with one row per SNP, and a header including position for the
+          physical position in 1 based coordinates, a0 for the reference allele,
+          and a1 for the alternate allele).
         pattern: "*.{legend.gz}"
         ontologies: []
     - posfile:
         type: file
-        description: (Optional) File with positions of where to impute, lining up one-to-one
-          with genfile. File is tab separated with no header, one row per SNP, with
-          col 1 = chromosome, col 2 = physical position (sorted from smallest to largest),
-          col 3 = reference base, col 4 = alternate base. Bases are capitalized.
+        description: (Optional) File with positions of where to impute, lining up
+          one-to-one with genfile. File is tab separated with no header, one row
+          per SNP, with col 1 = chromosome, col 2 = physical position (sorted from
+          smallest to largest), col 3 = reference base, col 4 = alternate base.
+          Bases are capitalized.
         pattern: "*.{txt}"
         ontologies: []
     - phasefile:
         type: file
-        description: (Optional) File with truth phasing results. Supersedes genfile
-          if both options given. File has a header row with a name for each sample,
-          matching what is found in the bam file. Each subject is then a tab separated
-          column, with 0 = ref and 1 = alt, separated by a vertical bar |, e.g. 0|0
-          or 0|1. Note therefore this file has one more row than posfile which has no
-          header.
+        description: (Optional) File with truth phasing results. Supersedes
+          genfile if both options given. File has a header row with a name for
+          each sample, matching what is found in the bam file. Each subject is
+          then a tab separated column, with 0 = ref and 1 = alt, separated by a
+          vertical bar |, e.g. 0|0 or 0|1. Note therefore this file has one more
+          row than posfile which has no header.
         pattern: "*.{txt}"
         ontologies: []
     - genfile:
         type: file
-        description: (Optional) Path to gen file with high coverage results. Empty for
-          no genfile. If both genfile and phasefile are given, only phasefile is used,
-          as genfile (unphased genotypes) is derivative to phasefile (phased genotypes).
-          File has a header row with a name for each sample, matching what is found
-          in the bam file. Each subject is then a tab seperated column, with 0 = hom
-          ref, 1 = het, 2 = hom alt and NA indicating missing genotype, with rows corresponding
-          to rows of the posfile. Note therefore this file has one more row than posfile
-          which has no header [default \"\"]
+        description: (Optional) Path to gen file with high coverage results. Empty
+          for no genfile. If both genfile and phasefile are given, only phasefile
+          is used, as genfile (unphased genotypes) is derivative to phasefile
+          (phased genotypes). File has a header row with a name for each sample,
+          matching what is found in the bam file. Each subject is then a tab
+          seperated column, with 0 = hom ref, 1 = het, 2 = hom alt and NA
+          indicating missing genotype, with rows corresponding to rows of the
+          posfile. Note therefore this file has one more row than posfile which
+          has no header [default \"\"]
         pattern: "*.{txt}"
         ontologies: []
     - chr:
@@ -95,27 +98,28 @@ input:
         description: (Mandatory) What chromosome to run. Should match BAM headers.
     - regions_start:
         type: integer
-        description: (Mandatory) When running imputation, where to start from. The 1-based
-          position x is kept if regionStart <= x <= regionEnd.
+        description: (Mandatory) When running imputation, where to start from. The
+          1-based position x is kept if regionStart <= x <= regionEnd.
     - regions_end:
         type: integer
         description: (Mandatory) When running imputation, where to stop.
     - ngen:
         type: integer
-        description: Number of generations since founding or mixing. Note that the algorithm
-          is relatively robust to this. Use nGen = 4 * Ne / K if unsure.
+        description: Number of generations since founding or mixing. Note that the
+          algorithm is relatively robust to this. Use nGen = 4 * Ne / K if unsure.
     - buffer:
         type: integer
-        description: Buffer of region to perform imputation over. So imputation is run
-          form regionStart-buffer to regionEnd+buffer, and reported for regionStart
-          to regionEnd, including the bases of regionStart and regionEnd.
-    - genetic_map_file:
+        description: Buffer of region to perform imputation over. So imputation is
+          run form regionStart-buffer to regionEnd+buffer, and reported for
+          regionStart to regionEnd, including the bases of regionStart and
+          regionEnd.
+    - genetic_map:
         type: file
-        description: (Optional) File with genetic map information, a file with 3 white-space
-          delimited entries giving position (1-based), genetic rate map in cM/Mbp, and
-          genetic map in cM. If no file included, rate is based on physical distance
-          and expected rate (expRate).
-        pattern: "*.{txt.gz}"
+        description: (Optional) File with genetic map information, a file with 3
+          white-space delimited entries giving position (1-based), genetic rate
+          map in cM/Mbp, and genetic map in cM. If no file included, rate is based
+          on physical distance and expected rate (expRate).
+        pattern: "*.{txt,map}{,gz}"
         ontologies: []
   - - meta2:
         type: map
@@ -125,7 +129,12 @@ input:
     - fasta:
         type: file
         description: (Optional) File with reference genome.
-        pattern: "*.{txt.gz}"
+        pattern: "*.{fa,fasta}"
+        ontologies: []
+    - fasta_fai:
+        type: file
+        description: (Optional) File with reference genome index.
+        pattern: "*.{fai}"
         ontologies: []
 output:
   vcf:
@@ -136,8 +145,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.vcf.gz":
           type: file
-          description: VCF file with both SNP annotation information and per-sample
-            genotype information.
+          description: VCF file with both SNP annotation information and
+            per-sample genotype information.
           pattern: "*.{vcf.gz}"
           ontologies: []
   tbi:
@@ -157,21 +166,62 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - RData: {}
+      - RData:
+          type: directory
+          description: |
+            Folder of RData objects generated during the imputation process.
+          pattern: "RData"
   plots:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - plots: {}
+      - plots:
+          type: directory
+          description: |
+            Folder of plots generated during the imputation process.
+          pattern: "plots"
+  versions_r_quilt:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - r-quilt:
+          type: string
+          description: The name of the tool
+      - Rscript -e "cat(as.character(packageVersion('QUILT')))":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_r_base:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - r-base:
+          type: string
+          description: The name of the tool
+      - R --version | sed "1!d; s/.*version //; s/ .*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - r-quilt:
+          type: string
+          description: The name of the tool
+      - Rscript -e "cat(as.character(packageVersion('QUILT')))":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - r-base:
+          type: string
+          description: The name of the tool
+      - R --version | sed "1!d; s/.*version //; s/ .*//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@atrigila"
 maintainers:

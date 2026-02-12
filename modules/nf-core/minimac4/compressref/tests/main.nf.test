@@ -13,23 +13,21 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
-                    [ id:'input', single_end:false ], // meta map
+                input[0] = [
+                    [ id:'input' ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists: true),
-                ])
+                ]
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.msav.collect{ file(it[1]).name },
-                    ["versions.yml": path(process.out.versions.get(0)).yaml]
-                ).match() }
-            )
+            assert process.success
+            assert snapshot(
+                process.out.msav.collect{  meta, path -> [ meta, file(path).name ] },
+                process.out.findAll { key, val -> key.startsWith('versions') }
+            ).match()
         }
 
     }
@@ -41,23 +39,18 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
-                    [ id:'input', single_end:false ], // meta map
+                input[0] = [
+                    [ id:'input' ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists: true),
-                ])
+                ]
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.msav,
-                    ["versions.yml": path(process.out.versions.get(0)).yaml]
-                ).match() }
-            )
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }

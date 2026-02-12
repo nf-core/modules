@@ -1,11 +1,11 @@
 process SAWFISH_DISCOVER {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f8/f8f28fcf0823d39a8038b02cc5ff86d7cfbcf92e6f5c8540c25e110c6eb1f9be/data' :
-        'community.wave.seqera.io/library/sawfish:2.1.1--1fd57d06a7186245' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ca/ca71c93b472a8b9a7701a744a5f123e4474ce9bf1e0d110aae5b84b5134dd74c/data' :
+        'community.wave.seqera.io/library/sawfish:2.2.0--430c21f2b465b4f7' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -25,7 +25,7 @@ process SAWFISH_DISCOVER {
     tuple val(meta), path("${prefix}/debug.breakpoint_clusters.bed"), emit: debug_breakpoint_clusters
     tuple val(meta), path("${prefix}/debug.cluster.refinement.txt") , emit: debug_cluster_refinement
     tuple val(meta), path("${prefix}/discover.settings.json")       , emit: discover_settings
-    tuple val(meta), path("${prefix}/genome.gclevels.mpack")        , emit: genome_gclevels
+    tuple val(meta), path("${prefix}/genome.gclevels.mpack")        , emit: genome_gclevels          , optional: true
     tuple val(meta), path("${prefix}/max.depth.bed")                , emit: max_depth
     tuple val(meta), path("${prefix}/run.stats.json")               , emit: run_stats
     tuple val(meta), path("${prefix}/sample.gcbias.mpack")          , emit: sample_gcbias            , optional: true

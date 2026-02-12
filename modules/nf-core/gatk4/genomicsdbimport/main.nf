@@ -14,10 +14,10 @@ process GATK4_GENOMICSDBIMPORT {
     val input_map
 
     output:
-    tuple val(meta), path("${prefix}"),       emit: genomicsdb,   optional: true
-    tuple val(meta), path("${updated_db}"),   emit: updatedb,     optional: true
+    tuple val(meta), path("${prefix}"), emit: genomicsdb, optional: true
+    tuple val(meta), path("${updated_db}"), emit: updatedb, optional: true
     tuple val(meta), path("*.interval_list"), emit: intervallist, optional: true
-    path "versions.yml",                      emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,7 +27,7 @@ process GATK4_GENOMICSDBIMPORT {
     prefix = task.ext.prefix ?: "${meta.id}"
 
     // settings for running default create gendb mode
-    input_command = input_map ? "--sample-name-map ${vcf[0]}" : vcf.collect { "--variant ${it}" }.join(' ')
+    input_command = input_map ? "--sample-name-map ${vcf[0]}" : vcf.collect { vcf_ -> "--variant ${vcf_}" }.join(' ')
 
     genomicsdb_command = "--genomicsdb-workspace-path ${prefix}"
     interval_command = interval_file ? "--intervals ${interval_file}" : "--intervals ${interval_value}"
@@ -61,11 +61,6 @@ process GATK4_GENOMICSDBIMPORT {
         ${interval_command} \\
         --tmp-dir . \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -96,10 +91,5 @@ process GATK4_GENOMICSDBIMPORT {
     ${stub_genomicsdb}
     ${stub_interval}
     ${stub_update}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

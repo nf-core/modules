@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "chromograph"
 description: Chromograph is a python package to create PNG images from genetics data
   such as BED and WIG files.
@@ -88,18 +88,33 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}:
+      - "*.png":
           type: file
-          description: Directory containing the plots in png format
-          pattern: "*.png"
+          description: Plot(s) in PNG format
           ontologies: []
+  versions_chromograph:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - chromograph:
+          type: string
+          description: The tool name
+      - chromograph --version | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - chromograph:
+          type: string
+          description: The tool name
+      - chromograph --version | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@ramprasadn"
 maintainers:

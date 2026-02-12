@@ -102,7 +102,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.{fa, fasta}":
+      - "*.{fa,fasta}":
           type: file
           description: A fasta file of ccs purged of primers.
           pattern: "*.fa"
@@ -113,7 +113,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.{fa.gz, fasta.gz}":
+      - "*.{fa.gz,fasta.gz}":
           type: file
           description: A fasta.gz file of ccs purged of primers.
           pattern: "*.fasta.gz"

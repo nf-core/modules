@@ -23,7 +23,6 @@ process PYCLONEVI {
     template "main_script.py"
 
     stub:
-    def args = task.ext.args ?: '' 
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """

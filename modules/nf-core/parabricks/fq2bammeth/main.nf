@@ -5,7 +5,7 @@ process PARABRICKS_FQ2BAMMETH {
     // needed by the module to work properly can be removed when fixed upstream - see: https://github.com/nf-core/modules/issues/7226
     stageInMode 'copy'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.5.1-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-1"
 
     input:
     tuple val(meta),  path(reads)
@@ -19,7 +19,7 @@ process PARABRICKS_FQ2BAMMETH {
     path ("qc_metrics"),            emit: qc_metrics,        optional: true
     path ("*.table"),               emit: bqsr_table,        optional: true
     path ("duplicate-metrics.txt"), emit: duplicate_metrics, optional: true
-    path ("versions.yml"),          emit: versions
+    tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions_parabricks
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,7 +32,7 @@ process PARABRICKS_FQ2BAMMETH {
     def args                = task.ext.args ?: ''
     def prefix              = task.ext.prefix ?: "${meta.id}"
     def in_fq_command       = meta.single_end ? "--in-se-fq ${reads}" : "--in-fq ${reads}"
-    def known_sites_command = known_sites ? known_sites.collect { "--knownSites ${it}" }.join(' ') : ""
+    def known_sites_command = known_sites ? known_sites.collect { knownSite ->  "--knownSites ${knownSite}" }.join(' ') : ""
     def known_sites_output  = known_sites ? "--out-recal-file ${prefix}.table" : ""
     def num_gpus            = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
     """
@@ -51,11 +51,6 @@ process PARABRICKS_FQ2BAMMETH {
         ${known_sites_output} \\
         ${num_gpus} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 
     stub:
@@ -67,10 +62,5 @@ process PARABRICKS_FQ2BAMMETH {
     """
     touch ${prefix}.bam
     touch ${prefix}.bam.bai
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 }

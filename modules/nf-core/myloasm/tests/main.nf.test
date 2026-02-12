@@ -3,19 +3,19 @@ nextflow_process {
     name "Test Process MYLOASM"
     script "../main.nf"
     process "MYLOASM"
-    config "./nextflow.config" 
+    config "./nextflow.config"
     tag "modules"
     tag "modules_nfcore"
     tag "myloasm"
 
-    test("homo_sapiens - pacbio - hifi - fastq") {  
+    test("homo_sapiens - pacbio - hifi - fastq") {
         when {
             params {
                 module_args = '--hifi'
             }
             process {
                 """
-                
+
                 input[0] = [
                     [ id:'test_hifi' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists:true)

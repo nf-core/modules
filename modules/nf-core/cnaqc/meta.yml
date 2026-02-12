@@ -1,0 +1,110 @@
+name: "cnaqc"
+description: Quality control of copy number data from bulk WGS assays
+keywords:
+  - WGS
+  - copy number
+  - quality control
+tools:
+  - "cnaqc":
+      description: "Copy number quality control"
+      homepage: "https://caravagnalab.github.io/CNAqc/"
+      documentation: "https://caravagnalab.github.io/CNAqc/"
+      tool_dev_url: "https://github.com/caravagnalab/CNAqc"
+      licence: ["GPL v3-or-later"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - snv_rds:
+        type: file
+        description: R object with mutation data
+        pattern: "*.rds"
+        ontologies: []
+    - cna_rds:
+        type: file
+        description: R object with copy number data
+        pattern: "*.rds"
+        ontologies: []
+    - tumour_sample:
+        type: string
+        description: string containing sample name
+        ontologies: []
+output:
+  qc_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name' ]`
+      - "*_qc.rds":
+          type: file
+          description: R object containing quality control results for the sample
+          pattern: "*{_qc.rds}"
+          ontologies: []
+  data_plot_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name' ]`
+      - "*_data_plot.rds":
+          type: file
+          description: R object containing plots of the CNA statistics for the sample
+          pattern: "*{_data_plot.rds}"
+          ontologies: []
+      - "*_qc_plot.rds":
+          type: file
+          description: R object containing plots of the quality control results for
+            the sample
+          pattern: "*{_qc_plot.rds}"
+          ontologies: []
+  qc_plot_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name' ]`
+      - "*_qc_plot.rds":
+          type: file
+          description: R object containing plots of the quality control results for
+            the sample
+          pattern: "*{_qc_plot.rds}"
+          ontologies: []
+  plot_pdf_data:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name' ]`
+      - "*_data.pdf":
+          type: file
+          description: plots of the CNA statistics for the sample
+          pattern: "*{_data.pdf}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3508" # pdf
+  plot_pdf_qc:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name' ]`
+      - "*_qc.pdf":
+          type: file
+          description: plots of the quality control results for the sample
+          pattern: "*{_qc.pdf}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3508" # pdf
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@vvvirgy"
+maintainers:
+  - "@vvvirgy"

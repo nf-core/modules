@@ -1,7 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "modkit_repair"
-description: Modkit is a bioinformatics tool for working with modified bases in Oxford Nanopore sequencing data. The command `modkit reapir` is used for repairing the MM/ML tags on trimmed or hard-clipped ONT reads.
-        
+description: Repair the MM/ML tags on trimmed or hard-clipped ONT reads using untrimmed ONT reads.
 keywords:
   - methylation
   - ont
@@ -58,13 +57,28 @@ output:
           pattern: "*.log"
           ontologies:
             - edam: "http://edamontology.org/data_1678"
+  versions_modkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - modkit:
+          type: string
+          description: The name of the tool
+      - modkit --version | sed 's/modkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - modkit:
+          type: string
+          description: The name of the tool
+      - modkit --version | sed 's/modkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
   - "@jkh00"

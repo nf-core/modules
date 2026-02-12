@@ -45,9 +45,12 @@ nextflow_workflow {
             }
         }
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    bam(workflow.out.bam[0][1]).getReadsMD5(),
+                    file(workflow.out.bai[0][1]).name
+                    ).match() }
             )
         }
     }
@@ -81,9 +84,12 @@ nextflow_workflow {
             }
         }
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    bam(workflow.out.bam[0][1]).getReadsMD5(),
+                    file(workflow.out.bai[0][1]).name
+                    ).match() }
             )
         }
     }
@@ -127,9 +133,12 @@ nextflow_workflow {
             }
         }
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    bam(workflow.out.bam[0][1]).getReadsMD5(),
+                    file(workflow.out.bai[0][1]).name
+                    ).match() }
             )
         }
     }
@@ -178,9 +187,12 @@ nextflow_workflow {
             }
         }
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    bam(workflow.out.bam[0][1]).getReadsMD5(),
+                    file(workflow.out.bai[0][1]).name
+                    ).match() }
             )
         }
     }
@@ -233,8 +245,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect{ path(it).yaml }
+                    workflow.out
                 ).match() }
             )
         }

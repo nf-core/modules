@@ -108,11 +108,11 @@ nextflow_process {
     test("homo_sampiens - bam - stub") {
 
         options "-stub"
-        
+
         when {
             process {
                 """
-                input[0] = [[ id: 'test' ], []] 
+                input[0] = [[ id: 'test' ], []]
                 input[1] = 'spearman'
                 input[2] = 'heatmap'
                 """

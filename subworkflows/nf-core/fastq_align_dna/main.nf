@@ -33,7 +33,6 @@ workflow FASTQ_ALIGN_DNA {
         if (aligner == 'bowtie2') {
                 BOWTIE2_ALIGN(ch_reads, ch_aligner_index, ch_fasta, false, sort) // if aligner is bowtie2
                 ch_bam = ch_bam.mix(BOWTIE2_ALIGN.out.bam)
-                ch_versions = ch_versions.mix(BOWTIE2_ALIGN.out.versions)
         }
         else if (aligner == 'bwamem'){
                 BWAMEM1_MEM  (ch_reads, ch_aligner_index, ch_fasta, sort)        // If aligner is bwa-mem
@@ -44,7 +43,6 @@ workflow FASTQ_ALIGN_DNA {
         else if (aligner == 'bwamem2'){
                 BWAMEM2_MEM  (ch_reads, ch_aligner_index, ch_fasta, sort)       // If aligner is bwa-mem2
                 ch_bam = ch_bam.mix(BWAMEM2_MEM.out.bam)
-                ch_versions = ch_versions.mix(BWAMEM2_MEM.out.versions)
         }
         else if (aligner == 'dragmap'){
                 DRAGMAP_ALIGN(ch_reads, ch_aligner_index, ch_fasta, sort)       // If aligner is dragmap

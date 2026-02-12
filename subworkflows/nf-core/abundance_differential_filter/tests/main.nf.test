@@ -16,6 +16,7 @@ nextflow_workflow {
     tag "variancepartition/dream"
 
     test("dream") {
+        config './dream.config'
         tag "dream_simple"
 
         when {
@@ -35,61 +36,7 @@ nextflow_workflow {
                 ])
                 ch_transcript_lengths = Channel.of([ [], [] ])
                 ch_control_features = Channel.of([ [], [] ])
-                ch_contrasts =  Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ treatment + (1 | sample_number)'])
-                    .map{
-                        tuple([id: 'test'], it, it.variable, it.reference, it.target, it.formula, it.comparison)
-                    }
-                    .groupTuple()
-                ch_input = Channel.of([
-                    [ id:'test' ],
-                    file(testData.expression_test_data_dir + testData.abundance_file),
-                    'dream',  // analysis method
-                    1.5,       // FC threshold
-                    0.05       // stat (adjusted p-value) threshold
-                ])
-
-                input[0] = ch_input
-                input[1] = ch_samplesheet
-                input[2] = ch_transcript_lengths
-                input[3] = ch_control_features
-                input[4] = ch_contrasts
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert workflow.success },
-                { assert snapshot(
-                    workflow.out.results_genewise,
-                    workflow.out.results_genewise_filtered,
-                    workflow.out.model,
-                    workflow.out.versions
-                ).match() }
-            )
-        }
-    }
-
-    test("dream - complex contrast - literal contrast string comparison") {
-        tag "dream_complex"
-
-        when {
-            workflow {
-                """
-
-                def testData = [
-                    expression_test_data_dir: params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/',
-                    contrasts_file: 'SRP254919.contrasts.csv',
-                    abundance_file: 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv',
-                    samplesheet_file: 'SRP254919.samplesheet.csv'
-                ]
-
-                ch_samplesheet = Channel.of([
-                    [ id:'test' ],
-                    file(testData.expression_test_data_dir + testData.samplesheet_file)
-                ])
-                ch_transcript_lengths = Channel.of([ [], [] ])
-                ch_control_features = Channel.of([ [], [] ])
-                ch_contrasts =  Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ 0 + treatment + sample_number', 'comparison':'treatmenthND6 - treatmentmCherry'])
+                ch_contrasts =  Channel.of(['id': 'treatment_mCherry_hND6', 'formula':'~ treatment + (1 | sample_number)', 'comparison': 'treatmentmCherry'])
                     .map{
                         tuple([id: 'test'], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
@@ -114,10 +61,119 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert path(workflow.out.results_genewise[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
-                { assert path(workflow.out.results_genewise[0][1]).getText().contains("-95.6666") },
-                { assert path(workflow.out.results_genewise[0][1]).getText().contains("1050\t549\t4.15") },
                 { assert snapshot(
-                    file(workflow.out.results_genewise[0][1]).name,
+                    workflow.out.results_genewise_filtered,
+                    workflow.out.model,
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("dream - voom") {
+        config './dream_voom.config'
+        tag "dream_voom"
+
+        when {
+            workflow {
+                """
+
+                def testData = [
+                    expression_test_data_dir: params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/',
+                    contrasts_file: 'SRP254919.contrasts.csv',
+                    abundance_file: 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv',
+                    samplesheet_file: 'SRP254919.samplesheet.csv'
+                ]
+
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.samplesheet_file)
+                ])
+                ch_transcript_lengths = Channel.of([ [], [] ])
+                ch_control_features = Channel.of([ [], [] ])
+                ch_contrasts =  Channel.of(['id': 'treatment_mCherry_hND6', 'formula':'~ treatment + (1 | sample_number)', 'comparison': 'treatmentmCherry'])
+                    .map{
+                        tuple([id: 'test'], it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                    }
+                    .groupTuple()
+                ch_input = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.abundance_file),
+                    'dream',  // analysis method
+                    1.5,       // FC threshold
+                    0.05       // stat (adjusted p-value) threshold
+                ])
+
+                input[0] = ch_input
+                input[1] = ch_samplesheet
+                input[2] = ch_transcript_lengths
+                input[3] = ch_control_features
+                input[4] = ch_contrasts
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert path(workflow.out.results_genewise[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
+                { assert snapshot(
+                    workflow.out.results_genewise_filtered,
+                    workflow.out.normalised_matrix,
+                    workflow.out.model,
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("dream - complex contrast - literal contrast string comparison") {
+        config './dream.config'
+        tag "dream_complex"
+
+        when {
+            workflow {
+                """
+
+                def testData = [
+                    expression_test_data_dir: params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/',
+                    contrasts_file: 'SRP254919.contrasts.csv',
+                    abundance_file: 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv',
+                    samplesheet_file: 'SRP254919.samplesheet.csv'
+                ]
+
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.samplesheet_file)
+                ])
+                ch_transcript_lengths = Channel.of([ [], [] ])
+                ch_control_features = Channel.of([ [], [] ])
+                ch_contrasts =  Channel.of(['id': 'treatment_mCherry_hND6', 'formula':'~ 0 + treatment + sample_number', 'comparison':'treatmenthND6 - treatmentmCherry'])
+                    .map{
+                        tuple([id: 'test'], it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                    }
+                    .groupTuple()
+                ch_input = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.abundance_file),
+                    'dream',  // analysis method
+                    1.5,       // FC threshold
+                    0.05       // stat (adjusted p-value) threshold
+                ])
+
+                input[0] = ch_input
+                input[1] = ch_samplesheet
+                input[2] = ch_transcript_lengths
+                input[3] = ch_control_features
+                input[4] = ch_contrasts
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert path(workflow.out.results_genewise[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
+                { assert snapshot(
+                    workflow.out.results_genewise_filtered,
                     workflow.out.model,
                     workflow.out.versions
                 ).match() }

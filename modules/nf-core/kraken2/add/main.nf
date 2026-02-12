@@ -15,9 +15,9 @@ process KRAKEN2_ADD {
     path seqid2taxid, stageAs: "seqid2taxid.map"
 
     output:
-    tuple val(meta), path("${prefix}/library/added/*"), emit: library_added_files
-    tuple val(meta), path("${prefix}/seqid2taxid.map"), optional: true, emit: seqid2taxid_map
-    tuple val(meta), path("${prefix}/taxonomy/*"), emit: taxonomy_files
+    tuple val(meta), path("${prefix}/library/added/*", includeInputs: true), emit: library_added_files
+    tuple val(meta), path("${prefix}/seqid2taxid.map", includeInputs: true), optional: true, emit: seqid2taxid_map
+    tuple val(meta), path("${prefix}/taxonomy/*", includeInputs: true), emit: taxonomy_files
     path "versions.yml", emit: versions
 
     when:

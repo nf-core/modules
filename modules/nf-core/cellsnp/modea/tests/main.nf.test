@@ -12,7 +12,7 @@ nextflow_process {
     tag "samtools/index"
 
     test("genotyping") {
-        setup { 
+        setup {
             run("SAMTOOLS_INDEX") {
                 script "../../../samtools/index/main.nf"
                 process {
@@ -27,10 +27,10 @@ nextflow_process {
 
         when {
             process {
-                """ 
-                
-                input[0] = SAMTOOLS_INDEX.out.bai.collect{ meta, bai -> bai }.map{ 
-                            bai -> [[ id: 'sample1'], 
+                """
+
+                input[0] = SAMTOOLS_INDEX.out.bai.collect{ meta, bai -> bai }.map{
+                            bai -> [[ id: 'sample1'],
                                     file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
                                     bai,
                                     file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true),
@@ -49,7 +49,7 @@ nextflow_process {
                     process.out.allele_depth,
                     process.out.depth_coverage,
                     process.out.depth_other).match()
-                }    
+                }
 	        )
         }
 
@@ -62,7 +62,7 @@ nextflow_process {
         when {
             process {
                 """
-                
+
                 input[0] = [
                     [ id:'sample1'],
                     file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),

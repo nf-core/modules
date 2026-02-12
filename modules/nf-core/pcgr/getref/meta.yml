@@ -1,0 +1,111 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "pcgr_getref"
+description: Get reference to run Personal Cancer Genome Reporter (PCGR)
+keywords:
+  - cancer
+  - reference
+  - pcgr
+  - mtb
+tools:
+  - pcgr:
+      description: "The Personal Cancer Genome Reporter (PCGR) is a stand-alone software package for functional annotation and translation of individual tumor genomes for precision cancer medicine"
+      homepage: "https://sigven.github.io/pcgr/index.html"
+      documentation: "https://sigven.github.io/pcgr/articles/running.html"
+      tool_dev_url: "https://github.com/sigven/pcgr/"
+      doi: "10.1093/bioinformatics/btx817"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bundleversion:
+        type: string
+        description: PCGR reference data bundle version
+        pattern: "*[0-9]*"
+        ontologies: []
+    - genome:
+        type: string
+        description: PCGR reference genome version
+        pattern: "grch37|grch38"
+        ontologies: []
+
+output:
+  pcgrref:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${bundleversion}":
+          type: directory
+          description: PCGR reference data directory
+          pattern: "{bundleversion}/"
+          ontologies: []
+  versions_curl:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - curl:
+          type: string
+          description: The tool name
+      - "curl --version | head -1 | cut -d ' ' -f 2":
+          type: string
+          description: The command used to generate the version of the tool
+  versions_gzip:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - gzip:
+          type: string
+          description: The tool name
+      - "gzip --version | head -1 | cut -d ' ' -f 2":
+          type: string
+          description: The command used to generate the version of the tool
+  versions_tar:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - tar:
+          type: string
+          description: The tool name
+      - "tar --version | head -1 | cut -d ' ' -f 4":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - curl:
+          type: string
+          description: The tool name
+      - "curl --version | head -1 | cut -d ' ' -f 2":
+          type: string
+          description: The command used to generate the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - gzip:
+          type: string
+          description: The tool name
+      - "gzip --version | head -1 | cut -d ' ' -f 2":
+          type: string
+          description: The command used to generate the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - tar:
+          type: string
+          description: The tool name
+      - "tar --version | head -1 | cut -d ' ' -f 4":
+          type: string
+          description: The command used to generate the version of the tool
+
+authors:
+  - "@famosab"
+maintainers:
+  - "@famosab"

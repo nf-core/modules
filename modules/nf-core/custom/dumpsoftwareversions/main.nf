@@ -1,11 +1,3 @@
-def deprecation_message = """
-WARNING: This module has been deprecated.
-
-Reason:
-This module is no longer recommended for use, as it is replaced by the function softwareVersionsToYAML
-in the utils_nfcore_pipeline subworkflow that is included in the nf-core template.
-
-"""
 process CUSTOM_DUMPSOFTWAREVERSIONS {
     label 'process_single'
 
@@ -27,7 +19,14 @@ process CUSTOM_DUMPSOFTWAREVERSIONS {
     task.ext.when == null || task.ext.when
 
     script:
-    assert true: deprecation_message
-    def args = task.ext.args ?: ''
+    def deprecation_message = """
+WARNING: This module has been deprecated.
+
+Reason:
+This module is no longer recommended for use, as it is replaced by the function softwareVersionsToYAML
+in the utils_nfcore_pipeline subworkflow that is included in the nf-core template.
+
+"""
+    assert false: deprecation_message
     template 'dumpsoftwareversions.py'
 }

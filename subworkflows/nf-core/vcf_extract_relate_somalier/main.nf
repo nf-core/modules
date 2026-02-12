@@ -27,10 +27,8 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         ch_input.no_tbi
     )
 
-    ch_versions = ch_versions.mix(TABIX_TABIX.out.versions)
-
     ch_somalierextract_input = ch_input.no_tbi
-        .join(TABIX_TABIX.out.tbi)
+        .join(TABIX_TABIX.out.index)
         .mix(ch_input.tbi)
 
     SOMALIER_EXTRACT(
@@ -53,7 +51,8 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         .map { meta, extract, ped ->
             def extract2 = extract[0] instanceof ArrayList ? extract[0] : extract
             def sorted_extract = extract2.sort { a, b -> file(a).name <=> file(b).name }
-            def new_meta = meta instanceof nextflow.extension.GroupKey ? meta.target : meta
+            // Check if meta is a GroupKey by checking for 'target' property
+            def new_meta = meta.hasProperty('target') ? meta.target : meta
             [ new_meta, sorted_extract, ped ]
         } // Sort and flatten the extract list, remove the GroupKey wrapper if present
 

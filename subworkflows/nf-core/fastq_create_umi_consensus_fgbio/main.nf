@@ -36,7 +36,7 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
 
     main:
 
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     // reference is indexed if index not available in iGenomes - this is set in modules configuration
     // NB: this should exist in main workflow in a form like:
@@ -48,20 +48,18 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     // please make sure you adjust your config to include --extract-umis-from-read-names with ext.args
     // of the following step
     FASTQTOBAM ( reads )
-    ch_versions = ch_versions.mix(FASTQTOBAM.out.versions)
+    // FGBIO versions are emitted via topic channels
 
     // in order to map uBAM using BWA MEM, we need to convert uBAM to FASTQ
     BAM2FASTQ_PRE ( FASTQTOBAM.out.bam, false )
-    ch_versions = ch_versions.mix(BAM2FASTQ_PRE.out.versions)
 
     // the user can choose here to use either bwa-mem (default) or bwa-mem2
-    aligned_bam = Channel.empty()
+    aligned_bam = channel.empty()
 
     if (aligner == "bwa-mem") {
 
         if(!bwa_index){
             BWAMEM1_INDEX ( fasta )
-            ch_versions = ch_versions.mix(BWAMEM1_INDEX.out.versions)
         }
 
         // sets bwaindex to correct input
@@ -76,7 +74,6 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
 
         if(!bwa_index){
             BWAMEM2_INDEX ( fasta )
-            ch_versions = ch_versions.mix(BWAMEM2_INDEX.out.versions)
         }
 
         // sets bwaindex to correct input
@@ -85,14 +82,13 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
         // the aligner should be set with the following parameters "-p -K 150000000 -Y"
         // to be configured in ext.args of your config
         BWAMEM2_MEM_PRE ( BAM2FASTQ_PRE.out.fastq, bwaindex, fasta, false )
-        ch_versions = ch_versions.mix(BWAMEM2_MEM_PRE.out.versions)
         aligned_bam = BWAMEM2_MEM_PRE.out.bam
     }
 
     // in order to tag mates information in the BAM file
     // FGBIO tool ZipperBams is used to merge info from mapped and unmapped BAM files
     ZIPPERBAMS_PRE ( FASTQTOBAM.out.bam, aligned_bam, fasta, dict )
-    ch_versions = ch_versions.mix(ZIPPERBAMS_PRE.out.versions)
+    // FGBIO versions are emitted via topic channels
 
     // appropriately tagged reads are now grouped by UMI information
     // note that in tests ext.args has been set to recommended --edits 1
@@ -102,15 +98,15 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     // it is recommended to use --strategy Identity to reduce runtime at the expense of lower accuracy
     // For duplex UMIs reads MUST be grouped using --strategy paired
     GROUPREADSBYUMI ( ZIPPERBAMS_PRE.out.bam, groupreadsbyumi_strategy )
-    ch_versions = ch_versions.mix(GROUPREADSBYUMI.out.versions)
+    // FGBIO versions are emitted via topic channels
 
     // prepare output channel independently on UMI structure
-    consensus_bam = Channel.empty()
+    consensus_bam = channel.empty()
 
     if (duplex){
         // this is executed if the library contains duplex UMIs
         CALLDUPLEXCONSENSUS ( GROUPREADSBYUMI.out.bam, min_reads, min_baseq )
-        ch_versions = ch_versions.mix(CALLDUPLEXCONSENSUS.out.versions)
+        // FGBIO versions are emitted via topic channels
         consensus_bam =  CALLDUPLEXCONSENSUS.out.bam
 
     } else {
@@ -118,17 +114,16 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
         // can be called
         // this will emit a consensus BAM file
         CALLUMICONSENSUS ( GROUPREADSBYUMI.out.bam, min_reads, min_baseq )
-        ch_versions = ch_versions.mix(CALLUMICONSENSUS.out.versions)
+        // FGBIO versions are emitted via topic channels
         consensus_bam =  CALLUMICONSENSUS.out.bam
     }
 
     FILTERCONSENSUS ( consensus_bam, fasta, min_reads, min_baseq, max_base_error_rate )
-    ch_versions = ch_versions.mix(FILTERCONSENSUS.out.versions)
+    // FGBIO versions are emitted via topic channels
 
     // now the consensus uBAM needs to be converted into FASTQ again
     // to be aligned
     BAM2FASTQ_POST ( FILTERCONSENSUS.out.bam, false )
-    ch_versions = ch_versions.mix(BAM2FASTQ_POST.out.versions)
 
     if (aligner == "bwa-mem") {
         // index made available through previous steps
@@ -138,18 +133,16 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     } else {
         // index made available through previous steps
         BWAMEM2_MEM_POST ( BAM2FASTQ_POST.out.fastq, bwaindex, fasta, false )
-        ch_versions = ch_versions.mix(BWAMEM2_MEM_POST.out.versions)
         aligned_bam_post = BWAMEM2_MEM_POST.out.bam
     }
 
     // in order to tag mates information in the BAM file
     // FGBIO tool ZipperBams is used to merge info from mapped and unmapped BAM files
     ZIPPERBAMS_POST ( consensus_bam, aligned_bam_post, fasta, dict )
-    ch_versions = ch_versions.mix(ZIPPERBAMS_POST.out.versions)
+    // FGBIO versions are emitted via topic channels
 
     // finally sort bam file
     SORTBAM ( ZIPPERBAMS_POST.out.bam, fasta, '' )
-    ch_versions = ch_versions.mix(SORTBAM.out.versions)
 
     emit:
     ubam               = FASTQTOBAM.out.bam             // channel: [ val(meta), [ bam ] ]

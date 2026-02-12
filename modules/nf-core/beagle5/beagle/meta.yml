@@ -1,6 +1,6 @@
 name: "beagle5_beagle"
-description: Beagle v5.5 is a software package for phasing genotypes and for imputing
-  ungenotyped markers.
+description: Beagle v5.5 is a software package for phasing genotypes and for
+  imputing ungenotyped markers.
 keywords:
   - phasing
   - imputation
@@ -12,7 +12,8 @@ tools:
       homepage: "https://faculty.washington.edu/browning/beagle/beagle.html"
       documentation: "https://faculty.washington.edu/browning/beagle/beagle_5.5_17Dec24.pdf"
       doi: "10.1016/j.ajhg.2021.08.005; doi:10.1016/j.ajhg.2018.07.015"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -25,27 +26,42 @@ input:
         description: target VCF input file to be imputed and or phased
         pattern: "*.{vcf,vcf.gz}"
         ontologies: []
-  - refpanel:
-      type: file
-      description: target reference panel
-      ontologies: []
-  - genmap:
-      type: file
-      description: a PLINK format genetic map with cM units
-      pattern: "*.{map,map.gz,map.zip}"
-      ontologies: []
-  - exclsamples:
-      type: file
-      description: text file containing samples one sample per line to be excluded from
-        the analysis
-      pattern: "*.*"
-      ontologies: []
-  - exclmarkers:
-      type: file
-      description: text file containing markers one marker per line to be excluded from
-        the analysis
-      pattern: "*.*"
-      ontologies: []
+    - vcf_index:
+        type: file
+        description: target VCF input file index
+        pattern: "*.{vcf,vcf.gz}.{tbi,csi}"
+        ontologies: []
+    - refpanel:
+        type: file
+        description: target reference panel
+        ontologies: []
+        pattern: "*.{vcf,vcf.gz}"
+    - refpanel_index:
+        type: file
+        description: target reference panel index
+        ontologies: []
+        pattern: "*.{vcf,vcf.gz}.{tbi,csi}"
+    - genmap:
+        type: file
+        description: a PLINK format genetic map with cM units
+        pattern: "*.{map,map.gz,map.zip}"
+        ontologies: []
+    - exclsamples:
+        type: file
+        description: text file containing samples one sample per line to be
+          excluded from the analysis
+        pattern: "*.*"
+        ontologies: []
+    - exclmarkers:
+        type: file
+        description: text file containing markers one marker per line to be
+          excluded from the analysis
+        pattern: "*.*"
+        ontologies: []
+    - region:
+        type: string
+        description: Region to perform imputation
+        pattern: "(chr)?\\d*:\\d*-\\d*"
 output:
   vcf:
     - - meta:
@@ -55,10 +71,11 @@ output:
             e.g. [ id:'test' ]
       - "*.vcf.gz":
           type: file
-          description: bgzip compressed VCF file that contains phased non missing genotypes
-            for all non reference samples
+          description: bgzip compressed VCF file that contains phased non missing
+            genotypes for all non reference samples
           pattern: "*.vcf.gz"
           ontologies:
+            - edam: http://edamontology.org/format_3016 #VCF
             - edam: http://edamontology.org/format_3989 # GZIP format
   log:
     - - meta:
@@ -68,17 +85,31 @@ output:
             e.g. [ id:'test' ]
       - "*.log":
           type: file
-          description: a summary of the analysis that includes the Beagle version, the
-            command line arguments, and compute time.
+          description: a summary of the analysis that includes the Beagle version,
+            the command line arguments, and compute time.
           pattern: "*.log"
           ontologies: []
+  versions_beagle:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - beagle:
+          type: string
+          description: The name of the tool
+      - beagle 2>&1 | sed -n 's/.*version \([^)]*\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - beagle:
+          type: string
+          description: The name of the tool
+      - beagle 2>&1 | sed -n 's/.*version \([^)]*\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ashotmarg"
 maintainers:

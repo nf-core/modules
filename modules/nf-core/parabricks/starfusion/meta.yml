@@ -1,0 +1,83 @@
+name: parabricks_starfusion
+description: This tool uses the GPU to perform fusion calling for RNA-Seq
+  samples, utilizing the STAR-Fusion algorithm. This requires input of a genome
+  resource library, in accordance with the original STAR-Fusion tool, and
+  outputs candidate fusion transcripts.
+keywords:
+  - fusion
+  - starfusion
+  - rna
+tools:
+  - "parabricks":
+      description: "NVIDIA Clara Parabricks GPU-accelerated genomics tools"
+      homepage: "https://www.nvidia.com/en-us/clara/genomics/"
+      documentation: "https://docs.nvidia.com/clara/parabricks/latest/index.html"
+      licence: ["https://docs.nvidia.com/clara/parabricks/latest/eula.html"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - chimeric_junction:
+        type: file
+        description: Path to the Chimeric.out.junction file produced by STAR
+        pattern: "*/Chimeric.out.junction"
+        ontologies: []
+  - - meta1:
+        type: map
+        description: |
+          Groovy Map containing genome lib dir information
+    - genome_lib_dir:
+        type: directory
+        description: Path to a genome resource library directory. The indexing
+          required to run STAR should be completed by the user beforehand.
+        pattern: "*"
+        ontologies: []
+output:
+  fusions:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "fusion_predictions.tsv":
+          type: file
+          description: Fusion events from STAR-fusion
+          pattern: "fusion_predictions.tsv"
+  abridged:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "fusion_predictions.abridged.tsv":
+          type: file
+          description: Abridged version of fusion events from STAR-fusion
+          pattern: "fusion_predictions.abridged.tsv"
+  versions_parabricks:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - parabricks:
+          type: string
+          description: The tool name
+      - "pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - parabricks:
+          type: string
+          description: The tool name
+      - "pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'":
+          type: string
+          description: The command used to generate the version of the tool
+authors:
+  - "@gburnett-nvidia"
+maintainers:
+  - "@gburnett-nvidia"

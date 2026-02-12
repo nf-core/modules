@@ -13,11 +13,15 @@ inputs:
   paths:
     description: "Test paths"
     required: true
+  tag:
+    description: "Tag to pass as argument for nf-test --tag parameter"
+    required: false
+    default: ""
 
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5
+    - uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5
       with:
         distribution: "temurin"
         java-version: "17"
@@ -25,12 +29,12 @@ runs:
     - name: Set up Nextflow
       uses: nf-core/setup-nextflow@v2
       with:
-        version: "${{ env.NXF_VERSION }}"
+        version: "${{ env.NXF_VER }}"
 
     - name: Set up Python
-      uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6
+      uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
       with:
-        python-version: "3.13"
+        python-version: "3.14"
 
     - name: Set up nf-test
       uses: nf-core/setup-nf-test@v1
@@ -52,7 +56,7 @@ runs:
 
     - name: Set up Conda
       if: ${{contains(inputs.profile, 'conda')}}
-      uses: conda-incubator/setup-miniconda@505e6394dae86d6a5c7fbb6e3fb8938e3e863830 # v3
+      uses: conda-incubator/setup-miniconda@fc2d68f6413eb2d87b895e92f8584b5b94a10167 # v3
       with:
         auto-update-conda: true
         conda-solver: libmamba
@@ -76,6 +80,7 @@ runs:
         SENTIEON_AUTH_MECH: "GitHub Actions - token"
       run: |
         NFT_WORKDIR=~
+        TAGS=$([ -n "${{ inputs.tags }}" ] && echo "--tag ${{ inputs.tags }}" || echo "")
 
         nf-test test \
           --profile=${{ inputs.profile }} \
@@ -84,6 +89,7 @@ runs:
           --ci \
           --shard ${{ inputs.shard }}/${{ inputs.total_shards }} \
           --filter process,workflow \
+          $TAGS \
           ${{ inputs.paths }}
 
           # Save the absolute path of the test.tap file to the output

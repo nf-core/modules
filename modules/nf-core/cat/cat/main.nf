@@ -4,15 +4,15 @@ process CAT_CAT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pigz:2.3.4' :
-        'biocontainers/pigz:2.3.4' }"
+        'https://depot.galaxyproject.org/singularity/pigz:2.8' :
+        'biocontainers/pigz:2.8' }"
 
     input:
     tuple val(meta), path(files_in)
 
     output:
     tuple val(meta), path("${prefix}"), emit: file_out
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val("pigz"), eval("pigz --version 2>&1 | sed 's/pigz //g'"),  topic: versions, emit: versions_cat
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,7 +20,7 @@ process CAT_CAT {
     script:
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
-    def file_list = files_in.collect { it.toString() }
+    def file_list = files_in.collect { file -> file.toString() }
 
     // choose appropriate concatenation tool depending on input and output format
 
@@ -55,7 +55,7 @@ process CAT_CAT {
     """
 
     stub:
-    def file_list   = files_in.collect { it.toString() }
+    def file_list   = files_in.collect { file -> file.toString() }
     prefix          = task.ext.prefix ?: "${meta.id}${file_list[0].substring(file_list[0].lastIndexOf('.'))}"
     if(file_list.contains(prefix.trim())) {
         error "The name of the input file can't be the same as for the output prefix in the " +

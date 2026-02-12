@@ -4,7 +4,7 @@ nextflow_process {
     config "./nextflow.config"
     script "../main.nf"
     process "SENTIEON_VARCAL"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "sentieon"
@@ -12,7 +12,7 @@ nextflow_process {
 
 
     test("homo sapiens - one resource") {
-        
+
         when {
             params {
                 module_args = '--var_type SNP --annotation QD --annotation MQ --annotation FS --annotation SOR'
@@ -42,15 +42,15 @@ nextflow_process {
                     file(process.out.recal[0][1]).readLines()[0..5],
                     file(process.out.idx[0][1]).name,
                     process.out.tranches,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
         }
-    }   
+    }
 
     test("homo sapiens - multiple resources") {
-        
+
         when {
             params {
                 module_args = '--var_type SNP --annotation QD --annotation MQ --annotation FS --annotation SOR'
@@ -91,13 +91,13 @@ nextflow_process {
                     file(process.out.recal[0][1]).readLines()[0..5],
                     file(process.out.idx[0][1]).name,
                     process.out.tranches,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
         }
     }
-    
+
     test("homo sapiens -- stub") {
         options '-stub'
         when {
@@ -137,8 +137,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
+                    process.out
                     ).match()
                 }
             )

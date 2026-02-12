@@ -6,7 +6,7 @@ process BLOBTK_PLOT {
     // Adding a check would overly complicate the module so for now
     // we can ignore errors, with the knowledge it would only kill
     // runs in which the blobdir doesn't have the right data.
-    errorStrategy = 'ignore'
+    errorStrategy 'ignore'
 
     tag "$prefix"
     label 'process_single'
@@ -36,8 +36,8 @@ process BLOBTK_PLOT {
         error "BLOBTK_PLOT can't use both local_path and online_path, use `[]` as input for the unused channel."
     }
 
-    resource    = online_path ?: local_path
-    prefix      = task.ext.prefix ?: "${meta.id}"
+    def resource = online_path ?: local_path
+    prefix       = task.ext.prefix ?: "${meta.id}"
 
     """
     blobtk plot \\
@@ -52,7 +52,7 @@ process BLOBTK_PLOT {
     """
 
     stub:
-    def prefix  = task.ext.prefix ?: "${meta.id}"
+    prefix      = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.png
 

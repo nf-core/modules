@@ -17,28 +17,56 @@ tools:
       identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - config_file:
+        type: file
+        description: Path to a config file in YAML format
+        pattern: "*.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+    - table:
+        type: file
+        description: Path to a CSV/TSV file
+        pattern: "*.{csv,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
   report:
     - - meta:
-          type: directory
-          description: directory with HTML report of provided CSV/TSV files
-          pattern: "/output/"
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
       - ${prefix}:
           type: directory
           description: directory with HTML report of provided CSV/TSV files
-          pattern: "/output/"
+          pattern: "${prefix}"
+  versions_datavzrd:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - datavzrd:
+          type: string
+          description: The tool name
+      - "datavzrd --version | sed -e 's/[^0-9.]//g'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - datavzrd:
+          type: string
+          description: The tool name
+      - "datavzrd --version | sed -e 's/[^0-9.]//g'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@vickylaram"
   - "@famosab"

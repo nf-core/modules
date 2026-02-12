@@ -14,7 +14,7 @@ process GATK4_FILTERINTERVALS {
 
     output:
     tuple val(meta), path("*.interval_list"), emit: interval_list
-    path "versions.yml",                      emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +23,7 @@ process GATK4_FILTERINTERVALS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def annotated_command = annotated_intervals ? "--annotated-intervals ${annotated_intervals}" : ""
-    def read_counts_command = read_counts ? read_counts.collect { "--input ${it}" }.join(" ") : ""
+    def read_counts_command = read_counts ? read_counts.collect { count -> "--input ${count}" }.join(" ") : ""
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -40,21 +40,11 @@ process GATK4_FILTERINTERVALS {
         --intervals ${intervals} \\
         --output ${prefix}.interval_list \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.interval_list
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

@@ -7,13 +7,14 @@ process KRAKEN2_BUILD {
         : 'community.wave.seqera.io/library/kraken2_coreutils_pigz:920ecc6b96e2ba71'}"
 
     input:
-    tuple val(meta), path(library_added_files, stageAs: "database/library/added/")
-    tuple val(meta2), path(seqid2taxid_map, stageAs: "database/seqid2taxid.map")
-    tuple val(meta3), path(taxonomy_files, stageAs: "database/taxonomy/")
+    tuple val(meta), path(library_added_files, stageAs: "kraken2-database/library/added/")
+    tuple val(meta2), path(seqid2taxid_map, stageAs: "kraken2-database/seqid2taxid.map")
+    tuple val(meta3), path(taxonomy_files, stageAs: "kraken2-database/taxonomy/")
     val cleaning
 
     output:
-    tuple val(meta), path("${prefix}"), emit: db
+    tuple val(meta), path("kraken2-database"), emit: db
+    tuple val(meta), path("kraken2-database/*k2d", includeInputs: true), path("kraken2-database/*map", includeInputs: true), path("kraken2-database/library/added/*", includeInputs: true), path("kraken2-database/taxonomy/*", includeInputs: true), optional: true, emit: db_separated
     path "versions.yml", emit: versions
 
     when:
@@ -22,17 +23,15 @@ process KRAKEN2_BUILD {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    run_clean = cleaning ? "kraken2-build --clean --db database/" : ""
+    run_clean = cleaning ? "kraken2-build --clean --db kraken2-database/" : ""
     """
     kraken2-build \\
         --build \\
         ${args} \\
         --threads ${task.cpus} \\
-        --db database/
+        --db kraken2-database/
 
     ${run_clean}
-
-    mv database/ ${prefix}/
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -45,8 +44,8 @@ process KRAKEN2_BUILD {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "${args}"
-    mkdir -p "${prefix}"
-    touch ${prefix}/{hash,opts,tax}.k2d
+    mkdir -p kraken2-database/
+    touch kraken2-database/{hash,opts,tax}.k2d
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
