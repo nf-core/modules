@@ -17,7 +17,7 @@ process FASTANI {
     tuple val(meta), path("*.txt")   , emit: ani
     tuple val(meta), path("*.visual"), optional:true, emit: visual
     tuple val(meta), path("*.matrix"), optional:true, emit: matrix
-    tuple val("${task.process}"), val("fastani"), eval('fastANI --version'), topic: versions, emit: versions_fastani
+    tuple val("${task.process}"), val("fastani"), eval('fastANI --version 2>&1 | head -1 | sed "s/version\ //"'), topic: versions, emit: versions_fastani
 
     when:
     task.ext.when == null || task.ext.when
