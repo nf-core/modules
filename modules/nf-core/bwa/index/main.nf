@@ -22,25 +22,25 @@ process BWA_INDEX {
     script:
     prefix = task.ext.prefix ?: ( meta.id ? "${meta.id}" : "${fasta.baseName}" )
     def args   = task.ext.args ?: ''
-    def genome = "${fasta.baseName}"
+    def suffix = task.ext.suffix ?: "${fasta.baseName}"
     """
     mkdir ${prefix}
     bwa \\
         index \\
         $args \\
-        -p ${prefix}/${genome} \\
+        -p ${prefix}/${suffix} \\
         $fasta
     """
 
     stub:
     prefix = task.ext.prefix ?: ( meta.id ? "${meta.id}" : "${fasta.baseName}" )
-    def genome = "${fasta.baseName}"
+    def suffix = task.ext.suffix ?: "${fasta.baseName}"
     """
     mkdir ${prefix}
-    touch ${prefix}/${genome}.amb
-    touch ${prefix}/${genome}.ann
-    touch ${prefix}/${genome}.bwt
-    touch ${prefix}/${genome}.pac
-    touch ${prefix}/${genome}.sa
+    touch ${prefix}/${suffix}.amb
+    touch ${prefix}/${suffix}.ann
+    touch ${prefix}/${suffix}.bwt
+    touch ${prefix}/${suffix}.pac
+    touch ${prefix}/${suffix}.sa
     """
 }
