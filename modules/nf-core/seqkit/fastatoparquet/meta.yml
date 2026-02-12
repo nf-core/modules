@@ -1,0 +1,49 @@
+name: seqkit_fastatoparquet
+description: Convert DNA or protein sequences in FASTA format to Parquet format
+keywords:
+  - fasta
+  - parquet
+  - convert
+  - sequence
+tools:
+  - seqkit:
+      description: |
+        Cross-platform and ultrafast toolkit for FASTA/Q file manipulation, written by Wei Shen.
+      homepage: https://github.com/shenwei356/seqkit
+      documentation: https://bioinf.shenwei.me/seqkit/
+      doi: 10.1371/journal.pone.0163962
+      licence: ["MIT"]
+  - duckdb:
+      description: |
+        DuckDB is a fast in-process analytical database.
+      homepage: https://duckdb.org/
+      documentation: https://duckdb.org/docs/
+      license: ["MIT"]
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', alphabet:'dna' ]
+  - fasta:
+      type: file
+      description: DNA or protein sequences in compressed FASTA format
+      pattern: "*.{fasta,fa,fas,fna,faa}[.gz,.zst]"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', alphabet:'protein' ]
+  - parquet:
+      type: file
+      description: DNA or protein sequences in Parquet format with zstd compression
+      pattern: "*.sequences.parquet"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@heuermh"
+maintainers:
+  - "@heuermh"
