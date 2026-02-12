@@ -19,7 +19,6 @@ process ISMAPPER {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     ismap \\
         ${args} \\
@@ -27,8 +26,7 @@ process ISMAPPER {
         --output_dir results \\
         --queries ${query} \\
         --reference ${reference} \\
-        --reads ${reads} \\
-        --out_prefix ${prefix}
+        --reads ${reads}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
