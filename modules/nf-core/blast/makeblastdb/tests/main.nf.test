@@ -9,7 +9,7 @@ nextflow_process {
     tag "blast"
     tag "blast/makeblastdb"
 
-    test("Should build a blast db folder from a fasta file") {
+    test("makeblastdb - fasta") {
 
         when {
             process {
@@ -40,7 +40,7 @@ nextflow_process {
                     assert snapshot(
                         all_files.collect { it.name }.toSorted(),
                         stable_files,
-                        process.out.versions[0]
+                        process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
@@ -48,7 +48,7 @@ nextflow_process {
 
     }
 
-    test("Should build a blast db folder from a zipped fasta file") {
+    test("makeblastdb - fasta.gz") {
 
         when {
             process {
@@ -79,12 +79,30 @@ nextflow_process {
                     assert snapshot(
                         all_files.collect { it.name }.toSorted(),
                         stable_files,
-                        process.out.versions[0]
+                        process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
         }
+    }
 
+    test("makeblastdb - fasta.gz - stub"){
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
     }
 
 }

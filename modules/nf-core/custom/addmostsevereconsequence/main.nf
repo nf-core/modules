@@ -45,8 +45,6 @@ process CUSTOM_ADDMOSTSEVERECONSEQUENCE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.1' // WARN: Version information not provided by tool on CLI.
     """
