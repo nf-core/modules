@@ -13,7 +13,7 @@ process RTGTOOLS_SVDECOMPOSE {
     output:
     tuple val(meta), path("*.vcf.gz")    , emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi"), emit: index
-    path "versions.yml"                  , emit: versions
+    tuple val("${task.process}"), val('rgtools'), eval("rtg version | head -n 1 | sed 's/Product: RTG Tools //'"), topic: versions, emit: versions_rtgtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,11 +34,6 @@ process RTGTOOLS_SVDECOMPOSE {
         --output=${prefix}.vcf.gz
 
     rtg index ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rtg-tools: \$(echo \$(rtg version | head -n 1 | awk '{print \$4}'))
-    END_VERSIONS
     """
 
     stub:
@@ -48,10 +43,5 @@ process RTGTOOLS_SVDECOMPOSE {
     """
     echo | gzip -n > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rtg-tools: \$(echo \$(rtg version | head -n 1 | awk '{print \$4}'))
-    END_VERSIONS
     """
 }

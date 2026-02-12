@@ -183,13 +183,27 @@ output:
           pattern: "*.summary.txt"
           ontologies:
             - edam: "http://edamontology.org/format_1964"
+  versions_rtgtools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rgtools:
+          type: string
+          description: The name of the tool
+      - "rtg version | head -n 1 | sed 's/Product: RTG Tools //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rgtools:
+          type: string
+          description: The name of the tool
+      - "rtg version | head -n 1 | sed 's/Product: RTG Tools //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@kubranarci"
 maintainers:

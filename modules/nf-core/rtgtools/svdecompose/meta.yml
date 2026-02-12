@@ -1,6 +1,6 @@
 name: "rtgtools_svdecompose"
-description: The svdecompose tool of RTG tools. It is used to decompose structural
-  variants to BNDs
+description: The svdecompose tool of RTG tools. It is used to decompose
+  structural variants to BNDs
 keywords:
   - svdecompose
   - structural
@@ -13,7 +13,8 @@ tools:
       homepage: "https://www.realtimegenomics.com/products/rtg-tools"
       documentation: "https://cdn.jsdelivr.net/gh/RealTimeGenomics/rtg-tools@master/installer/resources/tools/RTGOperationsManual.pdf"
       tool_dev_url: "https://github.com/RealTimeGenomics/rtg-tools"
-      licence: ["BSD"]
+      licence:
+        - "BSD"
       identifier: ""
 input:
   - - meta:
@@ -29,7 +30,8 @@ input:
           - edam: "http://edamontology.org/format_3016"
     - tbi:
         type: file
-        description: The index of the VCF with called variants to decompose variants
+        description: The index of the VCF with called variants to decompose
+          variants
         pattern: "*.{vcf.gz.tbi}"
         ontologies:
           - edam: "http://edamontology.org/format_3616"
@@ -46,7 +48,7 @@ output:
           pattern: "*.vcf.gz"
           ontologies:
             - edam: "http://edamontology.org/format_3016"
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   index:
     - - meta:
           type: map
@@ -59,13 +61,27 @@ output:
           pattern: "*.vcf.gz.tbi"
           ontologies:
             - edam: "http://edamontology.org/format_3616"
+  versions_rtgtools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rgtools:
+          type: string
+          description: The name of the tool
+      - "rtg version | head -n 1 | sed 's/Product: RTG Tools //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rgtools:
+          type: string
+          description: The name of the tool
+      - "rtg version | head -n 1 | sed 's/Product: RTG Tools //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@kubranarci"
 maintainers:

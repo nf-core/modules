@@ -12,7 +12,7 @@ process RTGTOOLS_PEDFILTER {
 
     output:
     tuple val(meta), path("*.{vcf.gz,ped}") , emit: output
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('rgtools'), eval("rtg version | head -n 1 | sed 's/Product: RTG Tools //'"), topic: versions, emit: versions_rtgtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,12 +35,6 @@ process RTGTOOLS_PEDFILTER {
         ${args} \\
         ${input} \\
     ${postprocess} > ${prefix}.${extension}
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rtgtools: \$(echo \$(rtg version | head -n 1 | awk '{print \$4}'))
-    END_VERSIONS
     """
 
     stub:
@@ -54,10 +48,5 @@ process RTGTOOLS_PEDFILTER {
 
     """
     touch ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rtgtools: \$(echo \$(rtg version | head -n 1 | awk '{print \$4}'))
-    END_VERSIONS
     """
 }

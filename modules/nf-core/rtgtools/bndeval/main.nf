@@ -21,7 +21,7 @@ process RTGTOOLS_BNDEVAL {
     tuple val(meta), path("*.tp-baseline.vcf.gz.tbi")   , emit: baseline_tbi
     tuple val(meta), path("*.weighted_roc.tsv.gz")      , emit: weighted_roc
     tuple val(meta), path("*.summary.txt")              , emit: summary
-    path "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('rgtools'), eval("rtg version | head -n 1 | sed 's/Product: RTG Tools //'"), topic: versions, emit: versions_rtgtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,11 +44,6 @@ process RTGTOOLS_BNDEVAL {
     mv done progress ..
     for f in * ; do mv "\$f" "../${prefix}.\$f" ; done
     cd ..
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rtg-tools: \$(echo \$(rtg version | head -n 1 | awk '{print \$4}'))
-    END_VERSIONS
     """
 
     stub:
@@ -65,10 +60,5 @@ process RTGTOOLS_BNDEVAL {
     touch ${prefix}.tp-baseline.vcf.gz.tbi
     echo | gzip > ${prefix}.weighted_roc.tsv.gz
     touch ${prefix}.summary.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rtg-tools: \$(echo \$(rtg version | head -n 1 | awk '{print \$4}'))
-    END_VERSIONS
     """
 }

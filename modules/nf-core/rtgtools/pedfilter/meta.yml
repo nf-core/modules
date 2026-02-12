@@ -10,9 +10,10 @@ tools:
       description: "RealTimeGenomics Tools -- Utilities for accurate VCF comparison
         and manipulation"
       homepage: "https://www.realtimegenomics.com/products/rtg-tools"
-      documentation: "https://realtimegenomics.github.io/rtg-tools/rtg_command_reference.html#pedfilter"
+      documentation: "https://cdn.jsdelivr.net/gh/RealTimeGenomics/rtg-tools@master/installer/resources/tools/RTGOperationsManual.pdf"
       tool_dev_url: "https://github.com/RealTimeGenomics/rtg-tools"
-      licence: ["BSD"]
+      licence:
+        - "BSD"
       identifier: ""
 input:
   - - meta:
@@ -39,13 +40,27 @@ output:
             or a VCF file containing the PED headers (needs --vcf as argument)
           pattern: "*.{vcf.gz,ped}"
           ontologies: []
+  versions_rtgtools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rgtools:
+          type: string
+          description: The name of the tool
+      - "rtg version | head -n 1 | sed 's/Product: RTG Tools //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rgtools:
+          type: string
+          description: The name of the tool
+      - "rtg version | head -n 1 | sed 's/Product: RTG Tools //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

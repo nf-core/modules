@@ -1,6 +1,6 @@
 name: "rtgtools_vcfeval"
-description: The VCFeval tool of RTG tools. It is used to evaluate called variants
-  for agreement with a baseline variant set
+description: The VCFeval tool of RTG tools. It is used to evaluate called
+  variants for agreement with a baseline variant set
 keywords:
   - benchmarking
   - vcf
@@ -10,9 +10,10 @@ tools:
       description: "RealTimeGenomics Tools -- Utilities for accurate VCF comparison
         and manipulation"
       homepage: "https://www.realtimegenomics.com/products/rtg-tools"
-      documentation: "https://realtimegenomics.github.io/rtg-tools/rtg_command_reference.html#vcfeval"
+      documentation: "https://cdn.jsdelivr.net/gh/RealTimeGenomics/rtg-tools@master/installer/resources/tools/RTGOperationsManual.pdf"
       tool_dev_url: "https://github.com/RealTimeGenomics/rtg-tools"
-      licence: ["BSD"]
+      licence:
+        - "BSD"
       identifier: ""
 input:
   - - meta:
@@ -27,8 +28,8 @@ input:
         ontologies: []
     - query_vcf_tbi:
         type: file
-        description: The index of the VCF file with called variants to benchmark against
-          the standard
+        description: The index of the VCF file with called variants to benchmark
+          against the standard
         pattern: "*.{vcf.gz.tbi, vcf.tbi}"
         ontologies: []
     - truth_vcf:
@@ -43,16 +44,16 @@ input:
         ontologies: []
     - truth_bed:
         type: file
-        description: A BED file containing the strict regions where VCFeval should only
-          evaluate the fully overlapping variants (optional) This input should be used
-          to provide the golden truth BED files.
+        description: A BED file containing the strict regions where VCFeval should
+          only evaluate the fully overlapping variants (optional) This input
+          should be used to provide the golden truth BED files.
         pattern: "*.bed"
         ontologies: []
     - regions_bed:
         type: file
-        description: A BED file containing the regions where VCFeval will evaluate every
-          fully and partially overlapping variant (optional) This input should be used
-          to provide the regions used by the analysis
+        description: A BED file containing the regions where VCFeval will evaluate
+          every fully and partially overlapping variant (optional) This input
+          should be used to provide the regions used by the analysis
         pattern: "*.bed"
         ontologies: []
   - - meta2:
@@ -62,7 +63,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - sdf:
         type: file
-        description: The SDF (RTG Sequence Data File) folder of the reference genome
+        description: The SDF (RTG Sequence Data File) folder of the reference
+          genome
         ontologies: []
 output:
   tp_vcf:
@@ -76,7 +78,7 @@ output:
           description: A VCF file for the true positive variants
           pattern: "*.tp.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   tp_tbi:
     - - meta:
           type: map
@@ -99,7 +101,7 @@ output:
           description: A VCF file for the false negative variants
           pattern: "*.fn.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   fn_tbi:
     - - meta:
           type: map
@@ -122,7 +124,7 @@ output:
           description: A VCF file for the false positive variants
           pattern: "*.fp.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   fp_tbi:
     - - meta:
           type: map
@@ -145,7 +147,7 @@ output:
           description: A VCF file for the true positive variants from the baseline
           pattern: "*.tp-baseline.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   baseline_tbi:
     - - meta:
           type: map
@@ -154,8 +156,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.tp-baseline.vcf.gz.tbi":
           type: file
-          description: The index of the VCF file for the true positive variants from
-            the baseline
+          description: The index of the VCF file for the true positive variants
+            from the baseline
           pattern: "*.tp-baseline.vcf.gz.tbi"
           ontologies: []
   snp_roc:
@@ -169,7 +171,7 @@ output:
           description: TSV files containing ROC data for the SNPs
           pattern: "*.snp_roc.tsv.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   non_snp_roc:
     - - meta:
           type: map
@@ -181,7 +183,7 @@ output:
           description: TSV files containing ROC data for all variants except SNPs
           pattern: "*.non_snp_roc.tsv.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   weighted_roc:
     - - meta:
           type: map
@@ -193,7 +195,7 @@ output:
           description: TSV files containing weighted ROC data for all variants
           pattern: "*.weighted_snp_roc.tsv.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   summary:
     - - meta:
           type: map
@@ -216,13 +218,27 @@ output:
           description: A TXT file containing the data on the phasing
           pattern: "*.phasing.txt"
           ontologies: []
+  versions_rtgtools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rgtools:
+          type: string
+          description: The name of the tool
+      - "rtg version | head -n 1 | sed 's/Product: RTG Tools //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rgtools:
+          type: string
+          description: The name of the tool
+      - "rtg version | head -n 1 | sed 's/Product: RTG Tools //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

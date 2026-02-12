@@ -10,40 +10,40 @@ nextflow_process {
     tag "rtgtools/vcfeval"
     tag "untar"
 
-    test("homo_sapiens - tsv") {
-
-        setup {
-            run("UNTAR") {
-                script "modules/nf-core/untar/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test' ],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome_sdf.tar.gz', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
-
-            run("RTGTOOLS_VCFEVAL") {
-                script "modules/nf-core/rtgtools/vcfeval/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz.tbi', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz.tbi', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true)
-                    ]
-                    input[1] = UNTAR.out.untar
-                    println(projectDir)
-                    """
-                }
+    setup {
+        run("UNTAR") {
+            script "modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome_sdf.tar.gz', checkIfExists: true)
+                ]
+                """
             }
         }
+
+        run("RTGTOOLS_VCFEVAL") {
+            script "modules/nf-core/rtgtools/vcfeval/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz.tbi', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz.tbi', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true)
+                ]
+                input[1] = UNTAR.out.untar
+                println(projectDir)
+                """
+            }
+        }
+    }
+    
+    test("homo_sapiens - tsv") {
 
         when {
             params {
@@ -62,7 +62,34 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.png[0][1]).name,
                     file(process.out.svg[0][1]).name,
-                    file(process.out.versions[0]).name
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match()}
+            )
+        }
+
+    }
+    test("homo_sapiens - tsv - stub") {
+
+        options "-stub"
+        
+        when {
+            params {
+                outdir = $outputDir
+            }
+            process {
+                """
+                input[0] = RTGTOOLS_VCFEVAL.out.weighted_roc
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.png[0][1]).name,
+                    file(process.out.svg[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match()}
             )
         }

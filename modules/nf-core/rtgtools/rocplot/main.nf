@@ -13,7 +13,7 @@ process RTGTOOLS_ROCPLOT {
     output:
     tuple val(meta), path("*.png"), emit: png
     tuple val(meta), path("*.svg"), emit: svg
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('rgtools'), eval("rtg version | head -n 1 | sed 's/Product: RTG Tools //'"), topic: versions, emit: versions_rtgtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,11 +28,6 @@ process RTGTOOLS_ROCPLOT {
         --png ${prefix}.png \\
         --svg ${prefix}.svg \\
         ${input}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rtg-tools: \$(echo \$(rtg version | head -n 1 | awk '{print \$4}'))
-    END_VERSIONS
     """
 
     stub:
@@ -40,10 +35,5 @@ process RTGTOOLS_ROCPLOT {
     """
     touch ${prefix}.png
     touch ${prefix}.svg
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rtg-tools: \$(echo \$(rtg version | head -n 1 | awk '{print \$4}'))
-    END_VERSIONS
     """
 }
