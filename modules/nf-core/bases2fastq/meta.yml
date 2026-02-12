@@ -122,13 +122,27 @@ output:
           pattern: "output/UnassignedSequences.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
+  versions_bases2fastq:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bases2fastq:
+          type: string
+          description: The tool name
+      - bases2fastq --version | sed -e "s/.*version //g":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bases2fastq:
+          type: string
+          description: The tool name
+      - bases2fastq --version | sed -e "s/.*version //g":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@edmundmiller"
 maintainers:

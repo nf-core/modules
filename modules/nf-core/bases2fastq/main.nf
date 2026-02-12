@@ -16,7 +16,7 @@ process BASES2FASTQ {
     tuple val(meta), path('output/RunManifest.json')        , emit: generated_run_manifest
     tuple val(meta), path('output/Metrics.csv')             , emit: metrics
     tuple val(meta), path('output/UnassignedSequences.csv') , emit: unassigned
-    path "versions.yml"                                     , emit: versions
+    tuple val("${task.process}"), val('bases2fastq'), eval('bases2fastq --version | sed -e "s/.*version //g"'), emit: versions_bases2fastq, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,11 +35,6 @@ process BASES2FASTQ {
         $args \\
         $run_dir \\
         output
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bases2fastq: \$(bases2fastq --version | sed -e "s/bases2fastq version //g")
-    END_VERSIONS
     """
 
     stub:
@@ -57,6 +52,5 @@ process BASES2FASTQ {
     touch output/multiqc_report.html
     touch output/RunStats.json
     touch output/Samples/DefaultSample/DefaultSample_stats.json
-    touch versions.yml
     """
 }
