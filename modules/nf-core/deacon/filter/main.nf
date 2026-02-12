@@ -13,7 +13,7 @@ process DEACON_FILTER {
     output:
     tuple val(meta), path("${prefix}*.fq.gz"), emit: fastq_filtered
     tuple val(meta), path("${prefix}.json")  , emit: log
-    path "versions.yml"			             , emit: versions
+    tuple val("${task.process}"), val('deacon'), eval('deacon --version | head -n1 | sed "s/deacon //g"'), emit: versions_fastqc, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,17 +27,12 @@ process DEACON_FILTER {
         filter \\
         --threads ${task.cpus} \\
         $args \\
-	    --summary ${prefix}.json \\
+        --summary ${prefix}.json \\
         -d $index \\
         $reads \\
         ${read_type}
 
     gzip -f ${prefix}*.fq
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deacon: \$(deacon --version | head -n1 | sed 's/deacon //g')
-    END_VERSIONS
     """
 
     stub:
@@ -45,10 +40,5 @@ process DEACON_FILTER {
     """
     echo | gzip > '${prefix}.fq.gz'
     touch ${prefix}.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deacon: \$(deacon --version | head -n1 | sed 's/deacon //g')
-    END_VERSIONS
     """
 }

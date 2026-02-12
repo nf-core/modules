@@ -12,7 +12,7 @@ process DEACON_INDEX {
 
     output:
     tuple val(meta), path("*.idx"), emit: index
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('deacon'), eval('deacon --version | head -n1 | sed "s/deacon //g"'), emit: versions_fastqc, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,21 +27,11 @@ process DEACON_INDEX {
         --threads ${task.cpus} \\
         $args \\
         $fasta > ${prefix}.idx
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deacon: \$(deacon --version | head -n1 | sed 's/deacon //g')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${fasta.baseName}"
     """
     touch ${prefix}.idx
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deacon: \$(deacon --version | head -n1 | sed 's/deacon //g')
-    END_VERSIONS
     """
 }

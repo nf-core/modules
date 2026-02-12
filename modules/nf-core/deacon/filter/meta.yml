@@ -64,13 +64,28 @@ output:
           pattern: "*.json"
           ontologies:
             - edam: "http://edamontology.org/format_3464" # JSON
+  versions_deacon:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - deacon:
+          type: string
+          description: The tool name
+      - deacon --version | head -n1 | sed "s/deacon //g:
+          type: string
+          description: The command used to generate the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+    - deacon:
+          type: string
+          description: The tool name
+    - deacon --version | head -n1 | sed "s/deacon //g:
+          type: string
+          description: The command used to generate the version of the tool
 
 authors:
   - "@Baksic-Ivan"
@@ -79,3 +94,5 @@ maintainers:
   - "@Baksic-Ivan"
   - "@Omer0191"
   - "@vagkaratzas"
+contributors:
+  - "@pmoris"

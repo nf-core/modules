@@ -45,15 +45,32 @@ output:
           pattern: "*.idx"
           ontologies:
             - edam: "http://edamontology.org/data_3210" # Genome index
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+  versions_deacon:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - deacon:
+          type: string
+          description: The tool name
+      - deacon --version | head -n1 | sed "s/deacon //g:
+          type: string
+          description: The command used to generate the version of the tool
 
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+    - deacon:
+          type: string
+          description: The tool name
+    - deacon --version | head -n1 | sed "s/deacon //g:
+          type: string
+          description: The command used to generate the version of the tool
+
 authors:
   - "@mberacochea"
 maintainers:
   - "@mberacochea"
+contributors:
+  - "@pmoris"
