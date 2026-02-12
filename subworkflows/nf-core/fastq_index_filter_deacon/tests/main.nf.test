@@ -34,7 +34,7 @@ nextflow_workflow {
                     workflow.out.index,
                     workflow.out.fastq_filtered,
                     file(workflow.out.summary[0][1]).name,
-                    workflow.out.versions.collect { path(it).yaml }
+                    workflow.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()}
             )
         }
@@ -66,7 +66,7 @@ nextflow_workflow {
                     workflow.out.index,
                     workflow.out.fastq_filtered,
                     file(workflow.out.summary[0][1]).name,
-                    workflow.out.versions.collect { path(it).yaml }
+                    workflow.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()}
             )
         }
@@ -95,7 +95,7 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out,
-                    workflow.out.versions.collect { path(it).yaml }
+                    workflow.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()}
             )
         }
