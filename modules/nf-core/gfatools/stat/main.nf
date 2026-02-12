@@ -12,7 +12,7 @@ process GFATOOLS_STAT {
 
     output:
     tuple val(meta), path("*.stats"), emit: stats
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('gfatools'), eval("gfatools version | sed '1!d; s/.* //'"), topic: versions, emit: versions_gfatools
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,21 +26,11 @@ process GFATOOLS_STAT {
         $args \\
         $gfa \\
         > ${prefix}.stats
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gfatools: \$( gfatools version | sed '1!d; s/.* //' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.stats
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gfatools: \$( gfatools version | sed '1!d; s/.* //' )
-    END_VERSIONS
     """
 }
