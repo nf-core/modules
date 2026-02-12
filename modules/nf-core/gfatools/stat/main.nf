@@ -4,8 +4,8 @@ process GFATOOLS_STAT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gfatools:0.5--he4a0461_4':
-        'biocontainers/gfatools:0.5--he4a0461_4' }"
+        'https://depot.galaxyproject.org/singularity/gfatools:0.5--h577a1d6_5':
+        'biocontainers/gfatools:0.5--h577a1d6_5' }"
 
     input:
     tuple val(meta), path(gfa)
