@@ -40,9 +40,9 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.results[0][1]).getText().contains("C\tERR5069949.2257580\t2697049") },
                 { assert snapshot(
-                    file(process.out.results[0][1],
+                    file(process.out.results[0][1]).name,
                     process.out.versions
-                ).name).match() }
+                ).match() }
             )
         }
 
@@ -79,9 +79,9 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.results[0][1]).getText().contains("C\tERR5069949.2257580\t2697049") },
                 { assert snapshot(
-                    file(process.out.results[0][1],
+                    file(process.out.results[0][1]).name,
                     process.out.versions
-                ).name).match() }
+                ).match() }
             )
         }
     }
