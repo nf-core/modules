@@ -13,7 +13,7 @@ process LSA_COSINE {
     output:
     tuple val(meta), path("*_matrix.csv") , emit: matrix
     tuple val(meta), path("*_heatmap.png"), emit: heatmap
-    path "versions.yml" , emit: versions
+    path "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,8 +24,8 @@ process LSA_COSINE {
     template 'cosine.R'
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_matrix.csv
     touch ${prefix}_heatmap.png
@@ -33,8 +33,8 @@ process LSA_COSINE {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         r-base: \$(R --version | sed -n 1p | sed 's/R version //g' | sed 's/ (.*//g')
-        r-lsa: 0.73.3
-        r-pheatmap: 1.0.12
+        r-lsa: \$(Rscript -e "library(lsa); cat(as.character(packageVersion('lsa')))")
+        r-pheatmap: \$(Rscript -e "library(pheatmap); cat(as.character(packageVersion('pheatmap')))")
     END_VERSIONS
     """
 }
