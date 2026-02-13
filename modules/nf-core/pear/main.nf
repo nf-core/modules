@@ -11,10 +11,10 @@ process PEAR {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*.assembled.fastq.gz")                                                  , emit: assembled
-    tuple val(meta), path("*.unassembled.forward.fastq.gz"), path("*.unassembled.reverse.fastq.gz"), emit: unassembled
-    tuple val(meta), path("*.discarded.fastq.gz")                                                  , emit: discarded
-    path "versions.yml"                                                                            , emit: versions
+    tuple val(meta), path("*.assembled.fastq.gz")                                                                   , emit: assembled
+    tuple val(meta), path("*.unassembled.forward.fastq.gz"), path("*.unassembled.reverse.fastq.gz")                 , emit: unassembled
+    tuple val(meta), path("*.discarded.fastq.gz")                                                                   , emit: discarded
+    tuple val("${task.process}"), val('pear'), eval("pear -h | grep 'PEAR v' | sed 's/PEAR v//' | sed 's/ .*//'")   , topic: versions, emit: versions_pear
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,11 +35,6 @@ process PEAR {
     gzip -f ${prefix}.unassembled.forward.fastq
     gzip -f ${prefix}.unassembled.reverse.fastq
     gzip -f ${prefix}.discarded.fastq
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pear: \$(pear -h | grep 'PEAR v' | sed 's/PEAR v//' | sed 's/ .*//' )
-    END_VERSIONS
     """
 
     stub:
@@ -49,10 +44,5 @@ process PEAR {
     echo | gzip > ${prefix}.unassembled.forward.fastq.gz
     echo | gzip > ${prefix}.unassembled.reverse.fastq.gz
     echo | gzip > ${prefix}.discarded.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pear: \$(pear -h | grep 'PEAR v' | sed 's/PEAR v//' | sed 's/ .*//' )
-    END_VERSIONS
     """
 }

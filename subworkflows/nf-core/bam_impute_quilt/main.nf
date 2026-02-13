@@ -5,8 +5,7 @@ include { BCFTOOLS_INDEX  } from '../../../modules/nf-core/bcftools/index'
 workflow BAM_IMPUTE_QUILT {
     take:
     ch_input // channel (mandatory):   [ [id], [bam], [bai], bampaths, bamnames ]
-    ch_hap_legend // channel (mandatory):   [ [panel, chr], hap, legend ]
-    ch_posfile // channel (mandatory):   [ [panel, chr], posfile ]
+    ch_hap_legend_posfile // channel (mandatory):   [ [panel, chr], hap, legend, posfile ]
     ch_chunks // channel (optional) :   [ [panel, chr], chr, start, end ]
     ch_map // channel (optional) :   [ [panel, chr], map ]
     ch_fasta // channel (optional) :   [ [genome], fa, fai ]
@@ -16,8 +15,7 @@ workflow BAM_IMPUTE_QUILT {
     main:
 
     // Make final channel with parameters
-    ch_parameters = ch_hap_legend
-        .combine(ch_posfile, by: 0)
+    ch_parameters = ch_hap_legend_posfile
         .combine(ch_map, by: 0)
         .combine(ch_chunks, by: 0)
 
