@@ -26,6 +26,8 @@ process QCATCH {
     """
     export MPLCONFIGDIR=./tmp
     export NUMBA_CACHE_DIR=./tmp
+    export NUMBA_DISABLE_CACHE=1
+    export XDG_CACHE_HOME=./tmp
     export TMPDIR=./tmp
 
     qcatch \\
@@ -53,6 +55,8 @@ process QCATCH {
     """
     export MPLCONFIGDIR=./tmp
     export NUMBA_CACHE_DIR=./tmp
+    export NUMBA_DISABLE_CACHE=1
+    export XDG_CACHE_HOME=./tmp
     export TMPDIR=./tmp
 
     touch ${prefix}_qcatch_report.html
