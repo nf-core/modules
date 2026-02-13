@@ -19,7 +19,6 @@ process LSA_COSINE {
     task.ext.when == null || task.ext.when
 
     script:
-    // HEMOS QUITADO EL 'def' DE AQUÍ ABAJO PARA QUE LA PLANTILLA LO VEA
     args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     template 'cosine.R'
