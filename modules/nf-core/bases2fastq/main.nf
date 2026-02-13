@@ -41,7 +41,6 @@ process BASES2FASTQ {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p ${prefix}/Samples
     mkdir -p ${prefix}/Samples/DefaultSample
 
     touch ${prefix}/Metrics.csv
