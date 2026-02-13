@@ -85,7 +85,7 @@ process DEACON_INDEX {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${reference.baseName}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     subcommand = subcommand ?: 'build'
     meta_out = meta + [operation: subcommand]
     """
