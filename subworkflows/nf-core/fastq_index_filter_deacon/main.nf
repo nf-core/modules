@@ -30,8 +30,8 @@ workflow FASTQ_INDEX_FILTER_DEACON {
         .map { _meta, fasta, _reads -> fasta }
         .unique()
         .map { fasta ->
-            def fasta_meta = [ id: fasta.baseName ]
-            [ fasta_meta, fasta ]
+            def meta_fasta = [ id: fasta.baseName ]
+            [ meta_fasta, fasta ]
         }
 
     // Index unique FASTA files only
@@ -39,7 +39,7 @@ workflow FASTQ_INDEX_FILTER_DEACON {
 
     // Match indexes back to original samples
     ch_indexes = DEACON_INDEX.out.index
-        .map { fasta_meta, index -> [ fasta_meta.id, index ] }
+        .map { meta_fasta, index -> [ meta_fasta.id, index ] }
     ch_reads_with_index = ch_reads
         .map { meta, fasta, reads ->
             [ fasta.baseName, meta, reads ]
@@ -52,13 +52,13 @@ workflow FASTQ_INDEX_FILTER_DEACON {
     // Filter reads using the matched index
     DEACON_FILTER(ch_reads_with_index)
 
-    // TODO: optionally create output channel with indexes and their original sample-level metadata,
-    // this preserves the original behaviour of the workflow
-    // ch_index_with_meta = ch_reads_with_index
-    //     .map { meta, index, _reads -> [ meta, index ] }
+    // Create output channel with indexes, the original sample-level metadata and index id
+    ch_index_with_meta = ch_reads_with_index
+        .map { meta, index, _reads -> [ meta + [ index_id: index.baseName ], index ] }
+
 
     emit:
-    index          = DEACON_INDEX.out.index           // channel: [ val(meta), [ index ] ]  // TODO: optional emit ch_index_with_meta instead
+    index          = ch_index_with_meta               // channel: [ val(meta), [ index ] ]
     fastq_filtered = DEACON_FILTER.out.fastq_filtered // channel: [ val(meta), [ fastq ] ]
     summary        = DEACON_FILTER.out.log            // channel: [ val(meta), [ log ] ]
 }
