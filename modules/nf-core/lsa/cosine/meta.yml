@@ -1,0 +1,62 @@
+# name matches directory structure
+name: "lsa_cosine"
+description: Calculates the cosine similarity matrix between samples based on a gene expression matrix.
+keywords:
+  - similarity
+  - cosine
+  - clustering
+  - rnaseq
+  - heatmap
+tools:
+  - "lsa":
+      description: "Latent Semantic Analysis (LSA) package for R."
+      homepage: "https://cran.r-project.org/web/packages/lsa/index.html"
+      documentation: "https://cran.r-project.org/web/packages/lsa/lsa.pdf"
+      licence: ["GPL-2"]
+  - "pheatmap":
+      description: "Pretty Heatmaps package for R."
+      homepage: "https://cran.r-project.org/web/packages/pheatmap/index.html"
+      documentation: "https://cran.r-project.org/web/packages/pheatmap/pheatmap.pdf"
+      licence: ["GPL-2"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information, e.g. [ id:'test' ].
+    - expression_matrix:
+        type: file
+        description: |
+          CSV file containing the expression matrix. 
+          Rows should be features (genes) and columns should be samples.
+        pattern: "*.csv"
+
+output:
+  - matrix:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information, e.g. [ id:'test' ].
+      - "*_matrix.csv":
+          type: file
+          description: A square matrix (CSV) containing pairwise similarity scores.
+          pattern: "*_matrix.csv"
+  - heatmap:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information, e.g. [ id:'test' ].
+      - "*_heatmap.png":
+          type: file
+          description: A PNG image visualizing the similarity matrix as a heatmap.
+          pattern: "*_heatmap.png"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions.
+          pattern: "versions.yml"
+
+authors:
+  - "@miguelrosell"
+maintainers:
+  - "@miguelrosell"
