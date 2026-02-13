@@ -32,7 +32,7 @@ process GETORGANELLE_CONFIG {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+
     """
     mkdir -p getorganelle/{LabelDatabase,SeedDatabase}
     touch getorganelle/{LabelDatabase,SeedDatabase}/${organelle_type}.fasta

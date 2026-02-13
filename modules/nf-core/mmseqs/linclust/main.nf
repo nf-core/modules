@@ -12,7 +12,7 @@ process MMSEQS_LINCLUST {
 
     output:
     tuple val(meta), path("${prefix}/"), emit: db_cluster
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('mmseqs'), eval('mmseqs version'), topic: versions, emit: versions_mmseqs
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,10 +38,6 @@ process MMSEQS_LINCLUST {
         ${args} \\
         --threads ${task.cpus}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //')
-    END_VERSIONS
     """
 
     stub:
@@ -55,9 +51,5 @@ process MMSEQS_LINCLUST {
     touch ${prefix}/${prefix}.dbtype
     touch ${prefix}/${prefix}.index
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //')
-    END_VERSIONS
     """
 }
