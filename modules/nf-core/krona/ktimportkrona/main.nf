@@ -31,7 +31,6 @@ process KRONA_KTIMPORTKRONA {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def output = task.ext.prefix ? "${task.ext.prefix}.html" : 'krona.krona.html'
     """
     touch ${output}

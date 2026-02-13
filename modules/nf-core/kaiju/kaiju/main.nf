@@ -40,9 +40,7 @@ process KAIJU_KAIJU {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input = meta.single_end ? "-i ${reads}" : "-i ${reads[0]} -j ${reads[1]}"
     """
     touch ${prefix}.tsv
 

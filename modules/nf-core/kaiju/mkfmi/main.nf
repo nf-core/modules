@@ -41,7 +41,6 @@ process KAIJU_MKFMI {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def run_cleanup = keep_intermediate ? "" : "rm -f *.{bwt,sa}"
     """
