@@ -37,8 +37,11 @@ process FASTANI {
     """
 
     stub:
-    def prefix          = task.ext.prefix  ?: ( meta.id  ?: 'all')
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix  ?: ( meta.id  ?: 'all')
     """
+    echo $args
+
     touch ${prefix}.visual
     touch ${prefix}.txt
     touch ${prefix}.matrix
