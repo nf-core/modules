@@ -22,7 +22,6 @@ process FASTQSCREEN_FASTQSCREEN {
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ""
 
     """
@@ -38,7 +37,6 @@ process FASTQSCREEN_FASTQSCREEN {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch test_1_screen.html
     touch test_1_screen.png
