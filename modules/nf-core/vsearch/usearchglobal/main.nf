@@ -24,7 +24,7 @@ process VSEARCH_USEARCHGLOBAL {
     tuple val(meta), path('*.tsv')    , optional: true, emit: tsv
     tuple val(meta), path('*.txt')    , optional: true, emit: txt
     tuple val(meta), path('*.uc')     , optional: true, emit: uc
-    path "versions.yml"                               , emit: versions
+    tuple val("${task.process}"), val('vsearch'), eval('vsearch --version 2>&1 | sed -n "1s/.*v\\([0-9.]*\\).*/\\\\1/p"'), emit: versions_vsearch, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -74,9 +74,5 @@ process VSEARCH_USEARCHGLOBAL {
         ${columns} \\
         ${outfmt} ${prefix}.${out_ext}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vsearch: \$(vsearch --version 2>&1 | head -n 1 | sed 's/vsearch //g' | sed 's/,.*//g' | sed 's/^v//' | sed 's/_.*//')
-    END_VERSIONS
     """
 }
