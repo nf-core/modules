@@ -25,11 +25,6 @@ runs:
         distribution: "temurin"
         java-version: "17"
 
-    - name: Set up Nextflow
-      uses: nf-core/setup-nextflow@v2
-      with:
-        version: "${{ env.NXF_VER }}"
-
     - name: Set up nf-test
       uses: nf-core/setup-nf-test@v1
       with:
