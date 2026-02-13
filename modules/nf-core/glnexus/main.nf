@@ -24,7 +24,7 @@ process GLNEXUS {
     def regions = bed ? "--bed ${bed}" : ""
 
     // Make list of GVCFs to merge
-    def input = gvcfs.collect { it.toString() }
+    def input = gvcfs.collect {vcf -> vcf.toString() }
     def avail_mem = 3
     if (!task.memory) {
         log.info '[Glnexus] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
