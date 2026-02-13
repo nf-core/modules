@@ -17,7 +17,7 @@ process STAINWARPY_REGISTER {
     tuple val(meta), path("*_transformed_image.ome.tif")                                         , emit: reg_image
     tuple val(meta), path("*_registration_metrics_tform_map.json")                               , emit: reg_metrics_tform
     tuple val(meta), path("*_feature_based_transformation_map.npy")                              , emit: tform_map
-    tuple val("${task.process}"), val('stainwarpy'), eval("stainwarpy --version | sed 's/.* //'"), emit: versions_stainwarpy_register, topic: versions
+    tuple val("${task.process}"), val('stainwarpy'), eval("stainwarpy --version | sed 's/.* //'"), emit: versions_stainwarpy, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
