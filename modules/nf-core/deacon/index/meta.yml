@@ -24,7 +24,7 @@ input:
         description: |
           Groovy Map containing reference information.
           e.g. [ id:'test', single_end:false ]
-    - fasta:
+    - reference:
         type: file
         description: |
           Main input file for deacon index
@@ -35,15 +35,15 @@ input:
           - edam: "http://edamontology.org/data_2044" # Sequence
           - edam: "http://edamontology.org/format_1929" # FASTA
           - edam: "http://edamontology.org/data_3210" # Genome index
-  - - subcommand:
-        type: string
-        description: |
-          Deacon index subcommand to execute: 'build' (default), 'union', 'intersect', or 'diff'.
-          - build: Index minimizers contained within a fastx file
-          - union: Combine multiple minimizer indexes (A ∪ B…)
-          - intersect: Intersect multiple minimizer indexes (A ∩ B…)
-          - diff: SSubtract minimizers in one index from another (A - B)
-        pattern: "build|union|intersect|diff"
+  - subcommand:
+      type: string
+      description: |
+        Deacon index subcommand to execute: 'build' (default), 'union', 'intersect', or 'diff'.
+        - build: Index minimizers contained within a fastx file
+        - union: Combine multiple minimizer indexes (A ∪ B…)
+        - intersect: Intersect multiple minimizer indexes (A ∩ B…)
+        - diff: SSubtract minimizers in one index from another (A - B)
+      pattern: "build|union|intersect|diff"
   - - meta_set:
         type: map
         description: |
@@ -65,7 +65,7 @@ input:
 
 output:
   index:
-    - - meta:
+    - - meta_out:
           type: map
           description: |
             Groovy Map containing reference information.
