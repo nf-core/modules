@@ -50,9 +50,9 @@ process DIANN {
     //   to match against preprocessed .quant files in quant/ directory, avoiding unnecessary file staging
     def ms_input = ''
     if (ms_files && ms_files != []) {
-        ms_input = ms_files instanceof List ? ms_files.collect{ "--f ${it}" }.join(' ') : "--f ${ms_files}"
+        ms_input = ms_files instanceof List ? ms_files.collect{ms_file -> "--f ${ms_file}" }.join(' ') : "--f ${ms_files}"
     } else if (ms_file_names && ms_file_names != []) {
-        ms_input = ms_file_names instanceof List ? ms_file_names.collect{ "--f ${it}" }.join(' ') : "--f ${ms_file_names}"
+        ms_input = ms_file_names instanceof List ? ms_file_names.collect{ms_file -> "--f ${ms_file}" }.join(' ') : "--f ${ms_file_names}"
     }
 
     def fasta_input = fasta && fasta != [] ? "--fasta ${fasta}" : ''

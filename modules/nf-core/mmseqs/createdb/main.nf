@@ -12,7 +12,7 @@ process MMSEQS_CREATEDB {
 
     output:
     tuple val(meta), path("${prefix}/"), emit: db
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('mmseqs'), eval('mmseqs version'), topic: versions, emit: versions_mmseqs
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,10 +35,6 @@ process MMSEQS_CREATEDB {
         ${prefix}/${prefix} \\
         ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //')
-    END_VERSIONS
     """
 
     stub:
@@ -57,9 +53,5 @@ process MMSEQS_CREATEDB {
     touch ${prefix}/${prefix}_h.dbtype
     touch ${prefix}/${prefix}_h.index
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //')
-    END_VERSIONS
     """
 }
