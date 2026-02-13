@@ -73,6 +73,20 @@ process VSEARCH_USEARCHGLOBAL {
         $args \\
         ${columns} \\
         ${outfmt} ${prefix}.${out_ext}
-
+    """
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    out_ext = outoption == "alnout" ? 'aln' :
+                    outoption == "biomout" ? 'biom' :
+                    outoption == "blast6out" ? 'txt' :
+                    outoption == "mothur_shared_out" ? 'mothur' :
+                    outoption == "otutabout" ? 'otu' :
+                    outoption == "samout" ? 'sam' :
+                    outoption == "uc" ? 'uc' :
+                    outoption == "userout" ? 'tsv' :
+                    outoption == "lcaout" ? 'lca' :
+                    'aln'
+    """
+    touch ${prefix}.${out_ext}
     """
 }

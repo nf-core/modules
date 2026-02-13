@@ -13,7 +13,7 @@ process VSEARCH_DEREPLICATE {
     output:
     tuple val(meta), path("${prefix}.fasta"), emit: fasta
     tuple val(meta), path("${prefix}.uc")   , emit: clustering
-    path "${prefix}.log"                      , emit: log
+    path "${prefix}.log"                    , emit: log
     tuple val("${task.process}"), val('vsearch'), eval('vsearch --version 2>&1 | sed -n "1s/.*v\\([0-9.]*\\).*/\\\\1/p"'), emit: versions_vsearch, topic: versions
 
     when:

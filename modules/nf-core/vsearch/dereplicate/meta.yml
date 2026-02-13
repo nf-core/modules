@@ -32,28 +32,26 @@ output:
   fasta:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test'
-            ]`
-      - "*.derep.fasta":
+          description: Groovy Map containing sample information e.g. [ id:'test']
+      - "${prefix}.fasta":
           type: file
           description: dereplicated fasta
-          pattern: "*.fasta"
+          pattern: "${prefix}.fasta"
           ontologies: []
   clustering:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test'
-            ]`
-      - "*.derep.uc":
+          description: Groovy Map containing sample information e.g. [ id:'test']
+      - "${prefix}.uc":
           type: file
           description: dereplicated derep.uc file
-          pattern: "*.uc"
+          pattern: "${prefix}.uc"
           ontologies: []
   log:
-    - "*.derep.log":
+    - "${prefix}.log":
         type: file
         description: a log file of the run
-        pattern: "*.derep.log"
+        pattern: "${prefix}.log"
         ontologies: []
   versions_vsearch:
     - - ${task.process}:

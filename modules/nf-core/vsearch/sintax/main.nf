@@ -21,7 +21,6 @@ process VSEARCH_SINTAX {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     vsearch \\
         --sintax $queryfasta \\
@@ -29,7 +28,10 @@ process VSEARCH_SINTAX {
         --threads $task.cpus \\
         $args \\
         --tabbedout ${prefix}.tsv
-
-    
+    """
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.tsv
     """
 }

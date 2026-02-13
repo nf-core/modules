@@ -28,13 +28,11 @@ process VSEARCH_SORT {
         --threads $task.cpus \\
         --output ${prefix}.fasta \\
         $args
-
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.fasta
-
     """
 }

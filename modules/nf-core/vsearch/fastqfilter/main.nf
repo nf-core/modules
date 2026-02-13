@@ -22,7 +22,6 @@ process VSEARCH_FASTQFILTER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     vsearch \\
         --fastq_filter ${fastq} \\
@@ -32,7 +31,6 @@ process VSEARCH_FASTQFILTER {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     touch ${prefix}.fasta
     touch ${prefix}.log

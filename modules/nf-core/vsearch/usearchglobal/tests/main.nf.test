@@ -61,4 +61,28 @@ nextflow_process {
         }
     }
 
+    test("test-vsearch-usearchglobal-userout -stub") {
+
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				input[2] = 0.985
+				input[3] = "userout"
+				input[4] = "query+target+id"
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
 }
