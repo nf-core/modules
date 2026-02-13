@@ -129,7 +129,7 @@ output:
       - bases2fastq:
           type: string
           description: The tool name
-      - bases2fastq --version | sed -e "s/.*version //g":
+      - bases2fastq --version | sed "s/.*version //;s/,.*//":
           type: string
           description: The command used to generate the version of the tool
 topics:
@@ -140,7 +140,7 @@ topics:
       - bases2fastq:
           type: string
           description: The tool name
-      - bases2fastq --version | sed -e "s/.*version //g":
+      - bases2fastq --version | sed "s/.*version //;s/,.*//":
           type: string
           description: The command used to generate the version of the tool
 authors:
