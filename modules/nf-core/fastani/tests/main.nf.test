@@ -29,6 +29,7 @@ nextflow_process {
 
         then {
             assertAll (
+                { assert process.success },
                 { assert snapshot(
                     process.out.ani,
                     process.out.findAll { key, val -> key.startsWith("versions")}
@@ -75,10 +76,14 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert snapshot(
-                    process.out.ani,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() }
+                { assert process.success },
+                {
+                    def aniFile = path(process.out.ani[0][1])
+                    assert aniFile.exists()
+                    def lines = aniFile.readLines()
+                    assert lines.size() == 4 : "Expected 4 ANI comparisons but found ${lines.size()}"
+                },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match() }
             )
         }
     }
@@ -106,6 +111,7 @@ nextflow_process {
 
         then {
             assertAll (
+                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
