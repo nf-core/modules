@@ -19,7 +19,7 @@ process GLIMPSE_CONCORDANCE {
     tuple val(meta), path("*.error.spl.txt.gz")  , emit: errors_spl
     tuple val(meta), path("*.rsquare.grp.txt.gz"), emit: rsquare_grp
     tuple val(meta), path("*.rsquare.spl.txt.gz"), emit: rsquare_spl
-    path "versions.yml"                          , emit: versions
+    tuple val("${task.process}"), val('glimpse'), eval("GLIMPSE_concordance --help | sed -n '/Version/s/.*: //p'"), topic: versions, emit: versions_glimpse
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,26 +40,16 @@ process GLIMPSE_CONCORDANCE {
         ${min_prob_cmd} \\
         ${min_dp_cmd} \\
         ${bins_cmd}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        glimpse: "\$(GLIMPSE_concordance --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo "" | gzip > ${prefix}.error.cal.txt.gz
-    echo "" | gzip > ${prefix}.error.grp.txt.gz
-    echo "" | gzip > ${prefix}.error.spl.txt.gz
-    echo "" | gzip > ${prefix}.rsquare.grp.txt.gz
-    echo "" | gzip > ${prefix}.rsquare.spl.txt.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        glimpse: "\$(GLIMPSE_concordance --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
-    END_VERSIONS
+    echo | gzip > ${prefix}.error.cal.txt.gz
+    echo | gzip > ${prefix}.error.grp.txt.gz
+    echo | gzip > ${prefix}.error.spl.txt.gz
+    echo | gzip > ${prefix}.rsquare.grp.txt.gz
+    echo | gzip > ${prefix}.rsquare.spl.txt.gz
     """
 }

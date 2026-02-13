@@ -9,15 +9,15 @@ process SAMTOOLS_COLLATEFASTQ {
 
     input:
     tuple val(meta), path(input)
-    tuple val(meta2), path(fasta)
+    tuple val(meta2), path(fasta), path(fai)
     val(interleave)
 
     output:
-    tuple val(meta), path("*_{1,2}.fq.gz")     , optional:true, emit: fastq
-    tuple val(meta), path("*_interleaved.fq")  , optional:true, emit: fastq_interleaved
+    tuple val(meta), path("*_{1,2}.fq.gz")     , emit: fastq            , optional:true
+    tuple val(meta), path("*_interleaved.fq")  , emit: fastq_interleaved, optional:true
     tuple val(meta), path("*_other.fq.gz")     , emit: fastq_other
-    tuple val(meta), path("*_singleton.fq.gz") , optional:true, emit: fastq_singleton
-    path "versions.yml"                        , emit: versions
+    tuple val(meta), path("*_singleton.fq.gz") , emit: fastq_singleton  , optional:true
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,11 +46,6 @@ process SAMTOOLS_COLLATEFASTQ {
         ${reference} \\
         -0 ${prefix}_other.fq.gz \\
         $output
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -67,10 +62,5 @@ process SAMTOOLS_COLLATEFASTQ {
     ${interleavecommand}
     ${singletoncommand}
     ${empty}> ${prefix}_other.fq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }

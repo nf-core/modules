@@ -1,4 +1,5 @@
 include { BBMAP_BBSPLIT                         } from '../../../modules/nf-core/bbmap/bbsplit'
+include { FASTQC as FASTQC_FILTERED             } from '../../../modules/nf-core/fastqc'
 include { CAT_FASTQ                             } from '../../../modules/nf-core/cat/fastq/main'
 include { FQ_LINT                               } from '../../../modules/nf-core/fq/lint/main'
 include { FQ_LINT as FQ_LINT_AFTER_TRIMMING     } from '../../../modules/nf-core/fq/lint/main'
@@ -126,7 +127,6 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
 
     main:
 
-    ch_versions = channel.empty()
     ch_filtered_reads = channel.empty()
     ch_trim_read_count = channel.empty()
     ch_multiqc_files = channel.empty()
@@ -155,12 +155,14 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     ch_bowtie2_index      = channel.empty()
     ch_seqkit_prefixed    = channel.empty()
     ch_seqkit_converted   = channel.empty()
+    ch_fastqc_filtered_html = channel.empty()
+    ch_fastqc_filtered_zip  = channel.empty()
 
     ch_reads
         .branch { meta, fastqs ->
-            single: fastqs.size() == 1
+            single: fastqs.size() == 1 && fastqs.flatten()[0].name.endsWith('.gz')
             return [meta, fastqs.flatten()]
-            multiple: fastqs.size() > 1
+            multiple: true
             return [meta, fastqs.flatten()]
         }
         .set { ch_fastq }
@@ -335,7 +337,6 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         ch_seqkit_prefixed  = FASTQ_REMOVE_RRNA.out.seqkit_prefixed
         ch_seqkit_converted = FASTQ_REMOVE_RRNA.out.seqkit_converted
         ch_multiqc_files = ch_multiqc_files.mix(FASTQ_REMOVE_RRNA.out.multiqc_files)
-        ch_versions = ch_versions.mix(FASTQ_REMOVE_RRNA.out.versions)
 
         if (!skip_linting) {
             FQ_LINT_AFTER_RIBO_REMOVAL(
@@ -344,6 +345,18 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
             ch_lint_log_ribo = FQ_LINT_AFTER_RIBO_REMOVAL.out.lint
             ch_filtered_reads = ch_filtered_reads.join(FQ_LINT_AFTER_RIBO_REMOVAL.out.lint.map { meta, _lint -> meta })
         }
+    }
+
+    //
+    // MODULE: Run FastQC on filtered reads (after BBSplit and/or rRNA removal)
+    //
+    if (!skip_fastqc && (!skip_bbsplit || remove_ribo_rna)) {
+        FASTQC_FILTERED(
+            ch_filtered_reads
+        )
+        ch_fastqc_filtered_html = FASTQC_FILTERED.out.html
+        ch_fastqc_filtered_zip  = FASTQC_FILTERED.out.zip
+        ch_multiqc_files = ch_multiqc_files.mix(FASTQC_FILTERED.out.zip)
     }
 
     // Branch FastQ channels if 'auto' specified to infer strandedness
@@ -375,7 +388,6 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         ch_salmon_index,
         make_salmon_index,
     )
-    ch_versions = ch_versions.mix(FASTQ_SUBSAMPLE_FQ_SALMON.out.versions)
 
     FASTQ_SUBSAMPLE_FQ_SALMON.out.lib_format_counts
         .join(ch_strand_fastq.auto_strand)
@@ -417,8 +429,8 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     seqkit_stats     = ch_seqkit_stats
     bowtie2_log      = ch_bowtie2_log
     bowtie2_index    = ch_bowtie2_index
+    fastqc_filtered_html = ch_fastqc_filtered_html
+    fastqc_filtered_zip  = ch_fastqc_filtered_zip
     seqkit_prefixed  = ch_seqkit_prefixed
     seqkit_converted = ch_seqkit_converted
-
-    versions         = ch_versions // channel: [ versions.yml ]
 }

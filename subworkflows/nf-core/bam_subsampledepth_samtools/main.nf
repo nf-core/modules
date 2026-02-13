@@ -7,17 +7,15 @@ workflow BAM_SUBSAMPLEDEPTH_SAMTOOLS {
     take:
     ch_bam_bai    // channel: [ val(meta), path(bam), path(bai) ]
     ch_depth      // channel: [ val(meta), val(depth)]
-    ch_fasta      // channel: [ val(meta), path(fasta) ]
+    ch_fasta      // channel: [ val(meta), path(fasta), path(fai) ]
 
     main:
-    ch_versions = Channel.empty()
 
     // Compute mean depth
     SAMTOOLS_DEPTH(ch_bam_bai, [[], []])
 
     // Use GAWK to get mean depth
     GAWK(SAMTOOLS_DEPTH.out.tsv, [], false)
-    ch_versions = ch_versions.mix(GAWK.out.versions.first())
 
     // Compute downsampling factor
     ch_mean_depth = GAWK.out.output
@@ -29,8 +27,8 @@ workflow BAM_SUBSAMPLEDEPTH_SAMTOOLS {
     ch_input_subsample = ch_bam_bai
         .join(ch_mean_depth)
         .combine(ch_depth)
-        .map{ meta, bam, index, mean, depth ->
-            [ meta + ['subsample_fraction': depth as Float / mean, 'depth': depth ], bam, index ]
+        .map{ meta, bam, index, mean, metaD, depth ->
+            [ meta + metaD + ['subsample_fraction': depth as Float / mean, 'depth': depth ], bam, index ]
         }
 
     // Downsample
@@ -50,5 +48,4 @@ workflow BAM_SUBSAMPLEDEPTH_SAMTOOLS {
 
     emit:
     bam_subsampled    = ch_bam_subsampled             // channel: [ val(meta), path(bam), path(csi) ]
-    versions          = ch_versions                   // channel: [ path(versions.yml) ]
 }

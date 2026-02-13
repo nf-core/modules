@@ -51,12 +51,13 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out.versions).match("versions") },
-                { assert snapshot(file(workflow.out.mutect2_vcf.get(0).get(1)).name).match("test1.vcf.gz") },
-                { assert snapshot(file(workflow.out.mutect2_index.get(0).get(1)).name).match("test1.vcf.gz.tbi") },
-                { assert snapshot(file(workflow.out.mutect2_stats.get(0).get(1)).name).match("test1.vcf.gz.stats") },
-                { assert snapshot(file(workflow.out.pon_vcf.get(0).get(1)).name).match("test_panel.vcf.gz") },
-                { assert snapshot(file(workflow.out.pon_index.get(0).get(1)).name).match("test_panel.vcf.gz.tbi") },
+                { assert snapshot(
+                    file(workflow.out.mutect2_vcf[0][1]).name,
+                    file(workflow.out.mutect2_index[0][1]).name,
+                    file(workflow.out.mutect2_stats[0][1]).name,
+                    file(workflow.out.pon_vcf[0][1]).name,
+                    file(workflow.out.pon_index[0][1]).name)
+                .match() }
             )
         }
     }

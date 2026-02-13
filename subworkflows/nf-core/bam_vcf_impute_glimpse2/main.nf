@@ -18,8 +18,6 @@ workflow BAM_VCF_IMPUTE_GLIMPSE2 {
 
     main:
 
-    ch_versions = channel.empty()
-
     if (chunk == true) {
         // Error if pre-defined chunks are provided when chunking is activated
         ch_chunks
@@ -31,7 +29,6 @@ workflow BAM_VCF_IMPUTE_GLIMPSE2 {
         // Chunk reference panel
         ch_ref_map = ch_ref.combine(ch_map, by: 0)
         GLIMPSE2_CHUNK(ch_ref_map, chunk_model)
-        ch_versions = ch_versions.mix(GLIMPSE2_CHUNK.out.versions.first())
 
         ch_chunks = GLIMPSE2_CHUNK.out.chunk_chr
             .splitCsv(
@@ -72,7 +69,6 @@ workflow BAM_VCF_IMPUTE_GLIMPSE2 {
             }
 
         GLIMPSE2_SPLITREFERENCE(split_input)
-        ch_versions = ch_versions.mix(GLIMPSE2_SPLITREFERENCE.out.versions.first())
 
         // Everything is provided by the bin file so no additional file
         ch_chunks_panel_map = GLIMPSE2_SPLITREFERENCE.out.bin_ref.map { meta, bin_ref -> [meta, [], [], bin_ref, [], []] }
@@ -116,7 +112,6 @@ workflow BAM_VCF_IMPUTE_GLIMPSE2 {
 
     // Impute with Glimpse2
     GLIMPSE2_PHASE(ch_phase_input, ch_fasta)
-    ch_versions = ch_versions.mix(GLIMPSE2_PHASE.out.versions.first())
 
     // Index phased file
     BCFTOOLS_INDEX_PHASE(GLIMPSE2_PHASE.out.phased_variants)
@@ -135,7 +130,6 @@ workflow BAM_VCF_IMPUTE_GLIMPSE2 {
         .groupTuple()
 
     GLIMPSE2_LIGATE(ligate_input)
-    ch_versions = ch_versions.mix(GLIMPSE2_LIGATE.out.versions.first())
 
     BCFTOOLS_INDEX_LIGATE(GLIMPSE2_LIGATE.out.merged_variants)
 
@@ -149,5 +143,4 @@ workflow BAM_VCF_IMPUTE_GLIMPSE2 {
     emit:
     chunks    = ch_chunks // channel: [ val(meta), regionin, regionout ]
     vcf_index = ch_vcf_index // channel: [ val(meta), vcf, csi ]
-    versions  = ch_versions // channel: [ versions.yml ]
 }

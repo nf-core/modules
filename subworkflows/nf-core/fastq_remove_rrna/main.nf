@@ -45,7 +45,6 @@ workflow FASTQ_REMOVE_RRNA {
 
     main:
 
-    ch_versions = channel.empty()
     ch_multiqc_files = channel.empty()
     ch_filtered_reads = ch_reads
 
@@ -188,7 +187,7 @@ workflow FASTQ_REMOVE_RRNA {
         // This removes any pair where at least one mate aligned to rRNA
         SAMTOOLS_VIEW_BOWTIE2(
             BOWTIE2_ALIGN_PE.out.bam.map { meta, bam_file -> [meta, bam_file, []] },
-            [[], []],  // No reference fasta
+            [[], [], []],  // No reference fasta
             [],        // No qname file
             []         // No index format
         )
@@ -216,5 +215,4 @@ workflow FASTQ_REMOVE_RRNA {
     bowtie2_index    = ch_bowtie2_index_out // channel: [ val(meta), [ index ] ]
     seqkit_prefixed  = ch_seqkit_prefixed  // channel: [ val(meta), [ fasta ] ]
     seqkit_converted = ch_seqkit_converted // channel: [ val(meta), [ fasta ] ]
-    versions         = ch_versions         // channel: [ versions.yml ]
 }

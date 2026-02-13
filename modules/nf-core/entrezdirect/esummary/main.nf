@@ -37,7 +37,6 @@ process ENTREZDIRECT_ESUMMARY {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (!uid && !uids_file) error "No input. Valid input: an identifier or a .txt file with identifiers"
     if (uid && uids_file) error "Only one input is required: a single identifier or a .txt file with identifiers"

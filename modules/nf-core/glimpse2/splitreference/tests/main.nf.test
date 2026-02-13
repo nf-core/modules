@@ -16,7 +16,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'ref1000GP', single_end:false ],
+                    [ id:'ref1000GP' ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
                     "chr22:16600000-16800000",
@@ -28,14 +28,11 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                // File has a timestamp in it and is in binary format, so we can only check the name
-                { assert snapshot(
-                    file(process.out.bin_ref[0][1]).name,
-                    process.out.versions
-                ).match() }
-            )
+            assert process.success
+            assert snapshot(
+                file(process.out.bin_ref[0][1]).name,
+                process.out.findAll { key, val -> key.startsWith('versions') }
+            ).match()
         }
     }
 
@@ -44,7 +41,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'ref1000GP', single_end:false ],
+                    [ id:'ref1000GP' ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
                     "chr22:16600000-16800000",
@@ -56,14 +53,11 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                // File has a timestamp in it and is in binary format, so we can only check the name
-                { assert snapshot(
-                    file(process.out.bin_ref[0][1]).name,
-                    process.out.versions
-                ).match() }
-            )
+            assert process.success
+            assert snapshot(
+                file(process.out.bin_ref[0][1]).name,
+                process.out.findAll { key, val -> key.startsWith('versions') }
+            ).match()
         }
     }
 
@@ -73,7 +67,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'ref1000GP', single_end:false ],
+                    [ id:'ref1000GP' ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
                     "chr22:16600000-16800000",
@@ -85,13 +79,8 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
-            )
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }

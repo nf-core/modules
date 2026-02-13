@@ -33,7 +33,7 @@ process SVANALYZER_SVBENCHMARK {
     def args   = task.ext.args ?: ''
     def args2  = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def bed = bed ? "-includebed $bed" : ""
+    def bed_opt = bed ? "-includebed $bed" : ""
     def VERSION = '0.36' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
@@ -44,7 +44,7 @@ process SVANALYZER_SVBENCHMARK {
         --test $test \\
         --truth $truth \\
         --prefix $prefix \\
-        $bed
+        $bed_opt
 
     bgzip ${args2} --threads ${task.cpus} -c ${prefix}.falsenegatives.vcf > ${prefix}.falsenegatives.vcf.gz
     bgzip ${args2} --threads ${task.cpus} -c ${prefix}.falsepositives.vcf > ${prefix}.falsepositives.vcf.gz

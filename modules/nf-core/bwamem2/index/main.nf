@@ -2,7 +2,7 @@ process BWAMEM2_INDEX {
     tag "$fasta"
     // NOTE Requires 28N GB memory where N is the size of the reference sequence, floor of 280M
     // source: https://github.com/bwa-mem2/bwa-mem2/issues/9
-    memory { (280.MB * Math.ceil(fasta.size() / 10000000)) * task.attempt }
+    memory { 280.MB * Math.ceil(fasta.size() / 10000000) * task.attempt }
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -14,7 +14,7 @@ process BWAMEM2_INDEX {
 
     output:
     tuple val(meta), path("bwamem2"), emit: index
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('bwamem2'), eval('bwa-mem2 version | grep -o -E "[0-9]+(\\.[0-9]+)+"'), emit: versions_bwamem2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,11 +29,6 @@ process BWAMEM2_INDEX {
         $args \\
         -p bwamem2/${prefix} \\
         $fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bwamem2: \$(echo \$(bwa-mem2 version 2>&1) | sed 's/.* //')
-    END_VERSIONS
     """
 
     stub:
@@ -46,10 +41,5 @@ process BWAMEM2_INDEX {
     touch bwamem2/${prefix}.pac
     touch bwamem2/${prefix}.amb
     touch bwamem2/${prefix}.bwt.2bit.64
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bwamem2: \$(echo \$(bwa-mem2 version 2>&1) | sed 's/.* //')
-    END_VERSIONS
     """
 }

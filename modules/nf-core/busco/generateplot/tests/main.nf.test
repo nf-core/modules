@@ -42,7 +42,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions")}).match("versions") },
                 { assert process.out.png != null } // PNGs with same data but different meta-data. Not sure how to get around this, yet!
             )
         }

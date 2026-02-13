@@ -69,7 +69,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match()},
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() },
                 { assert path(process.out.alignment.get(0).get(1)).getText().contains("1ahl") }
             )
         }
@@ -92,7 +92,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match()},
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() },
                 { assert path(process.out.alignment.get(0).get(1)).getText().contains("1ahl") }
             )
         }
@@ -114,7 +114,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match()},
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() },
                 { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains("1ahl") }
             )
         }
