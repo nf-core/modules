@@ -1,17 +1,13 @@
 nextflow_process {
 
     name "Test Process FASTANI"
+    script "../main.nf"
+    process "FASTANI"
+    config "./nextflow.config"
     tag "modules_nfcore"
     tag "modules"
     tag "fastani"
-    script "../main.nf"
-name "Test Process FASTANI"
-tag "modules_nfcore"
-tag "modules"
-tag "fastani"
-script "../main.nf"
-process "FASTANI"
-    config "./nextflow.config"
+
     test("sarscov2 - referece vs contigs - fastANI - 1 v 1 mode") {
 
         when {
