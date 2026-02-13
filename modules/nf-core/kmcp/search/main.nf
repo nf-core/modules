@@ -25,10 +25,10 @@ process KMCP_SEARCH {
     """
     kmcp \\
         search \\
-        $args \\
-        --threads $task.cpus \\
-        --db-dir $db \\
-        $reads \\
+        ${args} \\
+        --threads ${task.cpus} \\
+        --db-dir ${db} \\
+        ${input} \\
         --out-file ${prefix}.gz
 
     cat <<-END_VERSIONS > versions.yml
@@ -37,7 +37,6 @@ process KMCP_SEARCH {
     END_VERSIONS
     """
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.gz

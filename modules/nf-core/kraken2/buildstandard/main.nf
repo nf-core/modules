@@ -33,7 +33,6 @@ process KRAKEN2_BUILDSTANDARD {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "kraken2_standard_db"
     """
     mkdir -p "$prefix"
