@@ -25,6 +25,7 @@ process QCATCH {
 
     """
     export MPLCONFIGDIR=./tmp
+    export NUMBA_CACHE_DIR=./tmp
     export TMPDIR=./tmp
 
     qcatch \\
@@ -51,6 +52,7 @@ process QCATCH {
 
     """
     export MPLCONFIGDIR=./tmp
+    export NUMBA_CACHE_DIR=./tmp
     export TMPDIR=./tmp
 
     touch ${prefix}_qcatch_report.html
