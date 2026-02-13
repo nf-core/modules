@@ -36,14 +36,15 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success},
-                { assert path(workflow.out.fastqc_html[0][1]).text.contains("<tr><td>File type</td><td>Conventional base calls</td></tr>") },
                 { assert snapshot(
+                    workflow.out.fastqc_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                    workflow.out.fastqc_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
                     workflow.out.reads,
                     workflow.out.trim_read_count,
                     workflow.out.trim_unpaired,
-).match() }
+                ).match() }
             )
         }
     }
@@ -71,13 +72,15 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success},
                 { assert snapshot(
+                    workflow.out.fastqc_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                    workflow.out.fastqc_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
                     workflow.out.reads,
                     workflow.out.trim_read_count,
                     workflow.out.trim_unpaired,
-).match() }
+                ).match() }
             )
         }
     }
@@ -104,13 +107,15 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success},
                 { assert snapshot(
+                    workflow.out.fastqc_html.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
+                    workflow.out.fastqc_zip.collect().flatten().findAll { !(it instanceof Map) && it.startsWith("/") }.collect { file(it).name },
                     workflow.out.reads,
                     workflow.out.trim_read_count,
                     workflow.out.trim_unpaired,
-).match() }
+                ).match() }
             )
         }
     }
@@ -138,12 +143,14 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success},
+                { assert !workflow.out.fastqc_html },
+                { assert !workflow.out.fastqc_zip },
                 { assert snapshot(
                     workflow.out.trim_read_count,
                     workflow.out.trim_unpaired,
-).match() }
+                ).match() }
             )
         }
     }
@@ -170,9 +177,9 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success},
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }
@@ -202,9 +209,9 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success},
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }
@@ -233,9 +240,9 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success},
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }

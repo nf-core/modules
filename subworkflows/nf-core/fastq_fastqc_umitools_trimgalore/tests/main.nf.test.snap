@@ -2,81 +2,14 @@
     "test paired end read with UMI - stub": {
         "content": [
             {
-                "0": [
-                    
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.html:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.zip:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.umi_extract.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "4": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        [
-                            "test.umi_extract_1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                            "test.umi_extract_2.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                        ]
-                    ]
-                ],
-                "5": [
-                    
-                ],
-                "6": [
-                    
-                ],
-                "7": [
-                    
-                ],
-                "8": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.fastq.gz_trimming_report.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "9": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        0
-                    ]
-                ],
                 "fastqc_html": [
                     [
                         {
                             "id": "test",
                             "single_end": false
                         },
+                        "FASTQ_FASTQC_UMITOOLS_TRIMGALORE:FASTQC",
+                        "fastqc",
                         "test.html:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
@@ -86,6 +19,8 @@
                             "id": "test",
                             "single_end": false
                         },
+                        "FASTQ_FASTQC_UMITOOLS_TRIMGALORE:FASTQC",
+                        "fastqc",
                         "test.zip:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
@@ -144,76 +79,21 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
+            "nextflow": "25.10.4"
         },
-        "timestamp": "2026-02-03T13:21:45.022632239"
+        "timestamp": "2026-02-11T14:47:05.647721208"
     },
     "test paired end read without UMI - stub": {
         "content": [
             {
-                "0": [
-                    
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.html:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.zip:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "3": [
-                    
-                ],
-                "4": [
-                    
-                ],
-                "5": [
-                    
-                ],
-                "6": [
-                    
-                ],
-                "7": [
-                    
-                ],
-                "8": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        [
-                            "test_1.fastq.gz_trimming_report.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test_2.fastq.gz_trimming_report.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                        ]
-                    ]
-                ],
-                "9": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        0
-                    ]
-                ],
                 "fastqc_html": [
                     [
                         {
                             "id": "test",
                             "single_end": false
                         },
+                        "FASTQ_FASTQC_UMITOOLS_TRIMGALORE:FASTQC",
+                        "fastqc",
                         "test.html:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
@@ -223,6 +103,8 @@
                             "id": "test",
                             "single_end": false
                         },
+                        "FASTQ_FASTQC_UMITOOLS_TRIMGALORE:FASTQC",
+                        "fastqc",
                         "test.zip:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
@@ -269,12 +151,20 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
+            "nextflow": "25.10.4"
         },
-        "timestamp": "2026-02-03T13:21:51.075428076"
+        "timestamp": "2026-02-11T14:47:14.08042154"
     },
     "test paired end read without UMI": {
         "content": [
+            [
+                "test_1_fastqc.html",
+                "test_2_fastqc.html"
+            ],
+            [
+                "test_1_fastqc.zip",
+                "test_2_fastqc.zip"
+            ],
             [
                 [
                     {
@@ -302,12 +192,18 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
+            "nextflow": "25.10.4"
         },
-        "timestamp": "2026-02-03T13:21:22.252381045"
+        "timestamp": "2026-02-11T14:46:37.294916439"
     },
     "test single end read with UMI": {
         "content": [
+            [
+                "test_fastqc.html"
+            ],
+            [
+                "test_fastqc.zip"
+            ],
             [
                 [
                     {
@@ -332,12 +228,20 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
+            "nextflow": "25.10.4"
         },
-        "timestamp": "2026-02-03T13:21:01.887880112"
+        "timestamp": "2026-02-11T14:46:13.310452258"
     },
     "test paired end read with UMI": {
         "content": [
+            [
+                "test_1_fastqc.html",
+                "test_2_fastqc.html"
+            ],
+            [
+                "test_1_fastqc.zip",
+                "test_2_fastqc.zip"
+            ],
             [
                 [
                     {
@@ -362,9 +266,9 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
+            "nextflow": "25.10.4"
         },
-        "timestamp": "2026-02-03T13:21:13.989761245"
+        "timestamp": "2026-02-11T14:46:27.2011909"
     },
     "test skip all steps": {
         "content": [
@@ -384,78 +288,14 @@
     "test single end read with UMI - stub": {
         "content": [
             {
-                "0": [
-                    
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.html:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.zip:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.umi_extract.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "4": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.umi_extract.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "5": [
-                    
-                ],
-                "6": [
-                    
-                ],
-                "7": [
-                    
-                ],
-                "8": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.fastq.gz_trimming_report.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "9": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        0
-                    ]
-                ],
                 "fastqc_html": [
                     [
                         {
                             "id": "test",
                             "single_end": true
                         },
+                        "FASTQ_FASTQC_UMITOOLS_TRIMGALORE:FASTQC",
+                        "fastqc",
                         "test.html:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
@@ -465,6 +305,8 @@
                             "id": "test",
                             "single_end": true
                         },
+                        "FASTQ_FASTQC_UMITOOLS_TRIMGALORE:FASTQC",
+                        "fastqc",
                         "test.zip:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
@@ -520,8 +362,8 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
+            "nextflow": "25.10.4"
         },
-        "timestamp": "2026-02-03T13:21:36.092099503"
+        "timestamp": "2026-02-11T14:46:54.690152145"
     }
 }

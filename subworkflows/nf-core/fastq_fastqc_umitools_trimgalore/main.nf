@@ -2,9 +2,9 @@
 // Read QC, UMI extraction and trimming
 //
 
-include { FASTQC           } from '../../../modules/nf-core/fastqc/main'
-include { UMITOOLS_EXTRACT } from '../../../modules/nf-core/umitools/extract/main'
-include { TRIMGALORE       } from '../../../modules/nf-core/trimgalore/main'
+include { FASTQC           } from '../../../modules/nf-core/fastqc'
+include { TRIMGALORE       } from '../../../modules/nf-core/trimgalore'
+include { UMITOOLS_EXTRACT } from '../../../modules/nf-core/umitools/extract'
 
 //
 // Function that parses TrimGalore log output file to get total number of reads after trimming
@@ -27,12 +27,12 @@ def getTrimGaloreReadsAfterFiltering(log_file) {
 
 workflow FASTQ_FASTQC_UMITOOLS_TRIMGALORE {
     take:
-    reads             // channel: [ val(meta), [ reads ] ]
-    skip_fastqc       // boolean: true/false
-    with_umi          // boolean: true/false
-    skip_umi_extract  // boolean: true/false
-    skip_trimming     // boolean: true/false
-    umi_discard_read  // integer: 0, 1 or 2
+    reads // channel: [ val(meta), [ reads ] ]
+    skip_fastqc // boolean: true/false
+    with_umi // boolean: true/false
+    skip_umi_extract // boolean: true/false
+    skip_trimming // boolean: true/false
+    umi_discard_read // integer: 0, 1 or 2
     min_trimmed_reads // integer: > 0
 
     main:
@@ -40,6 +40,7 @@ workflow FASTQ_FASTQC_UMITOOLS_TRIMGALORE {
     fastqc_zip = channel.empty()
     if (!skip_fastqc) {
         FASTQC(reads)
+
         fastqc_html = FASTQC.out.html
         fastqc_zip = FASTQC.out.zip
     }
@@ -104,13 +105,13 @@ workflow FASTQ_FASTQC_UMITOOLS_TRIMGALORE {
 
     emit:
     reads           = trim_reads // channel: [ val(meta), [ reads ] ]
-    fastqc_html     // channel: [ val(meta), [ html ] ]
-    fastqc_zip      // channel: [ val(meta), [ zip ] ]
-    umi_log         // channel: [ val(meta), [ log ] ]
-    umi_reads       // channel: [ val(meta), [ reads ] ]
-    trim_unpaired   // channel: [ val(meta), [ reads ] ]
-    trim_html       // channel: [ val(meta), [ html ] ]
-    trim_zip        // channel: [ val(meta), [ zip ] ]
-    trim_log        // channel: [ val(meta), [ txt ] ]
+    fastqc_html // channel: [ val(meta), process, tool, [ html ] ]
+    fastqc_zip // channel: [ val(meta), process, tool, [ zip ] ]
+    umi_log // channel: [ val(meta), [ log ] ]
+    umi_reads // channel: [ val(meta), [ reads ] ]
+    trim_unpaired // channel: [ val(meta), [ reads ] ]
+    trim_html // channel: [ val(meta), [ html ] ]
+    trim_zip // channel: [ val(meta), [ zip ] ]
+    trim_log // channel: [ val(meta), [ txt ] ]
     trim_read_count // channel: [ val(meta), val(count) ]
 }

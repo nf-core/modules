@@ -1,14 +1,14 @@
 include { BBMAP_BBSPLIT                         } from '../../../modules/nf-core/bbmap/bbsplit'
+include { CAT_FASTQ                             } from '../../../modules/nf-core/cat/fastq'
 include { FASTQC as FASTQC_FILTERED             } from '../../../modules/nf-core/fastqc'
-include { CAT_FASTQ                             } from '../../../modules/nf-core/cat/fastq/main'
-include { FQ_LINT                               } from '../../../modules/nf-core/fq/lint/main'
-include { FQ_LINT as FQ_LINT_AFTER_TRIMMING     } from '../../../modules/nf-core/fq/lint/main'
-include { FQ_LINT as FQ_LINT_AFTER_BBSPLIT      } from '../../../modules/nf-core/fq/lint/main'
-include { FQ_LINT as FQ_LINT_AFTER_RIBO_REMOVAL } from '../../../modules/nf-core/fq/lint/main'
-include { FASTQ_REMOVE_RRNA                     } from '../fastq_remove_rrna'
-include { FASTQ_SUBSAMPLE_FQ_SALMON             } from '../fastq_subsample_fq_salmon'
+include { FQ_LINT                               } from '../../../modules/nf-core/fq/lint'
+include { FQ_LINT as FQ_LINT_AFTER_BBSPLIT      } from '../../../modules/nf-core/fq/lint'
+include { FQ_LINT as FQ_LINT_AFTER_RIBO_REMOVAL } from '../../../modules/nf-core/fq/lint'
+include { FQ_LINT as FQ_LINT_AFTER_TRIMMING     } from '../../../modules/nf-core/fq/lint'
 include { FASTQ_FASTQC_UMITOOLS_TRIMGALORE      } from '../fastq_fastqc_umitools_trimgalore'
 include { FASTQ_FASTQC_UMITOOLS_FASTP           } from '../fastq_fastqc_umitools_fastp'
+include { FASTQ_REMOVE_RRNA                     } from '../fastq_remove_rrna'
+include { FASTQ_SUBSAMPLE_FQ_SALMON             } from '../fastq_subsample_fq_salmon'
 
 //
 // Function to determine library type by comparing type counts.
@@ -84,45 +84,32 @@ def multiqcTsvFromList(tsv_data, header) {
 
 workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     take:
-    // Input channels
-    ch_reads             // channel: [ val(meta), [ reads ] ]
-    ch_fasta             // channel: /path/to/genome.fasta
-    ch_transcript_fasta  // channel: /path/to/transcript.fasta
-    ch_gtf               // channel: /path/to/genome.gtf
-    ch_salmon_index      // channel: /path/to/salmon/index/ (optional)
-    ch_sortmerna_index   // channel: /path/to/sortmerna/index/ (optional)
-    ch_bowtie2_index     // channel: /path/to/bowtie2/index/ (optional)
-    ch_bbsplit_index     // channel: /path/to/bbsplit/index/ (optional)
-    ch_rrna_fastas       // channel: one or more fasta files containing rrna sequences to be passed to SortMeRNA/Bowtie2 (optional)
-
-    // Skip options
-    skip_bbsplit         // boolean: Skip BBSplit for removal of non-reference genome reads.
-    skip_fastqc          // boolean: true/false
-    skip_trimming        // boolean: true/false
-    skip_umi_extract     // boolean: true/false
-    skip_linting         // boolean: true/false
-
-    // Index generation
-    make_salmon_index    // boolean: Whether to create salmon index before running salmon quant
+    ch_reads // channel: [ val(meta), [ reads ] ]
+    ch_fasta // channel: /path/to/genome.fasta
+    ch_transcript_fasta // channel: /path/to/transcript.fasta
+    ch_gtf // channel: /path/to/genome.gtf
+    ch_salmon_index // channel: /path/to/salmon/index/ (optional)
+    ch_sortmerna_index // channel: /path/to/sortmerna/index/ (optional)
+    ch_bowtie2_index // channel: /path/to/bowtie2/index/ (optional)
+    ch_bbsplit_index // channel: /path/to/bbsplit/index/ (optional)
+    ch_rrna_fastas // channel: one or more fasta files containing rrna sequences to be passed to SortMeRNA/Bowtie2 (optional)
+    skip_bbsplit // boolean: Skip BBSplit for removal of non-reference genome reads.
+    skip_fastqc // boolean: true/false
+    skip_trimming // boolean: true/false
+    skip_umi_extract // boolean: true/false
+    skip_linting // boolean: true/false
+    make_salmon_index // boolean: Whether to create salmon index before running salmon quant
     make_sortmerna_index // boolean: Whether to create a sortmerna index before running sortmerna
-    make_bowtie2_index   // boolean: Whether to create a bowtie2 index before running bowtie2
-
-    // Trimming options
-    trimmer              // string (enum): 'fastp' or 'trimgalore'
-    min_trimmed_reads    // integer: > 0
-    save_trimmed         // boolean: true/false
-    fastp_merge          // boolean: true/false: whether to stitch paired end reads together in FASTP output
-
-    // rRNA removal options
-    remove_ribo_rna           // boolean: true/false: whether to remove rRNA
-    ribo_removal_tool         // string (enum): 'sortmerna', 'ribodetector', or 'bowtie2'
-
-    // UMI options
-    with_umi             // boolean: true/false: Enable UMI-based read deduplication.
-    umi_discard_read     // integer: 0, 1 or 2
-
-    // Strandedness thresholds
-    stranded_threshold   // float: The fraction of stranded reads that must be assigned to a strandedness for confident assignment. Must be at least 0.5
+    make_bowtie2_index // boolean: Whether to create a bowtie2 index before running bowtie2
+    trimmer // string (enum): 'fastp' or 'trimgalore'
+    min_trimmed_reads // integer: > 0
+    save_trimmed // boolean: true/false
+    fastp_merge // boolean: true/false: whether to stitch paired end reads together in FASTP output
+    remove_ribo_rna // boolean: true/false: whether to remove rRNA
+    ribo_removal_tool // string (enum): 'sortmerna', 'ribodetector', or 'bowtie2'
+    with_umi // boolean: true/false: Enable UMI-based read deduplication.
+    umi_discard_read // integer: 0, 1 or 2
+    stranded_threshold // float: The fraction of stranded reads that must be assigned to a strandedness for confident assignment. Must be at least 0.5
     unstranded_threshold // float: The difference in fraction of stranded reads assigned to 'forward' and 'reverse' below which a sample is classified as 'unstranded'
 
     main:
@@ -136,27 +123,27 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     ch_lint_log_ribo = channel.empty()
 
     // Individual output channels for workflow outputs
-    ch_fastqc_raw_html    = channel.empty()
-    ch_fastqc_raw_zip     = channel.empty()
-    ch_fastqc_trim_html   = channel.empty()
-    ch_fastqc_trim_zip    = channel.empty()
-    ch_trim_html          = channel.empty()
-    ch_trim_zip           = channel.empty()
-    ch_trim_log           = channel.empty()
-    ch_trim_json          = channel.empty()
-    ch_trim_unpaired      = channel.empty()
-    ch_umi_log            = channel.empty()
-    ch_umi_reads          = channel.empty()
-    ch_bbsplit_stats      = channel.empty()
-    ch_sortmerna_log      = channel.empty()
-    ch_ribodetector_log   = channel.empty()
-    ch_seqkit_stats       = channel.empty()
-    ch_bowtie2_log        = channel.empty()
-    ch_bowtie2_index      = channel.empty()
-    ch_seqkit_prefixed    = channel.empty()
-    ch_seqkit_converted   = channel.empty()
+    ch_fastqc_raw_html = channel.empty()
+    ch_fastqc_raw_zip = channel.empty()
+    ch_fastqc_trim_html = channel.empty()
+    ch_fastqc_trim_zip = channel.empty()
+    ch_trim_html = channel.empty()
+    ch_trim_zip = channel.empty()
+    ch_trim_log = channel.empty()
+    ch_trim_json = channel.empty()
+    ch_trim_unpaired = channel.empty()
+    ch_umi_log = channel.empty()
+    ch_umi_reads = channel.empty()
+    ch_bbsplit_stats = channel.empty()
+    ch_sortmerna_log = channel.empty()
+    ch_ribodetector_log = channel.empty()
+    ch_seqkit_stats = channel.empty()
+    ch_bowtie2_log = channel.empty()
+    ch_bowtie2_index = channel.empty()
+    ch_seqkit_prefixed = channel.empty()
+    ch_seqkit_converted = channel.empty()
     ch_fastqc_filtered_html = channel.empty()
-    ch_fastqc_filtered_zip  = channel.empty()
+    ch_fastqc_filtered_zip = channel.empty()
 
     ch_reads
         .branch { meta, fastqs ->
@@ -204,19 +191,19 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
 
         // Capture individual outputs for workflow outputs
         ch_fastqc_raw_html = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.fastqc_html
-        ch_fastqc_raw_zip  = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.fastqc_zip
+        ch_fastqc_raw_zip = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.fastqc_zip
         ch_fastqc_trim_html = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_html
-        ch_fastqc_trim_zip  = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_zip
-        ch_trim_log        = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_log
-        ch_trim_unpaired   = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_unpaired
-        ch_umi_log         = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.umi_log
-        ch_umi_reads       = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.umi_reads
+        ch_fastqc_trim_zip = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_zip
+        ch_trim_log = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_log
+        ch_trim_unpaired = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_unpaired
+        ch_umi_log = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.umi_log
+        ch_umi_reads = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.umi_reads
 
-        ch_multiqc_files = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.fastqc_zip
+        ch_multiqc_files = ch_multiqc_files
+            .mix(FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.fastqc_zip.map { meta, _process, _tool, file -> [meta, file] })
             .mix(FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_zip)
             .mix(FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_log)
             .mix(FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.umi_log)
-            .mix(ch_multiqc_files)
     }
 
     //
@@ -224,7 +211,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     //
     if (trimmer == 'fastp') {
         FASTQ_FASTQC_UMITOOLS_FASTP(
-            ch_filtered_reads.map { meta, reads -> tuple(meta, reads, []) }, // Add empty adapter sequence
+            ch_filtered_reads.map { meta, reads -> tuple(meta, reads, []) },
             skip_fastqc,
             with_umi,
             skip_umi_extract,
@@ -238,21 +225,21 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         ch_trim_read_count = FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_read_count
 
         // Capture individual outputs for workflow outputs
-        ch_fastqc_raw_html  = FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_raw_html
-        ch_fastqc_raw_zip   = FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_raw_zip
+        ch_fastqc_raw_html = FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_raw_html
+        ch_fastqc_raw_zip = FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_raw_zip
         ch_fastqc_trim_html = FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_trim_html
-        ch_fastqc_trim_zip  = FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_trim_zip
-        ch_trim_json        = FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_json
-        ch_trim_html        = FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_html
-        ch_trim_log         = FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_log
-        ch_umi_log          = FASTQ_FASTQC_UMITOOLS_FASTP.out.umi_log
-        ch_umi_reads        = FASTQ_FASTQC_UMITOOLS_FASTP.out.umi_reads
+        ch_fastqc_trim_zip = FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_trim_zip
+        ch_trim_json = FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_json
+        ch_trim_html = FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_html
+        ch_trim_log = FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_log
+        ch_umi_log = FASTQ_FASTQC_UMITOOLS_FASTP.out.umi_log
+        ch_umi_reads = FASTQ_FASTQC_UMITOOLS_FASTP.out.umi_reads
 
-        ch_multiqc_files = FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_raw_zip
-            .mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_trim_zip)
+        ch_multiqc_files = ch_multiqc_files
+            .mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_raw_zip.map { meta, _process, _tool, file -> [meta, file] })
+            .mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_trim_zip.map { meta, _process, _tool, file -> [meta, file] })
             .mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_json)
             .mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.umi_log)
-            .mix(ch_multiqc_files)
     }
 
     def pass_trimmed_reads = [:]
@@ -329,12 +316,12 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         )
 
         ch_filtered_reads = FASTQ_REMOVE_RRNA.out.reads
-        ch_sortmerna_log    = FASTQ_REMOVE_RRNA.out.sortmerna_log
+        ch_sortmerna_log = FASTQ_REMOVE_RRNA.out.sortmerna_log
         ch_ribodetector_log = FASTQ_REMOVE_RRNA.out.ribodetector_log
-        ch_seqkit_stats     = FASTQ_REMOVE_RRNA.out.seqkit_stats
-        ch_bowtie2_log      = FASTQ_REMOVE_RRNA.out.bowtie2_log
-        ch_bowtie2_index    = FASTQ_REMOVE_RRNA.out.bowtie2_index
-        ch_seqkit_prefixed  = FASTQ_REMOVE_RRNA.out.seqkit_prefixed
+        ch_seqkit_stats = FASTQ_REMOVE_RRNA.out.seqkit_stats
+        ch_bowtie2_log = FASTQ_REMOVE_RRNA.out.bowtie2_log
+        ch_bowtie2_index = FASTQ_REMOVE_RRNA.out.bowtie2_index
+        ch_seqkit_prefixed = FASTQ_REMOVE_RRNA.out.seqkit_prefixed
         ch_seqkit_converted = FASTQ_REMOVE_RRNA.out.seqkit_converted
         ch_multiqc_files = ch_multiqc_files.mix(FASTQ_REMOVE_RRNA.out.multiqc_files)
 
@@ -355,8 +342,8 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
             ch_filtered_reads
         )
         ch_fastqc_filtered_html = FASTQC_FILTERED.out.html
-        ch_fastqc_filtered_zip  = FASTQC_FILTERED.out.zip
-        ch_multiqc_files = ch_multiqc_files.mix(FASTQC_FILTERED.out.zip)
+        ch_fastqc_filtered_zip = FASTQC_FILTERED.out.zip
+        ch_multiqc_files = ch_multiqc_files.mix(FASTQC_FILTERED.out.zip.map { meta, _process, _tool, file -> [meta, file] })
     }
 
     // Branch FastQ channels if 'auto' specified to infer strandedness
@@ -403,34 +390,32 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         .set { ch_strand_inferred_fastq }
 
     emit:
-    reads            = ch_strand_inferred_fastq
-    trim_read_count  = ch_trim_read_count
-    multiqc_files    = ch_multiqc_files.transpose().map { _meta, file -> file }
-
-    // Individual outputs for workflow outputs
-    lint_log_raw     = ch_lint_log_raw
-    lint_log_trimmed = ch_lint_log_trimmed
-    lint_log_bbsplit = ch_lint_log_bbsplit
-    lint_log_ribo    = ch_lint_log_ribo
-    fastqc_raw_html  = ch_fastqc_raw_html
-    fastqc_raw_zip   = ch_fastqc_raw_zip
-    fastqc_trim_html = ch_fastqc_trim_html
-    fastqc_trim_zip  = ch_fastqc_trim_zip
-    trim_html        = ch_trim_html
-    trim_zip         = ch_trim_zip
-    trim_log         = ch_trim_log
-    trim_json        = ch_trim_json
-    trim_unpaired    = ch_trim_unpaired
-    umi_log          = ch_umi_log
-    umi_reads        = ch_umi_reads
-    bbsplit_stats    = ch_bbsplit_stats
-    sortmerna_log    = ch_sortmerna_log
-    ribodetector_log = ch_ribodetector_log
-    seqkit_stats     = ch_seqkit_stats
-    bowtie2_log      = ch_bowtie2_log
-    bowtie2_index    = ch_bowtie2_index
+    reads                = ch_strand_inferred_fastq
+    trim_read_count      = ch_trim_read_count
+    multiqc_files        = ch_multiqc_files.transpose().map { _meta, file -> file }
+    lint_log_raw         = ch_lint_log_raw
+    lint_log_trimmed     = ch_lint_log_trimmed
+    lint_log_bbsplit     = ch_lint_log_bbsplit
+    lint_log_ribo        = ch_lint_log_ribo
+    fastqc_raw_html      = ch_fastqc_raw_html
+    fastqc_raw_zip       = ch_fastqc_raw_zip
+    fastqc_trim_html     = ch_fastqc_trim_html
+    fastqc_trim_zip      = ch_fastqc_trim_zip
+    trim_html            = ch_trim_html
+    trim_zip             = ch_trim_zip
+    trim_log             = ch_trim_log
+    trim_json            = ch_trim_json
+    trim_unpaired        = ch_trim_unpaired
+    umi_log              = ch_umi_log
+    umi_reads            = ch_umi_reads
+    bbsplit_stats        = ch_bbsplit_stats
+    sortmerna_log        = ch_sortmerna_log
+    ribodetector_log     = ch_ribodetector_log
+    seqkit_stats         = ch_seqkit_stats
+    bowtie2_log          = ch_bowtie2_log
+    bowtie2_index        = ch_bowtie2_index
     fastqc_filtered_html = ch_fastqc_filtered_html
     fastqc_filtered_zip  = ch_fastqc_filtered_zip
-    seqkit_prefixed  = ch_seqkit_prefixed
-    seqkit_converted = ch_seqkit_converted
+    seqkit_prefixed      = ch_seqkit_prefixed
+    seqkit_converted     = ch_seqkit_converted
 }
