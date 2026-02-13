@@ -16,7 +16,7 @@ process BASES2FASTQ {
     tuple val(meta), path("${prefix}/RunManifest.json")        , emit: generated_run_manifest
     tuple val(meta), path("${prefix}/Metrics.csv")             , emit: metrics
     tuple val(meta), path("${prefix}/UnassignedSequences.csv") , emit: unassigned
-    tuple val("${task.process}"), val('bases2fastq'), eval('bases2fastq --version | sed -e "s/.*version //g"'), emit: versions_bases2fastq, topic: versions
+    tuple val("${task.process}"), val('bases2fastq'), eval('bases2fastq --version | sed "s/.*version //;s/,.*//"'), emit: versions_bases2fastq, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
