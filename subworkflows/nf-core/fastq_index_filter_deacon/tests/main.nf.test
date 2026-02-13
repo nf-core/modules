@@ -33,8 +33,7 @@ nextflow_workflow {
                 { assert snapshot(
                     workflow.out.index,
                     workflow.out.fastq_filtered,
-                    file(workflow.out.summary[0][1]).name,
-                    workflow.out.findAll { key, val -> key.startsWith("versions") }
+                    file(workflow.out.summary[0][1]).name
                 ).match()}
             )
         }
@@ -65,8 +64,7 @@ nextflow_workflow {
                 { assert snapshot(
                     workflow.out.index,
                     workflow.out.fastq_filtered,
-                    file(workflow.out.summary[0][1]).name,
-                    workflow.out.findAll { key, val -> key.startsWith("versions") }
+                    file(workflow.out.summary[0][1]).name
                 ).match()}
             )
         }
@@ -94,8 +92,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out,
-                    workflow.out.findAll { key, val -> key.startsWith("versions") }
+                    workflow.out
                 ).match()}
             )
         }
