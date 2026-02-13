@@ -24,6 +24,9 @@ process QCATCH {
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    export MPLCONFIGDIR=./tmp
+    export TMPDIR=./tmp
+
     qcatch \\
         --input ${quant_dir} \\
         --output ${prefix} \\
@@ -43,9 +46,13 @@ process QCATCH {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    export MPLCONFIGDIR=./tmp
+    export TMPDIR=./tmp
+
     touch ${prefix}_qcatch_report.html
     touch ${prefix}_filtered_quants.h5ad
     touch ${prefix}_metrics_summary.csv
