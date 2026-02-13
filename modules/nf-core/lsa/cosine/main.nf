@@ -2,7 +2,6 @@ process LSA_COSINE {
     tag "$meta.id"
     label 'process_medium'
 
-    // Contenedores nuevos generados por el revisor
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4d/4d94f159b95315adf8bf54fdc9db88db10a5aef72dca6245dd163b91e9e0437e/data' :
@@ -14,14 +13,15 @@ process LSA_COSINE {
     output:
     tuple val(meta), path("*_matrix.csv") , emit: matrix
     tuple val(meta), path("*_heatmap.png"), emit: heatmap
-    path "versions.yml"                   , emit: versions
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    // HEMOS QUITADO EL 'def' DE AQUÍ ABAJO PARA QUE LA PLANTILLA LO VEA
+    args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
     template 'cosine.R'
 
     stub:
