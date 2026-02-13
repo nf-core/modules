@@ -41,7 +41,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.bed,
-     		        process.out.summary.collect{ meta, summary_file ->
+                    process.out.summary.collect{ meta, summary_file ->
                         [ meta, path(summary_file).json.tap { it.remove('run_info') } ]
                     },
                     process.out.hits,
