@@ -32,10 +32,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert file(process.out.db.get(0).get(1).find { file(it).name == "test.tax" }).text.contains("MT192765.1") },
                 { assert snapshot(
                         process.out.db.get(0).get(1).findAll { file(it).name != "test.tax" },
-                        process.out.versions,
-                        file(process.out.db.get(0).get(1).find { file(it).name == "test.tax" }).text.contains("MT192765.1")
+                        process.out.versions
                     ).match()
                 },
             )
@@ -52,7 +52,7 @@ test("sarscov2 - genome - tsv") {
                 """
                 input[0] =  [
                                 [ id:'test' ], // meta map
-                                file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                             ]
                 input[1] = ch_ganon_input_tsv = Channel.of(["genome.fasta", "Severe_acute_respiratory_syndrome_coronavirus_2", "2697049"]).
                                 map { it.join("\t") }
