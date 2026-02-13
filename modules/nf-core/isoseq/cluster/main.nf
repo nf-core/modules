@@ -44,14 +44,13 @@ process ISOSEQ_CLUSTER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch dummy.transcripts.bam
-    touch dummy.transcripts.bam.pbi
-    touch dummy.transcripts.cluster
-    touch dummy.transcripts.cluster_report.csv
-    touch dummy.transcripts.transcriptset.xml
+    touch ${prefix}.transcripts.bam
+    touch ${prefix}.transcripts.bam.pbi
+    touch ${prefix}.transcripts.cluster
+    touch ${prefix}.transcripts.cluster_report.csv
+    touch ${prefix}.transcripts.transcriptset.xml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
