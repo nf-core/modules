@@ -6,7 +6,8 @@
                     [
                         {
                             "id": "test",
-                            "single_end": true
+                            "single_end": true,
+                            "index_id": "genome"
                         },
                         "genome.idx:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -42,7 +43,8 @@
                     [
                         {
                             "id": "test",
-                            "single_end": true
+                            "single_end": true,
+                            "index_id": "genome"
                         },
                         "genome.idx:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -58,11 +60,11 @@
                 ]
             }
         ],
+        "timestamp": "2026-02-13T15:10:09.178241099",
         "meta": {
-            "nf-test": "0.9.3",
+            "nf-test": "0.9.4",
             "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-02-13T09:19:12.052209052"
+        }
     },
     "sarscov2 - fastq - paired-end": {
         "content": [
@@ -70,9 +72,10 @@
                 [
                     {
                         "id": "test",
-                        "single_end": false
+                        "single_end": false,
+                        "index_id": "genome"
                     },
-                    "test.idx:md5,84e4985c91800686db9c9dca28fabd1a"
+                    "genome.idx:md5,84e4985c91800686db9c9dca28fabd1a"
                 ]
             ],
             [
@@ -89,11 +92,11 @@
             ],
             "test.json"
         ],
+        "timestamp": "2026-02-13T15:09:59.820753976",
         "meta": {
-            "nf-test": "0.9.3",
+            "nf-test": "0.9.4",
             "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-02-13T09:19:03.559444963"
+        }
     },
     "sarscov2 - fastq - single-end": {
         "content": [
@@ -101,9 +104,10 @@
                 [
                     {
                         "id": "test",
-                        "single_end": true
+                        "single_end": true,
+                        "index_id": "genome"
                     },
-                    "test.idx:md5,84e4985c91800686db9c9dca28fabd1a"
+                    "genome.idx:md5,84e4985c91800686db9c9dca28fabd1a"
                 ]
             ],
             [
@@ -117,10 +121,10 @@
             ],
             "test.json"
         ],
+        "timestamp": "2026-02-13T15:09:50.38883241",
         "meta": {
-            "nf-test": "0.9.3",
+            "nf-test": "0.9.4",
             "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-02-13T09:18:55.835377502"
+        }
     }
 }
