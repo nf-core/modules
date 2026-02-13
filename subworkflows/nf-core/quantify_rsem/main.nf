@@ -43,8 +43,8 @@ workflow QUANTIFY_RSEM {
     // Merge counts across samples
     //
     CUSTOM_RSEMMERGECOUNTS (
-        ch_counts_gene.collect{ tuple -> tuple[1] },
-        ch_counts_transcript.collect{ tuple -> tuple[1] }
+        ch_counts_gene.collect{ it[1] }.map { results -> [ ['id': 'all_samples'], results ] },
+        ch_counts_transcript.collect{ it[1] }
     )
 
     //
@@ -68,12 +68,12 @@ workflow QUANTIFY_RSEM {
     logs                     = ch_logs                                                               // channel: [ val(meta), logs ]
 
     // RSEM merge outputs
-    merged_counts_gene       = CUSTOM_RSEMMERGECOUNTS.out.counts_gene                                //    path: *.gene_counts.tsv
-    merged_tpm_gene          = CUSTOM_RSEMMERGECOUNTS.out.tpm_gene                                   //    path: *.gene_tpm.tsv
-    merged_counts_transcript = CUSTOM_RSEMMERGECOUNTS.out.counts_transcript                          //    path: *.transcript_counts.tsv
-    merged_tpm_transcript    = CUSTOM_RSEMMERGECOUNTS.out.tpm_transcript                             //    path: *.transcript_tpm.tsv
-    merged_genes_long        = CUSTOM_RSEMMERGECOUNTS.out.genes_long                                 //    path: *.genes_long.tsv
-    merged_isoforms_long     = CUSTOM_RSEMMERGECOUNTS.out.isoforms_long                              //    path: *.isoforms_long.tsv
+    merged_counts_gene       = CUSTOM_RSEMMERGECOUNTS.out.counts_gene                                // channel: [ val(meta), counts ]
+    merged_tpm_gene          = CUSTOM_RSEMMERGECOUNTS.out.tpm_gene                                   // channel: [ val(meta), tpm ]
+    merged_counts_transcript = CUSTOM_RSEMMERGECOUNTS.out.counts_transcript                          // channel: [ val(meta), counts ]
+    merged_tpm_transcript    = CUSTOM_RSEMMERGECOUNTS.out.tpm_transcript                             // channel: [ val(meta), tpm ]
+    merged_genes_long        = CUSTOM_RSEMMERGECOUNTS.out.genes_long                                 // channel: [ val(meta), genes_long ]
+    merged_isoforms_long     = CUSTOM_RSEMMERGECOUNTS.out.isoforms_long                              // channel: [ val(meta), isoforms_long ]
 
     // tximport outputs
     tpm_gene                  = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.tpm_gene                     //    path: *gene_tpm.tsv

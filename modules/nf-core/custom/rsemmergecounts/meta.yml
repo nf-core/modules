@@ -16,12 +16,16 @@ tools:
       identifier: ""
 
 input:
-  - "genes/*":
-      type: file
-      description: |
-        Collected RSEM gene-level results files across all samples.
-      pattern: "*.genes.results"
-      ontologies: []
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information. e.g. [ id:'all_samples' ].
+    - "genes/*":
+        type: file
+        description: |
+          Collected RSEM gene-level results files across all samples.
+        pattern: "*.genes.results"
+        ontologies: []
   - "isoforms/*":
       type: file
       description: |
@@ -31,57 +35,81 @@ input:
 
 output:
   counts_gene:
-    - "${prefix}.gene_counts.tsv":
-        type: file
-        description: |
-          Wide-format gene-level count matrix (expected_count column from
-          RSEM) with samples as columns.
-        pattern: "*.gene_counts.tsv"
-        ontologies:
-          - edam: http://edamontology.org/format_3475
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information. e.g. [ id:'all_samples' ].
+      - "${prefix}.gene_counts.tsv":
+          type: file
+          description: |
+            Wide-format gene-level count matrix (expected_count column from
+            RSEM) with samples as columns.
+          pattern: "*.gene_counts.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
   tpm_gene:
-    - "${prefix}.gene_tpm.tsv":
-        type: file
-        description: |
-          Wide-format gene-level TPM matrix with samples as columns.
-        pattern: "*.gene_tpm.tsv"
-        ontologies:
-          - edam: http://edamontology.org/format_3475
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information. e.g. [ id:'all_samples' ].
+      - "${prefix}.gene_tpm.tsv":
+          type: file
+          description: |
+            Wide-format gene-level TPM matrix with samples as columns.
+          pattern: "*.gene_tpm.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
   counts_transcript:
-    - "${prefix}.transcript_counts.tsv":
-        type: file
-        description: |
-          Wide-format transcript-level count matrix (expected_count column
-          from RSEM) with samples as columns.
-        pattern: "*.transcript_counts.tsv"
-        ontologies:
-          - edam: http://edamontology.org/format_3475
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information. e.g. [ id:'all_samples' ].
+      - "${prefix}.transcript_counts.tsv":
+          type: file
+          description: |
+            Wide-format transcript-level count matrix (expected_count column
+            from RSEM) with samples as columns.
+          pattern: "*.transcript_counts.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
   tpm_transcript:
-    - "${prefix}.transcript_tpm.tsv":
-        type: file
-        description: |
-          Wide-format transcript-level TPM matrix with samples as columns.
-        pattern: "*.transcript_tpm.tsv"
-        ontologies:
-          - edam: http://edamontology.org/format_3475
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information. e.g. [ id:'all_samples' ].
+      - "${prefix}.transcript_tpm.tsv":
+          type: file
+          description: |
+            Wide-format transcript-level TPM matrix with samples as columns.
+          pattern: "*.transcript_tpm.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
   genes_long:
-    - "${prefix}.genes_long.tsv":
-        type: file
-        description: |
-          Long-format gene-level results with all RSEM fields and a
-          sample_name column.
-        pattern: "*.genes_long.tsv"
-        ontologies:
-          - edam: http://edamontology.org/format_3475
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information. e.g. [ id:'all_samples' ].
+      - "${prefix}.genes_long.tsv":
+          type: file
+          description: |
+            Long-format gene-level results with all RSEM fields and a
+            sample_name column.
+          pattern: "*.genes_long.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
   isoforms_long:
-    - "${prefix}.isoforms_long.tsv":
-        type: file
-        description: |
-          Long-format isoform-level results with all RSEM fields and a
-          sample_name column.
-        pattern: "*.isoforms_long.tsv"
-        ontologies:
-          - edam: http://edamontology.org/format_3475
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information. e.g. [ id:'all_samples' ].
+      - "${prefix}.isoforms_long.tsv":
+          type: file
+          description: |
+            Long-format isoform-level results with all RSEM fields and a
+            sample_name column.
+          pattern: "*.isoforms_long.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
 
   versions_sed:
     - - ${task.process}:

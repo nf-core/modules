@@ -1,4 +1,5 @@
 process CUSTOM_RSEMMERGECOUNTS {
+    tag "$meta.id"
     label "process_medium"
 
     conda "${moduleDir}/environment.yml"
@@ -7,23 +8,23 @@ process CUSTOM_RSEMMERGECOUNTS {
         'nf-core/ubuntu:20.04' }"
 
     input:
-    path ('genes/*')
+    tuple val(meta), path ('genes/*')
     path ('isoforms/*')
 
     output:
-    path "${prefix}.gene_counts.tsv"      , emit: counts_gene
-    path "${prefix}.gene_tpm.tsv"         , emit: tpm_gene
-    path "${prefix}.transcript_counts.tsv", emit: counts_transcript
-    path "${prefix}.transcript_tpm.tsv"   , emit: tpm_transcript
-    path "${prefix}.genes_long.tsv"       , emit: genes_long
-    path "${prefix}.isoforms_long.tsv"    , emit: isoforms_long
+    tuple val(meta), path("${prefix}.gene_counts.tsv")      , emit: counts_gene
+    tuple val(meta), path("${prefix}.gene_tpm.tsv")         , emit: tpm_gene
+    tuple val(meta), path("${prefix}.transcript_counts.tsv"), emit: counts_transcript
+    tuple val(meta), path("${prefix}.transcript_tpm.tsv")   , emit: tpm_transcript
+    tuple val(meta), path("${prefix}.genes_long.tsv")       , emit: genes_long
+    tuple val(meta), path("${prefix}.isoforms_long.tsv")    , emit: isoforms_long
     tuple val("${task.process}"), val('sed'), eval("sed --version 2>&1 | sed '1!d;s/^.*) //'"), emit: versions_sed, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    prefix = task.ext.prefix ?: "rsem.merged"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p tmp/genes
     cut -f 1,2 `ls ./genes/* | head -n 1` > gene_ids.txt
@@ -66,7 +67,7 @@ process CUSTOM_RSEMMERGECOUNTS {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "rsem.merged"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.gene_counts.tsv
     touch ${prefix}.gene_tpm.tsv
