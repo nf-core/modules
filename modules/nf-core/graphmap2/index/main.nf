@@ -33,7 +33,7 @@ process GRAPHMAP2_INDEX {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+
     """
     touch ${fasta}.gmidx
 

@@ -4,15 +4,15 @@ process GFATOOLS_GFA2FA {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gfatools:0.5--he4a0461_4':
-        'biocontainers/gfatools:0.5--he4a0461_4' }"
+        'https://depot.galaxyproject.org/singularity/gfatools:0.5--h577a1d6_5':
+        'biocontainers/gfatools:0.5--h577a1d6_5' }"
 
     input:
     tuple val(meta), path(gfa)
 
     output:
     tuple val(meta), path("*.fasta.gz"), emit: fasta
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('gfatools'), eval("gfatools version | sed '1!d; s/.* //'"), topic: versions, emit: versions_gfatools
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,22 +26,11 @@ process GFATOOLS_GFA2FA {
         $args \\
         $gfa \\
         | gzip -c > ${prefix}.fasta.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gfatools: \$( gfatools version | sed '1!d; s/.* //' )
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo | gzip > ${prefix}.fasta.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gfatools: \$( gfatools version | sed '1!d; s/.* //' )
-    END_VERSIONS
     """
 }
