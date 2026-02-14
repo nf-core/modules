@@ -33,13 +33,12 @@ nextflow_process {
                     process.out.fastq_idx,
                     process.out.undetermined.collect { meta, fastq -> file(fastq).name },
                     process.out.undetermined_idx,
-                    process.out.reports,
-                    process.out.logs.collect { meta, logs -> file(logs).list().sort() },
+                    process.out.reports.collect { meta, reports -> reports.findAll {report -> file(report).name }},
+                    process.out.logs.collect { meta, logs -> logs.sort().findAll { log -> file(log).name} },
                     process.out.interop.collect { meta, interop ->
                                                 interop.findAll { interopfile ->
                                                 file(interopfile).name != "IndexMetricsOut.bin" } },
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -75,14 +74,13 @@ nextflow_process {
                     process.out.fastq_idx,
                     process.out.undetermined.collect { meta, fastq -> file(fastq).name },
                     process.out.undetermined_idx,
-                    process.out.reports,
-                    process.out.logs.collect { meta, logs -> file(logs).list().sort() },
+                    process.out.reports.collect { meta, reports -> reports.findAll {report -> file(report).name }},
+                    process.out.logs.collect { meta, logs -> logs.sort().findAll { log -> file(log).name} },
                     process.out.interop,
                     process.out.interop.collect { meta, interop ->
                                                 interop.findAll { interopfile ->
                                                 file(interopfile).name != "IndexMetricsOut.bin" } },
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }

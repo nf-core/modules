@@ -2,7 +2,7 @@ process BCLCONVERT {
     tag { "$meta.lane" ? "$meta.id"+"."+"$meta.lane" : "$meta.id" }
     label 'process_high'
 
-    container "nf-core/bclconvert:4.4.6"
+    container "nf-core/bclconvert:4.4.6_1"
 
     input:
     tuple val(meta), path(samplesheet), path(run_dir)
@@ -12,10 +12,10 @@ process BCLCONVERT {
     tuple val(meta), path("output/**_S[1-9]*_I?_00?.fastq.gz")        , emit: fastq_idx       , optional:true
     tuple val(meta), path("output/**Undetermined_S0*_R?_00?.fastq.gz"), emit: undetermined    , optional:true
     tuple val(meta), path("output/**Undetermined_S0*_I?_00?.fastq.gz"), emit: undetermined_idx, optional:true
-    tuple val(meta), path("output/Reports")                           , emit: reports
-    tuple val(meta), path("output/Logs")                              , emit: logs
-    tuple val(meta), path("output/InterOp/*.bin")                     , emit: interop         , optional:true
-    path("versions.yml")                                              , emit: versions
+    tuple val(meta), path("output/Reports/*")                         , emit: reports
+    tuple val(meta), path("output/Logs/*")                            , emit: logs
+    tuple val(meta), path("output/InterOp/*.bin")                     , emit: interop
+    tuple val("${task.process}"), val('bclconvert'), eval("bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //'"), topic: versions, emit: versions_bclconvert
 
     when:
     task.ext.when == null || task.ext.when
@@ -65,11 +65,6 @@ process BCLCONVERT {
     # copy the InterOp folder contents to ensure it gets picked up when using fusion
     mkdir -p output/InterOp/
     cp -n **/InterOp/*.bin output/InterOp/
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bclconvert: \$(bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //')
-    END_VERSIONS
     """
 
     stub:
@@ -102,10 +97,6 @@ process BCLCONVERT {
     touch output/InterOp/IndexMetricsOut.bin
     touch output/InterOp/QMetricsOut.bin
     touch output/InterOp/TileMetricsOut.bin
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bclconvert: \$(bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //')
-    END_VERSIONS
     """
 
 }

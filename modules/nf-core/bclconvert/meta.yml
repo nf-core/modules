@@ -9,7 +9,8 @@ tools:
       description: "Demultiplex Illumina BCL files"
       homepage: "https://support.illumina.com/sequencing/sequencing_software/bcl-convert.html"
       documentation: "https://support-docs.illumina.com/SW/BCL_Convert/Content/SW/FrontPages/BCL_Convert.htm"
-      licence: ["ILLUMINA"]
+      licence:
+        - "ILLUMINA"
       identifier: ""
 input:
   - - meta:
@@ -22,7 +23,7 @@ input:
         description: "Input samplesheet"
         pattern: "*.{csv}"
         ontologies:
-          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3752
     - run_dir:
         type: file
         description: |
@@ -33,79 +34,101 @@ output:
   fastq:
     - - meta:
           type: map
-          description: Groovy Map containing sample information
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - output/**_S[1-9]*_R?_00?.fastq.gz:
           type: file
           description: Demultiplexed sample FASTQ files
           pattern: "**_S*_L00?_R?_00?.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   fastq_idx:
     - - meta:
           type: map
-          description: Groovy Map containing sample information
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - output/**_S[1-9]*_I?_00?.fastq.gz:
           type: file
           description: Optional demultiplexed index FASTQ files
           pattern: "**_S*_L00?_I?_00?.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   undetermined:
     - - meta:
           type: map
-          description: Groovy Map containing sample information
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - output/**Undetermined_S0*_R?_00?.fastq.gz:
           type: file
           description: Optional undetermined sample FASTQ files
           pattern: "Undetermined_S0_L00?_R?_00?.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   undetermined_idx:
     - - meta:
           type: map
-          description: Groovy Map containing sample information
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - output/**Undetermined_S0*_I?_00?.fastq.gz:
           type: file
           description: Optional undetermined index FASTQ files
           pattern: "Undetermined_S0_L00?_I?_00?.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   reports:
     - - meta:
           type: map
-          description: Groovy Map containing sample information
-      - output/Reports:
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - output/Reports/*:
           type: file
-          description: Demultiplexing Reports
-          pattern: "Reports/*.{csv,xml}"
-          ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
-            - edam: http://edamontology.org/format_2332 # XML
+          description: Demultiplexing reports
+          pattern: "*.{html,txt}"
+          ontologies: []
   logs:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - output/Logs:
+      - output/Logs/*:
           type: file
           description: Log files
-          pattern: "Logs/*.{log,txt}"
+          pattern: "*.{log,txt}"
           ontologies: []
   interop:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - "output/InterOp/*.bin":
+      - output/InterOp/*.bin:
           type: file
           description: Interop files
           pattern: "*.{bin}"
           ontologies: []
+  versions_bclconvert:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bclconvert:
+          type: string
+          description: The name of the tool
+      - bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bclconvert:
+          type: string
+          description: The name of the tool
+      - bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@matthdsm"
 maintainers:

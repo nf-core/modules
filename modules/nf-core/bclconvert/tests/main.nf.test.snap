@@ -20,32 +20,27 @@
             ],
             [
                 [
-                    {
-                        "id": "test"
-                    },
-                    [
-                        "Adapter_Cycle_Metrics.csv:md5,05fbe7b2b0acdd557d355b448aa88ace",
-                        "Adapter_Metrics.csv:md5,0fa4ac708955417af9d18cec4955552f",
-                        "Demultiplex_Detailed_Stats.csv:md5,5a6a4d66a96256ff71e4f649927fb112",
-                        "Demultiplex_Stats.csv:md5,4a3f451faa098156623b55b0f2ff27ee",
-                        "Demultiplex_Tile_Stats.csv:md5,f91fb0c7a2c5588ed43c7f9145d004ee",
-                        "IndexMetricsOut.bin:md5,fb16c8a9873e5b5950ae5949126af76c",
-                        "Index_Hopping_Counts.csv:md5,f59474d96afe8218c7590bb240b19690",
-                        "Quality_Metrics.csv:md5,c4622066f85d93b1661c928a46cfc508",
-                        "Quality_Tile_Metrics.csv:md5,e22bc5e2f147695150b02afcccb38c4f",
-                        "RunInfo.xml:md5,f283cb4600235db9261ee1e319b1407e",
-                        "SampleSheet.csv:md5,4113eabae23136cc819c7f15ac5b6aad",
-                        "Top_Unknown_Barcodes.csv:md5,37dbc2860c640fc721820b0217ea0504",
-                        "fastq_list.csv:md5,482cf7fe9b304a900e4ede3bb25b4912"
-                    ]
+                    "Adapter_Cycle_Metrics.csv:md5,05fbe7b2b0acdd557d355b448aa88ace",
+                    "Adapter_Metrics.csv:md5,0fa4ac708955417af9d18cec4955552f",
+                    "Demultiplex_Detailed_Stats.csv:md5,5a6a4d66a96256ff71e4f649927fb112",
+                    "Demultiplex_Stats.csv:md5,4a3f451faa098156623b55b0f2ff27ee",
+                    "Demultiplex_Tile_Stats.csv:md5,f91fb0c7a2c5588ed43c7f9145d004ee",
+                    "IndexMetricsOut.bin:md5,fb16c8a9873e5b5950ae5949126af76c",
+                    "Index_Hopping_Counts.csv:md5,f59474d96afe8218c7590bb240b19690",
+                    "Quality_Metrics.csv:md5,c4622066f85d93b1661c928a46cfc508",
+                    "Quality_Tile_Metrics.csv:md5,e22bc5e2f147695150b02afcccb38c4f",
+                    "RunInfo.xml:md5,f283cb4600235db9261ee1e319b1407e",
+                    "SampleSheet.csv:md5,4113eabae23136cc819c7f15ac5b6aad",
+                    "Top_Unknown_Barcodes.csv:md5,37dbc2860c640fc721820b0217ea0504",
+                    "fastq_list.csv:md5,482cf7fe9b304a900e4ede3bb25b4912"
                 ]
             ],
             [
                 [
-                    "Errors.log",
-                    "FastqComplete.txt",
-                    "Info.log",
-                    "Warnings.log"
+                    "Errors.log:md5,d41d8cd98f00b204e9800998ecf8427e",
+                    "FastqComplete.txt:md5,5919510af6a731a6b98ca763af495eea",
+                    "Info.log:md5,2010fe17675419e0fd2487b5ea67aba5",
+                    "Warnings.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                 ]
             ],
             [
@@ -92,20 +87,21 @@
                     "TileMetricsOut.bin:md5,21388348d81fa9be326d30ef6d348464"
                 ]
             ],
-            [
-                "versions.yml:md5,a7ddd79ad04a69cb254185a11296f1b6"
-            ],
             {
-                "BCLCONVERT": {
-                    "bclconvert": "4.4.6"
-                }
+                "versions_bclconvert": [
+                    [
+                        "BCLCONVERT",
+                        "bclconvert",
+                        "4.4.6"
+                    ]
+                ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2025-09-23T10:12:42.943671245"
+        "timestamp": "2026-02-04T10:06:42.505191"
     },
     "homo_sapiens illumina [bcl] - stub": {
         "content": [
@@ -188,7 +184,11 @@
                     ]
                 ],
                 "7": [
-                    "versions.yml:md5,a7ddd79ad04a69cb254185a11296f1b6"
+                    [
+                        "BCLCONVERT",
+                        "bclconvert",
+                        "4.4.6"
+                    ]
                 ],
                 "fastq": [
                     [
@@ -267,16 +267,20 @@
                 "undetermined_idx": [
                     
                 ],
-                "versions": [
-                    "versions.yml:md5,a7ddd79ad04a69cb254185a11296f1b6"
+                "versions_bclconvert": [
+                    [
+                        "BCLCONVERT",
+                        "bclconvert",
+                        "4.4.6"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-09-23T10:12:55.362214653"
+        "timestamp": "2025-12-02T14:30:30.75002"
     },
     "homo_sapiens illumina [bcl]": {
         "content": [
@@ -300,33 +304,27 @@
             ],
             [
                 [
-                    {
-                        "id": "test",
-                        "lane": 1
-                    },
-                    [
-                        "Adapter_Cycle_Metrics.csv:md5,5a0c88793b4a0885fe3dda16609b576e",
-                        "Adapter_Metrics.csv:md5,989240b8840b2169ac1061f952c90f6c",
-                        "Demultiplex_Detailed_Stats.csv:md5,fda7961f2958545daa94b55b84c99eb1",
-                        "Demultiplex_Stats.csv:md5,93949a8cd96f907d83e0808c1ec2a04b",
-                        "Demultiplex_Tile_Stats.csv:md5,d966f774c438485907ae22ac34b85722",
-                        "IndexMetricsOut.bin:md5,9e688c58a5487b8eaf69c9e1005ad0bf",
-                        "Index_Hopping_Counts.csv:md5,1059369e375fd8f8423c0f6c934be978",
-                        "Quality_Metrics.csv:md5,6614accb1bb414fe312b17b81f5521f7",
-                        "Quality_Tile_Metrics.csv:md5,cdc89fd2962bdd4a24f71e186112118a",
-                        "RunInfo.xml:md5,03038959f4dd181c86bc97ae71fe270a",
-                        "SampleSheet.csv:md5,dc0dffd39541dd6cc5b4801d768a8d2b",
-                        "Top_Unknown_Barcodes.csv:md5,2e2faba761137f228e56bd3428453ccc",
-                        "fastq_list.csv:md5,ae1470cd741e33b87a4ad26f849a50f9"
-                    ]
+                    "Adapter_Cycle_Metrics.csv:md5,5a0c88793b4a0885fe3dda16609b576e",
+                    "Adapter_Metrics.csv:md5,989240b8840b2169ac1061f952c90f6c",
+                    "Demultiplex_Detailed_Stats.csv:md5,fda7961f2958545daa94b55b84c99eb1",
+                    "Demultiplex_Stats.csv:md5,93949a8cd96f907d83e0808c1ec2a04b",
+                    "Demultiplex_Tile_Stats.csv:md5,d966f774c438485907ae22ac34b85722",
+                    "IndexMetricsOut.bin:md5,9e688c58a5487b8eaf69c9e1005ad0bf",
+                    "Index_Hopping_Counts.csv:md5,1059369e375fd8f8423c0f6c934be978",
+                    "Quality_Metrics.csv:md5,6614accb1bb414fe312b17b81f5521f7",
+                    "Quality_Tile_Metrics.csv:md5,cdc89fd2962bdd4a24f71e186112118a",
+                    "RunInfo.xml:md5,03038959f4dd181c86bc97ae71fe270a",
+                    "SampleSheet.csv:md5,dc0dffd39541dd6cc5b4801d768a8d2b",
+                    "Top_Unknown_Barcodes.csv:md5,2e2faba761137f228e56bd3428453ccc",
+                    "fastq_list.csv:md5,ae1470cd741e33b87a4ad26f849a50f9"
                 ]
             ],
             [
                 [
-                    "Errors.log",
-                    "FastqComplete.txt",
-                    "Info.log",
-                    "Warnings.log"
+                    "Errors.log:md5,d41d8cd98f00b204e9800998ecf8427e",
+                    "FastqComplete.txt:md5,f12323d254b6794b773b4ad240a9a478",
+                    "Info.log:md5,881dbec3f2cfb04e6729b4b68c9f094d",
+                    "Warnings.log:md5,011dff1081474326ff45c54f30d82e10"
                 ]
             ],
             [
@@ -339,19 +337,20 @@
                     "TileMetricsOut.bin:md5,83891751ec1c91a425a524b476b6ca3c"
                 ]
             ],
-            [
-                "versions.yml:md5,a7ddd79ad04a69cb254185a11296f1b6"
-            ],
             {
-                "BCLCONVERT": {
-                    "bclconvert": "4.4.6"
-                }
+                "versions_bclconvert": [
+                    [
+                        "BCLCONVERT",
+                        "bclconvert",
+                        "4.4.6"
+                    ]
+                ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.4"
         },
-        "timestamp": "2025-09-23T10:12:18.369689549"
+        "timestamp": "2026-02-13T11:35:23.199343"
     }
 }
