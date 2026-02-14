@@ -1,0 +1,83 @@
+{
+    "colon_tissue_local - ome.tif - no_mask": {
+        "content": [
+            "sample1_transformed_image.ome.tif",
+            "sample1_registration_metrics_tform_map.json",
+            [
+                
+            ],
+            [
+                [
+                    "TIF_REGISTRATION_STAINWARPY:STAINWARPY_EXTRACTCHANNEL",
+                    "stainwarpy",
+                    "0.2.3"
+                ],
+                [
+                    "TIF_REGISTRATION_STAINWARPY:STAINWARPY_REGISTER",
+                    "stainwarpy",
+                    "0.2.4"
+                ]
+            ]
+        ],
+        "timestamp": "2026-02-14T11:45:35.378481232",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.2"
+        }
+    },
+    "colon_tissue_local - ome.tif - stub": {
+        "content": [
+            [
+                [
+                    "TIF_REGISTRATION_STAINWARPY:STAINWARPY_EXTRACTCHANNEL",
+                    "stainwarpy",
+                    "0.2.3"
+                ],
+                [
+                    "TIF_REGISTRATION_STAINWARPY:STAINWARPY_REGISTER",
+                    "stainwarpy",
+                    "0.2.4"
+                ],
+                [
+                    "TIF_REGISTRATION_STAINWARPY:STAINWARPY_TRANSFORMSEGMASK",
+                    "stainwarpy",
+                    "0.2.4"
+                ]
+            ]
+        ],
+        "timestamp": "2026-02-14T11:45:47.064275781",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.2"
+        }
+    },
+    "colon_tissue_local - ome.tif - with_mask": {
+        "content": [
+            "sample1_transformed_image.ome.tif",
+            "sample1_transformed_segmentation_mask.ome.tif",
+            "sample1_registration_metrics_tform_map.json",
+            [
+                [
+                    "TIF_REGISTRATION_STAINWARPY:STAINWARPY_EXTRACTCHANNEL",
+                    "stainwarpy",
+                    "0.2.3"
+                ],
+                [
+                    "TIF_REGISTRATION_STAINWARPY:STAINWARPY_REGISTER",
+                    "stainwarpy",
+                    "0.2.4"
+                ],
+                [
+                    "TIF_REGISTRATION_STAINWARPY:STAINWARPY_TRANSFORMSEGMASK",
+                    "stainwarpy",
+                    "0.2.4"
+                ]
+            ]
+        ],
+        "timestamp": "2026-02-14T11:45:22.946931214",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.2"
+        }
+    }
+}
