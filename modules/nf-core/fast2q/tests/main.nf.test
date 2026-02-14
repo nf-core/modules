@@ -61,7 +61,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test1' ], // meta map
-                    file(params.test_data_base + '/data/genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true) // FASTQ file
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true) // FASTQ file
                 ]
                 input[1] = [
                     [ id:'library_name', multiple_features_per_read:false ], // meta map for second input
@@ -99,12 +99,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test1' ], // meta map
-                    file(params.test_data_base + '/data/genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true) // FASTQ file
+                    [ id:'test1' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true) // FASTQ file
                 ]
                 input[1] = [
-                    [ id:'library_name', multiple_features_per_read:false ], // meta map for second input
-                    file(params.test_data_base + '/data/genomics/mus_musculus/mageck/yusa_library.csv', checkIfExists: true) // library file
+                    [ id:'library_name', multiple_features_per_read:false ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/yusa_library.csv', checkIfExists: true) // library file
                 ]
                 """
             }
