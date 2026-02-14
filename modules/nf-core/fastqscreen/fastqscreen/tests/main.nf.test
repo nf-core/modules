@@ -19,15 +19,13 @@ nextflow_process {
             script "../../../bowtie2/build/main.nf"
             process {
                 """
-                input[0] =  [
-                    [
-                        [id: "sarscov2"],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    ], [
-                        [id: "human"],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
-                    ]
-                ]
+                input[0] = channel.of([
+                    [id: "sarscov2"],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ], [
+                    [id: "human"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ])
                 """
             }
         }
