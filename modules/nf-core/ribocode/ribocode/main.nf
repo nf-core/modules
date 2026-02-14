@@ -27,11 +27,21 @@ process RIBOCODE_RIBOCODE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    # Run RiboCode and capture output to check for errors
     RiboCode \\
         -a $annotation \\
         -c $config \\
         -o ${prefix} \\
-        $args 2>&1 || test -s ${prefix}.txt
+        $args 2>&1 | tee ribocode_output.log || true
+
+    # Check if RiboCode output contains error messages
+    if grep -qiE "^Error|Error:" ribocode_output.log; then
+        echo "ERROR: RiboCode failed. Check the output above for details." >&2
+        echo "Common causes:" >&2
+        echo "  - Invalid config file from metaplots (try lowering cutoff via ext.args, e.g., '-f0_percent 0.5')" >&2
+        echo "  - Insufficient data from Ribo-Seq alignment" >&2
+        exit 1
+    fi
     """
 
     stub:

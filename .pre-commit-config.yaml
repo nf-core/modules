@@ -27,7 +27,7 @@ repos:
           )$
 
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.35.0
+    rev: 0.36.1
     hooks:
       - id: check-jsonschema
         name: "Match meta.ymls in one of the subdirectories of modules/nf-core"
@@ -48,7 +48,7 @@ repos:
 
   # use ruff for python files
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.14
+    rev: v0.15.1
     hooks:
       - id: ruff
         files: \.py$
