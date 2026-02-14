@@ -4,9 +4,8 @@ process QCATCH {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/qcatch:0.2.8--3089b62e628f96d7':
-        'community.wave.seqera.io/library/qcatch:0.2.8--454a9b478b62c36f' }"
-
+        'https://depot.galaxyproject.org/singularity/qcatch:0.2.8--pyhdfd78af_0':
+        'biocontainers/qcatch:0.2.8--pyhdfd78af_0' }"
     input:
     tuple val(meta), val(chemistry), path(quant_dir)
 
