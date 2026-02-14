@@ -23,12 +23,6 @@ process QCATCH {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    export MPLCONFIGDIR=./tmp
-    export NUMBA_CACHE_DIR=./tmp
-    export NUMBA_DISABLE_CACHE=1
-    export XDG_CACHE_HOME=./tmp
-    export TMPDIR=./tmp
-
     qcatch \\
         --input ${quant_dir} \\
         --output ${prefix} \\
@@ -52,12 +46,6 @@ process QCATCH {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    export MPLCONFIGDIR=./tmp
-    export NUMBA_CACHE_DIR=./tmp
-    export NUMBA_DISABLE_CACHE=1
-    export XDG_CACHE_HOME=./tmp
-    export TMPDIR=./tmp
-
     touch ${prefix}_qcatch_report.html
     touch ${prefix}_filtered_quants.h5ad
     touch ${prefix}_metrics_summary.csv

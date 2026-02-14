@@ -52,7 +52,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}_filtered_quants.h5ad:
+      - "*_filtered_quants.h5ad":
           type: file
           description: |
             Filtered quantification matrix in h5ad format (AnnData)
@@ -64,7 +64,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}_metrics_summary.csv:
+      - "*_metrics_summary.csv":
           type: file
           description: |
             CSV file containing summary metrics from QC analysis
