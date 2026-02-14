@@ -1,0 +1,101 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "trident_fetch"
+description: Download data from a remote Poseidon repository
+keywords:
+  - poseidon-trident
+  - poseidon
+  - trident
+  - fetch
+tools:
+  - "trident":
+      description: "A tool (trident) to work with modular genotype databases formatted
+        using Poseidon."
+      homepage: "https://www.poseidon-adna.org/"
+      documentation: "https://www.poseidon-adna.org/#/trident?id=fetch-command"
+      tool_dev_url: "https://github.com/poseidon-framework/poseidon-hs/"
+      doi: "10.7554/eLife.98317.1"
+      licence: ["MIT"]
+
+input:
+  - - archive_dir:
+        type: directory
+        description: |
+          The path to the directories containing any previously downloaded Poseidon archive files.
+          If this is provided, trident fetch will check these directories, and only download missing packages from the Poseidon-Framework server.
+    - fetch_s:
+        type: string
+        description: The fetchString provided to trident fetch (`--fetchString`), if any.
+    - fetch_fn:
+        type: file
+        description: A file containing a list of fetchStrings provided to trident fetch (`--fetchFile`), if any.
+        pattern: "*.txt"
+
+output:
+  poseidon_yml:
+    - output_archive/*/POSEIDON.yml:
+        type: file
+        description: The POSEIDON.yml file of any newly downloaded package(s).
+        pattern: "output_archive/*/POSEIDON.yml"
+        ontologies: []
+  geno:
+    - "output_archive/*/*.{geno,bed,vcf,geno.gz,bed.gz,vcf.gz}":
+        type: file
+        description: The genotype files of any newly downloaded package(s).
+        pattern: "output_archive/*/*.{geno,bed,vcf,geno.gz,bed.gz,vcf.gz}"
+        ontologies: []
+  snp:
+    - "output_archive/*/*.{snp,bim,snp.gz,bim.gz}":
+        type: file
+        description: The SNP information files of any newly downloaded package(s).
+        pattern: "output_archive/*/*.{snp,bim,snp.gz,bim.gz}"
+        ontologies: []
+  ind:
+    - "output_archive/*/*.{ind,fam,ind.gz,fam.gz}":
+        type: file
+        description: The individual information files of any newly downloaded package(s).
+        pattern: "output_archive/*/*.{ind,fam,ind.gz,fam.gz}"
+        ontologies: []
+  janno:
+    - output_archive/*/*.janno:
+        type: file
+        description: The .janno annotation files of any newly downloaded
+          package(s).
+        pattern: "output_archive/*/*.janno"
+        ontologies: []
+  ssf:
+    - output_archive/*/*.ssf:
+        type: file
+        description: The .ssf files of any newly downloaded package(s).
+        pattern: "output_archive/*/*.ssf"
+        ontologies: []
+  bib:
+    - output_archive/*/*.bib:
+        type: file
+        description: The .bib bibliography files of any newly downloaded
+          package(s).
+        pattern: "output_archive/*/*.bib"
+        ontologies: []
+  changelog:
+    - output_archive/*/CHANGELOG.md:
+        type: file
+        description: The CHANGELOG.md files of any newly downloaded package(s).
+        pattern: "output_archive/*/CHANGELOG.md"
+        ontologies: []
+  readme:
+    - output_archive/*/README.md:
+        type: file
+        description: The README.md files of any newly downloaded package(s).
+        pattern: "output_archive/*/README.md"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@TCLamnidis"
+maintainers:
+  - "@TCLamnidis"
