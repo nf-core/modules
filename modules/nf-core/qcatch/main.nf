@@ -4,15 +4,15 @@ process QCATCH {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/qcatch:0.2.8--pyhdfd78af_0':
-        'biocontainers/qcatch:0.2.8--pyhdfd78af_0' }"
+        'oras://community.wave.seqera.io/library/qcatch:0.2.8--3089b62e628f96d7':
+        'community.wave.seqera.io/library/qcatch:0.2.8--454a9b478b62c36f' }"
     input:
     tuple val(meta), val(chemistry), path(quant_dir)
 
     output:
     tuple val(meta), path("*.html")                         , emit: report
-    tuple val(meta), path("${prefix}_filtered_quants.h5ad") , emit: filtered_h5ad
-    tuple val(meta), path("${prefix}_metrics_summary.csv")  , emit: metrics_summary
+    tuple val(meta), path("*_filtered_quants.h5ad") , emit: filtered_h5ad
+    tuple val(meta), path("*_metrics_summary.csv")  , emit: metrics_summary
     path  "versions.yml"                                    , emit: versions
 
     when:
@@ -20,7 +20,7 @@ process QCATCH {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     export MPLCONFIGDIR=./tmp
@@ -49,7 +49,7 @@ process QCATCH {
 
     stub:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     export MPLCONFIGDIR=./tmp
