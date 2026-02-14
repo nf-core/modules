@@ -34,9 +34,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.versions
-                    ).match()
-                }
+                    path(process.out.versions[0]).yaml
+                ).match()}
             )
         }
 
@@ -65,7 +64,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert file(process.out.vcf[0][1]).exists() },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
 
@@ -94,7 +95,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(path(process.out.vcf[0][1]), process.out.versions).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
