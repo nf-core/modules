@@ -1,0 +1,77 @@
+name: "pharmcat_vcfpreprocessor"
+description: This is used for preprocessing of the variants that can be supplied to
+  pharmcat
+keywords:
+  - pharmacognomics
+  - pharmcat
+  - genomics
+tools:
+  - pharmcat:
+      description: "PharmCAT (Pharmacogenomics Clinical Annotation Tool) is a bioinformatics\
+        \ tool that analyzes genetic variants to predict drug response and tailor medical\
+        \ treatment to an individual patient’s genetic profile."
+      homepage: "https://pharmcat.clinpgx.org/"
+      documentation: "https://pharmcat.clinpgx.org/using/"
+      tool_dev_url: "https://github.com/PharmGKB/PharmCAT"
+      licence: ["MPL"]
+      identifier: biotools:pharmcat
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1', single_end: false ]
+    - vcf_file:
+        type: file
+        description: Compressed input VCF file for PharmCAT preprocessing
+        pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3016 # VCF format
+          - edam: http://edamontology.org/format_3989 # GZIP format
+    - vcf_idx:
+        type: file
+        description: Index file for the input VCF
+        pattern: "*.vcf.gz.tbi"
+        ontologies:
+          - edam: http://edamontology.org/format_3016 # VCF format
+          - edam: http://edamontology.org/format_3989 # GZIP format
+output:
+  preprocessor_bgz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1', single_end: false ]
+      - "*.vcf.bgz":
+          type: file
+          description: BGZIP-compressed VCF after preprocessing
+          pattern: "*.vcf.{gz,bgz}"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3016 # VCF format
+            - edam: http://edamontology.org/format_3615 # BGZIP format
+  missing_pgx_var:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1', single_end: false ]
+      - "*.missing_pgx_var.vcf":
+          type: file
+          description: VCF containing missing PGx variants
+          pattern: "*.missing_pgx_var.vcf"
+          ontologies:
+            - edam: http://edamontology.org/format_3016 # VCF format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+
+authors:
+  - "@rkmishra3893"
+maintainers:
+  - "@rkmishra3893"
