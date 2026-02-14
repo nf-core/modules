@@ -10,8 +10,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true)
+                input[0] = [
+                    [ id:'test' ],
+                    params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam'
                 ]
                 """
             }
@@ -19,7 +20,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -29,8 +30,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true)
+                input[0] = [
+                    [ id:'test' ],
+                    params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam'
                 ]
                 """
             }
@@ -38,7 +40,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
