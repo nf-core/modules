@@ -1,0 +1,55 @@
+name: "baysor_preview"
+description: Preview run for visualization of data.
+keywords:
+  - exploratory-data-analysis
+tools:
+  - "baysor":
+    description: "Baysor is a tool that segments cells using spatial gene expression maps. Optionally, segmentation masks can be given as additional input."
+    homepage: "https://kharchenkolab.github.io/Baysor/dev/"
+    documentation: "https://kharchenkolab.github.io/Baysor/dev/"
+    tool_dev_url: "https://github.com/kharchenkolab/Baysor"
+    doi: "https://doi.org/10.1038/s41587-021-01044-w"
+    licence: ["MIT license"]
+    identifier:
+
+## baysor_preview requires a transcript map of the data and a configuration file with argument values
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - transcripts_csv:
+        type: file
+        description: CSV file
+        pattern: "*.csv"
+
+  - config_toml:
+    type: file
+    description: TOML file with config arguments
+    pattern: "*.toml"
+
+## segmentation results
+output:
+  - preview_html:
+      - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+      - "preview.html":
+        type: file
+        description: segmentation preview
+        pattern: "preview.html"
+
+  - preview_log:
+    type: file
+    description: |
+      Log file with summary statistics of preview
+    pattern: "preview_preview_log.log"
+
+
+authors:
+  - "@sebgoti8"
+maintainers:
+  - "@sebgoti8"

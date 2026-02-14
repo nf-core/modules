@@ -1,0 +1,63 @@
+nextflow_process {
+
+    name "Test Process BAYSOR_SEGFREE"
+    script "../main.nf"
+    process "BAYSOR_SEGFREE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "baysor"
+
+    test("baysor segfree - loom") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'spatial_omics/xenium/homo_sapiens/spatial_gene_expression.csv', checkIfExists: true),
+                ]
+
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'generic/config/config_baysor.toml', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+            )
+        }
+
+    }
+
+    test("baysor segfree - loom - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'spatial_omics/xenium/homo_sapiens/spatial_gene_expression.csv', checkIfExists: true),
+                ]
+
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'generic/config/config_baysor.toml' , checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+            )
+        }
+
+    }
+
+}
