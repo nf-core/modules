@@ -51,10 +51,10 @@ test("sarscov2 - genome - tsv") {
             process {
                 """
                 input[0] =  [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = = Channel.of([
+                input[1] = channel.of([
                     "genome.fasta",
                     "Severe_acute_respiratory_syndrome_coronavirus_2",
                     "2697049"
