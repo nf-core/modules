@@ -1,0 +1,92 @@
+name: gapseq_doall
+description: Complete gapseq workflow from genome to gap-filled model
+keywords:
+  - metabolic model
+  - gap filling
+  - pathway prediction
+  - bacteria
+  - genome-scale model
+  - complete workflow
+tools:
+  - gapseq:
+      description: |
+        gapseq is designed to combine metabolic pathway analysis with metabolic network reconstruction and curation.
+        The doall command runs the complete workflow: pathway prediction, transporter inference, model construction, and gap filling.
+      homepage: https://github.com/jotech/gapseq
+      documentation: https://gapseq.readthedocs.io/
+      tool_dev_url: https://github.com/jotech/gapseq
+      doi: "10.1186/s13059-021-02295-1"
+      licence: ["AGPL-3.0-only"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Protein or genomic FASTA file
+        pattern: "*.{fasta,fa,faa,fna,gz}"
+        ontologies: []
+    - medium:
+        type: file
+        description: Optional medium definition file (CSV format)
+        pattern: "*.csv"
+        ontologies: []
+output:
+  model:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.RDS":
+          type: file
+          description: Gap-filled metabolic model in RDS format
+          pattern: "*.RDS"
+          ontologies: []
+  tbl:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tbl":
+          type: file
+          description: TBL files containing pathway and transporter predictions
+          pattern: "*.tbl"
+          ontologies: []
+  fna:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fna":
+          type: file
+          description: Optional extracted sequences in FASTA format
+          pattern: "*.fna"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: Log files from gapseq doall
+          pattern: "*.log"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@copilot"
+maintainers:
+  - "@copilot"

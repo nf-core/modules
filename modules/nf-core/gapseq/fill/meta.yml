@@ -1,0 +1,68 @@
+name: gapseq_fill
+description: Perform gap filling on draft metabolic model
+keywords:
+  - metabolic model
+  - gap filling
+  - bacteria
+  - genome-scale model
+tools:
+  - gapseq:
+      description: |
+        gapseq is designed to combine metabolic pathway analysis with metabolic network reconstruction and curation.
+        The fill command performs multi-step gap filling on a draft metabolic model.
+      homepage: https://github.com/jotech/gapseq
+      documentation: https://gapseq.readthedocs.io/
+      tool_dev_url: https://github.com/jotech/gapseq
+      doi: "10.1186/s13059-021-02295-1"
+      licence: ["AGPL-3.0-only"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - draft:
+        type: file
+        description: Draft metabolic model in RDS format from gapseq draft
+        pattern: "*-draft.RDS"
+        ontologies: []
+    - medium:
+        type: file
+        description: Optional medium definition file (CSV format)
+        pattern: "*.csv"
+        ontologies: []
+output:
+  filled:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.RDS":
+          type: file
+          description: Gap-filled metabolic model in RDS format
+          pattern: "*-filled.RDS"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: Log files from gapseq fill
+          pattern: "*.log"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@copilot"
+maintainers:
+  - "@copilot"
