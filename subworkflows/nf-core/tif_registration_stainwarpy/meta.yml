@@ -30,7 +30,7 @@ input:
   - ch_segmask:
       type: file
       description: |
-        Channel containing segmentation mask in TIF/OME-TIF/npy format
+        Channel containing segmentation mask in TIF/OME-TIF/npy format. (optional input)
         Structure: [ val(meta), path(ome.tif) ]
       pattern: "*.{tif,ome.tif,tiff,ome.tiff,npy}"
   - val_fixed_img:
@@ -52,7 +52,7 @@ output:
   - segmask_tformed:
       type: file
       description: |
-        Channel containing transformed segmentation mask
+        Channel containing transformed segmentation mask (empty if 'ch_segmask' not provided)
         Structure: [ val(meta), path(ome.tif) ]
       pattern: "*_transformed_segmentation_mask.ome.tif"
   - metrics_tform_map:
