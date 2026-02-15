@@ -92,7 +92,7 @@ process CELLRANGER_MULTI {
     frna_csv_text  = include_frna && frna_sampleinfo.size() > 0    ? frna_sampleinfo    : ''
 
     // the feature barcodes section get options for either CRISPR or antibody capture assays
-    fb_options     = meta_ab?.options ? meta_ab.options : (meta_crispr?.options ? meta_crispr.options : [])
+    fb_options     = ab_fastqs.first().getName() != 'fastqs' && meta_ab?.options ? meta_ab : (crispr_fastqs.first().getName() != 'fastqs' && meta_crispr?.options ? meta_crispr : [:])
 
     // collect options for each section
     // these are pulled from the meta maps
@@ -123,8 +123,8 @@ process CELLRANGER_MULTI {
     vdj_options_r1_length = vdj_options_use && meta_vdj.options.containsKey("r1-length") ? "r1-length,${meta_vdj.options["r1-length"]}" : ''
     vdj_options_r2_length = vdj_options_use && meta_vdj.options.containsKey("r2-length") ? "r2-length,${meta_vdj.options["r2-length"]}" : ''
 
-    fb_options_r1_length = fb_options_use && meta_fb.options.containsKey("r1-length") ? "r1-length,${meta_fb.options["r1-length"]}" : ''
-    fb_options_r2_length = fb_options_use && meta_fb.options.containsKey("r2-length") ? "r2-length,${meta_fb.options["r2-length"]}" : ''
+    fb_options_r1_length = fb_options_use && fb_options.options.containsKey("r1-length") ? "r1-length,${fb_options.options["r1-length"]}" : ''
+    fb_options_r2_length = fb_options_use && fb_options.options.containsKey("r2-length") ? "r2-length,${fb_options.options["r2-length"]}" : ''
 
     // point config to FASTQs
     // After renaming it gets in 'fastq_all' folder
