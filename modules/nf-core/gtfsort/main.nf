@@ -12,7 +12,7 @@ process GTFSORT {
 
     output:
     tuple val(meta), path("*.sorted.{gff,gtf}"), emit: gtf
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('gtfsort'), eval('gtfsort --version |& sed "s/gtfsort //"'), emit: versions_gtfsort, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,11 +26,6 @@ process GTFSORT {
         -o ${prefix}.sorted.${gtf.extension} \\
         ${args} \\
         -t ${task.cpus}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gtfsort: \$(gtfsort --version |& sed 's/gtfsort //')
-    END_VERSIONS
     """
 
     stub:
@@ -38,10 +33,5 @@ process GTFSORT {
 
     """
     touch ${prefix}.sorted.${gtf.extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gtfsort: \$(gtfsort --version |& sed 's/gtfsort //')
-    END_VERSIONS
     """
 }
