@@ -1,0 +1,432 @@
+nextflow_workflow {
+
+    name "Test Subworkflow VCF_VEMBRANE"
+    script "../main.nf"
+    workflow "VCF_VEMBRANE"
+    config '../nextflow.config'
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/vcf_vembrane"
+    tag "vcf_vembrane"
+
+    tag "tabix"
+    tag "tabix/bgziptabix"
+    tag "vembrane"
+    tag "vembrane/filter"
+    tag "vembrane/sort"
+    tag "vembrane/table"
+
+    test("homo_sapiens - vcf - vcf_processing") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [
+                        sample: 'sample1',
+                        id: 'HCC1395.HCC1395T.strelka.somatic_indels'
+                    ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true)
+                ])
+
+
+                // Vembrane filter expression
+                input[1] = "'QUAL > 20'"
+
+                // Vembrane sort expression
+                input[2] = "QUAL"
+
+                // Vembrane table expression
+                input[3] = "CHROM, POS"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.filtered_ch,
+                    workflow.out.tsv_ch,
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf.gz - compressed_vcf_processing") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [
+                        sample: 'sample2',
+                        id: 'test.compressed.vcf.gz'
+                    ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true)
+                ])
+
+                // Vembrane filter expression
+                input[1] = "'QUAL > 20'"
+
+                // Vembrane sort expression
+                input[2] = "QUAL"
+
+                // Vembrane table expression
+                input[3] = "CHROM, POS"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.filtered_ch,
+                    workflow.out.tsv_ch,
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - bcf - binary_vcf_processing") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [
+                        sample: 'sample3',
+                        id: 'test.binary.bcf'
+                    ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.bcf', checkIfExists: true)
+                ])
+
+                // Vembrane filter expression
+                input[1] = "'QUAL > 20'"
+
+                // Vembrane sort expression
+                input[2] = "QUAL"
+
+                // Vembrane table expression
+                input[3] = "CHROM, POS"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.filtered_ch,
+                    workflow.out.tsv_ch,
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
+
+    test("homo_sapiens - bcf.gz - compressed_binary_bcf_processing") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [
+                        sample: 'sample3',
+                        id: 'test.binary.bcf'
+                    ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bcf.gz', checkIfExists: true)
+                ])
+
+                // Vembrane filter expression
+                input[1] = "'QUAL > 20'"
+
+                // Vembrane sort expression
+                input[2] = "QUAL"
+
+                // Vembrane table expression
+                input[3] = "CHROM, POS"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.filtered_ch,
+                    workflow.out.tsv_ch,
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
+
+    test("homo_sapiens - vcf - empty_filter_expression") {
+
+        when {
+            workflow {
+                """
+                // Test with empty filter expression (should pass all variants)
+                input[0] = Channel.of([
+                    [
+                        sample: 'sample6',
+                        id: 'test.no_filter.vcf'
+                    ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true)
+                ])
+
+
+                // Empty filter expression
+                input[1] = ""
+
+                // Simple sort expression
+                input[2] = "CHROM, POS"
+
+                // Vembrane table expression
+                input[3] = "CHROM, POS"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.filtered_ch,
+                    workflow.out.tsv_ch,
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
+
+    test("homo_sapiens - vcf - empty_sort_expression") {
+
+        when {
+            workflow {
+                """
+                // Test with empty filter expression (should pass all variants)
+                input[0] = Channel.of([
+                    [
+                        sample: 'sample6',
+                        id: 'test.no_filter.vcf'
+                    ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true)
+                ])
+
+
+                // Empty filter expression
+                input[1] = "'QUAL > 20'"
+
+                // Simple sort expression
+                input[2] = ""
+
+                // Vembrane table expression
+                input[3] = "CHROM, POS"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.filtered_ch,
+                    workflow.out.tsv_ch,
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
+
+    test("homo_sapiens - vcf - empty_table_expression") {
+
+        when {
+            workflow {
+                """
+                // Test with empty filter expression (should pass all variants)
+                input[0] = Channel.of([
+                    [
+                        sample: 'sample6',
+                        id: 'test.no_filter.vcf'
+                    ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true)
+                ])
+
+
+                // Empty filter expression
+                input[1] = "'QUAL > 20'"
+
+                // Simple sort expression
+                input[2] = "QUAL"
+
+                // Basic table expression
+                input[3] = ""
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.filtered_ch,
+                    workflow.out.tsv_ch,
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    // Stub tests for all file formats
+    test("homo_sapiens - vcf - vcf_processing - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [
+                        sample: 'sample1',
+                        id: 'HCC1395.HCC1395T.strelka.somatic_indels'
+                    ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true)
+                ])
+
+                // Vembrane filter expression
+                input[1] = "'QUAL > 20'"
+
+                // Vembrane sort expression
+                input[2] = "QUAL"
+
+                // Vembrane table expression
+                input[3] = "CHROM, POS"
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf.gz - compressed_vcf_processing - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [
+                        sample: 'sample2',
+                        id: 'test.compressed.vcf.gz'
+                    ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true)
+                ])
+
+                // Vembrane filter expression
+                input[1] = "'QUAL > 20'"
+
+                // Vembrane sort expression
+                input[2] = "QUAL"
+
+                // Vembrane table expression
+                input[3] = "CHROM, POS"
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+
+    test("homo_sapiens - bcf - binary_vcf_processing - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [
+                        sample: 'sample3',
+                        id: 'test.binary.bcf'
+                    ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.bcf', checkIfExists: true)
+                ])
+
+                // Vembrane filter expression
+                input[1] = "'QUAL > 20'"
+
+                // Vembrane sort expression
+                input[2] = "QUAL"
+
+                // Vembrane table expression
+                input[3] = "CHROM, POS"
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+
+    }
+
+
+    test("homo_sapiens - bcf.gz - compressed_binary_bcf_processing - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [
+                        sample: 'sample3',
+                        id: 'test.binary.bcf'
+                    ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bcf.gz', checkIfExists: true)
+                ])
+
+                // Vembrane filter expression
+                input[1] = "'QUAL > 20'"
+
+                // Vembrane sort expression
+                input[2] = "QUAL"
+
+                // Vembrane table expression
+                input[3] = "CHROM, POS"
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+}
