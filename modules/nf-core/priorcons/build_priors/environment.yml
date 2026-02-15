@@ -1,0 +1,19 @@
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+# All that dependencies need to be specified because of the parquet file generation:
+# It needs the exact same version of all packages to produce the same has) 
+  - priorcons=0.1.0
+  - pandas=2.3.3
+  - pyarrow=21.0.0
+  - numpy=2.3.4
+  - biopython=1.85
+  - python=3.13.2
+  - pip=25.0
+  - python-dateutil=2.8.2
+  - pytz=2025.2
+  - tzdata=2025a
+  - setuptools=67.7.2
+  - wheel=0.45.1
