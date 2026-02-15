@@ -24,7 +24,7 @@ process GRAPHTYPER_VCFCONCATENATE {
     if ("$vcf" == "${prefix}.vcf.gz") {
         error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     }
-    input_vcfs = vcf.collate(1000).collect{it.join(' ')} // Batching needed because if there are too many VCFs the shell cannot run the command
+    input_vcfs = vcf.collate(1000).collect{ vcf_file -> vcf_file.join(' ')} // Batching needed because if there are too many VCFs the shell cannot run the command
     commands = input_vcfs.withIndex().collect{ batch_vcfs, index ->
         "graphtyper vcf_concatenate ${batch_vcfs} ${args} --output=${prefix}_subset_${index}.vcf.gz"
     }.join('\n    ')

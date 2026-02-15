@@ -37,7 +37,6 @@ process KMCP_COMPUTE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir $prefix

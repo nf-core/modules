@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "svanalyzer_svbenchmark"
 description: "SVbenchmark compares a set of “test” structural variants in VCF format
   to a known truth set (also in VCF format) and outputs estimates of sensitivity and
@@ -13,8 +12,8 @@ tools:
       homepage: "https://svanalyzer.readthedocs.io/en/latest/index.html"
       documentation: "https://svanalyzer.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/nhansen/SVanalyzer"
-      license: "['CC0']"
-
+      licence:
+        - "CC0"
       identifier: ""
 input:
   - - meta:
@@ -24,30 +23,32 @@ input:
           e.g. `[ id:'test' ]`
     - test:
         type: file
-        description: A VCF-formatted file of structural variants to test (required)
+        description: A VCF-formatted file of structural variants to test
+          (required)
         pattern: "*.{vcf,vcf.gz}"
         ontologies: []
     - test_tbi:
         type: file
-        description: A VCF-formatted file index of structural variants to test only
-          for zipped files
+        description: A VCF-formatted file index of structural variants to test
+          only for zipped files
         pattern: "*.{vcf.gz.tbi}"
         ontologies: []
     - truth:
         type: file
-        description: A VCF-formatted file of variants to compare against (required)
+        description: A VCF-formatted file of variants to compare against
+          (required)
         pattern: "*.{vcf,vcf.gz}"
         ontologies: []
     - truth_tbi:
         type: file
-        description: A VCF-formatted file of variants to compare against only for zipped
-          files
+        description: A VCF-formatted file of variants to compare against only for
+          zipped files
         pattern: "*.{vcf.gz.tbi}"
         ontologies: []
     - bed:
         type: file
-        description: BED File of regions from which to include variants. Used to filter
-          both test and truth variants.
+        description: BED File of regions from which to include variants. Used to
+          filter both test and truth variants.
         pattern: "*.{bed}"
         ontologies: []
   - - meta2:
@@ -57,7 +58,8 @@ input:
           e.g. `[ id:'test2' ]`
     - fasta:
         type: file
-        description: The reference FASTA file for the supplied VCF file or files (required)
+        description: The reference FASTA file for the supplied VCF file or files
+          (required)
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
         ontologies: []
   - - meta3:
@@ -101,8 +103,8 @@ output:
             e.g. `[ id:'test']`
       - "*.distances":
           type: file
-          description: TSV file with genomic distances and size differences between
-            structural variants compared
+          description: TSV file with genomic distances and size differences
+            between structural variants compared
           pattern: "*.{distances}"
           ontologies: []
   log:
@@ -127,12 +129,26 @@ output:
           description: Text file reporting RECALL, PRECISION and F1.
           pattern: "*.{report}"
           ontologies: []
+  versions_svanalyzer:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - svanalyzer:
+          type: string
+          description: The tool name
+      - "0.36":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - svanalyzer:
+          type: string
+          description: The tool name
+      - "0.36":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@kubranarci"

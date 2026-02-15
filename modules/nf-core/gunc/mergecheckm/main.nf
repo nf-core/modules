@@ -19,13 +19,12 @@ process GUNC_MERGECHECKM {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     gunc \\
         merge_checkm \\
-        $args \\
-        -g $gunc_file \\
-        -c $checkm_file \\
+        ${args} \\
+        -g ${gunc_file} \\
+        -c ${checkm_file} \\
         -o .
 
     cat <<-END_VERSIONS > versions.yml
