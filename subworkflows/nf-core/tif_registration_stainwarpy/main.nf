@@ -2,16 +2,16 @@
 // Register H&E stained and multiplexed tissue images and transform segmentation masks using stainwarpy
 //
 
-include { STAINWARPY_REGISTER             } from '../../../modules/nf-core/stainwarpy/register/main'
-include { STAINWARPY_EXTRACTCHANNEL       } from '../../../modules/nf-core/stainwarpy/extractchannel/main'
-include { STAINWARPY_TRANSFORMSEGMASK     } from '../../../modules/nf-core/stainwarpy/transformsegmask/main'
+include { STAINWARPY_REGISTER         } from '../../../modules/nf-core/stainwarpy/register/main'
+include { STAINWARPY_EXTRACTCHANNEL   } from '../../../modules/nf-core/stainwarpy/extractchannel/main'
+include { STAINWARPY_TRANSFORMSEGMASK } from '../../../modules/nf-core/stainwarpy/transformsegmask/main'
 
 workflow TIF_REGISTRATION_STAINWARPY {
 
     take:
-    ch_hne              // channel: [ val(meta), path to .tif   ]
-    ch_multiplexed      // channel: [ val(meta), path to .tif   ]
-    ch_segmask          // channel: [ val(meta), path to .tif/'']
+    ch_hne              // channel: [ val(meta), path to .tif ]
+    ch_multiplexed      // channel: [ val(meta), path to .tif ]
+    ch_segmask          // channel: [ val(meta), path to .tif ] (optional)
     val_fixed_img       // val: fixed image to use ("multiplexed" or "hne")
     val_final_img_sz    // val: final image size to use ("multiplexed" or "hne")
 
@@ -25,7 +25,7 @@ workflow TIF_REGISTRATION_STAINWARPY {
         ch_versions = ch_versions.mix(STAINWARPY_EXTRACTCHANNEL.out.versions_stainwarpy_extractchannel.first())
         ch_multiplexed_forward = STAINWARPY_EXTRACTCHANNEL.out.single_ch_image
 
-        STAINWARPY_REGISTER ( ch_hne, STAINWARPY_EXTRACTCHANNEL.out.single_ch_image,  val_fixed_img, val_final_img_sz )
+        STAINWARPY_REGISTER ( ch_hne, ch_multiplexed_forward,  val_fixed_img, val_final_img_sz )
         ch_versions = ch_versions.mix(STAINWARPY_REGISTER.out.versions_stainwarpy.first())
     } else {
         STAINWARPY_REGISTER ( ch_hne, ch_multiplexed, val_fixed_img, val_final_img_sz )
