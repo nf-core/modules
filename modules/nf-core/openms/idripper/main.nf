@@ -19,7 +19,6 @@ process OPENMS_IDRIPPER {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     IDRipper \\
@@ -30,7 +29,6 @@ process OPENMS_IDRIPPER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
