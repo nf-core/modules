@@ -9,7 +9,7 @@ nextflow_process {
     tag "happy"
     tag "happy/happy"
 
-    test("homo_sapiens - illumina - vcf - bed") {
+    test("homo_sapiens illumina vcf bed") {
 
         when {
             process {
@@ -41,22 +41,22 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
                 { assert snapshot(
-                                process.out.summary_csv,
-                                process.out.extended_csv,
-                                process.out.roc_all_csv,
-                                process.out.roc_indel_locations_csv,
-                                process.out.roc_snp_locations_csv,
-                                process.out.roc_indel_locations_pass_csv,
-                                process.out.roc_snp_locations_pass_csv,
-                                process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() },
-                { assert snapshot(file(process.out.metrics_json[0][1]).name).match("metrics_json_1")},
-                { assert snapshot(file(process.out.runinfo[0][1]).name).match("runinfo_1")},
-                { assert snapshot(file(process.out.tbi[0][1]).name).match("tbi_1")}
+                    process.out.summary_csv,
+                    process.out.extended_csv,
+                    process.out.roc_all_csv,
+                    process.out.roc_indel_locations_csv,
+                    process.out.roc_snp_locations_csv,
+                    process.out.roc_indel_locations_pass_csv,
+                    process.out.roc_snp_locations_pass_csv,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    file(process.out.metrics_json[0][1]).name,
+                    file(process.out.runinfo[0][1]).name,
+                    file(process.out.tbi[0][1]).name
+                ).match() }
             )
         }
     }
-    test("homo_sapiens - illumina - vcf - nobed") {
+    test("homo_sapiens illumina vcf nobed") {
 
         when {
             process {
@@ -88,22 +88,22 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
                 { assert snapshot(
-                                process.out.summary_csv,
-                                process.out.extended_csv,
-                                process.out.roc_all_csv,
-                                process.out.roc_indel_locations_csv,
-                                process.out.roc_snp_locations_csv,
-                                process.out.roc_indel_locations_pass_csv,
-                                process.out.roc_snp_locations_pass_csv,
-                                process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() },
-                { assert snapshot(file(process.out.metrics_json[0][1]).name).match("metrics_json_2")},
-                { assert snapshot(file(process.out.runinfo[0][1]).name).match("runinfo_2")},
-                { assert snapshot(file(process.out.tbi[0][1]).name).match("tbi_2")}
+                    process.out.summary_csv,
+                    process.out.extended_csv,
+                    process.out.roc_all_csv,
+                    process.out.roc_indel_locations_csv,
+                    process.out.roc_snp_locations_csv,
+                    process.out.roc_indel_locations_pass_csv,
+                    process.out.roc_snp_locations_pass_csv,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    file(process.out.metrics_json[0][1]).name,
+                    file(process.out.runinfo[0][1]).name,
+                    file(process.out.tbi[0][1]).name
+                ).match() }
             )
         }
     }
-    test("homo_sapiens - illumina - vcf - stub") {
+    test("homo_sapiens illumina vcf stub") {
 
         options "-stub"
 
