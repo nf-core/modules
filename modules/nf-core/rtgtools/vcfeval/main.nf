@@ -25,7 +25,7 @@ process RTGTOOLS_VCFEVAL {
     tuple val(meta), path("*.weighted_roc.tsv.gz")      , emit: weighted_roc
     tuple val(meta), path("*.summary.txt")              , emit: summary
     tuple val(meta), path("*.phasing.txt")              , emit: phasing
-    tuple val("${task.process}"), val('rgtools'), eval("rtg version | sed 's/Product: RTG Tools //; q'"), topic: versions, emit: versions_rtgtools
+    tuple val("${task.process}"), val('rtgtools'), eval("rtg version | sed 's/Product: RTG Tools //; q'"), topic: versions, emit: versions_rtgtools
 
 
     when:
