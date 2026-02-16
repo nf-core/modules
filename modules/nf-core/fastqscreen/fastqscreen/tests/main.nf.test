@@ -19,10 +19,13 @@ nextflow_process {
             script "../../../bowtie2/build/main.nf"
             process {
                 """
-                input[0] =  Channel.from([
-                                    [[id: "sarscov2"], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)],
-                                    [[id: "human"]   , file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)]
-                            ])
+                input[0] = channel.of([
+                    [id: "sarscov2"],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ], [
+                    [id: "human"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ])
                 """
             }
         }
@@ -43,9 +46,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] =  [[ id:'test', single_end:true ],
-                             [file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
-                            ]
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
+                ]
                 input[1] = FASTQSCREEN_BUILDFROMINDEX.out.database
                 """
             }
@@ -68,9 +72,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] =  [[ id:'test', single_end:false ],
-                             [file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)]
-                            ]
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
+                ]
                 input[1] = FASTQSCREEN_BUILDFROMINDEX.out.database
                 """
             }
@@ -97,9 +102,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] =  [[ id:'test', single_end:true ],
-                             [file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
-                            ]
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
+                ]
                 input[1] = FASTQSCREEN_BUILDFROMINDEX.out.database
                 """
             }
