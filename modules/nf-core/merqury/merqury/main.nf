@@ -29,7 +29,7 @@ process MERQURY_MERQURY {
     tuple val(meta), path("*.hist.ploidy")       , emit: read_ploidy
     tuple val(meta), path("*.hapmers.blob.png")  , emit: hapmers_blob_png           , optional: true
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    tuple val("${task.process}"), val('merqury'), eval('echo 1.3'), emit: versions_merqury, topic: versions
+    tuple val("${task.process}"), val('merqury'), val('1.3'), emit: versions_merqury, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
