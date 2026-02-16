@@ -15,7 +15,7 @@ nextflow_process {
             script "../../../untar/main.nf"
                 process {
                     """
-                    input[0] =  db    =  [
+                    input[0] = [
                         [],
                         file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/minigut_cf.tar.gz', checkIfExists: true)
                     ]
