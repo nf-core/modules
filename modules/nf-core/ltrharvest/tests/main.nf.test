@@ -26,7 +26,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.gff3,
-                    path(process.out.versions[0]).yaml
+                    [ "versions" : path(process.out.versions[0]).yaml ]
                 ).match()},
                 { assert path(process.out.scn[0][1]).text.contains("46510803 46520182 9380 46510803 46510940 138 46520042 46520182 141 86.52 0 chr21") },
             )
@@ -52,7 +52,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.gff3,
-                    path(process.out.versions[0]).yaml
+                    [ "versions" : path(process.out.versions[0]).yaml ]
                 ).match()},
                 { assert path(process.out.scn[0][1]).text.contains("predictions are reported in the following way") },
             )
