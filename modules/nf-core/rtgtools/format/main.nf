@@ -12,7 +12,7 @@ process RTGTOOLS_FORMAT {
 
     output:
     tuple val(meta), path("*.sdf"), emit: sdf
-    tuple val("${task.process}"), val('rgtools'), eval("rtg version | head -n 1 | sed 's/Product: RTG Tools //'"), topic: versions, emit: versions_rtgtools
+    tuple val("${task.process}"), val('rtgtools'), eval("rtg version | head -n 1 | sed 's/Product: RTG Tools //'"), topic: versions, emit: versions_rtgtools
 
     when:
     task.ext.when == null || task.ext.when
