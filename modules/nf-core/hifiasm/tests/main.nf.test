@@ -59,7 +59,7 @@ nextflow_process {
                     process.out.hap2_contigs,
                     process.out.fasta,
                     process.out.paf,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
