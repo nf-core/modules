@@ -29,7 +29,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    process.out.vcf.collect{ meta, vcf -> [ meta, vcf.collect{ vcf_file -> path(vcf_file).vcf.variantsMD5} ] },
+                    process.out.tbi,
+                    process.out.versions
+                ).match() }
             )
         }
 
