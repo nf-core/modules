@@ -66,15 +66,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.mat_hapmer_meryl).md5().match("mat_hapmer_meryl") },
-                { assert snapshot(process.out.pat_hapmer_meryl).md5().match("pat_hapmer_meryl") },
                 { assert snapshot(
                     process.out.versions,
+                    process.out.mat_hapmer_meryl,
+                    process.out.pat_hapmer_meryl,
                     file(process.out.inherited_hapmers_fl_png[0][1]).name,
                     file(process.out.inherited_hapmers_ln_png[0][1]).name,
                     file(process.out.inherited_hapmers_st_png[0][1]).name
-                    ).match()
-                },
+                ).match()}
             )
         }
     }
@@ -96,15 +95,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.mat_hapmer_meryl).md5().match("mat_hapmer_meryl_stub") },
-                { assert snapshot(process.out.pat_hapmer_meryl).md5().match("pat_hapmer_meryl_stub") },
-                { assert snapshot(
-                    process.out.versions,
-                    file(process.out.inherited_hapmers_fl_png[0][1]).name,
-                    file(process.out.inherited_hapmers_ln_png[0][1]).name,
-                    file(process.out.inherited_hapmers_st_png[0][1]).name
-                    ).match()
-                },
+                { assert snapshot(sanitizeOutput(process.out)).match()},
             )
         }
 
