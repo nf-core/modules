@@ -87,7 +87,7 @@ process PBMARKDUP {
     def args      = task.ext.args  ?: ''
     prefix        = task.ext.prefix ?: "${meta.id}"
     suffix        =
-        input.find { file
+        input.find { file ->
             file.name ==~ /.*\.(fasta|fa|fna)(\.gz)?$/ }?.with { f ->
             f.name.tokenize('.').takeRight(f.name.endsWith('.gz') ? 2 : 1).join('.')
         } ?:
