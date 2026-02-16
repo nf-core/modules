@@ -65,7 +65,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					file(process.out.metrics[0][1]).name, // I couldnt find a way to get actual results for the tool
-					process.out.versions
+					process.out.findAll { key, val -> key.startsWith("versions") }
 					).match()
 				}
             )
@@ -98,7 +98,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
