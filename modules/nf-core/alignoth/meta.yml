@@ -1,0 +1,142 @@
+name: "alignoth"
+description: Creating alignment plots from bam files
+keywords:
+  - genomics
+  - alignment
+  - visualization
+  - pileup
+  - plotting
+tools:
+  - "alignoth":
+      description: "A tool for creating alignment plots from bam files."
+      homepage: "https://github.com/alignoth/alignoth/blob/v1.4.6/README.md"
+      documentation: "https://github.com/alignoth/alignoth/blob/v1.4.6/README.md"
+      tool_dev_url: "https://github.com/alignoth/alignoth"
+      doi: "10.1093/bioinformatics/btaf663"
+      licence: ["MIT"]
+      identifier: biotools:alignoth
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM/SAM file to be visualized
+        pattern: "*.{bam,cram,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2573" # CRAM
+          - edam: "http://edamontology.org/format_3462" # SAM
+    - bai:
+        type: file
+        description: Index file for the BAM/CRAM/SAM file
+        pattern: "*.{bai,crai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM index
+          - edam: "http://edamontology.org/format_2573" # CRAM index
+          - edam: "http://edamontology.org/format_3462" # SAM index
+    - fasta:
+        type: file
+        description: Reference fasta file
+        pattern: "*.{fa,fasta}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+    - fai:
+        type: file
+        description: Index file for the reference fasta file
+        pattern: "*.{fa,fasta}.fai"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA index
+    - bed:
+        type: file
+        description: Bed file with regions to be visualized (optional)
+        pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3001" # BED
+    - vcf:
+        type: file
+        description: VCF file with variants to be highlighted (optional)
+        pattern: "*.vcf"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+    - tbi:
+        type: file
+        description: Index file for the VCF file
+        pattern: "*.vcf.tbi"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF index
+    - around:
+        type: integer
+        description: A chromosome and a base position that will define the region that will be plotted starting 500bp before and end 500bp behind the given position (e.g. "2:17348") (optional)
+    - highlight:
+        type: string
+        description: Named intervals or single base positions that will be highlighted in the visualization (e.g. myinterval:132400-132500 or myvariant:132440) (optional)
+    - region:
+        type: string
+        description: Chromosome and region for the visualization (e.g. "2:132424-132924") (optional)
+
+output:
+  html:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.html":
+          type: file
+          description: HTML file with the alignment plot
+          pattern: "*.html"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # HTML
+  output:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}":
+          type: directory
+          description: Output directory with the alignment plot and all intermediate files
+          pattern: "*"
+  vl_json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.vl.json":
+          type: file
+          description: Vega-Lite JSON file with the alignment plot
+          pattern: "*.vl.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3608" # Vega-Lite JSON
+
+  versions_alignoth:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "alignoth":
+          type: string
+          description: The name of the tool
+      - "alignoth --version | sed 's/alignoth //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - alignoth:
+          type: string
+          description: The name of the tool
+      - "alignoth --version | sed 's/alignoth //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@famosab"
+maintainers:
+  - "@famosab"
