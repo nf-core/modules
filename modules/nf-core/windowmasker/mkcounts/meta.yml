@@ -41,9 +41,9 @@ output:
           - windowmasker:
                 type: string
                 description: The name of the tool
-        - windowmasker -version-full | head -n 1 | sed 's/^.*windowmasker. //; s/ .*\$//':
-              type: string
-              description: The expression to obtain the version of the tool
+          - windowmasker -version-full | head -n 1 | sed 's/^.*windowmasker. //; s/ .*\$//':
+                type: string
+                description: The expression to obtain the version of the tool
 topics:
     versions:
         - - ${task.process}:
