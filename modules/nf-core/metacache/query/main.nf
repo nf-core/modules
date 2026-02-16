@@ -44,13 +44,11 @@ process METACACHE_QUERY {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_file = meta.single_end ? reads : "${reads[0]} ${reads[1]} -pairfiles"
-    def abundance_opt = do_abundances ? "-abundances ${prefix}.abundances.txt" : ''
+    def abundance_cmd = do_abundances ? "touch ${prefix}.abundances.txt" : ''
     """
     touch ${prefix}.mapping.txt
-    [ -n "$abundance_opt" ] && touch ${prefix}.abundances.txt
+    ${abundance_cmd}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -31,10 +31,11 @@ process METAMAPS_CLASSIFY {
     """
     metamaps \\
         classify \\
-        $args \\
-        --mappings $classification_res \\
-        --threads $task.cpus \\
-        --DB $database_folder
+        ${args} \\
+        --mappings ${classification_res} \\
+        --threads ${task.cpus} \\
+        --DB ${database_folder} \\
+        -o ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -43,7 +44,6 @@ process METAMAPS_CLASSIFY {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_classification_res.EM.WIMP
