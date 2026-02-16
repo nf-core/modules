@@ -4,8 +4,8 @@ process TIDDIT_SV {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/tiddit:3.6.1--py38h24c8ff8_0' :
-        'biocontainers/tiddit:3.6.1--py38h24c8ff8_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/89/89080e08e55823dbdb424407a4e9eefbc669e2b0e841f142a1014204659df87b/data' :
+        'community.wave.seqera.io/library/tiddit:3.9.4--11a71ebb5fd55c20' }"
 
     input:
     tuple val(meta), path(input), path(input_index)
@@ -13,44 +13,34 @@ process TIDDIT_SV {
     tuple val(meta3), path(bwa_index)
 
     output:
-    tuple val(meta), path("*.vcf")         , emit: vcf
-    tuple val(meta), path("*.ploidies.tab"), emit: ploidy
-    path  "versions.yml"                   , emit: versions
+    tuple val(meta), path("${prefix}.vcf")         , emit: vcf
+    tuple val(meta), path("${prefix}.ploidies.tab"), emit: ploidy
+    tuple val("${task.process}"), val('tiddit'), eval("tiddit | sed -n 's/^usage: tiddit-//; s/ .*//p'"), topic: versions, emit: versions_tiddit
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def bwa_command = bwa_index ? "[[ -d $bwa_index ]] && for i in $bwa_index/*; do [[ -f $fasta && ! \"\$i\" =~ .*\"$fasta.\".* ]] && ln -s \$i ${fasta}.\${i##*.} || ln -s \$i .; done" : ""
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def bwa_command = bwa_index ? "[[ -d ${bwa_index} ]] && for i in ${bwa_index}/*; do [[ -f ${fasta} && ! \"\$i\" =~ .*\"${fasta}.\".* ]] && ln -s \$i ${fasta}.\${i##*.} || ln -s \$i .; done" : ""
 
     """
     $bwa_command
 
     tiddit \\
         --sv \\
-        $args \\
+        ${args} \\
         --threads $task.cpus \\
-        --bam $input \\
-        --ref $fasta \\
-        -o $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tiddit: \$(echo \$(tiddit 2>&1) | sed 's/^.*tiddit-//; s/ .*\$//')
-    END_VERSIONS
+        --bam ${input} \\
+        --ref ${fasta} \\
+        -o ${prefix}
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf
-    touch ${prefix}.ploidies.tab
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tiddit: \$(echo \$(tiddit 2>&1) | sed 's/^.*tiddit-//; s/ .*\$//')
-    END_VERSIONS
+    echo "" > ${prefix}.vcf
+    echo "" > ${prefix}.ploidies.tab
     """
 }
