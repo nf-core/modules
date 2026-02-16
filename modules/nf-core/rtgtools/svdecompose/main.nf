@@ -13,7 +13,7 @@ process RTGTOOLS_SVDECOMPOSE {
     output:
     tuple val(meta), path("*.vcf.gz")    , emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi"), emit: index
-    tuple val("${task.process}"), val('rgtools'), eval("rtg version | sed 's/Product: RTG Tools //; q'"), topic: versions, emit: versions_rtgtools
+    tuple val("${task.process}"), val('rtgtools'), eval("rtg version | sed 's/Product: RTG Tools //; q'"), topic: versions, emit: versions_rtgtools
 
     when:
     task.ext.when == null || task.ext.when

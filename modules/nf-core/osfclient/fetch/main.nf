@@ -33,7 +33,6 @@ process OSFCLIENT_FETCH {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     outname = path.tokenize('/').last()
     """
     touch ${outname}
