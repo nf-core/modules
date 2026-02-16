@@ -13,7 +13,8 @@ process MERYL_COUNT {
 
     output:
     tuple val(meta), path("*.meryl")    , emit: meryl_db
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('meryl'), eval("meryl --version |& sed -n 's/.* \\([a-f0-9]\\{40\\}\\))/\\1/p'"), emit: versions_meryl, topic: versions
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,11 +33,6 @@ process MERYL_COUNT {
             \$READ \\
             output ${prefix}.\${READ%.f*}.meryl
     done
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        meryl: \$( meryl --version |& sed -n 's/.* \\([a-f0-9]\\{40\\}\\))/\\1/p' )
-    END_VERSIONS
     """
 
     stub:
@@ -45,10 +41,5 @@ process MERYL_COUNT {
     for READ in ${reads}; do
         touch ${prefix}.\${READ%.f*}.meryl
     done
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        meryl: \$( meryl --version |& sed -n 's/.* \\([a-f0-9]\\{40\\}\\))/\\1/p' )
-    END_VERSIONS
     """
 }
