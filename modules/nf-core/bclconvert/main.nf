@@ -1,5 +1,5 @@
 process BCLCONVERT {
-    tag { "$meta.lane" ? "$meta.id"+"."+"$meta.lane" : "$meta.id" }
+    tag { "${meta.lane}" ? "${meta.id}" + "." + "${meta.lane}" : "${meta.id}" }
     label 'process_high'
 
     container "nf-core/bclconvert:4.4.6"
@@ -8,14 +8,14 @@ process BCLCONVERT {
     tuple val(meta), path(samplesheet), path(run_dir)
 
     output:
-    tuple val(meta), path("output/**_S[1-9]*_R?_00?.fastq.gz")        , emit: fastq
-    tuple val(meta), path("output/**_S[1-9]*_I?_00?.fastq.gz")        , emit: fastq_idx       , optional:true
-    tuple val(meta), path("output/**Undetermined_S0*_R?_00?.fastq.gz"), emit: undetermined    , optional:true
-    tuple val(meta), path("output/**Undetermined_S0*_I?_00?.fastq.gz"), emit: undetermined_idx, optional:true
-    tuple val(meta), path("output/Reports")                           , emit: reports
-    tuple val(meta), path("output/Logs")                              , emit: logs
-    tuple val(meta), path("output/InterOp/*.bin")                     , emit: interop         , optional:true
-    path("versions.yml")                                              , emit: versions
+    tuple generate_fastq_channel(val(meta), path("output/reports/fastq_list.csv")), emit: fastq
+    tuple val(meta), path("output/**_S[1-9]*_I?_00?.fastq.gz"), emit: fastq_idx, optional: true
+    tuple val(meta), path("output/**Undetermined_S0*_R?_00?.fastq.gz"), emit: undetermined, optional: true
+    tuple val(meta), path("output/**Undetermined_S0*_I?_00?.fastq.gz"), emit: undetermined_idx, optional: true
+    tuple val(meta), path("output/Reports/*"), emit: reports
+    tuple val(meta), path("output/Logs/*"), emit: logs
+    tuple val(meta), path("output/InterOp/*.bin"), emit: interop, optional: true
+    path ("versions.yml"), emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +23,7 @@ process BCLCONVERT {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "BCLCONVERT module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("BCLCONVERT module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
@@ -37,27 +37,27 @@ process BCLCONVERT {
 
     if ${input_tar}; then
         ## Ensures --strip-components only applied when top level of tar contents is a directory
-        ## If just files or multiple directories, place all in $input_dir
+        ## If just files or multiple directories, place all in ${input_dir}
 
         if [[ \$(tar -taf ${run_dir} | grep -o -P "^.*?\\/" | uniq | wc -l) -eq 1 ]]; then
             tar \\
-                -C $input_dir --strip-components 1 \\
+                -C ${input_dir} --strip-components 1 \\
                 -xavf \\
-                $args2 \\
-                $run_dir \\
-                $args3
+                ${args2} \\
+                ${run_dir} \\
+                ${args3}
         else
             tar \\
-                -C $input_dir \\
+                -C ${input_dir} \\
                 -xavf \\
-                $args2 \\
-                $run_dir \\
-                $args3
+                ${args2} \\
+                ${run_dir} \\
+                ${args3}
         fi
     fi
 
     bcl-convert \\
-        $args \\
+        ${args} \\
         --output-directory output \\
         --bcl-input-directory ${input_dir} \\
         --sample-sheet ${samplesheet}
@@ -65,12 +65,8 @@ process BCLCONVERT {
     # copy the InterOp folder contents to ensure it gets picked up when using fusion
     mkdir -p output/InterOp/
     cp -n **/InterOp/*.bin output/InterOp/
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bclconvert: \$(bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //')
-    END_VERSIONS
     """
+
 
     stub:
     """
@@ -102,10 +98,29 @@ process BCLCONVERT {
     touch output/InterOp/IndexMetricsOut.bin
     touch output/InterOp/QMetricsOut.bin
     touch output/InterOp/TileMetricsOut.bin
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bclconvert: \$(bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //')
-    END_VERSIONS
     """
+}
 
+def generate_fastq_channel(meta, fastq_list_csv) {
+    return
+    file(fastq_list_csv)
+    .splitCsv(header:true)
+    .combine(meta)
+    .map { row, fc_meta ->
+        // Create the readgroup tuple
+        // RGID,RGSM,RGLB,Lane,Read1File,Read2File
+        def rg = [:]
+        // row.RGID is index1.index2.lane
+        rg.ID = row.RGID
+        // RGPU is a custom column in the samplesheet containing the flowcell ID
+        rg.PU = row.RGPU ? row.RGPU : ""
+        rg.SM = row.RGSM
+        rg.LB = row.RGLB ? row.RGLB : ""
+        rg.PL = "ILLUMINA"
+
+        // replace the meta id with the sample name
+        def new_meta = fc_meta + [id: row.RGSM, readgroup: rg]
+        // Return the new meta and the list of fastq files for this sample
+        return [new_meta, [file(row.Read1File, checkIfExists:true), file(row.Read2File, checkIfExists:true)]]
+    }
 }
