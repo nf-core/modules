@@ -39,7 +39,7 @@ process HAPPY_HAPPY {
     def regions = regions_bed ? "-f ${regions_bed}" : ""
     def targets = targets_bed ? "-T ${targets_bed}" : ""
     def false_positives = false_positives_bed ? "--false-positives ${false_positives_bed}" : ""
-    def stratification = stratification_tsv ? "--stratification ${stratification_tsv}" : ""
+    def stratification = stratification_tsv && stratification_beds ? "--stratification ${stratification_tsv}" : ""
     """
     hap.py \\
         ${truth_vcf} \\
