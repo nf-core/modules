@@ -31,10 +31,9 @@ process PROTEINORTHO {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        proteinortho : \$(echo \$(proteinortho --version 2>&1) )
-        \$(echo \$( "diamond:"(diamond version 2>/dev/null | head -n1 | sed 's/^.*version //;' ) || echo "") )
-        \$(echo \$( "blast:"(blastp -version 2>/dev/null |head -n1 | sed 's/^.*: //;'  ) || echo "") )
-        \$(echo \$( "mmseqs:"(mmseqp version 2>/dev/null ) || echo "") )
+        proteinortho : \$(proteinortho --version 2>&1)
+        diamond : \$(diamond version 2>/dev/null | head -n1 | sed 's/^.*version //;')
+        blast : \$(blastp -version 2>/dev/null | head -n1 | sed 's/^.*: //;')
     END_VERSIONS
     """
 
@@ -47,10 +46,9 @@ process PROTEINORTHO {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        proteinortho : \$(echo \$(proteinortho --version 2>&1) )
-        \$(echo \$( "diamond:"(diamond version 2>/dev/null | head -n1 | sed 's/^.*version //;' ) || echo "") )
-        \$(echo \$( "blast:"(blastp -version 2>/dev/null |head -n1 | sed 's/^.*: //;'  ) || echo "") )
-        \$(echo \$( "mmseqs:"(mmseqp version 2>/dev/null ) || echo "") )
+        proteinortho : \$(proteinortho --version 2>&1)
+        diamond : \$(diamond version 2>/dev/null | head -n1 | sed 's/^.*version //;')
+        blast : \$(blastp -version 2>/dev/null | head -n1 | sed 's/^.*: //;')
     END_VERSIONS
     """
 }
