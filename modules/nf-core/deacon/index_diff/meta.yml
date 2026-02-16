@@ -1,0 +1,82 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "deacon_index_diff"
+description: Create deacon index for reference genome
+keywords:
+  - index
+  - fasta
+  - genome
+  - reference
+  - minimizer
+  - decontamination
+tools:
+  - "deacon":
+      description: "Fast alignment-free sequence filter"
+      homepage: "https://github.com/bede/deacon"
+      documentation: "https://github.com/bede/deacon#readme"
+      tool_dev_url: "https://github.com/bede/deacon"
+      doi: "10.1093/bioinformatics/btae004"
+      licence: ["MIT"]
+      identifier: "biotools:deacon"
+input:
+  - - meta_index:
+        type: map
+        description: |
+          Groovy Map containing reference index information.
+          e.g. [ id:'test', single_end:false ]
+    - index:
+        type: file
+        description: |
+          Deacon .idx index file to perform the diff operation on
+        pattern: "*.idx"
+        ontologies:
+          - edam: "http://edamontology.org/data_3210" # Genome index
+  - - meta_genome:
+        type: map
+        description: |
+          Groovy Map containing metadata for the genome to subtract from the index (.idx or fasta file).
+          e.g. [ id:'genome' ]
+    - genome:
+        type: file
+        description: |
+          A single .idx or fasta file to subtract from the main reference index
+        pattern: "*.{idx,fasta,fasta.gz,fas,fas.gz,fa,fa.gz,fna,fna.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/data_3210" # Genome index
+          - edam: "http://edamontology.org/data_2044" # Sequence
+          - edam: "http://edamontology.org/format_1929" # FASTA
+output:
+  index:
+    - - meta_index:
+          type: map
+          description: |
+            Groovy Map containing reference index information.
+            e.g. [ id:'test', single_end:false ]
+      - "*.idx":
+          type: file
+          description: Deacon minimizer index file
+          pattern: "*.idx"
+          ontologies:
+            - edam: "http://edamontology.org/data_3210" # Genome index
+  versions_deacon:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deacon:
+          type: string
+          description: The name of the tool
+      - deacon --version | head -n1 | sed "s/deacon //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deacon:
+          type: string
+          description: The name of the tool
+      - deacon --version | head -n1 | sed "s/deacon //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@pmoris"
