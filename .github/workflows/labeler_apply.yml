@@ -1,0 +1,139 @@
+name: labeler_apply
+
+on:
+  workflow_run:
+    workflows: ["labeler"]
+    types:
+      - completed
+
+jobs:
+  apply-labels:
+    permissions:
+      pull-requests: write
+      contents: read
+      issues: write
+    runs-on: ubuntu-latest
+    name: Apply PR size label
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Download PR number artifact
+        uses: dawidd6/action-download-artifact@bf251b5aa9c2f7eeb574a96ee720e24f801b7c11 # v6
+        with:
+          workflow: labeler.yml
+          run_id: ${{ github.event.workflow_run.id }}
+          name: pr_number
+          path: pr
+
+      - name: Read PR number
+        id: pr_number
+        run: |
+          PR_NUMBER=$(cat pr/pr_number.txt)
+          echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
+
+      - name: Calculate PR size and apply label
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const prNumber = ${{ steps.pr_number.outputs.pr_number }};
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            // Get PR details
+            const pr = await github.rest.pulls.get({
+              owner,
+              repo,
+              pull_number: prNumber
+            });
+
+            // Get PR files to calculate size
+            const files = await github.rest.pulls.listFiles({
+              owner,
+              repo,
+              pull_number: prNumber,
+              per_page: 100
+            });
+
+            // Calculate total changes (additions + deletions)
+            let totalChanges = 0;
+            for (const file of files.data) {
+              totalChanges += file.additions + file.deletions;
+            }
+
+            console.log(`Total changes: ${totalChanges}`);
+
+            // Determine size label based on thresholds
+            let sizeLabel = '';
+            if (totalChanges <= 10) {
+              sizeLabel = 'size/xs';
+            } else if (totalChanges <= 100) {
+              sizeLabel = 'size/s';
+            } else if (totalChanges <= 500) {
+              sizeLabel = 'size/m';
+            } else if (totalChanges <= 1000) {
+              sizeLabel = 'size/l';
+            } else {
+              sizeLabel = 'size/xl';
+            }
+
+            console.log(`Determined size label: ${sizeLabel}`);
+
+            // Get current labels on the PR
+            const currentLabels = pr.data.labels.map(label => label.name);
+            console.log(`Current labels: ${currentLabels.join(', ')}`);
+
+            // Remove any existing size labels
+            const sizeLabels = ['size/xs', 'size/s', 'size/m', 'size/l', 'size/xl'];
+            for (const label of currentLabels) {
+              if (sizeLabels.includes(label)) {
+                console.log(`Removing old size label: ${label}`);
+                await github.rest.issues.removeLabel({
+                  owner,
+                  repo,
+                  issue_number: prNumber,
+                  name: label
+                });
+              }
+            }
+
+            // Add the new size label
+            console.log(`Adding new size label: ${sizeLabel}`);
+            await github.rest.issues.addLabels({
+              owner,
+              repo,
+              issue_number: prNumber,
+              labels: [sizeLabel]
+            });
+
+            // Post warning comment if size is XL
+            if (sizeLabel === 'size/xl') {
+              const warningMessage = `This PR exceeds the recommended size of 1000 lines.
+            Please make sure you are NOT addressing multiple issues with one PR.
+            Note this PR might be rejected due to its size.`;
+
+              // Check if we've already posted this warning
+              const comments = await github.rest.issues.listComments({
+                owner,
+                repo,
+                issue_number: prNumber
+              });
+
+              const botComment = comments.data.find(comment =>
+                comment.user.type === 'Bot' &&
+                comment.body.includes('This PR exceeds the recommended size of 1000 lines')
+              );
+
+              if (!botComment) {
+                console.log('Posting XL warning comment');
+                await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number: prNumber,
+                  body: warningMessage
+                });
+              } else {
+                console.log('XL warning comment already exists');
+              }
+            }
+
+            console.log('Labeling completed successfully');
