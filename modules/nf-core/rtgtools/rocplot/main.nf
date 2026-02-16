@@ -13,7 +13,7 @@ process RTGTOOLS_ROCPLOT {
     output:
     tuple val(meta), path("*.png"), emit: png
     tuple val(meta), path("*.svg"), emit: svg
-    tuple val("${task.process}"), val('rgtools'), eval("rtg version | sed 's/Product: RTG Tools //; q'"), topic: versions, emit: versions_rtgtools
+    tuple val("${task.process}"), val('rtgtools'), eval("rtg version | sed 's/Product: RTG Tools //; q'"), topic: versions, emit: versions_rtgtools
 
     when:
     task.ext.when == null || task.ext.when
