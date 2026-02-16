@@ -15,7 +15,8 @@ tools:
       documentation: https://github.com/freebayes/freebayes
       tool_dev_url: https://github.com/freebayes/freebayes
       doi: "10.48550/arXiv.1207.3907"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:freebayes
 input:
   - - meta:
@@ -45,8 +46,8 @@ input:
         ontologies: []
     - target_bed:
         type: file
-        description: Optional - Limit analysis to targets listed in this BED-format
-          FILE.
+        description: Optional - Limit analysis to targets listed in this
+          BED-format FILE.
         pattern: "*.bed"
         ontologies: []
   - - meta2:
@@ -76,8 +77,8 @@ input:
           e.g. [ id:'test_samples' ]
     - samples:
         type: file
-        description: Optional - Limit analysis to samples listed (one per line) in the
-          FILE.
+        description: Optional - Limit analysis to samples listed (one per line) in
+          the FILE.
         pattern: "*.txt"
         ontologies: []
   - - meta5:
@@ -87,8 +88,8 @@ input:
           e.g. [ id:'test_populations' ]
     - populations:
         type: file
-        description: Optional - Each line of FILE should list a sample and a population
-          which it is part of.
+        description: Optional - Each line of FILE should list a sample and a
+          population which it is part of.
         pattern: "*.txt"
         ontologies: []
   - - meta6:
@@ -117,14 +118,28 @@ output:
           description: Compressed VCF file
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
+  versions_freebayes:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - freebayes:
+          type: string
+          description: The name of the tool
+      - freebayes --version 2>&1 | sed "s/version:\s*v//g":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software version
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - freebayes:
+          type: string
+          description: The name of the tool
+      - freebayes --version 2>&1 | sed "s/version:\s*v//g":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@maxibor"
   - "@FriederikeHanssen"

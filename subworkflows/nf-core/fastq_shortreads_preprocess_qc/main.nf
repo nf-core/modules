@@ -167,7 +167,6 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
         ch_hostile_json      = FASTQ_DECONTAMINATE_DEACON_HOSTILE.out.json
         ch_deacon_index      = FASTQ_DECONTAMINATE_DEACON_HOSTILE.out.index
         ch_deacon_summary    = FASTQ_DECONTAMINATE_DEACON_HOSTILE.out.summary
-        ch_versions          = ch_versions.mix(FASTQ_DECONTAMINATE_DEACON_HOSTILE.out.versions)
     }
 
 

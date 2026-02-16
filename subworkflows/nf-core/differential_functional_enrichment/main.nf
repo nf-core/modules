@@ -2,13 +2,13 @@
 //
 // Perform enrichment analysis
 //
-include { GPROFILER2_GOST          } from "../../../modules/nf-core/gprofiler2/gost/main.nf"
+include { GPROFILER2_GOST          } from '../../../modules/nf-core/gprofiler2/gost/main.nf'
 include { CUSTOM_TABULARTOGSEAGCT  } from '../../../modules/nf-core/custom/tabulartogseagct/main.nf'
 include { CUSTOM_TABULARTOGSEACLS  } from '../../../modules/nf-core/custom/tabulartogseacls/main.nf'
 include { CUSTOM_TABULARTOGSEACHIP } from '../../../modules/nf-core/custom/tabulartogseachip/main.nf'
 include { GSEA_GSEA                } from '../../../modules/nf-core/gsea/gsea/main.nf'
-include { PROPR_GREA               } from "../../../modules/nf-core/propr/grea/main.nf"
-include { DECOUPLER_DECOUPLER                } from '../../../modules/nf-core/decoupler/decoupler/main'
+include { PROPR_GREA               } from '../../../modules/nf-core/propr/grea/main.nf'
+include { DECOUPLER_DECOUPLER      } from '../../../modules/nf-core/decoupler/decoupler/main'
 
 // Combine meta maps, including merging non-identical values of shared keys (e.g. 'id')
 def mergeMaps(meta, meta2){
@@ -33,7 +33,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
 
     main:
 
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     // Add method information into meta map of ch_input
     // This information is used later to determine which method to run for each input
@@ -72,12 +72,12 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
 
     // GSEA uses meta.variable, so only keep contrasts where meta.variable is present
     ch_contrasts_transposed = ch_contrasts.transpose()
-        .filter { meta, contrastMap, variable, reference, target, formula, comparison ->
+        .filter { _meta, _contrastMap, variable, _reference, _target, _formula, _comparison ->
             variable?.trim()
         }
 
     ch_input_for_gsea = ch_input
-        .filter{ it[4] == 'gsea' }
+        .filter{ it -> it[4] == 'gsea' }
         .combine(ch_samplesheet.join(ch_featuresheet), by:0)
         .combine(ch_contrasts_transposed, by:0)
         .multiMap(criteria)
