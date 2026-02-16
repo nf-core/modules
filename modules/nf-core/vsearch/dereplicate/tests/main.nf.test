@@ -25,10 +25,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.log[0]).getText().contains("Dereplicating file") },
                 { assert snapshot(
                     process.out.fasta,
-                    process.out.uc,
-                    path(process.out.log[0]).getText().contains("Dereplicating file"),
+                    process.out.clustering,
                     process.out.findAll { key, val -> key.startsWith("versions") },
                     ).match() }
             )
