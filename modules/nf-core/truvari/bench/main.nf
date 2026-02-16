@@ -23,7 +23,7 @@ process TRUVARI_BENCH {
     tuple val(meta), path("*.tp-comp.vcf.gz.tbi"), emit: tp_comp_tbi
     tuple val(meta), path("*.summary.json")      , emit: summary
     tuple val(meta), path("*.log.txt")           , emit: log
-    tuple val("${task.process}"), val('truvari'), eval("truvari version 2>&1 | sed 's/Truvari v//'"), topic: versions, emit: versions_truvari
+    tuple val("${task.process}"), val('truvari'), eval("truvari version | sed 's/Truvari v//'"), topic: versions, emit: versions_truvari
 
 
     when:
