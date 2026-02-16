@@ -21,7 +21,7 @@ process RTGTOOLS_BNDEVAL {
     tuple val(meta), path("*.tp-baseline.vcf.gz.tbi")   , emit: baseline_tbi
     tuple val(meta), path("*.weighted_roc.tsv.gz")      , emit: weighted_roc
     tuple val(meta), path("*.summary.txt")              , emit: summary
-    tuple val("${task.process}"), val('rgtools'), eval("rtg version | sed 's/Product: RTG Tools //; q'"), topic: versions, emit: versions_rtgtools
+    tuple val("${task.process}"), val('rtgtools'), eval("rtg version | sed 's/Product: RTG Tools //; q'"), topic: versions, emit: versions_rtgtools
 
     when:
     task.ext.when == null || task.ext.when
