@@ -1,0 +1,151 @@
+{
+    "sarscov2 - fastq - single_end - fastp - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fastp.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fastp.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fastp.html:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fastp.json:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "4": [
+                    
+                ],
+                "filtered_reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fastp.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "logfile": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fastp.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "multiqc_files": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fastp.json:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "report": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fastp.html:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions": [
+                    
+                ]
+            },
+            [
+                
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-01-23T13:25:07.968797819"
+    },
+    "sarscov2 - fastq - single_end - prinseqplusplus": {
+        "content": [
+            "test_good_out.fastq.gz",
+            "test.log:md5,f9bceec6e29b63bac4b8da14efeadfcd",
+            [
+                {
+                    "FASTQ_COMPLEXITY_FILTER:PRINSEQPLUSPLUS": {
+                        "prinseqplusplus": 1.2
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-01-23T13:24:48.137181855"
+    },
+    "sarscov2 - fastq - single_end - fastp": {
+        "content": [
+            "test.fastp.fastq.gz:md5,0536c516b46941a349c8ba69b324fd73",
+            27,
+            2394,
+            "test.fastp.json:md5,59943168befbe3b57fa63e715d5177c2",
+            [
+                
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-01-23T13:25:02.100460318"
+    },
+    "sarscov2 - fastq - paired_end - bbduk": {
+        "content": [
+            [
+                "test.trim_1.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec",
+                "test.trim_2.fastq.gz:md5,2ebae722295ea66d84075a3b042e2b42"
+            ],
+            [
+                "test.trim.bbduk.log"
+            ],
+            [
+                {
+                    "FASTQ_COMPLEXITY_FILTER:BBMAP_BBDUK": {
+                        "bbmap": 39.18
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-01-23T13:24:55.165255006"
+    }
+}

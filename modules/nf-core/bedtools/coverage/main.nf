@@ -1,11 +1,11 @@
 process BEDTOOLS_COVERAGE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bedtools:2.31.1--hf5e1c6e_0' :
-        'biocontainers/bedtools:2.31.1--hf5e1c6e_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/bedtools:2.31.1--hf5e1c6e_0'
+        : 'biocontainers/bedtools:2.31.1--hf5e1c6e_0'}"
 
     input:
     tuple val(meta), path(input_A), path(input_B)
@@ -13,7 +13,7 @@ process BEDTOOLS_COVERAGE {
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('bedtools'), eval("bedtools --version | sed -e 's/bedtools v//g'"), topic: versions, emit: versions_bedtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,15 +25,16 @@ process BEDTOOLS_COVERAGE {
     """
     bedtools \\
         coverage \\
-        $args \\
-        $reference \\
-        -a $input_A \\
-        -b $input_B \\
+        ${args} \\
+        ${reference} \\
+        -a ${input_A} \\
+        -b ${input_B} \\
         > ${prefix}.bed
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bedtools: \$(echo \$(bedtools --version 2>&1) | sed 's/^.*bedtools v//' ))
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bed
     """
 }

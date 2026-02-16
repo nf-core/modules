@@ -13,6 +13,7 @@ process CUSTOM_MATRIXFILTER {
     output:
     tuple val(meta), path("*.filtered.tsv")             , emit: filtered
     tuple val(meta), path("*.tests.tsv")                , emit: tests
+    tuple val(meta), path("*.thresholds.tsv")           , emit: thresholds
     tuple val(meta), path("*R_sessionInfo.log")         , emit: session_info
     path "versions.yml"                                 , emit: versions
 
@@ -33,6 +34,7 @@ process CUSTOM_MATRIXFILTER {
     """
     touch ${prefix}.filtered.tsv
     touch ${prefix}.tests.tsv
+    touch ${prefix}.thresholds.tsv
     touch ${prefix}.R_sessionInfo.log
 
     cat <<-END_VERSIONS > versions.yml

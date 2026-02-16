@@ -50,8 +50,6 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_STRELKA {
         // add variantcaller to meta map and remove no longer necessary field: num_intervals
         .map{ meta, vcf -> [ meta - meta.subMap('num_intervals') + [ variantcaller:'strelka' ], vcf ] }
 
-    ch_versions = ch_versions.mix(MERGE_STRELKA_SNVS.out.versions)
-    ch_versions = ch_versions.mix(MERGE_STRELKA_INDELS.out.versions)
     ch_versions = ch_versions.mix(STRELKA_SOMATIC.out.versions)
 
     emit:

@@ -4,8 +4,8 @@ process SVDB_BUILD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/svdb:2.8.2--py39h5371cbf_0':
-        'biocontainers/svdb:2.8.2--py39h5371cbf_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ff/ff995c756aa8a3c0af13b1d054eacd536a11d35de5fa288dacf558bc21696968/data':
+        'community.wave.seqera.io/library/bcftools_svdb:ae3b14d2d608fd81' }"
 
     input:
     tuple val(meta), path(input)
@@ -13,7 +13,7 @@ process SVDB_BUILD {
 
     output:
     tuple val(meta), path("*.db"), emit: db
-    path "versions.yml"          , emit: versions
+    tuple val("${task.process}"), val('svdb'), eval("svdb | sed -nE 's/.*SVDB-([0-9.]+).*/\\1/p'"), emit: versions_svdb, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,13 +26,10 @@ process SVDB_BUILD {
     """
     svdb \\
         --build \\
+        ${args} \\
         --$input_type $input \\
         --prefix ${prefix}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        svdb: \$( echo \$(svdb) | head -1 | sed 's/usage: SVDB-\\([0-9]\\.[0-9]\\.[0-9]\\).*/\\1/' )
-    END_VERSIONS
     """
 
     stub:
@@ -40,9 +37,5 @@ process SVDB_BUILD {
     """
     touch ${prefix}.db
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        svdb: \$( echo \$(svdb) | head -1 | sed 's/usage: SVDB-\\([0-9]\\.[0-9]\\.[0-9]\\).*/\\1/' )
-    END_VERSIONS
     """
 }

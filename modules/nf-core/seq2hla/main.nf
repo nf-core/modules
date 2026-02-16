@@ -24,7 +24,7 @@ process SEQ2HLA {
     tuple val(meta), path("*ClassII.HLAgenotype2digits")        , emit: class2_genotype_2d
     tuple val(meta), path("*ClassII.HLAgenotype4digits")        , emit: class2_genotype_4d
     tuple val(meta), path("*.ambiguity")                        , emit: ambiguity, optional: true
-    path "versions.yml"                                         , emit: versions
+    tuple val("${task.process}"), val('seq2hla'), eval("seq2HLA --version | sed 's/seq2HLA.py //'"), topic: versions, emit: versions_seq2hla
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,15 +42,9 @@ process SEQ2HLA {
         -r ${prefix} \\
         -p ${task.cpus} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seq2hla: \$(seq2HLA --version |& sed 's/seq2HLA.py //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}-ClassI-class.HLAgenotype2digits
@@ -66,10 +60,5 @@ process SEQ2HLA {
     touch ${prefix}-ClassI-nonclass.bowtielog
     touch ${prefix}-ClassI-nonclass.expression
     touch ${prefix}.ambiguity
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seq2hla: \$(seq2HLA --version |& sed 's/seq2HLA.py //')
-    END_VERSIONS
     """
 }

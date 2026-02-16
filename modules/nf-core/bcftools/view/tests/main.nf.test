@@ -33,11 +33,10 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.vcf,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, tbi], [], [], [] - vcf_gz_index") {
@@ -66,12 +65,11 @@ nextflow_process {
                     process.out.vcf,
                     process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name } },
                     process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() },
                 { assert process.out.csi[0][1].endsWith(".csi") }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, tbi], [], [], [] - vcf_gz_index_csi") {
@@ -100,12 +98,11 @@ nextflow_process {
                     process.out.vcf,
                     process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name } },
                     process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() },
                 { assert process.out.csi[0][1].endsWith(".csi") }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, tbi], [], [], [] - vcf_gz_index_tbi") {
@@ -134,12 +131,11 @@ nextflow_process {
                     process.out.vcf,
                     process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name } },
                     process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() },
                 { assert process.out.tbi[0][1].endsWith(".tbi") }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, tbi], vcf, tsv, []") {
@@ -166,11 +162,10 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.vcf,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, tbi], [], [], [] - stub") {
@@ -198,11 +193,10 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.vcf[0][1]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, tbi], [], [], [] - vcf_gz_index - stub") {
@@ -232,7 +226,6 @@ nextflow_process {
                 { assert process.out.csi[0][1].endsWith(".csi") }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, tbi], [], [], [] - vcf_gz_index_csi - stub") {
@@ -262,7 +255,6 @@ nextflow_process {
                 { assert process.out.csi[0][1].endsWith(".csi") }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, tbi], [], [], [] - vcf_gz_index_tbi - stub") {
@@ -292,7 +284,5 @@ nextflow_process {
                 { assert process.out.tbi[0][1].endsWith(".tbi") }
             )
         }
-
     }
-
 }

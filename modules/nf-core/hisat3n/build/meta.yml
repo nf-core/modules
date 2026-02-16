@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "hisat3n_build"
+description: Build HISAT-3N index for nucleotide conversion sequencing alignment
+keywords:
+  - build
+  - index
+  - fasta
+  - genome
+  - reference
+  - bisulfite
+  - methylation
+tools:
+  - "hisat-3n":
+      description: "HISAT-3N is designed for nucleotide conversion sequencing technologies
+        and implemented based on HISAT2."
+      homepage: "http://daehwankimlab.github.io/hisat2/hisat-3n/"
+      documentation: "http://daehwankimlab.github.io/hisat2/hisat-3n/"
+      tool_dev_url: "https://github.com/DaehwanKimLab/hisat2/tree/hisat-3n"
+      doi: "10.1101/gr.275193.120"
+      licence: ["GPL v3"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'genome' ]`
+    - fasta:
+        type: file
+        description: Reference FASTA file
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+
+output:
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing reference information
+            e.g. `[ id:'genome' ]`
+      - hisat3n:
+          type: directory
+          description: Directory containing HISAT-3N index files
+          pattern: "hisat3n"
+          ontologies: []
+  versions_hisat3n:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - hisat-3n:
+          type: string
+          description: The tool name
+      - "hisat-3n --version 2>&1 | head -1 | sed 's/.* //'":
+          type: eval
+          description: The command used to generate the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - hisat-3n:
+          type: string
+          description: The tool name
+      - "hisat-3n --version 2>&1 | head -1 | sed 's/.* //'":
+          type: eval
+          description: The command used to generate the version of the tool
+
+authors:
+  - "@emmcauley"
+maintainers:
+  - "@emmcauley"

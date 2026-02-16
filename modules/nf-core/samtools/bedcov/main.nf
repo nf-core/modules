@@ -10,12 +10,11 @@ process SAMTOOLS_BEDCOV {
     input:
     tuple val(meta), path(input), path(input_index)
     tuple val(meta2), path(bed)
-    tuple val(meta3), path(fasta)
-    tuple val(meta4), path(fasta_index)
+    tuple val(meta3), path(fasta), path(fasta_index)
 
     output:
     tuple val(meta), path("*.tsv"), emit: coverage
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,11 +32,6 @@ process SAMTOOLS_BEDCOV {
         $bed \\
         $input \\
         > ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(samtools --version |& sed '1!d ; s/samtools //')
-    END_VERSIONS
     """
 
     stub:
@@ -45,10 +39,5 @@ process SAMTOOLS_BEDCOV {
 
     """
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(samtools --version |& sed '1!d ; s/samtools //')
-    END_VERSIONS
     """
 }

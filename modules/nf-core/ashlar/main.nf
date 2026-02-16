@@ -4,8 +4,8 @@ process ASHLAR {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ashlar:1.18.0--pyhdfd78af_0' :
-        'biocontainers/ashlar:1.18.0--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/ashlar:1.19.0--pyhdfd78af_0' :
+        'biocontainers/ashlar:1.19.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(images, stageAs: 'image*/*')
@@ -14,7 +14,7 @@ process ASHLAR {
 
     output:
     tuple val(meta), path("*.ome.tif"), emit: tif
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('ashlar'), eval("ashlar --version | sed 's/^.*ashlar //'"), emit: versions_ashlar, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,6 +35,8 @@ process ASHLAR {
 
     """
     export JAVA_TOOL_OPTIONS='-XX:+PerfDisableSharedMem'
+    export XDG_CACHE_HOME=.cache
+    export MPLCONFIGDIR=.matplotlib
 
     ashlar \\
         -o ${prefix}.ome.tif \\
@@ -44,11 +46,6 @@ process ASHLAR {
         ${ffp}
 
     sed -i -E 's/UUID="urn:uuid:[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}"/                                                    /g' ${prefix}.ome.tif
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ashlar: \$(ashlar --version | sed 's/^.*ashlar //' )
-    END_VERSIONS
     """
 
     stub:
@@ -66,10 +63,5 @@ process ASHLAR {
     export JAVA_TOOL_OPTIONS='-XX:+PerfDisableSharedMem'
 
     touch ${prefix}.ome.tif
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ashlar: \$(ashlar --version | sed 's/^.*ashlar //' )
-    END_VERSIONS
     """
 }

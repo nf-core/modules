@@ -5,14 +5,14 @@ include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_LIGATE } from '../../../modules/nf-co
 
 workflow BAM_IMPUTE_STITCH {
     take:
-    ch_input   // channel (mandatory):   [ [id], [bam], [bai], bampaths, bamnames ]
+    ch_input // channel (mandatory):   [ [id], [bam], [bai], bampaths, bamnames ]
     ch_posfile // channel (mandatory):   [ [panel, chr], posfile ]
-    ch_chunks  // channel (optional) :   [ [panel, chr], chr, start, end ]
-    ch_map     // channel (optional) :   [ [panel, chr], map ]
-    ch_fasta   // channel (optional) :   [ [genome], fa, fai ]
-    k_val      // integer:   k value for STITCH
-    n_gen      // integer:   number of generations for STITCH
-    seed       // value  :   seed for random number generator
+    ch_chunks // channel (optional) :   [ [panel, chr], chr, start, end ]
+    ch_map // channel (optional) :   [ [panel, chr], map ]
+    ch_fasta // channel (optional) :   [ [genome], fa, fai ]
+    k_val // integer:   k value for STITCH
+    n_gen // integer:   number of generations for STITCH
+    seed // value  :   seed for random number generator
 
     main:
 
@@ -39,11 +39,19 @@ workflow BAM_IMPUTE_STITCH {
             }
             [
                 metaPC + metaI + ["regionout": regionout],
-                bam, bai, bampath, bamname,
-                posfile, [],
-                gmap, [],
-                chr, start, end,
-                k_val, n_gen
+                bam,
+                bai,
+                bampath,
+                bamname,
+                posfile,
+                [],
+                gmap,
+                [],
+                chr,
+                start,
+                end,
+                k_val,
+                n_gen,
             ]
         }
 
@@ -52,7 +60,6 @@ workflow BAM_IMPUTE_STITCH {
 
     // Index imputed annotated VCF
     BCFTOOLS_INDEX_PHASE(STITCH.out.vcf)
-    ch_versions = ch_versions.mix(BCFTOOLS_INDEX_PHASE.out.versions.first())
 
     // Ligate all phased files in one and index it
     ligate_input = STITCH.out.vcf
@@ -68,10 +75,8 @@ workflow BAM_IMPUTE_STITCH {
         .groupTuple()
 
     GLIMPSE2_LIGATE(ligate_input)
-    ch_versions = ch_versions.mix(GLIMPSE2_LIGATE.out.versions.first())
 
     BCFTOOLS_INDEX_LIGATE(GLIMPSE2_LIGATE.out.merged_variants)
-    ch_versions = ch_versions.mix(BCFTOOLS_INDEX_LIGATE.out.versions.first())
 
     // Join imputed and index files
     ch_vcf_index = GLIMPSE2_LIGATE.out.merged_variants.join(
@@ -82,5 +87,5 @@ workflow BAM_IMPUTE_STITCH {
 
     emit:
     vcf_index = ch_vcf_index // channel:   [ [id, chr], vcf, tbi ]
-    versions  = ch_versions  // channel:   [ versions.yml ]
+    versions  = ch_versions // channel:   [ versions.yml ]
 }

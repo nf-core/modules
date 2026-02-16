@@ -13,7 +13,7 @@ process TABIX_BGZIP {
     output:
     tuple val(meta), path("${output}"), emit: output
     tuple val(meta), path("*.gzi")    , emit: gzi, optional: true
-    path  "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('tabix'), eval("tabix -h 2>&1 | grep -oP 'Version:\\s*\\K[^\\s]+'")   , topic: versions   , emit: versions_tabix
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,10 +33,6 @@ process TABIX_BGZIP {
     """
     bgzip $command -c $args -@${task.cpus} $input > ${output}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -48,9 +44,5 @@ process TABIX_BGZIP {
     echo "" | gzip > ${output}
     touch ${output}.gzi
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-    END_VERSIONS
     """
 }

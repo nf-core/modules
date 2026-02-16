@@ -15,7 +15,7 @@ process PICARD_COLLECTMULTIPLEMETRICS {
     output:
     tuple val(meta), path("*_metrics"), emit: metrics
     tuple val(meta), path("*.pdf")    , emit: pdf, optional: true
-    path  "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('picard'), eval("picard CollectMultipleMetrics --version 2>&1 | sed -n 's/^Version:*//p'"), topic: versions, emit: versions_picard
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,10 +39,6 @@ process PICARD_COLLECTMULTIPLEMETRICS {
         --OUTPUT ${prefix}.CollectMultipleMetrics \\
         $reference
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(picard CollectMultipleMetrics --version 2>&1 | grep -o 'Version.*' | cut -f2- -d:)
-    END_VERSIONS
     """
 
     stub:
@@ -59,9 +55,5 @@ process PICARD_COLLECTMULTIPLEMETRICS {
     touch ${prefix}.CollectMultipleMetrics.insert_size_histogram.pdf
     touch ${prefix}.CollectMultipleMetrics.quality_distribution_metrics
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(echo \$(picard CollectMultipleMetrics --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
     """
 }

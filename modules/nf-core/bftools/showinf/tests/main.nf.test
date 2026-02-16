@@ -13,7 +13,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [["id":0], file(params.modules_testdata_base_path + "/imaging/ome-tiff/cycif-tonsil-cycle1.ome.tif")]
+                input[0] = [["id":0], file(params.modules_testdata_base_path + "imaging/ome-tiff/cycif-tonsil-cycle1.ome.tif", checkIfExists: true)]
                 """
             }
         }

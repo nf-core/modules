@@ -14,7 +14,7 @@ process PICARD_SORTVCF {
 
     output:
     tuple val(meta), path("*_sorted.vcf.gz"), emit: vcf
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('picard'), eval("picard SortVcf --version 2>&1 | sed -n 's/^Version:*//p'"), topic: versions, emit: versions_picard
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,11 +40,6 @@ process PICARD_SORTVCF {
         $seq_dict \\
         $reference \\
         --OUTPUT ${prefix}_sorted.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(picard SortVcf --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
     """
 
     stub:
@@ -53,10 +48,5 @@ process PICARD_SORTVCF {
     echo "" | gzip > ${prefix}_sorted.vcf.gz
     touch ${prefix}.bam.bai
     touch ${prefix}.MarkDuplicates.metrics.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(picard SortVcf --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
     """
 }

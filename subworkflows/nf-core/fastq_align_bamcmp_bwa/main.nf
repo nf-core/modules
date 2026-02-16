@@ -16,7 +16,7 @@ workflow FASTQ_ALIGN_BAMCMP_BWA {
     ch_fasta             // channel (optional) : [ val(meta4), path(fasta) ]
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     //
     // Map reads with BWA to the primary index, must be queryname sorted (controlled by config)
@@ -42,20 +42,17 @@ workflow FASTQ_ALIGN_BAMCMP_BWA {
     ch_both_bams = BWA_MEM_PRIMARY.out.bam.join(BWA_MEM_CONTAMINANT.out.bam, by: [0], failOnDuplicate:true, failOnMismatch:true)
 
     BAMCMP(ch_both_bams)
-    ch_versions = ch_versions.mix(BAMCMP.out.versions)
     //
     // Sort, index primary unfiltered BAM file and run samtools stats, flagstat and idxstats
     //
 
     BAM_SORT_STATS_SAMTOOLS_UNFILTERED ( BWA_MEM_PRIMARY.out.bam, ch_fasta )
-    ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS_UNFILTERED.out.versions)
 
     //
     // Sort, index filtered BAM file and run samtools stats, flagstat and idxstats
     //
 
     BAM_SORT_STATS_SAMTOOLS_FILTERED ( BAMCMP.out.primary_filtered_bam, ch_fasta)
-    ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS_FILTERED.out.versions)
 
     emit:
     bam      = BAM_SORT_STATS_SAMTOOLS_FILTERED.out.bam                   // channel: [ val(meta), path(bam) ]

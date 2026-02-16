@@ -39,7 +39,6 @@ process RNAQUAST {
     END_VERSIONS
     """
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}

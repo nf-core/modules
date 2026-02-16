@@ -61,7 +61,7 @@ input:
           RNA-seq workflow
         ontologies: []
   - - meta3:
-        type: file
+        type: map
         description: |
           Meta map describing control genes, e.g. [ id: 'ERCC' ]
         ontologies: []
@@ -85,131 +85,115 @@ input:
 output:
   results:
     - - meta:
-          type: file
-          description: TSV-format table of differential expression information as output
-            by DESeq2
-          pattern: "deseq2.results.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+          type: map
+          description: |
+            Groovy Map containing contrast information, same as input meta
       - "*.deseq2.results.tsv":
           type: file
-          description: TSV-format table of differential expression information as output
-            by DESeq2
-          pattern: "deseq2.results.tsv"
+          description: TSV-format table of differential expression information as output by DESeq2
+          pattern: "*.deseq2.results.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
-  dispersion_plot:
+  dispersion_plot_png:
     - - meta:
-          type: file
-          description: TSV-format table of differential expression information as output
-            by DESeq2
-          pattern: "deseq2.results.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+          type: map
+          description: |
+            Groovy Map containing contrast information, same as input meta
       - "*.deseq2.dispersion.png":
           type: file
-          description: DESeq2 dispersion plot
-          pattern: "deseq2.dispersion.png"
-          ontologies: []
+          description: DESeq2 dispersion plot in PNG format
+          pattern: "*.deseq2.dispersion.png"
+          ontologies:
+            - edam: "http://edamontology.org/format_3603" # PNG
+  dispersion_plot_pdf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information, same as input meta
+      - "*.deseq2.dispersion.pdf":
+          type: file
+          description: DESeq2 dispersion plot in PDF format
+          pattern: "*.deseq2.dispersion.pdf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3508" # PDF
   rdata:
     - - meta:
-          type: file
-          description: TSV-format table of differential expression information as output
-            by DESeq2
-          pattern: "deseq2.results.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+          type: map
+          description: |
+            Groovy Map containing contrast information, same as input meta
       - "*.dds.rld.rds":
           type: file
           description: Serialised DESeq2 object
-          pattern: "dds.rld.rds"
+          pattern: "*.dds.rld.rds"
           ontologies: []
   size_factors:
     - - meta:
-          type: file
-          description: TSV-format table of differential expression information as output
-            by DESeq2
-          pattern: "deseq2.results.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+          type: map
+          description: |
+            Groovy Map containing contrast information, same as input meta
       - "*.deseq2.sizefactors.tsv":
           type: file
-          description: Size factors
-          pattern: "deseq2.sizefactors.tsv"
+          description: TSV-format table containing DESeq2 size factors
+          pattern: "*.deseq2.sizefactors.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   normalised_counts:
     - - meta:
-          type: file
-          description: TSV-format table of differential expression information as output
-            by DESeq2
-          pattern: "deseq2.results.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+          type: map
+          description: |
+            Groovy Map containing contrast information, same as input meta
       - "*.normalised_counts.tsv":
           type: file
           description: TSV-format counts matrix, normalised to size factors
-          pattern: "normalised_counts.tsv"
+          pattern: "*.normalised_counts.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   rlog_counts:
     - - meta:
-          type: file
-          description: TSV-format table of differential expression information as output
-            by DESeq2
-          pattern: "deseq2.results.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+          type: map
+          description: |
+            Groovy Map containing contrast information, same as input meta
       - "*.rlog.tsv":
           type: file
           description: |
             Optional, TSV-format counts matrix, normalised to size factors, with
             variance stabilisation applied via `rlog()`.
-          pattern: "rlog.tsv"
+          pattern: "*.rlog.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   vst_counts:
     - - meta:
-          type: file
-          description: TSV-format table of differential expression information as output
-            by DESeq2
-          pattern: "deseq2.results.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+          type: map
+          description: |
+            Groovy Map containing contrast information, same as input meta
       - "*.vst.tsv":
           type: file
           description: |
             Optional, TSV-format counts matrix, normalised to size factors, with
             variance stabilisation applied via `vst()`.
-          pattern: "vst_counts.tsv"
+          pattern: "*.vst.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   model:
     - - meta:
-          type: file
-          description: TSV-format table of differential expression information as output
-            by DESeq2
-          pattern: "deseq2.results.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+          type: map
+          description: |
+            Groovy Map containing contrast information, same as input meta
       - "*.deseq2.model.txt":
           type: file
           description: TXT-format DESeq2 model
-          pattern: "deseq2.model.tsv"
+          pattern: "*.deseq2.model.txt"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_2330 # TXT
   session_info:
     - - meta:
-          type: file
-          description: TSV-format table of differential expression information as output
-            by DESeq2
-          pattern: "deseq2.results.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+          type: map
+          description: |
+            Groovy Map containing contrast information, same as input meta
       - "*.R_sessionInfo.log":
           type: file
-          description: dump of R SessionInfo
-          pattern: "*.log"
+          description: Dump of R SessionInfo
+          pattern: "*.R_sessionInfo.log"
           ontologies: []
   versions:
     - versions.yml:

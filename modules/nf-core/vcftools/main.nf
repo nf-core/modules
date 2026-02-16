@@ -94,18 +94,18 @@ process VCFTOOLS {
         (args.contains('--hapcount')) ? "--hapcount ${bed}" :
         (args.contains('--positions')) ? "--positions ${bed}" :
         (args.contains('--exclude-positions')) ? "--exclude-positions ${bed}"  : ''
-    args_list.removeIf { it.contains('--bed') }
-    args_list.removeIf { it.contains('--exclude-bed') }
-    args_list.removeIf { it.contains('--hapcount') }
-    args_list.removeIf { it.contains('--positions') }
-    args_list.removeIf { it.contains('--exclude-positions') }
+    args_list.removeIf { arg -> arg.contains('--bed') }
+    args_list.removeIf { arg -> arg.contains('--exclude-bed') }
+    args_list.removeIf { arg -> arg.contains('--hapcount') }
+    args_list.removeIf { arg -> arg.contains('--positions') }
+    args_list.removeIf { arg -> arg.contains('--exclude-positions') }
 
     def diff_variant_arg = (args.contains('--diff')) ? "--diff ${diff_variant_file}" :
         (args.contains('--gzdiff')) ? "--gzdiff ${diff_variant_file}" :
         (args.contains('--diff-bcf')) ? "--diff-bcf ${diff_variant_file}" : ''
-    args_list.removeIf { it.contains('--diff') }
-    args_list.removeIf { it.contains('--gzdiff') }
-    args_list.removeIf { it.contains('--diff-bcf') }
+    args_list.removeIf { arg -> arg.contains('--diff') }
+    args_list.removeIf { arg -> arg.contains('--gzdiff') }
+    args_list.removeIf { arg -> arg.contains('--diff-bcf') }
 
     def input_file = ("$variant_file".endsWith(".vcf")) ? "--vcf ${variant_file}" :
         ("$variant_file".endsWith(".vcf.gz")) ? "--gzvcf ${variant_file}" :

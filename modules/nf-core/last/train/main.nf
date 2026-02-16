@@ -14,7 +14,8 @@ process LAST_TRAIN {
     output:
     tuple val(meta), path("*.train"), emit: param_file
     tuple val(meta), path("*.tsv")  , emit: multiqc
-    path "versions.yml"           , emit: versions
+   // last-dotplot has no --version option so let's use lastal from the same suite
+    tuple val("${task.process}"), val('last'), eval("lastal --version | sed 's/lastal //'"), emit: versions_last, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,11 +44,6 @@ process LAST_TRAIN {
     grep 'last -b' ${prefix}.train | tail -n 1 | awk '{print \$3}'                       | tr '\\n' '\\t' >> ${prefix}.train.tsv
     grep 'last -B' ${prefix}.train | tail -n 1 | awk '{print \$3}'                       | tr '\\n' '\\t' >> ${prefix}.train.tsv
     grep 'last -S' ${prefix}.train | tail -n 1 | awk '{print \$3}'                                        >> ${prefix}.train.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        last: \$(lastdb --version | sed 's/lastdb //')
-    END_VERSIONS
     """
 
     stub:
@@ -57,10 +53,5 @@ process LAST_TRAIN {
     INDEX_NAME=\$(basename \$(ls $index/*.des) .des)
     touch ${prefix}.train
     touch ${prefix}.train.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        last: \$(lastdb --version | sed 's/lastdb //')
-    END_VERSIONS
     """
 }

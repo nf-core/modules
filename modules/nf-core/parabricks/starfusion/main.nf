@@ -14,7 +14,7 @@ process PARABRICKS_STARFUSION {
     output:
     tuple val(meta), path("fusion_predictions.tsv"),                emit: fusions
     tuple val(meta), path("fusion_predictions.abridged.tsv"),       emit: abridged
-    path "versions.yml",                                            emit: versions
+    tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions_parabricks
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,11 +39,6 @@ process PARABRICKS_STARFUSION {
 
     mv ${prefix}_starfusion/fusion_predictions.tsv .
     mv ${prefix}_starfusion/fusion_predictions.abridged.tsv .
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 
     stub:
@@ -54,11 +49,5 @@ process PARABRICKS_STARFUSION {
     """
     touch fusion_predictions.tsv
     touch fusion_predictions.abridged.tsv
-
-    # Capture the full version output once and store it in a variable
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 }

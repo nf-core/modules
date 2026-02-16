@@ -1,17 +1,3 @@
-def deprecation_message = """
-WARNING: The deepvariant process has been moved into deepvariant/rundeepvariant.
-
-Reason:
-A subworkflow "deepvariant" was added, to split DeepVariant into three processes, to help optimise
-the usage of GPU resources (https://github.com/nf-core/modules/pull/6172). The subworkflow can be
-used instead of this module. Alternatively, it is possible to use the subcommand "rundeepvariant" in
-this module. "rundeepvariant" (the process DEEPVARIANT_RUNDEEPVARIANT) is the exact same as this
-top-level process (DEEPVARIANT) used to be.
-
-The processing stages used by the subworkflow are implemented as module subcommands, e.g. makeexamples.
-"""
-
-
 process DEEPVARIANT {
     tag "$meta.id"
     label 'process_high'
@@ -36,6 +22,19 @@ process DEEPVARIANT {
     task.ext.when == null || task.ext.when
 
     script:
+    def deprecation_message = """
+WARNING: The deepvariant process has been moved into deepvariant/rundeepvariant.
+
+Reason:
+A subworkflow "deepvariant" was added, to split DeepVariant into three processes, to help optimise
+the usage of GPU resources (https://github.com/nf-core/modules/pull/6172). The subworkflow can be
+used instead of this module. Alternatively, it is possible to use the subcommand "rundeepvariant" in
+this module. "rundeepvariant" (the process DEEPVARIANT_RUNDEEPVARIANT) is the exact same as this
+top-level process (DEEPVARIANT) used to be.
+
+The processing stages used by the subworkflow are implemented as module subcommands, e.g. makeexamples.
+"""
+    prefix = task.ext.prefix ?: "${meta.id}"
     assert false: deprecation_message
 
 }

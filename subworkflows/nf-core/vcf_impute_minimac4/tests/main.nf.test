@@ -41,21 +41,17 @@ nextflow_workflow {
         }
 
         then {
-            assertAll(
-                { assert workflow.success },
-                { assert snapshot(
-                    workflow.out.vcf_index.collect{[
-                        it[0],
-                        path(it[1]).getFileName().toString(),
-                        path(it[2]).getFileName().toString(),
-                        path(it[1]).vcf.summary,
-                        path(it[1]).vcf.header.getGenotypeSamples().sort(),
-                        path(it[1]).vcf.variantsMD5
-                    ]},
-                    workflow.out.versions,
-                    workflow.out.versions.collect{ path(it).yaml }
-                ).match() }
-            )
+            assert workflow.success
+            assert snapshot(
+                workflow.out.vcf_index.collect{[
+                    it[0],
+                    path(it[1]).getFileName().toString(),
+                    path(it[2]).getFileName().toString(),
+                    path(it[1]).vcf.summary,
+                    path(it[1]).vcf.header.getGenotypeSamples().sort(),
+                    path(it[1]).vcf.variantsMD5
+                ]}
+            ).match()
         }
     }
 
@@ -106,20 +102,17 @@ nextflow_workflow {
         }
 
         then {
-            assertAll(
-                { assert workflow.success },
-                { assert snapshot(
-                    workflow.out.vcf_index.collect{[
-                        it[0],
-                        path(it[1]).getFileName().toString(),
-                        path(it[2]).getFileName().toString(),
-                        path(it[1]).vcf.summary,
-                        path(it[1]).vcf.header.getGenotypeSamples().sort(),
-                        path(it[1]).vcf.variantsMD5
-                    ]},
-                    workflow.out.versions.collect{ path(it).yaml }
-                ).match() }
-            )
+            assert workflow.success
+            assert snapshot(
+                workflow.out.vcf_index.collect{[
+                    it[0],
+                    path(it[1]).getFileName().toString(),
+                    path(it[2]).getFileName().toString(),
+                    path(it[1]).vcf.summary,
+                    path(it[1]).vcf.header.getGenotypeSamples().sort(),
+                    path(it[1]).vcf.variantsMD5
+                ]}
+            ).match()
         }
     }
 
@@ -161,13 +154,8 @@ nextflow_workflow {
             }
         }
         then {
-            assertAll(
-                { assert workflow.success },
-                { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect{ path(it).yaml }
-                ).match() }
-            )
+            assert workflow.success
+            assert snapshot(sanitizeOutput(workflow.out)).match()
         }
     }
 
@@ -207,10 +195,8 @@ nextflow_workflow {
             }
         }
         then {
-            assertAll(
-                { assert workflow.failed },
-                { assert filterNextflowOutput(workflow.stdout).contains("ERROR: ch_panel files must be either VCF/BCF or MSAV.") }
-            )
+            assert workflow.failed
+            assert filterNextflowOutput(workflow.stdout).contains("ERROR: ch_panel files must be either VCF/BCF or MSAV.")
         }
     }
 
@@ -252,10 +238,8 @@ nextflow_workflow {
             }
         }
         then {
-            assertAll(
-                { assert workflow.failed },
-                { assert filterNextflowOutput(workflow.stdout).contains("ERROR: join operation resulted in an empty channel. Please provide a valid ch_posfile, ch_chunks and ch_map channel as input.") }
-            )
+            assert workflow.failed
+            assert filterNextflowOutput(workflow.stdout).contains("ERROR: join operation resulted in an empty channel. Please provide a valid ch_posfile, ch_chunks and ch_map channel as input.")
         }
     }
 }

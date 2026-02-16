@@ -42,8 +42,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - gff:
         type: file
-        description: The genome GFF file. Has to contain at least a non-empty string
-          dummy value.
+        description: The genome GFF file. Has to contain at least a non-empty
+          string dummy value.
         ontologies: []
 output:
   results:
@@ -103,13 +103,29 @@ output:
             Report containing unaligned contigs, only when a reference fasta is provided
           pattern: "${prefix}_unaligned.tsv"
           ontologies: []
+  versions_quast:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - quast:
+          type: string
+          description: The name of the tool
+      - quast.py --version 2>&1 | grep "QUAST" | sed 's/^.*QUAST v//; s/ .*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - quast:
+          type: string
+          description: The name of the tool
+      - quast.py --version 2>&1 | grep "QUAST" | sed 's/^.*QUAST v//; s/ .*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@drpatelh"
   - "@kevinmenden"

@@ -25,7 +25,7 @@ process COPTR_ESTIMATE {
         estimate \\
         $args \\
         coverage_maps/ \\
-        ptrs.csv
+        ${prefix}.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -34,7 +34,6 @@ process COPTR_ESTIMATE {
     """
 
     stub:
-    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.csv

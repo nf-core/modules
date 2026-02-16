@@ -4,8 +4,8 @@ process GATK_UNIFIEDGENOTYPER {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/mulled-v2-5e3fd88c6b8af48bb5982d5721ca5e36da94029b:c496eeb8cc9067e0720d35121dbff7732a7ebdb0-0'
-        : 'biocontainers/mulled-v2-5e3fd88c6b8af48bb5982d5721ca5e36da94029b:c496eeb8cc9067e0720d35121dbff7732a7ebdb0-0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/19/194eeac04775f5e88453dcc831c6de7b36839fe17d0bbd8e1bca6d9ab41cdba2/data'
+        : 'community.wave.seqera.io/library/gatk_tabix:efe73d760b0a026c'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
