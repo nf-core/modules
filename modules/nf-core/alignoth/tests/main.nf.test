@@ -290,11 +290,11 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - bam - json - highlight") {
+    test("homo_sapiens - bam - json - around - highlight") {
 
         when {
             params {
-                module_args = "--json --plot-all"
+                module_args = "--json"
             }
             process {
                 """
@@ -307,7 +307,7 @@ nextflow_process {
                     [],
                     [],
                     [],
-                    '',
+                    "chr21:5011395",
                     "myvariant:5011395",
                     ''
                 ]
