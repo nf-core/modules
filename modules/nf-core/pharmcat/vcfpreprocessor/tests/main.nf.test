@@ -22,7 +22,7 @@ nextflow_process {
                 ]
                 input[1] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
                 input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
-                input[3] = [[id: 'test'],file('/data/bnf/dev/ram/Pipelines/nf-core/test-datasets/data/genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz', checkIfExists: true)]
+                input[3] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz', checkIfExists: true)]
                 """
             }
         }
@@ -54,7 +54,7 @@ nextflow_process {
                 ]
                 input[1] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
                 input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
-                input[3] = [[id: 'test'],file('/data/bnf/dev/ram/Pipelines/nf-core/test-datasets/data/genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz', checkIfExists: true)]
+                input[3] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz', checkIfExists: true)]
                 """
             }
         }
