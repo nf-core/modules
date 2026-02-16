@@ -47,7 +47,7 @@ output:
       - truvari:
           type: string
           description: The name of the tool
-      - "truvari version 2>&1 | sed 's/Truvari v//'":
+      - "truvari version | sed 's/Truvari v//'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -58,7 +58,7 @@ topics:
       - truvari:
           type: string
           description: The name of the tool
-      - "truvari version 2>&1 | sed 's/Truvari v//'":
+      - "truvari version | sed 's/Truvari v//'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
