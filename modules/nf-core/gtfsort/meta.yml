@@ -33,7 +33,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.sorted.{gff,gtf}":
+      - "*.sorted.${gtf.extension}":
           type: file
           description: Sorted GTF file
           pattern: "*.{gff,gtf}"

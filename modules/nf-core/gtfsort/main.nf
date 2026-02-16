@@ -11,7 +11,7 @@ process GTFSORT {
     tuple val(meta), path(gtf)
 
     output:
-    tuple val(meta), path("*.sorted.{gff,gtf}"), emit: gtf
+    tuple val(meta), path("*.sorted.${gtf.extension}"), emit: gtf
     tuple val("${task.process}"), val('gtfsort'), eval('gtfsort --version |& sed "s/gtfsort //"'), emit: versions_gtfsort, topic: versions
 
     when:
