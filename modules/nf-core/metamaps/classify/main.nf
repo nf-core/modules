@@ -27,15 +27,13 @@ process METAMAPS_CLASSIFY {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     metamaps \\
         classify \\
         ${args} \\
         --mappings ${classification_res} \\
         --threads ${task.cpus} \\
-        --DB ${database_folder} \\
-        -o ${prefix}
+        --DB ${database_folder}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
