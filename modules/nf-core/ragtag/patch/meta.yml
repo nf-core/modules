@@ -165,7 +165,7 @@ output:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - pilon:
+      - ragtag:
           type: string
           description: The name of the tool
       - ragtag.py -v | sed 's/v//':
@@ -176,7 +176,7 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - pilon:
+      - ragtag:
           type: string
           description: The name of the tool
       - ragtag.py -v | sed 's/v//':
