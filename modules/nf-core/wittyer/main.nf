@@ -11,7 +11,7 @@ process WITTYER {
     tuple val(meta),    path("*.json")         , emit: report
     tuple val(meta),    path("*.vcf.gz")       , emit: bench_vcf
     tuple val(meta),    path("*.vcf.gz.tbi")   , emit: bench_vcf_tbi
-    tuple val("${task.process}"), val('wittyer'), eval("dotnet /opt/Wittyer/Wittyer.dll --version  |& sed '1!d ; s/witty.er //"), topic: versions, emit: versions_wittyer
+    tuple val("${task.process}"), val('wittyer'), eval("dotnet /opt/Wittyer/Wittyer.dll --version | sed '1!d ; s/witty.er //'"), topic: versions, emit: versions_wittyer
 
     when:
     task.ext.when == null || task.ext.when
