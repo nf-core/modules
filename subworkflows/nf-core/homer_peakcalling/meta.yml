@@ -1,0 +1,123 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "homer_peakcalling"
+description: Peak calling workflow using HOMER for ChIP-seq, ChIP-exo, and other sequencing data with optional peak merging and annotation
+keywords:
+  - peak calling
+  - chipseq
+  - chipexo
+  - homer
+  - annotation
+  - merge peaks
+components:
+  - homer/maketagdirectory
+  - homer/makeucscfile
+  - homer/findpeaks
+  - homer/mergepeaks
+  - homer/annotatepeaks
+  - homer/pos2bed
+  - unzip
+input:
+  - bam:
+      type: file
+      description: |
+        Channel containing BAM files for peak calling
+        Structure: [ val(meta), path(bam) ]
+      pattern: "*.bam"
+  - fasta:
+      type: file
+      description: |
+        Reference genome FASTA file
+        Structure: path(fasta)
+      pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+  - gtf:
+      type: file
+      description: |
+        Gene annotation GTF file for peak annotation.
+        If an empty channel is passed in, then the subworkflow skips annotation steps.
+        Structure: path(gtf)
+      pattern: "*.gtf"
+  - control:
+      type: file
+      description: |
+        Optional control/input BAM file for peak calling. Can be empty channel.
+        Structure: [ val(meta), path(bam) ] or empty
+      pattern: "*.bam"
+  - uniqmap:
+      type: file
+      description: |
+        Optional uniquely mappable regions file or directory (can be zipped).
+        Can be empty channel.
+        Structure: path(uniqmap) or empty
+      pattern: "*.zip"
+  - merge_peaks:
+      type: boolean
+      description: |
+        Whether to merge peaks across all samples into a consensus peak set. If a gtf
+        is passed in via the input, then the merged peaks are annotated
+  - annotate_individual:
+      type: boolean
+      description: |
+        Whether to annotate individual peak files. If false and merge_peaks is false,
+        no annotation is performed. If no gtf is passed into the subworkflow,
+        annotation steps are not performed regardless of this setting.
+output:
+  - tagdir:
+      type: directory
+      description: |
+        HOMER tag directories for each sample
+        Structure: [ val(meta), path(tagdir) ]
+  - bedgraph:
+      type: file
+      description: |
+        BedGraph files for UCSC genome browser visualization, created from processed tag directories
+        Structure: [ val(meta), path(bedGraph.gz) ]
+      pattern: "*.bedGraph.gz"
+  - txt:
+      type: file
+      description: |
+        Individual output txt files in HOMER format for each sample
+        Structure: [ val(meta), path(_{peaks,regions,tss,superEnhancers,...}.txt) ]
+        The file type (and hence suffix) depends on the `style`. e.g. style = factor
+        would output *_peaks.txt
+      pattern: "*.txt"
+  - bed:
+      type: file
+      description: |
+        Individual txt files converted to BED format
+        Structure: [ val(meta), path(peaks.bed) ]
+      pattern: "*.bed"
+  - gtf:
+      type: file
+      description: |
+        This is only created for style = groseq. A gtf file of the RNA loci inferred
+        from the experiment
+  - merged_peaks:
+      type: file
+      description: |
+        Merged consensus peak file in HOMER format (empty if merge_peaks is false)
+        Structure: [ val(meta), path(merged.txt) ]
+      pattern: "*.txt"
+  - annotated_individual:
+      type: file
+      description: |
+        Annotated individual peak files (empty if annotate_individual is false)
+        Structure: [ val(meta), path(annotated.txt) ]
+      pattern: "*.txt"
+  - annotated_merged:
+      type: file
+      description: |
+        Annotated merged peak file (empty if merge_peaks is false)
+        Structure: [ val(meta), path(annotated.txt) ]
+      pattern: "*.txt"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@edmundmiller"
+  - "@cmatKhan"
+maintainers:
+  - "@edmundmiller"
+  - "@cmatKhan"
