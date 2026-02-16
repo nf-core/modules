@@ -27,8 +27,8 @@ process UPP_ALIGN {
     def aligned_args = aligned ? "-a ${aligned}" : ""
     """
     if [ "${workflow.containerEngine}" = 'singularity' ]; then
-        export CONDA_PREFIX="/opt/conda/"
-        export PASTA_TOOLS_DEVDIR="/opt/conda/bin/"
+        export CONDA_PREFIX="/usr/local/"
+        export PASTA_TOOLS_DEVDIR="/usr/local/bin/"
     fi
 
     run_upp.py \\
