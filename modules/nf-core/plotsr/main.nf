@@ -27,7 +27,7 @@ process PLOTSR {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def syri_arg = syri instanceof List ? syri.collect { it -> "--sr ${it}" }.join(' ') : "--sr ${syri}"
+    def syri_arg = syri instanceof List ? syri.collect { syri_file -> "--sr ${syri_file}" }.join(' ') : "--sr ${syri}"
     def bedpe_arg = bedpe ? "--bedpe ${bedpe}" : ''
     def markers_arg = markers ? "--markers ${markers}" : ''
     def tracks_arg = tracks ? "--tracks ${tracks}" : ''
