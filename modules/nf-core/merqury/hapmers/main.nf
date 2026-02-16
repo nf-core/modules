@@ -19,7 +19,7 @@ process MERQURY_HAPMERS {
     tuple val(meta), path('*_inherited_hapmers.ln.png') , emit: inherited_hapmers_ln_png
     tuple val(meta), path('*_inherited_hapmers.st.png') , emit: inherited_hapmers_st_png
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    tuple val("${task.process}"), val('merqury'), eval('echo 1.3'), emit: versions_merqury, topic: versions
+    tuple val("${task.process}"), val('merqury'), val('1.3'), emit: versions_merqury, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
