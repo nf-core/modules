@@ -1,71 +1,70 @@
 name: windowmasker_ustat
-description:
-    A program to take a counts file and creates a file of genomic co-ordinates
-    to be masked.
+description: A program to take a counts file and creates a file of genomic co-ordinates
+  to be masked.
 keywords:
-    - fasta
-    - interval
-    - windowmasker
+  - fasta
+  - interval
+  - windowmasker
 tools:
-    - windowmasker:
-          description: |
-              A program to mask highly repetitive and low complexity DNA sequences within a genome.
-          homepage: https://github.com/ncbi/ncbi-cxx-toolkit-public
-          documentation: https://ncbi.github.io/cxx-toolkit/
-          licence: ["MIT"]
-          identifier: biotools:windowmasker
+  - windowmasker:
+      description: |
+        A program to mask highly repetitive and low complexity DNA sequences within a genome.
+      homepage: https://github.com/ncbi/ncbi-cxx-toolkit-public
+      documentation: https://ncbi.github.io/cxx-toolkit/
+      licence: ["MIT"]
+      identifier: biotools:windowmasker
 input:
-    - - meta:
-            type: map
-            description: |
-                Groovy Map containing sample information
-                e.g. [ id:'test' ]
-      - counts:
-            type: file
-            description: Contains count data of repetitive regions.
-            ontologies: []
-    - - meta2:
-            type: map
-            description: |
-                Groovy Map containing sample information
-                e.g. [ id:'test', single_end:false ]
-      - ref:
-            type: file
-            description: An input nucleotide fasta file.
-            ontologies: []
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - counts:
+        type: file
+        description: Contains count data of repetitive regions.
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - ref:
+        type: file
+        description: An input nucleotide fasta file.
+        ontologies: []
 output:
-    intervals:
-        - - meta:
-                type: map
-                description: |
-                    Groovy Map containing sample information
-                    e.g. [ id:'test', single_end:false ]
-          - ${output}:
-                type: file
-                description: intervals
-                ontologies: []
-    versions_windowmasker:
-        - - ${task.process}:
-                type: string
-                description: The name of the process
-          - windowmasker:
-                type: string
-                description: The name of the tool
-          - windowmasker -version-full | head -n 1 | sed 's/^.*windowmasker. //; s/ .*\$//':
-                type: string
-                description: The expression to obtain the version of the tool
+  intervals:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${output}:
+          type: file
+          description: intervals
+          ontologies: []
+  versions_windowmasker:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - windowmasker:
+          type: string
+          description: The name of the tool
+      - windowmasker -version-full | head -n 1 | sed 's/^.*windowmasker. //; s/ .*\$//':
+          type: string
+          description: The expression to obtain the version of the tool
 topics:
-    versions:
-        - - ${task.process}:
-                type: string
-                description: The name of the process
-          - windowmasker:
-                type: string
-                description: The name of the tool
-          - windowmasker -version-full | head -n 1 | sed 's/^.*windowmasker. //; s/ .*\$//':
-                type: eval
-                description: The expression to obtain the version of the tool
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - windowmasker:
+          type: string
+          description: The name of the tool
+      - windowmasker -version-full | head -n 1 | sed 's/^.*windowmasker. //; s/ .*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
-    - "@DLBPointon"
+  - "@DLBPointon"
 maintainers:
-    - "@DLBPointon"
+  - "@DLBPointon"
