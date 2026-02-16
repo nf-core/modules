@@ -79,9 +79,10 @@ process DEACON_INDEX {
     deacon \\
         index \\
         ${subcommand} \\
-        --threads ${task.cpus} \\
+        ${subcommand == 'build' ? "--threads ${task.cpus}" : ""} \\
         ${args} \\
-        ${subcommand == 'build' ? "${reference}" : "${reference} ${set_genomes}"} > ${prefix}.idx
+        ${subcommand == 'build' ? "${reference}" : "${reference} ${set_genomes}"} \\
+        > ${prefix}.idx
     """
 
     stub:
