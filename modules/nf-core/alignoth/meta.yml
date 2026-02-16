@@ -34,10 +34,7 @@ input:
         type: file
         description: Index file for the BAM/CRAM/SAM file
         pattern: "*.{bai,crai}"
-        ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM index
-          - edam: "http://edamontology.org/format_2573" # CRAM index
-          - edam: "http://edamontology.org/format_3462" # SAM index
+        ontologies: []
     - fasta:
         type: file
         description: Reference fasta file
@@ -48,14 +45,13 @@ input:
         type: file
         description: Index file for the reference fasta file
         pattern: "*.{fa,fasta}.fai"
-        ontologies:
-          - edam: "http://edamontology.org/format_1929" # FASTA index
+        ontologies: []
     - bed:
         type: file
         description: Bed file with regions to be visualized (optional)
         pattern: "*.bed"
         ontologies:
-          - edam: "http://edamontology.org/format_3001" # BED
+          - edam: "http://edamontology.org/format_3003" # BED
     - vcf:
         type: file
         description: VCF file with variants to be highlighted (optional)
@@ -66,8 +62,7 @@ input:
         type: file
         description: Index file for the VCF file
         pattern: "*.vcf.tbi"
-        ontologies:
-          - edam: "http://edamontology.org/format_3016" # VCF index
+        ontologies: []
     - around:
         type: integer
         description: A chromosome and a base position that will define the region that will be plotted starting 500bp before and end 500bp behind the given position (e.g. "2:17348") (optional)
@@ -90,7 +85,7 @@ output:
           description: HTML file with the alignment plot
           pattern: "*.html"
           ontologies:
-            - edam: "http://edamontology.org/format_2330" # HTML
+            - edam: "http://edamontology.org/format_2331" # HTML
   output:
     - - meta:
           type: map
@@ -112,7 +107,7 @@ output:
           description: Vega-Lite JSON file with the alignment plot
           pattern: "*.vl.json"
           ontologies:
-            - edam: "http://edamontology.org/format_3608" # Vega-Lite JSON
+            - edam: "http://edamontology.org/format_3464" # JSON
 
   versions_alignoth:
     - - "${task.process}":
