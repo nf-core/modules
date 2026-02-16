@@ -118,8 +118,8 @@ jobs:
             // Post warning comment if size is XL
             if (sizeLabel === 'size/xl') {
               const warningMessage = `This PR exceeds the recommended size of 1000 lines.
-            Please make sure you are NOT addressing multiple issues with one PR.
-            Note this PR might be rejected due to its size.`;
+Please make sure you are NOT addressing multiple issues with one PR.
+Note this PR might be rejected due to its size.`;
 
               // Check if we've already posted this warning
               const comments = await github.rest.issues.listComments({
