@@ -1,0 +1,71 @@
+nextflow_process {
+
+    name "Test Process PHARMCAT_VCFPREPROCESSOR"
+    script "../main.nf"
+    process "PHARMCAT_VCFPREPROCESSOR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pharmcat"
+    tag "pharmcat/vcfpreprocessor"
+    config "./nextflow.config"
+
+    test("pharmcat VCF PREPROCESSOR") {
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz.tbi', checkIfExists: true),
+                ]
+                input[1] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
+                input[3] = [[id: 'test'],file('/data/bnf/dev/ram/Pipelines/nf-core/test-datasets/data/genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz', checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    file(process.out.preprocessed_vcf.get(0).get(1)).name,
+                    path(process.out.preprocessed_vcf[0][1]).vcf.variantsMD5,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("pharmcat VCF PREPROCESSOR - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """              
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz.tbi', checkIfExists: true),
+                ]
+                input[1] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
+                input[3] = [[id: 'test'],file('/data/bnf/dev/ram/Pipelines/nf-core/test-datasets/data/genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz', checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match()}
+            )
+        }
+
+    }
+
+}
