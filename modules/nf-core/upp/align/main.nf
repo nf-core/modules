@@ -26,6 +26,11 @@ process UPP_ALIGN {
     def tree_args = tree ? "-t ${tree}" : ""
     def aligned_args = aligned ? "-a ${aligned}" : ""
     """
+    if [ "${workflow.containerEngine}" = 'singularity' ]; then
+        export CONDA_PREFIX="/opt/conda/"
+        export PASTA_TOOLS_DEVDIR="/opt/conda/bin/"
+    fi
+
     run_upp.py \\
         ${args} \\
         -s ${fasta} \\
