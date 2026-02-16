@@ -33,8 +33,8 @@ process HIFIASM {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
-    def long_reads_sorted = long_reads instanceof List ? long_reads.sort{ it.name } : long_reads
-    def ul_reads_sorted = ul_reads instanceof List ? ul_reads.sort{ it.name } : ul_reads
+    def long_reads_sorted = long_reads instanceof List ? long_reads.sort{ read -> read.name } : long_reads
+    def ul_reads_sorted = ul_reads instanceof List ? ul_reads.sort{ read -> read.name } : ul_reads
     def ultralong = ul_reads ? "--ul ${ul_reads_sorted}" : ""
 
     if([paternal_kmer_dump, maternal_kmer_dump].any() && [hic_read1, hic_read2].any()) {

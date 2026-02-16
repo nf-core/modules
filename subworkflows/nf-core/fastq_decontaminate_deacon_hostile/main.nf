@@ -12,7 +12,6 @@ workflow FASTQ_DECONTAMINATE_DEACON_HOSTILE {
 
     main:
 
-    ch_versions = channel.empty()
     reference = channel.empty()
     json = channel.empty()
     index = channel.empty()
@@ -30,7 +29,6 @@ workflow FASTQ_DECONTAMINATE_DEACON_HOSTILE {
             index_name
         )
         fastq_filtered = FASTQ_FETCH_CLEAN_HOSTILE.out.fastq
-        ch_versions = ch_versions.mix(FASTQ_FETCH_CLEAN_HOSTILE.out.versions.first())
         reference = FASTQ_FETCH_CLEAN_HOSTILE.out.reference
         json = FASTQ_FETCH_CLEAN_HOSTILE.out.json
     } else if (decontaminator == "deacon") {
@@ -38,7 +36,6 @@ workflow FASTQ_DECONTAMINATE_DEACON_HOSTILE {
             ch_fasta.join(ch_reads)
         )
         fastq_filtered = FASTQ_INDEX_FILTER_DEACON.out.fastq_filtered
-        ch_versions = ch_versions.mix(FASTQ_INDEX_FILTER_DEACON.out.versions.first())
         index = FASTQ_INDEX_FILTER_DEACON.out.index
         summary = FASTQ_INDEX_FILTER_DEACON.out.summary
     }
@@ -50,5 +47,4 @@ workflow FASTQ_DECONTAMINATE_DEACON_HOSTILE {
     json                = json              // channel: [ val(meta), [ *.json ] ] (hostile only)
     index               = index             // channel: [ val(meta), [ index ] ] (deacon only)
     summary             = summary           // channel: [ val(meta), [ log ] ] (deacon only)
-    versions            = ch_versions       // channel: [ versions.yml ]
 }

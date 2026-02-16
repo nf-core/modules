@@ -12,7 +12,7 @@ process RTGTOOLS_FORMAT {
 
     output:
     tuple val(meta), path("*.sdf"), emit: sdf
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('rgtools'), eval("rtg version | head -n 1 | sed 's/Product: RTG Tools //'"), topic: versions, emit: versions_rtgtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,11 +38,6 @@ process RTGTOOLS_FORMAT {
         ${rg} \\
         --output ${prefix}.sdf \\
         ${input}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rtg-tools: \$(echo \$(rtg version | head -n 1 | awk '{print \$4}'))
-    END_VERSIONS
     """
 
     stub:
@@ -56,10 +51,5 @@ process RTGTOOLS_FORMAT {
     }
     """
     touch ${prefix}.sdf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rtg-tools: \$(echo \$(rtg version | head -n 1 | awk '{print \$4}'))
-    END_VERSIONS
     """
 }

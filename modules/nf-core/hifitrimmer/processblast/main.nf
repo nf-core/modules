@@ -26,10 +26,11 @@ process HIFITRIMMER_PROCESSBLAST {
    def args = task.ext.args ? task.ext.args : ''
    """
    hifi_trimmer process_blast \\
-       -t ${task.cpus} \\
-       ${args} \\
-       ${blast} \\
-       ${yaml}
+      -t ${task.cpus} \\
+      --prefix ${prefix} \\
+      ${args} \\
+      ${blast} \\
+      ${yaml}
    """
 
    stub:
