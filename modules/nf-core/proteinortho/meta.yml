@@ -40,7 +40,7 @@ output:
           pattern: "*.proteinortho.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
-      - ${meta.id}.proteinortho.tsv:
+      - ${prefix}.proteinortho.tsv:
           type: file
           description: Orthology table
           pattern: "*.proteinortho.tsv"
@@ -53,7 +53,7 @@ output:
           pattern: "*.proteinortho.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
-      - ${meta.id}.proteinortho-graph:
+      - ${prefix}.proteinortho-graph:
           type: file
           description: Orthology graph
           pattern: "*.proteinortho-graph"
@@ -65,7 +65,7 @@ output:
           pattern: "*.proteinortho.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
-      - ${meta.id}.blast-graph:
+      - ${prefix}.blast-graph:
           type: file
           description: BLAST graph
           pattern: "*.blast-graph"
