@@ -13,7 +13,7 @@ process WINDOWMASKER_USTAT {
 
     output:
     tuple val(meta), path("${output}")  , emit: intervals
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('windowmasker'), eval("windowmasker -version-full | head -n 1 | sed 's/^.*windowmasker. //; s/ .*\$//'"), topic: versions, emit: versions_windowmasker
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,11 +38,6 @@ process WINDOWMASKER_USTAT {
         $args \\
         -in ${ref} \\
         -out ${output}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        windowmasker: \$(windowmasker -version-full | head -n 1 | sed 's/^.*windowmasker: //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -60,10 +55,5 @@ process WINDOWMASKER_USTAT {
     output  = "${prefix}.${outfmt}"
     """
     touch ${output}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        windowmasker: \$(windowmasker -version-full | head -n 1 | sed 's/^.*windowmasker: //; s/ .*\$//')
-    END_VERSIONS
     """
 }
