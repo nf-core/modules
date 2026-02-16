@@ -81,7 +81,7 @@ nextflow_process {
                     file(process.out.scaffolds_graph[0][1]).name,
                     process.out.assembly_correspondence,
                     process.out.tigpair_checkpoint,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
