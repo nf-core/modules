@@ -41,7 +41,6 @@ process RIPGREP {
     """
 
     stub:
-    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def write_output = compress ? "touch ${prefix}.txt.gz" : "touch ${prefix}.txt"
     """
