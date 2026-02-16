@@ -29,7 +29,7 @@ nextflow_process {
                 { assert snapshot(process.out.counts).match("counts") },
                 { assert snapshot(process.out.report).match("report") },
                 { assert snapshot(process.out.summary).match("summary") },
-                { assert snapshot(process.out.versions).match("versions") },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match() },
                 { assert snapshot(process.out.bam).match("bam") },
                 { assert snapshot(process.out.pbi).match("pbi") },
                 { assert snapshot(process.out.fasta).match("fasta") },

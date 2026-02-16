@@ -39,7 +39,6 @@ workflow FASTA_INDEX_DNA {
     } else if (val_aligner == 'bwamem2') {
         BWAMEM2_INDEX(ch_fasta)
         ch_aligner_index = BWAMEM2_INDEX.out.index
-        ch_versions = BWAMEM2_INDEX.out.versions
     } else if (val_aligner == 'dragmap') {
         DRAGMAP_HASHTABLE(ch_fasta)
         ch_aligner_index = DRAGMAP_HASHTABLE.out.hashmap

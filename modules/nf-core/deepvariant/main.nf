@@ -34,6 +34,7 @@ top-level process (DEEPVARIANT) used to be.
 
 The processing stages used by the subworkflow are implemented as module subcommands, e.g. makeexamples.
 """
+    prefix = task.ext.prefix ?: "${meta.id}"
     assert false: deprecation_message
 
 }

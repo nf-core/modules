@@ -22,7 +22,6 @@ process CELLPOSE {
         error "I did not manage to create a cellpose module in Conda that works in all OSes. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def model_command = model ? "--pretrained_model $model" : ""
     """
     export OMP_NUM_THREADS=${task.cpus}
@@ -43,7 +42,6 @@ process CELLPOSE {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "I did not manage to create a cellpose module in Conda that works in all OSes. Please use Docker / Singularity / Podman instead."
     }
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def name = image.name
     def base = name.lastIndexOf('.') != -1 ? name[0..name.lastIndexOf('.') - 1] : name
     """

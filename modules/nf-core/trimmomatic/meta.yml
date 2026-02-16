@@ -1,5 +1,6 @@
 name: "trimmomatic"
-description: Performs quality and adapter trimming on paired end and single end reads
+description: Performs quality and adapter trimming on paired end and single end
+  reads
 keywords:
   - trimming
   - adapter trimming
@@ -10,7 +11,8 @@ tools:
       homepage: "http://www.usadellab.org/cms/?page=trimmomatic"
       documentation: "https://github.com/usadellab/Trimmomatic"
       doi: "10.1093/bioinformatics/btu170"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:trimmomatic
 input:
   - - meta:
@@ -83,13 +85,27 @@ output:
           description: trimmomatic summary file of surviving and dropped reads
           pattern: "*.summary"
           ontologies: []
+  versions_trimmomatic:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trimmomatic:
+          type: string
+          description: The name of the tool
+      - trimmomatic -version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trimmomatic:
+          type: string
+          description: The name of the tool
+      - trimmomatic -version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@alyssa-ab"
 maintainers:

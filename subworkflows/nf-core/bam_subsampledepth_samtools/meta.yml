@@ -14,9 +14,15 @@ input:
   - ch_bam:
       type: file
       description: |
-        The input channel containing the BAM/CRAM/SAM files and their indexes and the depth at which to subsample them.
-        Structure: [ val(meta), path(bam), path(bai), val(depth) ]
+        The input channel containing the BAM/CRAM/SAM files and their indexes.
+        Structure: [ val(meta), path(bam), path(bai) ]
       pattern: "*.{bam,cram,sam}"
+  - ch_depth:
+      type: float
+      description: |
+        Target depth to downsample each input of ch_bam to.
+        Structure: [ val(meta), val(depth) ]
+        The meta map will be combined to the meta map of the ch_bam channel.
   - ch_fasta:
       type: file
       description: |
