@@ -17,7 +17,7 @@ process LIFTOFF {
     tuple val(meta), path("${prefix}.gff3")     , emit: gff3
     tuple val(meta), path("*.polished.gff3")    , emit: polished_gff3, optional: true
     tuple val(meta), path("*.unmapped.txt")     , emit: unmapped_txt
-    tuple val("${task.process}"), val('liftoff'), eval('liftoff --version'), emit: versions_liftoff, topic: versions
+    tuple val("${task.process}"), val('liftoff'), eval('liftoff --version | sed "s/v//"'), emit: versions_liftoff, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
