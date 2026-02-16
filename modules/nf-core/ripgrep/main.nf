@@ -36,7 +36,7 @@ process RIPGREP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ripgrep: \$(rg --version |& sed '1!d ; s/ripgrep //')
+        ripgrep: \$(rg --version |& sed '1!d ; s/ripgrep // ; s/ .*//')
     END_VERSIONS
     """
 
@@ -48,7 +48,7 @@ process RIPGREP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ripgrep: \$(rg --version |& sed '1!d ; s/ripgrep //')
+        ripgrep: \$(rg --version |& sed '1!d ; s/ripgrep // ; s/ .*//')
     END_VERSIONS
     """
 }
