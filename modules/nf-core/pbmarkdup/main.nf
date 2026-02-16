@@ -30,11 +30,11 @@ process PBMARKDUP {
         // if it is compressed, get both `.fastq` and `.gz` as suffix (2 last right tokens)
     // else use the extension of the first input file as suffix
     suffix        =
-        input.find {
-            it.name ==~ /.*\.(fasta|fa|fna)(\.gz)?$/ }?.with { f ->
+        input.find { file ->
+            file.name ==~ /.*\.(fasta|fa|fna)(\.gz)?$/ }?.with { f ->
             f.name.tokenize('.').takeRight(f.name.endsWith('.gz') ? 2 : 1).join('.')
         } ?:
-        input.find { it.name ==~ /.*\.(fastq|fq)(\.gz)?$/ }?.with { f ->
+        input.find { file -> file.name ==~ /.*\.(fastq|fq)(\.gz)?$/ }?.with { f ->
             f.name.tokenize('.').takeRight(f.name.endsWith('.gz') ? 2 : 1).join('.')
         } ?:
         input[0].extension
@@ -48,7 +48,7 @@ process PBMARKDUP {
         fi
         """ : ''
     def log_args = args.contains('--log-level') ? " > ${prefix}.pbmarkdup.log" : ''
-    def file_list = input.collect { it.getName() }.join(' ')
+    def file_list = input.collect { file -> file.getName() }.join(' ')
 
     // Check file name collisions between input, output, and duplicate file
     if (file_list.contains("${prefix}.${suffix}"))
@@ -87,16 +87,16 @@ process PBMARKDUP {
     def args      = task.ext.args  ?: ''
     prefix        = task.ext.prefix ?: "${meta.id}"
     suffix        =
-        input.find {
-            it.name ==~ /.*\.(fasta|fa|fna)(\.gz)?$/ }?.with { f ->
+        input.find { file ->
+            file.name ==~ /.*\.(fasta|fa|fna)(\.gz)?$/ }?.with { f ->
             f.name.tokenize('.').takeRight(f.name.endsWith('.gz') ? 2 : 1).join('.')
         } ?:
-        input.find { it.name ==~ /.*\.(fastq|fq)(\.gz)?$/ }?.with { f ->
+        input.find { file -> file.name ==~ /.*\.(fastq|fq)(\.gz)?$/ }?.with { f ->
             f.name.tokenize('.').takeRight(f.name.endsWith('.gz') ? 2 : 1).join('.')
         } ?:
         input[0].extension
     dupfile_name = args.contains('--dup-file') ? (args =~ /--dup-file\s+(\S+)/)[0][1] : '' // Use for export
-    def file_list = input.collect { it.getName() }.join(' ')
+    def file_list = input.collect { file -> file.getName() }.join(' ')
     // Check file name collisions between input, output, and duplicate file
     if (file_list.contains("${prefix}.${suffix}"))
         error """Output file `${prefix}.${suffix}` conflicts with an input file.
