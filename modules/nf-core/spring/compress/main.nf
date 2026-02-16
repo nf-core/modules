@@ -35,7 +35,7 @@ process SPRING_COMPRESS {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.spring
+    echo "" > ${prefix}.spring
     """
 
 }

@@ -35,7 +35,7 @@ process TIDDIT_COV {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.wig
-    touch ${prefix}.bed
+    echo "" > ${prefix}.wig
+    echo "" > ${prefix}.bed
     """
 }
