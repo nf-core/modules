@@ -43,30 +43,24 @@ input:
         Final image size to output registered image and segmentation mask ("multiplexed" or "hne")
 
 output:
-  - img_tformed:
+  - transformed_image:
       type: file
       description: |
         Channel containing registered tissue image
         Structure: [ val(meta), path(ome.tif) ]
       pattern: "*_transformed_image.ome.tif"
-  - segmask_tformed:
+  - transformed_segmask:
       type: file
       description: |
         Channel containing transformed segmentation mask (empty if 'ch_segmask' not provided)
         Structure: [ val(meta), path(ome.tif) ]
       pattern: "*_transformed_segmentation_mask.ome.tif"
-  - metrics_tform_map:
+  - metrics:
       type: file
       description: |
         Channel containing registration metrics and transformation map file
         Structure: [ val(meta), path(json) ]
       pattern: "*_registration_metrics_tform_map.json"
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
 authors:
   - "@tckumarasekara"
 maintainers:

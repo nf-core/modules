@@ -11,16 +11,9 @@ nextflow_workflow {
     tag "stainwarpy/register"
     tag "stainwarpy/transformsegmask"
 
-    config "./nextflow.config"
-
     test("colon_tissue_local - ome.tif - with_mask") {
 
         when {
-            params {
-                moduleA_args = '--channel-idx 0'
-                moduleB_args = '--feature-tform similarity'
-                moduleC_args = ''
-            }
             workflow {
                 """
                 input[0] = [
@@ -44,10 +37,9 @@ nextflow_workflow {
             assert workflow.success
             assertAll(
                 { assert snapshot(
-                    file(workflow.out.img_tformed[0][1]).name,
-                    file(workflow.out.segmask_tformed[0][1]).name,
-                    file(workflow.out.metrics_tform_map[0][1]).name,
-                    workflow.out.versions
+                    file(workflow.out.transformed_image[0][1]).name,
+                    file(workflow.out.transformed_segmask[0][1]).name,
+                    file(workflow.out.metrics[0][1]).name
                 ).match() }
             )
         }
@@ -56,11 +48,6 @@ nextflow_workflow {
     test("colon_tissue_local - ome.tif - no_mask") {
 
         when {
-            params {
-                moduleA_args = '--channel-idx 0'
-                moduleB_args = '--feature-tform similarity'
-                moduleC_args = ''
-            }
             workflow {
                 """
                 input[0] = [
@@ -81,10 +68,9 @@ nextflow_workflow {
             assert workflow.success
             assertAll(
                 { assert snapshot(
-                    file(workflow.out.img_tformed[0][1]).name,
-                    file(workflow.out.metrics_tform_map[0][1]).name,
-                    workflow.out.segmask_tformed,
-                    workflow.out.versions
+                    file(workflow.out.transformed_image[0][1]).name,
+                    file(workflow.out.metrics[0][1]).name,
+                    workflow.out.transformed_segmask
                 ).match() }
             )
         }
@@ -95,11 +81,6 @@ nextflow_workflow {
         options "-stub"
 
         when {
-            params {
-                moduleA_args = ''
-                moduleB_args = ''
-                moduleC_args = ''
-            }
             workflow {
                 """
                 input[0] = [
@@ -120,12 +101,8 @@ nextflow_workflow {
             }
         }
         then {
-            assert workflow.success
-            assertAll(
-                { assert snapshot(
-                    workflow.out.versions
-                ).match() }
-            )
+            { assert workflow.success }
+            { assert snapshot(workflow.out).match() }
         }
     }
 }
