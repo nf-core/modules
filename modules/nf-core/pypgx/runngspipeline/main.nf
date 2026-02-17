@@ -45,7 +45,6 @@ process PYPGX_RUNNGSPIPELINE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_${pgx_gene}"
 
     """
