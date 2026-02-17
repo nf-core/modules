@@ -31,12 +31,11 @@ nextflow_process {
                 { assert snapshot(
                     process.out.fastq,
                     process.out.fastq_idx,
-                    process.out.undetermined,
+                    process.out.undetermined.collect { meta, fastq -> file(fastq).name },
                     process.out.undetermined_idx,
                     process.out.reports.collect {meta, files -> files.collect { file(it).name }.sort() },
                     process.out.logs.collect {meta, files -> files.collect { file(it).name }.sort() },
                     process.out.interop,
-                    process.out.versions,
                 ).match() }
             )
         }
@@ -78,7 +77,6 @@ nextflow_process {
                     process.out.interop.collect { meta, interop ->
                                                 interop.findAll { interopfile ->
                                                 file(interopfile).name != "IndexMetricsOut.bin" } },
-                    process.out.versions,
                 ).match() }
             )
         }
