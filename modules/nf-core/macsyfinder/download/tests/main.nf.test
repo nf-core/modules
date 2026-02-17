@@ -1,0 +1,48 @@
+nextflow_process {
+
+    name "Test Process MACSYFINDER_DOWNLOAD"
+    script "../main.nf"
+    process "MACSYFINDER_DOWNLOAD"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "macsyfinder"
+    tag "macsyfinder/download"
+
+    test("macsyfinder_download - TXSScan") {
+
+        when {
+            process {
+                """
+                input[0] = 'TXSScan'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("macsyfinder_download - TXSScan - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = 'TXSScan'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

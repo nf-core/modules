@@ -1,0 +1,101 @@
+name: "macsyfinder_search"
+description: Search for macromolecular systems in protein datasets using MacSyFinder
+keywords:
+  - genomics
+  - protein
+  - macromolecular systems
+  - hmmer
+  - search
+tools:
+  - "macsyfinder":
+      description: "Detection of macromolecular systems in protein datasets using systems modelling and similarity search"
+      homepage: "https://github.com/gem-pasteur/macsyfinder"
+      documentation: "https://macsyfinder.readthedocs.io"
+      tool_dev_url: "https://github.com/gem-pasteur/macsyfinder"
+      doi: "10.24072/pcjournal.250"
+      licence: ["GPL v3"]
+      identifier: biotools:macsyfinder
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', db_type:'gembase' ]`
+          db_type can be 'gembase', 'ordered_replicon', or 'unordered'
+    - proteins:
+        type: file
+        description: Protein sequence file in FASTA format
+        pattern: "*.{fasta,faa,fa,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+  - models:
+      type: directory
+      description: Directory containing MacSyFinder model(s)
+      pattern: "*"
+  - model_names:
+      type: string
+      description: Space-separated list of model names to search for. If not provided, all models in the directory will be used.
+output:
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', db_type:'gembase' ]`
+      - ${prefix}/*:
+          type: directory
+          description: Complete MacSyFinder output directory
+          pattern: "${prefix}/*"
+  stdout:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', db_type:'gembase' ]`
+      - ${prefix}/macsyfinder.out:
+          type: file
+          description: MacSyFinder standard output
+          pattern: "${prefix}/macsyfinder.out"
+  stderr:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', db_type:'gembase' ]`
+      - ${prefix}/macsyfinder.err:
+          type: file
+          description: MacSyFinder standard error
+          pattern: "${prefix}/macsyfinder.err"
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', db_type:'gembase' ]`
+      - ${prefix}/all_systems.tsv:
+          type: file
+          description: Summary table of all detected systems
+          pattern: "${prefix}/all_systems.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  best_solutions:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', db_type:'gembase' ]`
+      - ${prefix}/all_best_solutions*:
+          type: file
+          description: Best solutions for detected systems
+          pattern: "${prefix}/all_best_solutions*"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750"
+authors:
+  - "@github-actions[bot]"
+maintainers:
+  - "@github-actions[bot]"
