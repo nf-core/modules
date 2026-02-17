@@ -4,8 +4,8 @@ process BEDOPS_CONVERT2BED {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bedops:2.4.41--h4ac6f70_2':
-        'biocontainers/bedops:2.4.41--h4ac6f70_2' }"
+        'https://depot.galaxyproject.org/singularity/bedops:2.4.42--h9948957_0':
+        'biocontainers/bedops:2.4.42--h9948957_0' }"
 
     input:
     tuple val(meta), path(in_file)

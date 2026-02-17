@@ -46,7 +46,7 @@ output:
       - bedops:
           type: string
           description: The name of the tool
-      - "bedops --version | grep version | awk ' { print \$2 } '":
+      - "bedops --version | grep version | sed 's/.*version:[[:space:]]*//' | cut -d' ' -f1":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -57,7 +57,7 @@ topics:
       - bedops:
           type: string
           description: The name of the tool
-      - "bedops --version | grep version | awk ' { print \$2 } '":
+      - "bedops --version | grep version | sed 's/.*version:[[:space:]]*//' | cut -d' ' -f1":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
