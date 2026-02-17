@@ -61,7 +61,6 @@ process RIBOTRICER_DETECTORFS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_protocol.txt
