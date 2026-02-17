@@ -9,7 +9,9 @@ nextflow_process {
     tag "modules_nfcore"
     tag "upp"
     tag "upp/align"
+    tag "famsa"
     tag "famsa/guidetree"
+    tag "famsa/align"
 
     test("fasta - align_sequence - uncompressed") {
         when {
@@ -35,7 +37,6 @@ nextflow_process {
     }
 
     test("fasta - with_tree - compressed") {
-        tag "test"
         setup {
             run("FAMSA_GUIDETREE") {
                 script "../../../famsa/guidetree/main.nf"
