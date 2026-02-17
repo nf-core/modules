@@ -59,7 +59,9 @@ process SAWFISH_JOINTCALL {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def maf_bw = sample_dirs.get(0).resolve("maf.mpack").exists() ? "touch ${prefix}/samples/sample0001_test/maf.bw" : ""
+    // Relative paths are resolved with respect to the pipeline's working directory and task.workDir is unavailable.
+    // It's more straightforward to construct the path for maf.mpack here and test for its existence in the script
+    def maf_mpack = sample_dirs[0].resolve("maf.mpack")
     """
     mkdir -p ${prefix}/samples/sample0001_test/
     echo \"\" | gzip > ${prefix}/${prefix}_genotyped.sv.vcf.gz
@@ -72,6 +74,8 @@ process SAWFISH_JOINTCALL {
     touch ${prefix}/samples/sample0001_test/depth.bw
     touch ${prefix}/samples/sample0001_test/gc_bias_corrected_depth.bw
     touch ${prefix}/samples/sample0001_test/copynum.summary.json
-    ${maf_bw}
+
+    # Output maf.bw if and only if maf.mpack exists in the input sample directory
+    [ -f ${maf_mpack} ] && touch ${prefix}/samples/sample0001_test/maf.bw
     """
 }
