@@ -47,7 +47,6 @@ process LAST_TRAIN {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     INDEX_NAME=\$(basename \$(ls $index/*.des) .des)

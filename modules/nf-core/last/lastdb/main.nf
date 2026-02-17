@@ -31,7 +31,6 @@ process LAST_LASTDB {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir lastdb
