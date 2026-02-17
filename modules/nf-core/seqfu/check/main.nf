@@ -21,7 +21,7 @@ process SEQFU_CHECK {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
-    def dirFlag = (reads instanceof List ? reads.every { it.isDirectory() } : reads.isDirectory()) ? "--dir" : ""
+    def dirFlag = (reads instanceof List ? reads.every { read -> read.isDirectory() } : reads.isDirectory()) ? "--dir" : ""
 
     """
     seqfu \\
@@ -36,11 +36,8 @@ process SEQFU_CHECK {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
-
     touch ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml

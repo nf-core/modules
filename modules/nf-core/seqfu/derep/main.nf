@@ -11,7 +11,7 @@ process SEQFU_DEREP {
 
     output:
     tuple val(meta), path("*_derep.fasta.gz"), emit: fasta
-    path "versions.yml"                 , emit: versions
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -19,8 +19,8 @@ process SEQFU_DEREP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_derep"
-    def fasta_files = fastas.collect { it.getName() }
-    if (fasta_files.any { it == "${prefix}.fasta.gz" }) {
+    def fasta_files = fastas.collect { fasta_file -> fasta_file.getName() }
+    if (fasta_files.any { fasta_file -> fasta_file == "${prefix}.fasta.gz" }) {
         error "Input file name coincides with the output file name: ${prefix}.fasta.gz. Please set a unique prefix."
     }
 
@@ -37,7 +37,6 @@ process SEQFU_DEREP {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_derep"
     """
     echo "" | gzip -c > "${prefix}.fasta.gz"

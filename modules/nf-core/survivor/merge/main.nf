@@ -26,8 +26,8 @@ process SURVIVOR_MERGE {
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    vcfs.each{
-        if (it.getExtension() == "gz"){
+    vcfs.each{ vcf_file ->
+        if ( vcf_file.getExtension() == "gz"){
             error "Gzipped files are not supported by Survivor, please gunzip your VCF files first."
             // https://github.com/fritzsedlazeck/SURVIVOR/issues/158
         }
@@ -47,8 +47,8 @@ process SURVIVOR_MERGE {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    vcfs.each{
-        if (it.getExtension() == "gz"){
+    vcfs.each{ vcf_file ->
+        if (vcf_file.getExtension() == "gz"){
             error "Gzipped files are not supported by Survivor, please gunzip your VCF files first."
             // https://github.com/fritzsedlazeck/SURVIVOR/issues/158
         }
