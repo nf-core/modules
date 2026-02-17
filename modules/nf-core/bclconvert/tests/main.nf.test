@@ -36,7 +36,7 @@ nextflow_process {
                     process.out.reports.collect {meta, files -> files.collect { file(it).name }.sort() },
                     process.out.logs.collect {meta, files -> files.collect { file(it).name }.sort() },
                     process.out.interop.collect {meta, files -> files.collect { file(it).name }.sort() },
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -75,7 +75,7 @@ nextflow_process {
                     process.out.reports.collect {meta, files -> files.collect { file(it).name }.sort() },
                     process.out.logs.collect {meta, files -> files.collect { file(it).name }.sort() },
                     process.out.interop.collect {meta, files -> files.collect { file(it).name }.sort() },
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
