@@ -11,9 +11,9 @@ tools:
       documentation: "https://bedops.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/bedops"
       doi: "10.1093/bioinformatics/bts277"
-      licence: ["GNU v2"]
+      licence:
+        - "GNU v2"
       identifier: biotools:bedops
-
 input:
   - - meta:
         type: map
@@ -43,7 +43,7 @@ output:
       - bedops:
           type: string
           description: The name of the tool
-      - 'convert2bed --version | sed -n "s/.*version: *\\([^ ]*\\).*/\\1/p"':
+      - 'convert2bed --version | sed -n "s/.*version: *\([^ ]*\).*/\1/p"':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -54,7 +54,7 @@ topics:
       - bedops:
           type: string
           description: The name of the tool
-      - 'convert2bed --version | sed -n "s/.*version: *\\([^ ]*\\).*/\\1/p"':
+      - 'convert2bed --version | sed -n "s/.*version: *\([^ ]*\).*/\1/p"':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
