@@ -36,12 +36,11 @@ process RIPGREP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ripgrep: \$(rg --version |& sed '1!d ; s/ripgrep //')
+        ripgrep: \$(rg --version |& sed '1!d ; s/ripgrep // ; s/ .*//')
     END_VERSIONS
     """
 
     stub:
-    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def write_output = compress ? "touch ${prefix}.txt.gz" : "touch ${prefix}.txt"
     """
@@ -49,7 +48,7 @@ process RIPGREP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ripgrep: \$(rg --version |& sed '1!d ; s/ripgrep //')
+        ripgrep: \$(rg --version |& sed '1!d ; s/ripgrep // ; s/ .*//')
     END_VERSIONS
     """
 }
