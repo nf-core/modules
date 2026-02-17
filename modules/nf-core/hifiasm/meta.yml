@@ -14,7 +14,8 @@ tools:
       documentation: https://github.com/chhylp123/hifiasm
       tool_dev_url: https://github.com/chhylp123/hifiasm
       doi: "10.1038/s41592-020-01056-5"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:hifiasm
 input:
   - - meta:
@@ -24,7 +25,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - long_reads:
         type: file
-        description: Long reads PacBio HiFi reads or ONT reads (requires ext.arg '--ont').
+        description: Long reads PacBio HiFi reads or ONT reads (requires ext.arg
+          '--ont').
         ontologies: []
     - ul_reads:
         type: file
@@ -36,13 +38,13 @@ input:
           Groovy Map containing information about parental kmers.
     - paternal_kmer_dump:
         type: file
-        description: Yak kmer dump file for paternal reads (can be used for haplotype
-          resolution). It can have an arbitrary extension.
+        description: Yak kmer dump file for paternal reads (can be used for
+          haplotype resolution). It can have an arbitrary extension.
         ontologies: []
     - maternal_kmer_dump:
         type: file
-        description: Yak kmer dump file for maternal reads (can be used for haplotype
-          resolution). It can have an arbitrary extension.
+        description: Yak kmer dump file for maternal reads (can be used for
+          haplotype resolution). It can have an arbitrary extension.
         ontologies: []
   - - meta2:
         type: map
@@ -76,7 +78,7 @@ output:
           description: Raw unitigs
           pattern: "*.r_utg.gfa"
           ontologies:
-            - edam: http://edamontology.org/format_3975 # GFA 1
+            - edam: http://edamontology.org/format_3975
   bin_files:
     - - meta:
           type: map
@@ -105,7 +107,7 @@ output:
           description: Processed unitigs
           pattern: "*.p_utg.gfa"
           ontologies:
-            - edam: http://edamontology.org/format_3975 # GFA 1
+            - edam: http://edamontology.org/format_3975
   primary_contigs:
     - - meta:
           type: map
@@ -175,7 +177,7 @@ output:
             reads produced by the hifiasm error correction module
           pattern: "*.ec.fa.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   read_overlaps:
     - - meta:
           type: map
@@ -189,7 +191,7 @@ output:
             among all error-corrected reads
           pattern: "*.ovlp.paf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   log:
     - - meta:
           type: map
@@ -201,13 +203,27 @@ output:
           description: Stderr log
           pattern: "*.stderr.log"
           ontologies: []
+  versions_hifiasm:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hifasm:
+          type: string
+          description: The name of the tool
+      - hifiasm --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hifasm:
+          type: string
+          description: The name of the tool
+      - hifiasm --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@sidorov-si"
   - "@scorreard"
