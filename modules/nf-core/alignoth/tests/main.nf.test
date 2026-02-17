@@ -39,7 +39,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out,
+                    sanitizeOutput(process.out),
                     // path(process.out.vl_json[0][1]).json
                 ).match() }
             )
