@@ -12,7 +12,7 @@ process BEDOPS_GTF2BED {
 
     output:
     tuple val(meta), path('*.bed'), emit: bed
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val("bedops"), eval("bedops --version | grep version | sed 's/.*version:[[:space:]]*//' | cut -d' ' -f1"), emit: versions_bedops, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,22 +28,12 @@ process BEDOPS_GTF2BED {
     $args \\
     --attribute-key=exon_id \\
     > ${prefix}.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gtf2bed: \$(bedops --version | grep version | awk ' { print \$2 } ')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${gtf.baseName}"
     """
     touch ${prefix}.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gtf2bed: \$(bedops --version | grep version | awk ' { print \$2 } ')
-    END_VERSIONS
     """
 
 }

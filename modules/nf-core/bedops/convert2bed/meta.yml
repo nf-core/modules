@@ -36,13 +36,27 @@ output:
           description: Sorted BED file
           pattern: "*.{bed}"
           ontologies: []
+  versions_bedops:
+    - - ${task.process}:
+          type: string
+          description: "The name of the process"
+      - bedops:
+          type: string
+          description: The name of the tool
+      - "bedops --version | grep version | sed 's/.*version:[[:space:]]*//' | cut -d' ' -f1":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: "The name of the process"
+      - bedops:
+          type: string
+          description: The name of the tool
+      - "bedops --version | grep version | sed 's/.*version:[[:space:]]*//' | cut -d' ' -f1":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rannick"
 maintainers:

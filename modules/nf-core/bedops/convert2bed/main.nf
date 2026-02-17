@@ -12,7 +12,7 @@ process BEDOPS_CONVERT2BED {
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val("bedops"), eval("bedops --version | grep version | sed 's/.*version:[[:space:]]*//' | cut -d' ' -f1"), emit: versions_bedops, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,21 +27,11 @@ process BEDOPS_CONVERT2BED {
         -i $format \\
         < $in_file \\
         > ${prefix}.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bedops/convert2bed: \$(convert2bed --version | grep vers | sed 's/^.*.version:  //')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bedops/convert2bed: \$(convert2bed --version | grep vers | sed 's/^.*.version:  //')
-    END_VERSIONS
     """
 }
