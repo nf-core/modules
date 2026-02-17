@@ -21,9 +21,18 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'test']`
-    - fasta:
+    - fasta_unaligned:
         type: file
-        description: Input sequences in FASTA format
+        description: Unaligned sequence file. If no backbone tree nor alignment is
+          given, the sequence file will be randomly split into a backbone set and
+          query set
+        pattern: "*.{fa,fasta}"
+        ontologies:
+          - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
+          - edam: http://edamontology.org/format_1929 # FASTA
+    - fasta_aligned:
+        type: file
+        description: Aligned sequence file. (optional)
         pattern: "*.{fa,fasta}"
         ontologies:
           - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
@@ -38,7 +47,7 @@ input:
         description: Input guide tree in Newick format
         pattern: "*.{dnd}"
         ontologies:
-          - edam: http://edamontology.org/format_2006 # PHYLOGENETIC TREE
+          - edam: http://edamontology.org/format_2006
   - compress:
       type: boolean
       description: Flag representing whether the output MSA should be compressed.
@@ -56,9 +65,9 @@ output:
             uncompressed, depending on if compress is set to true or false
           pattern: "*.aln{.gz,}"
           ontologies:
-            - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
-            - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
-            - edam: http://edamontology.org/format_1984 # FASTA-ALN
+            - edam: http://edamontology.org/format_2554
+            - edam: http://edamontology.org/format_1921
+            - edam: http://edamontology.org/format_1984
   versions_upp:
     - - ${task.process}:
           type: string
