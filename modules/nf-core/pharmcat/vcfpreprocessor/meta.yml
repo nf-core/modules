@@ -30,10 +30,10 @@ input:
         pattern: "*.vcf.gz"
         ontologies:
           - edam: http://edamontology.org/format_3989
-    - vcf_tbi:
+    - vcf_index:
         type: file
-        description: The tbi file to be inspected
-        pattern: "*.tbi"
+        description: The tbi/csi file to be inspected
+        pattern: "*.{tbi,csi}"
         ontologies: []
   - - meta2:
         type: map

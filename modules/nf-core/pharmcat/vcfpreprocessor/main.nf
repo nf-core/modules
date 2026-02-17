@@ -7,7 +7,7 @@ process PHARMCAT_VCFPREPROCESSOR {
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2b/2b27c134f2226e65c3be9687fdcd6dfb5eebb7998bf1ad89ff396c914fe6d81a/data'
         : 'community.wave.seqera.io/library/pharmcat3:3.1.1--876b7152770ba008'}"
     input:
-    tuple val(meta), path(vcf_gz), path(vcf_tbi)
+    tuple val(meta), path(vcf_gz), path(vcf_index)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(pharmcat_positions)
@@ -25,10 +25,11 @@ process PHARMCAT_VCFPREPROCESSOR {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     pharmcat_vcf_preprocessor \\
-        -vcf ${vcf_gz} \\
+        --vcf ${vcf_gz} \\
         --base-filename ${prefix} \\
         --reference-genome ${fasta} \\
         --reference-pgx-vcf ${pharmcat_positions} \\
+        --output-dir . \\
         $args
     """
 
@@ -37,7 +38,7 @@ process PHARMCAT_VCFPREPROCESSOR {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo $args
-    
+
     touch ${prefix}.preprocessed.vcf.bgz
     touch ${prefix}.missing_pgx_var.vcf
     """
