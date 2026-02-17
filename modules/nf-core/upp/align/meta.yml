@@ -23,7 +23,9 @@ input:
           e.g. `[ id:'test']`
     - fasta:
         type: file
-        description: Input sequences in FASTA format
+        description: Unaligned sequence file. If no backbone
+          tree and alignment is given, the sequence file will
+          be randomly split into a backbone set and query set
         pattern: "*.{fa,fasta}"
         ontologies:
           - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
