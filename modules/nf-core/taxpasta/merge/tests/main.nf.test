@@ -38,8 +38,10 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     path(process.out.merged_profiles[0][1])
-                        .readLines()
-                        .sort(), // Needs to be sorted (differences conda vs container)
+                        .csv(sep: "\t")
+                        .sortRows()
+                        .sortColumns()
+                        .columns, // Needs to be sorted (differences conda vs container)
                     process.out.versions
                 ).match() }
             )
@@ -81,8 +83,10 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     path(process.out.merged_profiles[0][1])
-                        .readLines()
-                        .sort(), // Needs to be sorted (differences conda vs container)
+                        .csv(sep: "\t")
+                        .sortRows()
+                        .sortColumns()
+                        .columns, // Needs to be sorted (differences conda vs container)
                     process.out.versions
                 ).match() }
             )
