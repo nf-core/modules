@@ -114,3 +114,48 @@ nextflow_process {
         }
     }
 }
+
+nextflow_function {
+    name "Test Function BCLCONVERT - generateReadgroup"
+    script "../main.nf"
+    function "generateReadgroup"
+    config "./nextflow.config"
+
+    tag "bclconvert"
+    tag "modules"
+    tag "modules_nfcore"
+
+    test("homo_sapiens illumina [bcl]") {
+        setup {
+            run("BCLCONVERT") {
+                script "../main.nf"
+                params {
+                    module_args = "--force --first-tile-only true"
+                }
+                process {
+                    """
+                    input[0] = [
+                        [ id: 'test', lane:1 ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.csv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell.tar.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            """
+                input[0] = BCLCONVERT.out.reports
+                    .map { meta, reports -> 
+                        return [meta, reports.find { report -> report.name == "fastq_list.csv" }]
+                    }
+                input[1] = BCLCONVERT.out.fastq
+            """
+        }
+
+        then {
+            assert function.success
+        }
+    }
+}

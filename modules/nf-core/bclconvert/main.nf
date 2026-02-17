@@ -8,14 +8,14 @@ process BCLCONVERT {
     tuple val(meta), path(samplesheet), path(run_dir)
 
     output:
-    tuple generate_fastq_channel(val(meta), path("output/reports/fastq_list.csv")), emit: fastq
+    tuple val(meta), path("output/**_S[1-9]*_R?_00?.fastq.gz"), emit: fastq
     tuple val(meta), path("output/**_S[1-9]*_I?_00?.fastq.gz"), emit: fastq_idx, optional: true
     tuple val(meta), path("output/**Undetermined_S0*_R?_00?.fastq.gz"), emit: undetermined, optional: true
     tuple val(meta), path("output/**Undetermined_S0*_I?_00?.fastq.gz"), emit: undetermined_idx, optional: true
     tuple val(meta), path("output/Reports/*"), emit: reports
     tuple val(meta), path("output/Logs/*"), emit: logs
     tuple val(meta), path("output/InterOp/*.bin"), emit: interop, optional: true
-    path ("versions.yml"), emit: versions
+    tuple val("${task.process}"), val('bclconvert'), eval("bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //'"), topic: versions, emit: versions_bclconvert
 
     when:
     task.ext.when == null || task.ext.when
@@ -67,7 +67,6 @@ process BCLCONVERT {
     cp -n **/InterOp/*.bin output/InterOp/
     """
 
-
     stub:
     """
     mkdir -p output/Reports
@@ -101,26 +100,49 @@ process BCLCONVERT {
     """
 }
 
-def generate_fastq_channel(meta, fastq_list_csv) {
-    return
-    file(fastq_list_csv)
-    .splitCsv(header:true)
-    .combine(meta)
-    .map { row, fc_meta ->
-        // Create the readgroup tuple
-        // RGID,RGSM,RGLB,Lane,Read1File,Read2File
-        def rg = [:]
-        // row.RGID is index1.index2.lane
-        rg.ID = row.RGID
-        // RGPU is a custom column in the samplesheet containing the flowcell ID
-        rg.PU = row.RGPU ? row.RGPU : ""
-        rg.SM = row.RGSM
-        rg.LB = row.RGLB ? row.RGLB : ""
-        rg.PL = "ILLUMINA"
+def generateReadgroup(ch_fastq_list_csv, ch_fastq) {
+    return ch_fastq_list_csv
+        .map { meta, csv_file ->
+            def fastq_metadata = csv_file
+                .splitCsv(header: true)
+                .map { row ->
+                    // Create the readgroup tuple
+                    // RGID,RGSM,RGLB,Lane,Read1File,Read2File
+                    def rg = [:]
+                    // row.RGID is index1.index2.lane
+                    rg.ID = row.RGID
+                    // RGPU is a custom column in the samplesheet containing the flowcell ID
+                    rg.PU = row.RGPU ? row.RGPU : ""
+                    rg.SM = row.RGSM
+                    rg.LB = row.RGLB ? row.RGLB : ""
+                    rg.PL = "ILLUMINA"
 
-        // replace the meta id with the sample name
-        def new_meta = fc_meta + [id: row.RGSM, readgroup: rg]
-        // Return the new meta and the list of fastq files for this sample
-        return [new_meta, [file(row.Read1File, checkIfExists:true), file(row.Read2File, checkIfExists:true)]]
-    }
+                    // replace the meta id with the sample name
+                    def new_meta = [id: row.RGSM, readgroup: rg]
+                    // Return the new meta and the list of fastq files for this sample
+                    return [new_meta, [file(row.Read1File).name, file(row.Read2File).name]]
+                }
+            return [meta, fastq_metadata]
+        }
+        .collect()
+        .join(ch_fastq)
+        .map { meta, fastq_metadata, fastq_files ->
+            //[
+            //  [:],                                // meta map
+            //  [[:],[file1, file2]]],              // list of metadata entries for each sample, each containing a map of readgroup info and a list of fastq filename
+            //  [/path/to/file1, /path/to/file2]    // list of FQDN (single) fastq files
+            //]
+            // Get the correct metadata entry from the list of metadata entries based on the fastq file names
+            def new_meta = meta
+            def fastq_tuple = fastq_metadata.find { entry ->
+                new_meta = new_meta + entry[0]
+                // add the readgroup info to the meta map and set the sample name as the meta id
+                def fastq_files_for_entry = entry[1]
+                // list of fastq files for this metadata entry
+                fastq_files_for_entry.any { fastq_file ->
+                    fastq_files.contains(fastq_file)
+                }
+            }
+            return [new_meta, fastq_tuple]
+        }
 }
