@@ -13,7 +13,7 @@ process MERYL_HISTOGRAM {
 
     output:
     tuple val(meta), path("*.hist"), emit: hist
-    path "versions.yml"            , emit: versions
+    tuple val("${task.process}"), val('meryl'), eval("meryl --version |& sed 's/meryl //'"), emit: versions_meryl, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,11 +28,6 @@ process MERYL_HISTOGRAM {
         memory=${task.memory.toGiga()} \\
         $args \\
         $meryl_db > ${prefix}.hist
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        meryl: \$( meryl --version |& sed 's/meryl //' )
-    END_VERSIONS
     """
 
     stub:
@@ -40,10 +35,5 @@ process MERYL_HISTOGRAM {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.hist
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        meryl: \$( meryl --version |& sed 's/meryl //' )
-    END_VERSIONS
     """
 }
