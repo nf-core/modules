@@ -32,7 +32,7 @@ process SIGPROFILER {
         'DINUC' : 'DBS78',
         'ID'    : 'ID83'
     ]
-    def signatures = context_types.collect { context_map[it] }
+    def signatures = context_types.collect { index -> context_map[index] }
 
     """
     mkdir -p results/input
