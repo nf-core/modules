@@ -17,9 +17,9 @@ tools:
       documentation: "https://github.com/bcgsc/LINKS"
       tool_dev_url: "https://github.com/bcgsc/LINKS"
       doi: "10.1186/s13742-015-0076-3"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -38,11 +38,11 @@ input:
           e.g. `[ id:'sample1' ]`
     - reads:
         type: file
-        description: fastq file(s) containing the long reads to be used for scaffolding
+        description: fastq file(s) containing the long reads to be used for
+          scaffolding
         pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
-
         ontologies:
-          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_1930
 output:
   log:
     - - meta:
@@ -70,7 +70,7 @@ output:
             that distance.
           pattern: "*.pairing_distribution.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
   pairing_issues:
     - - meta:
           type: map
@@ -146,7 +146,7 @@ output:
             links ratio, gap or overlap
           pattern: "*.assembly_correspondence.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   simplepair_checkpoint:
     - - meta:
           type: map
@@ -155,11 +155,11 @@ output:
             e.g. `[ id:'sample1']`
       - "*.simplepair_checkpoint.tsv":
           type: file
-          description: checkpoint file, contains info to rebuild datastructure for .gv
-            graph
+          description: checkpoint file, contains info to rebuild datastructure for
+            .gv graph
           pattern: "*.simplepair_checkpoint.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   tigpair_checkpoint:
     - - meta:
           type: map
@@ -179,15 +179,28 @@ output:
             4) scaffold with output of ARCS
           pattern: "*.tigpair_checkpoint.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
+  versions_links:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - liftoff:
+          type: string
+          description: The name of the tool
+      - echo \$(LINKS | grep -o 'LINKS v.*' | sed 's/LINKS v//'):
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - liftoff:
+          type: string
+          description: The name of the tool
+      - echo \$(LINKS | grep -o 'LINKS v.*' | sed 's/LINKS v//'):
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nschan"
 maintainers:
