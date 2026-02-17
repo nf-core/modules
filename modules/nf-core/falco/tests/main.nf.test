@@ -27,6 +27,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.txt,
                     file(process.out.html.get(0).get(1)).list(),
+                    process.out.versions,
                     ).match()
                 },
             )
@@ -56,6 +57,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.txt,
                     process.out.html.get(0).get(1).collect{ it.split("/")[-1] }.sort(),
+                    process.out.versions,
                     ).match()
                 },
             )
@@ -82,6 +84,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.txt,
                     file(process.out.html.get(0).get(1)).list(),
+                    process.out.versions,
                     ).match()
                 },
             )
