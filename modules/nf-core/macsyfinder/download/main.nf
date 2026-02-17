@@ -38,8 +38,8 @@ process MACSYFINDER_DOWNLOAD {
 
     stub:
     """
-    mkdir -p models
-    touch models/${model_name}
+    mkdir -p models/${model_name}
+    touch models/${model_name}/definitions.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
