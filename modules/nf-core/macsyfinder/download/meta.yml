@@ -1,0 +1,36 @@
+name: "macsyfinder_download"
+description: Download MacSyFinder models using macsydata
+keywords:
+  - genomics
+  - protein
+  - macromolecular systems
+  - models
+  - database
+tools:
+  - "macsyfinder":
+      description: "Detection of macromolecular systems in protein datasets using systems modelling and similarity search"
+      homepage: "https://github.com/gem-pasteur/macsyfinder"
+      documentation: "https://macsyfinder.readthedocs.io"
+      tool_dev_url: "https://github.com/gem-pasteur/macsyfinder"
+      doi: "10.24072/pcjournal.250"
+      licence: ["GPL v3"]
+      identifier: biotools:macsyfinder
+input:
+  - model_name:
+      type: string
+      description: Name of the MacSyFinder model to download (e.g., 'TXSScan', 'CasFinder')
+output:
+  models:
+    - "models/*":
+        type: directory
+        description: Directory containing the downloaded MacSyFinder model(s)
+        pattern: "models/*"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+authors:
+  - "@github-actions[bot]"
+maintainers:
+  - "@github-actions[bot]"

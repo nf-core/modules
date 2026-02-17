@@ -1,0 +1,70 @@
+nextflow_process {
+
+    name "Test Process MACSYFINDER_SEARCH"
+    script "../main.nf"
+    process "MACSYFINDER_SEARCH"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "macsyfinder"
+    tag "macsyfinder/search"
+    tag "macsyfinder/download"
+
+    setup {
+        run("MACSYFINDER_DOWNLOAD") {
+            script "../../download/main.nf"
+            process {
+                """
+                input[0] = 'TXSScan'
+                """
+            }
+        }
+    }
+
+    test("macsyfinder_search - proteins - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', db_type:'gembase' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
+                ]
+                input[1] = MACSYFINDER_DOWNLOAD.out.models
+                input[2] = 'TXSScan'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("macsyfinder_search - proteins - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', db_type:'gembase' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
+                ]
+                input[1] = MACSYFINDER_DOWNLOAD.out.models
+                input[2] = 'TXSScan'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
