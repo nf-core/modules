@@ -35,7 +35,8 @@ nextflow_process {
                     process.out.undetermined_idx,
                     process.out.reports.collect {meta, files -> files.collect { file(it).name }.sort() },
                     process.out.logs.collect {meta, files -> files.collect { file(it).name }.sort() },
-                    process.out.interop,
+                    process.out.interop.collect {meta, files -> files.collect { file(it).name }.sort() },
+                    process.out.versions
                 ).match() }
             )
         }
@@ -73,10 +74,8 @@ nextflow_process {
                     process.out.undetermined_idx,
                     process.out.reports.collect {meta, files -> files.collect { file(it).name }.sort() },
                     process.out.logs.collect {meta, files -> files.collect { file(it).name }.sort() },
-                    process.out.interop,
-                    process.out.interop.collect { meta, interop ->
-                                                interop.findAll { interopfile ->
-                                                file(interopfile).name != "IndexMetricsOut.bin" } },
+                    process.out.interop.collect {meta, files -> files.collect { file(it).name }.sort() },
+                    process.out.versions
                 ).match() }
             )
         }

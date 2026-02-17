@@ -86,13 +86,13 @@ process BCLCONVERT {
     echo "fake report file" > output/Reports/RunInfo.xml
     echo "fake report file" > output/Reports/SampleSheet.csv
     echo "fake report file" > output/Reports/Top_Unknown_Barcodes.csv
-    
+
     mkdir -p output/Logs
     echo "fake log file" > output/Logs/Errors.log
     echo "fake log file" > output/Logs/FastqComplete.log
     echo "fake log file" > output/Logs/Info.log
     echo "fake log file" > output/Logs/Warnings.log
-    
+
     mkdir -p output/InterOp
     echo "fake InterOp file" > output/InterOp/ControlMetricsOut.bin
     echo "fake InterOp file" > output/InterOp/CorrectedIntMetricsOut.bin
