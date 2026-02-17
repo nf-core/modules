@@ -89,25 +89,25 @@ output:
           description: Missing position in PGX VCF file
           pattern: "*.missing_pgx_var.vcf"
           ontologies: []
-  versions_pharmcat:
-    - - "${task.process}":
+  versions_pharmcat_vcf_preprocessor:
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "pharmcat":
+      - pharmcat_vcf_preprocessor:
           type: string
           description: The name of the tool
-      - "pharmcat --version":
+      - pharmcat_vcf_preprocessor --version | cut -f4 -d ' ':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
   versions:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "pharmcat":
+      - pharmcat_vcf_preprocessor:
           type: string
           description: The name of the tool
-      - "pharmcat --version":
+      - pharmcat_vcf_preprocessor --version | cut -f4 -d ' ':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
