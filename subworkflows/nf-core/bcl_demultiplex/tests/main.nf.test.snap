@@ -3,37 +3,20 @@
         "content": [
             {
                 "empty_fastq": [
-                    [
-                        {
-                            "empty": true,
-                            "fcid": "HMTFYDRXX",
-                            "id": "SampleZ_S5_L001",
-                            "lane": 1,
-                            "readgroup": {
-                                
-                            },
-                            "samplename": "SampleZ",
-                            "single_end": true
-                        },
-                        [
-                            "SampleZ_S5_L001_R1_001.fastq.gz"
-                        ]
-                    ]
+                    
                 ],
                 "fastq": [
                     [
                         {
-                            "id": "Sample1_S1_L001",
-                            "samplename": "Sample1",
-                            "fcid": "HMTFYDRXX",
+                            "id": "Sample1",
                             "lane": 1,
                             "readgroup": {
-                                "ID": "HMTFYDRXX.1",
+                                "ID": "GAACTGAGCG.TCGTGGAGCG.1",
+                                "PU": "HMTFYDRXX.1",
                                 "SM": "Sample1",
-                                "PL": "ILLUMINA",
-                                "PU": "HMTFYDRXX.1.GAACTGAGCG+TCGTGGAGCG"
+                                "LB": "UnknownLibrary",
+                                "PL": "ILLUMINA"
                             },
-                            "empty": false,
                             "single_end": true
                         },
                         [
@@ -42,17 +25,15 @@
                     ],
                     [
                         {
-                            "id": "Sample23_S3_L001",
-                            "samplename": "Sample23",
-                            "fcid": "HMTFYDRXX",
+                            "id": "Sample23",
                             "lane": 1,
                             "readgroup": {
-                                "ID": "HMTFYDRXX.1",
+                                "ID": "CGTCTCATAT.TATAGTAGCT.1",
+                                "PU": "HMTFYDRXX.1",
                                 "SM": "Sample23",
-                                "PL": "ILLUMINA",
-                                "PU": "HMTFYDRXX.1.CGTCTCATAT+TATAGTAGCT"
+                                "LB": "UnknownLibrary",
+                                "PL": "ILLUMINA"
                             },
-                            "empty": false,
                             "single_end": true
                         },
                         [
@@ -61,17 +42,15 @@
                     ],
                     [
                         {
-                            "id": "SampleA_S2_L001",
-                            "samplename": "SampleA",
-                            "fcid": "HMTFYDRXX",
+                            "id": "SampleA",
                             "lane": 1,
                             "readgroup": {
-                                "ID": "HMTFYDRXX.1",
+                                "ID": "AGGTCAGATA.CTACAAGATA.1",
+                                "PU": "HMTFYDRXX.1",
                                 "SM": "SampleA",
-                                "PL": "ILLUMINA",
-                                "PU": "HMTFYDRXX.1.AGGTCAGATA+CTACAAGATA"
+                                "LB": "UnknownLibrary",
+                                "PL": "ILLUMINA"
                             },
-                            "empty": false,
                             "single_end": true
                         },
                         [
@@ -80,17 +59,32 @@
                     ],
                     [
                         {
-                            "id": "sampletest_S4_L001",
-                            "samplename": "sampletest",
-                            "fcid": "HMTFYDRXX",
+                            "id": "SampleZ",
                             "lane": 1,
                             "readgroup": {
-                                "ID": "HMTFYDRXX.1",
-                                "SM": "sampletest",
-                                "PL": "ILLUMINA",
-                                "PU": "HMTFYDRXX.1.ATTCCATAAG+TGCCTGGTGG"
+                                "ID": "AAAATTTTGG.GGCCCCAAAA.1",
+                                "PU": "HMTFYDRXX.1",
+                                "SM": "SampleZ",
+                                "LB": "UnknownLibrary",
+                                "PL": "ILLUMINA"
                             },
-                            "empty": false,
+                            "single_end": true
+                        },
+                        [
+                            "SampleZ_S5_L001_R1_001.fastq.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ],
+                    [
+                        {
+                            "id": "sampletest",
+                            "lane": 1,
+                            "readgroup": {
+                                "ID": "ATTCCATAAG.TGCCTGGTGG.1",
+                                "PU": "HMTFYDRXX.1",
+                                "SM": "sampletest",
+                                "LB": "UnknownLibrary",
+                                "PL": "ILLUMINA"
+                            },
                             "single_end": true
                         },
                         [
@@ -163,9 +157,6 @@
                 ],
                 "stats": [
                     
-                ],
-                "versions": [
-                    
                 ]
             }
         ],
@@ -173,7 +164,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.4"
         },
-        "timestamp": "2026-02-17T11:00:00.868274"
+        "timestamp": "2026-02-17T15:13:36.828961"
     },
     "bcl2fastq": {
         "content": [
@@ -189,12 +180,12 @@
                             "fcid": "test",
                             "lane": 1,
                             "readgroup": {
-                                "ID": "000000000-K9H97.1",
+                                "ID": ".1",
                                 "SM": "Sample1",
                                 "PL": "ILLUMINA",
-                                "PU": "000000000-K9H97.1"
+                                "PU": "000000000-K9H97.1",
+                                "LB": ""
                             },
-                            "empty": false,
                             "single_end": true
                         },
                         [
@@ -286,9 +277,6 @@
                             "Stats.json:md5,8e5f038b8aa9e465599d3575f930e604"
                         ]
                     ]
-                ],
-                "versions": [
-                    "versions.yml:md5,513271615cb02dbe541a6202d713ef81"
                 ]
             }
         ],
@@ -296,6 +284,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.4"
         },
-        "timestamp": "2026-02-17T10:56:32.289267"
+        "timestamp": "2026-02-17T15:13:55.605006"
     }
 }
