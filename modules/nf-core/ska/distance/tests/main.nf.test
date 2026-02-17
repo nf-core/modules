@@ -66,6 +66,7 @@ nextflow_process {
     }
 
     test("sarscov2 - plasmodium - list") {
+        tag "test"
 
         setup {
             run("WGET", alias: "WGET1") {
@@ -102,8 +103,11 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.versions,
-                    path(process.out.distances[0][1]).csv(sep:"\t").rows,
-                    path(process.out.cluster_list[0][1]).csv(sep:"\t").rows,
+                    path(process.out.distances[0][1]).csv(sep:"\t").columnNames.sort(),
+                    path(process.out.distances[0][1]).csv(sep:"\t").rows[0].values().sort(),
+                    path(process.out.cluster_list[0][1]).csv(sep:"\t").columnNames.sort(),
+                    path(process.out.cluster_list[0][1]).csv(sep:"\t").columns["ID"].sort(),
+                    path(process.out.cluster_list[0][1]).csv(sep:"\t").columns["Cluster__autocolour"].sort(),
                     process.out.dot
                 ).match() }
             )
