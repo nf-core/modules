@@ -3,7 +3,23 @@
         "content": [
             {
                 "empty_fastq": [
-                    
+                    [
+                        {
+                            "id": "SampleZ",
+                            "lane": 1,
+                            "readgroup": {
+                                "ID": "AAAATTTTGG.GGCCCCAAAA.1",
+                                "LB": "UnknownLibrary",
+                                "PL": "ILLUMINA",
+                                "PU": "HMTFYDRXX.1",
+                                "SM": "SampleZ"
+                            },
+                            "single_end": true
+                        },
+                        [
+                            "SampleZ_S5_L001_R1_001.fastq.gz"
+                        ]
+                    ]
                 ],
                 "fastq": [
                     [
@@ -55,23 +71,6 @@
                         },
                         [
                             "SampleA_S2_L001_R1_001.fastq.gz:md5,7de2ea88133409f34563f40a0d8c9e55"
-                        ]
-                    ],
-                    [
-                        {
-                            "id": "SampleZ",
-                            "lane": 1,
-                            "readgroup": {
-                                "ID": "AAAATTTTGG.GGCCCCAAAA.1",
-                                "PU": "HMTFYDRXX.1",
-                                "SM": "SampleZ",
-                                "LB": "UnknownLibrary",
-                                "PL": "ILLUMINA"
-                            },
-                            "single_end": true
-                        },
-                        [
-                            "SampleZ_S5_L001_R1_001.fastq.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
                         ]
                     ],
                     [
@@ -164,7 +163,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.4"
         },
-        "timestamp": "2026-02-17T15:13:36.828961"
+        "timestamp": "2026-02-17T15:53:44.616782"
     },
     "bcl2fastq": {
         "content": [
@@ -204,7 +203,7 @@
                             "CorrectedIntMetricsOut.bin:md5,2bbf84d3be72734addaa2fe794711434",
                             "ErrorMetricsOut.bin:md5,38c88def138e9bb832539911affdb286",
                             "ExtractionMetricsOut.bin:md5,7497c3178837eea8f09350b5cd252e99",
-                            "IndexMetricsOut.bin",
+                            "IndexMetricsOut.bin:md5,9e688c58a5487b8eaf69c9e1005ad0bf",
                             "QMetricsOut.bin:md5,7e9f198d53ebdfbb699a5f94cf1ed51c",
                             "TileMetricsOut.bin:md5,83891751ec1c91a425a524b476b6ca3c"
                         ]
@@ -284,6 +283,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.4"
         },
-        "timestamp": "2026-02-17T15:13:55.605006"
+        "timestamp": "2026-02-17T15:52:15.463745"
     }
 }

@@ -78,7 +78,7 @@ workflow BCL_DEMULTIPLEX {
 
     // extract empty fastq files from channel
     ch_fastq = ch_fastq_with_meta.branch { meta, fastq ->
-        empty: fastq.any { fq -> file(fq).size() < 1 }
+        empty: fastq.any { fq -> file(fq).size() < 30 }
             return [meta, fastq]
         fastq: true
             return [meta, fastq]
