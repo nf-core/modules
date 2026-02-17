@@ -13,9 +13,9 @@ tools:
       documentation: "https://github.com/alignoth/alignoth/blob/v1.4.6/README.md"
       tool_dev_url: "https://github.com/alignoth/alignoth"
       doi: "10.1093/bioinformatics/btaf663"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:alignoth
-
 input:
   - - meta:
         type: map
@@ -27,9 +27,9 @@ input:
         description: Sorted BAM/CRAM/SAM file to be visualized
         pattern: "*.{bam,cram,sam}"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
-          - edam: "http://edamontology.org/format_3462" # SAM
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_2573"
+          - edam: "http://edamontology.org/format_3462"
     - bai:
         type: file
         description: Index file for the BAM/CRAM/SAM file
@@ -40,7 +40,7 @@ input:
         description: Reference fasta file
         pattern: "*.{fa,fasta}"
         ontologies:
-          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/format_1929"
     - fai:
         type: file
         description: Index file for the reference fasta file
@@ -51,19 +51,18 @@ input:
         description: Bed file with regions to be visualized (optional)
         pattern: "*.bed"
         ontologies:
-          - edam: "http://edamontology.org/format_3003" # BED
+          - edam: "http://edamontology.org/format_3003"
     - vcf:
         type: file
         description: VCF file with variants to be highlighted (optional)
         pattern: "*.vcf"
         ontologies:
-          - edam: "http://edamontology.org/format_3016" # VCF
+          - edam: "http://edamontology.org/format_3016"
     - tbi:
         type: file
         description: Index file for the VCF file
         pattern: "*.vcf.tbi"
         ontologies: []
-
 output:
   html:
     - - meta:
@@ -76,7 +75,7 @@ output:
           description: HTML file with the alignment plot
           pattern: "*.html"
           ontologies:
-            - edam: "http://edamontology.org/format_2331" # HTML
+            - edam: "http://edamontology.org/format_2331"
   output:
     - - meta:
           type: map
@@ -85,7 +84,8 @@ output:
             e.g. `[ id:'sample1' ]`
       - "${prefix}":
           type: directory
-          description: Output directory with the alignment plot and all intermediate files
+          description: Output directory with the alignment plot and all
+            intermediate files
           pattern: "*"
   vl_json:
     - - meta:
@@ -98,8 +98,7 @@ output:
           description: Vega-Lite JSON file with the alignment plot
           pattern: "*.vl.json"
           ontologies:
-            - edam: "http://edamontology.org/format_3464" # JSON
-
+            - edam: "http://edamontology.org/format_3464"
   versions_alignoth:
     - - "${task.process}":
           type: string
@@ -110,13 +109,12 @@ output:
       - "alignoth --version | sed 's/alignoth //g'":
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
-    - - ${task.process}:
+    - - "${task.process}":
           type: string
           description: The name of the process
-      - alignoth:
+      - "alignoth":
           type: string
           description: The name of the tool
       - "alignoth --version | sed 's/alignoth //g'":
