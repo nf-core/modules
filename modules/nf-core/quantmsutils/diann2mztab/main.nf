@@ -38,8 +38,6 @@ process QUANTMSUTILS_DIANN2MZTAB {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-
     """
     touch test_sample_msstats_in.csv
     touch test_sample_triqler_in.tsv

@@ -35,8 +35,6 @@ process QUANTMSUTILS_DIANNCFG {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-
     """
     echo "--cut K*,R*,!*P --fixed-mod Carbamidomethyl,57.021464,C --var-mod Oxidation,15.994915,M" > diann_config.cfg
     touch GENERATE_DIANN_CFG.log
