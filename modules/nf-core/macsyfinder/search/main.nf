@@ -49,7 +49,9 @@ process MACSYFINDER_SEARCH {
     """
     mkdir -p ${prefix}
     touch ${prefix}/macsyfinder.out
+    touch ${prefix}/macsyfinder.err
     touch ${prefix}/all_systems.tsv
+    touch ${prefix}/all_best_solutions.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
