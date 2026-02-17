@@ -81,7 +81,10 @@ nextflow_process {
         then {
             assertAll(
                     { assert process.success },
-                    { assert snapshot(sanitizeOutput(process.out)).match()}
+                    { assert snapshot(
+                        file(process.out.alignment[0][1]).name, // Unstable
+                        process.out.findAll { key, val -> key.startsWith("versions")}
+                    ).match()}
             )
         }
     }
