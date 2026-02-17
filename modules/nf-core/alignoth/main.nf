@@ -8,7 +8,7 @@ process ALIGNOTH {
         : 'community.wave.seqera.io/library/alignoth:1.4.6--049c1999033885bf'}"
 
     input:
-    tuple val(meta), path(bam), path(bai), path(fasta), path(fai), path(bed), path(vcf), path(tbi), val(around), val(highlight), val(region)
+    tuple val(meta), path(bam), path(bai), path(fasta), path(fai), path(bed), path(vcf), path(tbi)
 
     output:
     tuple val(meta), path("${prefix}.html"),    emit: html,    optional: true
@@ -26,9 +26,6 @@ process ALIGNOTH {
         ? "--html > ${prefix}.html"
         : args.contains('--json') ? "> ${prefix}.vl.json" : "--output ${prefix}"
     def dir_cmd = output_cmd.contains('--output') ? "mkdir ${prefix}" : ""
-    def region_cmd = region ? "--region ${region}" : ""
-    def around_cmd = around ? "--around ${around}" : ""
-    def highlight_cmd = highlight ? "--highlight ${highlight}" : ""
     def vcf_cmd = vcf ? "--vcf ${vcf}" : ""
     def bed_cmd = bed ? "--bed ${bed}" : ""
     // --html is added with output_cmd and --json is not a flag used by the tool and is just here for easier module usage
@@ -42,9 +39,6 @@ process ALIGNOTH {
         ${args_corrected} \\
         --bam-path ${bam} \\
         --reference ${fasta} \\
-        ${region_cmd} \\
-        ${around_cmd} \\
-        ${highlight_cmd} \\
         ${vcf_cmd} \\
         ${bed_cmd} \\
         ${output_cmd}

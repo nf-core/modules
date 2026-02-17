@@ -63,15 +63,6 @@ input:
         description: Index file for the VCF file
         pattern: "*.vcf.tbi"
         ontologies: []
-    - around:
-        type: integer
-        description: A chromosome and a base position that will define the region that will be plotted starting 500bp before and end 500bp behind the given position (e.g. "2:17348") (optional)
-    - highlight:
-        type: string
-        description: Named intervals or single base positions that will be highlighted in the visualization (e.g. myinterval:132400-132500 or myvariant:132440) (optional)
-    - region:
-        type: string
-        description: Chromosome and region for the visualization (e.g. "2:132424-132924") (optional)
 
 output:
   html:
