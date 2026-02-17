@@ -11,7 +11,7 @@ process MACSYFINDER_DOWNLOAD {
     val model_name
 
     output:
-    path "models/*"     , emit: models
+    path "models"       , emit: models
     path "versions.yml" , emit: versions
 
     when:

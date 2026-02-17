@@ -21,10 +21,10 @@ input:
       description: Name of the MacSyFinder model to download (e.g., 'TXSScan', 'CasFinder')
 output:
   models:
-    - "models/*":
+    - models:
         type: directory
         description: Directory containing the downloaded MacSyFinder model(s)
-        pattern: "models/*"
+        pattern: "models"
   versions:
     - versions.yml:
         type: file
