@@ -43,7 +43,6 @@ process SLAMDUNK_MAP {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     if ("${input}" == "${prefix}.bam") {

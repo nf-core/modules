@@ -64,7 +64,6 @@ process STADENIOLIB_SCRAMBLE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def inputformat = reads.extension
     def outputformat = "cram"
     if ( "-O sam" in args ) {
         outputformat = "sam"

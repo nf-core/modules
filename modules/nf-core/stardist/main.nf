@@ -17,8 +17,6 @@ process STARDIST {
 
     script:
     def args               = task.ext.args   ?: ''
-    def prefix             = task.ext.prefix ?: "${meta.id}"
-
     """
     stardist-predict2d \\
         -i $image \\
@@ -35,8 +33,7 @@ process STARDIST {
     """
 
     stub:
-    def args               = task.ext.args   ?: ''
-    def prefix             = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.stardist.tif
 
