@@ -37,12 +37,11 @@ process VSEARCH_DEREPLICATE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.derep.fasta
     touch ${prefix}.derep.uc
-    touch myfile.derep.log
+    touch ${prefix}.derep.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
