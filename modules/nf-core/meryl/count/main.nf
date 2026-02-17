@@ -4,8 +4,8 @@ process MERYL_COUNT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/meryl:1.4.1--h4ac6f70_1':
-        'biocontainers/meryl:1.4.1--h4ac6f70_1' }"
+        'https://depot.galaxyproject.org/singularity/meryl:1.4.1--h4ac6f70_0':
+        'biocontainers/meryl:1.4.1--h4ac6f70_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -13,7 +13,7 @@ process MERYL_COUNT {
 
     output:
     tuple val(meta), path("*.meryl")    , emit: meryl_db
-    tuple val("${task.process}"), val('meryl'), eval("meryl --version |& sed -n 's/.* \\([a-f0-9]\\{40\\}\\))/\\1/p'"), emit: versions_meryl, topic: versions
+    tuple val("${task.process}"), val('meryl'), eval("meryl --version |& sed 's/meryl //'"), emit: versions_meryl, topic: versions
 
 
     when:

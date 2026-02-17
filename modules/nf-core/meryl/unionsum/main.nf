@@ -13,7 +13,7 @@ process MERYL_UNIONSUM {
 
     output:
     tuple val(meta), path("*.unionsum.meryl"), emit: meryl_db
-    tuple val("${task.process}"), val('meryl'), eval("meryl --version |& sed -n 's/.* \\([a-f0-9]\\{40\\}\\))/\\1/p'"), emit: versions_meryl, topic: versions
+    tuple val("${task.process}"), val('meryl'), eval("meryl --version |& sed 's/meryl //'"), emit: versions_meryl, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
