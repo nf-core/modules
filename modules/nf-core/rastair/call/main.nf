@@ -22,7 +22,6 @@ process RASTAIR_CALL {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def nt_OT_to_trim = meta.trim_OT ?: parsed_trim_OT
     def nt_OB_to_trim = meta.trim_OB ?: parsed_trim_OB
