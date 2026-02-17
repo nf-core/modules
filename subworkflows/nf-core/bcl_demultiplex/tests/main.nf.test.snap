@@ -5,14 +5,15 @@
                 "empty_fastq": [
                     [
                         {
-                            "empty": true,
-                            "fcid": "HMTFYDRXX",
-                            "id": "SampleZ_S5_L001",
+                            "id": "SampleZ",
                             "lane": 1,
                             "readgroup": {
-                                
+                                "ID": "AAAATTTTGG.GGCCCCAAAA.1",
+                                "LB": "UnknownLibrary",
+                                "PL": "ILLUMINA",
+                                "PU": "HMTFYDRXX.1",
+                                "SM": "SampleZ"
                             },
-                            "samplename": "SampleZ",
                             "single_end": true
                         },
                         [
@@ -23,17 +24,15 @@
                 "fastq": [
                     [
                         {
-                            "id": "Sample1_S1_L001",
-                            "samplename": "Sample1",
-                            "fcid": "HMTFYDRXX",
+                            "id": "Sample1",
                             "lane": 1,
                             "readgroup": {
-                                "ID": "HMTFYDRXX.1",
+                                "ID": "GAACTGAGCG.TCGTGGAGCG.1",
+                                "PU": "HMTFYDRXX.1",
                                 "SM": "Sample1",
-                                "PL": "ILLUMINA",
-                                "PU": "HMTFYDRXX.1.GAACTGAGCG+TCGTGGAGCG"
+                                "LB": "UnknownLibrary",
+                                "PL": "ILLUMINA"
                             },
-                            "empty": false,
                             "single_end": true
                         },
                         [
@@ -42,17 +41,15 @@
                     ],
                     [
                         {
-                            "id": "Sample23_S3_L001",
-                            "samplename": "Sample23",
-                            "fcid": "HMTFYDRXX",
+                            "id": "Sample23",
                             "lane": 1,
                             "readgroup": {
-                                "ID": "HMTFYDRXX.1",
+                                "ID": "CGTCTCATAT.TATAGTAGCT.1",
+                                "PU": "HMTFYDRXX.1",
                                 "SM": "Sample23",
-                                "PL": "ILLUMINA",
-                                "PU": "HMTFYDRXX.1.CGTCTCATAT+TATAGTAGCT"
+                                "LB": "UnknownLibrary",
+                                "PL": "ILLUMINA"
                             },
-                            "empty": false,
                             "single_end": true
                         },
                         [
@@ -61,17 +58,15 @@
                     ],
                     [
                         {
-                            "id": "SampleA_S2_L001",
-                            "samplename": "SampleA",
-                            "fcid": "HMTFYDRXX",
+                            "id": "SampleA",
                             "lane": 1,
                             "readgroup": {
-                                "ID": "HMTFYDRXX.1",
+                                "ID": "AGGTCAGATA.CTACAAGATA.1",
+                                "PU": "HMTFYDRXX.1",
                                 "SM": "SampleA",
-                                "PL": "ILLUMINA",
-                                "PU": "HMTFYDRXX.1.AGGTCAGATA+CTACAAGATA"
+                                "LB": "UnknownLibrary",
+                                "PL": "ILLUMINA"
                             },
-                            "empty": false,
                             "single_end": true
                         },
                         [
@@ -80,17 +75,15 @@
                     ],
                     [
                         {
-                            "id": "sampletest_S4_L001",
-                            "samplename": "sampletest",
-                            "fcid": "HMTFYDRXX",
+                            "id": "sampletest",
                             "lane": 1,
                             "readgroup": {
-                                "ID": "HMTFYDRXX.1",
+                                "ID": "ATTCCATAAG.TGCCTGGTGG.1",
+                                "PU": "HMTFYDRXX.1",
                                 "SM": "sampletest",
-                                "PL": "ILLUMINA",
-                                "PU": "HMTFYDRXX.1.ATTCCATAAG+TGCCTGGTGG"
+                                "LB": "UnknownLibrary",
+                                "PL": "ILLUMINA"
                             },
-                            "empty": false,
                             "single_end": true
                         },
                         [
@@ -130,7 +123,12 @@
                             "id": "HMTFYDRXX",
                             "lane": 1
                         },
-                        "Logs"
+                        [
+                            "Errors.log",
+                            "FastqComplete.txt",
+                            "Info.log",
+                            "Warnings.log"
+                        ]
                     ]
                 ],
                 "reports": [
@@ -158,17 +156,14 @@
                 ],
                 "stats": [
                     
-                ],
-                "versions": [
-                    "versions.yml:md5,b1427a2b3abad63b04f1dd62c8f40e2e"
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.10.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.4"
         },
-        "timestamp": "2025-11-04T16:13:41.469897018"
+        "timestamp": "2026-02-17T15:53:44.616782"
     },
     "bcl2fastq": {
         "content": [
@@ -184,12 +179,12 @@
                             "fcid": "test",
                             "lane": 1,
                             "readgroup": {
-                                "ID": "000000000-K9H97.1",
+                                "ID": ".1",
                                 "SM": "Sample1",
                                 "PL": "ILLUMINA",
-                                "PU": "000000000-K9H97.1"
+                                "PU": "000000000-K9H97.1",
+                                "LB": ""
                             },
-                            "empty": false,
                             "single_end": true
                         },
                         [
@@ -208,7 +203,7 @@
                             "CorrectedIntMetricsOut.bin:md5,2bbf84d3be72734addaa2fe794711434",
                             "ErrorMetricsOut.bin:md5,38c88def138e9bb832539911affdb286",
                             "ExtractionMetricsOut.bin:md5,7497c3178837eea8f09350b5cd252e99",
-                            "IndexMetricsOut.bin",
+                            "IndexMetricsOut.bin:md5,9e688c58a5487b8eaf69c9e1005ad0bf",
                             "QMetricsOut.bin:md5,7e9f198d53ebdfbb699a5f94cf1ed51c",
                             "TileMetricsOut.bin:md5,83891751ec1c91a425a524b476b6ca3c"
                         ]
@@ -281,16 +276,13 @@
                             "Stats.json:md5,8e5f038b8aa9e465599d3575f930e604"
                         ]
                     ]
-                ],
-                "versions": [
-                    "versions.yml:md5,513271615cb02dbe541a6202d713ef81"
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.10.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.4"
         },
-        "timestamp": "2025-11-04T15:08:58.666466636"
+        "timestamp": "2026-02-17T15:52:15.463745"
     }
 }

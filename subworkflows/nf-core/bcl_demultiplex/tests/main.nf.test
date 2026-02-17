@@ -76,6 +76,7 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     sanitizeOutput(workflow.out).collectEntries { key, val ->
+                        if (key == "fastq")
                         if (key == "interop") {
                             return [ key, val.collect { meta, files ->
                                 [
