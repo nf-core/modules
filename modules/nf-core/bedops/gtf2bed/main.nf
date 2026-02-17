@@ -12,7 +12,7 @@ process BEDOPS_GTF2BED {
 
     output:
     tuple val(meta), path('*.bed'), emit: bed
-    tuple val("${task.process}"), val("bedops"), eval("bedops --version | grep version | sed 's/.*version:[[:space:]]*//' | cut -d' ' -f1"), emit: versions_bedops, topic: versions
+    tuple val("${task.process}"), val("bedops"), eval('bedops --version | sed -n "s/.*version: *\\([^ ]*\\).*/\\1/p"'), emit: versions_bedops, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
