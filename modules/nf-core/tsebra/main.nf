@@ -25,9 +25,9 @@ process TSEBRA {
     script:
     def args        = task.ext.args                                     ?: ''
     def prefix      = task.ext.prefix                                   ?: "${meta.id}"
-    def gtf_arg     = '-g ' + gtfs.collect { "$it" }.join(',')
-    def hints_arg   = '-e ' + hints_files.collect { "$it" }.join(',')
-    def keep_arg    = keep_gtfs                                         ? ( '-k ' + keep_gtfs.collect { "$it" }.join(',') ) : ''
+    def gtf_arg     = '-g ' + gtfs.collect { gtf -> "$gtf" }.join(',')
+    def hints_arg   = '-e ' + hints_files.collect { hint -> "$hint" }.join(',')
+    def keep_arg    = keep_gtfs                                         ? ( '-k ' + keep_gtfs.collect { gtf -> "$gtf" }.join(',') ) : ''
     def config_arg  = config                                            ? "-c $config"                                      : ''
     def VERSION     = '1.1.2.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
@@ -47,7 +47,6 @@ process TSEBRA {
     """
 
     stub:
-    def args        = task.ext.args     ?: ''
     def prefix      = task.ext.prefix   ?: "${meta.id}"
     def VERSION     = '1.1.2.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
