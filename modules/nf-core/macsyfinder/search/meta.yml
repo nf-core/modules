@@ -21,11 +21,11 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'test', db_type:'gembase' ]`
-          db_type can be 'gembase', 'ordered_replicon', or 'unordered'
+          db_type specifies the type of dataset to process. Can be 'gembase' (default), 'ordered_replicon', or 'unordered'.
     - proteins:
         type: file
         description: Protein sequence file in FASTA format
-        pattern: "*.{fasta,faa,fa,fna}"
+        pattern: "*.{fasta,faa,fa}"
         ontologies:
           - edam: "http://edamontology.org/format_1929"
   - models:
