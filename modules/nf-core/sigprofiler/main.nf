@@ -23,6 +23,7 @@ process SIGPROFILER {
     template "main_script.py"
 
     stub:
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def context_types = task.ext.context_type?.split(',') ?: ['96','DINUC','ID']
 
@@ -32,7 +33,7 @@ process SIGPROFILER {
         'DINUC' : 'DBS78',
         'ID'    : 'ID83'
     ]
-    def signatures = context_types.collect { index -> context_map[index] }
+    def signatures = context_types.collect { context_map[it] }
 
     """
     mkdir -p results/input
