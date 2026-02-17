@@ -39,7 +39,7 @@ process SEQFU_DEREP {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}_derep"
     """
-    echo | gzip -c > "${prefix}.fasta.gz"
+    echo "" | gzip -c > "${prefix}.fasta.gz"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
