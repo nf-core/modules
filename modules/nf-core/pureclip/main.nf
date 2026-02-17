@@ -54,7 +54,6 @@ process PURECLIP {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     crosslinks_output_name = "${prefix}_pureclip_crosslinks.bed"
     peaks_output_name      = "${prefix}_pureclip_peaks.bed"
