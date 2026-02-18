@@ -50,14 +50,16 @@ input:
       pattern: "*barcodes.csv"
       ontologies:
         - edam: http://edamontology.org/format_3752
+  - lineages_meta:
+      type: file
+      description: Optional file containing lineage metadata that correspond to
+        barcodes
+      pattern: "*lineages.json"
   - lineages_topology:
       type: file
       description: Optional file containing lineage topology information that
         correspond to barcodes
       pattern: "*lineages.yml"
-      ontologies:
-        - edam: http://edamontology.org/format_3752
-        - edam: http://edamontology.org/format_3750
 output:
   lineages:
     - - meta:
