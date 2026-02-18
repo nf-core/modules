@@ -70,14 +70,6 @@ process MULTIVCFANALYZER {
     END_VERSIONS
     """
     stub:
-
-    def args2 = task.ext.args2 ?: ''
-
-    def cmd_snpeff_results = snpeff_results ? "${snpeff_results}" : "NA"
-    def cmd_gff            = gff ? "${gff}" : "NA"
-    def cmd_allele_freqs   = allele_freqs ? "T" : "F"
-    def cmd_gff_exclude    = gff_exclude ? "${gff}" : "NA"
-
     """
     echo "" | gzip > fullAlignment.fasta.gz
     touch info.txt

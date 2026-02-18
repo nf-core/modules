@@ -37,7 +37,6 @@ process MAPDAMAGE2 {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mapDamage \\
             $args \\
@@ -51,7 +50,6 @@ process MAPDAMAGE2 {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir results_${bam.baseName}
 
