@@ -12,7 +12,8 @@ tools:
       homepage: https://blast.ncbi.nlm.nih.gov/Blast.cgi
       documentation: https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=Blastdocs
       doi: 10.1016/S0022-2836(05)80360-2
-      licence: ["US-Government-Work"]
+      licence:
+        - "US-Government-Work"
       identifier: ""
 input:
   - - meta:
@@ -46,13 +47,27 @@ output:
           description: File containing blastn hits
           pattern: "*.txt"
           ontologies: []
+  versions_tblastn:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tblastn:
+          type: string
+          description: The name of the tool
+      - "tblastn -version 2>&1 | sed 's/^.*tblastn: //; s/ .*\\$//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tblastn:
+          type: string
+          description: The name of the tool
+      - "tblastn -version 2>&1 | sed 's/^.*tblastn: //; s/ .*\\$//'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@yumisims"
   - "@gq2"

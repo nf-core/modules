@@ -20,15 +20,15 @@ process SCOARY {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def newick_tree = tree ? "-n ${tree}" : ""
     """
     scoary \\
-        $args \\
+        ${args} \\
         --no-time \\
-        --threads $task.cpus \\
-        --traits $traits \\
-        --genes $genes
+        --threads ${task.cpus} \\
+        --traits ${traits} \\
+        --genes ${genes} \\
+        ${newick_tree}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

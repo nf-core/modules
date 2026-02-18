@@ -17,7 +17,8 @@ process FREEBAYES {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('freebayes'), eval('freebayes --version 2>&1 | sed "s/version:\s*v//g"'), emit: versions_freebayes, topic: versions
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,21 +42,11 @@ process FREEBAYES {
         ${input} > ${prefix}.vcf
 
     bgzip ${prefix}.vcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        freebayes: \$(echo \$(freebayes --version 2>&1) | sed 's/version:\s*v//g' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo | gzip > ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        freebayes: \$(echo \$(freebayes --version 2>&1) | sed 's/version:\s*v//g' )
-    END_VERSIONS
     """
 }

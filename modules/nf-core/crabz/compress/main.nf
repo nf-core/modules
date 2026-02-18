@@ -34,7 +34,6 @@ process CRABZ_COMPRESS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${file}"
     """
     echo "" | gzip > ${prefix}.gz

@@ -12,7 +12,7 @@ process COOLER_BALANCE {
 
     output:
     tuple val(meta), path("${prefix}.${extension}"), emit: cool
-    path "versions.yml"                            , emit: versions
+    tuple val("${task.process}"), val('cooler'), eval('cooler --version 2>&1 | sed "s/cooler, version //"'), emit: versions_cooler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,11 +30,6 @@ process COOLER_BALANCE {
         $args \\
         -p ${task.cpus} \\
         ${prefix}.${extension}${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cooler: \$(cooler --version 2>&1 | sed 's/cooler, version //')
-    END_VERSIONS
     """
 
     stub:
@@ -44,9 +39,5 @@ process COOLER_BALANCE {
     def creation_cmd = suffix.endsWith(".gz") ? "echo '' | gzip -c >" : "touch"
     """
     ${creation_cmd} ${prefix}.${extension}${suffix}
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cooler: \$(cooler --version 2>&1 | sed 's/cooler, version //')
-    END_VERSIONS
     """
 }

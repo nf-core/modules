@@ -4,14 +4,15 @@ process TRUVARI_SEGMENT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/truvari:5.3.0--pyhdfd78af_0':
-        'biocontainers/truvari:5.3.0--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/truvari:5.4.0--pyhdfd78af_0':
+        'biocontainers/truvari:5.4.0--pyhdfd78af_0' }"
+
     input:
     tuple val(meta), path(vcf)
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('truvari'), eval("truvari version | sed 's/Truvari v//'"), topic: versions, emit: versions_truvari
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,21 +27,12 @@ process TRUVARI_SEGMENT {
         $args \\
         $vcf
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        truvari: \$(echo \$(truvari version 2>&1) | sed 's/^Truvari v//' ))
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.vcf
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        truvari: \$(echo \$(truvari version 2>&1) | sed 's/^Truvari v//' ))
-    END_VERSIONS
     """
 }

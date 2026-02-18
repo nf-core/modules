@@ -23,7 +23,8 @@ process RAGTAG_PATCH {
     tuple val(meta), path("*.rename.agp"),          emit: qry_rename_agp,           optional: true
     tuple val(meta), path("*.rename.fasta"),        emit: qry_rename_fasta,         optional: true
     tuple val(meta), path("*.patch.err"),           emit: stderr
-    path "versions.yml",                            emit: versions
+    tuple val("${task.process}"), val('ragtag'), eval("ragtag.py -v | sed 's/v//'"), emit: versions_ragtag, topic: versions
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -79,11 +80,6 @@ process RAGTAG_PATCH {
         do
             mv "\$alignment_file" "\${alignment_file/${prefix}\\//${prefix}_}"
         done
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ragtag: \$(echo \$(ragtag.py -v | sed 's/v//'))
-    END_VERSIONS
     """
 
     stub:
@@ -101,9 +97,5 @@ process RAGTAG_PATCH {
     touch ${prefix}.rename.fasta
     touch ${prefix}.ragtag.patch.asm.1
     touch ${prefix}.patch.err
-
-    cat <<-END_VERSIONS > versions.yml
-        ragtag: \$(echo \$(ragtag.py -v | sed 's/v//'))
-    END_VERSIONS
     """
 }

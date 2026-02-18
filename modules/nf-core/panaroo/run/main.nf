@@ -4,8 +4,8 @@ process PANAROO_RUN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/panaroo:1.3.2--pyhdfd78af_0':
-        'biocontainers/panaroo:1.3.2--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/panaroo:1.6.0--pyhdfd78af_0':
+        'biocontainers/panaroo:1.6.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(gff)
@@ -20,7 +20,6 @@ process PANAROO_RUN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     panaroo \\
         $args \\
