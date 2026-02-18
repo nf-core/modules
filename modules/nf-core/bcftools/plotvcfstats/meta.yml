@@ -1,4 +1,4 @@
-name: plotvcfstats
+name: bcftools_plotvcfstats
 description: Plots the output of bcftools stats
 keywords:
   - visualization
@@ -23,7 +23,8 @@ input:
         type: file
         description: Text file from BCFtools stats output
         pattern: "*_stats.txt"
-        ontologies: http://edamontology.org/format_2330 # TXT
+        ontologies: 
+          - edam: "http://edamontology.org/format_2330" # TXT
 output:
   plot_dir:
     - - meta:
@@ -32,7 +33,7 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'sample1' ]
       - "*plots*":
-          type: folder
+          type: directory
           description: Output directory containing plots, raw data, and log files
           pattern: "*plots*"
           ontologies: []
@@ -46,7 +47,8 @@ output:
           type: file
           description: Copy of the PDF summary output
           pattern: "*.pdf"
-          ontologies: http://edamontology.org/format_3508 # PDF
+          ontologies: 
+            - edam: "http://edamontology.org/format_3508" # PDF
   versions:
     - versions.yml:
         type: file

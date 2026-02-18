@@ -13,7 +13,7 @@ process BCFTOOLS_PLOTVCFSTATS {
     output:
     tuple val(meta), path("*plots*")              , emit: plot_dir
     tuple val(meta), path("*.pdf"), optional: true, emit: plot_pdf
-    path "versions.yml"                           , emit: versions
+    tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,11 +37,6 @@ process BCFTOOLS_PLOTVCFSTATS {
         $stats
 
     cp ${prefix}_plots/*.pdf ${prefix}.plot-vcfstats.pdf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -50,10 +45,5 @@ process BCFTOOLS_PLOTVCFSTATS {
     """
     mkdir ${prefix}_plots
     touch ${prefix}.plot-vcfstats.pdf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
-    END_VERSIONS
     """
 }
