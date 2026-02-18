@@ -12,7 +12,7 @@ process SNAPALIGNER_INDEX {
 
     output:
     tuple val(meta), path("snap/*") ,emit: index
-    path "versions.yml"             ,emit: versions
+    tuple val("${task.process}"), val('snap-aligner'), eval("snap-aligner 2>&1| head -n 1 | sed 's/^.*version //;s/.\$//'"), topic: versions, emit: versions_snapaligner
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,11 +34,6 @@ process SNAPALIGNER_INDEX {
         $nonaltcontigfile_arg \\
         $altliftoverfile_arg \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        snapaligner: \$(snap-aligner 2>&1| head -n 1 | sed 's/^.*version //;s/.\$//')
-    END_VERSIONS
     """
     stub:
     """
@@ -47,10 +42,5 @@ process SNAPALIGNER_INDEX {
     echo "GenomeIndex" > snap/GenomeIndex
     echo "GenomeIndexHash" > snap/GenomeIndexHash
     echo "OverflowTable" > snap/OverflowTable
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        snapaligner: \$(snap-aligner 2>&1| head -n 1 | sed 's/^.*version //;s/.\$//')
-    END_VERSIONS
     """
 }
