@@ -40,7 +40,9 @@ nextflow_process {
                     path(process.out.merged_profiles[0][1])
                         .readLines()
                         .sort() // Needs to be sorted (differences conda vs container)
-                        .collect { line -> line.split("\t").sort().join("\t") },
+                        .collect { line -> line.split("\t").sort().join("\t") }
+                        .join("\n")
+                        .md5(),
                     process.out.versions
                 ).match() }
             )
@@ -84,7 +86,9 @@ nextflow_process {
                     path(process.out.merged_profiles[0][1])
                         .readLines()
                         .sort() // Needs to be sorted (differences conda vs container)
-                        .collect { line -> line.split("\t").sort().join("\t") },
+                        .collect { line -> line.split("\t").sort().join("\t") }
+                        .join("\n")
+                        .md5(),
                     process.out.versions
                 ).match() }
             )
