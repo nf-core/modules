@@ -10,7 +10,7 @@ process UPP_ALIGN {
     input:
     tuple val(meta), path(fasta_unaligned), path(fasta_aligned)
     tuple val(meta2), path(tree)
-    val compress
+    val(compress)
 
     output:
     tuple val(meta), path("*.aln{.gz,}"), emit: alignment
