@@ -26,7 +26,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.txt,
-                    file(process.out.html.get(0).get(1)).list(),
+                    file(process.out.html.get(0).get(1)).name,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 },
@@ -83,7 +83,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.txt,
-                    file(process.out.html.get(0).get(1)).list(),
+                    file(process.out.html.get(0).get(1)).name,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 },
