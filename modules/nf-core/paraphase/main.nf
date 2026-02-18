@@ -6,7 +6,7 @@ process PARAPHASE {
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/65/65e79cfe3a98637330bad85befbbb0baf72366040ce1911f60be8485eae28d55/data':
-        'community.wave.seqera.io/library/minimap2_paraphase_samtools:ab39f9ad1f898e08' }"
+        'community.wave.seqera.io/library/paraphase:3.4.0--3d81b590296e93ae' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
