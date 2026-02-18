@@ -36,8 +36,7 @@ nextflow_process {
                     file(process.out.bam_index[0][1]).name,
                     process.out.checksum,
                     process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match()
-                }
+                ).match()}
             )
         }
     }
