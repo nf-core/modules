@@ -12,7 +12,7 @@ process STAINWARPY_EXTRACTCHANNEL {
 
     output:
     tuple val(meta), path("*_multiplexed_single_channel_img.ome.tif")                            , emit: single_ch_image
-    tuple val("${task.process}"), val('stainwarpy'), eval("stainwarpy --version | sed 's/.* //'"), emit: versions_stainwarpy_extractchannel, topic: versions
+    tuple val("${task.process}"), val('stainwarpy'), eval("stainwarpy --version | sed 's/.* //'"), emit: versions_stainwarpy, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
