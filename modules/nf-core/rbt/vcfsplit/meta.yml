@@ -29,11 +29,6 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_3016" # VCF
           - edam: http://edamontology.org/format_3020 # BCF
-    - tbi:
-        type: file
-        description: Index file for gzipped VCF (optional)
-        pattern: "*.vcf.gz.tbi"
-        ontologies: []
   - numchunks:
       type: integer
       description: Number of chunks to split the VCF file into. The default is 15.
