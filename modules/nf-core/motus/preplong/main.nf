@@ -46,6 +46,7 @@ process MOTUS_PREPLONG {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def refdb = db ? "-db ${db}" : ""
     """
     echo '' | gzip > ${prefix}.gz
 
