@@ -23,9 +23,7 @@ process FASTANI {
     task.ext.when == null || task.ext.when
 
     script:
-    def args            = task.ext.args ?: ''
     def prefix          = task.ext.prefix ?: ( meta.id ?: 'all' )
-    def prefix2         = task.ext.prefix2 ?: ( meta2.id ?: 'all' )
     def input_query     = query ? "-q ${query}": "--ql ${ql}"
     def input_reference = reference ? "-r ${reference}": "--rl ${rl}"
     """
