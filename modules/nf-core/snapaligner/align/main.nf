@@ -14,7 +14,7 @@ process SNAPALIGNER_ALIGN {
     output:
     tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path("*.bai"), optional: true, emit: bai
-    tuple val("${task.process}"), val('snap-aligner'), eval("snap-aligner 2>&1| head -n 1 | sed 's/^.*version //;s/.\$//'"), topic: versions, emit: versions_snapaligner
+    tuple val("${task.process}"), val('snap-aligner'), eval("snap-aligner 2>&1 | sed 's/^.*version //;s/.\$//;q'"), topic: versions, emit: versions_snapaligner
 
     when:
     task.ext.when == null || task.ext.when
