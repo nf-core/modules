@@ -39,9 +39,7 @@ process TAXPASTA_STANDARDISE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def taxonomy_option = taxonomy ? "--taxonomy ${taxonomy}" : ''
     """
     touch ${prefix}.${format}
 

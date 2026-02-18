@@ -27,8 +27,6 @@ process RTN_TNI {
     template 'rtn_tni.r'
 
     stub:
-    def args = task.ext.args ?: ''
-
     """
     touch tni.rds
     touch tni_permutated.rds
