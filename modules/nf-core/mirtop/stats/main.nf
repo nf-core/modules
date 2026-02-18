@@ -12,7 +12,7 @@ process MIRTOP_STATS {
     tuple val(meta), path(mirtop_gff)
 
     output:
-    tuple val(meta), path("stats/*.txt")        , emit: txt
+    tuple val(meta), path("stats/*_stats.txt")  , emit: txt
     tuple val(meta), path("stats/*_stats.log")  , emit: log
     path "versions.yml"                         , emit: versions
 
@@ -29,6 +29,9 @@ process MIRTOP_STATS {
         --out stats \\
         $mirtop_gff
 
+    mv stats/mirtop_stats.log stats/${prefix}_stats.log
+    mv stats/mirtop_stats.txt stats/${prefix}_stats.txt
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         mirtop: \$(echo \$(mirtop --version 2>&1) | sed 's/^.*mirtop //')
@@ -36,11 +39,10 @@ process MIRTOP_STATS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir stats
-    touch stats/${prefix}.txt
+    touch stats/${prefix}_stats.txt
     touch stats/${prefix}_stats.log
 
     cat <<-END_VERSIONS > versions.yml

@@ -36,7 +36,6 @@ process TCOFFEE_IRMSD {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${msa.baseName}"
     """
     # Otherwise, tcoffee will crash when calling its version

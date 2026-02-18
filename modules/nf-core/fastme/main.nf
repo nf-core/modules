@@ -44,7 +44,6 @@ process FASTME {
     """
 
     stub:
-    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: infile
     def mat    = task.ext.args =~ "-O" ? "touch ${prefix}.matrix.phy" : ''
     def boot   = task.ext.args =~ "-B" ? "touch ${prefix}.bootstrap" : ''

@@ -20,7 +20,7 @@ process SURVIVOR_SIMSV {
     tuple val(meta), path("*.bed")          , emit: bed, optional:true
     tuple val(meta), path("*.fasta")        , emit: fasta, optional:true
     tuple val(meta), path("*.insertions.fa"), emit: insertions, optional:true
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('survivor'), eval("SURVIVOR 2>&1 | grep 'Version' | sed 's/Version: //'"), topic: versions, emit: versions_survivor
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,11 +36,6 @@ process SURVIVOR_SIMSV {
     ${create_parameters}
 
     ${create_vcf}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        survivor: \$(echo \$(SURVIVOR 2>&1 | grep "Version" | sed 's/^Version: //'))
-    END_VERSIONS
     """
 
     stub:
@@ -53,10 +48,5 @@ process SURVIVOR_SIMSV {
     ${create_parameters}
 
     ${create_vcf}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        survivor: \$(echo \$(SURVIVOR 2>&1 | grep "Version" | sed 's/^Version: //'))
-    END_VERSIONS
     """
 }
