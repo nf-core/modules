@@ -40,7 +40,7 @@ process VARSCAN_PROCESSSOMATIC {
     """
 
     stub:
-    def output_name = vcf.baseName
+    def output_name = vcf.baseName.replace(".vcf", "")
     """
     echo "" | gzip > ${output_name}.Germline.vcf.gz
     echo "" | gzip > ${output_name}.Germline.hc.vcf.gz
