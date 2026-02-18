@@ -27,7 +27,6 @@ workflow FASTQ_ALIGN_DNA {
         ch_bam_index    = Channel.empty()
         ch_bam          = Channel.empty()
         ch_reports      = Channel.empty()
-        ch_versions     = Channel.empty()
 
         // Align fastq files to reference genome and (optionally) sort
         if (aligner == 'bowtie2') {
@@ -66,5 +65,4 @@ workflow FASTQ_ALIGN_DNA {
         bam         = ch_bam        // channel: [ [meta], bam       ]
         bam_index   = ch_bam_index  // channel: [ [meta], csi/bai   ]
         reports     = ch_reports    // channel: [ [meta], log       ]
-        versions    = ch_versions   // channel: [ versions.yml      ]
 }
