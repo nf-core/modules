@@ -47,7 +47,7 @@ nextflow_process {
                 ]).join(SAMTOOLS_FAIDX.out.fai)
                 """
             }
-        } 
+        }
     }
 
 
@@ -174,12 +174,12 @@ nextflow_process {
         }
 
     }
-     
+
     test("whatshap - haplotag - bam - stub") {
 
         options "-stub"
 
-        when { 
+        when {
             process {
                 """
                 input[0] = Channel.of([
@@ -200,7 +200,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
                 ]
 
-                
+
                 input[2] = Channel.of([
                     [ id:'test' ], // meta map
                 ]).join(SAMTOOLS_FAIDX.out.fai)
@@ -210,7 +210,7 @@ nextflow_process {
 
             }
         }
-        
+
 
         then {
             assertAll(
@@ -350,6 +350,6 @@ nextflow_process {
             )
         }
 
-    }   
+    }
 
 }

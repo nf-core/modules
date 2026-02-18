@@ -1,7 +1,7 @@
 
 process WHATSHAP_HAPLOTAG {
     tag "$meta.id"
-    label 'process_medium' 
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -46,10 +46,10 @@ process WHATSHAP_HAPLOTAG {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def output_tsv = include_tsv_output  ? "echo '' | gzip > ${prefix}.tsv.gz" : ''
-    """ 
+    """
     touch ${prefix}.bam
     $output_tsv
 
-    echo $args 
+    echo $args
     """
 }
