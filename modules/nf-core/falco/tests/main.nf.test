@@ -24,7 +24,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.txt,
+                    file(process.out.html.get(0).get(1)).list(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                },
             )
         }
 
@@ -49,7 +54,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.txt,
+                    process.out.html.collect {meta, files -> files.collect { file(it).name }.sort() },
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                },
             )
         }
 
@@ -71,14 +81,19 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.txt,
+                    file(process.out.html.get(0).get(1)).list(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                },
             )
         }
 
     }
 
     test("sarscov2 - fastq - single end - stub") {
-        options = "-stub"
+        options "-stub"
         when {
             process {
                 """
