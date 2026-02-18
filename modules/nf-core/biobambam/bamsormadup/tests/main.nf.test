@@ -22,8 +22,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
                     ]
                 ]
-                input[1] = [[:],[]]
-
+                input[1] = [[:],[],[]]
                 """
             }
         }
@@ -53,8 +52,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
                     ]
                 ]
-                input[1] = [[:],[]]
-
+                input[1] = [[:],[],[]]
                 """
             }
         }
@@ -86,8 +84,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
                     ]
                 ]
-                input[1] = [[:],[]]
-
+                input[1] = [[:],[],[]]
                 """
             }
         }

@@ -9,14 +9,14 @@ process BIOBAMBAM_BAMSORMADUP {
 
     input:
     tuple val(meta) , path(bams, stageAs: "?/*")
-    tuple val(meta2), path(fasta)
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*.bam")              ,optional:true, emit: bam
     tuple val(meta), path("*.bam.bai")          ,optional:true, emit: bam_index
     tuple val(meta), path("*.cram")             ,optional:true, emit: cram
     tuple val(meta), path("*.metrics.txt")      ,emit: metrics
-    path "versions.yml"                         ,emit: versions
+    tuple val("${task.process}"), val('biobambam'), eval("bamsormadup --version | sed '1!d;s/.* //'"), topic: versions, emit: versions_biobambam
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,13 +42,6 @@ process BIOBAMBAM_BAMSORMADUP {
         tmpfile=$prefix \\
         threads=$task.cpus \\
         > ${prefix}.${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bamcat: \$(echo \$(bamcat --version 2>&1) | sed 's/^This is biobambam2 version //; s/..biobambam2 is .*\$//' )
-        bamcollate2: \$(echo \$(bamcollate2 --version 2>&1) | sed 's/^This is biobambam2 version //; s/..biobambam2 is .*\$//' )
-        bamsormadup: \$(echo \$(bamsormadup --version 2>&1) | sed 's/^This is biobambam2 version //; s/..biobambam2 is .*\$//' )
-    END_VERSIONS
     """
 
     stub:
@@ -60,12 +53,5 @@ process BIOBAMBAM_BAMSORMADUP {
     """
     touch ${prefix}.${suffix}
     touch ${prefix}.metrics.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bamcat: \$(echo \$(bamcat --version 2>&1) | sed 's/^This is biobambam2 version //; s/..biobambam2 is .*\$//' )
-        bamcollate2: \$(echo \$(bamcollate2 --version 2>&1) | sed 's/^This is biobambam2 version //; s/..biobambam2 is .*\$//' )
-        bamsormadup: \$(echo \$(bamsormadup --version 2>&1) | sed 's/^This is biobambam2 version //; s/..biobambam2 is .*\$//' )
-    END_VERSIONS
     """
 }
