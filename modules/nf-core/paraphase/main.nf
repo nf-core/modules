@@ -19,7 +19,9 @@ process PARAPHASE {
     tuple val(meta), path("*.paraphase.bam.bai")                        , emit: bai
     tuple val(meta), path("${prefix}_paraphase_vcfs/*.vcf.gz")          , emit: vcf      , optional: true
     tuple val(meta), path("${prefix}_paraphase_vcfs/*.vcf.gz.{csi,tbi}"), emit: vcf_index, optional: true
-    path "versions.yml"                                                 , emit: versions
+    tuple val("${task.process}"), val('minimap2'),  eval('minimap2 --version')      , emit: versions_minimap2   , topic: versions
+    tuple val("${task.process}"), val('paraphase'), eval('paraphase --version')     , emit: versions_paraphase  , topic: versions
+    tuple val("${task.process}"), val('samtools'),  eval('samtools --version')      , emit: versions_samtools   , topic: versions
 
     when:
     task.ext.when == null || task.ext.when
