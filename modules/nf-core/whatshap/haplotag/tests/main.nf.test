@@ -190,10 +190,7 @@ nextflow_process {
                 ]
 
 
-                input[2] = Channel.of([
-                    [ id:'test' ], // meta map
-                ]).join(SAMTOOLS_FAIDX.out.fai)
-
+                input[2] = SAMTOOLS_FAIDX.out.fai
                 input[3] = "true"
                 """
 
