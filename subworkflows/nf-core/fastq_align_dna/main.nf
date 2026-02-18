@@ -47,7 +47,6 @@ workflow FASTQ_ALIGN_DNA {
                 DRAGMAP_ALIGN(ch_reads, ch_aligner_index, ch_fasta, sort)       // If aligner is dragmap
                 ch_bam = ch_bam.mix(DRAGMAP_ALIGN.out.bam)
                 ch_reports = ch_reports.mix(DRAGMAP_ALIGN.out.log)
-                ch_versions = ch_versions.mix(DRAGMAP_ALIGN.out.versions)
         }
         else if (aligner == 'snap'){
             SNAP_ALIGN   (ch_reads, ch_aligner_index)                           // If aligner is snap
