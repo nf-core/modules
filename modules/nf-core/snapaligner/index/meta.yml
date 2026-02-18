@@ -63,7 +63,7 @@ output:
       - snap-aligner:
           type: string
           description: The name of the tool
-      - snap-aligner 2>&1| head -n 1 | sed 's/^.*version //;s/.\$//':
+      - snap-aligner 2>&1 | sed 's/^.*version //;s/.\$//;q':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -74,7 +74,7 @@ topics:
       - snap-aligner:
           type: string
           description: The name of the tool
-      - snap-aligner 2>&1| head -n 1 | sed 's/^.*version //;s/.\$//':
+      - snap-aligner 2>&1 | sed 's/^.*version //;s/.\$//;q':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
