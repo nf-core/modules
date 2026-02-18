@@ -20,7 +20,7 @@ process VIENNARNA_RNAFOLD {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: meta.id ?: "${fasta.getName()}"
     """
     RNAfold \\
         ${args} \\
@@ -35,7 +35,7 @@ process VIENNARNA_RNAFOLD {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: meta.id ?: "${fasta.getName()}"
     """
     touch ${prefix}.fold
     touch ${prefix}.ps
