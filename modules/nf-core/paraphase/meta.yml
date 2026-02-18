@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "paraphase"
 description: "HiFi-based caller for highly homologous genes"
 keywords:
@@ -12,9 +11,9 @@ tools:
       documentation: "https://github.com/PacificBiosciences/paraphase"
       tool_dev_url: "https://github.com/PacificBiosciences/paraphase"
       doi: "10.1016/j.ajhg.2023.01.001"
-      licence: ["BSD-3-clause-Clear"]
+      licence:
+        - "BSD-3-clause-Clear"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -51,7 +50,7 @@ input:
         description: Config file
         pattern: "*.yaml"
         ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+          - edam: http://edamontology.org/format_3750
 output:
   json:
     - - meta:
@@ -64,7 +63,7 @@ output:
           description: Summary of haplotype and variant calls
           pattern: "*.paraphase.json"
           ontologies:
-            - edam: http://edamontology.org/format_3464 # JSON
+            - edam: http://edamontology.org/format_3464
   bam:
     - - meta:
           type: map
@@ -98,7 +97,7 @@ output:
           description: compressed VCF file(s) per gene
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   vcf_index:
     - - meta:
           type: map
@@ -110,13 +109,65 @@ output:
           description: compressed VCF file index
           pattern: "*.vcf.gz.{tbi,csi}"
           ontologies: []
+  versions_minimap2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - minimap2:
+          type: string
+          description: The name of the tool
+      - minimap2 --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_paraphase:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - paraphase:
+          type: string
+          description: The name of the tool
+      - paraphase --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - minimap2:
+          type: string
+          description: The name of the tool
+      - minimap2 --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - paraphase:
+          type: string
+          description: The name of the tool
+      - paraphase --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@fellen31"
 maintainers:
