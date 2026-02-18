@@ -58,7 +58,6 @@ workflow FASTQ_ALIGN_DNA {
             STROBEALIGN  (ch_reads, ch_fasta, ch_aligner_index, sort)           // If aligner is strobealign
             ch_bam = ch_bam.mix(STROBEALIGN.out.bam)
             ch_bam_index = ch_bam_index.mix(STROBEALIGN.out.csi)
-            ch_versions = ch_versions.mix(STROBEALIGN.out.versions)
         }
         else {
             error "Unknown aligner: ${aligner}"
