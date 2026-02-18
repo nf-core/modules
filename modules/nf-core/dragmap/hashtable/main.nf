@@ -13,7 +13,7 @@ process DRAGMAP_HASHTABLE {
 
     output:
     tuple val(meta), path("dragmap"), emit: hashmap
-    path "versions.yml",              emit: versions
+    tuple val("${task.process}"), val('dragmap'), eval("dragen-os --version 2>&1"), emit: versions_dragmap, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,20 +28,10 @@ process DRAGMAP_HASHTABLE {
         --output-directory dragmap \\
         ${args} \\
         --ht-num-threads ${task.cpus}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dragmap: \$(echo \$(dragen-os --version 2>&1))
-    END_VERSIONS
     """
 
     stub:
     """
     mkdir dragmap
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dragmap: \$(echo \$(dragen-os --version 2>&1))
-    END_VERSIONS
     """
 }
