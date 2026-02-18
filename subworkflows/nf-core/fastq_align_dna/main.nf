@@ -38,7 +38,6 @@ workflow FASTQ_ALIGN_DNA {
                 BWAMEM1_MEM  (ch_reads, ch_aligner_index, ch_fasta, sort)        // If aligner is bwa-mem
                 ch_bam = ch_bam.mix(BWAMEM1_MEM.out.bam)
                 ch_bam_index = ch_bam_index.mix(BWAMEM1_MEM.out.csi)
-                ch_versions = ch_versions.mix(BWAMEM1_MEM.out.versions)
         }
         else if (aligner == 'bwamem2'){
                 BWAMEM2_MEM  (ch_reads, ch_aligner_index, ch_fasta, sort)       // If aligner is bwa-mem2
@@ -48,7 +47,6 @@ workflow FASTQ_ALIGN_DNA {
                 DRAGMAP_ALIGN(ch_reads, ch_aligner_index, ch_fasta, sort)       // If aligner is dragmap
                 ch_bam = ch_bam.mix(DRAGMAP_ALIGN.out.bam)
                 ch_reports = ch_reports.mix(DRAGMAP_ALIGN.out.log)
-                ch_versions = ch_versions.mix(DRAGMAP_ALIGN.out.versions)
         }
         else if (aligner == 'snap'){
             SNAP_ALIGN   (ch_reads, ch_aligner_index)                           // If aligner is snap
