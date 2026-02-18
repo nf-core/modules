@@ -16,21 +16,18 @@ workflow FASTQ_ALIGN_BAMCMP_BWA {
     ch_fasta             // channel (optional) : [ val(meta4), path(fasta) ]
 
     main:
-    ch_versions = channel.empty()
 
     //
     // Map reads with BWA to the primary index, must be queryname sorted (controlled by config)
     //
 
     BWA_MEM_PRIMARY ( ch_reads, ch_primary_index, ch_fasta, true )
-    ch_versions = ch_versions.mix(BWA_MEM_PRIMARY.out.versions)
 
     //
     // Map reads with BWA to the contaminant index, must be queryname sorted (controlled by config)
     //
 
     BWA_MEM_CONTAMINANT ( ch_reads, ch_contaminant_index, [[], [] ], true )
-    ch_versions = ch_versions.mix(BWA_MEM_CONTAMINANT.out.versions)
 
     //
     // Use BAMCMP to retain only reads which map better to the primary genome.
@@ -68,6 +65,4 @@ workflow FASTQ_ALIGN_BAMCMP_BWA {
     unfiltered_stats = BAM_SORT_STATS_SAMTOOLS_UNFILTERED.out.stats       // channel: [ val(meta), path(stats) ]
     unfiltered_flagstat = BAM_SORT_STATS_SAMTOOLS_UNFILTERED.out.flagstat // channel: [ val(meta), path(flagstat) ]
     unfiltered_idxstats = BAM_SORT_STATS_SAMTOOLS_UNFILTERED.out.idxstats // channel: [ val(meta), path(idxstats) ]
-
-    versions = ch_versions                                                // channel: [ path(versions.yml) ]
 }

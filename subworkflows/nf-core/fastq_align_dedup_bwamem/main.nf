@@ -27,7 +27,6 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
     ch_idxstats         = channel.empty()
     ch_picard_metrics   = channel.empty()
     ch_multiqc_files    = channel.empty()
-    ch_versions         = channel.empty()
     if (use_gpu) {
         /*
         * Align with parabricks GPU enabled fq2bam implementation of bwa-mem
@@ -64,7 +63,6 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
         ch_stats            = FASTQ_ALIGN_BWA.out.stats       // channel: [ val(meta), path(stats) ]
         ch_flagstat         = FASTQ_ALIGN_BWA.out.flagstat    // channel: [ val(meta), path(flagstat) ]
         ch_idxstats         = FASTQ_ALIGN_BWA.out.idxstats    // channel: [ val(meta), path(idxstats) ]
-        ch_versions         = ch_versions.mix(FASTQ_ALIGN_BWA.out.versions)
     }
 
     if (!skip_deduplication) {
@@ -113,5 +111,4 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
     samtools_idxstats = ch_idxstats                      // channel: [ val(meta), [ idxstats ]  ]
     picard_metrics    = ch_picard_metrics                // channel: [ val(meta), [ metrics ]   ]
     multiqc           = ch_multiqc_files                 // channel: [ *{html,txt}              ]
-    versions          = ch_versions                      // channel: [ versions.yml             ]
 }

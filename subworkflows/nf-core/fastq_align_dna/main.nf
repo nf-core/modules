@@ -38,7 +38,6 @@ workflow FASTQ_ALIGN_DNA {
                 BWAMEM1_MEM  (ch_reads, ch_aligner_index, ch_fasta, sort)        // If aligner is bwa-mem
                 ch_bam = ch_bam.mix(BWAMEM1_MEM.out.bam)
                 ch_bam_index = ch_bam_index.mix(BWAMEM1_MEM.out.csi)
-                ch_versions = ch_versions.mix(BWAMEM1_MEM.out.versions)
         }
         else if (aligner == 'bwamem2'){
                 BWAMEM2_MEM  (ch_reads, ch_aligner_index, ch_fasta, sort)       // If aligner is bwa-mem2
