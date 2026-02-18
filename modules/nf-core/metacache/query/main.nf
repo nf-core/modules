@@ -25,7 +25,7 @@ process METACACHE_QUERY {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input_file = meta.single_end ? reads : "${reads[0]} ${reads[1]} -pairfiles"
-    def abundance_opt = do_abundances ? "-abundances ${prefix}.abundances.txt" : ''
+    def abundance_cmd = do_abundances ? "-abundances ${prefix}.abundances.txt" : ''
     """
     dbmeta=`find -L db/ -name "*.meta" | head -n 1`
     [ -n "\$dbmeta" ] || { echo 'Database file "*.meta" not found!' >&2 ; exit 1 ; }
@@ -33,8 +33,8 @@ process METACACHE_QUERY {
         query \\
         \$dbmeta \\
         ${input_file} \\
-        $abundance_opt \\
-        $args \\
+        ${abundance_cmd} \\
+        ${args} \\
         -out ${prefix}.mapping.txt
 
     cat <<-END_VERSIONS > versions.yml
