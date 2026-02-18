@@ -30,8 +30,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.versions,
-                    path(process.out.distances[0][1]).csv(sep:"\t").sort(),
-                    path(process.out.cluster_list[0][1]).csv(sep:"\t").sort(),
+                    path(process.out.distances[0][1]).csv(sep:"\t").rows,
+                    path(process.out.cluster_list[0][1]).csv(sep:"\t").rows,
                     process.out.dot
                 ).match() }
             )
@@ -59,13 +59,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
     }
 
     test("sarscov2 - plasmodium - list") {
+        tag "test"
 
         setup {
             run("WGET", alias: "WGET1") {
@@ -133,7 +134,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
