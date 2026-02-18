@@ -99,7 +99,7 @@ output:
       - biobambam:
           type: string
           description: The name of the tool
-      - bamsormadup --version | sed '1!d;s/.* //':
+      - bamsormadup --version |& sed '1!d; s/.*version //; s/.\$//':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -110,7 +110,7 @@ topics:
       - biobambam:
           type: string
           description: The name of the tool
-      - bamsormadup --version | sed '1!d;s/.* //':
+      - bamsormadup --version |& sed '1!d; s/.*version //; s/.\$//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

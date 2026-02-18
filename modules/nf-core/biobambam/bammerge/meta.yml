@@ -24,7 +24,7 @@ input:
         type: file
         description: List containing 1 or more bam files
         ontologies:
-          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_2572
 output:
   bam:
     - - meta:
@@ -37,7 +37,7 @@ output:
           description: Merged BAM file
           pattern: "*.bam"
           ontologies:
-            - edam: http://edamontology.org/format_2572 # BAM
+            - edam: http://edamontology.org/format_2572
   bam_index:
     - - meta:
           type: map
@@ -49,7 +49,7 @@ output:
           description: BAM index file
           pattern: "*.bai"
           ontologies:
-            - edam: http://edamontology.org/format_2573 # BAI
+            - edam: http://edamontology.org/format_2573
   checksum:
     - - meta:
           type: map
@@ -69,7 +69,7 @@ output:
       - biobambam:
           type: string
           description: The name of the tool
-      - bammerge --version | sed '1!d;s/.* //':
+      - bammerge --version |& sed '1!d; s/.*version //; s/.\$//':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -80,7 +80,7 @@ topics:
       - biobambam:
           type: string
           description: The name of the tool
-      - bammerge --version | sed '1!d;s/.* //':
+      - bammerge --version |& sed '1!d; s/.*version //; s/.\$//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
