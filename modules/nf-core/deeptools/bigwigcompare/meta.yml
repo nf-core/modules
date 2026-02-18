@@ -14,7 +14,8 @@ tools:
       documentation: https://deeptools.readthedocs.io/en/develop/content/tools/bigwigCompare.html
       tool_dev_url: https://github.com/deeptools/deepTools
       doi: "10.1093/nar/gku365"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: "biotools:deeptools"
       args_id: "$args"
 input:
@@ -64,13 +65,27 @@ output:
           ontologies:
             - edam: "http://edamontology.org/format_3583"
             - edam: "http://edamontology.org/format_3006"
+  versions_deeptools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deeptools:
+          type: string
+          description: The name of the tool
+      - bigwigCompare --version | sed "s/bigwigCompare //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: versions.yml
-        ontologies:
-          - edam: http://edamontology.org/format_3750
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deeptools:
+          type: string
+          description: The name of the tool
+      - bigwigCompare --version | sed "s/bigwigCompare //g":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nadiaxaidan"
   - "@daisymut"
