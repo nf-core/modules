@@ -13,7 +13,7 @@ process BIOBAMBAM_BAMMARKDUPLICATES2 {
     output:
     tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path("*.metrics.txt"), emit: metrics
-    tuple val("${task.process}"), val('biobambam'), eval("bammarkduplicates2 --version | sed '1!d;s/.* //'"), topic: versions, emit: versions_biobambam
+    tuple val("${task.process}"), val('biobambam'), eval("bammarkduplicates2 --version |& sed '1!d; s/.*version //; s/.\$//'"), topic: versions, emit: versions_biobambam
 
     when:
     task.ext.when == null || task.ext.when
