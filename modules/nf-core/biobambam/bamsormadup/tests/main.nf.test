@@ -22,8 +22,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
                     ]
                 ]
-                input[1] = [[:],[]]
-
+                input[1] = [[:],[],[]]
                 """
             }
         }
@@ -36,7 +35,7 @@ nextflow_process {
                     process.out.bam_index,
                     process.out.cram,
                     file(process.out.metrics[0][1]).readLines()[3..5],
-                    process.out.versions.collect{ path(it).yaml }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()}
             )
         }
@@ -53,8 +52,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
                     ]
                 ]
-                input[1] = [[:],[]]
-
+                input[1] = [[:],[],[]]
                 """
             }
         }
@@ -67,7 +65,7 @@ nextflow_process {
                     process.out.bam_index,
                     process.out.cram,
                     file(process.out.metrics[0][1]).readLines()[3..5],
-                    process.out.versions.collect{ path(it).yaml }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()}
             )
         }
@@ -86,8 +84,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
                     ]
                 ]
-                input[1] = [[:],[]]
-
+                input[1] = [[:],[],[]]
                 """
             }
         }
@@ -97,7 +94,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    process.out.versions.collect{ path(it).yaml }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
