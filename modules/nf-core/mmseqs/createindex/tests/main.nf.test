@@ -10,18 +10,18 @@ nextflow_process {
     tag "mmseqs/createindex"
     tag "untar"
 
-    test("sars-cov-2 - mmseqs.tar.gz") {
-
-        setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/mmseqs.tar.gz', checkIfExists: true) ]
-                    """
-                }
+    setup {
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/mmseqs.tar.gz', checkIfExists: true) ]
+                """
             }
         }
+    }
+
+    test("sars-cov-2 - mmseqs.tar.gz") {
 
         when {
             process {
@@ -84,9 +84,32 @@ nextflow_process {
 
             assertAll(
                 { assert process.success },
-                { assert snapshot(filteredFiles).match("createindex_filtered_files")},
                 { assert filesExist : "One or more files to exclude do not exist" },
-                { assert snapshot(process.out.versions).match("versions")}
+                { assert snapshot(
+                    filteredFiles,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("sars-cov-2 - mmseqs.tar.gz - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
     }

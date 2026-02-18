@@ -17,7 +17,7 @@ process LIFTOFF {
     tuple val(meta), path("${prefix}.gff3")     , emit: gff3
     tuple val(meta), path("*.polished.gff3")    , emit: polished_gff3, optional: true
     tuple val(meta), path("*.unmapped.txt")     , emit: unmapped_txt
-    path "versions.yml"                         , emit: versions
+    tuple val("${task.process}"), val('liftoff'), eval('liftoff --version | sed "s/v//"'), emit: versions_liftoff, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -58,11 +58,6 @@ process LIFTOFF {
         "${prefix}.gff3_polished" \\
         "${prefix}.polished.gff3" \\
         || echo "-polish is absent"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        liftoff: \$(liftoff --version 2> /dev/null)
-    END_VERSIONS
     """
 
     stub:
@@ -73,10 +68,5 @@ process LIFTOFF {
     touch "${prefix}.gff3"
     touch "${prefix}.unmapped.txt"
     $touch_polished
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        liftoff: \$(liftoff --version 2> /dev/null)
-    END_VERSIONS
     """
 }

@@ -28,13 +28,13 @@ process GMMDEMUX {
     task.ext.when == null || task.ext.when
 
     script:
-    def args           = task.ext.args ?: ''
-    def prefix         = task.ext.prefix ?: "${meta.id}"
-    def skip_opt           = skip ? "--skip $skip" : ""
-    def examine_cells  = examine ? "--examine $examine" : ""
-    def VERSION        = '0.2.2.3' // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    def type_report_opt    = type_report ? "-f ." : "-s ."
-    def summary_rep    = summary_report ? "-r ${prefix}_summary_report.txt" : ""
+    def args            = task.ext.args ?: ''
+    def prefix          = task.ext.prefix ?: "${meta.id}"
+    def skip_opt        = skip ? "--skip $skip" : ""
+    def examine_cells   = examine ? "--examine $examine" : ""
+    def VERSION         = '0.2.2.3' // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    def type_report_opt = type_report ? "-f ." : "-s ."
+    def summary_rep     = summary_report ? "-r ${prefix}_summary_report.txt" : ""
     """
     if [[ ${summary_report} == true ]]; then
         cat /dev/null > ${prefix}_summary_report.txt
@@ -59,6 +59,10 @@ process GMMDEMUX {
     def VERSION = '0.2.2.3'
     def prefix   = task.ext.prefix ?: "${meta.id}"
     """
+    if [[ ${summary_report} == true ]]; then
+        touch ${prefix}_summary_report.txt
+    fi
+
     echo "" | gzip > barcodes.tsv.gz
     echo "" | gzip > features.tsv.gz
     echo "" | gzip > matrix.mtx.gz

@@ -24,10 +24,10 @@ process IVAR_TRIM {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     ivar trim \\
-        $args \\
-        -i $bam \\
-        -b $bed \\
-        -p $prefix \\
+        ${args} \\
+        -i ${bam} \\
+        -b ${bed} \\
+        -p ${prefix} \\
         > ${prefix}.ivar.log
 
     cat <<-END_VERSIONS > versions.yml
@@ -37,7 +37,6 @@ process IVAR_TRIM {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.ivar.log

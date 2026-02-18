@@ -6,7 +6,7 @@ process PARAPHASE {
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/65/65e79cfe3a98637330bad85befbbb0baf72366040ce1911f60be8485eae28d55/data':
-        'community.wave.seqera.io/library/minimap2_paraphase_samtools:ab39f9ad1f898e08' }"
+        'community.wave.seqera.io/library/paraphase:3.4.0--3d81b590296e93ae' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -19,7 +19,9 @@ process PARAPHASE {
     tuple val(meta), path("*.paraphase.bam.bai")                        , emit: bai
     tuple val(meta), path("${prefix}_paraphase_vcfs/*.vcf.gz")          , emit: vcf      , optional: true
     tuple val(meta), path("${prefix}_paraphase_vcfs/*.vcf.gz.{csi,tbi}"), emit: vcf_index, optional: true
-    path "versions.yml"                                                 , emit: versions
+    tuple val("${task.process}"), val('minimap2'),  eval('minimap2 --version')      , emit: versions_minimap2   , topic: versions
+    tuple val("${task.process}"), val('paraphase'), eval('paraphase --version')     , emit: versions_paraphase  , topic: versions
+    tuple val("${task.process}"), val('samtools'),  eval('samtools --version')      , emit: versions_samtools   , topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,17 +42,19 @@ process PARAPHASE {
         $config_file \\
         --out .
 
-    for vcf in ${prefix}_paraphase_vcfs/*.vcf;
-    do
-        bgzip \\
-            $args2 \\
-            --threads $task.cpus \\
-            \$vcf;
-        tabix \\
-            $args3 \\
-            --threads $task.cpus \\
-            \$vcf.gz;
-    done
+    if compgen -G "${prefix}_paraphase_vcfs/*.vcf" > /dev/null; then
+        for vcf in ${prefix}_paraphase_vcfs/*.vcf;
+        do
+            bgzip \\
+                $args2 \\
+                --threads $task.cpus \\
+                \$vcf;
+            tabix \\
+                $args3 \\
+                --threads $task.cpus \\
+                \$vcf.gz;
+        done
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

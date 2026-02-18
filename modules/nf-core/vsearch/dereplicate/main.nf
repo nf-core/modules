@@ -13,7 +13,7 @@ process VSEARCH_DEREPLICATE {
     output:
     tuple val(meta), path('*.derep.fasta')   , emit: fasta
     tuple val(meta), path('*.derep.uc')      , emit: clustering
-    path "*.derep.log"                       , emit: log
+    tuple val(meta), path('*.derep.log')     , emit: log
     path "versions.yml"                      , emit: versions
 
     when:
@@ -37,12 +37,11 @@ process VSEARCH_DEREPLICATE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.derep.fasta
     touch ${prefix}.derep.uc
-    touch myfile.derep.log
+    touch ${prefix}.derep.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

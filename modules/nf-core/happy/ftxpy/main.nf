@@ -45,11 +45,7 @@ process HAPPY_FTXPY {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def regions = regions_bed ? "-R ${regions_bed}" : ""
-    def targets = targets_bed ? "-T ${targets_bed}" : ""
-    def bams = bam ? "--bam ${bam}" : ""
     def VERSION = '0.3.14' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """

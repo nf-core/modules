@@ -21,7 +21,6 @@ process TCOFFEE_TCS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args          = task.ext.args ?: ''
     def prefix        = task.ext.prefix ?: "${meta.id}"
     def lib_arg       = lib ? "-lib ${lib}" : ""
     def header        = meta.keySet().join(",")
@@ -55,7 +54,6 @@ process TCOFFEE_TCS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     # Otherwise, tcoffee will crash when calling its version

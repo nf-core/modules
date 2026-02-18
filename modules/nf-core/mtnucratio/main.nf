@@ -21,8 +21,6 @@ process MTNUCRATIO {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     mtnucratio \\
         $args \\
@@ -31,20 +29,19 @@ process MTNUCRATIO {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mtnucratio: \$(echo \$(mtnucratio --version 2>&1) | head -n1 | sed 's/Version: //')
+        mtnucratio: \$(mtnucratio --version 2>&1 | sed -n '1s/Version: //p')
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     touch ${prefix}.mtnucratio
     touch ${prefix}.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mtnucratio: \$(echo \$(mtnucratio --version 2>&1) | head -n1 | sed 's/Version: //')
+        mtnucratio: \$(mtnucratio --version 2>&1 | sed -n '1s/Version: //p')
     END_VERSIONS
     """
 }

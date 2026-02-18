@@ -6,7 +6,7 @@ process UPP_ALIGN {
     container "nf-core/multiplesequencealign_upp2:4.5.5"
 
     input:
-    tuple val(meta) , path(fasta)
+    tuple val(meta) , path(fasta_unaligned), path(fasta_aligned)
     tuple val(meta2), path(tree)
     val(compress)
 
@@ -22,6 +22,9 @@ process UPP_ALIGN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def tree_args = tree ? "-t $tree" : ""
+    def seq_cmd = fasta_unaligned ? "--sequence_file ${fasta_unaligned}" : ""
+    def align_cmd = fasta_aligned ? "--alignment ${fasta_aligned}" : ""
+
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error("Upp align module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
@@ -32,9 +35,11 @@ process UPP_ALIGN {
     fi
 
     run_upp.py \\
-        $args \\
-        -x $task.cpus \\
-        -s ${fasta} \\
+        ${args} \\
+        ${tree_args} \\
+        -x ${task.cpus} \\
+        ${seq_cmd} \\
+        ${align_cmd} \\
         -d . \\
         -o ${prefix} \\
         -p ./upp-temporary
@@ -49,7 +54,7 @@ process UPP_ALIGN {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    if [ "$compress" = true ]; then
+    if [ "${compress}" = true ]; then
         echo | gzip > "${prefix}.aln.gz"
     else
         touch "${prefix}.aln"

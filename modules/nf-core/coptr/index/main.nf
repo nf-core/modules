@@ -37,7 +37,6 @@ process COPTR_INDEX {
     """
 
     stub:
-    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir bowtie2

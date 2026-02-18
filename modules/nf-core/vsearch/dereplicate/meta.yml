@@ -48,11 +48,14 @@ output:
           pattern: "*.uc"
           ontologies: []
   log:
-    - "*.derep.log":
-        type: file
-        description: a log file of the run
-        pattern: "*.derep.log"
-        ontologies: []
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test' ]`
+      - "*.derep.log":
+          type: file
+          description: a log file of the run
+          pattern: "*.derep.log"
+          ontologies: []
   versions:
     - versions.yml:
         type: file
