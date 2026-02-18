@@ -8,7 +8,7 @@ process RBT_VCFSPLIT {
         : 'biocontainers/rust-bio-tools:0.42.2--h4458251_1'}"
 
     input:
-    tuple val(meta), path(vcf), path(tbi)
+    tuple val(meta), path(vcf)
     val numchunks
 
     output:
