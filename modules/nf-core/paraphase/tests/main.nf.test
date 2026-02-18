@@ -53,8 +53,7 @@ nextflow_process {
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     bam(process.out.bam.get(0).get(1)).getReadsMD5(),
                     file(process.out.bai.get(0).get(1)).name,
-                    file(process.out.vcf_index.get(0).get(1)).name,
-                    process.out.versions
+                    file(process.out.vcf_index.get(0).get(1)).name
                     ).match()
                 }
             )
@@ -92,8 +91,7 @@ nextflow_process {
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     bam(process.out.bam.get(0).get(1)).getReadsMD5(),
                     file(process.out.bai.get(0).get(1)).name,
-                    file(process.out.vcf_index.get(0).get(1)).name,
-                    process.out.versions
+                    file(process.out.vcf_index.get(0).get(1)).name
                     ).match()
                 }
             )
@@ -129,8 +127,7 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.json.get(0).get(1)).readLines()[0..28],
                     process.out.bam.get(0).get(1).isEmpty(),
-                    file(process.out.bai.get(0).get(1)).name,
-                    process.out.versions
+                    file(process.out.bai.get(0).get(1)).name
                     ).match()
                 }
             )
@@ -167,8 +164,7 @@ nextflow_process {
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     bam(process.out.bam.get(0).get(1)).getReadsMD5(),
                     file(process.out.bai.get(0).get(1)).name,
-                    file(process.out.vcf_index.get(0).get(1)).name,
-                    process.out.versions
+                    file(process.out.vcf_index.get(0).get(1)).name
                     ).match()
                 }
             )
