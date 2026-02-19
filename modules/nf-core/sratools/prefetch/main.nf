@@ -19,7 +19,7 @@ process SRATOOLS_PREFETCH {
     when:
     task.ext.when == null || task.ext.when
 
-    script:
+    shell:
     args = task.ext.args ?: ''
     args2 = task.ext.args2 ?: '5 1 100'  // <num retries> <base delay in seconds> <max delay in seconds>
     if (certificate) {

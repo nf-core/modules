@@ -17,7 +17,7 @@ process CUSTOM_SRATOOLSNCBISETTINGS {
     when:
     task.ext.when == null || task.ext.when
 
-    script:
+    shell:
     config = "/LIBS/GUID = \"${UUID.randomUUID().toString()}\"\\n/libs/cloud/report_instance_identity = \"true\"\\n"
     template 'detect_ncbi_settings.sh'
 }
