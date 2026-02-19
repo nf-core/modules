@@ -27,19 +27,8 @@ process PHARMCAT_MATCHER {
     def genes_join = genes instanceof List ? genes.collect().join(',') : null
     def genes_cmd  = genes_join ? "--genes ${genes_join}" : ""
 
-    // Memory is a bit tricky - we want to use the available memory, but we don't want to use more than the available memory
-    def avail_mem = 3072
-    if (!task.memory) {
-        log.info('[GATK HaplotypeCaller] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
-    }
-    else {
-        avail_mem = (task.memory.mega * 0.8).intValue()
-    }
-
     """
-    set -euo pipefail
-
-    java -Xmx${avail_mem}m -jar /opt/conda/bin/pharmcat.jar \\
+    pharmcat \\
         -vcf ${vcf} \\
         --base-filename ${prefix} \\
         --output-dir . \\
