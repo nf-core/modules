@@ -71,14 +71,6 @@ output:
           ontologies:
             - edam: "http://edamontology.org/format_3475"
 
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
   versions_perbase:
     - - ${task.process}:
           type: string
