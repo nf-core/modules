@@ -14,7 +14,7 @@ tools:
       doi: "10.1093/bioinformatics/btad007"
       licence:
         - "GPL v3"
-      identifier: ""
+      identifier: "biotools:sepp"
 input:
   - - meta:
         type: map
@@ -26,17 +26,18 @@ input:
         description: Unaligned sequence file. If no backbone tree nor alignment is
           given, the sequence file will be randomly split into a backbone set and
           query set
-        pattern: "*.{fa,fasta}"
+        pattern: "*.{fa,fna,faa,fasta}"
         ontologies:
           - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
           - edam: http://edamontology.org/format_1929 # FASTA
     - fasta_aligned:
         type: file
         description: Aligned sequence file. (optional)
-        pattern: "*.{fa,fasta}"
+        pattern: "*.{fa,fna,faa,fasta,aln}"
         ontologies:
           - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
           - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1984 # FASTA-ALN
   - - meta2:
         type: map
         description: |
@@ -44,10 +45,10 @@ input:
           e.g. `[ id:'test_tree']`
     - tree:
         type: file
-        description: Input guide tree in Newick format
+        description: Input guide tree, in Newick format.
         pattern: "*.{dnd}"
         ontologies:
-          - edam: http://edamontology.org/format_2006
+          - edam: http://edamontology.org/format_2006 # PHYLOGENETIC TREE
   - compress:
       type: boolean
       description: Flag representing whether the output MSA should be compressed.
@@ -65,27 +66,17 @@ output:
             uncompressed, depending on if compress is set to true or false
           pattern: "*.aln{.gz,}"
           ontologies:
-            - edam: http://edamontology.org/format_2554
-            - edam: http://edamontology.org/format_1921
-            - edam: http://edamontology.org/format_1984
-  versions_upp:
+            - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
+            - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+            - edam: http://edamontology.org/format_1984 # FASTA-ALN
+  versions_sepp:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - upp:
+      - sepp:
           type: string
           description: The name of the tool
       - run_upp.py -v | grep "run_upp" | cut -f2 -d" ":
-          type: eval
-          description: The expression to obtain the version of the tool
-  versions_pigz:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - pigz:
-          type: string
-          description: The name of the tool
-      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -93,19 +84,10 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - upp:
+      - sepp:
           type: string
           description: The name of the tool
       - run_upp.py -v | grep "run_upp" | cut -f2 -d" ":
-          type: eval
-          description: The expression to obtain the version of the tool
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - pigz:
-          type: string
-          description: The name of the tool
-      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
           type: eval
           description: The expression to obtain the version of the tool
 authors:

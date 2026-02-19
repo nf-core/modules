@@ -17,22 +17,22 @@ nextflow_process {
         when {
             process {
                 """
-                    input[0] = [
-                        [ id:'test' ],
-                        file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true),
-                        []
-                    ]
-                    input[1] = [[:],[]]
-                    input[2] = false
-                    """
+                input[0] = [
+                    [ id:'test' ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true),
+                    []
+                ]
+                input[1] = [[:],[]]
+                input[2] = false
+                """
             }
         }
 
         then {
             assertAll(
-                    { assert process.success },
-                    { assert snapshot(sanitizeOutput(process.out)).match() }
-                    )
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
     }
 
@@ -63,28 +63,29 @@ nextflow_process {
                 }
             }
         }
+
         when {
             process {
                 """
-                    input[0] = channel.of([
-                        [ id:'test_tree' ],
-                        file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/toxin-ref.fa", checkIfExists: true)
-                    ]).combine(
-                        FAMSA_ALIGN.out.alignment.map{ meta, file -> [file]}
-                    )
-                    input[1] = FAMSA_GUIDETREE.out.tree
-                    input[2] = true
-                    """
+                input[0] = channel.of([
+                    [ id:'test_tree' ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/toxin-ref.fa", checkIfExists: true)
+                ]).combine(
+                    FAMSA_ALIGN.out.alignment.map{ meta, file -> [file]}
+                )
+                input[1] = FAMSA_GUIDETREE.out.tree
+                input[2] = true
+                """
             }
         }
 
         then {
             assertAll(
-                    { assert process.success },
-                    { assert snapshot(
-                        file(process.out.alignment[0][1]).name, // Unstable
-                        process.out.findAll { key, val -> key.startsWith("versions")}
-                    ).match()}
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.alignment[0][1]).name, // Unstable
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match()}
             )
         }
     }
@@ -94,22 +95,22 @@ nextflow_process {
         when {
             process {
                 """
-                    input[0] = [
-                        [ id:'test' ],
-                        file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true),
-                        []
-                    ]
-                    input[1] = [[:],[]]
-                    input[2] = false
-                    """
+                input[0] = [
+                    [ id:'test' ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true),
+                    []
+                ]
+                input[1] = [[:],[]]
+                input[2] = false
+                """
             }
         }
 
         then {
             assertAll(
-                    { assert process.success },
-                    { assert snapshot(sanitizeOutput(process.out)).match()}
-                    )
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match()}
+            )
         }
     }
 }
