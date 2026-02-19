@@ -1,0 +1,97 @@
+name: "pharmcat_matcher"
+description: |
+  The Named Allele Matcher is responsible for calling diplotypes from variant call data.
+  While it is designed to be used in the PharmCAT pipeline, it can also be run independently.
+  The Named Allele Matcher does not currently support structural variants, including gene copy
+  number. If structural variants are detected in the VCF data, it will be ignored and a warning
+  will be issued.
+  If it detects more than the expected number of alleles in the GT column of the VCF, only the
+  first two alleles will be used and a warning will be issued. On haploid chromosomes, only
+  the first allele will be used.
+keywords:
+  - vcf
+  - pharmcat
+  - matcher
+  - PGx
+tools:
+  - "pharmcat":
+      description: |
+        "PharmCAT (Pharmacogenomics Clinical Annotation Tool) is a bioinformatics
+        tool that analyzes genetic variants to predict drug response and tailor medical
+        treatment to an individual patient’s genetic profile."
+      homepage: "https://pharmcat.clinpgx.org/"
+      documentation: "https://pharmcat.clinpgx.org/"
+      tool_dev_url: "https://github.com/PharmGKB/PharmCAT"
+      doi: "10.1002/cpt.928"
+      licence:
+        - "MPL-2.0"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', name:'test_sample' ]`
+    - vcf:
+        type: file
+        description: The vcf file to be inspected
+        pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
+    - index:
+        type: file
+        description: The tbi/csi file to be inspected
+        pattern: "*.{tbi,csi}"
+        ontologies: []
+  - genes:
+      type: list
+      description: List of genes to be processed
+output:
+  matcher_json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', name:'test_sample' ]`
+      - "*.match.json":
+          type: file
+          description: Json output from the matcher module of PharmCAT
+          pattern: "*.match.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464
+  matcher_html:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', name:'test_sample' ]`
+      - "*.match.html":
+          type: file
+          description: HTML output from the matcher module of PharmCAT
+          pattern: "*.match.html"
+          ontologies: []
+  versions_pharmcat:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pharmcat:
+          type: string
+          description: The name of the tool
+      - pharmcat --version | cut -f2 -d ' ':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pharmcat:
+          type: string
+          description: The name of the tool
+      - pharmcat --version | cut -f2 -d ' ':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@ramsainanduri"
+maintainers:
+  - "@ramsainanduri"
