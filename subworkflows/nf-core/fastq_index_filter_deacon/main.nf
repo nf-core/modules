@@ -9,10 +9,10 @@ workflow FASTQ_INDEX_FILTER_DEACON {
     main:
 
     ch_fasta = ch_fasta_reads
-        .map  { meta, fasta, reads -> [ meta, fasta ] }
+        .map  { meta, fasta, _reads -> [ meta, fasta ] }
     // Check if fastqs are single-end or paired-end and run Deacon accordingly
     ch_reads = ch_fasta_reads
-        .map  { meta, fasta, reads ->
+        .map  { meta, _fasta, reads ->
             if (meta.single_end) {
                 if (reads instanceof List && reads.size() != 1) {
                     error("Error: Check your meta.single_end value. Single-end reads should contain one file only.")
