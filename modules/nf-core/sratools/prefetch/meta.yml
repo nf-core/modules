@@ -43,7 +43,11 @@ output:
           description: >
             Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
+<<<<<<< modules_sra_cleanup
       - ${id}:
+=======
+      - "id, type: 'dir'":
+>>>>>>> master
           type: directory
           description: Directory containing SRA data files
           pattern: "*/*.sra"
