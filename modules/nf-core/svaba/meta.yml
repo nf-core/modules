@@ -1,6 +1,7 @@
 name: "svaba"
-description: SvABA is an efficient and accurate method for detecting SVs from short-read
-  sequencing data using genome-wide local assembly with low memory and computing requirements
+description: SvABA is an efficient and accurate method for detecting SVs from
+  short-read sequencing data using genome-wide local assembly with low memory
+  and computing requirements
 keywords:
   - sv
   - structural variants
@@ -13,7 +14,8 @@ tools:
       documentation: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5880247/"
       tool_dev_url: "https://github.com/walaj/svaba"
       doi: "10.1101/gr.221028.117"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -34,8 +36,8 @@ input:
         ontologies: []
     - normalbam:
         type: file
-        description: Control (or normal) of matching tumor/metastatic sample, BAM, SAM
-          or CRAM file
+        description: Control (or normal) of matching tumor/metastatic sample, BAM,
+          SAM or CRAM file
         pattern: "*.{bam,cram,sam}"
         ontologies: []
     - normalbai:
@@ -73,9 +75,9 @@ input:
           e.g. [ id:'bwa' ]
     - bwa_index:
         type: file
-        description: BWA genome index files. Note that this tool requires the bwa index
-          files to be of the format `prefix.suffix.amb`, where `prefix.suffix` is the
-          full name of the fasta file, not just the prefix.
+        description: BWA genome index files. Note that this tool requires the bwa
+          index files to be of the format `prefix.suffix.amb`, where
+          `prefix.suffix` is the full name of the fasta file, not just the prefix.
         pattern: "Directory containing BWA index *.{amb,ann,bwt,pac,sa}"
         ontologies: []
   - - meta5:
@@ -266,8 +268,8 @@ output:
             e.g. [ id:'test' ]
       - "*.discordants.txt.gz":
           type: file
-          description: Information on all clusters of discordant reads identified with
-            2+ reads
+          description: Information on all clusters of discordant reads identified
+            with 2+ reads
           pattern: "*.txt.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -295,13 +297,27 @@ output:
           pattern: "*.txt.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_svaba:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - svaba:
+          type: string
+          description: The name of the tool
+      - svaba --version 2>&1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n 1:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - svaba:
+          type: string
+          description: The name of the tool
+      - svaba --version 2>&1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n 1:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@kubranarci"
 maintainers:

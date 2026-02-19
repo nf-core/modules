@@ -56,7 +56,6 @@ Reason:
 This module no longer works in conda due to glibc incompatibilities with plotting libraries
 This module is no longer maintained by the authors
 """
-    def args      = task.ext.args   ?: ''
     def prefix    = task.ext.prefix ?: "${meta.id}"
     assert false: deprecation_message
     """

@@ -36,7 +36,6 @@ process PIGZ_UNCOMPRESS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     uncompressed_filename = zip.toString() - '.gz'
     """
     touch $uncompressed_filename

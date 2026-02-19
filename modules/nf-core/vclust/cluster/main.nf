@@ -54,7 +54,6 @@ process VCLUST_CLUSTER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def tani_command = tani ? "--tani ${tani}" : ''
     def gani_command = gani ? "--gani ${gani}" : ''

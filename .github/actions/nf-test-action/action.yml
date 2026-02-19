@@ -13,6 +13,10 @@ inputs:
   paths:
     description: "Test paths"
     required: true
+  tag:
+    description: "Tag to pass as argument for nf-test --tag parameter"
+    required: false
+    default: ""
 
 runs:
   using: "composite"
@@ -76,6 +80,7 @@ runs:
         SENTIEON_AUTH_MECH: "GitHub Actions - token"
       run: |
         NFT_WORKDIR=~
+        TAGS=$([ -n "${{ inputs.tags }}" ] && echo "--tag ${{ inputs.tags }}" || echo "")
 
         nf-test test \
           --profile=${{ inputs.profile }} \
@@ -84,6 +89,7 @@ runs:
           --ci \
           --shard ${{ inputs.shard }}/${{ inputs.total_shards }} \
           --filter process,workflow \
+          $TAGS \
           ${{ inputs.paths }}
 
           # Save the absolute path of the test.tap file to the output

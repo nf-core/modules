@@ -65,9 +65,7 @@ process YARA_MAPPER {
     }
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def index_prefix = index[0].baseName.substring(0,index[0].baseName.lastIndexOf('.'))
     if (meta.single_end) {
         """
         touch ${prefix}.mapped.bam

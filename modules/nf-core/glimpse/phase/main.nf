@@ -12,7 +12,7 @@ process GLIMPSE_PHASE {
 
     output:
     tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: phased_variants
-    path "versions.yml"                               , emit: versions
+    tuple val("${task.process}"), val('glimpse'), eval("GLIMPSE_phase --help | sed -n '/Version/s/.*: //p'"), topic: versions, emit: versions_glimpse
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,23 +36,15 @@ process GLIMPSE_PHASE {
         --output-region ${output_region} \\
         --thread ${task.cpus} \\
         --output ${prefix}.${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        glimpse: "\$(GLIMPSE_phase --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}_${input_region.replace(":", "_")}"
     def suffix = task.ext.suffix ?: "vcf.gz"
 
-    """
-    touch ${prefix}.${suffix}
+    def create_cmd = suffix.endsWith(".gz") ? "echo | gzip >" : "touch"
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        glimpse: "\$(GLIMPSE_phase --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
-    END_VERSIONS
+    """
+    ${create_cmd} ${prefix}.${suffix}
     """
 }

@@ -12,38 +12,7 @@ nextflow_process {
 
     config './nextflow.config'
 
-    test("hifi_trimmer filter_bam test - fasta") {
-
-        when {
-            params {
-                filter_bam_args    = ""
-            }
-            process {
-                """
-                input[0] = Channel.of(
-                    [
-                        [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.bam', checkIfExists: true),
-                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.bed.gz', checkIfExists: true)
-                    ]
-                )
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.filtered,
-                    process.out.versions_hifitrimmer
-                    ).match()
-                }
-            )
-        }
-    }
-
-    test("hifi_trimmer filter_bam test - fastq") {
+    test("hifi_trimmer filter_bam test - input bam") {
 
         when {
             params {
@@ -53,8 +22,8 @@ nextflow_process {
                 """
                 input[0] = Channel.of(
                     [
-                        [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.bam', checkIfExists: true),
+                        [ id:'test_bam' ], // meta map
+                        file(params.modules_testdata_base_path + '/genomics/eukaryotes/Pipistrellus_nathusii/genome/test.bam', checkIfExists: true),
                         file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.bed.gz', checkIfExists: true)
                     ]
                 )
@@ -65,11 +34,61 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.filtered,
-                    process.out.versions_hifitrimmer
-                    ).match()
-                }
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("hifi_trimmer filter_bam test - input fastq") {
+
+        when {
+            params {
+                filter_bam_args    = "-f"
+            }
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test_fastq' ], // meta map
+                        file(params.modules_testdata_base_path + '/genomics/eukaryotes/Pipistrellus_nathusii/genome/test.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.bed.gz', checkIfExists: true)
+                    ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("hifi_trimmer filter_bam test - input fasta") {
+
+        when {
+            params {
+                filter_bam_args    = ""
+            }
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test_fasta' ], // meta map
+                        file(params.modules_testdata_base_path + '/genomics/eukaryotes/Pipistrellus_nathusii/genome/test.fasta.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.bed.gz', checkIfExists: true)
+                    ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
     }
@@ -85,7 +104,7 @@ nextflow_process {
                 input[0] = Channel.of(
                     [
                         [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '/genomics/eukaryotes/Pipistrellus_nathusii/genome/test.bam', checkIfExists: true),
                         file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.bed.gz', checkIfExists: true)
                     ]
                 )
@@ -96,8 +115,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
-                { assert snapshot(process.out.versions_hifitrimmer).match("versions") }
+                { assert snapshot(process.out).match() }
             )
         }
     }

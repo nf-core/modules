@@ -1,7 +1,7 @@
 name: "vsearch_dereplicate"
-description: Merge strictly identical sequences contained in filename. Identical sequences
-  are defined as having the same length and the same string of nucleotides (case insensitive,
-  T and U are considered the same).
+description: Merge strictly identical sequences contained in filename. Identical
+  sequences are defined as having the same length and the same string of
+  nucleotides (case insensitive, T and U are considered the same).
 keywords:
   - vsearch/dereplicate
   - vsearch
@@ -32,34 +32,53 @@ output:
   fasta:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test' ]`
-      - "*.derep.fasta":
+          description: Groovy Map containing sample information e.g. [ id:'test']
+      - "${prefix}.fasta":
           type: file
           description: dereplicated fasta
-          pattern: "*.fasta"
+          pattern: "${prefix}.fasta"
           ontologies: []
   clustering:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test' ]`
-      - "*.derep.uc":
+          description: Groovy Map containing sample information e.g. [ id:'test']
+      - "${prefix}.uc":
           type: file
           description: dereplicated derep.uc file
-          pattern: "*.uc"
+          pattern: "${prefix}.uc"
           ontologies: []
   log:
-    - "*.derep.log":
-        type: file
-        description: a log file of the run
-        pattern: "*.derep.log"
-        ontologies: []
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test']
+      - "${prefix}.log":
+          type: file
+          description: a log file of the run
+          pattern: "${prefix}.log"
+          ontologies: []
+  versions_vsearch:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - vsearch:
+          type: string
+          description: The tool name
+      - vsearch --version 2>&1 | sed -n "1s/.*v\([0-9.]*\).*/\\1/p":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - vsearch:
+          type: string
+          description: The tool name
+      - vsearch --version 2>&1 | sed -n "1s/.*v\([0-9.]*\).*/\\1/p":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@chriswyatt1"
 maintainers:

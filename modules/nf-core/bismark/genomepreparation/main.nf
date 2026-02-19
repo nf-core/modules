@@ -31,7 +31,6 @@ process BISMARK_GENOMEPREPARATION {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     """
     rm $fasta
 

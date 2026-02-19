@@ -37,7 +37,6 @@ workflow VCF_PHASE_SHAPEIT5 {
             }
 
         GLIMPSE2_CHUNK ( ch_vcf_map, chunk_model )
-        ch_versions = ch_versions.mix( GLIMPSE2_CHUNK.out.versions.first() )
 
         ch_chunks = GLIMPSE2_CHUNK.out.chunk_chr
             .splitCsv(header: [

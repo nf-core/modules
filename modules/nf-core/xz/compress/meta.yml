@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "xz_compress"
 description: Compresses files with xz.
 keywords:
@@ -12,9 +11,11 @@ tools:
       homepage: "https://tukaani.org/xz/"
       documentation: "https://tukaani.org/xz/man/xz.1.html"
       tool_dev_url: "https://github.com/tukaani-project/xz"
-      licence: ["GNU LGPLv2.1", "GNU GPLv2", "GNU GPLv3"]
+      licence:
+        - "GNU LGPLv2.1"
+        - "GNU GPLv2"
+        - "GNU GPLv3"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -38,13 +39,27 @@ output:
           description: The compressed file
           pattern: "*.xz"
           ontologies: []
+  versions_xz:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - xz:
+          type: string
+          description: The name of the tool
+      - xz --version | sed '1!d;s/\([^0-9.]*\)//g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - xz:
+          type: string
+          description: The name of the tool
+      - xz --version | sed '1!d;s/\([^0-9.]*\)//g':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@leoisl"
 maintainers:

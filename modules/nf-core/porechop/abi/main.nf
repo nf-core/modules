@@ -41,9 +41,7 @@ process PORECHOP_ABI {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}.porechop_abi"
-    def adapters_list = custom_adapters ? "--custom_adapters ${custom_adapters}" : ""
     """
     echo "" | gzip > ${prefix}.fastq.gz
     touch ${prefix}.log

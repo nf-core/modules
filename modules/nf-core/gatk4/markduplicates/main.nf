@@ -13,12 +13,13 @@ process GATK4_MARKDUPLICATES {
     path fasta_fai
 
     output:
-    tuple val(meta), path("*cram"),     emit: cram, optional: true
-    tuple val(meta), path("*bam"),      emit: bam,  optional: true
-    tuple val(meta), path("*.crai"),    emit: crai, optional: true
-    tuple val(meta), path("*.bai"),     emit: bai,  optional: true
+    tuple val(meta), path("*cram"), emit: cram, optional: true
+    tuple val(meta), path("*bam"), emit: bam, optional: true
+    tuple val(meta), path("*.crai"), emit: crai, optional: true
+    tuple val(meta), path("*.bai"), emit: bai, optional: true
     tuple val(meta), path("*.metrics"), emit: metrics
-    path "versions.yml",                emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,7 +31,7 @@ process GATK4_MARKDUPLICATES {
     // If the extension is CRAM, then change it to BAM
     prefix_bam = prefix.tokenize('.')[-1] == 'cram' ? "${prefix.substring(0, prefix.lastIndexOf('.'))}.bam" : prefix
 
-    def input_list = bam.collect { "--INPUT ${it}" }.join(' ')
+    def input_list = bam.collect { bam_ -> "--INPUT ${bam_}" }.join(' ')
     def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
 
     def avail_mem = 3072
@@ -59,12 +60,6 @@ process GATK4_MARKDUPLICATES {
         rm ${prefix_bam}
         samtools index ${prefix}
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -76,11 +71,5 @@ process GATK4_MARKDUPLICATES {
     touch ${prefix_no_suffix}.cram.crai
     touch ${prefix_no_suffix}.bai
     touch ${prefix}.metrics
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }
