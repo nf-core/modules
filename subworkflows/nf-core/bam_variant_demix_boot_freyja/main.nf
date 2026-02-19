@@ -15,7 +15,7 @@ workflow BAM_VARIANT_DEMIX_BOOT_FREYJA {
     ch_lineages_meta    // channel:  [ path(lineages_meta)]
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     //
     // Variant calling
@@ -55,8 +55,8 @@ workflow BAM_VARIANT_DEMIX_BOOT_FREYJA {
     //
     // Perform bootstrapping to get more accurate estimates of abundances
     //
-    ch_lineages   = Channel.empty()
-    ch_summarized = Channel.empty()
+    ch_lineages   = channel.empty()
+    ch_summarized = channel.empty()
     if (!val_skip_boot){
         FREYJA_BOOT (
             ch_freyja_variants,
@@ -71,7 +71,7 @@ workflow BAM_VARIANT_DEMIX_BOOT_FREYJA {
 
     emit:
     variants       = FREYJA_VARIANTS.out.variants  // channel: [ val(meta), path(variants_tsv), path(depths_tsv) ]
-    demix          = FREYJA_DEMIX.out.demix        // channel: [ val(meta), path(demix_tsv) ]
+    demix          = ch_freyja_demix               // channel: [ val(meta), path(demix_tsv) ]
     lineages       = ch_lineages                   // channel: [ val(meta), path(lineages_csv) ]
     summarized     = ch_summarized                 // channel: [ val(meta), path(summarized_csv) ]
     barcodes       = ch_barcodes                   // channel: [ path(barcodes) ]
