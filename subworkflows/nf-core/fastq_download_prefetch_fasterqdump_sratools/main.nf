@@ -25,7 +25,6 @@ workflow FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS {
     // Prefetch sequencing reads in SRA format.
     //
     SRATOOLS_PREFETCH ( ch_sra_ids, ch_ncbi_settings, ch_dbgap_key )
-    ch_versions = ch_versions.mix(SRATOOLS_PREFETCH.out.versions.first())
 
     //
     // Convert the SRA format into one or more compressed FASTQ files.

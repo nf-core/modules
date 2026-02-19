@@ -15,7 +15,7 @@ process SRATOOLS_PREFETCH {
     output:
     tuple val(meta), path("${id}", type: 'dir'), emit: sra
     tuple val("${task.process}"), val('sratools'), eval("prefetch --version 2>&1 | grep -Eo '[0-9.]+'"), topic: versions, emit: versions_sratools
-    tuple val("${task.process}"), val('curl'), eval("curl --version | head -n 1 | sed 's/^curl //; s/ .*\$//'"), topic: versions, emit: versions_curl
+    tuple val("${task.process}"), val('curl'), eval("curl --version | sed '1!d;s/^curl //; s/ .*//'"), topic: versions, emit: versions_curl
 
     when:
     task.ext.when == null || task.ext.when
