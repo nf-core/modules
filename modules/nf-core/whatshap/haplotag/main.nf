@@ -5,8 +5,8 @@ process WHATSHAP_HAPLOTAG {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/whatshap:2.8--py39h2de1943_0' :
-        'biocontainers/whatshap:2.8--py39h2de1943_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d8/d837709891c2d98fc0956f6fd0dba18b0f67d96c4db74ccbae7db98fd00afe42/data' :
+        'community.wave.seqera.io/library/whatshap:2.8--7fe530bc624a3e5a' }"
 
     input:
     tuple val(meta),  path(vcf), path(tbi), path(bam), path(bai)
