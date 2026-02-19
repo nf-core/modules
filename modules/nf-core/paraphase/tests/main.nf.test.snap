@@ -56,37 +56,7 @@
     },
     "homo_sapiens - [ bam, bai ], no_vcf": {
         "content": [
-            [
-                "{",
-                "    \"RIMBP3B\": {",
-                "        \"total_cn\": null,",
-                "        \"gene_cn\": null,",
-                "        \"final_haplotypes\": null,",
-                "        \"two_copy_haplotypes\": null,",
-                "        \"alleles_final\": null,",
-                "        \"haplotype_links\": null,",
-                "        \"highest_total_cn\": null,",
-                "        \"assembled_haplotypes\": null,",
-                "        \"sites_for_phasing\": null,",
-                "        \"unique_supporting_reads\": null,",
-                "        \"het_sites_not_used_in_phasing\": null,",
-                "        \"homozygous_sites\": null,",
-                "        \"haplotype_details\": null,",
-                "        \"nonunique_supporting_reads\": null,",
-                "        \"read_details\": null,",
-                "        \"genome_depth\": null,",
-                "        \"region_depth\": {",
-                "            \"median\": 0.0,",
-                "            \"percentile80\": 0.0",
-                "        },",
-                "        \"sample_sex\": null,",
-                "        \"heterozygous_sites\": null,",
-                "        \"phase_region\": \"38:chr22:21380000-21390000\",",
-                "        \"raw_alleles\": null,",
-                "        \"fusions_called\": null",
-                "    }",
-                "}"
-            ],
+            "test.paraphase.json:md5,a6126dc93d832121a54532cfc3675027",
             false,
             "test.paraphase.bam.bai"
         ],
@@ -94,7 +64,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.4"
         },
-        "timestamp": "2026-02-18T21:55:00.725248215"
+        "timestamp": "2026-02-19T13:48:14.010321602"
     },
     "homo_sapiens - [ bam, bai ], config - stub": {
         "content": [
@@ -162,7 +132,7 @@
                     [
                         "PARAPHASE",
                         "samtools",
-                        "samtools 1.22.1\nUsing htslib 1.22.1\nCopyright (C) 2025 Genome Research Ltd.\n\nSamtools compilation details:\n    Features:       build=configure curses=yes \n    CC:             /opt/conda/conda-bld/samtools_1752528053426/_build_env/bin/x86_64-conda-linux-gnu-cc\n    CPPFLAGS:       -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /opt/conda/include\n    CFLAGS:         -Wall -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -isystem /opt/conda/include -fdebug-prefix-map=/opt/conda/conda-bld/samtools_1752528053426/work=/usr/local/src/conda/samtools-1.22.1 -fdebug-prefix-map=/opt/conda=/usr/local/src/conda-prefix\n    LDFLAGS:        -Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now -Wl,--disable-new-dtags -Wl,--gc-sections -Wl,--allow-shlib-undefined -Wl,-rpath,/opt/conda/lib -Wl,-rpath-link,/opt/conda/lib -L/opt/conda/lib\n    HTSDIR:         \n    LIBS:           \n    CURSES_LIB:     -ltinfow -lncursesw\n\nHTSlib compilation details:\n    Features:       build=configure libcurl=yes S3=yes GCS=yes libdeflate=yes lzma=yes bzip2=yes plugins=yes plugin-path=/opt/conda/libexec/htslib htscodecs=1.6.4\n    CC:             /opt/conda/conda-bld/htslib_1752522550715/_build_env/bin/x86_64-conda-linux-gnu-cc\n    CPPFLAGS:       -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /opt/conda/include\n    CFLAGS:         -Wall -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -isystem /opt/conda/include -fdebug-prefix-map=/opt/conda/conda-bld/htslib_1752522550715/work=/usr/local/src/conda/htslib-1.22.1 -fdebug-prefix-map=/opt/conda=/usr/local/src/conda-prefix -fvisibility=hidden\n    LDFLAGS:        -Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now -Wl,--disable-new-dtags -Wl,--gc-sections -Wl,--allow-shlib-undefined -Wl,-rpath,/opt/conda/lib -Wl,-rpath-link,/opt/conda/lib -L/opt/conda/lib -fvisibility=hidden -rdynamic\n\nHTSlib URL scheme handlers present:\n    built-in:\t file, preload, data\n    S3 Multipart Upload:\t s3w+https, s3w+http, s3w\n    Amazon S3:\t s3+https, s3, s3+http\n    libcurl:\t gophers, smtp, wss, smb, rtsp, tftp, pop3, smbs, imaps, pop3s, ws, ftps, https, ftp, gopher, sftp, imap, http, smtps, scp, dict, mqtt, telnet\n    Google Cloud Storage:\t gs+http, gs+https, gs\n    crypt4gh-needed:\t crypt4gh\n    mem:\t mem"
+                        "1.22.1"
                     ]
                 ],
                 "bai": [
@@ -228,7 +198,7 @@
                     [
                         "PARAPHASE",
                         "samtools",
-                        "samtools 1.22.1\nUsing htslib 1.22.1\nCopyright (C) 2025 Genome Research Ltd.\n\nSamtools compilation details:\n    Features:       build=configure curses=yes \n    CC:             /opt/conda/conda-bld/samtools_1752528053426/_build_env/bin/x86_64-conda-linux-gnu-cc\n    CPPFLAGS:       -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /opt/conda/include\n    CFLAGS:         -Wall -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -isystem /opt/conda/include -fdebug-prefix-map=/opt/conda/conda-bld/samtools_1752528053426/work=/usr/local/src/conda/samtools-1.22.1 -fdebug-prefix-map=/opt/conda=/usr/local/src/conda-prefix\n    LDFLAGS:        -Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now -Wl,--disable-new-dtags -Wl,--gc-sections -Wl,--allow-shlib-undefined -Wl,-rpath,/opt/conda/lib -Wl,-rpath-link,/opt/conda/lib -L/opt/conda/lib\n    HTSDIR:         \n    LIBS:           \n    CURSES_LIB:     -ltinfow -lncursesw\n\nHTSlib compilation details:\n    Features:       build=configure libcurl=yes S3=yes GCS=yes libdeflate=yes lzma=yes bzip2=yes plugins=yes plugin-path=/opt/conda/libexec/htslib htscodecs=1.6.4\n    CC:             /opt/conda/conda-bld/htslib_1752522550715/_build_env/bin/x86_64-conda-linux-gnu-cc\n    CPPFLAGS:       -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /opt/conda/include\n    CFLAGS:         -Wall -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -isystem /opt/conda/include -fdebug-prefix-map=/opt/conda/conda-bld/htslib_1752522550715/work=/usr/local/src/conda/htslib-1.22.1 -fdebug-prefix-map=/opt/conda=/usr/local/src/conda-prefix -fvisibility=hidden\n    LDFLAGS:        -Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now -Wl,--disable-new-dtags -Wl,--gc-sections -Wl,--allow-shlib-undefined -Wl,-rpath,/opt/conda/lib -Wl,-rpath-link,/opt/conda/lib -L/opt/conda/lib -fvisibility=hidden -rdynamic\n\nHTSlib URL scheme handlers present:\n    built-in:\t file, preload, data\n    S3 Multipart Upload:\t s3w+https, s3w+http, s3w\n    Amazon S3:\t s3+https, s3, s3+http\n    libcurl:\t gophers, smtp, wss, smb, rtsp, tftp, pop3, smbs, imaps, pop3s, ws, ftps, https, ftp, gopher, sftp, imap, http, smtps, scp, dict, mqtt, telnet\n    Google Cloud Storage:\t gs+http, gs+https, gs\n    crypt4gh-needed:\t crypt4gh\n    mem:\t mem"
+                        "1.22.1"
                     ]
                 ]
             }
@@ -237,7 +207,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.4"
         },
-        "timestamp": "2026-02-19T09:46:09.880880553"
+        "timestamp": "2026-02-19T13:59:46.344105904"
     },
     "homo_sapiens - [ bam, bai ], config - csi_index": {
         "content": [
@@ -360,7 +330,7 @@
                     [
                         "PARAPHASE",
                         "samtools",
-                        "samtools 1.22.1\nUsing htslib 1.22.1\nCopyright (C) 2025 Genome Research Ltd.\n\nSamtools compilation details:\n    Features:       build=configure curses=yes \n    CC:             /opt/conda/conda-bld/samtools_1752528053426/_build_env/bin/x86_64-conda-linux-gnu-cc\n    CPPFLAGS:       -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /opt/conda/include\n    CFLAGS:         -Wall -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -isystem /opt/conda/include -fdebug-prefix-map=/opt/conda/conda-bld/samtools_1752528053426/work=/usr/local/src/conda/samtools-1.22.1 -fdebug-prefix-map=/opt/conda=/usr/local/src/conda-prefix\n    LDFLAGS:        -Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now -Wl,--disable-new-dtags -Wl,--gc-sections -Wl,--allow-shlib-undefined -Wl,-rpath,/opt/conda/lib -Wl,-rpath-link,/opt/conda/lib -L/opt/conda/lib\n    HTSDIR:         \n    LIBS:           \n    CURSES_LIB:     -ltinfow -lncursesw\n\nHTSlib compilation details:\n    Features:       build=configure libcurl=yes S3=yes GCS=yes libdeflate=yes lzma=yes bzip2=yes plugins=yes plugin-path=/opt/conda/libexec/htslib htscodecs=1.6.4\n    CC:             /opt/conda/conda-bld/htslib_1752522550715/_build_env/bin/x86_64-conda-linux-gnu-cc\n    CPPFLAGS:       -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /opt/conda/include\n    CFLAGS:         -Wall -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -isystem /opt/conda/include -fdebug-prefix-map=/opt/conda/conda-bld/htslib_1752522550715/work=/usr/local/src/conda/htslib-1.22.1 -fdebug-prefix-map=/opt/conda=/usr/local/src/conda-prefix -fvisibility=hidden\n    LDFLAGS:        -Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now -Wl,--disable-new-dtags -Wl,--gc-sections -Wl,--allow-shlib-undefined -Wl,-rpath,/opt/conda/lib -Wl,-rpath-link,/opt/conda/lib -L/opt/conda/lib -fvisibility=hidden -rdynamic\n\nHTSlib URL scheme handlers present:\n    built-in:\t file, preload, data\n    S3 Multipart Upload:\t s3w+https, s3w+http, s3w\n    Amazon S3:\t s3+https, s3, s3+http\n    libcurl:\t gophers, smtp, wss, smb, rtsp, tftp, pop3, smbs, imaps, pop3s, ws, ftps, https, ftp, gopher, sftp, imap, http, smtps, scp, dict, mqtt, telnet\n    Google Cloud Storage:\t gs+http, gs+https, gs\n    crypt4gh-needed:\t crypt4gh\n    mem:\t mem"
+                        "1.22.1"
                     ]
                 ],
                 "bai": [
@@ -426,7 +396,7 @@
                     [
                         "PARAPHASE",
                         "samtools",
-                        "samtools 1.22.1\nUsing htslib 1.22.1\nCopyright (C) 2025 Genome Research Ltd.\n\nSamtools compilation details:\n    Features:       build=configure curses=yes \n    CC:             /opt/conda/conda-bld/samtools_1752528053426/_build_env/bin/x86_64-conda-linux-gnu-cc\n    CPPFLAGS:       -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /opt/conda/include\n    CFLAGS:         -Wall -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -isystem /opt/conda/include -fdebug-prefix-map=/opt/conda/conda-bld/samtools_1752528053426/work=/usr/local/src/conda/samtools-1.22.1 -fdebug-prefix-map=/opt/conda=/usr/local/src/conda-prefix\n    LDFLAGS:        -Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now -Wl,--disable-new-dtags -Wl,--gc-sections -Wl,--allow-shlib-undefined -Wl,-rpath,/opt/conda/lib -Wl,-rpath-link,/opt/conda/lib -L/opt/conda/lib\n    HTSDIR:         \n    LIBS:           \n    CURSES_LIB:     -ltinfow -lncursesw\n\nHTSlib compilation details:\n    Features:       build=configure libcurl=yes S3=yes GCS=yes libdeflate=yes lzma=yes bzip2=yes plugins=yes plugin-path=/opt/conda/libexec/htslib htscodecs=1.6.4\n    CC:             /opt/conda/conda-bld/htslib_1752522550715/_build_env/bin/x86_64-conda-linux-gnu-cc\n    CPPFLAGS:       -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /opt/conda/include\n    CFLAGS:         -Wall -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -isystem /opt/conda/include -fdebug-prefix-map=/opt/conda/conda-bld/htslib_1752522550715/work=/usr/local/src/conda/htslib-1.22.1 -fdebug-prefix-map=/opt/conda=/usr/local/src/conda-prefix -fvisibility=hidden\n    LDFLAGS:        -Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now -Wl,--disable-new-dtags -Wl,--gc-sections -Wl,--allow-shlib-undefined -Wl,-rpath,/opt/conda/lib -Wl,-rpath-link,/opt/conda/lib -L/opt/conda/lib -fvisibility=hidden -rdynamic\n\nHTSlib URL scheme handlers present:\n    built-in:\t file, preload, data\n    S3 Multipart Upload:\t s3w+https, s3w+http, s3w\n    Amazon S3:\t s3+https, s3, s3+http\n    libcurl:\t gophers, smtp, wss, smb, rtsp, tftp, pop3, smbs, imaps, pop3s, ws, ftps, https, ftp, gopher, sftp, imap, http, smtps, scp, dict, mqtt, telnet\n    Google Cloud Storage:\t gs+http, gs+https, gs\n    crypt4gh-needed:\t crypt4gh\n    mem:\t mem"
+                        "1.22.1"
                     ]
                 ]
             }
@@ -435,7 +405,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.4"
         },
-        "timestamp": "2026-02-19T09:45:48.96229081"
+        "timestamp": "2026-02-19T13:59:33.864338702"
     },
     "homo_sapiens - [ bam, bai ], config": {
         "content": [
@@ -558,7 +528,7 @@
                     [
                         "PARAPHASE",
                         "samtools",
-                        "samtools 1.22.1\nUsing htslib 1.22.1\nCopyright (C) 2025 Genome Research Ltd.\n\nSamtools compilation details:\n    Features:       build=configure curses=yes \n    CC:             /opt/conda/conda-bld/samtools_1752528053426/_build_env/bin/x86_64-conda-linux-gnu-cc\n    CPPFLAGS:       -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /opt/conda/include\n    CFLAGS:         -Wall -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -isystem /opt/conda/include -fdebug-prefix-map=/opt/conda/conda-bld/samtools_1752528053426/work=/usr/local/src/conda/samtools-1.22.1 -fdebug-prefix-map=/opt/conda=/usr/local/src/conda-prefix\n    LDFLAGS:        -Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now -Wl,--disable-new-dtags -Wl,--gc-sections -Wl,--allow-shlib-undefined -Wl,-rpath,/opt/conda/lib -Wl,-rpath-link,/opt/conda/lib -L/opt/conda/lib\n    HTSDIR:         \n    LIBS:           \n    CURSES_LIB:     -ltinfow -lncursesw\n\nHTSlib compilation details:\n    Features:       build=configure libcurl=yes S3=yes GCS=yes libdeflate=yes lzma=yes bzip2=yes plugins=yes plugin-path=/opt/conda/libexec/htslib htscodecs=1.6.4\n    CC:             /opt/conda/conda-bld/htslib_1752522550715/_build_env/bin/x86_64-conda-linux-gnu-cc\n    CPPFLAGS:       -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /opt/conda/include\n    CFLAGS:         -Wall -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -isystem /opt/conda/include -fdebug-prefix-map=/opt/conda/conda-bld/htslib_1752522550715/work=/usr/local/src/conda/htslib-1.22.1 -fdebug-prefix-map=/opt/conda=/usr/local/src/conda-prefix -fvisibility=hidden\n    LDFLAGS:        -Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now -Wl,--disable-new-dtags -Wl,--gc-sections -Wl,--allow-shlib-undefined -Wl,-rpath,/opt/conda/lib -Wl,-rpath-link,/opt/conda/lib -L/opt/conda/lib -fvisibility=hidden -rdynamic\n\nHTSlib URL scheme handlers present:\n    built-in:\t file, preload, data\n    S3 Multipart Upload:\t s3w+https, s3w+http, s3w\n    Amazon S3:\t s3+https, s3, s3+http\n    libcurl:\t gophers, smtp, wss, smb, rtsp, tftp, pop3, smbs, imaps, pop3s, ws, ftps, https, ftp, gopher, sftp, imap, http, smtps, scp, dict, mqtt, telnet\n    Google Cloud Storage:\t gs+http, gs+https, gs\n    crypt4gh-needed:\t crypt4gh\n    mem:\t mem"
+                        "1.22.1"
                     ]
                 ],
                 "bai": [
@@ -624,7 +594,7 @@
                     [
                         "PARAPHASE",
                         "samtools",
-                        "samtools 1.22.1\nUsing htslib 1.22.1\nCopyright (C) 2025 Genome Research Ltd.\n\nSamtools compilation details:\n    Features:       build=configure curses=yes \n    CC:             /opt/conda/conda-bld/samtools_1752528053426/_build_env/bin/x86_64-conda-linux-gnu-cc\n    CPPFLAGS:       -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /opt/conda/include\n    CFLAGS:         -Wall -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -isystem /opt/conda/include -fdebug-prefix-map=/opt/conda/conda-bld/samtools_1752528053426/work=/usr/local/src/conda/samtools-1.22.1 -fdebug-prefix-map=/opt/conda=/usr/local/src/conda-prefix\n    LDFLAGS:        -Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now -Wl,--disable-new-dtags -Wl,--gc-sections -Wl,--allow-shlib-undefined -Wl,-rpath,/opt/conda/lib -Wl,-rpath-link,/opt/conda/lib -L/opt/conda/lib\n    HTSDIR:         \n    LIBS:           \n    CURSES_LIB:     -ltinfow -lncursesw\n\nHTSlib compilation details:\n    Features:       build=configure libcurl=yes S3=yes GCS=yes libdeflate=yes lzma=yes bzip2=yes plugins=yes plugin-path=/opt/conda/libexec/htslib htscodecs=1.6.4\n    CC:             /opt/conda/conda-bld/htslib_1752522550715/_build_env/bin/x86_64-conda-linux-gnu-cc\n    CPPFLAGS:       -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /opt/conda/include\n    CFLAGS:         -Wall -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -isystem /opt/conda/include -fdebug-prefix-map=/opt/conda/conda-bld/htslib_1752522550715/work=/usr/local/src/conda/htslib-1.22.1 -fdebug-prefix-map=/opt/conda=/usr/local/src/conda-prefix -fvisibility=hidden\n    LDFLAGS:        -Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now -Wl,--disable-new-dtags -Wl,--gc-sections -Wl,--allow-shlib-undefined -Wl,-rpath,/opt/conda/lib -Wl,-rpath-link,/opt/conda/lib -L/opt/conda/lib -fvisibility=hidden -rdynamic\n\nHTSlib URL scheme handlers present:\n    built-in:\t file, preload, data\n    S3 Multipart Upload:\t s3w+https, s3w+http, s3w\n    Amazon S3:\t s3+https, s3, s3+http\n    libcurl:\t gophers, smtp, wss, smb, rtsp, tftp, pop3, smbs, imaps, pop3s, ws, ftps, https, ftp, gopher, sftp, imap, http, smtps, scp, dict, mqtt, telnet\n    Google Cloud Storage:\t gs+http, gs+https, gs\n    crypt4gh-needed:\t crypt4gh\n    mem:\t mem"
+                        "1.22.1"
                     ]
                 ]
             }
@@ -633,6 +603,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.4"
         },
-        "timestamp": "2026-02-19T09:46:33.505093462"
+        "timestamp": "2026-02-19T13:59:58.984802834"
     }
 }
