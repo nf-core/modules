@@ -13,7 +13,7 @@ workflow BAM_STATS_MIRNA_MIRTOP {
 
     main:
 
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     MIRTOP_GFF ( ch_bam, ch_hairpin, ch_gtf_species )
     ch_versions = ch_versions.mix(MIRTOP_GFF.out.versions)
