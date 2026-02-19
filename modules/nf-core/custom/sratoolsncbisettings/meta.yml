@@ -1,6 +1,6 @@
 name: "custom_sratoolsncbisettings"
-description: Test for the presence of suitable NCBI settings or create them on the
-  fly.
+description: Test for the presence of suitable NCBI settings or create them on
+  the fly.
 keywords:
   - NCBI
   - settings
@@ -13,7 +13,8 @@ tools:
       homepage: https://github.com/ncbi/sra-tools
       documentation: https://github.com/ncbi/sra-tools/wiki
       tool_dev_url: https://github.com/ncbi/sra-tools
-      licence: ["Public Domain"]
+      licence:
+        - "Public Domain"
       identifier: ""
 input:
   - ids:
@@ -26,13 +27,27 @@ output:
         description: An NCBI user settings file.
         pattern: "*.mkfg"
         ontologies: []
+  versions_sratools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sratools:
+          type: string
+          description: The name of the tool
+      - prefetch --version 2>&1 | grep -Eo '[0-9.]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sratools:
+          type: string
+          description: The name of the tool
+      - prefetch --version 2>&1 | grep -Eo '[0-9.]+':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Midnighter"
 maintainers:
