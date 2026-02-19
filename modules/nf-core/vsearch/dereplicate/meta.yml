@@ -48,11 +48,14 @@ output:
           pattern: "${prefix}.uc"
           ontologies: []
   log:
-    - "${prefix}.log":
-        type: file
-        description: a log file of the run
-        pattern: "${prefix}.log"
-        ontologies: []
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test']
+      - "${prefix}.log":
+          type: file
+          description: a log file of the run
+          pattern: "${prefix}.log"
+          ontologies: []
   versions_vsearch:
     - - ${task.process}:
           type: string
