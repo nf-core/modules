@@ -16,12 +16,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:true ], // meta map
+                    [ id:'test', single_end:true ], // meta map
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                     ]
                 ]
-
                 """
             }
         }
@@ -43,7 +42,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
+                    [ id:'test', single_end:false ], // meta map
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
@@ -71,7 +70,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
+                    [ id:'test', single_end:false ], // meta map
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
@@ -88,6 +87,81 @@ nextflow_process {
 					bam(process.out.bam[0][1]).getReadsMD5(),
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()}
+            )
+        }
+    }
+
+    test("test-picard-fastqtosam-single - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("test-picard-fastqtosam-paired - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("test-picard-fastqtosam-paired-custom-samplename - stub") {
+        options "-stub"
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
