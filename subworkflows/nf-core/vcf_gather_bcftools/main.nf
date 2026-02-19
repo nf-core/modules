@@ -32,7 +32,7 @@ workflow VCF_GATHER_BCFTOOLS {
         }
         .branch { key, meta, vcf, index ->
             def cleanedMetas = meta.collect { m ->
-                m.findAll { k, v -> !(k in arr_common_meta) }
+                m.findAll { k, _v -> !(k in arr_common_meta) }
             }
             def newMeta = arr_common_meta ? key.target + [metas: cleanedMetas] : meta[0]
             def out_tuple = [newMeta, vcf, index]
