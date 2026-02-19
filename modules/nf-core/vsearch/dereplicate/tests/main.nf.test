@@ -29,8 +29,8 @@ nextflow_process {
                     process.out.fasta,
                     process.out.clustering,
                     path(process.out.log[0][1]).readLines().drop(1).join("\n").md5(),
-                    process.out.versions
-                ).match() }
+                    process.out.findAll { key, val -> key.startsWith("versions") },
+                    ).match() }
             )
         }
 
