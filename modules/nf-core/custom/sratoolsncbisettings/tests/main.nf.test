@@ -30,13 +30,31 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                process.out.versions
+                file(process.out.ncbi_settings[0]).name,
+                process.out.findAll { key, val -> key.startsWith("versions") }
             ).match()
 
             with(process.out.ncbi_settings) {
                 assert path(get(0)).readLines().any { it.contains('/LIBS/GUID') }
                 assert path(get(0)).readLines().any { it.contains('/libs/cloud/report_instance_identity') }
             }
+        }
+    }
+
+    test("Should run without failures - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = ["SRX6725035"]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
     }
 }

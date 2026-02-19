@@ -11,13 +11,23 @@ process CUSTOM_SRATOOLSNCBISETTINGS {
     val ids
 
     output:
-    path('*.mkfg')     , emit: ncbi_settings
-    path 'versions.yml', emit: versions
+    path('*.mkfg'), emit: ncbi_settings
+    tuple val("${task.process}"), val('sratools'), eval("prefetch --version 2>&1 | grep -Eo '[0-9.]+'"), topic: versions, emit: versions_sratools
 
     when:
     task.ext.when == null || task.ext.when
 
-    shell:
+    script:
     config = "/LIBS/GUID = \"${UUID.randomUUID().toString()}\"\\n/libs/cloud/report_instance_identity = \"true\"\\n"
-    template 'detect_ncbi_settings.sh'
+
+    """
+    echo ${config}
+    """
+
+    template "detect_ncbi_settings.sh"
+
+    stub:
+    """
+    touch user-settings.mkfg
+    """
 }

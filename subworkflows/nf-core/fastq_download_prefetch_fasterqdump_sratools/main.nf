@@ -19,7 +19,6 @@ workflow FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS {
     //
     CUSTOM_SRATOOLSNCBISETTINGS ( ch_sra_ids.collect() )
     ch_ncbi_settings = CUSTOM_SRATOOLSNCBISETTINGS.out.ncbi_settings
-    ch_versions = ch_versions.mix(CUSTOM_SRATOOLSNCBISETTINGS.out.versions)
 
     //
     // Prefetch sequencing reads in SRA format.
