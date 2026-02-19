@@ -26,7 +26,6 @@ nextflow_process {
                 """
             }
         }
-
     }
 
     test("sarscov2 - human") {
@@ -46,7 +45,6 @@ nextflow_process {
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("sarscov2 - human - stub") {
@@ -68,7 +66,5 @@ nextflow_process {
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
-
 }
