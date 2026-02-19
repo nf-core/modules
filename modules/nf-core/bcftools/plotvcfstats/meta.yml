@@ -11,7 +11,8 @@ tools:
       homepage: http://samtools.github.io/bcftools/bcftools.html
       documentation: http://www.htslib.org/doc/bcftools.html
       doi: 10.1093/bioinformatics/btp352
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:bcftools
 input:
   - - meta:
@@ -23,8 +24,8 @@ input:
         type: file
         description: Text file from BCFtools stats output
         pattern: "*_stats.txt"
-        ontologies: 
-          - edam: "http://edamontology.org/format_2330" # TXT
+        ontologies:
+          - edam: "http://edamontology.org/format_2330"
 output:
   plot_dir:
     - - meta:
@@ -47,14 +48,28 @@ output:
           type: file
           description: Copy of the PDF summary output
           pattern: "*.pdf"
-          ontologies: 
-            - edam: "http://edamontology.org/format_3508" # PDF
+          ontologies:
+            - edam: "http://edamontology.org/format_3508"
+  versions_bcftools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bcftools:
+          type: string
+          description: The name of the tool
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bcftools:
+          type: string
+          description: The name of the tool
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@yz533cb"

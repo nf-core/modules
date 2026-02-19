@@ -30,7 +30,7 @@ nextflow_process {
     }
 
 
-    test("BCFTOOLS - PLOTVCFSTATS") {
+    test("sarscov2 - bcftools") {
 
         when {
             process {
@@ -44,13 +44,16 @@ nextflow_process {
             def stable_data_output = getAllFilesFromDir(process.out.plot_dir.get(0).get(1), ignore: [ '*.{aux,tex,log,pdf}' ] )
             assertAll(
                 { assert process.success },
-                { assert snapshot(stable_data_output).match() }
+                { assert snapshot(
+                    stable_data_output,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
 
     }
 
-    test("BCFTOOLS - PLOTVCFSTATS - stub") {
+    test("sarscov2 - bcftools - stub") {
 
         options "-stub"
 
