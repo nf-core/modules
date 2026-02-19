@@ -18,7 +18,8 @@ process BWA_MEM {
     tuple val(meta), path("*.cram") , emit: cram,   optional: true
     tuple val(meta), path("*.csi")  , emit: csi,    optional: true
     tuple val(meta), path("*.crai") , emit: crai,   optional: true
-    path  "versions.yml"            , emit: versions
+    tuple val("${task.process}"), val('bwa'), eval('bwa 2>&1 | sed -n "s/^Version: //p"'), topic: versions, emit: versions_bwa
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,12 +45,6 @@ process BWA_MEM {
         \$INDEX \\
         $reads \\
         | samtools $samtools_command $args2 ${reference} --threads $task.cpus -o ${prefix}.${extension} -
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bwa: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -64,11 +59,5 @@ process BWA_MEM {
     touch ${prefix}.${extension}
     touch ${prefix}.csi
     touch ${prefix}.crai
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bwa: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }

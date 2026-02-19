@@ -12,7 +12,7 @@ workflow BAM_SPLIT_BY_REGION {
 
     main:
 
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     //
     // Create channel containing the region names from the bed file.
@@ -20,7 +20,7 @@ workflow BAM_SPLIT_BY_REGION {
 
     ch_regions = ch_bam
         .map{
-            meta, bam, bai, regions_file ->
+            meta, _bam, _bai, regions_file ->
             [ meta, regions_file ]
         }
         .splitCsv ( header: ['seq_name', 'start', 'stop'], sep:'\t', elem: 1)
@@ -47,7 +47,7 @@ workflow BAM_SPLIT_BY_REGION {
     ch_bam_for_splitting = ch_bam
         .combine(ch_regions, by: 0)
         // Place region into meta map
-        .map{ meta, bam, bai, regions, chrom -> [ meta + [ genomic_region:chrom ], bam, bai ] }
+        .map{ meta, bam, bai, _region_file, chrom -> [ meta + [ genomic_region:chrom ], bam, bai ] }
 
     // The specified region is put into ext.args2 from the meta. See nextflow.config of the subworkflow.
     SAMTOOLS_VIEW(ch_bam_for_splitting, [[],[],[]], [], [])
