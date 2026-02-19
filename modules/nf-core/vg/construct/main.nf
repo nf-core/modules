@@ -25,7 +25,7 @@ process VG_CONSTRUCT {
 
     def mode =  input instanceof ArrayList || input.toString().endsWith(".vcf.gz") ? 'vcf' : 'msa'
 
-    input_files = mode == 'vcf' ? input.collect { "--vcf ${it}" }.join(" ") : "--msa ${input}"
+    input_files = mode == 'vcf' ? input.collect { vcf_file -> "--vcf ${vcf_file}" }.join(" ") : "--msa ${input}"
     reference = mode == 'vcf' ? "--reference ${fasta}" : ""
 
     insertions = insertions_fasta ? "--insertions ${insertions_fasta}" : ""
@@ -47,8 +47,6 @@ process VG_CONSTRUCT {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-
-
     """
     touch ${prefix}.vg
 

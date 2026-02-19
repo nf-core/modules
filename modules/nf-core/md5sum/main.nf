@@ -13,7 +13,7 @@ process MD5SUM {
 
     output:
     tuple val(meta), path("*.md5"), emit: checksum
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('md5sum'), eval("md5sum --version | sed '1!d; s/.* //'"), topic: versions, emit: versions_md5sum
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,11 +27,6 @@ process MD5SUM {
         find -L * -maxdepth 0 -type f \\
             ! -name '*.md5' \\
             -exec sh -c 'md5sum ${args} "\$1" > "\$1.md5"' _ "{}" \\;
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            md5sum: \$( md5sum --version | sed '1!d; s/.* //' )
-        END_VERSIONS
         """
     }
     else {
@@ -40,11 +35,6 @@ process MD5SUM {
             ! -name '*.md5' \\
             -exec md5sum ${args} "{}" + \\
             > ${prefix}.md5
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            md5sum: \$( md5sum --version | sed '1!d; s/.* //' )
-        END_VERSIONS
         """
     }
 
@@ -55,21 +45,11 @@ process MD5SUM {
         find -L * -type f \\
             ! -name '*.md5' \\
             -exec sh -c 'touch "\$1.md5"' _ "{}" \\;
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            md5sum: \$( md5sum --version | sed '1!d; s/.* //' )
-        END_VERSIONS
         """
     }
     else {
         """
         touch ${prefix}.md5
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            md5sum: \$( md5sum --version | sed '1!d; s/.* //' )
-        END_VERSIONS
         """
     }
 }

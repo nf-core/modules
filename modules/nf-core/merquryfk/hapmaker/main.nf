@@ -6,8 +6,8 @@ process MERQURYFK_HAPMAKER {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3f/3fefda33017e34e77a61dd82f8a2884414cdcb222269d9ca72a543bfeb4604b6/data' :
-        'community.wave.seqera.io/library/fastk_merquryfk_r-argparse_r-cowplot_pruned:d61b120497d4185b' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/56/56641ad3d1130e668134edc752fdf0bed1cc31da3b3d74730aa6edf40527493a/data' :
+        'community.wave.seqera.io/library/merquryfk:1.2--f21b6c1cbbbbfe64' }"
 
     input:
     tuple val(meta) , path(matktab)
@@ -27,9 +27,9 @@ process MERQURYFK_HAPMAKER {
 
     script:
     def args        = task.ext.args ?: ''
-    input_mat       = matktab   ? "${matktab.find{ path -> path.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}"   : ''
-    input_pat       = patktab   ? "${patktab.find{ path -> path.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}"   : ''
-    def input_child = childktab ? "${childktab.find{ path -> path.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}" : ''
+    input_mat       = matktab   ? "${matktab.find { path -> path.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}"   : ''
+    input_pat       = patktab   ? "${patktab.find { path -> path.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}"   : ''
+    def input_child = childktab ? "${childktab.find { path -> path.toString().endsWith(".ktab") }.toString() - ~/\.ktab/}" : ''
     """
     HAPmaker \\
         $args \\

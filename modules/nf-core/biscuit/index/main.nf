@@ -32,7 +32,6 @@ process BISCUIT_INDEX {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     """
     touch ${fasta}.bis.amb
     touch ${fasta}.bis.ann

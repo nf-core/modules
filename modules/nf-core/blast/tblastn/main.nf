@@ -13,7 +13,7 @@ process BLAST_TBLASTN {
 
     output:
     tuple val(meta), path('*.txt'), emit: txt
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val("tblastn"), eval("tblastn -version 2>&1 | sed 's/^.*tblastn: //; s/ .*\$//'"), topic: versions, emit: versions_tblastn
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,21 +41,12 @@ process BLAST_TBLASTN {
         ${args} \\
         -out ${prefix}.txt
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blast: \$(tblastn -version 2>&1 | sed 's/^.*tblastn: //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blast: \$(tblastn -version 2>&1 | sed 's/^.*tblastn: //; s/ .*\$//')
-    END_VERSIONS
     """
 }

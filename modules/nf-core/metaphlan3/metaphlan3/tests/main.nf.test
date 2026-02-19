@@ -131,7 +131,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists:true),
                     []
                 ])
-                input[1] = [[],[]]
+                input[1] = [[],[],[]]
                 input[2] = []
                 input[3] = []
                 """
@@ -182,7 +182,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists:true),
                     []
                 ])
-                input[1] = [[],[]]
+                input[1] = [[],[],[]]
                 input[2] = []
                 input[3] = []
                 """

@@ -48,7 +48,8 @@ process BISMARK_ALIGN {
             def tmem = (task.memory as MemoryUnit).toBytes()
             def mcore = (tmem / mem_per_multicore) as int
             ccore = Math.min(ccore, mcore)
-        } catch (all) {
+        } catch (Exception e) {
+            log.warn "Error catched: ${e}"
             log.warn "Not able to define bismark align multicore based on available memory"
         }
         if(ccore > 1){
@@ -64,7 +65,6 @@ process BISMARK_ALIGN {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bam

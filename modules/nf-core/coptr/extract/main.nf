@@ -19,7 +19,6 @@ process COPTR_EXTRACT {
 
     script:
     def args   = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     coptr \\

@@ -29,7 +29,6 @@ via a boolean switch, making 'getchromsizes' unnecessary.
 """
     assert false: deprecation_message
 
-    def args = task.ext.args ?: ''
     """
     samtools faidx $fasta
     cut -f 1,2 ${fasta}.fai > ${fasta}.sizes

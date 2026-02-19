@@ -1,7 +1,7 @@
 name: "snpsift_annmem"
 description: |
-  High-performance annotation of VCF files using memory-optimized databases.
-  Supports two modes: database creation (create=true) and VCF annotation (default).
+  Annotate VCF files using pre-built SnpSift annMem databases.
+  Enriches input VCF records by querying memory-optimized indexed dataframes for high-performance annotation.
 keywords:
   - vcf
   - annotation
@@ -26,7 +26,7 @@ input:
           e.g. `[ id:'test' ]`
     - vcf:
         type: file
-        description: VCF file to annotate (annotate mode only)
+        description: VCF file to annotate
         pattern: "*.{vcf,vcf.gz}"
         ontologies: []
     - vcf_tbi:
@@ -37,8 +37,8 @@ input:
   - - db_vcf:
         type: file
         description: |
-          VCF database file(s). In create mode: VCF to build database from.
-          In annotate mode: VCF database(s) for annotation.
+          VCF database file(s) for annotation.
+          Can provide multiple databases for multi-database annotation.
         pattern: "*.{vcf,vcf.gz}"
         ontologies: []
     - db_vcf_tbi:
@@ -48,33 +48,17 @@ input:
         ontologies: []
     - db_vardb:
         type: directory
-        description: Pre-built .snpsift.vardb directory (annotate mode, used
-          instead of db_vcf if provided)
+        description: Pre-built .snpsift.vardb directory (used instead of db_vcf if provided)
         pattern: "*.snpsift.vardb"
     - db_fields:
         type: list
         description: |
-          INFO field names to use. In create mode: fields to include in database.
-          In annotate mode: fields to annotate with. Can be list or semicolon-delimited string.
+          INFO field names to annotate with.
+          Can be a list or a single string.
     - db_prefixes:
         type: string
-        description: Prefix to add to annotated field names (annotate mode only)
-  - create:
-      type: boolean
-      description: |
-        Set to true to create a database from db_vcf.
-        Set to false (default) to annotate vcf using the provided databases.
+        description: Prefix to add to annotated field names
 output:
-  database:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test' ]`
-      - "*.snpsift.vardb":
-          type: directory
-          description: SnpSift vardb directory (create mode only, optional)
-          pattern: "*.snpsift.vardb"
   vcf:
     - - meta:
           type: map
@@ -83,7 +67,7 @@ output:
             e.g. `[ id:'test' ]`
       - "*.vcf.gz":
           type: file
-          description: Annotated VCF file (annotate mode only, optional)
+          description: Annotated VCF file
           pattern: "*.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989
@@ -95,8 +79,7 @@ output:
             e.g. `[ id:'test' ]`
       - "*.vcf.gz.tbi":
           type: file
-          description: Tabix index for annotated VCF (annotate mode only,
-            optional)
+          description: Tabix index for annotated VCF
           pattern: "*.vcf.gz.tbi"
           ontologies: []
   versions_snpsift:

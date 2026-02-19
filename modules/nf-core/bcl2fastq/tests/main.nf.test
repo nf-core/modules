@@ -29,4 +29,29 @@ nextflow_process {
             )
         }
     }
+
+    test("homo_sapiens illumina [bcl] - stub") {
+        options "-stub"
+
+        when {
+            process {
+                //TODO use new test dataset when available, see https://github.com/nf-core/test-datasets/issues/996
+                """
+                input[0] = [
+                    [ id: 'test', lane:1 ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell.tar.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
 }

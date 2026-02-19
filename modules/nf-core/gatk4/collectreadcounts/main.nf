@@ -15,7 +15,7 @@ process GATK4_COLLECTREADCOUNTS {
 
     output:
     tuple val(meta), path("*.hdf5"), emit: hdf5, optional: true
-    tuple val(meta), path("*.tsv"),  emit: tsv, optional: true
+    tuple val(meta), path("*.tsv"), emit: tsv, optional: true
     tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
@@ -48,7 +48,6 @@ process GATK4_COLLECTREADCOUNTS {
         ${reference} \\
         --tmp-dir . \\
         ${args}
-
     """
 
     stub:
@@ -61,6 +60,5 @@ process GATK4_COLLECTREADCOUNTS {
             : "hdf5"
     """
     touch ${prefix}.${extension}
-
     """
 }

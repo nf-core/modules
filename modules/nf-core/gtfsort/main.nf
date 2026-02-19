@@ -1,49 +1,37 @@
 process GTFSORT {
-    tag "$gtf"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gtfsort:0.2.2--h4ac6f70_0':
-        'biocontainers/gtfsort:0.2.2--h4ac6f70_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/gtfsort:0.2.2--h4ac6f70_0'
+        : 'biocontainers/gtfsort:0.2.2--h4ac6f70_0'}"
 
     input:
-
-    path gtf
+    tuple val(meta), path(gtf)
 
     output:
-    path "*.sorted.gtf", emit: gtf
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.sorted.${gtf.extension}"), emit: gtf
+    tuple val("${task.process}"), val('gtfsort'), eval('gtfsort --version |& sed "s/gtfsort //"'), emit: versions_gtfsort, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${gtf.baseName}"
-
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     gtfsort \\
-        -i $gtf \\
-        -o ${prefix}.sorted.gtf \\
-        -t $task.cpus
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gtfsort: \$(gtfsort --version |& sed 's/gtfsort //')
-    END_VERSIONS
+        -i ${gtf} \\
+        -o ${prefix}.sorted.${gtf.extension} \\
+        ${args} \\
+        -t ${task.cpus}
     """
 
     stub:
-    def args   = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${gtf.baseName}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}.sorted.gtf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gtfsort: \$(gtfsort --version |& sed 's/gtfsort //')
-    END_VERSIONS
+    touch ${prefix}.sorted.${gtf.extension}
     """
 }

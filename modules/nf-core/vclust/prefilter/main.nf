@@ -35,7 +35,6 @@ process VCLUST_PREFILTER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt

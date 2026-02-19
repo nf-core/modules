@@ -14,9 +14,9 @@ process GATK4_PRINTREADS {
     tuple val(meta4), path(dict)
 
     output:
-    tuple val(meta), path("${prefix}.bam"),  emit: bam,  optional: true
+    tuple val(meta), path("${prefix}.bam"), emit: bam, optional: true
     tuple val(meta), path("${prefix}.cram"), emit: cram, optional: true
-    tuple val(meta), path("${prefix}.sam"),  emit: sam,  optional: true
+    tuple val(meta), path("${prefix}.sam"), emit: sam, optional: true
     tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:

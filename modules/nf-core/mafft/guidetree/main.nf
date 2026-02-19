@@ -39,7 +39,6 @@ process MAFFT_GUIDETREE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.dnd

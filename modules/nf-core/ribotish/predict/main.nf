@@ -38,7 +38,7 @@ process RIBOTISH_PREDICT {
     }
     if (bam_ti){
         ti_bam_cmd = "-t ${bam_ti.join(',')}"
-        if (para_tis){
+        if (para_ti){
             ti_bam_cmd += " --tisparapara  ${para_ti.join(',')}"
         }
     }
@@ -61,7 +61,6 @@ process RIBOTISH_PREDICT {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_pred.txt

@@ -39,13 +39,11 @@ process GATK4_MERGEBAMALIGNMENT {
         --REFERENCE_SEQUENCE ${fasta} \\
         --TMP_DIR . \\
         ${args}
-
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bam
-
     """
 }

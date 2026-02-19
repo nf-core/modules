@@ -34,7 +34,6 @@ process CRABZ_DECOMPRESS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${archive}"
     """
     touch ${prefix}

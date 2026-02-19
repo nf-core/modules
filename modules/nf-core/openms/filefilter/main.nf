@@ -34,7 +34,6 @@ process OPENMS_FILEFILTER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = "${file.getExtension()}"
     if ("$file" == "${prefix}.${suffix}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
