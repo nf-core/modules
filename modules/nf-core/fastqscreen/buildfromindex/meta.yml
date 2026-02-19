@@ -38,7 +38,7 @@ output:
       - fastqscreen:
           type: string
           description: The name of the tool
-      - fastq_screen --version 2>&1 | sed "s/^.*FastQ Screen v//; s/ .*\$//":
+      - fastq_screen --version 2>&1 | sed "s/^.*FastQ Screen v//;":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -49,7 +49,7 @@ topics:
       - fastqscreen:
           type: string
           description: The name of the tool
-      - fastq_screen --version 2>&1 | sed "s/^.*FastQ Screen v//; s/ .*\$//":
+      - fastq_screen --version 2>&1 | sed "s/^.*FastQ Screen v//;":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
