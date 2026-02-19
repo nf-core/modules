@@ -16,7 +16,6 @@ workflow BAM_VARIANT_DEMIX_BOOT_FREYJA {
     ch_lineages_topology // channel:  [ path(lineages_topology)]
 
     main:
-
     //
     // Variant calling
     //
@@ -51,13 +50,12 @@ workflow BAM_VARIANT_DEMIX_BOOT_FREYJA {
         ch_lineages_meta,
         ch_lineages_topology
     )
-    ch_freyja_demix = FREYJA_DEMIX.out.demix
 
     //
     // Perform bootstrapping to get more accurate estimates of abundances
     //
-    ch_lineages   = Channel.empty()
-    ch_summarized = Channel.empty()
+    ch_lineages   = channel.empty()
+    ch_summarized = channel.empty()
     if (!val_skip_boot){
         FREYJA_BOOT (
             ch_freyja_variants,

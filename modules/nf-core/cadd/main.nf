@@ -5,17 +5,13 @@ process CADD {
     conda "${moduleDir}/environment.yml"
     container 'docker.io/biocontainers/cadd-scripts-with-envs:1.6.post1_cv1'
 
-    containerOptions {
-        if (prescored_dir) {
-            ['singularity', 'apptainer'].contains(workflow.containerEngine) ?
-                "-B ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations -B ${prescored_dir}:/opt/CADD-scripts-1.6.post1/data/prescored" :
-                "-v ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations -v ${prescored_dir}:/opt/CADD-scripts-1.6.post1/data/prescored"
-        } else {
-            ['singularity', 'apptainer'].contains(workflow.containerEngine) ?
-                "-B ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations" :
-                "-v ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations"
-        }
-    }
+    containerOptions "${ prescored_dir ?
+        ['singularity', 'apptainer'].contains(workflow.containerEngine) ?
+            "-B ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations -B ${prescored_dir}:/opt/CADD-scripts-1.6.post1/data/prescored" :
+            "-v ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations -v ${prescored_dir}:/opt/CADD-scripts-1.6.post1/data/prescored" :
+        ['singularity', 'apptainer'].contains(workflow.containerEngine) ?
+            "-B ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations" :
+            "-v ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations" }"
 
     input:
     tuple val(meta), path(vcf)
