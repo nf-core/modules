@@ -13,7 +13,12 @@ process VCF2DB {
 
     output:
     tuple val(meta), path("*.db") , emit: db
-    path "versions.yml"           , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('vcf2db'), val("2020.02.24"), emit: versions_vcf2db, topic: versions
+    tuple val("${task.process}"), val('python-snappy'), val("0.5.4"), emit: versions_python_snappy, topic: versions
+    tuple val("${task.process}"), val('snappy'), val("1.1.8"), emit: versions_snappy, topic: versions
+    tuple val("${task.process}"), val('cyvcf2'), eval("python -c 'import cyvcf2; print(cyvcf2.__version__)'"), emit: versions_cyvcf2, topic: versions
+    tuple val("${task.process}"), val('python'), eval("python --version 2>&1 | awk '{print \$2}'"), emit: versions_python, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,29 +26,17 @@ process VCF2DB {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "2020.02.24" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     vcf2db.py \\
         $vcf \\
         $ped \\
         ${prefix}.db \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vcf2db: $VERSION
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "2020.02.24" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.db
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vcf2db: $VERSION
-    END_VERSIONS
     """
 }
