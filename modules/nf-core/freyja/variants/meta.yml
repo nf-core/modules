@@ -20,7 +20,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - bam:
         type: file
         description: Sorted BAM file
@@ -38,19 +38,19 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*.variants.tsv":
           type: file
           description: File containing identified variants in a gff-like format
           pattern: "*.variants.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 #TSV
       - "*.depth.tsv":
           type: file
-          description: File containing identified variants in a gff-like format
-          pattern: "*.variants.tsv"
+          description: File containing depth of the variants
+          pattern: "*.depth.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 #TSV
   versions_freyja:
     - - ${task.process}:
           type: string
