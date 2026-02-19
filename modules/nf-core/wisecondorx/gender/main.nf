@@ -13,35 +13,21 @@ process WISECONDORX_GENDER {
     tuple val(meta2), path(reference)
 
     output:
-    tuple val(meta), stdout , emit: gender
-    path "versions.yml"     , emit: versions
+    tuple val(meta), stdout, emit: gender
+    tuple val("${task.process}"), val('wisecondorx'), eval("pip list |& sed -n 's/wisecondorx *//p'"), emit: versions_wisecondorx, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def VERSION = '1.2.9' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
     WisecondorX gender \\
         ${npz} \\
         ${reference}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        wisecondorx: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
-    def VERSION = '1.2.9' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
     echo male
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        wisecondorx: ${VERSION}
-    END_VERSIONS
     """
 }
