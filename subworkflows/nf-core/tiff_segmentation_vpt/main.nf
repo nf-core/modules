@@ -16,7 +16,7 @@ workflow TIFF_SEGMENTATION_VPT {
 
     main:
 
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     //
     // Generate segmentation parameters file
@@ -33,8 +33,8 @@ workflow TIFF_SEGMENTATION_VPT {
     VIZGENPOSTPROCESSING_PREPARESEGMENTATION.out.segmentation_files
         .map { _meta, seg_params -> seg_params }
         .splitJson(path: 'window_grid' )
-        .filter { it.key == 'num_tiles' }
-        .map { it.value.toInteger() }
+        .filter { index -> index.key == 'num_tiles' }
+        .map { index -> index.value.toInteger() }
         .flatMap { num -> (0..num-1).toList() }
         .set{ ch_tiles }
 

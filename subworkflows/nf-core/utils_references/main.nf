@@ -15,7 +15,10 @@ workflow UTILS_REFERENCES {
     basepath
 
     main:
-    references = Channel.fromList(samplesheetToList(yaml_reference, "${projectDir}/subworkflows/nf-core/utils_references/schema_references.json"))
+    references = channel.fromList(samplesheetToList(
+        yaml_reference,
+        "${projectDir}/subworkflows/nf-core/utils_references/schema_references.json"
+    ))
 
     // GIVING up writing a test for the functions, so writing a subworkflow to test it
     references_file = get_references_file(references, param_file, attribute_file, basepath)

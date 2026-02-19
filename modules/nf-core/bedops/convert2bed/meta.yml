@@ -11,9 +11,9 @@ tools:
       documentation: "https://bedops.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/bedops"
       doi: "10.1093/bioinformatics/bts277"
-      licence: ["GNU v2"]
+      licence:
+        - "GNU v2"
       identifier: biotools:bedops
-
 input:
   - - meta:
         type: map
@@ -36,13 +36,27 @@ output:
           description: Sorted BED file
           pattern: "*.{bed}"
           ontologies: []
+  versions_bedops:
+    - - ${task.process}:
+          type: string
+          description: "The name of the process"
+      - bedops:
+          type: string
+          description: The name of the tool
+      - 'convert2bed --version | sed -n "s/.*version: *\([^ ]*\).*/\1/p"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: "The name of the process"
+      - bedops:
+          type: string
+          description: The name of the tool
+      - 'convert2bed --version | sed -n "s/.*version: *\([^ ]*\).*/\1/p"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rannick"
 maintainers:
