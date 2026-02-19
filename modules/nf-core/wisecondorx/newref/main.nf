@@ -13,7 +13,7 @@ process WISECONDORX_NEWREF {
 
     output:
     tuple val(meta), path("*.npz"), emit: npz
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('wisecondorx'), eval("pip list |& sed -n 's/wisecondorx *//p'"), emit: versions_wisecondorx, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,7 +21,6 @@ process WISECONDORX_NEWREF {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.9' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     inputs.each { input ->
         if("${input}" == "${prefix}.npz") error "${input} has the same name as the output file, set prefix in module configuration to disambiguate!"
@@ -34,16 +33,10 @@ process WISECONDORX_NEWREF {
         ${prefix}.npz \\
         --cpus ${task.cpus} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        wisecondorx: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.9' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     inputs.each { input ->
         if("${input}" == "${prefix}.npz") error "${input} has the same name as the output file, set prefix in module configuration to disambiguate!"
@@ -51,10 +44,5 @@ process WISECONDORX_NEWREF {
 
     """
     touch ${prefix}.npz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        wisecondorx: ${VERSION}
-    END_VERSIONS
     """
 }
