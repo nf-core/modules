@@ -27,28 +27,28 @@ output:
         description: File containing lineage defining barcodes
         pattern: "*barcodes.csv"
         ontologies:
-          - edam: http://edamontology.org/format_3752 #CSV
+          - edam: http://edamontology.org/format_3752 # CSV
   lineages_topology:
     - "${db_name}/*lineages.yml":
         type: file
         description: File containing lineage topology information that correspond to barcodes
         pattern: "*lineages.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750 #YAML
+          - edam: http://edamontology.org/format_3750 # YAML
   lineages_meta:
     - "${db_name}/*curated_lineages.json":
         type: file
         description: File containing lineage metadata that correspond to barcodes
         pattern: "*curated_lineages.json"
         ontologies:
-          - edam: http://edamontology.org/format_3464 #JSON
+          - edam: http://edamontology.org/format_3464 # JSON
   config:
     - "${db_name}/*pathogen_config.yml":
         type: file
         description: File containing pathogen configuration information for Freyja
         pattern: "*pathogen_config.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750 #YAML
+          - edam: http://edamontology.org/format_3750 # YAML
   versions_freyja:
     - - ${task.process}:
           type: string
