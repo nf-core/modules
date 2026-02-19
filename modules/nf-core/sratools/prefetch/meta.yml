@@ -10,7 +10,8 @@ tools:
       homepage: https://github.com/ncbi/sra-tools
       documentation: https://github.com/ncbi/sra-tools/wiki
       tool_dev_url: https://github.com/ncbi/sra-tools
-      licence: ["Public Domain"]
+      licence:
+        - "Public Domain"
       identifier: ""
 input:
   - - meta:
@@ -42,7 +43,7 @@ output:
           description: >
             Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
-      - id:
+      - "id, type: 'dir'":
           type: directory
           description: Directory containing SRA data files
           pattern: "*/*.sra"
