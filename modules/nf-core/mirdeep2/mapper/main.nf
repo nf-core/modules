@@ -38,7 +38,6 @@ process MIRDEEP2_MAPPER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '2.0.1'
     """

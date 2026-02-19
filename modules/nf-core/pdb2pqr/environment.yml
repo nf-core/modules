@@ -4,6 +4,7 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - bioconda::macs2=2.2.9.1=py39hff71179_1
-  - conda-forge::python=3.9.19
-  - conda-forge::setuptools=70.0
+  - conda-forge::python=3.12.0
+  - pip:
+      - pdb2pqr==3.7.1
+      - pip==26.0.1
