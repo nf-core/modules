@@ -16,13 +16,13 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
 				]
 				input[1] = [
-				    [id:'genome'],
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
 				]
 				input[2] = [[id:'genome'],[]]
 
@@ -37,8 +37,7 @@ nextflow_process {
                     process.out.metrics[0][1].collect { file(it).name }.toSorted(),
                     process.out.pdf[0][1].collect { file(it).name }.toSorted(),
                     process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match()
-                }
+                ).match()}
             )
         }
     }
@@ -49,9 +48,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
 				]
 				input[1] = [[id:'genome'],[]]
                 input[2] = [[id:'genome'],[]]
@@ -67,8 +66,7 @@ nextflow_process {
                     process.out.metrics[0][1].collect { file(it).name }.toSorted(),
                     process.out.pdf[0][1].collect { file(it).name }.toSorted(),
                     process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match()
-                }
+                ).match()}
             )
         }
     }
@@ -80,16 +78,16 @@ nextflow_process {
                 """
                 input[0] = [
 				[ id:'test', single_end:false ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
 				]
 				input[1] = [
-				    [id:'genome'],
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
 				]
 				input[2] = [
-				    [id:'genome'],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
 				]
 
                 """
@@ -103,10 +101,8 @@ nextflow_process {
                     process.out.metrics[0][1].collect { file(it).name }.toSorted(),
                     process.out.pdf[0][1].collect { file(it).name }.toSorted(),
                     process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match()
-                }
+                ).match()}
             )
         }
     }
-
 }

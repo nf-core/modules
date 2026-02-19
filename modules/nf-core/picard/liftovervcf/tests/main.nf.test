@@ -17,18 +17,17 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test' ],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true)
 				]
 				input[1] = [ [ id:'genome' ],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
 				]
 				input[2] = [ [ id:'genome' ],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
 				]
 				input[3] = [ [ id:'genome' ],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.chain.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.chain.gz', checkIfExists: true)
 				]
-
                 """
             }
         }
@@ -40,30 +39,28 @@ nextflow_process {
 					path(process.out.vcf_lifted[0][1]).vcf.summary,
 					path(process.out.vcf_unlifted[0][1]).vcf.variantsMD5,
                     process.out.findAll { key, val -> key.startsWith("versions") }
-					).match()
-				}
+                ).match()}
             )
         }
     }
 
-    test("test-picard-liftovervcf-stubs") {
+    test("test-picard-liftovervcf - stub") {
         options '-stub'
         when {
             process {
                 """
                 input[0] = [ [ id:'test' ],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true)
 				]
 				input[1] = [ [ id:'genome' ],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
 				]
 				input[2] = [ [ id:'genome' ],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
 				]
 				input[3] = [ [ id:'genome' ],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.chain.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.chain.gz', checkIfExists: true)
 				]
-
                 """
             }
         }
@@ -75,10 +72,8 @@ nextflow_process {
 					file(process.out.vcf_lifted[0][1]).name,
 					file(process.out.vcf_unlifted[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith("versions") }
-					).match()
-				}
+                ).match()}
             )
         }
     }
-
 }

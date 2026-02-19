@@ -26,13 +26,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions,
-                                  process.out.bam.collect { bam(it[1]).getHeaderMD5() },
-                                  process.out.bam.collect { bam(it[1]).getReadsMD5() },
-                                  process.out.bai).match() }
+                { assert snapshot(
+                    process.out.bam.collect { bam(it[1]).getHeaderMD5() },
+                    process.out.bam.collect { bam(it[1]).getReadsMD5() },
+                    process.out.bai,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("sarscov2 - bam - stub") {
@@ -54,10 +55,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
-
 }

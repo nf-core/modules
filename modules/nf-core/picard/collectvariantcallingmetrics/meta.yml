@@ -76,12 +76,27 @@ output:
           type: file
           description: Summary variant calling metrics file
           pattern: "*.variant_calling_summary_metrics"
+  versions_picard:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - picard:
+          type: string
+          description: The tool name
+      - "picard CollectVariantCallingMetrics --version 2>&1 | sed -n 's/^Version:*//p'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - picard:
+          type: string
+          description: The tool name
+      - "picard CollectVariantCallingMetrics --version 2>&1 | sed -n 's/^Version:*//p'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@georgiakes"
 maintainers:

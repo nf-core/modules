@@ -14,12 +14,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test' ], // meta map
-				    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true) ]
+                    [ id:'test' ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true) ]
 				]
 				input[1] = [
-				    [ id:'test' ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
 				]
 				input[2] = []
                 """
@@ -29,7 +29,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -42,12 +42,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test' ], // meta map
-				    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true) ]
+                    [ id:'test' ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true) ]
 				]
 				input[1] = [
-				    [ id:'test' ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
 				]
 				input[2] = []
                 """
@@ -59,8 +59,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    path(process.out.versions[0]).yaml
-                    ).match() }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }
