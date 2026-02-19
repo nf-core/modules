@@ -8,6 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "pharmcat"
     tag "pharmcat/phenotyper"
+    tag "pharmcat/matcher"
 
     config "./nextflow.config"
 
@@ -74,7 +75,7 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ], // meta map
                     [],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.chr22.outsideCall.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.outsideCall.tsv', checkIfExists: true),
                 ]
                 """
             }

@@ -22,7 +22,7 @@ process PHARMCAT_PHENOTYPER {
     def prefix = task.ext.prefix ?: "${meta.id}.pharmcat"
 
     def pheno_input = match_json ? " --phenotyper-input ${match_json} " : ""
-    def outside_pheno_input = outside_match_tsv ? " --outside-phenotyper-input ${outside_match_tsv} " : ""
+    def outside_pheno_input = outside_match_tsv ? " --phenotyper-outside-call-file ${outside_match_tsv} " : ""
 
     """
     pharmcat \\

@@ -37,9 +37,11 @@ input:
           - edam: http://edamontology.org/format_3464
     - outside_match_tsv:
         type: file
-        description: Tab seperated file containing diplotypes calls from other callers
+        description: Tab seperated file containing diplotypes calls from other
+          callers
         pattern: "*.tsv"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3475
 output:
   phenotyper_json:
     - - meta:
