@@ -125,7 +125,7 @@ nextflow_process {
                 { assert process.out.vcf?.isEmpty() },
                 { assert process.out.vcf_index?.isEmpty() },
                 { assert snapshot(
-                    file(process.out.json.get(0).get(1)).readLines()[0..28],
+                    file(process.out.json.get(0).get(1)),
                     process.out.bam.get(0).get(1).isEmpty(),
                     file(process.out.bai.get(0).get(1)).name
                     ).match()
