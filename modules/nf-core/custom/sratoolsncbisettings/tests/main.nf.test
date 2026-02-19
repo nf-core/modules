@@ -45,6 +45,11 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                settings_path = '/tmp/.ncbi'
+                settings_file  = "${params.settings_path}/user-settings.mkfg"
+            }
+
             process {
                 """
                 input[0] = ["SRX6725035"]
