@@ -13,7 +13,7 @@ workflow FASTQ_FIND_MIRNA_MIRDEEP2 {
 
     main:
 
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     SEQKIT_FQ2FA ( ch_reads )
     ch_versions = ch_versions.mix(SEQKIT_FQ2FA.out.versions)
