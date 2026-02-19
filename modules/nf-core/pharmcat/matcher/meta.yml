@@ -57,7 +57,8 @@ output:
           type: file
           description: Json output from the matcher module of PharmCAT
           pattern: "*.match.json"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3464
   matcher_html:
     - - meta:
           type: map
@@ -70,13 +71,13 @@ output:
           pattern: "*.match.html"
           ontologies: []
   versions_pharmcat:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "pharmcat":
+      - pharmcat:
           type: string
           description: The name of the tool
-      - "pharmcat --version":
+      - pharmcat --version | cut -f2 -d ' ':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -87,7 +88,7 @@ topics:
       - pharmcat:
           type: string
           description: The name of the tool
-      - pharmcat --version:
+      - pharmcat --version | cut -f2 -d ' ':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

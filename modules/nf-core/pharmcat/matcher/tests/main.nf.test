@@ -34,9 +34,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.matcher_json.get(0).get(1)).name,
-                    file(process.out.matcher_html.get(0).get(1)).name,
-                    process.out.versions_pharmcat
+                    file(process.out.matcher_json[0][1]).name,
+                    file(process.out.matcher_html[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -67,8 +67,8 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.matcher_html[1] == null },
                 { assert snapshot(
-                    file(process.out.matcher_json.get(0).get(1)).name,
-                    process.out.versions_pharmcat
+                    file(process.out.matcher_json[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -98,8 +98,8 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.matcher_html[1] == null },
                 { assert snapshot(
-                    file(process.out.matcher_json.get(0).get(1)).name,
-                    process.out.versions_pharmcat
+                    file(process.out.matcher_json[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -129,9 +129,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.matcher_json.get(0).get(1)).name,
-                    file(process.out.matcher_html.get(0).get(1)).name,
-                    process.out.versions_pharmcat
+                    file(process.out.matcher_json[0][1]).name,
+                    file(process.out.matcher_html[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -162,8 +162,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    process.out.versions_pharmcat
+                    sanitizeOutput(process.out)
                 ).match() }
             )
         }
