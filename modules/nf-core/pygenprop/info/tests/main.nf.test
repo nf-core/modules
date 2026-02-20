@@ -19,7 +19,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test_genprops' ],
-                    params.modules_testdata_base_path + 'proteomics/interproscan/genomeProperties.txt.gz' // https URL
+                    params.modules_testdata_base_path + 'proteomics/interproscan/genomeProperties.txt.gz'
                 ]
                 """
             }
