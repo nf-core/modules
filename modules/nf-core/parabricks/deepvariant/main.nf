@@ -29,7 +29,7 @@ process PARABRICKS_DEEPVARIANT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def output_file = args.contains("--gvcf") ? "${prefix}.g.vcf.gz" : "${prefix}.vcf.gz"
     def interval_command = intervals        ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : ""
-    def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
+    def num_gpus = task.ext.num_gpus ? "--num-gpus ${task.ext.num_gpus}" : ''
     """
     pbrun \\
         deepvariant \\

@@ -25,7 +25,7 @@ process PARABRICKS_DBSNP {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
+    def num_gpus = task.ext.num_gpus ? "--num-gpus ${task.ext.num_gpus}" : ''
     """
     pbrun \\
         dbsnp \\

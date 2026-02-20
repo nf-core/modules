@@ -24,7 +24,7 @@ process PARABRICKS_INDEXGVCF {
         error("Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
-    def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
+    def num_gpus = task.ext.num_gpus ? "--num-gpus ${task.ext.num_gpus}" : ''
     """
     pbrun \\
         indexgvcf \\

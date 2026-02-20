@@ -34,7 +34,7 @@ process PARABRICKS_FQ2BAMMETH {
     def in_fq_command       = meta.single_end ? "--in-se-fq ${reads}" : "--in-fq ${reads}"
     def known_sites_command = known_sites ? known_sites.collect { knownSite ->  "--knownSites ${knownSite}" }.join(' ') : ""
     def known_sites_output  = known_sites ? "--out-recal-file ${prefix}.table" : ""
-    def num_gpus            = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
+    def num_gpus            = task.ext.num_gpus ? "--num-gpus ${task.ext.num_gpus}" : ''
     """
     if [ -L ${fasta} ]; then
         ln -sf \$(readlink ${fasta}) ${index}/${fasta}

@@ -31,7 +31,7 @@ process PARABRICKS_HAPLOTYPECALLER {
     def output_file           = args.contains("--gvcf") ? "${prefix}.g.vcf.gz" : "${prefix}.vcf"
     def intervals_command     = intervals     ? (intervals instanceof List ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : "--interval-file ${intervals}") : ""
 
-    def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
+    def num_gpus = task.ext.num_gpus ? "--num-gpus ${task.ext.num_gpus}" : ''
     """
     pbrun \\
         haplotypecaller \\

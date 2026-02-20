@@ -53,7 +53,7 @@ process PARABRICKS_MINIMAP2 {
     def known_sites_output_cmd = known_sites ? "--out-recal-file ${prefix}.table" : ""
     def intervals_command  = intervals     ? (intervals instanceof List ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : "--interval-file ${intervals}") : ""
 
-    def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
+    def num_gpus = task.ext.num_gpus ? "--num-gpus ${task.ext.num_gpus}" : ''
     """
     pbrun \\
         minimap2 \\
