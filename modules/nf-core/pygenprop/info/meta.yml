@@ -1,13 +1,14 @@
-name: "pygenprop_build"
+name: "pygenprop_info"
 description: |
-  Generate a Micromeda file containing pathway annotations for one or more genomes.
-  Supporting InterProScan and protein sequence information can also be optionally incorporated.
+  Display a summary of the contents of a Micromeda file, including the number of samples,
+  genome property assignments, step assignments, InterProScan matches, and protein sequences.
 keywords:
   - genome properties
   - functional annotation
   - interproscan
   - pathway analysis
   - micromeda
+  - summary
 tools:
   - "pygenprop":
       description: A python library for programmatic usage of EBI InterPro Genome Properties.
@@ -17,43 +18,36 @@ tools:
       licence:
         - "Apache-2.0"
       identifier: ""
-
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - ips:
+    - meda:
         type: file
-        description: InterProScan TSV output file
-        pattern: "*.tsv"
+        description: |
+          Micromeda SQLite database containing Genome Properties assignments
+          (output of pygenprop build)
+        pattern: "*.micro"
         ontologies:
-          - edam: "http://edamontology.org/format_3475" # TSV
-  - gp_txt:
-      type: file
-      description: |
-        Genome Properties flatfile (e.g. genomeProperties.txt)
-        This file can be found on the original archived repository link below:
-        https://raw.githubusercontent.com/ebi-pf-team/genome-properties/refs/heads/master/flatfiles/genomeProperties.txt
-      pattern: "*.txt"
-      ontologies:
-        - edam: http://edamontology.org/format_2330 # TXT
+          - edam: "http://edamontology.org/format_3621" # SQLite format
 output:
-  meda:
+  info:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.micro":
+      - "*.info":
           type: file
           description: |
-            Micromeda SQLite database containing Genome Properties assignments
-          pattern: "*.micro"
+            Plain-text summary report of the Micromeda file contents, including counts of
+            samples, genome property assignments, step assignments, InterProScan matches,
+            and protein sequences
+          pattern: "*.info"
           ontologies:
-            - edam: "http://edamontology.org/format_3621" # SQLite format
-
+            - edam: "http://edamontology.org/format_2330" # Textual format
   versions_pygenprop:
     - - ${task.process}:
           type: string
@@ -74,7 +68,6 @@ output:
       - python -V | sed "s/Python //g":
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:

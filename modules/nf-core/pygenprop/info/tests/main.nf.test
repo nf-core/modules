@@ -1,12 +1,13 @@
 nextflow_process {
 
-    name "Test Process PYGENPROP_BUILD"
+    name "Test Process PYGENPROP_INFO"
     script "../main.nf"
-    process "PYGENPROP_BUILD"
+    process "PYGENPROP_INFO"
 
     tag "modules"
     tag "modules_nfcore"
     tag "pygenprop"
+    tag "pygenprop/info"
     tag "pygenprop/build"
     tag "aria2"
     tag "gunzip"
@@ -32,11 +33,9 @@ nextflow_process {
                 """
             }
         }
-    }
 
-    test("human_skin_metagenome - ips - micro") {
-
-        when {
+        run("PYGENPROP_BUILD") {
+            script "../../build/main.nf"
             process {
                 """
                 input[0] = channel.of([
@@ -44,6 +43,17 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'proteomics/interproscan/human_skin_metagenome_ips_result.tsv', checkIfExists: true)
                 ])
                 input[1] = GUNZIP.out.gunzip.map{ it -> it[1] }
+                """
+            }
+        }
+    }
+
+    test("human_skin_metagenome - ips - micro - info") {
+
+        when {
+            process {
+                """
+                input[0] = PYGENPROP_BUILD.out.meda
                 """
             }
         }
@@ -57,18 +67,14 @@ nextflow_process {
 
     }
 
-    test("human_skin_metagenome - ips - micro - stub") {
+    test("human_skin_metagenome - ips - micro - info - stub") {
 
         options "-stub"
 
         when {
             process {
                 """
-                input[0] = channel.of([
-                    [ id:'test_genprops' ],
-                    file(params.modules_testdata_base_path + 'proteomics/interproscan/human_skin_metagenome_ips_result.tsv', checkIfExists: true)
-                ])
-                input[1] = GUNZIP.out.gunzip.map{ it -> it[1] }
+                input[0] = PYGENPROP_BUILD.out.meda
                 """
             }
         }
