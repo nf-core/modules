@@ -29,7 +29,7 @@ process LSA_COSINE {
     """
     echo "dummy matrix data" >  ${prefix}_matrix.csv
     echo "dummy matrix data" >  ${prefix}_heatmap.png
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         r-base: \$(R --version | sed -n 1p | sed 's/R version //g' | sed 's/ (.*//g')
