@@ -1,6 +1,7 @@
 # name matches directory structure
-name: "lsa/cosine"
-description: Calculates the cosine similarity matrix between samples based on a gene expression matrix.
+name: "lsa_cosine"
+description: Calculates the cosine similarity matrix between samples based on a gene
+  expression matrix.
 keywords:
   - similarity
   - cosine
@@ -13,11 +14,13 @@ tools:
       homepage: "https://cran.r-project.org/web/packages/lsa/index.html"
       documentation: "https://cran.r-project.org/web/packages/lsa/lsa.pdf"
       licence: ["GPL-2"]
+      identifier: ""
   - "pheatmap":
       description: "Pretty Heatmaps package for R."
       homepage: "https://cran.r-project.org/web/packages/pheatmap/index.html"
       documentation: "https://cran.r-project.org/web/packages/pheatmap/pheatmap.pdf"
       licence: ["GPL-2"]
+      identifier: biotools:pheatmap
 
 input:
   - - meta:
@@ -30,32 +33,38 @@ input:
           CSV file containing the expression matrix.
           Rows should be features (genes) and columns should be samples.
         pattern: "*.csv"
-
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
 output:
-  - matrix:
-      meta:
-        type: map
-        description: |
-          Groovy Map containing sample information, e.g. [ id:'test' ].
-      "*_matrix.csv":
-        type: file
-        description: A square matrix (CSV) containing pairwise similarity scores.
-        pattern: "*_matrix.csv"
-  - heatmap:
-      meta:
-        type: map
-        description: |
-          Groovy Map containing sample information, e.g. [ id:'test' ].
-      "*_heatmap.png":
-        type: file
-        description: A PNG image visualizing the similarity matrix as a heatmap.
-        pattern: "*_heatmap.png"
-  - versions:
-      "versions.yml":
+  matrix:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information, e.g. [ id:'test' ].
+      - "*_matrix.csv":
+          type: file
+          description: A square matrix (CSV) containing pairwise similarity scores.
+          pattern: "*_matrix.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  heatmap:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information, e.g. [ id:'test' ].
+      - "*_heatmap.png":
+          type: file
+          description: A PNG image visualizing the similarity matrix as a heatmap.
+          pattern: "*_heatmap.png"
+          ontologies: []
+  versions:
+    - versions.yml:
         type: file
         description: File containing software versions.
         pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@miguelrosell"
 maintainers:
