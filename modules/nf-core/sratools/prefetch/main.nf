@@ -26,12 +26,11 @@ process SRATOOLS_PREFETCH {
     def cert_arg = certificate ?
         (certificate.name.endsWith('.jwt') ? "--perm ${certificate}" :
         certificate.name.endsWith('.ngc') ? "--ngc ${certificate}" : '') : ''
-    def final_args = "${args} ${cert_arg}".trim()
+    final_args = "${args} ${cert_arg}".trim()
 
     """
-    echo "${id}"
-    echo "${final_args}"
     echo "${args2}"
+    echo "${final_args}"
     """
 
     template "retry_with_backoff.sh"
