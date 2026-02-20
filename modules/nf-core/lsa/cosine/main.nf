@@ -27,8 +27,8 @@ process LSA_COSINE {
     args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_matrix.csv
-    touch ${prefix}_heatmap.png
+    echo "dummy matrix data" >  ${prefix}_matrix.csv
+    echo "dummy matrix data" >  ${prefix}_heatmap.png
     
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

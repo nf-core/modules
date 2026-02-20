@@ -33,7 +33,7 @@ input:
 
 output:
   - matrix:
-      - meta:
+      meta:
           type: map
           description: |
             Groovy Map containing sample information, e.g. [ id:'test' ].
@@ -42,7 +42,7 @@ output:
           description: A square matrix (CSV) containing pairwise similarity scores.
           pattern: "*_matrix.csv"
   - heatmap:
-      - meta:
+       meta:
           type: map
           description: |
             Groovy Map containing sample information, e.g. [ id:'test' ].
@@ -51,7 +51,7 @@ output:
           description: A PNG image visualizing the similarity matrix as a heatmap.
           pattern: "*_heatmap.png"
   - versions:
-      - versions.yml:
+       "versions.yml":
           type: file
           description: File containing software versions.
           pattern: "versions.yml"

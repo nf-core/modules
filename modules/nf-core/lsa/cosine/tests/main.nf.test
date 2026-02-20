@@ -22,7 +22,7 @@ nextflow_process {
                 GENE_2,50.0,50.5,2.0
                 GENE_3,0.0,0.0,100.0
                 GENE_4,100.0,99.5,10.0'''
-                
+
                 input[0] = [ [id:'test_sample'], test_csv ]
                 """
             }
@@ -43,7 +43,7 @@ nextflow_process {
     // Test 2: Stub run (fast check)
     test("Stub run") {
         options "-stub"
-        
+
         when {
             process {
                 """
