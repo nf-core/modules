@@ -20,9 +20,7 @@ process SEQFU_CHECK {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-
-    def dirFlag = reads instanceof List ? reads.every { read -> read.isDirectory() } : reads.isDirectory() ? "--dir" : ""
-
+    def dirFlag = (reads instanceof List ? reads.every { read -> read.isDirectory() } : reads.isDirectory()) ? "--dir" : ""
     """
     seqfu \\
         check \\
