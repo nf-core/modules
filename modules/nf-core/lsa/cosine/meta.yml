@@ -1,5 +1,5 @@
 # name matches directory structure
-name: "lsa_cosine"
+name: "lsa/cosine"
 description: Calculates the cosine similarity matrix between samples based on a gene expression matrix.
 keywords:
   - similarity
@@ -27,31 +27,31 @@ input:
     - expression_matrix:
         type: file
         description: |
-          CSV file containing the expression matrix. 
+          CSV file containing the expression matrix.
           Rows should be features (genes) and columns should be samples.
         pattern: "*.csv"
 
 output:
   - matrix:
-      meta:
+      - meta:
           type: map
           description: |
             Groovy Map containing sample information, e.g. [ id:'test' ].
-      - "*_matrix.csv":
+      - matrix:
           type: file
           description: A square matrix (CSV) containing pairwise similarity scores.
           pattern: "*_matrix.csv"
   - heatmap:
-       meta:
+      - meta:
           type: map
           description: |
             Groovy Map containing sample information, e.g. [ id:'test' ].
-      - "*_heatmap.png":
+      - heatmap:
           type: file
           description: A PNG image visualizing the similarity matrix as a heatmap.
           pattern: "*_heatmap.png"
   - versions:
-       "versions.yml":
+      - versions:
           type: file
           description: File containing software versions.
           pattern: "versions.yml"
