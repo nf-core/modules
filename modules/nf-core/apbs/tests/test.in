@@ -1,0 +1,30 @@
+read
+    mol pqr test.pqr
+end
+
+elec name comp_solv
+    mg-auto
+    mol 1
+    fgcent mol 1
+    cgcent mol 1
+    fglen 20.0 20.0 20.0
+    cglen 40.0 40.0 40.0
+    dime 33 33 33
+    lpbe
+    bcfl sdh
+    pdie 2.0
+    sdie 78.54
+    srfm smol
+    chgm spl0
+    srad 1.4
+    swin 0.3
+    sdens 10.0
+    temp 298.15
+    calcenergy total
+    calcforce no
+    write pot dx pot
+end
+
+print elecEnergy comp_solv end
+
+quit
