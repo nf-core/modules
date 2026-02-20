@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process PICARD_SETNMMDANDUQTAGS"
     script "../main.nf"
     process "PICARD_SETNMMDANDUQTAGS"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -10,8 +11,6 @@ nextflow_process {
     tag "picard/setnmmdanduqtags"
 
     test("sarscov2 - bam") {
-        config "./nextflow.config"
-
         when {
             process {
                 """
@@ -33,10 +32,7 @@ nextflow_process {
     }
 
     test("sarscov2 - bam - stub") {
-        config "./nextflow.config"
-
         options "-stub"
-
         when {
             process {
                 """

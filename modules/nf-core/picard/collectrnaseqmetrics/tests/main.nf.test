@@ -31,7 +31,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-        	    [ id:'test', single_end:false, strandedness:'forward' ], // meta map
+                [ id:'test', single_end:false, strandedness:'forward' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
                 ]
                 input[1] = UCSC_GTFTOGENEPRED.out.refflat.map{ it[1] }
@@ -54,14 +54,12 @@ nextflow_process {
     }
 
     test("sarscov2 - fasta - gtf - stub") {
-
         options "-stub"
-
         when {
             process {
                 """
                 input[0] = [
-        	    [ id:'test', single_end:false, strandedness:'forward' ], // meta map
+                [ id:'test', single_end:false, strandedness:'forward' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
                 ]
                 input[1] = UCSC_GTFTOGENEPRED.out.refflat.map{ it[1] }
