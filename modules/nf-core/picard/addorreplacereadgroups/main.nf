@@ -34,7 +34,6 @@ process PICARD_ADDORREPLACEREADGROUPS {
     }
 
     if ("$reads" == "${prefix}.${suffix}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
-
     """
     picard \\
         -Xmx${avail_mem}M \\
@@ -43,7 +42,6 @@ process PICARD_ADDORREPLACEREADGROUPS {
         $reference \\
         --INPUT ${reads} \\
         --OUTPUT ${prefix}.${suffix}
-
     """
 
     stub:
@@ -52,6 +50,5 @@ process PICARD_ADDORREPLACEREADGROUPS {
     if ("$reads" == "${prefix}.${suffix}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${prefix}.${suffix}
-
     """
 }
