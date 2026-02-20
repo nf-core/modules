@@ -15,7 +15,7 @@ process PICARD_COLLECTMULTIPLEMETRICS {
     output:
     tuple val(meta), path("*_metrics"), emit: metrics
     tuple val(meta), path("*.pdf"), emit: pdf, optional: true
-    tuple val("${task.process}"), val('picard'), eval("picard CollectMultipleMetrics --version 2>&1 | sed -n 's/^Version:*//p'"), topic: versions, emit: versions_picard
+    tuple val("${task.process}"), val('picard'), eval("picard CollectMultipleMetrics --version 2>&1 | sed -n 's/.*Version://p'"), topic: versions, emit: versions_picard
 
     when:
     task.ext.when == null || task.ext.when

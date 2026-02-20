@@ -12,7 +12,7 @@ process PICARD_RENAMESAMPLEINVCF {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    tuple val("${task.process}"), val('picard'), eval("picard RenameSampleInVcf --version 2>&1 | sed -n 's/^Version:*//p'"), topic: versions, emit: versions_picard
+    tuple val("${task.process}"), val('picard'), eval("picard RenameSampleInVcf --version 2>&1 | sed -n 's/.*Version://p'"), topic: versions, emit: versions_picard
 
     when:
     task.ext.when == null || task.ext.when

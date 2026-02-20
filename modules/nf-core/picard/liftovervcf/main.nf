@@ -16,7 +16,7 @@ process PICARD_LIFTOVERVCF {
     output:
     tuple val(meta), path("*.lifted.vcf.gz"), emit: vcf_lifted
     tuple val(meta), path("*.unlifted.vcf.gz"), emit: vcf_unlifted
-    tuple val("${task.process}"), val('picard'), eval("picard LiftoverVcf --version 2>&1 | sed -n 's/^Version:*//p'"), topic: versions, emit: versions_picard
+    tuple val("${task.process}"), val('picard'), eval("picard LiftoverVcf --version 2>&1 | sed -n 's/.*Version://p'"), topic: versions, emit: versions_picard
 
     when:
     task.ext.when == null || task.ext.when
