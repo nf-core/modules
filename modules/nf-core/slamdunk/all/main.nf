@@ -28,7 +28,6 @@ process SLAMDUNK_ALL {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def filterbed = filter_bed ? "-fb ${filter_bed}" : ""
     """
     slamdunk \\
@@ -48,9 +47,7 @@ process SLAMDUNK_ALL {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def filterbed = filter_bed ? "-fb ${filter_bed}" : ""
     """
     mkdir -p outputs/map
     mkdir -p outputs/filter

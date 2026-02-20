@@ -34,16 +34,14 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.detail_metrics[0][1]).readLines()[5..7].join('\n').md5(),
                     path(process.out.summary_metrics[0][1]).readLines()[5..7].join('\n').md5(),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
     }
 
     test("homo_sapiens - vcf_gz - stub") {
-
         options "-stub"
-
         when {
             process {
                 """
@@ -64,7 +62,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -93,16 +91,14 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.detail_metrics[0][1]).readLines()[5..7].join('\n').md5(),
                     path(process.out.summary_metrics[0][1]).readLines()[5..7].join('\n').md5(),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
     }
 
     test("homo_sapiens - vcf_gz - intervals - stub"){
-
         options "-stub"
-
         when {
             process {
                 """
@@ -123,7 +119,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

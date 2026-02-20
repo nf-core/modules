@@ -36,13 +36,13 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "multiplexed_single_channel_img.ome.tif":
+      - "*_multiplexed_single_channel_img.ome.tif":
           type: file
           description: Single channel extracted image file in OME-TIFF format
-          pattern: "multiplexed_single_channel_img.ome.tif"
+          pattern: "*_multiplexed_single_channel_img.ome.tif"
           ontologies:
             - edam: "http://edamontology.org/format_3727"
-  versions_stainwarpy_extractchannel:
+  versions_stainwarpy:
     - - "${task.process}":
           type: string
           description: The name of the process

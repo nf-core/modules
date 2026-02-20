@@ -53,7 +53,18 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.tsebra_gtf,
+                    path(process.out.tsebra_scores[0][1]) // Float error in conda
+                        .readLines()
+                        .collect { line ->
+                            line.replaceAll(/\d+\.\d{7,}/) { value ->
+                                String.format("%.6f", value as Double)
+                            }
+                        }.join("\n").md5(),
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
 

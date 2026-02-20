@@ -17,7 +17,7 @@ process MSISENSORPRO_MSISOMATIC {
     tuple val(meta), path("${prefix}_dis")     , emit: output_dis
     tuple val(meta), path("${prefix}_germline"), emit: output_germline, optional: true
     tuple val(meta), path("${prefix}_somatic") , emit: output_somatic,  optional: true
-    path "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val('msisensor-pro'), eval("msisensor-pro --version 2>&1 | sed -nE 's/Version:\\s*//p'") , emit: versions_msisensorpro, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,11 +39,6 @@ process MSISENSORPRO_MSISOMATIC {
         -b ${task.cpus} \\
         ${intervals_cmd} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        msisensor-pro: \$(msisensor-pro 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p')
-    END_VERSIONS
     """
 
     stub:
@@ -54,10 +49,5 @@ process MSISENSORPRO_MSISOMATIC {
     touch ${prefix}_dis
     touch ${prefix}_germline
     touch ${prefix}_somatic
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        msisensor-pro: \$(msisensor-pro 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p')
-    END_VERSIONS
     """
 }
