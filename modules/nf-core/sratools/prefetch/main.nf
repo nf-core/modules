@@ -1,5 +1,5 @@
 process SRATOOLS_PREFETCH {
-    tag "$id"
+    tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
@@ -28,21 +28,13 @@ process SRATOOLS_PREFETCH {
         certificate.name.endsWith('.ngc') ? "--ngc ${certificate}" : '') : ''
     def final_args = "${args} ${cert_arg}".trim()
 
-    def retry_script_content = file("${moduleDir}/templates/retry_with_backoff.sh").text
-
     """
-    export NCBI_SETTINGS="\${PWD}/${ncbi_settings}"
-    export SRA_ID="${id}"
-    export PROCESS_NAME="${task.process}"
-    export PREFETCH_ARGS="${final_args}"
-    export RETRY_ARGS="${args2}"
-
-    cat > retry_with_backoff.sh <<'SCRIPT_EOF'
-${retry_script_content}
-SCRIPT_EOF
-
-    bash retry_with_backoff.sh
+    echo "${id}"
+    echo "${final_args}"
+    echo "${args2}"
     """
+
+    template "retry_with_backoff.sh"
 
     stub:
     """
