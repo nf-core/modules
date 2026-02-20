@@ -1,6 +1,6 @@
 name: "cadd"
-description: CADD is a tool for scoring the deleteriousness of single nucleotide variants
-  as well as insertion/deletions variants in the human genome.
+description: CADD is a tool for scoring the deleteriousness of single nucleotide
+  variants as well as insertion/deletions variants in the human genome.
 keywords:
   - cadd
   - annotate
@@ -53,19 +53,33 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.tsv.gz":
+      - ${prefix}.tsv.gz:
           type: file
           description: Annotated tsv file
           pattern: "*.{tsv,tsv.gz}"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
+  versions_cadd:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cadd:
+          type: string
+          description: The name of the tool
+      - 1.6.post1:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cadd:
+          type: string
+          description: The name of the tool
+      - 1.6.post1:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@ramprasadn"
 maintainers:
