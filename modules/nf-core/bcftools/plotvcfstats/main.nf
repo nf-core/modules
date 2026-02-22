@@ -11,8 +11,8 @@ process BCFTOOLS_PLOTVCFSTATS {
     tuple val(meta), path(stats)
 
     output:
-    tuple val(meta), path("*plots*")              , emit: plot_dir
-    tuple val(meta), path("*.pdf"), optional: true, emit: plot_pdf
+    tuple val(meta), path("*plots*"), emit: plot_dir
+    tuple val(meta), path("*.pdf")  , emit: plot_pdf
     tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
 
     when:
@@ -24,7 +24,7 @@ process BCFTOOLS_PLOTVCFSTATS {
 
     // plot-vcfstats requires an output directory, so create one with the prefix
     // The PDF output is also copied to the results directory with a standard name
-    // NXF_HOME is set to a writable location to avoid matplotlib to fail when creating cache files
+    // HOME is set to a writable location to avoid matplotlib to fail when creating cache files
 
     """
     mkdir -p ${prefix}_plots
@@ -36,7 +36,7 @@ process BCFTOOLS_PLOTVCFSTATS {
         $args \\
         $stats
 
-    cp ${prefix}_plots/*.pdf ${prefix}.plot-vcfstats.pdf
+    ln -s ${prefix}_plots/*.pdf ${prefix}.plot-vcfstats.pdf
     """
 
     stub:
