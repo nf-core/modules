@@ -3,9 +3,9 @@ process BCFTOOLS_PLOTVCFSTATS {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e0/e015b8c4e8c5542a80f40ee000fffdf07b53eef199bd2b96fde8f8e76f9ce346/data':
-        'community.wave.seqera.io/library/bcftools_matplotlib_tectonic:7b19fc971b64a2bf' }"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'oras://community.wave.seqera.io/library/bcftools_matplotlib_tectonic:238c6655eb878518'
+        : 'community.wave.seqera.io/library/bcftools_matplotlib_tectonic:b409553c39e037f0' }"
 
     input:
     tuple val(meta), path(stats)
