@@ -9,7 +9,7 @@ workflow FASTQ_FETCH_CLEAN_HOSTILE {
     index_name      // val (optional)
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     if (!index_name && !ch_reference) {
         error "Provide either the reference index name for HOSTILE_FETCH or an existing reference path for HOSTILE_CLEAN."
