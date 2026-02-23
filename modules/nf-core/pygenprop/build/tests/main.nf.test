@@ -9,6 +9,7 @@ nextflow_process {
     tag "pygenprop"
     tag "pygenprop/build"
     tag "aria2"
+    tag "gunzip"
 
     setup {
         run("ARIA2") {
@@ -17,8 +18,17 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test_genprops' ],
-                    'https://raw.githubusercontent.com/ebi-pf-team/genome-properties/refs/heads/master/flatfiles/genomeProperties.txt' // https URL
+                    params.modules_testdata_base_path + 'proteomics/interproscan/genomeProperties.txt.gz'
                 ]
+                """
+            }
+        }
+
+        run("GUNZIP") {
+            script "../../../gunzip/main.nf"
+                process {
+                """
+                input[0] = ARIA2.out.downloaded_file
                 """
             }
         }
@@ -33,7 +43,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'proteomics/interproscan/human_skin_metagenome_ips_result.tsv', checkIfExists: true)
                 ])
-                input[1] = ARIA2.out.downloaded_file.map{ it -> it[1] }
+                input[1] = GUNZIP.out.gunzip.map{ it -> it[1] }
                 """
             }
         }
@@ -58,7 +68,7 @@ nextflow_process {
                     [ id:'test_genprops' ],
                     file(params.modules_testdata_base_path + 'proteomics/interproscan/human_skin_metagenome_ips_result.tsv', checkIfExists: true)
                 ])
-                input[1] = ARIA2.out.downloaded_file.map{ it -> it[1] }
+                input[1] = GUNZIP.out.gunzip.map{ it -> it[1] }
                 """
             }
         }

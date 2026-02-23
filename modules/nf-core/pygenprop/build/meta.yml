@@ -14,7 +14,8 @@ tools:
       homepage: "https://github.com/Micromeda/pygenprop"
       documentation: "https://pygenprop.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/Micromeda/pygenprop"
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: ""
 
 input:
@@ -60,8 +61,8 @@ output:
       - pygenprop:
           type: string
           description: The name of the tool
-      - echo 1.1:
-          type: eval
+      - '"1.1"':
+          type: string
           description: The expression to obtain the version of the tool
   versions_python:
     - - ${task.process}:
@@ -82,8 +83,8 @@ topics:
       - pygenprop:
           type: string
           description: The name of the tool
-      - echo 1.1:
-          type: eval
+      - '"1.1"':
+          type: string
           description: The expression to obtain the version of the tool
     - - ${task.process}:
           type: string
