@@ -30,6 +30,7 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.umi.sorted.bam.bai', checkIfExists: true)
                 ])
                 input[1] = val_get_dedup_stats
+                input[2] = false
                 """
             }
         }
@@ -65,6 +66,7 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.umi.sorted.bam.bai', checkIfExists: true)
                 ])
                 input[1] = val_get_dedup_stats
+                input[2] = false
                 """
             }
         }
