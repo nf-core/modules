@@ -8,10 +8,11 @@ process APBS {
         'community.wave.seqera.io/library/apbs:3.4.1--298b75172827aae7' }"
 
     input:
-    tuple val(meta), path(input_file) // TODO add the pqr file, path (in), path (pqr)
+    tuple val(meta), path(in), path(pqr)
 
     output:
-    tuple val(meta), path("*.dx") , emit: dx
+    tuple val(meta), path("*.dx") , emit: dx, optional: true
+    tuple val(meta), path("io.mc"), emit: mc
     tuple val(meta), path("*.log"), emit: log
     tuple val("${task.process}"), val('apbs'), eval("apbs --version 2>&1 | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+' | tail -n1"), topic: versions, emit: versions_apbs
 
@@ -24,7 +25,7 @@ process APBS {
     """
     apbs \\
         $args \\
-        ${input_file} \\
+        ${in} \\
         2>&1 | tee ${prefix}.log
     """
 
@@ -32,7 +33,7 @@ process APBS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo ${args} >/dev/null
+    echo ${args}
 
     touch ${prefix}.dx
     touch ${prefix}.log

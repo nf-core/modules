@@ -3,20 +3,23 @@ nextflow_process {
     name "Test Process APBS"
     script "../main.nf"
     process "APBS"
-    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "apbs"
 
-    test("water - pqr_in - dx") {
+    test("apbs - in_pqr - dx") {
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file("${projectDir}/modules/nf-core/apbs/tests/test.in", checkIfExists: true)
+                    file("${projectDir}/modules/nf-core/apbs/tests/apbs-mol.in", checkIfExists: true),
+                    [
+                        file("${projectDir}/modules/nf-core/apbs/tests/methanol.pqr", checkIfExists: true),
+                        file("${projectDir}/modules/nf-core/apbs/tests/methoxide.pqr", checkIfExists: true)
+                    ]
                 ]
                 """
             }
@@ -27,15 +30,16 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.dx,
+                    file(process.out.mc[0][1]).name,
                     path(process.out.log[0][1]).readLines().size(),
-                    process.out.versions_apbs
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
 
     }
 
-    test("water - pqr_in - dx - stub") {
+    test("apbs - in_pqr - dx - stub") {
 
         options "-stub"
 
@@ -44,7 +48,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file("${projectDir}/modules/nf-core/apbs/tests/test.in", checkIfExists: true)
+                    file("${projectDir}/modules/nf-core/apbs/tests/apbs-mol.in", checkIfExists: true),
+                    [
+                        file("${projectDir}/modules/nf-core/apbs/tests/methanol.pqr", checkIfExists: true),
+                        file("${projectDir}/modules/nf-core/apbs/tests/methoxide.pqr", checkIfExists: true)
+                    ]
                 ]
                 """
             }
@@ -53,7 +61,12 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.dx,
+                    process.out.log,
+                    file(process.out.mc[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
 
