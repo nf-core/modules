@@ -22,7 +22,7 @@ process RMATS_PREP {
     // TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
     tuple val(meta), path("*.rmats"), emit: prep_rmats_file
     tuple val(meta), path("*outcomes_by_bam.txt"), emit: prep_read_outcomes_file
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('rmats'), eval('rmats.py --version | sed -e "s/v//g"'), emit: versions_rmats, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -57,11 +57,6 @@ process RMATS_PREP {
     do
     cp \${file} ${prefix}_prep_\$(basename \${file})
     done
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rmats: \$(echo \$(rmats.py --version) | sed -e "s/v//g")
-    END_VERSIONS
     """
 
     // NOTES for post - post requires the rmats files to be in the tmp directory, otherwise it fails
@@ -69,19 +64,10 @@ process RMATS_PREP {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // TODO nf-core: A stub section should mimic the execution of the original module as best as possible
-    //               Have a look at the following examples:
-    //               Simple example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bcftools/annotate/main.nf#L47-L63
-    //               Complex example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bedtools/split/main.nf#L38-L54
     """
     echo ${args}
 
     touch ${prefix}.rmats
     touch ${prefix}_outcomes_by_bam.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rmats:  \$(echo \$(rmats.py --version) | sed -e "s/v//g")
-    END_VERSIONS
     """
 }
