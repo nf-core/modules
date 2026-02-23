@@ -18,10 +18,10 @@ process PHARMCAT_PHENOTYPER {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}.pharmcat"
+    def args    = task.ext.args     ?: ''
+    def prefix  = task.ext.prefix   ?: "${meta.id}.pharmcat"
 
-    def pheno_input = match_json ? " --phenotyper-input ${match_json} " : ""
+    def pheno_input         = match_json        ? " --phenotyper-input ${match_json} "                    : ""
     def outside_pheno_input = outside_match_tsv ? " --phenotyper-outside-call-file ${outside_match_tsv} " : ""
 
     """
@@ -35,11 +35,8 @@ process PHARMCAT_PHENOTYPER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}.pharmcat"
     """
-    echo ${args} >/dev/null
-
     touch ${prefix}.phenotype.json
     """
 }
