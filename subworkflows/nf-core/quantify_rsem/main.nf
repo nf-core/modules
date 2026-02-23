@@ -43,8 +43,11 @@ workflow QUANTIFY_RSEM {
     // Merge counts across samples
     //
     CUSTOM_RSEMMERGECOUNTS (
-        ch_counts_gene.collect{ index -> index[1] }.map { results -> [ ['id': 'all_samples'], results ] },
-        ch_counts_transcript.collect{ index -> index[1] }
+        ch_counts_gene
+            .collect{ _meta, genes_count -> genes_count }
+            .map { genes_count -> [ ['id': 'all_samples'], genes_count ] },
+        ch_counts_transcript
+            .collect{ _meta, transcripts_count -> transcripts_count }
     )
 
     //
