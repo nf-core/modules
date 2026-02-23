@@ -8,7 +8,8 @@ keywords:
   - search
 tools:
   - "macsyfinder":
-      description: "Detection of macromolecular systems in protein datasets using systems modelling and similarity search"
+      description: "Detection of macromolecular systems in protein datasets using systems\
+        \ modelling and similarity search"
       homepage: "https://github.com/gem-pasteur/macsyfinder"
       documentation: "https://macsyfinder.readthedocs.io"
       tool_dev_url: "https://github.com/gem-pasteur/macsyfinder"
@@ -20,8 +21,11 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'test', db_type:'gembase' ]`
-          db_type specifies the type of dataset to process. Can be 'gembase' (default), 'ordered_replicon', or 'unordered'.
+          e.g. `[ id:'test', db_type:'unordered' ]`
+          db_type specifies the type of dataset to process:
+          - 'unordered' (default): Use for protein FASTA files from annotation tools (e.g., Prokka) where proteins are individual sequences without positional information
+          - 'gembase': Use for ordered genomic sequences (e.g., contigs, chromosomes) where gene position and order matter
+          - 'ordered_replicon': Use for complete replicons where gene order is important
     - proteins:
         type: file
         description: Protein sequence file in FASTA format
@@ -34,7 +38,8 @@ input:
       pattern: "*"
   - model_names:
       type: string
-      description: Space-separated list of model names to search for. If not provided, all models in the directory will be used.
+      description: Space-separated list of model names to search for. If not provided,
+        all models in the directory will be used.
 output:
   results:
     - - meta:
@@ -44,7 +49,7 @@ output:
             e.g. `[ id:'test', db_type:'gembase' ]`
       - ${prefix}/*:
           type: directory
-          description: Complete MacSyFinder output directory
+          description: Directory containing all MacSyFinder results
           pattern: "${prefix}/*"
   stdout:
     - - meta:
@@ -56,6 +61,7 @@ output:
           type: file
           description: MacSyFinder standard output
           pattern: "${prefix}/macsyfinder.out"
+          ontologies: []
   stderr:
     - - meta:
           type: map
@@ -66,6 +72,7 @@ output:
           type: file
           description: MacSyFinder standard error
           pattern: "${prefix}/macsyfinder.err"
+          ontologies: []
   summary:
     - - meta:
           type: map
@@ -86,16 +93,41 @@ output:
             e.g. `[ id:'test', db_type:'gembase' ]`
       - ${prefix}/all_best_solutions*:
           type: file
-          description: Best solutions for detected systems
+          description: Best solution files for detected systems
           pattern: "${prefix}/all_best_solutions*"
+          ontologies: []
+  versions_macsyfinder:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - macsyfinder:
+          type: string
+          description: The name of the tool
+      - 'macsyfinder --version 2>&1 | head -1 | sed "s/^.*MacSyFinder //; s/ .*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_hmmer:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hmmer:
+          type: string
+          description: The name of the tool
+      - 'hmmsearch -h | grep -o "^# HMMER [0-9.]*" | sed "s/^# HMMER *//"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750"
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - macsyfinder:
+          type: string
+          description: The name of the tool
+      - 'macsyfinder --version 2>&1 | head -1 | sed "s/^.*MacSyFinder //; s/ .*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
-  - "@github-actions[bot]"
+  - "@brovolia"
 maintainers:
-  - "@github-actions[bot]"
+  - "@brovolia"
