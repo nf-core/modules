@@ -11,7 +11,8 @@ tools:
       documentation: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
       tool_dev_url: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
       doi: "10.1093/nar/gky1263"
-      licence: ["Attribution-NonCommercial-ShareAlike CC BY-NC-SA"]
+      licence:
+        - "Attribution-NonCommercial-ShareAlike CC BY-NC-SA"
       identifier: ""
 input:
   - - meta:
@@ -46,8 +47,8 @@ input:
           e.g. [ id:'test' ]
     - fasta_fai:
         type: file
-        description: The index of the reference FASTA file (mandatory when using CRAM
-          files)
+        description: The index of the reference FASTA file (mandatory when using
+          CRAM files)
         pattern: "*.fai"
         ontologies: []
 output:
@@ -62,13 +63,27 @@ output:
           description: The output NPZ file
           pattern: "*.npz"
           ontologies: []
+  versions_wisecondorx:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - wisecondorx:
+          type: string
+          description: The name of the tool
+      - pip list |& sed -n 's/wisecondorx *//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - wisecondorx:
+          type: string
+          description: The name of the tool
+      - pip list |& sed -n 's/wisecondorx *//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:
