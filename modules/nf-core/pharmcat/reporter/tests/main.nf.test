@@ -33,9 +33,11 @@ nextflow_process {
             script "../../phenotyper/main.nf"
             process {
                 """
-                input[0] = PHARMCAT_MATCHER.out.matcher_json.map {
-                    meta, match_json -> [
-                        meta,
+                input[0] = PHARMCAT_MATCHER.out.matcher_json.collect {
+                    meta, match_json -> match_json
+                }.map {
+                    match_json -> [
+                        [ id: 'test'],
                         match_json,
                         []
                     ]
@@ -54,7 +56,7 @@ nextflow_process {
 
             process {
                 """
-                input[0] = PHARMCAT_PHENOTYPER.out.phenotypes
+                input[0] = PHARMCAT_PHENOTYPER.out.phenotyper_json
                 """
             }
         }
@@ -82,7 +84,7 @@ nextflow_process {
 
             process {
                 """
-                input[0] = PHARMCAT_PHENOTYPER.out.phenotypes
+                input[0] = PHARMCAT_PHENOTYPER.out.phenotyper_json
                 """
             }
         }
@@ -109,7 +111,7 @@ nextflow_process {
 
             process {
                 """
-                input[0] = PHARMCAT_PHENOTYPER.out.phenotypes
+                input[0] = PHARMCAT_PHENOTYPER.out.phenotyper_json
                 """
             }
         }
@@ -136,7 +138,7 @@ nextflow_process {
 
             process {
                 """
-                input[0] = PHARMCAT_PHENOTYPER.out.phenotypes
+                input[0] = PHARMCAT_PHENOTYPER.out.phenotyper_json
                 """
             }
         }
@@ -158,12 +160,12 @@ nextflow_process {
 
         when {
             params {
-                module_args = " --reporter-sources CPIC,FDA --reporter-title ${mets.id} "
+                module_args = " --reporter-sources CPIC,FDA  "
             }
 
             process {
                 """
-                input[0] = PHARMCAT_PHENOTYPER.out.phenotypes
+                input[0] = PHARMCAT_PHENOTYPER.out.phenotyper_json
                 """
             }
         }
@@ -193,7 +195,7 @@ nextflow_process {
 
             process {
                 """
-                input[0] = PHARMCAT_PHENOTYPER.out.phenotypes
+                input[0] = PHARMCAT_PHENOTYPER.out.phenotyper_json
                 """
             }
         }

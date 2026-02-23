@@ -32,7 +32,7 @@ input:
         ontologies:
           - edam: http://edamontology.org/format_3464
 output:
-  reporter_json:
+  report_json:
     - - meta:
           type: map
           description: |
@@ -44,7 +44,7 @@ output:
           pattern: "*.report.json"
           ontologies:
             - edam: http://edamontology.org/format_3464
-  reporter_html:
+  report_html:
     - - meta:
           type: map
           description: |
@@ -55,7 +55,7 @@ output:
           description: HTML output from the reporter module of PharmCAT
           pattern: "*.report.html"
           ontologies: []
-  reporter_tsv:
+  report_tsv:
     - - meta:
           type: map
           description: |
