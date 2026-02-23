@@ -22,9 +22,9 @@ workflow BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS {
     if (val_primary_only) {
         SAMTOOLS_VIEW_PRIMARY (
             ch_bam_bai,
-            [[], []],  // No reference fasta
-            [],        // No qname file
-            []         // No index format
+            [[],[],[]],  // No reference fasta
+            [],       // No qname file
+            []        // No index format
         )
 
         SAMTOOLS_INDEX_PRIMARY ( SAMTOOLS_VIEW_PRIMARY.out.bam )
