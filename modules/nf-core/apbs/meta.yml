@@ -18,20 +18,19 @@ tools:
         It computes electrostatic solvation energies and potentials for large
         biomolecular assemblages and is widely used in structural biology and
         computational biophysics.
-      homepage: "http://www.poissonboltzmann.org/"
+      homepage: "https://www.poissonboltzmann.org/"
       documentation: "https://apbs.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/Electrostatics/apbs"
       licence:
-        - "BSD-3-Clause"
+        - "Custom"
       identifier: ""
-
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - in:
+    - apbs_input:
         type: file
         description: |
           APBS input configuration file specifying the electrostatics calculation,
@@ -49,7 +48,6 @@ input:
         pattern: "*.pqr"
         ontologies:
           - edam: "http://edamontology.org/format_4035" # PQR
-
 output:
   dx:
     - - meta:
@@ -71,7 +69,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "io.mc":
+      - io.mc:
           type: file
           description: |
             APBS multigrid calculation output file containing energy and force
@@ -84,7 +82,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.log":
+      - ${prefix}.log:
           type: file
           description: |
             APBS standard output log file containing calculation results, including
@@ -93,28 +91,26 @@ output:
           ontologies:
             - edam: "http://edamontology.org/format_2330" # Textual format
   versions_apbs:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "apbs":
+      - apbs:
           type: string
           description: The name of the tool
-      - "apbs --version 2>&1 | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+' | tail -n1":
+      - apbs --version 2>&1 | sed '6!d;s|^.*Version APBS ||; s| .*\$||':
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "apbs":
+      - apbs:
           type: string
           description: The name of the tool
-      - "apbs --version 2>&1 | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+' | tail -n1":
+      - apbs --version 2>&1 | sed '6!d;s|^.*Version APBS ||; s| .*\$||':
           type: eval
           description: The expression to obtain the version of the tool
-
 authors:
   - "@vagkaratzas"
 maintainers:

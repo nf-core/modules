@@ -8,30 +8,30 @@ process APBS {
         'community.wave.seqera.io/library/apbs:3.4.1--298b75172827aae7' }"
 
     input:
-    tuple val(meta), path(in), path(pqr)
+    tuple val(meta), path(apbs_input), path(pqr)
 
     output:
-    tuple val(meta), path("*.dx") , emit: dx, optional: true
-    tuple val(meta), path("io.mc"), emit: mc
-    tuple val(meta), path("*.log"), emit: log
-    tuple val("${task.process}"), val('apbs'), eval("apbs --version 2>&1 | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+' | tail -n1"), topic: versions, emit: versions_apbs
+    tuple val(meta), path("*.dx")         , emit: dx, optional: true
+    tuple val(meta), path("io.mc")        , emit: mc
+    tuple val(meta), path("${prefix}.log"), emit: log
+    tuple val("${task.process}"), val('apbs'), eval("apbs --version 2>&1 | sed '6!d;s|^.*Version APBS ||; s| .*\$||'"), topic: versions, emit: versions_apbs
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     apbs \\
         $args \\
-        ${in} \\
+        ${apbs_input} \\
         2>&1 | tee ${prefix}.log
     """
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo ${args}
 
