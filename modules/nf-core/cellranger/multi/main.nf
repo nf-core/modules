@@ -141,42 +141,18 @@ process CELLRANGER_MULTI {
 
     """
     echo ${args}
-    echo ${gex_reference_path}
-    echo ${fb_reference_path}
-    echo ${vdj_reference_path}
-    echo ${target_panel}
-    echo ${frna_probeset}
-    echo ${primer_index}
-    echo ${beam_antigen_csv}
-    echo ${beam_csv_text}
-    echo ${cmo_csv_text}
-    echo ${ocm_csv_text}
-    echo ${frna_csv_text}
-    echo ${beam_options_use}
-    echo ${gex_options_filter_probes}
-    echo ${gex_options_r1_length}
-    echo ${gex_options_r2_length}
-    echo ${gex_options_chemistry}
-    echo ${gex_options_expect_cells}
-    echo ${gex_options_force_cells}
-    echo ${gex_options_no_secondary}
-    echo ${gex_options_no_bam}
-    echo ${gex_options_no_target_umi_filter}
-    echo ${gex_options_include_introns}
-    echo ${gex_options_check_library_compatibility}
-    echo ${cmo_reference_path}
-    echo ${cmo_barcode_path}
-    echo ${cmo_options_min_assignment_confidence}
-    echo ${vdj_options_r1_length}
-    echo ${vdj_options_r2_length}
-    echo ${fb_options_r1_length}
-    echo ${fb_options_r2_length}
-    echo ${fastq_gex}
-    echo ${fastq_vdj}
-    echo ${fastq_antibody}
-    echo ${fastq_beam}
-    echo ${fastq_crispr}
-    echo ${fastq_cmo}
+    echo ${gex_reference_path} ${fb_reference_path} ${vdj_reference_path}
+    echo ${target_panel} ${frna_probeset} ${primer_index}
+    echo ${beam_antigen_csv} ${beam_csv_text} ${cmo_csv_text} ${ocm_csv_text} ${frna_csv_text}
+    echo ${beam_options_use} ${gex_options_filter_probes}
+    echo ${gex_options_r1_length} ${gex_options_r2_length}
+    echo ${gex_options_chemistry} ${gex_options_expect_cells} ${gex_options_force_cells}
+    echo ${gex_options_no_secondary} ${gex_options_no_bam} ${gex_options_no_target_umi_filter}
+    echo ${gex_options_include_introns} ${gex_options_check_library_compatibility}
+    echo ${cmo_reference_path} ${cmo_barcode_path} ${cmo_options_min_assignment_confidence}
+    echo ${vdj_options_r1_length} ${vdj_options_r2_length}
+    echo ${fb_options_r1_length} ${fb_options_r2_length}
+    echo ${fastq_gex} ${fastq_vdj} ${fastq_antibody} ${fastq_beam} ${fastq_crispr} ${fastq_cmo}
     echo ${config}
     """
 
