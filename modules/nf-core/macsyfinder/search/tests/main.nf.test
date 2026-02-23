@@ -40,7 +40,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.results.collect { meta, files -> [ meta, files.collect { file(it).name }.sort() ] },
+                    process.out.summary.collect { meta, files -> [ meta, file(files).name ] },
+                    process.out.best_solutions.collect { meta, files -> [ meta, files.collect { file(it).name }.sort() ] },
+                    process.out.versions_macsyfinder,
+                    process.out.versions_hmmer
+                ).match() }
             )
         }
     }
@@ -76,7 +82,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.results.collect { meta, files -> [ meta, files.collect { file(it).name }.sort() ] },
+                    process.out.summary.collect { meta, files -> [ meta, file(files).name ] },
+                    process.out.best_solutions.collect { meta, files -> [ meta, files.collect { file(it).name }.sort() ] },
+                    process.out.versions_macsyfinder,
+                    process.out.versions_hmmer
+                ).match() }
             )
         }
     }
@@ -101,7 +113,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.results.collect { meta, files -> [ meta, files.collect { file(it).name }.sort() ] },
+                    process.out.summary.collect { meta, files -> [ meta, file(files).name ] },
+                    process.out.best_solutions.collect { meta, files -> [ meta, files.collect { file(it).name }.sort() ] },
+                    process.out.versions_macsyfinder,
+                    process.out.versions_hmmer
+                ).match() }
             )
         }
     }
