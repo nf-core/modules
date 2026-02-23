@@ -31,15 +31,24 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - input_file:
+    - in:
         type: file
         description: |
-          APBS input configuration file (`.in` or `.apbs` extension) specifying the
-          electrostatics calculation, including paths to molecular structure files
-          (PQR/PDB) and calculation parameters.
-        pattern: "*.{in,apbs}"
+          APBS input configuration file specifying the electrostatics calculation,
+          including paths to molecular structure files (PQR/PDB) and calculation
+          parameters. The file extension is typically `.in` but `.inp` is also
+          accepted for legacy purposes.
+        pattern: "*.{in,inp}"
+        ontologies: []
+    - pqr:
+        type: file
+        description: |
+          One or more PQR molecular structure files referenced by the input
+          configuration file. PQR files contain atomic coordinates, charges, and
+          radii used by APBS for electrostatics calculations.
+        pattern: "*.pqr"
         ontologies:
-          - edam: "http://edamontology.org/format_2330"
+          - edam: "http://edamontology.org/format_4035" # PQR
 
 output:
   dx:
@@ -52,8 +61,22 @@ output:
           type: file
           description: |
             OpenDX format volumetric electrostatic potential map file output by APBS.
-            Optional: not all calculation types produce potential map output.
+            Optional: this output is only produced when the input configuration file
+            contains a `write pot dx <dx_filename>` directive.
           pattern: "*.dx"
+          ontologies: []
+  mc:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "io.mc":
+          type: file
+          description: |
+            APBS multigrid calculation output file containing energy and force
+            information from the finite difference solver.
+          pattern: "io.mc"
           ontologies: []
   log:
     - - meta:
@@ -68,7 +91,7 @@ output:
             electrostatic solvation energies and run diagnostics.
           pattern: "*.log"
           ontologies:
-            - edam: "http://edamontology.org/format_2330"
+            - edam: "http://edamontology.org/format_2330" # Textual format
   versions_apbs:
     - - "${task.process}":
           type: string
