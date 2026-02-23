@@ -30,16 +30,9 @@ workflow BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS {
         SAMTOOLS_INDEX_PRIMARY ( SAMTOOLS_VIEW_PRIMARY.out.bam )
 
         ch_dedup_input = SAMTOOLS_VIEW_PRIMARY.out.bam
-            .join(SAMTOOLS_INDEX_PRIMARY.out.bai, by: [0], remainder: true)
-            .join(SAMTOOLS_INDEX_PRIMARY.out.csi, by: [0], remainder: true)
-            .map {
-                meta, bam, bai, csi ->
-                    if (bai) {
-                        [ meta, bam, bai ]
-                    } else {
-                        [ meta, bam, csi ]
-                    }
-            }
+            .join(SAMTOOLS_INDEX_PRIMARY.out.bai
+                .mix(SAMTOOLS_INDEX_PRIMARY.out.csi),
+            by: [0], remainder: true)
     } else {
         ch_dedup_input = ch_bam_bai
     }
@@ -55,16 +48,9 @@ workflow BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS {
     SAMTOOLS_INDEX ( UMITOOLS_DEDUP.out.bam )
 
     ch_bam_bai_dedup = UMITOOLS_DEDUP.out.bam
-        .join(SAMTOOLS_INDEX.out.bai, by: [0], remainder: true)
-        .join(SAMTOOLS_INDEX.out.csi, by: [0], remainder: true)
-        .map {
-            meta, bam, bai, csi ->
-                if (bai) {
-                    [ meta, bam, bai ]
-                } else {
-                    [ meta, bam, csi ]
-                }
-        }
+        .join(SAMTOOLS_INDEX.out.bai
+            .mix(SAMTOOLS_INDEX.out.csi),
+        by: [0], remainder: true)
 
     BAM_STATS_SAMTOOLS ( ch_bam_bai_dedup, [ [:], [] ] )
 
