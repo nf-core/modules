@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "checkm2_predict"
 description: CheckM2 bin quality prediction
 keywords:
@@ -16,7 +15,6 @@ tools:
       doi: "10.1038/s41592-023-01940-w"
       licence: ["GPL v3"]
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -60,12 +58,27 @@ output:
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_checkm2_predict:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - checkm2:
+          type: string
+          description: The name of the tool
+      - "checkm2 --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - checkm2:
+          type: string
+          description: The name of the tool
+      - "checkm2 --version":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@dialvarezs"
+  - "@eit-maxlcummins"

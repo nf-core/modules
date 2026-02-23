@@ -1,16 +1,4 @@
 {
-    "versions": {
-        "content": [
-            [
-                "versions.yml:md5,c45fc4ae4849dede870322256d32dc25"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
-        },
-        "timestamp": "2025-11-10T09:25:02.460117668"
-    },
     "sarscov2 - fastq - single-end - stub": {
         "content": [
             {
@@ -33,7 +21,11 @@
                     ]
                 ],
                 "2": [
-                    "versions.yml:md5,c45fc4ae4849dede870322256d32dc25"
+                    [
+                        "DEACON_FILTER",
+                        "deacon",
+                        "0.13.2"
+                    ]
                 ],
                 "fastq_filtered": [
                     [
@@ -53,23 +45,29 @@
                         "test.json:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,c45fc4ae4849dede870322256d32dc25"
+                "versions_deacon": [
+                    [
+                        "DEACON_FILTER",
+                        "deacon",
+                        "0.13.2"
+                    ]
                 ]
             },
-            [
-                {
-                    "DEACON_FILTER": {
-                        "deacon": "0.12.0"
-                    }
-                }
-            ]
+            {
+                "versions_deacon": [
+                    [
+                        "DEACON_FILTER",
+                        "deacon",
+                        "0.13.2"
+                    ]
+                ]
+            }
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-11-10T09:28:50.027194924"
+        "timestamp": "2026-02-12T12:46:45.282375511"
     },
     "sarscov2 - fastq - paired-end": {
         "content": [
@@ -85,13 +83,22 @@
                         "test_2.fq.gz:md5,d3106ad7395c78a212e6214177d5c054"
                     ]
                 ]
-            ]
+            ],
+            {
+                "versions_deacon": [
+                    [
+                        "DEACON_FILTER",
+                        "deacon",
+                        "0.13.2"
+                    ]
+                ]
+            }
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-11-10T09:28:44.453551557"
+        "timestamp": "2026-02-12T12:46:37.539497096"
     },
     "sarscov2 - fastq - single-end": {
         "content": [
@@ -105,18 +112,20 @@
                     "test.fq.gz:md5,2250e99ec61fca0e28e2dcb5124d1a16"
                 ]
             ],
-            [
-                {
-                    "DEACON_FILTER": {
-                        "deacon": "0.12.0"
-                    }
-                }
-            ]
+            {
+                "versions_deacon": [
+                    [
+                        "DEACON_FILTER",
+                        "deacon",
+                        "0.13.2"
+                    ]
+                ]
+            }
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-11-10T09:35:51.289803549"
+        "timestamp": "2026-02-12T12:46:29.822244006"
     }
 }

@@ -14,8 +14,7 @@ process LAST_DOTPLOT {
     val(filter)
 
     output:
-    tuple val(meta), path("*.gif"), optional:true, emit: gif
-    tuple val(meta), path("*.png"), optional:true, emit: png
+    tuple val(meta), path("*.{gif,png}"), emit: plot
     // last-dotplot has no --version option so let's use lastal from the same suite
     tuple val("${task.process}"), val('last'), eval("lastal --version | sed 's/lastal //'"), emit: versions_last, topic: versions
 
@@ -43,7 +42,6 @@ process LAST_DOTPLOT {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch $prefix.$format

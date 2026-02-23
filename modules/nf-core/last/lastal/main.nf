@@ -91,9 +91,7 @@ process LAST_LASTAL {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def trained_params = param_file ? "-p ${param_file}"  : ''
     """
     INDEX_NAME=STUB
     echo stub | gzip --no-name > ${prefix}.\$INDEX_NAME.maf.gz

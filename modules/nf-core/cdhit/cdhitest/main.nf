@@ -13,7 +13,7 @@ process CDHIT_CDHITEST {
     output:
     tuple val(meta), path("*.{fa,fq}")    ,emit: fasta
     tuple val(meta), path("*.clstr")      ,emit: clusters
-    path "versions.yml"                   ,emit: versions
+    tuple val("${task.process}"), val('cdhit'), eval("cd-hit-est -h | sed -n '1s/.*version \\([0-9.]*\\).*/\\1/p'"), topic: versions, emit: versions_cdhitest
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,27 +33,18 @@ process CDHIT_CDHITEST {
     cd-hit-est \\
         $args \\
         -i ${sequences} \\
-        -o ${meta.id}.${suffix} \\
+        -o ${prefix}.${suffix} \\
         -M $avail_mem \\
         -T $task.cpus
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cdhit: \$(cd-hit-est -h | head -n 1 | sed 's/^.*====== CD-HIT version //;s/ (built on .*) ======//' )
-    END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
-    def suffix  = task.ext.suffix ?: "${sequences}" ==~ /(.*f[astn]*a(.gz)?$)/ ? "fa" : "fq"
-
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = task.ext.suffix ?: "${sequences}" ==~ /(.*f[astn]*a(.gz)?$)/ ? "fa" : "fq"
     """
-    touch ${meta.id}.${suffix}
-    touch ${meta.id}.${suffix}.clstr
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cdhit: \$(cd-hit-est -h | head -n 1 | sed 's/^.*====== CD-HIT version //;s/ (built on .*) ======//' )
-    END_VERSIONS
+    echo "${args}"
+    touch ${prefix}.${suffix}
+    touch ${prefix}.${suffix}.clstr
     """
 }

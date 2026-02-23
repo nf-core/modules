@@ -26,14 +26,14 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.gtf,
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                 ).match() }
             )
         }
 
     }
 
-    test("homo_sapiens (stub) - gtf") {
+    test("homo_sapiens - gtf - stub") {
 
         options "-stub"
 
@@ -50,7 +50,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
+                { assert snapshot(process.out).match() }
             )
         }
 

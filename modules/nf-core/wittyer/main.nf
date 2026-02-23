@@ -2,12 +2,7 @@ process WITTYER {
     tag "$meta.id"
     label 'process_single'
 
-    container "nf-core/modules/wittyer:4c55c27c711b558f"
-
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "WITTYER module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
+    container "nf-core/wittyer:0.5.2"
 
     input:
     tuple val(meta), path(query_vcf), path(truth_vcf), path(bed), path(wittyer_config)
@@ -16,12 +11,16 @@ process WITTYER {
     tuple val(meta),    path("*.json")         , emit: report
     tuple val(meta),    path("*.vcf.gz")       , emit: bench_vcf
     tuple val(meta),    path("*.vcf.gz.tbi")   , emit: bench_vcf_tbi
-    path  "versions.yml"                       , emit: versions
+    tuple val("${task.process}"), val('wittyer'), eval("dotnet /opt/Wittyer/Wittyer.dll --version | sed '1!d ; s/witty.er //'"), topic: versions, emit: versions_wittyer
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "WITTYER module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args  = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     // you can not define both bed and wittyer_config
@@ -52,14 +51,13 @@ process WITTYER {
 
     rm -rf bench
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        wittyer: \$(dotnet /opt/Wittyer/Wittyer.dll --version  |& sed '1!d ; s/witty.er //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "WITTYER module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def prefix = task.ext.prefix ?: "${meta.id}"
     if ("$truth_vcf" == "${prefix}.vcf") {
         error "Input and output names are the same, set prefix in module configuration to disambiguate!"
@@ -72,9 +70,5 @@ process WITTYER {
     echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        wittyer: \$(dotnet /opt/Wittyer/Wittyer.dll --version  |& sed '1!d ; s/witty.er //')
-    END_VERSIONS
     """
 }

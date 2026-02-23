@@ -4,8 +4,8 @@ process RHOCALL_VIZ {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/rhocall:0.5.1--py39hbf8eff0_0':
-        'biocontainers/rhocall:0.5.1--py39hbf8eff0_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7d/7dbf7021085cfea72a20cafffe57fcf47392706d9a433f1143f1e60b389b85ae/data':
+        'community.wave.seqera.io/library/rhocall:0.5.1--a7eced77e39d2b82' }"
 
     input:
     tuple val(meta), path(vcf)
@@ -14,7 +14,7 @@ process RHOCALL_VIZ {
     output:
     tuple val(meta), path("${prefix}/${prefix}.bed"), emit: bed
     tuple val(meta), path("${prefix}/${prefix}.wig"), emit: wig
-    path "versions.yml"                             , emit: versions
+    tuple val("${task.process}"), val("rhocall"), eval("rhocall --version | sed 's/rhocall, version //'"), topic: versions, emit: versions_rhocall
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,11 +32,6 @@ process RHOCALL_VIZ {
 
     mv ${prefix}/output.bed ${prefix}/${prefix}.bed
     mv ${prefix}/output.wig ${prefix}/${prefix}.wig
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rhocall: \$(echo \$(rhocall --version 2>&1) | sed 's/rhocall, version //' )
-    END_VERSIONS
     """
 
     stub:
@@ -45,10 +40,5 @@ process RHOCALL_VIZ {
     mkdir ${prefix}
     touch ${prefix}/${prefix}.bed
     touch ${prefix}/${prefix}.wig
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rhocall: \$(echo \$(rhocall --version 2>&1) | sed 's/rhocall, version //' )
-    END_VERSIONS
     """
 }

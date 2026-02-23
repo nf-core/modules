@@ -1,10 +1,11 @@
 process SVDB_MERGE {
     tag "$meta.id"
     label 'process_single'
+
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-375a758a4ca8c128fb9d38047a68a9f4322d2acd:b3615e06ef17566f2988a215ce9e10808c1d08bf-0':
-        'biocontainers/mulled-v2-375a758a4ca8c128fb9d38047a68a9f4322d2acd:b3615e06ef17566f2988a215ce9e10808c1d08bf-0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ff/ff995c756aa8a3c0af13b1d054eacd536a11d35de5fa288dacf558bc21696968/data':
+        'community.wave.seqera.io/library/bcftools_svdb:ae3b14d2d608fd81' }"
 
     input:
     tuple val(meta), path(vcfs)
@@ -15,7 +16,8 @@ process SVDB_MERGE {
     tuple val(meta), path("*.{vcf,vcf.gz,bcf,bcf.gz}"), emit: vcf
     tuple val(meta), path("*.tbi")                    , emit: tbi, optional: true
     tuple val(meta), path("*.csi")                    , emit: csi, optional: true
-    path "versions.yml"                               , emit: versions
+    tuple val("${task.process}"), val('svdb'), eval("svdb | sed -nE 's/.*SVDB-([0-9.]+).*/\\1/p'"), emit: versions_svdb, topic: versions
+    tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), emit: versions_bcftools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,10 +37,10 @@ process SVDB_MERGE {
     if (input_priority) {
         if (vcfs.collect().size() > 1 && sort_inputs) {
             // make vcf-priority pairs and sort on VCF name, so priority is also sorted the same
-            def pairs = vcfs.indices.collect { [vcfs[it], input_priority[it]] }
+            def pairs = vcfs.indices.collect { index -> [vcfs[index], input_priority[index]] }
             pairs = pairs.sort { a, b -> a[0].name <=> b[0].name }
-            vcfs = pairs.collect { it[0] }
-            priority = pairs.collect { it[1] }
+            vcfs = pairs.collect { vcf -> vcf[0] }
+            priority = pairs.collect { pair -> pair[1] }
         } else {
             priority = input_priority
         }
@@ -52,7 +54,7 @@ process SVDB_MERGE {
 
     } else {
         // if there's no priority input just sort the vcfs by name if possible
-        input = (vcfs.collect().size() > 1 && sort_inputs) ? vcfs.sort { it.name } : vcfs
+        input = (vcfs.collect().size() > 1 && sort_inputs) ? vcfs.sort { vcf_file -> vcf_file.name } : vcfs
     }
 
     def extension = args2.contains("--output-type b") || args2.contains("-Ob") ? "bcf.gz" :
@@ -71,11 +73,6 @@ process SVDB_MERGE {
             --threads ${task.cpus} \\
             --output ${prefix}.${extension}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        svdb: \$( echo \$(svdb) | head -1 | sed 's/usage: SVDB-\\([0-9]\\.[0-9]\\.[0-9]\\).*/\\1/' )
-        bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -96,10 +93,5 @@ process SVDB_MERGE {
     ${create_cmd} ${prefix}.${extension}
     ${create_index}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        svdb: \$( echo \$(svdb) | head -1 | sed 's/usage: SVDB-\\([0-9]\\.[0-9]\\.[0-9]\\).*/\\1/' )
-        bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
-    END_VERSIONS
     """
 }

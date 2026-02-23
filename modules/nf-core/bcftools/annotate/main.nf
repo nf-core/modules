@@ -65,9 +65,7 @@ process BCFTOOLS_ANNOTATE {
             ? "bcf"
             : args.contains("--output-type z") || args.contains("-Oz")
                 ? "vcf.gz"
-                : args.contains("--output-type v") || args.contains("-Ov")
-                    ? "vcf"
-                    : "vcf"
+                : args.contains("--output-type v") || args.contains("-Ov") ? "vcf" : "vcf"
     def index_extension = args.contains("--write-index=tbi") || args.contains("-W=tbi")
         ? "tbi"
         : args.contains("--write-index=csi") || args.contains("-W=csi")

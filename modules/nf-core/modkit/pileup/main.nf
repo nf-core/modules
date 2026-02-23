@@ -4,8 +4,8 @@ process MODKIT_PILEUP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ont-modkit:0.6.0--hcdda2d0_0':
-        'biocontainers/ont-modkit:0.6.0--hcdda2d0_0' }"
+        'https://depot.galaxyproject.org/singularity/ont-modkit:0.6.1--hcdda2d0_0':
+        'biocontainers/ont-modkit:0.6.1--hcdda2d0_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -15,7 +15,7 @@ process MODKIT_PILEUP {
     output:
     tuple val(meta), path("*.bed.gz")  , emit: bedgz   , optional: true
     tuple val(meta), path("*.log")     , emit: log     , optional: true
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('modkit'), eval("modkit --version | sed 's/modkit //'"), emit: versions_modkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -48,11 +48,6 @@ process MODKIT_PILEUP {
     else
         mv ${prefix}.tmp ${prefix}.bed.gz
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        modkit: \$( modkit --version | sed 's/mod_kit //' )
-    END_VERSIONS
     """
 
     stub:
@@ -63,10 +58,5 @@ process MODKIT_PILEUP {
 
     echo | gzip > ${prefix}.bed.gz
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        modkit: \$( modkit --version | sed 's/mod_kit //' )
-    END_VERSIONS
     """
 }

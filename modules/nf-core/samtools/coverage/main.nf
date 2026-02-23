@@ -9,12 +9,11 @@ process SAMTOOLS_COVERAGE {
 
     input:
     tuple val(meta), path(input), path(input_index)
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fai)
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*.txt"), emit: coverage
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,11 +33,6 @@ process SAMTOOLS_COVERAGE {
         -o ${prefix}.txt \\
         $reference \\
         $input
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' )
-    END_VERSIONS
     """
 
     stub:

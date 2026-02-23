@@ -1,0 +1,215 @@
+{
+    "sarscov2 - fastq - seqfu - seqkit - deacon - single_end": {
+        "content": [
+            "test.fq.gz:md5,f3a7626275fad3775b6005fad9c13c27",
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.tsv:md5,4c6409169772005cfb06be9e41f2c1e2"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.tsv:md5,7573d0c83cfc9af6e1ced67a45265381"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.tsv:md5,24dd7cfbb9ae0034d0bd804f464f11fa"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.tsv:md5,35dd18aff6780370b48027fec9c7d900"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.idx:md5,84e4985c91800686db9c9dca28fabd1a"
+                ]
+            ],
+            "test.json",
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test_mqc.txt:md5,1facba42f81058e557e3d85dcff2a6f3"
+                ],
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test_mqc.txt:md5,a039b8c1cc923db88d2484d3abbf00fe"
+                ]
+            ],
+            [
+                {
+                    "FASTQ_SHORTREADS_PREPROCESS_QC:FASTQ_PREPROCESS_SEQKIT:SEQKIT_RMDUP": {
+                        "seqkit": "v2.9.0"
+                    }
+                },
+                {
+                    "FASTQ_SHORTREADS_PREPROCESS_QC:FASTQ_PREPROCESS_SEQKIT:SEQKIT_SEQ": {
+                        "seqkit": "v2.9.0"
+                    }
+                },
+                {
+                    "FASTQ_SHORTREADS_PREPROCESS_QC:FASTQ_PREPROCESS_SEQKIT:FASTQ_SANITISE_SEQKIT:SEQKIT_SANA": {
+                        "seqkit": "2.10.1"
+                    }
+                }
+            ]
+        ],
+        "timestamp": "2026-02-20T11:59:23.009553213",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "sarscov2 - fastq - adapterremoval - merge - cat more files - paired_end": {
+        "content": [
+            "test.merged.fastq.gz:md5,369452751050a7f1e31b839702d61417",
+            "test2.merged.fastq.gz:md5,369452751050a7f1e31b839702d61417",
+            [
+                "test.discarded.fastq.gz",
+                "test2.discarded.fastq.gz"
+            ],
+            [
+                {
+                    "FASTQ_SHORTREADS_PREPROCESS_QC:FASTQ_REMOVEADAPTERS_MERGE:ADAPTERREMOVAL_PE": {
+                        "adapterremoval": "2.3.2"
+                    }
+                }
+            ]
+        ],
+        "timestamp": "2026-02-13T09:13:49.235042821",
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        }
+    },
+    "sarscov2 - fastq - fastqc - seqkit - cutadapt - clumpify - cat - paired_end": {
+        "content": [
+            400,
+            400,
+            "test_1_fastqc.html",
+            "test_2_fastqc.html",
+            "test_1_fastqc.html",
+            "test_2_fastqc.html",
+            "test_1_fastqc.zip",
+            "test_2_fastqc.zip",
+            "test_1_fastqc.zip",
+            "test_2_fastqc.zip",
+            41,
+            [
+                {
+                    "FASTQ_SHORTREADS_PREPROCESS_QC:BBMAP_CLUMPIFY": {
+                        "bbmap": 39.18
+                    }
+                },
+                {
+                    "FASTQ_SHORTREADS_PREPROCESS_QC:FASTQ_PREPROCESS_SEQKIT:SEQKIT_RMDUP": {
+                        "seqkit": "v2.9.0"
+                    }
+                },
+                {
+                    "FASTQ_SHORTREADS_PREPROCESS_QC:FASTQ_PREPROCESS_SEQKIT:SEQKIT_SEQ": {
+                        "seqkit": "v2.9.0"
+                    }
+                },
+                {
+                    "FASTQ_SHORTREADS_PREPROCESS_QC:FASTQ_PREPROCESS_SEQKIT:FASTQ_SANITISE_SEQKIT:SEQKIT_SANA": {
+                        "seqkit": "2.10.1"
+                    }
+                },
+                {
+                    "FASTQ_SHORTREADS_PREPROCESS_QC:FASTQ_PREPROCESS_SEQKIT:FASTQ_SANITISE_SEQKIT:SEQKIT_PAIR": {
+                        "seqkit": "2.9.0"
+                    }
+                }
+            ]
+        ],
+        "timestamp": "2026-02-13T09:13:35.929830095",
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        }
+    },
+    "sarscov2 - fastq - skip all - single_end": {
+        "content": [
+            "/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fastq/test_1.fastq.gz",
+            [
+                
+            ]
+        ],
+        "timestamp": "2026-02-13T09:13:58.592190153",
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        }
+    },
+    "sarscov2 - fastq - umitools - prinseq - clumpify - cat - single_end": {
+        "content": [
+            400,
+            51,
+            41,
+            [
+                {
+                    "FASTQ_SHORTREADS_PREPROCESS_QC:BBMAP_CLUMPIFY": {
+                        "bbmap": 39.18
+                    }
+                },
+                {
+                    "FASTQ_SHORTREADS_PREPROCESS_QC:FASTQ_COMPLEXITY_FILTER:PRINSEQPLUSPLUS": {
+                        "prinseqplusplus": 1.2
+                    }
+                }
+            ]
+        ],
+        "timestamp": "2026-02-13T09:13:13.566464264",
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        }
+    },
+    "sarscov2 - fastq - skip all - single_end - stub": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fastq/test_1.fastq.gz"
+                ]
+            ]
+        ],
+        "timestamp": "2026-01-13T12:17:19.455574032",
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        }
+    }
+}

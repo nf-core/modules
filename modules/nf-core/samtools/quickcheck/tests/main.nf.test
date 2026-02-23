@@ -1,0 +1,207 @@
+// nf-core modules test samtools/quickcheck
+nextflow_process {
+
+    name "Test Process SAMTOOLS_QUICKCHECK"
+    script "../main.nf"
+    process "SAMTOOLS_QUICKCHECK"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samtools"
+    tag "samtools/quickcheck"
+
+    test(" bam - PE ") {
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test.paired_end.sorted' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert process.out.bam.collect{ it[2] } == ["0"] },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test(" bam - SE ") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test.single_end.sorted' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert process.out.bam.collect{ it[2] } == ["0"] },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test(" bam - PE - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test.paired_end.sorted' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert process.out.bam.collect{ it[2] } == ["0"] },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test(" cram - PE ") {
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test.paired_end.sorted' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert process.out.bam.collect{ it[2] } == ["0"] },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test(" sam - PE - No targets") {
+        /* SAM header misses targets of corresponding alignments */
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test.paired_end.sorted' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.invalid.sam', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert process.out.bam.collect{ it[2] } == ["8"] },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test(" sam - PE - No targets - ignore targets / unaligned option") {
+        /* SAM header misses targets of corresponding alignments, but the '-u' parameter makes this tolerated as unaligned */
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test.paired_end.sorted' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.invalid.sam', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert process.out.bam.collect{ it[2] } == ["0"] },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test(" bam - ?E - Bad EOF") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'1.quickcheck.badeof' ],
+                    file('https://github.com/samtools/samtools/raw/refs/heads/develop/test/quickcheck/1.quickcheck.badeof.bam', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert process.out.bam.collect{ it[2] } == ["16"] },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test(" bam - ?E - No targets") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'10.quickcheck.notargets' ],
+                    file('https://github.com/samtools/samtools/raw/refs/heads/develop/test/quickcheck/10.quickcheck.notargets.bam', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert process.out.bam.collect{ it[2] } == ["8"] },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test(" bam - ?E - Bad header") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'2.quickcheck.badheader' ],
+                    file('https://github.com/samtools/samtools/raw/refs/heads/develop/test/quickcheck/2.quickcheck.badheader.bam', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert process.out.bam.collect{ it[2] } == ["4"] },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

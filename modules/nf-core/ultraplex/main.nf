@@ -49,7 +49,6 @@ process ULTRAPLEX {
 
     stub:
     def VERSION = "1.2.5" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    def args    = task.ext.args ?: ''
     prefix      = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ultraplex_${prefix}_Sample1_Fwd_matched.fastq.gz

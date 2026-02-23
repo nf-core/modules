@@ -73,149 +73,18 @@ input:
         pattern: "*.dict"
         ontologies: []
 output:
-  axt_gz:
+  alignment:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.axt.gz":
+      - "*.{axt.gz,bam,bed.gz,blast.gz,blasttab.gz,chain.gz,cram,gff.gz,html.gz,psl.gz,sam.gz,tab.gz}":
           type: file
-          description: Gzipped pairwise alignment in Axt (Blastz) format
-            (optional)
-          pattern: "*.axt.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
-  bam:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.bam":
-          type: file
-          description: Pairwise alignment in BAM format (optional)
-          pattern: "*.bam"
+          description: Pairwise alignment exported to Axt, BAM, BED, BLAST, Chain,
+            CRAM, GFF, HTML PSL, SAM or Tab format.
+          pattern: "*.{axt.gz,bam,bed.gz,blast.gz,blasttab.gz,chain.gz,cram,gff.gz,html.gz,psl.gz,sam.gz,tab.gz}"
           ontologies: []
-  bed_gz:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.bed.gz":
-          type: file
-          description: Gzipped pairwise alignment in BED format (optional)
-          pattern: "*.bed.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
-  blast_gz:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.blast.gz":
-          type: file
-          description: Gzipped pairwise alignment in blast format (optional)
-          pattern: "*.blast.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
-  blasttab_gz:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.blasttab.gz":
-          type: file
-          description: Gzipped pairwise alignment in blasttab format (optional)
-          pattern: "*.blasttab.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
-  chain_gz:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.chain.gz":
-          type: file
-          description: Gzipped pairwise alignment in UCSC chain format (optional)
-          pattern: "*.chain.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
-  cram:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.cram":
-          type: file
-          description: Pairwise alignment in CRAM format (optional)
-          pattern: "*.cram"
-          ontologies: []
-  gff_gz:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.gff.gz":
-          type: file
-          description: Gzipped pairwise alignment in GFF format (optional)
-          pattern: "*.gff.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
-  html_gz:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.html.gz":
-          type: file
-          description: Gzipped pairwise alignment in HTML format (optional)
-          pattern: "*.html.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
-  psl_gz:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.psl.gz":
-          type: file
-          description: Gzipped pairwise alignment in PSL (BLAT) format (optional)
-          pattern: "*.psl.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
-  sam_gz:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.sam.gz":
-          type: file
-          description: Gzipped pairwise alignment in SAM format (optional)
-          pattern: "*.sam.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
-  tab_gz:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.tab.gz":
-          type: file
-          description: Gzipped pairwise alignment in TAB format (optional)
-          pattern: "*.tab.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
   versions_last:
     - - "${task.process}":
           type: string

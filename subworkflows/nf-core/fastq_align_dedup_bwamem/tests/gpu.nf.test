@@ -73,7 +73,7 @@ nextflow_workflow {
                     workflow.out.samtools_index_stats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
+                    workflow.out.versions.collect().sort { a, b -> path(a).md5 <=> path(b).md5 }
                     ).match()
                 }
             )
@@ -117,7 +117,7 @@ nextflow_workflow {
                     workflow.out.samtools_index_stats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
+                    workflow.out.versions.collect().sort { a, b -> path(a).md5 <=> path(b).md5 }
                     ).match()
                 }
             )
@@ -165,14 +165,14 @@ nextflow_workflow {
                     workflow.out.samtools_index_stats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
+                    workflow.out.versions.collect().sort { a, b -> path(a).md5 <=> path(b).md5 }
                     ).match()
                 }
             )
         }
     }
 
-    test("Sarscov2 fasta - SE - skip deduplication - with GPU parabricks/fq2bam - stub") {
+    test("Sarscov2 fasta - SE - deduplicate - with GPU parabricks/fq2bam - stub") {
         options '-stub'
         when {
             workflow {
@@ -190,7 +190,7 @@ nextflow_workflow {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
                 input[3] = BWA_INDEX.out.index
-                input[4] = false                    // deduplicate
+                input[4] = false                    // skip_deduplication
                 input[5] = true                     // use_gpu
                 input[6] = "bam"                    // output_fmt
                 input[7] = Channel.of([[:], []])    // interval_file
@@ -203,10 +203,14 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect{ path(it).yaml }
-                ).match()
-                }
+                    workflow.out.bam,
+                    workflow.out.bai,
+                    workflow.out.samtools_flagstat,
+                    workflow.out.samtools_stats,
+                    workflow.out.samtools_index_stats,
+                    workflow.out.picard_metrics,
+                    workflow.out.versions.collect().sort { a, b -> path(a).md5 <=> path(b).md5 }
+                ).match() }
             )
         }
     }
