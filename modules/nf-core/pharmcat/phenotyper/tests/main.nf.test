@@ -1,0 +1,162 @@
+nextflow_process {
+
+    name "Test Process PHARMCAT_PHENOTYPER"
+    script "../main.nf"
+    process "PHARMCAT_PHENOTYPER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pharmcat"
+    tag "pharmcat/phenotyper"
+    tag "pharmcat/matcher"
+
+    config "./nextflow.config"
+
+
+    setup {
+        run("PHARMCAT_MATCHER") {
+            script "../../matcher/main.nf"
+            process {
+                """
+                input[0] =  Channel.fromList([
+                    tuple([id: 'PharmCAT'], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz.tbi', checkIfExists: true)),
+                ])
+                input[1] = Channel.of([])
+                """
+            }
+        }
+    }
+
+    test("Phenotyper with pharmcat matcher JSON") {
+
+        when {
+
+            params {
+                module_args = ''
+            }
+
+            process {
+                """
+                input[0] = PHARMCAT_MATCHER.out.matcher_json.collect {
+                    meta, match_json -> match_json
+                }.map {
+                    match_json -> [
+                        [ id: 'test'],
+                        match_json,
+                        []
+                    ]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.phenotyper_json[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+    test("Phenotyper with outside calls JSON") {
+
+        when {
+            params {
+                module_args = ''
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.outsideCall.tsv', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.phenotyper_json[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+    test("Phenotyper with pharmcat matcher + outside calls JSON") {
+
+        when {
+            params {
+                module_args = ''
+            }
+
+            process {
+                """
+                input[0] = PHARMCAT_MATCHER.out.matcher_json.collect {
+                    meta, match_json -> match_json
+                }.map {
+                    match_json -> [
+                        [ id: 'test'],
+                        match_json,
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.outsideCall.tsv', checkIfExists: true)
+                    ]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.phenotyper_json[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+
+    test("Phenotyper - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+
+            process {
+                """
+                input[0] = PHARMCAT_MATCHER.out.matcher_json.collect {
+                    meta, match_json -> match_json
+                }.map {
+                    match_json -> [
+                        [ id: 'test'],
+                        match_json,
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.outsideCall.tsv', checkIfExists: true)
+                    ]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+    }
+}
