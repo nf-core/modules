@@ -12,7 +12,8 @@ process MACSYFINDER_DOWNLOAD {
 
     output:
     path "models"       , emit: models
-    path "versions.yml" , emit: versions
+    tuple val("${task.process}"), val('macsyfinder'), eval('macsyfinder --version 2>&1 | head -1 | sed "s/^.*MacSyFinder //; s/ .*$//"'), topic: versions, emit: versions_macsyfinder
+    tuple val("${task.process}"), val('msf_data'), eval('msf_data --version 2>&1 | grep -o "MacSyLib [0-9.]*" | sed "s/MacSyLib //"'), topic: versions, emit: versions_macsydata
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,31 +21,19 @@ process MACSYFINDER_DOWNLOAD {
     script:
     def args = task.ext.args ?: ''
     """
-    # macsydata installs models into the current directory by default
+    # msf_data installs models into the current directory by default
     # We'll create a models directory to store them
     mkdir -p models
 
-    macsydata install \\
+    msf_data install \\
         --target models \\
         ${args} \\
         ${model_name}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        macsyfinder: \$(macsyfinder --version 2>&1 | sed 's/^.*MacSyFinder //; s/ .*\$//')
-        macsydata: \$(macsydata --version 2>&1 | sed 's/^.*macsydata //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
     """
     mkdir -p models/${model_name}
     touch models/${model_name}/definitions.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        macsyfinder: \$(macsyfinder --version 2>&1 | sed 's/^.*MacSyFinder //; s/ .*\$//')
-        macsydata: \$(macsydata --version 2>&1 | sed 's/^.*macsydata //; s/ .*\$//')
-    END_VERSIONS
     """
 }

@@ -18,7 +18,8 @@ process MACSYFINDER_SEARCH {
     tuple val(meta), path("${prefix}/macsyfinder.err")     , emit: stderr   , optional: true
     tuple val(meta), path("${prefix}/all_systems.tsv")     , emit: summary  , optional: true
     tuple val(meta), path("${prefix}/all_best_solutions*") , emit: best_solutions, optional: true
-    path "versions.yml"                                    , emit: versions
+    tuple val("${task.process}"), val('macsyfinder'), eval('macsyfinder --version 2>&1 | head -1 | sed "s/^.*MacSyFinder //; s/ .*$//"'), topic: versions, emit: versions_macsyfinder
+    tuple val("${task.process}"), val('hmmer'), eval('hmmsearch -h | grep -o "^# HMMER [0-9.]*" | sed "s/^# HMMER *//"'), topic: versions, emit: versions_hmmer
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,18 +31,12 @@ process MACSYFINDER_SEARCH {
     """
     macsyfinder \\
         --sequence-db ${proteins} \\
-        --db-type ${meta.db_type ?: 'gembase'} \\
+        --db-type ${meta.db_type ?: 'unordered'} \\
         --models-dir ${models} \\
         ${model_arg} \\
         --out-dir ${prefix} \\
         --worker ${task.cpus} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        macsyfinder: \$(macsyfinder --version 2>&1 | sed 's/^.*MacSyFinder //; s/ .*\$//')
-        hmmer: \$(hmmsearch -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER *//')
-    END_VERSIONS
     """
 
     stub:
@@ -52,11 +47,5 @@ process MACSYFINDER_SEARCH {
     touch ${prefix}/macsyfinder.err
     touch ${prefix}/all_systems.tsv
     touch ${prefix}/all_best_solutions.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        macsyfinder: \$(macsyfinder --version 2>&1 | sed 's/^.*MacSyFinder //; s/ .*\$//')
-        hmmer: \$(hmmsearch -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER *//')
-    END_VERSIONS
     """
 }
