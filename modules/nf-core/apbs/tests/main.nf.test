@@ -15,10 +15,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file("${projectDir}/modules/nf-core/apbs/tests/apbs-mol.in", checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'proteomics/apbs/apbs-mol.in', checkIfExists: true),
                     [
-                        file("${projectDir}/modules/nf-core/apbs/tests/methanol.pqr", checkIfExists: true),
-                        file("${projectDir}/modules/nf-core/apbs/tests/methoxide.pqr", checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'proteomics/apbs/methanol.pqr', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'proteomics/apbs/methoxide.pqr', checkIfExists: true)
                     ]
                 ]
                 """
@@ -48,10 +48,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file("${projectDir}/modules/nf-core/apbs/tests/apbs-mol.in", checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'proteomics/apbs/apbs-mol.in', checkIfExists: true),
                     [
-                        file("${projectDir}/modules/nf-core/apbs/tests/methanol.pqr", checkIfExists: true),
-                        file("${projectDir}/modules/nf-core/apbs/tests/methoxide.pqr", checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'proteomics/apbs/methanol.pqr', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'proteomics/apbs/methoxide.pqr', checkIfExists: true)
                     ]
                 ]
                 """
