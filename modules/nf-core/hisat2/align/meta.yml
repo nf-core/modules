@@ -47,6 +47,15 @@ input:
         description: Splices sites in gtf file
         pattern: "*.{txt}"
         ontologies: []
+  - seq_platform:
+      type: string
+      description: Sequencing platform for read group PL tag
+  - seq_center:
+      type: string
+      description: Sequencing center for read group CN tag
+  - save_unaligned:
+      type: boolean
+      description: Save unaligned reads to FastQ files
 output:
   bam:
     - - meta:
