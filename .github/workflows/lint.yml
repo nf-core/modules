@@ -30,6 +30,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
   NXF_VER: "25.10.2"
+  NXF_SYNTAX_PARSER: "v2"
 
 jobs:
   pre-commit:
