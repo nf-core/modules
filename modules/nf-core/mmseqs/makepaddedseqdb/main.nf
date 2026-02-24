@@ -19,7 +19,7 @@ process MMSEQS_MAKEPADDEDSEQDB {
 
     script:
     def args = task.ext.args ?: ''
-    padded_prefix = task.ext.prefix ?: "${meta.id}_padded"
+    padded_prefix = task.ext.prefix ?: "${meta.id}_gpu"
     """
     mkdir -p ${padded_prefix}
     mmseqs \\
@@ -31,7 +31,7 @@ process MMSEQS_MAKEPADDEDSEQDB {
 
     stub:
     def args = task.ext.args ?: ''
-    padded_prefix = task.ext.prefix ?: "${meta.id}"
+    padded_prefix = task.ext.prefix ?: "${meta.id}_gpu"
     """
     echo ${args}
     mkdir -p ${padded_prefix}
