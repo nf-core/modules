@@ -10,7 +10,7 @@ nextflow_process {
     tag "mmseqs/createdb"
 
     setup {
-        run("MMSEQS_CREATEDB", alias: "MMSEQS_CREATEDB_TARGET") {
+        run("MMSEQS_CREATEDB") {
             script "../../../mmseqs/createdb/main.nf"
             process {
                 """
@@ -27,7 +27,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = MMSEQS_CREATEDB_TARGET.out.db
+                input[0] = MMSEQS_CREATEDB.out.db
                 """
             }
         }
