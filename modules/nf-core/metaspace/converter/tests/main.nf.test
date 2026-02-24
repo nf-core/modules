@@ -25,7 +25,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.adata_object,metafile.getAbsolutePath(),
+                    process.out.adata_object,
+                    metafile.getAbsolutePath(),
                     process.out.versions
                 ).match() }
             )
