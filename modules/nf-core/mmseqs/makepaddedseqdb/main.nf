@@ -13,7 +13,9 @@ process MMSEQS_MAKEPADDEDSEQDB {
     output:
     tuple val(meta), path("${padded_prefix}/"), emit: db_padded
     tuple val("${task.process}"), val('mmseqs'), eval('mmseqs version'), topic: versions, emit: versions_mmseqs
-    // targetdbpadded  targetdbpadded.dbtype  targetdbpadded.index  targetdbpadded.lookup  targetdbpadded_h  targetdbpadded_h.dbtype  targetdbpadded_h.index
+
+    when:
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
