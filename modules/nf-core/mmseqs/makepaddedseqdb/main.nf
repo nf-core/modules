@@ -10,6 +10,10 @@ process MMSEQS_MAKEPADDEDSEQDB {
     input:
     tuple val(meta), path(prefix)
 
+    output:
+    tuple val(meta), path("${padded_prefix}/"), emit: db_padded
+    tuple val("${task.process}"), val('mmseqs'), eval('mmseqs version'), topic: versions, emit: versions_mmseqs
+
     script:
     def args = task.ext.args ?: ''
     padded_prefix = task.ext.prefix ?: "${meta.id}_padded"
