@@ -11,7 +11,7 @@ process MMSEQS_MAKEPADDEDSEQDB {
     tuple val(meta), path(db_in)
 
     output:
-    tuple val(meta), path("${padded_prefix}/"), emit: db_padded
+    tuple val(meta), path("${prefix}/"), emit: db_padded
     tuple val("${task.process}"), val('mmseqs'), eval('mmseqs version'), topic: versions, emit: versions_mmseqs
 
     when:
@@ -19,16 +19,18 @@ process MMSEQS_MAKEPADDEDSEQDB {
 
     script:
     def args = task.ext.args ?: ''
-     def prefix = task.ext.prefix ?: "${meta.id}"
-        if ("${db_in}" == "${prefix}") {
-          error("Input and output names of databases are the same, set prefix in module configuration to disambiguate!")
-      }
+    def args2 = task.ext.args2 ?: '*.dbtype'
+    prefix = task.ext.prefix ?: "${meta.id}"
+    if ("${db_in}" == "${prefix}") {
+        error("Input and output names of databases are the same, set prefix in module configuration to disambiguate!")
+    }
     """
-    mkdir -p ${padded_prefix}
+    DB_TARGET_PATH_NAME=\$(find -L "${db_in}/" -maxdepth 1 -name "${args2}" | sed 's/\\.[^.]*\$//' | sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
+    mkdir -p ${prefix}
     mmseqs \\
         makepaddedseqdb \\
-        ${db_in}/${db_in} \\
-        ${padded_prefix}/${padded_prefix} \\
+        \$DB_TARGET_PATH_NAME \\
+        ${prefix}/${prefix} \\
         ${args}
     """
 
