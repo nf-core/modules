@@ -13,15 +13,32 @@ process MMSEQS_MAKEPADDEDSEQDB {
     output:
     tuple val(meta), path("${padded_prefix}/"), emit: db_padded
     tuple val("${task.process}"), val('mmseqs'), eval('mmseqs version'), topic: versions, emit: versions_mmseqs
+    // targetdbpadded  targetdbpadded.dbtype  targetdbpadded.index  targetdbpadded.lookup  targetdbpadded_h  targetdbpadded_h.dbtype  targetdbpadded_h.index
 
     script:
     def args = task.ext.args ?: ''
     padded_prefix = task.ext.prefix ?: "${meta.id}_padded"
     """
+    mkdir -p ${padded_prefix}
     mmseqs \\
         makepaddedseqdb \\
-        ${prefix} \\
-        ${padded_prefix} \\
+        ${prefix}/${prefix} \\
+        ${padded_prefix}/${padded_prefix} \\
         ${args}
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    padded_prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo ${args}
+    mkdir -p ${padded_prefix}
+    touch ${padded_prefix}/${padded_prefix}
+    touch ${padded_prefix}/${padded_prefix}.dbtype
+    touch ${padded_prefix}/${padded_prefix}.index
+    touch ${padded_prefix}/${padded_prefix}.lookup
+    touch ${padded_prefix}/${padded_prefix}_h
+    touch ${padded_prefix}/${padded_prefix}_h.dbtype
+    touch ${padded_prefix}/${padded_prefix}_h.index
     """
 }
