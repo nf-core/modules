@@ -36,16 +36,16 @@ process MMSEQS_MAKEPADDEDSEQDB {
 
     stub:
     def args = task.ext.args ?: ''
-    padded_prefix = task.ext.prefix ?: "${meta.id}_gpu"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo ${args}
-    mkdir -p ${padded_prefix}
-    touch ${padded_prefix}/${padded_prefix}
-    touch ${padded_prefix}/${padded_prefix}.dbtype
-    touch ${padded_prefix}/${padded_prefix}.index
-    touch ${padded_prefix}/${padded_prefix}.lookup
-    touch ${padded_prefix}/${padded_prefix}_h
-    touch ${padded_prefix}/${padded_prefix}_h.dbtype
-    touch ${padded_prefix}/${padded_prefix}_h.index
+    mkdir -p ${prefix}
+    touch ${prefix}/${prefix}
+    touch ${prefix}/${prefix}.dbtype
+    touch ${prefix}/${prefix}.index
+    touch ${prefix}/${prefix}.lookup
+    touch ${prefix}/${prefix}_h
+    touch ${prefix}/${prefix}_h.dbtype
+    touch ${prefix}/${prefix}_h.index
     """
 }
