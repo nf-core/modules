@@ -2,20 +2,45 @@
 // UMI-tools dedup, index BAM file and run samtools stats, flagstat and idxstats
 //
 
-include { UMITOOLS_DEDUP     } from '../../../modules/nf-core/umitools/dedup/main'
-include { SAMTOOLS_INDEX     } from '../../../modules/nf-core/samtools/index/main'
-include { BAM_STATS_SAMTOOLS } from '../bam_stats_samtools/main'
+include { UMITOOLS_DEDUP                      } from '../../../modules/nf-core/umitools/dedup/main'
+include { SAMTOOLS_INDEX                       } from '../../../modules/nf-core/samtools/index/main'
+include { SAMTOOLS_VIEW  as SAMTOOLS_VIEW_PRIMARY  } from '../../../modules/nf-core/samtools/view'
+include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_PRIMARY  } from '../../../modules/nf-core/samtools/index/main'
+include { BAM_STATS_SAMTOOLS                   } from '../bam_stats_samtools/main'
 
 workflow BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS {
     take:
     ch_bam_bai          // channel: [ val(meta), path(bam), path(bai/csi) ]
     val_get_dedup_stats // boolean: true/false
+    val_primary_only    // boolean: true/false
 
     main:
+
+    //
+    // Optionally filter to primary alignments before deduplication
+    //
+    if (val_primary_only) {
+        SAMTOOLS_VIEW_PRIMARY (
+            ch_bam_bai,
+            [[],[],[]],  // No reference fasta
+            [],       // No qname file
+            []        // No index format
+        )
+
+        SAMTOOLS_INDEX_PRIMARY ( SAMTOOLS_VIEW_PRIMARY.out.bam )
+
+        ch_dedup_input = SAMTOOLS_VIEW_PRIMARY.out.bam
+            .join(SAMTOOLS_INDEX_PRIMARY.out.bai
+                .mix(SAMTOOLS_INDEX_PRIMARY.out.csi),
+            by: [0], remainder: true)
+    } else {
+        ch_dedup_input = ch_bam_bai
+    }
+
     //
     // UMI-tools dedup
     //
-    UMITOOLS_DEDUP ( ch_bam_bai, val_get_dedup_stats )
+    UMITOOLS_DEDUP ( ch_dedup_input, val_get_dedup_stats )
 
     //
     // Index BAM file and run samtools stats, flagstat and idxstats
@@ -23,16 +48,9 @@ workflow BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS {
     SAMTOOLS_INDEX ( UMITOOLS_DEDUP.out.bam )
 
     ch_bam_bai_dedup = UMITOOLS_DEDUP.out.bam
-        .join(SAMTOOLS_INDEX.out.bai, by: [0], remainder: true)
-        .join(SAMTOOLS_INDEX.out.csi, by: [0], remainder: true)
-        .map {
-            meta, bam, bai, csi ->
-                if (bai) {
-                    [ meta, bam, bai ]
-                } else {
-                    [ meta, bam, csi ]
-                }
-        }
+        .join(SAMTOOLS_INDEX.out.bai
+            .mix(SAMTOOLS_INDEX.out.csi),
+        by: [0], remainder: true)
 
     BAM_STATS_SAMTOOLS ( ch_bam_bai_dedup, [ [:], [] ] )
 
