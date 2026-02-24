@@ -8,7 +8,7 @@ process MMSEQS_MAKEPADDEDSEQDB {
         : 'community.wave.seqera.io/library/mmseqs2:18.8cc5c--af05c9a98d9f6139'}"
 
     input:
-    tuple val(meta), path(prefix)
+    tuple val(meta), path(db_in)
 
     output:
     tuple val(meta), path("${padded_prefix}/"), emit: db_padded
@@ -24,7 +24,7 @@ process MMSEQS_MAKEPADDEDSEQDB {
     mkdir -p ${padded_prefix}
     mmseqs \\
         makepaddedseqdb \\
-        ${prefix}/${prefix} \\
+        ${db_in}/${db_in} \\
         ${padded_prefix}/${padded_prefix} \\
         ${args}
     """
