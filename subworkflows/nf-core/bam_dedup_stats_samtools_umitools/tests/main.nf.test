@@ -40,11 +40,10 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert workflow.out.deduplog.get(0).get(1) ==~ ".*.log"},
-                { assert workflow.out.bam.get(0).get(1) ==~ ".*.bam"},
-                { assert workflow.out.bai.get(0).get(1) ==~ ".*.bai"},
                 { assert snapshot(
                     bam(workflow.out.bam[0][1]).getSamLinesMD5(),
+                    file(workflow.out.bai[0][1]).name,
+                    file(workflow.out.deduplog[0][1]).name,
                     workflow.out.stats,
                     workflow.out.flagstat,
                     workflow.out.idxstats
@@ -74,11 +73,10 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert workflow.out.deduplog.get(0).get(1) ==~ ".*.log"},
-                { assert workflow.out.bam.get(0).get(1) ==~ ".*.bam"},
-                { assert workflow.out.bai.get(0).get(1) ==~ ".*.bai"},
                 { assert snapshot(
                     bam(workflow.out.bam[0][1]).getSamLinesMD5(),
+                    file(workflow.out.bai[0][1]).name,
+                    file(workflow.out.deduplog[0][1]).name,
                     workflow.out.stats,
                     workflow.out.flagstat,
                     workflow.out.idxstats
