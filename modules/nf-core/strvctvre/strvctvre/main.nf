@@ -2,8 +2,6 @@ process STRVCTVRE_STRVCTVRE {
     tag "$meta.id"
     label 'process_low'
 
-    // When updating the version here, don't forget to update the hardcoded version in script and stub sections
-    // Version in help message does not match the actual version of the tool
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/95/9584eeb6569a511be29d0a07bf80103d59d38715ddb971dddeca0bc72aec41d3/data':
@@ -17,14 +15,13 @@ process STRVCTVRE_STRVCTVRE {
     output:
     tuple val(meta), path("*.vcf"), emit: vcf, optional: true
     tuple val(meta), path("*.bed"), emit: bed, optional: true
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('strvctvre'), eval("StrVCTVRE.py --help |& sed -n 's/StrVCTVRE: version *//p'"), emit: versions_strvctvre, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.10'
     def format = ''
     if (sv_file.name.endsWith('.vcf') || sv_file.name.endsWith('.vcf.gz')) {
         format = 'vcf'
@@ -44,16 +41,10 @@ process STRVCTVRE_STRVCTVRE {
         --assembly ${assembly} \\
         --liftover liftover_hg19_to_hg38_public.py \\
         --output ${prefix}.${format}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        strvctvre: '$VERSION'
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.10'
     def format = ''
     if (sv_file.name.endsWith('.vcf') || sv_file.name.endsWith('.vcf.gz')) {
         format = 'vcf'
@@ -67,10 +58,5 @@ process STRVCTVRE_STRVCTVRE {
     }
     """
     touch ${prefix}.${format}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        strvctvre: '$VERSION'
-    END_VERSIONS
     """
 }

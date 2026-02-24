@@ -32,12 +32,7 @@ nextflow_workflow {
         }
         then {
             assert workflow.success
-            assertAll(
-                { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect{ path(it).yaml }
-                ).match() }
-            )
+            assert snapshot(sanitizeOutput(workflow.out)).match()
         }
     }
     test("Params: bwamem | generate bwamem1 index") {
@@ -59,12 +54,7 @@ nextflow_workflow {
         }
         then {
             assert workflow.success
-            assertAll(
-                { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect{ path(it).yaml }
-                ).match() }
-            )
+            assert snapshot(sanitizeOutput(workflow.out)).match()
         }
     }
     test("Params: bwamem2 | generate bwamem2 index") {
@@ -86,12 +76,7 @@ nextflow_workflow {
         }
         then {
             assert workflow.success
-            assertAll(
-                { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect{ path(it).yaml }
-                ).match() }
-            )
+            assert snapshot(sanitizeOutput(workflow.out)).match()
         }
     }
     test("Params: dragmap | generate dragmap hashtable") {
@@ -115,8 +100,7 @@ nextflow_workflow {
             assert workflow.success
             assertAll(
                 { assert snapshot(
-                    workflow.out.index[1].collect { file(it).name }.toSorted(),
-                    workflow.out.versions.collect{ path(it).yaml }
+                    workflow.out.index[1].collect { file(it).name }.toSorted()
                 ).match() }
             )
         }
@@ -142,8 +126,7 @@ nextflow_workflow {
             assert workflow.success
             assertAll(
                 { assert snapshot(
-                    //workflow.out.index[0][1].collect { file(it).name }.toSorted(),
-                    workflow.out.versions.collect{ path(it).yaml }
+                    workflow.out.index[0][1].collect { file(it).name }.toSorted()
                 ).match() }
             )
         }
@@ -169,12 +152,7 @@ nextflow_workflow {
         }
         then {
             assert workflow.success
-            assertAll(
-                { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect{ path(it).yaml }
-                ).match() }
-            )
+            assert snapshot(sanitizeOutput(workflow.out)).match()
         }
     }
     test("Params: bwamem | generate bwamem1 index - stub") {
@@ -196,12 +174,7 @@ nextflow_workflow {
         }
         then {
             assert workflow.success
-            assertAll(
-                { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect{ path(it).yaml }
-                ).match() }
-            )
+            assert snapshot(sanitizeOutput(workflow.out)).match()
         }
     }
     test("Params: bwamem2 | generate bwamem2 index - stub") {
@@ -223,12 +196,7 @@ nextflow_workflow {
         }
         then {
             assert workflow.success
-            assertAll(
-                { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect{ path(it).yaml }
-                ).match() }
-            )
+            assert snapshot(sanitizeOutput(workflow.out)).match()
         }
     }
     test("Params: dragmap | generate dragmap hashtable - stub") {
@@ -250,12 +218,7 @@ nextflow_workflow {
         }
         then {
             assert workflow.success
-            assertAll(
-                { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect{ path(it).yaml }
-                ).match() }
-            )
+            assert snapshot(sanitizeOutput(workflow.out)).match()
         }
     }
     test("Params: snapaligner | generate snapaligner index - stub") {
@@ -277,12 +240,7 @@ nextflow_workflow {
         }
         then {
             assert workflow.success
-            assertAll(
-                { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect{ path(it).yaml }
-                ).match() }
-            )
+            assert snapshot(sanitizeOutput(workflow.out)).match()
         }
     }
 

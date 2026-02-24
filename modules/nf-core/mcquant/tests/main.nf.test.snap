@@ -1,36 +1,13 @@
 {
-    "versions": {
-        "content": [
-            [
-                "versions.yml:md5,e27b6a87e2ea34d5ebaaf7f3e1200805"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-04-18T20:05:03.083136949"
-    },
     "imaging - image,mask,marker - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "image"
-                        },
-                        "image.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,e27b6a87e2ea34d5ebaaf7f3e1200805"
-                ],
                 "csv": [
                     [
                         {
                             "id": "image"
                         },
-                        "image.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "cycif_tonsil_registered_cell.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "versions": [
@@ -38,27 +15,28 @@
                 ]
             }
         ],
+        "timestamp": "2026-02-16T13:22:16.511029817",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-04-18T20:11:53.400762546"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
-    "csv": {
+    "imaging - image,mask,marker": {
         "content": [
+            "e1559b2be1611815a3335bf83b48d22d",
             [
-                [
-                    {
-                        "id": "image"
-                    },
-                    "cycif_tonsil_registered_cell.csv:md5,f5d41f3cc64a573cf45682bda6ffe0d9"
-                ]
-            ]
+                "versions.yml:md5,e27b6a87e2ea34d5ebaaf7f3e1200805"
+            ],
+            {
+                "MCQUANT": {
+                    "mcquant": "1.5.4"
+                }
+            }
         ],
+        "timestamp": "2026-02-16T14:27:22.221845149",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-04-18T20:05:03.06867638"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     }
 }

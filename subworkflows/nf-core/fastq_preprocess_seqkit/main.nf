@@ -60,7 +60,7 @@ workflow FASTQ_PREPROCESS_SEQKIT {
     ch_reads = ch_reads_split
         .map { meta, fastq ->
             // Remove strandness field from meta to merge back together
-            def clean_meta = meta.findAll { key, value -> key != 'strandness' }
+            def clean_meta = meta.findAll { key, _value -> key != 'strandness' }
             return [ clean_meta, fastq ]
         }
         .groupTuple(by: 0)
@@ -68,7 +68,7 @@ workflow FASTQ_PREPROCESS_SEQKIT {
             if (meta.single_end) {
                 return [ meta, files[0] ]
             } else {
-                def sorted_files = files.flatten().sort { it.name }
+                def sorted_files = files.flatten().sort { index -> index.name }
                 return [ meta, sorted_files ]
             }
         }

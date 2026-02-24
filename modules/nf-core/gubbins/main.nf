@@ -19,7 +19,7 @@ process GUBBINS {
     path "*.branch_base_reconstruction.embl", emit: embl_branch
     path "*.final_tree.tre"                 , emit: tree
     path "*.node_labelled.final_tree.tre"   , emit: tree_labelled
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('gubbins'), eval("run_gubbins.py --version 2>&1"), topic: versions, emit: versions_gubbins
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,14 +34,10 @@ process GUBBINS {
         --threads $task.cpus \\
         $args \\
         $alignment
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gubbins: \$(run_gubbins.py --version 2>&1)
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
+
     """
     mkdir numba_cache_dir
     export NUMBA_CACHE_DIR='./numba_cache_dir'
@@ -55,10 +51,5 @@ process GUBBINS {
     touch ${alignment.baseName}.branch_base_reconstruction.embl
     touch ${alignment.baseName}.final_tree.tre
     touch ${alignment.baseName}.node_labelled.final_tree.tre
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gubbins: \$(run_gubbins.py --version 2>&1)
-    END_VERSIONS
     """
 }

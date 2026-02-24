@@ -16,7 +16,10 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [ id:'test_rmd' ], file(params.test_data['generic']['notebooks']['rmarkdown'], checkIfExists: true) ]
+                input[0] = [
+                    [ id:'test_rmd' ],
+                    file(params.modules_testdata_base_path + 'generic/notebooks/rmarkdown/rmarkdown_notebook.Rmd', checkIfExists: true)
+                ]
                 input[1] = [:]
                 input[2] = []
                 """
@@ -45,9 +48,12 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [ id:'test_rmd' ], file(params.test_data['generic']['notebooks']['rmarkdown'], checkIfExists: true) ]
+                input[0] = [
+                    [ id:'test_rmd' ],
+                    file(params.modules_testdata_base_path + 'generic/notebooks/rmarkdown/rmarkdown_notebook.Rmd', checkIfExists: true)
+                ]
                 input[1] = [input_filename: "hello.txt", n_iter: 12]
-                input[2] = file(params.test_data['generic']['txt']['hello'], checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true)
                 """
             }
         }
@@ -76,7 +82,10 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [ id:'test_rmd' ], file(params.test_data['generic']['notebooks']['rmarkdown'], checkIfExists: true) ]
+                input[0] = [
+                    [ id:'test_rmd' ],
+                    file(params.modules_testdata_base_path + 'generic/notebooks/rmarkdown/rmarkdown_notebook.Rmd', checkIfExists: true)
+                ]
                 input[1] = [:]
                 input[2] = []
                 """

@@ -35,7 +35,6 @@ process GOAT_TAXONSEARCH {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     input = taxa_file ? "-f ${taxa_file}" : "-t \"${taxon}\""
     if (!taxon && !taxa_file) error "No input. Valid input: single taxon identifier or a .txt file with identifiers"
