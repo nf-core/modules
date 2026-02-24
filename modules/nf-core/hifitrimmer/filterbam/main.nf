@@ -4,8 +4,8 @@ process HIFITRIMMER_FILTERBAM {
 
    conda "${moduleDir}/environment.yml"
    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-      'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dd/ddcbb21fe5a0ddaaf0fdccedc5c60d6298710e87eea39a45a75969528f001e37/data' :
-      'community.wave.seqera.io/library/hifi_trimmer_htslib_samtools:faf8da27d58784cd' }"
+      'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2f/2f9ae9ae67cf4c1ee39387e2607cac90cd699a6233ed742970dfc29e5ab43539/data' :
+      'community.wave.seqera.io/library/hifi_trimmer_htslib_samtools:db636d1a487afe47' }"
 
    input:
    tuple val(meta), path(input), path(bed)
