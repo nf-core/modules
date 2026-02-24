@@ -14,7 +14,7 @@ nextflow_process {
             script "../../../mmseqs/createdb/main.nf"
             process {
                 """
-                input[0] = [ [ id:'test_query', single_end:true ], // meta map
+                input[0] = [ [ id:'test_query' ], 
                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
                 ]
                 """
