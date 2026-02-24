@@ -20,6 +20,9 @@ process MMSEQS_MAKEPADDEDSEQDB {
     script:
     def args = task.ext.args ?: ''
      def prefix = task.ext.prefix ?: "${meta.id}"
+        if ("${db_in}" == "${prefix}") {
+          error("Input and output names of databases are the same, set prefix in module configuration to disambiguate!")
+      }
     """
     mkdir -p ${padded_prefix}
     mmseqs \\
