@@ -41,10 +41,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path(process.out.report.get(0).get(1)).size(),
+                    path(process.out.report[0][1]).size(),
                     process.out.filtered_h5ad,
                     process.out.metrics_summary,
-                    process.out.versions
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
                 ).match() }
             )
         }
