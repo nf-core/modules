@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process MACSYFINDER_SEARCH"
     script "../main.nf"
     process "MACSYFINDER_SEARCH"
+    config "./nextflow.config"
     tag "modules"
     tag "modules_nfcore"
     tag "macsyfinder"
@@ -28,7 +29,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', db_type:'unordered' ],
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
                 ]
                 input[1] = MACSYFINDER_DOWNLOAD.out.models
@@ -71,7 +72,7 @@ nextflow_process {
             process {
                 """
                 input[0] = PIGZ_COMPRESS.out.archive.map { meta, file ->
-                    [[ id: 'test', db_type: 'unordered' ], file]
+                    [[ id: 'test' ], file]
                 }
                 input[1] = MACSYFINDER_DOWNLOAD.out.models
                 input[2] = 'TXSScan'
@@ -101,7 +102,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', db_type:'unordered' ],
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
                 ]
                 input[1] = MACSYFINDER_DOWNLOAD.out.models

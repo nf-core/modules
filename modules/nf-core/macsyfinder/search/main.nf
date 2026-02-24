@@ -18,8 +18,8 @@ process MACSYFINDER_SEARCH {
     tuple val(meta), path("${prefix}/macsyfinder.err")     , emit: stderr   , optional: true
     tuple val(meta), path("${prefix}/all_systems.tsv")     , emit: summary  , optional: true
     tuple val(meta), path("${prefix}/all_best_solutions*") , emit: best_solutions, optional: true
-    tuple val("${task.process}"), val('macsyfinder'), eval('macsyfinder --version 2>&1 | head -1 | sed "s/^.*MacSyFinder //; s/ .*$//"'), topic: versions, emit: versions_macsyfinder
-    tuple val("${task.process}"), val('hmmer'), eval('hmmsearch -h | grep -o "^# HMMER [0-9.]*" | sed "s/^# HMMER *//"'), topic: versions, emit: versions_hmmer
+    tuple val("${task.process}"), val('macsyfinder'), eval('macsyfinder --version 2>&1 | sed "1!d;s/^.*MacSyFinder //;s/ .*$//"'), topic: versions, emit: versions_macsyfinder
+    tuple val("${task.process}"), val('hmmer'), eval('hmmsearch -h 2>&1 | sed "2!d;s/^# HMMER //;s/ .*$//"'), topic: versions, emit: versions_hmmer
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,7 +31,6 @@ process MACSYFINDER_SEARCH {
     """
     macsyfinder \\
         --sequence-db ${proteins} \\
-        --db-type ${meta.db_type ?: 'unordered'} \\
         --models-dir ${models} \\
         ${model_arg} \\
         --out-dir ${prefix} \\

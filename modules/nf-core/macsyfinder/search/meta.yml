@@ -21,11 +21,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'test', db_type:'unordered' ]`
-          db_type specifies the type of dataset to process:
-          - 'unordered' (default): Use for protein FASTA files from annotation tools (e.g., Prokka) where proteins are individual sequences without positional information
-          - 'gembase': Use for ordered genomic sequences (e.g., contigs, chromosomes) where gene position and order matter
-          - 'ordered_replicon': Use for complete replicons where gene order is important
+          e.g. `[ id:'test' ]`
     - proteins:
         type: file
         description: Protein sequence file in FASTA format
@@ -103,9 +99,7 @@ output:
       - macsyfinder:
           type: string
           description: The name of the tool
-      - 'macsyfinder --version 2>&1 | head -1 | sed "s/^.*MacSyFinder //; s/ .*$//"':
-          type: eval
-          description: The expression to obtain the version of the tool
+      - macsyfinder --version 2>&1 | sed "1!d;s/^.*MacSyFinder //;s/ .*$//: {}
   versions_hmmer:
     - - ${task.process}:
           type: string
@@ -113,9 +107,7 @@ output:
       - hmmer:
           type: string
           description: The name of the tool
-      - 'hmmsearch -h | grep -o "^# HMMER [0-9.]*" | sed "s/^# HMMER *//"':
-          type: eval
-          description: The expression to obtain the version of the tool
+      - hmmsearch -h 2>&1 | sed "2!d;s/^# HMMER //;s/ .*$//: {}
 topics:
   versions:
     - - ${task.process}:
@@ -124,9 +116,7 @@ topics:
       - macsyfinder:
           type: string
           description: The name of the tool
-      - 'macsyfinder --version 2>&1 | head -1 | sed "s/^.*MacSyFinder //; s/ .*$//"':
-          type: eval
-          description: The expression to obtain the version of the tool
+      - macsyfinder --version 2>&1 | sed "1!d;s/^.*MacSyFinder //;s/ .*$//: {}
 authors:
   - "@brovolia"
 maintainers:

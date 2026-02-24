@@ -12,8 +12,8 @@ process MACSYFINDER_DOWNLOAD {
 
     output:
     path "models"       , emit: models
-    tuple val("${task.process}"), val('macsyfinder'), eval('macsyfinder --version 2>&1 | head -1 | sed "s/^.*MacSyFinder //; s/ .*$//"'), topic: versions, emit: versions_macsyfinder
-    tuple val("${task.process}"), val('msf_data'), eval('msf_data --version 2>&1 | grep -o "MacSyLib [0-9.]*" | sed "s/MacSyLib //"'), topic: versions, emit: versions_macsydata
+    tuple val("${task.process}"), val('macsyfinder'), eval('macsyfinder --version 2>&1 | sed "1!d;s/^.*MacSyFinder //;s/ .*$//"'), topic: versions, emit: versions_macsyfinder
+    tuple val("${task.process}"), val('msf_data'), eval('msf_data --version 2>&1 | sed "4!d;s/^.*MacSyLib //;s/ .*$//"'), topic: versions, emit: versions_macsydata
 
     when:
     task.ext.when == null || task.ext.when
