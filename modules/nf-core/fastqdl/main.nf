@@ -14,7 +14,8 @@ process FASTQDL {
     tuple val(meta), path("*.fastq.gz")       , emit: fastq
     tuple val(meta), path("*-run-info.tsv")   , emit: runinfo
     tuple val(meta), path("*-run-mergers.tsv"), emit: runmergers, optional: true
-    path "versions.yml"                       , emit: versions
+    tuple val("${task.process}"), val('fastq-dl'), eval('fastq-dl --version |& sed "s/.* //"'), emit: versions_fastqdl, topic: versions
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,11 +30,6 @@ process FASTQDL {
         --accession ${accession} \\
         --cpus ${task.cpus} \\
         --outdir .
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastq-dl: \$(fastq-dl --version |& sed 's/.* //')
-    END_VERSIONS
     """
 
     stub:
@@ -43,10 +39,5 @@ process FASTQDL {
     echo "" | gzip > ${accession}_1.fastq.gz
     echo "" | gzip > ${accession}_2.fastq.gz
     touch ${prefix}-run-info.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastq-dl: \$(fastq-dl --version |& sed 's/.* //')
-    END_VERSIONS
     """
 }
