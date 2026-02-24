@@ -28,13 +28,13 @@ input:
         type: directory
         description: Input of existing MMseqs database
 output:
-  padded_db:
+  db_padded:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-      - ${prefix}_padded/:
+      - '${padded_prefix}/':
           type: directory
           description: The padded MMseqs2 database
   versions_mmseqs:
