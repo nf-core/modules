@@ -22,10 +22,7 @@ input:
       description: Name of the MacSyFinder model to download (e.g., 'TXSScan', 'CasFinder')
 output:
   models:
-    - model_data:
-        type: directory
-        description: Directory containing the downloaded MacSyFinder model(s)
-        pattern: "models"
+    - models: {}
   versions_macsyfinder:
     - - ${task.process}:
           type: string
@@ -33,9 +30,7 @@ output:
       - macsyfinder:
           type: string
           description: The name of the tool
-      - "macsyfinder --version 2>&1 | head -1 | sed 's/^.*MacSyFinder //; s/ .*$//'":
-          type: eval
-          description: The expression to obtain the version of the tool
+      - macsyfinder --version 2>&1 | sed "1!d;s/^.*MacSyFinder //;s/ .*$//: {}
   versions_macsydata:
     - - ${task.process}:
           type: string
@@ -43,9 +38,7 @@ output:
       - msf_data:
           type: string
           description: The name of the tool
-      - "msf_data --version 2>&1 | grep -o 'MacSyLib [0-9.]*' | sed 's/MacSyLib //'":
-          type: eval
-          description: The expression to obtain the version of the tool
+      - msf_data --version 2>&1 | sed "4!d;s/^.*MacSyLib //;s/ .*$//: {}
 topics:
   versions:
     - - ${task.process}:
@@ -54,18 +47,7 @@ topics:
       - macsyfinder:
           type: string
           description: The name of the tool
-      - "macsyfinder --version 2>&1 | head -1 | sed 's/^.*MacSyFinder //; s/ .*$//'":
-          type: eval
-          description: The expression to obtain the version of the tool
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - msf_data:
-          type: string
-          description: The name of the tool
-      - "msf_data --version 2>&1 | grep -o 'MacSyLib [0-9.]*' | sed 's/MacSyLib //'":
-          type: eval
-          description: The expression to obtain the version of the tool
+      - macsyfinder --version 2>&1 | sed "1!d;s/^.*MacSyFinder //;s/ .*$//: {}
 authors:
   - "@brovolia"
 maintainers:
