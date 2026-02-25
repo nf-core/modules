@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-# # TODO nf-core: Add a description of the module and list keywords
 name: "rmats_prep"
-description: MATS is a computational tool to detect differential alternative splicing events from RNA-Seq data.
+description: MATS is a computational tool to detect differential alternative
+  splicing events from RNA-Seq data.
 keywords:
   - splicing
   - RNA-Seq
@@ -10,78 +9,80 @@ keywords:
   - intron
   - rMATS
 tools:
-  ## TODO nf-core: Add a description and other details for the software below
   - "rmats":
       description: "MATS is a computational tool to detect differential alternative
         splicing events from RNA-Seq data."
       homepage: "https://github.com/Xinglab/rmats-turbo"
       documentation: "https://github.com/Xinglab/rmats-turbo/blob/v4.3.0/README.md"
       doi: "10.1038/s41596-023-00944-2"
-      licence: ["FreeBSD for non-commercial use, see LICENSE file"]
+      licence:
+        - "FreeBSD for non-commercial use, see LICENSE file"
       identifier: biotools:rmats
-
 input:
-  # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
   - - meta:
         type: map
-        description: Groovy Map containing sample information. e.g. `[ id:'sample1', single_end:false, strandness:'auto']`
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1', single_end:false, strandness:'auto']`
     - genome_bam:
         type: file
         description: BAM file aligned to the genome
         pattern: "*.{bam}"
         ontologies:
-          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_2572
   - reference_gtf:
       type: file
       description: Annotation GTF file
       pattern: "*.{gtf}"
       ontologies:
-        - edam: http://edamontology.org/format_2306 # GTF
+        - edam: http://edamontology.org/format_2306
   - rmats_read_len:
       type: integer
       description: Read length in bases
 output:
-  # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
   prep_rmats_file:
     - - meta:
           type: map
-          description: Groovy Map containing sample information. e.g. `[ id:'sample1'single_end:false, strandness:'auto']`
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1'single_end:false, strandness:'auto']`
       - "*.rmats":
           type: file
-          description: text file containing rmats processed splice junctions
+          description: rmats junction count information, after processing the BAM
+            file
           pattern: "*.rmats"
           ontologies: []
   prep_read_outcomes_file:
     - - meta:
           type: map
-          description: Groovy Map containing sample information. e.g. `[ id:'sample1'single_end:false, strandness:'auto']`
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1'single_end:false, strandness:'auto']`
       - "*outcomes_by_bam.txt":
           type: file
-          description: text file containing the numbers of reads for each outcome (USED, NOT_PAIRED, etc.)
+          description: text file detailing number of reads used and not used for
+            various reasons (clipped, not paired, wrong length, etc.)
           pattern: "*outcomes_by_bam.txt"
           ontologies:
             - edam: http://edamontology.org/format_2330
   versions_rmats:
     - - ${task.process}:
           type: string
-          description: The name of the process
+          description: The process the versions were collected from
       - rmats:
           type: string
-          description: The name of the tool
+          description: The tool name
       - rmats.py --version | sed -e "s/v//g":
           type: eval
-          description: The expression to obtain the version of the tool
+          description: The command used to generate the version of the tool
 topics:
   versions:
     - - ${task.process}:
           type: string
-          description: The name of the process
+          description: The process the versions were collected from
       - rmats:
           type: string
-          description: The name of the tool
+          description: The tool name
       - rmats.py --version | sed -e "s/v//g":
           type: eval
-          description: The expression to obtain the version of the tool
+          description: The command used to generate the version of the tool
 authors:
   - "@akaviaLab"
 maintainers:
