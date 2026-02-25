@@ -50,7 +50,7 @@ process ADAPTERREMOVAL {
         ensure_fastq '${prefix}.truncated.gz'
         ensure_fastq '${prefix}.discarded.gz'
 
-        
+
         """
     } else {
         """
@@ -79,7 +79,7 @@ process ADAPTERREMOVAL {
         ensure_fastq '${prefix}.collapsed.truncated.gz'
         ensure_fastq '${prefix}.paired.gz'
 
-        
+
         """
     }
 
@@ -104,6 +104,6 @@ process ADAPTERREMOVAL {
         fi
     fi
 
-    
+
     """
 }
