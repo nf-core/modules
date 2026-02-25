@@ -122,7 +122,6 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
             ch_processed_reads = ADAPTERREMOVAL_PE.out.paired_truncated.mix(ADAPTERREMOVAL_SE.out.singles_truncated)
         }
         ch_discarded_reads    = ch_discarded_reads.mix(ADAPTERREMOVAL_SE.out.discarded, ADAPTERREMOVAL_PE.out.discarded)
-        ch_versions           = ch_versions.mix(ADAPTERREMOVAL_SE.out.versions.first(), ADAPTERREMOVAL_PE.out.versions.first())
         ch_multiqc_files      = ch_multiqc_files.mix(ADAPTERREMOVAL_PE.out.settings, ADAPTERREMOVAL_SE.out.settings)
     } else {
         error('Please choose one of the available adapter removal and merging tools: ["trimmomatic", "cutadapt", "trimgalore", "bbduk", "leehom", "fastp", "adapterremoval"]')
