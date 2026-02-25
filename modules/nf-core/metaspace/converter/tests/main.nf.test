@@ -24,7 +24,11 @@ nextflow_process {
             def metafile = sdata_zarr.listFiles().find { it.name == 'zmetadata' }
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.adata_object,metafile.getAbsolutePath()).match() }
+                { assert snapshot(
+                    process.out.adata_object,
+                    metafile.getAbsolutePath(),
+                    process.out.versions
+                ).match() }
             )
         }
     }

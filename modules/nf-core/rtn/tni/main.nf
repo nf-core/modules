@@ -24,6 +24,10 @@ process RTN_TNI {
     script:
     def args = task.ext.args ?: ''
 
+    """
+    echo ${args}
+    """
+
     template 'rtn_tni.r'
 
     stub:

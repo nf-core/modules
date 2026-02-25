@@ -39,7 +39,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match("bam") }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -73,7 +73,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match("cram") }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -107,7 +107,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match("bed") }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -141,7 +141,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match("genotype") }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -178,7 +178,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match("stub") }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

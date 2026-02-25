@@ -63,9 +63,30 @@ input:
     - pharmcat_positions:
         type: file
         description: Pharmcat positions vcf
-        pattern: "*.vcf.gz"
+        pattern: "*.vcf.{gz,bgz}"
         ontologies:
           - edam: http://edamontology.org/format_3989
+    - pharmcat_positions_index:
+        type: file
+        description: Pharmcat positions vcf index file
+        pattern: "*.{tbi,csi}"
+        ontologies: []
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test' ]
+    - pharmcat_uniallelic_positions:
+        type: file
+        description: Pharmcat uniallelic positions vcf
+        pattern: "*.vcf.{gz,bgz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
+    - pharmcat_uniallelic_positions_index:
+        type: file
+        description: Pharmcat uniallelic positions vcf index file
+        pattern: "*.{tbi,csi}"
+        ontologies: []
 output:
   preprocessed_vcf:
     - - meta:
