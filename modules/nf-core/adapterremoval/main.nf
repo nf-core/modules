@@ -12,6 +12,8 @@ process ADAPTERREMOVAL {
     path(adapterlist)
 
     output:
+    tuple val("${task.process}"), val('adapterremoval'), eval('AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g"'), emit: versions_adapterremoval, topic: versions
+
     tuple val(meta), path("${prefix}.truncated.fastq.gz")          , emit: singles_truncated  , optional: true
     tuple val(meta), path("${prefix}.discarded.fastq.gz")          , emit: discarded          , optional: true
     tuple val(meta), path("${prefix}.pair{1,2}.truncated.fastq.gz"), emit: paired_truncated   , optional: true
@@ -19,8 +21,6 @@ process ADAPTERREMOVAL {
     tuple val(meta), path("${prefix}.collapsed.truncated.fastq.gz"), emit: collapsed_truncated, optional: true
     tuple val(meta), path("${prefix}.paired.fastq.gz")             , emit: paired_interleaved , optional: true
     tuple val(meta), path('*.settings')                            , emit: settings
-    path "versions.yml"                                            , emit: versions
-
     when:
     task.ext.when == null || task.ext.when
 
@@ -50,10 +50,7 @@ process ADAPTERREMOVAL {
         ensure_fastq '${prefix}.truncated.gz'
         ensure_fastq '${prefix}.discarded.gz'
 
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            adapterremoval: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
-        END_VERSIONS
+        
         """
     } else {
         """
@@ -82,10 +79,7 @@ process ADAPTERREMOVAL {
         ensure_fastq '${prefix}.collapsed.truncated.gz'
         ensure_fastq '${prefix}.paired.gz'
 
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            adapterremoval: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
-        END_VERSIONS
+        
         """
     }
 
@@ -110,9 +104,6 @@ process ADAPTERREMOVAL {
         fi
     fi
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        adapterremoval: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
-    END_VERSIONS
+    
     """
 }

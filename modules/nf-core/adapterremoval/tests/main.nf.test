@@ -31,7 +31,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.singles_truncated,
                     process.out.settings,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() },
             )
         }
@@ -63,7 +63,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.paired_truncated,
                     process.out.settings,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -96,7 +96,7 @@ nextflow_process {
                     process.out.collapsed,
                     file(process.out.collapsed_truncated[0][1]).name, // Check for present but is empty
                     process.out.settings,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -128,7 +128,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.paired_truncated,
                     process.out.settings,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -159,7 +159,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith('versions') }[0]
                 ).match() }
             )
         }
@@ -187,7 +187,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith('versions') }[0]
                 ).match() }
             )
         }
@@ -218,7 +218,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith('versions') }[0]
                 ).match() }
             )
         }
