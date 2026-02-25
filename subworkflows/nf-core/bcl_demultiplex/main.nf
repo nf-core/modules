@@ -4,8 +4,8 @@
 // Demultiplex Illumina BCL data using bcl-convert or bcl2fastq
 //
 
-include { BCLCONVERT                                       } from "../../../modules/nf-core/bclconvert/main"
-include { BCL2FASTQ                                        } from "../../../modules/nf-core/bcl2fastq/main"
+include { BCLCONVERT } from "../../../modules/nf-core/bclconvert/main"
+include { BCL2FASTQ  } from "../../../modules/nf-core/bcl2fastq/main"
 
 workflow BCL_DEMULTIPLEX {
     take:
@@ -77,9 +77,9 @@ workflow BCL_DEMULTIPLEX {
     // extract empty fastq files from channel
     ch_fastq = ch_fastq_with_meta.branch { meta, fastq ->
         empty: fastq.any { fq -> file(fq).size() < 30 }
-            return [meta, fastq]
+        return [meta, fastq]
         fastq: true
-            return [meta, fastq]
+        return [meta, fastq]
     }
 
     emit:
@@ -93,9 +93,9 @@ workflow BCL_DEMULTIPLEX {
 
 def generateReadgroupBCLCONVERT(ch_fastq_list_csv, ch_fastq) {
     return ch_fastq_list_csv
-        .collect() // make it a value channel
-        .map { meta, csv_file ->
-            def fastq_metadata = []
+        .join(ch_fastq, by: [0])
+        .map { meta, csv_file, fastq_list ->
+            def meta_fastq = []
             csv_file
                 .splitCsv(header: true)
                 .each { row ->
@@ -110,27 +110,18 @@ def generateReadgroupBCLCONVERT(ch_fastq_list_csv, ch_fastq) {
                     rg.LB = row.RGLB ? row.RGLB : ""
                     rg.PL = "ILLUMINA"
 
-                    // replace the meta id with the sample name
-                    def new_meta = [id: row.RGSM, readgroup: rg]
-                    // Return the new meta with fastq file
-                    fastq_metadata << [new_meta, file(row.Read1File).name]
-                    if (row.Read2File) {
-                        fastq_metadata << [new_meta, file(row.Read2File).name]
-                    }
+                    // dereference the fastq files in the csv
+                    def fastq1 = fastq_list.find { fq -> file(fq).name == file(row.Read1File).name }
+                    def fastq2 = row.Read2File ? fastq_list.find { fq -> file(fq).name == file(row.Read2File).name } : null
+
+                    // set fastq metadata
+                    def new_meta = meta + [id: row.RGSM, readgroup: rg, single_end: !fastq2]
+
+                    meta_fastq << [new_meta, fastq2 ? [fastq1, fastq2] : [fastq1]]
                 }
-            return [meta, fastq_metadata]
+            return meta_fastq
         }
-        .join(ch_fastq, by:[0]) // -> [ meta, [fq_meta, fastq_filename], [fastq_file, ...] ]
-        .transpose(by:[2]) // -> [ meta, [fq_meta, fastq_filename], fastq_file ]
-        .map { meta, fastq_metadata, fastq_file ->
-            def fastq_meta = fastq_metadata.find { _meta, filename -> filename == file(fastq_file).name }
-            return [meta + fastq_meta[0], file(fastq_file)]
-        }
-        .groupTuple(by: [0])
-        .map { meta, fastq ->
-            meta.single_end = fastq.size() == 1
-            return [meta, fastq.flatten()]
-        }
+        .flatMap()
 }
 
 def generateReadgroupBCL2FASTQ(ch_fastq) {
