@@ -28,9 +28,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.lifted,
-                    file(process.out.unlifted[0][1]).name
-                ).match() },
-
+                    file(process.out.unlifted[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }

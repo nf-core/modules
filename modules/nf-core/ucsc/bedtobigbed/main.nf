@@ -15,8 +15,7 @@ process UCSC_BEDTOBIGBED {
 
     output:
     tuple val(meta), path("*.bigBed"), emit: bigbed
-    path "versions.yml"              , emit: versions
-
+    tuple val("${task.process}"), val('ucsc'), val('477'), topic: versions, emit: versions_ucsc
     when:
     task.ext.when == null || task.ext.when
 
@@ -24,7 +23,6 @@ process UCSC_BEDTOBIGBED {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def as_option = autosql ? "-as=${autosql}" : ""
-    def VERSION = '447' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     bedToBigBed \\
         $bed \\
@@ -33,22 +31,11 @@ process UCSC_BEDTOBIGBED {
         $args \\
         ${prefix}.bigBed
 
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ucsc: $VERSION
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '447' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.bigBed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ucsc: $VERSION
-    END_VERSIONS
     """
 }
