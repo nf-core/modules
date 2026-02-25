@@ -16,6 +16,7 @@ process UCSC_BEDTOBIGBED {
     output:
     tuple val(meta), path("*.bigBed"), emit: bigbed
     tuple val("${task.process}"), val('ucsc'), val('477'), topic: versions, emit: versions_ucsc
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     when:
     task.ext.when == null || task.ext.when
 
