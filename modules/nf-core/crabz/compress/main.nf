@@ -13,7 +13,7 @@ process CRABZ_COMPRESS {
 
     output:
     tuple val(meta), path("*.gz"), emit: archive
-    tuple val("${task.process}"), val('crabz'), eval("echo $VERSION"), emit: versions_crabz, topic: versions
+    tuple val("${task.process}"), val('crabz'), val('0.10.0'), emit: versions_crabz, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,7 +21,6 @@ process CRABZ_COMPRESS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${file}"
-    VERSION = "0.10.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     crabz \\
         ${args} \\
@@ -32,7 +31,6 @@ process CRABZ_COMPRESS {
 
     stub:
     def prefix = task.ext.prefix ?: "${file}"
-    VERSION = "0.10.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     echo "" | gzip > ${prefix}.gz
     """
