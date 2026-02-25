@@ -33,4 +33,28 @@ nextflow_process {
         }
     }
 
+
+    test("sarscov2-bed-bigwig - stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id: 'test' ], // meta map
+				    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true) ]
+				]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bigwig/test.bigwig', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
 }
