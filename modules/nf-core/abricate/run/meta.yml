@@ -1,5 +1,6 @@
 name: abricate_run
-description: Screen assemblies for antimicrobial resistance against multiple databases
+description: Screen assemblies for antimicrobial resistance against multiple
+  databases
 keywords:
   - bacteria
   - assembly
@@ -10,7 +11,8 @@ tools:
       homepage: https://github.com/tseemann/abricate
       documentation: https://github.com/tseemann/abricate
       tool_dev_url: https://github.com/tseemann/abricate
-      licence: ["GPL v2"]
+      licence:
+        - "GPL v2"
       identifier: biotools:ABRicate
 input:
   - - meta:
@@ -23,13 +25,13 @@ input:
         description: FASTA, GenBank or EMBL formatted file
         pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz,gbk,gbk.gz,embl,embl.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_1929" # FASTA
-          - edam: "http://edamontology.org/format_1936" # GenBank
-          - edam: "http://edamontology.org/format_2204" # EMBL format
+          - edam: "http://edamontology.org/format_1929"
+          - edam: "http://edamontology.org/format_1936"
+          - edam: "http://edamontology.org/format_2204"
   - databasedir:
       type: directory
-      description: Optional location of local copy of database files, possibly with
-        custom databases set up with `abricate --setupdb`
+      description: Optional location of local copy of database files, possibly
+        with custom databases set up with `abricate --setupdb`
       pattern: "*/"
 output:
   report:
@@ -43,15 +45,30 @@ output:
           description: Tab-delimited report of results
           pattern: "*.{txt}"
           ontologies:
-            - edam: "http://edamontology.org/format_2330" # Textual format
+            - edam: "http://edamontology.org/format_2330"
+  versions_abricate:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - abricate:
+          type: string
+          description: The tool name
+      - "echo \\$(abricate --version 2>&1) | sed 's/^.*abricate //' ":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - abricate:
+          type: string
+          description: The tool name
+      - "echo \\$(abricate --version 2>&1) | sed 's/^.*abricate //' ":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rpetit3"
+  - "@maxcumminsandfred"
 maintainers:
   - "@rpetit3"
