@@ -392,29 +392,14 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         make_salmon_index,
     )
 
-    // Detect samples lost during strandedness inference (e.g. Salmon index mismatch)
     FASTQ_SUBSAMPLE_FQ_SALMON.out.lib_format_counts
-        .map { meta, _json -> meta.id }
-        .collect()
-        .ifEmpty([])
-        .combine(
-            ch_strand_fastq.auto_strand
-                .map { meta, _reads -> meta.id }
-                .collect()
-                .ifEmpty([])
-        )
-        .map { observed_ids, expected_ids ->
-            def missing = expected_ids.findAll { !observed_ids.contains(it) }
-            if (missing) {
-                error("Salmon failed to produce lib_format_counts for the following samples " +
-                    "set to 'auto' strandedness: ${missing.join(', ')}. Check that the Salmon " +
+        .join(ch_strand_fastq.auto_strand, remainder: true)
+        .map { meta, json, reads ->
+            if (json == null) {
+                error("Salmon failed to produce lib_format_counts for sample '${meta.id}' " +
+                    "which was set to 'auto' strandedness. Check that the Salmon " +
                     "index matches your input reads, or set strandedness explicitly in the samplesheet.")
             }
-        }
-
-    FASTQ_SUBSAMPLE_FQ_SALMON.out.lib_format_counts
-        .join(ch_strand_fastq.auto_strand, failOnMismatch: true)
-        .map { meta, json, reads ->
             def salmon_strand_analysis = getSalmonInferredStrandedness(json, stranded_threshold, unstranded_threshold)
             def strandedness = salmon_strand_analysis.inferred_strandedness
             if (strandedness == 'undetermined') {

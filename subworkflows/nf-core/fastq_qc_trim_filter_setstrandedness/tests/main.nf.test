@@ -478,8 +478,8 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.failed },
-                { assert workflow.errorMessage.contains("Salmon failed to produce lib_format_counts") },
-                { assert workflow.errorMessage.contains("test") }
+                { assert workflow.errorMessage.contains("Salmon failed to produce lib_format_counts for sample 'test'") },
+                { assert workflow.errorMessage.contains("set strandedness explicitly in the samplesheet") }
             )
         }
     }
