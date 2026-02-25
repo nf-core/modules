@@ -11,8 +11,7 @@ tools:
       homepage: https://github.com/tseemann/abricate
       documentation: https://github.com/tseemann/abricate
       tool_dev_url: https://github.com/tseemann/abricate
-      licence:
-        - "GPL v2"
+      licence: ["GPL v2"]
       identifier: biotools:ABRicate
 input:
   - - meta:
@@ -25,9 +24,9 @@ input:
         description: FASTA, GenBank or EMBL formatted file
         pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz,gbk,gbk.gz,embl,embl.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_1929"
-          - edam: "http://edamontology.org/format_1936"
-          - edam: "http://edamontology.org/format_2204"
+          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/format_1936" # GenBank
+          - edam: "http://edamontology.org/format_2204" # EMBL format
   - databasedir:
       type: directory
       description: Optional location of local copy of database files, possibly
