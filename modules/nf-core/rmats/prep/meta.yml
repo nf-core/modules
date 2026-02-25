@@ -60,13 +60,28 @@ output:
           description: text file containing the numbers of reads for each outcome (USED, NOT_PAIRED, etc.)
           pattern: "*.txt"
           ontologies: []
+            - edam: http://edamontology.org/format_2330
+  versions_rmats:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rmats:
+          type: string
+          description: The name of the tool
+      - rmats.py --version | sed -e "s/v//g":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: versions.yml
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rmats:
+          type: string
+          description: The name of the tool
+      - rmats.py --version | sed -e "s/v//g":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@akaviaLab"
 maintainers:
