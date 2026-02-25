@@ -36,7 +36,7 @@ process ABRICATE_RUN {
         --threads ${task.cpus} \\
         > ${prefix}.txt
 
-    
+
     """
 
     stub:
@@ -44,6 +44,6 @@ process ABRICATE_RUN {
     """
     touch ${prefix}.txt
 
-    
+
     """
 }
