@@ -13,8 +13,7 @@ process SAMSHEE {
 
     output:
     tuple val(meta), path("*_formatted.csv"), emit: samplesheet
-    tuple val("${task.process}"), val('samshee'), eval('python -m pip show samshee | sed -n "s/Version: //p"'), emit: versions_samshee, topic: versions
-    tuple val("${task.process}"), val('python'), eval('python --version | sed -e "s/Python //g"'), emit: versions_python, topic: versions
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,10 +27,21 @@ process SAMSHEE {
     $args \
     $arg_file_schema_validator \
     > ${samplesheet.baseName}_formatted.csv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        samshee: \$( python -m pip show --version samshee | grep "Version" | sed -e "s/Version: //g" )
+        python: \$( python --version | sed -e "s/Python //g" )
+    END_VERSIONS
     """
 
     stub:
     """
     touch ${samplesheet.baseName}_formatted.csv
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        samshee: \$( python -m pip show --version samshee | grep "Version" | sed -e "s/Version: //g" )
+        python: \$( python --version | sed -e "s/Python //g" )
+    END_VERSIONS
     """
 }
