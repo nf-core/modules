@@ -14,7 +14,7 @@ process CELLRANGER_MKFASTQ {
     tuple val(meta), path("*_outs/outs/fastq_path/Reports")                        , optional:true, emit: reports
     tuple val(meta), path("*_outs/outs/fastq_path/Stats")                          , optional:true, emit: stats
     tuple val(meta), path("*_outs/outs/interop_path/*.bin")                        , emit: interop
-    tuple val("${task.process}"), val('cellranger'), eval('cellranger --version | sed -e "s/cellranger //g"'), emit: versions_cellranger, topic: versions
+    tuple val("${task.process}"), val('cellranger'), eval('cellranger --version | sed "s/.*-//"'), emit: versions_cellranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
