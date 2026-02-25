@@ -4,8 +4,8 @@ process UCSC_GTFTOGENEPRED {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ucsc-gtftogenepred:447--h954228d_0':
-        'biocontainers/ucsc-gtftogenepred:447--h954228d_0' }"
+        'https://depot.galaxyproject.org/singularity/ucsc-gtftogenepred:482--h0b57e2e_0':
+        'biocontainers/ucsc-gtftogenepred:482--h0b57e2e_0' }"
 
     input:
     tuple val(meta), path(gtf)
@@ -13,7 +13,7 @@ process UCSC_GTFTOGENEPRED {
     output:
     tuple val(meta), path("*.genepred"), emit: genepred
     tuple val(meta), path("*.refflat") , emit: refflat , optional: true
-    tuple val("${task.process}"), val('ucsc'), val('477'), topic: versions, emit: versions_ucsc
+    tuple val("${task.process}"), val('ucsc'), val('482'), topic: versions, emit: versions_ucsc
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     when:
     task.ext.when == null || task.ext.when

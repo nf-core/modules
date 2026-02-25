@@ -5,8 +5,8 @@ process UCSC_BEDTOBIGBED {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ucsc-bedtobigbed:447--h954228d_0' :
-        'biocontainers/ucsc-bedtobigbed:447--h954228d_0' }"
+        'https://depot.galaxyproject.org/singularity/ucsc-bedtobigbed:482--hdc0a859_0' :
+        'biocontainers/ucsc-bedtobigbed:482--hdc0a859_0' }"
 
     input:
     tuple val(meta), path(bed)
@@ -15,7 +15,7 @@ process UCSC_BEDTOBIGBED {
 
     output:
     tuple val(meta), path("*.bigBed"), emit: bigbed
-    tuple val("${task.process}"), val('ucsc'), val('477'), topic: versions, emit: versions_ucsc
+    tuple val("${task.process}"), val('ucsc'), val('482'), topic: versions, emit: versions_ucsc
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     when:
     task.ext.when == null || task.ext.when
