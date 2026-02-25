@@ -44,7 +44,7 @@ output:
       - crabz:
           type: string
           description: The name of the tool
-      - crabz --version |& sed "s/[^:]*://":
+      - echo $VERSION:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -55,7 +55,7 @@ topics:
       - crabz:
           type: string
           description: The name of the tool
-      - crabz --version |& sed "s/[^:]*://":
+      - echo $VERSION:
           type: eval
           description: The expression to obtain the version of the tool
 authors:

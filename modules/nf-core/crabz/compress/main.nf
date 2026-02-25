@@ -2,6 +2,7 @@ process CRABZ_COMPRESS {
     tag "$meta.id"
     label 'process_low'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/79/798b49da13cf3eddbf611aecbcfef584183d80aaec016406a10990ac741d6f8f/data':
@@ -12,7 +13,7 @@ process CRABZ_COMPRESS {
 
     output:
     tuple val(meta), path("*.gz"), emit: archive
-    tuple val("${task.process}"), val('crabz'), eval('crabz --version |& sed "s/[^:]*://"'), emit: versions_crabz, topic: versions
+    tuple val("${task.process}"), val('crabz'), eval("echo $VERSION"), emit: versions_crabz, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,6 +21,7 @@ process CRABZ_COMPRESS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${file}"
+    VERSION = "0.10.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     crabz \\
         ${args} \\
@@ -30,6 +32,7 @@ process CRABZ_COMPRESS {
 
     stub:
     def prefix = task.ext.prefix ?: "${file}"
+    VERSION = "0.10.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     echo "" | gzip > ${prefix}.gz
     """
