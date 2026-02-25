@@ -13,9 +13,9 @@ process PMLST {
     val scheme
 
     output:
-    tuple val(meta), path("*.tsv")  , emit: tsv, optional: true
-    tuple val(meta), path("*.txt")  , emit: txt, optional: true
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path("*.tsv"), emit: tsv, optional: true
+    tuple val(meta), path("*.txt"), emit: txt, optional: true
+    tuple val("${task.process}"), val('pmlst'), eval('echo 2.0.3'), emit: versions_pmlst, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,8 +23,8 @@ process PMLST {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def is_compressed = fasta.getName().endsWith(".gz") ? true : false
-    def fasta_name = fasta.getName().replace(".gz", "")
+    def is_compressed = fasta.getName().endsWith('.gz') ? true : false
+    def fasta_name = fasta.getName().replace('.gz', '')
     """
     if [ "$is_compressed" == "true" ]; then
         gzip -c -d $fasta > $fasta_name
@@ -51,12 +51,7 @@ process PMLST {
         mv "${prefix}_${scheme}/results.txt" "${prefix}.txt"
     else
         touch "${prefix}.txt"
-    fi    
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pmlst: "2.0.3"
-    END_VERSIONS
+    fi
     """
 
     stub:
@@ -64,10 +59,5 @@ process PMLST {
     """
     touch ${prefix}.tsv
     touch ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pmlst: "2.0.3"
-    END_VERSIONS
     """
 }
