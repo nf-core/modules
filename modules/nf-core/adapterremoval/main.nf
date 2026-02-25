@@ -12,8 +12,6 @@ process ADAPTERREMOVAL {
     path(adapterlist)
 
     output:
-    tuple val("${task.process}"), val('adapterremoval'), eval('AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g"'), emit: versions_adapterremoval, topic: versions
-
     tuple val(meta), path("${prefix}.truncated.fastq.gz")          , emit: singles_truncated  , optional: true
     tuple val(meta), path("${prefix}.discarded.fastq.gz")          , emit: discarded          , optional: true
     tuple val(meta), path("${prefix}.pair{1,2}.truncated.fastq.gz"), emit: paired_truncated   , optional: true
@@ -21,6 +19,8 @@ process ADAPTERREMOVAL {
     tuple val(meta), path("${prefix}.collapsed.truncated.fastq.gz"), emit: collapsed_truncated, optional: true
     tuple val(meta), path("${prefix}.paired.fastq.gz")             , emit: paired_interleaved , optional: true
     tuple val(meta), path('*.settings')                            , emit: settings
+    tuple val("${task.process}"), val('adapterremoval'), eval('AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g"'), emit: versions_adapterremoval, topic: versions
+
     when:
     task.ext.when == null || task.ext.when
 
