@@ -153,8 +153,8 @@ output:
       - merquryfk:
           type: string
           description: The name of the tool
-      - echo 1.2:
-          type: eval
+      - "1.2":
+          type: string
           description: The expression to obtain the version of the tool
   versions_fastk:
     - - ${task.process}:
@@ -163,8 +163,8 @@ output:
       - fastk:
           type: string
           description: Name of the tool
-      - echo 1.2:
-          type: eval
+      - "1.2":
+          type: string
           description: The expression to obtain the version of the tool
   versions_r:
     - - ${task.process}:
@@ -184,8 +184,8 @@ topics:
       - merquryfk:
           type: string
           description: The name of the tool
-      - echo 1.2:
-          type: eval
+      - "1.2":
+          type: string
           description: The expression to obtain the version of the tool
     - - ${task.process}:
           type: string
@@ -193,8 +193,8 @@ topics:
       - fastk:
           type: string
           description: Name of the tool
-      - echo 1.2:
-          type: eval
+      - "1.2":
+          type: string
           description: The expression to obtain the version of the tool
     - - ${task.process}:
           type: string

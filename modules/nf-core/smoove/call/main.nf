@@ -14,7 +14,7 @@ process SMOOVE_CALL {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('smoove'), eval("smoove -v |& sed -n 's/smoove version: *//p'"), emit: versions_smoove, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,21 +33,11 @@ process SMOOVE_CALL {
         ${exclude} \\
         --processes ${task.cpus} \\
         ${input}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        smoove: \$(echo \$(smoove -v) | sed 's/^.*version: //; s/ .*\$//' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        smoove: \$(echo \$(smoove -v) | sed 's/^.*version: //; s/ .*\$//' )
-    END_VERSIONS
     """
 }

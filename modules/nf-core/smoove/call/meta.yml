@@ -1,8 +1,8 @@
 name: "smoove_call"
-description: smoove simplifies and speeds calling and genotyping SVs for short reads.
-  It also improves specificity by removing many spurious alignment signals that are
-  indicative of low-level noise and often contribute to spurious calls. Developed
-  by Brent Pedersen.
+description: smoove simplifies and speeds calling and genotyping SVs for short
+  reads. It also improves specificity by removing many spurious alignment
+  signals that are indicative of low-level noise and often contribute to
+  spurious calls. Developed by Brent Pedersen.
 keywords:
   - structural variants
   - SV
@@ -15,7 +15,8 @@ tools:
       homepage: https://github.com/brentp/smoove
       documentation: https://brentp.github.io/post/smoove/
       tool_dev_url: https://github.com/brentp/smoove
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: ""
 input:
   - - meta:
@@ -35,7 +36,8 @@ input:
         ontologies: []
     - exclude_beds:
         type: file
-        description: A BED file containing the regions to exclude from the SV calling
+        description: A BED file containing the regions to exclude from the SV
+          calling
         pattern: "*.bed"
         ontologies: []
   - - meta2:
@@ -70,14 +72,28 @@ output:
           description: Compressed VCF file
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
+  versions_smoove:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - smoove:
+          type: string
+          description: The name of the tool
+      - "smoove -v |& sed -n 's/smoove version: *//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - smoove:
+          type: string
+          description: The name of the tool
+      - "smoove -v |& sed -n 's/smoove version: *//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@scorreard"
   - "@nvnieuwk"
