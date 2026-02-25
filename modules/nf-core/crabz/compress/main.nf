@@ -12,7 +12,7 @@ process CRABZ_COMPRESS {
 
     output:
     tuple val(meta), path("*.gz"), emit: archive
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('crabz'), eval('crabz --version |& sed "s/[^:]*://"'), emit: versions_crabz, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,23 +26,11 @@ process CRABZ_COMPRESS {
         -p ${task.cpus} \\
         -o ${prefix}.gz \\
         ${file}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        crabz: \$(crabz --version |& sed 's/[^:]*://')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${file}"
     """
     echo "" | gzip > ${prefix}.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        crabz: \$(crabz --version |& sed 's/[^:]*://')
-
-
-    END_VERSIONS
     """
 }
