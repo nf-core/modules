@@ -12,7 +12,9 @@ process BIOFORMATS2RAW {
 
     output:
     tuple val(meta), path("*ome.zarr"),         emit: omezarr
-    path "versions.yml"               ,         emit: versions
+    tuple val("${task.process}"), val('bioformats2raw'), eval('bioformats2raw --version |& sed -n "1s/Version = //p"')         , emit: versions_bioformats2raw, topic: versions
+    tuple val("${task.process}"), val('bio-formats'), eval('bioformats2raw --version |& sed -n "2s/Bio-Formats version = //p"'), emit: versions_bioformats, topic: versions
+    tuple val("${task.process}"), val('ngff'), eval('bioformats2raw --version |& sed -n "3s/NGFF specification version = //p"'), emit: versions_ngff, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,13 +29,6 @@ process BIOFORMATS2RAW {
         ${prefix}.ome.zarr \\
         --max-workers $task.cpus \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bioformats2raw: \$(bioformats2raw --version |& sed -n '1s/Version = //p')
-        bio-formats: \$(bioformats2raw --version |& sed -n '2s/Bio-Formats version = //p')
-        ngff: \$(bioformats2raw --version |& sed -n '3s/NGFF specification version = //p')
-    END_VERSIONS
     """
 
     stub:
@@ -41,12 +36,5 @@ process BIOFORMATS2RAW {
 
     """
     mkdir ${prefix}.ome.zarr
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bioformats2raw: \$(bioformats2raw --version |& sed -n '1s/Version = //p')
-        bio-formats: \$(bioformats2raw --version |& sed -n '2s/Bio-Formats version = //p')
-        ngff: \$(bioformats2raw --version |& sed -n '3s/NGFF specification version = //p')
-    END_VERSIONS
     """
 }
