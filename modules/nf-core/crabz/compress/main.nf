@@ -22,10 +22,10 @@ process CRABZ_COMPRESS {
     def prefix = task.ext.prefix ?: "${file}"
     """
     crabz \\
-        $args \\
-        -p $task.cpus \\
+        ${args} \\
+        -p ${task.cpus} \\
         -o ${prefix}.gz \\
-        $file
+        ${file}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
