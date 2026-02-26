@@ -8,7 +8,16 @@ process MULTIQC_SAV {
         : 'community.wave.seqera.io/library/multiqc_multiqc_sav_pip_interop:b142653b3920c82b'}"
 
     input:
-    tuple val(meta), path(runinfo_xml), path(interop_bin, stageAs: "InterOp/*"), path(extra_multiqc_files, stageAs: "?/*"), path(multiqc_config), path(extra_multiqc_config), path(multiqc_logo), path(replace_names), path(sample_names)
+    tuple(
+        val(meta),
+        path(xml),
+        path(interop_bin, stageAs: "InterOp/*"),
+        path(extra_multiqc_files, stageAs: "?/*"),
+        path(multiqc_config, stageAs: "?/*"),
+        path(multiqc_logo),
+        path(replace_names),
+        path(sample_names)
+    )
 
     output:
     tuple val(meta), path("*.html"), emit: report
@@ -25,18 +34,17 @@ process MULTIQC_SAV {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ? "--filename ${task.ext.prefix}.html" : ''
-    def config = multiqc_config ? "--config ${multiqc_config}" : ''
-    def extra_config = extra_multiqc_config ? "--config ${extra_multiqc_config}" : ''
+    def config = multiqc_config ? multiqc_config instanceof List ? "--config ${multiqc_config.join(' --config ')}" : "--config ${multiqc_config}" : ""
     def logo = multiqc_logo ? "--cl-config 'custom_logo: \"${multiqc_logo}\"'" : ''
     def replace = replace_names ? "--replace-names ${replace_names}" : ''
     def samples = sample_names ? "--sample-names ${sample_names}" : ''
     """
+    export TMPDIR="\$PWD/tmp"
     multiqc \\
         --force \\
         ${args} \\
         ${config} \\
         ${prefix} \\
-        ${extra_config} \\
         ${logo} \\
         ${replace} \\
         ${samples} \\
