@@ -41,8 +41,8 @@ input:
         description: |
           A folder container containing a previous WorkingDirectory from Orthofinder.
 output:
-  - orthofinder:
-      - meta:
+  orthofinder:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,21 +50,23 @@ output:
       - $prefix:
           type: directory
           description: Orthofinder output directory
-  - working:
-      - meta:
+  working:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
       - $prefix/WorkingDirectory:
           type: directory
-          description: Orthofinder output WorkingDirectory (used for the orthofinder resume
-            function)
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: Orthofinder output WorkingDirectory (used for the orthofinder
+            resume function)
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@GallVp"
 maintainers:

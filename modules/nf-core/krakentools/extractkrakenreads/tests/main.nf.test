@@ -245,7 +245,7 @@ nextflow_process {
     test ("stub sarscov2 illumina paired end with parents [fastq]") {
 
         options '-stub'
-        
+
         setup {
             run("UNTAR") {
                 script "../../../untar/main.nf"
@@ -291,5 +291,5 @@ nextflow_process {
                 { assert snapshot ( process.out ).match() }
             )
         }
-    }    
+    }
 }

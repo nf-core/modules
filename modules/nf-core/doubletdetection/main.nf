@@ -1,11 +1,11 @@
 process DOUBLETDETECTION {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/87/878a0582c1de0ad7370ad1fbdebd7e786c77d29b064e10a7c09c35a9df3bfb97/data' :
-        'community.wave.seqera.io/library/anndata_louvain_numpy_pip_pruned:9ff7bfd3c5201947' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/96/96f52092a8472acb59ded59ab5ec4a29a56627f0c78e3cc8a0b916c6bedd67d6/data'
+        : 'community.wave.seqera.io/library/pyyaml_pip_doubletdetection:5af145ffec01d7da'}"
 
     input:
     tuple val(meta), path(h5ad)
@@ -20,14 +20,11 @@ process DOUBLETDETECTION {
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
-    template 'doubletdetection.py'
+    template('doubletdetection.py')
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    export MPLCONFIGDIR=./tmp
-    export NUMBA_CACHE_DIR=./tmp
-
     touch ${prefix}.h5ad
     touch ${prefix}.pkl
 

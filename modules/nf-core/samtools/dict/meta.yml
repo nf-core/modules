@@ -25,9 +25,10 @@ input:
         type: file
         description: FASTA file
         pattern: "*.{fa,fasta}"
+        ontologies: []
 output:
-  - dict:
-      - meta:
+  dict:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,11 +37,29 @@ output:
           type: file
           description: FASTA dictionary file
           pattern: "*.{dict}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@muffato"
 maintainers:

@@ -16,14 +16,16 @@ nextflow_process {
             script "../../../bowtie2/build/main.nf"
             process {
                 """
-                input[0] =  Channel.from([
-                                    [[id: "sarscov2"], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)],
-                                    [[id: "human"]   , file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)]
-                            ])
+                input[0] = channel.of([
+                    [id: "sarscov2"],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ], [
+                    [id: "human"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ])
                 """
             }
         }
-
     }
 
     test("sarscov2 - human") {
@@ -40,10 +42,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.database, process.out.versions).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("sarscov2 - human - stub") {
@@ -62,10 +63,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
-
 }

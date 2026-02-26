@@ -9,11 +9,9 @@ from cellbender.remove_background.downstream import load_anndata_from_input_and_
 
 def format_yaml_like(data: dict, indent: int = 0) -> str:
     """Formats a dictionary to a YAML-like string.
-
     Args:
         data (dict): The dictionary to format.
         indent (int): The current indentation level.
-
     Returns:
         str: A string formatted as YAML.
     """
@@ -42,13 +40,7 @@ adata.write_h5ad("${prefix}.h5ad")
 
 # Versions
 
-versions = {
-    "${task.process}": {
-        "python": platform.python_version(),
-        "cellbender": cellbender.__version__,
-        "anndata": ad.__version__,
-    }
-}
+versions = {"${task.process}": {"python": platform.python_version(), "cellbender": cellbender.__version__}}
 
 with open("versions.yml", "w") as f:
     f.write(format_yaml_like(versions))

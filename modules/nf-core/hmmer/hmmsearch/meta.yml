@@ -24,10 +24,12 @@ input:
         type: file
         description: One or more HMM profiles created with hmmbuild
         pattern: "*.{hmm,hmm.gz}"
+        ontologies: []
     - seqdb:
         type: file
         description: Database of sequences in FASTA format
         pattern: "*.{fasta,fna,faa,fa,fasta.gz,fna.gz,faa.gz,fa.gz}"
+        ontologies: []
     - write_align:
         type: boolean
         description: Flag to save optional alignment output. Specify with 'true' to
@@ -41,8 +43,8 @@ input:
         description: Flag to save optional per domain summary. Specify with 'true' to
           save.
 output:
-  - output:
-      - meta:
+  output:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -51,8 +53,9 @@ output:
           type: file
           description: Human readable output summarizing hmmsearch results
           pattern: "*.{txt.gz}"
-  - alignments:
-      - meta:
+          ontologies: []
+  alignments:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -61,8 +64,9 @@ output:
           type: file
           description: Optional multiple sequence alignment (MSA) in Stockholm format
           pattern: "*.{sto.gz}"
-  - target_summary:
-      - meta:
+          ontologies: []
+  target_summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -71,8 +75,9 @@ output:
           type: file
           description: Optional tabular (space-delimited) summary of per-target output
           pattern: "*.{tbl.gz}"
-  - domain_summary:
-      - meta:
+          ontologies: []
+  domain_summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -81,11 +86,14 @@ output:
           type: file
           description: Optional tabular (space-delimited) summary of per-domain output
           pattern: "*.{domtbl.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Midnighter"
 maintainers:

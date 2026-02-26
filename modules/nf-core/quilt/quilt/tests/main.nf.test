@@ -13,7 +13,7 @@ nextflow_process {
 
     config "./nextflow.config"
 
-    test("QUILT") {
+    test("homo_sapiens - bam, hap, legend, posfile, phasefile, map - fasta") {
         setup {
             run("BCFTOOLS_QUERY") {
                 script "../../../bcftools/query/main.nf"
@@ -21,8 +21,8 @@ nextflow_process {
                     """
                     input[0] = [
                         [id: 'NA12878'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi', checkIfExists: true)
                     ]
                     input[1] = []
                     input[2] = []
@@ -42,63 +42,56 @@ nextflow_process {
                     """
                 }
             }
-
-            run("GAWK", alias: "GAWK_POSFILE") {
-                script "../../../gawk/main.nf"
-                process {
-                    """
-                    program  = Channel.of('BEGIN{OFS=\"\\t\"} NR>1 {split(\$1, a, \"[:-_]\"); print a[1],\$2,\$3,\$4}').collectFile(name: 'program.txt', newLine: true)
-                    input[0] = [
-                        [id: 'NA12878'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.legend.gz', checkIfExists: true)
-                    ]
-                    input[1] = program
-                    input[2] = false
-                    """
-                }
-            }
         }
 
         when {
             params{
                 quilt_args = "--save_prepared_reference=TRUE --make_plots=TRUE --seed=1"
-                bcftools_query_args = "-f '[%GT]\\n'"
-                bcftools_query_suffix = "genfile.txt"
-                gawk_posfile_suffix = "posfile.txt"
-                gawk_name_suffix = "genfile.name.txt"
+                bcftools_query_args = "-f '[%GT]\\n' -r chr22"
+                bcftools_query_suffix = "phasefile.txt"
+                gawk_name_suffix = "phasefile.name.txt"
             }
             process {
                 """
                 input[0] = Channel.of([
                     [ id:'NA12878', chr:'chr22' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai', checkIfExists: true),
                     [], [],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.hap.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.legend.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.legend.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.posfile', checkIfExists: true),
                 ])
-                .combine(GAWK_POSFILE.out.output.map{ it[1] })
                 .combine(GAWK_NAME.out.output.map{ it[1] })
-                .combine(Channel.of([[], "chr22", "16570000", "16610000", "100", "10000", []]))
-                input[1] = [[id: 'GRCh38'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                .combine(channel.of([
+                    [], "chr22", "16570000", "16610000", "100", "10000",
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.stitch.map", checkIfExist:true)
+                ]))
+                input[1] = [
+                    [id: 'GRCh38'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
                 """
             }
         }
 
         then {
+            assert process.success
             def dir = new File(process.out.plots[0][1])
             def list = []
             dir.eachFileRecurse { file -> list << file.getName() }
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.vcf,
                     process.out.tbi,
                     list.sort(),
                     process.out.rdata,
-                    process.out.versions,
-                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() },
-                    process.out.vcf.collect{ path(it[1]).vcf.variantsMD5 }
+                    process.out.vcf.collect{ meta, vcf -> [
+                        meta,
+                        path(vcf).vcf.header.getGenotypeSamples().sort(),
+                        path(vcf).vcf.variantsMD5
+                    ]},
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -117,23 +110,27 @@ nextflow_process {
                     [], [], [], [], [], [], [], [],
                     [], "chr22", "16570000", "16610000", "100", "10000", []
                 ])
-                input[1] = [[id: 'GRCh38'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                input[1] = [
+                    [id: 'GRCh38'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
                 """
             }
         }
 
         then {
+            assert process.success
             def dir = new File(process.out.plots[0][1])
             def list = []
             dir.eachFileRecurse { file -> list << file.getName() }
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.vcf,
                     process.out.tbi,
                     list.sort(),
                     process.out.rdata,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -148,8 +145,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', chr:'chr22' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai', checkIfExists: true),
                     [], [],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.hap.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.legend.gz', checkIfExists: true),
@@ -157,21 +154,23 @@ nextflow_process {
                     "chr22", "16570000", "16610000", "100", "10000",
                     []
                 ]
-                input[1] = [[id: null], []]
+                input[1] = [[id: null], [], []]
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.vcf,
                     process.out.tbi,
                     process.out.rdata,
-                    process.out.versions,
-                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() },
-                    process.out.vcf.collect{ path(it[1]).vcf.variantsMD5 }
+                    process.out.vcf.collect{ meta, vcf -> [
+                        meta,
+                        path(vcf).vcf.header.getGenotypeSamples().sort(),
+                        path(vcf).vcf.variantsMD5
+                    ]},
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -185,7 +184,7 @@ nextflow_process {
             process {
                 """
                 bamlist = Channel.of(
-                    "NA12878.chr22.1X.bam",
+                    "NA12878.chr21_22.1X.bam",
                 ).collectFile(name : 'bamlist.txt', newLine : true)
 
                 bamnames = Channel.of(
@@ -194,8 +193,8 @@ nextflow_process {
 
                 ch_input = Channel.of([
                     [ id:'test', chr:'chr20' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai', checkIfExists: true)
                 ])
                 .combine(bamlist)
                 .combine(bamnames)
@@ -208,23 +207,26 @@ nextflow_process {
                 ]))
 
                 input[0] = ch_input
-                input[1] = [[id: null], []]
+                input[1] = [[id: null], [], []]
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.vcf,
                     process.out.tbi,
                     process.out.rdata,
-                    process.out.versions,
-                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() },
-                    process.out.vcf.collect{ path(it[1]).vcf.variantsMD5 }
+                    process.out.vcf.collect{ meta, vcf -> [
+                        meta,
+                        path(vcf).vcf.header.getGenotypeSamples().sort(),
+                        path(vcf).vcf.variantsMD5
+                    ]},
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
     }
+
 }

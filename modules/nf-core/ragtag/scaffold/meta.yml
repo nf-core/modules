@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: ragtag_scaffold
 description: |
   Scaffolding is the process of ordering and orienting draft assembly (query)
@@ -18,9 +17,9 @@ tools:
       documentation: "https://github.com/malonge/RagTag/wiki"
       tool_dev_url: "https://github.com/malonge/RagTag"
       doi: "10.1186/s13059-022-02823-7"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:ragtag
-
 input:
   - - meta:
         type: map
@@ -31,6 +30,7 @@ input:
         type: file
         description: Assembly to be scaffolded
         pattern: "*.{fasta,fasta.gz,fa,fa.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -40,6 +40,7 @@ input:
         type: file
         description: Reference assembly
         pattern: "*.{fasta,fasta.gz,fa,fa.gz}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -49,6 +50,7 @@ input:
         type: file
         description: list of target sequences to ignore
         pattern: "*.txt"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -58,14 +60,16 @@ input:
         type: file
         description: list of query sequences to leave unplaced
         pattern: "*.txt"
+        ontologies: []
     - hard_skip:
         type: file
-        description: list of query headers to leave unplaced and exclude from 'chr0'
-          ('-C')
+        description: list of query headers to leave unplaced and exclude from
+          'chr0' ('-C')
         pattern: "*.txt"
+        ontologies: []
 output:
-  - corrected_assembly:
-      - meta:
+  corrected_assembly:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,8 +78,9 @@ output:
           type: file
           description: FASTA file containing the patched assembly
           pattern: "*.fasta"
-  - corrected_agp:
-      - meta:
+          ontologies: []
+  corrected_agp:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -84,8 +89,9 @@ output:
           type: file
           description: agp file defining how corrected_assembly is built
           pattern: "*.agp"
-  - corrected_stats:
-      - meta:
+          ontologies: []
+  corrected_stats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -94,12 +100,28 @@ output:
           type: file
           description: Statistics on the scaffold
           pattern: "*.stats"
-
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_ragtag:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ragtag:
+          type: string
+          description: The name of the tool
+      - ragtag.py -v | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ragtag:
+          type: string
+          description: The name of the tool
+      - ragtag.py -v | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nschan"
 maintainers:

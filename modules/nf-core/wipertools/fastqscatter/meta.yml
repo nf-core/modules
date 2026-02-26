@@ -28,32 +28,32 @@ input:
         pattern: "*.{fastq,fastq.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_1930"
-  - - num_splits:
-        type: integer
-        description: Number of desired chunks
-        pattern: "[1-9][0-9]*"
+  - num_splits:
+      type: integer
+      description: Number of desired chunks
+      pattern: "[1-9][0-9]*"
 
 output:
-  - fastq_chunks:
-      - meta:
+  fastq_chunks:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "${out_folder}/*":
+      - ${out_folder}/*:
           type: file
           description: Chunk FASTQ files
           pattern: "*.{fastq,fastq.gz}"
           ontologies:
             - edam: "http://edamontology.org/format_1930"
             - edam: "http://edamontology.org/format_3989"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: "http://edamontology.org/format_3750"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750"
 authors:
   - "@tm4zza"
 maintainers:

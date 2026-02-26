@@ -1,16 +1,16 @@
 nextflow_process {
 
     name "Test Process PARACLU"
-    
+
     script "../main.nf"
     process "PARACLU"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "paraclu"
 
     test("sarscov2") {
-        
+
         when {
             process {
                 """

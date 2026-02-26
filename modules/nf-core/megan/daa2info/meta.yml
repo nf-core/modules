@@ -25,12 +25,13 @@ input:
         type: file
         description: DAA file from DIAMOND
         pattern: "*.daa"
-  - - megan_summary:
-        type: boolean
-        description: Specify whether to generate a MEGAN summary file
+        ontologies: []
+  - megan_summary:
+      type: boolean
+      description: Specify whether to generate a MEGAN summary file
 output:
-  - txt_gz:
-      - meta:
+  txt_gz:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,8 +40,10 @@ output:
           type: file
           description: Compressed text file
           pattern: "*.txt.gz"
-  - megan:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  megan:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,11 +52,14 @@ output:
           type: file
           description: Optionally generated MEGAN summary file
           pattern: "*.megan"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

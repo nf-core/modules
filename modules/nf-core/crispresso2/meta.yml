@@ -1,0 +1,81 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "crispresso2"
+description: "A software pipeline for the analysis of genome editing outcomes from
+  deep sequencing data"
+keywords:
+  - genome editing
+  - CRISPR
+  - sequencing
+  - amplicon
+tools:
+  - "crispresso2":
+      description: "CRISPResso2 is a software pipeline designed to enable rapid and
+        intuitive interpretation of genome editing experiments."
+      homepage: "https://crispresso.pinellolab.partners.org/"
+      documentation: "https://docs.crispresso.com"
+      tool_dev_url: "https://github.com/pinellolab/CRISPResso2"
+      doi: "10.1038/s41587-019-0032-3"
+      licence: ["MIT"]
+      identifier: biotools:crispresso2
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - reads:
+        type: file
+        description: List of input FastQ files of size 1 and 2 for single-end and
+          paired-end data, respectively.
+        pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+
+output:
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - CRISPResso_on_*:
+          type: directory
+          description: CRISPResso output directory
+          pattern: "CRISPResso_on_*"
+  html:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.html":
+          type: file
+          description: CRISPResso HTML report
+          pattern: "*.html"
+          ontologies:
+            - edam: http://edamontology.org/format_2331 # HTML
+  txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "CRISPResso_on_*/*.txt":
+          type: file
+          description: CRISPResso text output files
+          pattern: "CRISPResso_on_*/*.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@sathyasjali"
+maintainers:
+  - "@sathyasjali"

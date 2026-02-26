@@ -30,25 +30,26 @@ input:
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.tsv":
           type: file
-          description: a 2-column tabular file with the representative accession as the
-            first column and the member sequence accession as the second column
+          description: a 2-column tabular file with the representative accession as
+            the first column and the member sequence accession as the second column
           pattern: "*.tsv"
-          ontologies: []
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies: 
-              - edam: http://edamontology.org/format_3750 # YAML
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@itrujnara"
 maintainers:

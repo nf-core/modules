@@ -27,9 +27,10 @@ input:
         type: file
         description: fasta file, or a directory containing FASTA files
         pattern: "**/*.{fa,fa.gz,fasta,fasta.gz,fna,fna.gz}"
+        ontologies: []
 output:
-  - outdir:
-      - meta:
+  outdir:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,8 +41,8 @@ output:
             in .txt format. Every .unik file contains the sequence/reference ID,chunk
             index, number of chunks, and genome size of reference.
           pattern: "*/"
-  - info:
-      - meta:
+  info:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,11 +51,14 @@ output:
           type: file
           description: Summary file that is generated for later use
           pattern: "*_info.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sofstam"
 maintainers:

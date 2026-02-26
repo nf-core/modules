@@ -1,0 +1,109 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "souporcell"
+description: souporcell is a method for clustering mixed-genotype scRNAseq
+  experiments by individual.
+keywords:
+  - clustering
+  - mixed-genotype
+  - genomics
+tools:
+  - "souporcell":
+      description: "Clustering scRNAseq by genotypes."
+      homepage: "https://github.com/wheaton5/souporcell"
+      documentation: "https://demultiplexing-doublet-detecting-docs.readthedocs.io/en/latest/Souporcell.html"
+      tool_dev_url: "https://github.com/wheaton5/souporcell"
+      doi: "10.1101/699637v1"
+      licence: ["MIT"]
+      identifier: biotools:souporcell
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: A BAM file from cellranger containing single-cell RNA-seq
+          alignments.
+        pattern: "*.bam"
+        ontologies:
+          - edam: http://edamontology.org/format_2572 # BAM
+    - barcodes:
+        type: file
+        description: A barcode or whitelist TSV file from cellranger identifying
+          individual cell barcodes.
+        pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+    - clusters:
+        type: integer
+        description: Number of clusters.
+
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+
+    - fasta:
+        type: file
+        description: A reference fasta file.
+        pattern: "*.fasta"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+
+output:
+  clusters:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/clusters.tsv":
+          type: file
+          description: TSV file listing cell barcodes with singlet/doublet status, assigned cluster, and per-cluster log-loss metrics
+          pattern: "clusters.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/cluster_genotypes.vcf":
+          type: file
+          description: A `vcf` with genotypes for each cluster for each variant in the input `vcf` from freebayes.
+          pattern: "cluster_genotypes.vcf"
+          ontologies:
+            - edam: http://edamontology.org/format_3016 # VCF
+
+  ambient_rna:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/ambient_rna.txt":
+          type: file
+          description: Contains the ambient RNA percentage detected
+          pattern: "ambient_rna.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Plain text
+
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+
+authors:
+  - "@seohyonkim"
+  - "@LuisHeinzlmeier"
+maintainers:
+  - "@seohyonkim"
+  - "@LuisHeinzlmeier"

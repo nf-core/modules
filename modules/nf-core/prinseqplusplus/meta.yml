@@ -26,9 +26,10 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end
           data, respectively.
+        ontologies: []
 output:
-  - good_reads:
-      - meta:
+  good_reads:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,8 +38,9 @@ output:
           type: file
           description: Reads passing filter(s) in gzipped FASTQ format
           pattern: "*_good_out_{R1,R2}.fastq.gz"
-  - single_reads:
-      - meta:
+          ontologies: []
+  single_reads:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,8 +50,9 @@ output:
           description: |
             Single reads without the pair passing filter(s) in gzipped FASTQ format
           pattern: "*_single_out_{R1,R2}.fastq.gz"
-  - bad_reads:
-      - meta:
+          ontologies: []
+  bad_reads:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -59,8 +62,9 @@ output:
           description: |
             Reads without not passing filter(s) in gzipped FASTQ format
           pattern: "*_bad_out_{R1,R2}.fastq.gz"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -70,11 +74,14 @@ output:
           description: |
             Verbose level 2 STDOUT information in a log file
           pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

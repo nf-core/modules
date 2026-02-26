@@ -10,7 +10,8 @@ tools:
       homepage: "https://github.com/dnil/rhocall"
       documentation: "https://github.com/dnil/rhocall"
       tool_dev_url: "https://github.com/dnil"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -22,10 +23,12 @@ input:
         type: file
         description: vcf file
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
     - tbi:
         type: file
         description: vcf index file
         pattern: "*.{tbi}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -35,13 +38,15 @@ input:
         type: file
         description: Bcftools roh style TSV file with CHR,POS,AZ,QUAL
         pattern: "*.{roh}"
-  - - bed:
-        type: file
-        description: BED file with AZ windows.
-        pattern: "*.{bed}"
+        ontologies: []
+  - bed:
+      type: file
+      description: BED file with AZ windows.
+      pattern: "*.{bed}"
+      ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,11 +55,28 @@ output:
           type: file
           description: vcf file
           pattern: "*.{vcf,vcf.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_rhocall:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rhocall:
+          type: string
+          description: The name of the tool
+      - rhocall --version | sed 's/rhocall, version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rhocall:
+          type: string
+          description: The name of the tool
+      - rhocall --version | sed 's/rhocall, version //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ramprasadn"
 maintainers:

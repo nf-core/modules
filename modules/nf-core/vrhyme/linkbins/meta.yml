@@ -28,8 +28,8 @@ input:
         description: Directory file containing bin FASTA files output by vRhyme (each
           bin having multiple sequences)
 output:
-  - linked_bins:
-      - meta:
+  linked_bins:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,12 +40,13 @@ output:
           pattern: "*_linked_bins.fasta"
           ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@CarsonJM"
 maintainers:

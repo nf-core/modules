@@ -1,19 +1,71 @@
 {
-    "versions": {
+    "test_glimpse_phase -- stub": {
+        "content": [
+            {
+                "phased_variants": [
+                    [
+                        {
+                            "id": "input"
+                        },
+                        "input_chr21_16570065-16597215.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_glimpse": [
+                    [
+                        "GLIMPSE_PHASE",
+                        "glimpse",
+                        "1.1.1"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-05T17:47:46.411303792"
+    },
+    "test_glimpse_phase": {
         "content": [
             [
-                "versions.yml:md5,b24f49b2f5989a1f7da32c195334e96b",
-                "versions.yml:md5,b24f49b2f5989a1f7da32c195334e96b",
-                "versions.yml:md5,b24f49b2f5989a1f7da32c195334e96b",
-                "versions.yml:md5,b24f49b2f5989a1f7da32c195334e96b"
-            ]
+                [
+                    {
+                        "id": "input",
+                        "region": "chr21:16570065-16597215"
+                    },
+                    "input_chr21_16570065-16597215.vcf.gz",
+                    "VcfFile [chromosomes=[chr21], sampleCount=1, variantCount=563, phased=false, phasedAutodetect=false]",
+                    "307c42e67924110b165f1fff0e5c14a"
+                ],
+                [
+                    {
+                        "id": "input",
+                        "region": "chr21:16587172-16609999"
+                    },
+                    "input_chr21_16587172-16609999.vcf.gz",
+                    "VcfFile [chromosomes=[chr21], sampleCount=1, variantCount=459, phased=false, phasedAutodetect=false]",
+                    "b138aad7ca677f696b7635802d3be82e"
+                ]
+            ],
+            {
+                "versions_glimpse": [
+                    [
+                        "GLIMPSE_PHASE",
+                        "glimpse",
+                        "1.1.1"
+                    ],
+                    [
+                        "GLIMPSE_PHASE",
+                        "glimpse",
+                        "1.1.1"
+                    ]
+                ]
+            }
         ],
-        "timestamp": "2023-10-17T15:27:55.512415434"
-    },
-    "imputed": {
-        "content": [
-            "chr21\t16799989\t21:16799989:T:C\tT\tC\t.\t.\tRAF=0.000468897;AF=0;INFO=1;BUF=1\tGT:DS:GP:HS\t0/0:0:1,0,0:0"
-        ],
-        "timestamp": "2023-10-17T15:27:55.99820664"
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-05T17:48:13.027301359"
     }
 }

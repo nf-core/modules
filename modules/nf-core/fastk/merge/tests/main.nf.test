@@ -49,7 +49,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    // Merge output is non-deterministic
+                    process.out.hist.collect { meta, hist -> [ meta, file(hist).name ] },
+                    process.out.ktab.collect { meta, ktab -> [ meta, ktab.collect { f -> file(f).name } ] },
+                    process.out.prof.collect { meta, prof -> [ meta, prof.collect { f -> file(f).name } ] },
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
 
@@ -88,7 +94,8 @@ nextflow_process {
                     .join( FASTK_FASTK.out.prof.groupTuple(), remainder: true )
                     .map { meta, hist, ktab, prof ->
                         [meta, hist, ktab ? ktab.flatten().sort() : [] , prof ? prof.flatten().sort() : [] ]
-                    }                """
+                    }
+            """
             }
         }
 

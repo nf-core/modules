@@ -11,23 +11,22 @@ process ATLAS_SPLITMERGE {
     tuple val(meta), path(bam), path(bai), path(read_group_settings), path(blacklist)
 
     output:
-    tuple val(meta), path("*_mergedReads.bam")  , emit: bam
-    tuple val(meta), path("*.txt.gz")           , emit: txt
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*_mergedReads.bam"), emit: bam
+    tuple val(meta), path("*.txt.gz")         , emit: txt
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def optional = blacklist ? 'blacklist=${blacklist}' : ''
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args     = task.ext.args   ?: ''
     """
     atlas \\
         task=splitMerge bam=${bam} \\
         readGroupSettings=${read_group_settings}\\
-        $optional \\
-        $args
+        ${optional} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -30,24 +30,28 @@ input:
           If you provide ".ped" or ".geno" then you need to provide a ".map" file and
           an empty channel.
         pattern: "*.{bed}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3586" # bed12
     - bim_map:
         type: file
         description: Mandatory accompanying file. One of PLINK ".bim" file or PLINK
           ".map" file. Provide ".bim" if ".bed" is the input. Provide ".map" if ".ped"
           or ".geno" is the input.
         pattern: "*.{bim}"
+        ontologies: []
     - fam:
         type: file
         description: PLINK ".fam" file. Mandatory if you provide ".bed" as input. Replace
           with an empty channel if input is ".ped" or ".geno".
         pattern: "*.{fam}"
-  - - K:
-        type: integer
-        description: Belief of the number of ancestral populations.
-        pattern: "{*}"
+        ontologies: []
+  - K:
+      type: integer
+      description: Belief of the number of ancestral populations.
+      pattern: "{*}"
 output:
-  - ancestry_fractions:
-      - meta:
+  ancestry_fractions:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,8 +61,9 @@ output:
           description: Space-delimited files containing ancestry fractions. The output
             filenames have the number of populations (K) that was assumed for the analysis.
           pattern: "*.{Q}"
-  - allele_frequencies:
-      - meta:
+          ontologies: []
+  allele_frequencies:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,14 +71,17 @@ output:
       - "*.P":
           type: file
           description: Space-delimited files containing the allele frequencies of the
-            inferred ancestral populations. The output filenames have the number of populations
-            (K) that was assumed for the analysis.
+            inferred ancestral populations. The output filenames have the number of
+            populations (K) that was assumed for the analysis.
           pattern: "*.{P}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@atrigila"
 maintainers:

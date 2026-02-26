@@ -46,6 +46,7 @@ def construct_most_severe_pli_info(line: str, pli_ind: int) -> list:
 
     columns = line.strip().split()
     info_fields = columns[7].split(";")
+    transcripts = []
     for field in info_fields:
         if field.startswith("CSQ="):
             transcripts = field.split("CSQ=")[1].split(",")
@@ -56,7 +57,7 @@ def construct_most_severe_pli_info(line: str, pli_ind: int) -> list:
     except ValueError:
         pli_max = ""
     if pli_max:
-        columns[7] += ";most_severe_pli={:.2f}".format(float(pli_max))
+        columns[7] += f";most_severe_pli={float(pli_max):.2f}"
     return columns
 
 

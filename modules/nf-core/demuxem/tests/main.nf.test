@@ -15,16 +15,15 @@ nextflow_process {
         when {
             process {
                 """
-                
+
                 input[0] = [
                     [ id:'sample1'],
                     file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/438-21-raw_feature_bc_matrix.h5",checkIfExists: true),
                     file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/438_21_raw_HTO.csv",checkIfExists: true)
                     ]
-                input[1] = "results"
+                input[1] = ""
                 input[2] = ""
                 input[3] = ""
-                input[4] = ""
                 """
             }
         }
@@ -32,9 +31,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.zarr.get(0).get(1)).exists() },
-                { assert path(process.out.out_zarr.get(0).get(1)).exists() },
-                
+                { assert snapshot(
+                    file(process.out.zarr[0][1]).name,
+                    file(process.out.out_zarr[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
 
@@ -47,16 +48,15 @@ nextflow_process {
         when {
             process {
                 """
-                
+
                 input[0] = [
                     [ id:'sample1'],
                     file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/438-21-raw_feature_bc_matrix.h5",checkIfExists: true),
                     file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/438_21_raw_HTO.csv",checkIfExists: true)
                     ]
-                input[1] = "results"
+                input[1] = ""
                 input[2] = ""
-                input[3] = ""
-                input[4] = "True"
+                input[3] = "True"
                 """
             }
         }
@@ -64,8 +64,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.zarr.get(0).get(1)).exists() },
-                { assert path(process.out.out_zarr.get(0).get(1)).exists() },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

@@ -27,16 +27,20 @@ input:
         type: file
         description: One or more count TSV files created with gatk/collectreadcounts
         pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
     - bed:
         type: file
         description: Optional - A bed file containing the intervals to include in the
           process
         pattern: "*.bed"
+        ontologies: []
     - exclude_beds:
         type: file
         description: Optional - One or more bed files containing intervals to exclude
           from the process
         pattern: "*.bed"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -48,13 +52,15 @@ input:
           Optional - A folder containing the ploidy model.
           When a model is supplied to tool will run in CASE mode.
           pattern: '*-model/'
-  - - contig_ploidy_table:
-        type: file
-        description: The contig ploidy priors table
-        pattern: "*.tsv"
+  - contig_ploidy_table:
+      type: file
+      description: The contig ploidy priors table
+      pattern: "*.tsv"
+      ontologies:
+        - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - calls:
-      - meta:
+  calls:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -63,8 +69,8 @@ output:
           type: directory
           description: A folder containing the calls from the input files
           pattern: "*-calls/"
-  - model:
-      - meta:
+  model:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -75,11 +81,27 @@ output:
             A folder containing the model from the input files.
             This will only be created in COHORT mode (when no model is supplied to the process).
           pattern: "*-model/"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions_gatk4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

@@ -58,9 +58,9 @@ process DEEPSOMATIC {
     prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.7.0'
     """
-    touch ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
-    touch ${prefix}.g.vcf.gz
+    echo "" | gzip > ${prefix}.g.vcf.gz
     touch ${prefix}.g.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml

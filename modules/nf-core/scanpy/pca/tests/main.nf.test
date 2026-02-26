@@ -1,0 +1,63 @@
+nextflow_process {
+
+    name "Test Process SCANPY_PCA"
+    script "../main.nf"
+    process "SCANPY_PCA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "scanpy"
+    tag "scanpy/pca"
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/combined_filtered_matrix.h5ad', checkIfExists: true)
+                    ]
+                )
+                input[1] = "X_pca"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(process.out).match() },
+            { assert "X_pca" in anndata(process.out.h5ad[0][1]).obsm }
+            )
+        }
+
+    }
+
+    test("Should run without failures - stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/combined_filtered_matrix.h5ad', checkIfExists: true)
+                    ]
+                )
+                input[1] = "X_pca"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

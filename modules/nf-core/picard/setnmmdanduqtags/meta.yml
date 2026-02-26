@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "picard_setnmmdanduqtags"
-description: "This tool takes in a coordinate-sorted SAM or BAM and calculatesthe NM, MD, and UQ tags by comparing with the reference."
+description: "This tool takes in a coordinate-sorted SAM or BAM and calculatesthe
+  NM, MD, and UQ tags by comparing with the reference."
 keywords:
   - bam
   - uq
@@ -13,7 +13,7 @@ tools:
       homepage: "https://broadinstitute.github.io/picard/"
       documentation: "https://broadinstitute.github.io/picard/"
       tool_dev_url: "https://github.com/broadinstitute/picard"
-      licence: ['MIT']
+      licence: ["MIT"]
       identifier: biotools:picard_tools
 
 input:
@@ -42,36 +42,51 @@ input:
           - edam: "http://edamontology.org/format_1929"
 
 output:
-  - bam:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*.bam":
-        type: file
-        description: Sorted BAM file
-        pattern: "*.bam"
-        ontologies:
-          - edam: "http://edamontology.org/format_2572"
-  - bai:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*.bai":
-        type: file
-        description: BAM indexing file
-        pattern: "*.bai"
-        ontologies:
-          - edam: "http://edamontology.org/format_3327"
-  - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.bam":
+          type: file
+          description: Sorted BAM file
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  bai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.bai":
+          type: file
+          description: BAM indexing file
+          pattern: "*.bai"
+          ontologies:
+            - edam: "http://edamontology.org/format_3327"
+  versions_picard:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - picard:
+          type: string
+          description: The tool name
+      - "picard SetNmMdAndUqTags --version 2>&1 | sed -n 's/.*Version://p'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - picard:
+          type: string
+          description: The tool name
+      - "picard SetNmMdAndUqTags --version 2>&1 | sed -n 's/.*Version://p'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@anoronh4"
 maintainers:

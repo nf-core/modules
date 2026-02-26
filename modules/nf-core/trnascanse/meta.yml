@@ -29,8 +29,8 @@ input:
           - edam: "http://edamontology.org/format_1929"
 
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -41,8 +41,8 @@ output:
           pattern: "*.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475"
-  - log:
-      - meta:
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,8 +53,8 @@ output:
           pattern: "*.log"
           ontologies:
             - edam: "http://edamontology.org/data_3671"
-  - stats:
-      - meta:
+  stats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,8 +65,8 @@ output:
           pattern: "*.stats"
           ontologies:
             - edam: "http://edamontology.org/data_3671"
-  - fasta:
-      - meta:
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -78,8 +78,9 @@ output:
           pattern: "*.fasta.gz"
           ontologies:
             - edam: "http://edamontology.org/format_1929"
-  - gff:
-      - meta:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  gff:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -90,26 +91,25 @@ output:
             (optional) GFF annotation of tRNA sequences in input fasta
           ontologies:
             - edam: "http://edamontology.org/format_1975"
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*.bed"
       - "*.bed":
           type: file
           description: |
             (optional) BED annotation of tRNA sequences in input fasta
           ontologies:
             - edam: "http://edamontology.org/format_3003"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: "http://edamontology.org/format_3750"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750"
 authors:
   - "@prototaxites"
 maintainers:

@@ -1,5 +1,6 @@
 name: "custom_filterdifferentialtable"
-description: Filters a differential expression table based on logFC and adjusted p-value thresholds
+description: Filters a differential expression table based on logFC and adjusted p-value
+  thresholds
 keywords:
   - filter
   - differential expression
@@ -17,6 +18,7 @@ tools:
       identifiers:
         - "biotools:pandas"
         - "conda:pandas"
+      identifier: biotools:pandas
 input:
   - - meta:
         type: map
@@ -27,6 +29,9 @@ input:
         type: file
         description: Input differential expression table (CSV, TSV, or TXT format)
         pattern: "*.{csv,tsv,txt}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3475 # TSV
   - - logfc_column:
         type: string
         description: Name of the column containing log fold change values
@@ -52,8 +57,8 @@ input:
           Operator to compare the column values with the threshold.
           Valid values are: ">=", "<=", ">", "<".
 output:
-  - filtered:
-      - meta:
+  filtered:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,11 +67,39 @@ output:
           type: file
           description: Filtered differential expression table
           pattern: "*_filtered.tsv"
-  - versions:
-      - versions.yml:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  filtered_up:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_filtered_up.tsv":
           type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: Filtered differential expression table for overexpressed genes
+          pattern: "*_filtered_up.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  filtered_down:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_filtered_down.tsv":
+          type: file
+          description: Filtered differential expression table for underexpressed genes
+          pattern: "*_filtered_down.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@pinin4fjords"
   - "@WackerO"

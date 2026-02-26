@@ -24,9 +24,11 @@ input:
         type: file
         description: Pangenome graph in GFA v1.0 format
         pattern: "*.{gfa}"
+        ontologies:
+          - edam: http://edamontology.org/format_3975 # GFA 1
 output:
-  - og:
-      - meta:
+  og:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,11 +38,14 @@ output:
           description: File containing a pangenome graph in ODGI binary format. Usually
             ends with '.og'
           pattern: "*.{og}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@subwaystation"
 maintainers:

@@ -1,50 +1,16 @@
 #!/usr/bin/env python3
 
-import logging
+"""
+Author:
+    Annick Renevey
+
+Copyright (c) 2025, Annick Renevey. All rights reserved.
+
+License: GPL-3 License
+"""
+
 import platform
-import sys
 from pathlib import Path
-
-# Configure logging
-logging.basicConfig(format="%(name)s - %(asctime)s %(levelname)s: %(message)s")
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-
-
-def get_rrna_intervals(gtf: str, rrna_transcripts: str):
-    """
-    Get lines containing ``#`` or ``gene_type rRNA`` or ```` or ``gene_type rRNA_pseudogene`` or ``gene_type MT_rRNA``
-    Create output file
-
-    Args:
-        file_in (pathlib.Path): The given GTF file.
-        file_out (pathlib.Path): Where the ribosomal RNA GTF file should
-            be created; always in GTF format.
-    """
-    patterns = {
-        "#",
-        'transcript_biotype "Mt_rRNA"',
-        'transcript_biotype "rRNA"',
-        'transcript_biotype "rRNA_pseudogene"',
-    }
-    line_starts = {"MT", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
-    out_lines = []
-    path_gtf = Path(gtf)
-    path_rrna_transcripts = Path(rrna_transcripts)
-    if not path_gtf.is_file():
-        logger.error(f"The given input file {gtf} was not found!")
-        sys.exit(2)
-    with path_gtf.open() as f:
-        data = f.readlines()
-        for line in data:
-            for pattern in patterns:
-                if pattern in line:
-                    for line_start in line_starts:
-                        if line.startswith(line_start):
-                            out_lines.append(line)
-    if out_lines != []:
-        with path_rrna_transcripts.open(mode="w") as out_file:
-            out_file.writelines(out_lines)
 
 
 def format_yaml_like(data: dict, indent: int = 0) -> str:
@@ -67,17 +33,38 @@ def format_yaml_like(data: dict, indent: int = 0) -> str:
     return yaml_str
 
 
-if __name__ == "__main__":
-    if "${task.ext.prefix}" != "null":
-        prefix = "${task.ext.prefix}."
-    else:
-        prefix = "${task.ext.gtf}."
+def get_rrna_intervals(file_in: Path, file_out: Path):
+    """
+    Extracts rRNA lines from a GTF and writes them out.
+    """
+    patterns = {
+        "#",
+        'transcript_biotype "Mt_rRNA"',
+        'transcript_biotype "rRNA"',
+        'transcript_biotype "rRNA_pseudogene"',
+    }
+    line_starts = {"MT", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
+    out_lines = []
 
-    if not get_rrna_intervals("$gtf", f"{prefix}_rrna_intervals.gtf"):
-        logging.error("Failed to extract rrna transcipts.")
+    with file_in.open() as f:
+        for line in f:
+            if any(p in line for p in patterns) and any(line.startswith(ls) for ls in line_starts):
+                out_lines.append(line)
 
-    # Write the versions
-    versions_this_module = {}
-    versions_this_module["${task.process}"] = {"python": platform.python_version()}
-    with open("versions.yml", "w") as f:
-        f.write(format_yaml_like(versions_this_module))
+    file_out.parent.mkdir(parents=True, exist_ok=True)
+    with file_out.open("w") as out:
+        out.writelines(out_lines)
+
+
+# Main
+gtf_path = Path("${gtf}")
+prefix = "${prefix}"
+out_gtf = Path(f"{prefix}_rrna_intervals.gtf")
+
+get_rrna_intervals(gtf_path, out_gtf)
+
+# Versions
+versions = {"${task.process}": {"python": platform.python_version()}}
+
+with open("versions.yml", "w") as v:
+    v.write(format_yaml_like(versions))

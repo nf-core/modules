@@ -1,0 +1,61 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "dssp_mkdssp"
+description: |
+  Calculates secondary structure assignments from PDB files using mkdssp (DSSP).
+  DSSP is a standard tool for assigning secondary structure to amino acids in protein structures.
+keywords:
+  - protein
+  - secondary structure
+  - structural bioinformatics
+  - dssp
+  - mkdssp
+tools:
+  - "dssp":
+      description: Calculates secondary structure information from PDB files.
+      homepage: "https://github.com/PDB-REDO/dssp"
+      documentation: "https://github.com/PDB-REDO/dssp/blob/trunk/doc/mkdssp.md"
+      tool_dev_url: "https://github.com/PDB-REDO/dssp"
+      doi: "10.1002/bip.360221211"
+      licence: ["BSD-2-Clause"]
+      identifier: biotools:dssp
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - pdb:
+        type: file
+        description: Protein structure file in PDB format
+        pattern: "*.pdb"
+        ontologies:
+          - edam: "http://edamontology.org/format_1476" # PDB
+  - format:
+      type: string
+      description: Format for the output file
+      enum: ["dssp", "mmcif"]
+output:
+  dssp:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.{dssp,mmcif}":
+          type: file
+          description: File containing secondary structure output in dssp or mmCIF format
+          pattern: "*.{dssp,mmcif}"
+          ontologies:
+            - edam: "http://edamontology.org/format_1454" # dssp
+            - edam: "http://edamontology.org/format_1477" # mmCIF
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

@@ -105,9 +105,11 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = Channel.of([
-                            [ id:'test', single_end:true ],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
+                            [ id:'test', single_end:false ],
+                            [
+                                file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
+                                file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
+                            ]
                 ])
                 input[1] = Channel.of([
                             [:],
@@ -154,9 +156,11 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = Channel.of([
-                            [ id:'test', single_end:true ],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
+                            [ id:'test', single_end:false ],
+                            [
+                                file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
+                                file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
+                            ]
                 ])
                 input[1] = Channel.of([
                             [:],
@@ -203,9 +207,11 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = Channel.of([
-                            [ id:'test', single_end:true ],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
+                            [ id:'test', single_end:false ],
+                            [
+                                file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
+                                file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
+                            ]
                 ])
                 input[1] = Channel.of([
                             [:],
@@ -302,9 +308,11 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = Channel.of([
-                            [ id:'test', single_end:true ],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
+                            [ id:'test', single_end:false ],
+                            [
+                                file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
+                                file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
+                            ]
                 ])
                 input[1] = Channel.of([
                             [:],
@@ -351,9 +359,11 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = Channel.of([
-                            [ id:'test', single_end:true ],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
+                            [ id:'test', single_end:false ],
+                            [
+                                file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
+                                file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
+                            ]
                 ])
                 input[1] = Channel.of([
                             [:],
@@ -400,9 +410,11 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = Channel.of([
-                            [ id:'test', single_end:true ],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
+                            [ id:'test', single_end:false ],
+                            [
+                                file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
+                                file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
+                            ]
                 ])
                 input[1] = Channel.of([
                             [:],

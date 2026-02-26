@@ -1,0 +1,111 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "drep_dereplicate"
+description: Dereplicates a genome  set by identifying highly similar genomes and
+  choose the best representative genome
+keywords:
+  - drep
+  - genome
+  - fasta
+  - compare
+  - comparison
+  - visualisation
+  - metagenomics
+  - assembly
+  - microbial genomics
+  - dereplication
+
+tools:
+  - "drep":
+      description: "De-replication of microbial genomes assembled from multiple samples"
+      homepage: "https://drep.readthedocs.io/en/latest/"
+      documentation: "https://drep.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/MrOlm/drep"
+      doi: "10.1038/ismej.2017.126"
+      licence: ["MIT"]
+      identifier: biotools:drep
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fastas:
+        type: file
+        description: List of FASTA files to dereplicate
+        pattern: "*.{fasta,fa,fna,fas}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - drep_work:
+        type: directory
+        description: Optional existing dRep working directory containing pre-computed
+          clustering results (e.g. output from dRep compare)
+        ontologies:
+          - edam: "http://edamontology.org/data_1049" ## Directory name
+output:
+  fastas:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - dereplicated_genomes/*:
+          type: file
+          description: Representative genomes for each cluster of similar genomes
+          pattern: "*.{fasta,fa,fna,fas}"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  summary_tables:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - data_tables/*.csv:
+          type: file
+          description: Summary tables containing information about the dereplication
+            process including cluster membership of each genome
+          pattern: "*.{csv}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3752" ## CSV
+  figures:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - figures/*pdf:
+          type: file
+          description: Figures visualising the dereplication process, such as clustering
+            results and representative genome selection
+          pattern: "*.{pdf}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3508" ## PDF
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - logger.log:
+          type: file
+          description: logging file containing information about the dereplication process
+          pattern: "*.{log}"
+          ontologies:
+            - edam: "http://edamontology.org/format_1964" # Plain text file
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: versions.yml
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@jfy133"
+maintainers:
+  - "@jfy133"

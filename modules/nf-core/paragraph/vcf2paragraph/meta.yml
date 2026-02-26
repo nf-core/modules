@@ -23,6 +23,7 @@ input:
         type: file
         description: The VCF/BCF file
         pattern: "*.{vcf,bcf}(.gz)?"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -32,9 +33,10 @@ input:
         type: file
         description: Reference genome VCF was generated against
         pattern: "*.{fasta,fna,fa}"
+        ontologies: []
 output:
-  - graph:
-      - meta:
+  graph:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,11 +45,15 @@ output:
           type: file
           description: The created graph in BGZIP format
           pattern: "*.json.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

@@ -24,13 +24,16 @@ input:
         type: file
         description: BAM/CRAM file(s) from alignment
         pattern: "*.{bam,cram}"
+        ontologies: []
     - input_index:
         type: file
         description: BAI/CRAI file(s) from alignment
         pattern: "*.{bai,crai}"
+        ontologies: []
     - intervals:
         type: file
         description: Bed file with the genomic regions included in the library (optional)
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -40,6 +43,7 @@ input:
         type: file
         description: GATK sequence dictionary
         pattern: "*.dict"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -49,6 +53,7 @@ input:
         type: file
         description: Genome fasta file
         pattern: "*.{fa,fasta}"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -58,6 +63,7 @@ input:
         type: file
         description: Index of the genome fasta file
         pattern: "*.fai"
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -67,6 +73,8 @@ input:
         type: file
         description: Population vcf of germline sequencing, containing allele fractions.
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
   - - meta6:
         type: map
         description: |
@@ -76,6 +84,7 @@ input:
         type: file
         description: Index file for the germline resource.
         pattern: "*.vcf.gz.tbi"
+        ontologies: []
   - - meta7:
         type: map
         description: |
@@ -85,6 +94,8 @@ input:
         type: file
         description: vcf file to be used as a panel of normals.
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
   - - meta8:
         type: map
         description: |
@@ -94,17 +105,18 @@ input:
         type: file
         description: Index for the panel of normals.
         pattern: "*.vcf.gz.tbi"
-  - - emit_orientation_data:
-        type: boolean
-        description: If true, the module will run the sentieon algorithm TNhaplotyper2
-          followed by the sentieon algorithm OrientationBias.
-  - - emit_contamination_data:
-        type: boolean
-        description: If true, the module will run the sentieon algorithm TNhaplotyper2
-          followed by the sentieon algorithm ContaminationModel.
+        ontologies: []
+  - emit_orientation_data:
+      type: boolean
+      description: If true, the module will run the sentieon algorithm TNhaplotyper2
+        followed by the sentieon algorithm OrientationBias.
+  - emit_contamination_data:
+      type: boolean
+      description: If true, the module will run the sentieon algorithm TNhaplotyper2
+        followed by the sentieon algorithm ContaminationModel.
 output:
-  - orientation_data:
-      - meta:
+  orientation_data:
+    - - meta:
           type: map
           description: |
             Groovy Map containing reference information.
@@ -113,8 +125,10 @@ output:
           type: file
           description: TSV file from Sentieon's algorithm OrientationBias
           pattern: "*.orientation_data.tsv"
-  - contamination_data:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  contamination_data:
+    - - meta:
           type: map
           description: |
             Groovy Map containing reference information.
@@ -123,8 +137,10 @@ output:
           type: file
           description: TSV file from Sentieon's algorithm ContaminationModel
           pattern: "*.contamination_data.tsv"
-  - contamination_segments:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  contamination_segments:
+    - - meta:
           type: map
           description: |
             Groovy Map containing reference information.
@@ -133,8 +149,9 @@ output:
           type: file
           description: Tumour segments file from Sentieon's algorithm ContaminationModel
           pattern: "*.segments"
-  - stats:
-      - meta:
+          ontologies: []
+  stats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing reference information.
@@ -143,8 +160,9 @@ output:
           type: file
           description: Stats file from Sentieon's algorithm
           pattern: "*.stats"
-  - vcf:
-      - meta:
+          ontologies: []
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing reference information.
@@ -153,8 +171,9 @@ output:
           type: file
           description: VCF file
           pattern: "*.{vcf.gz}"
-  - index:
-      - meta:
+          ontologies: []
+  index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing reference information.
@@ -163,11 +182,28 @@ output:
           type: file
           description: Index of the VCF file
           pattern: "*.vcf.gz.tbi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_sentieon:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - sentieon:
+          type: string
+          description: The tool name
+      - sentieon driver --version | sed "s/.*-//g":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - sentieon:
+          type: string
+          description: The tool name
+      - sentieon driver --version | sed "s/.*-//g":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@asp8200"
 maintainers:

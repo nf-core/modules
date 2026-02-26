@@ -1,0 +1,333 @@
+nextflow_workflow {
+
+    name "Test Workflow VCF_EXTRACT_RELATE_SOMALIER"
+
+    script "../main.nf"
+    workflow "VCF_EXTRACT_RELATE_SOMALIER"
+
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/vcf_extract_relate_somalier"
+    tag "vcf_extract_relate_somalier"
+
+    tag "somalier/extract"
+    tag "somalier/relate"
+    tag "somalier"
+    tag "tabix/tabix"
+    tag "tabix"
+
+    tag "bcftools/merge"
+    tag "bcftools"
+
+    test("homo_sapiens minimal - vcf 1 - fasta - fai - sites - [] - [] - []") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:"test"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true),
+                    [],
+                    1
+                ])
+                input[1] = Channel.of([ [id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)])
+                input[2] = Channel.of([ [id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)])
+                input[3] = Channel.of([ [id: "sites"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)])
+                input[4] = Channel.of([ [id:"test"], [] ])
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("homo_sapiens vcf_and_index - vcf index 1 - fasta - fai - sites - [] - [] - []") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:"test"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz.csi', checkIfExists: true),
+                    1
+                ])
+                input[1] = Channel.of([ [id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)])
+                input[2] = Channel.of([ [id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)])
+                input[3] = Channel.of([ [id: "sites"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)])
+                input[4] = Channel.of([ [id:"test"], [] ])
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("homo_sapiens with_ped - vcf 1 - fasta - fai - sites - ped - [] - []") {
+        when {
+            workflow {
+                """
+                ped_file = Channel.of(
+                        "#family_id\tsample_id\tfather\tmother\tsex\tphenotype",
+                        "family1\tnormal\tfatherID\tmotherID\t1\t1",
+                        "family1\ttumour\tfatherID\tmotherID\t1\t2"
+                    )
+                    .collectFile(name: 'family.ped', newLine: true)
+                ch_ped = Channel.of([[id: "test"]])
+                    .combine(ped_file)
+
+                input[0] = Channel.of([
+                    [id:"test"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true),
+                    [],
+                    1
+                ])
+                input[1] = Channel.of([ [id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)])
+                input[2] = Channel.of([ [id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)])
+                input[3] = Channel.of([ [id: "sites"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)])
+                input[4] = ch_ped
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("homo_sapiens mixed_combine - [vcf, vcf] [index, []] 2 - fasta - fai - sites - ped - samples - common") {
+        when {
+
+            workflow {
+                """
+                ped_file = Channel.of(
+                        "#family_id\tsample_id\tfather\tmother\tsex\tphenotype",
+                        "family1\tnormal\tfatherID\tmotherID\t1\t1",
+                        "family1\ttumour\tfatherID\tmotherID\t1\t2"
+                    )
+                    .collectFile(name: 'family.ped', newLine: true)
+                ch_ped = Channel.of([[id: "test", common:"test"]])
+                    .combine(ped_file)
+
+                input[0] = Channel.of(
+                    [
+                        [id:"test", common:"test"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true),
+                        [],
+                        2
+                    ],
+                    [
+                        [id:"test2", common:"test"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz.tbi', checkIfExists: true),
+                        2
+                    ],
+                )
+                input[1] = Channel.of([ [id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)]).collect()
+                input[2] = Channel.of([ [id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)]).collect()
+                input[3] = Channel.of([ [id: "sites"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)]).collect()
+                input[4] = ch_ped
+                input[5] = Channel.of("disease_103,testN").collectFile(name:"sample_groups.txt")
+                input[6] = "common"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("homo_sapiens mixed_no_combine - [vcf, vcf] [index, []] 1 - fasta - fai - sites - [ped, ped] - [] - []") {
+        when {
+            workflow {
+                """
+                ped_file = Channel.of(
+                        "#family_id\tsample_id\tfather\tmother\tsex\tphenotype",
+                        "family1\tnormal\tfatherID\tmotherID\t1\t1",
+                        "family1\ttumour\tfatherID\tmotherID\t1\t2"
+                    )
+                    .collectFile(name: 'family.ped', newLine: true)
+                ch_ped = Channel.of([id: "test"], [id: "test2"])
+                    .combine(ped_file)
+
+                input[0] = Channel.of(
+                    [
+                        [id:"test"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true),
+                        [],
+                        1
+                    ],
+                    [
+                        [id:"test2"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz.tbi', checkIfExists: true),
+                        1
+                    ],
+                )
+                input[1] = Channel.of([ [id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)]).collect()
+                input[2] = Channel.of([ [id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)]).collect()
+                input[3] = Channel.of([ [id: "sites"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)]).collect()
+                input[4] = ch_ped
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("homo_sapiens joint_vcf - vcf index [] - fasta - fai - sites - [] - [] - []") {
+        setup {
+            run ("BCFTOOLS_MERGE") {
+                script "../../../../modules/nf-core/bcftools/merge"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [id:"test"],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz', checkIfExists: true)
+                        ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz.csi', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz.tbi', checkIfExists: true)
+                        ]
+                    ])
+                    input[1] = [[], []]
+                    input[2] = [[], []]
+                    input[3] = [[], []]
+                    """
+                }
+            }
+        }
+        when {
+            workflow {
+                """
+                input[0] = BCFTOOLS_MERGE.out.vcf
+                    .join(BCFTOOLS_MERGE.out.index)
+                    .combine(Channel.of([[]]))
+                input[1] = Channel.of([ [id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)]).collect()
+                input[2] = Channel.of([ [id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)]).collect()
+                input[3] = Channel.of([ [id: "sites"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)]).collect()
+                input[4] = Channel.of([[id:"test"], []])
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("homo_sapiens mixed_combine_no_count- [vcf, vcf] [index, []] [] - fasta - fai - sites - ped - samples - common") {
+        when {
+            workflow {
+                """
+                ped_file = Channel.of(
+                        "#family_id\tsample_id\tfather\tmother\tsex\tphenotype",
+                        "family1\tnormal\tfatherID\tmotherID\t1\t1",
+                        "family1\ttumour\tfatherID\tmotherID\t1\t2"
+                    )
+                    .collectFile(name: 'family.ped', newLine: true)
+
+                input[0] = Channel.of(
+                    [
+                        [id:"test", common:"test"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true),
+                        [],
+                        []
+                    ],
+                    [
+                        [id:"test2", common:"test"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz.tbi', checkIfExists: true),
+                        []
+                    ],
+                )
+                input[1] = Channel.of([ [id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)]).collect()
+                input[2] = Channel.of([ [id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)]).collect()
+                input[3] = Channel.of([ [id: "sites"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)]).collect()
+                input[4] = Channel.of([[id: "test", common:"test"]])
+                    .combine(ped_file)
+                input[5] = Channel.of("disease_103,testN").collectFile(name:"sample_groups.txt")
+                input[6] = "common"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens mixed_combine_no_count- [vcf, vcf] [index, []] [] - fasta - fai - sites - ped - samples - common -- stub") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                ped_file = Channel.of(
+                        "#family_id\tsample_id\tfather\tmother\tsex\tphenotype",
+                        "family1\tnormal\tfatherID\tmotherID\t1\t1",
+                        "family1\ttumour\tfatherID\tmotherID\t1\t2"
+                    )
+                    .collectFile(name: 'family.ped', newLine: true)
+
+                input[0] = Channel.of(
+                    [
+                        [id:"test", common:"test"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true),
+                        [],
+                        []
+                    ],
+                    [
+                        [id:"test2", common:"test"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz.tbi', checkIfExists: true),
+                        []
+                    ],
+                )
+                input[1] = Channel.of([ [id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)]).collect()
+                input[2] = Channel.of([ [id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)]).collect()
+                input[3] = Channel.of([ [id: "sites"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)]).collect()
+                input[4] = Channel.of([[id: "test", common:"test"]])
+                    .combine(ped_file)
+                input[5] = Channel.of("disease_103,testN").collectFile(name:"sample_groups.txt")
+                input[6] = "common"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+}

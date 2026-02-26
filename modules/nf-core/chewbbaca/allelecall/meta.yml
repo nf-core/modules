@@ -37,8 +37,8 @@ input:
         description: Directory containing the schema files
         pattern: "*/"
 output:
-  - stats:
-      - meta:
+  stats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,8 +49,8 @@ output:
           pattern: "*_results_statistics.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # Tab-separated values
-  - contigs_info:
-      - meta:
+  contigs_info:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -61,8 +61,8 @@ output:
           pattern: "*_results_contigsInfo.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # Tab-separated values
-  - alleles:
-      - meta:
+  alleles:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,8 +73,8 @@ output:
           pattern: "*_results_alleles.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # Tab-separated values
-  - log:
-      - meta:
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -85,35 +85,34 @@ output:
           pattern: "*_logging_info.txt"
           ontologies:
             - edam: http://edamontology.org/format_2330 # Plain text
-  - paralogous_counts:
-      - meta:
+  paralogous_counts:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
       - "*_paralogous_counts.tsv":
           type: file
-          description:
-            File contains the list of paralogous loci and the number of times
+          description: File contains the list of paralogous loci and the number of times
             those loci matched a CDS that was also similar to other loci in the schema
           pattern: "*_paralogous_counts.tsv"
-          ontologies: []
-  - paralogous_loci:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  paralogous_loci:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
       - "*_paralogous_loci.tsv":
           type: file
-          description:
-            File contains the sets of paralogous loci identified in the input
+          description: File contains the sets of paralogous loci identified in the input
             sample
           pattern: "*_paralogous_loci.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # Tab-separated values
-  - cds_coordinates:
-      - meta:
+  cds_coordinates:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -124,30 +123,21 @@ output:
           pattern: "*_cds_coordinates.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # Tab-separated values
-  - invalid_cds:
-      - meta:
+  invalid_cds:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
       - "*_invalid_cds.txt":
           type: file
-          description:
-            File contains the list of alleles predicted by Prodigal that were
-            excluded
+          description: File contains the list of alleles predicted by Prodigal that
+            were excluded
           pattern: "*_invalid_cds.txt"
           ontologies:
             - edam: http://edamontology.org/format_2330 # Plain text
-      - id_cds:
-          type: file
-          description:
-            File contains the list of alleles predicted by Prodigal that were
-            excluded
-          pattern: "*_invalid_cds.txt"
-          ontologies:
-            - edam: http://edamontology.org/format_2330 # Plain text
-  - loci_summary_stats:
-      - meta:
+  loci_summary_stats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -158,12 +148,12 @@ output:
           pattern: "*_loci_summary_stats.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # Tab-separated values
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: http://edamontology.org/format_3750 # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@anwarMZ"

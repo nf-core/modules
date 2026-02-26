@@ -7,12 +7,13 @@ keywords:
   - bam
 tools:
   - deeptools:
-      description: A set of user-friendly tools for normalization and visualization
-        of deep-sequencing data
+      description: A set of user-friendly tools for normalization and
+        visualization of deep-sequencing data
       documentation: https://deeptools.readthedocs.io/en/develop/index.html
       tool_dev_url: https://github.com/deeptools/deepTools
       doi: "10.1093/nar/gku365"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:deeptools
 input:
   - - meta:
@@ -24,13 +25,15 @@ input:
         type: file
         description: BAM files
         pattern: "*.bam"
+        ontologies: []
     - bais:
         type: file
         description: Corresponding BAM file indexes
         pattern: "*.bam.bai"
+        ontologies: []
 output:
-  - pdf:
-      - meta:
+  pdf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,8 +43,9 @@ output:
           description: |
             Output figure containing resulting plot
           pattern: "*.{plotFingerprint.pdf}"
-  - matrix:
-      - meta:
+          ontologies: []
+  matrix:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -51,8 +55,9 @@ output:
           description: |
             Output file summarizing the read counts per bin
           pattern: "*.{plotFingerprint.raw.txt}"
-  - metrics:
-      - meta:
+          ontologies: []
+  metrics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,11 +67,28 @@ output:
           description: |
             file containing BAM file quality metrics
           pattern: "*.{qcmetrics.txt}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_deeptools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deeptools:
+          type: string
+          description: The name of the tool
+      - plotFingerprint --version | sed "s/plotFingerprint //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deeptools:
+          type: string
+          description: The name of the tool
+      - plotFingerprint --version | sed "s/plotFingerprint //g":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@edmundmiller"
   - "@drpatelh"

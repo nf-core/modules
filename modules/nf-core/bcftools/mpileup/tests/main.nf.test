@@ -31,19 +31,20 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(file(process.out.vcf[0][1]).name).match("bam_fasta_false.vcf.gz") },
-                { assert snapshot(file(process.out.tbi[0][1]).name).match("bam_fasta_false.vcf.gz.tbi") },
-                { assert snapshot(file(process.out.stats[0][1]).name).match("bam_fasta_false.bcftools_stats.txt") },
-                { assert snapshot(process.out.versions).match("bam_fasta_false_versions") }
+                { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    file(process.out.tbi[0][1]).name,
+                    process.out.stats,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [bam, []], fasta, false stub") {
-        
+
         options "-stub"
 
         when {
@@ -64,15 +65,11 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(file(process.out.vcf[0][1]).name).match("bam_fasta_false_stub.vcf.gz") },
-                { assert snapshot(file(process.out.tbi[0][1]).name).match("bam_fasta_false_stub.vcf.gz.tbi") },
-                { assert snapshot(file(process.out.stats[0][1]).name).match("bam_fasta_false_stub.bcftools_stats.txt") },
-                { assert snapshot(process.out.versions).match("bam_fasta_false_stub_versions") }
+                { assert snapshot(process.out).match()}
             )
         }
-
     }
 
     test("sarscov2 - [bam, []], fasta, true") {
@@ -95,16 +92,17 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(file(process.out.vcf[0][1]).name).match("bam_bed_fasta_true_stub.vcf.gz") },
-                { assert snapshot(file(process.out.tbi[0][1]).name).match("bam_bed_fasta_true_stub.vcf.gz.tbi") },
-                { assert snapshot(file(process.out.stats[0][1]).name).match("bam_bed_fasta_true_stub.bcftools_stats.txt") },
-                { assert snapshot(file(process.out.mpileup[0][1]).name).match("bam_bed_fasta_true_stub.mpileup.gz") },
-                { assert snapshot(process.out.versions).match("bam_bed_fasta_true_stub_versions") }
+                { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    file(process.out.tbi[0][1]).name,
+                    process.out.stats,
+                    process.out.mpileup,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [bam, []], fasta, true stub") {
@@ -128,17 +126,13 @@ nextflow_process {
             }
         }
 
+
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(file(process.out.vcf[0][1]).name).match("bam_bed_fasta_true.vcf.gz") },
-                { assert snapshot(file(process.out.tbi[0][1]).name).match("bam_bed_fasta_true.vcf.gz.tbi") },
-                { assert snapshot(file(process.out.stats[0][1]).name).match("bam_bed_fasta_true.bcftools_stats.txt") },
-                { assert snapshot(file(process.out.mpileup[0][1]).name).match("bam_bed_fasta_true.mpileup.gz") },
-                { assert snapshot(process.out.versions).match("bam_bed_fasta_true_versions") }
+                { assert snapshot(process.out).match()}
             )
         }
-
     }
 
     test("sarscov2 - [bam, bed], fasta, false") {
@@ -161,15 +155,16 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(file(process.out.vcf[0][1]).name).match("bam_bed_fasta_false.vcf.gz") },
-                { assert snapshot(file(process.out.tbi[0][1]).name).match("bam_bed_fasta_false.vcf.gz.tbi") },
-                { assert snapshot(file(process.out.stats[0][1]).name).match("bam_bed_fasta_false.bcftools_stats.txt") },
-                { assert snapshot(process.out.versions).match("bam_bed_fasta_false_versions") }
+                { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    file(process.out.tbi[0][1]).name,
+                    process.out.stats,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [bam, bed], fasta, false stub") {
@@ -194,15 +189,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(file(process.out.vcf[0][1]).name).match("bam_bed_fasta_false_stub.vcf.gz") },
-                { assert snapshot(file(process.out.tbi[0][1]).name).match("bam_bed_fasta_false_stub.vcf.gz.tbi") },
-                { assert snapshot(file(process.out.stats[0][1]).name).match("bam_bed_fasta_false_stub.bcftools_stats.txt") },
-                { assert snapshot(process.out.versions).match("bam_bed_fasta_false_stub_versions") }
+                { assert snapshot(process.out).match()}
             )
         }
-
     }
-
 }

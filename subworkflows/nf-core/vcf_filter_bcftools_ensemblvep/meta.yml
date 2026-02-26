@@ -1,0 +1,56 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "vcf_filter_bcftools_ensemblvep"
+description: Filter VCF file with bcftools and filter_vep
+keywords:
+  - filter
+  - vcf
+  - bcftools
+  - filter_vep
+components:
+  - bcftools/view
+  - ensemblvep/filtervep
+  - tabix/bgziptabix
+input:
+  - ch_vcf:
+      type: file
+      description: |
+        The input channel containing the VCF files
+        Structure: [ val(meta), path(vcf) ]
+      pattern: "*.{vcf/vcf.gz}"
+  - ch_filter_vep_file:
+      type: file
+      description: |
+        File to pass to filter_vep, containing e.g. HGNC IDs to filter on
+        Structure: [ val(meta), path(txt) ]
+  - filter_with_bcftools:
+      type: boolean
+      description: |
+        Whether to filter the VCF file with bcftools before passing it to filter_vep
+  - filter_with_filter_vep:
+      type: boolean
+      description: |
+        Whether to filter the VCF file with filter_vep
+output:
+  - vcf:
+      type: file
+      description: |
+        Channel containing VCF files
+        Structure: [ val(meta), path(bam) ]
+      pattern: "*.vcf.gz"
+  - bai:
+      type: file
+      description: |
+        Channel containing indexed VCF (TBI) files
+        Structure: [ val(meta), path(bai) ]
+      pattern: "*.tbi"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@fellen31"
+maintainers:
+  - "@fellen31"
+  - "@ramprasadn"

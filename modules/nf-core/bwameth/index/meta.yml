@@ -27,9 +27,14 @@ input:
     - fasta:
         type: file
         description: Input genome fasta file
+        ontologies: []
+  - use_mem2:
+      type: boolean
+      description: |
+        If true, use bwameth index-mem2 for indexing. If false, use bwameth index (default: false)
 output:
-  - index:
-      - meta:
+  index:
+    - - meta:
           type: directory
           description: Directory containing bwameth genome index
           pattern: "index"
@@ -37,11 +42,13 @@ output:
           type: directory
           description: Directory containing bwameth genome index
           pattern: "index"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@phue"
 maintainers:

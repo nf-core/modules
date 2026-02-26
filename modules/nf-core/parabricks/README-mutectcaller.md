@@ -1,3 +1,0 @@
-# Parabricks mutectcaller
-
-TBD.

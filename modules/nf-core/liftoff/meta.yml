@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "liftoff"
 description: |
   Uses Liftoff to accurately map annotations in GFF or GTF between assemblies of the same,
@@ -18,7 +17,8 @@ tools:
       documentation: "https://github.com/agshumate/Liftoff"
       tool_dev_url: "https://github.com/agshumate/Liftoff"
       doi: "10.1093/bioinformatics/bty191"
-      licence: ["GPL v3 License"]
+      licence:
+        - "GPL v3 License"
       identifier: biotools:liftoff
 input:
   - - meta:
@@ -30,22 +30,26 @@ input:
         type: file
         description: Target assembly in fasta format (can be gzipped)
         pattern: "*.{fa,fa.gz,fasta,fasta.gz,fas,fas.gz,fsa,fsa.gz}"
-  - - ref_fa:
-        type: file
-        description: Reference assembly in fasta format (can be gzipped)
-        pattern: "*.{fa,fa.gz,fasta,fasta.gz,fas,fas.gz,fsa,fsa.gz}"
-  - - ref_annotation:
-        type: file
-        description: Reference assembly annotations in gtf or gff3 format
-        pattern: "*.{gtf,gff3}"
-  - - ref_db:
-        type: file
-        description: |
-          Name of feature database; if not specified, the -g argument must
-          be provided and a database will be built automatically
+        ontologies: []
+  - ref_fa:
+      type: file
+      description: Reference assembly in fasta format (can be gzipped)
+      pattern: "*.{fa,fa.gz,fasta,fasta.gz,fas,fas.gz,fsa,fsa.gz}"
+      ontologies: []
+  - ref_annotation:
+      type: file
+      description: Reference assembly annotations in gtf or gff3 format
+      pattern: "*.{gtf,gff3}"
+      ontologies: []
+  - ref_db:
+      type: file
+      description: |
+        Name of feature database; if not specified, the -g argument must
+        be provided and a database will be built automatically
+      ontologies: []
 output:
-  - gff3:
-      - meta:
+  gff3:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,18 +58,21 @@ output:
           type: file
           description: Lifted annotations for the target assembly in gff3 format
           pattern: "*.gff3"
-  - polished_gff3:
-      - meta:
+          ontologies: []
+  polished_gff3:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
       - "*.polished.gff3":
           type: file
-          description: Polished lifted annotations for the target assembly in gff3 format
+          description: Polished lifted annotations for the target assembly in gff3
+            format
           pattern: "*.polished.gff3"
-  - unmapped_txt:
-      - meta:
+          ontologies: []
+  unmapped_txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,11 +81,28 @@ output:
           type: file
           description: List of unmapped reference annotations
           pattern: "*.unmapped.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_liftoff:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - liftoff:
+          type: string
+          description: The name of the tool
+      - liftoff --version | sed "s/v//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - liftoff:
+          type: string
+          description: The name of the tool
+      - liftoff --version | sed "s/v//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@GallVp"
 maintainers:

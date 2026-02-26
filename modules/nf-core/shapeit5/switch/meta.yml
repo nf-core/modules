@@ -25,10 +25,12 @@ input:
         type: file
         description: Imputed data.
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+        ontologies: []
     - estimate_index:
         type: file
         description: Index file of the freq VCF/BCF file.
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+        ontologies: []
     - region:
         type: string
         description: Target region used for imputation, including left and right buffers
@@ -39,36 +41,31 @@ input:
         description: |
           Pedigree information in the following format: offspring father mother.
         pattern: "*.{txt, tsv}"
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+        ontologies: []
     - truth:
         type: file
         description: Validation dataset called at the same positions as the imputed
           file.
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+        ontologies: []
     - truth_index:
         type: file
         description: Index file of the truth VCF/BCF file.
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+        ontologies: []
     - freq:
         type: file
         description: File containing allele frequencies at each site.
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+        ontologies: []
     - freq_index:
         type: file
         description: Index file of the freq VCF/BCF file.
         pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
+        ontologies: []
 output:
-  - errors:
-      - meta:
+  errors:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -77,11 +74,15 @@ output:
           type: file
           description: Estimates errors from the phased file.
           pattern: "*.txt.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@LouisLeNezet"
 maintainers:

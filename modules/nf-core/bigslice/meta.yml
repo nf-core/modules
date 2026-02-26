@@ -1,0 +1,90 @@
+name: "bigslice"
+description: |
+  A scalable tool for large-scale analysis of Biosynthetic Gene Clusters (BGCs).
+  It takes genome regions in GenBank format along with an HMM database and produces a SQLite database and FASTA outputs of predicted features.
+keywords:
+  - biosynthetic gene clusters
+  - genomics
+  - analysis
+tools:
+  - "bigslice":
+      description: A highly scalable, user-interactive tool for the large scale analysis
+        of Biosynthetic Gene Clusters data
+      homepage: "https://github.com/medema-group/bigslice"
+      documentation: "https://github.com/medema-group/bigslice"
+      tool_dev_url: "https://github.com/medema-group/bigslice"
+      doi: "10.1093/gigascience/giaa154"
+      licence: ["AGPL v3-or-later"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bgc:
+        type: directory
+        description: |
+          Path to a folder containing genomic regions in GenBank format, structured for BiG-SLiCE.
+          Each genome should have its own subfolder with region `.gbk` files.
+          The folder should also contain a datasets.tsv, and a taxonomy folder, with TSV taxonomy files per dataset.
+          See the tool's wiki for more information: https://github.com/medema-group/bigslice/wiki/Input-folder
+        pattern: "*"
+  - hmmdb:
+      type: directory
+      description: |
+        Path to the BiG-SLiCE HMM database folder containing biosynthetic and sub Pfams for annotation, in the required BiG-SLiCE format.
+        An example directory in compressed archive format can be found here: https://github.com/medema-group/bigslice/releases/download/v2.0.0rc/bigslice-models.2022-11-30.tar.gz
+
+output:
+  db:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample/dataset information
+      - ${prefix}/result/data.db:
+          type: file
+          description: |
+            The results SQLite database. Contains various tables relevant to result
+            BGCs, CDSs, GCFs, HMMs and HSPs.
+          pattern: "data.db"
+          ontologies:
+            - edam: "http://edamontology.org/format_3621" # SQLite format
+  fa:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample/dataset information
+      - ${prefix}/result/tmp/**/*.fa:
+          type: file
+          description: |
+            Predicted features as FASTA files. One file per hit HMM.
+          pattern: "*.fa"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929" # FASTA
+  versions_bigslice:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bigslice:
+          type: string
+          description: The name of the tool
+      - echo 2.0.2:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bigslice:
+          type: string
+          description: The name of the tool
+      - echo 2.0.2:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

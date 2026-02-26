@@ -1,0 +1,95 @@
+nextflow_process {
+
+    name "Test Process MIDAS_RUN"
+
+    script "../main.nf"
+    process "MIDAS_RUN"
+    config './nextflow.config'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "midas"
+    tag "midas/run"
+
+    /* // MIDAS BUILD not working due to phyeco.hmm not present
+    test("sarscov2 - fastq - db - genes") {
+        setup {
+            run ("UNTAR") {
+                process {
+                    """
+                    input[0] = [
+                        [id:'db'],
+                        [file('https://github.com/snayfach/MIDAS/raw/refs/heads/master/test/genomes.tar.gz', checkIfExists:true)]
+                    ]
+                    """
+                }
+            }
+            run ("MIDAS_BUILD") {
+                process {
+                    """
+                    input[0] = UNTAR.out.untar
+                        .combine(
+                            Channel.of(
+                                file('https://github.com/snayfach/MIDAS/raw/refs/heads/master/test/genomes.mapfile', checkIfExists:true)
+                            )
+                        )
+                    """
+                }
+            }
+        }
+        when {
+            params {
+                module_untar_prefix = 'genome'
+                module_args = '--species_topn 5'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'tiny_db', single_end:false],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists:true)
+                    ]
+                ]
+                input[1] = MIDAS_BUILD.out.database
+                input[2] = "genes"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    */
+
+    test("sarscov2 - fastq - db - species -- stub") {
+        options '-stub'
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:true],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true)]
+                ]
+                input[1] = [[id: 'db'], []]
+                input[2] = "species"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

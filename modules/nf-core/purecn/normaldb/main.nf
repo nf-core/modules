@@ -4,8 +4,8 @@ process PURECN_NORMALDB {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/17/171d9cdb3db28ca8a63d87dd514a97e92af353f35b8f2173173a3dc3bb801516/data':
-        'community.wave.seqera.io/library/bioconductor-dnacopy_bioconductor-org.hs.eg.db_bioconductor-purecn_bioconductor-txdb.hsapiens.ucsc.hg19.knowngene_pruned:cc846801cfba58d6' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b7/b7fc3a4982b55672638cd95e6eb7a884206cc2c296de5a182462c316139f08ab/data':
+        'community.wave.seqera.io/library/bioconductor-dnacopy_bioconductor-org.hs.eg.db_bioconductor-purecn_bioconductor-txdb.hsapiens.ucsc.hg19.knowngene_pruned:ca4b5595ad5ac8ff' }"
 
 
     input:
@@ -26,7 +26,6 @@ process PURECN_NORMALDB {
 
     script:
     def args            = task.ext.args     ?: ''
-    def prefix          = task.ext.prefix   ?: "${meta.id}"
     def normal_panel    = normal_vcf        ? "--normal-panel ${normal_vcf}" : ""
     """
     echo $coverage_files | tr ' ' '\\n' > coverages.list

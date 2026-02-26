@@ -4,30 +4,30 @@ process AGAT_SPFLAGSHORTINTRONS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/agat:1.4.2--pl5321hdfd78af_0':
-        'biocontainers/agat:1.4.2--pl5321hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/03/033434db0bd6ba28660401e1059286f36641fd8ce55faa11973fe5eaf312adcd/data' :
+        'community.wave.seqera.io/library/agat:1.5.1--ae3cd948ce5e9795' }"
 
     input:
     tuple val(meta), path(gxf)
     path config
 
     output:
-    tuple val(meta), path("*.gff")  , emit: gff
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path("*.gff"), emit: gff
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args        = task.ext.args ?: ''
-    def prefix      = task.ext.prefix ?: "${meta.id}"
-    def config_arg  = config ? "-c $config" : ''
-    if( "$gxf" == "${prefix}.gff" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    def args       = task.ext.args   ?: ''
+    def prefix     = task.ext.prefix ?: "${meta.id}"
+    def config_arg = config ? "-c ${config}" : ''
+    if( "${gxf}" == "${prefix}.gff" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     agat_sp_flag_short_introns.pl \\
-        $args \\
-        -g $gxf \\
-        $config_arg \\
+        ${args} \\
+        -g ${gxf} \\
+        ${config_arg} \\
         -o ${prefix}.gff
 
     cat <<-END_VERSIONS > versions.yml
@@ -37,8 +37,8 @@ process AGAT_SPFLAGSHORTINTRONS {
     """
 
     stub:
-    def prefix  = task.ext.prefix ?: "${meta.id}"
-    if( "$gxf" == "${prefix}.gff" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if( "${gxf}" == "${prefix}.gff" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${prefix}.gff
 

@@ -13,14 +13,14 @@ process ARGNORM {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml", emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args   ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
     def db_args = db ? "--db ${db}" : ""
     if (!tool) {
         error('Tool not provided.')
@@ -44,7 +44,6 @@ process ARGNORM {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (!tool) {
         error('Tool not provided.')

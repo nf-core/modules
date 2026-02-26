@@ -27,14 +27,17 @@ input:
         type: file
         description: PLINK binary biallelic genotype table file
         pattern: "*.{bed}"
+        ontologies: []
     - bim:
         type: file
         description: PLINK extended MAP file
         pattern: "*.{bim}"
+        ontologies: []
     - fam:
         type: file
         description: PLINK sample information file
         pattern: "*.{fam}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -45,6 +48,7 @@ input:
         type: file
         description: Variant calling file (vcf)
         pattern: "*.{vcf}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -55,6 +59,7 @@ input:
         type: file
         description: PLINK variant information + sample ID + genotype call binary file
         pattern: "*.{bcf}"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -67,9 +72,10 @@ input:
           can be read from the third column with the --pheno option or from a specific
           column with the --pheno-name option.
         pattern: "*.{phe}"
+        ontologies: []
 output:
-  - epi:
-      - meta:
+  epi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -78,8 +84,9 @@ output:
           type: file
           description: PLINK epistasis file
           pattern: "*.{epi.cc}"
-  - episummary:
-      - meta:
+          ontologies: []
+  episummary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -88,8 +95,9 @@ output:
           type: file
           description: PLINK epistasis summary file
           pattern: "*.{epi.cc.summary}"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -98,8 +106,9 @@ output:
           type: file
           description: PLINK epistasis log file
           pattern: "*.{log}"
-  - nosex:
-      - meta:
+          ontologies: []
+  nosex:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -108,11 +117,14 @@ output:
           type: file
           description: Ambiguous sex ID file
           pattern: "*.{nosex}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@davidebag"
 maintainers:

@@ -20,32 +20,24 @@ process AMULETY_ANTIBERTA2 {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    TRANSFORMERS_CACHE="./cache" amulety \\
-        antiberta2 \\
-        $args \\
-        --cache-dir ./cache \\
-        $tsv \\
-        $chain \\
-        ${prefix}.tsv
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/amulety/embed instead
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        amulety: \$( amulety --help 2>&1 | grep -o "version [0-9\\.]\\+" | grep -o "[0-9\\.]\\+" )
-    END_VERSIONS
-    """
+Reason:
+This module is no longer fit for purpose because the syntax for amulety has been updated in version 2.x.
+The new 'embed' command now covers the embedding functionality for all embeddings.
+
+"""
+    assert false: deprecation_message
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    touch ${prefix}.tsv
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/amulety/embed instead
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        amulety: \$( amulety --help 2>&1 | grep -o "version [0-9\\.]\\+" | grep -o "[0-9\\.]\\+" )
-    END_VERSIONS
-    """
+Reason:
+This module is no longer fit for purpose because the syntax for amulety has been updated in version 2.x.
+The new 'embed' command now covers the embedding functionality for all embeddings.
+
+"""
+    assert false: deprecation_message
 }

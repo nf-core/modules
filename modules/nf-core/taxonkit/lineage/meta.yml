@@ -28,13 +28,16 @@ input:
     - taxidfile:
         type: file
         description: File with taxon ids to look up, each on their own line (provide
-          either this or name, not both; the file can contain other information, see the tool's docs)
-  - - taxdb:
-        type: file
-        description: Taxonomy database unpacked from ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
+          either this or name, not both; the file can contain other information, see
+          the tool's docs)
+        ontologies: []
+  - taxdb:
+      type: file
+      description: Taxonomy database unpacked from ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
+      ontologies: []
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,11 +46,15 @@ output:
           type: file
           description: TSV file with added taxon lineages
           pattern: "*.tsv"
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@erikrikarddaniel"
 maintainers:

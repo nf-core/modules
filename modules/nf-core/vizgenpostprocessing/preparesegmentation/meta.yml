@@ -1,0 +1,80 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "vizgenpostprocessing_preparesegmentation"
+description: |
+  The module prepares the specification JSON file for Vizgen's post-processing tool
+  cell segmentation workflow.
+keywords:
+  - vpt
+  - vizgen
+  - segmentation
+  - microscopy
+  - spatial transcriptomics
+tools:
+  - "vizgenpostprocessing":
+      description: "Vizgen's post-processing tool"
+      homepage: "https://github.com/Vizgen/vizgen-postprocessing"
+      documentation: "https://vizgen.github.io/vizgen-postprocessing"
+      tool_dev_url: "https://github.com/Vizgen/vizgen-postprocessing"
+      licence: ["Apache-2.0"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1', single_end:false ]
+    - input_images:
+        type: directory
+        description: |
+          Path to the input images directory to be used for segmentation.
+        ontologies:
+          - edam: "http://edamontology.org/data_1049"
+    - um_to_mosaic_file:
+        type: file
+        description: |
+          Path to the micron-to-mosaic pixel transform matrix file.
+        pattern: "*.csv"
+        ontologies:
+          - edam: "http://edamontology.org/format_3752"
+  - algorithm_json:
+      type: file
+      description: JSON file containing the algorithm specification
+      pattern: "*.json"
+      ontologies:
+        - edam: "http://edamontology.org/format_3464"
+  - images_regex:
+      type: string
+      description: |
+        Can either be blank to match files by MERSCOPE convention, or a
+        python formatting string specifying the file name (e.g.,
+        image_{stain}_z{z}.tif), or a regular expression matching the tiff
+        files to be used (e.g., mosaic_(?P<stain>[\w|-]+)_z(?P<z>[0-9]+).tif)
+      ontologies:
+        - edam: "http://edamontology.org/data_1352"
+
+output:
+  segmentation_files:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}/*.json:
+          type: file
+          description: Segmentation specification JSON file
+          pattern: "*.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@mcmero"
+maintainers:
+  - "@mcmero"

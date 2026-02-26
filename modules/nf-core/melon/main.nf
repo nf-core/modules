@@ -33,7 +33,7 @@ process MELON {
         --threads $task.cpus \\
         $k2_db_arg \\
         $args \\
-        2> >(tee ${prefix}.log >&2)
+        2>| >(tee ${prefix}.log >&2)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -42,7 +42,6 @@ process MELON {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}

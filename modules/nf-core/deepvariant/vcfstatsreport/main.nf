@@ -5,14 +5,14 @@ process DEEPVARIANT_VCFSTATSREPORT {
     // FIXME Conda is not supported at the moment
     // BUG https://github.com/nf-core/modules/issues/1754
     // BUG https://github.com/bioconda/bioconda-recipes/issues/30310
-    container "docker.io/google/deepvariant:1.8.0"
+    container "docker.io/google/deepvariant:1.9.0"
 
     input:
     tuple val(meta), path(vcf)
 
     output:
     tuple val(meta), path("${prefix}.visual_report.html"), emit: report
-    path "versions.yml"                                  , emit: versions
+    tuple val("${task.process}"), val('deepvariant'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //'"), topic: versions, emit: versions_deepvariant
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,12 +27,8 @@ process DEEPVARIANT_VCFSTATSREPORT {
     """
     /opt/deepvariant/bin/vcf_stats_report \\
         --input_vcf=${vcf} \\
-        --outfile_base ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepvariant: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
+        --outfile_base ${prefix} \\
+        ${args}
     """
 
     stub:
@@ -44,9 +40,5 @@ process DEEPVARIANT_VCFSTATSREPORT {
     """
     touch ${prefix}.visual_report.html
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepvariant: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
     """
 }

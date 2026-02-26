@@ -37,6 +37,7 @@ input:
         description: A FASTA file containing insertion sequences (referred to in the
           VCF file(s))
         pattern: "*.{fa,fasta,fna}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -47,6 +48,7 @@ input:
         description: The reference FASTA file (cannot be used in combination with `msa`,
           but is required when using `vcfs`)
         pattern: "*.{fa,fasta,fna}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -56,9 +58,10 @@ input:
         type: file
         description: The index of the reference FASTA file
         pattern: "*.fai"
+        ontologies: []
 output:
-  - graph:
-      - meta:
+  graph:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,11 +70,14 @@ output:
           type: file
           description: The constructed graph
           pattern: "*.vg"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

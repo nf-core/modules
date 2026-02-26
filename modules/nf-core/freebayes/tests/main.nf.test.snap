@@ -2,121 +2,144 @@
     "sarscov2 - [ cram, crai, cram, crai, bed ] - fasta - fai": {
         "content": [
             "test.vcf.gz",
-            [
-                "##source=freeBayes v1.3.6",
-                "##reference=genome.fasta",
-                "##contig=<ID=chr22,length=40001>",
-                "##phasing=none",
-                "##commandline=\"freebayes -f genome.fasta --target genome.bed test.paired_end.sorted.cram test2.paired_end.sorted.cram\"",
-                "##INFO=<ID=NS,Number=1,Type=Integer,Description=\"Number of samples with data\">",
-                "##INFO=<ID=DP,Number=1,Type=Integer,Description=\"Total read depth at the locus\">",
-                "##INFO=<ID=DPB,Number=1,Type=Float,Description=\"Total read depth per bp at the locus; bases in reads overlapping / bases in haplotype\">",
-                "##INFO=<ID=AC,Number=A,Type=Integer,Description=\"Total number of alternate alleles in called genotypes\">"
-            ],
-            [
-                "versions.yml:md5,4d24a735eabf2f037ab935511a2bc99c"
-            ]
+            "5d2758e9ebd427d59c8d1eebdd1c0f44",
+            {
+                "versions_freebayes": [
+                    [
+                        "FREEBAYES",
+                        "freebayes",
+                        "1.3.10"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-08-14T16:16:26.462458"
+        "timestamp": "2026-02-11T14:34:02.96823"
     },
     "sarscov2 - [ bam, bai ] - fasta - fai": {
         "content": [
             "test.vcf.gz",
-            [
-                "##source=freeBayes v1.3.6",
-                "##reference=genome.fasta",
-                "##contig=<ID=MT192765.1,length=29829>",
-                "##phasing=none",
-                "##commandline=\"freebayes -f genome.fasta test.paired_end.sorted.bam\"",
-                "##INFO=<ID=NS,Number=1,Type=Integer,Description=\"Number of samples with data\">",
-                "##INFO=<ID=DP,Number=1,Type=Integer,Description=\"Total read depth at the locus\">",
-                "##INFO=<ID=DPB,Number=1,Type=Float,Description=\"Total read depth per bp at the locus; bases in reads overlapping / bases in haplotype\">",
-                "##INFO=<ID=AC,Number=A,Type=Integer,Description=\"Total number of alternate alleles in called genotypes\">"
-            ],
-            [
-                "versions.yml:md5,4d24a735eabf2f037ab935511a2bc99c"
-            ]
+            "f68e3a94e542c7cc84cdedcfc3f6190c",
+            {
+                "versions_freebayes": [
+                    [
+                        "FREEBAYES",
+                        "freebayes",
+                        "1.3.10"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-08-14T16:16:02.547974"
+        "timestamp": "2026-02-11T14:33:40.39589"
+    },
+    "sarscov2 - [ bam, bai ] - fasta - fai - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "1": [
+                    [
+                        "FREEBAYES",
+                        "freebayes",
+                        "1.3.10"
+                    ]
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_freebayes": [
+                    [
+                        "FREEBAYES",
+                        "freebayes",
+                        "1.3.10"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-11T14:34:07.702759"
     },
     "sarscov2 - [ cram, crai ] - fasta - fai": {
         "content": [
             "test.vcf.gz",
-            [
-                "##source=freeBayes v1.3.6",
-                "##reference=genome.fasta",
-                "##contig=<ID=chr22,length=40001>",
-                "##phasing=none",
-                "##commandline=\"freebayes -f genome.fasta test.paired_end.sorted.cram\"",
-                "##INFO=<ID=NS,Number=1,Type=Integer,Description=\"Number of samples with data\">",
-                "##INFO=<ID=DP,Number=1,Type=Integer,Description=\"Total read depth at the locus\">",
-                "##INFO=<ID=DPB,Number=1,Type=Float,Description=\"Total read depth per bp at the locus; bases in reads overlapping / bases in haplotype\">",
-                "##INFO=<ID=AC,Number=A,Type=Integer,Description=\"Total number of alternate alleles in called genotypes\">"
-            ],
-            [
-                "versions.yml:md5,4d24a735eabf2f037ab935511a2bc99c"
-            ]
+            "f578a2043bd4303e16487b64ea6ff524",
+            {
+                "versions_freebayes": [
+                    [
+                        "FREEBAYES",
+                        "freebayes",
+                        "1.3.10"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-08-14T16:16:13.594195"
+        "timestamp": "2026-02-11T14:33:50.709615"
     },
     "sarscov2 - [ bam, bai, bed ] - fasta - fai": {
         "content": [
             "test.vcf.gz",
-            [
-                "##source=freeBayes v1.3.6",
-                "##reference=genome.fasta",
-                "##contig=<ID=MT192765.1,length=29829>",
-                "##phasing=none",
-                "##commandline=\"freebayes -f genome.fasta --target test.bed test.paired_end.sorted.bam\"",
-                "##INFO=<ID=NS,Number=1,Type=Integer,Description=\"Number of samples with data\">",
-                "##INFO=<ID=DP,Number=1,Type=Integer,Description=\"Total read depth at the locus\">",
-                "##INFO=<ID=DPB,Number=1,Type=Float,Description=\"Total read depth per bp at the locus; bases in reads overlapping / bases in haplotype\">",
-                "##INFO=<ID=AC,Number=A,Type=Integer,Description=\"Total number of alternate alleles in called genotypes\">"
-            ],
-            [
-                "versions.yml:md5,4d24a735eabf2f037ab935511a2bc99c"
-            ]
+            "VcfFile [chromosomes=[], sampleCount=1, variantCount=0, phased=true, phasedAutodetect=true]",
+            {
+                "versions_freebayes": [
+                    [
+                        "FREEBAYES",
+                        "freebayes",
+                        "1.3.10"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-08-14T16:16:07.514526"
+        "timestamp": "2026-02-11T14:33:44.909226"
     },
     "sarscov2 - [ bam, bai, bam, bai ] - fasta - fai": {
         "content": [
             "test.vcf.gz",
-            [
-                "##source=freeBayes v1.3.6",
-                "##reference=genome.fasta",
-                "##contig=<ID=chr22,length=40001>",
-                "##phasing=none",
-                "##commandline=\"freebayes -f genome.fasta test.paired_end.sorted.bam test2.paired_end.sorted.bam\"",
-                "##INFO=<ID=NS,Number=1,Type=Integer,Description=\"Number of samples with data\">",
-                "##INFO=<ID=DP,Number=1,Type=Integer,Description=\"Total read depth at the locus\">",
-                "##INFO=<ID=DPB,Number=1,Type=Float,Description=\"Total read depth per bp at the locus; bases in reads overlapping / bases in haplotype\">",
-                "##INFO=<ID=AC,Number=A,Type=Integer,Description=\"Total number of alternate alleles in called genotypes\">"
-            ],
-            [
-                "versions.yml:md5,4d24a735eabf2f037ab935511a2bc99c"
-            ]
+            "5d2758e9ebd427d59c8d1eebdd1c0f44",
+            {
+                "versions_freebayes": [
+                    [
+                        "FREEBAYES",
+                        "freebayes",
+                        "1.3.10"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-08-14T16:16:20.085987"
+        "timestamp": "2026-02-11T14:33:56.481422"
     }
 }

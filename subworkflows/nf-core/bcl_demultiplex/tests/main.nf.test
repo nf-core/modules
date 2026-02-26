@@ -32,15 +32,25 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.reports,
-                    workflow.out.versions,
-                    workflow.out.fastq,
-                    workflow.out.stats,
-                    workflow.out.interop.get(0).get(1).findAll { file(it).name != "IndexMetricsOut.bin" },
+                    sanitizeOutput(workflow.out, unstableKeys: ["empty_fastq", "logs"]).collectEntries { key, val ->
+                        if (key == "interop") {
+                            return [ key, val.collect { meta, files ->
+                                [
+                                    meta,
+                                    files.collect { interop_file ->
+                                        if (interop_file.endsWith("IndexMetricsOut.bin")) {
+                                            file(interop_file).name
+                                        } else {
+                                            interop_file
+                                        }
+                                    }
+                                ]
+                            } ]
+                        }
+                        return [ key, val ]
+                    },
                     ).match()
                 },
-                { assert file(workflow.out.interop.get(0).get(1).find { file(it).name == "IndexMetricsOut.bin" }).exists() },
-                { assert file(workflow.out.empty_fastq.get(0).get(1).find { file(it).name == "SampleZ_S5_L001_R1_001.fastq.gz" }).exists() }
             )
         }
     }
@@ -65,14 +75,26 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.reports,
-                    workflow.out.versions,
-                    workflow.out.fastq,
-                    workflow.out.stats,
-                    workflow.out.interop.get(0).get(1).findAll { file(it).name != "IndexMetricsOut.bin" },
+                    sanitizeOutput(workflow.out).collectEntries { key, val ->
+                        if (key == "fastq")
+                        if (key == "interop") {
+                            return [ key, val.collect { meta, files ->
+                                [
+                                    meta,
+                                    files.collect { interop_file ->
+                                        if (interop_file.endsWith("IndexMetricsOut.bin")) {
+                                            file(interop_file).name
+                                        } else {
+                                            interop_file
+                                        }
+                                    }
+                                ]
+                            } ]
+                        }
+                        return [ key, val ]
+                    },
                     ).match()
                 },
-                { assert file(workflow.out.interop.get(0).get(1).find { file(it).name == "IndexMetricsOut.bin" }).exists() }
             )
         }
     }

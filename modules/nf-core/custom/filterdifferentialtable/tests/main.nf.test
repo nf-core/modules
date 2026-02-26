@@ -27,10 +27,37 @@ nextflow_process {
                 { assert snapshot(process.out).match() },
                 { assert path(process.out.filtered[0][1]).text.contains("log2FoldChange") },
                 { assert path(process.out.filtered[0][1]).text.contains("padj") },
-                { assert path(process.out.versions[0]).text.contains("pandas") }
+                { assert path(process.out.versions[0]).text.contains("pandas") },
+                { assert file(process.out.filtered_up[0][1]).readLines().size() + file(process.out.filtered_down[0][1]).readLines().size() == file(process.out.filtered[0][1]).readLines().size() + 1 }
             )
         }
 
     }
 
+    // The previous test generates a one line down file, and this test generates a bigger file, making sure it works
+    test("#lines(Up) + #lines(Down) = #lines(Full) + 1") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.deseq2.results.tsv", checkIfExists: true) ]
+                input[1] = Channel.of(['log2FoldChange', 2, '>='])
+                input[2] = Channel.of(['pvalue', 0.05, '<='])
+                """
+            }
+        }
+
+        then {
+            println("Meta part:" +process.out.filtered[0][0].id)
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert path(process.out.filtered[0][1]).text.contains("log2FoldChange") },
+                { assert path(process.out.filtered[0][1]).text.contains("pvalue") },
+                { assert path(process.out.versions[0]).text.contains("pandas") },
+                { assert file(process.out.filtered_up[0][1]).readLines().size() + file(process.out.filtered_down[0][1]).readLines().size() == file(process.out.filtered[0][1]).readLines().size() + 1 }
+            )
+        }
+
+    }
 }

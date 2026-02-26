@@ -3,7 +3,9 @@ process NACHO_QC {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container 'community.wave.seqera.io/library/r-dplyr_r-fs_r-ggplot2_r-nacho_pruned:033bc017f5f36b6d'
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2d6b5e106e91070f16613d1950461b1587652d8003abae68637f51593b7457c3/data' :
+        'community.wave.seqera.io/library/r-dplyr_r-fs_r-ggplot2_r-nacho_pruned:92aef6fc5eff932b' }"
 
     input:
     tuple val(meta) , path(rcc_files, stageAs: "input/*")
@@ -24,7 +26,8 @@ process NACHO_QC {
     """
     nacho_qc.R \\
         --input_rcc_path input \\
-        --input_samplesheet ${sample_sheet}
+        --input_samplesheet ${sample_sheet} \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

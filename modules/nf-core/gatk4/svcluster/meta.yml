@@ -27,31 +27,39 @@ input:
         type: file
         description: One or more VCF files created with a structural variant caller
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
     - indices:
         type: file
         description: Index files for the VCFs
         pattern: "*.vcf.gz.tbi"
-  - - ploidy_table:
-        type: file
-        description: The sample ploidy table
-        pattern: "*.tsv"
-  - - fasta:
-        type: file
-        description: Reference FASTA file needed when the input is a CRAM file
-        pattern: "*.{fasta,fa}"
-  - - fasta_fai:
-        type: file
-        description: Index of the reference FASTA file needed when the input is a CRAM
-          file
-        pattern: "*.fai"
-  - - dict:
-        type: file
-        description: Sequence dictionary of the reference FASTA file needed when the
-          input is a CRAM file
-        pattern: "*.dict"
+        ontologies: []
+  - ploidy_table:
+      type: file
+      description: The sample ploidy table
+      pattern: "*.tsv"
+      ontologies:
+        - edam: http://edamontology.org/format_3475 # TSV
+  - fasta:
+      type: file
+      description: Reference FASTA file needed when the input is a CRAM file
+      pattern: "*.{fasta,fa}"
+      ontologies: []
+  - fasta_fai:
+      type: file
+      description: Index of the reference FASTA file needed when the input is a CRAM
+        file
+      pattern: "*.fai"
+      ontologies: []
+  - dict:
+      type: file
+      description: Sequence dictionary of the reference FASTA file needed when the input
+        is a CRAM file
+      pattern: "*.dict"
+      ontologies: []
 output:
-  - clustered_vcf:
-      - meta:
+  clustered_vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,8 +68,10 @@ output:
           type: file
           description: The VCF containing the clustered VCFs
           pattern: "*.vcf.gz"
-  - clustered_vcf_index:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  clustered_vcf_index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -70,11 +80,28 @@ output:
           type: file
           description: The index of the VCF containing the clustered VCFs
           pattern: "*.vcf.gz.tbi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_gatk4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

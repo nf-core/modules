@@ -30,18 +30,19 @@ input:
         type: file
         description: FASTA file containing gene-like sequences
         pattern: "*.{fasta,fa,fna}"
+        ontologies: []
     - model:
         type: string
         description: Which model to use, depending on input data. Either 'LS' or 'SS'
           for long or short sequences respectively
         pattern: "LS|LS"
-  - - db:
-        type: directory
-        description: Path to a directory containing the deepARG pre-built models
-        pattern: "*/"
+  - db:
+      type: directory
+      description: Path to a directory containing the deepARG pre-built models
+      pattern: "*/"
 output:
-  - daa:
-      - meta:
+  daa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,8 +51,9 @@ output:
           type: file
           description: Sequences of ARG-like sequences from DIAMOND alignment
           pattern: "*.align.daa"
-  - daa_tsv:
-      - meta:
+          ontologies: []
+  daa_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,8 +62,10 @@ output:
           type: file
           description: Alignments scores against ARG-like sequences from DIAMOND alignment
           pattern: "*.align.daa.tsv"
-  - arg:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  arg:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -71,8 +75,9 @@ output:
           description: Table containing sequences with an ARG-like probability of more
             than specified thresholds
           pattern: "*.mapping.ARG"
-  - potential_arg:
-      - meta:
+          ontologies: []
+  potential_arg:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -82,11 +87,14 @@ output:
           description: Table containing sequences with an ARG-like probability of less
             than specified thresholds, and requires manual inspection
           pattern: "*.mapping.potential.ARG"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

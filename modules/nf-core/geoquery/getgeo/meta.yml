@@ -23,38 +23,42 @@ input:
         description: |
           GSE identifier to pass to getGEO()
 output:
-  - rds:
-      - meta:
-          type: file
-          description: R object containing GEO data
-          pattern: "*.rds"
+  rds:
+    - - meta:
+          type: map
+          description: A Groovy map containing sample information
       - "*.rds":
           type: file
           description: R object containing GEO data
           pattern: "*.rds"
-  - expression:
-      - meta:
-          type: file
-          description: TSV-format expression matrix
-          pattern: "*matrix.tsv"
+          ontologies: []
+  expression:
+    - - meta:
+          type: map
+          description: A Groovy map containing sample information
       - "*matrix.tsv":
           type: file
           description: TSV-format expression matrix
           pattern: "*matrix.tsv"
-  - annotation:
-      - meta:
-          type: file
-          description: TSV-format annotation file
-          pattern: "*annotation.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  annotation:
+    - - meta:
+          type: map
+          description: A Groovy map containing sample information
       - "*annotation.tsv":
           type: file
           description: TSV-format annotation file
           pattern: "*annotation.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@azedinez"
   - "@pinin4fjords"

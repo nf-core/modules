@@ -1,26 +1,26 @@
 process PORTCULLIS_FULL {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
-    conda "bioconda::portcullis=1.2.4"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/portcullis:1.2.4--py38haf070c8_0':
-        'biocontainers/portcullis:1.2.4--py38haf070c8_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/portcullis:1.2.4--py38haf070c8_0'
+        : 'biocontainers/portcullis:1.2.4--py38haf070c8_0'}"
 
     input:
-    tuple val(meta) , path(bam)
+    tuple val(meta), path(bam)
     tuple val(meta2), path(bed)
     tuple val(meta3), path(fasta)
 
     output:
     tuple val(meta), path("*.pass.junctions.bed"), emit: pass_junctions_bed
     tuple val(meta), path("*.pass.junctions.tab"), emit: pass_junctions_tab
-    tuple val(meta), path("*.portcullis.log")    , emit: log
-    tuple val(meta), path("*.intron.gff3")       , emit: intron_gff , optional: true
-    tuple val(meta), path("*.exon.gff3")         , emit: exon_gff   , optional: true
-    tuple val(meta), path("*.bam")               , emit: spliced_bam, optional: true
-    tuple val(meta), path("*.bai")               , emit: spliced_bai, optional: true
-    path "versions.yml"                          , emit: versions
+    tuple val(meta), path("*.portcullis.log"), emit: log
+    tuple val(meta), path("*.intron.gff3"), emit: intron_gff, optional: true
+    tuple val(meta), path("*.exon.gff3"), emit: exon_gff, optional: true
+    tuple val(meta), path("*.spliced.bam"), emit: spliced_bam, optional: true
+    tuple val(meta), path("*.spliced.bam.bai"), emit: spliced_bai, optional: true
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,10 +33,10 @@ process PORTCULLIS_FULL {
         full \\
         ${args} \\
         -t ${task.cpus} \\
-        -o $prefix \\
-        -r $bed \\
-        $fasta \\
-        $bam > ${prefix}.portcullis.log
+        -o ${prefix} \\
+        -r ${bed} \\
+        ${fasta} \\
+        ${bam} > ${prefix}.portcullis.log
 
     cp ${prefix}/3-filt/*.pass.junctions.bed .
     cp ${prefix}/3-filt/*.pass.junctions.tab .
@@ -58,7 +58,6 @@ process PORTCULLIS_FULL {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.portcullis.log
@@ -71,4 +70,3 @@ process PORTCULLIS_FULL {
     END_VERSIONS
     """
 }
-

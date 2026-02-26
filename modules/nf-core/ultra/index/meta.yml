@@ -18,29 +18,57 @@ tools:
       licence: ["GNU GPLV3"]
       identifier: ""
 input:
-  - - fasta:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing genome information
+          e.g. [ id:'test' ]
+    - fasta:
         type: file
         description: A fasta file of the genome to use as reference for mapping
         pattern: "*.{fasta, fa}"
-  - - gtf:
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing gtf information
+          e.g. [ id:'test' ]
+    - gtf:
         type: file
         description: An annotation file of the reference genome in GTF format
         pattern: "*.gtf"
+        ontologies: []
 output:
-  - index:
-      - "*.pickle":
-          type: file
-          description: Index file
-          pattern: "*.pickle"
+  database:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing genome information
+            e.g. [ id:'test' ]
       - "*.db":
           type: file
           description: Index database
           pattern: "*.db"
-  - versions:
-      - versions.yml:
+          ontologies: []
+  pickle:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing genome information
+            e.g. [ id:'test' ]
+      - "*.pickle":
           type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: Index file
+          pattern: "*.pickle"
+          ontologies:
+            - edam: http://edamontology.org/format_4002 # pickle
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sguizard"
 maintainers:

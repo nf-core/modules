@@ -28,12 +28,14 @@ input:
         type: file
         description: Gzipped file output from kmcp search module
         pattern: "*.gz"
-  - - db:
-        type: directory
-        description: Database directory containing taxdump files and taxid file
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+  - db:
+      type: directory
+      description: Database directory containing taxdump files and taxid file
 output:
-  - profile:
-      - meta:
+  profile:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -42,11 +44,14 @@ output:
           type: file
           description: Tab-delimited format file with 17 columns.
           pattern: "*.profile"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sofstam"
 maintainers:

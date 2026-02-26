@@ -23,59 +23,73 @@ input:
         type: file
         description: BAM files
         pattern: "*.bam"
+        ontologies: []
     - normal_index:
         type: file
         description: BAM file indices
         pattern: "*.bam.bai"
+        ontologies: []
     - tumor:
         type: file
         description: BAM files
         pattern: "*.bam"
+        ontologies: []
     - tumor_index:
         type: file
         description: BAM file indices
         pattern: "*.bam.bai"
-  - - bed:
-        type: file
-        description: annotated BED file containing target regions
-        pattern: "*.bed"
-  - - fasta:
-        type: file
-        description: genome FASTA file
-        pattern: "*.fasta"
+        ontologies: []
+  - bed:
+      type: file
+      description: annotated BED file containing target regions
+      pattern: "*.bed"
+      ontologies: []
+  - fasta:
+      type: file
+      description: genome FASTA file
+      pattern: "*.fasta"
+      ontologies: []
 output:
-  - png:
-      - meta:
+  png:
+    - - meta:
           type: file
           description: PNG file containing profile plot
           pattern: "*.profile.png"
+          ontologies: []
       - "*.profile.png":
           type: file
           description: PNG file containing profile plot
           pattern: "*.profile.png"
-  - profile:
-      - meta:
+          ontologies: []
+  profile:
+    - - meta:
           type: file
-          description: TXT file containing profile data
-          pattern: "*.profile.txt"
+          description: PNG file containing profile plot
+          pattern: "*.profile.png"
+          ontologies: []
       - "*.profile.txt":
           type: file
           description: TXT file containing profile data
           pattern: "*.profile.txt"
-  - summary:
-      - meta:
+          ontologies: []
+  summary:
+    - - meta:
           type: file
-          description: TXT file containing summarized data
-          pattern: "*.summary.txt"
+          description: PNG file containing profile plot
+          pattern: "*.profile.png"
+          ontologies: []
       - "*.summary.txt":
           type: file
           description: TXT file containing summarized data
           pattern: "*.summary.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@marrip"
 maintainers:

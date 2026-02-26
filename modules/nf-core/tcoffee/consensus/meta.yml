@@ -12,7 +12,8 @@ tools:
       documentation: "https://tcoffee.readthedocs.io/en/latest/tcoffee_main_documentation.html"
       tool_dev_url: "https://github.com/cbcrg/tcoffee"
       doi: "10.1006/jmbi.2000.4042"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
   - pigz:
       description: "Parallel implementation of the gzip algorithm."
@@ -27,9 +28,10 @@ input:
           e.g. `[ id:'sample1' ]`
     - aln:
         type: file
-        description: List of multiple sequence alignments in FASTA format to be used
-          to compute the consensus
+        description: List of multiple sequence alignments in FASTA format to be
+          used to compute the consensus
         pattern: "*.{fa,fasta}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -39,14 +41,15 @@ input:
         type: file
         description: Input guide tree in Newick format
         pattern: "*.{dnd}"
-  - - compress:
-        type: boolean
-        description: Flag representing whether the output MSA should be compressed.
-          Set to true to enable/false to disable compression. Compression is done using
-          pigz, and is multithreaded.
+        ontologies: []
+  - compress:
+      type: boolean
+      description: Flag representing whether the output MSA should be compressed.
+        Set to true to enable/false to disable compression. Compression is done
+        using pigz, and is multithreaded.
 output:
-  - alignment:
-      - meta:
+  alignment:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -56,22 +59,59 @@ output:
           type: file
           description: Alignment file in FASTA format. May be gzipped.
           pattern: "*.aln{.gz,}"
-  - eval:
-      - meta:
+          ontologies: []
+  eval:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test']`
-          pattern: "*.{score_html, score_ascii}"
+            e.g. `[ id:'sample1' ]`
+          pattern: "*.{fa,fasta,aln}"
       - "*.{score_html,sp_ascii}":
           type: file
           description: Consensus evaluation file.
           pattern: "*.{score_html, score_ascii}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_tcoffee:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tcoffee:
+          type: string
+          description: The name of the tool
+      - t_coffee -version | awk '{gsub("Version_", ""); print \$3}':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_pigz:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tcoffee:
+          type: string
+          description: The name of the tool
+      - t_coffee -version | awk '{gsub("Version_", ""); print \$3}':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@luisas"
 maintainers:

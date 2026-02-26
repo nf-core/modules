@@ -30,9 +30,11 @@ input:
         description: FASTA or FASTQ file containing (genomic, transcriptomic, or proteomic)
           sequence data
         pattern: "*.{fna,fa,fasta,fastq,fq,faa}.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
 output:
-  - signatures:
-      - meta:
+  signatures:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -41,11 +43,14 @@ output:
           type: file
           description: FracMinHash signature of the given sequence
           pattern: "*.{sig}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Midnighter"
 maintainers:

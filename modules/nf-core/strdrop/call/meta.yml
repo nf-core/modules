@@ -1,0 +1,90 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "strdrop_call"
+description: Detect drops in STR coverage
+keywords:
+  - str
+  - vcf
+  - lrs
+tools:
+  - "strdrop":
+      description: "Flag STR coverage drops in LRS data"
+      homepage: "https://github.com/dnil/strdrop"
+      documentation: "https://github.com/dnil/strdrop/blob/main/docs/README.md"
+      tool_dev_url: "https://github.com/dnil/strdrop"
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcf:
+        type: file
+        description: Input STR call VCF file
+        pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+          - edam: "http://edamontology.org/format_3020" # BCF
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing training set information
+          e.g. `[ id:'sample1' ]`
+    - training_set_json:
+        type: file
+        description: Input training set as json
+        pattern: "*.json"
+        ontologies:
+          - edam: "http://edamontology.org/format_3464" # JSON
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing training set information
+          e.g. `[ id:'sample1' ]`
+    - training_set_vcfs:
+        type: file
+        description: Input training set as VCF files
+        pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+          - edam: "http://edamontology.org/format_3020" # BCF
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.vcf.gz":
+          type: file
+          description: Output annotated VCF file
+          pattern: "*.{vcf.gz}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+  versions_strdrop:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "strdrop":
+          type: string
+          description: The name of the tool
+      - "strdrop --version | sed 's/.* //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - strdrop:
+          type: string
+          description: The name of the tool
+      - strdrop --version | sed 's/.* //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@fellen31"
+maintainers:
+  - "@fellen31"

@@ -1,16 +1,16 @@
 nextflow_process {
 
     name "Test Process CONIFER"
-    
+
     script "../main.nf"
     process "CONIFER"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "conifer"
     tag "untar"
     tag "kraken2/kraken2"
-   
+
     setup {
         run("UNTAR") {
             script "modules/nf-core/untar/main.nf"
@@ -44,12 +44,12 @@ nextflow_process {
             }
         }
     }
-    
-    
+
+
     test("sarscov2 - kraken2 - k2d") {
-        
+
         when {
-            
+
             process {
                 """
                 input[0] = KRAKEN2_KRAKEN2.out.report
@@ -64,12 +64,12 @@ nextflow_process {
             )
         }
     }
-    
-    
+
+
     test("sarscov2 - kraken2 - k2d -- stub") {
         options '-stub'
         when {
-            
+
             process {
                 """
                 input[0] = KRAKEN2_KRAKEN2.out.report

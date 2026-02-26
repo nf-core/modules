@@ -41,11 +41,10 @@ process NGMERGE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}.merged.fq.gz
+    echo "" | gzip > ${prefix}.merged.fq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

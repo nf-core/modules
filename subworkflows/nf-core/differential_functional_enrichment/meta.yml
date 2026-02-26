@@ -8,6 +8,7 @@ keywords:
 components:
   - gprofiler2/gost
   - gsea/gsea
+  - decoupler/decoupler
   - propr/grea
   - custom/tabulartogseagct
   - custom/tabulartogseacls
@@ -35,7 +36,7 @@ input:
               For the moment, it is only required for gprofiler2.
         - analysis_method:
             type: value
-            description: Analysis method (gprofiler2, gsea, or grea)
+            description: Analysis method (gprofiler2, gsea, decoupler or grea)
   - ch_contrasts:
       description: Channel with contrast information
       structure:
@@ -60,7 +61,7 @@ input:
             type: list
             description: List of contrast formula
         - comparison:
-            type list:
+            type: list
             description: List of contrast comparison
   - ch_samplesheet:
       description: Channel with sample information
@@ -104,11 +105,12 @@ output:
             description: Metadata map
         - all_enrich:
             type: file
-            description: table listing all enriched pathways that were found by gprofiler2.
+            description: |
+              Table listing all enriched pathways that were found by gprofiler2.
               It can be empty, if none is found.
             pattern: "*.gprofiler2.all_enriched_pathways.tsv"
   - gprofiler2_sub_enrich:
-      description: Channel containing the secondary enrichment table output from gprofiler.
+      description: Channel containing the secondary enrichment table output from gprofiler2.
       structure:
         - meta:
             type: map
@@ -116,7 +118,7 @@ output:
         - sub_enrich:
             type: file
             description: |
-              table listing enriched pathways that were found from one particular source.
+              Table listing enriched pathways that were found from one particular source.
               Note that it will only be created if any were found.
             pattern: "*.gprofiler2.*.sub_enriched_pathways.tsv"
   - gprofiler2_plot_html:
@@ -128,7 +130,7 @@ output:
         - plot_html:
             type: file
             description: |
-              Channel containing HTML file; interactive Manhattan plot of all enriched pathways.
+              HTML file; interactive Manhattan plot of all enriched pathways.
               Note that this file will only be generated if enriched pathways were found.
             pattern: "*.gprofiler2.gostplot.html"
   - gsea_report:
@@ -145,9 +147,49 @@ output:
             type: file
             description: Main TSV results report file for the target group.
             pattern: "*gsea_report_for_${target}.tsv"
+  - decoupler_dc_estimate:
+      description: Channel containing decoupler estimate results.
+      structure:
+        - meta:
+            type: map
+            description: |
+              Groovy Map containing sample information
+              e.g. [ id:'test', single_end ]
+        - estimate_files:
+            type: file
+            description: |
+              Files containing the estimation results of the enrichment(s)
+            pattern: "*estimate_decoupler.tsv"
+  - decoupler_dc_pvals:
+      description: Channel containing decoupler pvals results.
+      structure:
+        - meta:
+            type: map
+            description: |
+              Groovy Map containing sample information
+              e.g. [ id:'test', single_end ]
+        - pvals_files:
+            type: file
+            description: |
+              Files containing the p-values associated to the estimation
+              results of the enrichment(s)
+            pattern: "*pvals_decoupler.tsv"
+  - decoupler_png:
+      description: Channel containing decoupler png results.
+      structure:
+        - meta:
+            type: map
+            description: |
+              Groovy Map containing sample information
+              e.g. [ id:'test', single_end ]
+        - plot_files:
+            type: file
+            description: |
+              Files containing the plots associated to the estimation
+              results of the enrichment(s)
+            pattern: "*estimate_decoupler_plot.png"
   - grea_results:
-      description: |
-        Channel containing the output from GREA.
+      description: Channel containing the output from GREA.
       structure:
         - meta:
             type: map

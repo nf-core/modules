@@ -8,7 +8,7 @@
                             "id": "input",
                             "single_end": false
                         },
-                        "input.bcf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "input.graph:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "1": [
@@ -20,7 +20,7 @@
                             "id": "input",
                             "single_end": false
                         },
-                        "input.bcf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "input.graph:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "versions": [
@@ -29,12 +29,12 @@
             }
         ],
         "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.1"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
         },
-        "timestamp": "2024-12-03T17:01:18.387684498"
+        "timestamp": "2025-11-26T17:58:34.335209352"
     },
-    "homo sapiens - vcf, [], [], []": {
+    "homo sapiens - vcf, no reference, no scaffold, no map": {
         "content": [
             [
                 [
@@ -45,14 +45,39 @@
                     "input.bcf"
                 ]
             ],
-            [
-                "versions.yml:md5,135745eaa06583f1c0402134626f9082"
-            ]
+            {
+                "versions": [
+                    "versions.yml:md5,135745eaa06583f1c0402134626f9082"
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.1"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
         },
-        "timestamp": "2024-12-03T16:56:47.720234317"
+        "timestamp": "2025-11-26T18:01:57.860901774"
+    },
+    "homo sapiens - vcf, no reference, no scaffold, with map": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "input",
+                        "single_end": false
+                    },
+                    "input.bcf"
+                ]
+            ],
+            {
+                "versions": [
+                    "versions.yml:md5,135745eaa06583f1c0402134626f9082"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-11-26T17:58:27.665343119"
     }
 }
