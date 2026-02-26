@@ -42,11 +42,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.results.collect { meta, files -> [ meta, files.collect { file(it).name }.sort() ] },
-                    process.out.summary.collect { meta, files -> [ meta, file(files).name ] },
-                    process.out.best_solutions.collect { meta, files -> [ meta, files.collect { file(it).name }.sort() ] },
-                    process.out.versions_macsyfinder,
-                    process.out.versions_hmmer
+                    sanitizeOutput(process.out),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -84,11 +81,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.results.collect { meta, files -> [ meta, files.collect { file(it).name }.sort() ] },
-                    process.out.summary.collect { meta, files -> [ meta, file(files).name ] },
-                    process.out.best_solutions.collect { meta, files -> [ meta, files.collect { file(it).name }.sort() ] },
-                    process.out.versions_macsyfinder,
-                    process.out.versions_hmmer
+                    sanitizeOutput(process.out),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -115,11 +109,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.results.collect { meta, files -> [ meta, files.collect { file(it).name }.sort() ] },
-                    process.out.summary.collect { meta, files -> [ meta, file(files).name ] },
-                    process.out.best_solutions.collect { meta, files -> [ meta, files.collect { file(it).name }.sort() ] },
-                    process.out.versions_macsyfinder,
-                    process.out.versions_hmmer
+                    sanitizeOutput(process.out),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }

@@ -13,7 +13,7 @@ process MACSYFINDER_DOWNLOAD {
     output:
     path "models"       , emit: models
     tuple val("${task.process}"), val('macsyfinder'), eval('macsyfinder --version 2>&1 | sed "1!d;s/^.*MacSyFinder //;s/ .*$//"'), topic: versions, emit: versions_macsyfinder
-    tuple val("${task.process}"), val('msf_data'), eval('msf_data --version 2>&1 | sed "4!d;s/^.*MacSyLib //;s/ .*$//"'), topic: versions, emit: versions_macsydata
+    tuple val("${task.process}"), val('msf_data'), eval('msf_data --version 2>&1 | awk "NR==4{print \$2}"'), topic: versions, emit: versions_macsydata
 
     when:
     task.ext.when == null || task.ext.when

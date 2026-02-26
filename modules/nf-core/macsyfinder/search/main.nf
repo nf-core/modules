@@ -35,15 +35,23 @@ process MACSYFINDER_SEARCH {
         ${model_arg} \\
         --out-dir ${prefix} \\
         --worker ${task.cpus} \\
-        ${args}
+        ${args} \\
+        2>| >( tee macsyfinder.err >&2 ) \\
+        | tee macsyfinder.out
+
+    mv macsyfinder.err ${prefix}/
+    mv macsyfinder.out ${prefix}/
+
+    # Remove empty error files to avoid snapshot pollution
+    find ${prefix} -name "*.err" -type f -size 0 -delete
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}
-    touch ${prefix}/macsyfinder.out
     touch ${prefix}/macsyfinder.err
+    touch ${prefix}/macsyfinder.out
     touch ${prefix}/all_systems.tsv
     touch ${prefix}/all_best_solutions.txt
     """
