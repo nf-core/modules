@@ -2,17 +2,21 @@ name: "eggnogmapper"
 description: Fast genome-wide functional annotation through orthology assignment.
 keywords:
   - annotation
+  - functional annotation
   - orthology
   - genomics
 tools:
   - "eggnogmapper":
-      description: "Fast genome-wide functional annotation through orthology assignment."
+      description: |
+        EggNOG-mapper is a tool for fast functional annotation of novel sequences.
+        It uses precomputed orthologous groups and phylogenies from the eggNOG database
+        to transfer functional information from fine-grained orthologs only.
       homepage: "https://github.com/eggnogdb/eggnog-mapper"
       documentation: "https://github.com/eggnogdb/eggnog-mapper/wiki"
       tool_dev_url: "https://github.com/eggnogdb/eggnog-mapper"
       doi: "10.1093/molbev/msab293"
       licence: ["AGPL v3"]
-      identifier: ""
+      identifier: biotools:eggnog-mapper-v2
 input:
   - - meta:
         type: map
