@@ -23,12 +23,13 @@ process GLIMPSE2_LIGATE {
     def suffix = task.ext.suffix ?: "vcf.gz"
 
     // Create file list using Groovy (most portable)
-    def file_list = input_list.collect {file_path -> file_path.toString() }.join('\n')
+    def file_list = input_list
+        .collect { file_path -> file_path.toString() }
+        .sort()
+        .join('\n')
 
     """
-    cat > all_files.txt <<EOF
-    ${file_list}
-    EOF
+    echo "${file_list}" > all_files.txt
 
     GLIMPSE2_ligate \\
         ${args} \\
