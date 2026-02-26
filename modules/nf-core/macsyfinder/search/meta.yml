@@ -14,7 +14,8 @@ tools:
       documentation: "https://macsyfinder.readthedocs.io"
       tool_dev_url: "https://github.com/gem-pasteur/macsyfinder"
       doi: "10.24072/pcjournal.250"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:macsyfinder
 input:
   - - meta:
@@ -99,7 +100,9 @@ output:
       - macsyfinder:
           type: string
           description: The name of the tool
-      - macsyfinder --version 2>&1 | sed "1!d;s/^.*MacSyFinder //;s/ .*$//: {}
+      - macsyfinder --version 2>&1 | sed "1!d;s/^.*MacSyFinder //;s/ .*$//":
+          type: eval
+          description: The expression to obtain the version of the tool
   versions_hmmer:
     - - ${task.process}:
           type: string
@@ -107,7 +110,9 @@ output:
       - hmmer:
           type: string
           description: The name of the tool
-      - hmmsearch -h 2>&1 | sed "2!d;s/^# HMMER //;s/ .*$//: {}
+      - hmmsearch -h 2>&1 | sed "2!d;s/^# HMMER //;s/ .*$//":
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -116,7 +121,18 @@ topics:
       - macsyfinder:
           type: string
           description: The name of the tool
-      - macsyfinder --version 2>&1 | sed "1!d;s/^.*MacSyFinder //;s/ .*$//: {}
+      - macsyfinder --version 2>&1 | sed "1!d;s/^.*MacSyFinder //;s/ .*$//":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hmmer:
+          type: string
+          description: The name of the tool
+      - hmmsearch -h 2>&1 | sed "2!d;s/^# HMMER //;s/ .*$//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@brovolia"
 maintainers:

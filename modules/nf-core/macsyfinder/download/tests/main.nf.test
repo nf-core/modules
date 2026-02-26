@@ -21,7 +21,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match("txsscan_output") },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match("txsscan_versions") }
             )
         }
     }
@@ -41,7 +42,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match("txsscan_stub_output") },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match("txsscan_stub_versions") }
             )
         }
     }

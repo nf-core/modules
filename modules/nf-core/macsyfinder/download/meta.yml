@@ -14,7 +14,8 @@ tools:
       documentation: "https://macsyfinder.readthedocs.io"
       tool_dev_url: "https://github.com/gem-pasteur/macsyfinder"
       doi: "10.24072/pcjournal.250"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:macsyfinder
 input:
   - model_name:
@@ -22,7 +23,10 @@ input:
       description: Name of the MacSyFinder model to download (e.g., 'TXSScan', 'CasFinder')
 output:
   models:
-    - models: {}
+    - models:
+        type: directory
+        description: Directory containing downloaded MacSyFinder model definitions
+        pattern: "models"
   versions_macsyfinder:
     - - ${task.process}:
           type: string
@@ -30,7 +34,9 @@ output:
       - macsyfinder:
           type: string
           description: The name of the tool
-      - macsyfinder --version 2>&1 | sed "1!d;s/^.*MacSyFinder //;s/ .*$//: {}
+      - macsyfinder --version 2>&1 | sed "1!d;s/^.*MacSyFinder //;s/ .*$//":
+          type: eval
+          description: The expression to obtain the version of the tool
   versions_macsydata:
     - - ${task.process}:
           type: string
@@ -38,7 +44,9 @@ output:
       - msf_data:
           type: string
           description: The name of the tool
-      - msf_data --version 2>&1 | sed "4!d;s/^.*MacSyLib //;s/ .*$//: {}
+      - msf_data --version 2>&1 | awk "NR==4{print \$2}":
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -47,7 +55,18 @@ topics:
       - macsyfinder:
           type: string
           description: The name of the tool
-      - macsyfinder --version 2>&1 | sed "1!d;s/^.*MacSyFinder //;s/ .*$//: {}
+      - macsyfinder --version 2>&1 | sed "1!d;s/^.*MacSyFinder //;s/ .*$//":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - msf_data:
+          type: string
+          description: The name of the tool
+      - msf_data --version 2>&1 | awk "NR==4{print \$2}":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@brovolia"
 maintainers:
