@@ -12,9 +12,10 @@ process ABRICATE_RUN {
     path databasedir
 
     output:
-    tuple val("${task.process}"), val('abricate'), eval("echo \$(abricate --version 2>&1) | sed 's/^.*abricate //' "), emit: versions_abricate, topic: versions
+    tuple val(meta), path("*.txt"), emit: report    
+    tuple val("${task.process}"), val('abricate'), eval("abricate --version 2>&1 | sed 's/^.*abricate //' "), emit: versions_abricate, topic: versions
 
-    tuple val(meta), path("*.txt"), emit: report
+    
     when:
     task.ext.when == null || task.ext.when
 
