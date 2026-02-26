@@ -17,8 +17,6 @@ workflow VCF_PHASE_SHAPEIT5 {
 
     main:
 
-    ch_versions = channel.empty()
-
     if ( chunk == true ){
         // Error if pre-defined chunks are provided when chunking is activated
         ch_chunks
@@ -73,7 +71,6 @@ workflow VCF_PHASE_SHAPEIT5 {
         }
 
     SHAPEIT5_PHASECOMMON (ch_phase_input)
-    ch_versions = ch_versions.mix(SHAPEIT5_PHASECOMMON.out.versions.first())
 
     BCFTOOLS_INDEX_PHASE(SHAPEIT5_PHASECOMMON.out.phased_variant)
 
@@ -89,7 +86,6 @@ workflow VCF_PHASE_SHAPEIT5 {
         .groupTuple()
 
     SHAPEIT5_LIGATE(ch_ligate_input)
-    ch_versions = ch_versions.mix(SHAPEIT5_LIGATE.out.versions.first())
 
     BCFTOOLS_INDEX_LIGATE(SHAPEIT5_LIGATE.out.merged_variants)
 
@@ -102,5 +98,4 @@ workflow VCF_PHASE_SHAPEIT5 {
     emit:
     chunks    = ch_chunks    // channel: [ [id, chr], regionout]
     vcf_index = ch_vcf_index // channel: [ [id, chr], vcf, csi ]
-    versions  = ch_versions  // channel: [ versions.yml ]
 }
