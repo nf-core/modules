@@ -11,7 +11,7 @@ process ABRICATE_SUMMARY {
     tuple val(meta), path(reports)
 
     output:
-    tuple val("${task.process}"), val('abricate'), eval("echo \$(abricate --version 2>&1) | sed 's/^.*abricate //' "), emit: versions_abricate, topic: versions
+    tuple val("${task.process}"), val('abricate'), eval("(abricate --version 2>&1 | sed 's/^.*abricate //' "), emit: versions_abricate, topic: versions
 
     tuple val(meta), path("*.txt"), emit: report
     when:
