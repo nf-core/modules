@@ -15,6 +15,7 @@ process BCL2FASTQ {
     tuple val(meta), path("output/Reports"), emit: reports
     tuple val(meta), path("output/Stats"), emit: stats
     tuple val(meta), path("InterOp/*.bin"), emit: interop
+    tuple val(meta), path("**/*.xml", includeInputs: true), emit: xml
     tuple val("${task.process}"), val('bcl2fastq'), eval("bcl2fastq -V 2>&1 | grep -m 1 bcl2fastq | sed 's/^.*bcl2fastq v//'"), topic: versions, emit: versions_bcl2fastq
 
     when:
@@ -78,5 +79,6 @@ process BCL2FASTQ {
     echo "fake report" > output/Reports/index.html
     mkdir -p output/Stats
     echo "fake stats" > output/Stats/Stats.json
+    echo "fake RunInfo" > output/RunInfo.xml
     """
 }
