@@ -21,7 +21,6 @@ nextflow_process {
                     [],
                     [],
                     [],
-                    [],
                     []
                 ])
                 """
@@ -49,7 +48,6 @@ nextflow_process {
                 input[0] = channel.of([
                     [ id: 'FASTQC' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastqc/test_fastqc.zip', checkIfExists: true),
-                    [],
                     [],
                     [],
                     [],
@@ -82,6 +80,38 @@ nextflow_process {
                     file("https://github.com/nf-core/tools/raw/dev/nf_core/pipeline-template/assets/multiqc_config.yml", checkIfExists: true),
                     [],
                     [],
+                    []
+                ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    file(process.out.report[0][1]).name,
+                    file(process.out.data[0][1]).name,
+                    file(process.out.plots[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions")
+                }).match() }
+            )
+        }
+    }
+
+    test("sarscov2 single-end [fastqc] [multiple configs]") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [ id: 'FASTQC' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastqc/test_fastqc.zip', checkIfExists: true),
+                    [
+                        file("https://github.com/nf-core/tools/raw/dev/nf_core/pipeline-template/assets/multiqc_config.yml", checkIfExists: true),
+                        file("https://github.com/nf-core/tools/raw/dev/nf_core/pipeline-template/assets/multiqc_config.yml", checkIfExists: true)
+                    ],
+                    [],
                     [],
                     []
                 ])
@@ -112,7 +142,6 @@ nextflow_process {
                 input[0] = channel.of([
                     [ id: 'FASTQC' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastqc/test_fastqc.zip', checkIfExists: true),
-                    [],
                     [],
                     [],
                     [],
