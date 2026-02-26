@@ -24,6 +24,5 @@ process ABRICATE_SUMMARY {
         --summary \\
         ${reports} > ${prefix}.txt
 
-
     """
 }
