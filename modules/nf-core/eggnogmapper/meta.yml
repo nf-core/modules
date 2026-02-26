@@ -41,15 +41,15 @@ input:
         description: |
           Search database file corresponding to the chosen search mode. Uses --dmnd_db
           for diamond/novel_fams, --mmseqs_db for mmseqs, --database for hmmer, or
-          --annotate_hits_table/--cache for no_search/cache modes. May be null/empty
-          when the database is already present in eggnog_data_dir.
+          --annotate_hits_table/--cache for no_search/cache modes.
         pattern: "*.{dmnd,db,h3m,hmm}"
         ontologies: []
   - eggnog_data_dir:
       type: directory
       description: |
         Directory containing eggnog-mapper database files
-        (e.g. downloaded via download_eggnog_data.py)
+        (e.g. can be downloaded via download_eggnog_data.py,
+        found in the eggnog-mapper repository)
       pattern: "*"
 output:
   annotations:
