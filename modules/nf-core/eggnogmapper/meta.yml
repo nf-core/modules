@@ -28,10 +28,17 @@ input:
       type: directory
       description: Directory containing eggnog database files (e.g. eggnog-mapper/data)
       pattern: "*"
-  - eggnog__dmnd_db:
+  - search_mode:
+      type: string
+      description: |
+        Search mode for eggnog-mapper. One of: diamond, mmseqs, hmmer, no_search, cache, novel_fams.
+  - db:
       type: file
-      description: The eggnog Diamond protein database file (e.g. eggnog-mapper/data/eggnog_proteins.dmnd)
-      pattern: "*.dmnd"
+      description: |
+        Search database file. The appropriate flag is automatically selected based on search_mode:
+        --dmnd_db for diamond/novel_fams, --mmseqs_db for mmseqs, -d for hmmer.
+        Optional when the database is already present in eggnog_data_dir.
+      pattern: "*.{dmnd,idx,h3m}"
       ontologies: []
 output:
   annotations:
@@ -68,13 +75,6 @@ output:
           description: TSV with the results from the Diamond search phase
           pattern: "*.emapper.hits"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@vagkaratzas"
 maintainers:

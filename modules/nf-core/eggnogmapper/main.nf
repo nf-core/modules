@@ -9,26 +9,26 @@ process EGGNOGMAPPER {
 
     input:
     tuple val(meta), path(fasta)
+    tuple val(search_mode), path(db)
     path(eggnog_data_dir)
-    val(search_mode)
-    path(db)
 
     output:
     tuple val(meta), path("*.emapper.annotations")   , emit: annotations
     tuple val(meta), path("*.emapper.seed_orthologs"), emit: orthologs
     tuple val(meta), path("*.emapper.hits")          , emit: hits
-    path "versions.yml"                              , emit: versions
+    tuple val("${task.process}"), val('eggnog-mapper'), eval("emapper.py --version 2>&1 | grep -o 'emapper-[0-9]\\+\\.[0-9]\\+\\.[0-9]\\+' | sed 's/emapper-//'"), topic: versions, emit: versions_eggnogmapper
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args            = task.ext.args                 ?: ''
-    def prefix          = task.ext.prefix               ?: "${meta.id}"
-    def is_compressed   = fasta.extension == '.gz'      ? true                            : false
-    def fasta_name      = is_compressed                 ? fasta.baseName                  : "$fasta"
-    def dbmem           = task.memory.toMega() > 40000  ? '--dbmem'                       : ''
-    def db_arg          = db                            ? "-m $search_mode --dmnd_db $db" : ''
+    def args          = task.ext.args            ?: ''
+    def prefix        = task.ext.prefix          ?: "${meta.id}"
+    def is_compressed = fasta.extension == '.gz' ? true           : false
+    def fasta_name    = is_compressed            ? fasta.baseName : "$fasta"
+    def db_flags      = ['diamond': '--dmnd_db', 'novel_fams': '--dmnd_db', 'mmseqs': '--mmseqs_db', 'hmmer': '--database', 'no_search': '--annotate_hits_table', 'cache': '--cache']
+    def db_arg        = db && db_flags[search_mode]  ? "${db_flags[search_mode]} $db" : ''
+    def dbmem         = task.memory.toMega() > 40000 ? '--dbmem'                      : ''
     """
     if [ "$is_compressed" == "true" ]; then
         gzip -c -d $fasta > $fasta_name
@@ -39,29 +39,19 @@ process EGGNOGMAPPER {
         --cpu ${task.cpus} \\
         -i ${fasta_name} \\
         --data_dir ${eggnog_data_dir} \\
+        -m ${search_mode} \\
         $db_arg \\
-        --output ${prefix} \\
         ${dbmem} \\
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        eggnog-mapper: \$(echo \$(emapper.py --version) | grep -o "emapper-[0-9]\\+\\.[0-9]\\+\\.[0-9]\\+" | sed "s/emapper-//")
-    END_VERSIONS
+        --output ${prefix}
     """
 
     stub:
-    def prefix  = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo $args
 
     touch ${prefix}.emapper.annotations
     touch ${prefix}.emapper.seed_orthologs
     touch ${prefix}.emapper.hits
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        eggnog-mapper: \$(echo \$(emapper.py --version) | grep -o "emapper-[0-9]\\+\\.[0-9]\\+\\.[0-9]\\+" | sed "s/emapper-//")
-    END_VERSIONS
     """
 }
