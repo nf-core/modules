@@ -8,13 +8,7 @@ process MULTIQC_SAV {
         : 'community.wave.seqera.io/library/multiqc_multiqc_sav_pip_interop:b142653b3920c82b'}"
 
     input:
-    tuple val(meta), path(runinfo_xml), path(interop_bin, stageAs: "InterOp/*")
-    path extra_multiqc_files, stageAs: "?/*"
-    path multiqc_config
-    path extra_multiqc_config
-    path multiqc_logo
-    path replace_names
-    path sample_names
+    tuple val(meta), path(runinfo_xml), path(interop_bin, stageAs: "InterOp/*"), path(extra_multiqc_files, stageAs: "?/*"), path(multiqc_config), path(extra_multiqc_config), path(multiqc_logo), path(replace_names), path(sample_names)
 
     output:
     tuple val(meta), path("*.html"), emit: report

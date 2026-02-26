@@ -35,46 +35,46 @@ input:
         pattern: "InterOp/*.bin"
         ontologies:
           - edam: http://edamontology.org/format_2333 # Binary format
-  - extra_multiqc_files:
-      type: file
-      description: |
-        List of reports / files rec ognised by MultiQC, for example the html and zip output of FastQC
-      ontologies: []
-  - multiqc_config:
-      type: file
-      description: Optional config yml for MultiQC
-      pattern: "*.{yml,yaml}"
-      ontologies:
-        - edam: http://edamontology.org/format_3750 # YAML
-  - extra_multiqc_config:
-      type: file
-      description: Second optional config yml for MultiQC. Will override common
-        sections in multiqc_config.
-      pattern: "*.{yml,yaml}"
-      ontologies:
-        - edam: http://edamontology.org/format_3750 # YAML
-  - multiqc_logo:
-      type: file
-      description: Optional logo file for MultiQC
-      pattern: "*.{png}"
-      ontologies: []
-  - replace_names:
-      type: file
-      description: |
-        Optional two-column sample renaming file. First column a set of
-        patterns, second column a set of corresponding replacements. Passed via
-        MultiQC's `--replace-names` option.
-      pattern: "*.{tsv}"
-      ontologies:
-        - edam: http://edamontology.org/format_3475 # TSV
-  - sample_names:
-      type: file
-      description: |
-        Optional TSV file with headers, passed to the MultiQC --sample_names
-        argument.
-      pattern: "*.{tsv}"
-      ontologies:
-        - edam: http://edamontology.org/format_3475 # TSV
+    - extra_multiqc_files:
+        type: file
+        description: |
+          List of reports / files rec ognised by MultiQC, for example the html and zip output of FastQC
+        ontologies: []
+    - multiqc_config:
+        type: file
+        description: Optional config yml for MultiQC
+        pattern: "*.{yml,yaml}"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+    - extra_multiqc_config:
+        type: file
+        description: Second optional config yml for MultiQC. Will override common
+          sections in multiqc_config.
+        pattern: "*.{yml,yaml}"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+    - multiqc_logo:
+        type: file
+        description: Optional logo file for MultiQC
+        pattern: "*.{png}"
+        ontologies: []
+    - replace_names:
+        type: file
+        description: |
+          Optional two-column sample renaming file. First column a set of
+          patterns, second column a set of corresponding replacements. Passed via
+          MultiQC's `--replace-names` option.
+        pattern: "*.{tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+    - sample_names:
+        type: file
+        description: |
+          Optional TSV file with headers, passed to the MultiQC --sample_names
+          argument.
+        pattern: "*.{tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
   report:
     - - meta:
