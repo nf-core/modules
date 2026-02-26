@@ -12,7 +12,7 @@ process SHAPEIT5_PHASECOMMON {
 
     output:
     tuple val(meta), path("*.{bcf,graph,bh}"), emit: phased_variant
-    tuple val("${task.process}"), val('shapeit5'), eval('SHAPEIT5_ligate | sed "5!d;s/^.*Version *: //; s/ .*$//"'), topic: versions, emit: versions_shapeit5
+    tuple val("${task.process}"), val('shapeit5'), eval('SHAPEIT5_phasecommon | sed "5!d;s/^.*Version *: //; s/ .*$//"'), topic: versions, emit: versions_shapeit5
 
     when:
     task.ext.when == null || task.ext.when
