@@ -12,9 +12,9 @@ process ADAPTERREMOVALFIXPREFIX {
     tuple val(meta), path(fastq)
 
     output:
-    tuple val(meta), path("*.fq.gz"), emit: fixed_fastq
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('adapterremovalfixprefix'), val('0.0.5'), emit: versions_adapterremovalfixprefix, topic: versions
 
+    tuple val(meta), path("*.fq.gz"), emit: fixed_fastq
     when:
     task.ext.when == null || task.ext.when
 
@@ -29,10 +29,7 @@ process ADAPTERREMOVALFIXPREFIX {
         ${args} \\
         | gzip > ${prefix}.fq.gz
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        adapterremovalfixprefix: ${VERSION}
-    END_VERSIONS
+    
     """
 
     stub:
@@ -41,9 +38,6 @@ process ADAPTERREMOVALFIXPREFIX {
     """
     echo | gzip > ${prefix}.fq.gz
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        adapterremovalfixprefix: "${VERSION}"
-    END_VERSIONS
+    
     """
 }

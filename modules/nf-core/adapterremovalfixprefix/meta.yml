@@ -39,14 +39,31 @@ output:
           pattern: "*.{fq.gz}"
           ontologies:
             - edam: "http://edamontology.org/format_1930" # FASTQ
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+  versions_adapterremovalfixprefix:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - adapterremovalfixprefix:
+          type: string
+          description: The tool name
+      - 0.0.5:
+          type: eval
+          description: The expression to obtain the version of adapterremovalfixprefix
 authors:
   - "@jfy133"
+  - "@maxcumminsandfred"
 maintainers:
   - "@jfy133"
+
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - adapterremovalfixprefix:
+          type: string
+          description: The tool name
+      - 0.0.5:
+          type: eval
+          description: The expression to obtain the version of adapterremovalfixprefix
