@@ -53,14 +53,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert process.out.report[0][1] ==~ ".*/multiqc_report.html" },
-                { assert process.out.data[0][1] ==~ ".*/multiqc_data" },
-                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions")}).match() }
+                { assert snapshot(
+                    file(process.out.report[0][1]).name,
+                    file(process.out.data[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions")
+                }).match() }
             )
         }
-
     }
 
     test("NovaSeq6000 - stub") {
@@ -110,11 +111,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert process.out.report[0][1] ==~ ".*/multiqc_report.html" },
-                { assert process.out.data[0][1] ==~ ".*/multiqc_data" },
-                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions")}).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

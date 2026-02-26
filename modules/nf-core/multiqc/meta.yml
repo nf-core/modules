@@ -15,11 +15,16 @@ tools:
       licence: ["GPL-3.0-or-later"]
       identifier: biotools:multiqc
 input:
-  - multiqc_files:
-      type: file
-      description: |
-        List of reports / files recognised by MultiQC, for example the html and zip output of FastQC
-      ontologies: []
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1', single_end:false ]
+    - multiqc_files:
+        type: file
+        description: |
+          List of reports / files recognised by MultiQC, for example the html and zip output of FastQC
+        ontologies: []
   - multiqc_config:
       type: file
       description: Optional config yml for MultiQC
