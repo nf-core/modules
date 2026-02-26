@@ -51,6 +51,44 @@ nextflow_process {
         }
     }
 
+    test("test_qcatch - remove_doublets") {
+
+        config "./nextflow_doublets.config"
+
+        setup {
+            run("UNZIP") {
+                script "modules/nf-core/unzip/main.nf"
+                process {
+                    """
+                    meta = [id:'qcatch_test_data']
+                    input[0] = Channel.of([meta, file('https://umd.box.com/shared/static/zd4sai70uw9fs24e1qx6r41ec50pf45g.zip')])
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = UNZIP.out.unzipped_archive.map { meta, dir ->
+                    def quant_dir = file("\${dir}/test_data/1k_pbmc_v3")
+                    [[id:'1k_pbmc_v3_doublets'], '10X_3p_v3', quant_dir]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.report.get(0).get(1)).size() > 0 },
+                { assert path(process.out.filtered_h5ad.get(0).get(1)).size() > 0 },
+                { assert path(process.out.metrics_summary.get(0).get(1)).size() > 0 },
+                { assert snapshot(process.out.versions).match("remove_doublets_versions") }
+            )
+        }
+    }
+
     test("test_qcatch - stub") {
         options "-stub-run"
 
