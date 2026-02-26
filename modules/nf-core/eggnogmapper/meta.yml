@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "eggnogmapper"
 description: Fast genome-wide functional annotation through orthology assignment.
 keywords:
@@ -25,25 +24,15 @@ input:
         description: Database of sequences in FASTA format
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
         ontologies: []
-  - eggnog_db:
-      type: file
-      description: The eggnog database file (e.g. eggnog-mapper/data/eggnog.db)
-      pattern: "*.db"
-      ontologies: []
   - eggnog_data_dir:
       type: directory
       description: Directory containing eggnog database files (e.g. eggnog-mapper/data)
       pattern: "*"
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing database information
-          e.g. `[ id:'test' ]`
-    - eggnog_diamond_db:
-        type: file
-        description: The eggnog Diamond protein database file (e.g. eggnog-mapper/data/eggnog_proteins.dmnd)
-        pattern: "*.dmnd"
-        ontologies: []
+  - eggnog__dmnd_db:
+      type: file
+      description: The eggnog Diamond protein database file (e.g. eggnog-mapper/data/eggnog_proteins.dmnd)
+      pattern: "*.dmnd"
+      ontologies: []
 output:
   annotations:
     - - meta:
