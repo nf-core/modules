@@ -5,6 +5,7 @@ keywords:
   - functional annotation
   - orthology
   - genomics
+  - eggnog
 tools:
   - "eggnogmapper":
       description: |
@@ -15,70 +16,102 @@ tools:
       documentation: "https://github.com/eggnogdb/eggnog-mapper/wiki"
       tool_dev_url: "https://github.com/eggnogdb/eggnog-mapper"
       doi: "10.1093/molbev/msab293"
-      licence: ["AGPL v3"]
-      identifier: biotools:eggnog-mapper-v2
+      licence:
+        - "AGPL v3"
+      identifier: "biotools:eggnog-mapper-v2"
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'test', single_end:false ]`
+          e.g. `[ id:'sample1' ]`
     - fasta:
         type: file
-        description: Database of sequences in FASTA format
-        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+        description: Input sequences in FASTA format (plain or gzip-compressed)
+        pattern: "*.{fasta,faa,fa}(.gz)?"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+  - - search_mode:
+        type: string
+        description: |
+          Search mode for eggnog-mapper. One of: diamond, novel_fams, mmseqs, hmmer,
+          no_search, cache. Determines which search backend and database flag are used.
+    - db:
+        type: file
+        description: |
+          Search database file corresponding to the chosen search mode. Uses --dmnd_db
+          for diamond/novel_fams, --mmseqs_db for mmseqs, --database for hmmer, or
+          --annotate_hits_table/--cache for no_search/cache modes. May be null/empty
+          when the database is already present in eggnog_data_dir.
+        pattern: "*.{dmnd,db,h3m,hmm}"
         ontologies: []
   - eggnog_data_dir:
       type: directory
-      description: Directory containing eggnog database files (e.g. eggnog-mapper/data)
+      description: |
+        Directory containing eggnog-mapper database files
+        (e.g. downloaded via download_eggnog_data.py)
       pattern: "*"
-  - search_mode:
-      type: string
-      description: |
-        Search mode for eggnog-mapper. One of: diamond, mmseqs, hmmer, no_search, cache, novel_fams.
-  - db:
-      type: file
-      description: |
-        Search database file. The appropriate flag is automatically selected based on search_mode:
-        --dmnd_db for diamond/novel_fams, --mmseqs_db for mmseqs, -d for hmmer.
-        Optional when the database is already present in eggnog_data_dir.
-      pattern: "*.{dmnd,idx,h3m}"
-      ontologies: []
 output:
   annotations:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
       - "*.emapper.annotations":
           type: file
-          description: TSV with the results from the annotation phase
+          description: TSV file with the results from the annotation phase, including
+            functional annotations, GO terms, KEGG pathways, and COG categories
           pattern: "*.emapper.annotations"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   orthologs:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
       - "*.emapper.seed_orthologs":
           type: file
-          description: TSV with the results from parsing the hits, linking queries with
-            seed orthologs (with commented metadata)
+          description: TSV file with the results from parsing the hits, linking queries
+            with their best seed orthologs (includes commented metadata header)
           pattern: "*.emapper.seed_orthologs"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   hits:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
       - "*.emapper.hits":
           type: file
-          description: TSV with the results from the Diamond search phase
+          description: TSV file with the raw search hits from the Diamond/MMseqs2/HMMER
+            search phase before annotation
           pattern: "*.emapper.hits"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions_eggnogmapper:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - eggnog-mapper:
+          type: string
+          description: The name of the tool
+      - emapper.py --version 2>&1 | grep -o 'emapper-[0-9]\+\.[0-9]\+\.[0-9]\+' | sed 's/emapper-//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - eggnog-mapper:
+          type: string
+          description: The name of the tool
+      - emapper.py --version 2>&1 | grep -o 'emapper-[0-9]\+\.[0-9]\+\.[0-9]\+' | sed 's/emapper-//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@vagkaratzas"
 maintainers:
