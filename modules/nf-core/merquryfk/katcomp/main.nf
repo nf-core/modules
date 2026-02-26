@@ -14,9 +14,9 @@ process MERQURYFK_KATCOMP {
     output:
     tuple val(meta), path("*.{png,pdf}"), emit: images
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    tuple val("${task.process}"), val('merquryfk'), eval('echo 1.2'), emit: versions_merquryfk, topic: versions
+    tuple val("${task.process}"), val('merquryfk'), val('1.2'), emit: versions_merquryfk, topic: versions
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    tuple val("${task.process}"), val('fastk'), eval('echo 1.2'), emit: versions_fastk, topic: versions
+    tuple val("${task.process}"), val('fastk'), val('1.2'), emit: versions_fastk, topic: versions
     tuple val("${task.process}"), val('R'), eval('R --version | sed "1!d; s/.*version //; s/ .*//"'), emit: versions_r, topic: versions
 
     when:

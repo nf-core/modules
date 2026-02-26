@@ -115,7 +115,7 @@ def generateReadgroupBCLCONVERT(ch_fastq_list_csv, ch_fastq) {
                     def fastq2 = row.Read2File ? fastq_list.find { fq -> file(fq).name == file(row.Read2File).name } : null
 
                     // set fastq metadata
-                    def new_meta = meta + [id: row.RGSM, readgroup: rg, single_end: !fastq2]
+                    def new_meta = meta + [id: fastq1.getSimpleName().toString() - ~/_R[0-9]_001.*$/, readgroup: rg, single_end: !fastq2]
 
                     meta_fastq << [new_meta, fastq2 ? [fastq1, fastq2] : [fastq1]]
                 }
