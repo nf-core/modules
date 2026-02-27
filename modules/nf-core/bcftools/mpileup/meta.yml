@@ -24,10 +24,15 @@ input:
         description: Input BAM file
         pattern: "*.{bam}"
         ontologies: []
-    - intervals:
+    - intervals_mpileup:
         type: file
         description: Input intervals file. A file (commonly '.bed') containing regions
-          to subset
+          to subset used by mpileup
+        ontologies: []
+    - intervals_call:
+        type: file
+        description: Input intervals file. A file (commonly '.bed') containing regions
+          to subset used by call but need a fourth column with REF,ALT
         ontologies: []
   - - meta2:
         type: map

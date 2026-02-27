@@ -8,7 +8,7 @@ process BCFTOOLS_MPILEUP {
         : 'community.wave.seqera.io/library/bcftools_htslib:0a3fa2654b52006f'}"
 
     input:
-    tuple val(meta), path(bam), path(intervals)
+    tuple val(meta), path(bam), path(intervals_mpileup), path(intervals_call)
     tuple val(meta2), path(fasta), path(fai)
     val save_mpileup
 
@@ -29,7 +29,8 @@ process BCFTOOLS_MPILEUP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def mpileup = save_mpileup ? "| tee ${prefix}.mpileup" : ""
     def bgzip_mpileup = save_mpileup ? "bgzip ${prefix}.mpileup" : ""
-    def intervals_cmd = intervals ? "-T ${intervals}" : ""
+    def intervals_mpileup_cmd = intervals_mpileup ? "-T ${intervals_mpileup}" : ""
+    def intervals_call_cmd = intervals_call ? "-T ${intervals_call}" : ""
     """
     echo "${meta.id}" > sample_name.list
 
@@ -38,9 +39,9 @@ process BCFTOOLS_MPILEUP {
         --fasta-ref ${fasta} \\
         ${args} \\
         ${bam} \\
-        ${intervals_cmd} \\
+        ${intervals_mpileup_cmd} \\
         ${mpileup} \\
-        | bcftools call --output-type v ${args2} ${intervals_cmd} \\
+        | bcftools call --output-type v ${args2} ${intervals_call_cmd} \\
         | bcftools reheader --samples sample_name.list \\
         | bcftools view --output-file ${prefix}.vcf.gz --output-type z ${args3}
 
