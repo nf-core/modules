@@ -57,10 +57,15 @@ workflow BCL_DEMULTIPLEX {
         ch_runinfo = ch_runinfo.mix(BCLCONVERT.out.runinfo)
         ch_fastq_with_meta = ch_fastq_with_meta.mix(
             generateReadgroupBCLCONVERT(
-                BCLCONVERT.out.reports.map { meta, reports ->
-                    return [meta, reports.find { report -> report.name == "fastq_list.csv" }]
+                BCLCONVERT.out.reports
+                    .map { meta, reports_dir ->
+                        def csvFile = reports_dir.find { report -> report.name == "fastq_list.csv"} ?:
+                            reports_dir.eachFileRecurse { report_file ->
+                                report_file.name == "fastq_list.csv"
+                            }
+                    return [meta, csvFile]
                 },
-                BCLCONVERT.out.fastq,
+                BCLCONVERT.out.fastq
             )
         )
     }
@@ -72,7 +77,7 @@ workflow BCL_DEMULTIPLEX {
         ch_interop = ch_interop.mix(BCL2FASTQ.out.interop)
         ch_reports = ch_reports.mix(BCL2FASTQ.out.reports)
         ch_stats = ch_stats.mix(BCL2FASTQ.out.stats)
-        ch_runinfo = ch_runinfo.mix(BCL2FASTQ.out.runinfo)
+        ch_runinfo = ch_runinfo.mix(BCL2FASTQ.out.xml)
         ch_fastq_with_meta = ch_fastq_with_meta.mix(
             generateReadgroupBCL2FASTQ(
                 BCL2FASTQ.out.fastq
@@ -92,21 +97,19 @@ workflow BCL_DEMULTIPLEX {
     // Generate MultiQC report for demultiplexing step
     ch_sav_input = ch_runinfo.join(ch_interop)
     ch_mqc_input = ch_reports.mix(ch_stats).map { _meta, files -> files.flatten() }
-    if (demultiplexer == "bclconvert") {
-        MULTIQCSAV(
-            ch_sav_input,
-            ch_mqc_input,
-            [],
-            [],
-            [],
-            [],
-            []
-        )
+    MULTIQCSAV(
+        ch_sav_input,
+        ch_mqc_input,
+        [],
+        [],
+        [],
+        [],
+        []
+    )
 
-        ch_multiqc_report  = MULTIQCSAV.out.report
-        ch_multiqc_data    = MULTIQCSAV.out.data
-        ch_multiqc_plots   = MULTIQCSAV.out.plots
-    }
+    ch_multiqc_report  = MULTIQCSAV.out.report
+    ch_multiqc_data    = MULTIQCSAV.out.data
+    ch_multiqc_plots   = MULTIQCSAV.out.plots
 
     emit:
     fastq           = ch_fastq.fastq
