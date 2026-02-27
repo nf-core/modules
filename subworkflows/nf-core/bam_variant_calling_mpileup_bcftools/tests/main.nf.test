@@ -7,9 +7,11 @@ nextflow_workflow {
     workflow "BAM_VARIANT_CALLING_MPILEUP_BCFTOOLS"
 
     tag "subworkflows"
-    tag "subworkflows_local"
+    tag "subworkflows_nfcore"
     tag "subworkflows/bam_variant_calling_mpileup_bcftools"
+    tag "subworkflows/vcf_gather_bcftools"
     tag "bam_variant_calling_mpileup_bcftools"
+    tag "vcf_gather_bcftools"
 
     tag "gawk"
     tag "tabix"
@@ -19,9 +21,6 @@ nextflow_workflow {
     tag "bcftools/annotate"
     tag "bcftools/merge"
     tag "bcftools/concat"
-
-    tag "subworkflows_nfcore"
-    tag "vcf_gather_bcftools"
 
     test("Two individuals and two chromosomes, sort and annotate") {
         setup { // Change CHR\tPOS\tREF\tALT to CHR\tPOS\tREF,tALT
