@@ -9,7 +9,7 @@ process SAMTOOLS_ADDREPLACERG {
 
     input:
     tuple val(meta), path(input)
-    tuple val(meta1), path(fasta), path(fai), path(gzi)
+    tuple val(meta2), path(fasta), path(fai), path(gzi)
 
     output:
     tuple val(meta), path("${prefix}.bam") , emit: bam , optional: true

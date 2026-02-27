@@ -26,6 +26,27 @@ input:
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
         ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Reference file the CRAM was created with (optional)
+        pattern: "*.{fasta,fa}"
+        ontologies: []
+    - fai:
+        type: file
+        description: Index of the reference file the CRAM was created with (optional)
+        pattern: "*.fai"
+        ontologies: []
+    - gzi:
+        type: file
+        description: Index of the compressed reference file the CRAM was created with
+          (optional)
+        pattern: "*.gzi"
+        ontologies: []
 output:
   bam:
     - - meta:
@@ -33,10 +54,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.bam":
+      - "${prefix}.bam":
           type: file
           description: BAM file with updated RG tags
-          pattern: "*.bam"
+          pattern: "${prefix}.bam"
           ontologies: []
   cram:
     - - meta:
@@ -44,10 +65,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.cram":
+      - "${prefix}.cram":
           type: file
           description: CRAM file with updated RG tags
-          pattern: "*.cram"
+          pattern: "${prefix}.cram"
           ontologies: []
   sam:
     - - meta:
@@ -55,10 +76,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.sam":
+      - "${prefix}.sam":
           type: file
           description: SAM file with updated RG tags
-          pattern: "*.sam"
+          pattern: "${prefix}.sam"
           ontologies: []
   versions_samtools:
     - - ${task.process}:
