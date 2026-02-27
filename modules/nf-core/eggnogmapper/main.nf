@@ -26,9 +26,10 @@ process EGGNOGMAPPER {
     def prefix        = task.ext.prefix          ?: "${meta.id}"
     def is_compressed = fasta.extension == '.gz' ? true           : false
     def fasta_name    = is_compressed            ? fasta.baseName : "$fasta"
-    def db_flags      = ['diamond': '--dmnd_db', 'novel_fams': '--dmnd_db', 'mmseqs': '--mmseqs_db', 'hmmer': '--database', 'no_search': '--annotate_hits_table', 'cache': '--cache']
-    def db_arg        = db && db_flags[search_mode]  ? "${db_flags[search_mode]} $db" : ''
-    def dbmem         = task.memory.toMega() > 40000 ? '--dbmem'                      : ''
+    def db_flags = ['diamond': '--dmnd_db', 'novel_fams': '--dmnd_db', 'mmseqs': '--mmseqs_db', 'hmmer': '--database', 'no_search': '--annotate_hits_table', 'cache': '--cache']
+    def db_path  = (db instanceof Path && db.isDirectory()) ? "${db}/${db.name}"                    : "$db"
+    def db_arg   = db && db_flags[search_mode]              ? "${db_flags[search_mode]} ${db_path}" : ''
+    def dbmem    = task.memory.toMega() > 40000             ? '--dbmem'                             : ''
     """
     if [ "$is_compressed" == "true" ]; then
         gzip -c -d $fasta > $fasta_name
