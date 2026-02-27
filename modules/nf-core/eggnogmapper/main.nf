@@ -14,8 +14,8 @@ process EGGNOGMAPPER {
 
     output:
     tuple val(meta), path("*.emapper.annotations")   , emit: annotations
-    tuple val(meta), path("*.emapper.seed_orthologs"), emit: orthologs
-    tuple val(meta), path("*.emapper.hits")          , emit: hits
+    tuple val(meta), path("*.emapper.seed_orthologs"), emit: orthologs, optional: true
+    tuple val(meta), path("*.emapper.hits")          , emit: hits     , optional: true
     tuple val("${task.process}"), val('eggnog-mapper'), eval("emapper.py --version 2>&1 | grep -o 'emapper-[0-9]\\+\\.[0-9]\\+\\.[0-9]\\+' | sed 's/emapper-//'"), topic: versions, emit: versions_eggnogmapper
 
     when:
