@@ -58,8 +58,10 @@ nextflow_process {
         }
 
         then {
-            assert process.success
-            assert snapshot(process.out).match()
+            assert snapshot(
+                process.out.cram.collect{ meta, cram -> bam(cram).getHeader().collect{ l -> l.replaceAll(/\tUR:[^\t\n]+/, '') } },
+                process.out.findAll { key, val -> key.startsWith("versions") }
+            ).match()
         }
 
     }

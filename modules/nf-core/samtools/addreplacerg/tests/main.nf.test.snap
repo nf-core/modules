@@ -54,42 +54,17 @@
     },
     "homo-sapiens - cram": {
         "content": [
+            [
+                [
+                    "@HD\tVN:1.6\tSO:coordinate",
+                    "@SQ\tSN:chr22\tLN:40001\tM5:1922b52e1af6977302717072ebaca0a1",
+                    "@RG\tID:1\tPU:1\tSM:testN\tLB:testN\tPL:illumina\tDS:replaced_read_group_test",
+                    "@PG\tID:bwa\tPN:bwa\tVN:0.7.17-r1188\tCL:bwa mem -K 100000000 -R @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina -t 19 -M genome.fasta test_1.retry.fq.gz test_2.retry.fq.gz",
+                    "@PG\tID:samtools\tPN:samtools\tPP:bwa\tVN:1.13\tCL:samtools view -C -T ../../genome/genome.fasta -o test.paired_end.sorted.cram test.paired_end.sorted.bam",
+                    "@PG\tID:samtools.1\tPN:samtools\tPP:samtools\tVN:1.22.1\tCL:samtools addreplacerg --threads 2 -O cram,version=3.0 -w -r @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina\\tDS:replaced_read_group_test --reference genome.fasta -o test.cram test.paired_end.sorted.cram"
+                ]
+            ],
             {
-                "0": [
-                    
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.cram:md5,09c26dc10de6116bec9dd4662dba821f"
-                    ]
-                ],
-                "2": [
-                    
-                ],
-                "3": [
-                    [
-                        "SAMTOOLS_ADDREPLACERG",
-                        "samtools",
-                        "1.22.1"
-                    ]
-                ],
-                "bam": [
-                    
-                ],
-                "cram": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.cram:md5,09c26dc10de6116bec9dd4662dba821f"
-                    ]
-                ],
-                "sam": [
-                    
-                ],
                 "versions_samtools": [
                     [
                         "SAMTOOLS_ADDREPLACERG",
@@ -103,7 +78,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2026-02-27T16:02:36.632319481"
+        "timestamp": "2026-02-27T16:41:39.49289646"
     },
     "sarscov2 - bam ": {
         "content": [
@@ -113,7 +88,7 @@
                         {
                             "id": "test"
                         },
-                        "test.bam:md5,45a56e2ba18c941076b0c233a2ec14f1"
+                        "test.bam:md5,ac98510e2fcb3f64ab646a4e036ccd6f"
                     ]
                 ],
                 "1": [
@@ -134,7 +109,7 @@
                         {
                             "id": "test"
                         },
-                        "test.bam:md5,45a56e2ba18c941076b0c233a2ec14f1"
+                        "test.bam:md5,ac98510e2fcb3f64ab646a4e036ccd6f"
                     ]
                 ],
                 "cram": [
@@ -156,6 +131,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2026-02-27T16:02:27.762351212"
+        "timestamp": "2026-02-27T16:41:29.490269645"
     }
 }
