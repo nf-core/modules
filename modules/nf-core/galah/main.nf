@@ -13,7 +13,7 @@ process GALAH {
     output:
     tuple val(meta), path("*.tsv")      , emit: tsv
     tuple val(meta), path("${prefix}/*"), emit: dereplicated_bins
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('galah'), eval('galah --version | sed "s/galah //"'), emit: versions_galah, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,11 +37,6 @@ process GALAH {
         --output-cluster-definition ${prefix}.tsv \\
         --output-representative-fasta-directory ${prefix} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        galah: \$(galah --version | sed 's/galah //')
-    END_VERSIONS
     """
 
     stub:
@@ -50,10 +45,5 @@ process GALAH {
     mkdir ${prefix}/
     touch ${prefix}/test.fa
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        galah: \$(galah --version | sed 's/galah //')
-    END_VERSIONS
     """
 }

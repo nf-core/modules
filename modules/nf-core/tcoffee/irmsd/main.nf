@@ -13,7 +13,8 @@ process TCOFFEE_IRMSD {
 
     output:
     tuple val(meta), path ("${prefix}.irmsd"), emit: irmsd
-    path "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val('tcoffee'), eval('t_coffee -version | awk \'{gsub("Version_", ""); print \\$3}\''), emit: versions_tcoffee, topic: versions
+    tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,26 +33,13 @@ process TCOFFEE_IRMSD {
         \$(basename $msa .gz) \
         $args \
         -template_file $template > ${prefix}.irmsd
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${msa.baseName}"
     """
     # Otherwise, tcoffee will crash when calling its version
     export TEMP='./'
     touch ${prefix}.irmsd
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
-    END_VERSIONS
     """
 }

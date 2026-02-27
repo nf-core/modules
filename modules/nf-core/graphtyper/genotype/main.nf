@@ -24,8 +24,8 @@ process GRAPHTYPER_GENOTYPE {
     script:
     def args          = task.ext.args ?: ''
     def bam_path_text = bam.sort().join('\\n')
-    def region_text   = region_file.size() > 0 ? "--region_file ${region_file}" : ""
-    if (region_file.size() == 0 && ! args.contains("region")) {
+    def region_text   = region_file ? "--region_file ${region_file}" : ""
+    if (!region_file && ! args.contains("region")) {
         error "GRAPHTYPER_GENOTYPE requires either a region file or a region specified using '--region' in ext.args"
     }
     """

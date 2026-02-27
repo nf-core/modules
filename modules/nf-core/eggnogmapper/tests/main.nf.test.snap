@@ -1,86 +1,48 @@
 {
-    "hits": {
-        "content": [
-            true
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-08-28T10:51:01.677075785"
-    },
-    "versions--empty-params": {
+    "sarscov2 - proteome - diamond": {
         "content": [
             [
-                {
-                    "EGGNOGMAPPER": {
-                        "eggnog-mapper": "2.1.12"
-                    }
-                }
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-08-28T10:51:25.522521855"
-    },
-    "versions": {
-        "content": [
+                "##",
+                "#query\tseed_ortholog\tevalue\tscore\teggNOG_OGs\tmax_annot_lvl\tCOG_category\tDescription\tPreferred_name\tGOs\tEC\tKEGG_ko\tKEGG_Pathway\tKEGG_Module\tKEGG_Reaction\tKEGG_rclass\tBRITE\tKEGG_TC\tCAZy\tBiGG_Reaction\tPFAMs",
+                "ENSSASP00005000002.1\tENSSASP00005000002.1\t0.0\t14179.0\tCOG0498@1|root,COG0498@2|Bacteria,1MUWQ@1224|Proteobacteria,2VHR6@28216|Betaproteobacteria,2KUMA@206389|Rhodocyclales\t1224|Proteobacteria\tE\tthreonine synthase\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-",
+                "## 12 queries scanned"
+            ],
             [
-                {
-                    "EGGNOGMAPPER": {
-                        "eggnog-mapper": "2.1.12"
-                    }
-                }
-            ]
+                "#qseqid\tsseqid\tevalue\tbitscore\tqstart\tqend\tsstart\tsend\tpident\tqcov\tscov",
+                "ENSSASP00005000002.1\tENSSASP00005000002.1\t0.0\t14179.0\t1\t7096\t1\t7096\t100.0\t100.0\t100.0",
+                "ENSSASP00005000003.1\tENSSASP00005000003.1\t0.0\t8659.0\t1\t4405\t1\t4405\t100.0\t100.0\t100.0",
+                "ENSSASP00005000004.1\tENSSASP00005000004.1\t0.0\t2469.0\t1\t1273\t1\t1273\t100.0\t100.0\t100.0",
+                "ENSSASP00005000005.1\tENSSASP00005000005.1\t2.54e-286\t769.0\t1\t419\t1\t419\t100.0\t100.0\t100.0",
+                "ENSSASP00005000006.1\tENSSASP00005000006.1\t4.58e-205\t551.0\t1\t275\t1\t275\t100.0\t100.0\t100.0",
+                "ENSSASP00005000007.1\tENSSASP00005000007.1\t4.9e-160\t433.0\t1\t222\t1\t222\t100.0\t100.0\t100.0",
+                "ENSSASP00005000008.1\tENSSASP00005000008.1\t5.64e-94\t258.0\t1\t121\t1\t121\t100.0\t100.0\t100.0",
+                "ENSSASP00005000009.1\tENSSASP00005000009.1\t1.44e-87\t242.0\t1\t121\t1\t121\t100.0\t100.0\t100.0",
+                "ENSSASP00005000010.1\tENSSASP00005000010.1\t1.14e-47\t137.0\t1\t75\t1\t75\t100.0\t100.0\t100.0",
+                "ENSSASP00005000011.1\tENSSASP00005000011.1\t3.07e-39\t115.0\t1\t61\t1\t61\t100.0\t100.0\t100.0",
+                "ENSSASP00005000012.1\tENSSASP00005000012.1\t6.59e-20\t65.5\t1\t43\t1\t43\t100.0\t100.0\t100.0",
+                "ENSSASP00005000013.1\tENSSASP00005000013.1\t1.07e-25\t79.7\t1\t38\t1\t38\t100.0\t100.0\t100.0",
+                "## 12 queries scanned"
+            ],
+            "test.emapper.hits:md5,9ab2e1810b911f2e6c63f8c0f998ee83",
+            {
+                "versions_eggnogmapper": [
+                    [
+                        "EGGNOGMAPPER",
+                        "eggnog-mapper",
+                        "2.1.13"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.4"
         },
-        "timestamp": "2025-08-28T10:51:02.042174914"
+        "timestamp": "2026-02-26T14:41:08.245249413"
     },
-    "hits--emptyparams": {
-        "content": [
-            true
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-08-28T10:51:25.448709571"
-    },
-    "Should search for protein annotations against the eggnogmapper db - stub": {
+    "sarscov2 - proteome - diamond - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.emapper.annotations:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.emapper.seed_orthologs:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.emapper.hits:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "3": [
-                    "versions.yml:md5,d3e4efad28b5a924585ea3dfcf72c32c"
-                ],
                 "annotations": [
                     [
                         {
@@ -105,20 +67,69 @@
                         "test.emapper.seed_orthologs:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,d3e4efad28b5a924585ea3dfcf72c32c"
+                "versions_eggnogmapper": [
+                    [
+                        "EGGNOGMAPPER",
+                        "eggnog-mapper",
+                        "2.1.13"
+                    ]
                 ]
-            },
-            {
-                "EGGNOGMAPPER": {
-                    "eggnog-mapper": "2.1.12"
-                }
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.4"
         },
-        "timestamp": "2025-08-28T09:54:40.344995769"
+        "timestamp": "2026-02-26T13:49:53.898972887"
+    },
+    "sarscov2 - proteome - mmseqs": {
+        "content": [
+            [
+                "##",
+                "#query\tseed_ortholog\tevalue\tscore\teggNOG_OGs\tmax_annot_lvl\tCOG_category\tDescription\tPreferred_name\tGOs\tEC\tKEGG_ko\tKEGG_Pathway\tKEGG_Module\tKEGG_Reaction\tKEGG_rclass\tBRITE\tKEGG_TC\tCAZy\tBiGG_Reaction\tPFAMs",
+                "ENSSASP00005000002.1\tENSSASP00005000002.1\t0.0\t12938.0\tCOG0498@1|root,COG0498@2|Bacteria,1MUWQ@1224|Proteobacteria,2VHR6@28216|Betaproteobacteria,2KUMA@206389|Rhodocyclales\t1224|Proteobacteria\tE\tthreonine synthase\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-",
+                "## 12 queries scanned"
+            ],
+            24,
+            12,
+            {
+                "versions_eggnogmapper": [
+                    [
+                        "EGGNOGMAPPER",
+                        "eggnog-mapper",
+                        "2.1.13"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-02-27T09:49:08.050484472"
+    },
+    "sarscov2 - proteome - no_search": {
+        "content": [
+            [
+                "##",
+                "#query\tseed_ortholog\tevalue\tscore\teggNOG_OGs\tmax_annot_lvl\tCOG_category\tDescription\tPreferred_name\tGOs\tEC\tKEGG_ko\tKEGG_Pathway\tKEGG_Module\tKEGG_Reaction\tKEGG_rclass\tBRITE\tKEGG_TC\tCAZy\tBiGG_Reaction\tPFAMs",
+                "ENSSASP00005000002.1\tENSSASP00005000002.1\t0.0\t14179.0\tCOG0498@1|root,COG0498@2|Bacteria,1MUWQ@1224|Proteobacteria,2VHR6@28216|Betaproteobacteria,2KUMA@206389|Rhodocyclales\t1224|Proteobacteria\tE\tthreonine synthase\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-",
+                "## 12 queries scanned"
+            ],
+            {
+                "versions_eggnogmapper": [
+                    [
+                        "EGGNOGMAPPER",
+                        "eggnog-mapper",
+                        "2.1.13"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-02-27T10:49:12.14219149"
     }
 }

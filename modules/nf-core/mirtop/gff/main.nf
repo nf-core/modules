@@ -41,11 +41,10 @@ process MIRTOP_GFF {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir mirtop
-    touch mirtop/mirtop.gff
+    touch mirtop/${prefix}_mirtop.gff
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

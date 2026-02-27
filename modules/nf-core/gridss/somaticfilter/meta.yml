@@ -1,6 +1,6 @@
 name: "gridss_somaticfilter"
-description: GRIDSS is a module software suite containing tools useful for the detection
-  of genomic rearrangements.
+description: GRIDSS is a module software suite containing tools useful for the
+  detection of genomic rearrangements.
 keywords:
   - gridss
   - structural variants
@@ -12,7 +12,8 @@ tools:
       documentation: "https://github.com/PapenfussLab/gridss/wiki/GRIDSS-Documentation"
       tool_dev_url: "https://github.com/PapenfussLab/gridss"
       doi: "10.1186/s13059-021-02423-x"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:gridss
 input:
   - - meta:
@@ -32,8 +33,8 @@ input:
           e.g. [ id:'test']
     - pondir:
         type: directory
-        description: Directory containing Panel Of Normal bed/bedpe used to filter FP
-          somatic events. Use gridss.GeneratePonBedpe to generate the PON.
+        description: Directory containing Panel Of Normal bed/bedpe used to filter
+          FP somatic events. Use gridss.GeneratePonBedpe to generate the PON.
 output:
   high_conf_sv:
     - - meta:
@@ -57,13 +58,27 @@ output:
           description: VCF file including all somatic SVs
           pattern: "*.vcf.bgz"
           ontologies: []
+  versions_gridss:
+    - - ${task.process}:
+          type: string
+          description: The process
+      - gridss:
+          type: string
+          description: The tool name
+      - "echo \\$(GeneratePonBedpe --version 2>&1) | sed 's/-gridss//'":
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process
+      - gridss:
+          type: string
+          description: The tool name
+      - "echo \\$(GeneratePonBedpe --version 2>&1) | sed 's/-gridss//'":
+          type: eval
+          description: The command used to generate the version of the tool
 authors:
   - "@kubranarci"
 maintainers:

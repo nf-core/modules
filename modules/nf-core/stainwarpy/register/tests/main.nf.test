@@ -1,0 +1,89 @@
+nextflow_process {
+
+    name "Test Process STAINWARPY_REGISTER"
+    script "../main.nf"
+    process "STAINWARPY_REGISTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "stainwarpy"
+    tag "stainwarpy/register"
+
+    config "./nextflow.config"
+
+    test("colon_tissue_local - ome.tif") {
+
+        when {
+            params {
+                modules_args = "--feature-tform similarity"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'sample1'],
+                    file(params.modules_testdata_base_path + 'imaging/hne_multiplexed/hne_image_colon.ome.tif', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'sample1'],
+                    file(params.modules_testdata_base_path + 'imaging/hne_multiplexed/multiplexed_single_channel_img.ome.tif', checkIfExists: true)
+                ]
+                input[2] = 'multiplexed'
+                input[3] = 'multiplexed'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.reg_image.get(0).get(1)).exists(),
+                    file(process.out.reg_metrics_tform.get(0).get(1)).exists(),
+                    file(process.out.tform_map.get(0).get(1)).exists(),
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("colon_tissue_local - ome.tif - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                modules_args = null
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'sample1'],
+                    file(params.modules_testdata_base_path + 'imaging/hne_multiplexed/hne_image_colon.ome.tif', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'sample1'],
+                    file(params.modules_testdata_base_path + 'imaging/hne_multiplexed/multiplexed_single_channel_img.ome.tif', checkIfExists: true)
+                ]
+                input[2] = 'multiplexed'
+                input[3] = 'multiplexed'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.reg_image,
+                    process.out.reg_metrics_tform,
+                    process.out.tform_map,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    ).match() }
+            )
+        }
+
+    }
+
+}

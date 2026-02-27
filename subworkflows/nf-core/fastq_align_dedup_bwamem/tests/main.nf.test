@@ -76,7 +76,6 @@ nextflow_workflow {
                     workflow.out.samtools_idxstats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
                     ).match() }
             )
         }
@@ -122,7 +121,6 @@ nextflow_workflow {
                     workflow.out.samtools_idxstats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
                     ).match() }
             )
         }
@@ -168,7 +166,6 @@ nextflow_workflow {
                     workflow.out.samtools_idxstats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
                     ).match() }
             )
         }
@@ -206,8 +203,12 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect{ path(it).yaml }
+                    workflow.out.bam,
+                    workflow.out.bai,
+                    workflow.out.samtools_flagstat,
+                    workflow.out.samtools_stats,
+                    workflow.out.samtools_idxstats,
+                    workflow.out.picard_metrics,
                 ).match() }
             )
         }

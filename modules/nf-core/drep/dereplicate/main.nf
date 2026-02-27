@@ -23,7 +23,6 @@ process DREP_DEREPLICATE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     if [[ ! -d drep_work/ ]]; then
         mkdir drep_work/

@@ -12,7 +12,7 @@ process COOLER_ZOOMIFY {
 
     output:
     tuple val(meta), path("*.mcool"), emit: mcool
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('cooler'), eval('cooler --version 2>&1 | sed "s/cooler, version //"'), emit: versions_cooler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,21 +26,11 @@ process COOLER_ZOOMIFY {
         -n $task.cpus \\
         -o ${prefix}.mcool \\
         $cool
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cooler: \$(cooler --version 2>&1 | sed 's/cooler, version //')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.mcool
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cooler: \$(cooler --version 2>&1 | sed 's/cooler, version //')
-    END_VERSIONS
     """
 }

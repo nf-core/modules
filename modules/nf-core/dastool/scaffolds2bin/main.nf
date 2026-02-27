@@ -1,11 +1,3 @@
-def deprecation_message = """
-WARNING: This module has been deprecated. Please use nf-core/modules/dastool/fastatocontig2bin
-
-Reason:
-This tool has been renamed in newer versions of DAS_Tool, so any changes
-to this tool will not be tracked by this module.
-"""
-
 process DASTOOL_SCAFFOLDS2BIN {
     tag "$meta.id"
     label 'process_single'
@@ -28,6 +20,12 @@ process DASTOOL_SCAFFOLDS2BIN {
     task.ext.when == null || task.ext.when
 
     script:
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/dastool/fastatocontig2bin
+
+Reason:
+This tool has been renamed in newer versions of DAS_Tool, so any changes
+to this tool will not be tracked by this module.
+"""
     assert false: deprecation_message
-    """
 }

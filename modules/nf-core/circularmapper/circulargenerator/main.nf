@@ -47,7 +47,6 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     """
 
     stub:
-    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_${elongation_factor}.fasta

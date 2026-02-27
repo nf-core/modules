@@ -14,17 +14,18 @@ process SAWFISH_JOINTCALL {
     tuple val(meta4), path(sample_csv)
 
     output:
-    tuple val(meta), path("*/*_genotyped.sv.vcf.gz")               , emit: vcf
-    tuple val(meta), path("*/*_genotyped.sv.vcf.gz.tbi")           , emit: tbi
-    tuple val(meta), path("*/contig.alignment.bam")                , emit: bam
-    tuple val(meta), path("*/contig.alignment.bam.csi")            , emit: bam_index
-    tuple val(meta), path("*/run.stats.json")                      , emit: stats
-    tuple val(meta), path("*/samples/*/depth.bw")                  , emit: depth_bw
-    tuple val(meta), path("*/samples/*/copynum.bedgraph")          , emit: copynum_bedgraph          , optional: true
-    tuple val(meta), path("*/samples/*/gc_bias_corrected_depth.bw"), emit: gc_bias_corrected_depth_bw, optional: true
-    tuple val(meta), path("*/samples/*/copynum.summary.json")      , emit: copynum_summary           , optional: true
-    tuple val(meta), path("*/sawfish.log")                         , emit: log
-    path "versions.yml"                                            , emit: versions
+    tuple val(meta), path("*/*_genotyped.sv.vcf.gz")                                             , emit: vcf
+    tuple val(meta), path("*/*_genotyped.sv.vcf.gz.tbi")                                         , emit: tbi
+    tuple val(meta), path("*/contig.alignment.bam")                                              , emit: bam
+    tuple val(meta), path("*/contig.alignment.bam.csi")                                          , emit: bam_index
+    tuple val(meta), path("*/run.stats.json")                                                    , emit: stats
+    tuple val(meta), path("*/samples/*/depth.bw")                                                , emit: depth_bw
+    tuple val(meta), path("*/samples/*/copynum.bedgraph")                                        , emit: copynum_bedgraph          , optional: true
+    tuple val(meta), path("*/samples/*/gc_bias_corrected_depth.bw")                              , emit: gc_bias_corrected_depth_bw, optional: true
+    tuple val(meta), path("*/samples/*/copynum.summary.json")                                    , emit: copynum_summary           , optional: true
+    tuple val(meta), path("*/samples/*/maf.bw")                                                  , emit: maf_bw                    , optional: true
+    tuple val(meta), path("*/sawfish.log")                                                       , emit: log
+    tuple val("${task.process}"), val("sawfish"), eval('sawfish --version | sed "s/sawfish //g"'), emit: versions_sawfish          , topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -54,15 +55,13 @@ process SAWFISH_JOINTCALL {
     if [ -f ${prefix}/genotyped.sv.vcf.gz.tbi ]; then
         mv ${prefix}/genotyped.sv.vcf.gz.tbi ${prefix}/${prefix}_genotyped.sv.vcf.gz.tbi
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sawfish: \$(sawfish --version | sed 's/sawfish //g')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    // Relative paths are resolved with respect to the pipeline's working directory and task.workDir is unavailable.
+    // It's more straightforward to construct the path for maf.mpack here and test for its existence in the script
+    def maf_mpack = sample_dirs[0].resolve("maf.mpack")
     """
     mkdir -p ${prefix}/samples/sample0001_test/
     echo \"\" | gzip > ${prefix}/${prefix}_genotyped.sv.vcf.gz
@@ -76,9 +75,7 @@ process SAWFISH_JOINTCALL {
     touch ${prefix}/samples/sample0001_test/gc_bias_corrected_depth.bw
     touch ${prefix}/samples/sample0001_test/copynum.summary.json
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sawfish: \$(sawfish --version | sed 's/sawfish //g')
-    END_VERSIONS
+    # Output maf.bw if and only if maf.mpack exists in the input sample directory
+    [ -f ${maf_mpack} ] && touch ${prefix}/samples/sample0001_test/maf.bw
     """
 }

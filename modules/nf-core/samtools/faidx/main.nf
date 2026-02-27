@@ -8,8 +8,7 @@ process SAMTOOLS_FAIDX {
         'biocontainers/samtools:1.22.1--h96c455f_0' }"
 
     input:
-    tuple val(meta), path(fasta)
-    tuple val(meta2), path(fai)
+    tuple val(meta), path(fasta), path(fai)
     val get_sizes
 
     output:

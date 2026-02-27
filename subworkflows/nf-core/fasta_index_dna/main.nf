@@ -20,7 +20,6 @@ workflow FASTA_INDEX_DNA {
     main:
 
     ch_aligner_index    = channel.empty()
-    ch_versions         = channel.empty()
 
     if (val_aligner != "snap") {
         ch_altliftover
@@ -32,7 +31,6 @@ workflow FASTA_INDEX_DNA {
     if (val_aligner == 'bowtie2') {
         BOWTIE2_BUILD(ch_fasta)
         ch_aligner_index = BOWTIE2_BUILD.out.index
-        ch_versions = BOWTIE2_BUILD.out.versions
     } else if (val_aligner == 'bwamem') {
         BWAMEM1_INDEX(ch_fasta)
         ch_aligner_index = BWAMEM1_INDEX.out.index
@@ -40,25 +38,19 @@ workflow FASTA_INDEX_DNA {
     } else if (val_aligner == 'bwamem2') {
         BWAMEM2_INDEX(ch_fasta)
         ch_aligner_index = BWAMEM2_INDEX.out.index
-        ch_versions = BWAMEM2_INDEX.out.versions
     } else if (val_aligner == 'dragmap') {
         DRAGMAP_HASHTABLE(ch_fasta)
         ch_aligner_index = DRAGMAP_HASHTABLE.out.hashmap
-        ch_versions = DRAGMAP_HASHTABLE.out.versions
     } else if (val_aligner == 'snap') {
-
         ch_snap_reference = ch_fasta
             .combine(ch_altliftover)
             .map { meta, fasta_, _meta2, liftover -> [meta, fasta_, [], [], liftover] }
-
         SNAP_INDEX(ch_snap_reference)
         ch_aligner_index = SNAP_INDEX.out.index
-        ch_versions = SNAP_INDEX.out.versions
     } else {
         error "Unknown aligner: ${val_aligner}"
     }
 
     emit:
         index    = ch_aligner_index // channel: [ val(meta), path(index) ]
-        versions = ch_versions      // channel: [ path(versions.yml) ]
 }

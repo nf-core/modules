@@ -1,29 +1,27 @@
 // Run GATK4_MUTECT2 in tumor normal mode, getepileupsummaries, calculatecontamination, learnreadorientationmodel and filtermutectcalls
 
-include { GATK4_MUTECT2                                               } from '../../../modules/nf-core/gatk4/mutect2'
-include { GATK4_LEARNREADORIENTATIONMODEL                             } from '../../../modules/nf-core/gatk4/learnreadorientationmodel'
-include { GATK4_GETPILEUPSUMMARIES as GATK4_GETPILEUPSUMMARIES_TUMOR  } from '../../../modules/nf-core/gatk4/getpileupsummaries'
-include { GATK4_GETPILEUPSUMMARIES as GATK4_GETPILEUPSUMMARIES_NORMAL } from '../../../modules/nf-core/gatk4/getpileupsummaries'
 include { GATK4_CALCULATECONTAMINATION                                } from '../../../modules/nf-core/gatk4/calculatecontamination'
 include { GATK4_FILTERMUTECTCALLS                                     } from '../../../modules/nf-core/gatk4/filtermutectcalls'
+include { GATK4_GETPILEUPSUMMARIES as GATK4_GETPILEUPSUMMARIES_NORMAL } from '../../../modules/nf-core/gatk4/getpileupsummaries'
+include { GATK4_GETPILEUPSUMMARIES as GATK4_GETPILEUPSUMMARIES_TUMOR  } from '../../../modules/nf-core/gatk4/getpileupsummaries'
+include { GATK4_LEARNREADORIENTATIONMODEL                             } from '../../../modules/nf-core/gatk4/learnreadorientationmodel'
+include { GATK4_MUTECT2                                               } from '../../../modules/nf-core/gatk4/mutect2'
 
 workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_GATK {
     take:
-    ch_input                 // channel: [ val(meta), path(input), path(input_index), val(which_norm) ]
-    ch_fasta                 // channel: [ val(meta), path(fasta) ]
-    ch_fai                   // channel: [ val(meta), path(fai), path(gzi) ]
-    ch_dict                  // channel: [ val(meta), path(dict) ]
-    ch_alleles               // channel: /path/to/alleles
-    ch_alleles_tbi           // channel: /path/to/alleles/index
-    ch_germline_resource     // channel: /path/to/germline/resource
+    ch_input // channel: [ val(meta), path(input), path(input_index), val(which_norm) ]
+    ch_fasta // channel: [ val(meta), path(fasta) ]
+    ch_fai // channel: [ val(meta), path(fai), path(gzi) ]
+    ch_dict // channel: [ val(meta), path(dict) ]
+    ch_alleles // channel: /path/to/alleles
+    ch_alleles_tbi // channel: /path/to/alleles/index
+    ch_germline_resource // channel: /path/to/germline/resource
     ch_germline_resource_tbi // channel: /path/to/germline/index
-    ch_panel_of_normals      // channel: /path/to/panel/of/normals
-    ch_panel_of_normals_tbi  // channel: /path/to/panel/of/normals/index
-    ch_interval_file         // channel: /path/to/interval/file
+    ch_panel_of_normals // channel: /path/to/panel/of/normals
+    ch_panel_of_normals_tbi // channel: /path/to/panel/of/normals/index
+    ch_interval_file // channel: /path/to/interval/file
 
     main:
-    versions = Channel.empty()
-
     // Perform variant calling using GATK4_MUTECT2 module in tumor single mode.
     GATK4_MUTECT2(
         ch_input,
@@ -35,7 +33,7 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_GATK {
         ch_germline_resource,
         ch_germline_resource_tbi,
         ch_panel_of_normals,
-        ch_panel_of_normals_tbi
+        ch_panel_of_normals_tbi,
     )
 
     // Generate artifactpriors using learnreadorientationmodel on the f1r2 output of GATK4_MUTECT2.
@@ -82,11 +80,11 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_GATK {
     GATK4_CALCULATECONTAMINATION(ch_calccon_in)
 
     // GATK4_MUTECT2 calls filtered by filtermutectcalls using the artifactpriors, contamination and segmentation tables.
-    ch_vcf         = GATK4_MUTECT2.out.vcf.collect()
-    ch_tbi         = GATK4_MUTECT2.out.tbi.collect()
-    ch_stats       = GATK4_MUTECT2.out.stats.collect()
+    ch_vcf = GATK4_MUTECT2.out.vcf.collect()
+    ch_tbi = GATK4_MUTECT2.out.tbi.collect()
+    ch_stats = GATK4_MUTECT2.out.stats.collect()
     ch_orientation = GATK4_LEARNREADORIENTATIONMODEL.out.artifactprior.collect()
-    ch_segment     = GATK4_CALCULATECONTAMINATION.out.segmentation.collect()
+    ch_segment = GATK4_CALCULATECONTAMINATION.out.segmentation.collect()
 
     // [] is used as a placeholder for optional input to specify the contamination estimate as a value, since the contamination table is used, this is not needed.
     ch_contamination = GATK4_CALCULATECONTAMINATION.out.contamination.map { meta, table -> [meta, table, []] }.collect()
@@ -105,25 +103,17 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_GATK {
         ch_dict,
     )
 
-    versions = versions.mix(GATK4_CALCULATECONTAMINATION.out.versions)
-    versions = versions.mix(GATK4_FILTERMUTECTCALLS.out.versions)
-    versions = versions.mix(GATK4_GETPILEUPSUMMARIES_NORMAL.out.versions)
-    versions = versions.mix(GATK4_GETPILEUPSUMMARIES_TUMOR.out.versions)
-    versions = versions.mix(GATK4_LEARNREADORIENTATIONMODEL.out.versions)
-    versions = versions.mix(GATK4_MUTECT2.out.versions)
-
     emit:
     artifact_priors     = GATK4_LEARNREADORIENTATIONMODEL.out.artifactprior // channel: [ val(meta), path(artifactprior) ]
-    contamination_table = GATK4_CALCULATECONTAMINATION.out.contamination    // channel: [ val(meta), path(table) ]
-    filtered_stats      = GATK4_FILTERMUTECTCALLS.out.stats                 // channel: [ val(meta), path(stats) ]
-    filtered_tbi        = GATK4_FILTERMUTECTCALLS.out.tbi                   // channel: [ val(meta), path(tbi) ]
-    filtered_vcf        = GATK4_FILTERMUTECTCALLS.out.vcf                   // channel: [ val(meta), path(vcf) ]
-    mutect2_f1r2        = GATK4_MUTECT2.out.f1r2                            // channel: [ val(meta), path(f1r2) ]
-    mutect2_stats       = GATK4_MUTECT2.out.stats                           // channel: [ val(meta), path(stats) ]
-    mutect2_tbi         = GATK4_MUTECT2.out.tbi                             // channel: [ val(meta), path(tbi) ]
-    mutect2_vcf         = GATK4_MUTECT2.out.vcf                             // channel: [ val(meta), path(vcf) ]
-    pileup_table_normal = GATK4_GETPILEUPSUMMARIES_NORMAL.out.table         // channel: [ val(meta), path(table) ]
-    pileup_table_tumor  = GATK4_GETPILEUPSUMMARIES_TUMOR.out.table          // channel: [ val(meta), path(table) ]
-    segmentation_table  = GATK4_CALCULATECONTAMINATION.out.segmentation     // channel: [ val(meta), path(table) ]
-    versions                                                                // channel: [ path(versions.yml) ]
+    contamination_table = GATK4_CALCULATECONTAMINATION.out.contamination // channel: [ val(meta), path(table) ]
+    filtered_stats      = GATK4_FILTERMUTECTCALLS.out.stats // channel: [ val(meta), path(stats) ]
+    filtered_tbi        = GATK4_FILTERMUTECTCALLS.out.tbi // channel: [ val(meta), path(tbi) ]
+    filtered_vcf        = GATK4_FILTERMUTECTCALLS.out.vcf // channel: [ val(meta), path(vcf) ]
+    mutect2_f1r2        = GATK4_MUTECT2.out.f1r2 // channel: [ val(meta), path(f1r2) ]
+    mutect2_stats       = GATK4_MUTECT2.out.stats // channel: [ val(meta), path(stats) ]
+    mutect2_tbi         = GATK4_MUTECT2.out.tbi // channel: [ val(meta), path(tbi) ]
+    mutect2_vcf         = GATK4_MUTECT2.out.vcf // channel: [ val(meta), path(vcf) ]
+    pileup_table_normal = GATK4_GETPILEUPSUMMARIES_NORMAL.out.table // channel: [ val(meta), path(table) ]
+    pileup_table_tumor  = GATK4_GETPILEUPSUMMARIES_TUMOR.out.table // channel: [ val(meta), path(table) ]
+    segmentation_table  = GATK4_CALCULATECONTAMINATION.out.segmentation // channel: [ val(meta), path(table) ]
 }

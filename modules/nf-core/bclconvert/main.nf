@@ -1,5 +1,5 @@
 process BCLCONVERT {
-    tag {"$meta.lane" ? "$meta.id"+"."+"$meta.lane" : "$meta.id" }
+    tag "${ meta.lane ? meta.id + "." + meta.lane : meta.id }"
     label 'process_high'
 
     container "nf-core/bclconvert:4.4.6"
@@ -8,14 +8,14 @@ process BCLCONVERT {
     tuple val(meta), path(samplesheet), path(run_dir)
 
     output:
-    tuple val(meta), path("output/**_S[1-9]*_R?_00?.fastq.gz")        , emit: fastq
-    tuple val(meta), path("output/**_S[1-9]*_I?_00?.fastq.gz")        , emit: fastq_idx       , optional:true
-    tuple val(meta), path("output/**Undetermined_S0*_R?_00?.fastq.gz"), emit: undetermined    , optional:true
-    tuple val(meta), path("output/**Undetermined_S0*_I?_00?.fastq.gz"), emit: undetermined_idx, optional:true
-    tuple val(meta), path("output/Reports")                           , emit: reports
-    tuple val(meta), path("output/Logs")                              , emit: logs
-    tuple val(meta), path("output/InterOp/*.bin")                     , emit: interop         , optional:true
-    path("versions.yml")                                              , emit: versions
+    tuple val(meta), path("output/**_S[1-9]*_R?_00?.fastq.gz"), emit: fastq
+    tuple val(meta), path("output/**_S[1-9]*_I?_00?.fastq.gz"), emit: fastq_idx, optional: true
+    tuple val(meta), path("output/**Undetermined_S0*_R?_00?.fastq.gz"), emit: undetermined, optional: true
+    tuple val(meta), path("output/**Undetermined_S0*_I?_00?.fastq.gz"), emit: undetermined_idx, optional: true
+    tuple val(meta), path("output/Reports/*.{csv,xml,bin}"), emit: reports
+    tuple val(meta), path("output/Logs/*.{log,txt}"), emit: logs
+    tuple val(meta), path("output/InterOp/*.bin"), emit: interop, optional: true
+    tuple val("${task.process}"), val('bclconvert'), eval("bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //'"), topic: versions, emit: versions_bclconvert
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +23,7 @@ process BCLCONVERT {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "BCLCONVERT module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("BCLCONVERT module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
@@ -37,27 +37,27 @@ process BCLCONVERT {
 
     if ${input_tar}; then
         ## Ensures --strip-components only applied when top level of tar contents is a directory
-        ## If just files or multiple directories, place all in $input_dir
+        ## If just files or multiple directories, place all in ${input_dir}
 
         if [[ \$(tar -taf ${run_dir} | grep -o -P "^.*?\\/" | uniq | wc -l) -eq 1 ]]; then
             tar \\
-                -C $input_dir --strip-components 1 \\
+                -C ${input_dir} --strip-components 1 \\
                 -xavf \\
-                $args2 \\
-                $run_dir \\
-                $args3
+                ${args2} \\
+                ${run_dir} \\
+                ${args3}
         else
             tar \\
-                -C $input_dir \\
+                -C ${input_dir} \\
                 -xavf \\
-                $args2 \\
-                $run_dir \\
-                $args3
+                ${args2} \\
+                ${run_dir} \\
+                ${args3}
         fi
     fi
 
     bcl-convert \\
-        $args \\
+        ${args} \\
         --output-directory output \\
         --bcl-input-directory ${input_dir} \\
         --sample-sheet ${samplesheet}
@@ -65,47 +65,41 @@ process BCLCONVERT {
     # copy the InterOp folder contents to ensure it gets picked up when using fusion
     mkdir -p output/InterOp/
     cp -n **/InterOp/*.bin output/InterOp/
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bclconvert: \$(bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //')
-    END_VERSIONS
     """
 
     stub:
     """
-    mkdir -p output/Reports
-    mkdir -p output/Logs
-    echo "" | gzip > output/Sample1_S1_L001_R1_001.fastq.gz
-    echo "" | gzip > output/Undetermined_S0_L001_R1_001.fastq.gz
-    touch output/Reports/Adapter_Cycle_Metrics.csv
-    touch output/Reports/Adapter_Metrics.csv
-    touch output/Reports/Demultiplex_Stats.csv
-    touch output/Reports/Demultiplex_Tile_Stats.csv
-    touch output/Reports/fastq_list.csv
-    touch output/Reports/Index_Hopping_Counts.csv
-    touch output/Reports/IndexMetricsOut.bin
-    touch output/Reports/Quality_Metrics.csv
-    touch output/Reports/Quality_Tile_Metrics.csv
-    touch output/Reports/RunInfo.xml
-    touch output/Reports/SampleSheet.csv
-    touch output/Reports/Top_Unknown_Barcodes.csv
-    touch output/Logs/Errors.log
-    touch output/Logs/FastqComplete.log
-    touch output/Logs/Info.log
-    touch output/Logs/Warnings.log
-    mkdir -p output/InterOp
-    touch output/InterOp/ControlMetricsOut.bin
-    touch output/InterOp/CorrectedIntMetricsOut.bin
-    touch output/InterOp/ErrorMetricsOut.bin
-    touch output/InterOp/ExtractionMetricsOut.bin
-    touch output/InterOp/IndexMetricsOut.bin
-    touch output/InterOp/QMetricsOut.bin
-    touch output/InterOp/TileMetricsOut.bin
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bclconvert: \$(bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //')
-    END_VERSIONS
-    """
+    mkdir -p output
+    echo "fake fastq file" | gzip > output/Sample1_S1_L001_R1_001.fastq.gz
+    echo "fake fastq file" | gzip > output/Undetermined_S0_L001_R1_001.fastq.gz
 
+    mkdir -p output/Reports
+    echo "fake report file" > output/Reports/Adapter_Cycle_Metrics.csv
+    echo "fake report file" > output/Reports/Adapter_Metrics.csv
+    echo "fake report file" > output/Reports/Demultiplex_Stats.csv
+    echo "fake report file" > output/Reports/Demultiplex_Tile_Stats.csv
+    echo "fake report file" > output/Reports/fastq_list.csv
+    echo "fake report file" > output/Reports/Index_Hopping_Counts.csv
+    echo "fake report file" > output/Reports/IndexMetricsOut.bin
+    echo "fake report file" > output/Reports/Quality_Metrics.csv
+    echo "fake report file" > output/Reports/Quality_Tile_Metrics.csv
+    echo "fake report file" > output/Reports/RunInfo.xml
+    echo "fake report file" > output/Reports/SampleSheet.csv
+    echo "fake report file" > output/Reports/Top_Unknown_Barcodes.csv
+
+    mkdir -p output/Logs
+    echo "fake log file" > output/Logs/Errors.log
+    echo "fake log file" > output/Logs/FastqComplete.log
+    echo "fake log file" > output/Logs/Info.log
+    echo "fake log file" > output/Logs/Warnings.log
+
+    mkdir -p output/InterOp
+    echo "fake InterOp file" > output/InterOp/ControlMetricsOut.bin
+    echo "fake InterOp file" > output/InterOp/CorrectedIntMetricsOut.bin
+    echo "fake InterOp file" > output/InterOp/ErrorMetricsOut.bin
+    echo "fake InterOp file" > output/InterOp/ExtractionMetricsOut.bin
+    echo "fake InterOp file" > output/InterOp/IndexMetricsOut.bin
+    echo "fake InterOp file" > output/InterOp/QMetricsOut.bin
+    echo "fake InterOp file" > output/InterOp/TileMetricsOut.bin
+    """
 }
