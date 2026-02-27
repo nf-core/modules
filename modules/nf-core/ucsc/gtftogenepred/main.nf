@@ -4,8 +4,8 @@ process UCSC_GTFTOGENEPRED {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ucsc-gtftogenepred:447--h954228d_0':
-        'biocontainers/ucsc-gtftogenepred:447--h954228d_0' }"
+        'https://depot.galaxyproject.org/singularity/ucsc-gtftogenepred:482--h0b57e2e_0':
+        'biocontainers/ucsc-gtftogenepred:482--h0b57e2e_0' }"
 
     input:
     tuple val(meta), path(gtf)
@@ -13,8 +13,8 @@ process UCSC_GTFTOGENEPRED {
     output:
     tuple val(meta), path("*.genepred"), emit: genepred
     tuple val(meta), path("*.refflat") , emit: refflat , optional: true
-    path "versions.yml"                , emit: versions
-
+    tuple val("${task.process}"), val('ucsc'), val('482'), topic: versions, emit: versions_ucsc
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     when:
     task.ext.when == null || task.ext.when
 
@@ -22,7 +22,6 @@ process UCSC_GTFTOGENEPRED {
     def args = task.ext.args ?: ''
     def gen_refflat = args.contains("-genePredExt") && args.contains("-geneNameAsName2") ? "true" : "false"
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '447' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     gtfToGenePred \\
         $args \\
@@ -33,22 +32,13 @@ process UCSC_GTFTOGENEPRED {
         awk 'BEGIN { OFS="\\t"} {print \$12, \$1, \$2, \$3, \$4, \$5, \$6, \$7, \$8, \$9, \$10}' ${prefix}.genepred > ${prefix}.refflat
     fi
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ucsc: $VERSION
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '447'
     """
     touch ${prefix}.genepred
     touch ${prefix}.refflat
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ucsc: $VERSION
-    END_VERSIONS
     """
 }
