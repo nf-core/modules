@@ -16,7 +16,7 @@ process FASTAWINDOWS {
     tuple val(meta), path("fw_out/*_dinuc_windows.tsv")   , emit: dinuc
     tuple val(meta), path("fw_out/*_trinuc_windows.tsv")  , emit: trinuc
     tuple val(meta), path("fw_out/*_tetranuc_windows.tsv"), emit: tetranuc
-    path "versions.yml"                                   , emit: versions
+    tuple val("${task.process}"), val('fasta_windows'), eval('fasta_windows --version | cut -d" " -f3'), emit: versions_fasta_windows, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,11 +31,6 @@ process FASTAWINDOWS {
         $args \\
         --fasta $fasta \\
         --output ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fasta_windows: \$(fasta_windows --version | cut -d' ' -f3)
-    END_VERSIONS
     """
 
     stub:
@@ -48,11 +43,5 @@ process FASTAWINDOWS {
     touch fw_out/${prefix}_dinuc_windows.tsv
     touch fw_out/${prefix}_trinuc_windows.tsv
     touch fw_out/${prefix}_tetranuc_windows.tsv
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fasta_windows: \$(fasta_windows --version | cut -d' ' -f3)
-    END_VERSIONS
     """
 }
