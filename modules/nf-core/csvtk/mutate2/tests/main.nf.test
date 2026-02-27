@@ -42,7 +42,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--out-delimiter \\t --at 0 --name sample_id -e=\"\'test\'\"'
+                module_args = '--at 0 --name sample_id -e=\"\'test\'\"'
             }
             process {
                 """
