@@ -23,7 +23,7 @@ tools:
         - "MIT"
       args_id: "$args"
       identifier: biotools:bcftools
-  - "bcftools plugin setGT":
+  - "bcftools plugin fixploidy":
       description: "Bcftools plugins are tools that can be used with bcftools to manipulate
         variant calls in Variant Call Format (VCF) and BCF. The fixploidy plugin fixes
         ploidy in genotype fields according to specified ploidy rules, sample sex assignments,
@@ -94,7 +94,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.{vcf,vcf.gz,bcf,bcf.gz}":
           type: file
-          description: VCF output file containing set genotypes
+          description: VCF output file containing GT fields with modified ploidy
           pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
           ontologies: []
   tbi:
