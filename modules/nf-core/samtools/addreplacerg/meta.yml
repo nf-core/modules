@@ -26,6 +26,15 @@ input:
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
         ontologies: []
+    - index:
+        type: file
+        description: BAM/CRAM/SAM index file
+        pattern: "*.{bai,csi,crai}"
+        ontologies: []
+    - read_group:
+        type: string
+        description: Read group line to add or replace
+        ontologies: []
   - - meta2:
         type: map
         description: |

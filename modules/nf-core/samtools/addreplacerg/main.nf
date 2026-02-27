@@ -8,7 +8,7 @@ process SAMTOOLS_ADDREPLACERG {
         'biocontainers/samtools:1.22.1--h96c455f_0' }"
 
     input:
-    tuple val(meta), path(input)
+    tuple val(meta), path(input), path(index), val(read_group)
     tuple val(meta2), path(fasta), path(fai), path(gzi)
 
     output:
@@ -23,6 +23,7 @@ process SAMTOOLS_ADDREPLACERG {
     script:
     def args      = task.ext.args ?: ''
     def reference = fasta ? "--reference ${fasta}" : ''
+    def read_group = read_group ? "-r ${read_group}" : ''
     def file_type = input.getExtension()
     prefix        = task.ext.prefix ?: "${meta.id}"
     if ("$input" == "${prefix}.${file_type}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
@@ -31,6 +32,7 @@ process SAMTOOLS_ADDREPLACERG {
         addreplacerg \\
         --threads $task.cpus \\
         $args \\
+        $read_group \\
         $reference \\
         -o ${prefix}.${file_type} \\
         $input

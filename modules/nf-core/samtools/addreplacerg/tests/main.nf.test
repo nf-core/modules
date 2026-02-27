@@ -17,9 +17,10 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', read_group:"\'@RG\\tID:1\\tLB:lib1\\tPL:ILLUMINA\\tSM:test\\tPU:barcode1\\tDS:replaced_read_group_test\'" ],
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true),
-                    []
+                    [],
+                    "\'@RG\\\\tID:1\\\\tLB:lib1\\\\tPL:ILLUMINA\\\\tSM:test\\\\tPU:barcode1\\\\tDS:replaced_read_group_test\'"
                 ]
                 input[1] = [[],[],[],[]]
                 """
@@ -41,9 +42,10 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', read_group:"\'@RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina\\tDS:replaced_read_group_test\'" ],
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true),
+                    "\'@RG\\\\tID:1\\\\tPU:1\\\\tSM:testN\\\\tLB:testN\\\\tPL:illumina\\\\tDS:replaced_read_group_test\'"
                 ]
                 input[1] = [
                     [ id:'genome' ],
@@ -70,9 +72,10 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', read_group:"\'@RG\\tID:1\\tLB:lib1\\tPL:ILLUMINA\\tSM:test\\tPU:barcode1\\tDS:replaced_read_group_test\'" ],
+                    [ id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true),
-                    []
+                    [],
+                    "\'@RG\\\\tID:1\\\\tLB:lib1\\\\tPL:ILLUMINA\\\\tSM:test\\\\tPU:barcode1\\\\tDS:replaced_read_group_test\'"
                 ]
                 input[1] = [[],[],[],[]]
                 """
