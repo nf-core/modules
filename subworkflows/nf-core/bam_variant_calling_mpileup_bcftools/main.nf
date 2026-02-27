@@ -49,7 +49,9 @@ workflow BAM_VARIANT_CALLING_MPILEUP_BCFTOOLS {
             // Create new meta with meta_sample_merge_key set to meta_sample_merge_value
             def newMeta = metaPC + [
                 (meta_sample_merge_key): meta_sample_merge_value,
-                metas: filestups.collect{ meta, _vcf, _index -> meta }
+                metas: filestups
+                    .collect{ meta, _vcf, _index -> meta }
+                    .sort()
             ]
             [
                 newMeta,
