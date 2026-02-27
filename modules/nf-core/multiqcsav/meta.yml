@@ -112,16 +112,6 @@ output:
       - multiqc --version | sed "s/.* //g":
           type: eval
           description: The expression to obtain the version of the tool
-  versions_multiqc_sav:
-    - - ${task.process}:
-          type: string
-          description: The process the versions were collected from
-      - multiqc_sav:
-          type: string
-          description: The tool name
-      - python -c "import multiqc_sav; print(multiqc_sav.__version__)":
-          type: eval
-          description: The expression to obtain the version of the tool
   versions_interop:
     - - ${task.process}:
           type: string
@@ -130,6 +120,16 @@ output:
           type: string
           description: The tool name
       - python -c "import interop; print(interop.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_multiqcsav:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - multiqcsav:
+          type: string
+          description: The name of the tool
+      - python -c "import multiqc_sav; print(multiqc_sav.__version__)":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
