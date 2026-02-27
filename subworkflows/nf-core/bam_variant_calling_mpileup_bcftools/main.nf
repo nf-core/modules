@@ -44,7 +44,7 @@ workflow BAM_VARIANT_CALLING_MPILEUP_BCFTOOLS {
             def groupMeta = metaIPC.subMap(groupKeys)
             [groupMeta, [metaIPC, vcf, tbi]]
         }
-        .groupTuple(sort: { it1, it2 -> it1[0][meta_sample_merge_key] <=> it2[0][meta_sample_merge_key] }) // Sort by id
+        .groupTuple()
         .map{ metaPC, filestups ->
             // Create new meta with meta_sample_merge_key set to meta_sample_merge_value
             def newMeta = metaPC + [

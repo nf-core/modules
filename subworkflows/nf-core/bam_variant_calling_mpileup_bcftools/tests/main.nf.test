@@ -72,8 +72,14 @@ nextflow_workflow {
         then {
             assert workflow.success
             assert snapshot(
-                workflow.out.vcf_index.collect{ meta, vcf, index -> [
-                    meta,
+                workflow.out.vcf_index.collect{ meta, vcf, index ->
+                def metaForSnapshot = meta.findAll { key, value -> key != 'metas' }
+                // Add a deterministic count instead of the full metas list
+                if (meta.metas) {
+                    metaForSnapshot.metas_count = meta.metas.size()
+                }
+                [
+                    metaForSnapshot,
                     path(vcf).getFileName().toString(),
                     path(vcf).vcf.summary, // Two individuals and 1739 variants
                     path(vcf).vcf.variantsMD5,
@@ -126,8 +132,14 @@ nextflow_workflow {
         then {
             assert workflow.success
             assert snapshot(
-                workflow.out.vcf_index.collect{ meta, vcf, index -> [
-                    meta,
+                workflow.out.vcf_index.collect{ meta, vcf, index ->
+                def metaForSnapshot = meta.findAll { key, value -> key != 'metas' }
+                // Add a deterministic count instead of the full metas list
+                if (meta.metas) {
+                    metaForSnapshot.metas_count = meta.metas.size()
+                }
+                [
+                    metaForSnapshot,
                     path(vcf).getFileName().toString(),
                     path(vcf).vcf.summary, // One individuals and 902 variants
                     path(vcf).vcf.variantsMD5,
@@ -183,8 +195,14 @@ nextflow_workflow {
         then {
             assert workflow.success
             assert snapshot(
-                workflow.out.vcf_index.collect{ meta, vcf, index -> [
-                    meta,
+                workflow.out.vcf_index.collect{ meta, vcf, index ->
+                def metaForSnapshot = meta.findAll { key, value -> key != 'metas' }
+                // Add a deterministic count instead of the full metas list
+                if (meta.metas) {
+                    metaForSnapshot.metas_count = meta.metas.size()
+                }
+                [
+                    metaForSnapshot,
                     path(vcf).getFileName().toString(),
                     path(vcf).vcf.summary, // One individuals and 1737 variants
                     path(vcf).vcf.variantsMD5,

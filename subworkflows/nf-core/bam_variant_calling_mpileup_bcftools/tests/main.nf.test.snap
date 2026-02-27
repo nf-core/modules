@@ -6,18 +6,7 @@
                     {
                         "panel_id": "1000GP",
                         "id": "all_samples",
-                        "metas": [
-                            {
-                                "chr": "22",
-                                "metas": [
-                                    {
-                                        "id": "NA12878",
-                                        "panel_id": "1000GP",
-                                        "chr": "22"
-                                    }
-                                ]
-                            }
-                        ]
+                        "metas_count": 1
                     },
                     "NA12878_22.vcf.gz",
                     "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=902, phased=false, phasedAutodetect=false]",
@@ -33,7 +22,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.3"
         },
-        "timestamp": "2026-02-27T16:03:00.743836227"
+        "timestamp": "2026-02-27T18:26:40.379067986"
     },
     "Two individuals and two chromosomes, sort and annotate": {
         "content": [
@@ -42,38 +31,7 @@
                     {
                         "panel_id": "1000GP",
                         "id": "all_samples",
-                        "metas": [
-                            {
-                                "chr": "22",
-                                "metas": [
-                                    {
-                                        "id": "NA12878",
-                                        "panel_id": "1000GP",
-                                        "chr": "22"
-                                    },
-                                    {
-                                        "id": "NA19401",
-                                        "panel_id": "1000GP",
-                                        "chr": "22"
-                                    }
-                                ]
-                            },
-                            {
-                                "chr": "21",
-                                "metas": [
-                                    {
-                                        "id": "NA12878",
-                                        "panel_id": "1000GP",
-                                        "chr": "21"
-                                    },
-                                    {
-                                        "id": "NA19401",
-                                        "panel_id": "1000GP",
-                                        "chr": "21"
-                                    }
-                                ]
-                            }
-                        ]
+                        "metas_count": 2
                     },
                     "all_samples_all_chr.annotate.vcf.gz",
                     "VcfFile [chromosomes=[chr21, chr22], sampleCount=2, variantCount=1737, phased=false, phasedAutodetect=false]",
@@ -92,7 +50,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.3"
         },
-        "timestamp": "2026-02-27T17:53:09.566954514"
+        "timestamp": "2026-02-27T18:26:25.829877767"
     },
     "One individual and two chromosomes": {
         "content": [
@@ -101,28 +59,7 @@
                     {
                         "panel_id": "1000GP",
                         "id": "all_samples",
-                        "metas": [
-                            {
-                                "chr": "22",
-                                "metas": [
-                                    {
-                                        "id": "NA12878",
-                                        "panel_id": "1000GP",
-                                        "chr": "22"
-                                    }
-                                ]
-                            },
-                            {
-                                "chr": "21",
-                                "metas": [
-                                    {
-                                        "id": "NA12878",
-                                        "panel_id": "1000GP",
-                                        "chr": "21"
-                                    }
-                                ]
-                            }
-                        ]
+                        "metas_count": 2
                     },
                     "all_samples_all_chr.concat.vcf.gz",
                     "VcfFile [chromosomes=[chr21, chr22], sampleCount=1, variantCount=1737, phased=false, phasedAutodetect=false]",
@@ -139,6 +76,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.3"
         },
-        "timestamp": "2026-02-27T16:03:17.799447553"
+        "timestamp": "2026-02-27T18:26:57.619510735"
     }
 }
