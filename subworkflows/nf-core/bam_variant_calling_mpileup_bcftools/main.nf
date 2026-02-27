@@ -21,7 +21,7 @@ workflow BAM_VARIANT_CALLING_MPILEUP_BCFTOOLS {
     ch_mpileup = ch_bam
         .combine(ch_posfile)
         .map{metaI, bam, _bai, metaPC, tsv ->
-                [metaI + metaPC, bam, tsv, tsv]
+                [metaI + metaPC, bam, [], tsv]
         }
 
     def posfile_count = ch_posfile
