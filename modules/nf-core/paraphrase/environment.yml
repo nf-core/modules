@@ -4,4 +4,7 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - bioconda::eggnog-mapper=2.1.13
+  - conda-forge::pip==26.0.1
+  - conda-forge::python=3.14.3
+  - pip:
+      - paraphrase==0.2.0
