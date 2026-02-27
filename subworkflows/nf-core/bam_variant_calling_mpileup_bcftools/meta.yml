@@ -18,7 +18,7 @@ components:
   - bcftools/merge
   - bcftools/annotate
   - bcftools/concat
-  - vcf_gather_bcftools
+  - subworkflows/vcf_gather_bcftools
 input:
   - ch_bam:
       description: Channel with input data
