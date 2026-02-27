@@ -16,7 +16,7 @@ process PARAPHRASE {
     tuple val(meta), path("*.json"), emit: json, optional: true
     tuple val(meta), path("*.tsv"), emit: tsv, optional: true
 
-    tuple val("${task.process}"), val('paraphrase'), eval("paraphrase --version"), topic: versions, emit: versions_paraphrase
+    tuple val("${task.process}"), val('paraphrase'), eval("paraphrase --version | sed 's/.* //'"), topic: versions, emit: versions_paraphrase
 
     when:
     task.ext.when == null || task.ext.when

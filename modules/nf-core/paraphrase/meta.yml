@@ -67,7 +67,7 @@ output:
       - paraphrase:
           type: string
           description: The name of the tool
-      - paraphrase --version:
+      - paraphrase --version | sed 's/.* //':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -78,7 +78,7 @@ topics:
       - paraphrase:
           type: string
           description: The name of the tool
-      - paraphrase --version:
+      - paraphrase --version | sed 's/.* //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
