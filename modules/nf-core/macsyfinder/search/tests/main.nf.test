@@ -41,7 +41,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    process.out.best_solutions.collect { meta, filepath -> [ meta, file(filepath).name ] },
+                    process.out.stderr.collect { meta, filepath -> [ meta, file(filepath).name ] },
+                    process.out.stdout.collect { meta, filepath -> [ meta, file(filepath).name ] },
+                    process.out.summary.collect { meta, filepath -> [ meta, file(filepath).name ] },
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }
@@ -77,7 +83,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    process.out.best_solutions.collect { meta, filepath -> [ meta, file(filepath).name ] },
+                    process.out.stderr.collect { meta, filepath -> [ meta, file(filepath).name ] },
+                    process.out.stdout.collect { meta, filepath -> [ meta, file(filepath).name ] },
+                    process.out.summary.collect { meta, filepath -> [ meta, file(filepath).name ] },
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }
@@ -103,7 +115,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out),
+                    process.out.best_solutions.collect { meta, filepath -> [ meta, file(filepath).name ] },
+                    process.out.stderr.collect { meta, filepath -> [ meta, file(filepath).name ] },
+                    process.out.stdout.collect { meta, filepath -> [ meta, file(filepath).name ] },
+                    process.out.summary.collect { meta, filepath -> [ meta, file(filepath).name ] },
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )

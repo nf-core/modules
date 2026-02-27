@@ -44,7 +44,7 @@ output:
       - msf_data:
           type: string
           description: The name of the tool
-      - msf_data --version 2>&1 | awk "NR==4{print \$2}":
+      - msf_data --version 2>&1 | awk "NR==4" | sed "s/^- MacSyLib //;s/ *$//":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -64,7 +64,7 @@ topics:
       - msf_data:
           type: string
           description: The name of the tool
-      - msf_data --version 2>&1 | awk "NR==4{print \$2}":
+      - msf_data --version 2>&1 | awk "NR==4" | sed "s/^- MacSyLib //;s/ *$//":
           type: eval
           description: The expression to obtain the version of the tool
 authors:

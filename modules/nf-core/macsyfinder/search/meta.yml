@@ -48,6 +48,16 @@ output:
           type: directory
           description: Directory containing all MacSyFinder results
           pattern: "${prefix}/*"
+  hmmer:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', db_type:'gembase' ]`
+      - ${prefix}/hmmer_results:
+          type: directory
+          description: Directory containing HMMER search results (may contain variable content like timestamps)
+          pattern: "${prefix}/hmmer_results"
   stdout:
     - - meta:
           type: map
