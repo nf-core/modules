@@ -26,10 +26,11 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
+                { assert process.success  },
+                { assert process.out.html },
+                { assert process.out.html[0][1] ==~ /.*test_report\.html$/ },
                 { assert snapshot(
-                    process.out.html,
                     process.out.histo,
                     process.out.dat,
                     process.out.findAll { key, val -> key.startsWith("versions")},
