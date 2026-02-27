@@ -24,7 +24,7 @@ process BLOBTK_PLOT {
 
     output:
     tuple val(meta), path("*.png"), emit: png
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val("blobtk"), eval("blobtk --version | cut -d' ' -f2"), topic: versions, emit: versions_blobtk
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,11 +44,6 @@ process BLOBTK_PLOT {
         -d $resource \\
         $args \\
         -o ${prefix}.png
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blobtk: \$(blobtk --version | cut -d' ' -f2)
-    END_VERSIONS
     """
 
     stub:
