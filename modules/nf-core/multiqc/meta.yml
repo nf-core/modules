@@ -16,44 +16,44 @@ tools:
         - "GPL-3.0-or-later"
       identifier: biotools:multiqc
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'sample1', single_end:false ]
-  - multiqc_files:
-      type: file
-      description: |
-        List of reports / files recognised by MultiQC, for example the html and zip output of FastQC
-      ontologies: []
-  - multiqc_config:
-      type: file
-      description: Optional config yml for MultiQC
-      pattern: "*.{yml,yaml}"
-      ontologies:
-        - edam: http://edamontology.org/format_3750
-  - multiqc_logo:
-      type: file
-      description: Optional logo file for MultiQC
-      pattern: "*.{png}"
-      ontologies: []
-  - replace_names:
-      type: file
-      description: |
-        Optional two-column sample renaming file. First column a set of
-        patterns, second column a set of corresponding replacements. Passed via
-        MultiQC's `--replace-names` option.
-      pattern: "*.{tsv}"
-      ontologies:
-        - edam: http://edamontology.org/format_3475
-  - sample_names:
-      type: file
-      description: |
-        Optional TSV file with headers, passed to the MultiQC --sample_names
-        argument.
-      pattern: "*.{tsv}"
-      ontologies:
-        - edam: http://edamontology.org/format_3475
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1', single_end:false ]
+    - multiqc_files:
+        type: file
+        description: |
+          List of reports / files recognised by MultiQC, for example the html and zip output of FastQC
+        ontologies: []
+    - multiqc_config:
+        type: file
+        description: Optional config yml for MultiQC
+        pattern: "*.{yml,yaml}"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
+    - multiqc_logo:
+        type: file
+        description: Optional logo file for MultiQC
+        pattern: "*.{png}"
+        ontologies: []
+    - replace_names:
+        type: file
+        description: |
+          Optional two-column sample renaming file. First column a set of
+          patterns, second column a set of corresponding replacements. Passed via
+          MultiQC's `--replace-names` option.
+        pattern: "*.{tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+    - sample_names:
+        type: file
+        description: |
+          Optional TSV file with headers, passed to the MultiQC --sample_names
+          argument.
+        pattern: "*.{tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
 output:
   report:
     - - meta:

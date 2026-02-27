@@ -1,4 +1,4 @@
-process MULTIQC_SAV {
+process MULTIQCSAV {
     tag "${meta.id}"
     label 'process_single'
 
@@ -8,16 +8,7 @@ process MULTIQC_SAV {
         : 'community.wave.seqera.io/library/multiqc_multiqc_sav_pip_interop:b142653b3920c82b'}"
 
     input:
-    tuple(
-        val(meta),
-        path(xml),
-        path(interop_bin, stageAs: "InterOp/*"),
-        path(extra_multiqc_files, stageAs: "?/*"),
-        path(multiqc_config, stageAs: "?/*"),
-        path(multiqc_logo),
-        path(replace_names),
-        path(sample_names)
-    )
+    tuple  val(meta), path(xml), path(interop_bin, stageAs: "InterOp/*"), path(extra_multiqc_files, stageAs: "?/*"), path(multiqc_config, stageAs: "?/*"), path(multiqc_logo), path(replace_names), path(sample_names)
 
     output:
     tuple val(meta), path("*.html"), emit: report
@@ -25,7 +16,7 @@ process MULTIQC_SAV {
     tuple val(meta), path("*_plots"), emit: plots, optional: true
     // MultiQC should not push its versions to the `versions` topic. Its input depends on the versions topic to be resolved thus outputting to the topic will let the pipeline hang forever
     tuple val("${task.process}"), val('multiqc'), eval('multiqc --version | sed "s/.* //g"'), emit: versions
-    tuple val("${task.process}"), val('multiqc_sav'), eval('python -c "import multiqc_sav; print(multiqc_sav.__version__)"'), emit: versions_multiqc_sav
+    tuple val("${task.process}"), val('multiqcsav'), eval('python -c "import multiqc_sav; print(multiqc_sav.__version__)"'), emit: versions_multiqcsav
     tuple val("${task.process}"), val('interop'), eval('python -c "import interop; print(interop.__version__)"'), emit: versions_interop
 
     when:

@@ -1,13 +1,13 @@
 nextflow_process {
 
-    name "Test Process MULTIQC_SAV"
+    name "Test Process MULTIQCSAV"
     script "../main.nf"
-    process "MULTIQC_SAV"
+    process "MULTIQCSAV"
 
     tag "modules"
     tag "modules_nfcore"
     tag "untar"
-    tag "multiqc_sav"
+    tag "multiqcsav"
 
     test("NovaSeq6000") {
         setup {
