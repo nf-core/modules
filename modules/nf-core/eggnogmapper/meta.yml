@@ -30,20 +30,37 @@ input:
         description: Input sequences in FASTA format (plain or gzip-compressed)
         pattern: "*.{fasta,faa,fa}(.gz)?"
         ontologies:
-          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - search_mode:
         type: string
         description: |
-          Search mode for eggnog-mapper. One of: diamond, novel_fams, mmseqs, hmmer,
-          no_search, cache. Determines which search backend and database flag are used.
+          Search mode passed to emapper.py via -m. Determines which backend
+          is used and which database flag is applied internally.
+          Supported modes:
+            - diamond: DIAMOND-based homology search (--dmnd_db)
+            - novel_fams: DIAMOND search against novel families (--dmnd_db)
+            - mmseqs: MMseqs2-based search (--mmseqs_db)
+            - hmmer: HMMER-based search (--database)
+            - no_search: Skip search step and annotate from a precomputed
+              *.emapper.seed_orthologs file (--annotate_hits_table)
+            - cache: Reuse a previously generated hits table (--cache)
+        enum: [diamond, novel_fams, mmseqs, hmmer, no_search, cache]
     - db:
         type: file
         description: |
-          Search database file corresponding to the chosen search mode. Uses --dmnd_db
-          for diamond/novel_fams, --mmseqs_db for mmseqs, --database for hmmer, or
-          --annotate_hits_table/--cache for no_search/cache modes.
-        pattern: "*.{dmnd,db,h3m,hmm}"
-        ontologies: []
+          Database file, directory, or precomputed results file required by the
+          selected search_mode. The module automatically assigns the correct
+          flag depending on search_mode:
+            - diamond / novel_fams: DIAMOND database (*.dmnd)
+            - mmseqs: MMseqs2 database directory or prefix
+            - hmmer: HMM database (*.hmm, *.h3m)
+            - no_search: Precomputed *.emapper.seed_orthologs file
+            - cache: Previously generated *.emapper.hits file
+          This input is mandatory but its expected format depends on search_mode.
+        pattern: "*"
+        ontologies:
+          - edam: http://edamontology.org/format_1370 # HMMER format
+          - edam: http://edamontology.org/format_3475 # TSV
   - eggnog_data_dir:
       type: directory
       description: |
@@ -64,7 +81,7 @@ output:
             functional annotations, GO terms, KEGG pathways, and COG categories
           pattern: "*.emapper.annotations"
           ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: http://edamontology.org/format_3475 # TSV
   orthologs:
     - - meta:
           type: map
@@ -77,7 +94,7 @@ output:
             with their best seed orthologs (includes commented metadata header)
           pattern: "*.emapper.seed_orthologs"
           ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: http://edamontology.org/format_3475 # TSV
   hits:
     - - meta:
           type: map
@@ -90,7 +107,7 @@ output:
             search phase before annotation
           pattern: "*.emapper.hits"
           ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: http://edamontology.org/format_3475 # TSV
   versions_eggnogmapper:
     - - ${task.process}:
           type: string
