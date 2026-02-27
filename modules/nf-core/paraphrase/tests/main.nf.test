@@ -42,7 +42,7 @@ nextflow_process {
         }
     }
 
-    test("no rules") {
+    test("paraphase json - no rules") {
 
         when {
             params {
@@ -60,13 +60,13 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
     }
 
-    test("rules") {
+    test("paraphase json - rules yaml") {
 
         when {
             params {
@@ -93,7 +93,7 @@ nextflow_process {
 
     }
 
-    test("rules - tsv output") {
+    test("paraphase json - rules yaml - tsv output") {
 
         when {
             params {
