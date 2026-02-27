@@ -1,94 +1,144 @@
 {
-    "Compute genotype likelihood with merging and two chromosomes": {
+    "One individual and one chromosome": {
         "content": [
-            [
-                "versions.yml:md5,3b0fee3aa670345abd0d2f9058050d65",
-                "versions.yml:md5,5c1d0190110ff1887f49323dec613345",
-                "versions.yml:md5,627428fc0c462d764ef59f3f58cb4202",
-                "versions.yml:md5,85e298b4e9dd35ea49f5696b117f759b"
-            ],
             [
                 [
                     {
-                        "id": "all",
                         "panel_id": "1000GP",
-                        "chr": "all",
-                        "variantcaller": "bcftools"
+                        "id": "all_samples",
+                        "metas": [
+                            {
+                                "chr": "22",
+                                "metas": [
+                                    {
+                                        "id": "NA12878",
+                                        "panel_id": "1000GP",
+                                        "chr": "22"
+                                    }
+                                ]
+                            }
+                        ]
                     },
-                    "all_all.annotate.vcf.gz",
-                    "all_all.annotate.vcf.gz.tbi"
+                    "NA12878_22.vcf.gz",
+                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=902, phased=false, phasedAutodetect=false]",
+                    "b852b1cae943360e00ab93004509808a",
+                    "NA12878_22.vcf.gz.tbi"
                 ]
             ],
             [
-                "VcfFile [chromosomes=[chr21, chr22], sampleCount=2, variantCount=1739, phased=false, phasedAutodetect=false]"
-            ],
-            [
-                {
-                    "BAM_GL_BCFTOOLS:BCFTOOLS_ANNOTATE": {
-                        "bcftools": 1.21
-                    }
-                },
-                {
-                    "BAM_GL_BCFTOOLS:BCFTOOLS_MERGE": {
-                        "bcftools": 1.21
-                    }
-                },
-                {
-                    "BAM_GL_BCFTOOLS:BCFTOOLS_MPILEUP": {
-                        "bcftools": 1.21
-                    }
-                },
-                {
-                    "BAM_GL_BCFTOOLS:VCF_CONCATENATE_BCFTOOLS:BCFTOOLS_CONCAT": {
-                        "bcftools": 1.21
-                    }
-                }
+                "NA12878_22.bcftools_stats.txt:md5,e35386eaea9c0047d0c9ce56ae966d10"
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2025-12-20T17:05:10.755124761"
+        "timestamp": "2026-02-27T16:03:00.743836227"
     },
-    "Compute genotype likelihood with only one input": {
+    "Two individuals and two chromosomes, sort and annotate": {
         "content": [
-            [
-                "versions.yml:md5,3b0fee3aa670345abd0d2f9058050d65",
-                "versions.yml:md5,627428fc0c462d764ef59f3f58cb4202"
-            ],
             [
                 [
                     {
-                        "id": "NA12878",
                         "panel_id": "1000GP",
-                        "chr": "all",
-                        "variantcaller": "bcftools"
+                        "id": "all_samples",
+                        "metas": [
+                            {
+                                "chr": "21",
+                                "metas": [
+                                    {
+                                        "id": "NA12878",
+                                        "panel_id": "1000GP",
+                                        "chr": "21"
+                                    },
+                                    {
+                                        "id": "NA19401",
+                                        "panel_id": "1000GP",
+                                        "chr": "21"
+                                    }
+                                ]
+                            },
+                            {
+                                "chr": "22",
+                                "metas": [
+                                    {
+                                        "id": "NA12878",
+                                        "panel_id": "1000GP",
+                                        "chr": "22"
+                                    },
+                                    {
+                                        "id": "NA19401",
+                                        "panel_id": "1000GP",
+                                        "chr": "22"
+                                    }
+                                ]
+                            }
+                        ]
                     },
-                    "NA12878_all.annotate.vcf.gz",
-                    "NA12878_all.annotate.vcf.gz.tbi"
+                    "all_samples_all_chr.annotate.vcf.gz",
+                    "VcfFile [chromosomes=[chr21, chr22], sampleCount=2, variantCount=1737, phased=false, phasedAutodetect=false]",
+                    "96e0517b17306ab297c8ac87d753d4d9",
+                    "all_samples_all_chr.annotate.vcf.gz.tbi"
                 ]
             ],
             [
-                "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=903, phased=false, phasedAutodetect=false]"
-            ],
-            [
-                {
-                    "BAM_GL_BCFTOOLS:BCFTOOLS_ANNOTATE": {
-                        "bcftools": 1.21
-                    }
-                },
-                {
-                    "BAM_GL_BCFTOOLS:BCFTOOLS_MPILEUP": {
-                        "bcftools": 1.21
-                    }
-                }
+                "NA12878_21.bcftools_stats.txt:md5,29f310e5ed86cc2d3f6f77eb5da2a7e0",
+                "NA12878_22.bcftools_stats.txt:md5,e35386eaea9c0047d0c9ce56ae966d10",
+                "NA19401_21.bcftools_stats.txt:md5,16730f1e8df6e0446ed2779d87c98168",
+                "NA19401_22.bcftools_stats.txt:md5,e9b457859517dcfaf886335cbbe442b3"
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2025-12-20T17:50:42.161993968"
+        "timestamp": "2026-02-27T16:02:46.171730624"
+    },
+    "One individual and two chromosomes": {
+        "content": [
+            [
+                [
+                    {
+                        "panel_id": "1000GP",
+                        "id": "all_samples",
+                        "metas": [
+                            {
+                                "chr": "22",
+                                "metas": [
+                                    {
+                                        "id": "NA12878",
+                                        "panel_id": "1000GP",
+                                        "chr": "22"
+                                    }
+                                ]
+                            },
+                            {
+                                "chr": "21",
+                                "metas": [
+                                    {
+                                        "id": "NA12878",
+                                        "panel_id": "1000GP",
+                                        "chr": "21"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "all_samples_all_chr.concat.vcf.gz",
+                    "VcfFile [chromosomes=[chr21, chr22], sampleCount=1, variantCount=1737, phased=false, phasedAutodetect=false]",
+                    "2e125158b5531e9325cc00f004cebeeb",
+                    "all_samples_all_chr.concat.vcf.gz.tbi"
+                ]
+            ],
+            [
+                "NA12878_21.bcftools_stats.txt:md5,29f310e5ed86cc2d3f6f77eb5da2a7e0",
+                "NA12878_22.bcftools_stats.txt:md5,e35386eaea9c0047d0c9ce56ae966d10"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-27T16:03:17.799447553"
     }
 }

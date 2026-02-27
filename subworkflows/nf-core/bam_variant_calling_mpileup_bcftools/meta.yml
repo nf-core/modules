@@ -1,11 +1,12 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
-name: "BAM_GL_BCFTOOLS"
+name: "BAM_VARIANT_CALLING_MPILEUP_BCFTOOLS"
 description: |
   Subworkflow to compute genotype likelihoods from BAM files using
-  bcftools/mpileup and bcftools/call variants using bcftools call
-  by chromosomes.
+  bcftools/mpileup and bcftools/call variants by chromosomes.
   The resulting VCF files are then merged by chromosomes and
   annotated with bcftools/annotate to give an ID for each variants.
+  During samples merging and region concatenation, all metadata will
+  be preserved and stored in the key `metas` at each step.
 keywords:
   - BAM
   - genotype likelihoods
@@ -16,6 +17,8 @@ components:
   - bcftools/mpileup
   - bcftools/merge
   - bcftools/annotate
+  - bcftools/concat
+  - vcf_gather_bcftools
 input:
   - ch_bam:
       description: Channel with input data
@@ -38,11 +41,10 @@ input:
           type: map
           description: |
             Metadata map that will be combined with the input data map
-            Need to have the "chr" as chromosome name and "panel_id" as panel name
-        - legend:
+        - posfile:
           type: file
-          description: Region to extract from the BAM file
-          pattern: "*.legend[.gz]+"
+          description: Region to extract from the BAM file in the format
+            "CHR\tPOS\tREF,ALT"
   - ch_fasta:
       description: Channel with reference genome data
       structure:
@@ -57,8 +59,37 @@ input:
           type: file
           description: FASTA index file of the reference genome
           pattern: "*.fai"
+  - meta_sample_merge_key:
+      type: list
+      description: |
+        List of keys that define the sample.
+        All file sharing the same values for these keys will be merged together.
+        e.g. [ "id" ]
+  - meta_sample_merge_value:
+      description: |
+        Shared value that will be set to `meta_sample_merge_key` for all samples to be merged together.
+        e.g. "all_samples"
+  - meta_region_gather_keys:
+      type: list
+      description: |
+        List of keys to be used to gather the VCF files by region with vcf_gather_bcftools.
+        All file sharing the same values for these keys will be gathered together.
+        e.g. [ "id", "panel_id" ]
+  - sort_region_gather:
+      type: boolean
+      description: |
+        Whether to sort the VCF files by region after concatenation with
+        vcf_gather_bcftools.
+  - annotate:
+      type: boolean
+      description: |
+        Whether to annotate the merged VCF file with bcftools/annotate to give
+        an ID for each variants
 output:
-  - vcf_tbi:
+  - multiqc_files:
+      description: Channel containing stat files of bcftools mpileup and call
+      type: file
+  - vcf_index:
       description: Channel with one VCF files by chromosomes
       structure:
         - meta:
@@ -73,15 +104,6 @@ output:
           type: file
           description: VCF index file
           pattern: "*.{tbi,csi}"
-  - versions:
-      description: Channel containing software versions file
-      structure:
-        - versions.yml:
-            type: file
-            description: File containing versions of the software used
-  - multiqc_files:
-      description: Channel containing stat files of bcftools mpileup and call
-      type: file
 authors:
   - "@louislenezet"
 maintainers:

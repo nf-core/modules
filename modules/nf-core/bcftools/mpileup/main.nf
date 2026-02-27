@@ -9,7 +9,7 @@ process BCFTOOLS_MPILEUP {
 
     input:
     tuple val(meta), path(bam), path(intervals)
-    tuple val(meta2), path(fasta)
+    tuple val(meta2), path(fasta), path(fai)
     val save_mpileup
 
     output:
@@ -40,7 +40,7 @@ process BCFTOOLS_MPILEUP {
         ${bam} \\
         ${intervals_cmd} \\
         ${mpileup} \\
-        | bcftools call --output-type v ${args2} \\
+        | bcftools call --output-type v ${args2} ${intervals_cmd} \\
         | bcftools reheader --samples sample_name.list \\
         | bcftools view --output-file ${prefix}.vcf.gz --output-type z ${args3}
 

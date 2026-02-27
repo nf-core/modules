@@ -6,7 +6,7 @@ include { VCF_GATHER_BCFTOOLS              } from '../../../subworkflows/nf-core
 workflow BAM_VARIANT_CALLING_MPILEUP_BCFTOOLS {
 
     take:
-    ch_bam                    // channel: [ [id], bam, bai ]
+    ch_bam                   // channel: [ [id], bam, bai ]
     ch_posfile               // channel: [ [panel_id, chr], posfile_comma]
     ch_fasta                 // channel: [ [genome], fasta, fai ]
     meta_sample_merge_key    // val    : [ "id" ]
@@ -78,9 +78,7 @@ workflow BAM_VARIANT_CALLING_MPILEUP_BCFTOOLS {
         ] }
         .mix(
             BCFTOOLS_MERGE.out.vcf
-                .join(BCFTOOLS_MERGE.out.tbi.mix(
-                    BCFTOOLS_MERGE.out.csi
-                ))
+                .join(BCFTOOLS_MERGE.out.index)
         )
 
     // Merge all chromosomes
@@ -93,7 +91,7 @@ workflow BAM_VARIANT_CALLING_MPILEUP_BCFTOOLS {
     if (annotate) {
         // Annotate the variants
         BCFTOOLS_ANNOTATE(VCF_GATHER_BCFTOOLS.out.vcf_index
-            .combine(channel.of([[], [], [], []]))
+            .combine(channel.of([[], [], [], [], []]))
         )
         // Output
         ch_output = BCFTOOLS_ANNOTATE.out.vcf
@@ -103,9 +101,6 @@ workflow BAM_VARIANT_CALLING_MPILEUP_BCFTOOLS {
     } else {
         // Output without annotation
         ch_output = VCF_GATHER_BCFTOOLS.out.vcf_index
-            .join(VCF_GATHER_BCFTOOLS.out.tbi.mix(
-                VCF_GATHER_BCFTOOLS.out.csi
-            ))
     }
 
     emit:
