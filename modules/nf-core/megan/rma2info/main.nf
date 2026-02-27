@@ -37,9 +37,7 @@ process MEGAN_RMA2INFO {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def summary = megan_summary ? "-es ${prefix}.megan" : ""
     """
     echo "" | gzip > ${prefix}.txt.gz
     touch ${prefix}.megan

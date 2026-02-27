@@ -18,7 +18,7 @@ process SURVIVOR_MERGE {
 
     output:
     tuple val(meta), path("*.vcf")   , emit: vcf
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('survivor'), eval("SURVIVOR 2>&1 | grep 'Version' | sed 's/Version: //'"), topic: versions, emit: versions_survivor
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,8 +26,8 @@ process SURVIVOR_MERGE {
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    vcfs.each{
-        if (it.getExtension() == "gz"){
+    vcfs.each{ vcf_file ->
+        if ( vcf_file.getExtension() == "gz"){
             error "Gzipped files are not supported by Survivor, please gunzip your VCF files first."
             // https://github.com/fritzsedlazeck/SURVIVOR/issues/158
         }
@@ -43,29 +43,17 @@ process SURVIVOR_MERGE {
         ${estimate_distanced_by_sv_size} \\
         ${min_sv_size} \\
         ${prefix}.vcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        survivor: \$(echo \$(SURVIVOR 2>&1 | grep "Version" | sed 's/^Version: //'))
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-
-    vcfs.each{
-        if (it.getExtension() == "gz"){
+    vcfs.each{ vcf_file ->
+        if (vcf_file.getExtension() == "gz"){
             error "Gzipped files are not supported by Survivor, please gunzip your VCF files first."
             // https://github.com/fritzsedlazeck/SURVIVOR/issues/158
         }
     }
-
     """
     touch ${prefix}.vcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        survivor: \$(echo \$(SURVIVOR 2>&1 | grep "Version" | sed 's/^Version: //'))
-    END_VERSIONS
     """
 }

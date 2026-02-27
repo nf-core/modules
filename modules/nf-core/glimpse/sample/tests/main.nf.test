@@ -20,7 +20,7 @@ nextflow_process {
                 script "../../phase/main.nf"
                 process {
                 """
-                ch_sample = Channel.of('NA12878 2').collectFile(name: 'sampleinfos.txt')
+                ch_sample = channel.of('NA12878 2').collectFile(name: 'sampleinfos.txt')
                 region    = channel.of(["chr21:16570000-16610000","chr21:16570000-16610000"])
                 input_vcf = channel.of([
                     [ id:'input'], // meta map
@@ -65,18 +65,38 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.haplo_sampled.collect{ meta, vcf -> [
+            assert process.success
+            assert snapshot(
+                process.out.haplo_sampled.collect { meta, vcf -> [
                         meta,
                         file(vcf).name,
                         path(vcf).vcf.summary,
                         path(vcf).vcf.variantsMD5
-                    ] },
-                    process.out.versions
-                ).match() }
-            )
+                ] },
+                process.out.findAll { key, val -> key.startsWith('versions') }
+            ).match()
+        }
+
+    }
+
+
+    test("test_glimpse_sample -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "input"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }

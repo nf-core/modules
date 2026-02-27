@@ -36,7 +36,6 @@ process GNU_SPLIT {
     }
 
     stub:
-    def args        = task.ext.args   ?: ''
     prefix      = task.ext.prefix ?: "${meta.id}.split"
     """
     touch ${prefix}.000.csv ${prefix}.001.csv ${prefix}.002.csv

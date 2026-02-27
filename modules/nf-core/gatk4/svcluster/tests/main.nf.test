@@ -17,9 +17,9 @@ nextflow_process {
                 script "../../../manta/germline/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true), [], []])
-                    input[1] = Channel.value([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)])
-                    input[2] = Channel.value([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)])
+                    input[0] = channel.of([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true), [], []])
+                    input[1] = channel.value([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)])
+                    input[2] = channel.value([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)])
                     input[3] = []
                     """
                 }
@@ -30,23 +30,22 @@ nextflow_process {
             process {
                 """
                 input[0] = MANTA_GERMLINE.out.diploid_sv_vcf.combine(MANTA_GERMLINE.out.diploid_sv_vcf_tbi, by: 0)
-                input[1] = file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/svcluster/samples_ploidy.tsv", checkIfExists:true)
-                input[2] = Channel.value(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true))
-                input[3] = Channel.value(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true))
-                input[4] = Channel.value(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true))
+                input[1] = file(params.modules_testdata_base_path + 'delete_me/svcluster/samples_ploidy.tsv', checkIfExists:true)
+                input[2] = channel.value(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true))
+                input[3] = channel.value(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true))
+                input[4] = channel.value(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true))
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     file(process.out.clustered_vcf[0][1]).name,
                     process.out.clustered_vcf_index[0][1],
-                    process.out.versions
-                    ).match()
-                }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }

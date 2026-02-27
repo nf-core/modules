@@ -12,7 +12,7 @@ process GLIMPSE_SAMPLE {
 
     output:
     tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: haplo_sampled
-    path "versions.yml"                               , emit: versions
+    tuple val("${task.process}"), val('glimpse'), eval("GLIMPSE_sample --help | sed -n '/Version/s/.*: //p'"), topic: versions, emit: versions_glimpse
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,23 +28,15 @@ process GLIMPSE_SAMPLE {
         --input ${input} \\
         --thread ${task.cpus} \\
         --output ${prefix}.${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        glimpse: "\$(GLIMPSE_sample --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
 
-    """
-    touch ${prefix}.${suffix}
+    def create_cmd = suffix.endsWith(".gz") ? "echo | gzip >" : "touch"
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        glimpse: "\$(GLIMPSE_sample --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
-    END_VERSIONS
+    """
+    ${create_cmd} ${prefix}.${suffix}
     """
 }

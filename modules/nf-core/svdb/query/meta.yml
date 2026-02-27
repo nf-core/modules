@@ -11,7 +11,6 @@ tools:
       documentation: https://github.com/J35P312/SVDB/blob/master/README.md
       licence: ["MIT"]
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -42,8 +41,9 @@ input:
       ontologies: []
   - bedpe_dbs:
       type: file
-      description: path to a SV database of the following format chrA-posA-chrB-posB-type-count-frequency,
-        or a comma separated list of files
+      description: path to a SV database of the following format
+        chrA-posA-chrB-posB-type-count-frequency, or a comma separated list of
+        files
       pattern: "*.{bedpe}"
       ontologies: []
 output:
@@ -58,12 +58,26 @@ output:
           description: Annotated output VCF file
           pattern: "*_query.vcf"
           ontologies: []
+  versions_svdb:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - svdb:
+          type: string
+          description: The name of the tool
+      - svdb | sed -nE 's/.*SVDB-([0-9.]+).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - svdb:
+          type: string
+          description: The name of the tool
+      - svdb | sed -nE 's/.*SVDB-([0-9.]+).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ramprasadn"

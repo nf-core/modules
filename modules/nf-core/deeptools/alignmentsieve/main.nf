@@ -4,15 +4,16 @@ process DEEPTOOLS_ALIGNMENTSIEVE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-eb9e7907c7a753917c1e4d7a64384c047429618a:41defd13a6f2ce014549fcc05d0b051f655777f9-0':
-        'biocontainers/mulled-v2-eb9e7907c7a753917c1e4d7a64384c047429618a:41defd13a6f2ce014549fcc05d0b051f655777f9-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-eb9e7907c7a753917c1e4d7a64384c047429618a:28424fe3aec58d2b3e4e4390025d886207657d25-0':
+        'biocontainers/mulled-v2-eb9e7907c7a753917c1e4d7a64384c047429618a:28424fe3aec58d2b3e4e4390025d886207657d25-0' }"
 
     input:
     tuple val(meta), path(input), path(input_index)
 
     output:
     tuple val(meta), path("*_as.bam") , emit: bam
-    path  "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('deeptools'), eval('alignmentSieve --version | sed "s/alignmentSieve //g"') , emit: versions_deeptools, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'") , emit: versions_samtools, topic: versions
     path  "*_log.txt"                 , emit: logs
 
     when:
@@ -28,11 +29,6 @@ process DEEPTOOLS_ALIGNMENTSIEVE {
         -o ${prefix}_as.bam \\
         --filterMetrics ${prefix}_log.txt \\
         --numberOfProcessors $task.cpus
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deeptools: \$(alignmentSieve --version | sed -e "s/alignmentSieve //g")
-    END_VERSIONS
     """
 
     stub:
@@ -40,10 +36,5 @@ process DEEPTOOLS_ALIGNMENTSIEVE {
     """
     touch ${prefix}_as.bam
     touch ${prefix}_log.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deeptools: \$(alignmentSieve --version | sed -e "s/alignmentSieve //g")
-    END_VERSIONS
     """
 }

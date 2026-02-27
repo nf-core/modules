@@ -3,8 +3,8 @@ process NANOCOMP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/nanocomp:1.21.0--pyhdfd78af_0':
-        'biocontainers/nanocomp:1.21.0--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/nanocomp:1.25.6--pyhdfd78af_0':
+        'biocontainers/nanocomp:1.25.6--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(filelist)
@@ -43,49 +43,36 @@ process NANOCOMP {
     }
 
     //determine input file type
-    filetypes = []
-    for (file in filelist){
-        tokenized_filename = file.getName().tokenize('.')
-        if (tokenized_filename.size() < 2){
-            throw new java.lang.IndexOutOfBoundsException("Every input file to nanocomp has to have a file ending.")
+    def filetypes = []
+    filelist.each { file ->
+        def tokenized_filename = file.getName().tokenize('.')
+        if (tokenized_filename.size() < 2) {
+            error "Every input file to nanocomp has to have a file ending."
         }
 
-        first_namepart = true
-        extension_found = false
+        def extension_found = false
 
-        for (namepart in tokenized_filename){
-            if (namepart == ""){
-                continue
-            }
-
-            // prevent the file name to be seen as extension
-            if (first_namepart == true){
-                first_namepart = false
-                continue
-            }
-
-            if (["fq","fastq"].contains(namepart)){
-                filetypes.add("fastq")
-                extension_found = true
-                break
-            } else if (["fasta", "fna", "ffn", "faa", "frn", "fa"].contains(namepart)) {
-                filetypes.add("fasta")
-                extension_found = true
-                break
-            } else if (namepart == "bam") {
-                filetypes.add("bam")
-                extension_found = true
-                break
-            } else if (namepart == "txt") {
-                filetypes.add("summary")
-                extension_found = true
-                break
+        // Skip the first part (actual filename) and check extensions
+        tokenized_filename.drop(1).each { namepart ->
+            if (namepart && !extension_found) {
+                if (["fq", "fastq"].contains(namepart)) {
+                    filetypes.add("fastq")
+                    extension_found = true
+                } else if (["fasta", "fna", "ffn", "faa", "frn", "fa"].contains(namepart)) {
+                    filetypes.add("fasta")
+                    extension_found = true
+                } else if (namepart == "bam") {
+                    filetypes.add("bam")
+                    extension_found = true
+                } else if (namepart == "txt") {
+                    filetypes.add("summary")
+                    extension_found = true
+                }
             }
         }
 
-        if (extension_found == false){
-            throw new java.lang.IllegalArgumentException("There was no suitable filetype found for " + file.getName() +
-            ". NanoComp only accepts fasta (fasta, fna, ffn, faa, frn, fa), fastq (fastq, fq), bam and Nanopore sequencing summary (txt).")
+        if (!extension_found) {
+            error "There was no suitable filetype found for ${file.getName()}. NanoComp only accepts fasta (fasta, fna, ffn, faa, frn, fa), fastq (fastq, fq), bam and Nanopore sequencing summary (txt)."
         }
     }
 

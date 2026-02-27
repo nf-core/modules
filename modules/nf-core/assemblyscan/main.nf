@@ -23,12 +23,11 @@ process ASSEMBLYSCAN {
     def file_format = (task.ext.args?.contains("--json")) ? "json" : "tsv"
     """
     assembly-scan \\
-         ${args} \\
-         ${assembly} > ${prefix}.${file_format}
+        ${args} \\
+        ${assembly} > ${prefix}.${file_format}
     """
 
     stub:
-    def args        = task.ext.args   ?: ''
     def prefix      = task.ext.prefix ?: "${meta.id}"
     def file_format = (task.ext.args?.contains("--json")) ? "json" : "tsv"
     """

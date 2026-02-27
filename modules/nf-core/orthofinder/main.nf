@@ -51,9 +51,7 @@ process ORTHOFINDER {
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def include_command = prior_run   ? "-b $prior_run" : ''
 
     """
     mkdir -p    $prefix/Comparative_Genomics_Statistics

@@ -9,7 +9,8 @@ tools:
       description: "Evaluate genome assemblies with k-mers and more."
       tool_dev_url: "https://github.com/marbl/merqury"
       doi: "10.1186/s13059-020-02134-9"
-      licence: ["PUBLIC DOMAIN"]
+      licence:
+        - "PUBLIC DOMAIN"
       identifier: biotools:merqury
 input:
   - - meta:
@@ -204,13 +205,27 @@ output:
           description: "Hap-mer blob plot"
           pattern: "*.hapmers.blob.png"
           ontologies: []
+  versions_merqury:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - merqury:
+          type: string
+          description: The name of the tool
+      - '"1.3"':
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - merqury:
+          type: string
+          description: The name of the tool
+      - '"1.3"':
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@mahesh-panchal"
 maintainers:

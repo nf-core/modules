@@ -1,4 +1,5 @@
 include { BBMAP_BBSPLIT                         } from '../../../modules/nf-core/bbmap/bbsplit'
+include { FASTQC as FASTQC_FILTERED             } from '../../../modules/nf-core/fastqc'
 include { CAT_FASTQ                             } from '../../../modules/nf-core/cat/fastq/main'
 include { FQ_LINT                               } from '../../../modules/nf-core/fq/lint/main'
 include { FQ_LINT as FQ_LINT_AFTER_TRIMMING     } from '../../../modules/nf-core/fq/lint/main'
@@ -120,13 +121,15 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     with_umi             // boolean: true/false: Enable UMI-based read deduplication.
     umi_discard_read     // integer: 0, 1 or 2
 
+    // Merging options
+    save_merged_fastq    // boolean: true/false: Save merged FastQ files even for single-library samples
+
     // Strandedness thresholds
     stranded_threshold   // float: The fraction of stranded reads that must be assigned to a strandedness for confident assignment. Must be at least 0.5
     unstranded_threshold // float: The difference in fraction of stranded reads assigned to 'forward' and 'reverse' below which a sample is classified as 'unstranded'
 
     main:
 
-    ch_versions = channel.empty()
     ch_filtered_reads = channel.empty()
     ch_trim_read_count = channel.empty()
     ch_multiqc_files = channel.empty()
@@ -155,12 +158,14 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     ch_bowtie2_index      = channel.empty()
     ch_seqkit_prefixed    = channel.empty()
     ch_seqkit_converted   = channel.empty()
+    ch_fastqc_filtered_html = channel.empty()
+    ch_fastqc_filtered_zip  = channel.empty()
 
     ch_reads
         .branch { meta, fastqs ->
-            single: fastqs.size() == 1
+            single: fastqs.size() == 1 && fastqs.flatten()[0].name.endsWith('.gz') && !save_merged_fastq
             return [meta, fastqs.flatten()]
-            multiple: fastqs.size() > 1
+            multiple: true
             return [meta, fastqs.flatten()]
         }
         .set { ch_fastq }
@@ -180,7 +185,6 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         FQ_LINT(
             ch_filtered_reads
         )
-        ch_versions = ch_versions.mix(FQ_LINT.out.versions.first())
         ch_lint_log_raw = FQ_LINT.out.lint
         ch_filtered_reads = ch_filtered_reads.join(FQ_LINT.out.lint.map { meta, _lint -> meta })
     }
@@ -211,7 +215,6 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         ch_umi_log         = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.umi_log
         ch_umi_reads       = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.umi_reads
 
-        ch_versions = ch_versions.mix(FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.versions)
         ch_multiqc_files = FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.fastqc_zip
             .mix(FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_zip)
             .mix(FASTQ_FASTQC_UMITOOLS_TRIMGALORE.out.trim_log)
@@ -248,7 +251,6 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         ch_umi_log          = FASTQ_FASTQC_UMITOOLS_FASTP.out.umi_log
         ch_umi_reads        = FASTQ_FASTQC_UMITOOLS_FASTP.out.umi_reads
 
-        ch_versions = ch_versions.mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.versions)
         ch_multiqc_files = FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_raw_zip
             .mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_trim_zip)
             .mix(FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_json)
@@ -338,7 +340,6 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         ch_seqkit_prefixed  = FASTQ_REMOVE_RRNA.out.seqkit_prefixed
         ch_seqkit_converted = FASTQ_REMOVE_RRNA.out.seqkit_converted
         ch_multiqc_files = ch_multiqc_files.mix(FASTQ_REMOVE_RRNA.out.multiqc_files)
-        ch_versions = ch_versions.mix(FASTQ_REMOVE_RRNA.out.versions)
 
         if (!skip_linting) {
             FQ_LINT_AFTER_RIBO_REMOVAL(
@@ -347,6 +348,18 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
             ch_lint_log_ribo = FQ_LINT_AFTER_RIBO_REMOVAL.out.lint
             ch_filtered_reads = ch_filtered_reads.join(FQ_LINT_AFTER_RIBO_REMOVAL.out.lint.map { meta, _lint -> meta })
         }
+    }
+
+    //
+    // MODULE: Run FastQC on filtered reads (after BBSplit and/or rRNA removal)
+    //
+    if (!skip_fastqc && (!skip_bbsplit || remove_ribo_rna)) {
+        FASTQC_FILTERED(
+            ch_filtered_reads
+        )
+        ch_fastqc_filtered_html = FASTQC_FILTERED.out.html
+        ch_fastqc_filtered_zip  = FASTQC_FILTERED.out.zip
+        ch_multiqc_files = ch_multiqc_files.mix(FASTQC_FILTERED.out.zip)
     }
 
     // Branch FastQ channels if 'auto' specified to infer strandedness
@@ -378,11 +391,15 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         ch_salmon_index,
         make_salmon_index,
     )
-    ch_versions = ch_versions.mix(FASTQ_SUBSAMPLE_FQ_SALMON.out.versions)
 
     FASTQ_SUBSAMPLE_FQ_SALMON.out.lib_format_counts
-        .join(ch_strand_fastq.auto_strand)
+        .join(ch_strand_fastq.auto_strand, remainder: true)
         .map { meta, json, reads ->
+            if (json == null) {
+                error("Salmon failed to produce lib_format_counts for sample '${meta.id}' " +
+                    "which was set to 'auto' strandedness. Check that the Salmon " +
+                    "index matches your input reads, or set strandedness explicitly in the samplesheet.")
+            }
             def salmon_strand_analysis = getSalmonInferredStrandedness(json, stranded_threshold, unstranded_threshold)
             def strandedness = salmon_strand_analysis.inferred_strandedness
             if (strandedness == 'undetermined') {
@@ -420,8 +437,8 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     seqkit_stats     = ch_seqkit_stats
     bowtie2_log      = ch_bowtie2_log
     bowtie2_index    = ch_bowtie2_index
+    fastqc_filtered_html = ch_fastqc_filtered_html
+    fastqc_filtered_zip  = ch_fastqc_filtered_zip
     seqkit_prefixed  = ch_seqkit_prefixed
     seqkit_converted = ch_seqkit_converted
-
-    versions         = ch_versions // channel: [ versions.yml ]
 }

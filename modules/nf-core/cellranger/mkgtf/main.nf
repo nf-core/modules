@@ -39,7 +39,6 @@ process CELLRANGER_MKGTF {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "CELLRANGER_MKGTF module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${gtf.baseName}.filtered"
     """
     touch ${prefix}.gtf

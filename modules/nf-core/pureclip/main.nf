@@ -9,8 +9,8 @@ process PURECLIP {
 
     input:
     tuple val(meta), path(ipbam), path(controlbam)
-    tuple val(meta), path(ipbai), path(controlbai)
-    tuple val(meta2), path(genome_fasta)
+    tuple val(meta2), path(ipbai), path(controlbai)
+    tuple val(meta3), path(genome_fasta)
     val input_control
 
     output:
@@ -54,7 +54,6 @@ process PURECLIP {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     crosslinks_output_name = "${prefix}_pureclip_crosslinks.bed"
     peaks_output_name      = "${prefix}_pureclip_peaks.bed"

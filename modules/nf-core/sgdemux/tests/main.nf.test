@@ -45,7 +45,7 @@ nextflow_process {
                     process.out.per_project_metrics,
                     process.out.per_sample_metrics,
                     file(process.out.sample_barcode_hop_metrics[0][1]).name, // Empty file
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
@@ -67,10 +67,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
     }

@@ -13,7 +13,7 @@ process SAMTOOLS_BAM2FQ {
 
     output:
     tuple val(meta), path("*.fq.gz"), emit: reads
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +22,7 @@ process SAMTOOLS_BAM2FQ {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    if (split){
+    if (split) {
         """
         samtools \\
             bam2fq \\
@@ -33,11 +33,6 @@ process SAMTOOLS_BAM2FQ {
             -0 ${prefix}_other.fq.gz \\
             -s ${prefix}_singleton.fq.gz \\
             $inputbam
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-        END_VERSIONS
         """
     } else {
         """
@@ -46,11 +41,24 @@ process SAMTOOLS_BAM2FQ {
             $args \\
             -@ $task.cpus \\
             $inputbam | gzip --no-name > ${prefix}_interleaved.fq.gz
+        """
+    }
 
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-        END_VERSIONS
+    stub:
+
+    def create_cmd = "echo | gzip >"
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    if (split) {
+        """
+        ${create_cmd} ${prefix}_1.fq.gz
+        ${create_cmd} ${prefix}_2.fq.gz
+        ${create_cmd} ${prefix}_other.fq.gz
+        ${create_cmd} ${prefix}_singleton.fq.gz
+        """
+    } else {
+        """
+        ${create_cmd} ${prefix}_interleaved.fq.gz
         """
     }
 }

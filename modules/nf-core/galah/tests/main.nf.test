@@ -41,36 +41,12 @@ nextflow_process {
     test("genomes - checkm2 qc_table") {
 
         setup {
-            run("UNTAR") {
-                script "../../untar/main.nf"
-                process {
-                    """
-                    input[0] = channel
-                        .fromPath("https://zenodo.org/records/14897628/files/checkm2_database.tar.gz", checkIfExists: true)
-                        .map { dbfile -> [ [id: 'checkm2db'], dbfile ] }
-                    """
-                }
-            }
-
-            run("CHECKM2_PREDICT") {
-                script "../../checkm2/predict/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test_checkm2' ], // meta map
-                        [file("https://github.com/nf-core/test-datasets/raw/refs/heads/magmap/testdata/GCA_002688505.1_ASM268850v1_genomic.fna.gz", checkIfExists: true),
-                        file("https://github.com/nf-core/test-datasets/raw/refs/heads/magmap/testdata/GCF_004296495.1_ASM429649v1_genomic.fna.gz", checkIfExists: true)]
-                    ]
-                    input[1] = UNTAR.out.untar
-                    """
-                }
-            }
 
             run("GAWK") {
                 script "../../gawk/main.nf"
                 process {
                     """
-                    input[0] = CHECKM2_PREDICT.out.checkm2_tsv
+                    input[0] = [[id: 'test'], file(params.modules_testdata_base_path + "delete_me/galah/checkm2_report.tsv", checkIfExists: true)]
                     input[1] = []
                     input[2] = false
                     """
@@ -81,16 +57,14 @@ nextflow_process {
         when {
             process {
                 """
-                ch_checkm_tsv = GAWK.out.output
-                    | map { meta, tsv -> [ [id: "test"], tsv ] }
-
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
                     [file("https://github.com/nf-core/test-datasets/raw/refs/heads/magmap/testdata/GCA_002688505.1_ASM268850v1_genomic.fna.gz", checkIfExists: true),
                     file("https://github.com/nf-core/test-datasets/raw/refs/heads/magmap/testdata/GCF_004296495.1_ASM429649v1_genomic.fna.gz", checkIfExists: true)]
                 ])
-                .combine(ch_checkm_tsv, by: 0)
-                .map { meta, bins, tsv -> [ meta, bins, tsv, "checkm2" ] }
+                .combine(GAWK.out.output, by: 0)
+                // rename 'test' to 'input' to avoid name collision
+                .map { meta, bins, tsv -> [ meta + [id: "input"], bins, tsv, "checkm2" ] }
                 """
             }
         }

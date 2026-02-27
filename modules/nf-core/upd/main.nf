@@ -9,14 +9,14 @@ process UPD {
         'biocontainers/upd:0.1.1--pyhdfd78af_0' }"
 
     input:
-        tuple val(meta), path(vcf)
+    tuple val(meta), path(vcf)
 
     output:
-        tuple val(meta), path("*.bed"), emit: bed
-        path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.bed"), emit: bed
+    tuple val("${task.process}"), val('upd'), eval("upd --version 2>&1 | sed 's/upd, version //'"), topic: versions, emit: versions_upd
 
     when:
-        task.ext.when == null || task.ext.when
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
@@ -26,22 +26,12 @@ process UPD {
         --vcf $vcf \\
         $args \\
         | sort -k 1,1 -k 2,2n >${prefix}.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        upd: \$( upd --version 2>&1 | sed 's/upd, version //' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        upd: \$( upd --version 2>&1 | sed 's/upd, version //' )
-    END_VERSIONS
     """
 
 }

@@ -22,6 +22,11 @@ process CELLRANGER_COUNT {
     }
     args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    echo ${args}
+    """
+
     template "cellranger_count.py"
 
     stub:
@@ -29,7 +34,7 @@ process CELLRANGER_COUNT {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "CELLRANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p "${prefix}/outs/"
     echo "$prefix" > ${prefix}/outs/fake_file.txt
