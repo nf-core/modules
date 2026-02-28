@@ -34,9 +34,10 @@ process SAMTOOLS_ADDREPLACERG {
     prefix = task.ext.prefix ?: "${meta.id}"
     if ("$input" == "${prefix}.${file_type}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
+    # Note: --threads value represents *additional* CPUs to allocate (total CPUs = 1 + --threads).
     samtools \\
         addreplacerg \\
-        --threads $task.cpus \\
+        --threads ${task.cpus-1} \\
         $args \\
         $read_group_arg \\
         $reference \\
