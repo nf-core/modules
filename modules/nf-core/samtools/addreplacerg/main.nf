@@ -13,11 +13,11 @@ process SAMTOOLS_ADDREPLACERG {
 
     output:
     tuple val(meta), path("${prefix}.bam")      , emit: bam , optional: true
+    tuple val(meta), path("${prefix}.cram")     , emit: cram, optional: true
+    tuple val(meta), path("${prefix}.sam")      , emit: sam , optional: true
     tuple val(meta), path("${prefix}.bam.bai")  , emit: bai , optional: true
     tuple val(meta), path("${prefix}.bam.csi")  , emit: csi , optional: true
-    tuple val(meta), path("${prefix}.cram")     , emit: cram, optional: true
     tuple val(meta), path("${prefix}.cram.crai"), emit: crai, optional: true
-    tuple val(meta), path("${prefix}.sam")      , emit: sam , optional: true
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
