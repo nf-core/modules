@@ -17,11 +17,23 @@
                     
                 ],
                 "3": [
+                    
+                ],
+                "4": [
+                    
+                ],
+                "5": [
+                    
+                ],
+                "6": [
                     [
                         "SAMTOOLS_ADDREPLACERG",
                         "samtools",
                         "1.22.1"
                     ]
+                ],
+                "bai": [
+                    
                 ],
                 "bam": [
                     [
@@ -31,7 +43,13 @@
                         "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
+                "crai": [
+                    
+                ],
                 "cram": [
+                    
+                ],
+                "csi": [
                     
                 ],
                 "sam": [
@@ -50,21 +68,74 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2026-02-27T16:01:31.486469578"
+        "timestamp": "2026-02-27T23:49:19.856990445"
     },
-    "homo-sapiens - cram": {
+    "homo-sapiens - cram - output bam": {
         "content": [
-            [
-                [
-                    "@HD\tVN:1.6\tSO:coordinate",
-                    "@SQ\tSN:chr22\tLN:40001\tM5:1922b52e1af6977302717072ebaca0a1",
-                    "@RG\tID:1\tPU:1\tSM:testN\tLB:testN\tPL:illumina\tDS:replaced_read_group_test",
-                    "@PG\tID:bwa\tPN:bwa\tVN:0.7.17-r1188\tCL:bwa mem -K 100000000 -R @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina -t 19 -M genome.fasta test_1.retry.fq.gz test_2.retry.fq.gz",
-                    "@PG\tID:samtools\tPN:samtools\tPP:bwa\tVN:1.13\tCL:samtools view -C -T ../../genome/genome.fasta -o test.paired_end.sorted.cram test.paired_end.sorted.bam",
-                    "@PG\tID:samtools.1\tPN:samtools\tPP:samtools\tVN:1.22.1\tCL:samtools addreplacerg --threads 2 -O cram,version=3.0 -w -r @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina\\tDS:replaced_read_group_test --reference genome.fasta -o test.cram test.paired_end.sorted.cram"
-                ]
-            ],
             {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam:md5,5b144804d5f64da517291253762fa5a3"
+                    ]
+                ],
+                "1": [
+                    
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam.csi:md5,8b681445a826210081c8446f705031e7"
+                    ]
+                ],
+                "3": [
+                    
+                ],
+                "4": [
+                    
+                ],
+                "5": [
+                    
+                ],
+                "6": [
+                    [
+                        "SAMTOOLS_ADDREPLACERG",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ],
+                "bai": [
+                    
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam:md5,5b144804d5f64da517291253762fa5a3"
+                    ]
+                ],
+                "crai": [
+                    
+                ],
+                "cram": [
+                    
+                ],
+                "csi": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam.csi:md5,8b681445a826210081c8446f705031e7"
+                    ]
+                ],
+                "sam": [
+                    
+                ],
                 "versions_samtools": [
                     [
                         "SAMTOOLS_ADDREPLACERG",
@@ -78,9 +149,65 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2026-02-27T16:41:39.49289646"
+        "timestamp": "2026-02-27T23:49:10.450458933"
     },
-    "sarscov2 - bam ": {
+    "homo-sapiens - cram": {
+        "content": [
+            {
+                "bai": [
+                    
+                ],
+                "bam": [
+                    
+                ],
+                "crai": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.cram.crai"
+                    ]
+                ],
+                "cram": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.cram"
+                    ]
+                ],
+                "csi": [
+                    
+                ],
+                "sam": [
+                    
+                ],
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_ADDREPLACERG",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ]
+            },
+            [
+                [
+                    "@HD\tVN:1.6\tSO:coordinate",
+                    "@SQ\tSN:chr22\tLN:40001\tM5:1922b52e1af6977302717072ebaca0a1",
+                    "@RG\tID:1\tPU:1\tSM:testN\tLB:testN\tPL:illumina\tDS:replaced_read_group_test",
+                    "@PG\tID:bwa\tPN:bwa\tVN:0.7.17-r1188\tCL:bwa mem -K 100000000 -R @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina -t 19 -M genome.fasta test_1.retry.fq.gz test_2.retry.fq.gz",
+                    "@PG\tID:samtools\tPN:samtools\tPP:bwa\tVN:1.13\tCL:samtools view -C -T ../../genome/genome.fasta -o test.paired_end.sorted.cram test.paired_end.sorted.bam",
+                    "@PG\tID:samtools.1\tPN:samtools\tPP:samtools\tVN:1.22.1\tCL:samtools addreplacerg --threads 2 --write-index -O cram,version=3.0 -w -r @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina\\tDS:replaced_read_group_test --reference genome.fasta -o test.cram test.paired_end.sorted.cram"
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2026-02-28T00:11:49.308475935"
+    },
+    "sarscov2 - bam": {
         "content": [
             {
                 "0": [
@@ -88,7 +215,7 @@
                         {
                             "id": "test"
                         },
-                        "test.bam:md5,ac98510e2fcb3f64ab646a4e036ccd6f"
+                        "test.bam:md5,45a56e2ba18c941076b0c233a2ec14f1"
                     ]
                 ],
                 "1": [
@@ -98,21 +225,39 @@
                     
                 ],
                 "3": [
+                    
+                ],
+                "4": [
+                    
+                ],
+                "5": [
+                    
+                ],
+                "6": [
                     [
                         "SAMTOOLS_ADDREPLACERG",
                         "samtools",
                         "1.22.1"
                     ]
                 ],
+                "bai": [
+                    
+                ],
                 "bam": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.bam:md5,ac98510e2fcb3f64ab646a4e036ccd6f"
+                        "test.bam:md5,45a56e2ba18c941076b0c233a2ec14f1"
                     ]
                 ],
+                "crai": [
+                    
+                ],
                 "cram": [
+                    
+                ],
+                "csi": [
                     
                 ],
                 "sam": [
@@ -131,6 +276,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2026-02-27T16:41:29.490269645"
+        "timestamp": "2026-02-27T23:48:49.369435898"
     }
 }
