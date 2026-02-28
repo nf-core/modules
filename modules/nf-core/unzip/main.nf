@@ -39,7 +39,9 @@ process UNZIP {
     if ( archive instanceof List && archive.name.size > 1 ) { error "[UNZIP] error: 7za only accepts a single archive as input. Please check module input." }
     prefix = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.baseName)
     """
-    mkdir "${prefix}"
+    mkdir -p "${prefix}/morphology_focus"
+    touch "${prefix}/transcripts.parquet"
+    touch "${prefix}/morphology_focus/morphology_focus_0000.ome.tif"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

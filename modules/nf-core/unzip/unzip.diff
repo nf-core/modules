@@ -1,0 +1,17 @@
+Changes in component 'nf-core/unzip'
+'modules/nf-core/unzip/meta.yml' is unchanged
+Changes in 'unzip/main.nf':
+--- modules/nf-core/unzip/main.nf
++++ modules/nf-core/unzip/main.nf
+@@ -39,7 +39,9 @@
+     prefix = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.baseName)
+     """
+-    mkdir "${prefix}"
++    mkdir -p "${prefix}/morphology_focus"
++    touch "${prefix}/transcripts.parquet"
++    touch "${prefix}/morphology_focus/morphology_focus_0000.ome.tif"
+
+     cat <<-END_VERSIONS > versions.yml
+
+'modules/nf-core/unzip/environment.yml' is unchanged
+************************************************************
