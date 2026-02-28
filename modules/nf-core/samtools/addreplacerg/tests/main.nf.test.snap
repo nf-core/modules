@@ -78,25 +78,25 @@
                         {
                             "id": "test"
                         },
-                        "test.bam:md5,5b144804d5f64da517291253762fa5a3"
+                        "test.bam:md5,650547c668995e0e0f4131052542f388"
                     ]
                 ],
                 "1": [
                     
                 ],
                 "2": [
+                    
+                ],
+                "3": [
+                    
+                ],
+                "4": [
                     [
                         {
                             "id": "test"
                         },
                         "test.bam.csi:md5,8b681445a826210081c8446f705031e7"
                     ]
-                ],
-                "3": [
-                    
-                ],
-                "4": [
-                    
                 ],
                 "5": [
                     
@@ -116,7 +116,7 @@
                         {
                             "id": "test"
                         },
-                        "test.bam:md5,5b144804d5f64da517291253762fa5a3"
+                        "test.bam:md5,650547c668995e0e0f4131052542f388"
                     ]
                 ],
                 "crai": [
@@ -149,7 +149,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2026-02-27T23:49:10.450458933"
+        "timestamp": "2026-02-28T00:48:10.318914737"
     },
     "homo-sapiens - cram": {
         "content": [
@@ -197,7 +197,7 @@
                     "@RG\tID:1\tPU:1\tSM:testN\tLB:testN\tPL:illumina\tDS:replaced_read_group_test",
                     "@PG\tID:bwa\tPN:bwa\tVN:0.7.17-r1188\tCL:bwa mem -K 100000000 -R @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina -t 19 -M genome.fasta test_1.retry.fq.gz test_2.retry.fq.gz",
                     "@PG\tID:samtools\tPN:samtools\tPP:bwa\tVN:1.13\tCL:samtools view -C -T ../../genome/genome.fasta -o test.paired_end.sorted.cram test.paired_end.sorted.bam",
-                    "@PG\tID:samtools.1\tPN:samtools\tPP:samtools\tVN:1.22.1\tCL:samtools addreplacerg --threads 2 --write-index -O cram,version=3.0 -w -r @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina\\tDS:replaced_read_group_test --reference genome.fasta -o test.cram test.paired_end.sorted.cram"
+                    "@PG\tID:samtools.1\tPN:samtools\tPP:samtools\tVN:1.22.1\tCL:samtools addreplacerg --threads 1 --write-index -O cram,version=3.0 -w -r @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina\\tDS:replaced_read_group_test --reference genome.fasta -o test.cram test.paired_end.sorted.cram"
                 ]
             ]
         ],
@@ -205,7 +205,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2026-02-28T00:11:49.308475935"
+        "timestamp": "2026-02-28T00:48:01.943990031"
     },
     "sarscov2 - bam": {
         "content": [
@@ -215,7 +215,7 @@
                         {
                             "id": "test"
                         },
-                        "test.bam:md5,45a56e2ba18c941076b0c233a2ec14f1"
+                        "test.bam:md5,c158e1dd90fb9a40d22accd63990be46"
                     ]
                 ],
                 "1": [
@@ -248,7 +248,7 @@
                         {
                             "id": "test"
                         },
-                        "test.bam:md5,45a56e2ba18c941076b0c233a2ec14f1"
+                        "test.bam:md5,c158e1dd90fb9a40d22accd63990be46"
                     ]
                 ],
                 "crai": [
@@ -276,6 +276,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2026-02-27T23:48:49.369435898"
+        "timestamp": "2026-02-28T00:47:53.904862393"
     }
 }
