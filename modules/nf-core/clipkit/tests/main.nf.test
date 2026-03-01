@@ -24,7 +24,6 @@ nextflow_process {
     }
 
     test("PF14720 - aln") {
-
         when {
             process {
                 """
@@ -36,22 +35,20 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.clipkit,
-                    process.out.log.get(0).get(1),
+                    process.out.log,
+                    path(process.out.metadata[0][1]).readLines().size(),
                     process.out.findAll { key, val -> key.startsWith("versions")}
-                    ).match()
-                }
+                ).match() }
             )
         }
-
     }
 
     test("PF14720 - aln - gap threshold - ends only") {
-
-        config "./nextflow.config"
+        config "./ends_only.config"
 
         when {
             process {
@@ -64,22 +61,20 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.clipkit,
-                    process.out.log.get(0).get(1),
+                    process.out.log,
+                    path(process.out.metadata[0][1]).readLines().size(),
                     process.out.findAll { key, val -> key.startsWith("versions")}
-                    ).match()
-                }
+                ).match() }
             )
         }
-
     }
 
-    test("PF14720 - aln - complementary") {
-
-        config "./nextflow_complementary.config"
+    test("PF14720 - aln - complementary - json") {
+        config "./extra_outputs.config"
 
         when {
             process {
@@ -92,24 +87,21 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert process.out.complementary },
-                { assert process.out.log },
                 { assert snapshot(
                     process.out.clipkit,
-                    process.out.complementary.get(0).get(1),
-                    process.out.log.get(0).get(1),
+                    process.out.log,
+                    path(process.out.metadata[0][1]).readLines().size(),
+                    process.out.complementary,
+                    path(process.out.json[0][1]).readLines().size(),
                     process.out.findAll { key, val -> key.startsWith("versions")}
-                    ).match()
-                }
+                ).match() }
             )
         }
-
     }
 
     test("PF14720 - aln - stub") {
-
         options "-stub"
 
         when {
@@ -123,12 +115,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
-
 }

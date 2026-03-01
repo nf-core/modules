@@ -1,6 +1,6 @@
 process CLIPKIT {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -13,34 +13,41 @@ process CLIPKIT {
     path auxiliary_file
 
     output:
-    tuple val(meta), path("${prefix}.${out_extension}")           , emit: clipkit
-    tuple val(meta), path("${prefix}.${out_extension}.log")       , emit: log          , optional: true
-    tuple val(meta), path("${prefix}.${out_extension}.complement"), emit: complementary, optional: true
+    tuple val(meta), path("${prefix}.${out_extension}")            , emit: clipkit
+    tuple val(meta), path("${prefix}.${out_extension}.log")        , emit: log
+    tuple val(meta), path("${prefix}.${out_extension}.txt")        , emit: metadata
+    tuple val(meta), path("${prefix}.${out_extension}.complement") , emit: complementary, optional: true
+    tuple val(meta), path("${prefix}.${out_extension}.report.json"), emit: json         , optional: true
     tuple val("${task.process}"), val('clipkit'), eval("clipkit --version 2>&1 | sed 's/clipkit //'"), topic: versions, emit: versions_clipkit
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args     = task.ext.args ?: ''
-    prefix       = task.ext.prefix ?: "${meta.id}"
+    def args      = task.ext.args ?: ''
+    prefix        = task.ext.prefix ?: "${meta.id}"
     out_extension = out_format ? out_format : "clipkit"
-    def aux_flag = auxiliary_file ? "-a ${auxiliary_file}" : ''
+    def aux_flag  = auxiliary_file ? "-a ${auxiliary_file}" : ''
     """
     clipkit \\
         $args \\
+        --threads ${task.cpus} \\
         $aln \\
-        -o ${prefix}.${out_extension} \\
-        -l \\
-        ${aux_flag}
+        --output ${prefix}.${out_extension} \\
+        --log \\
+        2>&1 | tee ${prefix}.${out_extension}.txt
     """
 
     stub:
     prefix        = task.ext.prefix ?: "${meta.id}"
     out_extension = out_format ? out_format : "clipkit"
     """
+    echo $args
+
     touch ${prefix}.${out_extension}
     touch ${prefix}.${out_extension}.log
+    touch ${prefix}.${out_extension}.txt
     touch ${prefix}.${out_extension}.complement
+    touch ${prefix}.${out_extension}.report.json
     """
 }

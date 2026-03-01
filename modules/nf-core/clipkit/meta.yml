@@ -1,14 +1,14 @@
 name: "clipkit"
-description: ClipKIT is a fast and flexible alignment trimming tool that keeps phylogenetically
-  informative sites and removes those that display characteristics poor phylogenetic
-  signal.
+description: A multiple sequence alignment-trimming algorithm for accurate phylogenomic inference.
 keywords:
   - alignment
   - trimming
   - phylogeny
 tools:
   - "clipkit":
-      description: "Alignment trimming software for phylogenetics."
+      description: |
+        "ClipKIT is a fast and flexible alignment trimming tool that keeps
+        phylogenetically informative sitesand removes those with poor phylogenetic signal."
       homepage: "https://jlsteenwyk.com/ClipKIT/"
       documentation: "https://jlsteenwyk.com/ClipKIT/"
       tool_dev_url: "https://github.com/JLSteenwyk/ClipKIT"
@@ -21,11 +21,11 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
+          e.g. `[ id:'sample1']`
     - aln:
         type: file
         description: Multiple sequence alignment file in various supported formats.
-        pattern: "*.{fa,fasta,fa,fna,faa,alnfaa,aln,sto,stk,mauve,alignment,clustal}"
+        pattern: "*.{fa,fasta,fna,faa,alnfaa,aln,sto,stk,mauve,alignment,clustal}"
         ontologies: []
   - out_format:
       type: string
@@ -44,7 +44,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
       - ${prefix}.${out_extension}:
           type: file
           description: Trimmed multiple sequence alignment file
@@ -55,7 +55,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
       - ${prefix}.${out_extension}.log:
           type: file
           description: Log file with statistics from the tool's execution. Optional.
@@ -66,7 +66,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
       - ${prefix}.${out_extension}.complement:
           type: file
           description: |
