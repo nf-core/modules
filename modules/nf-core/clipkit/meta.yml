@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "clipkit"
 description: ClipKIT is a fast and flexible alignment trimming tool that keeps phylogenetically
   informative sites and removes those that display characteristics poor phylogenetic
@@ -14,7 +13,8 @@ tools:
       documentation: "https://jlsteenwyk.com/ClipKIT/"
       tool_dev_url: "https://github.com/JLSteenwyk/ClipKIT"
       doi: "10.1371/journal.pbio.3001007"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -31,6 +31,13 @@ input:
       type: string
       description: Output format (aln,msa,fas,etc.), default is clipkit.
       pattern: "*"
+  - auxiliary_file:
+      type: file
+      description: |
+        Optional tab-delimited auxiliary file specifying which sites to keep or
+        trim. Used in conjunction with the custom site trimming (cst) mode.
+      pattern: "*"
+      ontologies: []
 output:
   clipkit:
     - - meta:
@@ -49,18 +56,46 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}.log:
+      - ${prefix}.${out_extension}.log:
           type: file
-          description: Log file with statistics from the tool's execution
+          description: Log file with statistics from the tool's execution. Optional.
           pattern: "*.log"
           ontologies: []
+  complementary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}.${out_extension}.complement:
+          type: file
+          description: |
+            File containing the trimmed/removed sites from the alignment, i.e. the
+            complement of the clipkit output. Optional; only produced when the
+            complementary input is true (passes `-c` to clipkit).
+          pattern: "*.complement"
+          ontologies: []
+  versions_clipkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - clipkit:
+          type: string
+          description: The name of the tool
+      - clipkit --version 2>&1 | sed 's/clipkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - clipkit:
+          type: string
+          description: The name of the tool
+      - clipkit --version 2>&1 | sed 's/clipkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@vagkaratzas"
 maintainers:

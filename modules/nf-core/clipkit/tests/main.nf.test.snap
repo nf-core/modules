@@ -9,16 +9,22 @@
                     "PF14720.alnfaa:md5,c1ab1d4f55e928c24d03dd1fba1d8f27"
                 ]
             ],
-            true,
-            [
-                "versions.yml:md5,686a6ec37d208a0d6e965b86e7baac73"
-            ]
+            "PF14720.alnfaa.log:md5,ead8293153a057d4e564e45838fb39e0",
+            {
+                "versions_clipkit": [
+                    [
+                        "CLIPKIT",
+                        "clipkit",
+                        "2.11.4"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-02-19T08:33:56.424642871"
+        "timestamp": "2026-03-01T11:18:03.530651681"
     },
     "PF14720 - aln - stub": {
         "content": [
@@ -36,11 +42,23 @@
                         {
                             "id": "PF14720"
                         },
-                        "PF14720.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "PF14720.clipkit.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "2": [
-                    "versions.yml:md5,686a6ec37d208a0d6e965b86e7baac73"
+                    [
+                        {
+                            "id": "PF14720"
+                        },
+                        "PF14720.clipkit.complement:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "3": [
+                    [
+                        "CLIPKIT",
+                        "clipkit",
+                        "2.11.4"
+                    ]
                 ],
                 "clipkit": [
                     [
@@ -50,24 +68,36 @@
                         "PF14720.clipkit:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
+                "complementary": [
+                    [
+                        {
+                            "id": "PF14720"
+                        },
+                        "PF14720.clipkit.complement:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
                 "log": [
                     [
                         {
                             "id": "PF14720"
                         },
-                        "PF14720.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "PF14720.clipkit.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,686a6ec37d208a0d6e965b86e7baac73"
+                "versions_clipkit": [
+                    [
+                        "CLIPKIT",
+                        "clipkit",
+                        "2.11.4"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-02-19T08:34:03.502263109"
+        "timestamp": "2026-03-01T11:18:17.439014546"
     },
     "PF14720 - aln": {
         "content": [
@@ -79,15 +109,49 @@
                     "PF14720.clipkit:md5,97e4328b5990f5e5a6241c225ed6d922"
                 ]
             ],
-            true,
-            [
-                "versions.yml:md5,686a6ec37d208a0d6e965b86e7baac73"
-            ]
+            "PF14720.clipkit.log:md5,53bb80178adeb0fa6b4df882a6963c28",
+            {
+                "versions_clipkit": [
+                    [
+                        "CLIPKIT",
+                        "clipkit",
+                        "2.11.4"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-02-19T08:33:49.066805625"
+        "timestamp": "2026-03-01T11:17:56.468377375"
+    },
+    "PF14720 - aln - complementary": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "PF14720"
+                    },
+                    "PF14720.clipkit:md5,97e4328b5990f5e5a6241c225ed6d922"
+                ]
+            ],
+            "PF14720.clipkit.complement:md5,3fda46ab66fb05a3ec36b7eda4c285c0",
+            "PF14720.clipkit.log:md5,53bb80178adeb0fa6b4df882a6963c28",
+            {
+                "versions_clipkit": [
+                    [
+                        "CLIPKIT",
+                        "clipkit",
+                        "2.11.4"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-03-01T11:18:10.829792588"
     }
 }
