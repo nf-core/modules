@@ -38,20 +38,10 @@ process CHECKQC {
         echo "Error: Empty JSON files. Most likely due to missing files in run directory. See .command.log file for errors."
         exit 1
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        checkqc: \$( checkqc --version | sed -e "s/checkqc, version //g" )
-    END_VERSIONS
     """
 
     stub:
     """
     touch checkqc_report.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        checkqc: \$( checkqc --version | sed -e "s/checkqc, version //g" )
-    END_VERSIONS
     """
 }

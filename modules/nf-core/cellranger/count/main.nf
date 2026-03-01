@@ -22,6 +22,11 @@ process CELLRANGER_COUNT {
     }
     args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    echo ${args}
+    """
+
     template "cellranger_count.py"
 
     stub:

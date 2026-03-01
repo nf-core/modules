@@ -7,7 +7,7 @@ workflow FASTQ_SANITISE_SEQKIT {
     ch_reads // channel: [ val(meta), [ fastq ] ]
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     // Add strandness information to meta
     ch_reads_with_strandness = ch_reads
@@ -35,7 +35,7 @@ workflow FASTQ_SANITISE_SEQKIT {
     ch_sanitized_reads = SEQKIT_SANA.out.reads
         .map { meta, fastq ->
             // Remove strandness field from meta to merge back together
-            def clean_meta = meta.findAll { key, value -> key != 'strandness' }
+            def clean_meta = meta.findAll { key, _value -> key != 'strandness' }
             return [ clean_meta, fastq ]
         }
         .groupTuple(by: 0)

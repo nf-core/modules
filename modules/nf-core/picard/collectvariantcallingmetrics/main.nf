@@ -11,9 +11,9 @@ process PICARD_COLLECTVARIANTCALLINGMETRICS {
     tuple val(meta), path(vcf), path(index), path(intervals_file), path(fasta), path(dict), path(dbsnp), path(dbsnp_index)
 
     output:
-    tuple val(meta), path("*.variant_calling_detail_metrics"),  emit: detail_metrics
+    tuple val(meta), path("*.variant_calling_detail_metrics"), emit: detail_metrics
     tuple val(meta), path("*.variant_calling_summary_metrics"), emit: summary_metrics
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('picard'), eval("picard CollectVariantCallingMetrics --version 2>&1 | sed -n 's/.*Version://p'"), topic: versions, emit: versions_picard
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,11 +43,6 @@ process PICARD_COLLECTVARIANTCALLINGMETRICS {
         ${reference} \\
         --TMP_DIR . \\
         ${intervals} \\
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(echo \$(picard CollectVariantCallingMetrics --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
     """
 
     stub:
@@ -55,10 +50,5 @@ process PICARD_COLLECTVARIANTCALLINGMETRICS {
     """
     touch ${prefix}.variant_calling_detail_metrics
     touch ${prefix}.variant_calling_summary_metrics
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(echo \$(picard CollectVariantCallingMetrics --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
     """
 }
