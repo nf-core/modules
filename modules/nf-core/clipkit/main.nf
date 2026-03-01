@@ -31,6 +31,7 @@ process CLIPKIT {
     """
     clipkit \\
         $args \\
+        $aux_flag \\
         --threads ${task.cpus} \\
         $aln \\
         --output ${prefix}.${out_extension} \\

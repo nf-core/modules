@@ -101,6 +101,34 @@ nextflow_process {
         }
     }
 
+    test("PF14720 - aln - auxiliary file (CST)") {
+        config "./auxiliary_file.config"
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = []
+                input[2] = Channel.of(
+                    "1\tkeep", "2\ttrim", "3\tkeep", "4\ttrim", "5\tkeep"
+                ).collectFile(name: 'cst_auxiliary.tsv', newLine: true)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.clipkit,
+                    process.out.log,
+                    path(process.out.metadata[0][1]).readLines().size(),
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+    }
+
     test("PF14720 - aln - stub") {
         options "-stub"
 
