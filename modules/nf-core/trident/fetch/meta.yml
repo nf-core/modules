@@ -41,37 +41,63 @@ output:
         pattern: "output_archive/*/POSEIDON.yml"
         ontologies:
           - edam: http://edamontology.org/format_3750 ## YAML
-
-  geno:
-    - "output_archive/*/*.{geno,bed,vcf,geno.gz,bed.gz,vcf.gz}":
+  geno_vcf:
+    - output_archive/*/*.{vcf,vcf.gz}:
         type: file
-        description: The genotype files of any newly downloaded package(s).
-        pattern: "output_archive/*/*.{geno,bed,vcf,geno.gz,bed.gz,vcf.gz}"
+        description: The genotype files of any newly downloaded VCF-formatted package(s).
+        pattern: "output_archive/*/*.{vcf,vcf.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_3286 ## Plink PED
           - edam: http://edamontology.org/format_3016 ## VCF
           - edam: http://edamontology.org/format_3989 ## GZIP
-  snp:
-    - "output_archive/*/*.{snp,bim,snp.gz,bim.gz}":
+  geno_plink:
+    - output_archive/*/*.{bed,bed.gz}:
         type: file
-        description: The SNP information files of any newly downloaded package(s).
-        pattern: "output_archive/*/*.{snp,bim,snp.gz,bim.gz}"
+        description: The genotype files of any newly downloaded plink-formatted package(s).
+        pattern: "output_archive/*/*.{bed,bed.gz}"
         ontologies:
           - edam: http://edamontology.org/format_3286 ## Plink PED
           - edam: http://edamontology.org/format_3989 ## GZIP
-  ind:
-    - "output_archive/*/*.{ind,fam,ind.gz,fam.gz}":
+  snp_plink:
+    - output_archive/*/*.{bim,bim.gz}:
         type: file
-        description: The individual information files of any newly downloaded package(s).
-        pattern: "output_archive/*/*.{ind,fam,ind.gz,fam.gz}"
+        description: The SNP information files of any newly downloaded plink-formatted package(s).
+        pattern: "output_archive/*/*.{bim,bim.gz}"
         ontologies:
           - edam: http://edamontology.org/format_3286 ## Plink PED
+          - edam: http://edamontology.org/format_3989 ## GZIP
+  ind_plink:
+    - output_archive/*/*.{fam,fam.gz}:
+        type: file
+        description: The individual information files of any newly downloaded plink-formatted package(s).
+        pattern: "output_archive/*/*.{fam,fam.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3286 ## Plink PED
+          - edam: http://edamontology.org/format_3989 ## GZIP
+  geno_eigenstrat:
+    - output_archive/*/*.{geno,geno.gz}:
+        type: file
+        description: The genotype files of any newly downloaded eigenstrat-formatted package(s).
+        pattern: "output_archive/*/*.{geno,geno.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 ## GZIP
+  snp_eigenstrat:
+    - output_archive/*/*.{snp,snp.gz}:
+        type: file
+        description: The SNP information files of any newly downloaded eigenstrat-formatted package(s).
+        pattern: "output_archive/*/*.{snp,snp.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 ## GZIP
+  ind_eigenstrat:
+    - output_archive/*/*.{ind,ind.gz}:
+        type: file
+        description: The individual information files of any newly downloaded eigenstrat-formatted package(s).
+        pattern: "output_archive/*/*.{ind,ind.gz}"
+        ontologies:
           - edam: http://edamontology.org/format_3989 ## GZIP
   janno:
     - output_archive/*/*.janno:
         type: file
-        description: The .janno annotation files of any newly downloaded
-          package(s).
+        description: The .janno annotation files of any newly downloaded package(s).
         pattern: "output_archive/*/*.janno"
         ontologies: []
   ssf:
@@ -83,8 +109,7 @@ output:
   bib:
     - output_archive/*/*.bib:
         type: file
-        description: The .bib bibliography files of any newly downloaded
-          package(s).
+        description: The .bib bibliography files of any newly downloaded package(s).
         pattern: "output_archive/*/*.bib"
         ontologies:
           - edam: http://edamontology.org/data_3505 ## Bibliography
