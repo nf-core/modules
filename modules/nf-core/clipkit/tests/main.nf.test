@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process CLIPKIT"
     script "../main.nf"
     process "CLIPKIT"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -25,6 +26,9 @@ nextflow_process {
 
     test("PF14720 - aln") {
         when {
+            params {
+                module_args = ""
+            }
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
@@ -48,9 +52,10 @@ nextflow_process {
     }
 
     test("PF14720 - aln - gap threshold - ends only") {
-        config "./ends_only.config"
-
         when {
+            params {
+                module_args = "--mode gappy --gaps 0.1 --ends_only"
+            }
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
@@ -74,9 +79,10 @@ nextflow_process {
     }
 
     test("PF14720 - aln - complementary - json") {
-        config "./extra_outputs.config"
-
         when {
+            params {
+                module_args = "--complementary --report_json"
+            }
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
@@ -102,9 +108,10 @@ nextflow_process {
     }
 
     test("PF14720 - aln - auxiliary file (CST)") {
-        config "./auxiliary_file.config"
-
         when {
+            params {
+                module_args = "--mode cst"
+            }
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
@@ -133,6 +140,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = "--complementary --report_json"
+            }
             process {
                 """
                 input[0] = GUNZIP.out.gunzip

@@ -40,6 +40,7 @@ process CLIPKIT {
     """
 
     stub:
+    def args      = task.ext.args ?: ''
     prefix        = task.ext.prefix ?: "${meta.id}"
     out_extension = out_format ? out_format : "clipkit"
     """
@@ -48,7 +49,7 @@ process CLIPKIT {
     touch ${prefix}.${out_extension}
     touch ${prefix}.${out_extension}.log
     touch ${prefix}.${out_extension}.txt
-    touch ${prefix}.${out_extension}.complement
-    touch ${prefix}.${out_extension}.report.json
+    ${args.contains('--complement')  ? "touch ${prefix}.${out_extension}.complement"   : ''}
+    ${args.contains('--report_json') ? "touch ${prefix}.${out_extension}.report.json"  : ''}
     """
 }
