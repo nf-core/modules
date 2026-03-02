@@ -27,11 +27,13 @@ process RIBOCODE_RIBOCODE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    set -o pipefail
+
     RiboCode \\
         -a $annotation \\
         -c $config \\
         -o ${prefix} \\
-        $args
+        $args 2>&1 | tee ${prefix}_ribocode.log
 
     # RiboCode may exit 0 even on failure (e.g. P-site detection errors).
     # Verify expected output was actually produced.
