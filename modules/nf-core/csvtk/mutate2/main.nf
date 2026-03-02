@@ -8,7 +8,7 @@ process CSVTK_MUTATE2 {
         'biocontainers/csvtk:0.31.0--h9ee0642_0' }"
 
     input:
-    tuple val(meta), path(csv, name: 'inputs/csv*/*')
+    tuple val(meta), path(input, name: 'inputs/csv*/*')
     val in_format
     val out_format
 
@@ -33,7 +33,7 @@ process CSVTK_MUTATE2 {
         --delimiter ${delimiter} \\
         --out-delimiter ${out_delimiter} \\
         --out-file ${prefix}.${out_extension} \\
-        $csv
+        $input
     """
 
     stub:
