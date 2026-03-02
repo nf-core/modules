@@ -32,7 +32,7 @@ process RIBOCODE_RIBOCODE {
         -a $annotation \\
         -c $config \\
         -o ${prefix} \\
-        $args 2>&1 | tee ribocode_output.log || true
+        $args 2>&1 | tee ribocode_output.log
 
     # Check if RiboCode output contains error messages
     if grep -qiE "^Error|Error:" ribocode_output.log; then
