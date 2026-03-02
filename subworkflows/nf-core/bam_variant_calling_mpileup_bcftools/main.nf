@@ -45,16 +45,15 @@ workflow BAM_VARIANT_CALLING_MPILEUP_BCFTOOLS {
             [groupMeta, [meta, vcf, tbi]]
         }
         .groupTuple()
-        .map{ meta_group, filestups ->
-            // Create new meta with meta_sample_merge_key set to meta_sample_merge_value
-            def newMeta = meta_group + [
+        .map{ meta, filestups ->
+            // Assign meta_sample_merge_key to meta_sample_merge_value
+            [
+                meta + [
                 (meta_sample_merge_key): meta_sample_merge_value,
                 metas: filestups
                     .collect{ meta, _vcf, _index -> meta }
                     .sort()
-            ]
-            [
-                newMeta,
+            ],
                 filestups.collect{_meta, vcf, _index -> vcf},
                 filestups.collect{_meta, _vcf, index -> index},
                 filestups.collect{_meta, vcf, _index -> vcf}.size()
