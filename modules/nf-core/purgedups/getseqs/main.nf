@@ -13,7 +13,8 @@ process PURGEDUPS_GETSEQS {
     output:
     tuple val(meta), path("*.hap.fa")   , emit: haplotigs
     tuple val(meta), path("*.purged.fa"), emit: purged
-    path "versions.yml"                 , emit: versions
+    // WARN: Incorrect version printed inside the container, please check this if bumping version ( \$( purge_dups -h |& sed '3!d; s/.*: //' ))
+    tuple val("${task.process}"), val('purge_dups'), val('1.2.6'), emit: versions_purgedups, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,30 +22,18 @@ process PURGEDUPS_GETSEQS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.6' // WARN: Incorrect version printed inside the container, please check this if bumping version
     """
     get_seqs \\
         $args \\
         -e $bed \\
         -p $prefix \\
         $assembly
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        purgedups: $VERSION
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.6' // WARN: Incorrect version printed inside the container, please check this if bumping version
     """
     touch "${prefix}.hap.fa"
     touch "${prefix}.purged.fa"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        purgedups: $VERSION
-    END_VERSIONS
     """
 }
