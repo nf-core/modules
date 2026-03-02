@@ -12,7 +12,7 @@ process BLOBTK_DEPTH {
 
     output:
     tuple val(meta), path('*.regions.bed.gz') , emit: bed
-    path "versions.yml"                       , emit: versions
+    tuple val("${task.process}"), val("blobtk"), eval("blobtk --version | cut -d' ' -f2"), topic: versions, emit: versions_blobtk
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,11 +25,6 @@ process BLOBTK_DEPTH {
         -b ${bam} \\
         $args \\
         -O ${prefix}.regions.bed.gz \\
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blobtk: \$(blobtk --version | cut -d' ' -f2)
-    END_VERSIONS
     """
 
     stub:
