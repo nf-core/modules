@@ -27,8 +27,6 @@ process RIBOCODE_RIBOCODE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    set -o pipefail
-
     # Run RiboCode and capture output to check for errors
     RiboCode \\
         -a $annotation \\
