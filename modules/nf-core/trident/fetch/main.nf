@@ -1,5 +1,5 @@
 process TRIDENT_FETCH {
-    tag ""
+    tag "${fetch_fn ?: ''} ${fetch_s ?: ''}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -40,7 +40,7 @@ process TRIDENT_FETCH {
         ${args} \\
         ${fetch_string} \\
         ${fetch_file}
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         trident: \$(trident --version)
@@ -54,7 +54,7 @@ process TRIDENT_FETCH {
     def archives = archive_dir ? archive_dir.join(" -d ") : ''
     """
     echo ${archives} ${fetch_string} ${fetch_file} ${args}
-    
+
     mkdir dummy_package_dir
     touch dummy_package_dir/POSEIDON.yml
     touch dummy_package_dir/dummy_package.geno
