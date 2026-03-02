@@ -27,7 +27,7 @@ process SAMTOOLS_ADDREPLACERG {
     def args = task.ext.args ?: ''
     def reference = fasta ? "--reference ${fasta}" : ''
     def read_group_arg = read_group ? "-r ${read_group}" : ''
-    file_type = args =~ /--output-fmt\s+sam|-O\s+sam/ ? "sam" :
+    def file_type = args =~ /--output-fmt\s+sam|-O\s+sam/ ? "sam" :
                 args =~ /--output-fmt\s+bam|-O\s+bam/ ? "bam" :
                 args =~ /--output-fmt\s+cram|-O\s+cram/ ? "cram" :
                 input.getExtension()
@@ -46,7 +46,7 @@ process SAMTOOLS_ADDREPLACERG {
     """
 
     stub:
-    def file_type = input.getExtension()
+    file_type = input.getExtension()
     prefix        = task.ext.prefix ?: "${meta.id}"
     if ("$input" == "${prefix}.${file_type}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
