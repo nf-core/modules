@@ -3,7 +3,7 @@ process CELLPOSE {
     label 'process_high'
     label 'process_gpu'
 
-    container "quay.io/dongzehe/cellpose-gpu:4.0.8"
+    container "dongzehe/cellpose-gpu:4.0.8"
 
     input:
     tuple val(meta), path(image)
