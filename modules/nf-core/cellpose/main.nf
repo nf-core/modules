@@ -30,6 +30,7 @@ process CELLPOSE {
     """
     export OMP_NUM_THREADS=${task.cpus}
     export MKL_NUM_THREADS=${task.cpus}
+    # Container runs as root with HOME=/ which is not writable
     export HOME=\$PWD
     export MPLCONFIGDIR=\$PWD/.matplotlib
     export CELLPOSE_LOCAL_MODELS_PATH=\$PWD/.cellpose
