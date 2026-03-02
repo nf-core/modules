@@ -1,18 +1,18 @@
 process DEACON_INDEX {
     tag "$fasta"
-    label 'process_single'
+    label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/deacon:0.5.0--h4349ce8_0':
-        'biocontainers/deacon:0.5.0--h4349ce8_0' }"
+        'https://depot.galaxyproject.org/singularity/deacon:0.13.2--h7ef3eeb_1':
+        'biocontainers/deacon:0.13.2--h7ef3eeb_0' }"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("*.idx"), emit: index
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('deacon'), eval('deacon --version | head -n1 | sed "s/deacon //g"'), emit: versions_deacon, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,21 +27,11 @@ process DEACON_INDEX {
         --threads ${task.cpus} \\
         $args \\
         $fasta > ${prefix}.idx
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deacon: \$(deacon --version | head -n1 | sed 's/deacon //g')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${fasta.baseName}"
     """
     touch ${prefix}.idx
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deacon: \$(deacon --version | head -n1 | sed 's/deacon //g')
-    END_VERSIONS
     """
 }

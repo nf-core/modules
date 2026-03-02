@@ -29,51 +29,78 @@ input:
         pattern: "*.ktab*"
         ontologies: []
 output:
-  filled_gc_plot:
+  images:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.fi.{png,pdf}"
-      - "*.fi.{png,pdf}":
+      - "*.{png,pdf}":
           type: file
           description: |
-            A filled GC content plot in PNG or PDF format
-          pattern: "*.fi.{png,pdf}"
+            GC content plots in PNG or PDF format
+          pattern: "*.{png,pdf}"
           ontologies: []
-  line_gc_plot:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-          pattern: "*.fi.{png,pdf}"
-      - "*.ln.{png,pdf}":
-          type: file
-          description: |
-            A filled GC content plot in PNG or PDF format
-          pattern: "*.ln.{png,pdf}"
-          ontologies: []
-  stacked_gc_plot:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-          pattern: "*.fi.{png,pdf}"
-      - "*.st.{png,pdf}":
-          type: map
-          description: |
-            A stacked GC content plot in PNG or PDF format
-          pattern: "*.st.{png,pdf}"
+  versions_merquryfk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - merquryfk:
+          type: string
+          description: The name of the tool
+      - "1.2":
+          type: string
+          description: The expression to obtain the version of the tool
+  versions_fastk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fastk:
+          type: string
+          description: The name of the tool
+      - "1.2":
+          type: string
+          description: The expression to obtain the version of the tool
+  versions_r:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - R:
+          type: string
+          description: The name of the tool
+      - R --version | sed "1!d; s/.*version //; s/ .*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - merquryfk:
+          type: string
+          description: The name of the tool
+      - "1.2":
+          type: string
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fastk:
+          type: string
+          description: The name of the tool
+      - "1.2":
+          type: string
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - R:
+          type: string
+          description: The name of the tool
+      - R --version | sed "1!d; s/.*version //; s/ .*//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mahesh-panchal"
 maintainers:

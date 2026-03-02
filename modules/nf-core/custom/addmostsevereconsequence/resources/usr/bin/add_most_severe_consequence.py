@@ -7,7 +7,7 @@ import argparse
 import gzip
 import sys
 from pathlib import Path
-from typing import Tuple, TextIO
+from typing import TextIO, Tuple
 
 
 def parse_vep_csq_transcripts(

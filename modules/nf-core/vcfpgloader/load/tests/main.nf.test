@@ -1,0 +1,82 @@
+nextflow_process {
+    name "Test Process VCFPGLOADER_LOAD"
+    script "../main.nf"
+    process "VCFPGLOADER_LOAD"
+
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vcfpgloader"
+    tag "vcfpgloader/load"
+    tag "database"
+
+    test("sarscov2 - vcf.gz - stub") {
+        tag "stub"
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test_sample', family: 'TEST_FAM' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
+                    'localhost',
+                    5432,
+                    'testdb',
+                    'postgres',
+                    'public'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.report,
+                    process.out.log,
+                    process.out.row_count,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - gatk vcf.gz - stub") {
+        tag "stub"
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test_human' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotc.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotc.vcf.gz.tbi', checkIfExists: true),
+                    'localhost',
+                    5432,
+                    'testdb',
+                    'postgres',
+                    'public'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.report,
+                    process.out.log,
+                    process.out.row_count,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+    }
+
+}

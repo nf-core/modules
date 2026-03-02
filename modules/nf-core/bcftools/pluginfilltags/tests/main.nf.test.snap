@@ -1,33 +1,25 @@
 {
     "homo_sapiens - vcf": {
         "content": [
-            "da09a942b1e3c0226208880743d3dd07",
+            "d986322f4617ed952c7fcf6ed61e7983",
             "NA12878.vcf.gz.csi",
-            [
-                "versions.yml:md5,3eb4d1bb1b803aeb4d38e826dc83b8b2"
-            ]
+            {
+                "versions_bcftools": [
+                    [
+                        "BCFTOOLS_PLUGINFILLTAGS",
+                        "bcftools",
+                        "1.22"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-09-15T12:08:35.564113"
+        "timestamp": "2026-01-20T12:10:18.842847261"
     },
-    "homo_sapiens - vcf - samples": {
-        "content": [
-            "59152e4d89bf7ade9349695527827ffb",
-            "1000GP.vcf.gz.csi",
-            [
-                "versions.yml:md5,3eb4d1bb1b803aeb4d38e826dc83b8b2"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-15T12:08:58.597994"
-    },
-    "homo_sapiens - vcf -- stub": {
+    "homo_sapiens - vcf - stub": {
         "content": [
             {
                 "0": [
@@ -36,35 +28,39 @@
                             "id": "NA12878",
                             "region": "chr22:16570065-16609999"
                         },
-                        "NA12878.bcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "NA12878.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "1": [
-                    [
-                        {
-                            "id": "NA12878",
-                            "region": "chr22:16570065-16609999"
-                        },
-                        "NA12878.bcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
+                    
                 ],
                 "2": [
-                    
-                ],
-                "3": [
-                    "versions.yml:md5,3eb4d1bb1b803aeb4d38e826dc83b8b2"
-                ],
-                "csi": [
-                    
-                ],
-                "tbi": [
                     [
                         {
                             "id": "NA12878",
                             "region": "chr22:16570065-16609999"
                         },
-                        "NA12878.bcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "NA12878.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
+                ],
+                "3": [
+                    [
+                        "BCFTOOLS_PLUGINFILLTAGS",
+                        "bcftools",
+                        "1.22"
+                    ]
+                ],
+                "csi": [
+                    [
+                        {
+                            "id": "NA12878",
+                            "region": "chr22:16570065-16609999"
+                        },
+                        "NA12878.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "tbi": [
+                    
                 ],
                 "vcf": [
                     [
@@ -72,23 +68,42 @@
                             "id": "NA12878",
                             "region": "chr22:16570065-16609999"
                         },
-                        "NA12878.bcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "NA12878.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,3eb4d1bb1b803aeb4d38e826dc83b8b2"
+                "versions_bcftools": [
+                    [
+                        "BCFTOOLS_PLUGINFILLTAGS",
+                        "bcftools",
+                        "1.22"
+                    ]
                 ]
-            },
-            {
-                "BCFTOOLS_PLUGINFILLTAGS": {
-                    "bcftools": 1.22
-                }
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-09-15T12:09:03.820701"
+        "timestamp": "2026-01-20T12:27:21.257746315"
+    },
+    "homo_sapiens - vcf - samples": {
+        "content": [
+            "59152e4d89bf7ade9349695527827ffb",
+            "1000GP.vcf.gz.csi",
+            {
+                "versions_bcftools": [
+                    [
+                        "BCFTOOLS_PLUGINFILLTAGS",
+                        "bcftools",
+                        "1.22"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-01-20T12:10:29.790303489"
     }
 }

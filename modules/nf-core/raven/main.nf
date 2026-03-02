@@ -13,7 +13,7 @@ process RAVEN {
     output:
     tuple val(meta), path("*.fasta.gz"), emit: fasta
     tuple val(meta), path("*.gfa.gz")  , emit: gfa
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('raven'), eval('raven --version'), emit: versions_raven, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,11 +32,5 @@ process RAVEN {
 
     # compress assembly graph
     gzip -c ${prefix}.gfa > ${prefix}.gfa.gz
-
-    # get tool version
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        raven: \$( raven --version )
-    END_VERSIONS
     """
 }

@@ -1,4 +1,5 @@
-include { UNTAR                     } from '../../../modules/nf-core/untar/main'
+include { UNTAR as UNTAR_BISMARK    } from '../../../modules/nf-core/untar/main'
+include { UNTAR as UNTAR_BWAMETH    } from '../../../modules/nf-core/untar/main'
 include { GUNZIP                    } from '../../../modules/nf-core/gunzip/main'
 include { BISMARK_GENOMEPREPARATION as BISMARK_GENOMEPREPARATION_BOWTIE } from '../../../modules/nf-core/bismark/genomepreparation/main'
 include { BISMARK_GENOMEPREPARATION as BISMARK_GENOMEPREPARATION_HISAT } from '../../../modules/nf-core/bismark/genomepreparation/main'
@@ -14,23 +15,23 @@ workflow FASTA_INDEX_METHYLSEQ {
     bismark_index    // channel: [ val(meta), [ bismark index ] ]
     bwameth_index    // channel: [ val(meta), [ bwameth index ] ]
     bwamem_index     // channel: [ val(meta), [ bwamem index ] ]
-    aligner          // string: bismark, bismark_hisat or bwameth
+    aligner          // string: bismark, bismark_hisat, bwameth or bwamem
     collecthsmetrics // boolean: whether to run picard collecthsmetrics
     use_mem2         // boolean: generate mem2 index if no index provided, and bwameth is selected
 
     main:
 
-    ch_fasta         = Channel.empty()
-    ch_fasta_index   = Channel.empty()
-    ch_bismark_index = Channel.empty()
-    ch_bwameth_index = Channel.empty()
-    ch_bwamem_index  = Channel.empty()
-    ch_versions      = Channel.empty()
+    ch_fasta         = channel.empty()
+    ch_fasta_index   = channel.empty()
+    ch_bismark_index = channel.empty()
+    ch_bwameth_index = channel.empty()
+    ch_bwamem_index  = channel.empty()
+    ch_versions      = channel.empty()
 
     // Check if fasta file is gzipped and decompress if needed
     fasta
-        .branch {
-            gzipped: it[1].toString().endsWith('.gz')
+        .branch { _meta, file ->
+            gzipped: file.toString().endsWith('.gz')
             unzipped: true
         }
         .set { ch_fasta_branched }
@@ -40,7 +41,6 @@ workflow FASTA_INDEX_METHYLSEQ {
     )
 
     ch_fasta    = ch_fasta_branched.unzipped.mix(GUNZIP.out.gunzip)
-    ch_versions = ch_versions.mix(GUNZIP.out.versions)
 
     // Aligner: bismark or bismark_hisat
     if( aligner =~ /bismark/ ){
@@ -50,23 +50,22 @@ workflow FASTA_INDEX_METHYLSEQ {
         if (bismark_index) {
             // Handle channel-based bismark index
             bismark_index
-                .branch {
-                    gzipped: it[1].toString().endsWith('.gz')
+                .branch { _meta, file ->
+                    gzipped: file.toString().endsWith('.gz')
                     unzipped: true
                 }
                 .set { ch_bismark_index_branched }
 
-            UNTAR (
+            UNTAR_BISMARK (
                 ch_bismark_index_branched.gzipped
             )
 
-            ch_bismark_index = ch_bismark_index_branched.unzipped.mix(UNTAR.out.untar)
-            ch_versions      = ch_versions.mix(UNTAR.out.versions)
+            ch_bismark_index = ch_bismark_index_branched.unzipped.mix(UNTAR_BISMARK.out.untar)
         } else {
 
             if( aligner == "bismark_hisat") {
                 BISMARK_GENOMEPREPARATION_HISAT (
-                ch_fasta
+                    ch_fasta
                 )
                 ch_bismark_index = BISMARK_GENOMEPREPARATION_HISAT.out.index
                 ch_versions      = ch_versions.mix(BISMARK_GENOMEPREPARATION_HISAT.out.versions)
@@ -88,30 +87,22 @@ workflow FASTA_INDEX_METHYLSEQ {
         if (bwameth_index) {
             // Handle channel-based bwameth index
             bwameth_index
-                .branch {
-                    gzipped: it[1].toString().endsWith('.gz')
+                .branch { _meta, file ->
+                    gzipped: file.toString().endsWith('.gz')
                     unzipped: true
                 }
                 .set { ch_bwameth_index_branched }
 
-            UNTAR (
+            UNTAR_BWAMETH (
                 ch_bwameth_index_branched.gzipped
             )
 
-            ch_bwameth_index = ch_bwameth_index_branched.unzipped.mix(UNTAR.out.untar)
-            ch_versions      = ch_versions.mix(UNTAR.out.versions)
+            ch_bwameth_index = ch_bwameth_index_branched.unzipped.mix(UNTAR_BWAMETH.out.untar)
         } else {
-            if (use_mem2) {
-                BWAMETH_INDEX (
-                    ch_fasta,
-                    true
-                )
-            } else {
-                BWAMETH_INDEX (
-                    ch_fasta,
-                    false
-                )
-            }
+            BWAMETH_INDEX (
+                ch_fasta,
+                use_mem2
+            )
             ch_bwameth_index = BWAMETH_INDEX.out.index
             ch_versions      = ch_versions.mix(BWAMETH_INDEX.out.versions)
         }
@@ -119,18 +110,29 @@ workflow FASTA_INDEX_METHYLSEQ {
 
 
     else if ( aligner == 'bwamem' ){
-        log.info "BWA index not provided. Generating BWA index from FASTA file."
         /*
          * Generate BWA index from FASTA file
          */
         if (bwamem_index) {
-            ch_bwamem_index = bwamem_index
+            // Handle channel-based bwamem index
+            bwamem_index
+                .branch { _meta, file ->
+                    gzipped: file.toString().endsWith('.gz')
+                    unzipped: true
+                }
+                .set { ch_bwamem_index_branched }
+
+            UNTAR_BISMARK (
+                ch_bwamem_index_branched.gzipped
+            )
+
+            ch_bwamem_index = ch_bwamem_index_branched.unzipped.mix(UNTAR_BISMARK.out.untar)
         } else {
-            BWA_INDEX(
+            log.info "BWA index not provided. Generating BWA index from FASTA file."
+            BWA_INDEX (
                 ch_fasta
             )
             ch_bwamem_index = BWA_INDEX.out.index
-            ch_versions = ch_versions.mix(BWA_INDEX.out.versions)
         }
     }
 
@@ -138,17 +140,17 @@ workflow FASTA_INDEX_METHYLSEQ {
     * Generate fasta index if not supplied for bwameth workflow or picard collecthsmetrics tool
     */
     if (aligner == 'bwameth' || aligner == 'bwamem' || collecthsmetrics) {
-        // already exising fasta index
+        // already existing fasta index
         if (fasta_index) {
             ch_fasta_index = fasta_index
         } else {
-            SAMTOOLS_FAIDX(
-                ch_fasta,
-                [[:], []],
+            log.info "Fasta index not provided. Generating fasta index from FASTA file."
+            SAMTOOLS_FAIDX (
+                ch_fasta.combine(channel.of([[]])),
                 false
             )
             ch_fasta_index = SAMTOOLS_FAIDX.out.fai
-            ch_versions    = ch_versions.mix(SAMTOOLS_FAIDX.out.versions)
+            // samtools/faidx version emitted into the topic channel
         }
     }
 
@@ -157,6 +159,6 @@ workflow FASTA_INDEX_METHYLSEQ {
     fasta_index   = ch_fasta_index   // channel: [ val(meta), [ fasta index ] ]
     bismark_index = ch_bismark_index // channel: [ val(meta), [ bismark index ] ]
     bwameth_index = ch_bwameth_index // channel: [ val(meta), [ bwameth index ] ]
-    bwamem_index  = ch_bwamem_index // channel: [ val(meta), [ bwamem index ] ]
+    bwamem_index  = ch_bwamem_index  // channel: [ val(meta), [ bwamem index ] ]
     versions      = ch_versions      // channel: [ versions.yml ]
 }

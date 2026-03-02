@@ -37,7 +37,6 @@ process PYPGX_COMPUTECONTROLSTATISTICS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def control = "${control_gene}"  ?: "VDR"
     """

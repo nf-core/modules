@@ -36,20 +36,22 @@ RUN apt-get update && \
 
 # --- Build and install MUMmer4 v4.0.1 ---
 WORKDIR /opt
-RUN git clone --branch v4.0.1 https://github.com/mummer4/mummer.git && \
-    cd mummer && \
-    autoreconf -fi && \
+RUN git clone --branch v4.0.1 https://github.com/mummer4/mummer.git
+WORKDIR /opt/mummer
+RUN autoreconf -fi && \
     ./configure && \
     make && \
     make install && \
-    ldconfig /usr/local/lib && \
-    cd .. && rm -rf mummer
+    ldconfig /usr/local/lib
+WORKDIR /opt
+RUN rm -rf mummer
 
 # --- Install off-target-probe-tracker ---
-RUN git clone https://github.com/JEFworks/off-target-probe-tracker.git && \
-    cd off-target-probe-tracker && \
-    pip install --no-cache-dir . && \
-    cd .. && rm -rf off-target-probe-tracker
+RUN git clone https://github.com/JEFworks/off-target-probe-tracker.git
+WORKDIR /opt/off-target-probe-tracker
+RUN pip install --no-cache-dir .
+WORKDIR /opt
+RUN rm -rf off-target-probe-tracker
 
 # Default work directory
 WORKDIR /data

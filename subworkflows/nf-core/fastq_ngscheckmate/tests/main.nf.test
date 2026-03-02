@@ -57,8 +57,7 @@ nextflow_workflow {
                     workflow.out.matched,
                     workflow.out.all,
                     workflow.out.vaf,
-                    file(workflow.out.pdf[0][1]).name,
-                    workflow.out.versions
+                    file(workflow.out.pdf[0][1]).name
                     ).match() }
             )
         }
@@ -106,8 +105,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect{ path(it).yaml }
+                    workflow.out
                 ).match() }
             )
         }

@@ -1,0 +1,77 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "vembrane_sort"
+description: Sort VCF/BCF files by custom Python expressions for variant prioritization
+keywords:
+  - vcf
+  - bcf
+  - sort
+  - genomics
+  - variant
+  - prioritization
+tools:
+  - "vembrane":
+      description: "Filter VCF/BCF files with Python expressions"
+      homepage: "https://vembrane.github.io/"
+      documentation: "https://github.com/vembrane/vembrane/blob/main/docs/sort.md"
+      tool_dev_url: "https://github.com/vembrane/vembrane"
+      doi: "10.1093/bioinformatics/btac810"
+      licence: ["MIT"]
+      identifier: biotools:vembrane
+      args_id: "$args"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - vcf:
+        type: file
+        description: VCF/BCF file to sort
+        pattern: "*.{vcf,bcf,bcf.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3016 # VCF
+  - expression:
+      type: string
+      description: Python expression (or tuple of expressions) returning orderable values to sort by
+
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.{vcf,bcf,bcf.gz}":
+          type: file
+          description: Sorted VCF/BCF file
+          pattern: "*.{vcf,bcf,bcf.gz}"
+          ontologies:
+            - edam: http://edamontology.org/format_3016 # VCF
+  versions_vembrane:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - vembrane:
+          type: string
+          description: The tool name
+      - "vembrane --version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - vembrane:
+          type: string
+          description: The tool name
+      - "vembrane --version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
+authors:
+  - "@mkatsanto"
+  - "@trangdo-hsc"
+maintainers:
+  - "@mkatsanto"
+  - "@trangdo-hsc"

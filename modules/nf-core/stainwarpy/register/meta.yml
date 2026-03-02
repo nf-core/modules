@@ -1,0 +1,112 @@
+name: "stainwarpy_register"
+description: "Register H&E stained and Multiplexed tissue images using feature-based image registration"
+keywords:
+  - image registration
+  - histology
+  - hne
+  - multiplexed
+tools:
+  - "stainwarpy":
+      description: "Register H&E stained and Multiplexed tissue images using feature-based image registration"
+      homepage: "https://github.com/tckumarasekara/stainwarpy"
+      documentation: "https://github.com/tckumarasekara/stainwarpy"
+      tool_dev_url: "https://github.com/tckumarasekara/stainwarpy"
+      licence: ["MIT License", "Apache-2.0"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - hne_img:
+        type: file
+        description: H&E stained image file
+        pattern: "*.{ome.tif,ome.tiff,tif,tiff}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3727"
+          - edam: "http://edamontology.org/format_3591"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - multiplx_img:
+        type: file
+        description: Multiplexed image file
+        pattern: "*.{ome.tif,ome.tiff,tif,tiff}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3727"
+          - edam: "http://edamontology.org/format_3591"
+  - fixed_img:
+      type: string
+      description: Which image to use as fixed image for registration. Options - 'hne' or 'multiplexed'
+      ontologies: []
+  - final_sz:
+      type: string
+      description: In which pixel size to output the registered image and segmentation mask. Options - 'hne' or 'multiplexed'
+      ontologies: []
+
+output:
+  reg_image:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_transformed_image.ome.tif":
+          type: file
+          description: Registered final channel image in OME-TIFF format
+          pattern: "*_transformed_image.ome.tif"
+          ontologies:
+            - edam: "http://edamontology.org/format_3727"
+  reg_metrics_tform:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_registration_metrics_tform_map.json":
+          type: file
+          description: Registration metrics and transformation map in JSON format
+          pattern: "*_registration_metrics_tform_map.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464"
+  tform_map:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_feature_based_transformation_map.npy":
+          type: file
+          description: Feature-based transformation map in NPY format
+          pattern: "*_feature_based_transformation_map.npy"
+          ontologies: []
+  versions_stainwarpy:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "stainwarpy":
+          type: string
+          description: The name of the tool
+      - "stainwarpy --version | sed 's/.* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stainwarpy:
+          type: string
+          description: The name of the tool
+      - stainwarpy --version | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@tckumarasekara"
+maintainers:
+  - "@tckumarasekara"

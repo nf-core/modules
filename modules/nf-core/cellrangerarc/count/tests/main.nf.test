@@ -3,14 +3,14 @@ nextflow_process {
     name "Test Process CELLRANGERARC_COUNT"
     script "../main.nf"
     process "CELLRANGERARC_COUNT"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "cellrangerarc"
     tag "cellrangerarc/mkref"
     tag "cellrangerarc/count"
     tag "unzip"
-   
+
     setup {
         run("UNZIP") {
             script "../../../unzip/main.nf"

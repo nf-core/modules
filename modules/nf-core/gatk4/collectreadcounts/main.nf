@@ -15,8 +15,8 @@ process GATK4_COLLECTREADCOUNTS {
 
     output:
     tuple val(meta), path("*.hdf5"), emit: hdf5, optional: true
-    tuple val(meta), path("*.tsv"),  emit: tsv, optional: true
-    path "versions.yml",             emit: versions
+    tuple val(meta), path("*.tsv"), emit: tsv, optional: true
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -48,11 +48,6 @@ process GATK4_COLLECTREADCOUNTS {
         ${reference} \\
         --tmp-dir . \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -65,10 +60,5 @@ process GATK4_COLLECTREADCOUNTS {
             : "hdf5"
     """
     touch ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

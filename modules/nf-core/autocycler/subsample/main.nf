@@ -14,7 +14,7 @@ process AUTOCYCLER_SUBSAMPLE {
 
     output:
     tuple val(meta), path("$prefix/*.fastq.gz"), emit: subsampled_reads
-    path "versions.yml",                         emit: versions
+    tuple val("${task.process}"), val("autocycler"), eval("autocycler --version |  sed 's/^[^ ]* //'"), emit: versions_autocycler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,24 +32,13 @@ process AUTOCYCLER_SUBSAMPLE {
         --genome_size $genome_size
 
     gzip $prefix/*.fastq
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        autocycler: \$(autocycler --version |  sed 's/^[^ ]* //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
 
     mkdir $prefix
     echo | gzip > ${prefix}/sample_00.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        autocycler: \$(autocycler --version |  sed 's/^[^ ]* //')
-    END_VERSIONS
     """
 }

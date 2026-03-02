@@ -32,7 +32,8 @@ input:
         type: file
         description: Alternative HMM file(s) to use in HMMER format
         pattern: "*.hmm"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1370 # HMMER format
   - model_dir:
       type: directory
       description: Path to an alternative CRF (Conditional Random Fields) module to
@@ -87,7 +88,8 @@ output:
           description: Per cluster GenBank file (if found) containing sequence with
             annotations. Will not be generated if no hits are found.
           pattern: "*.gbk"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_1936" # GenBank
   json:
     - - meta:
           type: map
@@ -99,7 +101,8 @@ output:
           description: AntiSMASH v6 sideload JSON file (if --antismash-sideload) supplied.
             Will not be generated if no hits are found.
           pattern: "*.gbk"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_1936" # GenBank
   versions:
     - versions.yml:
         type: file

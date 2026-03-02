@@ -1,16 +1,4 @@
 {
-    "versions": {
-        "content": [
-            [
-                "versions.yml:md5,09ed3f492ad6f43e159b437b91d965ef"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
-        },
-        "timestamp": "2025-10-29T12:20:45.59941863"
-    },
     "sarscov2 - fastq - single-end - stub": {
         "content": [
             {
@@ -20,7 +8,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test.fq:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "1": [
@@ -33,7 +21,11 @@
                     ]
                 ],
                 "2": [
-                    "versions.yml:md5,09ed3f492ad6f43e159b437b91d965ef"
+                    [
+                        "DEACON_FILTER",
+                        "deacon",
+                        "0.13.2"
+                    ]
                 ],
                 "fastq_filtered": [
                     [
@@ -41,7 +33,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test.fq:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "log": [
@@ -53,23 +45,29 @@
                         "test.json:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,09ed3f492ad6f43e159b437b91d965ef"
+                "versions_deacon": [
+                    [
+                        "DEACON_FILTER",
+                        "deacon",
+                        "0.13.2"
+                    ]
                 ]
             },
-            [
-                {
-                    "DEACON_FILTER": {
-                        "deacon": "0.5.0"
-                    }
-                }
-            ]
+            {
+                "versions_deacon": [
+                    [
+                        "DEACON_FILTER",
+                        "deacon",
+                        "0.13.2"
+                    ]
+                ]
+            }
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-29T12:16:34.970620286"
+        "timestamp": "2026-02-12T12:46:45.282375511"
     },
     "sarscov2 - fastq - paired-end": {
         "content": [
@@ -81,17 +79,26 @@
                         "single_end": false
                     },
                     [
-                        "test_1.fq:md5,bf1aa22249e7e2b462c6be1a53ac55e9",
-                        "test_2.fq:md5,d3106ad7395c78a212e6214177d5c054"
+                        "test_1.fq.gz:md5,bf1aa22249e7e2b462c6be1a53ac55e9",
+                        "test_2.fq.gz:md5,d3106ad7395c78a212e6214177d5c054"
                     ]
                 ]
-            ]
+            ],
+            {
+                "versions_deacon": [
+                    [
+                        "DEACON_FILTER",
+                        "deacon",
+                        "0.13.2"
+                    ]
+                ]
+            }
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-29T12:20:45.589582528"
+        "timestamp": "2026-02-12T12:46:37.539497096"
     },
     "sarscov2 - fastq - single-end": {
         "content": [
@@ -102,21 +109,23 @@
                         "id": "test",
                         "single_end": true
                     },
-                    "test.fq:md5,2250e99ec61fca0e28e2dcb5124d1a16"
+                    "test.fq.gz:md5,2250e99ec61fca0e28e2dcb5124d1a16"
                 ]
             ],
-            [
-                {
-                    "DEACON_FILTER": {
-                        "deacon": "0.5.0"
-                    }
-                }
-            ]
+            {
+                "versions_deacon": [
+                    [
+                        "DEACON_FILTER",
+                        "deacon",
+                        "0.13.2"
+                    ]
+                ]
+            }
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-29T12:16:21.464845233"
+        "timestamp": "2026-02-12T12:46:29.822244006"
     }
 }

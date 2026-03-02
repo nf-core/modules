@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "oatk"
 description: An nf-core module for the OATK
 keywords:
@@ -19,7 +18,6 @@ tools:
       identifier: ""
 
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
@@ -30,58 +28,31 @@ input:
         description: HiFi reads in FASTA format
         pattern: "*.{fasta,fasta.gz,fa,fa.gz}"
         ontologies: []
-  - - mito_hmm:
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'Cladonia_norvegica' ]
+    - mito_hmm_files:
         type: file
-        description: mitochondria gene annotation HMM profile database
-        pattern: "*.{fa,fam}"
+        description: |
+          HMM profile for mitochondrial gene annotation, with corresponding
+          .h3i, h3f, .h3p, .h3m files from hmmpress
+        pattern: "*.{fam,h3i,h3f,h3p,h3m}"
         ontologies: []
-    - mito_hmm_h3f:
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'Cladonia_norvegica' ]
+    - pltd_hmm_files:
         type: file
-        description: mitochondria gene annotation HMM profile binary auxfile
-        pattern: "*.{h3f}"
-        ontologies: []
-    - mito_hmm_h3i:
-        type: file
-        description: mitochondria gene annotation HMM profile binary auxfile
-        pattern: "*.{h3i}"
-        ontologies: []
-    - mito_hmm_h3m:
-        type: file
-        description: mitochondria gene annotation HMM profile binary auxfile
-        pattern: "*.{h3m}"
-        ontologies: []
-    - mito_hmm_h3p:
-        type: file
-        description: mitochondria gene annotation HMM profile binary auxfile
-        pattern: "*.{h3p}"
-        ontologies: []
-  - - pltd_hmm:
-        type: file
-        description: plastid gene annotation HMM profile database
-        pattern: "*.{fa,fam}"
-        ontologies: []
-    - pltd_hmm_h3f:
-        type: file
-        description: plastid gene annotation HMM profile binary auxfile
-        pattern: "*.{h3f}"
-        ontologies: []
-    - pltd_hmm_h3i:
-        type: file
-        description: plastid gene annotation HMM profile binary auxfile
-        pattern: "*.{h3i}"
-        ontologies: []
-    - pltd_hmm_h3m:
-        type: file
-        description: plastid gene annotation HMM profile binary auxfile
-        pattern: "*.{h3m}"
-        ontologies: []
-    - pltd_hmm_h3p:
-        type: file
-        description: plastid gene annotation HMM profile binary auxfile
-        pattern: "*.{h3p}"
+        description: |
+          HMM profile for plastid gene annotation, with corresponding
+          .h3i, h3f, .h3p, .h3m files from hmmpress
+        pattern: "*.{fam,h3i,h3f,h3p,h3m}"
         ontologies: []
 output:
-  #Only when we have meta
   mito_fasta:
     - - meta:
           type: map
@@ -172,18 +143,6 @@ output:
           description: the PT gene annotation file over all assembled sequences
           pattern: "*annot_pltd.txt"
           ontologies: []
-  clean_gfa:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*utg.clean.gfa":
-          type: file
-          description: the GFA file for the clean genome assembly
-          pattern: "*utg.clean.gfa"
-          ontologies:
-            - edam: http://edamontology.org/format_3975 # GFA 1
   final_gfa:
     - - meta:
           type: map
@@ -208,36 +167,40 @@ output:
           pattern: "*utg.gfa"
           ontologies:
             - edam: http://edamontology.org/format_3975 # GFA 1
-  multiplex_gfa:
+  log:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*utg.multiplex.gfa":
+      - "*.log":
           type: file
-          description: the mutliplexed GFA file
-          pattern: "*utg.multiplex.gfa"
+          description: log file describing oatk run
+          pattern: "*.log"
           ontologies:
-            - edam: http://edamontology.org/format_3975 # GFA 1
-  unzip_gfa:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*utg.unzip.gfa":
-          type: file
-          description: the unzipped GFA file
-          pattern: "*utg.unzip.gfa"
-          ontologies:
-            - edam: http://edamontology.org/format_3975 # GFA 1
+            - edam: http://edamontology.org/data_2526 # Text
+  versions_oatk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - oatk:
+          type: string
+          description: The name of the tool
+      - oatk --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - oatk:
+          type: string
+          description: The name of the tool
+      - oatk --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@ksenia-krasheninnikova"

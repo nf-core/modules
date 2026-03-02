@@ -40,7 +40,6 @@ nextflow_workflow {
                     workflow.out.reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.summary.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.genes_txt.collect { it.collect { it instanceof String ? file(it).name : it } },
-                    workflow.out.versions.collect { it }
                 ).match()}
             )
         }

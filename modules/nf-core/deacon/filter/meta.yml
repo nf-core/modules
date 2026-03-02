@@ -46,10 +46,10 @@ output:
           description: |
             Groovy Map containing reference information.
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}*.fq":
+      - "${prefix}*.fq.gz":
           type: file
-          description: List of output filtered FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
-          pattern: "*.fq"
+          description: List of output filtered FastQ files of size 1 and 2, for single-end and paired-end data, respectively.
+          pattern: "*.fq.gz"
           ontologies:
             - edam: "http://edamontology.org/format_1930" # FASTQ
   log:
@@ -64,14 +64,28 @@ output:
           pattern: "*.json"
           ontologies:
             - edam: "http://edamontology.org/format_3464" # JSON
+  versions_deacon:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deacon:
+          type: string
+          description: The name of the tool
+      - deacon --version | head -n1 | sed "s/deacon //g":
+          type: eval
+          description: The expression to obtain the version of the tool
 
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deacon:
+          type: string
+          description: The name of the tool
+      - deacon --version | head -n1 | sed "s/deacon //g":
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
   - "@Baksic-Ivan"

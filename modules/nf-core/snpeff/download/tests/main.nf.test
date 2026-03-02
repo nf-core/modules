@@ -10,13 +10,12 @@ nextflow_process {
     tag "snpeff"
     tag "snpeff/download"
 
-    test("test-snpeff-download") {
+    test("SNPEFF download cache for WBcel235.99") {
 
         when {
             process {
                 """
                 input[0] = [ [ id:"WBcel235.99" ], "WBcel235.99" ]
-
                 """
             }
         }
@@ -24,18 +23,22 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.cache,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }
 
-    test("test-snpeff-download-stub") {
+    test("SNPEFF download cache for WBcel235.99 - stub") {
+
         options '-stub'
+
         when {
             process {
                 """
                 input[0] = [ [ id:"WBcel235.99" ], "WBcel235.99" ]
-
                 """
             }
         }
@@ -47,5 +50,4 @@ nextflow_process {
             )
         }
     }
-
 }

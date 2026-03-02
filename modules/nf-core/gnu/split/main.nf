@@ -12,7 +12,7 @@ process GNU_SPLIT {
 
     output:
     tuple val(meta), path( "${prefix}.*" )  , emit: split
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('coreutils'), eval("sort --version |& sed '1!d ; s/sort (GNU coreutils) //'"), emit: versions_coreutils, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,31 +27,18 @@ process GNU_SPLIT {
         gunzip -c ${input} | split ${args} --additional-suffix=.${next_suffix} - ${prefix}.
         gzip ${prefix}.*
 
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            gnu: \$(split --version |& sed '1!d ; s/split (GNU coreutils) //')
-        END_VERSIONS
         """
     } else {
         """
         split ${args} --additional-suffix=.${suffix} ${input} ${prefix}.
 
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            gnu: \$(split --version |& sed '1!d ; s/split (GNU coreutils) //')
-        END_VERSIONS
         """
     }
 
     stub:
-    def args        = task.ext.args   ?: ''
     prefix      = task.ext.prefix ?: "${meta.id}.split"
     """
     touch ${prefix}.000.csv ${prefix}.001.csv ${prefix}.002.csv
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gnu: \$(split --version |& sed '1!d ; s/split (GNU coreutils) //')
-    END_VERSIONS
     """
 }

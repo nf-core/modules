@@ -9,16 +9,14 @@ process SAMTOOLS_MERGE {
 
     input:
     tuple val(meta), path(input_files, stageAs: "?/*")
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fai)
-    tuple val(meta4), path(gzi)
+    tuple val(meta2), path(fasta), path(fai), path(gzi)
 
     output:
     tuple val(meta), path("${prefix}.bam") , optional:true, emit: bam
     tuple val(meta), path("${prefix}.cram"), optional:true, emit: cram
     tuple val(meta), path("*.csi")         , optional:true, emit: csi
     tuple val(meta), path("*.crai")        , optional:true, emit: crai
-    path  "versions.yml"                                  , emit: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,11 +35,6 @@ process SAMTOOLS_MERGE {
         ${reference} \\
         ${prefix}.${file_type} \\
         $input_files
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -53,10 +46,5 @@ process SAMTOOLS_MERGE {
     """
     touch ${prefix}.${file_type}
     ${index}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }

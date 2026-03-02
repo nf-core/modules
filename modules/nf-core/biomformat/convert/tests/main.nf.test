@@ -44,7 +44,7 @@ nextflow_process {
                 input[0] = VSEARCH_CLUSTER.out.otu
                 """
             }
-        }   
+        }
     }
 
     test("sarscov2 - text - biom") {
@@ -96,7 +96,7 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.biom[0][1]).json.findAll{it.key != "date"}.toString().md5(),
                     process.out.versions
-                    ).match() 
+                    ).match()
                 }
             )
         }
@@ -111,7 +111,7 @@ nextflow_process {
                 vsearch_cluster_args2  = '--cluster_fast'
                 vsearch_cluster_args3  = '--biomout'
                 module_args            = '-table-type="OTU table" --to-hdf5'
-            }            
+            }
 
             process {
                 """

@@ -37,7 +37,6 @@ nextflow_process {
                 }
             )
         }
-
     }
 
     test("homo_sapiens - sites per chunk - vcf_gz_index") {
@@ -68,12 +67,11 @@ nextflow_process {
                     process.out.vcf.collect { meta, files -> files.collect { it instanceof Map ? it : file(it).name } },
                     process.out.csi.collect { meta, files -> files.collect { it instanceof Map ? it : file(it).name } },
                     process.out.tbi.collect { meta, files -> files.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match("vcf_gz_index") },
                 { assert process.out.csi[0][1][0] =~ ".*/test_vcf0.vcf.gz.csi" }
             )
         }
-
     }
 
     test("homo_sapiens - sites per chunk - vcf_gz_index_csi") {
@@ -104,12 +102,11 @@ nextflow_process {
                     process.out.vcf.collect { meta, files -> files.collect { it instanceof Map ? it : file(it).name } },
                     process.out.csi.collect { meta, files -> files.collect { it instanceof Map ? it : file(it).name } },
                     process.out.tbi.collect { meta, files -> files.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match("vcf_gz_index_csi") },
                 { assert process.out.csi[0][1][0] =~ ".*/test_vcf0.vcf.gz.csi" }
             )
         }
-
     }
 
     test("homo_sapiens - sites per chunk - vcf_gz_index_tbi") {
@@ -140,12 +137,11 @@ nextflow_process {
                     process.out.vcf.collect { meta, files -> files.collect { it instanceof Map ? it : file(it).name } },
                     process.out.csi.collect { meta, files -> files.collect { it instanceof Map ? it : file(it).name } },
                     process.out.tbi.collect { meta, files -> files.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match("vcf_gz_index_tbi") },
                 { assert process.out.tbi[0][1][0] =~ ".*/test_vcf0.vcf.gz.tbi" }
             )
         }
-
     }
 
     test("homo_sapiens - scatter") {
@@ -178,7 +174,6 @@ nextflow_process {
                 }
             )
         }
-
     }
 
     test("homo_sapiens - scatter file") {
@@ -212,7 +207,6 @@ nextflow_process {
                 }
             )
         }
-
     }
 
     test("homo_sapiens - sites per chunk - stub") {
@@ -244,7 +238,6 @@ nextflow_process {
                 }
             )
         }
-
     }
 
     test("homo_sapiens - scatter - stub") {
@@ -278,7 +271,6 @@ nextflow_process {
                 }
             )
         }
-
     }
 
     test("homo_sapiens - scatter file - stub") {
@@ -313,7 +305,6 @@ nextflow_process {
                 }
             )
         }
-
     }
 
     test("homo_sapiens - sites per chunk - vcf_gz_index - stub") {
@@ -345,7 +336,6 @@ nextflow_process {
                 { assert process.out.csi[0][1][0] =~ ".*/test_vcf0.vcf.gz.csi" }
             )
         }
-
     }
 
     test("homo_sapiens - sites per chunk - vcf_gz_index_csi - stub") {
@@ -377,7 +367,6 @@ nextflow_process {
                 { assert process.out.csi[0][1][0] =~ ".*/test_vcf0.vcf.gz.csi" }
             )
         }
-
     }
 
     test("homo_sapiens - sites per chunk - vcf_gz_index_tbi - stub") {
@@ -409,7 +398,5 @@ nextflow_process {
                 { assert process.out.tbi[0][1][0] =~ ".*/test_vcf0.vcf.gz.tbi" }
             )
         }
-
     }
-
 }

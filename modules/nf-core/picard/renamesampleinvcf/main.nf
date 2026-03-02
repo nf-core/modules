@@ -1,19 +1,18 @@
-
 process PICARD_RENAMESAMPLEINVCF {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/0861295baa7c01fc593a9da94e82b44a729dcaf8da92be8e565da109aa549b25/data' :
-        'community.wave.seqera.io/library/picard:3.4.0--e9963040df0a9bf6' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/0861295baa7c01fc593a9da94e82b44a729dcaf8da92be8e565da109aa549b25/data'
+        : 'community.wave.seqera.io/library/picard:3.4.0--e9963040df0a9bf6'}"
 
     input:
     tuple val(meta), path(vcf)
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('picard'), eval("picard RenameSampleInVcf --version 2>&1 | sed -n 's/.*Version://p'"), topic: versions, emit: versions_picard
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,33 +23,23 @@ process PICARD_RENAMESAMPLEINVCF {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[Picard RenameSampleInVcf] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        log.info('[Picard RenameSampleInVcf] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
     }
-
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue()
+    }
     """
     picard \\
-        RenameSampleInVcf \\
         -Xmx${avail_mem}M \\
-        --INPUT $vcf \\
+        RenameSampleInVcf \\
+        --INPUT ${vcf} \\
         --OUTPUT ${prefix}_renam.vcf.gz \\
-        $extended_args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(picard RenameSampleInVcf --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
+        ${extended_args}
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}_renam.vcf.gz
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(picard RenameSampleInVcf --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
     """
 }

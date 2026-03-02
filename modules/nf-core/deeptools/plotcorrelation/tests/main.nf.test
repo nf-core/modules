@@ -50,7 +50,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(file(process.out.pdf.get(0).get(1)).name,
                                   process.out.matrix,
-                                  process.out.versions)
+                                  process.out.findAll { key, val -> key.startsWith('version') })
                                   .match()
                 }
             )
@@ -74,7 +74,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(file(process.out.pdf.get(0).get(1)).name,
                                   process.out.matrix,
-                                  process.out.versions)
+                                  process.out.findAll { key, val -> key.startsWith('version') })
                                   .match()
                 }
             )
@@ -98,7 +98,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(file(process.out.pdf.get(0).get(1)).name,
                                   process.out.matrix,
-                                  process.out.versions)
+                                  process.out.findAll { key, val -> key.startsWith('version') })
                                   .match()
                 }
             )
@@ -108,11 +108,11 @@ nextflow_process {
     test("homo_sampiens - bam - stub") {
 
         options "-stub"
-        
+
         when {
             process {
                 """
-                input[0] = [[ id: 'test' ], []] 
+                input[0] = [[ id: 'test' ], []]
                 input[1] = 'spearman'
                 input[2] = 'heatmap'
                 """

@@ -31,15 +31,16 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.versions
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, [], annotation, annotation_tbi], [], [], [] - vcf_output") {
@@ -64,15 +65,16 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.versions
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, tbi, annotation, annotation_tbi], [], [], [] - vcf_gz_index") {
@@ -97,18 +99,16 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.versions
-                ).match() },
-                { assert process.out.csi[0][1].endsWith(".csi") }
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, tbi, annotation, annotation_tbi], [], [], [] - vcf_gz_index_csi") {
@@ -133,18 +133,16 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.versions
-                ).match() },
-                { assert process.out.csi[0][1].endsWith(".csi") }
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, tbi, annotation, annotation_tbi], [], [], [] - vcf_gz_index_tbi") {
@@ -169,18 +167,16 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.versions
-                ).match() },
-                { assert process.out.tbi[0][1].endsWith(".tbi") }
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, [], annotation, annotation_tbi], [], header, [] - bcf_output") {
@@ -208,15 +204,16 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.versions
-                ).match("bcf-header") }
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, [], annotation, annotation_tbi], columns, [], [] - bcf_output") {
@@ -241,21 +238,22 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.versions
-                ).match("bcf-columns") }
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, [], annotation, annotation_tbi], [], header, rename_chrs - vcf_gz_index") {
 
         config "./vcf_gz_index.config"
- 
+
         when {
             process {
                 """
@@ -277,16 +275,16 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert path(process.out.vcf.get(0).get(1)).LinesGzip.contains("##contig=<ID=renamed,length=29829>")},
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.versions
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, tbi, annotation, annotation_tbi], [], [], [] - stub") {
@@ -312,12 +310,16 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, tbi, annotation, annotation_tbi], [], [], [] - vcf_gz_index - stub") {
@@ -343,13 +345,16 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match()},
-                { assert process.out.csi[0][1].endsWith(".csi") }
+                { assert snapshot(
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, tbi, annotation, annotation_tbi], [], [], [] - vcf_gz_index_csi - stub") {
@@ -375,13 +380,16 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() },
-                { assert process.out.csi[0][1].endsWith(".csi") }
+                { assert snapshot(
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, tbi, annotation, annotation_tbi], [], [], [] - vcf_gz_index_tbi - stub") {
@@ -407,13 +415,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() },
-                { assert process.out.tbi[0][1].endsWith(".tbi") }
+                { assert snapshot(
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
-
 }

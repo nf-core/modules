@@ -36,16 +36,33 @@ output:
       - "*.{jpeg,png,bmp}":
           type: file
           description: image of a hic contact map
-          pattern: "*.{png,jpg,bmp}"
+          pattern: "*.{jpeg,png,bmp}"
           ontologies: []
+  versions_pretextsnapshot:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - PretextSnapshot:
+          type: string
+          description: Name of the tool
+      - PretextSnapshot --version | sed 's/^.*PretextSnapshot Version //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - PretextSnapshot:
+          type: string
+          description: The name of the tool
+      - PretextSnapshot --version | sed 's/^.*PretextSnapshot Version //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@epaule"
 maintainers:
   - "@epaule"
+  - "@DLBPointon"

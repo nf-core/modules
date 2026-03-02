@@ -18,8 +18,8 @@ nextflow_process {
                 process {
                     """
                     input[0] = [
-                                [ id:'test', single_end:true ], // meta map
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                        [ id:'test', single_end:true ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
                     """
                 }
@@ -31,7 +31,7 @@ nextflow_process {
                 """
                 filter_fastq_ch = Channel.of(
                     [
-                        [ id:'test', single_end:true ], // meta map
+                        [ id:'test', single_end:true ],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                     ]
                 )
@@ -46,7 +46,7 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.log[0][1]).name,
                     process.out.fastq_filtered,
-                    process.out.versions.collect { path(it).yaml }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()}
             )
         }
@@ -61,8 +61,8 @@ nextflow_process {
                 process {
                     """
                     input[0] = [
-                                [ id:'test', single_end:false ], // meta map
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                        [ id:'test', single_end:false ], // single_end:false to join paired reads channel
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
                     """
                 }
@@ -74,7 +74,7 @@ nextflow_process {
                 """
                 filter_fastq_ch = Channel.of(
                     [
-                        [ id:'test', single_end:false ], // meta map
+                        [ id:'test', single_end:false ],
                         [
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
@@ -91,9 +91,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.log[0][1]).name,
-                    process.out.fastq_filtered
-                ).match()},
-                { assert snapshot(process.out.versions).match("versions") }
+                    process.out.fastq_filtered,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match()}
             )
         }
 
@@ -109,7 +109,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = [
-                        [ id:'test', single_end:true ], // meta map
+                        [ id:'test', single_end:true ],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
                     """
@@ -122,7 +122,7 @@ nextflow_process {
                 """
                 filter_fastq_ch = Channel.of(
                     [
-                        [ id:'test', single_end:true ], // meta map
+                        [ id:'test', single_end:true ],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                     ]
                 )
@@ -136,7 +136,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    process.out.versions.collect { path(it).yaml }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()}
             )
         }

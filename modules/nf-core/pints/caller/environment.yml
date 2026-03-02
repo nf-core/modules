@@ -4,11 +4,12 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - bedtools
-  - htslib
-  - pip
-  - pybedtools
-  - pip: # FIXME https://github.com/nf-core/modules/issues/5814
+  - bedtools=2.31.1
+  - htslib=1.22.1
+  - pip=25.2
+  - pybedtools=0.12.0
+  - python=3.12.6
+  - pip:
       # NOTE PINTS isn't adding conda builds and is a few versions behind.
       # renovate: datasource=pypi depName=pypints
       - pypints==1.1.13

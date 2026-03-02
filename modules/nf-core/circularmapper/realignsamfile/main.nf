@@ -2,6 +2,7 @@ process CIRCULARMAPPER_REALIGNSAMFILE {
     tag "$meta.id"
     label 'process_medium'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/circularmapper:1.93.5--h4a94de4_1':
@@ -16,8 +17,8 @@ process CIRCULARMAPPER_REALIGNSAMFILE {
     //          In its absence, when `-f true` is set, realignsamfile will remove all @SQ tags from the BAM header, breaking the bamfile.
 
     output:
-    tuple val(meta), path("*_realigned.bam")    , emit: bam
-    path "versions.yml"                         , emit: versions
+    tuple val(meta), path("*_realigned.bam"), emit: bam
+    tuple val("${task.process}"), val('circularmapper'), val('1.93.5'), topic: versions, emit: versions_circularmapper
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,7 +26,6 @@ process CIRCULARMAPPER_REALIGNSAMFILE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.93.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     realignsamfile \\
         -Xmx${task.memory.toGiga()}g \\
@@ -38,23 +38,11 @@ process CIRCULARMAPPER_REALIGNSAMFILE {
     if [[ "${bam.getBaseName()}_realigned.bam" != "${prefix}_realigned.bam" ]]; then
         mv ${bam.getBaseName()}_realigned.bam ${prefix}_realigned.bam
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        CircularMapper: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.93.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}_realigned.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        CircularMapper: ${VERSION}
-    END_VERSIONS
     """
 }

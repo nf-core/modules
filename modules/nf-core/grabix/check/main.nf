@@ -17,7 +17,6 @@ process GRABIX_CHECK {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
 
     """
     grabix check ${input} | tr -d '\\n'
@@ -29,7 +28,6 @@ process GRABIX_CHECK {
     """
 
     stub:
-    def args = task.ext.args ?: ''
 
     """
     \$(echo yes)

@@ -22,7 +22,7 @@ process OPT_FLIP {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    
+
     """
     opt \\
     -o ${prefix} \\
@@ -40,9 +40,8 @@ process OPT_FLIP {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    
+
     """
     mkdir -p ${prefix}
     touch "${prefix}/fwd_oriented.fa"

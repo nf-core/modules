@@ -42,11 +42,11 @@ For additional considerations, including information about how readgroups are ad
 
 ## rnafq2bam
 
-The `rnafq2bam` module is based on STAR version `2.7.2a`. Therefore the genome lib directory required as input for this module must also be generated using this version of STAR. For convenience, a module with this version of STAR is included in this directory under `parabricks/stargenomegenerate`.
+Parabricks `rnafq2bam` is based on STAR version `2.7.2a` and the STAR index directory required as input for this module must also be generated using this version. An example for how to use the existing STAR genomegenerate module with Parabricks can be found in the [nextflow.config](./rnafq2bam/tests/nextflow.config) for the rnafq2bam tests.
 
 ## starfusion
 
-The `starfusion` module is based on starfusion 1.7.0. Therefore the genome lib directory required as input for this module must also be generated using this version of starfusion. For convenience, a module with this version of starfusion is included in this directory under `parabricks/starfusion_build`.
+Parabricks `starfusion` is based on STAR-Fusion version `1.7.0` and the STAR-Fusion build indices required as input for this module must also be generated using this version. An example for how to use the existing STAR-Fusion build module with Parabricks can be found in the [nextflow.config](./starfusion/tests/nextflow.config) for the starfusion tests.
 
 ## compatible_with.yaml
 
@@ -56,12 +56,12 @@ For the full list of compatible versions, check the [Parabricks documentation](h
 
 ## Notes on Testing
 
-The following Parabricks modules require testing on a `g4dn.2xlarge` instead of the default `g4dn.xlarge` due to higher system memory requirements. 
+The following Parabricks modules require testing on a `g4dn.2xlarge` instead of the default `g4dn.xlarge` due to higher system memory requirements.
 
-* rnafq2bam
-* starfusion
+- rnafq2bam
+- starfusion
 
-In [nf-test-gpu.yml](../../../.github/workflows/nf-test-gpu.yml), update the following line: 
+In [nf-test-gpu.yml](../../../.github/workflows/nf-test-gpu.yml), update the following line:
 
 ```
 nf-test-gpu:

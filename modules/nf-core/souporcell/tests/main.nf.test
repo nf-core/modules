@@ -9,6 +9,17 @@ nextflow_process {
     tag "modules_nfcore"
     tag "souporcell"
 
+    def souporcell_ploidy                       = 2
+    def souporcell_min_alt                      = 10
+    def souporcell_min_ref                      = 10
+    def souporcell_max_loci                     = 2048
+    def souporcell_restarts                     = 80    // default would be 100
+    def souporcell_common_variants              = null
+    def souporcell_known_genotypes              = null
+    def souporcell_known_genotypes_sample_names = null
+    def souporcell_skip_remap                   = false
+    def souporcell_ignore                       = false
+
     test("homo sapiens - bam and barcodes") {
         when {
             process {
@@ -17,14 +28,13 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/demultiplexing/barcodes.tsv', checkIfExists: true),
+                    2
                 ]
 
                 input[1] = [
                     [:],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ]
-
-                input[2] = 2
                 """
             }
         }
@@ -35,11 +45,67 @@ nextflow_process {
                 { assert snapshot(
                     process.out.tsv,
                     process.out.versions,
+                    path(process.out.versions[0]).yaml,
                     path(process.out.vcf[0][1]).vcf.sampleCount == 69
                 ).match() }
             )
         }
     }
+
+    test("homo sapiens - bam and barcodes - ext.args") {
+
+        config "./nextflow.config"
+
+        when {
+            params{
+                module_args = [
+                    "-p",
+                    souporcell_ploidy,
+                    "--min_alt",
+                    souporcell_min_alt,
+                    "--min_ref",
+                    souporcell_min_ref,
+                    "--max_loci",
+                    souporcell_max_loci,
+                    "--restarts",
+                    souporcell_restarts,
+                    (souporcell_common_variants ? "--common_variants ${souporcell_common_variants}" : ""),
+                    (souporcell_known_genotypes ? "--known_genotypes ${souporcell_known_genotypes}" : ""),
+                    (souporcell_known_genotypes_sample_names ? "--known_genotypes_sample_names ${souporcell_known_genotypes_sample_names}" : ""),
+                    (souporcell_skip_remap ? "--skip_remap" : ""),
+                    (souporcell_ignore ? "--ignore" : "")
+                ].findAll { it != "" }.join(" ")
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/demultiplexing/barcodes.tsv', checkIfExists: true),
+                    2
+                ]
+
+                input[1] = [
+                    [:],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.tsv,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml,
+                    path(process.out.vcf[0][1]).vcf.sampleCount == 69
+                ).match() }
+            )
+        }
+    }
+
 
     test("homo sapience - bam and barcodes - stub") {
 
@@ -52,14 +118,13 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/demultiplexing/barcodes.tsv', checkIfExists: true),
+                    2
                 ]
 
                 input[1] = [
                     [:],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ]
-
-                input[2] = 2
                 """
             }
         }

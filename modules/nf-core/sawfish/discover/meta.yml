@@ -140,6 +140,7 @@ output:
           type: file
           description: Copy number BEDGraph file
           pattern: "*.bedgraph"
+          optional: true
           ontologies: []
   copynum_mpack:
     - - meta:
@@ -151,6 +152,7 @@ output:
           type: file
           description: Copy number mpack file
           pattern: "*.mpack"
+          optional: true
           ontologies: []
   debug_breakpoint_clusters:
     - - meta:
@@ -196,6 +198,7 @@ output:
           type: file
           description: Genome GC levels mpack file
           pattern: "*.mpack"
+          optional: true
           ontologies: []
   max_depth:
     - - meta:
@@ -230,6 +233,7 @@ output:
           type: file
           description: Sample GC bias mpack file
           pattern: "*.mpack"
+          optional: true
           ontologies: []
   log:
     - - meta:
@@ -263,6 +267,7 @@ output:
           type: file
           description: MAF mpack file
           pattern: "*.mpack"
+          optional: true
           ontologies: []
   expected_cn:
     - - meta:
@@ -274,6 +279,7 @@ output:
           type: file
           description: Expected copy number BED file
           pattern: "*.bed"
+          optional: true
           ontologies: []
   discover_dir:
     - - meta:

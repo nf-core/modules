@@ -3,18 +3,18 @@ nextflow_process {
     name "Test Process EXPANSIONHUNTERDENOVO_MERGE"
     script "../main.nf"
     process "EXPANSIONHUNTERDENOVO_MERGE"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "expansionhunterdenovo"
     tag "expansionhunterdenovo/merge"
     tag "expansionhunterdenovo/profile"
-   
+
     test("homo_sapiens - tsv - fasta - fai") {
         setup {
             run("EXPANSIONHUNTERDENOVO_PROFILE") {
                 script "../../profile/main.nf"
-                
+
                 process {
                     """
                     input[0] = Channel.of([

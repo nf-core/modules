@@ -26,8 +26,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match()},
-                
+                { assert snapshot(process.out.versions_openms).match()},
+
                 // check single line substrings in output idxml file
                 { assert path(process.out.idxml.get(0).get(1)).readLines().any { it.contains("</PeptideHit>") }},
                 { assert path(process.out.idxml.get(0).get(1)).readLines().any { it.contains("<VariableModification name=\"Oxidation (M)\" />") }},

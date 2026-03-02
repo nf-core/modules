@@ -44,13 +44,27 @@ output:
           description: Output VCF file
           pattern: "*.{vcf}"
           ontologies: []
+  versions_genmod:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - genmod:
+          type: string
+          description: Name of the tool
+      - "genmod --version | sed 's/^.*genmod version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - genmod:
+          type: string
+          description: Name of the tool
+      - "genmod --version | sed 's/^.*genmod version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ramprasadn"
 maintainers:

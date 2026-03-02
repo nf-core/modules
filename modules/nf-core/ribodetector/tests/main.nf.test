@@ -30,7 +30,7 @@ nextflow_process {
                 { assert process.out.fastq },
                 { assert process.out.log },
                 { assert path(process.out.log[0][1]).getText().contains("Writing output non-rRNA sequences") },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match() }
             )
         }
 

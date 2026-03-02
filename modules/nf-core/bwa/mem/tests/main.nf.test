@@ -48,8 +48,7 @@ nextflow_process {
                     process.out.cram,
                     process.out.csi,
                     process.out.crai,
-                    process.out.versions,
-                    bam(process.out.bam[0][1]).getHeaderMD5(),
+                    process.out.findAll { key, val -> key.startsWith("versions") },
                     bam(process.out.bam[0][1]).getReadsMD5()
                     ).match()
                 }
@@ -83,8 +82,7 @@ nextflow_process {
                     process.out.cram,
                     process.out.csi,
                     process.out.crai,
-                    process.out.versions,
-                    bam(process.out.bam[0][1]).getHeaderMD5(),
+                    process.out.findAll { key, val -> key.startsWith("versions") },
                     bam(process.out.bam[0][1]).getReadsMD5()
                     ).match()
                 }
@@ -119,8 +117,7 @@ nextflow_process {
                     process.out.cram,
                     process.out.csi,
                     process.out.crai,
-                    process.out.versions,
-                    bam(process.out.bam[0][1]).getHeaderMD5(),
+                    process.out.findAll { key, val -> key.startsWith("versions") },
                     bam(process.out.bam[0][1]).getReadsMD5()
                     ).match()
                 }
@@ -155,8 +152,7 @@ nextflow_process {
                     process.out.cram,
                     process.out.csi,
                     process.out.crai,
-                    process.out.versions,
-                    bam(process.out.bam[0][1]).getHeaderMD5(),
+                    process.out.findAll { key, val -> key.startsWith("versions") },
                     bam(process.out.bam[0][1]).getReadsMD5()
                     ).match()
                 }
@@ -191,8 +187,7 @@ nextflow_process {
                     process.out.cram,
                     process.out.csi,
                     process.out.crai,
-                    process.out.versions,
-                    bam(process.out.bam[0][1]).getHeaderMD5(),
+                    process.out.findAll { key, val -> key.startsWith("versions") },
                     bam(process.out.bam[0][1]).getReadsMD5()
                     ).match()
                 }

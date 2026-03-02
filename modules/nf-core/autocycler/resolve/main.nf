@@ -11,37 +11,34 @@ process AUTOCYCLER_RESOLVE {
     tuple val(meta), path(gfa)
 
     output:
-    tuple val(meta), path("3_bridged.gfa"), emit: bridged
-    tuple val(meta), path("4_merged.gfa"),  emit: merged
-    tuple val(meta), path("5_final.gfa"),   emit: resolved
-    path "versions.yml",                    emit: versions
+    tuple val(meta), path("resolve/${prefix}/${prefix}_3_bridged.gfa"), emit: bridged
+    tuple val(meta), path("resolve/${prefix}/${prefix}_4_merged.gfa"),  emit: merged
+    tuple val(meta), path("resolve/${prefix}/${prefix}_5_final.gfa"),   emit: resolved
+    tuple val("${task.process}"), val("autocycler"), eval("autocycler --version |  sed 's/^[^ ]* //'"), emit: versions_autocycler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
     autocycler resolve \\
         $args \\
         -c .
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        autocycler: \$(autocycler --version |  sed 's/^[^ ]* //')
-    END_VERSIONS
+    mkdir resolve/$prefix -p
+    mv 3_bridged.gfa resolve/${prefix}/${prefix}_3_bridged.gfa
+    mv 4_merged.gfa  resolve/${prefix}/${prefix}_4_merged.gfa
+    mv 5_final.gfa   resolve/${prefix}/${prefix}_5_final.gfa
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
-    touch 3_bridged.gfa
-    touch 4_merged.gfa
-    touch 5_final.gfa
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        autocycler: \$(autocycler --version |  sed 's/^[^ ]* //')
-    END_VERSIONS
+    mkdir -p resolve/$prefix
+    touch resolve/${prefix}/${prefix}_3_bridged.gfa
+    touch resolve/${prefix}/${prefix}_4_merged.gfa
+    touch resolve/${prefix}/${prefix}_5_final.gfa
     """
 }

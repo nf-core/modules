@@ -12,7 +12,7 @@ process GATK4_LEARNREADORIENTATIONMODEL {
 
     output:
     tuple val(meta), path("*.tar.gz"), emit: artifactprior
-    path "versions.yml",               emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,7 +20,7 @@ process GATK4_LEARNREADORIENTATIONMODEL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_list = f1r2.collect { "--input ${it}" }.join(' ')
+    def input_list = f1r2.collect { f1r2_ -> "--input ${f1r2_}" }.join(' ')
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -36,21 +36,11 @@ process GATK4_LEARNREADORIENTATIONMODEL {
         --output ${prefix}.tar.gz \\
         --tmp-dir . \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.tar.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

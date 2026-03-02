@@ -23,12 +23,12 @@ concurrency:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # renovate: datasource=github-releases depName=askimed/nf-test versioning=semver
-  NFT_VER: "0.9.3"
+  NFT_VER: "0.9.4"
   NXF_ANSI_LOG: false
   NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
   NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
   # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
-  NXF_VER: "25.04.8"
+  NXF_VER: "25.10.2"
 
 jobs:
   nf-test-changes:
@@ -51,7 +51,7 @@ jobs:
           rm -rf ./* || true
           rm -rf ./.??* || true
           ls -la ./
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 0
 
@@ -77,7 +77,7 @@ jobs:
         env:
           NFT_VER: ${{ env.NFT_VER }}
         with:
-          max_shards: 15
+          max_shards: 16
           paths: "${{ join(fromJson(steps.list.outputs.components ), ' ') }}"
 
       - name: debug
@@ -112,7 +112,7 @@ jobs:
       filtered_paths: ${{ steps.filter.outputs.filtered_paths }}
 
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 0
 

@@ -25,12 +25,12 @@ concurrency:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # renovate: datasource=github-releases depName=askimed/nf-test versioning=semver
-  NFT_VER: "0.9.3"
+  NFT_VER: "0.9.4"
   NXF_ANSI_LOG: false
   NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
   NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
   # renovate: datasource=github-releases depName=nextflow-io/nextflow versioning=semver
-  NXF_VER: "25.04.8"
+  NXF_VER: "25.10.4"
 
 jobs:
   nf-test-changes:
@@ -53,7 +53,7 @@ jobs:
           rm -rf ./* || true
           rm -rf ./.??* || true
           ls -la ./
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 0
 
@@ -64,7 +64,7 @@ jobs:
           head: ${{ github.sha }}
           base: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha || 'origin/master' }}
           n_parents: 0
-          tags: "gpu"
+          tags: "gpu,gpu_highmem"
 
       - name: Separate modules and subworkflows
         id: outputs
@@ -91,8 +91,8 @@ jobs:
           echo ${{ steps.set-shards.outputs.total_shards }}
 
   nf-test-gpu:
-    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.xlarge/image=ubuntu24-gpu-x64"
-    name: "GPU Test | ${{ matrix.profile }} | ${{ matrix.shard }}"
+    runs-on: "runs-on=${{ github.run_id }}/family=${{ matrix.runner }}/image=ubuntu24-gpu-x64"
+    name: "GPU Test | ${{ matrix.runner }} | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: [nf-test-changes]
     if: ${{ needs.nf-test-changes.outputs.total_shards != '0' }}
     strategy:
@@ -100,12 +100,17 @@ jobs:
       matrix:
         shard: ${{ fromJson(needs.nf-test-changes.outputs.shard) }}
         profile: [docker, singularity]
+        include:
+          - runner: g4dn.xlarge
+            tag: gpu
+          - runner: g4dn.2xlarge
+            tag: gpu_highmem
     env:
       NXF_ANSI_LOG: false
       TOTAL_SHARDS: ${{ needs.nf-test-changes.outputs.total_shards }}
 
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 0
       - name: test cuda
@@ -123,6 +128,7 @@ jobs:
           shard: ${{ matrix.shard }}
           total_shards: ${{ env.TOTAL_SHARDS }}
           paths: "${{ join(fromJson(needs.nf-test-changes.outputs.paths), ' ') }}"
+          tag: ${{ matrix.tag }}
 
   confirm-pass-gpu:
     runs-on:

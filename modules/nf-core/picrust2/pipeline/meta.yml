@@ -54,7 +54,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - ${prefix}/*_reduced.tre:
+      - "${prefix}/*_reduced.tre":
           type: file
           description: Phylogenetic trees with reduced marker gene sequences
           pattern: "*_reduced.tre"
@@ -65,7 +65,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - ${prefix}/*_metagenome_out/pred_metagenome_unstrat.tsv.gz:
+      - "${prefix}_metagenome_*_abundances.tsv.gz":
           type: file
           description: Predicted metagenome functional abundances (unstratified)
           pattern: "pred_metagenome_unstrat.tsv.gz"
@@ -77,7 +77,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - ${prefix}/pathways_out/path_abun_unstrat.tsv.gz:
+      - "${prefix}_pathway_abundances.tsv.gz":
           type: file
           description: Predicted pathway abundances (unstratified)
           pattern: "path_abun_unstrat.tsv.gz"

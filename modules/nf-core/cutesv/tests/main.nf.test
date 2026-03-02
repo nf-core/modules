@@ -1,17 +1,17 @@
 nextflow_process {
 
     name "Test Process CUTESV"
-    
+
     script "../main.nf"
     process "CUTESV"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "cutesv"
-   
+
     test("sarscov2 - bam - fasta") {
         when {
-            
+
             process {
                 """
                 input[0] = Channel.of([[id:'test'],// meta map
@@ -40,7 +40,7 @@ nextflow_process {
         options '-stub'
 
         when {
-            
+
             process {
                 """
                 input[0] = Channel.of([[id:'test'],// meta map

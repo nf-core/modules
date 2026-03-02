@@ -44,13 +44,11 @@ process MOTUS_MERGE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def cmd_input = input.size() > 1 ? "-i ${input.join(',')}" : input.isDirectory() ? "-d ${input}" : "-i ${input}"
     def suffix = task.ext.args?.contains("-B") ? "biom" : "txt"
 
     """
-    touch ${prefix}.txt
+    touch ${prefix}.${suffix}
 
     VERSION=\$(cat ${profile_version_yml} | grep '/*motus:.*' | sed 's/.*otus: //g')
 

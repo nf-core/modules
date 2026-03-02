@@ -7,12 +7,13 @@ keywords:
   - bam
 tools:
   - deeptools:
-      description: A set of user-friendly tools for normalization and visualization
-        of deep-sequencing data
+      description: A set of user-friendly tools for normalization and
+        visualization of deep-sequencing data
       documentation: https://deeptools.readthedocs.io/en/develop/index.html
       tool_dev_url: https://github.com/deeptools/deepTools
       doi: "10.1093/nar/gku365"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:deeptools
 input:
   - - meta:
@@ -67,13 +68,27 @@ output:
             file containing BAM file quality metrics
           pattern: "*.{qcmetrics.txt}"
           ontologies: []
+  versions_deeptools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deeptools:
+          type: string
+          description: The name of the tool
+      - plotFingerprint --version | sed "s/plotFingerprint //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deeptools:
+          type: string
+          description: The name of the tool
+      - plotFingerprint --version | sed "s/plotFingerprint //g":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@edmundmiller"
   - "@drpatelh"

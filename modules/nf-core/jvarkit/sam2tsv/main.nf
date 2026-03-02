@@ -21,7 +21,7 @@ process JVARKIT_SAM2TSV {
     script:
     def args         = task.ext.args ?: ''
     def prefix       = task.ext.prefix ?: "${meta.id}"
-    def regions_file = regions_file ? " --regions" + " '${regions_file}' " : ""
+    def regions_opt = regions_file ? " --regions" + " '${regions_file}' " : ""
 
     """
     mkdir -p TMP
@@ -30,7 +30,7 @@ process JVARKIT_SAM2TSV {
         --reference "${fasta}" \\
         --output "${prefix}.tsv" \\
         ${args} \\
-        ${regions_file} \\
+        ${regions_opt} \\
         "${bam}"
     rm -rf TMP
 

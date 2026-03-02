@@ -34,6 +34,7 @@ process NEXTCLADE_DATASETGET {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         nextclade: \$(echo \$(nextclade --version 2>&1) | sed 's/^.*nextclade //; s/ .*\$//')
+        nextclade-tag: \$(grep "tag" $dataset/pathogen.json | sed -n 's/.*"tag": "\\([0-9-]\\+Z\\)".*/\\1/p')
     END_VERSIONS
     """
 

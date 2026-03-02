@@ -91,14 +91,28 @@ output:
           description: "Plot of region and reads spanning tandem repeat"
           pattern: "*.{png,pdf,svg}"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+  versions_trgt:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trgt:
+          type: string
+          description: The name of the tool
+      - trgt --version | sed 's/.* //g':
+          type: eval
+          description: The expression to obtain the version of the tool
 
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trgt:
+          type: string
+          description: The name of the tool
+      - trgt --version | sed 's/.* //g':
+          type: eval
+          description: The expression to obtain the version
 authors:
   - "@Schmytzi"
 maintainers:

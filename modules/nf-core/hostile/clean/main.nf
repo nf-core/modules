@@ -8,21 +8,22 @@ process HOSTILE_CLEAN {
         : 'community.wave.seqera.io/library/hostile:2.0.2--a7f5e5d341b6b94b'}"
 
     input:
-    tuple val(meta), path(reads, stageAs: "input_reads/")
+    tuple val(meta)          , path(reads, stageAs: "input_reads/")
     tuple val(reference_name), path(reference_dir)
 
     output:
     tuple val(meta), path('*.fastq.gz'), emit: fastq
-    tuple val(meta), path('*.json'), emit: json
-    path 'versions.yml', emit: versions
+    tuple val(meta), path('*.json')    , emit: json
+    path 'versions.yml'                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def reads_cmd = meta.single_end ? "--fastq1 ${[reads].flatten()[0]}" : "--fastq1 ${reads.sort()[0]} --fastq2 ${reads.sort()[1]}"
+    def args         = task.ext.args ?: ''
+    def prefix       = task.ext.prefix ?: "${meta.id}"
+    def sorted_reads = meta.single_end ? [reads].flatten() : reads.sort { read -> read.simpleName }
+    def reads_cmd    = meta.single_end ? "--fastq1 ${sorted_reads[0]}" : "--fastq1 ${sorted_reads[0]} --fastq2 ${sorted_reads[1]}"
     """
     export HOSTILE_CACHE_DIR=${reference_dir}
 
@@ -46,13 +47,14 @@ process HOSTILE_CLEAN {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def reads_cmd = meta.single_end ? "--fastq1 ${reads}" : "--fastq1 ${reads.sort()[0]} --fastq2 ${reads.sort()[1]}"
-    def fake_read2 = !meta.single_end ? "echo '' | gzip -c > ${prefix}.clean_2.fastq.gz" : ""
+    def args         = task.ext.args ?: ''
+    def prefix       = task.ext.prefix ?: "${meta.id}"
+    def sorted_reads = meta.single_end ? [reads].flatten() : reads.sort { read -> read.simpleName }
+    def reads_cmd    = meta.single_end ? "--fastq1 ${sorted_reads[0]}" : "--fastq1 ${sorted_reads[0]} --fastq2 ${sorted_reads[1]}"
+    def fake_read2   = !meta.single_end ? "echo '' | gzip -c > ${prefix}.clean_2.fastq.gz" : ""
     """
     export HOSTILE_CACHE_DIR=${reference_dir}
-    
+
     echo "hostile \\
         clean \\
         ${args} \\

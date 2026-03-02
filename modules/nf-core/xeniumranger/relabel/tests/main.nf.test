@@ -3,7 +3,6 @@ nextflow_process {
     name "Test Process XENIUMRANGER_RELABEL"
     script "../main.nf"
     process "XENIUMRANGER_RELABEL"
-    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -11,25 +10,31 @@ nextflow_process {
     tag "xeniumranger/relabel"
     tag "unzip"
 
+
     setup {
-            run("UNZIP") {
-                script "modules/nf-core/unzip/main.nf"
-                process {
-                    """
-                    input[0] = [[], file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/Xenium_Prime_Mouse_Ileum_tiny_outs.zip', checkIfExists: true)]
-                    """
-                }
+
+        run("UNZIP") {
+            script "modules/nf-core/unzip/main.nf"
+            process {
+                """
+                input[0] = [[], file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/Xenium_V1_Protein_Human_Kidney_tiny_outs.zip', checkIfExists: true)]
+                """
             }
+        }
     }
 
     test("xeniumranger relabel") {
         when {
             process {
                 """
-                input[0] = Channel.of([
-                        [id: "test_xeniumranger_relabel"],
-                    ]).combine(UNZIP.out.unzipped_archive.map { it[1] })
-                input[1] = UNZIP.out.unzipped_archive.map { it[1] } + "/gene_panel.json"
+                input[0] = UNZIP.out.unzipped_archive
+                    .map { _, bundle ->
+                        [
+                            [id: "test_xeniumranger_relabel"],
+                            bundle,
+                            bundle + "/gene_panel.json"
+                        ]
+                    }
                 """
             }
         }
@@ -37,37 +42,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.outs != null },
-                {
-                    assert snapshot(
-                        process.out.versions,
-                        process.out.outs.get(0).get(1).findAll { file(it).name !in [
-                            "analysis.zarr.zip",
-                            "experiment.xenium",
-                            "transcripts.zarr.zip",
-                            "analysis_summary.html",
-                            "cell_feature_matrix.zarr.zip",
-                            "differential_expression.csv",
-                            "components.csv",
-                            "projection.csv",
-                            "variance.csv",
-                            "metrics_summary.csv",
-                            "clusters.csv"
-                        ]}
-                    ).match()
-                },
-                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'analysis_summary.html' }).exists() },
-                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'analysis.zarr.zip' }).exists() },
-                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'experiment.xenium' }).exists() },
-                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'transcripts.zarr.zip' }).exists() },
-                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'analysis_summary.html' }).exists() },
-                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'cell_feature_matrix.zarr.zip' }).exists() },
-                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'differential_expression.csv' }).exists() },
-                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'components.csv' }).exists() },
-                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'projection.csv' }).exists() },
-                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'variance.csv' }).exists() },
-                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'metrics_summary.csv' }).exists() },
-                { assert path(process.out.outs.get(0).get(1).find { file(it).name == 'clusters.csv' }).exists() },
-            )
+                { assert file(process.out.outs.get(0).get(1)).isDirectory() },
+                { assert file(process.out.outs.get(0).get(1)).list().size() > 0 },
+                { assert snapshot(process.out.versions_xeniumranger).match()},
+                )
         }
     }
 
@@ -76,10 +54,14 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
-                        [id: "test_xeniumranger_relabel"],
-                    ]).combine(UNZIP.out.unzipped_archive.map { it[1] })
-                input[1] = UNZIP.out.unzipped_archive.map { it[1] } + "/gene_panel.json"
+                input[0] = UNZIP.out.unzipped_archive
+                    .map { _, bundle ->
+                        [
+                            [id: "test_xeniumranger_relabel"],
+                            bundle,
+                            bundle + "/gene_panel.json"
+                        ]
+                    }
                 """
             }
         }

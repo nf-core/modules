@@ -15,7 +15,7 @@ process GATK4_COMBINEGVCFS {
 
     output:
     tuple val(meta), path("*.combined.g.vcf.gz"), emit: combined_gvcf
-    path "versions.yml",                          emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +23,7 @@ process GATK4_COMBINEGVCFS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_list = vcf.collect { "--variant ${it}" }.join(' ')
+    def input_list = vcf.collect { vcf_ -> "--variant ${vcf_}" }.join(' ')
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -40,21 +40,11 @@ process GATK4_COMBINEGVCFS {
         --reference ${fasta} \\
         --tmp-dir . \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.combined.g.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

@@ -12,20 +12,32 @@ tools:
       documentation: "https://github.com/smirarab/sepp/blob/master/README.UPP.md"
       tool_dev_url: "https://github.com/smirarab/sepp/tree/master"
       doi: "10.1093/bioinformatics/btad007"
-      licence: ["GPL v3"]
-      identifier: ""
-
+      licence:
+        - "GPL v3"
+      identifier: "biotools:sepp"
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'test']`
-    - fasta:
+    - fasta_unaligned:
         type: file
-        description: Input sequences in FASTA format
-        pattern: "*.{fa,fasta}"
-        ontologies: []
+        description: Unaligned sequence file. If no backbone tree nor alignment is
+          given, the sequence file will be randomly split into a backbone set and
+          query set
+        pattern: "*.{fa,fna,faa,fasta}"
+        ontologies:
+          - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
+          - edam: http://edamontology.org/format_1929 # FASTA
+    - fasta_aligned:
+        type: file
+        description: Aligned sequence file. (optional)
+        pattern: "*.{fa,fna,faa,fasta,aln}"
+        ontologies:
+          - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1984 # FASTA-ALN
   - - meta2:
         type: map
         description: |
@@ -33,13 +45,14 @@ input:
           e.g. `[ id:'test_tree']`
     - tree:
         type: file
-        description: Input guide tree in Newick format
+        description: Input guide tree, in Newick format.
         pattern: "*.{dnd}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_2006 # PHYLOGENETIC TREE
   - compress:
       type: boolean
-      description: Flag representing whether the output MSA should be compressed. Set
-        to true to enable/false to disable compression.
+      description: Flag representing whether the output MSA should be compressed.
+        Set to true to enable/false to disable compression.
 output:
   alignment:
     - - meta:
@@ -49,17 +62,34 @@ output:
             e.g. `[ id:'test']`
       - "*.aln{.gz,}":
           type: file
-          description: Alignment file, in FASTA format. May be gzipped or uncompressed,
-            depending on if compress is set to true or false
+          description: Alignment file, in FASTA format. May be gzipped or
+            uncompressed, depending on if compress is set to true or false
           pattern: "*.aln{.gz,}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
+            - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+            - edam: http://edamontology.org/format_1984 # FASTA-ALN
+  versions_sepp:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sepp:
+          type: string
+          description: The name of the tool
+      - run_upp.py -v | grep "run_upp" | cut -f2 -d" ":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sepp:
+          type: string
+          description: The name of the tool
+      - run_upp.py -v | grep "run_upp" | cut -f2 -d" ":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@luisas"
 maintainers:

@@ -12,10 +12,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
-                    [ id: 'test'], // meta map
-                    [file(params.test_data_base + "/data/genomics/sarscov2/genome/genome.fasta.gz", checkIfExists: true) ]
-                ])    
+                input[0] = [
+                    [ id: 'test'],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true) ]
+                ]
                 """
             }
         }

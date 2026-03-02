@@ -1,11 +1,11 @@
 process PICARD_SORTSAM {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/0861295baa7c01fc593a9da94e82b44a729dcaf8da92be8e565da109aa549b25/data' :
-        'community.wave.seqera.io/library/picard:3.4.0--e9963040df0a9bf6' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/0861295baa7c01fc593a9da94e82b44a729dcaf8da92be8e565da109aa549b25/data'
+        : 'community.wave.seqera.io/library/picard:3.4.0--e9963040df0a9bf6'}"
 
     input:
     tuple val(meta), path(bam)
@@ -13,7 +13,7 @@ process PICARD_SORTSAM {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"                  , emit: versions
+    tuple val("${task.process}"), val('picard'), eval("picard SortSam --version 2>&1 | sed -n 's/.*Version://p'"), topic: versions, emit: versions_picard
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,24 +23,30 @@ process PICARD_SORTSAM {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[Picard SortSam] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        log.info('[Picard SortSam] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
     }
-
-    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
-
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue()
+    }
+    if ("${bam}" == "${prefix}.bam") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     picard \\
-        SortSam \\
         -Xmx${avail_mem}M \\
-        --INPUT $bam \\
+        SortSam \\
+        --INPUT ${bam} \\
         --OUTPUT ${prefix}.bam \\
-        --SORT_ORDER $sort_order
+        --SORT_ORDER ${sort_order} \\
+        ${args}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(picard SortSam --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("${bam}" == "${prefix}.bam") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
+    """
+    touch ${prefix}.bam
     """
 }

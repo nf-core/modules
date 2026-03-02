@@ -26,7 +26,7 @@ input:
         type: file
         description: Input BAM file
         pattern: "*.{bam,cram}"
-        ontologies: 
+        ontologies:
           - edam: http://edamontology.org/format_2572 # BAM
           - edam: http://edamontology.org/format_3462 # CRAM
     - index:
@@ -56,7 +56,7 @@ input:
         description: Genome reference FASTA index file
         pattern: "*.{fa.fai,fasta.fai}"
         ontologies: []
-  - - meta4: 
+  - - meta4:
         type: map
         description: |
           Groovy Map containing reference information

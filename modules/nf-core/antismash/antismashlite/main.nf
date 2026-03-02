@@ -7,13 +7,13 @@ process ANTISMASH_ANTISMASHLITE {
         ? 'https://depot.galaxyproject.org/singularity/antismash-lite:7.1.0--pyhdfd78af_0'
         : 'biocontainers/antismash-lite:7.1.0--pyhdfd78af_0'}"
 
-    containerOptions {
+    containerOptions (
         ['singularity', 'apptainer'].contains(workflow.containerEngine)
             ? "-B ${antismash_dir}:/usr/local/lib/python3.10/site-packages/antismash"
             : workflow.containerEngine == 'docker'
                 ? "-v \$PWD/${antismash_dir}:/usr/local/lib/python3.10/site-packages/antismash"
                 : ''
-    }
+    )
 
     input:
     tuple val(meta), path(sequence_input)
