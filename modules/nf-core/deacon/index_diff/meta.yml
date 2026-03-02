@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "deacon_index"
+name: "deacon_index_diff"
 description: Create deacon index for reference genome
 keywords:
   - index
@@ -18,43 +18,27 @@ tools:
       licence: ["MIT"]
       identifier: "biotools:deacon"
 input:
-  - - meta:
+  - - meta_index:
         type: map
         description: |
-          Groovy Map containing reference information.
+          Groovy Map containing reference index information.
           e.g. [ id:'test', single_end:false ]
-    - reference:
+    - index:
         type: file
         description: |
-          Main input file for deacon index
-          - For 'build': fasta genome file
-          - For 'union'/'intersect'/'diff': .idx index file
-        pattern: "*.{fasta,fasta.gz,fas,fas.gz,fa,fa.gz,fna,fna.gz,idx}"
+          Deacon .idx index file to perform the diff operation on
+        pattern: "*.idx"
         ontologies:
-          - edam: "http://edamontology.org/data_2044" # Sequence
-          - edam: "http://edamontology.org/format_1929" # FASTA
           - edam: "http://edamontology.org/data_3210" # Genome index
-  - subcommand:
-      type: string
-      description: |
-        Deacon index subcommand to execute: 'build' (default), 'union', 'intersect', or 'diff'.
-        - build: Index minimizers contained within a fastx file
-        - union: Combine multiple minimizer indexes (A ∪ B…)
-        - intersect: Intersect multiple minimizer indexes (A ∩ B…)
-        - diff: SSubtract minimizers in one index from another (A - B)
-      pattern: "build|union|intersect|diff"
-  - - meta_set:
+  - - meta_genome:
         type: map
         description: |
-          Groovy Map containing metadata for set operation genome index/fasta files.
+          Groovy Map containing metadata for the genome to subtract from the index (.idx or fasta file).
           e.g. [ id:'genome' ]
-    - set_genomes:
+    - genome:
         type: file
         description: |
-          Optional input for set operations (union/intersect/diff).
-          - For union/intersect: One or more .idx files to combine/intersect with the main reference index
-          - For diff: A single .idx or fasta file to subtract from the main reference index
-          - Not required for build
+          A single .idx or fasta file to subtract from the main reference index
         pattern: "*.{idx,fasta,fasta.gz,fas,fas.gz,fa,fa.gz,fna,fna.gz}"
         ontologies:
           - edam: "http://edamontology.org/data_3210" # Genome index
@@ -62,10 +46,10 @@ input:
           - edam: "http://edamontology.org/format_1929" # FASTA
 output:
   index:
-    - - meta_out:
+    - - meta_index:
           type: map
           description: |
-            Groovy Map containing reference information.
+            Groovy Map containing reference index information.
             e.g. [ id:'test', single_end:false ]
       - "*.idx":
           type: file
@@ -95,7 +79,4 @@ topics:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
-  - "@mberacochea"
-maintainers:
-  - "@mberacochea"
   - "@pmoris"
