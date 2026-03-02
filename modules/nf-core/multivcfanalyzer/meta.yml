@@ -27,7 +27,7 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - vcfs:
         type: file
-        description: One or a list of uncompressed VCF file
+        description: One or a list of gzipped or uncompressed VCF file
         pattern: "*.vcf"
         ontologies: []
   - - meta2:
@@ -177,7 +177,7 @@ output:
       - snpTableWithUncertaintyCalls.tsv:
           type: file
           description: Same as above, but with lower case characters indicating
-            uncertain calls
+            uncertainty calls
           pattern: ".tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475
