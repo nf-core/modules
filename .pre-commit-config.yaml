@@ -60,3 +60,11 @@ repos:
     hooks:
       - id: hadolint-docker
         args: ["--failure-threshold", "error"]
+
+  - repo: https://github.com/seqeralabs/nf-lint-pre-commit
+    rev: v0.2.0
+    hooks:
+      - id: nextflow-lint
+        files: '\.nf$|nextflow\.config$'
+        # TODO add formating at a later stage
+        # args: ["-format", "-sort-declarations", "-spaces", "4", "-harshil-alignment", "-output", "concise"]
