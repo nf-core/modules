@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "trident_fetch"
 description: Download data from a remote Poseidon repository
 keywords:
@@ -14,8 +13,9 @@ tools:
       documentation: "https://www.poseidon-adna.org/#/trident?id=fetch-command"
       tool_dev_url: "https://github.com/poseidon-framework/poseidon-hs/"
       doi: "10.7554/eLife.98317.1"
-      licence: ["MIT"]
-
+      licence:
+        - "MIT"
+      identifier: ""
 input:
   - - archive_dir:
         type: directory
@@ -24,19 +24,24 @@ input:
           If this is provided, trident fetch will check these directories, and only download missing packages from the Poseidon-Framework server.
     - fetch_s:
         type: string
-        description: The fetchString provided to trident fetch (`--fetchString`), if any.
+        description: The fetchString provided to trident fetch (`--fetchString`),
+          if any.
     - fetch_fn:
         type: file
-        description: A file containing a list of fetchStrings provided to trident fetch (`--fetchFile`), if any.
+        description: A file containing a list of fetchStrings provided to trident
+          fetch (`--fetchFile`), if any.
         pattern: "*.txt"
-
+        ontologies:
+          - edam: http://edamontology.org/format_2330 ## Text
 output:
   poseidon_yml:
     - output_archive/*/POSEIDON.yml:
         type: file
         description: The POSEIDON.yml file of any newly downloaded package(s).
         pattern: "output_archive/*/POSEIDON.yml"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3750 ## YAML
+
   geno:
     - "output_archive/*/*.{geno,bed,vcf,geno.gz,bed.gz,vcf.gz}":
         type: file
@@ -95,14 +100,27 @@ output:
         description: The README.md files of any newly downloaded package(s).
         pattern: "output_archive/*/README.md"
         ontologies: []
+  versions_trident:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trident:
+          type: string
+          description: The name of the tool
+      - trident --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
-
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trident:
+          type: string
+          description: The name of the tool
+      - trident --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@TCLamnidis"
 maintainers:

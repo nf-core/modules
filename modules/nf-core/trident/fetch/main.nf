@@ -21,7 +21,7 @@ process TRIDENT_FETCH {
     path "output_archive/*/*.bib", emit: bib, optional: true
     path "output_archive/*/CHANGELOG.md", emit: changelog, optional: true
     path "output_archive/*/README.md", emit: readme, optional: true
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('trident'), eval('trident --version'), emit: versions_trident, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,11 +40,6 @@ process TRIDENT_FETCH {
         ${args} \\
         ${fetch_string} \\
         ${fetch_file}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trident: \$(trident --version)
-    END_VERSIONS
     """
 
     stub:
@@ -61,10 +56,5 @@ process TRIDENT_FETCH {
     touch dummy_package_dir/dummy_package.snp
     touch dummy_package_dir/dummy_package.ind
     touch dummy_package_dir/dummy_package.janno
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trident: \$(trident --version)
-    END_VERSIONS
     """
 }
