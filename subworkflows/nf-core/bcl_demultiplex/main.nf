@@ -96,15 +96,10 @@ workflow BCL_DEMULTIPLEX {
     // MODULE: multiqcsav
     // Generate MultiQC report for demultiplexing step
     ch_sav_input = ch_runinfo.join(ch_interop)
-    ch_mqc_input = ch_reports.mix(ch_stats).map { _meta, files -> files.flatten() }
+    ch_mqc_input = ch_reports.mix(ch_stats).map { meta, files -> [meta, files.flatten()] }
+    ch_multiqcsav_input = ch_sav_input.join(ch_mqc_input).map{ meta, xml, bin, files -> [meta, xml, bin, files, [], [], [], []]}
     MULTIQCSAV(
-        ch_sav_input,
-        ch_mqc_input,
-        [],
-        [],
-        [],
-        [],
-        []
+        ch_multiqcsav_input
     )
 
     ch_multiqc_report  = MULTIQCSAV.out.report
