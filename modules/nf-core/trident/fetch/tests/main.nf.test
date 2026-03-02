@@ -34,6 +34,38 @@ nextflow_process {
 
     }
 
+    test("2012_MeyerScience-2.1.1 - fetchFile") {
+        // This test uses the smallest poseidon package in the archives (22M). It should be quick to download and validate.
+
+        // setup {
+        //     fetch_file = channel.of('*2012_MeyerScience-2.1.1*')
+        //         .collectFile(name: "fetch_file.txt", newLine: true)
+        // }
+        when {
+            process {
+                """
+                input[0] = channel.of('*2012_MeyerScience-2.1.1*')
+                .collectFile(name: "fetch_file.txt", newLine: true)
+                .map{
+                    fetch_file ->
+                    tuple(
+                        [], // archive_dir
+                        [], // fetchString
+                        fetch_file, // fetchFile
+                    )
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
     test("Existing package: 2012_MeyerScience-2.1.1 - fetchString") {
         // This test uses the smallest poseidon package in the archives (22M). It should be quick to download and validate.
 
@@ -57,7 +89,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = PREFETCH.out.poseidon_yml.map{ 
+                input[0] = PREFETCH.out.poseidon_yml.map{
                 x ->
                 def archive_dir = x.parent.parent.parent
                 def fetchString = "'*2012_MeyerScience-2.1.1*'"
