@@ -27,7 +27,7 @@ process CLIPKIT {
     def args      = task.ext.args ?: ''
     prefix        = task.ext.prefix ?: "${meta.id}"
     out_extension = out_format ? out_format : "clipkit"
-    def aux_flag  = auxiliary_file ? "-a ${auxiliary_file}" : ''
+    def aux_flag  = auxiliary_file ? "--auxiliary_file ${auxiliary_file}" : ''
     """
     clipkit \\
         $args \\
