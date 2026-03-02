@@ -40,10 +40,10 @@ process VIBER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        VIBER: \$(Rscript -e 'library(VIBER); sessionInfo()\$otherPkgs\$VIBER\$Version')
-        cli: \$(Rscript -e 'library(cli); sessionInfo()\$otherPkgs\$cli\$Version')
-        dplyr: \$(Rscript -e 'library(dplyr); sessionInfo()\$otherPkgs\$dplyr\$Version')
-        ggplot2: \$(Rscript -e 'library(ggplot2); sessionInfo()\$otherPkgs\$ggplot2\$Version')
+        VIBER: \$(Rscript -e "library(VIBER); cat(as.character(packageVersion('VIBER')))")
+        cli: \$(Rscript -e "library(cli); cat(as.character(packageVersion('cli')))")
+        dplyr: \$(Rscript -e "library(dplyr); cat(as.character(packageVersion('dplyr')))")
+        ggplot2: \$(Rscript -e "library(ggplot2); cat(as.character(packageVersion('ggplot2')))")
     END_VERSIONS
     """
 }
