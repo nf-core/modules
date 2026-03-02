@@ -30,8 +30,10 @@ input:
   - model:
       type: string
       description: |
-        Cellpose pretrained model name (e.g. 'cyto3', 'nuclei', 'CPSAM').
-        Passed to --pretrained_model. Leave empty to use default.
+        Cellpose pretrained model name passed to --pretrained_model.
+        Built-in models: 'cyto3', 'nuclei', 'cyto', 'cyto2', 'CPSAM'.
+        Can also be an absolute path to a custom-trained model file.
+        Pass empty string to use the cellpose default model.
       ontologies: []
 output:
   mask:
@@ -74,6 +76,19 @@ output:
         pattern: "versions.yml"
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
+notes: |
+  This module requires a Docker/Singularity/Podman container (conda is not supported
+  due to complex CUDA/PyTorch dependencies).
+
+  GPU support: Set `task.ext.use_gpu = true` to pass `--use_gpu` to cellpose.
+  The container includes CUDA 12.4 and falls back to CPU automatically when no GPU
+  is available. Use the `process_gpu` label to request GPU resources from your executor.
+
+  Additional cellpose CLI arguments can be passed via `task.ext.args`, for example:
+    ext.args = '--diameter 30 --flow_threshold 0.4 --cellprob_threshold 0'
+
+  Model weights are not bundled in the container. Cellpose downloads them on first
+  use to `$CELLPOSE_LOCAL_MODELS_PATH` (set to the work directory).
 authors:
   - "@josenimo"
   - "@FloWuenne"
