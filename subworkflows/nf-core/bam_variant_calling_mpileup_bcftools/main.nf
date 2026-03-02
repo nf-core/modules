@@ -74,7 +74,7 @@ workflow BAM_VARIANT_CALLING_MPILEUP_BCFTOOLS {
     )
 
     // Mix all vcfs
-    ch_to_concat = ch_all_vcf.one
+    ch_to_concat = ch_all_vcf.single
         .map{ meta, vcf_list, index_list, _size -> [
             meta, vcf_list[0], index_list[0]
         ] }
