@@ -144,7 +144,7 @@ nextflow_process {
         }
     }
 
-    test("sarscov2 - [bam], fasta, false") {
+    test("sarscov2 - [bam, bed_mpileup], fasta, false") {
 
         when {
             process {
@@ -206,6 +206,57 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     []
                 ]).combine(BCFTOOLS_QUERY.out.output.map{meta, tsv -> [tsv]})
+                input[1] = [
+                    [ id:'sarscov2' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    []
+                ]
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    file(process.out.tbi[0][1]).name,
+                    process.out.stats,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - [bam, bed_mpileup, bed_call], fasta, false") {
+
+        setup {
+            run("BCFTOOLS_QUERY") {
+                script "../../query/main.nf"
+                process {
+                    """
+                    input[0] = channel.of([
+                        [id: "test", chr: "MT192765.1"],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExist:true),
+                        []
+                    ])
+                    input[1] = []
+                    input[2] = []
+                    input[3] = []
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                ]).combine(BCFTOOLS_QUERY.out.output.map{meta, tsv -> [tsv]})
+                .combine(BCFTOOLS_QUERY.out.output.map{meta, tsv -> [tsv]})
                 input[1] = [
                     [ id:'sarscov2' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),

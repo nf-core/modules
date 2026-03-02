@@ -20,8 +20,8 @@ workflow BAM_VARIANT_CALLING_MPILEUP_BCFTOOLS {
 
     ch_mpileup = ch_bam
         .combine(ch_posfile)
-        .map{metaI, bam, _bai, metaPC, tsv ->
-                [metaI + metaPC, bam, [], tsv]
+        .map{meta_bam, bam, _bai, meta_posfile, tsv ->
+                [meta_bam + meta_posfile, bam, tsv, tsv]
         }
 
     def posfile_count = ch_posfile
@@ -39,15 +39,15 @@ workflow BAM_VARIANT_CALLING_MPILEUP_BCFTOOLS {
     // Branch depending on number of files
     ch_all_vcf = BCFTOOLS_MPILEUP.out.vcf
         .join(BCFTOOLS_MPILEUP.out.tbi)
-        .map{ metaIPC, vcf, tbi -> // Get all keys except merge_key
-            def groupKeys = metaIPC.keySet().findAll { key -> key != meta_sample_merge_key }
-            def groupMeta = metaIPC.subMap(groupKeys)
-            [groupMeta, [metaIPC, vcf, tbi]]
+        .map{ meta, vcf, tbi -> // Get all keys except merge_key
+            def groupKeys = meta.keySet().findAll { key -> key != meta_sample_merge_key }
+            def groupMeta = meta.subMap(groupKeys)
+            [groupMeta, [meta, vcf, tbi]]
         }
-        .groupTuple()
-        .map{ metaPC, filestups ->
+        .groupTuple().view()
+        .map{ meta_group, filestups ->
             // Create new meta with meta_sample_merge_key set to meta_sample_merge_value
-            def newMeta = metaPC + [
+            def newMeta = meta_group + [
                 (meta_sample_merge_key): meta_sample_merge_value,
                 metas: filestups
                     .collect{ meta, _vcf, _index -> meta }

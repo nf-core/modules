@@ -29,11 +29,11 @@
                 ]
             }
         ],
+        "timestamp": "2025-12-21T14:06:18.298267588",
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
-        },
-        "timestamp": "2025-12-21T14:06:18.298267588"
+        }
     },
     "sarscov2 - [bam, []], fasta, false stub": {
         "content": [
@@ -118,22 +118,22 @@
                 ]
             }
         ],
+        "timestamp": "2025-12-22T09:01:23.428267089",
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
-        },
-        "timestamp": "2025-12-22T09:01:23.428267089"
+        }
     },
-    "sarscov2 - [bam, bed], fasta, false": {
+    "sarscov2 - [bam, bed_mpileup], fasta, false": {
         "content": [
-            "c3e829c86ad6ce72945789383bb0108f",
+            "7341fd584a827cddfc5f181a81ed5076",
             "test.vcf.gz.tbi",
             [
                 [
                     {
                         "id": "test"
                     },
-                    "test.bcftools_stats.txt:md5,163481111816620f6b76a5e96976e93a"
+                    "test.bcftools_stats.txt:md5,ddfe3704ece40c8d3b8a8beb31cfbcf9"
                 ]
             ],
             {
@@ -146,11 +146,11 @@
                 ]
             }
         ],
+        "timestamp": "2026-03-02T13:20:19.914560249",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-02-27T16:45:46.038811362"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "sarscov2 - [bam, []], fasta, true stub": {
         "content": [
@@ -235,11 +235,39 @@
                 ]
             }
         ],
+        "timestamp": "2025-12-22T09:01:37.014405367",
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
-        },
-        "timestamp": "2025-12-22T09:01:37.014405367"
+        }
+    },
+    "sarscov2 - [bam, bed_mpileup, bed_call], fasta, false": {
+        "content": [
+            "c3e829c86ad6ce72945789383bb0108f",
+            "test.vcf.gz.tbi",
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.bcftools_stats.txt:md5,163481111816620f6b76a5e96976e93a"
+                ]
+            ],
+            {
+                "versions_bcftools": [
+                    [
+                        "BCFTOOLS_MPILEUP",
+                        "bcftools",
+                        "1.22"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-03-02T13:20:37.262876642",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "sarscov2 - [bam, bed_call], fasta, false": {
         "content": [
@@ -263,39 +291,11 @@
                 ]
             }
         ],
+        "timestamp": "2026-02-27T17:05:45.469300576",
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-02-27T17:05:45.469300576"
-    },
-    "sarscov2 - [bam], fasta, false": {
-        "content": [
-            "7341fd584a827cddfc5f181a81ed5076",
-            "test.vcf.gz.tbi",
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.bcftools_stats.txt:md5,ddfe3704ece40c8d3b8a8beb31cfbcf9"
-                ]
-            ],
-            {
-                "versions_bcftools": [
-                    [
-                        "BCFTOOLS_MPILEUP",
-                        "bcftools",
-                        "1.22"
-                    ]
-                ]
-            }
-        ],
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-02-27T17:05:36.496458264"
+        }
     },
     "sarscov2 - [bam, []], fasta, false": {
         "content": [
@@ -319,10 +319,10 @@
                 ]
             }
         ],
+        "timestamp": "2025-12-21T14:06:04.63975552",
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
-        },
-        "timestamp": "2025-12-21T14:06:04.63975552"
+        }
     }
 }
