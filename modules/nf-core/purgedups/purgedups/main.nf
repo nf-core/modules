@@ -13,7 +13,8 @@ process PURGEDUPS_PURGEDUPS {
     output:
     tuple val(meta), path("*.dups.bed")      , emit: bed
     tuple val(meta), path("*.purge_dups.log"), emit: log
-    path "versions.yml"                      , emit: versions
+    // WARN: Incorrect version printed inside the container, please check this if bumping version ( \$( purge_dups -h |& sed '3!d; s/.*: //' ))
+    tuple val("${task.process}"), val('purge_dups'), val('1.2.6'), emit: versions_purgedups, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,30 +22,18 @@ process PURGEDUPS_PURGEDUPS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.6' // WARN: Incorrect version printed inside the container, please check this if bumping version
     """
     purge_dups \\
         $args \\
         -T $cutoff \\
         -c $basecov \\
         $paf > ${prefix}.dups.bed 2>| >(tee ${prefix}.purge_dups.log >&2)
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        purgedups: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.6' // WARN: Incorrect version printed inside the container, please check this if bumping version
     """
     touch ${prefix}.dups.bed
     touch ${prefix}.purge_dups.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        purgedups: ${VERSION}
-    END_VERSIONS
     """
 }
