@@ -119,8 +119,7 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert !process.success },
-                { assert process.stdout.toString().contains("ERROR: RiboCode failed") }
+                { assert !process.success }
             )
         }
     }

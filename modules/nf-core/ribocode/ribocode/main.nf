@@ -27,19 +27,19 @@ process RIBOCODE_RIBOCODE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    # Run RiboCode and capture output to check for errors
     RiboCode \\
         -a $annotation \\
         -c $config \\
         -o ${prefix} \\
-        $args 2>&1 | tee ribocode_output.log || true
+        $args
 
-    # Check if RiboCode output contains error messages
-    if grep -qiE "^Error|Error:" ribocode_output.log; then
-        echo "ERROR: RiboCode failed. Check the output above for details." >&2
-        echo "Common causes:" >&2
-        echo "  - Invalid config file from metaplots (try lowering cutoff via ext.args, e.g., '-f0_percent 0.5')" >&2
-        echo "  - Insufficient data from Ribo-Seq alignment" >&2
+    # RiboCode may exit 0 even on failure (e.g. P-site detection errors).
+    # Verify expected output was actually produced.
+    if [ ! -s ${prefix}.txt ]; then
+        echo "ERROR: RiboCode produced no output - check log for details." >&2
+        echo "A common cause is failed P-site detection in metaplots." >&2
+        echo "Try relaxing metaplots thresholds via extra_ribocode_metaplots_args" >&2
+        echo "  e.g. '-pv1 0.05 -pv2 0.05 -f0_percent 0.5'" >&2
         exit 1
     fi
     """
