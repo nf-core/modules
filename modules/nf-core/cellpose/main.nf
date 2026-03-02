@@ -8,7 +8,6 @@ process CELLPOSE {
     input:
     tuple val(meta), path(image)
     val model
-    val maskname
 
     output:
     tuple val(meta), path("${prefix}/*masks.tif"), emit: mask
@@ -29,20 +28,13 @@ process CELLPOSE {
     def gpu_flag = task.ext.use_gpu ? "--use_gpu" : ""
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    # GPU detection logging
-    echo "=== GPU Detection ==="
-    echo "workflow.profile: ${workflow.profile}"
-    echo "args: '${args}'"
-    nvidia-smi 2>/dev/null && echo "GPU available: yes" || echo "GPU available: no (nvidia-smi failed)"
-    echo "===================="
-
     export OMP_NUM_THREADS=${task.cpus}
     export MKL_NUM_THREADS=${task.cpus}
-    export NPY_PROMOTION_STATE=legacy
     export HOME=\$PWD
     export MPLCONFIGDIR=\$PWD/.matplotlib
     export CELLPOSE_LOCAL_MODELS_PATH=\$PWD/.cellpose
     mkdir -p \$MPLCONFIGDIR \$CELLPOSE_LOCAL_MODELS_PATH
+
     cellpose \\
         --image_path ${image} \\
         --save_tif \\
@@ -52,7 +44,9 @@ process CELLPOSE {
         ${args}
 
     mkdir -p ${prefix}
-    mv *masks.tif ${prefix}/morphology.ome_${maskname}_masks.tif
+    mv *masks.tif ${prefix}/
+    mv *flows.tif ${prefix}/ 2>/dev/null || true
+    mv *seg.npy ${prefix}/ 2>/dev/null || true
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -71,9 +65,7 @@ process CELLPOSE {
 
     """
     mkdir -p ${prefix}
-    touch ${prefix}/morphology.ome_${maskname}_masks.tif
-    touch ${prefix}/morphology.ome_${maskname}_seg.npy
-    touch ${base}_cp_masks.tif
+    touch ${prefix}/${base}_cp_masks.tif
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

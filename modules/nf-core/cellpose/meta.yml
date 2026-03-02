@@ -27,18 +27,12 @@ input:
         description: tif file ready for segmentation
         pattern: "*.{tif,tiff}"
         ontologies: []
-  - - model:
-        type: string
-        description: |
-          Cellpose pretrained model name (e.g. 'cyto3', 'nuclei', 'CPSAM').
-          Passed to --pretrained_model. Leave empty to use default.
-        ontologies: []
-  - - maskname:
-        type: string
-        description: |
-          Label to include in the output mask filename.
-          Output mask will be named morphology.ome_<maskname>_masks.tif
-        ontologies: []
+  - model:
+      type: string
+      description: |
+        Cellpose pretrained model name (e.g. 'cyto3', 'nuclei', 'CPSAM').
+        Passed to --pretrained_model. Leave empty to use default.
+      ontologies: []
 output:
   mask:
     - - meta:
