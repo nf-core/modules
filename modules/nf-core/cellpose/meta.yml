@@ -1,9 +1,11 @@
 name: "cellpose"
-description: cellpose segments cells in images
+description: cellpose segments cells in images using GPU-accelerated deep learning
 keywords:
   - segmentation
   - image
   - cellpose
+  - gpu
+  - spatial-transcriptomics
 tools:
   - "cellpose":
       description: "cellpose is an anatomical segmentation algorithm written in Python
@@ -22,14 +24,21 @@ input:
           (sample id)
     - image:
         type: file
-        description: tif file for ready for segmentation
+        description: tif file ready for segmentation
         pattern: "*.{tif,tiff}"
         ontologies: []
-  - model:
-      type: file
-      description: Optional input file. Cellpose 2 model trained by user using human-in-the-loop
-        approach.
-      ontologies: []
+  - - model:
+        type: string
+        description: |
+          Cellpose pretrained model name (e.g. 'cyto3', 'nuclei', 'CPSAM').
+          Passed to --pretrained_model. Leave empty to use default.
+        ontologies: []
+  - - maskname:
+        type: string
+        description: |
+          Label to include in the output mask filename.
+          Output mask will be named morphology.ome_<maskname>_masks.tif
+        ontologies: []
 output:
   mask:
     - - meta:
@@ -37,10 +46,10 @@ output:
           description: |
             Groovy Map containing sample information
             [sample id]
-      - "*masks.tif":
+      - "${prefix}/*masks.tif":
           type: file
           description: labelled mask output from cellpose in tif format
-          pattern: "*.{tif, tiff}"
+          pattern: "${prefix}/*masks.tif"
           ontologies: []
   flows:
     - - meta:
@@ -48,10 +57,21 @@ output:
           description: |
             Groovy Map containing sample information
             [sample id]
-      - "*flows.tif":
+      - "${prefix}/*flows.tif":
           type: file
           description: cell flow output from cellpose
-          pattern: "*.{tif}"
+          pattern: "${prefix}/*flows.tif"
+          ontologies: []
+  cells:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            [sample id]
+      - "${prefix}/*seg.npy":
+          type: file
+          description: numpy array with cell segmentation data
+          pattern: "${prefix}/*seg.npy"
           ontologies: []
   versions:
     - versions.yml:
