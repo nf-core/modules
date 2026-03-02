@@ -62,12 +62,12 @@ workflow BAM_VARIANT_CALLING_MPILEUP_BCFTOOLS {
         }
         .branch{ _meta, _vcf, _index, size ->
             one: size == 1
-            more: size > 1
+            multiple: size > 1
         }
 
     // Merge VCFs all individuals
     BCFTOOLS_MERGE(
-        ch_all_vcf.more.map{
+        ch_all_vcf.multiple.map{
             meta, vcf_list, index_list, _size -> [ meta, vcf_list, index_list, [] ]
         },
         ch_fasta
