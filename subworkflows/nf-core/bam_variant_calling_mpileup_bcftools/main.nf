@@ -1,7 +1,7 @@
 include { BCFTOOLS_MPILEUP                 } from '../../../modules/nf-core/bcftools/mpileup'
 include { BCFTOOLS_MERGE                   } from '../../../modules/nf-core/bcftools/merge'
 include { BCFTOOLS_ANNOTATE                } from '../../../modules/nf-core/bcftools/annotate'
-include { VCF_GATHER_BCFTOOLS              } from '../../../subworkflows/nf-core/vcf_gather_bcftools'
+include { VCF_GATHER_BCFTOOLS              } from '../vcf_gather_bcftools'
 
 workflow BAM_VARIANT_CALLING_MPILEUP_BCFTOOLS {
 
@@ -44,7 +44,7 @@ workflow BAM_VARIANT_CALLING_MPILEUP_BCFTOOLS {
             def groupMeta = meta.subMap(groupKeys)
             [groupMeta, [meta, vcf, tbi]]
         }
-        .groupTuple().view()
+        .groupTuple()
         .map{ meta_group, filestups ->
             // Create new meta with meta_sample_merge_key set to meta_sample_merge_value
             def newMeta = meta_group + [

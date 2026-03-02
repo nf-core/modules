@@ -187,7 +187,7 @@ nextflow_process {
                     """
                     input[0] = channel.of([
                         [id: "test", chr: "MT192765.1"],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExist:true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists:true),
                         []
                     ])
                     input[1] = []
@@ -238,7 +238,7 @@ nextflow_process {
                     """
                     input[0] = channel.of([
                         [id: "test", chr: "MT192765.1"],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExist:true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists:true),
                         []
                     ])
                     input[1] = []
