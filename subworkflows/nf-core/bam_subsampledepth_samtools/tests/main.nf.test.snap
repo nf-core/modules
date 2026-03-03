@@ -1,133 +1,57 @@
 {
     "Downsample to 4X and 2X": {
         "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "NA12878",
-                            "subsample_fraction": 0.06201800538763442,
-                            "depth": 2
-                        },
-                        "NA12878.bam:md5,80d125b6b74be754eac082473b5b35c8",
-                        "NA12878.bam.csi:md5,e117d88fd3409d42f3cf97b3b29dba22"
-                    ],
-                    [
-                        {
-                            "id": "NA12878",
-                            "subsample_fraction": 0.12403601077526884,
-                            "depth": 4
-                        },
-                        "NA12878.bam:md5,c401347868092f8c0abaf2c0dc437483",
-                        "NA12878.bam.csi:md5,d1f24a25181d75c19f3ba169898b5678"
-                    ],
-                    [
-                        {
-                            "id": "NA19401",
-                            "subsample_fraction": 0.062137851766009305,
-                            "depth": 2
-                        },
-                        "NA19401.bam:md5,c5217463dd38a4f4367038d87d248ea0",
-                        "NA19401.bam.csi:md5,3c33431336c405d971f9b69724310b87"
-                    ],
-                    [
-                        {
-                            "id": "NA19401",
-                            "subsample_fraction": 0.12427570353201861,
-                            "depth": 4
-                        },
-                        "NA19401.bam:md5,0bf8644c46d43975a7f16f02558c7b70",
-                        "NA19401.bam.csi:md5,78619e30a0e233b35d57c6bc8d5222b7"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,b31618773ed8a31f8635bca3da001eeb",
-                    "versions.yml:md5,d90a2995d11e3c2a4a8b99799fb86fb6",
-                    "versions.yml:md5,eeb0a1f1cb18d25b5c98bf1f408302a7"
-                ],
-                "bam_subsampled": [
-                    [
-                        {
-                            "id": "NA12878",
-                            "subsample_fraction": 0.06201800538763442,
-                            "depth": 2
-                        },
-                        "NA12878.bam:md5,80d125b6b74be754eac082473b5b35c8",
-                        "NA12878.bam.csi:md5,e117d88fd3409d42f3cf97b3b29dba22"
-                    ],
-                    [
-                        {
-                            "id": "NA12878",
-                            "subsample_fraction": 0.12403601077526884,
-                            "depth": 4
-                        },
-                        "NA12878.bam:md5,c401347868092f8c0abaf2c0dc437483",
-                        "NA12878.bam.csi:md5,d1f24a25181d75c19f3ba169898b5678"
-                    ],
-                    [
-                        {
-                            "id": "NA19401",
-                            "subsample_fraction": 0.062137851766009305,
-                            "depth": 2
-                        },
-                        "NA19401.bam:md5,c5217463dd38a4f4367038d87d248ea0",
-                        "NA19401.bam.csi:md5,3c33431336c405d971f9b69724310b87"
-                    ],
-                    [
-                        {
-                            "id": "NA19401",
-                            "subsample_fraction": 0.12427570353201861,
-                            "depth": 4
-                        },
-                        "NA19401.bam:md5,0bf8644c46d43975a7f16f02558c7b70",
-                        "NA19401.bam.csi:md5,78619e30a0e233b35d57c6bc8d5222b7"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,b31618773ed8a31f8635bca3da001eeb",
-                    "versions.yml:md5,d90a2995d11e3c2a4a8b99799fb86fb6",
-                    "versions.yml:md5,eeb0a1f1cb18d25b5c98bf1f408302a7"
-                ]
-            },
             [
                 [
                     {
                         "id": "NA12878",
+                        "my_depth": "2x",
                         "subsample_fraction": 0.06201800538763442,
                         "depth": 2
                     },
+                    "NA12878.bam:md5,80d125b6b74be754eac082473b5b35c8",
+                    "NA12878.bam.csi:md5,e117d88fd3409d42f3cf97b3b29dba22",
                     1164
                 ],
                 [
                     {
                         "id": "NA12878",
+                        "my_depth": "4x",
                         "subsample_fraction": 0.12403601077526884,
                         "depth": 4
                     },
+                    "NA12878.bam:md5,c401347868092f8c0abaf2c0dc437483",
+                    "NA12878.bam.csi:md5,d1f24a25181d75c19f3ba169898b5678",
                     2402
                 ],
                 [
                     {
                         "id": "NA19401",
+                        "my_depth": "2x",
                         "subsample_fraction": 0.062137851766009305,
                         "depth": 2
                     },
+                    "NA19401.bam:md5,c5217463dd38a4f4367038d87d248ea0",
+                    "NA19401.bam.csi:md5,3c33431336c405d971f9b69724310b87",
                     1196
                 ],
                 [
                     {
                         "id": "NA19401",
+                        "my_depth": "4x",
                         "subsample_fraction": 0.12427570353201861,
                         "depth": 4
                     },
+                    "NA19401.bam:md5,0bf8644c46d43975a7f16f02558c7b70",
+                    "NA19401.bam.csi:md5,78619e30a0e233b35d57c6bc8d5222b7",
                     2321
                 ]
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2025-09-10T13:08:42.206943"
+        "timestamp": "2026-02-10T12:38:50.348195974"
     }
 }

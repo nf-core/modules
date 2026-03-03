@@ -4,8 +4,8 @@ process VCF2CYTOSURE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vcf2cytosure:0.9.1--pyh7cba7a3_1':
-        'biocontainers/vcf2cytosure:0.9.1--pyh7cba7a3_1' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/58/584cf1de62ed0d65a064456ec0d052d6b657b3245c8f10c626bca7131884c0fc/data':
+        'community.wave.seqera.io/library/pip_vcf2cytosure:6852c55eb4c9d406' }"
 
     input:
     tuple val(meta), path(sv_vcf)
@@ -16,7 +16,7 @@ process VCF2CYTOSURE {
 
     output:
     tuple val(meta), path("*.cgh"), emit: cgh
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('vcf2cytosure'), eval("vcf2cytosure --version 2>&1 | sed -n 's/.*cytosure //p'"), topic: versions, emit: versions_vcf2cytosure
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,27 +40,11 @@ process VCF2CYTOSURE {
         $snv \\
         $blacklist \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vcf2cytosure: \$(echo \$(vcf2cytosure --version 2>&1) | sed 's/^.* cytosure //' )
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def coverage = coverage_bed ? "--coverage ${coverage_bed}" : ''
-    def cnvkit = cns ? ( coverage_bed ? '' : "--cn ${cns}" ) : ''
-    def snv = snv_vcf ? ( coverage_bed ? '' : "--snv ${snv_vcf}" ) : ''
-    def blacklist = blacklist_bed ? "--blacklist ${blacklist_bed}" : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     touch ${prefix}.cgh
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vcf2cytosure: \$(echo \$(vcf2cytosure --version 2>&1) | sed 's/^.* cytosure //' )
-    END_VERSIONS
     """
 }

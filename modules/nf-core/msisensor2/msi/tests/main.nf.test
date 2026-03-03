@@ -19,8 +19,8 @@ nextflow_process {
                 process {
                 """
                 input[0] = [
-                            [ id:'models_hg19_17sites' ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/msisensor2/models_hg19_17sites.tar.gz', checkIfExists: true)
+                    [ id:'models_hg19_17sites' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/msisensor2/models_hg19_17sites.tar.gz', checkIfExists: true)
                 ]
                 """
                 }
@@ -34,9 +34,8 @@ nextflow_process {
                     [id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test_msisensor2.hg19.bam',checkIfExists:true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test_msisensor2.hg19.bam.bai',checkIfExists:true),
-                    ]
+                ]
                 input[1] = UNTAR.out.untar
-                
                 """
             }
         }
@@ -47,8 +46,7 @@ nextflow_process {
                     process.out.msi,
                     process.out.distribution,
                     file(process.out.somatic[0][1]).name, // Empty file
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
@@ -73,10 +71,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

@@ -13,7 +13,16 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                // Verify the VERSION empty file exists
+                { assert file(process.out.pharokka_db[0]).listFiles()
+                    .any { it.name.startsWith("VERSION_") } },
+                // Snapshot stable outputs only
+                { assert snapshot(
+                    file(process.out.pharokka_db[0]).listFiles()
+                        .findAll { !it.name.startsWith("VERSION_") }
+                        .sort(),
+                    process.out.versions
+                ).match() }
             )
         }
 

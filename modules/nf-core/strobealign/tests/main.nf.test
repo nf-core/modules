@@ -42,7 +42,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.bam,
                     process.out.csi,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -78,7 +78,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.bam,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -115,7 +115,7 @@ nextflow_process {
                 { assert snapshot(
                     cram(process.out.cram[0][1], 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta').getReadsMD5(),
                     file(process.out.crai[0][1]).exists(),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -151,7 +151,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     cram(process.out.cram[0][1], 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta').getReadsMD5(),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -187,7 +187,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.paf,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -223,7 +223,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.tsv,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -259,7 +259,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.sti,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }

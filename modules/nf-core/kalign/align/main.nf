@@ -13,7 +13,8 @@ process KALIGN_ALIGN {
 
     output:
     tuple val(meta), path("*.aln{.gz,}"), emit: alignment
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('kalign'), eval('kalign -v | sed "s/^.*kalign[[:space:]]*//"'), emit: versions_kalign, topic: versions
+    tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,24 +41,11 @@ process KALIGN_ALIGN {
         $args \\
         -n ${task.cpus} \\
         -o ${write_output}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kalign: \$(echo \$(kalign -v) | sed 's/kalign //g' )
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.aln${compress ? '.gz' : ''}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kalign : \$(echo \$(kalign -v) | sed 's/kalign //g' )
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
-    END_VERSIONS
     """
 }

@@ -76,6 +76,7 @@ run_mobster_fit = function(joint_table, descr) {
                 tail = eval(parse(text=opt[["tail"]])),
                 pi_cutoff = as.numeric(opt[["pi_cutoff"]]),
                 N_cutoff = as.integer(opt[["n_cutoff"]]),
+                parallel = FALSE,
                 description = descr)
 }
 
@@ -84,7 +85,7 @@ lapply(samples, function(sample_name) {
 
     fit = run_mobster_fit(joint_table=input_table %>% dplyr::filter(sample_id == !!sample_name),
                           descr=paste(description, sample_name, sep=":"))
-    
+
     if (any(fit[["fits.table"]][["tail"]])) {
         evoparams = evolutionary_parameters(fit)
         fit[["evolutionary_parameters"]] = evoparams

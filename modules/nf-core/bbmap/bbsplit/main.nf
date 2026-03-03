@@ -21,7 +21,7 @@ process BBMAP_BBSPLIT {
     tuple val(meta), path('*fastq.gz')        , optional:true, emit: all_fastq
     tuple val(meta), path('*txt')             , optional:true, emit: stats
     tuple val(meta), path('*.log')            , optional:true, emit: log
-    path "versions.yml"                       , emit: versions
+    tuple val("${task.process}"), val('bbmap'), eval('bbversion.sh | grep -v "Duplicate cpuset"'), topic: versions, emit: versions_bbmap
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,8 +38,8 @@ process BBMAP_BBSPLIT {
     }
 
     def other_refs = []
-    other_ref_names.eachWithIndex { name, index ->
-        other_refs << "ref_${name}=${other_ref_paths[index]}"
+    other_ref_names.eachWithIndex { name, idx ->
+        other_refs << "ref_${name}=${other_ref_paths[idx]}"
     }
 
     def fastq_in=''
@@ -68,17 +68,18 @@ process BBMAP_BBSPLIT {
     }
     """
 
-    # If using a pre-built index, copy it to avoid modifying input files in place,
-    # then fix timestamps. When we stage in the index files the time stamps get
-    # disturbed, which bbsplit doesn't like. Fix the time stamps in its summaries.
-    # This needs to be done via Java to match what bbmap does.
+    # If using a pre-built index, create writable structure: symlink all files except
+    # summary.txt (which we copy to modify). When we stage in the index files the time
+    # stamps get disturbed, which bbsplit doesn't like. Fix the time stamps in summaries.
     if [ "$use_index" == "true" ]; then
-        cp -rL input_index index_writable
-
-        for summary_file in \$(find index_writable/ref/genome -name summary.txt); do
-            # Extract the path from summary.txt and update it to point to index_writable
+        find input_index/ref -type f | while read -r f; do
+            target="index_writable/\${f#input_index/}"
+            mkdir -p "\$(dirname "\$target")"
+            [[ \$(basename "\$f") == "summary.txt" ]] && cp "\$f" "\$target" || ln -s "\$(realpath "\$f")" "\$target"
+        done
+        find index_writable/ref/genome -name summary.txt | while read -r summary_file; do
             src=\$(grep '^source' "\$summary_file" | cut -f2- -d\$'\\t' | sed 's|.*/ref/|index_writable/ref/|')
-            mod=\$(echo "System.out.println(java.nio.file.Files.getLastModifiedTime(java.nio.file.Paths.get(\\"\$src\\")).toMillis());" | jshell -J-Djdk.lang.Process.launchMechanism=vfork -)
+            mod=\$(echo "System.out.println(java.nio.file.Files.getLastModifiedTime(java.nio.file.Paths.get(\\"\$src\\")).toMillis());" | jshell -J-Djdk.lang.Process.launchMechanism=vfork - 2>/dev/null | grep -oE '^[0-9]{12,14}\$')
             sed -e 's|bbsplit_index/ref|index_writable/ref|' -e "s|^last modified.*|last modified\\t\$mod|" "\$summary_file" > \${summary_file}.tmp && mv \${summary_file}.tmp \${summary_file}
         done
     fi
@@ -95,27 +96,19 @@ process BBMAP_BBSPLIT {
         $args 2>| >(tee ${prefix}.log >&2)
 
     # Summary files will have an absolute path that will make the index
-    # impossible to use in other processes- we can fix that
+    # impossible to use in other processes - fix paths and rename atomically
     if [ -d bbsplit_build/ref/genome ]; then
-        for summary_file in \$(find bbsplit_build/ref/genome -name summary.txt); do
-            src=\$(grep '^source' "\$summary_file" | cut -f2- -d\$'\\t' | sed 's|.*/bbsplit_build|bbsplit_index|')
-            sed "s|^source.*|source\\t\$src|" "\$summary_file" > \${summary_file}.tmp && mv \${summary_file}.tmp \${summary_file}
+        find bbsplit_build/ref/genome -name summary.txt | while read -r summary_file; do
+            sed "s|^source.*|source\\t\$(grep '^source' "\$summary_file" | cut -f2- -d\$'\\t' | sed 's|.*/bbsplit_build|bbsplit_index|')|" "\$summary_file" > \${summary_file}.tmp && mv \${summary_file}.tmp \${summary_file}
         done
-
-        # Atomically rename the completed index
         mv bbsplit_build bbsplit_index
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def other_refs = ''
-    other_ref_names.eachWithIndex { name, index ->
+    other_ref_names.eachWithIndex { name, _idx ->
         other_refs += "echo '' | gzip > ${prefix}_${name}.fastq.gz"
     }
     def will_build_index = only_build_index || (!index && primary_ref && other_ref_names && other_ref_paths)
@@ -133,10 +126,5 @@ process BBMAP_BBSPLIT {
     fi
 
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
-    END_VERSIONS
     """
 }

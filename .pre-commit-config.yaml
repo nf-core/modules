@@ -3,8 +3,13 @@ repos:
     rev: "v3.1.0"
     hooks:
       - id: prettier
+        entry: prettier --experimental-cli --write --ignore-unknown --no-cache
+        exclude: |
+          (?x)^(
+              .*\.snap$
+          )$
         additional_dependencies:
-          - prettier@3.6.2
+          - prettier@3.8.1
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
@@ -22,7 +27,7 @@ repos:
           )$
 
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.35.0
+    rev: 0.37.0
     hooks:
       - id: check-jsonschema
         name: "Match meta.ymls in one of the subdirectories of modules/nf-core"
@@ -43,7 +48,7 @@ repos:
 
   # use ruff for python files
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.4
+    rev: v0.15.4
     hooks:
       - id: ruff
         files: \.py$
@@ -54,7 +59,13 @@ repos:
     rev: v2.14.0
     hooks:
       - id: hadolint-docker
-  - repo: https://github.com/nf-core/tools
-    rev: pre-commit
+        args: ["--failure-threshold", "error"]
+
+  - repo: https://github.com/seqeralabs/nf-lint-pre-commit
+    rev: v0.2.0
     hooks:
-      - id: lint-subworkflows
+      - id: nextflow-lint
+        files: '\.nf$|nextflow\.config$'
+        args: ["-output", "json"]
+        # TODO add formating at a later stage
+        # args: ["-format", "-sort-declarations", "-spaces", "4", "-harshil-alignment", "-output", "concise"]

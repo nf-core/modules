@@ -12,7 +12,7 @@ process TABIX_TABIX {
 
     output:
     tuple val(meta), path("*.{tbi,csi}"), emit: index
-    path  "versions.yml", emit: versions
+    tuple val("${task.process}"), val('tabix'), eval("tabix -h 2>&1 | grep -oP 'Version:\\s*\\K[^\\s]+'")   , topic: versions   , emit: versions_tabix
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,21 +25,11 @@ process TABIX_TABIX {
         $args \\
         $tab
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tabix: \$(tabix --version | sed '1!d;s/.* //' )
-    END_VERSIONS
     """
-
     stub:
     def args = task.ext.args ?: ''
     def index = args.contains("-C ") || args.contains("--csi") ? "csi" : "tbi"
     """
     touch ${tab}.${index}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tabix: \$(tabix --version | sed '1!d;s/.* //' )
-    END_VERSIONS
     """
 }

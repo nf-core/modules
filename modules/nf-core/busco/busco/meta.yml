@@ -7,14 +7,16 @@ keywords:
   - proteome
 tools:
   - busco:
-      description: BUSCO provides measures for quantitative assessment of genome assembly,
-        gene set, and transcriptome completeness based on evolutionarily informed expectations
-        of gene content from near-universal single-copy orthologs selected from OrthoDB.
+      description: BUSCO provides measures for quantitative assessment of genome
+        assembly, gene set, and transcriptome completeness based on evolutionarily
+        informed expectations of gene content from near-universal single-copy
+        orthologs selected from OrthoDB.
       homepage: https://busco.ezlab.org/
       documentation: https://busco.ezlab.org/busco_userguide.html
       tool_dev_url: https://gitlab.com/ezlab/busco
       doi: "10.1007/978-1-4939-9173-0_14"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:busco
 input:
   - - meta:
@@ -29,12 +31,13 @@ input:
         ontologies: []
   - mode:
       type: string
-      description: The mode to run Busco in. One of genome, proteins, or transcriptome
+      description: The mode to run Busco in. One of genome, proteins, or
+        transcriptome
       pattern: "{genome,proteins,transcriptome}"
   - lineage:
       type: string
-      description: The BUSCO lineage to use, or "auto", "auto_prok" or "auto_euk" to
-        automatically select lineage
+      description: The BUSCO lineage to use, or "auto", "auto_prok" or "auto_euk"
+        to automatically select lineage
   - busco_lineages_path:
       type: directory
       description: Path to local BUSCO lineages directory.
@@ -79,7 +82,7 @@ output:
           description: Short Busco summary in JSON format
           pattern: "short_summary.*.json"
           ontologies:
-            - edam: http://edamontology.org/format_3464 # JSON
+            - edam: http://edamontology.org/format_3464
   log:
     - - meta:
           type: map
@@ -102,7 +105,7 @@ output:
           description: Full BUSCO results table
           pattern: "full_table.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   missing_busco_list:
     - - meta:
           type: map
@@ -114,7 +117,7 @@ output:
           description: List of missing BUSCOs
           pattern: "missing_busco_list.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   single_copy_proteins:
     - - meta:
           type: map
@@ -144,8 +147,8 @@ output:
             e.g. [ id:'test' ]
       - "*-busco/*/translated_proteins":
           type: directory
-          description: Six frame translations of each transcript made by the transcriptome
-            mode
+          description: Six frame translations of each transcript made by the
+            transcriptome mode
           pattern: "translated_dir"
   busco_dir:
     - - meta:
@@ -165,8 +168,8 @@ output:
             e.g. [ id:'test' ]
       - busco_downloads/lineages/*:
           type: directory
-          description: Lineages downloaded by BUSCO when running the analysis, for example
-            bacteria_odb12
+          description: Lineages downloaded by BUSCO when running the analysis, for
+            example bacteria_odb12
           pattern: "busco_downloads/lineages/*"
   single_copy_faa:
     - - meta:
@@ -190,13 +193,27 @@ output:
           description: Single copy .fna sequence files
           pattern: "*-busco/*/run_*/busco_sequences/single_copy_busco_sequences/*.fna"
           ontologies: []
+  versions_busco:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - busco:
+          type: string
+          description: The name of the tool
+      - busco --version 2> /dev/null | sed 's/BUSCO //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - busco:
+          type: string
+          description: The name of the tool
+      - busco --version 2> /dev/null | sed 's/BUSCO //g':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@priyanka-surana"
   - "@charles-plessy"

@@ -20,17 +20,14 @@ nextflow_process {
                 process {
                     """
                     input[0] = [
-                        [ id:'test'], // meta map
-                        file(params.test_data['homo_sapiens']['genome']['prg_input'], checkIfExists: true)
+                        [ id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/PRG_test.zip', checkIfExists: true)
                     ]
                     """
                 }
             }
         }
         when {
-	    params {
-	        outdir = "$outputDir"
-	    }
             process {
                 """
                 input[0] = UNZIP.out.unzipped_archive.map{ meta, filepath ->
@@ -41,8 +38,8 @@ nextflow_process {
         }
 
         then {
-	    def stable_name    = getAllFilesFromDir(outputDir, relative:true, includeDir: true)
-	    def stable_content = getAllFilesFromDir(outputDir, ignore: ['**/referenceGenome.fa.{bwt,pac,sa}','**/referenceGenome.fa_bowtie2idx*'])
+            def stable_name    = getAllFilesFromDir(outputDir, relative:true, includeDir: true)
+            def stable_content = getAllFilesFromDir(outputDir, ignore: ['**/referenceGenome.fa.{bwt,pac,sa}','**/referenceGenome.fa_bowtie2idx*'])
             assertAll(
                 { assert process.success },
                 { assert snapshot(stable_name,stable_content).match() }
@@ -62,12 +59,12 @@ nextflow_process {
                 process {
                     """
                     input[0] = [
-                        [ id:'test'], // meta map
-                        file(params.test_data['homo_sapiens']['genome']['prg_input'], checkIfExists: true)
+                        [ id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/PRG_test.zip', checkIfExists: true)
                     ]
                     """
                 }
-            } 
+            }
         }
 
         when {

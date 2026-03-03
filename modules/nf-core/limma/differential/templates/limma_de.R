@@ -31,7 +31,7 @@ parse_args <- function(x){
 #'
 #' @return output Data frame
 
-read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.names = TRUE){
+read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.names = FALSE){
 
     ext <- tolower(tail(strsplit(basename(file), split = "\\\\.")[[1]], 1))
 
@@ -177,8 +177,7 @@ intensities.table <-
     read_delim_flexible(
         file = opt\$count_file,
         header = TRUE,
-        row.names = opt\$probe_id_col,
-        check.names = FALSE
+        row.names = opt\$probe_id_col
     )
 sample.sheet <- read_delim_flexible(file = opt\$sample_file)
 
@@ -376,7 +375,7 @@ if (!is.null(opt\$use_voom) && opt\$use_voom) {
     if (! is.null(opt\$round_digits)){
         normalized_counts <- apply(normalized_counts, 2, function(x) round(x, opt\$round_digits))
     }
-    normalized_counts_with_genes <- data.frame(Gene = rownames(normalized_counts), normalized_counts, row.names = NULL)
+    normalized_counts_with_genes <- data.frame(Gene = rownames(normalized_counts), normalized_counts, check.names = FALSE, row.names = NULL)
     colnames(normalized_counts_with_genes)[1] <- opt\$probe_id_col
     write.table(normalized_counts_with_genes,
         file = paste(opt\$output_prefix, "normalised_counts.tsv", sep = '.'),
@@ -424,8 +423,8 @@ if (!is.null(opt\$contrast_string)) {
 } else {
 
     # Construct the expected column names for the target and reference levels in the design matrix
-    treatment_target <- paste0(contrast_variable, ".", opt\$target_level)
-    treatment_reference <- paste0(contrast_variable, ".", opt\$reference_level)
+    treatment_target <- make.names(paste0(contrast_variable, ".", opt\$target_level))
+    treatment_reference <- make.names(paste0(contrast_variable, ".", opt\$reference_level))
 
     # Determine how to construct the contrast string based on which levels are present in the design matrix
     if ((treatment_target %in% colnames(design)) && (treatment_reference %in% colnames(design))) {
@@ -447,6 +446,8 @@ if (!is.null(opt\$contrast_string)) {
         # This indicates an error; the specified levels are not found
         stop(paste0(treatment_target, " and ", treatment_reference, " not found in design matrix"))
     }
+    cat("Using contrast string:", contrast_string, "
+")
     contrast.matrix <- makeContrasts(contrasts=contrast_string, levels=design)
 
 }

@@ -1,0 +1,70 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "sambamba_depth"
+description: Outputs a coverage file from bam files
+keywords:
+  - depth
+  - coverage
+  - sambamba
+tools:
+  - "sambamba":
+      description: "Tools for working with SAM/BAM data"
+      homepage: "https://lomereiter.github.io/sambamba/docs/sambamba-view.html"
+      documentation: "https://lomereiter.github.io/sambamba/docs/sambamba-view.html"
+      tool_dev_url: "https://github.com/biod/sambamba"
+      doi: 10.1093/bioinformatics/btv098
+      licence: ["GPL v2"]
+      identifier: biotools:sambamba
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - bam:
+        type: file
+        description: BAM file
+        pattern: "*.{bam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - bai:
+        type: file
+        description: BAI file
+        pattern: "*.{bai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing regions information
+    - bed:
+        type: file
+        description: bed file
+        pattern: "*.{bed}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+  - mode:
+      type: string
+      description: Analysis mode can be region, window, base
+      pattern: "region|window|base"
+output:
+  bed:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.bed":
+          type: file
+          description: bed file
+          pattern: "*.bed"
+          ontologies:
+            - edam: "http://edamontology.org/format_3586" # bed12
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@peterpru"
+maintainers:
+  - "@peterpru"

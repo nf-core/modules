@@ -1,5 +1,5 @@
 {
-    "forward_counts": {
+    "sarscov2 [bam] - forward": {
         "content": [
             [
                 [
@@ -8,53 +8,34 @@
                         "single_end": true,
                         "strandedness": "forward"
                     },
-                    "test.featureCounts.tsv:md5,21ff44bfaa4a3d8e8b7e749078f7a201"
+                    "test.featureCounts.tsv:md5,af5abde30c52606302d64a3f960a262a"
                 ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
-        },
-        "timestamp": "2024-12-01T11:28:20.989068"
-    },
-    "unstranded_counts": {
-        "content": [
+            ],
             [
                 [
                     {
                         "id": "test",
                         "single_end": true,
-                        "strandedness": "unstranded"
+                        "strandedness": "forward"
                     },
-                    "test.featureCounts.tsv:md5,9474f78d2d1d43613cbc16c10ba15047"
+                    "test.featureCounts.tsv.summary:md5,8f602ff9a8ef467af43294e80b367cdf"
                 ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
-        },
-        "timestamp": "2024-12-01T11:28:33.648742"
-    },
-    "reverse_summary": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true,
-                        "strandedness": "reverse"
-                    },
-                    "test.featureCounts.tsv.summary:md5,7cfa30ad678b9bc1bc63afbb0281547b"
+            ],
+            {
+                "versions_subread": [
+                    [
+                        "SUBREAD_FEATURECOUNTS",
+                        "subread",
+                        "2.1.1"
+                    ]
                 ]
-            ]
+            }
         ],
+        "timestamp": "2026-02-26T03:28:13.8156532",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
-        },
-        "timestamp": "2024-12-01T11:28:27.457841"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "sarscov2 [bam] - forward - stub": {
         "content": [
@@ -80,7 +61,11 @@
                     ]
                 ],
                 "2": [
-                    "versions.yml:md5,956ebb9da6a1747fc47d393fb5931fc2"
+                    [
+                        "SUBREAD_FEATURECOUNTS",
+                        "subread",
+                        "2.1.1"
+                    ]
                 ],
                 "counts": [
                     [
@@ -102,16 +87,58 @@
                         "test.featureCounts.tsv.summary:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,956ebb9da6a1747fc47d393fb5931fc2"
+                "versions_subread": [
+                    [
+                        "SUBREAD_FEATURECOUNTS",
+                        "subread",
+                        "2.1.1"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-02-26T03:28:21.127211404",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
-        },
-        "timestamp": "2024-12-01T11:29:21.075114"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "sarscov2 [bam] - unstranded": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true,
+                        "strandedness": "unstranded"
+                    },
+                    "test.featureCounts.tsv:md5,355c22823290c40ccadeee94a21eca8b"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true,
+                        "strandedness": "unstranded"
+                    },
+                    "test.featureCounts.tsv.summary:md5,23164b79f9f23f11c82820db61a35560"
+                ]
+            ],
+            {
+                "versions_subread": [
+                    [
+                        "SUBREAD_FEATURECOUNTS",
+                        "subread",
+                        "2.1.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-02-26T03:28:43.068113331",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "sarscov2 [bam] - reverse - stub": {
         "content": [
@@ -137,7 +164,11 @@
                     ]
                 ],
                 "2": [
-                    "versions.yml:md5,956ebb9da6a1747fc47d393fb5931fc2"
+                    [
+                        "SUBREAD_FEATURECOUNTS",
+                        "subread",
+                        "2.1.1"
+                    ]
                 ],
                 "counts": [
                     [
@@ -159,18 +190,22 @@
                         "test.featureCounts.tsv.summary:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,956ebb9da6a1747fc47d393fb5931fc2"
+                "versions_subread": [
+                    [
+                        "SUBREAD_FEATURECOUNTS",
+                        "subread",
+                        "2.1.1"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-02-26T03:28:35.854492757",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
-        },
-        "timestamp": "2024-12-01T11:29:27.146094"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
-    "reverse_counts": {
+    "sarscov2 [bam] - reverse": {
         "content": [
             [
                 [
@@ -179,15 +214,34 @@
                         "single_end": true,
                         "strandedness": "reverse"
                     },
-                    "test.featureCounts.tsv:md5,7df6092fdc65ce40b71c64e0c97f95c6"
+                    "test.featureCounts.tsv:md5,e79027ec5752cfdd6e8d85bb6932294c"
                 ]
-            ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true,
+                        "strandedness": "reverse"
+                    },
+                    "test.featureCounts.tsv.summary:md5,7cfa30ad678b9bc1bc63afbb0281547b"
+                ]
+            ],
+            {
+                "versions_subread": [
+                    [
+                        "SUBREAD_FEATURECOUNTS",
+                        "subread",
+                        "2.1.1"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-02-26T03:28:28.511647205",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
-        },
-        "timestamp": "2024-12-01T11:28:27.448485"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "sarscov2 [bam] - unstranded - stub": {
         "content": [
@@ -213,7 +267,11 @@
                     ]
                 ],
                 "2": [
-                    "versions.yml:md5,956ebb9da6a1747fc47d393fb5931fc2"
+                    [
+                        "SUBREAD_FEATURECOUNTS",
+                        "subread",
+                        "2.1.1"
+                    ]
                 ],
                 "counts": [
                     [
@@ -235,89 +293,19 @@
                         "test.featureCounts.tsv.summary:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,956ebb9da6a1747fc47d393fb5931fc2"
+                "versions_subread": [
+                    [
+                        "SUBREAD_FEATURECOUNTS",
+                        "subread",
+                        "2.1.1"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-02-26T03:28:50.377997465",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
-        },
-        "timestamp": "2024-12-01T11:29:33.287109"
-    },
-    "forward_summary": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true,
-                        "strandedness": "forward"
-                    },
-                    "test.featureCounts.tsv.summary:md5,8f602ff9a8ef467af43294e80b367cdf"
-                ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
-        },
-        "timestamp": "2024-12-01T11:28:21.006184"
-    },
-    "forward_versions": {
-        "content": [
-            [
-                "versions.yml:md5,956ebb9da6a1747fc47d393fb5931fc2"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-10-18T10:19:48.001158764"
-    },
-    "unstranded_summary": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true,
-                        "strandedness": "unstranded"
-                    },
-                    "test.featureCounts.tsv.summary:md5,23164b79f9f23f11c82820db61a35560"
-                ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
-        },
-        "timestamp": "2024-12-01T11:28:33.657543"
-    },
-    "reverse_versions": {
-        "content": [
-            [
-                "versions.yml:md5,956ebb9da6a1747fc47d393fb5931fc2"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-10-18T10:20:24.551053149"
-    },
-    "unstranded_versions": {
-        "content": [
-            [
-                "versions.yml:md5,956ebb9da6a1747fc47d393fb5931fc2"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-10-18T10:21:03.25895568"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     }
 }

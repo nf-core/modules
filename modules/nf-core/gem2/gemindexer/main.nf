@@ -38,7 +38,6 @@ process GEM2_GEMINDEXER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '20200110' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 

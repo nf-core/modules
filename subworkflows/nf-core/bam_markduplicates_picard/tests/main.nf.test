@@ -3,6 +3,7 @@ nextflow_workflow {
     name "Test Workflow BAM_MARKDUPLICATES_PICARD"
     script "../main.nf"
     workflow "BAM_MARKDUPLICATES_PICARD"
+    config "./nextflow.config"
 
     tag "picard"
     tag "picard/markduplicates"
@@ -48,8 +49,7 @@ nextflow_workflow {
                     path(workflow.out.bai[0][1]),
                     path(workflow.out.flagstat[0][1]),
                     path(workflow.out.idxstats[0][1]),
-                    path(workflow.out.stats[0][1]),
-                    workflow.out.versions
+                    path(workflow.out.stats[0][1])
                 ).match() }
             )
         }
@@ -85,8 +85,7 @@ nextflow_workflow {
                     path(workflow.out.crai[0][1]),
                     path(workflow.out.flagstat[0][1]),
                     path(workflow.out.idxstats[0][1]),
-                    path(workflow.out.stats[0][1]),
-                    workflow.out.versions
+                    path(workflow.out.stats[0][1])
                 ).match() }
             )
         }

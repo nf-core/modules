@@ -4,13 +4,18 @@ nextflow_process {
     script "../main.nf"
     process "SHAPEIT5_PHASECOMMON"
 
+    config "./nextflow.config"
+
     tag "modules"
     tag "modules_nfcore"
     tag "shapeit5"
     tag "shapeit5/phasecommon"
 
-    test("homo sapiens - vcf, [], [], []") {
+    test("homo sapiens - vcf, no reference, no scaffold, no map") {
         when {
+            params {
+                shapeit5_phasecommon_args = "--seed 1"
+            }
             process {
                 """
                 input[0] = Channel.of([
@@ -18,11 +23,11 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists: true),
                     [],
-                    "chr22"
+                    "chr22",
+                    [],[], // reference
+                    [],[], // scaffold
+                    [] // map
                 ])
-                input[1] = Channel.of([[],[],[]])
-                input[2] = Channel.of([[],[],[]])
-                input[3] = Channel.of([[],[]])
                 """
             }
         }
@@ -31,8 +36,45 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.phased_variant.collect{ meta, vcf -> [meta, file(vcf).name]},
-                    process.out.versions
+                    process.out.phased_variant.collect{
+                        meta, vcf -> [ meta, file(vcf).name ] // Only file name tested due to bcf format
+                    },
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - vcf, no reference, no scaffold, with map") {
+        when {
+            params {
+                shapeit5_phasecommon_args = "--seed 1"
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'input', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists: true),
+                    [],
+                    "chr22",
+                    [],[], // reference
+                    [],[], // scaffold
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.glimpse.map", checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.phased_variant.collect{
+                        meta, vcf -> [ meta, file(vcf).name ] // Only file name tested due to bcf format
+                    },
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -42,19 +84,17 @@ nextflow_process {
     test("homo sapiens - vcf, [], [], [] - stub") {
         options '-stub'
         when {
+            params {
+                shapeit5_phasecommon_args = "--seed 1 --output-format graph"
+            }
             process {
                 """
                 input[0] = Channel.of([
                     [ id:'input', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists: true),
-                    [],
-                    "chr22"
+                    [], "chr22", [], [], [], [], []
                 ])
-
-                input[1] = Channel.of([[],[],[]])
-                input[2] = Channel.of([[],[],[]])
-                input[3] = Channel.of([[],[]])
                 """
             }
         }
@@ -62,7 +102,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

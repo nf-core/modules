@@ -9,7 +9,7 @@ process SAMTOOLS_VIEW {
 
     input:
     tuple val(meta), path(input), path(index)
-    tuple val(meta2), path(fasta)
+    tuple val(meta2), path(fasta), path(fai)
     path qname
     val index_format
 
@@ -22,7 +22,7 @@ process SAMTOOLS_VIEW {
     tuple val(meta), path("${prefix}.${file_type}.crai"),                      emit: crai,             optional: true
     tuple val(meta), path("${prefix}.unselected.${file_type}"),                emit: unselected,       optional: true
     tuple val(meta), path("${prefix}.unselected.${file_type}.{csi,crai}"),     emit: unselected_index, optional: true
-    path  "versions.yml",                                                      emit: versions
+    tuple val("${task.process}"), val('samtools'), eval('samtools version | sed "1!d;s/.* //"'), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -60,11 +60,6 @@ process SAMTOOLS_VIEW {
         -o ${output_file} \\
         $input \\
         $args2
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -95,10 +90,5 @@ process SAMTOOLS_VIEW {
     ${index}
     ${unselected}
     ${unselected_index}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }

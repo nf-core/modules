@@ -25,7 +25,7 @@ process OSFCLIENT_FETCH {
         -p ${project_id} \\
         fetch ${path} \\
         ${args} \\
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         osfclient: \$(osf --version  | sed 's/osf //g')
@@ -33,7 +33,6 @@ process OSFCLIENT_FETCH {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     outname = path.tokenize('/').last()
     """
     touch ${outname}

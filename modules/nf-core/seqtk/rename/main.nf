@@ -12,7 +12,7 @@ process SEQTK_RENAME {
 
     output:
     tuple val(meta), path("*.gz")     , emit: sequences
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('seqtk'), eval("seqtk 2>&1 | sed -n 's/^Version: //p'"), emit: versions_seqtk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,11 +31,6 @@ process SEQTK_RENAME {
         $sequences \\
         $prefix | \\
         gzip -c --no-name > ${prefix}.renamed.${extension}.gz
-
-    cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -47,10 +42,5 @@ process SEQTK_RENAME {
     }
     """
     echo "" | gzip > ${prefix}.renamed.${extension}.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-    END_VERSIONS
     """
 }

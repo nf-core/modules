@@ -12,7 +12,7 @@ process BLAST_MAKEBLASTDB {
 
     output:
     tuple val(meta), path("${prefix}"), emit: db
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val("makeblastdb"), eval("makeblastdb -version 2>&1 | sed 's/^.*makeblastdb: //; s/ .*\$//'"), topic: versions, emit: versions_makeblastdb
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,14 +32,9 @@ process BLAST_MAKEBLASTDB {
         -out ${prefix}/${fasta_name} \\
         ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blast: \$(makeblastdb -version 2>&1 | sed 's/^.*makeblastdb: //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
-    def args           = task.ext.args ?: ''
     prefix             = task.ext.prefix ?: "${meta.id}"
     def is_compressed  = fasta.getExtension() == "gz" ? true : false
     def fasta_name     = is_compressed ? fasta.getBaseName() : fasta
@@ -56,9 +51,5 @@ process BLAST_MAKEBLASTDB {
     mkdir ${prefix}
     mv ${fasta_name}* ${prefix}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blast: \$(makeblastdb -version 2>&1 | sed 's/^.*makeblastdb: //; s/ .*\$//')
-    END_VERSIONS
     """
 }

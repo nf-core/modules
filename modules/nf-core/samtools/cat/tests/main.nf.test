@@ -14,22 +14,18 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
-                    [id: 'test', single_end: false], // meta map
+                input[0] = [
+                    [id: 'test'],
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.unaligned.bam', checkIfExists: true) ]
-                ])
+                ]
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(file(process.out.bam[0][1]).name).match("bams_bam") },
-                { assert snapshot(process.out.cram).match("bams_cram") },
-                { assert snapshot(process.out.versions).match("bams_versions") }
-            )
+            assert process.success
+            assert snapshot(process.out).match()
         }
     }
 
@@ -40,22 +36,18 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
-                    [id: 'test', single_end: false], // meta map
+                input[0] = [
+                    [id: 'test'],
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.unaligned.bam', checkIfExists: true) ]
-                ])
+                ]
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(file(process.out.bam[0][1]).name).match("bams_stub_bam") },
-                { assert snapshot(process.out.cram).match("bams_stub_cram") },
-                { assert snapshot(process.out.versions).match("bams_stub_versions") }
-            )
+            assert process.success
+            assert snapshot(process.out).match()
         }
     }
 }

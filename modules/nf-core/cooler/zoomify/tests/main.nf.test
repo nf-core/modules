@@ -4,14 +4,14 @@ nextflow_process {
     config "./nextflow.config"
     script "../main.nf"
     process "COOLER_ZOOMIFY"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "cooler"
     tag "cooler/zoomify"
-    
+
     test("test_cooler_zoomify") {
-        
+
         when {
             params {
                 module_args = '-r 2,4,8'
@@ -29,14 +29,14 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith("versions")},
                     process.out.mcool.collect{ file(it[1]).name }
                 ).match() }
             )
         }
     }
-    
-    
+
+
     test("test_cooler_zoomify -- stub") {
 
         options '-stub'
@@ -57,10 +57,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    process.out.versions.collect{ path(it).yaml }
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
     }

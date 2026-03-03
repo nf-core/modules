@@ -2,7 +2,7 @@ process CELLRANGER_MKREF {
     tag "$fasta"
     label 'process_high'
 
-    container "nf-core/cellranger:9.0.1"
+    container "nf-core/cellranger:10.0.0"
 
     input:
     path fasta
@@ -47,7 +47,6 @@ process CELLRANGER_MKREF {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "CELLRANGER_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
     """
     mkdir $reference_name
     touch ${reference_name}/empty_file

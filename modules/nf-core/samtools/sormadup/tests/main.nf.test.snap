@@ -5,8 +5,7 @@
                 "0": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -23,20 +22,22 @@
                 "4": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         "test.metrics:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "5": [
-                    "versions.yml:md5,f747eda74610b9e2ffbe38a0fe32605c"
+                    [
+                        "SAMTOOLS_SORMADUP",
+                        "samtools",
+                        "1.22.1"
+                    ]
                 ],
                 "bam": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -53,22 +54,25 @@
                 "metrics": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         "test.metrics:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,f747eda74610b9e2ffbe38a0fe32605c"
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_SORMADUP",
+                        "samtools",
+                        "1.22.1"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-09-10T14:41:27.357324"
+        "timestamp": "2026-02-03T14:50:54.695296905"
     },
     "sarscov2 - cram": {
         "content": [
@@ -77,18 +81,26 @@
             [
                 [
                     {
-                        "id": "test",
-                        "single_end": false
+                        "id": "test"
                     },
                     "test.merged.metrics:md5,02eebd31b097e165e1b18d84b023f18d"
                 ]
-            ]
+            ],
+            {
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_SORMADUP",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2025-09-10T15:34:19.685282"
+        "timestamp": "2026-02-04T09:59:00.393494"
     },
     "sarscov2 - bam": {
         "content": [
@@ -96,10 +108,9 @@
                 "0": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
-                        "test.bam:md5,22ccf80de9847da1fa532f7774580554"
+                        "test.bam:md5,b191a8b4d5b8b9884def3a613fee914a"
                     ]
                 ],
                 "1": [
@@ -114,22 +125,24 @@
                 "4": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         "test.metrics:md5,6093d8853805578a1868f22ff68177e7"
                     ]
                 ],
                 "5": [
-                    "versions.yml:md5,f747eda74610b9e2ffbe38a0fe32605c"
+                    [
+                        "SAMTOOLS_SORMADUP",
+                        "samtools",
+                        "1.22.1"
+                    ]
                 ],
                 "bam": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
-                        "test.bam:md5,22ccf80de9847da1fa532f7774580554"
+                        "test.bam:md5,b191a8b4d5b8b9884def3a613fee914a"
                     ]
                 ],
                 "crai": [
@@ -144,21 +157,24 @@
                 "metrics": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         "test.metrics:md5,6093d8853805578a1868f22ff68177e7"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,f747eda74610b9e2ffbe38a0fe32605c"
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_SORMADUP",
+                        "samtools",
+                        "1.22.1"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2025-09-10T14:41:11.744386"
+        "timestamp": "2026-02-04T10:01:06.229966"
     }
 }

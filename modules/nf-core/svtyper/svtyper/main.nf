@@ -10,7 +10,7 @@ process SVTYPER_SVTYPER {
     input:
     tuple val(meta), path(bam), path(bam_index), path(vcf)
     tuple val(meta2), path(fasta)
-    tuple val(meta2), path(fai)
+    tuple val(meta3), path(fai)
 
     output:
     tuple val(meta), path("*.json"), emit: json
@@ -24,13 +24,13 @@ process SVTYPER_SVTYPER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def vcf  = vcf ? "--input_vcf ${vcf}" : ""
+    def vcf_opt  = vcf ? "--input_vcf ${vcf}" : ""
     if ("$vcf" == "${prefix}.vcf") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     """
     svtyper \\
-        $vcf \\
+        $vcf_opt \\
         --bam $bam \\
         --lib_info ${prefix}.json \\
         --output_vcf ${prefix}.vcf \\

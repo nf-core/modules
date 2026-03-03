@@ -13,7 +13,7 @@ process PARABRICKS_INDEXGVCF {
     output:
     tuple val(meta), path("*.{idx,tbi}"), emit: gvcf_index
     path "compatible_versions.yml",       emit: compatible_versions, optional: true
-    path "versions.yml",                  emit: versions
+    tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions_parabricks
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,11 +31,6 @@ process PARABRICKS_INDEXGVCF {
         --input ${gvcf} \\
         ${num_gpus} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 
     stub:
@@ -43,7 +38,7 @@ process PARABRICKS_INDEXGVCF {
         error("Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def output_cmd = gvcf.any { it.name.endsWith(".gz") } ? "touch ${prefix}.g.vcf.gz.tbi" : "touch ${prefix}.g.vcf.idx"
+    def output_cmd = gvcf.any { item -> item.name.endsWith(".gz") } ? "touch ${prefix}.g.vcf.gz.tbi" : "touch ${prefix}.g.vcf.idx"
     """
     ${output_cmd}
 
@@ -57,10 +52,5 @@ process PARABRICKS_INDEXGVCF {
         compatible_with:
         \$(echo "\$pbrun_version_output" | awk '/Compatible With:/,/^---/{ if (\$1 ~ /^[A-Z]/ && \$1 != "Compatible" && \$1 != "---") { printf "  %s: %s\\n", \$1, \$2 } }')
     EOF
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 }

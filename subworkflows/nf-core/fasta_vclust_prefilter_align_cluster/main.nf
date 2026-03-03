@@ -13,7 +13,7 @@ workflow FASTA_VCLUST_PREFILTER_ALIGN_CLUSTER {
     ani            // float
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     VCLUST_PREFILTER ( ch_fasta )
     ch_versions = ch_versions.mix(VCLUST_PREFILTER.out.versions.first())

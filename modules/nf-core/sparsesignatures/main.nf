@@ -1,7 +1,7 @@
 process SPARSE_SIGNATURES {
     tag "$meta.id"
     label "process_long"
-    
+
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-d410175e2fbd9c47aa685bb5dfb87cfad76d408b:a995bb98b7122825523ffed7ae131cb006e56cbe-0':
@@ -9,8 +9,8 @@ process SPARSE_SIGNATURES {
 
     input:
     tuple val(meta), path(tsv_join,  stageAs: '*.tsv')
-    val(genome)   // genome version    
- 
+    val(genome)   // genome version
+
     output:
     tuple val(meta), path("*_mut_counts.rds"),            emit: signatures_mutCounts_rds
     tuple val(meta), path("*_cv_means_mse.rds"),          emit: signatures_cv_rds

@@ -4,8 +4,8 @@ process DEEPTOOLS_MULTIBAMSUMMARY {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/deeptools:3.5.5--pyhdfd78af_0':
-        'biocontainers/deeptools:3.5.5--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/deeptools:3.5.6--pyhdfd78af_0':
+        'biocontainers/deeptools:3.5.6--pyhdfd78af_0' }"
 
     input:
     tuple val(meta) , path(bams)    , path(bais), val(labels)
@@ -13,7 +13,7 @@ process DEEPTOOLS_MULTIBAMSUMMARY {
 
     output:
     tuple val(meta), path("*.npz"), emit: matrix
-    path  "versions.yml"          , emit: versions
+    tuple val("${task.process}"), val('deeptools'), eval('multiBamSummary --version | sed "s/multiBamSummary //g"') , emit: versions_deeptools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,7 +21,7 @@ process DEEPTOOLS_MULTIBAMSUMMARY {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "all_bam"
-    def blacklist_cmd = blacklist ? "--blackListFileName ${blacklist}" : ""        
+    def blacklist_cmd = blacklist ? "--blackListFileName ${blacklist}" : ""
     def label  = labels ? "--labels ${labels.join(' ')}" : ''
     """
     multiBamSummary bins \\
@@ -31,21 +31,11 @@ process DEEPTOOLS_MULTIBAMSUMMARY {
         --numberOfProcessors $task.cpus \\
         --outFileName ${prefix}.bamSummary.npz \\
         $blacklist_cmd
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deeptools: \$(multiBamSummary --version | sed -e "s/multiBamSummary //g")
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "all_bam"
     """
     touch ${prefix}.bamSummary.npz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deeptools: \$(multiBamSummary --version | sed -e "s/multiBamSummary //g")
-    END_VERSIONS
     """
 }

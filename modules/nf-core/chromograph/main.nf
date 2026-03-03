@@ -18,8 +18,8 @@ process CHROMOGRAPH {
     tuple val(meta7), path(sites)
 
     output:
-    tuple val(meta), path("*.png"), emit: plots
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.png"), emit: plots, optional: true
+    tuple val("${task.process}"), val('chromograph'), eval("chromograph --version | sed 's/.* //'")   , topic: versions   , emit: versions_chromograph
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,10 +46,6 @@ process CHROMOGRAPH {
         ${sites_param} \\
         --outd .
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        chromograph: \$(chromograph --version | sed 's/.* //' )
-    END_VERSIONS
     """
 
     stub:
@@ -65,15 +61,11 @@ process CHROMOGRAPH {
     ${touchCmd(euploidy, regions)}
     ${touchCmd(euploidy, sites)}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        chromograph: \$(chromograph --version | sed 's/.* //' )
-    END_VERSIONS
     """
 }
 
 // Helper function to generate touch commands
 def touchCmd(euploidy, input_file) {
     def chrs = euploidy ? (1..22) + ['X', 'Y', 'M'] : [1]
-    input_file ? chrs.collect { chr -> "touch ${input_file}_chr${chr}.png" }.join('\n') : ''
+    input_file ? chrs.collect { chr -> "touch ${input_file}_chr${chr}.png" }.join(' ') : ''
 }

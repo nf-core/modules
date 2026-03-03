@@ -21,7 +21,9 @@ process STROBEALIGN {
     tuple val(meta), path("*.paf.gz")   , emit: paf , optional: true
     tuple val(meta), path("*.tsv.gz")   , emit: tsv , optional: true
     tuple val(meta), path("*.sti")      , emit: sti , optional: true
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('strobealign'), eval("strobealign --version"), topic: versions, emit: versions_strobealign
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
+    tuple val("${task.process}"), val('pigz'), eval("pigz --version 2>&1 | sed 's/pigz //'"), emit: versions_pigz, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -67,13 +69,6 @@ process STROBEALIGN {
         ${fasta} \\
         ${reads} \\
         | ${output_cmd}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        strobealign: \$(echo \$(strobealign --version))
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-    END_VERSIONS
     """
 
     stub:
@@ -99,12 +94,5 @@ process STROBEALIGN {
     echo "" | pigz > ${prefix}.paf.gz
     echo "" | pigz > ${prefix}.tsv.gz
     touch ${prefix}.sti
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        strobealign: \$(echo \$(strobealign --version))
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-    END_VERSIONS
     """
 }

@@ -8,7 +8,7 @@ process CNAQC {
         'biocontainers/r-cnaqc:1.1.3--r44hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(snv_rds), path(cna_rds), val(tumour_sample) 
+    tuple val(meta), path(snv_rds), path(cna_rds), val(tumour_sample)
 
     output:
     tuple val(meta), path("*_qc.rds"),                                  emit: qc_rds
@@ -22,14 +22,16 @@ process CNAQC {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+
+    "echo ${args}"
 
     template "main_script.R"
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
+    args = task.ext.args ?: ''
     """
     touch ${prefix}_qc.rds
     touch ${prefix}_data_plot.rds

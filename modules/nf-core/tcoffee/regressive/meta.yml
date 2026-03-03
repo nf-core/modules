@@ -1,6 +1,6 @@
 name: "tcoffee_regressive"
-description: Aligns sequences using the regressive algorithm as implemented in the
-  T_COFFEE package
+description: Aligns sequences using the regressive algorithm as implemented in
+  the T_COFFEE package
 keywords:
   - alignment
   - MSA
@@ -13,7 +13,8 @@ tools:
       documentation: "https://tcoffee.readthedocs.io/en/latest/tcoffee_main_documentation.html"
       tool_dev_url: "https://github.com/cbcrg/tcoffee"
       doi: "10.1038/s41587-019-0333-6"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
   - "pigz":
       description: "Parallel implementation of the gzip algorithm."
@@ -30,7 +31,9 @@ input:
         type: file
         description: Input sequences in FASTA format
         pattern: "*.{fa,fasta}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta2:
         type: map
         description: |
@@ -40,7 +43,8 @@ input:
         type: file
         description: Input guide tree in Newick format
         pattern: "*.{dnd}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_2006 # PHYLOGENETIC TREE
   - - meta3:
         type: map
         description: |
@@ -48,21 +52,21 @@ input:
           e.g. `[ id:'test_infos']`
     - template:
         type: file
-        description: T_coffee template file that maps sequences to the accessory information
-          files to be used.
-        pattern: "*"
-        ontologies: []
+        description: T_coffee template file that maps sequences to the accessory
+          information files to be used.
+        ontologies:
+          - edam: http://edamontology.org/format_1476 # PDB
     - accessory_information:
         type: file
-        description: Accessory files to be used in the alignment. For example, it could
-          be protein structures or secondary structures.
-        pattern: "*"
-        ontologies: []
+        description: Accessory files to be used in the alignment. For example, it
+          could be protein structures or secondary structures.
+        ontologies:
+          - edam: http://edamontology.org/format_1476 # PDB
   - compress:
       type: boolean
-      description: Flag representing whether the output MSA should be compressed. Set
-        to true to enable/false to disable compression. Compression is done using pigz,
-        and is multithreaded.
+      description: Flag representing whether the output MSA should be compressed.
+        Set to true to enable/false to disable compression. Compression is done
+        using pigz, and is multithreaded.
 output:
   alignment:
     - - meta:
@@ -74,14 +78,50 @@ output:
           type: file
           description: Alignment file in FASTA format. May be gzipped.
           pattern: "*.aln{.gz,}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
+            - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+            - edam: http://edamontology.org/format_1984 # FASTA-ALN
+  versions_tcoffee:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tcoffee:
+          type: string
+          description: The name of the tool
+      - t_coffee -version | awk '{gsub("Version_", ""); print \$3}':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_pigz:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tcoffee:
+          type: string
+          description: The name of the tool
+      - t_coffee -version | awk '{gsub("Version_", ""); print \$3}':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@luisas"
 maintainers:

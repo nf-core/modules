@@ -17,7 +17,7 @@ process GATK4SPARK_BASERECALIBRATOR {
 
     output:
     tuple val(meta), path("*.table"), emit: table
-    path "versions.yml",              emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,7 +26,7 @@ process GATK4SPARK_BASERECALIBRATOR {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def interval_command = intervals ? "--intervals ${intervals}" : ""
-    def sites_command = known_sites.collect { "--known-sites ${it}" }.join(' ')
+    def sites_command = known_sites.collect { vcf -> "--known-sites ${vcf}" }.join(' ')
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -46,11 +46,6 @@ process GATK4SPARK_BASERECALIBRATOR {
         --spark-master local[${task.cpus}] \\
         --tmp-dir . \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -58,10 +53,5 @@ process GATK4SPARK_BASERECALIBRATOR {
 
     """
     touch ${prefix}.table
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

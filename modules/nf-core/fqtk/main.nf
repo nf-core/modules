@@ -17,19 +17,17 @@ process FQTK {
     tuple val(meta), path('output/*.fq.gz')                         , emit: sample_fastq
     tuple val(meta), path('output/demux-metrics.txt')               , emit: metrics
     tuple val(meta), path('output/unmatched*.fq.gz')                , emit: most_frequent_unmatched
-    path "versions.yml"                                             , emit: versions
-
+    tuple val("${task.process}"), val('fqtk'), eval('fqtk --version 2>&1 | cut -d " " -f2'), emit: versions_fqtk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     // Join the absolute path from UNTAR.out.untar to the fastq file names
-    fastqs = fastq_readstructure_pairs.collect{"input/" + it[0]}.join(" ")
+    fastqs = fastq_readstructure_pairs.collect{ fastq, _structure -> "input/" + fastq }.join(" ")
     // Create a list of read structures, Example: 8B 8B 150T
-    read_structures = fastq_readstructure_pairs.collect{it[1]}.join(" ")
+    read_structures = fastq_readstructure_pairs.collect{ _fastq, structure -> structure }.join(" ")
 
     """
     mkdir output
@@ -40,10 +38,6 @@ process FQTK {
             --output output/ \\
             --sample-metadata ${sample_sheet} \\
             ${args}
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fqtk: \$(echo \$(fqtk --version 2>&1) | cut -d " " -f2)
-    END_VERSIONS
     """
 
     stub:
@@ -58,10 +52,5 @@ process FQTK {
         echo "" | gzip >  output/"\${sample_id}.R1.fq.gz"
         echo "" | gzip >  output/"\${sample_id}.R2.fq.gz"
     done
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fqtk: \$(echo \$(fqtk --version 2>&1) | cut -d " " -f2)
-    END_VERSIONS
     """
 }

@@ -60,15 +60,19 @@ nextflow_process {
                         process.out.versions,
                         process.out.outs[0][1].findAll { file(it).name !in [
                             'web_summary.html', // unstable checksum
+                            'possorted_genome_bam.bam.bai', // unstable checksum despite identical content, verified with samtools idxstats
+                            'possorted_genome_bam.bam', // unstable checksum due to header
                             'barcodes.tsv.gz' // empty file in test data -> would raise linting error
-                        ]}
+                        ]} + [
+                            "possorted_genome_bam_samlines:" + sam(process.out.outs.get(0).get(1).find { file(it).name == "possorted_genome_bam.bam" }).getSamLinesMD5()  // checksum is unstable when header is included
+                        ],
                     ).match()
                 },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'web_summary.html' }).exists() },
-                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'barcodes.tsv.gz' }).exists() }
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'barcodes.tsv.gz' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'possorted_genome_bam.bam.bai' }).exists() },
             )
         }
-
     }
 
     test("10x example file - stub") {

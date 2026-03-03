@@ -5,8 +5,8 @@ process SENTIEON_TNFILTER {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f1dfe59ef66d7326b43db9ab1f39ce6220b358a311078c949a208f9c9815d4e/data'
-        : 'community.wave.seqera.io/library/sentieon:202503.01--1863def31ed8e4d5'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/73e9111552beb76e2ad3ad89eb75bed162d7c5b85b2433723ecb4fc96a02674a/data'
+        : 'community.wave.seqera.io/library/sentieon:202503.02--def60555294d04fa'}"
 
     input:
     tuple val(meta), path(vcf), path(vcf_tbi), path(stats), path(contamination), path(segments), path(orientation_priors)
@@ -17,7 +17,7 @@ process SENTIEON_TNFILTER {
     tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi
     tuple val(meta), path("*.vcf.gz.stats"), emit: stats
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,8 +27,8 @@ process SENTIEON_TNFILTER {
     def args2 = task.ext.args2 ?: '' // options for --algo TNfilter
     def prefix = task.ext.prefix ?: "${meta.id}_filtered"
     def contamination_command = contamination ? " --contamination ${contamination} " : ''
-    def segments_command = segments ? segments.collect { "--tumor_segments ${it}" }.join(' ') : ''
-    def orientation_priors_command = orientation_priors ? orientation_priors.collect { "--orientation_priors ${it}" }.join(' ') : ''
+    def segments_command = segments ? segments.collect {in -> "--tumor_segments ${in}" }.join(' ') : ''
+    def orientation_priors_command = orientation_priors ? orientation_priors.collect {in -> "--orientation_priors ${in}" }.join(' ') : ''
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64
         ? "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; "
         : ""
@@ -44,11 +44,6 @@ process SENTIEON_TNFILTER {
     ${segments_command} \\
     ${orientation_priors_command} \\
     ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 
     stub:
@@ -57,10 +52,5 @@ process SENTIEON_TNFILTER {
     echo | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
     touch ${prefix}.vcf.gz.stats
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 }

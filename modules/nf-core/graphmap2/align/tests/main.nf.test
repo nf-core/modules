@@ -1,10 +1,10 @@
 nextflow_process {
 
     name "Test Process GRAPHMAP2_ALIGN"
-    
+
     script "../main.nf"
     process "GRAPHMAP2_ALIGN"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "graphmap2"
@@ -14,7 +14,7 @@ nextflow_process {
     setup {
         run("GRAPHMAP2_INDEX") {
             script "../../index/main.nf"
-            
+
             process {
                 """
                 input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
@@ -25,7 +25,7 @@ nextflow_process {
 
     test("sarscov2 - fastq - fasta - index") {
         when {
-            
+
             process {
                 """
                 input[0] = [
@@ -52,7 +52,7 @@ nextflow_process {
     test("sarscov2 - fastq - fasta - index -- stub") {
         options '-stub'
         when {
-            
+
             process {
                 """
                 input[0] = [

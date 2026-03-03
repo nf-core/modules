@@ -28,19 +28,19 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success }, 
-                { 
+                { assert process.success },
+                {
                     assert snapshot(
                         process.out.versions,
                         process.out.arrow,
-                        process.out.stats.collect { 
-                            it.collect { 
-                                it instanceof String && file(it).exists() ? file(it).name : it 
+                        process.out.stats.collect {
+                            it.collect {
+                                it instanceof String && file(it).exists() ? file(it).name : it
                             } // stats filename
                         },
-                        process.out.stats.collect { 
-                            it.collect { 
-                                it instanceof String && file(it).exists() ? file(it).text.split("\n")[0..-2] : it 
+                        process.out.stats.collect {
+                            it.collect {
+                                it instanceof String && file(it).exists() ? file(it).text.split("\n")[0..-2] : it
                             } // stats content, without last timestamp line
                         }
                     ).match()
@@ -69,19 +69,19 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success }, 
-                { 
+                { assert process.success },
+                {
                     assert snapshot(
                         process.out.versions,
                         process.out.arrow,
-                        process.out.stats.collect { 
-                            it.collect { 
-                                it instanceof String && file(it).exists() ? file(it).name : it 
+                        process.out.stats.collect {
+                            it.collect {
+                                it instanceof String && file(it).exists() ? file(it).name : it
                             } // stats filename
                         },
-                        process.out.stats.collect { 
-                            it.collect { 
-                                it instanceof String && file(it).exists() ? file(it).text.split("\n")[0..-2] : it 
+                        process.out.stats.collect {
+                            it.collect {
+                                it instanceof String && file(it).exists() ? file(it).text.split("\n")[0..-2] : it
                             } // stats content, without last timestamp line
                         }
                     ).match()

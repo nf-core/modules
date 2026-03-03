@@ -14,7 +14,7 @@ nextflow_process {
     test("demultiplexing - bam") {
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'sample1'],
                     [],
@@ -36,7 +36,7 @@ nextflow_process {
     }
 
     test ("demultiplexing - bam - pileup"){
-        setup { 
+        setup {
             run("POPSCLE_DSCPILEUP") {
                 script "../../dscpileup/main.nf"
                 process {
@@ -54,10 +54,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = POPSCLE_DSCPILEUP.out.plp.collect{ meta, plp -> plp }.map{ 
-                            plp -> [[ id: 'sample1'], 
-                                    plp[0].toString() - '.plp.gz', 
-                                    [], 
+                input[0] = POPSCLE_DSCPILEUP.out.plp.collect{ meta, plp -> plp }.map{
+                            plp -> [[ id: 'sample1'],
+                                    plp[0].toString() - '.plp.gz',
+                                    [],
                                     file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true)]}
                 """
             }
@@ -70,7 +70,7 @@ nextflow_process {
                 { assert path(process.out.demuxlet_result.get(0).get(1)).exists() },
             )
         }
-            
+
     }
 
     test("demultiplexing - bam - stub") {
@@ -79,7 +79,7 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'sample1' ],
                     [],

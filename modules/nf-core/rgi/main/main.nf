@@ -16,8 +16,8 @@ process RGI_MAIN {
     tuple val(meta), path("*.json"), emit: json
     tuple val(meta), path("*.txt"), emit: tsv
     tuple val(meta), path("temp/"), emit: tmp
-    env RGI_VERSION, emit: tool_version
-    env DB_VERSION, emit: db_version
+    env 'RGI_VERSION', emit: tool_version
+    env 'DB_VERSION', emit: db_version
     path "versions.yml", emit: versions
 
     when:

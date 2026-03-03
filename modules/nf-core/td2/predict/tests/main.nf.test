@@ -1,0 +1,79 @@
+nextflow_process {
+
+    name "Test Process TD2_PREDICT"
+    script "../main.nf"
+    process "TD2_PREDICT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "td2"
+    tag "td2/longorfs"
+    tag "td2/predict"
+
+    setup {
+        run("TD2_LONGORFS") {
+            script "modules/nf-core/td2/longorfs/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id:'test_td2_predict'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("td2.predict - transcriptome.fasta") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: 'test_td2_predict'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]).combine(TD2_LONGORFS.out.orfs.map{ meta, orfs -> return [meta, file(orfs[0].getParent())] }, by: 0)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+    test("td2.predict - transcriptome.fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: 'test_td2_predict'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]).combine(TD2_LONGORFS.out.orfs.map{ meta, orfs -> return [meta, file(orfs[0].getParent())] }, by: 0)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+}

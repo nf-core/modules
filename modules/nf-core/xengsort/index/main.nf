@@ -41,7 +41,6 @@ process XENGSORT_INDEX {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     """
     touch ${index}.info
     touch ${index}.hash

@@ -30,7 +30,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], 
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                     ]
                 input[1] = GUNZIP.out.gunzip.map{ meta, gunzip -> gunzip }

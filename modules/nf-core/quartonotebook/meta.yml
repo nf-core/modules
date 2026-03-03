@@ -70,8 +70,8 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`.
       - notebook:
           type: file
-          description: The Quarto notebook that was rendered. Allows user to continue
-            working on the notebook.
+          description: The Quarto notebook that was rendered. Allows user to
+            continue working on the notebook.
           pattern: "*.{qmd}"
           ontologies: []
   params_yaml:
@@ -107,13 +107,48 @@ output:
           description: Quarto extensions used during report rendering.
           pattern: "*"
           ontologies: []
+  versions_quarto:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - quarto:
+          type: string
+          description: The name of the tool
+      - quarto -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_papermill:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - papermill:
+          type: string
+          description: The name of the tool
+      - papermill --version | cut -f1 -d" ":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions.
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - quarto:
+          type: string
+          description: The name of the tool
+      - quarto -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - papermill:
+          type: string
+          description: The name of the tool
+      - papermill --version | cut -f1 -d" ":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@fasterius"
 maintainers:
