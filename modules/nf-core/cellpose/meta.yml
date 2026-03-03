@@ -37,7 +37,7 @@ input:
         type: file
         description: |
           Custom cellpose model file. Takes priority over model_name when provided.
-          Pass file('NO_FILE') when not using a custom model.
+          Pass [] (empty list) when not using a custom model.
         pattern: "*"
         ontologies: []
 output:
@@ -90,9 +90,9 @@ notes: |
   is available. Use the `process_gpu` label to request GPU resources from your executor.
 
   Model selection via the model input channel (tuple of name and file):
-    - Pretrained model:  ["cyto3", file("NO_FILE")]
+    - Pretrained model:  ["cyto3", []]
     - Custom model file: ["", file("/path/to/model")]
-    - Default (no model): ["", file("NO_FILE")]
+    - Default (no model): ["", []]
 
   Additional cellpose CLI arguments can be passed via `task.ext.args`:
     ext.args = '--diameter 30 --flow_threshold 0.4 --cellprob_threshold 0'

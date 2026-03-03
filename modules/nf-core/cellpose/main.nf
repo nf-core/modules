@@ -24,8 +24,8 @@ process CELLPOSE {
         error("CELLPOSE module does not support conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
-    def model_command = model_path.name != 'NO_FILE' ? "--pretrained_model ${model_path}" :
-                        model_name                    ? "--pretrained_model ${model_name}" : ""
+    def model_command = model_path            ? "--pretrained_model ${model_path}" :
+                        model_name             ? "--pretrained_model ${model_name}" : ""
     def gpu_flag = task.ext.use_gpu ? "--use_gpu" : ""
     prefix = task.ext.prefix ?: "${meta.id}"
     """
