@@ -1,0 +1,141 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
+name: updhmm_vcfcheck
+description: Validate and format trio VCF files for UPD analysis using UPDhmm
+keywords:
+  - updhmm
+  - vcfcheck
+  - upd
+  - family analysis
+  - trio
+  - bioconductor
+  - variant calling
+  - genomics
+tools:
+  - updhmm:
+      description: "R/Bioconductor package for UPD detection in trio data"
+      homepage: "https://bioconductor.org/packages/UPDhmm/"
+      documentation: "https://bioconductor.org/packages/UPDhmm/"
+      tool_dev_url: "https://github.com/bjdmeest/UPDhmm"
+      doi: "10.1093/bioinformatics/btaa1010"
+      licence:
+        - "GPL-3.0-or-later"
+      identifier: "biotools:updhmm"
+  - variantannotation:
+      description: "Bioconductor package for annotation and filtering of genetic variants"
+      homepage: "https://bioconductor.org/packages/VariantAnnotation/"
+      documentation: "https://bioconductor.org/packages/VariantAnnotation/"
+      licence:
+        - "Artistic-2.0"
+      identifier: "biotools:variantannotation"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcf:
+        type: file
+        description: |
+          Input VCF file containing trio variant calls (proband, mother, father)
+          for uniparental disomy analysis
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+    - tbi:
+        type: file
+        description: Tabix index file for the input VCF
+        pattern: "*.{tbi,csi}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3616"
+output:
+  processed_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.processed.rds":
+          type: file
+          description: |
+            Processed VCF data in RDS format containing validated trio genotypes
+            ready for UPDhmm analysis
+          pattern: "*.processed.rds"
+          ontologies:
+            - edam: "http://edamontology.org/format_3590"
+  session_info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.R_sessionInfo.log":
+          type: file
+          description: |
+            R session information log containing package versions and
+            system details for reproducibility
+          pattern: "*.R_sessionInfo.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  versions_updhmm:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bioconductor-updhmm:
+          type: string
+          description: The tool name
+      - Rscript -e "library(UPDhmm); cat(as.character(packageVersion('UPDhmm')))":
+          type: string
+          description: The command used to generate the version of the tool
+  versions_variantannotation:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bioconductor-variantannotation:
+          type: string
+          description: The tool name
+      - Rscript -e "library(VariantAnnotation); cat(as.character(packageVersion('VariantAnnotation')))":
+          type: string
+          description: The command used to generate the version of the tool
+  versions_rbase:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - r-base:
+          type: string
+          description: The tool name
+      - Rscript -e "cat(strsplit(version[['version.string']], ' ')[[1]][3])":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bioconductor-updhmm:
+          type: string
+          description: The tool name
+      - Rscript -e "library(UPDhmm); cat(as.character(packageVersion('UPDhmm')))":
+          type: string
+          description: The command used to generate the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bioconductor-variantannotation:
+          type: string
+          description: The tool name
+      - Rscript -e "library(VariantAnnotation); cat(as.character(packageVersion('VariantAnnotation')))":
+          type: string
+          description: The command used to generate the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - r-base:
+          type: string
+          description: The tool name
+      - Rscript -e "cat(strsplit(version[['version.string']], ' ')[[1]][3])":
+          type: string
+          description: The command used to generate the version of the tool
+authors:
+  - "@saramenasantamaria"
+maintainers:
+  - "@saramenasantamaria"
