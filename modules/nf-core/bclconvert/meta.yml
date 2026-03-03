@@ -103,6 +103,16 @@ output:
           pattern: "InterOp/*.bin"
           ontologies:
             - edam: http://edamontology.org/format_2333 #BINARY
+  runinfo:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - output/Reports/RunInfo.xml:
+          type: file
+          description: RunInfo.xml file
+          pattern: "*.{xml}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2332" # XML
   versions_bclconvert:
     - - ${task.process}:
           type: string

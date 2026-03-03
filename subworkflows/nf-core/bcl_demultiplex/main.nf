@@ -4,8 +4,9 @@
 // Demultiplex Illumina BCL data using bcl-convert or bcl2fastq
 //
 
-include { BCLCONVERT } from "../../../modules/nf-core/bclconvert/main"
-include { BCL2FASTQ  } from "../../../modules/nf-core/bcl2fastq/main"
+include { BCLCONVERT                                       } from "../../../modules/nf-core/bclconvert/main"
+include { BCL2FASTQ                                        } from "../../../modules/nf-core/bcl2fastq/main"
+include { MULTIQCSAV                                       } from "../../../modules/nf-core/multiqcsav/main"
 
 workflow BCL_DEMULTIPLEX {
     take:
@@ -18,6 +19,10 @@ workflow BCL_DEMULTIPLEX {
     ch_stats = channel.empty()
     ch_interop = channel.empty()
     ch_logs = channel.empty()
+    ch_runinfo = channel.empty()
+    ch_multiqc_report = channel.empty()
+    ch_multiqc_data = channel.empty()
+    ch_multiqc_plots = channel.empty()
 
     // Split flowcells into separate channels containing run as tar and run as path
     // https://nextflow.slack.com/archives/C02T98A23U7/p1650963988498929
@@ -49,12 +54,18 @@ workflow BCL_DEMULTIPLEX {
         ch_interop = ch_interop.mix(BCLCONVERT.out.interop)
         ch_reports = ch_reports.mix(BCLCONVERT.out.reports)
         ch_logs = ch_logs.mix(BCLCONVERT.out.logs)
+        ch_runinfo = ch_runinfo.mix(BCLCONVERT.out.runinfo)
         ch_fastq_with_meta = ch_fastq_with_meta.mix(
             generateReadgroupBCLCONVERT(
-                BCLCONVERT.out.reports.map { meta, reports ->
-                    return [meta, reports.find { report -> report.name == "fastq_list.csv" }]
+                BCLCONVERT.out.reports
+                    .map { meta, reports_dir ->
+                        def csvFile = reports_dir.find { report -> report.name == "fastq_list.csv"} ?:
+                            reports_dir.eachFileRecurse { report_file ->
+                                report_file.name == "fastq_list.csv"
+                            }
+                    return [meta, csvFile]
                 },
-                BCLCONVERT.out.fastq,
+                BCLCONVERT.out.fastq
             )
         )
     }
@@ -66,7 +77,7 @@ workflow BCL_DEMULTIPLEX {
         ch_interop = ch_interop.mix(BCL2FASTQ.out.interop)
         ch_reports = ch_reports.mix(BCL2FASTQ.out.reports)
         ch_stats = ch_stats.mix(BCL2FASTQ.out.stats)
-
+        ch_runinfo = ch_runinfo.mix(BCL2FASTQ.out.xml)
         ch_fastq_with_meta = ch_fastq_with_meta.mix(
             generateReadgroupBCL2FASTQ(
                 BCL2FASTQ.out.fastq
@@ -82,13 +93,29 @@ workflow BCL_DEMULTIPLEX {
         return [meta, fastq]
     }
 
+    // MODULE: multiqcsav
+    // Generate MultiQC report for demultiplexing step
+    ch_sav_input = ch_runinfo.join(ch_interop)
+    ch_mqc_input = ch_reports.mix(ch_stats).map { meta, files -> [meta, files.flatten()] }
+    ch_multiqcsav_input = ch_sav_input.join(ch_mqc_input).map{ meta, xml, bin, files -> [meta, xml, bin, files, [], [], [], []]}
+    MULTIQCSAV(
+        ch_multiqcsav_input
+    )
+
+    ch_multiqc_report  = MULTIQCSAV.out.report
+    ch_multiqc_data    = MULTIQCSAV.out.data
+    ch_multiqc_plots   = MULTIQCSAV.out.plots
+
     emit:
-    fastq       = ch_fastq.fastq
-    empty_fastq = ch_fastq.empty
-    reports     = ch_reports
-    stats       = ch_stats
-    interop     = ch_interop
-    logs        = ch_logs
+    fastq           = ch_fastq.fastq
+    empty_fastq     = ch_fastq.empty
+    reports         = ch_reports
+    stats           = ch_stats
+    interop         = ch_interop
+    logs            = ch_logs
+    multiqc_report  = ch_multiqc_report
+    multiqc_data    = ch_multiqc_data
+    multiqc_plots   = ch_multiqc_plots
 }
 
 def generateReadgroupBCLCONVERT(ch_fastq_list_csv, ch_fastq) {

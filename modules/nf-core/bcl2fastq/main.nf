@@ -75,6 +75,8 @@ process BCL2FASTQ {
 
     mkdir -p InterOp
     echo "fake interop file" > InterOp/IndexMetricsOut.bin
+    mkdir -p flowcell
+    echo "fake runinfo file" > flowcell/RunInfo.xml
     mkdir -p output/Reports
     echo "fake report" > output/Reports/index.html
     mkdir -p output/Stats
