@@ -38,7 +38,7 @@ process RIBOCODE_RIBOCODE {
     if grep -qiE "^Error|Error:" ribocode_output.log; then
         echo "ERROR: RiboCode failed. Check the output above for details." >&2
         echo "Common causes:" >&2
-        echo "  - Invalid config file from metaplots (try lowering cutoff via ext.args, e.g., '-f0_percent 0.5')" >&2
+        echo "  - Invalid config file from metaplots (lower cutoffs in the RIBOCODE_METAPLOTS step, e.g., '-f0_percent 0.5')" >&2
         echo "  - Insufficient data from Ribo-Seq alignment" >&2
         exit 1
     fi
