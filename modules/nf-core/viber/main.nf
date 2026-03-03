@@ -18,7 +18,7 @@ process VIBER {
     tuple val(meta), path("*_viber_report.rds")                  , emit: viber_report_rds
     tuple val(meta), path("*_viber_report.pdf")                  , emit: viber_report_pdf
     tuple val(meta), path("*_viber_report.png")                  , emit: viber_report_png
-    path "versions.yml"                                          , emit: versions
+    path "versions.yml"                                          , emit: versions                  , topic: versions
 
     when:
     task.ext.when == null || task.ext.when
