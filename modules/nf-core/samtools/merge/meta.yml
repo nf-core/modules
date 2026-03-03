@@ -27,6 +27,11 @@ input:
         description: BAM/CRAM file
         pattern: "*.{bam,cram,sam}"
         ontologies: []
+    - ndex_files:
+        type: file
+        description: BAI/CRAI/CSI index file
+        pattern: "*.{bai,crai,csi}"
+        ontologies: []
   - - meta2:
         type: map
         description: |

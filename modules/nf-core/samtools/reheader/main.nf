@@ -8,7 +8,7 @@ process SAMTOOLS_REHEADER {
         'biocontainers/samtools:1.22.1--h96c455f_0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(bai)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
