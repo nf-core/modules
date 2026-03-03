@@ -12,7 +12,8 @@ process PURGEDUPS_HISTPLOT {
 
     output:
     tuple val(meta), path("*.png"), emit: png
-    path "versions.yml"           , emit: versions
+    // WARN: Incorrect version printed inside the container, please check this if bumping version ( \$( purge_dups -h |& sed '3!d; s/.*: //' ))
+    tuple val("${task.process}"), val('purge_dups'), val('1.2.6'), emit: versions_purgedups, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,29 +25,17 @@ process PURGEDUPS_HISTPLOT {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.6' // WARN: Incorrect version printed inside the container, please check this if bumping version
     """
     hist_plot.py \\
         -c $cutoff \\
         $args \\
         $statfile \\
         ${prefix}.png
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        purgedups: $VERSION
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.6' // WARN: Incorrect version printed inside the container, please check this if bumping version
     """
     touch ${prefix}.png
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        purgedups: $VERSION
-    END_VERSIONS
     """
 }

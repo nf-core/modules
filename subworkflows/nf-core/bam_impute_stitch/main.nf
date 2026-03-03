@@ -16,8 +16,6 @@ workflow BAM_IMPUTE_STITCH {
 
     main:
 
-    ch_versions = channel.empty()
-
     // Make final channel with parameters
     ch_parameters = ch_posfile
         .combine(ch_map, by: 0)
@@ -56,7 +54,6 @@ workflow BAM_IMPUTE_STITCH {
         }
 
     STITCH(ch_bam_params, ch_fasta, seed)
-    ch_versions = ch_versions.mix(STITCH.out.versions.first())
 
     // Index imputed annotated VCF
     BCFTOOLS_INDEX_PHASE(STITCH.out.vcf)
@@ -87,5 +84,4 @@ workflow BAM_IMPUTE_STITCH {
 
     emit:
     vcf_index = ch_vcf_index // channel:   [ [id, chr], vcf, tbi ]
-    versions  = ch_versions // channel:   [ versions.yml ]
 }
