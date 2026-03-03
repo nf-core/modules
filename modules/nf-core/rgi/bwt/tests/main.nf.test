@@ -16,11 +16,9 @@ nextflow_process {
             script "modules/nf-core/untar/main.nf"
             process {
             """
-            file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/rgi/card-data.tar.bz2', checkIfExists: true)
-
             input[0] = [
                 [ ],
-                file("card-data.tar.bz2")
+            file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/rgi/card-data.tar.bz2', checkIfExists: true)
             ]
             """
             }

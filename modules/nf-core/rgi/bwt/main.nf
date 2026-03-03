@@ -29,7 +29,7 @@ process RGI_BWT {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def read_one = reads[0]
-    def read_two = reads.size() > 1 ? reads[1] : null
+    def read_two_cmd = reads.size() > 1 ? "--read_two ${reads[1]}" : ""
     def load_wildcard = ""
 
     if (wildcard) {
