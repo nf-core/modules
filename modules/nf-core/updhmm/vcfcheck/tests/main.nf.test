@@ -30,7 +30,7 @@ nextflow_process {
 
     test("trio vcf") {
     
-        config './vcfcheck.config'
+        config './nextflow.config'
     
         when {
             process {
@@ -56,11 +56,10 @@ nextflow_process {
                 { assert snapshot(process.out).match() },
                 { assert process.out.processed_vcf },
                 { assert process.out.session_info },
-                { assert process.out.versions_updhmm },
-                { assert process.out.versions_variantannotation },
-                { assert process.out.versions_rbase },
+                { assert process.out.versions },
                 { assert path(process.out.processed_vcf.get(0).get(1)).exists() },
-                { assert path(process.out.session_info.get(0).get(1)).exists() }
+                { assert path(process.out.session_info.get(0).get(1)).exists() },
+                { assert path(process.out.versions.get(0)).exists() }
             )
         }
     }
@@ -68,7 +67,7 @@ nextflow_process {
     test("trio vcf - stub") {
 
         options "-stub"
-        config './vcfcheck.config'
+        config './nextflow.config'
 
         when {
             process {
@@ -90,8 +89,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() },
+                { assert process.out.versions },
                 { assert path(process.out.processed_vcf.get(0).get(1)).exists() },
-                { assert path(process.out.session_info.get(0).get(1)).exists() }
+                { assert path(process.out.session_info.get(0).get(1)).exists() },
+                { assert path(process.out.versions.get(0)).exists() }
             )
         }
     }

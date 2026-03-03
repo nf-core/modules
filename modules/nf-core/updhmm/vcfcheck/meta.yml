@@ -76,65 +76,15 @@ output:
           pattern: "*.R_sessionInfo.log"
           ontologies:
             - edam: "http://edamontology.org/format_2330"
-  versions_updhmm:
-    - - ${task.process}:
-          type: string
-          description: The process the versions were collected from
-      - bioconductor-updhmm:
-          type: string
-          description: The tool name
-      - Rscript -e "library(UPDhmm); cat(as.character(packageVersion('UPDhmm')))":
-          type: string
-          description: The command used to generate the version of the tool
-  versions_variantannotation:
-    - - ${task.process}:
-          type: string
-          description: The process the versions were collected from
-      - bioconductor-variantannotation:
-          type: string
-          description: The tool name
-      - Rscript -e "library(VariantAnnotation); cat(as.character(packageVersion('VariantAnnotation')))":
-          type: string
-          description: The command used to generate the version of the tool
-  versions_rbase:
-    - - ${task.process}:
-          type: string
-          description: The process the versions were collected from
-      - r-base:
-          type: string
-          description: The tool name
-      - Rscript -e "cat(strsplit(version[['version.string']], ' ')[[1]][3])":
-          type: string
-          description: The command used to generate the version of the tool
+  versions:
+    - versions.yml:
+        type: file
+        description: YAML file containing versions of tools used in the module
 topics:
   versions:
-    - - ${task.process}:
-          type: string
-          description: The process the versions were collected from
-      - bioconductor-updhmm:
-          type: string
-          description: The tool name
-      - Rscript -e "library(UPDhmm); cat(as.character(packageVersion('UPDhmm')))":
-          type: string
-          description: The command used to generate the version of the tool
-    - - ${task.process}:
-          type: string
-          description: The process the versions were collected from
-      - bioconductor-variantannotation:
-          type: string
-          description: The tool name
-      - Rscript -e "library(VariantAnnotation); cat(as.character(packageVersion('VariantAnnotation')))":
-          type: string
-          description: The command used to generate the version of the tool
-    - - ${task.process}:
-          type: string
-          description: The process the versions were collected from
-      - r-base:
-          type: string
-          description: The tool name
-      - Rscript -e "cat(strsplit(version[['version.string']], ' ')[[1]][3])":
-          type: string
-          description: The command used to generate the version of the tool
+    - versions.yml:
+        type: file
+        description: YAML file containing versions of tools used in the module
 authors:
   - "@saramenasantamaria"
 maintainers:

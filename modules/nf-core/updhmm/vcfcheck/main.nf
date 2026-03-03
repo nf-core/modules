@@ -13,9 +13,7 @@ process UPDHMM_VCFCHECK {
     output:
     tuple val(meta), path("*.processed.rds")    , emit: processed_vcf
     tuple val(meta), path("*.R_sessionInfo.log"), emit: session_info
-    tuple val("${task.process}"), val("bioconductor-updhmm"), eval("Rscript -e \"library(UPDhmm); cat(as.character(packageVersion('UPDhmm')))\""), emit: versions_updhmm, topic: versions
-    tuple val("${task.process}"), val("bioconductor-variantannotation"), eval("Rscript -e \"library(VariantAnnotation); cat(as.character(packageVersion('VariantAnnotation')))\""), emit: versions_variantannotation, topic: versions
-    tuple val("${task.process}"), val("r-base"), eval("Rscript -e \"cat(strsplit(version[['version.string']], ' ')[[1]][3])\""), emit: versions_rbase, topic: versions
+    path "versions.yml", emit: versions, topic: versions
    
     when:
     task.ext.when == null || task.ext.when
@@ -27,5 +25,12 @@ process UPDHMM_VCFCHECK {
     """
     touch ${meta.id}.processed.rds
     touch ${meta.id}.R_sessionInfo.log
+    
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        r-base: \$(Rscript -e "cat(paste(R.version[['major']], R.version[['minor']], sep='.'))")
+        bioconductor-updhmm: \$(Rscript -e "library(UPDhmm); cat(as.character(packageVersion('UPDhmm')))")
+        bioconductor-variantannotation: \$(Rscript -e "library(VariantAnnotation); cat(as.character(packageVersion('VariantAnnotation')))")
+    END_VERSIONS
     """
 }

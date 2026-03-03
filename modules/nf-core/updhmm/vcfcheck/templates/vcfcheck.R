@@ -147,3 +147,23 @@ sink(session_info_file)
 print(sessionInfo())
 sink()
 
+
+################################################
+################################################
+## VERSIONS FILE                              ##
+################################################
+################################################
+
+r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
+updhmm.version <- as.character(packageVersion('UPDhmm'))
+variantannotation.version <- as.character(packageVersion('VariantAnnotation'))
+
+writeLines(
+    c(
+        '"${task.process}":',
+        paste('    r-base:', r.version),
+        paste('    bioconductor-updhmm:', updhmm.version),
+        paste('    bioconductor-variantannotation:', variantannotation.version)
+    ),
+    'versions.yml'
+)
