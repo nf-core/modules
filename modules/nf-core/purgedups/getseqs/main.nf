@@ -20,7 +20,9 @@ process PURGEDUPS_GETSEQS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    // By default, we include the '-e' option in task.ext.args as this is considered the 'safe default'
+    // See https://github.com/dfguan/purge_dups?tab=readme-ov-file#step-3-get-purged-primary-and-haplotig-sequences-from-draft-assembly
+    def args = (task.ext.args instanceof CharSequence) ? task.ext.args : '-e'
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     get_seqs \\
