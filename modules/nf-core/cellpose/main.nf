@@ -7,7 +7,7 @@ process CELLPOSE {
 
     input:
     tuple val(meta), path(image)
-    val model
+    path(model)
 
     output:
     tuple val(meta), path("${prefix}/*masks.tif"), emit: mask
