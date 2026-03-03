@@ -1,5 +1,5 @@
 {
-    "sarcov2 - fasta - bed": {
+    "sarcov2 - fasta - bed - e option": {
         "content": [
             "test.hap.fa",
             [
@@ -7,7 +7,7 @@
                     {
                         "id": "test"
                     },
-                    "test.purged.fa:md5,5593b561f5dac649dd02adbc1ff440e9"
+                    "test.purged.fa:md5,70d0b87ecc04353767b1a713992f00fe"
                 ]
             ],
             {
@@ -22,9 +22,9 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
+            "nextflow": "25.10.0"
         },
-        "timestamp": "2026-03-02T14:29:02.967042"
+        "timestamp": "2026-03-03T11:29:32.059224715"
     },
     "sarcov2 - fasta - bed -- stub": {
         "content": [
@@ -82,5 +82,32 @@
             "nextflow": "25.10.3"
         },
         "timestamp": "2026-03-02T13:29:06.070948"
+    },
+    "sarcov2 - fasta - bed - no e option": {
+        "content": [
+            "test.hap.fa",
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.purged.fa:md5,5593b561f5dac649dd02adbc1ff440e9"
+                ]
+            ],
+            {
+                "versions_purgedups": [
+                    [
+                        "PURGEDUPS_GETSEQS",
+                        "purge_dups",
+                        "1.2.6"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2026-03-03T11:29:38.266778411"
     }
 }
