@@ -12,7 +12,7 @@ process KMERGENIE {
 
     output:
     tuple val(meta), path("*_report.html"), emit: html
-    tuple val (meta), path("*.histo")     ,emit: histo
+    tuple val(meta), path("*.histo")      , emit: histo
     tuple val(meta), path("*.dat")        ,emit: dat
     tuple val(meta), path("*.pdf")        ,emit: pdf
     tuple val("${task.process}"), val('kmergenie'), eval('kmergenie --version |& sed "1!d ; s/KmerGenie //"'), emit: versions_kmergenie, topic: versions
