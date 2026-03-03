@@ -52,9 +52,7 @@ nextflow_workflow {
                         path(it[1]).vcf.summary,
                         path(it[1]).vcf.header.getGenotypeSamples().sort(),
                         path(it[1]).vcf.variantsMD5
-                    ]},
-                    workflow.out.versions,
-                    workflow.out.versions.collect{ path(it).yaml }
+                    ]}
                 ).match() }
             )
         }
@@ -122,8 +120,7 @@ nextflow_workflow {
                         path(it[1]).vcf.summary,
                         path(it[1]).vcf.header.getGenotypeSamples().sort(),
                         path(it[1]).vcf.variantsMD5
-                    ]},
-                    workflow.out.versions.collect{ path(it).yaml }
+                    ]}
                 ).match() }
             )
         }
@@ -166,10 +163,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect{ path(it).yaml }
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }
