@@ -30,7 +30,8 @@ process LINKS {
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
     // Currently LINKS does not support more than 4 threads
-    def nthreads = "${task.cpus}" < 4 ? "${task.cpus}" : 4
+    def ncpu = "${task.cpus}".toInteger()
+    def nthreads = ncpu < 4 ? ncpu : 4
     def args = task.ext.args ?: ""
     """
     if [[ ${assembly} == *.gz ]];
