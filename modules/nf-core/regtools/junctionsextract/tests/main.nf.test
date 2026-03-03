@@ -14,12 +14,12 @@ nextflow_process {
         when {
             process {
                 """
-
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam.bai", checkIfExists: true)
                     ]
+                input[1] = ''
                 """
             }
         }
@@ -40,12 +40,12 @@ nextflow_process {
         when {
             process {
                 """
-
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam.bai", checkIfExists: true)
                     ]
+                input[1] = ''
                 """
             }
         }
