@@ -44,8 +44,16 @@ input:
     - prescored_dir:
         type: directory
         description: |
-          Path to folder containing prescored files.
-          This folder contains the uncompressed files that would otherwise be in data/prescored/${GENOME_BUILD}_${VERSION}/ folder as described in https://github.com/kircherlab/CADD-scripts/#manual-installation.
+          Path to folder containing prescored CADD score files.
+          Expected structure mirrors data/prescored/ from the CADD-scripts installation:
+            <prescored_dir>/
+              GRCh38_v1.7/
+                incl_anno/   # *.tsv.gz + *.tsv.gz.tbi (scores with annotations)
+                no_anno/     # *.tsv.gz + *.tsv.gz.tbi (scores only)
+              GRCh37_v1.7/
+                incl_anno/
+                no_anno/
+          See https://github.com/kircherlab/CADD-scripts/#manual-installation for details.
 output:
   tsv:
     - - meta:
@@ -66,7 +74,7 @@ output:
       - cadd:
           type: string
           description: The name of the tool
-      - 1.6.post1:
+      - 1.7.3:
           type: string
           description: The expression to obtain the version of the tool
 topics:
@@ -77,7 +85,7 @@ topics:
       - cadd:
           type: string
           description: The name of the tool
-      - 1.6.post1:
+      - 1.7.3:
           type: string
           description: The expression to obtain the version of the tool
 authors:
