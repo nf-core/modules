@@ -1,0 +1,124 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "viralconsensus"
+description: Fast and memory-efficient viral consensus genome sequence
+  generation from read alignments
+keywords:
+  - virus
+  - genomics
+  - consensus
+  - bam
+  - fasta
+tools:
+  - "viralconsensus":
+      description: "ViralConsensus is a fast and memory-efficient tool for calling viral
+        consensus genome sequences directly from read alignment data."
+      homepage: "https://github.com/niemasd/ViralConsensus"
+      documentation: "https://github.com/niemasd/ViralConsensus#usage"
+      tool_dev_url: "https://github.com/niemasd/ViralConsensus"
+      doi: "10.1093/bioinformatics/btad317"
+      licence: ["GPL-3.0-or-later"]
+      identifier: biotools:viralconsensus
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM/SAM/CRAM file containing aligned reads
+        pattern: "*.{bam,sam,cram}"
+        ontologies:
+          - edam: http://edamontology.org/format_2572
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'sarscov2' ]
+    - fasta:
+        type: file
+        description: Reference genome sequence in FASTA format
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929
+  - primer_bed:
+      type: file
+      description: Optional BED file with primer coordinates for trimming
+      pattern: "*.bed"
+      ontologies:
+        - edam: http://edamontology.org/format_3003
+  - save_pos_counts:
+      type: boolean
+      description: |
+        Save per-position counts to a TSV file
+  - save_ins_counts:
+      type: boolean
+      description: |
+        Save insertion counts to a JSON file
+
+output:
+  fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.consensus.fa":
+          type: file
+          description: Consensus genome sequence in FASTA format
+          pattern: "*.consensus.fa"
+          ontologies:
+            - edam: http://edamontology.org/format_1929
+  pos_counts:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pos_counts.tsv":
+          type: file
+          description: Per-position base counts (optional, enabled via
+            save_pos_counts input)
+          pattern: "*.pos_counts.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  ins_counts:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.ins_counts.json":
+          type: file
+          description: Insertion counts (optional, enabled via save_ins_counts
+            input)
+          pattern: "*.ins_counts.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464
+  versions_viralconsensus:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - viralconsensus:
+          type: string
+          description: The tool name
+      - "viral_consensus --version 2>&1 | sed 's/.*v//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - viralconsensus:
+          type: string
+          description: The tool name
+      - "viral_consensus --version 2>&1 | sed 's/.*v//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@niemasd"
+maintainers:
+  - "@niemasd"
+  - "@lucaspatel"
