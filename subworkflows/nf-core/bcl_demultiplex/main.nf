@@ -63,7 +63,11 @@ workflow BCL_DEMULTIPLEX {
         }
         .join(ch_sav_files, by: 0)
         .map { meta, xml, interop, reports ->
-            return [meta, xml, interop, reports, [], [], [], []]
+            return [meta - meta.subMap(['lane']), xml, interop, reports]
+        }
+        .groupTuple(by: [0])
+        .map { meta, xml, interop, reports ->
+            return [meta, xml.flatten().unique(), interop.flatten().unique(), reports.flatten().unique(), [], [], [], []]
         }
         .dump(tag: "MULTIQC SAV input", pretty: true)
 
@@ -85,7 +89,7 @@ workflow BCL_DEMULTIPLEX {
     stats       = ch_stats
     interop     = ch_interop
     logs        = ch_logs
-    sav_html    = MULTIQCSAV.out.report
+    sav_report  = MULTIQCSAV.out.report
     sav_data    = MULTIQCSAV.out.data
     sav_plots   = MULTIQCSAV.out.plots
 }
