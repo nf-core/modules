@@ -43,7 +43,9 @@ process KMERGENIE {
     """
     echo $args
 
+    touch ${prefix}_report.html
     touch ${prefix}*.histo
+    touch ${prefix}.dat
     touch ${prefix}*.pdf
     """
 }
