@@ -19,7 +19,9 @@ process PARAPHASE {
     tuple val(meta), path("*.paraphase.bam.bai")                        , emit: bai
     tuple val(meta), path("${prefix}_paraphase_vcfs/*.vcf.gz")          , emit: vcf      , optional: true
     tuple val(meta), path("${prefix}_paraphase_vcfs/*.vcf.gz.{csi,tbi}"), emit: vcf_index, optional: true
-    path "versions.yml"                                                 , emit: versions
+    tuple val("${task.process}"), val('minimap2'), eval("minimap2 --version")                  , topic: versions, emit: versions_minimap2
+    tuple val("${task.process}"), val('paraphase'), eval("paraphrase --version")               , topic: versions, emit: versions_paraphase
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -51,13 +53,6 @@ process PARAPHASE {
             --threads $task.cpus \\
             \$vcf.gz;
     done
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        minimap2: \$(minimap2 --version 2>&1)
-        paraphase: \$(paraphase --version)
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -73,12 +68,5 @@ process PARAPHASE {
     touch ${prefix}.paraphase.bam.bai
     echo '' | gzip > ${prefix}_paraphase_vcfs/${prefix}_stub.vcf.gz
     touch ${prefix}_paraphase_vcfs/${prefix}_stub.vcf.gz.${index}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        minimap2: \$(minimap2 --version 2>&1)
-        paraphase: \$(paraphase --version)
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }
