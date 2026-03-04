@@ -7,12 +7,13 @@ keywords:
   - bcl2fastq
 tools:
   - samshee:
-      description: A schema-agnostic parser and writer for illumina® sample sheets v2
-        and similar documents.
+      description: A schema-agnostic parser and writer for illumina® sample sheets
+        v2 and similar documents.
       homepage: https://github.com/lit-regensburg/samshee
       documentation: https://github.com/lit-regensburg/samshee/blob/main/README.md
       tool_dev_url: https://github.com/lit-regensburg/samshee
-      licence: [MIT license]
+      licence:
+        - MIT license
       identifier: ""
 input:
   - - meta:
@@ -25,7 +26,7 @@ input:
         description: "illumina v2 samplesheet"
         pattern: "*.{csv}"
         ontologies:
-          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3752
   - file_schema_validator:
       type: string
       description: "Optional JSON file used additional samplesheet validation settings"
@@ -40,13 +41,46 @@ output:
           type: file
           description: "illumina v2 samplesheet"
           ontologies: []
+  versions_samshee:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samshee:
+          type: string
+          description: The name of the tool
+      - 0.2.13:
+          type: string
+          description: The expression to obtain the version of the tool
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version | sed -e "s/Python //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software version
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samshee:
+          type: string
+          description: The name of the tool
+      - 0.2.13:
+          type: string
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version | sed -e "s/Python //g":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nschcolnicov"
 maintainers:

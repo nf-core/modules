@@ -16,7 +16,7 @@ workflow FASTA_EXPLORE_SEARCH_PLOT_TIDK {
                             // the same `id`
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     // MODULE: SEQKIT_SEQ as FILTER_BY_LENGTH
     FILTER_BY_LENGTH ( ch_fasta )
@@ -40,14 +40,14 @@ workflow FASTA_EXPLORE_SEARCH_PLOT_TIDK {
     ch_apriori_inputs       = ch_sorted_fasta
                             | map { meta, fasta -> [ meta.id, meta, fasta ] }
                             | join(
-                                ( ch_apriori_sequence ?: Channel.empty() )
+                                ( ch_apriori_sequence ?: channel.empty() )
                                 | map { meta, seq -> [ meta.id, seq ] }
                             )
-                            | map { id, meta, fasta, seq -> [ meta, fasta, seq ] }
+                            | map { _id, meta, fasta, seq -> [ meta, fasta, seq ] }
 
     TIDK_SEARCH_APRIORI (
-        ch_apriori_inputs.map { meta, fasta, seq -> [ meta, fasta ] },
-        ch_apriori_inputs.map { meta, fasta, seq -> seq }
+        ch_apriori_inputs.map { meta, fasta, _seq -> [ meta, fasta ] },
+        ch_apriori_inputs.map { _meta, _fasta, seq -> seq }
     )
 
     ch_apriori_tsv          = TIDK_SEARCH_APRIORI.out.tsv
@@ -61,8 +61,8 @@ workflow FASTA_EXPLORE_SEARCH_PLOT_TIDK {
                             }
 
     TIDK_SEARCH_APOSTERIORI (
-        ch_aposteriori_inputs.map { meta, fasta, seq -> [ meta, fasta ] },
-        ch_aposteriori_inputs.map { meta, fasta, seq -> seq }
+        ch_aposteriori_inputs.map { meta, fasta, _seq -> [ meta, fasta ] },
+        ch_aposteriori_inputs.map { _meta, _fasta, seq -> seq }
     )
 
     ch_aposteriori_tsv      = TIDK_SEARCH_APOSTERIORI.out.tsv

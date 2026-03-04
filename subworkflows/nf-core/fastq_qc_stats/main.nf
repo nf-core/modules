@@ -1,58 +1,52 @@
-include { FASTQC       } from '../../../modules/nf-core/fastqc/main'
-include { SEQFU_CHECK  } from '../../../modules/nf-core/seqfu/check/main'
-include { SEQFU_STATS  } from '../../../modules/nf-core/seqfu/stats/main'
-include { SEQKIT_STATS } from '../../../modules/nf-core/seqkit/stats/main'
-include { SEQTK_COMP   } from '../../../modules/nf-core/seqtk/comp/main'
+include { FASTQC       } from '../../../modules/nf-core/fastqc'
+include { SEQFU_CHECK  } from '../../../modules/nf-core/seqfu/check'
+include { SEQFU_STATS  } from '../../../modules/nf-core/seqfu/stats'
+include { SEQKIT_STATS } from '../../../modules/nf-core/seqkit/stats'
+include { SEQTK_COMP   } from '../../../modules/nf-core/seqtk/comp'
 
 workflow FASTQ_QC_STATS {
-
     take:
-    ch_reads          // channel: [ val(meta), [ fastq ] ]
-    skip_fastqc       // boolean
-    skip_seqfu_check  // boolean
-    skip_seqfu_stats  // boolean
+    ch_reads // channel: [ val(meta), [ fastq ] ]
+    skip_fastqc // boolean
+    skip_seqfu_check // boolean
+    skip_seqfu_stats // boolean
     skip_seqkit_stats // boolean
-    skip_seqtk_comp   // boolean
+    skip_seqtk_comp // boolean
 
     main:
-
-    ch_versions      = channel.empty()
-    ch_fastqc_html   = channel.empty()
-    ch_fastqc_zip    = channel.empty()
-    ch_seqfu_check   = channel.empty()
-    ch_seqfu_stats   = channel.empty()
+    ch_fastqc_html = channel.empty()
+    ch_fastqc_zip = channel.empty()
+    ch_seqfu_check = channel.empty()
+    ch_seqfu_stats = channel.empty()
     ch_seqfu_multiqc = channel.empty()
-    ch_seqkit_stats  = channel.empty()
-    ch_seqtk_stats   = channel.empty()
+    ch_seqkit_stats = channel.empty()
+    ch_seqtk_stats = channel.empty()
 
     if (!skip_fastqc) {
-        FASTQC( ch_reads )
+        FASTQC(ch_reads)
         ch_fastqc_html = FASTQC.out.html
-        ch_fastqc_zip  = FASTQC.out.zip
+        ch_fastqc_zip = FASTQC.out.zip
     }
 
     if (!skip_seqfu_check) {
-        SEQFU_CHECK( ch_reads )
+        SEQFU_CHECK(ch_reads)
         ch_seqfu_check = SEQFU_CHECK.out.check
-        ch_versions    = ch_versions.mix(SEQFU_CHECK.out.versions.first())
     }
 
     if (!skip_seqfu_stats) {
-        SEQFU_STATS ( ch_reads )
-        ch_seqfu_stats   = SEQFU_STATS.out.stats
+        SEQFU_STATS(ch_reads)
+        ch_seqfu_stats = SEQFU_STATS.out.stats
         ch_seqfu_multiqc = SEQFU_STATS.out.multiqc
-        ch_versions      = ch_versions.mix(SEQFU_STATS.out.versions.first())
     }
 
     if (!skip_seqkit_stats) {
-        SEQKIT_STATS ( ch_reads )
+        SEQKIT_STATS(ch_reads)
         ch_seqkit_stats = SEQKIT_STATS.out.stats
     }
 
     if (!skip_seqtk_comp) {
-        SEQTK_COMP ( ch_reads )
+        SEQTK_COMP(ch_reads)
         ch_seqtk_stats = SEQTK_COMP.out.seqtk_stats
-        // SEQTK_COMP emits version as a topic channel
     }
 
     emit:
@@ -63,5 +57,4 @@ workflow FASTQ_QC_STATS {
     seqfu_multiqc = ch_seqfu_multiqc
     seqkit_stats  = ch_seqkit_stats
     seqtk_stats   = ch_seqtk_stats
-    versions      = ch_versions
 }

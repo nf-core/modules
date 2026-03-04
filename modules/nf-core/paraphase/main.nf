@@ -1,5 +1,5 @@
 process PARAPHASE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -14,10 +14,10 @@ process PARAPHASE {
     tuple val(meta3), path(config)
 
     output:
-    tuple val(meta), path("*.paraphase.json")                           , emit: json
-    tuple val(meta), path("*.paraphase.bam")                            , emit: bam
-    tuple val(meta), path("*.paraphase.bam.bai")                        , emit: bai
-    tuple val(meta), path("${prefix}_paraphase_vcfs/*.vcf.gz")          , emit: vcf      , optional: true
+    tuple val(meta), path("*.paraphase.json"), emit: json
+    tuple val(meta), path("*.paraphase.bam"), emit: bam
+    tuple val(meta), path("*.paraphase.bam.bai"), emit: bai
+    tuple val(meta), path("${prefix}_paraphase_vcfs/*.vcf.gz"), emit: vcf, optional: true
     tuple val(meta), path("${prefix}_paraphase_vcfs/*.vcf.gz.{csi,tbi}"), emit: vcf_index, optional: true
     tuple val("${task.process}"), val('minimap2'),  eval('minimap2 --version')      , emit: versions_minimap2   , topic: versions
     tuple val("${task.process}"), val('paraphase'), eval('paraphase --version')     , emit: versions_paraphase  , topic: versions
@@ -31,15 +31,15 @@ process PARAPHASE {
     def args2 = task.ext.args2 ?: ''
     def args3 = task.ext.args3 ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def config_file = config ? "--config $config" : ""
+    def config_file = config ? "--config ${config}" : ""
     """
     paraphase \\
-        $args \\
-        --threads $task.cpus \\
-        --bam $bam \\
-        --reference $fasta \\
-        --prefix $prefix \\
-        $config_file \\
+        ${args} \\
+        --threads ${task.cpus} \\
+        --bam ${bam} \\
+        --reference ${fasta} \\
+        --prefix ${prefix} \\
+        ${config_file} \\
         --out .
 
     if compgen -G "${prefix}_paraphase_vcfs/*.vcf" > /dev/null; then
@@ -77,12 +77,5 @@ process PARAPHASE {
     touch ${prefix}.paraphase.bam.bai
     echo '' | gzip > ${prefix}_paraphase_vcfs/${prefix}_stub.vcf.gz
     touch ${prefix}_paraphase_vcfs/${prefix}_stub.vcf.gz.${index}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        minimap2: \$(minimap2 --version 2>&1)
-        paraphase: \$(paraphase --version)
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }

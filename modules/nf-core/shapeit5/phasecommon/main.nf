@@ -12,7 +12,7 @@ process SHAPEIT5_PHASECOMMON {
 
     output:
     tuple val(meta), path("*.{bcf,graph,bh}"), emit: phased_variant
-    path "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val('shapeit5'), eval('SHAPEIT5_phase_common | sed "5!d;s/^.*Version *: //; s/ .*$//"'), topic: versions, emit: versions_shapeit5
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,11 +46,6 @@ process SHAPEIT5_PHASECOMMON {
         --region ${region} \\
         --thread ${task.cpus} \\
         --output ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        shapeit5: "\$(SHAPEIT5_phase_common | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1)"
-    END_VERSIONS
     """
 
     stub:
@@ -63,10 +58,5 @@ process SHAPEIT5_PHASECOMMON {
                     "bcf"
     """
     touch ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        shapeit5: "\$(SHAPEIT5_phase_common | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1)"
-    END_VERSIONS
     """
 }

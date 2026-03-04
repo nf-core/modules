@@ -34,14 +34,6 @@ input:
       description: |
         If true the --sjdbGTFfile flag is set
       pattern: "true|false"
-  - val_seq_platform:
-      type: string
-      description: |
-        Sequencing platform to be added to the bam header using the --outSAMattrRGline flag
-  - val_seq_center:
-      type: string
-      description: |
-        Sequencing center to be added to the bam header using the --outSAMattrRGline flag
   - ch_fasta:
       type: file
       description: Reference genome fasta file
