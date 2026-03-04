@@ -32,7 +32,7 @@ workflow BCL_DEMULTIPLEX {
         ch_fastq_with_meta = ch_fastq_with_meta.mix(
             generateReadgroupBCLCONVERT(
                 BCLCONVERT.out.reports.map { meta, reports ->
-                    return [meta, reports.find { report -> report.name == "fastq_list.csv" }]
+                    return [meta, file(reports).resolve("fastq_list.csv")]
                 },
                 BCLCONVERT.out.fastq,
             )

@@ -14,7 +14,7 @@ process BCLCONVERT {
     tuple val(meta), path("output/**Undetermined_S0*_I?_00?.fastq.gz"), emit: undetermined_idx, optional: true
     tuple val(meta), path("output/Reports"), emit: reports
     tuple val(meta), path("output/Logs"), emit: logs
-    tuple val(meta), path("output/InterOp"), emit: interop, optional: true
+    tuple val(meta), path("output/InterOp/*.bin"), emit: interop, optional: true
     tuple val("${task.process}"), val('bclconvert'), eval("bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //'"), topic: versions, emit: versions_bclconvert
 
     when:

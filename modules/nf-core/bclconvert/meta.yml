@@ -97,10 +97,10 @@ output:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - output/InterOp:
+      - output/InterOp/*.bin:
           type: file
           description: Interop files
-          pattern: "InterOp"
+          pattern: "InterOp/*.bin"
           ontologies:
             - edam: http://edamontology.org/format_2333 #BINARY
   versions_bclconvert:
