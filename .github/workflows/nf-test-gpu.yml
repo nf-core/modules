@@ -128,7 +128,7 @@ jobs:
           shard: ${{ matrix.shard }}
           total_shards: ${{ env.TOTAL_SHARDS }}
           paths: "${{ join(fromJson(needs.nf-test-changes.outputs.paths), ' ') }}"
-          tag: ${{ matrix.tag }}
+          tags: ${{ matrix.tag }}
 
   confirm-pass-gpu:
     runs-on:
