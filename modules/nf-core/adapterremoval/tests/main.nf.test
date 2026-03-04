@@ -61,9 +61,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.paired_truncated,
-                    process.out.settings,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    process.out
                 ).match() }
             )
         }
@@ -92,11 +90,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.paired_truncated,
-                    process.out.collapsed,
-                    file(process.out.collapsed_truncated[0][1]).name, // Check for present but is empty
-                    process.out.settings,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    process.out
                 ).match() }
             )
         }
@@ -126,9 +120,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.paired_truncated,
-                    process.out.settings,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    process.out
                 ).match() }
             )
         }
@@ -158,8 +150,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    process.out.findAll { key, val -> key.startsWith('versions') }[0]
+                    process.out
                 ).match() }
             )
         }
@@ -186,8 +177,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    process.out.findAll { key, val -> key.startsWith('versions') }[0]
+                    process.out
                 ).match() }
             )
         }
@@ -217,8 +207,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    process.out.findAll { key, val -> key.startsWith('versions') }[0]
+                    process.out
                 ).match() }
             )
         }
