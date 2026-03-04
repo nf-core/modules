@@ -27,14 +27,14 @@ input:
         description: tif file ready for segmentation
         pattern: "*.{tif,tiff}"
         ontologies: []
-  - - model:
-        type: file
-        description: |
-          Optional custom cellpose model file. When provided, passed as
-          --pretrained_model to cellpose. Pass [] (empty list) to use the
-          default model (cpsam in cellpose 4).
-        pattern: "*"
-        ontologies: []
+  - model:
+      type: file
+      description: |
+        Optional custom cellpose model file. When provided, passed as
+        --pretrained_model to cellpose. Pass [] (empty list) to use the
+        default model (cpsam in cellpose 4).
+      pattern: "*"
+      ontologies: []
 output:
   mask:
     - - meta:
@@ -69,13 +69,27 @@ output:
           description: numpy array with cell segmentation data
           pattern: "${prefix}/*seg.npy"
           ontologies: []
+  versions_cellpose:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellpose:
+          type: string
+          description: The name of the tool
+      - "cellpose --version | awk 'NR==1 {print \\$NF}'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellpose:
+          type: string
+          description: The name of the tool
+      - "cellpose --version | awk 'NR==1 {print \\$NF}'":
+          type: eval
+          description: The expression to obtain the version of the tool
 notes: |
   This module requires a Docker/Singularity/Podman container (conda is not supported
   due to complex CUDA/PyTorch dependencies).
