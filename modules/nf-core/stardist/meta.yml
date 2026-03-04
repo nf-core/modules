@@ -4,6 +4,8 @@ keywords:
   - stardist
   - segmentation
   - image
+  - gpu
+  - spatial-transcriptomics
 tools:
   - "stardist":
       description: "Stardist is an cell segmentation tool developed in Python by Martin
@@ -14,7 +16,6 @@ tools:
       doi: "10.1109/ISBIC56247.2022.9854534"
       licence: ["BSD 3-Clause"]
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -25,6 +26,21 @@ input:
         type: file
         description: Single channel nuclear image
         pattern: "*.{tiff,tif}"
+        ontologies: []
+  - - model_name:
+        type: string
+        description: |
+          Name of a pretrained StarDist model (e.g. '2D_versatile_fluo',
+          '2D_versatile_he'). Used when model_path is not provided.
+          Pass '' (empty string) if providing a custom model path or
+          passing -m via ext.args.
+    - model_path:
+        type: file
+        description: |
+          Optional path to a custom StarDist model directory. When provided,
+          takes precedence over model_name. Pass [] (empty list) to use a
+          pretrained model name instead.
+        pattern: "*"
         ontologies: []
 output:
   mask:
@@ -38,14 +54,103 @@ output:
           description: labelled mask output from stardist in tif format.
           pattern: "*.{tiff,tif}"
           ontologies: []
+  versions_stardist:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stardist:
+          type: string
+          description: The name of the tool
+      - "pip show stardist | grep '^Version:' | sed 's/Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - "python --version | sed 's/Python //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_tensorflow:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tensorflow:
+          type: string
+          description: The name of the tool
+      - "pip show tensorflow | grep '^Version:' | sed 's/Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_tifffile:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tifffile:
+          type: string
+          description: The name of the tool
+      - "pip show tifffile | grep '^Version:' | sed 's/Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stardist:
+          type: string
+          description: The name of the tool
+      - "pip show stardist | grep '^Version:' | sed 's/Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - "python --version | sed 's/Python //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tensorflow:
+          type: string
+          description: The name of the tool
+      - "pip show tensorflow | grep '^Version:' | sed 's/Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tifffile:
+          type: string
+          description: The name of the tool
+      - "pip show tifffile | grep '^Version:' | sed 's/Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+notes: |
+  GPU support: The container (built via Seqera Containers) includes TensorFlow 2.20.0
+  with CUDA support and falls back to CPU automatically when no GPU is available.
+  Use the `process_gpu` label to request GPU resources from your executor.
+  When running with conda/mamba, GPU support depends on having a CUDA-enabled
+  TensorFlow installation in your environment.
+
+  Model selection via the model input channel [model_name, model_path]:
+    - Pretrained model:        [ '2D_versatile_fluo', [] ]
+    - Custom model directory:  [ '', file("/path/to/model") ]
+    - Via ext.args only:       [ '', [] ]  (then set ext.args = '-m ...')
+
+  Additional stardist CLI arguments can be passed via `task.ext.args`:
+    ext.args = '--n_tiles 4,4 --prob_thresh 0.5 --nms_thresh 0.3'
+
+  Model weights are not bundled in the container. StarDist downloads pretrained
+  models on first use to ~/.keras/models/.
 authors:
   - "@migueLib"
+  - "@dongzehe"
 maintainers:
   - "@migueLib"

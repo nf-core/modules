@@ -3,9 +3,23 @@
 channels:
   - conda-forge
   - bioconda
-
 dependencies:
-  - python=3.9
-  - stardist=0.9.1
-  - tensorflow=2.10.0
-  - tifffile=2022.4.8
+  - conda-forge::python=3.12
+  - pip:
+      - stardist==0.9.2
+      - imagecodecs
+      # For conda GPU support, use tensorflow[and-cuda]==2.20.0 instead
+      # The followings are needed in seqera containers UI
+      - tensorflow==2.20.0
+      - nvidia-cublas-cu12
+      - nvidia-cuda-cupti-cu12
+      - nvidia-cuda-nvcc-cu12
+      - nvidia-cuda-nvrtc-cu12
+      - nvidia-cuda-runtime-cu12
+      - nvidia-cudnn-cu12
+      - nvidia-cufft-cu12
+      - nvidia-curand-cu12
+      - nvidia-cusolver-cu12
+      - nvidia-cusparse-cu12
+      - nvidia-nccl-cu12
+      - nvidia-nvjitlink-cu12
