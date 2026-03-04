@@ -37,7 +37,6 @@ process ABRICATE_RUN {
         --threads ${task.cpus} \\
         > ${prefix}.txt
 
-
     """
 
     stub:
