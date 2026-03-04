@@ -3,6 +3,7 @@ process CELLPOSE {
     label 'process_high'
     label 'process_gpu'
 
+    conda "${moduleDir}/environment.yml"
     container "dongzehe/cellpose-gpu:4.0.8"
 
     input:
@@ -19,10 +20,6 @@ process CELLPOSE {
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error("CELLPOSE module does not support conda. Please use Docker / Singularity / Podman instead.")
-    }
     def args = task.ext.args ?: ''
     def model_command = model ? "--pretrained_model ${model}" : ""
     def gpu_flag = task.ext.use_gpu ? "--use_gpu" : ""
@@ -51,10 +48,6 @@ process CELLPOSE {
     """
 
     stub:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error("CELLPOSE module does not support conda. Please use Docker / Singularity / Podman instead.")
-    }
     def name = image.name
     def base = name.lastIndexOf('.') != -1 ? name[0..name.lastIndexOf('.') - 1] : name
     prefix = task.ext.prefix ?: "${meta.id}"
