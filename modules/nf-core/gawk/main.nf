@@ -4,8 +4,8 @@ process GAWK {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gawk:5.3.0' :
-        'biocontainers/gawk:5.3.0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a1/a125c778baf3865331101a104b60d249ee15fe1dca13bdafd888926cc5490a34/data' :
+        'community.wave.seqera.io/library/gawk:5.3.1--e09efb5dfc4b8156' }"
 
     input:
     tuple val(meta), path(input, arity: '0..*')
@@ -51,7 +51,7 @@ process GAWK {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = task.ext.suffix ?: "${input.getExtension()}"
+    suffix = task.ext.suffix ?: "${input.collect{ file -> file.getExtension()}.get(0)}"
     def create_cmd = suffix.endsWith("gz") ? "echo '' | gzip >" : "touch"
 
     """
