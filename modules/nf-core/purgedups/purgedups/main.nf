@@ -11,7 +11,7 @@ process PURGEDUPS_PURGEDUPS {
     tuple val(meta), path(basecov), path(cutoff), path(paf)
 
     output:
-    tuple val(meta), path("*.dups.bed")      , emit: bed
+    tuple val(meta), path("*.dups.bed.gz")   , emit: bed
     tuple val(meta), path("*.purge_dups.log"), emit: log
     // WARN: Incorrect version printed inside the container, please check this if bumping version ( \$( purge_dups -h |& sed '3!d; s/.*: //' ))
     tuple val("${task.process}"), val('purge_dups'), val('1.2.6'), emit: versions_purgedups, topic: versions
@@ -24,16 +24,20 @@ process PURGEDUPS_PURGEDUPS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     purge_dups \\
-        $args \\
-        -T $cutoff \\
-        -c $basecov \\
-        $paf > ${prefix}.dups.bed 2>| >(tee ${prefix}.purge_dups.log >&2)
+        ${args} \\
+        -T ${cutoff} \\
+        -c ${basecov} \\
+        ${paf} | gzip \\
+        > ${prefix}.dups.bed.gz \\
+        2>| >(tee ${prefix}.purge_dups.log >&2)
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.dups.bed
+    echo ${args}
+    echo "" | gzip > ${prefix}.dups.bed.gz
     touch ${prefix}.purge_dups.log
     """
 }
