@@ -15,7 +15,7 @@ process BIGSLICE {
     output:
     tuple val(meta), path("${prefix}/result/data.db")    , emit: db
     tuple val(meta), path("${prefix}/result/tmp/**/*.fa"), emit: fa
-    tuple val("${task.process}"), val('bigslice'), eval("echo 2.0.2"), topic: versions
+    tuple val("${task.process}"), val('bigslice'), eval("echo 2.0.2"), topic: versions, emit: versions_bigslice
 
     when:
     task.ext.when == null || task.ext.when
