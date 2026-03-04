@@ -8,10 +8,7 @@ process BCFTOOLS_ANNOTATE {
         : 'community.wave.seqera.io/library/bcftools_htslib:0a3fa2654b52006f'}"
 
     input:
-    tuple val(meta), path(input), path(index), path(annotations), path(annotations_index)
-    path columns
-    path header_lines
-    path rename_chrs
+    tuple val(meta), path(input), path(index), path(annotations), path(annotations_index), path(columns), path(header_lines), path(rename_chrs)
 
     output:
     tuple val(meta), path("${prefix}.${extension}"), emit: vcf

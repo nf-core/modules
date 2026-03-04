@@ -27,7 +27,7 @@ repos:
           )$
 
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.36.1
+    rev: 0.37.0
     hooks:
       - id: check-jsonschema
         name: "Match meta.ymls in one of the subdirectories of modules/nf-core"
@@ -48,7 +48,7 @@ repos:
 
   # use ruff for python files
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.1
+    rev: v0.15.4
     hooks:
       - id: ruff
         files: \.py$
@@ -60,3 +60,12 @@ repos:
     hooks:
       - id: hadolint-docker
         args: ["--failure-threshold", "error"]
+
+  - repo: https://github.com/seqeralabs/nf-lint-pre-commit
+    rev: v0.2.0
+    hooks:
+      - id: nextflow-lint
+        files: '\.nf$|nextflow\.config$'
+        args: ["-output", "json"]
+        # TODO add formating at a later stage
+        # args: ["-format", "-sort-declarations", "-spaces", "4", "-harshil-alignment", "-output", "concise"]
