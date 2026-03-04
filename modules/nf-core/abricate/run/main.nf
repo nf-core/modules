@@ -44,6 +44,5 @@ process ABRICATE_RUN {
     """
     touch ${prefix}.txt
 
-
     """
 }
