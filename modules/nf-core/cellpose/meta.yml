@@ -130,10 +130,10 @@ topics:
           description: The expression to obtain the version of the tool
 notes: |
   GPU support: Set `task.ext.use_gpu = true` to pass `--use_gpu` to cellpose.
-  The Docker container includes CUDA 12.4 and falls back to CPU automatically when
-  no GPU is available. Use the `process_gpu` label to request GPU resources from
-  your executor. When running with conda/mamba, GPU support depends on having a
-  CUDA-enabled PyTorch installation in your environment.
+  The container (built via Seqera Containers) includes PyTorch 2.10.0 with CUDA 12.8
+  and falls back to CPU automatically when no GPU is available. Use the `process_gpu`
+  label to request GPU resources from your executor. When running with conda/mamba,
+  GPU support depends on having a CUDA-enabled PyTorch installation in your environment.
 
   Model selection via the model input channel:
     - Custom model file: file("/path/to/model")
