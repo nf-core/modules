@@ -27,17 +27,12 @@ input:
         description: tif file ready for segmentation
         pattern: "*.{tif,tiff}"
         ontologies: []
-  - - model_name:
-        type: string
-        description: |
-          Cellpose pretrained model name (e.g. 'cyto3', 'nuclei', 'cyto2', 'CPSAM').
-          Used when no custom model file is provided. Pass empty string to skip.
-        ontologies: []
-    - model_path:
+  - - model:
         type: file
         description: |
-          Custom cellpose model file. Takes priority over model_name when provided.
-          Pass [] (empty list) when not using a custom model.
+          Optional custom cellpose model file. When provided, passed as
+          --pretrained_model to cellpose. Pass [] (empty list) to use the
+          default model (cpsam in cellpose 4).
         pattern: "*"
         ontologies: []
 output:
@@ -89,13 +84,15 @@ notes: |
   The container includes CUDA 12.4 and falls back to CPU automatically when no GPU
   is available. Use the `process_gpu` label to request GPU resources from your executor.
 
-  Model selection via the model input channel (tuple of name and file):
-    - Pretrained model:  ["cyto3", []]
-    - Custom model file: ["", file("/path/to/model")]
-    - Default (no model): ["", []]
+  Model selection via the model input channel:
+    - Custom model file: file("/path/to/model")
+    - Default (cpsam):   []
 
   Additional cellpose CLI arguments can be passed via `task.ext.args`:
     ext.args = '--diameter 30 --flow_threshold 0.4 --cellprob_threshold 0'
+
+  Deprecated in cellpose 4.0.1+: `--chan`, `--chan2`, `--invert`, `--all_channels`,
+  `--diam_mean`, `--pretrained_model_ortho`. Do not pass these via ext.args.
 
   Model weights are not bundled in the container. Cellpose downloads them on first
   use to `$CELLPOSE_LOCAL_MODELS_PATH` (set to the work directory).
