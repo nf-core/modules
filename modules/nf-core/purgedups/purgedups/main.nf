@@ -33,8 +33,10 @@ process PURGEDUPS_PURGEDUPS {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo ${args}
     echo "" | gzip > ${prefix}.dups.bed.gz
     touch ${prefix}.purge_dups.log
     """

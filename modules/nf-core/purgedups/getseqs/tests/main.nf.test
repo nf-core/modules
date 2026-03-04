@@ -10,13 +10,20 @@ nextflow_process {
     tag "purgedups"
     tag "purgedups/getseqs"
 
+    config './nextflow.config'
+
     test("sarcov2 - fasta - bed - e option") {
 
         when {
+
+            params {
+                get_seqs_args = null
+            }
+
             process {
                 """
-                ch_bed = Channel.of('MT192765.1\\n0\\t29828\\tJUNK\\n').collectFile(name: 'test.bed' )
-                input[0] = Channel.of([
+                ch_bed = channel.of('MT192765.1\\n0\\t29828\\tJUNK\\n').collectFile(name: 'test.bed' )
+                input[0] = channel.of([
                     [ id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]).combine(ch_bed)
@@ -38,14 +45,48 @@ nextflow_process {
 
     test("sarcov2 - fasta - bed - no e option") {
 
-        // load a config file where we load ext.args as an empty string to unset -e option
-        config './nextflow.config'
 
         when {
+
+            params {
+                get_seqs_args = ""
+            }
+
             process {
                 """
-                ch_bed = Channel.of('MT192765.1\\n0\\t29828\\tJUNK\\n').collectFile(name: 'test.bed' )
-                input[0] = Channel.of([
+                ch_bed = channel.of('MT192765.1\\n0\\t29828\\tJUNK\\n').collectFile(name: 'test.bed' )
+                input[0] = channel.of([
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]).combine(ch_bed)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.haplotigs[0][1]).name, // Empty file
+                    process.out.purged,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+    }
+
+    test("sarcov2 - fasta - bed - explicit args set") {
+
+        when {
+
+            params {
+                get_seqs_args = "-es"
+            }
+
+            process {
+                """
+                ch_bed = channel.of('MT192765.1\\n0\\t29828\\tJUNK\\n').collectFile(name: 'test.bed' )
+                input[0] = channel.of([
                     [ id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]).combine(ch_bed)
@@ -70,10 +111,15 @@ nextflow_process {
         options "-stub"
 
         when {
+
+            params {
+                get_seqs_args = null
+            }
+
             process {
                 """
-                ch_bed = Channel.of('MT192765.1\\n0\\t29828\\tJUNK\\n').collectFile(name: 'test.bed' )
-                input[0] = Channel.of([
+                ch_bed = channel.of('MT192765.1\\n0\\t29828\\tJUNK\\n').collectFile(name: 'test.bed' )
+                input[0] = channel.of([
                     [ id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]).combine(ch_bed)

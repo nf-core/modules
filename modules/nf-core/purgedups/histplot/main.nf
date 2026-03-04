@@ -25,9 +25,10 @@ process PURGEDUPS_HISTPLOT {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def cutoff_input = cutoff ? "-c ${cutoff}" : ""
     """
     hist_plot.py \\
-        -c ${cutoff} \\
+        ${cutoff_input} \\
         ${args} \\
         ${statfile} \\
         ${prefix}.png
