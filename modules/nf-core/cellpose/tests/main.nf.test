@@ -28,7 +28,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(process.out.mask).match("mask") },
                 { assert snapshot(process.out.flows).match("flows") },
-                { assert snapshot(process.out.versions_cellpose).match("versions") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("versions") }
             )
         }
 

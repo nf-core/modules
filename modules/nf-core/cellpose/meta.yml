@@ -76,7 +76,27 @@ output:
       - cellpose:
           type: string
           description: The name of the tool
-      - "cellpose --version | awk 'NR==1 {print \\$NF}'":
+      - "cellpose --version 2>&1 | grep 'cellpose version' | sed 's/.*:\\s*//' | tr -d ' '":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - "python --version | sed 's/Python //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_torch:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - torch:
+          type: string
+          description: The name of the tool
+      - "python -c 'import torch; print(torch.__version__)'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -87,7 +107,25 @@ topics:
       - cellpose:
           type: string
           description: The name of the tool
-      - "cellpose --version | awk 'NR==1 {print \\$NF}'":
+      - "cellpose --version 2>&1 | grep 'cellpose version' | sed 's/.*:\\s*//' | tr -d ' '":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - "python --version | sed 's/Python //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - torch:
+          type: string
+          description: The name of the tool
+      - "python -c 'import torch; print(torch.__version__)'":
           type: eval
           description: The expression to obtain the version of the tool
 notes: |
