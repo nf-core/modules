@@ -76,7 +76,7 @@ output:
       - cellpose:
           type: string
           description: The name of the tool
-      - "cellpose --version 2>&1 | grep 'cellpose version' | sed 's/.*:\\s*//' | tr -d ' '":
+      - "pip show cellpose | grep '^Version:' | sed 's/Version: //'":
           type: eval
           description: The expression to obtain the version of the tool
   versions_python:
@@ -96,7 +96,7 @@ output:
       - torch:
           type: string
           description: The name of the tool
-      - "python -c 'import torch; print(torch.__version__)'":
+      - "pip show torch | grep '^Version:' | sed 's/Version: //'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -107,7 +107,7 @@ topics:
       - cellpose:
           type: string
           description: The name of the tool
-      - "cellpose --version 2>&1 | grep 'cellpose version' | sed 's/.*:\\s*//' | tr -d ' '":
+      - "pip show cellpose | grep '^Version:' | sed 's/Version: //'":
           type: eval
           description: The expression to obtain the version of the tool
     - - ${task.process}:
@@ -125,7 +125,7 @@ topics:
       - torch:
           type: string
           description: The name of the tool
-      - "python -c 'import torch; print(torch.__version__)'":
+      - "pip show torch | grep '^Version:' | sed 's/Version: //'":
           type: eval
           description: The expression to obtain the version of the tool
 notes: |
