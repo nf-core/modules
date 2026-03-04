@@ -20,7 +20,7 @@ process PARAPHASE {
     tuple val(meta), path("${prefix}_paraphase_vcfs/*.vcf.gz")          , emit: vcf      , optional: true
     tuple val(meta), path("${prefix}_paraphase_vcfs/*.vcf.gz.{csi,tbi}"), emit: vcf_index, optional: true
     tuple val("${task.process}"), val('minimap2'), eval("minimap2 --version")                  , topic: versions, emit: versions_minimap2
-    tuple val("${task.process}"), val('paraphase'), eval("paraphrase --version")               , topic: versions, emit: versions_paraphase
+    tuple val("${task.process}"), val('paraphase'), eval("paraphase --version")               , topic: versions, emit: versions_paraphase
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
