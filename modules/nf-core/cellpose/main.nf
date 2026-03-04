@@ -4,7 +4,7 @@ process CELLPOSE {
     label 'process_gpu'
 
     conda "${moduleDir}/environment.yml"
-    container "dongzehe/cellpose-gpu:4.0.8"
+    container "community.wave.seqera.io/library/python_pip_cellpose:4be22f3ec4963ebe"
 
     input:
     tuple val(meta), path(image)
