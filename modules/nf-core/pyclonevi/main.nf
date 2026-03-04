@@ -14,7 +14,7 @@ process PYCLONEVI {
         tuple val(meta), path("*.tsv"),                 emit: pyclone_input
         tuple val(meta), path("*_all_fits.h5"),         emit: pyclone_all_fits
         tuple val(meta), path("*_best_fit.txt"),        emit: pyclone_best_fit
-        path "versions.yml",                            emit: versions
+        path "versions.yml",                            emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
