@@ -48,7 +48,9 @@ output:
           type: file
           description: A bed file of sequences purged of false duplications
           pattern: "*.bed.gz"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3003 # BED
+            - edam: http://edamontology.org/format_3989 # Gzip
   log:
     - - meta:
           type: map
