@@ -129,7 +129,7 @@ output:
       - adapterremoval:
           type: string
           description: The tool name
-      - AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g":
+      - AdapterRemoval --version 2>&1 | sed "s/ ver. //g":
           type: eval
           description: The expression to obtain the version of adapterremoval
 topics:
@@ -140,7 +140,7 @@ topics:
       - adapterremoval:
           type: string
           description: The tool name
-      - AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g":
+      - AdapterRemoval --version 2>&1 | sed "s/.* //g":
           type: eval
           description: The expression to obtain the version of adapterremoval
 authors:
