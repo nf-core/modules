@@ -13,7 +13,7 @@ process CELLPOSE {
     tuple val(meta), path("${prefix}/*masks.tif"), emit: mask
     tuple val(meta), path("${prefix}/*flows.tif"), emit: flows, optional: true
     tuple val(meta), path("${prefix}/*seg.npy"), emit: cells, optional: true
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('cellpose'), eval("cellpose --version | awk 'NR==1 {print \$NF}'"), topic: versions, emit: versions_cellpose
 
     when:
     task.ext.when == null || task.ext.when
@@ -48,11 +48,6 @@ process CELLPOSE {
     mv *masks.tif ${prefix}/
     mv *flows.tif ${prefix}/ 2>/dev/null || true
     mv *seg.npy ${prefix}/ 2>/dev/null || true
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellpose: \$(cellpose --version | awk 'NR==1 {print \$NF}')
-    END_VERSIONS
     """
 
     stub:
@@ -67,10 +62,5 @@ process CELLPOSE {
     """
     mkdir -p ${prefix}
     touch ${prefix}/${base}_cp_masks.tif
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellpose: \$(cellpose --version | awk 'NR==1 {print \$NF}')
-    END_VERSIONS
     """
 }
