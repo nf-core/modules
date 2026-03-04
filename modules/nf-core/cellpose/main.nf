@@ -7,7 +7,7 @@ process CELLPOSE {
 
     input:
     tuple val(meta), path(image)
-    tuple val(model_name), path(model_path)
+    path(model)
 
     output:
     tuple val(meta), path("${prefix}/*masks.tif"), emit: mask
@@ -24,8 +24,7 @@ process CELLPOSE {
         error("CELLPOSE module does not support conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
-    def model_command = model_path            ? "--pretrained_model ${model_path}" :
-                        model_name             ? "--pretrained_model ${model_name}" : ""
+    def model_command = model ? "--pretrained_model ${model}" : ""
     def gpu_flag = task.ext.use_gpu ? "--use_gpu" : ""
     prefix = task.ext.prefix ?: "${meta.id}"
     """
@@ -52,7 +51,7 @@ process CELLPOSE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cellpose: \$(cellpose --version | awk 'NR==2 {print \$3}')
+        cellpose: \$(cellpose --version | awk 'NR==1 {print \$NF}')
     END_VERSIONS
     """
 
@@ -71,7 +70,7 @@ process CELLPOSE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cellpose: \$(cellpose --version | awk 'NR==2 {print \$3}')
+        cellpose: \$(cellpose --version | awk 'NR==1 {print \$NF}')
     END_VERSIONS
     """
 }
