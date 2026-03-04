@@ -9,6 +9,7 @@ process REGTOOLS_JUNCTIONSEXTRACT {
 
     input:
     tuple val(meta), path(bam), path(bai)
+    val(strand_specificity)
 
     output:
     tuple val(meta), path("*.junc"), emit: junc
@@ -20,10 +21,11 @@ process REGTOOLS_JUNCTIONSEXTRACT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def strand = strand_specificity ?: 'XS'
     """
     regtools junctions extract \\
         $args \\
-        -s XS \\
+        -s ${strand} \\
         -o ${prefix}.junc \\
         $bam
 
