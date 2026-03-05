@@ -17,12 +17,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    [
-				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
-				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true)
-				    ]
-				]
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true)
+                    ]
+                ]
 
                 """
             }
@@ -32,11 +32,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-					path(process.out.vcf[0][1]).vcf.variantsMD5,
-					file(process.out.tbi[0][1]).name,
-					process.out.versions
-					).match()
-				}
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    file(process.out.tbi[0][1]).name,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
     }
@@ -48,12 +48,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    [
-				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
-				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true)
-				    ]
-				]
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true)
+                    ]
+                ]
 
                 """
             }

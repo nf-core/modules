@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "trgt_plot"
 description: Visualize tandem repeats genotyped by TRGT
@@ -17,6 +16,7 @@ tools:
       doi: "10.1038/s41587-023-02057-3"
       licence:
         ["Pacific Biosciences Software License (https://github.com/PacificBiosciences/trgt/blob/main/LICENSE.md)"]
+      identifier: ""
 
 input:
   - - meta:
@@ -28,18 +28,23 @@ input:
         type: file
         description: "Sorted reads spanning tandem repeat from TRGT output"
         pattern: "*.bam"
+        ontologies: []
     - bai:
         type: file
         description: "Index for reads"
         pattern: "*.bai"
+        ontologies: []
     - vcf:
         type: file
         description: "Sorted tandem repeat genotypes called by TRGT"
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
     - tbi:
         type: file
         description: "Index for genotypes"
         pattern: "*.{tbi,csi}"
+        ontologies: []
     - repeat_id:
         type: string
         description: "ID of tandem repeat to plot"
@@ -52,6 +57,7 @@ input:
         type: file
         description: "FASTA reference file"
         pattern: "*.{fasta,fa,fna}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -61,6 +67,7 @@ input:
         type: file
         description: "Index for FASTA file"
         pattern: "*.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -71,9 +78,10 @@ input:
         description: "BED file with repeat coordinates and structure"
         pattern: "*.bed"
 
+        ontologies: []
 output:
-  - plot:
-      - meta:
+  plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -82,12 +90,29 @@ output:
           type: file
           description: "Plot of region and reads spanning tandem repeat"
           pattern: "*.{png,pdf,svg}"
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_trgt:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trgt:
+          type: string
+          description: The name of the tool
+      - trgt --version | sed 's/.* //g':
+          type: eval
+          description: The expression to obtain the version of the tool
 
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trgt:
+          type: string
+          description: The name of the tool
+      - trgt --version | sed 's/.* //g':
+          type: eval
+          description: The expression to obtain the version
 authors:
   - "@Schmytzi"
 maintainers:

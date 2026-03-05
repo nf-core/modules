@@ -1,0 +1,71 @@
+name: "diann_insilicolibrarygeneration"
+description: |
+  Generate in silico predicted spectral library using DIA-NN deep learning predictor.
+  This module uses DIA-NN software for data-independent acquisition (DIA) proteomics data processing.
+  Output materials should include attribution: "Generated using DIA-NN".
+keywords:
+  - diann
+  - spectral library
+  - proteomics
+  - deep learning
+  - dia
+tools:
+  - "diann":
+      description: |
+        DIA-NN is a universal software for data-independent acquisition (DIA) proteomics data processing.
+        It uses deep learning to predict spectral libraries and perform peptide identification and quantification.
+      homepage: "https://github.com/vdemichev/DiaNN"
+      documentation: "https://github.com/vdemichev/DiaNN"
+      tool_dev_url: "https://github.com/vdemichev/DiaNN"
+      doi: "10.1038/s41592-020-01009-0"
+      licence: ["https://github.com/vdemichev/DiaNN/blob/1.8.1/LICENSE.txt"]
+      identifier: "biotools:diann"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: FASTA sequence database
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA format
+output:
+  predict_speclib:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.predicted.speclib":
+          type: file
+          description: In silico predicted spectral library by DIA-NN deep learning predictor
+          pattern: "*.predicted.speclib"
+          ontologies:
+            - edam: http://edamontology.org/format_3240 # Spectral library format
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.log":
+          type: file
+          description: DIA-NN log file
+          pattern: "*.log"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Text format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@daichengxin"
+  - "@pinin4fjords"
+maintainers:
+  - "@daichengxin"

@@ -23,9 +23,10 @@ input:
     - fasta:
         type: file
         description: Input genome fasta file
+        ontologies: []
 output:
-  - index:
-      - meta:
+  index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing reference information.
@@ -34,14 +35,29 @@ output:
           type: file
           description: BWA genome index files
           pattern: "*.{amb,ann,bwt,pac,sa}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_sentieon:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - sentieon:
+          type: string
+          description: The tool name
+      - 'sentieon driver --version | sed "s/.*-//g"':
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - sentieon:
+          type: string
+          description: The tool name
+      - 'sentieon driver --version | sed "s/.*-//g"':
+          type: string
+          description: The command used to generate the version of the tool
 authors:
-  - "@drpatelh"
   - "@maxulysse"
 maintainers:
-  - "@drpatelh"
   - "@maxulysse"

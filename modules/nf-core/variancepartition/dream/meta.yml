@@ -1,0 +1,109 @@
+name: "variancepartition_dream"
+description: Runs a differential expression analysis with dream() from
+  variancePartition R package
+keywords:
+  - rnaseq
+  - dream
+  - variancepartition
+tools:
+  - "dream":
+      description: "Differential expression for repeated measures"
+      homepage: "https://www.bioconductor.org/packages/release/bioc/html/variancePartition.html"
+      documentation: "https://www.bioconductor.org/packages/release/bioc/manuals/variancePartition/man/variancePartition.pdf"
+      tool_dev_url: "https://github.com/DiseaseNeuroGenomics/variancePartition"
+      doi: "10.1093/bioinformatics/btaa687"
+      licence: ["GPL >=2"]
+      identifier: biotools:dream_database
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing run and contrast information.
+    - contrast_variable:
+        type: string
+        description: |
+          The column in the sample sheet that should be used to define groups for
+          comparison
+    - reference:
+        type: string
+        description: |
+          The value within the contrast_variable column of the sample sheet that
+          should be used to derive the reference samples
+    - target:
+        type: string
+        description: |
+          The value within the contrast_variable column of the sample sheet that
+          should be used to derive the target samples
+    - formula:
+        type: string
+        description: (Optional) R formula string used for modeling, e.g. '~
+          treatment + (1 | sample_number)'.
+    - comparison:
+        type: string
+        description: (Optional) Literal string passed to `limma::makeContrasts`,
+          e.g. 'treatmenthND6 - treatmentmCherry'.
+  - - meta2:
+        type: map
+        description: |
+          Groovy map containing study-wide metadata related to the sample sheet
+          and matrix
+    - samplesheet:
+        type: file
+        description: Sample sheet file containing sample metadata.
+        ontologies: []
+    - counts:
+        type: file
+        description: |
+          TSV or CSV format expression matrix with genes as rows and samples as columns.
+        ontologies: []
+output:
+  results:
+    - - meta:
+          type: map
+          description: |
+            groovy array with metadata information for the contrast generated
+      - "*.dream.results.tsv":
+          type: file
+          description: |
+            TSV-format table of differential expression information as output by Dream
+          pattern: "*.dream.results.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  model:
+    - - meta:
+          type: map
+          description: |
+            groovy array with metadata information for the contrast generated
+      - "*.dream.model.txt":
+          type: file
+          description: |
+            R model description text file.
+          pattern: "*.dream.model.txt"
+          ontologies: []
+  normalised_counts:
+    - - meta:
+          type: map
+          description: |
+            groovy array with metadata information for the contrast generated
+      - "*.normalised_counts.tsv":
+          type: file
+          description: normalised TSV format expression matrix with genes by row and
+            samples by column
+          pattern: "*.normalised_counts.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@alanmmobbs03"
+  - "@nschcolnicov"
+  - "@atrigila"
+maintainers:
+  - "@alanmmobbs03"
+  - "@nschcolnicov"
+  - "@atrigila"

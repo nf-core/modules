@@ -2,7 +2,7 @@ process CELLPOSE {
     tag "$meta.id"
     label 'process_medium'
 
-    container "docker.io/biocontainers/cellpose:3.0.1_cv1"
+    container "docker.io/biocontainers/cellpose:3.1.0_cv1"
 
     input:
     tuple val(meta), path(image)
@@ -22,7 +22,6 @@ process CELLPOSE {
         error "I did not manage to create a cellpose module in Conda that works in all OSes. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def model_command = model ? "--pretrained_model $model" : ""
     """
     export OMP_NUM_THREADS=${task.cpus}
@@ -43,7 +42,6 @@ process CELLPOSE {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "I did not manage to create a cellpose module in Conda that works in all OSes. Please use Docker / Singularity / Podman instead."
     }
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def name = image.name
     def base = name.lastIndexOf('.') != -1 ? name[0..name.lastIndexOf('.') - 1] : name
     """

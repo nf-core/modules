@@ -26,22 +26,27 @@ input:
         type: file
         description: VCF file
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
     - tbi:
         type: file
         description: Index of VCF file.
         pattern: "*.{idx,tbi}"
+        ontologies: []
     - arguments_file:
         type: file
         description: "optional GATK arguments file"
         pattern: "*.{txt,list,args,arguments}"
+        ontologies: []
     - include_intervals:
         type: file
         description: "optional GATK region file"
         pattern: "*.{bed,bed.gz,interval,interval_list}"
+        ontologies: []
     - exclude_intervals:
         type: file
         description: "optional GATK exclude region file"
         pattern: "*.{bed,bed.gz,interval,interval_list}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -51,6 +56,7 @@ input:
         type: file
         description: Fasta file of reference genome
         pattern: "*.fasta"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -60,6 +66,7 @@ input:
         type: file
         description: Index of fasta file
         pattern: "*.fasta.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -69,21 +76,42 @@ input:
         type: file
         description: Sequence dictionary of fastea file
         pattern: "*.dict"
+        ontologies: []
 output:
-  - table:
-      - meta:
+  table:
+    - - meta:
           type: file
           description: GATK output
           pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.tsv":
           type: file
           description: GATK output
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_gatk4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@lindenb"
 maintainers:

@@ -31,30 +31,36 @@ input:
         type: file
         description: FASTQ files produced using Cell Ranger ARC
         pattern: "*.fastq.gz"
-  - - reference:
-        type: directory
-        description: Directory containing all the reference indices needed by Cell Ranger
-          ARC
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+  - reference:
+      type: directory
+      description: Directory containing all the reference indices needed by Cell Ranger
+        ARC
 output:
-  - outs:
-      - meta:
-          type: file
-          description: Files containing the outputs of Cell Ranger ARC
-          pattern: "${meta.id}/outs/*"
+  outs:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - ${meta.id}/outs/**:
           type: file
           description: Files containing the outputs of Cell Ranger ARC
           pattern: "${meta.id}/outs/*"
-  - lib:
-      - ${meta.id}_lib.csv:
-          type: file
-          description: Library
-          pattern: "*_lib.csv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software version
-          pattern: "versions.yml"
+          ontologies: []
+  lib:
+    - ${meta.id}_lib.csv:
+        type: file
+        description: Library
+        pattern: "*_lib.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ggabernet"
   - "@edmundmiller"

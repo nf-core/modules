@@ -20,7 +20,7 @@ process BAMTOOLS_SPLIT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_list = bam.collect{"-in $it"}.join(' ')
+    def input_list = bam.collect{ bam_file -> "-in ${bam_file}"}.join(' ')
     """
     bamtools \\
         merge \\
@@ -35,4 +35,17 @@ process BAMTOOLS_SPLIT {
         bamtools: \$( bamtools --version | grep -e 'bamtools' | sed 's/^.*bamtools //' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.split1.bam
+    touch ${prefix}.unmapped.bam
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bamtools: \$( bamtools --version | grep -e 'bamtools' | sed 's/^.*bamtools //' )
+    END_VERSIONS
+    """
+
 }

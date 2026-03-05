@@ -26,6 +26,7 @@ input:
         type: file
         description: BED file of target intervals
         pattern: "*.bed"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -35,12 +36,13 @@ input:
         type: file
         description: FASTA reference sequence of the genome being used
         pattern: "*.fasta"
-  - - genome:
-        type: string
-        description: Genome used for the BED file (e.g., "hg38", "mm10"...)
+        ontologies: []
+  - genome:
+      type: string
+      description: Genome used for the BED file (e.g., "hg38", "mm10"...)
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,8 +52,9 @@ output:
           pattern: "*.txt"
           description: |
             Annotated targets optimized for copy number calling
-  - bed:
-      - meta:
+          ontologies: []
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -63,11 +66,14 @@ output:
             Modified and optimized targets exported as a BED file.
             Generate the file using the --export command-line switch
             IntervalFile.R.
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@aldosr"
   - "@lbeltrame"

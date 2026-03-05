@@ -15,35 +15,45 @@ tools:
       licence: ["GNU Lesser General Public v3 (LGPL v3)"]
       identifier: biotools:hamronization
 input:
-  - - reports:
-        type: file
-        description: List of multiple hAMRonization reports in either JSON or TSV format
-        pattern: "*.{json,tsv}"
-  - - format:
-        type: string
-        description: Type of final combined report file to be produced
-        pattern: "tsv|json|interactive"
+  - reports:
+      type: file
+      description: List of multiple hAMRonization reports in either JSON or TSV format
+      pattern: "*.{json,tsv}"
+      ontologies:
+        - edam: http://edamontology.org/format_3464 # JSON
+        - edam: http://edamontology.org/format_3475 # TSV
+  - format:
+      type: string
+      description: Type of final combined report file to be produced
+      pattern: "tsv|json|interactive"
 output:
-  - json:
-      - hamronization_combined_report.json:
-          type: file
-          description: hAMRonised summary in JSON format
-          pattern: "*.json"
-  - tsv:
-      - hamronization_combined_report.tsv:
-          type: file
-          description: hAMRonised summary in TSV format
-          pattern: "*.json"
-  - html:
-      - hamronization_combined_report.html:
-          type: file
-          description: hAMRonised summary in HTML format
-          pattern: "*.html"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  json:
+    - hamronization_combined_report.json:
+        type: file
+        description: hAMRonised summary in JSON format
+        pattern: "*.json"
+        ontologies:
+          - edam: http://edamontology.org/format_3464 # JSON
+  tsv:
+    - hamronization_combined_report.tsv:
+        type: file
+        description: hAMRonised summary in TSV format
+        pattern: "*.json"
+        ontologies:
+          - edam: http://edamontology.org/format_3464 # JSON
+  html:
+    - hamronization_combined_report.html:
+        type: file
+        description: hAMRonised summary in HTML format
+        pattern: "*.html"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

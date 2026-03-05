@@ -26,10 +26,12 @@ input:
     - alignment_files:
         type: file
         description: Alignment files
+        ontologies: []
     - alignment_indices:
         type: file
         description: The index/indices of the BAM/CRAM file(s)
         pattern: "*.{bai,crai}"
+        ontologies: []
     - ref_regions:
         type: file
         description: |
@@ -40,27 +42,43 @@ input:
           4. The motif length
           5. The repeat motif
         pattern: "*.bed"
-  - - fasta:
-        type: file
-        description: The reference FASTA file
-        pattern: "*.{fasta,fa}"
-  - - fasta_fai:
-        type: file
-        description: The index of the reference FASTA file
-        pattern: "*.fai"
+        ontologies: []
+  - fasta:
+      type: file
+      description: The reference FASTA file
+      pattern: "*.{fasta,fa}"
+      ontologies: []
+  - fasta_fai:
+      type: file
+      description: The index of the reference FASTA file
+      pattern: "*.fai"
+      ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.vcf":
+      - "*.vcf.gz":
           type: file
           description: The resulting VCF file containing the genotypes
-          pattern: "*.vcf"
-  - samplestats:
-      - meta:
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf.gz.tbi":
+          type: file
+          description: The resulting index of the VCF file containing the genotypes
+          pattern: "*.vcf.gz.tbi"
+          ontologies: []
+  samplestats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -69,11 +87,15 @@ output:
           type: file
           description: A tab-delimited file containing statistics for each sample
           pattern: "*.tab"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

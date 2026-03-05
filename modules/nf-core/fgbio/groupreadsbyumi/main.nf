@@ -4,17 +4,18 @@ process FGBIO_GROUPREADSBYUMI {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/87/87626ef674e2f19366ae6214575a114fe80ce598e796894820550731706a84be/data' :
-        'community.wave.seqera.io/library/fgbio:2.4.0--913bad9d47ff8ddc' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fe/fe9479adc5e6e0a1c125d346fdfa0dd313834249e9c55c40e8d44ec3a48c6559/data' :
+        'community.wave.seqera.io/library/fgbio:3.1.1--6c9a88faf1d62b6c' }"
 
     input:
     tuple val(meta), path(bam)
     val(strategy)
 
     output:
-    tuple val(meta), path("*.bam")         , emit: bam
-    tuple val(meta), path("*histogram.txt"), emit: histogram
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*.bam")            , emit: bam
+    tuple val(meta), path("*histogram.txt")   , emit: histogram
+    tuple val(meta), path("*read-metrics.txt"), emit: read_metrics
+    tuple val("${task.process}"), val('fgbio'), eval('fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\\[.*$//"'), topic: versions, emit: versions_fgbio
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,12 +45,8 @@ process FGBIO_GROUPREADSBYUMI {
         $args \\
         -i $bam \\
         -o ${prefix}.bam \\
-        -f ${prefix}_histogram.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fgbio: \$( echo \$(fgbio --version 2>&1 | tr -d '[:cntrl:]' ) | sed -e 's/^.*Version: //;s/\\[.*\$//')
-    END_VERSIONS
+        -f ${prefix}_histogram.txt \\
+        --grouping-metrics ${prefix}_read-metrics.txt
     """
 
     stub:
@@ -58,10 +55,6 @@ process FGBIO_GROUPREADSBYUMI {
     """
     touch ${prefix}.bam
     touch ${prefix}_histogram.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fgbio: \$( echo \$(fgbio --version 2>&1 | tr -d '[:cntrl:]' ) | sed -e 's/^.*Version: //;s/\\[.*\$//')
-    END_VERSIONS
+    touch ${prefix}_read-metrics.txt
     """
 }

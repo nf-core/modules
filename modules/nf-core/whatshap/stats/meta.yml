@@ -1,0 +1,109 @@
+name: "whatshap_stats"
+description: Compute statistics from phased variant file using Whatshap
+keywords:
+  - vcf
+  - whatshap
+  - stats
+  - phasing
+  - phase
+tools:
+  - "whatshap":
+      description: Phase genomic variants using DNA sequencing reads (haplotype
+        assembly).
+      args_id: "$args"
+      homepage: "https://whatshap.readthedocs.io"
+      documentation: "https://whatshap.readthedocs.io"
+      tool_dev_url: "https://github.com/whatshap/whatshap"
+      doi: "10.1101/085050"
+      licence: ["MIT"]
+      identifier: biotools:whatshap
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1' ]
+    - vcf:
+        type: file
+        description: Phased variant vcf file
+        pattern: "*.vcf"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+  - include_tsv_output:
+      type: boolean
+      description: Whether to include TSV output file
+      default: false
+  - include_gtf_output:
+      type: boolean
+      description: Whether to include GTF output file
+      default: false
+  - inlude_block_output:
+      type: boolean
+      description: Whether to include block list output file
+      default: false
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}.tsv:
+          type: file
+          description: Whatshap stats output in TSV format
+          pattern: "*.tsv"
+  gtf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}.gtf:
+          type: file
+          description: Whatshap stats output in GTF format
+          pattern: "*.gtf"
+  block:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}.txt:
+          type: file
+          description: Whatshap stats block list output
+          pattern: "*.txt"
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}.log:
+          type: file
+          description: Whatshap stats output in TXT format
+          pattern: "*.log"
+  versions_whatshap:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - whatshap:
+          type: string
+          description: The name of the tool
+      - whatshap --version:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - whatshap:
+          type: string
+          description: The name of the tool
+      - whatshap --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@eliottBo"
+maintainers:
+  - "@eliottBo"

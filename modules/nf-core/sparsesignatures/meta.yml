@@ -1,0 +1,126 @@
+name: sparse_signatures
+description: mutational signature deconvolution of cancer cells
+keywords:
+  - mutational signatures
+  - SBS
+  - bs genome reference
+tools:
+  - sparsesignatures:
+      description: SparseSignatures is an R-based computational framework which performs
+        de novo extraction, inference, interpretation, or deconvolution of mutational
+        counts of a large number of patients.
+      documentation: https://www.bioconductor.org/packages/release/bioc/html/SparseSignatures.html
+      tool_dev_url: https://github.com/danro9685/SparseSignatures/tree/master?tab=readme-ov-file
+      doi: "10.1371/journal.pcbi.1009119"
+      licence: ["Apache-2.0"]
+      identifier: biotools:sparsesignatures
+  - bsgenome.hsapiens.1000genomes.hs37d5:
+      description: Reference Genome Sequence (hs37d5), based on NCBI GRCh37
+      documentation: https://bioconductor.org/packages/3.8/data/annotation/html/BSgenome.Hsapiens.1000genomes.hs37d5.html
+      doi: "10.1038/s41467-022-29271-y"
+      licence: ["Artistic-2.0"]
+      identifier: biotools:bsgenome.hsapiens.1000genomes.hs37d5
+  - bsgenome.hsapiens.ucsc.hg38:
+      description: Full genomic sequences for Homo sapiens (UCSC genome hg38)
+      documentation: https://bioconductor.org/packages/3.16/data/annotation/html/BSgenome.Hsapiens.UCSC.hg38.html
+      doi: "10.18129/B9.bioc.BSgenome.Hsapiens.UCSC.hg38"
+      licence: ["Artistic-2.0"]
+      identifier: biotools:bsgenome.hsapiens.ucsc.hg38
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1' ]
+    - tsv_join:
+        type: file
+        description: joint tsv file with validated mutations by CNAqc
+        pattern: "*.{tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - genome:
+      type: string
+      description: Reference genome name to use with SparseSignatures (e.g. "GRCh37", "GRCh38")
+      ontologies: []
+output:
+  signatures_mutCounts_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*_mut_counts.rds":
+          type: file
+          description: File containing mutational counts across samples/patients
+          pattern: "*{_mut_counts.rds}"
+          ontologies: []
+  signatures_cv_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*_cv_means_mse.rds":
+          type: file
+          description: File containing cross-validation results
+          pattern: "*{_cv_means_mse.rds}"
+          ontologies: []
+  signatures_bestConf_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*_best_params_config.rds":
+          type: file
+          description: File containing best parameters configuration (numer of signatures
+            (K) and lambda)
+          pattern: "*{_best_params_config.rds}"
+          ontologies: []
+  signatures_nmfOut_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*_nmf_Lasso_out.rds":
+          type: file
+          description: File containing the results of nmf LASSO fit (signatures and
+            exposures)
+          pattern: "*{_nmf_Lasso_out.rds}"
+          ontologies: []
+  signatures_plot_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*_plot_all.rds":
+          type: file
+          description: File containig the data to generate plots
+          pattern: "*{_plot_all.rds}"
+          ontologies: []
+  signatures_plot_pdf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*_plot_all.pdf":
+          type: file
+          description: File containing the generated plots
+          pattern: "*{_plot_all.pdf}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@kdavydzenka"
+  - "@elena-buscaroli"
+maintainers:
+  - "@kdavydzenka"
+  - "@elena-buscaroli"

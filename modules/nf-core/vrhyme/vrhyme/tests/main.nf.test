@@ -10,22 +10,6 @@ nextflow_process {
     tag "modules_vrhyme"
     tag "vrhyme"
     tag "vrhyme/vrhyme"
-    tag "gunzip"
-
-    setup {
-        run("GUNZIP") {
-            script "../../../gunzip/main.nf"
-            process {
-                """
-                input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true)
-				]
-
-                """
-            }
-        }
-    }
 
     test("test-vrhyme-vrhyme") {
 
@@ -33,14 +17,16 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
+				    [ id:'test', single_end:false ],
 				    [
 				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz', checkIfExists: true),
 				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_2.fastq.gz', checkIfExists: true)
 				    ]
 				]
-				input[1] = GUNZIP.out.gunzip
-
+				input[1] = [
+				    [ id:'test', single_end:false ],
+				    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true)
+				]
                 """
             }
         }
@@ -65,14 +51,16 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
+				    [ id:'test', single_end:false ],
 				    [
 				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz', checkIfExists: true),
 				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_2.fastq.gz', checkIfExists: true)
 				    ]
 				]
-				input[1] = GUNZIP.out.gunzip
-
+				input[1] = [
+				    [ id:'test', single_end:false ],
+				    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true)
+				]
                 """
             }
         }

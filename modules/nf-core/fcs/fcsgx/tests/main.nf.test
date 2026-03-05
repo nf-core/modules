@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process FCS_FCSGX"
+    script "../main.nf"
+    process "FCS_FCSGX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fcs"
+    tag "fcs/fcsgx"
+
+    test("sarscov2 - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated. Please use nf-core/modules/fcsgx/rungx")}
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated. Please use nf-core/modules/fcsgx/rungx")}
+            )
+        }
+
+    }
+
+}

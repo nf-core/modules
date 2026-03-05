@@ -33,17 +33,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     file(process.out.vcf[0][1]).name,
                     file(process.out.tbi[0][1]).name,
-                    process.out.versions
-                    ).match()
-                }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("homo_sapiens - [cram, crai] - fasta - fai - dict") {
@@ -68,17 +66,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     file(process.out.vcf[0][1]).name,
                     file(process.out.tbi[0][1]).name,
-                    process.out.versions
-                    ).match()
-                }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("homo_sapiens - [cram, crai] - fasta - fai - dict - sites - sites_tbi") {
@@ -103,17 +99,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     file(process.out.vcf[0][1]).name,
                     file(process.out.tbi[0][1]).name,
-                    process.out.versions
-                    ).match()
-                }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("homo_sapiens - [cram, crai, dragstr_model] - fasta - fai - dict - sites - sites_tbi") {
@@ -138,17 +132,14 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     file(process.out.vcf[0][1]).name,
                     file(process.out.tbi[0][1]).name,
-                    process.out.versions
-                    ).match()
-                }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
-
 }

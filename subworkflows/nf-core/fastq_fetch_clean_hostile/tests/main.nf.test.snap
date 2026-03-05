@@ -1,0 +1,80 @@
+{
+    "fastq - single-end - with reference - stub": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test_single",
+                        "single_end": true
+                    },
+                    "test_single.clean_1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                ]
+            ],
+            [
+                {
+                    "FASTQ_FETCH_CLEAN_HOSTILE:HOSTILE_CLEAN": {
+                        "hostile": "2.0.2"
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-11-10T09:37:58.736062"
+    },
+    "fastq - single-end - with reference": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test_single",
+                        "single_end": true
+                    },
+                    "test_1.clean.fastq.gz:md5,9224ada21765cb3ad5fc05f40df78f17"
+                ]
+            ],
+            [
+                {
+                    "FASTQ_FETCH_CLEAN_HOSTILE:HOSTILE_CLEAN": {
+                        "hostile": "2.0.2"
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-11-10T09:37:39.689986"
+    },
+    "fastq - paired-end - with reference": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test_paired",
+                        "single_end": false
+                    },
+                    [
+                        "test_1.clean_1.fastq.gz:md5,6de988b85909e6529bad0022703bcab2",
+                        "test_2.clean_2.fastq.gz:md5,539acd65e93bf16a5ace7d6034e704c7"
+                    ]
+                ]
+            ],
+            [
+                {
+                    "FASTQ_FETCH_CLEAN_HOSTILE:HOSTILE_CLEAN": {
+                        "hostile": "2.0.2"
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-11-10T09:37:51.783759"
+    }
+}

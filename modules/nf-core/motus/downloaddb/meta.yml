@@ -18,20 +18,23 @@ tools:
       licence: ["GPL v3"]
       identifier: ""
 input:
-  - - motus_downloaddb_script:
-        type: file
-        description: The script to download the mOTUs database
+  - motus_downloaddb_script:
+      type: file
+      description: The script to download the mOTUs database
+      ontologies: []
 output:
-  - db:
-      - db_mOTU/:
-          type: directory
-          description: The mOTUs database directory
-          pattern: "db_mOTU"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  db:
+    - db_mOTU/:
+        type: directory
+        description: The mOTUs database directory
+        pattern: "db_mOTU"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jianhong"
 maintainers:

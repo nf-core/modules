@@ -9,7 +9,7 @@ process ARIBA_RUN {
 
     input:
     tuple val(meta), path(reads)
-    tuple val(meta), path(db)
+    tuple val(meta2), path(db)
 
     output:
     tuple val(meta), path("${prefix}/*"), emit: results
@@ -19,8 +19,8 @@ process ARIBA_RUN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     def db_name = db.getName().replace('.tar.gz', '')
     """
     tar -xzvf ${db}
@@ -29,8 +29,8 @@ process ARIBA_RUN {
         ${db_name}/ \\
         ${reads} \\
         ${prefix} \\
-        $args \\
-        --threads $task.cpus
+        ${args} \\
+        --threads ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

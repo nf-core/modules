@@ -34,6 +34,7 @@ input:
         pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_2182"
+          - edam: http://edamontology.org/format_1930 # FASTQ
   - - meta2:
         type: map
         description: |
@@ -85,13 +86,13 @@ input:
         pattern: "*.{fasta,fna,fa,fas}"
         ontologies:
           - edam: "http://edamontology.org/format_1929"
-  - - mode:
-        type: string
-        description: |
-          Mode of operation of CAT_pack reads,  "mcr": integrate annotations from MAGs (bins), contigs, and
-          reads; "cr": integrate annotations from contigs and reads; "mr": integrate
-          annotations from MAGs (bins) and reads.
-        pattern: "mcr|cr|mr"
+  - mode:
+      type: string
+      description: |
+        Mode of operation of CAT_pack reads,  "mcr": integrate annotations from MAGs (bins), contigs, and
+        reads; "cr": integrate annotations from contigs and reads; "mr": integrate
+        annotations from MAGs (bins) and reads.
+      pattern: "mcr|cr|mr"
   - - meta6:
         type: map
         description: |
@@ -173,8 +174,8 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_3751"
 output:
-  - rat_log:
-      - meta:
+  rat_log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -186,8 +187,8 @@ output:
           pattern: "*.log"
           ontologies:
             - edam: "http://edamontology.org/data_3106"
-  - complete_abundance:
-      - meta:
+  complete_abundance:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -199,8 +200,8 @@ output:
           pattern: "*.contig.abundance.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3751"
-  - contig_abundance:
-      - meta:
+  contig_abundance:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -212,8 +213,8 @@ output:
           pattern: "*.contig.abundance.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3751"
-  - read2classification:
-      - meta:
+  read2classification:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -225,8 +226,8 @@ output:
           pattern: "*.read2classification.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475"
-  - alignment_diamond:
-      - meta:
+  alignment_diamond:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -237,8 +238,8 @@ output:
           pattern: "*.alignment.diamond"
           ontologies:
             - edam: "http://edamontology.org/format_3475"
-  - contig2classification:
-      - meta:
+  contig2classification:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -250,8 +251,8 @@ output:
           pattern: "*.contig2classification.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475"
-  - cat_log:
-      - meta:
+  cat_log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -261,8 +262,8 @@ output:
           description: CAT log file with run messages and basic statistics
           ontologies:
             - edam: "http://edamontology.org/format_2330"
-  - orf2lca:
-      - meta:
+  orf2lca:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -273,8 +274,8 @@ output:
           pattern: "*.ORF2LCA.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475"
-  - faa:
-      - meta:
+  faa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -284,8 +285,8 @@ output:
           description: FAA file of DIAMOND predicted proteins hits
           ontologies:
             - edam: "http://edamontology.org/format_3475"
-  - gff:
-      - meta:
+  gff:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -295,20 +296,21 @@ output:
           description: GFF file of DIAMOND predicted proteins hits
           ontologies:
             - edam: "http://edamontology.org/format_2305"
-  - unmapped_diamond:
-      - meta:
+  unmapped_diamond:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*_unmapped.alignment.diamond":
           type: file
-          description: Intermediate DIAMOND TSV summary output file list of unassigned hits
+          description: Intermediate DIAMOND TSV summary output file list of unassigned
+            hits
           pattern: "*.alignment.diamond"
           ontologies:
             - edam: "http://edamontology.org/format_3475"
-  - unmapped_fasta:
-      - meta:
+  unmapped_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -318,23 +320,26 @@ output:
           description: Nucleotide FASTA file of contigs with no hits
           ontologies:
             - edam: "http://edamontology.org/format_1929"
-  - unmapped2classification:
-      - meta:
+  unmapped2classification:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.unmapped2classification.txt":
           type: file
-          description: A TSV file with per-contig unmapped assignment justification information
+          description: A TSV file with per-contig unmapped assignment justification
+            information
           pattern: "*.contig2classification.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

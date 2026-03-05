@@ -13,8 +13,8 @@ process ICOUNTMINI_SIGXLS {
 
     output:
     tuple val(meta), path("*.sigxls.bed.gz"), emit: sigxls
-    tuple val(meta), path("*.scores.tsv")   , emit: scores
-    path "versions.yml"                     , emit: versions
+    tuple val(meta), path("*.scores.tsv"),    emit: scores
+    path "versions.yml",                      emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,8 +39,9 @@ process ICOUNTMINI_SIGXLS {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.sigxls.bed.gz
+    echo "" | gzip > ${prefix}.sigxls.bed.gz
     touch ${prefix}.scores.tsv
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         iCount-Mini: \$(iCount-Mini -v)

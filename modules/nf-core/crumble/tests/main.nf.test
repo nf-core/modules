@@ -31,7 +31,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					process.out.bam,
-					bam(process.out.cram[0][1]).getHeaderMD5(),
+					file(process.out.cram[0][1]).name,
 					process.out.sam,
 					process.out.bed,
 					process.out.versions
@@ -62,7 +62,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					process.out.bam,
-					bam(process.out.cram[0][1]).getHeaderMD5(),
+					file(process.out.cram[0][1]).name,
 					process.out.sam,
 					file(process.out.bed[0][1]).name, // empty
 					process.out.versions

@@ -27,12 +27,12 @@ process MUSCLE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def fasta_out = args.contains('-fasta') ? "-fastaout ${prefix}_muscle_msa.afa" : ''
-    def clw_out   = args.contains('-clw') ? "-clwout ${prefix}_muscle_msa.clw" : ''
-    def msf_out   = args.contains('-msf') ? "-msfout ${prefix}_muscle_msa.msf" : ''
-    def phys_out  = args.contains('-phys') ? "-physout ${prefix}_muscle_msa.phys" : ''
-    def phyi_out  = args.contains('-phyi') ? "-phyiout ${prefix}_muscle_msa.phyi" : ''
-    def html_out  = args.contains('-html') ? "-htmlout ${prefix}_muscle_msa.html" : ''
+    def fasta_out = args.contains('-fasta')    ? "-fastaout ${prefix}_muscle_msa.afa" : ''
+    def clw_out   = args.contains('-clw')      ? "-clwout ${prefix}_muscle_msa.clw" : ''
+    def msf_out   = args.contains('-msf')      ? "-msfout ${prefix}_muscle_msa.msf" : ''
+    def phys_out  = args.contains('-phys')     ? "-physout ${prefix}_muscle_msa.phys" : ''
+    def phyi_out  = args.contains('-phyi')     ? "-phyiout ${prefix}_muscle_msa.phyi" : ''
+    def html_out  = args.contains('-html')     ? "-htmlout ${prefix}_muscle_msa.html" : ''
     def tree_out  = args.contains('-maketree') ? "-out ${prefix}_muscle_msa.tree" : ''
     """
     muscle \\
@@ -51,4 +51,30 @@ process MUSCLE {
         muscle: \$(muscle -version |  sed 's/^MUSCLE v//; s/by.*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def fasta_out = args.contains('-fasta')    ? "touch ${prefix}_muscle_msa.afa" : ''
+    def clw_out   = args.contains('-clw')      ? "touch ${prefix}_muscle_msa.clw" : ''
+    def msf_out   = args.contains('-msf')      ? "touch ${prefix}_muscle_msa.msf" : ''
+    def phys_out  = args.contains('-phys')     ? "touch ${prefix}_muscle_msa.phys" : ''
+    def phyi_out  = args.contains('-phyi')     ? "touch ${prefix}_muscle_msa.phyi" : ''
+    def html_out  = args.contains('-html')     ? "touch ${prefix}_muscle_msa.html" : ''
+    def tree_out  = args.contains('-maketree') ? "touch ${prefix}_muscle_msa.tree" : ''
+    """
+    $fasta_out
+    $clw_out
+    $msf_out
+    $phys_out
+    $phyi_out
+    $html_out
+    $tree_out
+    touch muscle_msa.log
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        muscle: \$(muscle -version |  sed 's/^MUSCLE v//; s/by.*\$//')
+    END_VERSIONS
+    """
+
 }

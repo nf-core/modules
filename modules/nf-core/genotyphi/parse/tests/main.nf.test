@@ -1,0 +1,68 @@
+nextflow_process {
+
+    name "Test Process GENOTYPHI_PARSE"
+
+    script "../main.nf"
+    process "GENOTYPHI_PARSE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mykrobe"
+    tag "mykrobe/predict"
+    tag "genotyphi"
+    tag "genotyphi/parse"
+
+    setup {
+        run("MYKROBE_PREDICT") {
+            script "../../../mykrobe/predict/main.nf"
+
+            process {
+                """
+                input[0] = [
+                    [id:'test',single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam',checkIfExists:true)
+                    ]
+                input[1] = "typhi"
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - json") {
+        when {
+
+            process {
+                """
+                input[0] = MYKROBE_PREDICT.out.json
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - json -- stub") {
+        options "-stub"
+        when {
+
+            process {
+                """
+                input[0] = MYKROBE_PREDICT.out.json
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

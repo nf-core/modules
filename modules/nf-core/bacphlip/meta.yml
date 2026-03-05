@@ -27,9 +27,10 @@ input:
         description: FASTA file containing phage contigs/scaffolds/chromosomes (if it
           is a multi-FASTA file be sure to add the `--multi_fasta` argument)
         pattern: "*.{fasta,fna,fa}"
+        ontologies: []
 output:
-  - bacphlip_results:
-      - meta:
+  bacphlip_results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,8 +40,9 @@ output:
           description: TSV file containing Temperate and Virulent scores for each phage
             sequence
           pattern: "*.bacphlip"
-  - hmmsearch_results:
-      - meta:
+          ontologies: []
+  hmmsearch_results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,11 +52,15 @@ output:
           description: TSV file containing binary output indicating gene presence/absence
             based on hmmsearch results
           pattern: "*.hmmsearch.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@CarsonJM"
 maintainers:

@@ -1,6 +1,6 @@
 process PBMM2_ALIGN {
     tag "$meta.id"
-    label 'process_large'
+    label 'process_high'
 
 
     conda "${moduleDir}/environment.yml"
@@ -38,7 +38,6 @@ process PBMM2_ALIGN {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bam

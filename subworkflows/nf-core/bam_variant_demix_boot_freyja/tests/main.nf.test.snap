@@ -11,17 +11,15 @@
                     "test.depth.tsv:md5,27f79b28a365a8af915895b484d1153e"
                 ]
             ],
-            [
-                "versions.yml:md5,d3e911c025e35de092f7ef0073ccf807",
-                "versions.yml:md5,df54ea89f3bcb7e5952e7e3dae1d22a4",
-                "versions.yml:md5,e66aeb30f8646d583bec6fbf4fe02426"
-            ]
+            "curated_lineages.json",
+            "lineages.yml",
+            "usher_barcodes.feather"
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-05-02T16:12:55.505491641"
+        "timestamp": "2026-02-18T16:17:54.538706"
     },
     "sarscov2 - bam - skip - val - nodb": {
         "content": [
@@ -35,17 +33,15 @@
                     "test.depth.tsv:md5,27f79b28a365a8af915895b484d1153e"
                 ]
             ],
-            [
-                "versions.yml:md5,4b7dccb03c75e8e94d7c6bdefaa90c95",
-                "versions.yml:md5,df54ea89f3bcb7e5952e7e3dae1d22a4",
-                "versions.yml:md5,e66aeb30f8646d583bec6fbf4fe02426"
-            ]
+            "curated_lineages.json",
+            "lineages.yml",
+            "usher_barcodes.feather"
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-05-02T16:13:29.413908034"
+        "timestamp": "2026-02-18T16:18:08.422905"
     },
     "sarscov2 - bam - val - nodb": {
         "content": [
@@ -59,17 +55,71 @@
                     "test.depth.tsv:md5,27f79b28a365a8af915895b484d1153e"
                 ]
             ],
-            [
-                "versions.yml:md5,4b7dccb03c75e8e94d7c6bdefaa90c95",
-                "versions.yml:md5,d3e911c025e35de092f7ef0073ccf807",
-                "versions.yml:md5,df54ea89f3bcb7e5952e7e3dae1d22a4",
-                "versions.yml:md5,e66aeb30f8646d583bec6fbf4fe02426"
-            ]
+            "curated_lineages.json",
+            "lineages.yml",
+            "usher_barcodes.feather"
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-05-02T16:12:09.796799525"
+        "timestamp": "2026-02-18T16:17:30.814703"
+    },
+    "sarscov2 - bam - val - nodb - stub": {
+        "content": [
+            {
+                "barcodes": [
+                    "usher_barcodes.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "demix": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "lineages": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_lineages.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "lineages_meta": [
+                    "curated_lineages.json:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "lineages_topology": [
+                    "lineages.yml:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "summarized": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_summarized.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "variants": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.variants.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        "test.depth.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-19T10:00:04.521793"
     }
 }

@@ -1,19 +1,19 @@
 process SNPSIFT_DBNSFP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/snpsift:5.1d--hdfd78af_0' :
-        'biocontainers/snpsift:5.1d--hdfd78af_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3d/3d8ec79a01bcc86a5ce258c66fc18e48c1826aebc7e7114454757919162ff9e6/data'
+        : 'community.wave.seqera.io/library/snpsift:5.4.0c--6546f37f72acfb46'}"
 
     input:
     tuple val(meta), path(vcf), path(vcf_tbi)
-    tuple val(meta2), path(database), path(dbs_tbi)// TBI files are optional (use when compressed VCF file)
+    tuple val(meta2), path(database), path(dbs_tbi)
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,9 +24,9 @@ process SNPSIFT_DBNSFP {
     """
     SnpSift \\
         dbnsfp \\
-        $args \\
-        -db $database \\
-        $vcf > ${prefix}.vcf
+        ${args} \\
+        -db ${database} \\
+        ${vcf} > ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

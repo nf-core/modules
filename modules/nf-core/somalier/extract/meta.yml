@@ -1,6 +1,6 @@
 name: "somalier_extract"
-description: Somalier can extract informative sites, evaluate relatedness, and perform
-  quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs
+description: Somalier can extract informative sites, evaluate relatedness, and
+  perform quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs
 keywords:
   - relatedness
   - QC
@@ -21,7 +21,8 @@ tools:
       documentation: "https://github.com/brentp/somalier/blob/master/README.md"
       tool_dev_url: "https://github.com/brentp/somalier"
       doi: "10.1186/s13073-020-00761-2"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:somalier
 input:
   - - meta:
@@ -32,9 +33,11 @@ input:
     - input:
         type: file
         description: BAM/CRAM/SAM/BCF/VCF/GVCF or jointly-called VCF file
+        ontologies: []
     - input_index:
         type: file
         description: index file of the input data, e.g., bam.bai, cram.crai
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -44,6 +47,7 @@ input:
         type: file
         description: The reference fasta file
         pattern: "*.{fasta,fna,fas,fa}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -53,6 +57,7 @@ input:
         type: file
         description: FASTA index file
         pattern: "*.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -60,11 +65,14 @@ input:
           e.g. [ id:'hg38' ]
     - sites:
         type: file
-        description: sites file in VCF format which can be taken from https://github.com/brentp/somalier
+        description: sites file in VCF format which can be taken from
+          https://github.com/brentp/somalier
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
 output:
-  - extract:
-      - meta:
+  extract:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,11 +81,28 @@ output:
           type: file
           description: binary output file based on extracted sites
           pattern: "*.{somalier}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_somalier:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - somalier:
+          type: string
+          description: The name of the tool
+      - "somalier 2>&1 | sed -n 's/.*version: \\([0-9.]*\\).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - somalier:
+          type: string
+          description: The name of the tool
+      - "somalier 2>&1 | sed -n 's/.*version: \\([0-9.]*\\).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ashotmarg"
   - "@nvnieuwk"

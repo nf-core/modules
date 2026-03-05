@@ -39,7 +39,7 @@ process MERFIN_HIST {
         $optional_lookup_table \\
         $optional_seqmers \\
         -output ${prefix}.hist \\
-        2> >( tee ${prefix}.hist.stderr.log )
+        2>| >( tee ${prefix}.hist.stderr.log )
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

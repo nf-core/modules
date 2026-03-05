@@ -1,0 +1,74 @@
+name: starfusion_build
+description: Download STAR-fusion genome resource required to run STAR-Fusion caller
+keywords:
+  - download
+  - starfusion
+  - build
+
+tools:
+  - star-fusion:
+      description: Fusion calling algorithm for RNAseq data
+      homepage: https://github.com/STAR-Fusion/
+      documentation: https://github.com/STAR-Fusion/STAR-Fusion/wiki/installing-star-fusion
+      tool_dev_url: https://github.com/STAR-Fusion/STAR-Fusion
+      doi: "10.1186/s13059-019-1842-9"
+      licence: ["GPL v3"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: Metadata map
+        required: true
+    - fasta:
+        type: file
+        description: Input FASTA file
+        pattern: "*.{fa,fasta}"
+        required: true
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - meta2:
+        type: map
+        description: Second metadata map
+        required: true
+    - gtf:
+        type: file
+        description: Input GTF (Gene Transfer Format) file
+        pattern: "*.gtf"
+        required: true
+        ontologies:
+          - edam: "http://edamontology.org/format_2306" # GTF
+  - fusion_annot_lib:
+      type: file
+      description: Fusion annotation library file containing known fusion genes
+      required: true
+      ontologies:
+        - edam: "http://edamontology.org/topic_0203" # Gene fusion
+  - dfam_species:
+      type: string
+      description: Dfam species name
+output:
+  reference:
+    - - meta:
+          type: map
+          description: Metadata map
+      - ${prefix}_genome_lib_build_dir:
+          type: directory
+          description: Genome library build directory
+          pattern: "*_genome_lib_build_dir"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@praveenraj2018"
+  - "@martings"
+  - "@alanmmobbs93"
+  - "@delfiterradas"
+  - "@sofiromano"
+
+maintainers:
+  - "@praveenraj2018"

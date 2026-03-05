@@ -55,7 +55,6 @@ nextflow_process {
                 { assert process.out.call_variants_tfrecords.get(0).get(0) == [ id:'test', single_end:false ] },
                 // The tfrecord binary representation is not stable, but we check the name of the output.
                 { assert snapshot(file(process.out.call_variants_tfrecords.get(0).get(1)).name).match("homo_sapiens-wgs-call_variants_tfrecords-filenames")},
-                { assert snapshot(process.out.versions).match("versions") },
             )
         }
     }

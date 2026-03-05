@@ -22,37 +22,45 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - membership:
         type: file
         description: TSV file containing information regarding which bins input sequences
           were placed information
         pattern: "*.{tsv}"
-  - - meta:
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - - meta2:
         type: map
         description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          Groovy Map containing information related to the fasta
+          e.g. [ id:'test' ]
     - fasta:
         type: file
         description: FASTA file containing contigs/scaffolds input into vRhyme
-        pattern: "*.{fasta,fna,fa}"
+        pattern: "*.{fasta,fna,fa,fasta.gz,fna.gz,fa.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
 output:
-  - unbinned_sequences:
-      - meta:
+  unbinned_sequences:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_unbinned_sequences.fasta":
+      - ${prefix}.fasta:
           type: file
           description: FASTA file containing unbinned sequences
           pattern: "*_unbinned_sequences.fasta"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@CarsonJM"
 maintainers:

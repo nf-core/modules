@@ -34,17 +34,19 @@ input:
         type: file
         description: RMA6 files from MALT
         pattern: "*.rma6"
-  - - taxon_list:
-        type: file
-        description: List of target taxa to evaluate
-        pattern: "*.txt"
-  - - ncbi_dir:
-        type: directory
-        description: Directory containing NCBI taxonomy map and tre files
-        pattern: "${ncbi_dir}/"
+        ontologies: []
+  - taxon_list:
+      type: file
+      description: List of target taxa to evaluate
+      pattern: "*.txt"
+      ontologies: []
+  - ncbi_dir:
+      type: directory
+      description: Directory containing NCBI taxonomy map and tre files
+      pattern: "${ncbi_dir}/"
 output:
-  - results:
-      - meta:
+  results:
+    - - meta:
           type: directory
           description: Directory containing MaltExtract text results files
           pattern: "results/"
@@ -52,11 +54,13 @@ output:
           type: directory
           description: Directory containing MaltExtract text results files
           pattern: "results/"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

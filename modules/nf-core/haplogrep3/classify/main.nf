@@ -11,8 +11,8 @@ process HAPLOGREP3_CLASSIFY {
     tuple val(meta), path(inputfile)
 
     output:
-    tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml"           , emit: versions
+    tuple val(meta)             , path("*.txt")                                                                           , emit: txt
+    tuple val("${task.process}"), val('haplogrep3'), eval("haplogrep3 | sed -n 's/.*Haplogrep 3 \\([0-9.]\\+\\).*/\\1/p'"), emit: versions_haplogrep3, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,22 +26,12 @@ process HAPLOGREP3_CLASSIFY {
         $args \\
         --in $inputfile \\
         --out ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        haplogrep3: \$(echo \$(haplogrep3 2>&1) | (sed '2!d') | (sed 's/Haplogrep 3 //'))
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        haplogrep3: \$(echo \$(haplogrep3 2>&1) | (sed '2!d') | (sed 's/Haplogrep 3 //'))
-    END_VERSIONS
     """
 
 }

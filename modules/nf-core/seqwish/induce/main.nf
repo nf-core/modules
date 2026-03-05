@@ -4,8 +4,8 @@ process SEQWISH_INDUCE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqwish:0.7.9--h5b5514e_0' :
-        'biocontainers/seqwish:0.7.9--h5b5514e_0' }"
+        'https://depot.galaxyproject.org/singularity/seqwish:0.7.11--h5ca1c30_1' :
+        'biocontainers/seqwish:0.7.11--h5ca1c30_1' }"
 
     input:
     tuple val(meta), path(paf), path(fasta)
@@ -39,4 +39,16 @@ process SEQWISH_INDUCE {
         seqwish: \$(echo \$(seqwish --version 2>&1) | cut -f 1 -d '-' | cut -f 2 -d 'v')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.gfa
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        seqwish: \$(echo \$(seqwish --version 2>&1) | cut -f 1 -d '-' | cut -f 2 -d 'v')
+    END_VERSIONS
+    """
+
 }

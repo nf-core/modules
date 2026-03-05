@@ -28,6 +28,8 @@ input:
         description: Gzipped compressed vcf file generated with GATK UnifiedGenotyper
           containing the called snps
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
   - - meta2:
         type: map
         description: |
@@ -38,6 +40,8 @@ input:
         description: Optional gzipped compressed vcf file generated with GATK UnifiedGenotyper
           containing the called indels
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
   - - meta3:
         type: map
         description: |
@@ -47,6 +51,7 @@ input:
         type: file
         description: Fasta file of reference genome
         pattern: "*.fasta"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -56,13 +61,14 @@ input:
         type: file
         description: Optional index for the fasta file of reference genome
         pattern: "*.fai"
-  - - vcf_output:
-        type: boolean
-        description: Boolean value to indicate if a compressed vcf file with the consensus
-          calls included as SNPs should be produced
+        ontologies: []
+  - vcf_output:
+      type: boolean
+      description: Boolean value to indicate if a compressed vcf file with the consensus
+        calls included as SNPs should be produced
 output:
-  - fasta:
-      - meta:
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -72,19 +78,23 @@ output:
           description: Gzipped consensus fasta file with bases under threshold replaced
             with Ns
           pattern: "*.fasta.gz"
-  - vcf:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.vcf.gz":
           type: file
-          description: Gzipped vcf file with updated calls for the SNPs used in the consensus
-            generation and for bases under threshold replaced with Ns
+          description: Gzipped vcf file with updated calls for the SNPs used in the
+            consensus generation and for bases under threshold replaced with Ns
           pattern: "*.vcf.gz"
-  - ccf:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  ccf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -94,8 +104,9 @@ output:
           description: Statistics file containing information about the consensus calls
             in the fasta file
           pattern: "*.ccf"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -104,11 +115,14 @@ output:
           type: file
           description: Log file
           pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@aidaanva"
 maintainers:

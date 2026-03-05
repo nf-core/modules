@@ -1,0 +1,66 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "slamdunk_map"
+description: Slamdunk read mapping using NextGenMap’s SLAMSeq alignment settings.
+keywords:
+  - slamseq
+  - rna-seq
+  - mapping
+tools:
+  - "slamdunk":
+      description: "Slamdunk is a software tool for SLAMseq data analysis that performs mapping, filtering, SNP calling, and quantification of metabolic RNA labeling experiments."
+      homepage: "http://t-neumann.github.io/slamdunk/docs.html"
+      documentation: "http://t-neumann.github.io/slamdunk/docs.html"
+      tool_dev_url: "https://github.com/t-neumann/slamdunk"
+      doi: "10.1186/s12859-019-2849-7"
+      licence: ["GNU Affero General Public License v3 (AGPL v3)"]
+      identifier: biotools:slamdunk
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - input:
+        type: file
+        description: Input FASTQ or BAM file(s) for SLAMseq analysis
+        pattern: "*.{bam,fastq,fq,fastq.gz,fq.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1930" # FASTQ
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'reference' ]`
+    - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fasta,fa,fas,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: Mapped BAM file
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@haidyi"
+maintainers:
+  - "@haidyi"

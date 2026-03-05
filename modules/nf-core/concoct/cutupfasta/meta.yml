@@ -27,24 +27,26 @@ input:
         type: file
         description: (Uncompressed) FASTA file containing contigs
         pattern: "*.{fasta,fna,fa,fas}"
-  - - bed:
-        type: boolean
-        description: Specify whether to generate a BED file describing where each contig
-          was cut up
+        ontologies: []
+  - bed:
+      type: boolean
+      description: Specify whether to generate a BED file describing where each contig
+        was cut up
 output:
-  - fasta:
-      - meta:
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.fasta":
           type: file
-          description: Cut up fasta file in non-overlapping or overlapping parts of equal
-            length.
+          description: Cut up fasta file in non-overlapping or overlapping parts of
+            equal length.
           pattern: "*.fasta"
-  - bed:
-      - meta:
+          ontologies: []
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,11 +56,14 @@ output:
           description: Optional BED File containing locations on original contigs where
             they were cut up.
           pattern: "*.bed"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

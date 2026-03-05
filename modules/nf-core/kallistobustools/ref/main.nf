@@ -25,7 +25,6 @@ process KALLISTOBUSTOOLS_REF {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     if (workflow_mode == "standard") {
         """
         kb \\

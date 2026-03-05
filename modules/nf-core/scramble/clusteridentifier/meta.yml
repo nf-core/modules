@@ -17,35 +17,46 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - input:
         type: file
         description: BAM/CRAM file
         pattern: "*.{bam,cram}"
+        ontologies: []
     - input_index:
         type: file
         description: Index of the BAM/CRAM file
         pattern: "*.{bai,crai}"
-  - - fasta:
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing information about the fasta file
+          e.g. [ id:'test' ]
+    - fasta:
         type: file
         description: The reference FASTA file (mandatory when using CRAM files)
         pattern: "*.{fasta,fa}"
+        ontologies: []
 output:
-  - clusters:
-      - meta:
+  clusters:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*.clusters.txt":
           type: file
           description: Tab-delimited file containing the soft-clipped clusters
           pattern: "*.clusters.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

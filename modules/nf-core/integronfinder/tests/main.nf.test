@@ -1,0 +1,64 @@
+nextflow_process {
+
+    name "Test Process INTEGRONFINDER"
+    script "../main.nf"
+    process "INTEGRONFINDER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "integronfinder"
+
+    test("IntegronFinder - escherichia_coli - genome_fa_gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.out[0][1]).readLines().get(56).contains("command used: integron_finder") },
+                { assert snapshot(
+                        process.out.gbk ? path(process.out.gbk[0][1]).text : "no_gbk",
+                        path(process.out.summary[0][1]).readLines()[1..-1], // Remove first line due to hash presence in conda
+                        path(process.out.integrons[0][1]).readLines()[1..-1],
+                        process.out.versions,
+                        path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("IntegronFinder - escherichia_coli - genome_fa_gz - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

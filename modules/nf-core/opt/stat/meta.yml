@@ -1,0 +1,72 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "opt_stat"
+description: "stat summarizes opt binding predictions"
+keywords:
+  - opt
+  - opt stat
+  - transcripts
+  - binding predictions
+  - off-target probes
+  - align probes
+  - summary stats
+tools:
+  - "opt":
+      description: "opt is a simple program that aligns probe sequences to transcript
+        sequences to detect potential off-target probe activity"
+      homepage: "https://github.com/JEFworks-Lab/off-target-probe-tracker"
+      documentation: "https://github.com/JEFworks-Lab/off-target-probe-tracker/blob/main/README.md"
+      tool_dev_url: "https://github.com/JEFworks-Lab/off-target-probe-tracker"
+      licence: [GPL-3.0 license]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing information of the probe targets generated from the panel sequences with `opt track`
+          e.g. `[ id:'breast_cancer_probe_panel_sequences' ]`
+    - probe_targets:
+        type: file
+        description: Generated probe targets
+        pattern: "*.tsv"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing information of the forward oriented fasta generated with the probes panel sequences 'opt flip'
+          e.g. `[ id:'breast_cancer_probe_panel_sequences' ]`
+    - fwd_oriented_probes:
+        type: file
+        description: The forward oriented fasta file
+        pattern: "*.fa"
+        ontologies: []
+  - gene_synonyms:
+      type: file
+      description: Gene synonyms that may have been counted as off-targets but
+        simply differ in name (optional input)
+      pattern: "*.csv"
+      ontologies: []
+output:
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing summary of the forward oriented probes generated with the panel sequences 'opt flip and track'
+            e.g. `[ id:'breast_cancer_probe_panel_sequences' ]`
+      - "${meta.id}/collapsed_summary.tsv":
+          type: file
+          description: tsv file containing the summary stats
+          pattern: "*.tsv"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@khersameesh24"
+maintainers:
+  - "@khersameesh24"

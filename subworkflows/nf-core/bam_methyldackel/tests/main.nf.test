@@ -1,0 +1,46 @@
+nextflow_workflow {
+
+    name "Test Subworkflow BAM_METHYLDACKEL"
+    script "../main.nf"
+    workflow "BAM_METHYLDACKEL"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/bam_methyldackel"
+    tag "methyldackel/extract"
+    tag "methyldackel/mbias"
+
+    test("sarscov2 paired-end methylated [bam] / sarscov2 genome [fasta]") {
+
+        when {
+            workflow {
+                """
+                // Define the input channels required by the METHYLDACKEL workflow
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam", checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai", checkIfExists: true)
+                ])
+                input[2] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+                ])
+                input[3] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta.fai", checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}

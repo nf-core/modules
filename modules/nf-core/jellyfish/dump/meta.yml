@@ -1,0 +1,56 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "jellyfish_dump"
+description: Dumps the results from a jellyfish binary file into a human readable
+  format
+keywords:
+  - k-mer
+  - DNA
+  - substrings
+tools:
+  - "jellyfish":
+      description: "Jellyfish is a tool for fast, memory-efficient counting of k-mers
+        in DNA. A k-mer is a substring of length k, and counting the occurrences of
+        all such substrings is a central step in many analyses of DNA sequence"
+      homepage: "https://github.com/gmarcais/Jellyfish"
+      documentation: "https://github.com/gmarcais/Jellyfish/blob/master/doc/Readme.md"
+      tool_dev_url: "https://github.com/gmarcais/Jellyfish"
+      doi: "10.1093/bioinformatics/btr011"
+      licence: ["GPL v3"]
+      identifier: biotools:jellyfish
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - jf:
+        type: file
+        description: Jellyfish binary k-mer database
+        pattern: "*.jf"
+        ontologies: []
+output:
+  output:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.${extension}:
+          type: file
+          description: Human readable k-mer database in fasta format, or in 2-column
+            space delimited format if the -c argument is provided
+          pattern: "*.{fa,txt}"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+            - edam: http://edamontology.org/format_2330 # Textual format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

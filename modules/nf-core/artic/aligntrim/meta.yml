@@ -1,0 +1,93 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "artic_aligntrim"
+description: Standalone version of fieldbioinformatics aligntrim. Soft clips amplicon scheme primer sites in BAM/SAM files.
+keywords:
+  - artic
+  - primer trimming
+  - amplicon
+  - genomics
+  - sequencing
+  - nanopore
+  - illumina
+tools:
+  - "align_trim":
+      description: "ARTIC align_trim: A tool for trimming amplicon sequencing primers from aligned reads."
+      homepage: "https://github.com/artic-network/align_trim"
+      documentation: "https://github.com/artic-network/align_trim/blob/master/README.md"
+      tool_dev_url: "https://github.com/artic-network/align_trim"
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - samfile:
+        type: file
+        description: BAM or SAM file containing aligned reads
+        pattern: "*.{bam,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2573" # SAM
+    - scheme_bed:
+        type: file
+        description: BED file containing amplicon scheme primer locations
+        pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3617" # BED
+    - normalise_depth:
+        type: integer
+        description: Normalise the read depth to this value
+  - sort_bam:
+      type: boolean
+      description: Optionally sort the BAM file after trimming
+output:
+  primertrimmed_bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.primertrimmed*.bam":
+          type: file
+          description: BAM file with primer sequences soft clipped
+          pattern: "*.primertrimmed*.bam"
+          ontologies:
+            - edam: http://edamontology.org/format_2572 # BAM
+  align_trim_report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.align_trim_report.tsv":
+          type: file
+          description: TSV report containing full details of primer trimming for each read / read pair
+          pattern: "*.align_trim_report.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # TSV
+  amp_depth_report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.amp_depth_report.tsv":
+          type: file
+          description: TSV report containing mean depth per amplicon
+          pattern: "*.amp_depth_report.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@BioWilko"
+maintainers:
+  - "@BioWilko"

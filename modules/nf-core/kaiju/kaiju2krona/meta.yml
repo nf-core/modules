@@ -25,12 +25,15 @@ input:
         type: file
         description: Kaiju tab-separated output file
         pattern: "*.{tsv,txt}"
-  - - db:
-        type: file
-        description: Kaiju database file
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - db:
+      type: file
+      description: Kaiju database file
+      ontologies: []
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,11 +42,14 @@ output:
           type: file
           description: Krona text-based input file converted from Kaiju report
           pattern: "*.{txt,krona}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@MillironX"
 maintainers:

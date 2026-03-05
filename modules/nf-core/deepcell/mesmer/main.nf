@@ -17,10 +17,10 @@ process DEEPCELL_MESMER {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args             = task.ext.args ?: ''
+    def prefix           = task.ext.prefix ?: "${meta.id}"
     def membrane_command = membrane_img ? "--membrane-image $membrane_img" : ""
-    def VERSION = "0.4.1"
+    def VERSION          = "0.4.1"
 
     """
     python /usr/src/app/run_app.py mesmer \\
@@ -30,6 +30,18 @@ process DEEPCELL_MESMER {
         --output-name ${prefix}.tif \\
         $membrane_command \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        deepcell_mesmer: $VERSION
+    END_VERSIONS
+    """
+
+    stub:
+    prefix      = task.ext.prefix ?: "${meta.id}"
+    def VERSION = "0.4.1"
+    """
+    touch ${prefix}.tif
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -1,0 +1,88 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "melon"
+description: Performs taxonomic profiling of long metagenomic reads against the melon
+  database
+keywords:
+  - profile
+  - metagenomics
+  - melon
+  - classification
+  - long reads
+  - nanopore
+tools:
+  - "melon":
+      description: "Melon: metagenomic long-read-based taxonomic identification and
+        quantification using marker genes"
+      homepage: "https://github.com/xinehc/melon"
+      documentation: "https://github.com/xinehc/melon"
+      tool_dev_url: "https://github.com/xinehc/melon"
+      doi: "10.1186/s13059-024-03363-y"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:true ]`.
+    - reads:
+        type: file
+        description: Quality-controlled long reads.
+        pattern: "*.{fa,fasta,fas,fna,fq,fastq}{,.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - database:
+      type: directory
+      description: Melon database.
+  - k2_db:
+      type: directory
+      description: Kraken2 database for pre-filtering of non-prokaryotic reads (needs
+        to include at least human and fungi).
+output:
+  tsv_output:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:true ]`.
+      - ${prefix}/*.tsv:
+          type: file
+          description: Melon output tsv file containing taxonomic profiling results.
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  json_output:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:true ]`.
+      - ${prefix}/*.json:
+          type: file
+          description: Melon output json file containing per-read taxonomic classification
+            results.
+          pattern: "*.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:true ]`.
+      - ${prefix}.log:
+          type: file
+          description: |
+            Log file containing Melon standard output.
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions.
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@eparisis"
+maintainers:
+  - "@eparisis"

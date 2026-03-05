@@ -6,7 +6,7 @@ process DEEPVARIANT_RUNDEEPVARIANT {
     // https://github.com/bioconda/bioconda-recipes/pull/45214#issuecomment-1890937836
     // BUG https://github.com/nf-core/modules/issues/1754
     // BUG https://github.com/bioconda/bioconda-recipes/issues/30310
-    container "docker.io/google/deepvariant:1.8.0"
+    container "docker.io/google/deepvariant:1.9.0"
 
     input:
     tuple val(meta), path(input), path(index), path(intervals)
@@ -16,11 +16,12 @@ process DEEPVARIANT_RUNDEEPVARIANT {
     tuple val(meta5), path(par_bed)
 
     output:
-    tuple val(meta), path("${prefix}.vcf.gz")      , emit: vcf
-    tuple val(meta), path("${prefix}.vcf.gz.tbi")  , emit: vcf_tbi
-    tuple val(meta), path("${prefix}.g.vcf.gz")    , emit: gvcf
-    tuple val(meta), path("${prefix}.g.vcf.gz.tbi"), emit: gvcf_tbi
-    path "versions.yml"                            , emit: versions
+    tuple val(meta), path("${prefix}.vcf.gz")            , emit: vcf
+    tuple val(meta), path("${prefix}.vcf.gz.tbi")        , emit: vcf_tbi
+    tuple val(meta), path("${prefix}.g.vcf.gz")          , emit: gvcf
+    tuple val(meta), path("${prefix}.g.vcf.gz.tbi")      , emit: gvcf_tbi
+    tuple val(meta), path("${prefix}.visual_report.html"), emit: report, optional: true
+    tuple val("${task.process}"), val('deepvariant'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //'"), topic: versions, emit: versions_deepvariant
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,11 +47,6 @@ process DEEPVARIANT_RUNDEEPVARIANT {
         ${par_regions} \\
         --intermediate_results_dir=tmp \\
         --num_shards=${task.cpus}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepvariant: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
     """
 
     stub:
@@ -60,14 +56,8 @@ process DEEPVARIANT_RUNDEEPVARIANT {
     }
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf.gz
-    touch ${prefix}.vcf.gz.tbi
-    touch ${prefix}.g.vcf.gz
-    touch ${prefix}.g.vcf.gz.tbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepvariant: \$(echo \$(/opt/deepvariant/bin/run_deepvariant --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
-    """
+    echo "stub" | gzip > ${prefix}.vcf.gz
+    echo "stub" | gzip > ${prefix}.vcf.gz.tbi
+    echo "stub" | gzip > ${prefix}.g.vcf.gz
+    echo "stub" | gzip > ${prefix}.g.vcf.gz.tbi    """
 }

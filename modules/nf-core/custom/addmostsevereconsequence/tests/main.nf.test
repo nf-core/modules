@@ -1,0 +1,146 @@
+// nf-core modules test custom/addmostsevereconsequence
+nextflow_process {
+
+    name "Test Process CUSTOM_ADDMOSTSEVERECONSEQUENCE"
+    script "../main.nf"
+    process "CUSTOM_ADDMOSTSEVERECONSEQUENCE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "custom"
+    tag "custom/addmostsevereconsequence"
+    config "./nextflow.config"
+
+    test("vcf") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/genmod_compound.vcf', checkIfExists: true)
+                ]
+                input[1] = Channel.of([
+                    "transcript_ablation",
+                    "splice_acceptor_variant",
+                    "splice_donor_variant",
+                    "stop_gained",
+                    "frameshift_variant",
+                    "stop_lost",
+                    "start_lost",
+                    "transcript_amplification",
+                    "feature_elongation",
+                    "feature_truncation",
+                    "inframe_insertion",
+                    "inframe_deletion",
+                    "missense_variant",
+                    "protein_altering_variant",
+                    "splice_donor_5th_base_variant",
+                    "splice_region_variant",
+                    "splice_donor_region_variant",
+                    "splice_polypyrimidine_tract_variant",
+                    "incomplete_terminal_codon_variant",
+                    "start_retained_variant",
+                    "stop_retained_variant",
+                    "synonymous_variant",
+                    "coding_sequence_variant",
+                    "mature_miRNA_variant",
+                    "5_prime_UTR_variant",
+                    "3_prime_UTR_variant",
+                    "non_coding_transcript_exon_variant",
+                    "intron_variant",
+                    "NMD_transcript_variant",
+                    "non_coding_transcript_variant",
+                    "coding_transcript_variant",
+                    "upstream_gene_variant",
+                    "downstream_gene_variant",
+                    "TFBS_ablation",
+                    "TFBS_amplification",
+                    "TF_binding_site_variant",
+                    "regulatory_region_ablation",
+                    "regulatory_region_amplification",
+                    "regulatory_region_variant",
+                    "intergenic_variant",
+                    "sequence_variant"
+                ]).collectFile(name: 'variant_consequences.txt', newLine:true).map { file -> [ [ id: file.simpleName ], file ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("vcf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/genmod_compound.vcf', checkIfExists: true)
+                ]
+                input[1] = Channel.of([
+                    "transcript_ablation",
+                    "splice_acceptor_variant",
+                    "splice_donor_variant",
+                    "stop_gained",
+                    "frameshift_variant",
+                    "stop_lost",
+                    "start_lost",
+                    "transcript_amplification",
+                    "feature_elongation",
+                    "feature_truncation",
+                    "inframe_insertion",
+                    "inframe_deletion",
+                    "missense_variant",
+                    "protein_altering_variant",
+                    "splice_donor_5th_base_variant",
+                    "splice_region_variant",
+                    "splice_donor_region_variant",
+                    "splice_polypyrimidine_tract_variant",
+                    "incomplete_terminal_codon_variant",
+                    "start_retained_variant",
+                    "stop_retained_variant",
+                    "synonymous_variant",
+                    "coding_sequence_variant",
+                    "mature_miRNA_variant",
+                    "5_prime_UTR_variant",
+                    "3_prime_UTR_variant",
+                    "non_coding_transcript_exon_variant",
+                    "intron_variant",
+                    "NMD_transcript_variant",
+                    "non_coding_transcript_variant",
+                    "coding_transcript_variant",
+                    "upstream_gene_variant",
+                    "downstream_gene_variant",
+                    "TFBS_ablation",
+                    "TFBS_amplification",
+                    "TF_binding_site_variant",
+                    "regulatory_region_ablation",
+                    "regulatory_region_amplification",
+                    "regulatory_region_variant",
+                    "intergenic_variant",
+                    "sequence_variant"
+                ]).collectFile(name: 'variant_consequences.txt', newLine:true).map { file -> [ [ id: file.simpleName ], file ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

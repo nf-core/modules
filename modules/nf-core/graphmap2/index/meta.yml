@@ -13,21 +13,25 @@ tools:
       licence: ["MIT"]
       identifier: biotools:Graphmap2
 input:
-  - - fasta:
-        type: file
-        description: |
-          Reference database in FASTA format.
+  - fasta:
+      type: file
+      description: |
+        Reference database in FASTA format.
+      ontologies: []
 output:
-  - index:
-      - "*.gmidx":
-          type: file
-          description: Index file in gmidx format
-          pattern: "*.gmidx"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  index:
+    - "*.gmidx":
+        type: file
+        description: Index file in gmidx format
+        pattern: "*.gmidx"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@yuukiiwa"
   - "@drpatelh"

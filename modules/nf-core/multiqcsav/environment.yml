@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  # renovate: datasource=conda depName=bioconda/multiqc
+  - bioconda::multiqc=1.33
+  # renovate: datasource=conda depName=bioconda/multiqc_sav
+  - bioconda::multiqc_sav=0.2.0
+  - pip=25.3
+  - pip:
+      - interop==1.9.0

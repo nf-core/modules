@@ -28,17 +28,19 @@ input:
         type: file
         description: |
           The target bedgraph file from which the peaks will be calculated.
+        ontologies: []
     - ctrlbedgraph:
         type: file
         description: |
           Control (IgG) data bedgraph file to generate an empirical threshold for peak calling.
-  - - threshold:
-        type: integer
-        description: |
-          Threshold value used to call peaks if the ctrlbedgraph input is set to []. Set to 1 if using a control bedgraph
+        ontologies: []
+  - threshold:
+      type: integer
+      description: |
+        Threshold value used to call peaks if the ctrlbedgraph input is set to []. Set to 1 if using a control bedgraph
 output:
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,11 +49,14 @@ output:
           type: file
           description: Bed file containing the calculated peaks.
           pattern: "*.bed"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@chris-cheshire"
 maintainers:

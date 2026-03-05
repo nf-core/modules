@@ -1,37 +1,4 @@
 {
-    "Should run without failures": {
-        "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test_ref"
-                        },
-                        "genome.mmi:md5,72e450f12dc691e763c697463bdb1571"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,0fced0ee8015e7f50b82566e3db8f7b0"
-                ],
-                "index": [
-                    [
-                        {
-                            "id": "test_ref"
-                        },
-                        "genome.mmi:md5,72e450f12dc691e763c697463bdb1571"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,0fced0ee8015e7f50b82566e3db8f7b0"
-                ]
-            }
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-18T11:46:30.000058092"
-    },
     "minimap2 index": {
         "content": [
             {
@@ -44,7 +11,11 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,2f8340380c6741e9261a284262a90bde"
+                    [
+                        "MINIMAP2_INDEX",
+                        "minimap2",
+                        "2.29-r1283"
+                    ]
                 ],
                 "index": [
                     [
@@ -54,15 +25,60 @@
                         "genome.mmi:md5,72e450f12dc691e763c697463bdb1571"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,2f8340380c6741e9261a284262a90bde"
+                "versions_minimap2": [
+                    [
+                        "MINIMAP2_INDEX",
+                        "minimap2",
+                        "2.29-r1283"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-04-05T10:58:29.828187662"
+        "timestamp": "2026-02-09T16:12:10.625322"
+    },
+    "minimap2 index - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "genome.mmi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        "MINIMAP2_INDEX",
+                        "minimap2",
+                        "2.29-r1283"
+                    ]
+                ],
+                "index": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "genome.mmi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_minimap2": [
+                    [
+                        "MINIMAP2_INDEX",
+                        "minimap2",
+                        "2.29-r1283"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-09T16:12:15.244242"
     }
 }

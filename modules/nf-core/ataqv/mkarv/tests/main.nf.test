@@ -1,0 +1,79 @@
+nextflow_process {
+
+    name "Test Process ATAQV_MKARV"
+
+    script "../main.nf"
+    process "ATAQV_MKARV"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ataqv"
+    tag "ataqv/ataqv"
+    tag "ataqv/mkarv"
+
+    setup {
+        run("ATAQV_ATAQV") {
+            script "../../ataqv/main.nf"
+
+            process {
+                """
+                input[0] = [
+                    [id:'test',single_end:false],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam',checkIfExists:true),
+                    [],
+                    []
+                    ]
+                input[1] = 'human'
+                input[2] = ''
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                """
+            }
+        }
+    }
+
+    test("test_ataqv_mkarv") {
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = ATAQV_ATAQV.out.json.collect{it[1]}
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test_ataqv_mkarv - stub") {
+
+        options '-stub'
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = ATAQV_ATAQV.out.json.collect{it[1]}
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{path(it).yaml}
+                ).match() }
+            )
+        }
+    }
+}

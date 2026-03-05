@@ -12,7 +12,8 @@ process LAST_LASTDB {
 
     output:
     tuple val(meta), path("lastdb"), emit: index
-    path "versions.yml"            , emit: versions
+    // last-dotplot has no --version option so let's use lastal from the same suite
+    tuple val("${task.process}"), val('last'), eval("lastal --version | sed 's/lastal //'"), emit: versions_last, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,15 +28,9 @@ process LAST_LASTDB {
         -P $task.cpus \\
         lastdb/${prefix} \\
         $fastx
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        last: \$(lastdb --version 2>&1 | sed 's/lastdb //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir lastdb
@@ -47,9 +42,5 @@ process LAST_LASTDB {
     touch lastdb/${prefix}.suf
     touch lastdb/${prefix}.tis
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        last: \$(lastdb --version 2>&1 | sed 's/lastdb //')
-    END_VERSIONS
     """
 }

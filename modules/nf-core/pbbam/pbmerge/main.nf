@@ -1,10 +1,3 @@
-def deprecation_message = """
-WARNING: This module has been deprecated. Please use nf-core/pbtk/pbmerge
-
-Reason:
-This module is no longer fit for purpose because pbbam has been deprecated by PacificBiosciences
-
-"""
 process PBBAM_PBMERGE {
     tag "$meta.id"
     label 'process_low'
@@ -26,9 +19,16 @@ process PBBAM_PBMERGE {
     task.ext.when == null || task.ext.when
 
     script:
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/pbtk/pbmerge
+
+Reason:
+This module is no longer fit for purpose because pbbam has been deprecated by PacificBiosciences
+
+"""
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    assert true: deprecation_message
+    assert false: deprecation_message
     """
     pbmerge \\
         -o ${prefix}.bam \\
@@ -42,9 +42,15 @@ process PBBAM_PBMERGE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/pbtk/pbmerge
+
+Reason:
+This module is no longer fit for purpose because pbbam has been deprecated by PacificBiosciences
+
+"""
     def prefix = task.ext.prefix ?: "${meta.id}"
-    assert true: deprecation_message
+    assert false: deprecation_message
     """
     touch ${prefix}.bam
     touch ${prefix}.bam.pbi

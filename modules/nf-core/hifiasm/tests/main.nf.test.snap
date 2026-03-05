@@ -1,12 +1,12 @@
 {
-    "homo_sapiens pacbio hifi [fastq, [,], [,] ]": {
+    "homo_sapiens pacbio hifi [fastq, [,], [fastq, fastq], [,] ]": {
         "content": [
             [
                 [
                     {
                         "id": "test"
                     },
-                    "test.asm.bp.r_utg.gfa:md5,6a200e4bcb5d8d8fa6ed75874d26edc6"
+                    "test.hic.r_utg.gfa:md5,6a200e4bcb5d8d8fa6ed75874d26edc6"
                 ]
             ],
             [
@@ -14,7 +14,7 @@
                     {
                         "id": "test"
                     },
-                    "test.asm.bp.p_ctg.gfa:md5,c3225425a73a8d6d46536dab72380650"
+                    "test.hic.p_utg.gfa:md5,6a200e4bcb5d8d8fa6ed75874d26edc6"
                 ]
             ],
             [
@@ -22,43 +22,44 @@
                     {
                         "id": "test"
                     },
-                    "test.asm.bp.p_utg.gfa:md5,6a200e4bcb5d8d8fa6ed75874d26edc6"
+                    "test.hic.p_ctg.gfa:md5,6d0ec1ec65b1d2b295ac94b6fef25a27"
                 ]
+            ],
+            [
+                
             ],
             [
                 [
                     {
                         "id": "test"
                     },
-                    "test.asm.bp.hap1.p_ctg.gfa:md5,78a86b6d5741a680e22a427ca9faa74a"
+                    "test.hic.hap1.p_ctg.gfa:md5,f67a8fdfa756961360732c79d189054d"
                 ]
             ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.asm.bp.hap2.p_ctg.gfa:md5,ac2116fd2f22c67d4c304cbf9b9f7793"
+            {
+                "versions_hifiasm": [
+                    [
+                        "HIFIASM",
+                        "hifasm",
+                        "0.25.0-r726"
+                    ]
                 ]
-            ],
-            [
-                "versions.yml:md5,a2ea36e18c39850b1680302d9f6c950f"
-            ]
+            }
         ],
+        "timestamp": "2026-02-16T15:34:30.534362903",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
-        },
-        "timestamp": "2024-11-28T10:51:30.175326435"
+            "nf-test": "0.9.4",
+            "nextflow": "26.01.1"
+        }
     },
-    "homo_sapiens pacbio hifi [fastq x2, [,], [,] ]": {
+    "homo_sapiens pacbio hifi [fastq, [,], [,], [bin] ]": {
         "content": [
             [
                 [
                     {
                         "id": "test"
                     },
-                    "test.asm.bp.r_utg.gfa:md5,e6e38ac76f6b73142c3fe403f71d27b0"
+                    "test.bp.r_utg.gfa:md5,6a200e4bcb5d8d8fa6ed75874d26edc6"
                 ]
             ],
             [
@@ -66,7 +67,7 @@
                     {
                         "id": "test"
                     },
-                    "test.asm.bp.p_ctg.gfa:md5,43890a1832d8f26de263e57dc5e3b8de"
+                    "test.bp.p_utg.gfa:md5,6a200e4bcb5d8d8fa6ed75874d26edc6"
                 ]
             ],
             [
@@ -74,7 +75,7 @@
                     {
                         "id": "test"
                     },
-                    "test.asm.bp.p_utg.gfa:md5,e6e38ac76f6b73142c3fe403f71d27b0"
+                    "test.bp.p_ctg.gfa:md5,c3225425a73a8d6d46536dab72380650"
                 ]
             ],
             [
@@ -82,7 +83,7 @@
                     {
                         "id": "test"
                     },
-                    "test.asm.bp.hap1.p_ctg.gfa:md5,7d7ea2bed472de263f6ec3521959b0d9"
+                    "test.bp.hap1.p_ctg.gfa:md5,78a86b6d5741a680e22a427ca9faa74a"
                 ]
             ],
             [
@@ -90,27 +91,33 @@
                     {
                         "id": "test"
                     },
-                    "test.asm.bp.hap2.p_ctg.gfa:md5,ce096a66c9bba039c6a22ba9e9409d01"
+                    "test.bp.hap2.p_ctg.gfa:md5,ac2116fd2f22c67d4c304cbf9b9f7793"
                 ]
             ],
-            [
-                "versions.yml:md5,a2ea36e18c39850b1680302d9f6c950f"
-            ]
+            {
+                "versions_hifiasm": [
+                    [
+                        "HIFIASM",
+                        "hifasm",
+                        "0.25.0-r726"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-02-16T16:19:44.451598985",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.3"
-        },
-        "timestamp": "2025-03-04T10:53:37.361240273"
+            "nf-test": "0.9.4",
+            "nextflow": "25.04.8"
+        }
     },
-    "homo_sapiens pacbio hifi [fastq, [,], [fastq, fastq] ]": {
+    "homo_sapiens pacbio hifi [fastq x2, [,], [,], [,] ]": {
         "content": [
             [
                 [
                     {
                         "id": "test"
                     },
-                    "test.asm.hic.r_utg.gfa:md5,6a200e4bcb5d8d8fa6ed75874d26edc6"
+                    "test.bp.r_utg.gfa:md5,e6e38ac76f6b73142c3fe403f71d27b0"
                 ]
             ],
             [
@@ -118,7 +125,7 @@
                     {
                         "id": "test"
                     },
-                    "test.asm.hic.p_utg.gfa:md5,6a200e4bcb5d8d8fa6ed75874d26edc6"
+                    "test.bp.p_utg.gfa:md5,e6e38ac76f6b73142c3fe403f71d27b0"
                 ]
             ],
             [
@@ -126,20 +133,42 @@
                     {
                         "id": "test"
                     },
-                    "test.asm.hic.hap1.p_ctg.gfa:md5,f67a8fdfa756961360732c79d189054d"
+                    "test.bp.p_ctg.gfa:md5,43890a1832d8f26de263e57dc5e3b8de"
                 ]
             ],
             [
-                "versions.yml:md5,a2ea36e18c39850b1680302d9f6c950f"
-            ]
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.bp.hap1.p_ctg.gfa:md5,7d7ea2bed472de263f6ec3521959b0d9"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.bp.hap2.p_ctg.gfa:md5,ce096a66c9bba039c6a22ba9e9409d01"
+                ]
+            ],
+            {
+                "versions_hifiasm": [
+                    [
+                        "HIFIASM",
+                        "hifasm",
+                        "0.25.0-r726"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-02-16T16:19:55.227290441",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
-        },
-        "timestamp": "2024-11-28T10:52:15.111066189"
+            "nf-test": "0.9.4",
+            "nextflow": "25.04.8"
+        }
     },
-    "homo_sapiens pacbio hifi [fastq, [,], [,] ] - stub": {
+    "homo_sapiens pacbio hifi [fastq, [,], [,], [,] ] - stub": {
         "content": [
             {
                 "0": [
@@ -147,7 +176,7 @@
                         {
                             "id": "test"
                         },
-                        "test.asm.r_utg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.r_utg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "1": [
@@ -155,26 +184,28 @@
                         {
                             "id": "test"
                         },
-                        "test.asm.ec.bin:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            "test.ec.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.hic.lk.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.hic.tlb.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.ovlp.reverse.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.ovlp.source.bin:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "10": [
                     [
-                        {
-                            "id": "test"
-                        },
-                        "test.stderr.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "HIFIASM",
+                        "hifasm",
+                        "0.25.0-r726"
                     ]
-                ],
-                "11": [
-                    "versions.yml:md5,a2ea36e18c39850b1680302d9f6c950f"
                 ],
                 "2": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.asm.ovlp.source.bin:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.p_utg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "3": [
@@ -182,7 +213,10 @@
                         {
                             "id": "test"
                         },
-                        "test.asm.ovlp.reverse.bin:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            "test.bp.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "4": [
@@ -190,7 +224,7 @@
                         {
                             "id": "test"
                         },
-                        "test.asm.bp.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.a_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "5": [
@@ -198,7 +232,7 @@
                         {
                             "id": "test"
                         },
-                        "test.asm.p_utg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.bp.hap1.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "6": [
@@ -206,7 +240,7 @@
                         {
                             "id": "test"
                         },
-                        "test.asm.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.bp.hap2.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "7": [
@@ -214,7 +248,7 @@
                         {
                             "id": "test"
                         },
-                        "test.asm.a_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.ec.fa.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "8": [
@@ -222,7 +256,7 @@
                         {
                             "id": "test"
                         },
-                        "test.asm.hap1.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.ovlp.paf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "9": [
@@ -230,7 +264,7 @@
                         {
                             "id": "test"
                         },
-                        "test.asm.hap2.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.stderr.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "alternate_contigs": [
@@ -238,7 +272,21 @@
                         {
                             "id": "test"
                         },
-                        "test.asm.a_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.a_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "bin_files": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test.ec.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.hic.lk.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.hic.tlb.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.ovlp.reverse.bin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.ovlp.source.bin:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "corrected_reads": [
@@ -246,7 +294,23 @@
                         {
                             "id": "test"
                         },
-                        "test.asm.ec.bin:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.ec.fa.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "hap1_contigs": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bp.hap1.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "hap2_contigs": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bp.hap2.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "log": [
@@ -257,36 +321,15 @@
                         "test.stderr.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "maternal_contigs": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.asm.hap2.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "paternal_contigs": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.asm.hap1.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
                 "primary_contigs": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.asm.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "processed_contigs": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.asm.bp.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            "test.bp.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.p_ctg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "processed_unitigs": [
@@ -294,7 +337,7 @@
                         {
                             "id": "test"
                         },
-                        "test.asm.p_utg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.p_utg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "raw_unitigs": [
@@ -302,44 +345,40 @@
                         {
                             "id": "test"
                         },
-                        "test.asm.r_utg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.r_utg.gfa:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "reverse_overlaps": [
+                "read_overlaps": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.asm.ovlp.reverse.bin:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.ovlp.paf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "source_overlaps": [
+                "versions_hifiasm": [
                     [
-                        {
-                            "id": "test"
-                        },
-                        "test.asm.ovlp.source.bin:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "HIFIASM",
+                        "hifasm",
+                        "0.25.0-r726"
                     ]
-                ],
-                "versions": [
-                    "versions.yml:md5,a2ea36e18c39850b1680302d9f6c950f"
                 ]
             }
         ],
+        "timestamp": "2026-02-16T10:53:50.939408883",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
-        },
-        "timestamp": "2024-11-28T10:53:06.003871811"
+            "nf-test": "0.9.4",
+            "nextflow": "26.01.1"
+        }
     },
-    "homo_sapiens pacbio hifi [fastq, [yak, yak], [,] ]": {
+    "homo_sapiens pacbio hifi [fastq, [,], [,], [,]]": {
         "content": [
             [
                 [
                     {
                         "id": "test"
                     },
-                    "test.asm.dip.r_utg.gfa:md5,68361ac3e8babd51f3891d1637ca0fdc"
+                    "test.bp.r_utg.gfa:md5,6a200e4bcb5d8d8fa6ed75874d26edc6"
                 ]
             ],
             [
@@ -347,7 +386,7 @@
                     {
                         "id": "test"
                     },
-                    "test.asm.dip.p_utg.gfa:md5,68361ac3e8babd51f3891d1637ca0fdc"
+                    "test.bp.p_utg.gfa:md5,6a200e4bcb5d8d8fa6ed75874d26edc6"
                 ]
             ],
             [
@@ -355,17 +394,83 @@
                     {
                         "id": "test"
                     },
-                    "test.asm.dip.hap1.p_ctg.gfa:md5,eed5da5f3dd415dbb711edb61a09802f"
+                    "test.bp.p_ctg.gfa:md5,c3225425a73a8d6d46536dab72380650"
                 ]
             ],
             [
-                "versions.yml:md5,a2ea36e18c39850b1680302d9f6c950f"
-            ]
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.bp.hap1.p_ctg.gfa:md5,78a86b6d5741a680e22a427ca9faa74a"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.bp.hap2.p_ctg.gfa:md5,ac2116fd2f22c67d4c304cbf9b9f7793"
+                ]
+            ],
+            null,
+            null,
+            {
+                "versions_hifiasm": [
+                    [
+                        "HIFIASM",
+                        "hifasm",
+                        "0.25.0-r726"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-02-16T10:52:36.945051713",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
-        },
-        "timestamp": "2024-11-28T10:51:45.301359171"
+            "nf-test": "0.9.4",
+            "nextflow": "26.01.1"
+        }
+    },
+    "homo_sapiens pacbio hifi [fastq, [yak, yak], [,], [,] ]": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.dip.r_utg.gfa:md5,68361ac3e8babd51f3891d1637ca0fdc"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.dip.p_utg.gfa:md5,68361ac3e8babd51f3891d1637ca0fdc"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.dip.hap1.p_ctg.gfa:md5,eed5da5f3dd415dbb711edb61a09802f"
+                ]
+            ],
+            {
+                "versions_hifiasm": [
+                    [
+                        "HIFIASM",
+                        "hifasm",
+                        "0.25.0-r726"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-02-16T16:20:05.943561958",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.04.8"
+        }
     }
 }

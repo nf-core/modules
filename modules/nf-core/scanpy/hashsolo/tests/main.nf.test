@@ -1,0 +1,235 @@
+nextflow_process {
+
+    name "Test Process SCANPY_HASHSOLO"
+    script "../main.nf"
+    process "SCANPY_HASHSOLO"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hashsolo"
+    tag "scanpy/hashsolo"
+    tag "scanpy"
+    tag "untar"
+
+    // ext.args
+    def priors                   = [0.20, 0.8, 0.19]
+    def pre_existing_clusters    = null
+    def clustering_data          = null
+    def number_of_noise_barcodes = null
+    def round_digits             = 10
+
+    test("hto_data_10x") {
+
+        config "./nextflow.config"
+
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                """
+                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
+                """
+                }
+            }
+        }
+        when {
+            params{
+                module_args = [
+                    round_digits ? "--round_digits $round_digits" : ""
+                ].findAll { it != "" }.join(" ")
+            }
+            process {
+                """
+                input[0] = UNTAR.out.untar.map { meta, files ->
+                    [ [ id: 'test' ], files, [] ]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("hto_data_10x - ext.args") {
+
+        config "./nextflow.config"
+
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                """
+                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
+                """
+                }
+            }
+        }
+        when {
+
+            params{
+                module_args = [
+                    "--priors",
+                    priors.join(" "),
+                    pre_existing_clusters ? "--pre_existing_clusters $pre_existing_clusters" : "",
+                    clustering_data ? "--clustering_data $clustering_data" : "",
+                    number_of_noise_barcodes ? "--number_of_noise_barcodes $number_of_noise_barcodes" : "",
+                    round_digits ? "--round_digits $round_digits" : ""
+                ].findAll { it != "" }.join(" ")
+            }
+            process {
+                """
+                input[0] = UNTAR.out.untar.map { meta, files ->
+                    [ [ id: 'test' ], files, [] ]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+
+
+
+    test("hto_data_10x - stub") {
+
+        options "-stub"
+
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                """
+                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
+                """
+                }
+            }
+        }
+        when {
+
+            process {
+                """
+                input[0] = UNTAR.out.untar.map { meta, files ->
+                    [ [ id: 'test' ], files, [] ]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("hto_data_h5ad (generated, no real data)") {
+
+        config "./nextflow.config"
+
+        when {
+            params{
+                module_args = [
+                    round_digits ? "--round_digits $round_digits" : ""
+                ].findAll { it != "" }.join(" ")
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hashsolo_anndata.h5ad', checkIfExists: true),
+                    ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out,
+                        process.out.versions.collect { path(it).yaml }
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("hto_data_h5ad (generated, no real data) - ext.args") {
+
+        config "./nextflow.config"
+
+        when {
+            params{
+                module_args = [
+                    "--priors",
+                    priors.join(" "),
+                    pre_existing_clusters ? "--pre_existing_clusters $pre_existing_clusters" : "",
+                    clustering_data ? "--clustering_data $clustering_data" : "",
+                    number_of_noise_barcodes ? "--number_of_noise_barcodes $number_of_noise_barcodes" : "",
+                    round_digits ? "--round_digits $round_digits" : ""
+                ].findAll { it != "" }.join(" ")
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hashsolo_anndata.h5ad', checkIfExists: true),
+                    ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out,
+                        process.out.versions.collect { path(it).yaml }
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("hto_data_h5ad (generated, no real data) - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hashsolo_anndata.h5ad', checkIfExists: true),
+                    ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out,
+                        process.out.versions.collect { path(it).yaml }
+                    ).match() }
+            )
+        }
+
+    }
+}

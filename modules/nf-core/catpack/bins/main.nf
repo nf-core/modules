@@ -13,6 +13,7 @@ process CATPACK_BINS {
     tuple val(meta3), path(taxonomy)
     tuple val(meta4), path(proteins)
     tuple val(meta5), path(diamond_table)
+    val(bin_suffix)
 
     output:
     tuple val(meta), path("*.ORF2LCA.txt"), emit: orf2lca
@@ -37,6 +38,7 @@ process CATPACK_BINS {
         -b bins/ \\
         -d ${database} \\
         -t ${taxonomy} \\
+        -s ${bin_suffix} \\
         ${premade_proteins} \\
         ${premade_table} \\
         -o ${prefix} \\

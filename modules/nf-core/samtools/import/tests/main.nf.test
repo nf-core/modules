@@ -11,73 +11,87 @@ nextflow_process {
     test("samtools_import_single ") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
-                input[0] = Channel.of([
-                    [ id:'test', single_end:true ], // meta map
+                input[0] = [
+                    [ id:'test', single_end:true ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
-                ])
+                ]
                 """
             }
         }
 
         then {
-            assertAll(
-                {assert process.success},
-                {assert snapshot(process.out.bam.collect { it.collect { it instanceof Map ? it : file(it).name } }).match()}
-            )
+            assert process.success
+            assert snapshot(
+                process.out.bam.collect { meta, bam_file -> [meta, bam(bam_file).getReadsMD5()] },
+                process.out.findAll { key, val -> key.startsWith("versions") }
+            ).match()
         }
     }
 
     test("samtools_import_paired ") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
-                input[0] = Channel.of([
-                    [ id:'test', single_end:false ], // meta map
+                input[0] = [
+                    [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-                ])
+                ]
                 """
             }
         }
 
         then {
-            assertAll(
-                {assert process.success},
-                {assert snapshot(process.out.bam.collect { it.collect { it instanceof Map ? it : file(it).name } }).match()}
-            )
+            assert process.success
+            assert snapshot(
+                process.out.bam.collect { meta, bam_file -> [meta, bam(bam_file).getReadsMD5()] },
+                process.out.findAll { key, val -> key.startsWith("versions") }
+            ).match()
         }
     }
 
     test("samtools_import_interleaved") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
-                input[0] = Channel.of([
-                    [ id:'test', single_end:false ], // meta map
+                input[0] = [
+                    [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_interleaved.fastq.gz', checkIfExists: true)
-                ])
+                ]
                 """
             }
         }
 
         then {
-            assertAll(
-                {assert process.success},
-                {assert snapshot(process.out.bam.collect { it.collect { it instanceof Map ? it : file(it).name } }).match()}
-            )
+            assert process.success
+            assert snapshot(
+                process.out.bam.collect { meta, bam_file -> [meta, bam(bam_file).getReadsMD5()] },
+                process.out.findAll { key, val -> key.startsWith("versions") }
+            ).match()
+        }
+    }
+
+    test("samtools_import -- stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_interleaved.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
     }
 }

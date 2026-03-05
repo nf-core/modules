@@ -1,8 +1,0 @@
-- name: metaphlan3 mergemetaphlantables test_metaphlan3_mergemetaphlantables
-  command: nextflow run ./tests/modules/nf-core/metaphlan3/mergemetaphlantables -entry test_metaphlan3_mergemetaphlantables -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/metaphlan3/mergemetaphlantables/nextflow.config
-  tags:
-    - metaphlan3/mergemetaphlantables
-    - metaphlan3
-  files:
-    - path: output/metaphlan3/test.txt
-      contains: ["clade_name	NCBI_tax_id"]

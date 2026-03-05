@@ -22,15 +22,15 @@ process SVTYPER_SVTYPERSSO {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def vcf    = vcf ? "--input_vcf ${vcf}" : ""
-    def fasta  = fasta ? "--ref_fasta ${fasta}" : ""
+    def vcf_opt    = vcf ? "--input_vcf ${vcf}" : ""
+    def fasta_opt  = fasta ? "--ref_fasta ${fasta}" : ""
     if ("$vcf" == "${prefix}.vcf") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     svtyper-sso \\
         --bam $bam \\
-        $vcf \\
-        $fasta \\
+        $vcf_opt \\
+        $fasta_opt \\
         --output_vcf ${prefix}.vcf \\
         --lib_info ${prefix}.json \\
         --cores $task.cpus \\
@@ -43,7 +43,6 @@ process SVTYPER_SVTYPERSSO {
     """
 
     stub:
-    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.json

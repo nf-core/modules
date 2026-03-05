@@ -26,21 +26,23 @@ input:
         type: file
         description: FASTA file containing amino acid sequences
         pattern: "*.{faa,fasta}"
-  - - model:
-        type: string
-        description: Built-in model for AMP prediction
-        pattern: "{precursor,mature}"
-  - - min_length:
-        type: integer
-        description: Minimum protein length for which predictions will be generated
-        pattern: "[0-9]+"
-  - - min_probability:
-        type: float
-        description: Cut-off for AMP prediction
-        pattern: "[0-9].[0-9]+"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+  - model:
+      type: string
+      description: Built-in model for AMP prediction
+      pattern: "{precursor,mature}"
+  - min_length:
+      type: integer
+      description: Minimum protein length for which predictions will be generated
+      pattern: "[0-9]+"
+  - min_probability:
+      type: float
+      description: Cut-off for AMP prediction
+      pattern: "[0-9].[0-9]+"
 output:
-  - amps_faa:
-      - meta:
+  amps_faa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,8 +51,10 @@ output:
           type: file
           description: File containing AMP predictions in amino acid FASTA format
           pattern: "*.{faa}"
-  - amps_tsv:
-      - meta:
+          ontologies:
+            - edam: "http://edamontology.org/format_1929" # FASTA
+  amps_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -59,11 +63,15 @@ output:
           type: file
           description: File containing AMP predictions in TSV format
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@jasmezz"
 maintainers:

@@ -26,6 +26,7 @@ input:
           GTF/GFF files
           e.g. [ 'file_1.gtf', 'file_2.gtf' ]
         pattern: "*.{gtf,gff}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -35,10 +36,12 @@ input:
         type: file
         description: Genome reference fasta file (optional)
         pattern: "*.{fasta,fa}"
+        ontologies: []
     - fai:
         type: file
         description: Index for fasta file
         pattern: "*.fai"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -48,9 +51,10 @@ input:
         type: file
         description: Reference annotation in gtf/gff format (optional)
         pattern: "*.{gtf,gff}"
+        ontologies: []
 output:
-  - annotated_gtf:
-      - meta:
+  annotated_gtf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing meta data
@@ -60,8 +64,9 @@ output:
           description: |
             Annotated gtf file when reference gtf is provided (optional)
           pattern: "*.annotated.gtf"
-  - combined_gtf:
-      - meta:
+          ontologies: []
+  combined_gtf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing meta data
@@ -72,8 +77,9 @@ output:
             Combined gtf file when multiple input files are
             provided (optional)
           pattern: "*.annotated.gtf"
-  - tmap:
-      - meta:
+          ontologies: []
+  tmap:
+    - - meta:
           type: map
           description: |
             Groovy Map containing meta data
@@ -84,8 +90,9 @@ output:
             File listing the most closely matching reference transcript
             for each query transcript (optional)
           pattern: "*.tmap"
-  - refmap:
-      - meta:
+          ontologies: []
+  refmap:
+    - - meta:
           type: map
           description: |
             Groovy Map containing meta data
@@ -96,8 +103,9 @@ output:
             File listing the reference transcripts with overlapping
             query transcripts (optional)
           pattern: "*.refmap"
-  - loci:
-      - meta:
+          ontologies: []
+  loci:
+    - - meta:
           type: map
           description: |
             Groovy Map containing meta data
@@ -106,8 +114,9 @@ output:
           type: file
           description: File with loci
           pattern: "*.loci"
-  - stats:
-      - meta:
+          ontologies: []
+  stats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing meta data
@@ -118,8 +127,9 @@ output:
             File with stats for input transcripts as compared to
             reference alternatively stats for the combined gtf
           pattern: "*.stats"
-  - tracking:
-      - meta:
+          ontologies: []
+  tracking:
+    - - meta:
           type: map
           description: |
             Groovy Map containing meta data
@@ -129,11 +139,14 @@ output:
           description: |
             This file matches transcripts up between samples
           pattern: "*.tracking"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jemten"
 maintainers:

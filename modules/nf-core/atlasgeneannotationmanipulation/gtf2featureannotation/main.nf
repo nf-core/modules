@@ -12,25 +12,25 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
     tuple val(meta2), path(fasta)
 
     output:
-    tuple val(meta), path("*.anno.tsv")                 , emit: feature_annotation
-    tuple val(meta), path("*.fa.gz")                    , emit: filtered_cdna, optional: true
-    path("versions.yml")                                , emit: versions
+    tuple val(meta), path("*.anno.tsv"), emit: feature_annotation
+    tuple val(meta), path("*.fa.gz")   , emit: filtered_cdna, optional: true
+    path("versions.yml")               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: meta.id
-    def reference_cdna = fasta ? "--parse-cdnas $fasta" : ""
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def reference_cdna = fasta ? "--parse-cdnas ${fasta}" : ""
     def VERSION = '1.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     gtf2featureAnnotation.R \\
-        --gtf-file $gtf \\
+        --gtf-file ${gtf} \\
         --output-file ${prefix}.anno.tsv \\
-        $reference_cdna \\
-        $args
+        ${reference_cdna} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -39,12 +39,10 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: meta.id
-    def reference_cdna = fasta ? "--parse-cdnas $fasta" : ""
+    def prefix  = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    touch ${meta.id}.anno.tsv
+    touch ${prefix}.anno.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

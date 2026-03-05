@@ -24,7 +24,11 @@
                     
                 ],
                 "3": [
-                    "versions.yml:md5,1184eb9fbc4a9cb7384b760b2c112c94"
+                    [
+                        "GATK4SPARK_MARKDUPLICATES",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
                 ],
                 "bam_index": [
                     [
@@ -47,34 +51,20 @@
                         "test.bam:md5,1154a16717d430199f3e9994a87b546a"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,1184eb9fbc4a9cb7384b760b2c112c94"
+                "versions_gatk4": [
+                    [
+                        "GATK4SPARK_MARKDUPLICATES",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-11-06T11:52:48.84070018"
-    },
-    "homo_sapiens - bam - metrics - output": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.bam:md5,1154a16717d430199f3e9994a87b546a"
-                ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-02-15T11:53:32.254055925"
+        "timestamp": "2026-01-21T13:14:01.717149938"
     },
     "homo_sapiens - cram": {
         "content": [
@@ -85,7 +75,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.cram:md5,e3bcab34b141b0838cd9b6b779e09a7a"
+                        "test.cram:md5,42570011add71e1839c86fea2e51f117"
                     ]
                 ],
                 "1": [
@@ -95,7 +85,11 @@
                     
                 ],
                 "3": [
-                    "versions.yml:md5,1184eb9fbc4a9cb7384b760b2c112c94"
+                    [
+                        "GATK4SPARK_MARKDUPLICATES",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
                 ],
                 "bam_index": [
                     
@@ -109,51 +103,25 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.cram:md5,e3bcab34b141b0838cd9b6b779e09a7a"
+                        "test.cram:md5,42570011add71e1839c86fea2e51f117"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,1184eb9fbc4a9cb7384b760b2c112c94"
+                "versions_gatk4": [
+                    [
+                        "GATK4SPARK_MARKDUPLICATES",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-11-06T11:54:09.554533288"
+        "timestamp": "2026-01-21T13:14:40.856583017"
     },
-    "homo_sapiens - bam - metrics - versions": {
-        "content": [
-            [
-                "versions.yml:md5,1184eb9fbc4a9cb7384b760b2c112c94"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.0"
-        },
-        "timestamp": "2024-11-06T11:53:39.648663125"
-    },
-    "homo_sapiens - bam - metrics - bam_index": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.bam.bai:md5,d947dccacf3fb7fcf174d364a5f7856d"
-                ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-02-15T11:53:32.305216975"
-    },
-    "stub": {
+    "homo_sapiens - bam - metrics -stub": {
         "content": [
             {
                 "0": [
@@ -184,7 +152,11 @@
                     ]
                 ],
                 "3": [
-                    "versions.yml:md5,1184eb9fbc4a9cb7384b760b2c112c94"
+                    [
+                        "GATK4SPARK_MARKDUPLICATES",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
                 ],
                 "bam_index": [
                     [
@@ -213,16 +185,178 @@
                         "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,1184eb9fbc4a9cb7384b760b2c112c94"
+                "versions_gatk4": [
+                    [
+                        "GATK4SPARK_MARKDUPLICATES",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-11-06T11:54:21.987287007"
+        "timestamp": "2026-01-21T13:15:12.689633321"
+    },
+    "homo_sapiens - bam - multiple -stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam.metrics:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "3": [
+                    [
+                        "GATK4SPARK_MARKDUPLICATES",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
+                ],
+                "bam_index": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "metrics": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam.metrics:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "output": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_gatk4": [
+                    [
+                        "GATK4SPARK_MARKDUPLICATES",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-01-21T13:15:01.903285405"
+    },
+    "homo_sapiens - cram -stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.cram:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.cram.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.cram.metrics:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "3": [
+                    [
+                        "GATK4SPARK_MARKDUPLICATES",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
+                ],
+                "bam_index": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.cram.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "metrics": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.cram.metrics:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "output": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.cram:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_gatk4": [
+                    [
+                        "GATK4SPARK_MARKDUPLICATES",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-01-21T13:15:23.564450642"
     },
     "sarscov2 - bam": {
         "content": [
@@ -249,7 +383,11 @@
                     
                 ],
                 "3": [
-                    "versions.yml:md5,1184eb9fbc4a9cb7384b760b2c112c94"
+                    [
+                        "GATK4SPARK_MARKDUPLICATES",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
                 ],
                 "bam_index": [
                     [
@@ -272,15 +410,98 @@
                         "test.bam:md5,dc1a09ac6371aab7c50d1a554baa06d3"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,1184eb9fbc4a9cb7384b760b2c112c94"
+                "versions_gatk4": [
+                    [
+                        "GATK4SPARK_MARKDUPLICATES",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-11-06T11:51:28.270175346"
+        "timestamp": "2026-01-21T13:13:41.846010605"
+    },
+    "sarscov2 - bam -stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam.metrics:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "3": [
+                    [
+                        "GATK4SPARK_MARKDUPLICATES",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
+                ],
+                "bam_index": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "metrics": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam.metrics:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "output": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_gatk4": [
+                    [
+                        "GATK4SPARK_MARKDUPLICATES",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-01-21T13:14:51.650842397"
     }
 }

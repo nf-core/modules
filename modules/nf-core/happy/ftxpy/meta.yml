@@ -23,18 +23,22 @@ input:
         type: file
         description: VCF file to process
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
     - regions_bed:
         type: file
         description: BED file. Restrict analysis to given (sparse) regions.
         pattern: "*.bed"
+        ontologies: []
     - targets_bed:
         type: file
         description: Restrict analysis to given (dense) regions.
         pattern: "*.bed"
+        ontologies: []
     - bam:
         type: file
         description: Pass one or more BAM files for feature table extraction
         pattern: "*.bam"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -44,6 +48,7 @@ input:
         type: file
         description: FASTA file of the reference genome
         pattern: "*.{fa,fasta}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -53,9 +58,10 @@ input:
         type: file
         description: The index of the reference FASTA
         pattern: "*.fai"
+        ontologies: []
 output:
-  - features:
-      - meta:
+  features:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,11 +70,15 @@ output:
           type: file
           description: Fuature table
           pattern: "*.csv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kubranarci"
 maintainers:

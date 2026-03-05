@@ -1,0 +1,130 @@
+nextflow_process {
+
+    name "Test Process DAMAGEPROFILER"
+
+    script "../main.nf"
+    process "DAMAGEPROFILER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "damageprofiler"
+
+    test("homo_sapiens - bam") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam',checkIfExists:true)
+                ]
+                input[1] = []
+                input[2] = []
+                input[3] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.results.collect { meta, dir -> [
+                        meta, file(dir).list().sort().collect { // Do not check md5sum for .pdf .svg and .log as unstable
+                            file ->
+                            file.endsWith(".pdf") || file.endsWith(".svg") || file.endsWith(".log") ? file : path(dir).resolve(file)
+                        }
+                    ]}
+                ).match() }
+            )
+        }
+    }
+    test("homo_sapiens - bam - fasta fai") {
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test',single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists:true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai',checkIfExists:true)
+                input[3] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.results.collect { meta, dir -> [
+                        meta, file(dir).list().sort().collect { // Do not check md5sum for .pdf .svg and .log as unstable
+                            file ->
+                            file.endsWith(".pdf") || file.endsWith(".svg") || file.endsWith(".log") ? file : path(dir).resolve(file)
+                        }
+                    ]}
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - bam - header") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists:true)
+                ]
+                input[1] = []
+                input[2] = []
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.header', checkIfExists:true)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.results.collect { meta, dir -> [
+                        meta, file(dir).listFiles().findAll { it.isDirectory() }.collect { subdir ->
+                            subdir.listFiles().sort().collect { file ->
+                                file.name.endsWith(".pdf") || file.name.endsWith(".svg") || file.name.endsWith(".log") ? file.name : file
+                            }
+                        }.flatten()
+                    ]}
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - bam -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists:true)
+                ]
+                input[1] = []
+                input[2] = []
+                input[3] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

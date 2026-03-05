@@ -24,9 +24,10 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
 output:
-  - covstats:
-      - meta:
+  covstats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,8 +36,9 @@ output:
           type: file
           description: Coverage statistics
           pattern: "*.stats.txt"
-  - hist:
-      - meta:
+          ontologies: []
+  hist:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,11 +47,14 @@ output:
           type: file
           description: "Histogram of # occurrences of each depth level"
           pattern: "*.hist.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@edmundmiller"
 maintainers:

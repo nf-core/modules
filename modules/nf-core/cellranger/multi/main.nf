@@ -2,7 +2,7 @@ process CELLRANGER_MULTI {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/cellranger:8.0.0"
+    container "nf-core/cellranger:10.0.0"
 
     input:
     val meta
@@ -24,6 +24,7 @@ process CELLRANGER_MULTI {
     path cmo_barcodes          , stageAs: "references/cmo/barcodes/*"
     path cmo_barcode_assignment, stageAs: "references/cmo/sample_barcode_assignment/*"
     path frna_sampleinfo       , stageAs: "references/frna/*"
+    path ocm_barcodes          , stageAs: "references/ocm/barcodes/*"
     val skip_renaming
 
     output:
@@ -38,6 +39,10 @@ process CELLRANGER_MULTI {
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "CELLRANGER_MULTI module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
+    // add mutually exclusive input checker
+    if ([ocm_barcodes, cmo_barcodes, frna_sampleinfo].count { input -> input } >= 2) {
+        error "The ocm barcodes; cmo barcodes and frna probes are mutually exclusive features. Please use only one per sample, or reach out in slack in case it is really intended."
     }
     args   = task.ext.args   ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
@@ -61,6 +66,7 @@ process CELLRANGER_MULTI {
     include_cmo  = cmo_fastqs.first().getName() != 'fastqs' && cmo_barcodes            ? '[samples]'             : ''
     include_fb = (ab_fastqs.first().getName() != 'fastqs' || crispr_fastqs.first().getName() != 'fastqs') && fb_reference ? '[feature]' : ''
     include_frna = gex_frna_probeset_name && frna_sampleinfo                           ? '[samples]'             : ''
+    include_ocm  = ocm_barcodes                                                        ? '[samples]'             : ''
 
     gex_reference_path = include_gex ? "reference,./${gex_reference_name}" : ''
     fb_reference_path  = include_fb  ? "reference,./${fb_reference_name}"  : ''
@@ -70,7 +76,7 @@ process CELLRANGER_MULTI {
     target_panel = gex_targetpanel_name != '' ? "target-panel,./$gex_targetpanel_name" : ''
 
     // fixed RNA reference (not sample info!) also goes under GEX section
-    frna_probeset = include_frna && gex_frna_probeset_name != '' ? "probe-set,./$gex_frna_probeset_name" : ''
+    frna_probeset = gex_frna_probeset_name != '' ? "probe-set,./$gex_frna_probeset_name" : ''
 
     // VDJ inner primer set
     primer_index = vdj_primer_index ? "inner-enrichment-primers,./references/primers/${vdj_primer_index.getName()}" : ''
@@ -82,10 +88,12 @@ process CELLRANGER_MULTI {
     // these references get appended directly to config file
     beam_csv_text  = include_beam && beam_control_panel.size() > 0 ? beam_control_panel : ''
     cmo_csv_text   = include_cmo  && cmo_barcodes.size() > 0       ? cmo_barcodes       : ''
+    ocm_csv_text   = include_ocm  && ocm_barcodes.size() > 0       ? ocm_barcodes       : ''
     frna_csv_text  = include_frna && frna_sampleinfo.size() > 0    ? frna_sampleinfo    : ''
 
     // the feature barcodes section get options for either CRISPR or antibody capture assays
-    fb_options     = meta_ab?.options ? meta_ab.options : (meta_crispr?.options ? meta_crispr.options : [])
+    fb_options     = ab_fastqs.first().getName() != 'fastqs' && meta_ab?.options ? meta_ab :
+        (crispr_fastqs.first().getName() != 'fastqs' && meta_crispr?.options ? meta_crispr : [:])
 
     // collect options for each section
     // these are pulled from the meta maps
@@ -116,8 +124,8 @@ process CELLRANGER_MULTI {
     vdj_options_r1_length = vdj_options_use && meta_vdj.options.containsKey("r1-length") ? "r1-length,${meta_vdj.options["r1-length"]}" : ''
     vdj_options_r2_length = vdj_options_use && meta_vdj.options.containsKey("r2-length") ? "r2-length,${meta_vdj.options["r2-length"]}" : ''
 
-    fb_options_r1_length = fb_options_use && meta_fb.options.containsKey("r1-length") ? "r1-length,${meta_fb.options["r1-length"]}" : ''
-    fb_options_r2_length = fb_options_use && meta_fb.options.containsKey("r2-length") ? "r2-length,${meta_fb.options["r2-length"]}" : ''
+    fb_options_r1_length = fb_options_use && fb_options.options.containsKey("r1-length") ? "r1-length,${fb_options.options["r1-length"]}" : ''
+    fb_options_r2_length = fb_options_use && fb_options.options.containsKey("r2-length") ? "r2-length,${fb_options.options["r2-length"]}" : ''
 
     // point config to FASTQs
     // After renaming it gets in 'fastq_all' folder
@@ -130,6 +138,24 @@ process CELLRANGER_MULTI {
 
     // name the config file
     config = "cellranger_multi_config.csv"
+
+    """
+    echo ${args}
+    echo ${gex_reference_path} ${fb_reference_path} ${vdj_reference_path}
+    echo ${target_panel} ${frna_probeset} ${primer_index}
+    echo ${beam_antigen_csv} ${beam_csv_text} ${cmo_csv_text} ${ocm_csv_text} ${frna_csv_text}
+    echo ${beam_options_use} ${gex_options_filter_probes}
+    echo ${gex_options_r1_length} ${gex_options_r2_length}
+    echo ${gex_options_chemistry} ${gex_options_expect_cells} ${gex_options_force_cells}
+    echo ${gex_options_no_secondary} ${gex_options_no_bam} ${gex_options_no_target_umi_filter}
+    echo ${gex_options_include_introns} ${gex_options_check_library_compatibility}
+    echo ${cmo_reference_path} ${cmo_barcode_path} ${cmo_options_min_assignment_confidence}
+    echo ${vdj_options_r1_length} ${vdj_options_r2_length}
+    echo ${fb_options_r1_length} ${fb_options_r2_length}
+    echo ${fastq_gex} ${fastq_vdj} ${fastq_antibody} ${fastq_beam} ${fastq_crispr} ${fastq_cmo}
+    echo ${config}
+    """
+
     template "cellranger_multi.py"
 
     stub:

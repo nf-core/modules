@@ -4,8 +4,8 @@ process FCSGX_FETCHDB {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ncbi-fcs-gx:0.5.4--h4ac6f70_1':
-        'biocontainers/ncbi-fcs-gx:0.5.4--h4ac6f70_1' }"
+        'https://depot.galaxyproject.org/singularity/ncbi-fcs-gx:0.5.5--h9948957_0':
+        'biocontainers/ncbi-fcs-gx:0.5.5--h9948957_0' }"
 
     input:
     val manifest // URL of manifest. Should not stage locally.
@@ -28,7 +28,7 @@ process FCSGX_FETCHDB {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        fcs_gx: \$( gx --help | sed '/build/!d; s/.*:v//; s/-.*//' )
+        fcsgx: \$( gx --help | sed '/build/!d; s/.*:v//; s/-.*//' )
     END_VERSIONS
     """
 
@@ -40,7 +40,7 @@ process FCSGX_FETCHDB {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        fcs_gx: \$( gx --help | sed '/build/!d; s/.*:v//; s/-.*//' )
+        fcsgx: \$( gx --help | sed '/build/!d; s/.*:v//; s/-.*//' )
     END_VERSIONS
     """
 }
