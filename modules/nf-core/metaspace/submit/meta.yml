@@ -1,0 +1,44 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "metaspace_submit"
+description: Submit imaging mass spectrometry data to METASPACE for metabolite annotation
+keywords:
+- imaging
+- mass_spectrometry
+- metabolomics
+- annotation
+tools:
+- "metaspace2020":
+    description: "Python package providing programmatic access to the METASPACE platform"
+    homepage: "https://metaspace2020.readthedocs.io"
+    documentation: "https://metaspace2020.readthedocs.io"
+    tool_dev_url: "https://github.com/metaspace2020/metaspace/tree/master/metaspace/python-client"
+    licence: ["Apache-2.0 license"]
+    identifier: biotools:metaspace
+
+input:
+- - imzml:
+      type: file
+      description: Path to .imzML file
+- - ibd:
+      type: file
+      description: Path to .ibd file
+- - config:
+      type: file
+      description: Path to .yml file containing dataset configuration and metadata
+output:
+- ds_id:
+  - "ds_id.txt":
+      type: file
+      description: File containing METASPACE dataset ID
+      pattern: "ds_id.txt"
+
+- versions:
+  - "versions.yml":
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+- "@bisho2122"
+maintainers:
+- "@bisho2122"
