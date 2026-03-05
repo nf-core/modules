@@ -30,6 +30,7 @@ for ( ao in names(args_opt)) opt[[ao]] = args_opt[[ao]]
 library(CNAqc)
 library(mobster)
 library(dplyr)
+library(cli)
 library(ggplot2)
 
 description = "$meta.patient"
@@ -43,11 +44,15 @@ if ( grepl(".rds\$", tolower("$rds_join")) ) {
         input_table = lapply(names(original),
                              function(sample_name) {
                                  purity = original[[sample_name]][["purity"]]
-                                 original[[sample_name]] %>%
+                                 table_s = original[[sample_name]] %>%
                                      # keep only mutations on the diploid karyotype
                                      CNAqc::subset_by_segment_karyotype("1:1") %>%
                                      CNAqc::Mutations() %>%
                                      dplyr::mutate(sample_id=sample_name, purity=purity)
+                                 if (nrow(table_s) == 0) {
+                                     cli::cli_alert_warning("Sample {sample_name} has no diploid mutations!")
+                                 }
+                                 return(table_s)
                                  }) %>% dplyr::bind_rows()
     } else {
         cli::cli_abort("Object of class {class($rds_join)} not supported.")
