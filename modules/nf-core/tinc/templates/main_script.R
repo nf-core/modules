@@ -2,6 +2,7 @@
 
 require(CNAqc)
 require(tidyverse)
+require(dplyr)
 require(TINC)
 
 parse_args = function(x) {
@@ -34,23 +35,24 @@ tumor_sample = "$meta.tumour_sample"
 normal_sample = "$meta.normal_sample"
 
 tumor_mutations = all_mutations[[tumor_sample]][['mutations']] %>%
-    select(chr, from, to, ref, alt, NV, DP, NR, VAF) %>%
-    filter(!is.na(DP)) %>%
-    rename(t_alt_count = NV, t_ref_count = NR, t_tot_count = DP, t_vaf = VAF)
+    dplyr::select(chr, from, to, ref, alt, NV, DP, NR, VAF) %>%
+    dplyr::filter(!is.na(DP)) %>%
+    dplyr::rename(t_alt_count = NV, t_ref_count = NR, t_tot_count = DP, t_vaf = VAF)
 
 normal_mutations = all_mutations[[normal_sample]][['mutations']] %>%
-    select(chr, from, to, ref, alt, NV, DP, NR, VAF) %>%
-    filter(!is.na(DP)) %>%
-    rename(n_alt_count = NV, n_ref_count = NR, n_tot_count = DP, n_vaf = VAF)
+    dplyr::select(chr, from, to, ref, alt, NV, DP, NR, VAF) %>%
+    dplyr::filter(!is.na(DP)) %>%
+    dplyr::rename(n_alt_count = NV, n_ref_count = NR, n_tot_count = DP, n_vaf = VAF)
 
 input_mut = dplyr::full_join(tumor_mutations, normal_mutations, by = c("chr", "from", "to", "ref", "alt")) %>%
-    mutate(t_vaf = case_when(is.na(t_vaf) ~ 1e-5, .default = t_vaf)) %>%
-    mutate(n_vaf = case_when(is.na(n_vaf) ~ 1e-5, .default = n_vaf)) %>%
-    mutate(t_vaf = as.numeric(t_vaf), n_vaf = as.numeric(n_vaf)) %>%
-    filter(!(is.na(t_alt_count))) %>%
-    filter(!(is.na(n_alt_count))) %>%
-    mutate(t_alt_count = as.numeric(t_alt_count), t_ref_count = as.numeric(t_ref_count), n_tot_count = as.numeric(n_tot_count), n_ref_count = as.numeric(n_ref_count)) %>%
-    filter(t_vaf > 0)
+    dplyr::mutate(t_vaf = case_when(is.na(t_vaf) ~ 1e-5, .default = t_vaf)) %>%
+    dplyr::mutate(n_vaf = case_when(is.na(n_vaf) ~ 1e-5, .default = n_vaf)) %>%
+    dplyr::mutate(t_vaf = as.numeric(t_vaf), n_vaf = as.numeric(n_vaf)) %>%
+    dplyr::filter(!(is.na(t_alt_count))) %>%
+    dplyr::filter(!(is.na(n_alt_count))) %>%
+    dplyr::mutate(t_alt_count = as.numeric(t_alt_count), t_ref_count = as.numeric(t_ref_count), n_tot_count = as.numeric(n_tot_count), n_ref_count = as.numeric(n_ref_count)) %>%
+    dplyr::filter((n_ref_count + n_alt_count) > 0) %>%
+    dplyr::filter(t_vaf > 0)
 
 CNAs = readRDS("$cna_rds")[['segments']]
 TINC_fit = TINC::autofit(input = input_mut,
@@ -61,13 +63,13 @@ tinc_plot = plot(TINC_fit)
 qc_res = TINC:::classification_normal(TINC_fit[['TIN']])
 
 if (qc_res[["level"]] >= eval(parse(text=opt[["normal_contamination_level"]]))) {
-    sample_contamination = tibble(
+    sample_contamination = dplyr::tibble(
         sample = tumor_sample,
         normal_contamination = qc_res[["level"]],
         normal_contamination_flag = 1
     )
 } else {
-    sample_contamination = tibble(sample = tumor_sample,
+    sample_contamination = dplyr::tibble(sample = tumor_sample,
     normal_contamination = qc_res[["level"]],
     normal_contamination_flag = 0
     )

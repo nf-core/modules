@@ -34,8 +34,8 @@ nextflow_process {
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
-                input[1] = [[],[]]
-                input[2] = false
+                    .combine(channel.of([[]]))
+                input[1] = false
                 """
             }
         }
@@ -107,7 +107,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.plot.get(0).get(1)).name, //unstable
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
@@ -136,7 +136,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.plot.get(0).get(1)).name, //unstable
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }

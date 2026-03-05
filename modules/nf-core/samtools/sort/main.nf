@@ -4,8 +4,8 @@ process SAMTOOLS_SORT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.21--h50ea8bc_0' :
-        'biocontainers/samtools:1.21--h50ea8bc_0' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.22.1--h96c455f_0' :
+        'biocontainers/samtools:1.22.1--h96c455f_0' }"
 
     input:
     tuple val(meta) , path(bam)
@@ -19,7 +19,7 @@ process SAMTOOLS_SORT {
     tuple val(meta), path("${prefix}.${extension}.crai"),   emit: crai, optional: true
     tuple val(meta), path("${prefix}.${extension}.csi"),    emit: csi,  optional: true
     tuple val(meta), path("${prefix}.${extension}.bai"),    emit: bai,  optional: true
-    path  "versions.yml",                                   emit: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,7 +30,7 @@ process SAMTOOLS_SORT {
     extension = args.contains("--output-fmt sam") ? "sam" :
                 args.contains("--output-fmt cram") ? "cram" :
                 "bam"
-    reference = fasta ? "--reference ${fasta}" : ""
+    def reference = fasta ? "--reference ${fasta}" : ""
     output_file = index_format ? "${prefix}.${extension}##idx##${prefix}.${extension}.${index_format} --write-index" : "${prefix}.${extension}"
     if (index_format) {
         if (!index_format.matches('bai|csi|crai')) {
@@ -53,10 +53,6 @@ process SAMTOOLS_SORT {
         -o ${output_file} \\
         -
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -65,7 +61,6 @@ process SAMTOOLS_SORT {
     extension = args.contains("--output-fmt sam") ? "sam" :
                 args.contains("--output-fmt cram") ? "cram" :
                 "bam"
-    def reference = fasta ? "--reference ${fasta}" : ""
     if (index_format) {
         if (!index_format.matches('bai|csi|crai')) {
             error "Index format not one of bai, csi, crai."
@@ -79,9 +74,5 @@ process SAMTOOLS_SORT {
     touch ${prefix}.${extension}
     ${index}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }

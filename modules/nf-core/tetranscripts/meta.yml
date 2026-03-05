@@ -1,0 +1,150 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "tetranscripts"
+description: Runs TEtranscripts which summarises transposable element content of
+  a bam file.
+keywords:
+  - transposable
+  - TE
+  - transcriptomics
+tools:
+  - "tetranscripts":
+      description: A package for including transposable elements in differential
+        enrichment analysis of sequencing datasets.
+      homepage: https://github.com/mhammell-laboratory/TEtranscripts
+      documentation: https://hammelllab.labsites.cshl.edu/software/#TEtranscripts
+      tool_dev_url: https://github.com/mhammell-laboratory/TEtranscripts
+      doi: 10.1093/bioinformatics/btv422
+      licence: ["GPL v3"]
+      identifier: biotools:tetranscripts
+
+input:
+  # Treatment BAM
+  - - meta_t:
+        type: map
+        description: |
+          Groovy Map containing treatment sample information. e.g. `[
+          id:'sample1' ]`
+    - bam_t:
+        type: file
+        description: A BAM file for the treatment condition
+        pattern: "*.{bam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+
+        # Control BAM
+  - - meta_c:
+        type: map
+        description: |
+          Groovy Map containing control sample information,
+          e.g. `[ id:'control1']`
+    - bam_c:
+        type: file
+        description: A BAM file for the control condition
+        pattern: "*.{bam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+
+        # Genome GTF
+  - - meta_ggtf:
+        type: map
+        description: |
+          Groovy map containing control sample information
+          e.g. `[ id:'control1' ]`
+    - g_gtf:
+        type: file
+        description: A GTF file for alignment to the genome
+        pattern: "*.{gtf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2306"
+
+        # TE GTF
+  - - meta_tegtf:
+        type: map
+        description: |
+          Groovy map containing TE GTF information
+          e.g. `[ id:'control1' ]`
+
+    - te_gtf:
+        type: file
+        description: A curated GTF file for alignment to transposable elements
+        pattern: "*.{gtf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2306"
+output:
+  countTable:
+    - - meta_t:
+          type: map
+          description: |
+            Groovy Map containing treatment sample information.
+            e.g. `id:'sample1' ]`
+      - "*.cntTable":
+          type: file
+          description: Counts table of transposable element families
+          pattern: "*.cntTable"
+          ontologies: []
+  log2fc:
+    - - meta_t:
+          type: map
+          description: |
+            Groovy Map containing treatment sample information.
+            e.g. `id:'sample1' ]`
+      - "*.R":
+          type: file
+          description: Differential gene expression analysis file
+          pattern: "*.R"
+
+          ontologies:
+            - edam: http://edamontology.org/format_3999 # R script
+
+  analysis:
+    - - meta_t:
+          type: map
+          description: |
+            Groovy map containing treatment sample information.
+            e.g. `id:'sample1' ]`
+      - "*_analysis.txt":
+          type: file
+          description: DESeq2 analysis file
+          pattern: "*_analysis.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # text format
+
+  sigdiff:
+    - - meta_t:
+          type: map
+          description: |
+            Groovy map containing treatment sample information.
+            e.g. `id:'sample1' ]`
+      - "*_gene_TE.txt":
+          type: file
+          description: DESeq2 analysis file
+          pattern: "*_gene_TE.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # text format
+
+  versions_tetranscripts:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - tetranscripts:
+          type: string
+          description: The tool name
+      - "tetranscripts version | sed '1!d;s/.* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - tetranscripts:
+          type: string
+          description: The tool name
+      - "tetranscripts version | sed '1!d;s/.* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@hanalysis"
+maintainers:
+  - "@hanalysis"

@@ -2,9 +2,10 @@
 name: "hiphase"
 description: pacbio structural variant calling tool
 keywords:
-  - sort
-  - example
-  - genomics
+  - pacbio
+  - structural variant
+  - phasing
+  - pacbio hifi
 tools:
   - "hiphase":
       description: "Small and structural variant phasing tool for PacBio HiFi reads"
@@ -55,6 +56,18 @@ input:
         pattern: "*.{fasta}"
         ontologies: []
 output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.bam":
+          type: file
+          description: Phased BAM file with haplotag information
+          pattern: "*.bam"
+          ontologies:
+            - edam: http://edamontology.org/format_2572 # BAM
   vcf:
     - - meta:
           type: map
@@ -65,7 +78,8 @@ output:
           type: file
           description: Phased VCF file
           pattern: "*.vcf"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3016 # VCF
   csv:
     - - meta:
           type: map
@@ -76,7 +90,6 @@ output:
           type: file
           description: stats associated with the phasing
           pattern: "*.csv"
-
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
   versions:
@@ -84,7 +97,6 @@ output:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
-
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
 authors:

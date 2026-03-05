@@ -4,14 +4,14 @@ process SIGPROFILER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-b6141a7b8f0674ac604d90eb1306a731da24a734:daf9213409b038023df2a741f058d1bfd66b3c4c-0':
-        'biocontainers/mulled-v2-b6141a7b8f0674ac604d90eb1306a731da24a734:daf9213409b038023df2a741f058d1bfd66b3c4c-0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3e/3e160064566f2529f87874cfc606b160d9f58c606fbb1842ca46023da2afe8d3/data':
+        'community.wave.seqera.io/library/pip_sigprofilerassignment_sigprofilerextractor_sigprofilermatrixgenerator_pruned:02a3f95da35d8c9a' }"
 
     input:
     tuple val(meta), path(tsv_list, stageAs: '*.tsv')
-    val(genome)                  // genome version  
+    val(genome)                  // genome version
     path(genome_installed_path)  //optional
-    
+
     output:
     tuple val(meta), path("results/*")    , emit: results_sigprofiler
     path "versions.yml"                   , emit: versions
@@ -23,7 +23,6 @@ process SIGPROFILER {
     template "main_script.py"
 
     stub:
-    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def context_types = task.ext.context_type?.split(',') ?: ['96','DINUC','ID']
 
@@ -33,16 +32,16 @@ process SIGPROFILER {
         'DINUC' : 'DBS78',
         'ID'    : 'ID83'
     ]
-    def signatures = context_types.collect { context_map[it] }
+    def signatures = context_types.collect { index -> context_map[index] }
 
     """
     mkdir -p results/input
     touch results/input/input_data.txt
-    
+
     # Create per-context outputs
 
     for sig in ${signatures.join(" ")}; do
-       
+
         mkdir -p results/\$sig/\$sig/Suggested_Solution/COSMIC_\${sig}_Decomposed_Solution/Signatures/
         touch    results/\$sig/\$sig/Samples.txt
         touch    results/\$sig/\$sig/Suggested_Solution/COSMIC_\${sig}_Decomposed_Solution/Signatures/COSMIC_\${sig}_Signatures.txt
@@ -51,12 +50,15 @@ process SIGPROFILER {
         mkdir -p results/output/\$type
         touch    results/output/\$type/${prefix}.\${sig}.all
     done
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python3 -c 'import sys; print(".".join(map(str, sys.version_info[:3])))')
-        sigprofilermatrixGenerator: \$(python3 -c "import SigProfilerMatrixGenerator as matGen; print(matGen.__version__)")
-        sigprofilerextractor: \$(python3 -c "import SigProfilerExtractor as sig; print(sig.__version__)")
+        SigProfilerAssignment: \$(python3 -c "import SigProfilerAssignment as sig; print(sig.__version__)")
+        SigProfilerExtractor: \$(python3 -c "import SigProfilerExtractor as sig; print(sig.__version__)")
+        SigProfilerMatrixGenerator: \$(python3 -c "import SigProfilerMatrixGenerator as matGen; print(matGen.__version__)")
+        pandas: \$(python3 -c "import pandas as pd; print(pd.__version__)")
+        sigProfilerPlotting: \$(python3 -c "import sigProfilerPlotting as sig; print(sig.__version__)")
     END_VERSIONS
     """
 }

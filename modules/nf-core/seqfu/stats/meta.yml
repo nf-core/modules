@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "seqfu_stats"
 description: Statistics for FASTA or FASTQ files
 keywords:
@@ -13,11 +12,10 @@ tools:
       documentation: "https://telatin.github.io/seqfu2/"
       tool_dev_url: "https://github.com/telatin/seqfu2"
       doi: "10.3390/bioengineering8050059"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:seqfu
-
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
@@ -28,9 +26,8 @@ input:
         description: One or more FASTA or FASTQ files
         pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fq,fq.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_1930
 output:
-  #Only when we have meta
   stats:
     - - meta:
           type: map
@@ -42,7 +39,7 @@ output:
           description: Tab-separated output file with basic sequence statistics.
           pattern: "*.{tsv}"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   multiqc:
     - - meta:
           type: map
@@ -54,13 +51,27 @@ output:
           description: MultiQC ready table
           pattern: "*.{_mqc.txt}"
           ontologies: []
+  versions_seqfu:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqfu:
+          type: string
+          description: The name of the tool
+      - seqfu version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqfu:
+          type: string
+          description: The name of the tool
+      - seqfu version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@telatin"
 maintainers:

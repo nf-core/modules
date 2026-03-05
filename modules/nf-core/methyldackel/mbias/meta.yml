@@ -31,21 +31,36 @@ input:
         description: BAM/CRAM file
         pattern: "*.{bam,cram}"
         ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - bai:
         type: file
         description: BAM/CRAM index file
         pattern: "*.{bai,crai}"
         ontologies: []
-  - fasta:
-      type: file
-      description: Input genome fasta file
-      pattern: "*.{fasta,fa}"
-      ontologies: []
-  - fai:
-      type: file
-      description: FASTA index file
-      pattern: "*.{fai}"
-      ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input genome fasta file
+        pattern: "*.{fasta,fa}"
+        ontologies: []
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fai:
+        type: file
+        description: FASTA index file
+        pattern: "*.{fai}"
+        ontologies: []
 output:
   txt:
     - - meta:
@@ -69,3 +84,4 @@ authors:
   - "@phue"
 maintainers:
   - "@phue"
+  - "@eduard-watchmaker"

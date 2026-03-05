@@ -11,7 +11,7 @@ nextflow_process {
     tag "segemehl/index"
 
     test("test-segemehl-index") {
-        
+
         when {
             process {
                 """
@@ -28,7 +28,7 @@ nextflow_process {
             )
         }
     }
-    
+
     test("test-segemehl-index-stub") {
         options '-stub'
         when {
@@ -47,5 +47,5 @@ nextflow_process {
             )
         }
     }
-    
+
 }

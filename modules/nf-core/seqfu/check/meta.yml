@@ -1,0 +1,69 @@
+name: "seqfu_check"
+description: Evaluates the integrity of DNA FASTQ files
+keywords:
+  - check
+  - seqfu
+  - fastq
+tools:
+  - "seqfu":
+      description: "A general-purpose program to manipulate and parse information from FASTQ files"
+      homepage: https://telatin.github.io/seqfu2/
+      documentation: https://telatin.github.io/seqfu2/tools/check.html#usage
+      tool_dev_url: https://github.com/telatin/seqfu2
+      doi: "10.3390/bioengineering8050059"
+      licence: ["MIT"]
+      identifier: biotools:seqfu
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1' ]`
+    - reads:
+        type: file
+        description: Either fastq file(s) or directory containing fastq files to be checked
+        pattern: "*.{fq,fastq}[.gz]"
+        ontologies:
+          - edam: http://edamontology.org/format_1931 # FASTQ-illumina format
+
+output:
+  check:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - "${prefix}.tsv":
+          type: file
+          description: >
+            Tab-separated output file with basic sequence statistics.
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_seqfu:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqfu:
+          type: string
+          description: The name of the tool
+      - seqfu version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqfu:
+          type: string
+          description: The name of the tool
+      - seqfu version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@kornkv"
+  - "@mrozon-zip"
+maintainers:
+  - "@kornkv"
+  - "@mrozon-zip"
+  - "@vagkaratzas"

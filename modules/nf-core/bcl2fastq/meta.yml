@@ -9,7 +9,8 @@ tools:
       description: "Demultiplex Illumina BCL files"
       homepage: "https://support.illumina.com/sequencing/sequencing_software/bcl2fastq-conversion-software"
       documentation: "https://support.illumina.com/content/dam/illumina-support/documents/documentation/software_documentation/bcl2fastq/bcl2fastq2-v2-20-software-guide-15051736-03.pdf"
-      licence: ["ILLUMINA"]
+      licence:
+        - "ILLUMINA"
       identifier: ""
 input:
   - - meta:
@@ -22,7 +23,7 @@ input:
         description: "Input samplesheet"
         pattern: "*.{csv}"
         ontologies:
-          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3752
     - run_dir:
         type: file
         description: |
@@ -39,7 +40,8 @@ output:
           description: Demultiplexed sample FASTQ files
           pattern: "**_S*_L00?_R?_00?.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_1930
+            - edam: http://edamontology.org/format_3989
   fastq_idx:
     - - meta:
           type: map
@@ -49,7 +51,8 @@ output:
           description: Optional demultiplexed index FASTQ files
           pattern: "**_S*_L00?_I?_00?.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_1930
+            - edam: http://edamontology.org/format_3989
   undetermined:
     - - meta:
           type: map
@@ -59,7 +62,8 @@ output:
           description: Optional undetermined sample FASTQ files
           pattern: "Undetermined_S0_L00?_R?_00?.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_1930
+            - edam: http://edamontology.org/format_3989
   undetermined_idx:
     - - meta:
           type: map
@@ -69,7 +73,8 @@ output:
           description: Optional undetermined index FASTQ files
           pattern: "Undetermined_S0_L00?_I?_00?.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_1930
+            - edam: http://edamontology.org/format_3989
   reports:
     - - meta:
           type: map
@@ -77,8 +82,9 @@ output:
       - output/Reports:
           type: file
           description: Demultiplexing Reports
-          pattern: "Reports/*"
-          ontologies: []
+          pattern: "Reports"
+          ontologies:
+            - edam: http://edamontology.org/format_2331
   stats:
     - - meta:
           type: map
@@ -86,8 +92,11 @@ output:
       - output/Stats:
           type: file
           description: Statistics files
-          pattern: "Stats/*"
-          ontologies: []
+          pattern: "Stats"
+          ontologies:
+            - edam: http://edamontology.org/format_2330
+            - edam: http://edamontology.org/format_2332
+            - edam: http://edamontology.org/format_3464
   interop:
     - - meta:
           type: map
@@ -96,14 +105,39 @@ output:
           type: file
           description: Interop files
           pattern: "*.{bin}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2333
+  xml:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "**/*.xml":
+          type: file
+          description: Output XML files, for example RunInfo.xml
+          pattern: "**/*.xml"
+          ontologies:
+            - edam: http://edamontology.org/format_2332
+  versions_bcl2fastq:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bcl2fastq:
+          type: string
+          description: The name of the tool
+      - bcl2fastq -V 2>&1 | grep -m 1 bcl2fastq | sed 's/^.*bcl2fastq v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bcl2fastq:
+          type: string
+          description: The name of the tool
+      - bcl2fastq -V 2>&1 | grep -m 1 bcl2fastq | sed 's/^.*bcl2fastq v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@matthdsm"
 maintainers:

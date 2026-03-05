@@ -2,7 +2,7 @@ process CELLRANGER_VDJ {
     tag "${meta.id}"
     label 'process_high'
 
-    container "nf-core/cellranger:9.0.1"
+    container "nf-core/cellranger:10.0.0"
 
     input:
     tuple val(meta), path(reads)
@@ -46,8 +46,8 @@ process CELLRANGER_VDJ {
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p "${meta.id}/outs/"
-    touch ${meta.id}/outs/fake_file.txt
+    mkdir -p "${prefix}/outs/"
+    touch ${prefix}/outs/fake_file.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

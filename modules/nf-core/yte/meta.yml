@@ -25,17 +25,17 @@ input:
         pattern: "*.{yaml}"
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
-  - map_file:
-      type: file
-      description: YAML file containing a map to be used in the template
-      pattern: "*.{yaml}"
-      ontologies:
-        - edam: http://edamontology.org/format_3750 # YAML
-  - map:
-      type: map
-      description: |
-        Groovy Map containing mapping information to be used in the template
-        e.g. `[ key: value ]` with key being a wildcard in the template
+    - map_file:
+        type: file
+        description: YAML file containing a map to be used in the template
+        pattern: "*.{yaml}"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+    - map:
+        type: map
+        description: |
+          Groovy Map containing mapping information to be used in the template
+          e.g. `[ key: value ]` with key being a wildcard in the template
 
 output:
   rendered:
@@ -48,13 +48,28 @@ output:
           pattern: "*.yaml"
           ontologies:
             - edam: http://edamontology.org/format_3750 # YAML
+  versions_yte:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - yte:
+          type: string
+          description: The tool name
+      - echo $VERSION:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - yte:
+          type: string
+          description: The tool name
+      - echo $VERSION:
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
   - "@famosab"

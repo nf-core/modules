@@ -4,8 +4,8 @@ process GFASTATS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gfastats:1.3.10--h077b44d_0':
-        'biocontainers/gfastats:1.3.10--h077b44d_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f7/f7150110bea918bd523e41aab58f3be2eda949bbe7f715500681b01965e5f667/data':
+        'community.wave.seqera.io/library/gfastats:1.3.11--692f8595aa6b06a8' }"
 
     input:
     tuple val(meta), path(assembly)
@@ -20,7 +20,7 @@ process GFASTATS {
     output:
     tuple val(meta), path("*.assembly_summary"), emit: assembly_summary
     tuple val(meta), path("*.${out_fmt}.gz")   , emit: assembly        , optional: true
-    path "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val('gfastats'), eval("gfastats -v | sed '1!d;s/.*v//'"), emit: versions_gfastats, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,11 +46,6 @@ process GFASTATS {
         $genome_size \\
         $target \\
         > ${prefix}.assembly_summary
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gfastats: \$( gfastats -v | sed '1!d;s/.*v//' )
-    END_VERSIONS
     """
 
     stub:
@@ -58,10 +53,5 @@ process GFASTATS {
     """
     echo | gzip > ${prefix}.${out_fmt}.gz
     touch ${prefix}.assembly_summary
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gfastats: \$( gfastats -v | sed '1!d;s/.*v//' )
-    END_VERSIONS
     """
 }

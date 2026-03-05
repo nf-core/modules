@@ -1,16 +1,22 @@
 {
     "test-survivor-merge": {
         "content": [
-            "VcfFile [chromosomes=[], sampleCount=2, variantCount=0, phased=true, phasedAutodetect=true]",
-            [
-                "versions.yml:md5,ed584c94eb1af847390f47ab2ab32726"
-            ]
+            "VcfFile [chromosomes=[chr22], sampleCount=2, variantCount=13, phased=false, phasedAutodetect=false]",
+            {
+                "versions_survivor": [
+                    [
+                        "SURVIVOR_MERGE",
+                        "survivor",
+                        "1.0.7"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.3"
         },
-        "timestamp": "2024-08-27T12:08:46.453672"
+        "timestamp": "2026-02-13T12:11:50.088050517"
     },
     "test-survivor-merge-stub": {
         "content": [
@@ -25,7 +31,11 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,ed584c94eb1af847390f47ab2ab32726"
+                    [
+                        "SURVIVOR_MERGE",
+                        "survivor",
+                        "1.0.7"
+                    ]
                 ],
                 "vcf": [
                     [
@@ -36,15 +46,19 @@
                         "test.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,ed584c94eb1af847390f47ab2ab32726"
+                "versions_survivor": [
+                    [
+                        "SURVIVOR_MERGE",
+                        "survivor",
+                        "1.0.7"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.3"
         },
-        "timestamp": "2024-08-27T12:07:10.999159"
+        "timestamp": "2026-02-13T11:34:16.360956738"
     }
 }

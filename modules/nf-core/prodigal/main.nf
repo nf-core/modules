@@ -46,7 +46,6 @@ process PRODIGAL {
     """
 
     stub:
-    def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.fna.gz

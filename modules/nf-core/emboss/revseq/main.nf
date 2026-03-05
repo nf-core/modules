@@ -35,7 +35,6 @@ process EMBOSS_REVSEQ {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = sequences.name - ~/.*\./
     def outfile = "${prefix}.rev.${suffix}"

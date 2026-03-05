@@ -20,9 +20,13 @@ input:
     - reads:
         type: file
         description: |
-          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-          respectively.
-        ontologies: []
+          List of input FASTA, FASTQ, SAM, BAM or CRAM files. All must be of the same type.
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_2545 # FASTQ
+          - edam: http://edamontology.org/format_2573 # SAM
+          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_3462 # CRAM
 output:
   hist:
     - - meta:
@@ -43,8 +47,10 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.ktab*":
           type: file
-          description: A sorted table of all canonical k‑mers along with their counts.
-          pattern: "*.ktab"
+          description: A sorted table of all canonical k‑mers along with their
+            counts.
+          pattern: "*.ktab*"
+          ontologies: []
   prof:
     - - meta:
           type: map
@@ -53,15 +59,31 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.{prof,pidx}*":
           type: file
-          description: A k‑mer count profile of each sequence in the input data set.
-          pattern: "*.prof"
+          description: A k‑mer count profile of each sequence in the input data
+            set.
+          pattern: "*.{prof,pidx}*"
+          ontologies: []
+  versions_fastk:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - fastk:
+          type: string
+          description: Name of the tool
+      - "1.2":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - fastk:
+          type: string
+          description: Name of the tool
+      - "1.2":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@mahesh-panchal"
 maintainers:

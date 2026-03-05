@@ -877,5 +877,115 @@ nextflow_process {
         }
 
     }
+    test("cellranger - multi - 10k - kidney - flex - singleplex") {
 
+        when {
+            process {
+                """
+                //
+                // preparation: unfortunately have to repeat data load
+                //
+
+                /***************************/
+                /*** stage 10k Kidney data ***/
+                /***************************/
+
+                // stage FASTQ test data
+                fastqs = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/singleplex_flex/Human_Kidney_GEM-X_Flex_S1_L001_R1_001.subsampled.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/singleplex_flex/Human_Kidney_GEM-X_Flex_S1_L001_R2_001.subsampled.fastq.gz', checkIfExists: true)
+                ]
+                def fastq_samplename_10k_kidney = "subsampled_10k_human_kidney_gemx_flex"
+
+                /*******************************/
+                /*** end stage 10k Kidney data ***/
+                /*******************************/
+
+                /***************************/
+                /*** stage GEX reference ***/
+                /***************************/
+
+                // will build this as done in cellranger count test
+                gex_ref_fasta    = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                gex_ref_gtf      = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                def gex_ref_name = "homo_sapiens_chr22_reference"
+
+                /*******************************/
+                /*** end stage GEX reference ***/
+                /*******************************/
+
+                probeset = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/flex/Chromium_Human_Transcriptome_Probe_Set_v1.1.0_GRCh38-2024-A.chr22.csv', checkIfExists: true)
+
+                // make an empty dummy file, for FASTQs
+                empty_file = file("$workDir/EMPTY")
+                empty_file.append("")
+
+
+                // create empty channels to fill unused cellranger multi arguments
+                // fastqs need a [ meta, ref ] structure
+                // references just need a path
+                ch_gex_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_vdj_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_ab_fastqs             = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_beam_fastqs           = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_cmo_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_crispr_fastqs         = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_gex_frna_probeset     = []
+                ch_gex_targetpanel       = []
+                ch_vdj_reference         = []
+                ch_vdj_primer_index      = []
+                ch_fb_reference          = []
+                ch_beam_antigen_panel    = []
+                ch_beam_control_panel    = []
+                ch_cmo_reference         = []
+                ch_cmo_barcodes          = []
+                ch_ocm_barcodes          = []
+                ch_cmo_sample_assignment = []
+                ch_frna_sampleinfo       = []
+
+                // collect references and fastq files for staging
+                ch_gex_fastqs_10k_kidney = Channel.of( fastqs )
+                    .collect()
+                    .map { reads -> [ [ id:fastq_samplename_10k_kidney , options:[ "create-bam":false ] ], reads ] }
+
+                input[0]  = [ id:'subsampled_10k_human_kidney_gemx_flex', single_end:false ]
+                input[1]  = ch_gex_fastqs_10k_kidney
+                input[2]  = ch_vdj_fastqs
+                input[3]  = ch_ab_fastqs
+                input[4]  = ch_beam_fastqs
+                input[5]  = ch_cmo_fastqs
+                input[6]  = ch_crispr_fastqs
+                input[7]  = CELLRANGER_MKREF.out.reference
+                input[8]  = probeset
+                input[9]  = ch_gex_targetpanel
+                input[10] = ch_vdj_reference
+                input[11] = ch_vdj_primer_index
+                input[12] = ch_fb_reference
+                input[13] = ch_beam_antigen_panel
+                input[14] = ch_beam_control_panel
+                input[15] = ch_cmo_reference
+                input[16] = ch_cmo_barcodes
+                input[17] = ch_cmo_sample_assignment
+                input[18] = ch_frna_sampleinfo
+                input[19] = ch_ocm_barcodes
+                input[20] = false // default to false to guarantee renaming during test
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.outs[0][1].findAll {  file(it).name == 'metrics_summary.csv'  },
+                    process.out.outs[0][1].findAll {  file(it).name == 'filtered_feature_bc_matrix.h5'  },
+                    process.out.outs[0][1].findAll {  file(it).name == 'raw_feature_bc_matrix.h5' },
+                    process.out.outs[0][1].findAll {  file(it).name == 'sample_filtered_feature_bc_matrix.h5' },
+                    process.out.outs[0][1].findAll {  file(it).name == 'sample_raw_feature_bc_matrix.h5' }
+                ).match() },
+                { assert snapshot(process.out.versions).match("versions-flex-singleplex") }
+            )
+        }
+
+    }
 }

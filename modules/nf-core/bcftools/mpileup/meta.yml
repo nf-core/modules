@@ -24,10 +24,15 @@ input:
         description: Input BAM file
         pattern: "*.{bam}"
         ontologies: []
-    - intervals:
+    - intervals_mpileup:
         type: file
         description: Input intervals file. A file (commonly '.bed') containing regions
-          to subset
+          to subset used by mpileup
+        ontologies: []
+    - intervals_call:
+        type: file
+        description: Input intervals file. A file (commonly '.bed') containing regions
+          to subset used by call but need a fourth column with REF,ALT
         ontologies: []
   - - meta2:
         type: map
@@ -38,6 +43,11 @@ input:
         type: file
         description: FASTA reference file
         pattern: "*.{fasta,fa}"
+        ontologies: []
+    - fai:
+        type: file
+        description: FASTA reference file index
+        pattern: "*.fai"
         ontologies: []
   - save_mpileup:
       type: boolean
@@ -87,16 +97,28 @@ output:
           description: mpileup gzipped output for all positions
           pattern: "{*.mpileup.gz}"
           ontologies: []
+  versions_bcftools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@joseespinosa"
-  - "@drpatelh"
 maintainers:
   - "@joseespinosa"
-  - "@drpatelh"

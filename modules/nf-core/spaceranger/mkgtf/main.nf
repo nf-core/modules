@@ -2,14 +2,14 @@ process SPACERANGER_MKGTF {
     tag "$gtf"
     label 'process_low'
 
-    container "nf-core/spaceranger:3.1.3"
+    container "nf-core/spaceranger:9c5e7dc93c32448e"
 
     input:
-    path gtf
+    path(gtf)
 
     output:
-    path "*.gtf"         , emit: gtf
-    path "versions.yml"  , emit: versions
+    path("*.gtf"), emit: gtf
+    tuple val("${task.process}"), val('spaceranger'), eval('spaceranger -V | sed  "s/spaceranger spaceranger-//"'), emit: versions_spaceranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,25 +27,15 @@ process SPACERANGER_MKGTF {
         $gtf \\
         ${prefix}.gtf \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        spaceranger: \$(spaceranger -V | sed -e "s/spaceranger spaceranger-//g")
-    END_VERSIONS
     """
 
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "SPACERANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error "SPACERANGER_MKGTF module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def prefix = task.ext.prefix ?: "${gtf.baseName}.filtered"
     """
     touch ${prefix}.gtf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        spaceranger: \$(spaceranger -V | sed -e "s/spaceranger spaceranger-//g")
-    END_VERSIONS
     """
 }

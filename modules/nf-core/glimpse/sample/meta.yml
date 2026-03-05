@@ -12,7 +12,8 @@ tools:
       documentation: "https://odelaneau.github.io/GLIMPSE/commands.html"
       tool_dev_url: "https://github.com/odelaneau/GLIMPSE"
       doi: "10.1038/s41588-020-00756-0"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -22,8 +23,13 @@ input:
           e.g. [ id:'test', single_end:false ]
     - input:
         type: file
-        description: VCF/BCF file generated using GLIMPSE ligate
+        description: Imputed VCF/BCF file
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+        ontologies: []
+    - index:
+        type: file
+        description: Index file of the input VCF/BCF file.
+        pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
         ontologies: []
 output:
   haplo_sampled:
@@ -37,13 +43,27 @@ output:
           description: Output VCF/BCF file containing phased genotypes.
           pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
           ontologies: []
+  versions_glimpse:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - glimpse:
+          type: string
+          description: The name of the tool
+      - "GLIMPSE_sample --help | sed -n '/Version/s/.*: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - glimpse:
+          type: string
+          description: The name of the tool
+      - "GLIMPSE_sample --help | sed -n '/Version/s/.*: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@louislenezet"
 maintainers:

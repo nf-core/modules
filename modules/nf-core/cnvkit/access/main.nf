@@ -21,7 +21,7 @@ process CNVKIT_ACCESS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def exclude_cmd = exclude_bed.collect { "-x ${it}" }.join(" ")
+    def exclude_cmd = exclude_bed.collect { bed_file -> "-x ${bed_file}" }.join(" ")
     """
     cnvkit.py \\
         access \\

@@ -22,7 +22,7 @@ process LINKS {
     tuple val(meta), path("*.assembly_correspondence.tsv"), emit: assembly_correspondence
     tuple val(meta), path("*.simplepair_checkpoint.tsv"),   emit: simplepair_checkpoint, optional: true
     tuple val(meta), path("*.tigpair_checkpoint.tsv"),      emit: tigpair_checkpoint
-    path "versions.yml",                                    emit: versions
+    tuple val("${task.process}"), val('liftoff'), eval("echo \$(LINKS | grep -o 'LINKS v.*' | sed 's/LINKS v//')"), emit: versions_links, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,7 +43,7 @@ process LINKS {
     for read_file in ${reads};
         do
             if [[ \$read_file == *.gz ]];
-            then 
+            then
                 gzip -dc \$read_file > \$(basename \$read_file .gz)
                 echo \$(basename \$read_file .gz) >> readfile.fof
             else

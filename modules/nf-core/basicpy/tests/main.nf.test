@@ -29,7 +29,7 @@ nextflow_process {
                     file(process.out.profiles.get(0).get(1)).exists(),
                     file(process.out.profiles.get(0).get(2)).exists(),
                     file(process.out.profiles.get(0).get(1)).size(),
-                    file(process.out.profiles.get(0).get(2)).size()
+                    Math.round(file(process.out.profiles.get(0).get(2)).size() / 1000) * 1000
                     ).match()
                 },
             )

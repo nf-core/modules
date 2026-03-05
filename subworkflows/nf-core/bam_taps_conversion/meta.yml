@@ -1,0 +1,70 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "bam_taps_conversion"
+description: Uses rastair to assess C->T conversion as a readout for methylation in
+  a genome-wide basis
+keywords:
+  - TAPS conversion
+  - Methylation analysis
+  - Molecular bias (MBIAS)
+  - mCtoT
+  - rastair
+  - 4-letter genome
+components:
+  - rastair/mbias
+  - rastair/call
+  - rastair/methylkit
+  - rastair/mbiasparser
+input:
+  - ch_fasta:
+      type: file
+      description: |
+        Reference genome fasta file
+        Structure: [ [:], path(fasta) ]
+      pattern: "*.{fa,fasta}"
+  - ch_fasta_index:
+      type: file
+      description: |
+        Reference genome index file
+        Structure: [ val(meta), path(fai) ]
+      pattern: "*.fai"
+  - ch_bam:
+      type: file
+      description: |
+        BAM alignment files
+        Structure: [ val(meta), path(bam) ]
+      pattern: "*.bam"
+  - ch_bai:
+      type: file
+      description: |
+        BAM index files
+        Structure: [ val(meta), path(bai) ]
+      pattern: "*.bai"
+output:
+  - mbias:
+      type: file
+      description: |
+        File describing the molecular bias (MBIAS) of the TAPS conversion
+        Structure: [ val(meta), path(mbias) ]
+      pattern: "*.txt"
+  - call:
+      type: file
+      description: |
+        Rastair call output files (similar to bed format, genome-wide)
+        Structure: [ val(meta), path(call) ]
+      pattern: "*.txt"
+  - methylkit:
+      type: file
+      description: |
+        Rastair call output files in MethylKit format (similar to bed format, genome-wide)
+        Structure: [ val(meta), path(methylkit) ]
+      pattern: "*.gz"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@eduard-watchmaker"
+maintainers:
+  - "@eduard-watchmaker"

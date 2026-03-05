@@ -12,7 +12,8 @@ tools:
       documentation: "https://github.com/c-zhou/yahs"
       tool_dev_url: "https://github.com/c-zhou/yahs"
       doi: "10.1093/bioinformatics/btac808"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:yahs
 input:
   - - meta:
@@ -25,20 +26,28 @@ input:
         description: FASTA reference file
         pattern: "*.{fasta,fa}"
         ontologies:
-          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1929
     - fai:
         type: file
         description: index of the reference file
         pattern: "*.{fai}"
         ontologies:
-          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3475
     - hic_map:
         type: file
         description: BED file containing coordinates of read alignments
         pattern: "*.{bed,bam,bin}"
         ontologies:
-          - edam: http://edamontology.org/format_3003 # BED
-          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_3003
+          - edam: http://edamontology.org/format_2572
+    - agp:
+        type: file
+        description: |
+          Optional AGP file describing a set of scaffolds from the input contigs
+          to use as a start point
+        pattern: "*.agp"
+        ontologies:
+          - edam: http://edamontology.org/format_3693
 output:
   scaffolds_fasta:
     - - meta:
@@ -46,43 +55,94 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*_scaffolds_final.fa":
+      - ${prefix}_scaffolds_final.fa:
           type: file
           description: FASTA file with resulting contigs
-          pattern: "*_scaffolds_final.fa"
+          pattern: "${prefix}_scaffolds_final.fa"
           ontologies:
-            - edam: http://edamontology.org/format_1929 # FASTA
+            - edam: http://edamontology.org/format_1929
   scaffolds_agp:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*_scaffolds_final.agp":
+      - ${prefix}_scaffolds_final.agp:
           type: file
           description: AGP file containing contigs placing coordinates
-          pattern: "*_scaffolds_final.agp"
+          pattern: "${prefix}_scaffolds_final.agp"
           ontologies:
-            - edam: http://edamontology.org/format_3693 # AGP
+            - edam: http://edamontology.org/format_3693
+  initial_break_agp:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}_{inital,no}_break*.agp:
+          type: file
+          description: AGP file describing initial contig breaks
+          pattern: "${prefix}_{inital,no}_break*.agp"
+          ontologies:
+            - edam: http://edamontology.org/format_3693
+  round_agp:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}_r*_*.agp:
+          type: file
+          description: AGP file describing intermediate rounds of scaffolding
+          pattern: "${prefix}_{initial,no}_break*.agp"
+          ontologies:
+            - edam: http://edamontology.org/format_3693
   binary:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.bin":
+      - ${prefix}.bin:
           type: file
           description: |
             Binary data file with alignment results of Hi-C reads
             to the contigs in internal YaHS binary format
-          pattern: "*.bin"
+          pattern: "${prefix}.bin"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.log:
+          type: file
+          description: Log file describing YaHS run
+          pattern: "${prefix}.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  versions_yahs:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - yahs:
+          type: string
+          description: The name of the tool
+      - yahs --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - yahs:
+          type: string
+          description: The name of the tool
+      - yahs --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ksenia-krasheninnikova"
 maintainers:

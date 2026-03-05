@@ -21,7 +21,9 @@ process DRAGMAP_ALIGN {
     tuple val(meta), path("*.crai"), emit: crai, optional: true
     tuple val(meta), path("*.csi"),  emit: csi,  optional: true
     tuple val(meta), path('*.log'),  emit: log
-    path "versions.yml",             emit: versions
+    tuple val("${task.process}"), val('dragmap'), eval("dragen-os --version 2>&1"), emit: versions_dragmap, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
+    tuple val("${task.process}"), val('pigz'), eval("pigz --version 2>&1 | sed 's/pigz //'"), emit: versions_pigz, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -48,13 +50,6 @@ process DRAGMAP_ALIGN {
         ${reads_command} \\
         2>| >(tee ${prefix}.dragmap.log >&2) \\
         | samtools ${samtools_command} ${args2} --threads ${task.cpus} ${reference} -o ${prefix}.${extension} -
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dragmap: \$(echo \$(dragen-os --version 2>&1))
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-    END_VERSIONS
     """
 
     stub:
@@ -79,12 +74,5 @@ process DRAGMAP_ALIGN {
     touch ${prefix}.${extension}
     ${create_index}
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dragmap: \$(echo \$(dragen-os --version 2>&1))
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-    END_VERSIONS
     """
 }

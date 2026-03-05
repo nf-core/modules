@@ -4,8 +4,8 @@ process FASTQDL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fastq-dl:3.0.1--pyhdfd78af_0':
-        'biocontainers/fastq-dl:3.0.1--pyhdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/25/25de473366050bf652634865e5cf8450e682852a03dc34f77243264794cb989f/data':
+        'community.wave.seqera.io/library/fastq-dl:3.0.1--fa446f61dfc85bc3' }"
 
     input:
     tuple val(meta), val(accession)
@@ -14,7 +14,8 @@ process FASTQDL {
     tuple val(meta), path("*.fastq.gz")       , emit: fastq
     tuple val(meta), path("*-run-info.tsv")   , emit: runinfo
     tuple val(meta), path("*-run-mergers.tsv"), emit: runmergers, optional: true
-    path "versions.yml"                       , emit: versions
+    tuple val("${task.process}"), val('fastq-dl'), eval('fastq-dl --version |& sed "s/.* //"'), emit: versions_fastqdl, topic: versions
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,25 +30,14 @@ process FASTQDL {
         --accession ${accession} \\
         --cpus ${task.cpus} \\
         --outdir .
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastq-dl: \$(fastq-dl --version |& sed 's/.* //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${accession}.fastq.gz
     echo "" | gzip > ${accession}_1.fastq.gz
     echo "" | gzip > ${accession}_2.fastq.gz
     touch ${prefix}-run-info.tsv
-    
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastq-dl: \$(fastq-dl --version |& sed 's/.* //')
-    END_VERSIONS
     """
 }

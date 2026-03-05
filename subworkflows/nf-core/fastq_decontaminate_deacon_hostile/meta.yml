@@ -1,0 +1,79 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fastq_decontaminate_deacon_hostile"
+description: Decontaminate FastQ files by filtering reads that match a reference genome using Deacon or Hostile
+keywords:
+  - hostile
+  - deacon
+  - filter
+  - index
+  - fasta
+  - fastq
+  - genome
+  - reference
+  - minimizer
+  - decontamination
+components:
+  - hostile/fetch
+  - hostile/clean
+  - deacon/index
+  - deacon/filter
+  - fastq_fetch_clean_hostile
+  - fastq_index_filter_deacon
+input:
+  - ch_reads:
+      type: file
+      description: |
+        List of FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
+        Structure: [ val(meta), [ path(reads) ] ]
+  - ch_fasta:
+      type: file
+      description: |
+        Input genome fasta file used by Deacon. Meta must match the meta of ch_reads.
+        Structure: [ val(meta), [ path(fasta) ] ]
+  - ch_reference:
+      type: directory
+      description: |
+        Directory containing index file(s) corresponding to the preferred aligner (bowtie2 short reads or minimap for long reads) used by Hostile.
+        Note that single end data is assumed to be long reads. If you have single-end short read you must supply both the BowTie2
+        indices AND explicitly specify `--aligner bowtie2`
+  - index_name:
+      type: string
+      description: Name of the reference genome index to download for Hostile fetch if the reference is not provided.
+  - decontaminator:
+      type: string
+      description: Name of the deacontamination tool to use.
+      enum: ["deacon", "hostile"]
+output:
+  - fastq_filtered:
+      type: file
+      description: |
+        List of output filtered FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
+        Structure: [ val(meta), path(${prefix}*.fq.gz) ]
+      pattern: "*.fq.gz"
+  - reference:
+      type: channel
+      description: |
+        Channel containing reference name and directory with index files for Hostile.
+        Structure: [ val(reference_name), path(reference_dir) ]
+  - json:
+      type: channel
+      description: |
+        Channel containing sample metadata and Hostile cleaning log in JSON format.
+        Structure: [ val(meta), path(*.json) ]
+      pattern: "*.json"
+  - index:
+      type: file
+      description: |
+        Deacon minimizer index file.
+        Structure: [ val(meta), path(index) ]
+      pattern: ".idx"
+  - summary:
+      type: file
+      description: |
+        JSON file containing summary of results.
+        Structure: [ val(meta), path(${prefix}.json) ]
+      pattern: "*.json"
+authors:
+  - "@Baksic-Ivan"
+maintainers:
+  - "@Baksic-Ivan"

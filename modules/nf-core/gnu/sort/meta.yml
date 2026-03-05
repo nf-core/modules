@@ -3,13 +3,18 @@ description: |
   Writes a sorted concatenation of file/s
 keywords:
   - GNU
+  - coreutils
   - sort
   - merge compare
 tools:
-  - sort:
-      description: "Writes a sorted concatenation of file/s"
-      homepage: "https://github.com/vgl-hub/gfastats"
-      documentation: "https://www.gnu.org/software/coreutils/manual/html_node/sort-invocation.html"
+  - gnu:
+      description: "The GNU Core Utilities are the basic file, shell and text manipulation
+        utilities of the GNU operating system. These are the core utilities which are
+        expected to exist on every operating system."
+      homepage: "https://www.gnu.org/software/coreutils/"
+      documentation: "https://www.gnu.org/software/coreutils/manual/html_node/index.html"
+      tool_dev_url: "https://git.savannah.gnu.org/cgit/coreutils.git"
+      doi: "10.5281/zenodo.581670"
       licence: ["GPL"]
       identifier: ""
 input:
@@ -25,18 +30,39 @@ input:
         ontologies: []
 output:
   sorted:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "${output_file}"
+      - "${output_file}":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "${output_file}"
+  versions_coreutils:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - coreutils:
+          type: string
+          description: The tool name
+      - "sort --version |& sed '1!d ; s/sort (GNU coreutils) //'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - coreutils:
+          type: string
+          description: The tool name
+      - "sort --version |& sed '1!d ; s/sort (GNU coreutils) //'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@DLBPointon"
 maintainers:

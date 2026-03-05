@@ -4,8 +4,8 @@ process SENTIEON_QUALCAL {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/20/2050c5321a5426e31b9ed1e3e98356913fe3c316a7ef02c4fb872983a730db6f/data'
-        : 'community.wave.seqera.io/library/sentieon_gnuplot:a6da525a6c9ce6e3'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ae/ae67a134620c3af22c8563a2913c4639caa0d75ce25764e7b10c996b242aa023/data'
+        : 'community.wave.seqera.io/library/sentieon_gnuplot:41931fca35668c97'}"
 
     input:
     tuple val(meta), path(input), path(input_index)
@@ -22,7 +22,7 @@ process SENTIEON_QUALCAL {
     tuple val(meta), path("*.{cram,bam}"), emit: recal_alignment, optional: true
     tuple val(meta), path("*.csv"),        emit: csv, optional: true
     tuple val(meta), path("*.pdf"),        emit: pdf, optional: true
-    path "versions.yml",                   emit: versions
+    tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,8 +30,8 @@ process SENTIEON_QUALCAL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_list = input.collect { "-i ${it}" }.join(' ')
-    def knownSites = known_sites ? known_sites.collect { "-k ${it}" }.join(' ') : ""
+    def input_list = input.collect {in -> "-i ${in}" }.join(' ')
+    def knownSites = known_sites ? known_sites.collect {in -> "-k ${in}" }.join(' ') : ""
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64
         ? "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; "
         : ""
@@ -49,11 +49,6 @@ process SENTIEON_QUALCAL {
             ${args} \\
             ${knownSites} \\
             ${prefix}.table
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-        END_VERSIONS
         """
     }
     else {
@@ -84,11 +79,6 @@ process SENTIEON_QUALCAL {
             ${prefix}.csv
 
         sentieon plot QualCal -o ${prefix}.pdf ${prefix}.csv
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-        END_VERSIONS
         """
     }
 
@@ -103,10 +93,5 @@ process SENTIEON_QUALCAL {
     ${recalibrated_bam_cmd}
     touch ${prefix}.csv
     touch ${prefix}.pdf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 }

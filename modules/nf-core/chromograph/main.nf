@@ -1,11 +1,12 @@
 process CHROMOGRAPH {
-    tag "$meta.id"
+    // $meta.id can be [] because autozyg is not required, so use all ids
+    tag "${[meta, meta2, meta3, meta4, meta5, meta6, meta7].collect { meta_map -> meta_map.id }.findAll().unique().join('_') ?: 'chromograph'}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/chromograph:1.3.1--pyhdfd78af_2':
-        'biocontainers/chromograph:1.3.1--pyhdfd78af_2' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/chromograph:1.3.1--pyhdfd78af_2'
+        : 'biocontainers/chromograph:1.3.1--pyhdfd78af_2'}"
 
     input:
     tuple val(meta), path(autozyg)
@@ -17,79 +18,54 @@ process CHROMOGRAPH {
     tuple val(meta7), path(sites)
 
     output:
-    tuple val(meta), path("${prefix}"), emit: plots
-    path "versions.yml"               , emit: versions
+    tuple val(meta), path("*.png"), emit: plots, optional: true
+    tuple val("${task.process}"), val('chromograph'), eval("chromograph --version | sed 's/.* //'")   , topic: versions   , emit: versions_chromograph
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args           = task.ext.args   ?: ''
-    def autozyg_param  = autozyg         ? "--autozyg ${autozyg}"   : ''
-    def coverage_param = coverage        ? "--coverage ${coverage}" : ''
-    def exome_param    = exome           ? "--exom ${exome}"        : ''
-    def fracsnp_param  = fracsnp         ? "--fracsnp ${fracsnp}"   : ''
-    def ideogram_param = ideogram        ? "--ideogram ${ideogram}" : ''
-    def regions_param  = regions         ? "--regions ${regions}"   : ''
-    def sites_param    = sites           ? "--sites ${sites}"       : ''
+    def args           = task.ext.args ?: ''
+    def autozyg_param  = autozyg       ? "--autozyg ${autozyg}"   : ''
+    def coverage_param = coverage      ? "--coverage ${coverage}" : ''
+    def exome_param    = exome         ? "--exom ${exome}"        : ''
+    def fracsnp_param  = fracsnp       ? "--fracsnp ${fracsnp}"   : ''
+    def ideogram_param = ideogram      ? "--ideogram ${ideogram}" : ''
+    def regions_param  = regions       ? "--regions ${regions}"   : ''
+    def sites_param    = sites         ? "--sites ${sites}"       : ''
 
-    if (autozyg) {
-        prefix         = task.ext.prefix ?: "${meta.id}"
-    } else if (coverage) {
-        prefix         = task.ext.prefix ?: "${meta2.id}"
-    } else if (exome) {
-        prefix         = task.ext.prefix ?: "${meta3.id}"
-    } else if (fracsnp) {
-        prefix         = task.ext.prefix ?: "${meta4.id}"
-    } else if (ideogram) {
-        prefix         = task.ext.prefix ?: "${meta5.id}"
-    } else if (regions) {
-        prefix         = task.ext.prefix ?: "${meta6.id}"
-    } else {
-        prefix         = task.ext.prefix ?: "${meta7.id}"
-    }
     """
     chromograph \\
-        $args \\
-        $autozyg_param \\
-        $coverage_param \\
-        $exome_param \\
-        $fracsnp_param \\
-        $ideogram_param \\
-        $regions_param \\
-        $sites_param \\
-        --outd ${prefix}
+        ${args} \\
+        ${autozyg_param} \\
+        ${coverage_param} \\
+        ${exome_param} \\
+        ${fracsnp_param} \\
+        ${ideogram_param} \\
+        ${regions_param} \\
+        ${sites_param} \\
+        --outd .
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        chromograph: \$(echo \$(chromograph --version 2>&1) | sed 's/chromograph //' )
-    END_VERSIONS
     """
 
     stub:
-    def args               = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
+    euploidy = args.contains('-e') || args.contains('--euploid')
 
-    if (autozyg) {
-        prefix             = task.ext.prefix ?: "${meta.id}"
-    } else if (coverage) {
-        prefix             = task.ext.prefix ?: "${meta2.id}"
-    } else if (exome) {
-        prefix             = task.ext.prefix ?: "${meta3.id}"
-    } else if (fracsnp) {
-        prefix             = task.ext.prefix ?: "${meta4.id}"
-    } else if (ideogram) {
-        prefix             = task.ext.prefix ?: "${meta5.id}"
-    } else if (regions) {
-        prefix             = task.ext.prefix ?: "${meta6.id}"
-    } else {
-        prefix             = task.ext.prefix ?: "${meta7.id}"
-    }
     """
-    mkdir ${prefix}
+    ${touchCmd(euploidy, autozyg)}
+    ${touchCmd(euploidy, coverage)}
+    ${touchCmd(euploidy, exome)}
+    ${touchCmd(euploidy, fracsnp)}
+    ${touchCmd(euploidy, ideogram)}
+    ${touchCmd(euploidy, regions)}
+    ${touchCmd(euploidy, sites)}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        chromograph: \$(echo \$(chromograph --version 2>&1) | sed 's/chromograph //' )
-    END_VERSIONS
     """
+}
+
+// Helper function to generate touch commands
+def touchCmd(euploidy, input_file) {
+    def chrs = euploidy ? (1..22) + ['X', 'Y', 'M'] : [1]
+    input_file ? chrs.collect { chr -> "touch ${input_file}_chr${chr}.png" }.join(' ') : ''
 }

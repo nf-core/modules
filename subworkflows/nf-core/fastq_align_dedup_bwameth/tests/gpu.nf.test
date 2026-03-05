@@ -17,8 +17,6 @@ nextflow_workflow {
     tag "samtools/stats"
     tag "picard/markduplicates"
     tag "samtools/index"
-    tag "methyldackel/extract"
-    tag "methyldackel/mbias"
     tag "untar"
 
     setup {
@@ -68,12 +66,9 @@ nextflow_workflow {
                     workflow.out.bai.collect { meta, bai -> file(bai).name },
                     workflow.out.samtools_flagstat,
                     workflow.out.samtools_stats,
-                    workflow.out.methydackel_extract_bedgraph,
-                    workflow.out.methydackel_extract_methylkit,
-                    workflow.out.methydackel_mbias,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
+                    workflow.out.versions.collect().sort { a, b -> path(a).md5 <=> path(b).md5 }
                     ).match() }
             )
         }
@@ -116,12 +111,9 @@ nextflow_workflow {
                     workflow.out.bai.collect { meta, bai -> file(bai).name },
                     workflow.out.samtools_flagstat,
                     workflow.out.samtools_stats,
-                    workflow.out.methydackel_extract_bedgraph,
-                    workflow.out.methydackel_extract_methylkit,
-                    workflow.out.methydackel_mbias,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
+                    workflow.out.versions.collect().sort { a, b -> path(a).md5 <=> path(b).md5 }
                     ).match() }
             )
         }

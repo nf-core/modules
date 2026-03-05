@@ -22,7 +22,7 @@ workflow FASTQ_ALIGN_MAPAD {
 
     main:
 
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     // WARNING: You must specify in your prefix `meta.id_index` in your `modules.conf`
     // to ensure that you do not overwrite multiple BAM files from one sample mapped
@@ -49,7 +49,7 @@ workflow FASTQ_ALIGN_MAPAD {
     // Drop the index_meta, as the id of the index is now kept within the read meta.
     ch_preppedinput_for_mapad = ch_prepped_input
                         .multiMap {
-                            meta, reads, meta_index, index ->
+                            meta, reads, _meta_index, index ->
                                 reads: [ meta, reads ]
                                 index: [ meta, index ]
                         }
@@ -60,7 +60,6 @@ workflow FASTQ_ALIGN_MAPAD {
 
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
     BAM_SORT_STATS_SAMTOOLS ( MAPAD_MAP.out.bam, ch_fasta )
-    ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS.out.versions)
 
     emit:
     bam_unsorted = MAPAD_MAP.out.bam                    // channel: [ val(meta), path(bam) ]

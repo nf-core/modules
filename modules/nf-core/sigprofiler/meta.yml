@@ -23,7 +23,6 @@ tools:
       doi: "10.1016/j.xgen.2022.100179 "
       licence: ["BSD-2-clause"]
       identifier: biotools:sigprofilerextractor
-
 input:
   - - meta:
         type: map
@@ -38,7 +37,8 @@ input:
           - edam: http://edamontology.org/format_3475 # TSV
   - genome:
       type: string
-      description: Reference genome name to use with SigProfiler (e.g. "GRCh37", "GRCh38")
+      description: Reference genome name to use with SigProfiler (e.g. "GRCh37",
+        "GRCh38")
       ontologies: []
   - genome_installed_path:
       type: file

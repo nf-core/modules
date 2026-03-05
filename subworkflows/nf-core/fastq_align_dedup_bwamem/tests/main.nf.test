@@ -1,0 +1,216 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTQ_ALIGN_DEDUP_BWAMEM"
+    script "../main.nf"
+    workflow "FASTQ_ALIGN_DEDUP_BWAMEM"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_align_dedup_bwamem"
+    tag "subworkflows/fastq_align_bwa"
+    tag "bwa"
+    tag "bwa/index"
+    tag "bwa/mem"
+    tag "parabricks/fq2bam"
+    tag "samtools"
+    tag "samtools/sort"
+    tag "samtools/index"
+    tag "samtools/idxstats"
+    tag "samtools/flagstat"
+    tag "samtools/stats"
+    tag "bam_sort_stats_samtools"
+    tag "fastq_align_bwa"
+    tag "picard/markduplicates"
+    tag "picard/addorreplacereadgroups"
+
+    setup {
+        run("BWA_INDEX") {
+            script "../../../../modules/nf-core/bwa/index/main.nf"
+            process {
+                """
+                input[0] = Channel.value([ [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
+    }
+
+    test("Params: bwamem single-end - default") {
+
+        when {
+
+            workflow {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:true ],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                            [:],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = Channel.of([
+                            [:],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[3] = BWA_INDEX.out.index
+                input[4] = false            // skip_deduplication
+                input[5] = false            // use_gpu
+                input[6] = "bam"            // output_fmt
+                input[7] = [[:], [] ]       // interval_file
+                input[8] = [[:], [] ]       // known_sites
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
+                    workflow.out.bai.collect { meta, bai -> file(bai).name },
+                    workflow.out.samtools_flagstat,
+                    workflow.out.samtools_stats,
+                    workflow.out.samtools_idxstats,
+                    workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name },
+                    ).match() }
+            )
+        }
+    }
+
+    test("Params: bwamem paired-end - default") {
+
+        when {
+
+            workflow {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                            [:],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = Channel.of([
+                            [:],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[3] = BWA_INDEX.out.index
+                input[4] = false            // skip_deduplication
+                input[5] = false            // use_gpu
+                input[6] = "bam"            // output_fmt
+                input[7] = [[:], [] ]       // interval_file
+                input[8] = [[:], [] ]       // known_sites
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
+                    workflow.out.bai.collect { meta, bai -> file(bai).name },
+                    workflow.out.samtools_flagstat,
+                    workflow.out.samtools_stats,
+                    workflow.out.samtools_idxstats,
+                    workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name },
+                    ).match() }
+            )
+        }
+    }
+
+    test("Params: bwamem paired-end - skip_deduplication") {
+
+        when {
+
+            workflow {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                            [:],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = Channel.of([
+                            [:],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[3] = BWA_INDEX.out.index
+                input[4] = true             // skip_deduplication
+                input[5] = false            // use_gpu
+                input[6] = "bam"            // output_fmt
+                input[7] = [[:], [] ]       // interval_file
+                input[8] = [[:], [] ]       // known_sites
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
+                    workflow.out.bai.collect { meta, bai -> file(bai).name },
+                    workflow.out.samtools_flagstat,
+                    workflow.out.samtools_stats,
+                    workflow.out.samtools_idxstats,
+                    workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name },
+                    ).match() }
+            )
+        }
+    }
+
+    test("Params: bwamem single-end - default - stub") {
+        options '-stub'
+        when {
+
+            workflow {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:true ],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                            [:],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = Channel.of([
+                            [:],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[3] = BWA_INDEX.out.index
+                input[4] = false            // skip_deduplication
+                input[5] = false            // use_gpu
+                input[6] = "bam"            // output_fmt
+                input[7] = [[:], [] ]       // interval_file
+                input[8] = [[:], [] ]       // known_sites
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.bam,
+                    workflow.out.bai,
+                    workflow.out.samtools_flagstat,
+                    workflow.out.samtools_stats,
+                    workflow.out.samtools_idxstats,
+                    workflow.out.picard_metrics,
+                ).match() }
+            )
+        }
+    }
+}

@@ -45,7 +45,7 @@ size_functions = {
 
 size_type = "${size_type}".lower()
 if size_type not in size_functions:
-    raise ValueError(f'Size type must be one of {', '.join(size_functions.keys())}.')
+    raise ValueError(f"Size type must be one of {', '.join(size_functions.keys())}.")
 
 size = size_functions[size_type]()
 

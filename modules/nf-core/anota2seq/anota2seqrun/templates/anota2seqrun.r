@@ -116,6 +116,7 @@ opt <- list(
     reference_level = '$reference',
     target_level = '$target',
     sample_id_col = "sample",
+    gene_id_col = "gene_id",
     samples_pairing_col = NULL,
     samples_batch_col = NULL,
     subset_to_contrast_samples = FALSE,
@@ -319,7 +320,7 @@ anota2seqDataSetFromMatrix_args <- list(
 )
 
 if (! is.null(opt\$samples_batch_col)){
-    anota2seqDataSetFromMatrix_args\$batchVec <- samples[rnaseq_samples, opt\$samples_batch_col]
+    anota2seqDataSetFromMatrix_args\$batchVec <- sample.sheet[rnaseq_samples, opt\$samples_batch_col]
 }
 
 ads <- do.call(anota2seqDataSetFromMatrix, anota2seqDataSetFromMatrix_args)
@@ -331,7 +332,7 @@ contrast_matrix <- matrix(
     nrow = 2,
     dimnames = list(sort(c(opt\$reference_level, opt\$target_level)), NULL)
 )
-                                                                                 
+
 ads <- anota2seqRun(
     ads,
     contrasts = contrast_matrix,
@@ -366,14 +367,23 @@ for (analysis in c("translated mRNA", "total mRNA", "translation", "buffering", 
         selContrast = 1
     )
 
-    write.table(
-        output,
-        file = paste(opt\$output_prefix, sub(' ', '_', analysis), 'anota2seq.results.tsv', sep = '.'),
-        col.names = TRUE,
-        row.names = FALSE,
-        sep = '\t',
-        quote = FALSE
-    )
+    # Only write file if there are results
+    if (!is.null(output) && nrow(output) > 0) {
+        # Add gene IDs as the first column
+        output_with_genes <- cbind(
+            setNames(data.frame(rownames(output)), opt\$gene_id_col),
+            output
+        )
+
+        write.table(
+            output_with_genes,
+            file = paste(opt\$output_prefix, sub(' ', '_', analysis), 'anota2seq.results.tsv', sep = '.'),
+            col.names = TRUE,
+            row.names = FALSE,
+            sep = '\t',
+            quote = FALSE
+        )
+    }
 }
 
 # Fold change plot

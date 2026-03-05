@@ -20,11 +20,17 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5
+      with:
+        distribution: "temurin"
+        java-version: "17"
+
     - name: Set up nf-test
       uses: nf-core/setup-nf-test@v1
       with:
         version: ${{ env.NFT_VER }}
         install-pdiff: true
+
     - name: Get number of shards
       id: shards
       shell: bash

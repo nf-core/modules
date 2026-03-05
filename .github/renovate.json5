@@ -2,13 +2,24 @@
     $schema: "https://docs.renovatebot.com/renovate-schema.json",
     extends: [
         "github>nf-core/ops//.github/renovate/default.json5",
-        "github>nf-core/ops//.github/renovate/process_updaters.json5",
+        // "github>nf-core/ops//.github/renovate/process_updaters.json5",
     ],
     prHeader: "## WARNING\n - [ ] I have made sure to update the singularity and conda images",
     packageRules: [
         {
             matchDatasources: ["conda", "pypi", "docker"],
             automerge: false,
+        },
+        {
+            matchManagers: [
+                "github-actions",
+                "npm",
+                "pip_requirements",
+                "pip_setup",
+            ],
+            groupName: "Infrastructural dependencies",
+            schedule: ["before 6am on Monday"],
+            matchPackageNames: ["!/biocontainers/*/"],
         },
     ],
     customManagers: [

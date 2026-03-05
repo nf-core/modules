@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "raw2ometiff"
 description: write your description here
 keywords:
@@ -12,19 +11,19 @@ tools:
       homepage: "https://github.com/glencoesoftware/raw2ometiff"
       documentation: "https://github.com/glencoesoftware/raw2ometiff"
       tool_dev_url: "https://github.com/glencoesoftware/raw2ometiff"
-      licence: ["GPL-2.0"]
-      identifier: ""
-
+      licence:
+        - "GPL-2.0"
+      identifier: biotools:raw2ometiff
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1']`
-
     - zarr_dir:
         type: directory
-        description: Tile directory must contain a full pyramid in a Zarr container.
+        description: Tile directory must contain a full pyramid in a Zarr
+          container.
         pattern: "*.{zarr}"
         ontologies:
           - edam: "http://edamontology.org/format_3915"
@@ -41,15 +40,46 @@ output:
           pattern: "*.ome.tiff"
           ontologies:
             - edam: "http://edamontology.org/format_3727"
-
+  versions_raw2ometiff:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - raw2ometiff:
+          type: string
+          description: The name of the tool
+      - raw2ometiff --version |& sed -n "1s/Version = //p":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_bioformats:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bioformats:
+          type: string
+          description: The name of the tool
+      - raw2ometiff --version |& sed -n "2s/Bio-Formats version = //p":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - raw2ometiff:
+          type: string
+          description: The name of the tool
+      - raw2ometiff --version |& sed -n "1s/Version = //p":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bioformats:
+          type: string
+          description: The name of the tool
+      - raw2ometiff --version |& sed -n "2s/Bio-Formats version = //p":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@CaroAMN"
 maintainers:

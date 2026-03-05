@@ -29,7 +29,7 @@ nextflow_process {
                 { assert snapshot(
                     file("${process.out.results[0][1]}/qualimapReport.html").name,
                     path("${process.out.results[0][1]}/genome_results.txt"),
-                    process.out.versions)
+                    process.out.findAll {key, value -> key.startsWith("versions")})
                     .match() }
             )
         }

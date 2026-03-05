@@ -1,17 +1,18 @@
 name: "vsearch_cluster"
-description: Cluster sequences using a single-pass, greedy centroid-based clustering
-  algorithm.
+description: Cluster sequences using a single-pass, greedy centroid-based
+  clustering algorithm.
 keywords:
   - vsearch
   - clustering
   - microbiome
 tools:
   - vsearch:
-      description: VSEARCH is a versatile open-source tool for microbiome analysis,
-        including chimera detection, clustering, dereplication and rereplication, extraction,
-        FASTA/FASTQ/SFF file processing, masking, orienting, pair-wise alignment, restriction
-        site cutting, searching, shuffling, sorting, subsampling, and taxonomic classification
-        of amplicon sequences for metagenomics, genomics, and population genetics. (USEARCH
+      description: VSEARCH is a versatile open-source tool for microbiome
+        analysis, including chimera detection, clustering, dereplication and
+        rereplication, extraction, FASTA/FASTQ/SFF file processing, masking,
+        orienting, pair-wise alignment, restriction site cutting, searching,
+        shuffling, sorting, subsampling, and taxonomic classification of amplicon
+        sequences for metagenomics, genomics, and population genetics. (USEARCH
         alternative)
       homepage: https://github.com/torognes/vsearch
       documentation: https://github.com/torognes/vsearch/releases/download/v2.21.1/vsearch_manual.pdf
@@ -61,8 +62,8 @@ output:
             e.g. [ id:'test' ]
       - "*.mothur.tsv.gz":
           type: file
-          description: Results in an OTU table in the mothur ’shared’ tab-separated
-            plain text file format
+          description: Results in an OTU table in the mothur ’shared’
+            tab-separated plain text file format
           pattern: "*.mothur.tsv.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -74,8 +75,8 @@ output:
             e.g. [ id:'test' ]
       - "*.otu.tsv.gz":
           type: file
-          description: Results in an OTU table in the classic tab-separated plain text
-            format
+          description: Results in an OTU table in the classic tab-separated plain
+            text format
           pattern: "*.otu.tsv.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -122,7 +123,8 @@ output:
             e.g. [ id:'test' ]
       - "*.uc.tsv.gz":
           type: file
-          description: Tab delimited results in a uclust-like format with 10 columns
+          description: Tab delimited results in a uclust-like format with 10
+            columns
           pattern: "*.uc.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -174,13 +176,29 @@ output:
           pattern: "*.msa.fasta.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_vsearch:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - vsearch:
+          type: string
+          description: The tool name
+      - vsearch --version 2>&1 | sed -n "1s/.*v\([0-9.]*\).*/\\1/p":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - vsearch:
+          type: string
+          description: The tool name
+      - vsearch --version 2>&1 | sed -n "1s/.*v\([0-9.]*\).*/\\1/p":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@mirpedrol"
 maintainers:
