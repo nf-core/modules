@@ -18,7 +18,7 @@ process SPARSE_SIGNATURES {
     tuple val(meta), path("*_nmf_Lasso_out.rds"),         emit: signatures_nmfOut_rds
     tuple val(meta), path("*_plot_all.rds"),              emit: signatures_plot_rds
     tuple val(meta), path("*_plot_all.pdf"),              emit: signatures_plot_pdf
-    path "versions.yml",                                  emit: versions
+    path "versions.yml",                                  emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
