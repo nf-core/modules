@@ -1,7 +1,6 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "reseq_illuminape"
-description: Simulate realistic Illumina paired-end reads from a reference genome using profiles extracted from real sequencing data
+description: Simulate realistic Illumina paired-end reads from a reference
+  genome using profiles extracted from real sequencing data
 keywords:
   - simulate
   - fastq
@@ -18,9 +17,9 @@ tools:
       documentation: "https://github.com/schmeing/ReSeq"
       tool_dev_url: "https://github.com/schmeing/ReSeq"
       doi: "10.1186/s13059-021-02265-7"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -29,17 +28,18 @@ input:
           e.g. `[ id:'test' ]`
     - bam:
         type: file
-        description: Position-sorted BAM file from which to extract sequencing profiles
+        description: Position-sorted BAM file from which to extract sequencing
+          profiles
         pattern: "*.bam"
         ontologies:
           - edam: "http://edamontology.org/format_2572"
-  - - fasta:
+    - fasta:
         type: file
         description: Reference genome FASTA file
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_1929"
-  - - adapter_fasta:
+    - adapter_fasta:
         type: file
         description: |
           FASTA file with adapter sequences. If provided, skips automatic adapter
@@ -47,7 +47,7 @@ input:
         pattern: "*.{fasta,fa}"
         ontologies:
           - edam: "http://edamontology.org/format_1929"
-  - - adapter_matrix:
+    - adapter_matrix:
         type: file
         description: |
           0/1 matrix file specifying valid adapter pairings (first read adapters
@@ -55,7 +55,6 @@ input:
           is provided.
         pattern: "*.txt"
         ontologies: []
-
 output:
   fastq:
     - - meta:
@@ -69,14 +68,27 @@ output:
           pattern: "*_{R1,R2}.fq.gz"
           ontologies:
             - edam: "http://edamontology.org/format_1930"
+  versions_reseq:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "reseq":
+          type: string
+          description: The name of the tool
+      - "reseq --version 2>&1 | sed 's/^.*ReSeq version //'":
+          type: string
+          description: The version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750"
-
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "reseq":
+          type: string
+          description: The name of the tool
+      - "reseq --version 2>&1 | sed 's/^.*ReSeq version //'":
+          type: string
+          description: The version of the tool
 authors:
   - "@adamrtalbot"
 maintainers:
