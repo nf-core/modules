@@ -12,7 +12,7 @@ process ABRICATE_SUMMARY {
 
     output:
     tuple val(meta), path("*.txt"), emit: report
-    tuple val("${task.process}"), val('abricate'), eval("(abricate --version 2>&1 | sed 's/^.*abricate //' "), emit: versions_abricate, topic: versions
+    tuple val("${task.process}"), val('abricate'), eval("abricate --version | sed 's/^.* //' "), emit: versions_abricate, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

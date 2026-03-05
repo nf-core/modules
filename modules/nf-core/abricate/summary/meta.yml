@@ -48,7 +48,7 @@ output:
       - abricate:
           type: string
           description: The tool name
-      - "echo \\$(abricate --version 2>&1) | sed 's/^.*abricate //' ":
+      - "abricate --version | sed 's/^.* //' ":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -59,7 +59,7 @@ topics:
       - abricate:
           type: string
           description: The tool name
-      - "echo \\$(abricate --version 2>&1) | sed 's/^.*abricate //' ":
+      - "abricate --version | sed 's/^.* //' ":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
