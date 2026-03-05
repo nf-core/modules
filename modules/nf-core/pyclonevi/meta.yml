@@ -79,10 +79,14 @@ output:
           description: TXT file containing the pyclone-vi best fit.
           pattern: "*_best_fit.txt"
           ontologies: []
-versions:
-  - versions.yml:
-      type: file
-      description: YAML file containing versions of tools used in the module
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+
 authors:
   - "@giorgiagandolfi"
   - "@elena-buscaroli"
