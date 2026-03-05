@@ -4,8 +4,8 @@ process RESEQ_ILLUMINAPE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/reseq:1.1--py310hfb68e69_5' :
-        'biocontainers/reseq:1.1--py310hfb68e69_5' }"
+        'oras://community.wave.seqera.io/library/reseq:1.1--ff843e111e12fa4e' :
+        'community.wave.seqera.io/library/reseq:1.1--8536b4889ef6d3b8' }"
 
     input:
     tuple val(meta), path(bam)
