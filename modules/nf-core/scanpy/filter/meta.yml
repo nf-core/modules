@@ -1,0 +1,73 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: scanpy_filter
+description: Filter cells and genes in single-cell RNA-seq data using Scanpy
+keywords:
+  - filter
+  - quality-control
+  - scanpy
+  - single-cell
+  - preprocessing
+tools:
+  - scanpy:
+      description: Single-Cell Analysis in Python
+      homepage: https://scanpy.readthedocs.io
+      documentation: https://scanpy.readthedocs.io/en/stable/api/generated/scanpy.pp.filter_cells.html
+      tool_dev_url: https://github.com/scverse/scanpy
+      doi: 10.1186/s13059-017-1382-0
+      licence: ["BSD-3-Clause"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - h5ad:
+        type: file
+        description: AnnData object in h5ad format
+        pattern: "*.{h5ad}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3590" # HDF5 format
+  - - min_genes:
+        type: integer
+        description: Minimum number of genes expressed per cell
+  - - min_cells:
+        type: integer
+        description: Minimum number of cells expressing each gene
+  - - min_counts_gene:
+        type: integer
+        description: Minimum number of counts per gene
+  - - min_counts_cell:
+        type: integer
+        description: Minimum number of counts per cell
+  - - max_mito_percentage:
+        type: integer
+        description: Maximum percentage of mitochondrial genes per cell
+  - - symbol_col:
+        type: string
+        description: Column name of the gene symbols in the `var` of the AnnData object. Use `index` if the gene symbols are the row names.
+
+output:
+  h5ad:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - "*.h5ad":
+        type: file
+        description: Filtered AnnData object
+        pattern: "*.h5ad"
+        ontologies:
+          - edam: "http://edamontology.org/format_3590" # HDF5 format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@nictru"
+maintainers:
+  - "@nictru"

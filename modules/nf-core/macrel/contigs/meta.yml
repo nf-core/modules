@@ -27,9 +27,10 @@ input:
         type: file
         description: A fasta file with nucleotide sequences.
         pattern: "*.{fasta,fa,fna,fasta.gz,fa.gz,fna.gz}"
+        ontologies: []
 output:
-  - smorfs:
-      - meta:
+  smorfs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,8 +40,10 @@ output:
           description: A zipped fasta file containing aminoacid sequences showing the
             general gene prediction information in the contigs.
           pattern: "*.smorfs.faa.gz"
-  - all_orfs:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  all_orfs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,8 +53,10 @@ output:
           description: A zipped fasta file containing amino acid sequences showing the
             general gene prediction information in the contigs.
           pattern: "*.all_orfs.faa.gz"
-  - amp_prediction:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  amp_prediction:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,8 +65,10 @@ output:
           type: file
           description: A zipped file, with all predicted amps in a table format.
           pattern: "*.prediction.gz"
-  - readme_file:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  readme_file:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -71,8 +78,9 @@ output:
           description: A readme file containing tool specific information (e.g. citations,
             details about the output, etc.).
           pattern: "*.md"
-  - log_file:
-      - meta:
+          ontologies: []
+  log_file:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -81,11 +89,14 @@ output:
           type: file
           description: A log file containing the information pertaining to the run.
           pattern: "*_log.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@darcy220606"
 maintainers:

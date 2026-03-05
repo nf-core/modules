@@ -24,9 +24,10 @@ input:
         type: file
         description: FASTQ or FASTA formatted sequences
         pattern: "*.{fq.gz,fastq.gz,fna.gz,fna,fasta.gz,fasta,fa.gz,fa}"
+        ontologies: []
 output:
-  - log:
-      - meta:
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,8 +36,9 @@ output:
           type: file
           description: A log of serotype antigen results
           pattern: "*_log.txt"
-  - tsv:
-      - meta:
+          ontologies: []
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,8 +47,10 @@ output:
           type: file
           description: Tab-delimited summary of the SeqSero2 results
           pattern: "*_result.tsv"
-  - txt:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,11 +59,14 @@ output:
           type: file
           description: Detailed summary of the SeqSero2 results
           pattern: "*_result.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rpetit3"
 maintainers:

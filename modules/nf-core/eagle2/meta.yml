@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "eagle2"
 description: Perform phasing of genotyped data with or without a reference panel
@@ -9,12 +8,14 @@ keywords:
   - genomics
 tools:
   - "eagle2":
-      description: "The Eagle software estimates haplotype phase either within a genotyped cohort or using a phased reference panel."
+      description: "The Eagle software estimates haplotype phase either within a genotyped
+        cohort or using a phased reference panel."
       homepage: "https://alkesgroup.broadinstitute.org/Eagle/"
       documentation: "https://alkesgroup.broadinstitute.org/Eagle/"
       tool_dev_url: "https://github.com/poruloh/Eagle"
       doi: "10.1038/ng.3679"
-      licence: ['GPL v3-or-later']
+      licence: ["GPL v3-or-later"]
+      identifier: ""
 
 input:
   - - meta:
@@ -53,27 +54,30 @@ input:
         description: Genetic map file
         pattern: "*.{txt,txt.gz,map,map.gz}"
 
+        ontologies: []
 output:
-  - phased_variants:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*.{vcf,vcf.gz,bcf}":
-        type: file
-        description: Input phased variants
-        pattern: "*.{vcf,vcf.gz,bcf}"
-        ontologies:
-          - edam: "http://edamontology.org/format_3016"
-          - edam: "http://edamontology.org/format_3020"
+  phased_variants:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.{vcf,vcf.gz,bcf}":
+          type: file
+          description: Input phased variants
+          pattern: "*.{vcf,vcf.gz,bcf}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
+            - edam: "http://edamontology.org/format_3020"
 
-  - versions:
-    - "versions.yml":
+  versions:
+    - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@LouisLeNezet"
 maintainers:

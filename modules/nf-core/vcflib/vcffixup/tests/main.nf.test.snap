@@ -1,50 +1,54 @@
 {
-    "sarscov2 - vcf": {
+    "test-vcflib-vcffixup-stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_fixed.vcf.gz:md5,639ca71cddc7f5444f4376cdf474007e"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,fac118ed81e4ca76d3a75c2f47f4c4ce"
-                ],
                 "vcf": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
-                        "test_fixed.vcf.gz:md5,639ca71cddc7f5444f4376cdf474007e"
+                        "test.fixed.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,fac118ed81e4ca76d3a75c2f47f4c4ce"
+                "versions_vcflib": [
+                    [
+                        "VCFLIB_VCFFIXUP",
+                        "vcflib",
+                        "1.0.14"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.4"
         },
-        "timestamp": "2024-05-13T18:48:21.949531776"
+        "timestamp": "2026-03-02T22:37:54.793666638"
     },
-    "sarscov2 - vcf - stub": {
+    "test-vcflib-vcffixup": {
         "content": [
-            "test.fixup.vcf.gz",
-            [
-                "versions.yml:md5,fac118ed81e4ca76d3a75c2f47f4c4ce"
-            ]
+            {
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.fixed.vcf.gz:md5,accef1928d58d5c20553096921a9b1f6"
+                    ]
+                ],
+                "versions_vcflib": [
+                    [
+                        "VCFLIB_VCFFIXUP",
+                        "vcflib",
+                        "1.0.14"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.4"
         },
-        "timestamp": "2024-05-13T18:48:32.365674014"
+        "timestamp": "2026-03-02T22:37:48.442953709"
     }
 }

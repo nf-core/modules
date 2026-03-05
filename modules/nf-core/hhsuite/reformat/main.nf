@@ -14,7 +14,7 @@ process HHSUITE_REFORMAT {
 
     output:
     tuple val(meta), path("${prefix}.${outformat}.gz"), emit: msa
-    path "versions.yml"                               , emit: versions
+    tuple val("${task.process}"), val("hhsuite"), eval("hhblits -h 2>&1 | sed -n '1s/^HHblits \\([0-9.]\\+\\):/\\1/p'"), topic: versions, emit: versions_hhsuite
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,14 +22,11 @@ process HHSUITE_REFORMAT {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def is_compressed = aln.name.endsWith(".gz")
-    def aln_name = aln.name
-    if (is_compressed) {
-        aln_name = aln.name.replace(".gz", "")
-    }
+    def is_compressed = aln.getExtension() == "gz" ? true : false
+    def aln_name = is_compressed ? aln.getBaseName() : aln
     """
-    if [ "$is_compressed" == "true" ]; then
-        gzip -c -d $aln > $aln_name
+    if [ "${is_compressed}" == "true" ]; then
+        gzip -c -d ${aln} > ${aln_name}
     fi
 
     reformat.pl \\
@@ -40,22 +37,14 @@ process HHSUITE_REFORMAT {
         ${prefix}.${outformat}
 
     gzip ${prefix}.${outformat}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hhsuite: \$(hhblits -h | grep 'HHblits' | sed -n -e 's/.*\\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p')
-    END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "" | gzip > ${prefix}.${outformat}.gz
+    echo ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hhsuite: \$(hhblits -h | grep 'HHblits' | sed -n -e 's/.*\\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p')
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.${outformat}.gz
     """
 }

@@ -25,17 +25,20 @@ input:
         type: file
         description: An Eigenstrat formatted genotype file
         pattern: "*.{geno}"
+        ontologies: []
     - snp:
         type: file
         description: An Eigenstrat formatted snp file
         pattern: "*.{snp}"
+        ontologies: []
     - ind:
         type: file
         description: An Eigenstrat formatted individual file
         pattern: "*.{ind}"
+        ontologies: []
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,8 +47,10 @@ output:
           type: file
           description: A TSV table with the number of covered SNPs per individual.
           pattern: "*.{tsv}"
-  - json:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,11 +59,15 @@ output:
           type: file
           description: A json table with the number of covered SNPs per individual.
           pattern: "*.{json}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@TCLamnidis"
 maintainers:

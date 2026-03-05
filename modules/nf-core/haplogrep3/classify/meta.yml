@@ -22,9 +22,10 @@ input:
         type: file
         description: valid options are hsd, vcf, or fasta files
         pattern: "*.{vcf,vcf.gz,fasta,hsd}"
+        ontologies: []
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -33,11 +34,30 @@ output:
           type: file
           description: text file with classification information
           pattern: "*.{txt}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_haplogrep3:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - haplogrep3:
+          type: string
+          description: The tool name
+      - haplogrep3 | sed -n 's/.*Haplogrep 3 \([0-9.]\+\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - haplogrep3:
+          type: string
+          description: The tool name
+      - haplogrep3 | sed -n 's/.*Haplogrep 3 \([0-9.]\+\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@lucpen"
 maintainers:

@@ -36,7 +36,7 @@ process SEQKIT_RMDUP {
         $args \\
         $fastx \\
         -o ${prefix}.${extension} \\
-        2> >(tee ${prefix}.log >&2)
+        2>| >(tee ${prefix}.log >&2)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

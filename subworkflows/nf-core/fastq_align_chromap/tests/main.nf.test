@@ -1,0 +1,123 @@
+nextflow_workflow {
+
+    name "Test Workflow FASTQ_ALIGN_CHROMAP"
+    config "./nextflow.config"
+    script "../main.nf"
+    workflow "FASTQ_ALIGN_CHROMAP"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "chromap"
+    tag "chromap/chromap"
+    tag "chromap/index"
+    tag "fastq_align_chromap"
+    tag "subworkflows/fastq_align_chromap"
+    tag "subworkflows/bam_sort_stats_samtools"
+
+    setup {
+        run("CHROMAP_INDEX") {
+            script "../../../../modules/nf-core/chromap/index/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
+                ])
+                """
+            }
+        }
+    }
+
+    test("test_fastq_align_chromap_single_end") {
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [id:'test', single_end:true],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true)
+                ]
+                input[1] = CHROMAP_INDEX.out.index
+                input[2] = Channel.of([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
+                ])
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("test_fastq_align_chromap_paired_end") {
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists:true)
+                    ]
+                ]
+                input[1] = CHROMAP_INDEX.out.index
+                input[2] = Channel.of([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
+                ])
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
+    test("test_fastq_align_chromap_paired_end -- stub") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists:true)
+                    ]
+                ]
+                input[1] = CHROMAP_INDEX.out.index
+                input[2] = Channel.of([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
+                ])
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+}

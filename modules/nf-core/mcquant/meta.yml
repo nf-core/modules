@@ -26,6 +26,7 @@ input:
         type: file
         description: Multi-channel image file
         pattern: "*.{tiff,tif,h5,hdf5}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -35,6 +36,7 @@ input:
         type: file
         description: Labeled segmentation mask for image
         pattern: "*.{tiff,tif,h5,hdf5}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -44,9 +46,11 @@ input:
         type: file
         description: Marker file with channel names for image to quantify
         pattern: "*.{csv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
 output:
-  - csv:
-      - meta:
+  csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,11 +59,15 @@ output:
           type: file
           description: Quantified regionprops_table
           pattern: "*.{csv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@FloWuenne"
 maintainers:

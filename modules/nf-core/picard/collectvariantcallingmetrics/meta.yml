@@ -1,0 +1,110 @@
+name: "picard_collectvariantcallingmetrics"
+description: Collects per-sample and aggregate (spanning all samples) metrics
+  from the provided VCF file
+keywords:
+  - vcf
+  - metrics
+  - variant calling
+  - statistics
+tools:
+  - "picard":
+      description: "A set of command line tools (in Java) for manipulating high-throughput
+        sequencing (HTS) data and formats such as SAM/BAM/CRAM and VCF."
+      homepage: "https://broadinstitute.github.io/picard/"
+      documentation: "https://broadinstitute.github.io/picard/"
+      tool_dev_url: "https://github.com/broadinstitute/picard"
+      licence:
+        - "MIT"
+      identifier: biotools:picard_tools
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcf:
+        type: file
+        description: Input VCF file for analysis
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+    - index:
+        type: file
+        description: Index file for the input VCF file
+        pattern: "*.{idx,tbi}"
+        ontologies: []
+    - intervals_file:
+        type: file
+        description: Optional BED file specifying target intervals
+        pattern: "*.{bed,bed.gz,intervals_list}"
+        ontologies: []
+    - fasta:
+        type: file
+        description: Reference sequence file
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+    - dict:
+        type: file
+        description: Reference sequence dictionary file
+        pattern: "*.{dict}"
+        ontologies: []
+    - dbsnp:
+        type: file
+        description: Reference dbSNP file in dbSNP or VCF format
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+    - dbsnp_index:
+        type: file
+        description: Reference dbSNP file in dbSNP or VCF format
+        pattern: "*.{idx,tbi}"
+        ontologies: []
+output:
+  detail_metrics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.variant_calling_detail_metrics":
+          type: file
+          description: Detailed variant calling metrics file
+          pattern: "*.variant_calling_detail_metrics"
+          ontologies: []
+  summary_metrics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.variant_calling_summary_metrics":
+          type: file
+          description: Summary variant calling metrics file
+          pattern: "*.variant_calling_summary_metrics"
+          ontologies: []
+  versions_picard:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - picard:
+          type: string
+          description: The tool name
+      - "picard CollectVariantCallingMetrics --version 2>&1 | sed -n 's/.*Version://p'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - picard:
+          type: string
+          description: The tool name
+      - "picard CollectVariantCallingMetrics --version 2>&1 | sed -n 's/.*Version://p'":
+          type: string
+          description: The command used to generate the version of the tool
+authors:
+  - "@georgiakes"
+maintainers:
+  - "@georgiakes"

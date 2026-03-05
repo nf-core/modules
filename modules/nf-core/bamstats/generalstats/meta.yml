@@ -24,9 +24,10 @@ input:
         type: file
         description: Sorted BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
 output:
-  - json:
-      - meta:
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,10 +36,30 @@ output:
           type: file
           description: json containing bam statistics
           pattern: "*.json"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions_bamstats:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bamstats:
+          type: string
+          description: The name of the tool
+      - 'bamstats --version | grep "version: " | sed -e s"/version: //"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bamstats:
+          type: string
+          description: The name of the tool
+      - 'bamstats --version | grep "version: " | sed -e s"/version: //"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@johnoooh"

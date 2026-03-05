@@ -17,15 +17,15 @@ workflow HOMER_GROSEQ {
 
     main:
 
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
-    ch_uniqmap = Channel.empty()
+    ch_uniqmap = channel.empty()
 
     if (!uniqmap) {
         ch_uniqmap = []
     }
     else if (uniqmap.endsWith('.zip')) {
-        ch_uniqmap = UNZIP([[:], uniqmap]).unzipped_archive.map { it[1] }
+        ch_uniqmap = UNZIP([[:], uniqmap]).unzipped_archive.map { index -> index[1] }
         ch_versions = ch_versions.mix(UNZIP.out.versions)
     }
     else {

@@ -4,8 +4,8 @@ process STECFINDER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/stecfinder:1.1.0--pyhdfd78af_0':
-        'biocontainers/stecfinder:1.1.0--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/stecfinder:1.1.2--pyhdfd78af_0':
+        'biocontainers/stecfinder:1.1.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(seqs)
@@ -31,4 +31,16 @@ process STECFINDER {
         stecfinder: \$(echo \$(stecfinder --version 2>&1) | sed 's/^.*STECFinder version: //;' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        stecfinder: \$(echo \$(stecfinder --version 2>&1) | sed 's/^.*STECFinder version: //;' )
+    END_VERSIONS
+    """
+
 }

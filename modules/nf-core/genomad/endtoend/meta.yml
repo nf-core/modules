@@ -27,12 +27,13 @@ input:
         type: file
         description: FASTA file containing contigs/scaffolds/chromosomes
         pattern: "*.{fasta,fna,fa}"
-  - - genomad_db:
-        type: directory
-        description: Directory pointing to geNomad database
+        ontologies: []
+  - genomad_db:
+      type: directory
+      description: Directory pointing to geNomad database
 output:
-  - aggregated_classification:
-      - meta:
+  aggregated_classification:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -41,8 +42,23 @@ output:
           type: file
           description: Combined classification scores for each contig/scaffold/chromosome
           pattern: "*_aggregated_classification.tsv"
-  - taxonomy:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  marker_classification:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_marker_classification/*_marker_classification.tsv":
+          type: file
+          description: Marker-based classification scores when --disable-nn-classification
+            is used
+          pattern: "*_marker_classification.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  taxonomy:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -51,8 +67,10 @@ output:
           type: file
           description: Detailed output of geNomad's marker gene taxonomy analysis
           pattern: "*_taxonomy.tsv"
-  - provirus:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  provirus:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,8 +80,10 @@ output:
           description: Detailed output of each provirus identified by geNomad's find_proviruses
             module
           pattern: "*_provirus.tsv"
-  - compositions:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  compositions:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,8 +93,10 @@ output:
           description: OPTIONAL - Predicted sample composition when `--enable-score-calibration`
             is used
           pattern: "*_compositions.tsv"
-  - calibrated_classification:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  calibrated_classification:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -84,8 +106,10 @@ output:
           description: OPTIONAL - Classification scores that have been adjusted based
             on sample composition when `--enable-score-calibration` is used`
           pattern: "*_calibrated_aggregated_classification.tsv"
-  - plasmid_fasta:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  plasmid_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -94,8 +118,9 @@ output:
           type: file
           description: FASTA file containing predicted plasmid sequences
           pattern: "*_plasmid.fna"
-  - plasmid_genes:
-      - meta:
+          ontologies: []
+  plasmid_genes:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -104,8 +129,10 @@ output:
           type: file
           description: TSV file containing predicted plasmid genes and their annotations
           pattern: "*_plasmid_genes.tsv"
-  - plasmid_proteins:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  plasmid_proteins:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -114,8 +141,9 @@ output:
           type: file
           description: FASTA file containing predicted plasmid protein sequences
           pattern: "*_plasmid_proteins.faa"
-  - plasmid_summary:
-      - meta:
+          ontologies: []
+  plasmid_summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -124,8 +152,10 @@ output:
           type: file
           description: TSV file containing a summary of geNomad's plasmid predictions
           pattern: "*_plasmid_summary.tsv"
-  - virus_fasta:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  virus_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -134,8 +164,9 @@ output:
           type: file
           description: FASTA file containing predicted virus sequences
           pattern: "*_virus.fna"
-  - virus_genes:
-      - meta:
+          ontologies: []
+  virus_genes:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -144,8 +175,10 @@ output:
           type: file
           description: TSV file containing predicted virus genes and their annotations
           pattern: "*_virus_genes.tsv"
-  - virus_proteins:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  virus_proteins:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -154,8 +187,9 @@ output:
           type: file
           description: FASTA file containing predicted virus protein sequences
           pattern: "*_virus_proteins.faa"
-  - virus_summary:
-      - meta:
+          ontologies: []
+  virus_summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -164,11 +198,15 @@ output:
           type: file
           description: TSV file containing a summary of geNomad's virus predictions
           pattern: "*_virus_summary.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@CarsonJM"
 maintainers:

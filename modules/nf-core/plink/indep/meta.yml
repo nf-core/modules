@@ -26,29 +26,32 @@ input:
         type: file
         description: PLINK binary biallelic genotype table file
         pattern: "*.{bed}"
+        ontologies: []
     - bim:
         type: file
         description: PLINK extended MAP file
         pattern: "*.{bim}"
+        ontologies: []
     - fam:
         type: file
         description: PLINK sample information file
         pattern: "*.{fam}"
-  - - window_size:
-        type: string
-        description: Window size in variant count or kilobase (if the 'kb' modifier
-          is present) units, a variant count to shift the window at the end of each
-          step, and a variance inflation factor (VIF) threshold.
-  - - variant_count:
-        type: string
-        description: Variant count to shift the window at the end of each step.
-  - - variance_inflation_factor:
-        type: string
-        description: Variance inflation factor (VIF) threshold. At each step, all variants
-          in the current window with VIF exceeding the threshold are removed.
+        ontologies: []
+  - window_size:
+      type: string
+      description: Window size in variant count or kilobase (if the 'kb' modifier is
+        present) units, a variant count to shift the window at the end of each step,
+        and a variance inflation factor (VIF) threshold.
+  - variant_count:
+      type: string
+      description: Variant count to shift the window at the end of each step.
+  - variance_inflation_factor:
+      type: string
+      description: Variance inflation factor (VIF) threshold. At each step, all variants
+        in the current window with VIF exceeding the threshold are removed.
 output:
-  - prunein:
-      - meta:
+  prunein:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -58,8 +61,9 @@ output:
           description: File with IDs of pruned subset of markers that are in approximate
             linkage equilibrium with each other
           pattern: "*.{prune.in}"
-  - pruneout:
-      - meta:
+          ontologies: []
+  pruneout:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -68,11 +72,14 @@ output:
           type: file
           description: File with IDs of excluded variants
           pattern: "*.{prune.out}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@atrigila"
 maintainers:

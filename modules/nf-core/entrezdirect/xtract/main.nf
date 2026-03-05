@@ -36,4 +36,14 @@ process ENTREZDIRECT_XTRACT {
         xtract: \$(xtract -version)
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.txt
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        xtract: \$(xtract -version)
+    END_VERSIONS
+    """
 }

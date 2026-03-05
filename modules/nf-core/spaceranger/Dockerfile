@@ -1,10 +1,9 @@
 # syntax=docker/dockerfile:1
 
-FROM mambaorg/micromamba:1.5.10-noble
-ARG SPACERANGER_VER="3.1.2"
-# NOTE you need to go fill out the form to get a new download link
-ARG SPACERANGER_URL="https://cf.10xgenomics.com/releases/spatial-exp/spaceranger-3.1.2.tar.gz?Expires=1732608367&Key-Pair-Id=APKAI7S6A5RYOXBWRPDA&Signature=S4jcGCs5H0wLFfREhSc~AfuPIOXE~PW96kX9o2EyxZnmn1goUecgfEWTj67fL1DnZJBIa06kFdUdNpsMn2ustiSWOfXEgjlYQnxIcNnQIiEBGoQTHWphvx3LEQ6wtZnkWS80P6IcE0HJkIsgy04t6Sohih5cxY4jgytYsrAfZDYr5G3KKFwTfCKmhzMaXqW635yPbyQ8xEcQHK0QwviAx8-EFq-PE8UzC4QgUKi2MW-ivcfZkSDSfF8C3s7SgwDXIGIWv52mzeszenxMjN4KrWQotZ7ZpktzI0Vfpz0dNC17dQeDQUHj4LuNYbdh3RqsPKtqu3wjCe2Q7KiyoWnmaw__" \"
-ARG SPACERANGER_SHA256="2566b24f29829b39f3add112a674990b1c54ae2fbe7ccb50a4c7dce9ccf152e6"
+FROM mambaorg/micromamba:1.5.10-jammy
+ARG SPACERANGER_VER="4.0.1"
+ARG SPACERANGER_URL="https://cf.10xgenomics.com/releases/spatial-exp/spaceranger-4.0.1.tar.gz?Expires=1756263067&Key-Pair-Id=APKAI7S6A5RYOXBWRPDA&Signature=ZuXyhILJpqvX67FsKT4HuAW4JAW0pkLCDphqWCpqe553ujNcB9r13EmZU-yS7Wwmrfr7iPPYZsBGs2CEHQMjgJa0EhnB3kAIgTu33mtnBlZscmjbPx~AkgmvCJxrF06hXfU7nPIG0nQH2TbwAV2XAY67~-IHn8xrLZhEYdIFedIcsbpXJ0RMsb~JDyCaqqykIRnDsS85fAJ-nO7zaiv53iUsN4PgvVwF9vBJslLQzH-pA44ihpA0C4ibHxXIztdKbo72Gu-udibDvmiXBoM3Sb7E1-W6VCp8z0R9Yzwpv1POjYel7bVVc8bZd1Nj3vNNamr2T0fyP1XHnHcbDCZlEg__" \"
+ARG SPACERANGER_SHA256="eacb4a3e7a342424a57ac757fce95d536c1e0099fd8fef8d249f8afb105d6d91"
 LABEL org.opencontainers.image.authors="Gisela Gabernet <gisela.gabernet@gmail.com>,Edmund Miller <edmund@nf-co.re>"
 LABEL org.opencontainers.image.description="Docker image containing spaceranger"
 LABEL org.opencontainers.image.version="$SPACERANGER_VER"
@@ -22,6 +21,7 @@ ENV PATH="$MAMBA_ROOT_PREFIX/bin:$PATH"
 
 # NOTE Docker doesn't support md5sum and that's what spaceranger gives us --checksum=md5sum:949088b1e2cc5bd03079b60a65b41d39
 # https://docs.docker.com/reference/dockerfile/#add---checksum
+# hadolint ignore=DL3020
 ADD --checksum=sha256:$SPACERANGER_SHA256 \
     $SPACERANGER_URL \
     /opt/spaceranger-$SPACERANGER_VER.tar.gz

@@ -41,9 +41,10 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.fastq,
+                    process.out.fastq_idx,
                     process.out.undetermined_fastq,
                     process.out.interop,
-                    process.out.versions
+					process.out.findAll { key, val -> key.startsWith("versions")}
                     ).match()
                 }
             )
@@ -66,9 +67,10 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.fastq,
+                    process.out.fastq_idx,
                     process.out.undetermined_fastq,
                     process.out.interop,
-                    process.out.versions
+					process.out.findAll { key, val -> key.startsWith("versions")}
                     ).match()
                 }
             )
@@ -91,12 +93,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.fastq,
-                    process.out.undetermined_fastq,
-                    process.out.interop,
-                    process.out.versions
-                    ).match()
+                { assert snapshot(process.out).match()
                 }
             )
         }

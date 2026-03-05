@@ -42,24 +42,18 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                // Test string values and versions. The tfrecords contents are not stable, but we check the names.
-                { assert process.out.examples.get(0).get(0) == [ id:'test', single_end:false ] },
-                { assert process.out.gvcf.get(0).get(0) == [ id:'test', single_end:false ] },
-                { assert process.out.examples.get(0).get(1).size() == 4 },
-                { assert snapshot( // Check examples (tfrecord / json) file name list
-                    file(process.out.examples.get(0).get(1).get(0)).name,
-                    file(process.out.examples.get(0).get(1).get(1)).name,
-                    file(process.out.examples.get(0).get(1).get(2)).name,
-                    file(process.out.examples.get(0).get(1).get(3)).name,
-                ).match("test1-exaamples-filenames")},
 
-                { assert process.out.gvcf.get(0).get(0) == [ id:'test', single_end:false ] },
-                { assert process.out.gvcf.get(0).get(1).size() == 2 },
-                { assert snapshot( // Check gvcf file name list
-                    file(process.out.gvcf.get(0).get(1).get(0)).name,
-                    file(process.out.gvcf.get(0).get(1).get(1)).name,
-                ).match("test1-gvcf-filenames")},
-                { assert snapshot(process.out.versions).match("test1-versions") },
+                { assert process.out.examples[0][0] == [id:'test', single_end:false] },
+                { assert process.out.gvcf[0][0] == [id:'test', single_end:false] },
+                { assert process.out.examples[0][1].size() == 4 },
+                { assert snapshot(
+                    process.out.examples[0][1].collect { file(it).name }
+                ).match("test1-examples-filenames") },
+                { assert process.out.gvcf[0][1].size() == 2 },
+                { assert snapshot(process.out.versions_deepvariant).match("test1-versions") },
+                { assert snapshot(
+                    process.out.gvcf[0][1].collect { file(it).name }
+                ).match("test1-gvcf-filenames") }
             )
         }
     }
@@ -96,23 +90,17 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.examples.get(0).get(0) == [ id:'test', single_end:false ] },
-                // The test is always run with 2 cpus
-                { assert process.out.examples.get(0).get(1).size() == 4 },
-                { assert snapshot( // Check examples (tfrecord / json) file names
-                    file(process.out.examples.get(0).get(1).get(0)).name,
-                    file(process.out.examples.get(0).get(1).get(1)).name,
-                    file(process.out.examples.get(0).get(1).get(2)).name,
-                    file(process.out.examples.get(0).get(1).get(3)).name,
-                ).match("test2-examples-filenames")},
-
-                { assert process.out.gvcf.get(0).get(0) == [ id:'test', single_end:false ] },
-                { assert process.out.gvcf.get(0).get(1).size() == 2 },
-                { assert snapshot( // Check gvcf tfrecord file names
-                    file(process.out.gvcf.get(0).get(1).get(0)).name,
-                    file(process.out.gvcf.get(0).get(1).get(1)).name,
-                ).match("test2-gvcf-filenames")},
-                { assert snapshot(process.out.versions).match("test2-versions") },
+                { assert process.out.examples[0][0] == [id:'test', single_end:false] },
+                { assert process.out.gvcf[0][0] == [id:'test', single_end:false] },
+                { assert process.out.examples[0][1].size() == 4 },
+                { assert snapshot(
+                    process.out.examples[0][1].collect { file(it).name }
+                ).match("test2-examples-filenames") },
+                { assert process.out.gvcf[0][1].size() == 2 },
+                { assert snapshot(process.out.versions_deepvariant).match("test2-versions") },
+                { assert snapshot(
+                    process.out.gvcf[0][1].collect { file(it).name }
+                ).match("test2-gvcf-filenames") }
             )
         }
     }
@@ -150,24 +138,17 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-
-                { assert process.out.examples.get(0).get(0) == [ id:'test', single_end:false ] },
-                // The test is always run with 2 cpus
-                { assert process.out.examples.get(0).get(1).size() == 4 },
-                { assert snapshot( // Check examples (tfrecord / json) file name list
-                    file(process.out.examples.get(0).get(1).get(0)).name,
-                    file(process.out.examples.get(0).get(1).get(1)).name,
-                    file(process.out.examples.get(0).get(1).get(2)).name,
-                    file(process.out.examples.get(0).get(1).get(3)).name,
-                ).match("test3-examples-filenames")},
-
-                { assert process.out.gvcf.get(0).get(0) == [ id:'test', single_end:false ] },
-                { assert process.out.gvcf.get(0).get(1).size() == 2 },
-                { assert snapshot( // Check gvcf file name list
-                    file(process.out.gvcf.get(0).get(1).get(0)).name,
-                    file(process.out.gvcf.get(0).get(1).get(1)).name,
-                ).match("test3-gvcf-filenames")},
-                { assert snapshot(process.out.versions).match("test3-versions") },
+                { assert process.out.examples[0][0] == [id:'test', single_end:false] },
+                { assert process.out.gvcf[0][0] == [id:'test', single_end:false] },
+                { assert process.out.examples[0][1].size() == 4 },
+                { assert snapshot(
+                    process.out.examples[0][1].collect { file(it).name }
+                ).match("test3-examples-filenames") },
+                { assert process.out.gvcf[0][1].size() == 2 },
+                { assert snapshot(process.out.versions_deepvariant).match("test3-versions") },
+                { assert snapshot(
+                    process.out.gvcf[0][1].collect { file(it).name }
+                ).match("test3-gvcf-filenames") }
             )
         }
     }
@@ -207,22 +188,17 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.examples.get(0).get(1).size() == 4 },
-                { assert snapshot( // Check examples (tfrecord / json) file name list
-                    file(process.out.examples.get(0).get(1).get(0)).name,
-                    file(process.out.examples.get(0).get(1).get(1)).name,
-                    file(process.out.examples.get(0).get(1).get(2)).name,
-                    file(process.out.examples.get(0).get(1).get(3)).name,
-                ).match("test4-examples-filenames")},
-
-                { assert process.out.gvcf.get(0).get(0) == [ id:'test', single_end:false ] },
-                { assert process.out.gvcf.get(0).get(1).size() == 2 },
-                { assert snapshot( // Check gvcf file name list
-                    file(process.out.gvcf.get(0).get(1).get(0)).name,
-                    file(process.out.gvcf.get(0).get(1).get(1)).name,
-                ).match("test4-gvcf-filenames")},
+                { assert process.out.gvcf[0][0] == [id:'test', single_end:false] },
+                { assert process.out.examples[0][1].size() == 4 },
+                { assert snapshot(
+                    process.out.examples[0][1].collect { file(it).name }
+                ).match("test4-examples-filenames") },
+                { assert process.out.gvcf[0][1].size() == 2 },
+                { assert snapshot(process.out.versions_deepvariant).match("test4-versions") },
+                { assert snapshot(
+                    process.out.gvcf[0][1].collect { file(it).name }
+                ).match("test4-gvcf-filenames") }
             )
         }
     }
-
 }

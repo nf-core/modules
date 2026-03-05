@@ -19,21 +19,39 @@ tools:
       licence: ["MIT"]
       identifier: biotools:busco
 input:
-  - - short_summary_txt:
-        type: file
-        description: One or more short summary txt files from BUSCO
-        pattern: "short_summary.*.txt"
+  - short_summary_txt:
+      type: file
+      description: One or more short summary txt files from BUSCO
+      pattern: "short_summary.*.txt"
+      ontologies: []
 output:
-  - png:
-      - "*.png":
-          type: file
-          description: A summary plot in png format
-          pattern: "*.png"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  png:
+    - "*.png":
+        type: file
+        description: A summary plot in png format
+        pattern: "*.png"
+        ontologies: []
+  versions_busco:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - busco:
+          type: string
+          description: The name of the tool
+      - busco --version 2> /dev/null | sed 's/BUSCO //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - busco:
+          type: string
+          description: The name of the tool
+      - busco --version 2> /dev/null | sed 's/BUSCO //g':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@GallVp"
 maintainers:

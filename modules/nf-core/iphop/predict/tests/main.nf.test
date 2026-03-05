@@ -1,0 +1,77 @@
+nextflow_process {
+
+    name "Test Process IPHOP_PREDICT"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "IPHOP_PREDICT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "iphop"
+    tag "iphop/download"
+    tag "iphop/predict"
+
+    /* The test database is 4.5Gb and takes a long time to download
+    test("test_iphop_predict") {
+        setup {
+            run("IPHOP_DOWNLOAD") {
+                script "../../download/main.nf"
+                process {
+                    """
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_predict  = '--min_score 90'
+                module_download = '--db_version iPHoP_db_rw_for-test'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta',checkIfExists:true)
+                ]
+                input[1] = IPHOP_DOWNLOAD.out.iphop_db
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    */
+
+    test("test_iphop_predict -- stub") {
+        options '-stub'
+        when {
+            params {
+                module_predict  = '--min_score 90'
+                module_download = '--db_version iPHoP_db_for-test'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta',checkIfExists:true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

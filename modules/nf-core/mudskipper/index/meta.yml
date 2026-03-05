@@ -20,20 +20,23 @@ tools:
       identifier: ""
 
 input:
-  - - gtf:
-        type: file
-        description: Transcript annotation file.
-        pattern: "*.{gtf,gff,gff3}"
+  - gtf:
+      type: file
+      description: Transcript annotation file.
+      pattern: "*.{gtf,gff,gff3}"
+      ontologies: []
 output:
-  - index:
-      - index/:
-          type: directory
-          description: Mudskipper index for running mudskipper conversion tools
-          pattern: "*/"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  index:
+    - index/:
+        type: directory
+        description: Mudskipper index for running mudskipper conversion tools
+        pattern: "*/"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@anoronh4"

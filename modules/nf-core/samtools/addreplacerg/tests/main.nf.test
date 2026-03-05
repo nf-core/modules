@@ -1,0 +1,139 @@
+nextflow_process {
+
+    name "Test Process SAMTOOLS_ADDREPLACERG"
+    script "../main.nf"
+    process "SAMTOOLS_ADDREPLACERG"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samtools"
+    tag "samtools/addreplacerg"
+
+    test("sarscov2 - bam") {
+
+        config "./nextflow.config"
+
+        when {
+
+            params {
+                samtools_addreplacerg_arg = "-w" // Overwrite existing RG
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true),
+                    [],
+                    "\'@RG\\\\tID:1\\\\tLB:lib1\\\\tPL:ILLUMINA\\\\tSM:test\\\\tPU:barcode1\\\\tDS:replaced_read_group_test\'"
+                ]
+                input[1] = [[],[],[],[]]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+    test("homo-sapiens - cram") {
+
+        config "./nextflow.config"
+
+        when {
+
+            params {
+                samtools_addreplacerg_arg = "--write-index -O cram,version=3.0 -w"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true),
+                    "\'@RG\\\\tID:1\\\\tPU:1\\\\tSM:testN\\\\tLB:testN\\\\tPL:illumina\\\\tDS:replaced_read_group_test\'"
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert snapshot(
+                sanitizeOutput(process.out, unstableKeys: ["crai","cram"]),
+                process.out.cram.collect{ meta, cram -> bam(cram).getHeader().collect{ l -> l.replaceAll(/\tUR:[^\t\n]+/, '') } },
+            ).match()
+        }
+
+    }
+
+    test("homo-sapiens - cram - output bam") {
+
+        config "./nextflow.config"
+
+        when {
+
+            params {
+                samtools_addreplacerg_arg = "--write-index -O bam -w"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true),
+                    "\'@RG\\\\tID:1\\\\tPU:1\\\\tSM:testN\\\\tLB:testN\\\\tPL:illumina\\\\tDS:replaced_read_group_test\'"
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true),
+                    [],
+                    "\'@RG\\\\tID:1\\\\tLB:lib1\\\\tPL:ILLUMINA\\\\tSM:test\\\\tPU:barcode1\\\\tDS:replaced_read_group_test\'"
+                ]
+                input[1] = [[],[],[],[]]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+}

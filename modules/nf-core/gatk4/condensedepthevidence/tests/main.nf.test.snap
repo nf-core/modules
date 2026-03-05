@@ -21,7 +21,11 @@
                     ]
                 ],
                 "2": [
-                    "versions.yml:md5,f1e49a983c12aa65895e70405a9dfc14"
+                    [
+                        "GATK4_CONDENSEDEPTHEVIDENCE",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
                 ],
                 "condensed_evidence": [
                     [
@@ -41,16 +45,20 @@
                         "test.rd.txt.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,f1e49a983c12aa65895e70405a9dfc14"
+                "versions_gatk4": [
+                    [
+                        "GATK4_CONDENSEDEPTHEVIDENCE",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-10-31T10:49:51.212441436"
+        "timestamp": "2026-01-21T16:00:23.772211349"
     },
     "test-gatk4-condensdepthevidence": {
         "content": [
@@ -59,14 +67,20 @@
                 "chr22\t0\t40001\t5642"
             ],
             "test.rd.txt.gz.tbi",
-            [
-                "versions.yml:md5,f1e49a983c12aa65895e70405a9dfc14"
-            ]
+            {
+                "versions_gatk4": [
+                    [
+                        "GATK4_CONDENSEDEPTHEVIDENCE",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-10-31T10:49:37.340222412"
+        "timestamp": "2026-01-21T16:00:11.535332142"
     }
 }

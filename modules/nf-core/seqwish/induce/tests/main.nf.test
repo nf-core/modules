@@ -1,0 +1,73 @@
+nextflow_process {
+
+    name "Test Process SEQWISH_INDUCE"
+
+    script "../main.nf"
+    process "SEQWISH_INDUCE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "seqwish"
+    tag "seqwish/induce"
+
+    test("seqwish_induce_transcriptome") {
+
+        when {
+            process {
+                """
+                input[0] = [[id:'test'],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.paf', checkIfExists: true)],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)]
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    test("seqwish_induce_pangenome") {
+
+
+        when {
+            process {
+                """
+                input[0] = [[id:'test'],
+                    [file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.paf', checkIfExists: true)],
+                    [file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.fa', checkIfExists: true)]
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("seqwish_induce_transcriptome - stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [[id:'test'],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.paf', checkIfExists: true)],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)]
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

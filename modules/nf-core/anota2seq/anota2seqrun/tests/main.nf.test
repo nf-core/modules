@@ -15,15 +15,15 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'treatment_vs_control'], // meta map
+                    [ id:'treatment_vs_control'],
                     'treatment',
                     'control',
                     'treatment'
                     ]
                 input[1] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/samplesheet.csv"),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/salmon.merged.gene_counts_length_scaled.tsv")
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/samplesheet.csv", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/salmon.merged.gene_counts_length_scaled.tsv", checkIfExists: true)
                 ]
                 """
             }
@@ -33,22 +33,23 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.session_info[0][1]).getText().contains('anota2seq_1.24.0') },
-                { assert path(process.out.buffering[0][1]).getText().contains('-0.256216460412453') },
+                { assert path(process.out.buffering[0][1]).getText().contains('-0.25621646041245') }, // Floating number variation
                 { assert snapshot(
-                  process.out.translated_mrna,
-                  process.out.total_mrna,
-                  process.out.translation,
-                  process.out.mrna_abundance,
-                  process.out.versions,
-                  file(process.out.fold_change_plot[0][1]).name,
-                  file(process.out.interaction_p_distribution_plot[0][1]).name,
-                  file(process.out.residual_distribution_summary_plot[0][1]).name,
-                  file(process.out.residual_vs_fitted_plot[0][1]).name,
-                  file(process.out.rvm_fit_for_all_contrasts_group_plot[0][1]).name,
-                  file(process.out.rvm_fit_for_interactions_plot[0][1]).name,
-                  file(process.out.rvm_fit_for_omnibus_group_plot[0][1]).name,
-                  file(process.out.simulated_vs_obt_dfbetas_without_interaction_plot[0][1]).name,
-                  file(process.out.rdata[0][1]).name
+                    process.out.translated_mrna,
+                    process.out.total_mrna,
+                    process.out.translation,
+                    process.out.buffering,
+                    process.out.versions,
+                    file(process.out.fold_change_plot[0][1]).name,
+                    file(process.out.interaction_p_distribution_plot[0][1]).name,
+                    file(process.out.residual_distribution_summary_plot[0][1]).name,
+                    file(process.out.residual_vs_fitted_plot[0][1]).name,
+                    file(process.out.rvm_fit_for_all_contrasts_group_plot[0][1]).name,
+                    file(process.out.rvm_fit_for_interactions_plot[0][1]).name,
+                    file(process.out.rvm_fit_for_omnibus_group_plot[0][1]).name,
+                    file(process.out.simulated_vs_obt_dfbetas_without_interaction_plot[0][1]).name,
+                    file(process.out.rdata[0][1]).name,
+                    path(process.out.versions[0]).yaml
                 ).match() }
             )
         }

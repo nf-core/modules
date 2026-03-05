@@ -1,0 +1,57 @@
+nextflow_process {
+
+    name "Test Process KHMER_UNIQUEKMERS"
+
+    script "../main.nf"
+    process "KHMER_UNIQUEKMERS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "khmer"
+    tag "khmer/uniquekmers"
+
+    test("sarscov2 - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta',checkIfExists:true)
+                ]
+                input[1] = 50
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fasta -- stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta',checkIfExists:true)
+                ]
+                input[1] = 50
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

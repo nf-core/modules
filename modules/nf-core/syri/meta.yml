@@ -1,0 +1,89 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "syri"
+description: Syri compares alignments between two chromosome-level assemblies and
+  identifies synteny and structural rearrangements.
+keywords:
+  - genomics
+  - synteny
+  - rearrangements
+  - chromosome
+tools:
+  - "syri":
+      description: "Synteny and rearrangement identifier between whole-genome assemblies"
+      homepage: "https://github.com/schneebergerlab/syri"
+      documentation: "https://github.com/schneebergerlab/syri"
+      tool_dev_url: "https://github.com/schneebergerlab/syri"
+      doi: "10.1186/s13059-019-1911-0"
+      licence: ["MIT License"]
+      identifier: biotools:SyRI
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - infile:
+        type: file
+        description: File containing alignment coordinates
+        pattern: "*.{table, sam, bam, paf}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - query_fasta:
+        type: file
+        description: Query genome for the alignments
+        pattern: "*.{fasta}"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - reference_fasta:
+        type: file
+        description: Reference genome for the alignments
+        pattern: "*.{fasta}"
+        ontologies: []
+  - file_type:
+      type: string
+      description: |
+        Input file type which is one of  T: Table, S: SAM, B: BAM, P: PAF
+output:
+  syri:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*syri.out":
+          type: file
+          description: Syri output file
+          pattern: "*syri.{out}"
+          ontologies: []
+  error:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.error.log":
+          type: file
+          description: |
+            Error log if syri fails. This error log enables the pipeline to detect if syri has failed due to one of its
+            known limitations and pass the information to the user in a user-friendly manner such as a HTML report
+          pattern: "*.error.{log}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@GallVp"
+maintainers:
+  - "@GallVp"

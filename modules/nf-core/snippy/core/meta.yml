@@ -23,18 +23,23 @@ input:
         type: file
         description: Annotated variants in VCF format
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
     - aligned_fa:
         type: file
         description: A version of the reference but with - at position with depth=0
           and N for 0 < depth < --mincov (does not have variants)
         pattern: "*.aligned.fa.gz"
-  - - reference:
-        type: file
-        description: Reference genome in GenBank (preferred) or FASTA format
-        pattern: "*.{gbk,gbk.gz,gbff,gbff.gz,fa,fa.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+  - reference:
+      type: file
+      description: Reference genome in GenBank (preferred) or FASTA format
+      pattern: "*.{gbk,gbk.gz,gbff,gbff.gz,fa,fa.gz}"
+      ontologies: []
 output:
-  - aln:
-      - meta:
+  aln:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,8 +48,9 @@ output:
           type: file
           description: A core SNP alignment in FASTA format
           pattern: "*.aln"
-  - full_aln:
-      - meta:
+          ontologies: []
+  full_aln:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,8 +59,9 @@ output:
           type: file
           description: A whole genome SNP alignment (includes invariant sites)
           pattern: "*.full.aln"
-  - tab:
-      - meta:
+          ontologies: []
+  tab:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,8 +71,10 @@ output:
           description: Tab-separated columnar list of core SNP sites with alleles but
             NO annotations
           pattern: "*.tab"
-  - vcf:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -75,8 +84,9 @@ output:
           description: Multi-sample VCF file with genotype GT tags for all discovered
             alleles
           pattern: "*.vcf"
-  - txt:
-      - meta:
+          ontologies: []
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -85,12 +95,17 @@ output:
           type: file
           description: Tab-separated columnar list of alignment/core-size statistics
           pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rpetit3"
+  - "@delfiterradas"
+  - "@sofiromano"
 maintainers:
   - "@rpetit3"

@@ -21,7 +21,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cnr/test2.paired_end.sorted.cnr', checkIfExists: true)
                 ]
                 """
@@ -29,10 +29,11 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+            assert process.success
+            assert snapshot(
+                process.out,
+                path(process.out.versions[0]).yaml
+            ).match()
         }
 
     }
@@ -46,7 +47,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cnr/test2.paired_end.sorted.cns', checkIfExists: true)
                 ]
                 """
@@ -54,10 +55,11 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+            assert process.success
+            assert snapshot(
+                process.out,
+                path(process.out.versions[0]).yaml
+            ).match()
         }
 
     }
@@ -71,7 +73,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cnr/test2.paired_end.sorted.cns', checkIfExists: true)
                 ]
                 """
@@ -79,10 +81,11 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+            assert process.success
+            assert snapshot(
+                process.out,
+                path(process.out.versions[0]).yaml
+            ).match()
         }
 
     }
@@ -96,7 +99,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cnr/test2.paired_end.sorted.cns', checkIfExists: true)
                 ]
                 """
@@ -104,10 +107,11 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+            assert process.success
+            assert snapshot(
+                process.out,
+                path(process.out.versions[0]).yaml
+            ).match()
         }
 
     }
@@ -121,7 +125,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cnr/test2.paired_end.sorted.cns', checkIfExists: true)
                 ]
                 """
@@ -129,15 +133,16 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+            assert process.success
+            assert snapshot(
+                process.out,
+                path(process.out.versions[0]).yaml
+            ).match()
         }
 
     }
 
-        test("test_cnvkit_export_theta") {
+    test("test_cnvkit_export_theta") {
 
         when {
             params {
@@ -146,7 +151,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cnr/test2.paired_end.sorted.cns', checkIfExists: true)
                 ]
                 """
@@ -154,10 +159,11 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+            assert process.success
+            assert snapshot(
+                process.out,
+                path(process.out.versions[0]).yaml
+            ).match()
         }
 
     }
@@ -172,7 +178,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cnr/test2.paired_end.sorted.cns', checkIfExists: true)
                 ]
                 """
@@ -180,10 +186,11 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+            assert process.success
+            assert snapshot(
+                process.out,
+                path(process.out.versions[0]).yaml
+            ).match()
         }
 
     }

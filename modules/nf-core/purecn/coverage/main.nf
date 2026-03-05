@@ -6,8 +6,9 @@ process PURECN_COVERAGE {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-582ac26068889091d5e798347c637f8208d77a71:a29c64a63498b1ee8b192521fdf6ed3c65506994-0':
-        'biocontainers/mulled-v2-582ac26068889091d5e798347c637f8208d77a71:a29c64a63498b1ee8b192521fdf6ed3c65506994-0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b7/b7fc3a4982b55672638cd95e6eb7a884206cc2c296de5a182462c316139f08ab/data':
+        'community.wave.seqera.io/library/bioconductor-dnacopy_bioconductor-org.hs.eg.db_bioconductor-purecn_bioconductor-txdb.hsapiens.ucsc.hg19.knowngene_pruned:ca4b5595ad5ac8ff' }"
+
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -26,8 +27,7 @@ process PURECN_COVERAGE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '2.12.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     if (task.stageInMode != 'link') {
         error "purecn/coverage can not handle staging files with symlinks. Please change the stageInmode option to 'Link'"
@@ -49,20 +49,19 @@ process PURECN_COVERAGE {
     """
 
     stub:
-
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def png = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}.png"
+    def args         = task.ext.args                   ?: ''
+    def prefix       = task.ext.prefix                 ?: "${meta.id}"
+    def png          = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}.png"
     def loess_qc_txt = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}_loess_qc.txt"
-    def loess_txt = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}_loess.txt.gz"
-    def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def loess_txt    = args.contains("--skip-gc-norm") ? "" : "echo | gzip > ${prefix}_loess.txt.gz"
+    def VERSION = '2.12.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     if (task.stageInMode != 'link') {
         error "purecn/coverage can not handle staging files with symlinks. Please change the stageInmode option to 'Link'"
     }
 
     """
-    touch ${prefix}.txt
+    echo | gzip > ${prefix}.txt.gz
     touch ${prefix}.bed
     ${png}
     ${loess_qc_txt}

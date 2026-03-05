@@ -1,0 +1,79 @@
+nextflow_process {
+
+    name "Test Process GEM2_GEM2BEDMAPPABILITY"
+    script "../main.nf"
+    process "GEM2_GEM2BEDMAPPABILITY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gem2"
+    tag "gem2/gem2bedmappability"
+    tag "gem2/gemmappability"
+    tag "gem2/gemindexer"
+
+    setup {
+        run("GEM2_GEMINDEXER") {
+            script "../../gemindexer/main.nf"
+
+            process {
+                """
+                input[0] = [
+                    [id:'test',single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta',checkIfExists:true)
+                ]
+                """
+            }
+        }
+
+        run("GEM2_GEMMAPPABILITY") {
+            script "../../gemmappability/main.nf"
+
+            process {
+                """
+                input[0] = GEM2_GEMINDEXER.out.index
+                input[1] = "100"
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - map index") {
+
+        when {
+            process {
+                """
+                input[0] = GEM2_GEMMAPPABILITY.out.map
+                input[1] = GEM2_GEMINDEXER.out.index
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+
+    test("sarscov2 - map index -- stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = GEM2_GEMMAPPABILITY.out.map
+                input[1] = GEM2_GEMINDEXER.out.index
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

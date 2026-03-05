@@ -16,7 +16,7 @@ workflow FASTQ_ALIGN_CHROMAP {
     ch_pairs_chr_order // channel (optional):  [ pairs_chr_order ]
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     //
     // Map reads with CHROMAP
@@ -28,7 +28,6 @@ workflow FASTQ_ALIGN_CHROMAP {
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
     //
     BAM_SORT_STATS_SAMTOOLS(CHROMAP_CHROMAP.out.bam, ch_fasta)
-    ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS.out.versions)
 
     emit:
     bam               = BAM_SORT_STATS_SAMTOOLS.out.bam      // channel: [ val(meta), [ bam ] ]

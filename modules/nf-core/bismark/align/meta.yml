@@ -31,6 +31,7 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -40,6 +41,7 @@ input:
         type: file
         description: |
           Reference genome FASTA file
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -50,8 +52,8 @@ input:
         description: Bismark genome index directory
         pattern: "BismarkIndex"
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,8 +62,9 @@ output:
           type: file
           description: Output BAM file containing read alignments
           pattern: "*.{bam}"
-  - report:
-      - meta:
+          ontologies: []
+  report:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -70,8 +73,9 @@ output:
           type: file
           description: Bismark alignment reports
           pattern: "*{report.txt}"
-  - unmapped:
-      - meta:
+          ontologies: []
+  unmapped:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -80,11 +84,28 @@ output:
           type: file
           description: Output FastQ file(s) containing unmapped reads
           pattern: "*.{fq.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_bismark:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bismark:
+          type: string
+          description: The tool name
+      - 'bismark --version | grep Version | sed -e "s/Bismark Version: v//" | xargs':
+          type: string
+          description: The version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bismark:
+          type: string
+          description: The tool name
+      - 'bismark --version | grep Version | sed -e "s/Bismark Version: v//" | xargs':
+          type: string
+          description: The version of the tool
 authors:
   - "@phue"
 maintainers:

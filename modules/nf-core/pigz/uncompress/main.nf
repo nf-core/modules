@@ -31,19 +31,18 @@ process PIGZ_UNCOMPRESS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' )
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz[[:space:]]*//' )
     END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     uncompressed_filename = zip.toString() - '.gz'
     """
-    touch ${zip.dropRight(3)}
+    touch $uncompressed_filename
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' )
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz[[:space:]]*//' )
     END_VERSIONS
     """
 }

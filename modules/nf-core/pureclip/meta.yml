@@ -25,11 +25,13 @@ input:
         type: file
         description: Sorted BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - controlbam:
         type: file
         description: Sorted BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
-  - - meta:
+        ontologies: []
+  - - meta2:
         type: map
         description: |
           Groovy Map containing sample information
@@ -38,11 +40,13 @@ input:
         type: file
         description: BAM index
         pattern: "*.{bai}"
+        ontologies: []
     - controlbai:
         type: file
         description: BAM index
         pattern: "*.{bai}"
-  - - meta2:
+        ontologies: []
+  - - meta3:
         type: map
         description: |
           Groovy Map containing reference information.
@@ -51,12 +55,13 @@ input:
         type: file
         description: FASTA file of reference genome
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
-  - - input_control:
-        type: boolean
-        description: Whether to run PureCLIP with an input control
+        ontologies: []
+  - input_control:
+      type: boolean
+      description: Whether to run PureCLIP with an input control
 output:
-  - crosslinks:
-      - meta:
+  crosslinks:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,8 +70,9 @@ output:
           type: file
           description: Bed file of crosslinks
           pattern: "*.{bed}"
-  - peaks:
-      - meta:
+          ontologies: []
+  peaks:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -75,11 +81,14 @@ output:
           type: file
           description: Bed file of peaks
           pattern: "*.{bed}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@charlotteanne"
   - "@marcjones"

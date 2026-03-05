@@ -25,17 +25,23 @@ input:
         type: file
         description: A list of BAM or CRAM files
         pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_3462" # CRAM
     - bai:
         type: file
         description: List of BAM/CRAM index files
         pattern: "*.{bai,csi}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327" # BAI
     - minqfile:
         type: file
         description: File with individual quality score thresholds
         pattern: "*"
+        ontologies: []
 output:
-  - depth_sample:
-      - meta:
+  depth_sample:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,8 +50,9 @@ output:
           type: file
           description: Distribution of sequencing depths
           pattern: "*.depthSample"
-  - depth_global:
-      - meta:
+          ontologies: []
+  depth_global:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,8 +61,9 @@ output:
           type: file
           description: Distribution of sequencing depths
           pattern: "*.depthGlobal"
-  - qs:
-      - meta:
+          ontologies: []
+  qs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,8 +72,9 @@ output:
           type: file
           description: Distribution of scores
           pattern: "*.qs"
-  - pos:
-      - meta:
+          ontologies: []
+  pos:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,8 +83,11 @@ output:
           type: file
           description: Various types of depth statistics (depending on value for -dumpCounts)
           pattern: "*.pos.gz"
-  - counts:
-      - meta:
+          ontologies:
+            - edam: "http://edamontology.org/format_3675" # Compressed file
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  counts:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -84,8 +96,10 @@ output:
           type: file
           description: Various types of statistics (related to pos.gz)
           pattern: "*.counts.gz"
-  - icounts:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  icounts:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -95,11 +109,15 @@ output:
           description: Internal format for dumping binary single chrs. Useful for ANGSD
             contamination
           pattern: "*.icnts.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@jfy133"
 maintainers:

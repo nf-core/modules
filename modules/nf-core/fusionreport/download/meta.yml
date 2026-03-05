@@ -1,0 +1,36 @@
+name: fusionreport_download
+description: Build DB for fusionreport
+keywords:
+  - sort
+  - RNA-seq
+  - fusion_report
+  - download
+tools:
+  - fusionreport:
+      description: Generate an interactive summary report from fusion detection tools.
+      homepage: https://github.com/Clinical-Genomics/fusion-report
+      documentation: https://github.com/Clinical-Genomics/fusion-report/blob/master/README.md
+      tool_dev_url: https://github.com/Clinical-Genomics/fusion-report
+      licence: ["GPL v3"]
+      identifier: ""
+
+output:
+  fusionreport_ref:
+    - - meta:
+          type: string
+          description: directory containing the genome resource files required for fusioncatcher
+          pattern: "fusion_report_db"
+      - fusion_report_db:
+          type: directory
+          description: directory containing the genome resource files required for fusioncatcher
+          pattern: "fusion_report_db"
+
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@praveenraj2018"

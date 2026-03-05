@@ -23,17 +23,41 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.bam.collect { bam(it[1]).getReadsMD5() },
                     process.out.report,
-                    process.out.versions
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
                     ).match()
                 }
             )
         }
-
     }
 
+    test("sarscov2 paired-end methylated [bam] | stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.bam', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
 }

@@ -23,9 +23,10 @@ input:
         type: file
         description: FASTA file
         pattern: "*.{fa,fasta,fna,fas}"
+        ontologies: []
 output:
-  - sizes:
-      - meta:
+  sizes:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,8 +35,9 @@ output:
           type: file
           description: File containing chromosome lengths
           pattern: "*.{sizes}"
-  - fai:
-      - meta:
+          ontologies: []
+  fai:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,8 +46,9 @@ output:
           type: file
           description: FASTA index file
           pattern: "*.{fai}"
-  - gzi:
-      - meta:
+          ontologies: []
+  gzi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,11 +57,14 @@ output:
           type: file
           description: Optional gzip index file for compressed inputs
           pattern: "*.gzi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@tamara-hodgetts"
   - "@chris-cheshire"

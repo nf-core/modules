@@ -10,7 +10,7 @@ nextflow_process {
     tag "ffq"
 
     test("test-ffq-single-id") {
-        
+
         when {
             process {
                 """
@@ -27,9 +27,9 @@ nextflow_process {
             )
         }
     }
-    
+
     test("test-ffq-multiple-ids") {
-        
+
         when {
             process {
                 """
@@ -46,5 +46,5 @@ nextflow_process {
             )
         }
     }
-    
+
 }

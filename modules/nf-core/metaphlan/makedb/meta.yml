@@ -15,16 +15,18 @@ tools:
       licence: ["MIT License"]
       identifier: biotools:metaphlan
 output:
-  - db:
-      - metaphlan_db_latest:
-          type: directory
-          description: Output directory containing the indexed METAPHLAN database
-          pattern: "*/"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  db:
+    - metaphlan_db_latest:
+        type: directory
+        description: Output directory containing the indexed METAPHLAN database
+        pattern: "*/"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@LilyAnderssonLee"
 maintainers:

@@ -32,4 +32,14 @@ process ENTREZDIRECT_ESEARCH {
         esearch: \$(esearch -version)
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.xml
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        esearch: \$(esearch -version)
+    END_VERSIONS
+    """
 }

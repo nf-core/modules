@@ -1,5 +1,6 @@
 name: "freyja_update"
-description: downloads new versions of the curated SARS-CoV-2 lineage file and barcodes
+description: downloads new versions of the curated SARS-CoV-2 lineage file and
+  barcodes
 keywords:
   - database
   - variants
@@ -12,33 +13,63 @@ tools:
       documentation: "https://github.com/andersen-lab/Freyja/wiki"
       tool_dev_url: "https://github.com/andersen-lab/Freyja"
       doi: "10.1038/s41586-022-05049-6"
-      licence: ["BSD-2-Clause"]
-      identifier: ""
+      licence:
+        - "BSD-2-Clause"
+      identifier: "biotools:freyja"
 input:
-  - - db_name:
-        type: string
-        description: "The name of the database directory"
+  - db_name:
+      type: string
+      description: "The name of the database directory"
 output:
-  - barcodes:
-      - ${db_name}/usher_barcodes.csv:
-          type: file
-          description: File containing lineage defining barcodes
-          pattern: "*barcodes.csv"
-  - lineages_topology:
-      - ${db_name}/lineages.yml:
-          type: file
-          description: File containing the lineage topology
-          pattern: "*lineages.yml"
-  - lineages_meta:
-      - ${db_name}/curated_lineages.json:
-          type: file
-          description: File containing lineage metadata that correspond to barcodes
-          pattern: "*lineages.json"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  barcodes:
+    - "${db_name}/*barcodes.*":
+        type: file
+        description: File containing lineage defining barcodes
+        pattern: "*barcodes.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+  lineages_topology:
+    - "${db_name}/*lineages.yml":
+        type: file
+        description: File containing lineage topology information that correspond to barcodes
+        pattern: "*lineages.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  lineages_meta:
+    - "${db_name}/*curated_lineages.json":
+        type: file
+        description: File containing lineage metadata that correspond to barcodes
+        pattern: "*curated_lineages.json"
+        ontologies:
+          - edam: http://edamontology.org/format_3464 # JSON
+  config:
+    - "${db_name}/*pathogen_config.yml":
+        type: file
+        description: File containing pathogen configuration information for Freyja
+        pattern: "*pathogen_config.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  versions_freyja:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - freyja:
+          type: string
+          description: The name of the tool
+      - freyja --version | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - freyja:
+          type: string
+          description: The name of the tool
+      - freyja --version | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Joon-Klaps"
 maintainers:

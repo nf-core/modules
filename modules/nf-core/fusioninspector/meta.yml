@@ -1,0 +1,150 @@
+name: fusioninspector
+description: Validation of Fusion Transcript Predictions
+keywords:
+  - fusioninspector
+  - fusion
+  - RNA-seq
+  - fastq
+tools:
+  - fusioninspector:
+      description: Validation of Fusion Transcript Predictions
+      homepage: https://github.com/FusionInspector/FusionInspector
+      documentation: https://github.com/FusionInspector/FusionInspector/wiki
+      tool_dev_url: https://github.com/FusionInspector/FusionInspector
+      doi: 10.1101/2021.08.02.454639"
+      licence: ["BSD-3-Clause"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: FASTQ file
+        pattern: "*.{fastq*}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1930" # FASTQ
+    - fusion_list:
+        type: file
+        description: Fusion targets list
+        pattern: "*.{txt}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2330" # Textual format
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reference:
+        type: directory
+        description: Path to CTAT references
+        pattern: "*"
+
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*FusionInspector.fusions.tsv":
+          type: file
+          description: FusionInspector output TSV file
+          pattern: "*.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  out_gtf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - fi_workdir/*.gtf:
+          type: file
+          description: GTF output file
+          pattern: "*.gtf"
+          ontologies:
+            - edam: "http://edamontology.org/format_2306" # GTF
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*FusionInspector.log":
+          type: file
+          description: FusionInspector log file
+          pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/data_1678" # Log file
+            - edam: "http://edamontology.org/format_2330" # Plain text
+  html:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*html":
+          type: file
+          description: HTML output files
+          pattern: "*.html"
+          ontologies:
+            - edam: "http://edamontology.org/format_2331" # HTML
+  abridged_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*abridged.tsv":
+          type: file
+          description: Abridged TSV output file
+          pattern: "*.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  igv_inputs:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - IGV_inputs:
+          type: directory
+          description: IGV inputs directory
+          pattern: "IGV_inputs"
+  fi_workdir:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - fi_workdir:
+          type: directory
+          description: FusionInspector work directory
+          pattern: "fi_workdir"
+  chckpts_dir:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - chckpts_dir:
+          type: directory
+          description: Checkpoints directory
+          pattern: "chckpts_dir"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@rannick"
+  - "@delfiterradas"
+  - "@sofiromano"
+  - "@alanmmobbs93"
+  - "@martings"

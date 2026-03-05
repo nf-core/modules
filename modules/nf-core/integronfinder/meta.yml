@@ -1,0 +1,94 @@
+name: integronfinder
+description: Detect integrons in DNA sequences
+keywords:
+  - bacteria
+  - fasta
+  - mobile genetic elements
+  - integron
+tools:
+  - integronfinder:
+      description: "Integron Finder aims at detecting independently integron integrase
+        and attC recombination sites in DNA sequences"
+      homepage: "https://integronfinder.readthedocs.io/en/latest/"
+      documentation: "https://integronfinder.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/gem-pasteur/Integron_Finder/"
+      doi: "10.3390/microorganisms10040700"
+      licence: ["GPL v3-or-later"]
+      identifier: biotools:integron_finder
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Nucleotide sequences in FASTA format
+        pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/data_2977" # Nucleic acid sequence
+          - edam: "http://edamontology.org/format_1929" #FASTA
+output:
+  gbk:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*/*.gbk":
+          type: file
+          description: Creates a Genbank files with all the annotations found (present
+            in the .integrons file)
+          pattern: "*.gbk"
+          ontologies:
+            - edam: "http://edamontology.org/format_1936" # GenBank
+  integrons:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*/*.integrons":
+          type: file
+          description: A file with all integrons and their elements detected in all
+            sequences in the input file
+          pattern: "*.integrons"
+          ontologies: []
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*/*.summary":
+          type: file
+          description: A summary file with the number and type of integrons per sequence
+          pattern: "*.summary"
+          ontologies: []
+  out:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*/integron_finder.out":
+          type: file
+          description: A copy standard output. The stdout can be silenced with the argument
+            --mute
+          pattern: "integron_finder.out"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@nguyent-son"
+  - "@juke34"
+  - "@jhayer"
+maintainers:
+  - "@nguyent-son"
+  - "@juke34"
+  - "@jhayer"

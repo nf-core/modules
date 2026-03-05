@@ -1,0 +1,94 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "plastid_psite"
+description: Estimate position of ribosomal P-site within ribosome profiling
+  read alignments as a function of read length
+keywords:
+  - genomics
+  - riboseq
+  - psite
+tools:
+  - "plastid":
+      description: "Nucleotide-resolution analysis of next-generation sequencing and genomics data"
+      homepage: "https://github.com/joshuagryphon/plastid"
+      documentation: "https://plastid.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/joshuagryphon/plastid"
+      doi: "10.1186/s12864-016-3278-x"
+      licence: ["BSD-3-clause"]
+      identifier: biotools:plastid
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: Genome BAM file
+        pattern: "*.bam"
+        ontologies:
+          - edam: http://edamontology.org/format_2572 # BAM
+    - bam_index:
+        type: file
+        description: Genome BAM index file
+        pattern: "*.bai"
+        ontologies:
+          - edam: http://edamontology.org/format_3327 # BAI
+  - - meta2:
+        type: map
+        description: |
+          Map containing reference information for the reference genome GTF file
+          e.g. `[ id:'Ensembl human v.111' ]`
+    - rois_txt:
+        type: file
+        description: |
+          Tab-delimited text file describing the maximal spanning
+          window for each gene (output from plastid_metagene_generate)
+        pattern: "*.txt"
+        ontologies: []
+output:
+  metagene_profiles:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_metagene_profiles.txt":
+          type: file
+          description: Matrix containing metagene profile for each read length
+          pattern: "*_metagene_profiles.txt"
+          ontologies: []
+  p_offsets_png:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_p_offsets.png":
+          type: file
+          description: Graphical illustration of metagene profiles
+          pattern: "*_p_offsets.png"
+          ontologies:
+            - edam: http://edamontology.org/format_3603 # PNG
+  p_offsets:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_p_offsets.txt":
+          type: file
+          description: Selected p-site offset for each read length
+          pattern: "*_p_offsets.txt"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@suhrig"
+maintainers:
+  - "@suhrig"

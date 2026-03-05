@@ -1,0 +1,103 @@
+name: "tinc"
+description: "TINC is a package to determine the contamination of tumour DNA in a matched normal sample. The approach uses evolutionary theory applied to read counts data from whole-genome sequencing assays."
+keywords:
+  - genomics
+  - tumour contamination
+  - normal
+  - purity
+
+tools:
+  - "tinc":
+      description: "TINC is a package that implements algorithms to determine the contamination
+        of a bulk sequencing sample in the context of cancer studies (matched tumour/
+        normal). The contamination estimated by TINC can be either due to normal cells
+        sampled in the tumour biopsy or to tumour cells in the normal biopsy. The former
+        case is traditionally called purity, or cellularity, and a number of tools exist
+        to estimate it. The latter case is less common, and that is the main reason
+        TINC has been developed. For this reason, the package takes name TINC, Tumour-in-Normal
+        contamination. TINC is part of the evoverse, a package that gathers multiple
+        R packages to implement Cancer Evolution analyses."
+      homepage: "https://caravagnalab.github.io/TINC/"
+      documentation: "https://caravagnalab.github.io/TINC/"
+      tool_dev_url: "https://github.com/caravagnalab/TINC/"
+      doi: "10.1038/s41467-023-44158-2"
+      licence: ["GPL v3"]
+      identifier: "biotools:r-tinc"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name', normal_sample:'normal_sample_name' ]`
+
+    - cna_rds:
+        type: file
+        description: RDS file with copy number segments and purity
+
+        ontologies: []
+    - vcf_rds:
+        type: file
+        description: RDS file with vcf calls from tumour and normal sample
+
+        ontologies: []
+output:
+  rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name', normal_sample:'normal_sample_name' ]`
+      - "*_fit.rds":
+          type: file
+          description: RDS file with the fit results
+          pattern: "*.{rds}"
+          ontologies: []
+  plot_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name', normal_sample:'normal_sample_name' ]`
+      - "*_plot.rds":
+          type: file
+          description: RDS file with the plot of the results
+          pattern: "*.{rds}"
+
+          ontologies: []
+  plot_pdf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name', normal_sample:'normal_sample_name' ]`
+      - "*.pdf":
+          type: file
+          description: PDF file with the plot of the results
+          pattern: "*.{pdf}"
+          ontologies: []
+  tinc_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name', normal_sample:'normal_sample_name' ]`
+      - "*_qc.csv":
+          type: file
+          description: CSV file with the output of TINC qc flag
+          pattern: "*.{csv}"
+
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@valerianilucrezia"
+maintainers:
+  - "@valerianilucrezia"

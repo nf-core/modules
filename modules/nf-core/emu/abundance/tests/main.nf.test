@@ -2,11 +2,13 @@ nextflow_process {
     name "Test Process EMU_ABUNDANCE"
     script "../main.nf"
     process "EMU_ABUNDANCE"
+
     tag "modules"
     tag "untar"
     tag "modules_nfcore"
     tag "emu"
     tag "emu/abundance"
+
     config "./nextflow.config"
 
     setup {
@@ -14,13 +16,13 @@ nextflow_process {
             script "modules/nf-core/untar/main.nf"
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = [
                     [],
                     file(
                         params.modules_testdata_base_path + "genomics/prokaryotes/streptococcus_agalactiae/genome/emu.tar.gz",
                         checkIfExists: true
                     )
-                ])
+                ]
                 """
             }
         }
@@ -28,11 +30,15 @@ nextflow_process {
 
     test("sarscov2 nanopore [fastq_gz]") {
         when {
+            params {
+                module_args = "--keep-files --keep-read-assignments --output-unclassified"
+            }
             process {
                 """
-                input[0] = [ [ id:'test' ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/streptococcus_agalactiae/nanopore/fastq/test.fastq.gz', checkIfExists: true)
-                        ]
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/streptococcus_agalactiae/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+                ]
                 input[1] = UNTAR.out.untar.map{ it[1] }
                 """
             }
@@ -45,11 +51,10 @@ nextflow_process {
                     process.out.report,
                     process.out.assignment_report,
                     process.out.samfile,
-                    process.out.versions
-                ).match() },
-    // Match files unclassified_mapped.fasta and unmapped.fasta as they are empty with this test case
-                { assert file(process.out.unclassified_fa[0][1][0]).exists() },
-                { assert file(process.out.unclassified_fa[0][1][1]).exists() }
+                    file(process.out.unclassified[0][1]).name,
+                    file(process.out.unmapped[0][1]).name,
+                    process.out.versions,
+                ).match() }
             )
         }
     }
@@ -57,6 +62,9 @@ nextflow_process {
     test("sarscov2 nanopore [fastq_gz] - stub") {
         options "-stub"
         when {
+            params {
+                module_args = ""
+            }
             process {
                 """
                 input[0] = [ [ id:'test' ], // meta map

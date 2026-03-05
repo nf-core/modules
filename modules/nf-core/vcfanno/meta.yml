@@ -1,6 +1,6 @@
 name: vcfanno
-description: quickly annotate your VCF with any number of INFO fields from any number
-  of VCFs or BED files
+description: quickly annotate your VCF with any number of INFO fields from any
+  number of VCFs or BED files
 keywords:
   - vcf
   - bed
@@ -26,29 +26,33 @@ input:
         type: file
         description: query VCF file
         pattern: "*.{vcf, vcf.gz}"
+        ontologies: []
     - tbi:
         type: file
         description: tabix index file for the query VCF
         pattern: "*.tbi"
+        ontologies: []
     - specific_resources:
         type: map
-        description: A list of sample specific reference files defined in toml config,
-          must also include indices if bgzipped.
-  - - toml:
-        type: file
-        description: configuration file with reference file basenames
-        pattern: "*.toml"
-  - - lua:
-        type: file
-        description: Lua file for custom annotations
-        pattern: "*.lua"
-  - - resources:
-        type: map
-        description: List of reference files defined in toml config, must also include
-          indices if bgzipped.
+        description: A list of sample specific reference files defined in toml
+          config, must also include indices if bgzipped.
+  - toml:
+      type: file
+      description: configuration file with reference file basenames
+      pattern: "*.toml"
+      ontologies: []
+  - lua:
+      type: file
+      description: Lua file for custom annotations
+      pattern: "*.lua"
+      ontologies: []
+  - resources:
+      type: map
+      description: List of reference files defined in toml config, must also
+        include indices if bgzipped.
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,24 +64,40 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.vcf.gz"
-  - tbi:
-      - meta:
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.vcf.gz.tbi"
+          pattern: "*.vcf.gz"
       - "*.vcf.gz.tbi":
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.vcf.gz.tbi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions_vcfanno:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcfanno:
+          type: string
+          description: The name of the tool
+      - vcfanno 2>&1 | sed -n 's/.*version \([0-9.]\+\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcfanno:
+          type: string
+          description: The name of the tool
+      - vcfanno 2>&1 | sed -n 's/.*version \([0-9.]\+\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@projectoriented"
   - "@matthdsm"

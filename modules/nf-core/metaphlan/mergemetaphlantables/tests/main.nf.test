@@ -33,6 +33,7 @@ nextflow_process {
                     [ [ id: 'test2', single_end: true], file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz',checkIfExists: true ) ],
                 )
                 input[1] = UNTAR.out.untar.map{ it[1] }
+                input[2] = false
                 """
             }
         }

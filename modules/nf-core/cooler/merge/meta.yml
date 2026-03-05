@@ -23,9 +23,10 @@ input:
         type: file
         description: Path to COOL file
         pattern: "*.{cool,mcool}"
+        ontologies: []
 output:
-  - cool:
-      - meta:
+  cool:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,11 +35,28 @@ output:
           type: file
           description: Path to COOL file
           pattern: "*.cool"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software version
-          pattern: "versions.yml"
+          ontologies: []
+  versions_cooler:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cooler:
+          type: string
+          description: The name of the tool
+      - cooler --version 2>&1 | sed "s/cooler, version //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cooler:
+          type: string
+          description: The name of the tool
+      - cooler --version 2>&1 | sed "s/cooler, version //":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jianhong"
 maintainers:

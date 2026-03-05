@@ -1,0 +1,150 @@
+nextflow_process {
+
+    name "Test Process KHMER_NORMALIZEBYMEDIAN"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "KHMER_NORMALIZEBYMEDIAN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "seqtk"
+    tag "seqtk/mergepe"
+    tag "khmer"
+    tag "khmer/normalizebymedian"
+
+    test("sarscov2 - fastq - only_pe") {
+        setup {
+            run("SEQTK_MERGEPE") {
+                script "../../../seqtk/mergepe/main.nf"
+
+                process {
+                    """
+                    input[0] = [
+                        [id:'test', single_end:false],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists:true)
+                        ]
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            params {
+                module_args = ''
+                module_prefix = 'only_pe'
+            }
+            process {
+                """
+                input[0] = SEQTK_MERGEPE.out.reads.combine(Channel.of([[]]))
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    test("sarscov2 - fastq - only_se") {
+        when {
+            params {
+                module_args = '-C 20 -k 32'
+                module_prefix = 'only_se'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'only_se'],
+                    [],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true)
+                    ]
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    test("sarscov2 - fastq - mixed") {
+        setup {
+            run("SEQTK_MERGEPE") {
+                script "../../../seqtk/mergepe/main.nf"
+
+                process {
+                    """
+                    input[0] = [
+                        [id:'khmer_test0', single_end:false],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists:true)
+                        ],
+                        [id:'khmer_test1', single_end:false],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists:true)
+                        ]
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            params {
+                module_args = ''
+                module_prefix = 'mixed'
+            }
+            process {
+                """
+                input[0] = SEQTK_MERGEPE.out.reads
+                    .combine([
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true)
+                    ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq -- stub") {
+        options '-stub'
+        when {
+            params {
+                module_args = ''
+                module_prefix = 'stub'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    [],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true)
+                    ]
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

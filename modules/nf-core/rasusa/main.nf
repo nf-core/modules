@@ -13,7 +13,7 @@ process RASUSA {
 
     output:
     tuple val(meta), path('*.fastq.gz'), emit: reads
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('rasusa'), eval('rasusa --version 2>&1 | sed -e "s/rasusa //g"'), emit: versions_rasusa, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,9 +29,5 @@ process RASUSA {
         --genome-size $genome_size \\
         --input $reads \\
         $output
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rasusa: \$(rasusa --version 2>&1 | sed -e "s/rasusa //g")
-    END_VERSIONS
     """
 }

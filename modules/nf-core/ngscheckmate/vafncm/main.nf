@@ -14,7 +14,7 @@ process NGSCHECKMATE_VAFNCM {
     tuple val(meta), path("*_corr_matrix.txt") , emit: corr_matrix
     tuple val(meta), path("*_all.txt")         , emit: all
     tuple val(meta), path("*_matched.txt")     , emit: matched
-    path "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val('ngscheckmate'), eval("ncm.py --help | sed '7!d;s/.* v//g'"), topic: versions, emit: versions_ngscheckmate
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +22,6 @@ process NGSCHECKMATE_VAFNCM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     # tool has a bug where it misses the final file, so add a dummy one.
     cp ${vafs[0]} zzzzzz.vaf
@@ -34,26 +33,14 @@ process NGSCHECKMATE_VAFNCM {
 
     # generate a file with all the samples that do match, for consistency with the bam mode (ngscheckmate/ncm)
     sed "/unmatched/d" ${prefix}_all.txt > ${prefix}_matched.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ngscheckmate: \$(ncm.py --help | sed "7!d;s/ *Ensuring Sample Identity v//g")
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     touch ${prefix}_corr_matrix.txt
     touch ${prefix}_matched.txt
     touch ${prefix}_all.txt
     touch ${prefix}.pdf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ngscheckmate: \$(ncm.py --help | sed "7!d;s/ *Ensuring Sample Identity v//g")
-    END_VERSIONS
     """
 }

@@ -4,8 +4,8 @@ process COOLER_DIGEST {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cooler:0.9.2--pyh7cba7a3_0' :
-        'biocontainers/cooler:0.9.2--pyh7cba7a3_0' }"
+        'https://depot.galaxyproject.org/singularity/cooler:0.10.4--pyhdfd78af_0' :
+        'biocontainers/cooler:0.10.4--pyhdfd78af_0' }"
 
     input:
     path fasta
@@ -13,8 +13,8 @@ process COOLER_DIGEST {
     val  enzyme
 
     output:
-    path "*.bed"                  , emit: bed
-    path "versions.yml"           , emit: versions
+    path "*.bed", emit: bed
+    tuple val("${task.process}"), val('cooler'), eval('cooler --version 2>&1 | sed "s/cooler, version //"'), emit: versions_cooler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

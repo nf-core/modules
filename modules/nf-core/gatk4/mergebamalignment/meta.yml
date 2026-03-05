@@ -27,10 +27,12 @@ input:
         type: file
         description: The aligned bam file
         pattern: "*.{bam}"
+        ontologies: []
     - unmapped:
         type: file
         description: The unmapped bam file
         pattern: "*.{bam}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -39,6 +41,7 @@ input:
     - fasta:
         type: file
         description: The reference fasta file
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -47,21 +50,40 @@ input:
     - dict:
         type: file
         description: GATK sequence dictionary
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: file
           description: The merged bam file
           pattern: "*.bam"
+          ontologies: []
       - "*.bam":
           type: file
           description: The merged bam file
           pattern: "*.bam"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_gatk4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@kevinmenden"
   - "@ramprasadn"

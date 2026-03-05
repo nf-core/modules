@@ -4,8 +4,8 @@ process BLAST_BLASTDBCMD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/blast:2.15.0--pl5321h6f7f691_1':
-        'biocontainers/blast:2.15.0--pl5321h6f7f691_1' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0c/0c86cbb145786bf5c24ea7fb13448da5f7d5cd124fd4403c1da5bc8fc60c2588/data':
+        'community.wave.seqera.io/library/blast:2.17.0--d4fb881691596759' }"
 
     input:
     tuple val(meta) , val(entry), path(entry_batch)
@@ -14,7 +14,7 @@ process BLAST_BLASTDBCMD {
     output:
     tuple val(meta), path("*.fasta"), optional: true, emit: fasta
     tuple val(meta), path("*.txt")  , optional: true, emit: text
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('blastdbcmd'), eval('blastdbcmd -version 2>&1 | head -n1 | sed \'s/^.*blastdbcmd: //; s/ .*\$//\''), topic: versions, emit: versions_blastdbcmd
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,10 +43,6 @@ process BLAST_BLASTDBCMD {
         -out ${prefix}.${extension} \\
         ${input}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blast: \$(blastdbcmd -version 2>&1 | head -n1 | sed 's/^.*blastdbcmd: //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -56,9 +52,5 @@ process BLAST_BLASTDBCMD {
     """
     touch ${prefix}.${extension}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blast: \$(blastdbcmd -version 2>&1 | head -n1 | sed 's/^.*blastdbcmd: //; s/ .*\$//')
-    END_VERSIONS
     """
 }

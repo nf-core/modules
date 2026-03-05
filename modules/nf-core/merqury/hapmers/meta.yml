@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "merqury_hapmers"
 description: A script to generate hap-mer dbs for trios
 keywords:
@@ -11,9 +10,9 @@ tools:
       description: "Evaluate genome assemblies with k-mers and more."
       tool_dev_url: "https://github.com/marbl/merqury"
       doi: "10.1186/s13059-020-02134-9"
-      licence: ["United States Government Work"]
+      licence:
+        - "United States Government Work"
       identifier: biotools:merqury
-
 input:
   - - meta:
         type: map
@@ -24,17 +23,17 @@ input:
         type: directory
         description: Childs' k-mers (all, from WGS reads)
         pattern: "*.meryl"
-  - - maternal_meryl:
-        type: directory
-        description: Haplotype1 k-mers (all, ex. maternal)
-        pattern: "*.meryl"
-  - - paternal_meryl:
-        type: directory
-        description: Haplotype2 k-mers (all, ex. paternal)
-        pattern: "*.meryl"
+  - maternal_meryl:
+      type: directory
+      description: Haplotype1 k-mers (all, ex. maternal)
+      pattern: "*.meryl"
+  - paternal_meryl:
+      type: directory
+      description: Haplotype2 k-mers (all, ex. paternal)
+      pattern: "*.meryl"
 output:
-  - mat_hapmer_meryl:
-      - meta:
+  mat_hapmer_meryl:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,8 +42,8 @@ output:
           type: directory
           description: Inherited maternal hap-mer dbs
           pattern: "*_mat.hapmer.meryl"
-  - pat_hapmer_meryl:
-      - meta:
+  pat_hapmer_meryl:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,44 +52,63 @@ output:
           type: directory
           description: Inherited paternal hap-mer dbs
           pattern: "*_pat.hapmer.meryl"
-  - inherited_hapmers_fl_png:
-      - meta:
+  inherited_hapmers_fl_png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
       - "*_inherited_hapmers.fl.png":
           type: file
-          description: k-mer distribution of the inherited dbs and cutoffs used to generate
-            hap-mer dbs
+          description: k-mer distribution of the inherited dbs and cutoffs used to
+            generate hap-mer dbs
           pattern: "*_inherited_hapmers.fl.png"
-  - inherited_hapmers_ln_png:
-      - meta:
+          ontologies: []
+  inherited_hapmers_ln_png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
       - "*_inherited_hapmers.ln.png":
           type: file
-          description: k-mer distribution of the inherited dbs and cutoffs used to generate
-            hap-mer dbs
+          description: k-mer distribution of the inherited dbs and cutoffs used to
+            generate hap-mer dbs
           pattern: "*_inherited_hapmers.ln.png"
-  - inherited_hapmers_st_png:
-      - meta:
+          ontologies: []
+  inherited_hapmers_st_png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
       - "*_inherited_hapmers.st.png":
           type: file
-          description: k-mer distribution of the inherited dbs and cutoffs used to generate
-            hap-mer dbs
+          description: k-mer distribution of the inherited dbs and cutoffs used to
+            generate hap-mer dbs
           pattern: "*_inherited_hapmers.st.png"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_merqury:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - merqury:
+          type: string
+          description: The name of the tool
+      - '"1.3"':
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - merqury:
+          type: string
+          description: The name of the tool
+      - '"1.3"':
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@GallVp"
 maintainers:

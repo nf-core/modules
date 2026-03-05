@@ -34,6 +34,16 @@ input:
         type: file
         description: Groovy Map containing reference genome information for vcf
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+        ontologies: []
+    - tbi:
+        type: file
+        description: Alternative VCF file index
+        pattern: "*.tbi"
+        ontologies: []
+    - regions_file:
+        type: file
+        description: Regions file
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -43,6 +53,7 @@ input:
         description: Groovy Map containing reference genome information for fai reference
           fasta file
         pattern: "*.fasta"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -51,6 +62,7 @@ input:
         type: file
         description: Groovy Map containing reference genome information for fai
         pattern: "*.fasta.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -60,9 +72,10 @@ input:
         description: Groovy Map containing reference genome information for GATK sequence
           dictionary
         pattern: "*.dict"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing VCF information
@@ -71,8 +84,9 @@ output:
           type: file
           description: VCF filtered output file
           pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-  - tbi:
-      - meta:
+          ontologies: []
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing VCF information
@@ -81,8 +95,9 @@ output:
           type: file
           description: Alternative VCF file index
           pattern: "*.tbi"
-  - csi:
-      - meta:
+          ontologies: []
+  csi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing VCF information
@@ -91,11 +106,14 @@ output:
           type: file
           description: Default VCF file index
           pattern: "*.csi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@lindenb"
 maintainers:

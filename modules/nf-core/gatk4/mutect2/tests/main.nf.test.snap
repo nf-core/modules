@@ -1,33 +1,7 @@
 {
-    "tumor_normal_pair_f1r2_stubs": {
+    "human - bam - generate_pon": {
         "content": [
-            [
-                "test.vcf.gz"
-            ],
-            [
-                "test.vcf.gz.tbi"
-            ],
-            [
-                "test.vcf.gz.stats"
-            ],
-            [
-                "test.f1r2.tar.gz"
-            ],
-            [
-                "w"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.0"
-        },
-        "timestamp": "2024-10-31T11:49:16.64829295"
-    },
-    "generate_pon": {
-        "content": [
-            [
-                "test.vcf.gz"
-            ],
+            "876aa6be01c0c8fc71ad8e99ed842240",
             [
                 "test.vcf.gz.tbi"
             ],
@@ -42,21 +16,25 @@
             [
                 
             ],
-            [
-                "versions.yml:md5,8b99605d0a404d9ccbf8628ca881a8a4"
-            ]
+            {
+                "versions_gatk4": [
+                    [
+                        "GATK4_MUTECT2",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-10-31T11:48:44.796786166"
+        "timestamp": "2026-02-05T16:54:59.699672374"
     },
-    "mitochondria": {
+    "human - bam - tumor_only - force_call": {
         "content": [
-            [
-                "test.vcf.gz"
-            ],
+            "9c2928d0e751262c048ac162b9223e4e",
             [
                 "test.vcf.gz.tbi"
             ],
@@ -65,85 +43,31 @@
                     {
                         "id": "test"
                     },
-                    "test.vcf.gz.stats:md5,4f77301a125913170b8e9e7828b4ca3f"
+                    "test.vcf.gz.stats:md5,2398263886ecb546c8055af4fbad6040"
                 ]
             ],
             [
                 
             ],
-            [
-                "versions.yml:md5,8b99605d0a404d9ccbf8628ca881a8a4"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.0"
-        },
-        "timestamp": "2024-10-31T11:49:03.399442766"
-    },
-    "cram_input": {
-        "content": [
-            [
-                "test.vcf.gz"
-            ],
-            [
-                "test.vcf.gz.tbi"
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.vcf.gz.stats:md5,55ed641e16089afb33cdbc478e202d3d"
+            {
+                "versions_gatk4": [
+                    [
+                        "GATK4_MUTECT2",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
                 ]
-            ],
-            [
-                
-            ],
-            [
-                "versions.yml:md5,8b99605d0a404d9ccbf8628ca881a8a4"
-            ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-10-31T11:45:49.212101867"
+        "timestamp": "2026-02-05T17:02:15.006936591"
     },
-    "tumor_single": {
+    "human - bam - tumor_normal_pair": {
         "content": [
-            [
-                "test.vcf.gz"
-            ],
-            [
-                "test.vcf.gz.tbi"
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.vcf.gz.stats:md5,55ed641e16089afb33cdbc478e202d3d"
-                ]
-            ],
-            [
-                
-            ],
-            [
-                "versions.yml:md5,8b99605d0a404d9ccbf8628ca881a8a4"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.0"
-        },
-        "timestamp": "2024-10-31T11:42:47.335589964"
-    },
-    "tumor_normal_pair": {
-        "content": [
-            [
-                "test.vcf.gz"
-            ],
+            "7418ed45a029394253817a5eb7149334",
             [
                 "test.vcf.gz.tbi"
             ],
@@ -160,21 +84,297 @@
             [
                 
             ],
-            [
-                "versions.yml:md5,8b99605d0a404d9ccbf8628ca881a8a4"
-            ]
+            {
+                "versions_gatk4": [
+                    [
+                        "GATK4_MUTECT2",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-10-31T11:36:10.506528759"
+        "timestamp": "2026-02-05T16:44:25.776848294"
     },
-    "tumor_normal_pair_f1r2": {
+    "human - cram": {
         "content": [
+            "1b65f1a163b517944bf2e4b74230e035",
             [
-                "test.vcf.gz"
+                "test.vcf.gz.tbi"
             ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.vcf.gz.stats:md5,55ed641e16089afb33cdbc478e202d3d"
+                ]
+            ],
+            [
+                
+            ],
+            {
+                "versions_gatk4": [
+                    [
+                        "GATK4_MUTECT2",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-05T16:52:48.795368727"
+    },
+    "mitochondria - bam": {
+        "content": [
+            "ea70f79e33805a2c0b47b32a48a8d26f",
+            [
+                "test.vcf.gz.tbi"
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.vcf.gz.stats:md5,fc6ea14ca2da346babe78161beea28c9"
+                ]
+            ],
+            [
+                
+            ],
+            {
+                "versions_gatk4": [
+                    [
+                        "GATK4_MUTECT2",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-05T16:55:10.945977864"
+    },
+    "human - bam - tumor_only": {
+        "content": [
+            "1b65f1a163b517944bf2e4b74230e035",
+            [
+                "test.vcf.gz.tbi"
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.vcf.gz.stats:md5,55ed641e16089afb33cdbc478e202d3d"
+                ]
+            ],
+            [
+                
+            ],
+            {
+                "versions_gatk4": [
+                    [
+                        "GATK4_MUTECT2",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-05T16:50:29.074224171"
+    },
+    "mitochondria - bam - gz_ref": {
+        "content": [
+            "ea70f79e33805a2c0b47b32a48a8d26f",
+            [
+                "test.vcf.gz.tbi"
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.vcf.gz.stats:md5,fc6ea14ca2da346babe78161beea28c9"
+                ]
+            ],
+            [
+                
+            ],
+            {
+                "versions_gatk4": [
+                    [
+                        "GATK4_MUTECT2",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-05T16:55:22.160325012"
+    },
+    "human - bam - tumor_normal_pair - force_call": {
+        "content": [
+            "63c4ff01a8316f4243b6b12b06ded74e",
+            [
+                "test.vcf.gz.tbi"
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "normal_id": "normal",
+                        "tumor_id": "tumour"
+                    },
+                    "test.vcf.gz.stats:md5,81390058f99b80db30c89020aa9fc546"
+                ]
+            ],
+            [
+                
+            ],
+            {
+                "versions_gatk4": [
+                    [
+                        "GATK4_MUTECT2",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-05T16:59:14.299303803"
+    },
+    "human - bam - tumor_normal_pair_f1r2 - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "normal_id": "normal",
+                            "tumor_id": "tumour"
+                        },
+                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "normal_id": "normal",
+                            "tumor_id": "tumour"
+                        },
+                        "test.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "normal_id": "normal",
+                            "tumor_id": "tumour"
+                        },
+                        "test.vcf.gz.stats:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test",
+                            "normal_id": "normal",
+                            "tumor_id": "tumour"
+                        },
+                        "test.f1r2.tar.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "4": [
+                    [
+                        "GATK4_MUTECT2",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
+                ],
+                "f1r2": [
+                    [
+                        {
+                            "id": "test",
+                            "normal_id": "normal",
+                            "tumor_id": "tumour"
+                        },
+                        "test.f1r2.tar.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "stats": [
+                    [
+                        {
+                            "id": "test",
+                            "normal_id": "normal",
+                            "tumor_id": "tumour"
+                        },
+                        "test.vcf.gz.stats:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "tbi": [
+                    [
+                        {
+                            "id": "test",
+                            "normal_id": "normal",
+                            "tumor_id": "tumour"
+                        },
+                        "test.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "test",
+                            "normal_id": "normal",
+                            "tumor_id": "tumour"
+                        },
+                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_gatk4": [
+                    [
+                        "GATK4_MUTECT2",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-05T16:55:48.221310078"
+    },
+    "human - bam - tumor_normal_pair_f1r2": {
+        "content": [
+            "7418ed45a029394253817a5eb7149334",
             [
                 "test.vcf.gz.tbi"
             ],
@@ -191,14 +391,20 @@
             [
                 "test.f1r2.tar.gz"
             ],
-            [
-                "versions.yml:md5,8b99605d0a404d9ccbf8628ca881a8a4"
-            ]
+            {
+                "versions_gatk4": [
+                    [
+                        "GATK4_MUTECT2",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-10-31T11:39:21.909639821"
+        "timestamp": "2026-02-05T16:47:43.194989668"
     }
 }

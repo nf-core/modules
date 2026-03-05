@@ -1,60 +1,4 @@
 {
-    "sarscov2 - ref, gff": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.tsv:md5,1fc09ef5115692ed558cb31482bf3db0"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test_misassemblies.tsv:md5,b2c977af2f6e07603e0a0f4d1e32d058"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test_unaligned.tsv:md5,a3a36c1d206f89d12af74cef0c412f94"
-                ]
-            ],
-            [
-                "versions.yml:md5,51393275b26f4f0f3c7c107a0b9756f9"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-09-06T13:13:45.436004"
-    },
-    "sarscov2 - noref, nogff": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.tsv:md5,6c4891c111a46ed20d5e3062b71aa390"
-                ]
-            ],
-            [
-                "versions.yml:md5,51393275b26f4f0f3c7c107a0b9756f9"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-09-06T13:13:50.435479"
-    },
     "sarscov2 - all - stub": {
         "content": [
             {
@@ -159,7 +103,11 @@
                     ]
                 ],
                 "5": [
-                    "versions.yml:md5,51393275b26f4f0f3c7c107a0b9756f9"
+                    [
+                        "QUAST",
+                        "quast",
+                        "5.3.0"
+                    ]
                 ],
                 "misassemblies": [
                     [
@@ -261,16 +209,20 @@
                         "test1_unaligned.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,51393275b26f4f0f3c7c107a0b9756f9"
+                "versions_quast": [
+                    [
+                        "QUAST",
+                        "quast",
+                        "5.3.0"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.0"
         },
-        "timestamp": "2024-09-06T13:13:54.219263"
+        "timestamp": "2026-01-22T15:09:31.433469446"
     },
     "sarscov2 - ref": {
         "content": [
@@ -298,15 +250,21 @@
                     "test_unaligned.tsv:md5,a3a36c1d206f89d12af74cef0c412f94"
                 ]
             ],
-            [
-                "versions.yml:md5,51393275b26f4f0f3c7c107a0b9756f9"
-            ]
+            {
+                "versions_quast": [
+                    [
+                        "QUAST",
+                        "quast",
+                        "5.3.0"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.0"
         },
-        "timestamp": "2024-09-06T15:58:43.030275"
+        "timestamp": "2026-01-22T15:48:13.121824798"
     },
     "sarscov2 - noref": {
         "content": [
@@ -318,14 +276,20 @@
                     "test.tsv:md5,6c4891c111a46ed20d5e3062b71aa390"
                 ]
             ],
-            [
-                "versions.yml:md5,51393275b26f4f0f3c7c107a0b9756f9"
-            ]
+            {
+                "versions_quast": [
+                    [
+                        "QUAST",
+                        "quast",
+                        "5.3.0"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.0"
         },
-        "timestamp": "2024-09-06T15:58:58.400864"
+        "timestamp": "2026-01-22T15:48:21.016276202"
     }
 }

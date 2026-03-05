@@ -27,18 +27,21 @@ input:
         type: file
         description: MT BAM/SAM file
         pattern: "*.{bam,sam}"
+        ontologies: []
     - bai:
         type: file
         description: MT BAM/SAM index file
         pattern: "*.{bai,sai}"
-  - - ref_gb:
-        type: file
-        description: mtDNA reference genome in Genbank format, optional if empty NC_012920.1.gb
-          will be used
-        pattern: "*.{gb}"
+        ontologies: []
+  - ref_gb:
+      type: file
+      description: mtDNA reference genome in Genbank format, optional if empty NC_012920.1.gb
+        will be used
+      pattern: "*.{gb}"
+      ontologies: []
 output:
-  - deletions:
-      - meta:
+  deletions:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,8 +50,10 @@ output:
           type: file
           description: csv file with deletion information
           pattern: "*deletions.csv"
-  - genes:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  genes:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,8 +62,10 @@ output:
           type: file
           description: csv file with gene information
           pattern: "*genes.csv"
-  - circos:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  circos:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,11 +74,14 @@ output:
           type: file
           description: png file with circos plot of mt
           pattern: "*.{png}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Lucpen"
 maintainers:

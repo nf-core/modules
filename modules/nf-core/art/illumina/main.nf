@@ -1,5 +1,4 @@
 process ART_ILLUMINA {
-
     tag "$meta.id"
     label 'process_single'
 
@@ -17,40 +16,40 @@ process ART_ILLUMINA {
 
     output:
     tuple val(meta), path("*.fq.gz"), emit: fastq
-    tuple val(meta), path("*.aln"), optional:true , emit: aln
-    tuple val(meta), path("*.sam"), optional:true , emit: sam
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.aln")  , emit: aln, optional:true
+    tuple val(meta), path("*.sam")  , emit: sam, optional:true
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args   ?: ''
+    def args2   = task.ext.args2  ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
     def VERSION = '2016.06.05' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     art_illumina \\
-        -ss $sequencing_system \\
-        -i $fasta \\
-        -l $read_length \\
-        -f $fold_coverage \\
-        -o $prefix \\
-        $args
+        -ss ${sequencing_system} \\
+        -i ${fasta} \\
+        -l ${read_length} \\
+        -f ${fold_coverage} \\
+        -o ${prefix} \\
+        ${args}
 
     gzip \\
         --no-name \\
-        $args2 \\
-        $prefix*.fq
+        ${args2} \\
+        ${prefix}*.fq
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        art: $VERSION
+        art: ${VERSION}
     END_VERSIONS
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix  = task.ext.prefix ?: "${meta.id}"
     def VERSION = '2016.06.05'
     """
     echo "" | gzip > ${prefix}.fq.gz
@@ -65,7 +64,7 @@ process ART_ILLUMINA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        art: $VERSION
+        art: ${VERSION}
     END_VERSIONS
     """
 }

@@ -40,12 +40,12 @@ nextflow_process {
         }
 
         then {
+            assert { process.success }
             assertAll (
-                { assert process.success },
                 { assert snapshot(
                     file(process.out.bam[0][1]).name,
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    file(process.out.versions[0]).name
+                        process.out.findAll { key, val -> key.startsWith("versions") },
                 ).match() }
             )
         }
@@ -83,12 +83,12 @@ nextflow_process {
         }
 
         then {
+            assert { process.success }
             assertAll (
-                { assert process.success },
                 { assert snapshot(
                     file(process.out.bam[0][1]).name,
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    file(process.out.versions[0]).name
+                    process.out.findAll { key, val -> key.startsWith("versions") },
                 ).match() }
             )
         }
@@ -129,12 +129,12 @@ nextflow_process {
         }
 
         then {
+            assert { process.success }
             assertAll (
-                { assert process.success },
                 { assert snapshot(
                     file(process.out.bam[0][1]).name,
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    file(process.out.versions[0]).name
+                    process.out.findAll { key, val -> key.startsWith("versions") },
                 ).match() }
             )
         }
@@ -175,12 +175,12 @@ nextflow_process {
         }
 
         then {
+            assert { process.success }
             assertAll (
-                { assert process.success },
                 { assert snapshot(
                     file(process.out.bam[0][1]).name,
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    file(process.out.versions[0]).name
+                    process.out.findAll { key, val -> key.startsWith("versions") },
                 ).match() }
             )
         }
@@ -221,12 +221,12 @@ nextflow_process {
         }
 
         then {
+            assert { process.success }
             assertAll (
-                { assert process.success },
                 { assert snapshot(
                     file(process.out.bam[0][1]).name,
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    file(process.out.versions[0]).name
+                    process.out.findAll { key, val -> key.startsWith("versions") },
                 ).match() }
             )
         }
@@ -268,16 +268,12 @@ nextflow_process {
         }
 
         then {
+            assert { process.success }
             assertAll (
-                { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name,
-                    file(process.out.log[0][1]).name,
-                    file(process.out.versions[0]).name
+                    process.out,
                 ).match() }
             )
         }
-
     }
-
 }

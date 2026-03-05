@@ -4,15 +4,16 @@ process LAST_LASTDB {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/db/db0b5de918238f07ec1ca668be942397da85e26aa582f8927ac37c70896303cf/data'
-        : 'community.wave.seqera.io/library/last:1608--f41c047f7dc37e30'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0d/0d27a2649f1291ff817dc8f73357ffac206424cd972d3855421e4258acc600f7/data'
+        : 'community.wave.seqera.io/library/last:1611--e1193b3871fa0975'}"
 
     input:
     tuple val(meta), path(fastx)
 
     output:
     tuple val(meta), path("lastdb"), emit: index
-    path "versions.yml"            , emit: versions
+    // last-dotplot has no --version option so let's use lastal from the same suite
+    tuple val("${task.process}"), val('last'), eval("lastal --version | sed 's/lastal //'"), emit: versions_last, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,15 +28,9 @@ process LAST_LASTDB {
         -P $task.cpus \\
         lastdb/${prefix} \\
         $fastx
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        last: \$(lastdb --version 2>&1 | sed 's/lastdb //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir lastdb
@@ -47,9 +42,5 @@ process LAST_LASTDB {
     touch lastdb/${prefix}.suf
     touch lastdb/${prefix}.tis
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        last: \$(lastdb --version 2>&1 | sed 's/lastdb //')
-    END_VERSIONS
     """
 }
