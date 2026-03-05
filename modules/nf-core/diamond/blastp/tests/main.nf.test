@@ -10,11 +10,22 @@ nextflow_process {
     tag "diamond/blastp"
 
     setup {
-        run("DIAMOND_MAKEDB") {
+        run("DIAMOND_MAKEDB", alias: "FIRST_DB") {
             script "../../makedb/main.nf"
             process {
                 """
-                input[0] = [ [id:'test2'], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ] ]
+                input[0] = [ [id:'db1'], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ] ]
+                input[1] = []
+                input[2] = []
+                input[3] = []
+                """
+            }
+        }
+        run("DIAMOND_MAKEDB", alias: "SECOND_DB") {
+            script "../../makedb/main.nf"
+            process {
+                """
+                input[0] = [ [id:'db2'], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ] ]
                 input[1] = []
                 input[2] = []
                 input[3] = []
@@ -22,14 +33,25 @@ nextflow_process {
             }
         }
     }
+                /**
+                input[0] = Channel.fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                    .map { f -> [ [ id: 'f0' ], f ] }
+                    .mix(
+                        Channel.fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                            .map { f -> [ [ id: 'f1' ], f ] }
+                    )
+                    **/
 
     test("sarscov2 - proteome - txt") {
 
         when {
             process {
                 """
-                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
-                input[1] = DIAMOND_MAKEDB.out.db
+                input[0] = Channel.of(
+                    [ [id:'txt0'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true) ],
+                    [ [id:'txt1'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true) ]
+                )
+                input[1] = FIRST_DB.out.db.mix(SECOND_DB.out.db)
                 input[2] = 6
                 input[3] = 'qseqid qlen'
                 """
@@ -50,8 +72,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true) ]
-                input[1] = DIAMOND_MAKEDB.out.db
+                input[0] = [ [id:'txt.gz'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true) ]
+                input[1] = FIRST_DB.out.db
                 input[2] = 6
                 input[3] = 'qseqid qlen'
                 """
@@ -72,8 +94,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
-                input[1] = DIAMOND_MAKEDB.out.db
+                input[0] = [ [id:'daa'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                input[1] = FIRST_DB.out.db
                 input[2] = 100
                 input[3] = []
                 """
@@ -97,8 +119,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
-                input[1] = DIAMOND_MAKEDB.out.db
+                input[0] = [ [id:'txt.gz'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                input[1] = FIRST_DB.out.db
                 input[2] = 6
                 input[3] = 'qseqid qlen'
                 """
@@ -121,8 +143,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
-                input[1] = DIAMOND_MAKEDB.out.db
+                input[0] = [ [id:'stub'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                input[1] = FIRST_DB.out.db
                 input[2] = 6
                 input[3] = 'qseqid qlen'
                 """
