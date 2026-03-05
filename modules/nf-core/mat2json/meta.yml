@@ -1,4 +1,3 @@
----
 name: "mat2json"
 description: converst matlab .mat files into json or csv files.
 keywords:
@@ -12,42 +11,41 @@ tools:
       homepage: "https://github.com/qbic-pipelines/mat2json"
       documentation: "https://github.com/qbic-pipelines/mat2json/blob/main/README.md"
       tool_dev_url: "https://github.com/qbic-pipelines/mat2json"
-      licence: ["MIT"]
-      identifier:
-
+      licence:
+        - "MIT"
+      identifier: ""
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1']`
-
-    - mat_file:
+    - matfile:
         type: file
         description: matlab file
         pattern: "*.{mat}"
-
+        ontologies: []
+  - process:
+      type: string
+      description: Name of the process to be used in the output file name and as a tag
 output:
-  - converted_file:
-      #Only when we have meta
-      - meta:
+  converted_file:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-
-      - "*_conv.*":
+            e.g. `[ id:'sample1']`
+      - ${process}/*/*.*:
           type: file
           description: JSON or CSV file containing the the data from the input .mat file
           pattern: "*.{json,csv}"
-
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
 authors:
   - "@CaroAMN"
 maintainers:
