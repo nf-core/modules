@@ -1,0 +1,281 @@
+{
+    "sarscov2 - bam - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    
+                ],
+                "2": [
+                    
+                ],
+                "3": [
+                    
+                ],
+                "4": [
+                    
+                ],
+                "5": [
+                    
+                ],
+                "6": [
+                    [
+                        "SAMTOOLS_ADDREPLACERG",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ],
+                "bai": [
+                    
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "crai": [
+                    
+                ],
+                "cram": [
+                    
+                ],
+                "csi": [
+                    
+                ],
+                "sam": [
+                    
+                ],
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_ADDREPLACERG",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2026-02-27T23:49:19.856990445"
+    },
+    "homo-sapiens - cram - output bam": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam:md5,650547c668995e0e0f4131052542f388"
+                    ]
+                ],
+                "1": [
+                    
+                ],
+                "2": [
+                    
+                ],
+                "3": [
+                    
+                ],
+                "4": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam.csi:md5,8b681445a826210081c8446f705031e7"
+                    ]
+                ],
+                "5": [
+                    
+                ],
+                "6": [
+                    [
+                        "SAMTOOLS_ADDREPLACERG",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ],
+                "bai": [
+                    
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam:md5,650547c668995e0e0f4131052542f388"
+                    ]
+                ],
+                "crai": [
+                    
+                ],
+                "cram": [
+                    
+                ],
+                "csi": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam.csi:md5,8b681445a826210081c8446f705031e7"
+                    ]
+                ],
+                "sam": [
+                    
+                ],
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_ADDREPLACERG",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2026-02-28T00:48:10.318914737"
+    },
+    "homo-sapiens - cram": {
+        "content": [
+            {
+                "bai": [
+                    
+                ],
+                "bam": [
+                    
+                ],
+                "crai": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.cram.crai"
+                    ]
+                ],
+                "cram": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.cram"
+                    ]
+                ],
+                "csi": [
+                    
+                ],
+                "sam": [
+                    
+                ],
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_ADDREPLACERG",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ]
+            },
+            [
+                [
+                    "@HD\tVN:1.6\tSO:coordinate",
+                    "@SQ\tSN:chr22\tLN:40001\tM5:1922b52e1af6977302717072ebaca0a1",
+                    "@RG\tID:1\tPU:1\tSM:testN\tLB:testN\tPL:illumina\tDS:replaced_read_group_test",
+                    "@PG\tID:bwa\tPN:bwa\tVN:0.7.17-r1188\tCL:bwa mem -K 100000000 -R @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina -t 19 -M genome.fasta test_1.retry.fq.gz test_2.retry.fq.gz",
+                    "@PG\tID:samtools\tPN:samtools\tPP:bwa\tVN:1.13\tCL:samtools view -C -T ../../genome/genome.fasta -o test.paired_end.sorted.cram test.paired_end.sorted.bam",
+                    "@PG\tID:samtools.1\tPN:samtools\tPP:samtools\tVN:1.22.1\tCL:samtools addreplacerg --threads 1 --write-index -O cram,version=3.0 -w -r @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina\\tDS:replaced_read_group_test --reference genome.fasta -o test.cram test.paired_end.sorted.cram"
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2026-02-28T00:48:01.943990031"
+    },
+    "sarscov2 - bam": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam:md5,c158e1dd90fb9a40d22accd63990be46"
+                    ]
+                ],
+                "1": [
+                    
+                ],
+                "2": [
+                    
+                ],
+                "3": [
+                    
+                ],
+                "4": [
+                    
+                ],
+                "5": [
+                    
+                ],
+                "6": [
+                    [
+                        "SAMTOOLS_ADDREPLACERG",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ],
+                "bai": [
+                    
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam:md5,c158e1dd90fb9a40d22accd63990be46"
+                    ]
+                ],
+                "crai": [
+                    
+                ],
+                "cram": [
+                    
+                ],
+                "csi": [
+                    
+                ],
+                "sam": [
+                    
+                ],
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_ADDREPLACERG",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2026-02-28T00:47:53.904862393"
+    }
+}
