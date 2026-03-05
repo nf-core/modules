@@ -1,0 +1,67 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "reseq_illuminape"
+description: Simulate realistic Illumina paired-end reads from a reference genome using profiles extracted from real sequencing data
+keywords:
+  - simulate
+  - fastq
+  - illumina
+  - paired-end
+  - bam
+tools:
+  - "reseq":
+      description: |
+        ReSeq simulates more realistic Illumina genomic DNA sequences by
+        extracting and reproducing key components from real sequencing data,
+        including systematic errors, fragment-based coverage, and quality profiles.
+      homepage: "https://github.com/schmeing/ReSeq"
+      documentation: "https://github.com/schmeing/ReSeq"
+      tool_dev_url: "https://github.com/schmeing/ReSeq"
+      doi: "10.1186/s13059-021-02265-7"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - bam:
+        type: file
+        description: Position-sorted BAM file from which to extract sequencing profiles
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+  - - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+
+output:
+  fastq:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.fq.gz":
+          type: file
+          description: Simulated paired-end FASTQ files (gzipped)
+          pattern: "*_{R1,R2}.fq.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_1930"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750"
+
+authors:
+  - "@adamrtalbot"
+maintainers:
+  - "@adamrtalbot"
