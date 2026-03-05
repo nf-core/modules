@@ -28,6 +28,9 @@ nextflow_process {
         config "./nextflow.config"
 
         when {
+            params {
+                module_args = "--gene PRODH"
+            }
             process {
                 """
                 input[0] = [
@@ -67,6 +70,9 @@ nextflow_process {
         config "./nextflow.config"
 
         when {
+            params {
+                module_args = "--gene PRODH"
+            }
             process {
                 """
                 input[0] = [
@@ -102,9 +108,12 @@ nextflow_process {
 
     test("homo_sapiens - [ bam, bai ], no_vcf") {
 
-        config "./nextflow.no_vcf.config"
+        config "./nextflow.config"
 
         when {
+            params {
+                module_args = "--gene RIMBP3B"
+            }
             process {
                 """
                 input[0] = [
@@ -181,6 +190,9 @@ nextflow_process {
         config "./nextflow.config"
 
         when {
+            params {
+                module_args = '--gene PRODH'
+            }
             process {
                 """
                 input[0] = [
@@ -211,6 +223,9 @@ nextflow_process {
         config "./nextflow.config"
 
         when {
+            params {
+                module_args = '--gene PRODH'
+            }
             process {
                 """
                 input[0] = [
