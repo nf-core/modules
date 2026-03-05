@@ -4,12 +4,14 @@ process RESEQ_ILLUMINAPE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/reseq:1.1--ff843e111e12fa4e' :
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/49/494dd5224f3e7314d36af63a0740e51ecfd5373fe993ab3acf914754870e963a/data' :
         'community.wave.seqera.io/library/reseq:1.1--8536b4889ef6d3b8' }"
 
     input:
     tuple val(meta), path(bam)
     path(fasta)
+    path(adapter_fasta)
+    path(adapter_matrix)
 
     output:
     tuple val(meta), path("*.fq.gz"), emit: fastq
@@ -21,12 +23,16 @@ process RESEQ_ILLUMINAPE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def adapter_arg = adapter_fasta ? "--adapterFile ${adapter_fasta}" : ''
+    def matrix_arg = adapter_matrix ? "--adapterMatrix ${adapter_matrix}" : ''
     """
     reseq \\
         illuminaPE \\
         -j $task.cpus \\
         -r $fasta \\
         -b $bam \\
+        $adapter_arg \\
+        $matrix_arg \\
         $args \\
         -1 ${prefix}_R1.fq \\
         -2 ${prefix}_R2.fq

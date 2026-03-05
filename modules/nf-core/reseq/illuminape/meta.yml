@@ -39,6 +39,22 @@ input:
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_1929"
+  - - adapter_fasta:
+        type: file
+        description: |
+          FASTA file with adapter sequences. If provided, skips automatic adapter
+          detection. Recommended when using small BAM files for profiling.
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+  - - adapter_matrix:
+        type: file
+        description: |
+          0/1 matrix file specifying valid adapter pairings (first read adapters
+          in rows, second read adapters in columns). Required when adapterFile
+          is provided.
+        pattern: "*.txt"
+        ontologies: []
 
 output:
   fastq:

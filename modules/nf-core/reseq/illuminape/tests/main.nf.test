@@ -9,18 +9,25 @@ nextflow_process {
     tag "reseq"
     tag "reseq/illuminape"
 
-    test("sarscov2 - bam") {
+    test("homo_sapiens - bam") {
 
         config "./nextflow.config"
 
         when {
             process {
                 """
+                def adaptersFile = file("adapters.fa")
+                adaptersFile.text = ">TruSeq_Read1\\nAGATCGGAAGAGCACACGTCTGAACTCCAGTCA\\n>TruSeq_Read2\\nAGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT\\n"
+                def matrixFile = file("adapter_matrix.txt")
+                matrixFile.text = "01\\n10\\n"
+
                 input[0] = Channel.of([
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
                 ])
-                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[2] = adaptersFile
+                input[3] = matrixFile
                 """
             }
         }
@@ -45,6 +52,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
                 ])
                 input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                input[2] = []
+                input[3] = []
                 """
             }
         }
