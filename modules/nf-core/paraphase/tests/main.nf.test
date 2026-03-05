@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process PARAPHASE"
     script "../main.nf"
     process "PARAPHASE"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -24,8 +25,6 @@ nextflow_process {
     }
 
     test("homo_sapiens - [ bam, bai ], []") {
-
-        config "./nextflow.config"
 
         when {
             params {
@@ -67,8 +66,6 @@ nextflow_process {
 
     test("homo_sapiens - [ bam, bai ], config") {
 
-        config "./nextflow.config"
-
         when {
             params {
                 module_args = "--gene PRODH"
@@ -107,8 +104,6 @@ nextflow_process {
     }
 
     test("homo_sapiens - [ bam, bai ], no_vcf") {
-
-        config "./nextflow.config"
 
         when {
             params {
@@ -151,6 +146,9 @@ nextflow_process {
         config "./nextflow.csi_index.config"
 
         when {
+            params {
+                module_args = "--gene PRODH"
+            }
             process {
                 """
                 input[0] = [
@@ -187,7 +185,6 @@ nextflow_process {
     test("homo_sapiens - [ bam, bai ], [] - stub") {
 
         options "-stub"
-        config "./nextflow.config"
 
         when {
             params {
@@ -220,7 +217,6 @@ nextflow_process {
     test("homo_sapiens - [ bam, bai ], config - stub") {
 
         options "-stub"
-        config "./nextflow.config"
 
         when {
             params {
@@ -256,6 +252,9 @@ nextflow_process {
         config "./nextflow.csi_index.config"
 
         when {
+            params {
+                module_args = "--gene PRODH"
+            }
             process {
                 """
                 input[0] = [
