@@ -11,7 +11,7 @@ nextflow_process {
     test("cellpose - with flows, no model") {
 
         when {
-            config "./nextflow_wflows.config"
+            config "./nextflow.config"
             process {
                 """
                 input[0] = [
