@@ -18,7 +18,7 @@ nextflow_process {
                 """
                 input[0] = Channel.fromList([
                     tuple([ id:'test'], // meta map
-                    file(params.pipelines_testdata_base_path +'/test_data/mat2json/thresholds.mat', checkIfExists: true))
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/lsmquant/test_data/mat2json/thresholds.mat', checkIfExists: true))
                 ])
                 input[1] = Channel.of('test_process')
                 """
@@ -44,7 +44,7 @@ nextflow_process {
                 """
                 input[0] = Channel.fromList([
                     tuple([ id:'test'], // meta map
-                    file(params.pipelines_testdata_base_path +'/test_data/mat2json/thresholds.mat', checkIfExists: true))
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/lsmquant/test_data/mat2json/thresholds.mat', checkIfExists: true))
                 ])
                 input[1] = Channel.of('test_process')
                 """
