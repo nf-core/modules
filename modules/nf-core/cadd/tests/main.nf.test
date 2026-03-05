@@ -9,6 +9,8 @@ nextflow_process {
     tag "modules_nfcore"
     tag "cadd"
 
+    config "./nextflow.config"
+
     test("test_cadd - stub") {
         options '-stub'
         when {

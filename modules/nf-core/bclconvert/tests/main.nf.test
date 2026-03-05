@@ -33,8 +33,8 @@ nextflow_process {
                     process.out.fastq_idx,
                     process.out.undetermined.collect { meta, fastq -> file(fastq).name },
                     process.out.undetermined_idx,
-                    process.out.reports.collect {meta, files -> files.collect { file(it).name }.sort() },
-                    process.out.logs.collect {meta, files -> files.collect { file(it).name }.sort() },
+                    process.out.reports.collect {meta, dir -> file(dir).name },
+                    process.out.logs.collect {meta, dir -> file(dir).name },
                     process.out.interop.collect {meta, files -> files.collect { file(it).name }.sort() },
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
@@ -72,8 +72,8 @@ nextflow_process {
                     process.out.fastq_idx,
                     process.out.undetermined.collect { meta, fastq -> file(fastq).name },
                     process.out.undetermined_idx,
-                    process.out.reports.collect {meta, files -> files.collect { file(it).name }.sort() },
-                    process.out.logs.collect {meta, files -> files.collect { file(it).name }.sort() },
+                    process.out.reports.collect {meta, dir -> file(dir).name },
+                    process.out.logs.collect {meta, dir -> file(dir).name },
                     process.out.interop.collect {meta, files -> files.collect { file(it).name }.sort() },
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }

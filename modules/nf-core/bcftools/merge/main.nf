@@ -8,10 +8,8 @@ process BCFTOOLS_MERGE {
         : 'community.wave.seqera.io/library/bcftools_htslib:0a3fa2654b52006f'}"
 
     input:
-    tuple val(meta), path(vcfs), path(tbis)
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fai)
-    tuple val(meta4), path(bed)
+    tuple val(meta), path(vcfs), path(tbis), path(bed)
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*.{bcf,vcf}{,.gz}"), emit: vcf
