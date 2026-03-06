@@ -1,13 +1,13 @@
 nextflow_process {
 
-    name "Test Process SVIM"
+    name "Test Process SVIM_ALIGNMENT"
     script "../main.nf"
-    process "SVIM"
+    process "SVIM_ALIGNMENT"
     config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "svim"
+    tag "svim/alignment"
 
     test("homo_sapiens - [bam, bai], fasta") {
 
@@ -31,7 +31,6 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
                     process.out.vcf.collect { meta, vcf ->
                         [
                             meta,

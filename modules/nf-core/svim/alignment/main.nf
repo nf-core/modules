@@ -1,6 +1,6 @@
-process SVIM {
+process SVIM_ALIGNMENT {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_high'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -13,7 +13,7 @@ process SVIM {
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
-    path "versions.yml", emit: versions
+    tuple val(task.process), val('svim'), val('2.0.0'), topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,21 +32,11 @@ process SVIM {
         ${fasta}
 
     mv ${prefix}/variants.vcf ${prefix}.vcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        svim: \$(svim --version 2>/dev/null | tail -1 | sed 's/.*svim //g' | sed 's/[^0-9.].*//g')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch "${prefix}.vcf"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        svim: 2.0.0
-    END_VERSIONS
     """
 }
