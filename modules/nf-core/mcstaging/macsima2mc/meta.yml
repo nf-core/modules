@@ -37,20 +37,19 @@ input:
 
 
 output:
-      #Only when we have meta
-    - meta:
+  - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-  - out_dir:
+    - out_dir:
         type: directory
         description: |
-          Absolute path to the directory in which the outputs will be saved. If the output directory doesn't exist it will be created. Each directory contains subdirectorires with each well-rack-roi-exp combination. Each well-rack-roi-exp combination contains a markers.csv table that contains a row per channel/image with the following information; cycle number, channel number, channel name, corresponding background channel, exposure time and the instruction to remove or not the channel when applying the nf-core module Backsub.
+          Output directory containing subdirectories per well-rack-roi-exp combination.
+          Each subdirectory contains a markers.csv table and a raw/ folder with ome.tif files.
         pattern: "*/"
-        
 
-  - versions:
+  - - versions:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
