@@ -22,9 +22,12 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                vep_cache = Channel.of(file('s3://annotation-cache/vep_cache/113_WBcel235/')).collect()
+                vep_cache = channel.of([
+                    [ id:'115_WBcel235' ],
+                    file('s3://annotation-cache/vep_cache/115_WBcel235/')
+                ]).collect()
 
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'custom_test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
@@ -67,12 +70,12 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                snpeff_cache = Channel.of([
+                snpeff_cache = channel.of([
                     [ id:'WBcel235.99' ],
                     file('s3://annotation-cache/snpeff_cache/WBcel235.99/')
                 ]).collect()
 
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
@@ -121,13 +124,16 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                snpeff_cache = Channel.of([
+                snpeff_cache = channel.of([
                     [ id:'WBcel235.99' ],
                     file('s3://annotation-cache/snpeff_cache/WBcel235.99/')
                 ]).collect()
-                vep_cache = Channel.of(file('s3://annotation-cache/vep_cache/113_WBcel235/')).collect()
+                vep_cache = channel.of([
+                    [ id:'115_WBcel235' ],
+                    file('s3://annotation-cache/vep_cache/115_WBcel235/')
+                ]).collect()
 
-                input[0] = Channel.of(                [
+                input[0] = channel.of(                [
                     [ id:'custom_test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
@@ -170,9 +176,12 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                vep_cache = Channel.of(file('s3://annotation-cache/vep_cache/113_WBcel235/')).collect()
+                vep_cache = channel.of([
+                    [ id:'115_WBcel235' ],
+                    file('s3://annotation-cache/vep_cache/115_WBcel235/')
+                ]).collect()
 
-                input[0] = Channel.of(                [
+                input[0] = channel.of(                [
                     [ id:'custom_test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
@@ -215,9 +224,12 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                vep_cache = Channel.of(file('s3://annotation-cache/vep_cache/113_WBcel235/')).collect()
+                vep_cache = channel.of([
+                    [ id:'115_WBcel235' ],
+                    file('s3://annotation-cache/vep_cache/115_WBcel235/')
+                ]).collect()
 
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'custom_test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
