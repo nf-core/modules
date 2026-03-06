@@ -16,7 +16,8 @@ tools:
       documentation: "https://github.com/Roth-Lab/pyclone-vi"
       tool_dev_url: "https://github.com/Roth-Lab/pyclone-vi"
       doi: "10.1186/s12859-020-03919-2"
-      licence: ["GPL v3-or-later"]
+      licence:
+        - "GPL v3-or-later"
       identifier: ""
 input:
   - - meta:
@@ -45,7 +46,7 @@ output:
           description: Files containing information about identified clusters
           pattern: "*_cluster_table.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
   pyclone_input:
     - - meta:
           type: map
@@ -85,7 +86,13 @@ output:
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+          - edam: http://edamontology.org/format_3750
+
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
 
 authors:
   - "@giorgiagandolfi"
