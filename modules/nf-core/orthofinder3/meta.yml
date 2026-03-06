@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "orthofinder"
-description: OrthoFinder is a fast, accurate and comprehensive platform for comparative
-  genomics.
+name: "orthofinder3"
+description: OrthoFinder is a fast, accurate and comprehensive platform for
+  comparative genomics.
 keywords:
   - genomics
   - orthogroup
@@ -20,7 +19,6 @@ tools:
       doi: "10.1186/s13059-019-1832-y"
       licence: ["GPL v3"]
       identifier: biotools:OrthoFinder
-
 input:
   - - meta:
         type: map
@@ -39,7 +37,7 @@ input:
     - prior_run:
         type: directory
         description: |
-          A folder container containing a previous WorkingDirectory from Orthofinder.
+          A folder containing a previous WorkingDirectory from OrthoFinder.
 output:
   orthofinder:
     - - meta:
@@ -47,27 +45,42 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - $prefix:
+      - "$prefix":
           type: directory
-          description: Orthofinder output directory
+          description: OrthoFinder output directory
   working:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - $prefix/WorkingDirectory:
+      - "$prefix/WorkingDirectory":
           type: directory
-          description: Orthofinder output WorkingDirectory (used for the orthofinder
-            resume function)
+          description: OrthoFinder WorkingDirectory (used for the resume function)
+  versions_orthofinder:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - orthofinder:
+          type: string
+          description: The name of the tool
+      - "orthofinder --version 2>&1 | tail -1 | sed 's/\\x1b\\[[0-9;]*m//g; s/OrthoFinder:v//'":
+          type: eval
+          description: The version of OrthoFinder
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - "${task.process}":
+          type: string
+          description: The process the versions were collected from
+      - orthofinder:
+          type: string
+          description: The tool name
+      - "orthofinder --version 2>&1 | tail -1 | sed 's/\\x1b\\[[0-9;]*m//g; s/OrthoFinder:v//'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@GallVp"
+  - "@chriswyatt1"
 maintainers:
   - "@GallVp"
+  - "@chriswyatt1"
