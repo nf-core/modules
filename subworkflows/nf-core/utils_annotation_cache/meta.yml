@@ -10,9 +10,29 @@ keywords:
   - verification
 components: []
 input:
-  - snpeff_enabled:
+  - ensemblvep_cache:
       description: |
-        Boolean to enable snpeff
+        Path to root cache
+        Structure: [ path(cache) ]
+  - ensemblvep_cache_version:
+      description: |
+        cache_version to use
+        Structure: [ val(cache_version) ]
+  - ensemblvep_custom_args:
+      description: |
+        custom args, to check if refseq or merged is needed
+        Structure: [ val(custom args) ]
+  - ensemblvep_genome:
+      description: |
+        genome to use
+        Structure: [ val(genome) ]
+  - ensemblvep_species:
+      description: |
+        species to use
+        Structure: [ val(species) ]
+  - ensemblvep_enabled:
+      description: |
+        Boolean to enable ensemblvep
         Structure: [ Boolean ]
   - snpeff_cache:
       description: |
@@ -22,30 +42,10 @@ input:
       description: |
         db to use
         Structure: [ val(db) ]
-  - vep_enabled:
+  - snpeff_enabled:
       description: |
-        Boolean to enable vep
+        Boolean to enable snpeff
         Structure: [ Boolean ]
-  - vep_cache:
-      description: |
-        Path to root cache
-        Structure: [ path(cache) ]
-  - vep_species:
-      description: |
-        species to use
-        Structure: [ val(species) ]
-  - vep_cache_version:
-      description: |
-        cache_version to use
-        Structure: [ val(cache_version) ]
-  - vep_genome:
-      description: |
-        genome to use
-        Structure: [ val(genome) ]
-  - vep_custom_args:
-      description: |
-        custom args to use
-        Structure: [ val(custom args) ]
   - help_message:
       description: |
         Extra help message to display when error
