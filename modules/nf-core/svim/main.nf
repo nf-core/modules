@@ -1,7 +1,7 @@
 process SVIM {
     tag "$meta.id"
     label 'process_low'
-    
+
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/svim:2.0.0--pyhdfd78af_0':
@@ -43,7 +43,7 @@ process SVIM {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch "${prefix}.vcf"
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         svim: 2.0.0
