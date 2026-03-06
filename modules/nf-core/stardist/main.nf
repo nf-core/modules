@@ -14,10 +14,10 @@ process STARDIST {
 
     output:
     tuple val(meta), path("*.stardist.tif"), emit: mask
-    tuple val("${task.process}"), val('stardist'), eval("pip show stardist | grep '^Version:' | sed 's/Version: //'"), topic: versions, emit: versions_stardist
+    tuple val("${task.process}"), val('stardist'), eval("pip show stardist | sed -n 's/^Version: //p'"), topic: versions, emit: versions_stardist
     tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //'"), topic: versions, emit: versions_python
-    tuple val("${task.process}"), val('tensorflow'), eval("pip show tensorflow | grep '^Version:' | sed 's/Version: //'"), topic: versions, emit: versions_tensorflow
-    tuple val("${task.process}"), val('tifffile'), eval("pip show tifffile | grep '^Version:' | sed 's/Version: //'"), topic: versions, emit: versions_tifffile
+    tuple val("${task.process}"), val('tensorflow'), eval("pip show tensorflow | sed -n 's/^Version: //p'"), topic: versions, emit: versions_tensorflow
+    tuple val("${task.process}"), val('tifffile'), eval("pip show tifffile | sed -n 's/^Version: //p'"), topic: versions, emit: versions_tifffile
 
     when:
     task.ext.when == null || task.ext.when
