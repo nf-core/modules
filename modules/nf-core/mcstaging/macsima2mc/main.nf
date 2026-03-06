@@ -54,7 +54,7 @@ process MCSTAGING_MACSIMA2MC {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        macsima2mc: ${VERSION}
+        macsima2mc: \$( python -m pip show --version macsima2mc | grep "Version" | sed -e "s/Version: //g" )
     END_VERSIONS
     """
 }
