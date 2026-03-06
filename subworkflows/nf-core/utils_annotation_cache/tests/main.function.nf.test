@@ -1,0 +1,49 @@
+
+nextflow_function {
+
+    name "Test Functions"
+    script "subworkflows/nf-core/utils_annotation_cache/main.nf"
+    tag 'subworkflows'
+    tag 'utils_annotation_cache'
+    tag 'subworkflows/utils_annotation_cache'
+
+    test("isCloudUrl('s3://ngi-igenomes')") {
+
+        function "isCloudUrl"
+
+        when {
+            function {
+                """
+                input[0] = "s3://ngi-igenomes"
+                """
+            }
+        }
+
+        then {
+            assert function.success
+            assertAll(
+                { assert snapshot(function.result).match() }
+            )
+        }
+    }
+
+    test('isCloudUrl(${projectDir})') {
+
+        function "isCloudUrl"
+
+        when {
+            function {
+                """
+                input[0] = "${projectDir}"
+                """
+            }
+        }
+
+        then {
+            assert function.success
+            assertAll(
+                { assert snapshot(function.result).match() }
+            )
+        }
+    }
+}

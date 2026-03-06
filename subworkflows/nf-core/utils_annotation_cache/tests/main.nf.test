@@ -1,0 +1,36 @@
+nextflow_workflow {
+
+    name "Test Workflow UTILS_ANNOTATION_CACHE"
+    script "../main.nf"
+    workflow "UTILS_ANNOTATION_CACHE"
+    tag 'subworkflows'
+    tag 'utils_annotation_cache'
+    tag 'subworkflows/utils_annotation_cache'
+
+    test("ensemblvep 115_WBcel235 - snpeff WBcel235.99") {
+
+        when {
+            workflow {
+                """
+                input[0] = 's3://annotation-cache/vep_cache/'
+                input[1] = 115
+                input[2] = ''
+                input[3] = 'WBcel235'
+                input[4] = 'caenorhabditis_elegans'
+                input[5] = true
+                input[6] = 's3://annotation-cache/snpeff_cache/'
+                input[7] = 'WBcel235.99'
+                input[8] = true
+                input[9] = 'Please refer to https://annotation-cache.github.io/ for more information'
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
+            )
+        }
+    }
+}
