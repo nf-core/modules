@@ -11,9 +11,8 @@ LABEL org.opencontainers.image.version="$MAT2JSON_VERSION"
 
 RUN mkdir -p /usr/bin/mlrtapp
 
-ADD --checksum=sha256:$MAT2JSON_SHA256 \
-    $MAT2JSON_URL \
-    /usr/bin/mlrtapp
+RUN curl -fsSL "$MAT2JSON_URL" -o /usr/bin/mlrtapp/mat2json \
+    && echo "$MAT2JSON_SHA256  /usr/bin/mlrtapp/mat2json" | sha256sum -c
 
 RUN chmod -R a+rx /usr/bin/mlrtapp/
 
