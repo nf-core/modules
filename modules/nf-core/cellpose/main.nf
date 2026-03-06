@@ -5,8 +5,8 @@ process CELLPOSE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/07/073531bf01cb425d0a869533c8751ac974c9f10b1e72c815efebdb893aa979d5/data' :
-        'community.wave.seqera.io/library/python_pip_cellpose:4be22f3ec4963ebe' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ff/ff1ae659d63c642a7ba58bc3c22ca3ee692f5d654ab8eafcfdfbbce010ce1988/data' :
+        'community.wave.seqera.io/library/python_pip_cellpose:fdf7a8c3a305a26e' }"
 
     input:
     tuple val(meta), path(image)
