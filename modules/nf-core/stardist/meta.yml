@@ -14,7 +14,8 @@ tools:
       documentation: "https://stardist.net/faq/"
       tool_dev_url: "https://github.com/stardist/stardist"
       doi: "10.1109/ISBIC56247.2022.9854534"
-      licence: ["BSD 3-Clause"]
+      licence:
+        - "BSD 3-Clause"
       identifier: ""
 input:
   - - meta:
@@ -61,7 +62,7 @@ output:
       - stardist:
           type: string
           description: The name of the tool
-      - "pip show stardist | grep '^Version:' | sed 's/Version: //'":
+      - "pip show stardist | sed -n 's/^Version: //p'":
           type: eval
           description: The expression to obtain the version of the tool
   versions_python:
@@ -71,7 +72,7 @@ output:
       - python:
           type: string
           description: The name of the tool
-      - "python --version | sed 's/Python //'":
+      - python --version | sed 's/Python //':
           type: eval
           description: The expression to obtain the version of the tool
   versions_tensorflow:
@@ -81,7 +82,7 @@ output:
       - tensorflow:
           type: string
           description: The name of the tool
-      - "pip show tensorflow | grep '^Version:' | sed 's/Version: //'":
+      - "pip show tensorflow | sed -n 's/^Version: //p'":
           type: eval
           description: The expression to obtain the version of the tool
   versions_tifffile:
@@ -91,7 +92,7 @@ output:
       - tifffile:
           type: string
           description: The name of the tool
-      - "pip show tifffile | grep '^Version:' | sed 's/Version: //'":
+      - "pip show tifffile | sed -n 's/^Version: //p'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -102,7 +103,7 @@ topics:
       - stardist:
           type: string
           description: The name of the tool
-      - "pip show stardist | grep '^Version:' | sed 's/Version: //'":
+      - "pip show stardist | sed -n 's/^Version: //p'":
           type: eval
           description: The expression to obtain the version of the tool
     - - ${task.process}:
@@ -111,7 +112,7 @@ topics:
       - python:
           type: string
           description: The name of the tool
-      - "python --version | sed 's/Python //'":
+      - python --version | sed 's/Python //':
           type: eval
           description: The expression to obtain the version of the tool
     - - ${task.process}:
@@ -120,7 +121,7 @@ topics:
       - tensorflow:
           type: string
           description: The name of the tool
-      - "pip show tensorflow | grep '^Version:' | sed 's/Version: //'":
+      - "pip show tensorflow | sed -n 's/^Version: //p'":
           type: eval
           description: The expression to obtain the version of the tool
     - - ${task.process}:
@@ -129,9 +130,14 @@ topics:
       - tifffile:
           type: string
           description: The name of the tool
-      - "pip show tifffile | grep '^Version:' | sed 's/Version: //'":
+      - "pip show tifffile | sed -n 's/^Version: //p'":
           type: eval
           description: The expression to obtain the version of the tool
+authors:
+  - "@migueLib"
+  - "@dongzehe"
+maintainers:
+  - "@migueLib"
 notes: |
   GPU support: The container (built via Seqera Containers) includes TensorFlow 2.20.0
   with CUDA support and falls back to CPU automatically when no GPU is available.
@@ -149,8 +155,3 @@ notes: |
 
   Model weights are not bundled in the container. StarDist downloads pretrained
   models on first use to ~/.keras/models/.
-authors:
-  - "@migueLib"
-  - "@dongzehe"
-maintainers:
-  - "@migueLib"
