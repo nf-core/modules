@@ -5,7 +5,7 @@ process CELLPOSE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ff/ff1ae659d63c642a7ba58bc3c22ca3ee692f5d654ab8eafcfdfbbce010ce1988/data' :
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cb/cb670191b7ae1a9fd5449746453916c7014b9ea622942ca76a7cb40da7deee46/data' :
         'community.wave.seqera.io/library/python_pip_cellpose:fdf7a8c3a305a26e' }"
 
     input:
