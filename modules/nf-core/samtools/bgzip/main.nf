@@ -44,7 +44,7 @@ process SAMTOOLS_BGZIP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     output = "${prefix}.gz"
     """
-    [ "\$(basename $fasta)" == "\$(basename ${output})" ] && echo "Filename collision (\$basename $fasta)" && exit 1
+    [ "\$(basename $fasta)" == "\$(basename ${output})" ] && echo "Filename collision \$(basename $fasta)" && exit 1
     echo '' | bgzip > ${output}
     """
 }

@@ -8,11 +8,7 @@ process BCFTOOLS_PLUGINSPLIT {
         : 'community.wave.seqera.io/library/bcftools_htslib:0a3fa2654b52006f'}"
 
     input:
-    tuple val(meta), path(vcf, stageAs: "input/*"), path(tbi, stageAs: "input/*")
-    path samples
-    path groups
-    path regions
-    path targets
+    tuple val(meta), path(vcf, stageAs: "input/*"), path(tbi, stageAs: "input/*"), path(samples), path(groups), path(regions), path(targets)
 
     output:
     tuple val(meta), path("*.{vcf,vcf.gz,bcf,bcf.gz}"), emit: vcf
