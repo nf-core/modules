@@ -1,6 +1,6 @@
 process CELLPOSE {
     tag "${meta.id}"
-    label 'process_high'
+    label 'process_medium'
     label 'process_gpu'
 
     conda "${moduleDir}/environment.yml"
@@ -26,7 +26,7 @@ process CELLPOSE {
     script:
     def args = task.ext.args ?: ''
     def model_command = model ? "--pretrained_model ${model}" : ""
-    def gpu_flag = task.ext.use_gpu ? "--use_gpu" : ""
+    def gpu_flag = task.accelerator ? "--use_gpu" : ""
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     export OMP_NUM_THREADS=${task.cpus}
