@@ -4,8 +4,9 @@
 // Demultiplex Illumina BCL data using bcl-convert or bcl2fastq
 //
 
-include { BCLCONVERT                                       } from "../../../modules/nf-core/bclconvert/main"
-include { BCL2FASTQ                                        } from "../../../modules/nf-core/bcl2fastq/main"
+include { BCLCONVERT } from "../../../modules/nf-core/bclconvert/main"
+include { BCL2FASTQ  } from "../../../modules/nf-core/bcl2fastq/main"
+include { MULTIQCSAV } from "../../../modules/nf-core/multiqcsav/main"
 
 workflow BCL_DEMULTIPLEX {
     take:
@@ -18,41 +19,20 @@ workflow BCL_DEMULTIPLEX {
     ch_stats = channel.empty()
     ch_interop = channel.empty()
     ch_logs = channel.empty()
-
-    // Split flowcells into separate channels containing run as tar and run as path
-    // https://nextflow.slack.com/archives/C02T98A23U7/p1650963988498929
-    ch_flowcell
-        .branch { _meta, _samplesheet, run ->
-            tar: run.toString().endsWith(".tar.gz")
-            dir: true
-        }
-        .set { ch_flowcells }
-
-    ch_flowcells.tar
-        .multiMap { meta, samplesheet, run ->
-            samplesheets: [meta, samplesheet]
-            run_dirs: [meta, run]
-        }
-        .set { ch_flowcells_tar }
-
-    // Runs when run_dir is a tar archive
-    // Re-join the metadata and the untarred run directory with the samplesheet
-    ch_flowcells_tar_merged = ch_flowcells_tar.samplesheets.join(ch_flowcells_tar.run_dirs)
-
-    // Merge the two channels back together
-    ch_flowcells = ch_flowcells.dir.mix(ch_flowcells_tar_merged)
+    ch_sav_files = channel.empty()
 
     // MODULE: bclconvert
     // Demultiplex the bcl files
     if (demultiplexer == "bclconvert") {
-        BCLCONVERT(ch_flowcells)
+        BCLCONVERT(ch_flowcell)
         ch_interop = ch_interop.mix(BCLCONVERT.out.interop)
         ch_reports = ch_reports.mix(BCLCONVERT.out.reports)
         ch_logs = ch_logs.mix(BCLCONVERT.out.logs)
+        ch_sav_files = ch_sav_files.mix(BCLCONVERT.out.reports)
         ch_fastq_with_meta = ch_fastq_with_meta.mix(
             generateReadgroupBCLCONVERT(
                 BCLCONVERT.out.reports.map { meta, reports ->
-                    return [meta, reports.find { report -> report.name == "fastq_list.csv" }]
+                    return [meta, file(reports).resolve("fastq_list.csv")]
                 },
                 BCLCONVERT.out.fastq,
             )
@@ -62,11 +42,11 @@ workflow BCL_DEMULTIPLEX {
     // MODULE: bcl2fastq
     // Demultiplex the bcl files
     if (demultiplexer == "bcl2fastq") {
-        BCL2FASTQ(ch_flowcells)
+        BCL2FASTQ(ch_flowcell)
         ch_interop = ch_interop.mix(BCL2FASTQ.out.interop)
         ch_reports = ch_reports.mix(BCL2FASTQ.out.reports)
         ch_stats = ch_stats.mix(BCL2FASTQ.out.stats)
-
+        ch_sav_files = ch_sav_files.mix(BCL2FASTQ.out.stats)
         ch_fastq_with_meta = ch_fastq_with_meta.mix(
             generateReadgroupBCL2FASTQ(
                 BCL2FASTQ.out.fastq
@@ -74,12 +54,32 @@ workflow BCL_DEMULTIPLEX {
         )
     }
 
+    // MODULE: multiqcsav
+    ch_mqcsav_input = ch_flowcell
+        .map { meta, _samplesheet, flowcell ->
+            def interop = files(file(flowcell).resolve("InterOp/*.bin"), checkIfExists: true)
+            def xml = files(file(flowcell).resolve("*.xml"), checkIfExists: true)
+            return [meta, xml, interop]
+        }
+        .join(ch_sav_files, by: 0)
+        .map { meta, xml, interop, reports ->
+            return [meta - meta.subMap(['lane']), xml, interop, reports]
+        }
+        .groupTuple(by: [0])
+        .map { meta, xml, interop, reports ->
+            return [meta, xml.flatten().unique(), interop.flatten().unique(), reports.flatten().unique(), [], [], [], []]
+        }
+        .dump(tag: "MULTIQC SAV input", pretty: true)
+
+    // MULTIQCSAV([meta, xml, interop, reports, multiqc_config, multiqc_logo, [], []])
+    MULTIQCSAV(ch_mqcsav_input)
+
     // extract empty fastq files from channel
     ch_fastq = ch_fastq_with_meta.branch { meta, fastq ->
         empty: fastq.any { fq -> file(fq).size() < 30 }
-            return [meta, fastq]
+        return [meta, fastq]
         fastq: true
-            return [meta, fastq]
+        return [meta, fastq]
     }
 
     emit:
@@ -89,13 +89,16 @@ workflow BCL_DEMULTIPLEX {
     stats       = ch_stats
     interop     = ch_interop
     logs        = ch_logs
+    sav_report  = MULTIQCSAV.out.report
+    sav_data    = MULTIQCSAV.out.data
+    sav_plots   = MULTIQCSAV.out.plots
 }
 
 def generateReadgroupBCLCONVERT(ch_fastq_list_csv, ch_fastq) {
     return ch_fastq_list_csv
-        .collect() // make it a value channel
-        .map { meta, csv_file ->
-            def fastq_metadata = []
+        .join(ch_fastq, by: [0])
+        .map { meta, csv_file, fastq_list ->
+            def meta_fastq = []
             csv_file
                 .splitCsv(header: true)
                 .each { row ->
@@ -110,27 +113,18 @@ def generateReadgroupBCLCONVERT(ch_fastq_list_csv, ch_fastq) {
                     rg.LB = row.RGLB ? row.RGLB : ""
                     rg.PL = "ILLUMINA"
 
-                    // replace the meta id with the sample name
-                    def new_meta = [id: row.RGSM, readgroup: rg]
-                    // Return the new meta with fastq file
-                    fastq_metadata << [new_meta, file(row.Read1File).name]
-                    if (row.Read2File) {
-                        fastq_metadata << [new_meta, file(row.Read2File).name]
-                    }
+                    // dereference the fastq files in the csv
+                    def fastq1 = fastq_list.find { fq -> file(fq).name == file(row.Read1File).name }
+                    def fastq2 = row.Read2File ? fastq_list.find { fq -> file(fq).name == file(row.Read2File).name } : null
+
+                    // set fastq metadata
+                    def new_meta = meta + [id: fastq1.getSimpleName().toString() - ~/_R[0-9]_001.*$/, readgroup: rg, single_end: !fastq2]
+
+                    meta_fastq << [new_meta, fastq2 ? [fastq1, fastq2] : [fastq1]]
                 }
-            return [meta, fastq_metadata]
+            return meta_fastq
         }
-        .join(ch_fastq, by:[0]) // -> [ meta, [fq_meta, fastq_filename], [fastq_file, ...] ]
-        .transpose(by:[2]) // -> [ meta, [fq_meta, fastq_filename], fastq_file ]
-        .map { meta, fastq_metadata, fastq_file ->
-            def fastq_meta = fastq_metadata.find { _meta, filename -> filename == file(fastq_file).name }
-            return [meta + fastq_meta[0], file(fastq_file)]
-        }
-        .groupTuple(by: [0])
-        .map { meta, fastq ->
-            meta.single_end = fastq.size() == 1
-            return [meta, fastq.flatten()]
-        }
+        .flatMap()
 }
 
 def generateReadgroupBCL2FASTQ(ch_fastq) {

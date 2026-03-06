@@ -1,0 +1,206 @@
+nextflow_process {
+
+    name "Test Process PARAPHRASE"
+    script "../main.nf"
+    process "PARAPHRASE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tabix/bgzip"
+    tag "paraphase"
+    tag "paraphrase"
+
+    setup {
+        run("TABIX_BGZIP") {
+            script "../../tabix/bgzip/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test_ref' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22_chr22_KI270734v1_random/sequence/genome.fa.gz', checkIfExists: true),
+                ]
+                """
+            }
+        }
+        run("PARAPHASE") {
+            script "../../paraphase/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
+                ]
+                input[1] = TABIX_BGZIP.out.output
+                input[2] = [
+                    [:],
+                    []
+                ]
+                """
+            }
+        }
+    }
+
+    test("paraphase json - no rules") {
+
+        when {
+            params {
+                module_args = '--gene PRODH'
+            }
+            process {
+                """
+                input[0] = PARAPHASE.out.json.map { meta, json -> [meta, json, meta.id] }
+                input[1] = [[],[]]
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("paraphase json - rules yaml") {
+
+        when {
+            params {
+                module_args = '--gene PRODH'
+            }
+            process {
+                """
+                input[0] = PARAPHASE.out.json.map { meta, json -> [meta, json, meta.id] }
+                input[1] = [
+                    [ id:'rules' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/yaml/rules.yaml', checkIfExists: true)
+                ]
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("paraphase json - rules yaml - tsv output") {
+
+        when {
+            params {
+                module_args = '--gene PRODH'
+            }
+            process {
+                """
+                input[0] = PARAPHASE.out.json.map { meta, json -> [meta, json, meta.id] }
+                input[1] = [
+                    [ id:'rules' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/yaml/rules.yaml', checkIfExists: true)
+                ]
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("paraphase json - no rules - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--gene PRODH'
+            }
+            process {
+                """
+                input[0] = PARAPHASE.out.json.map { meta, json -> [meta, json, meta.id] }
+                input[1] = [[],[]]
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("paraphase json - rules yaml - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--gene PRODH'
+            }
+            process {
+                """
+                input[0] = PARAPHASE.out.json.map { meta, json -> [meta, json, meta.id] }
+                input[1] = [
+                    [ id:'rules' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/yaml/rules.yaml', checkIfExists: true)
+                ]
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("paraphase json - rules yaml - tsv output - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--gene PRODH'
+            }
+            process {
+                """
+                input[0] = PARAPHASE.out.json.map { meta, json -> [meta, json, meta.id] }
+                input[1] = [
+                    [ id:'rules' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/yaml/rules.yaml', checkIfExists: true)
+                ]
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+}

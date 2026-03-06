@@ -14,7 +14,7 @@ process FASTK_HISTEX {
     output:
     tuple val(meta), path("*.hist.txt"), emit: hist
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    tuple val("${task.process}"), val('fastk'), eval('echo 1.2'), emit: versions_fastk, topic: versions
+    tuple val("${task.process}"), val('fastk'), val('1.2'), emit: versions_fastk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

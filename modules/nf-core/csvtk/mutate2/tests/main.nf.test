@@ -1,0 +1,67 @@
+nextflow_process {
+
+    name "Test Process CSVTK_MUTATE2"
+    script "../main.nf"
+    process "CSVTK_MUTATE2"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "csvtk"
+    tag "csvtk/mutate2"
+
+    test("csv - mutate2 - tsv") {
+        when {
+            params {
+                module_args = '--at 0 --name sample_id -e=\"\'test\'\"'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true)
+                ]
+                input[1] = 'csv'
+                input[2] = 'tsv'
+                """
+            }
+        }
+
+         then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("csv - mutate2 - tsv - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--at 0 --name sample_id -e=\"\'test\'\"'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true)
+                ]
+                input[1] = 'csv'
+                input[2] = 'tsv'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+}

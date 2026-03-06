@@ -38,6 +38,7 @@ nextflow_workflow {
                     [id:'genome'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
                 ]
+                input[7] = false
                 """
             }
         }
@@ -77,6 +78,7 @@ nextflow_workflow {
                 input[4] = false
                 input[5] = Channel.empty()
                 input[6] = Channel.empty()
+                input[7] = false
                 """
             }
         }
