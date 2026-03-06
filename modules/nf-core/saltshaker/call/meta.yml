@@ -1,0 +1,104 @@
+name: "saltshaker_call"
+description: mtDNA deletion and duplication calling downstream of mitosalt
+keywords:
+  - saltshaker
+  - mitosalt
+  - mtDNA
+  - structural-variant calling
+tools:
+  - "saltshaker":
+      description: "A Python package for classifying and visualizing mitochondrial structural variants from MitoSAlt pipeline output."
+      homepage: "https://github.com/aksenia/saltshaker"
+      documentation: "https://github.com/aksenia/saltshaker/tree/main/saltshaker/docs"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - breakpoint:
+        type: file
+        description: breakpoint file from mitosalt
+        pattern: "*.{breakpoint}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - cluster:
+        type: file
+        description: cluster file from mitosalt
+        pattern: "*.{cluster}"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'fasta' ]
+    - mtfasta:
+        type: file
+        description: Reference mitochondrial genome in FASTA format
+        pattern: "*.{fasta,fa}"
+        ontologies: []
+  - flank:
+      type: integer
+      description: Basepairs flanking a deletion
+  - heteroplasmy_limit:
+      type: float
+      description: Minimum heteroplasmy level to report a deletion/duplication
+  - mito_length:
+      type: integer
+      description: Length of the mitochondrial genome
+  - heavy_strand_origin_start:
+      type: integer
+      description: Start position of the heavy strand origin of replication
+  - heavy_strand_origin_end:
+      type: integer
+      description: End position of the heavy strand origin of replication
+  - light_strand_origin_start:
+      type: integer
+      description: Start position of the light strand origin of replication
+  - light_strand_origin_end:
+      type: integer
+      description: End position of the light strand origin of replication
+
+output:
+  call:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_call_metadata.tsv":
+          type: file
+          description: tsv with variant call metadata to be used in saltshaker_classify
+          pattern: "*_call_metadata.tsv"
+          ontologies: []
+  versions_saltshaker:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "saltshaker":
+          type: string
+          description: The name of the tool
+      - "1.0.0":
+          type: string
+          description: Hardcoded version of saltshaker used in the module
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - saltshaker:
+          type: string
+          description: The name of the tool
+      - 1.0.0:
+          type: string
+          description: Hardcoded version of saltshaker used in the module
+authors:
+  - "@ieduba"
+maintainers:
+  - "@ieduba"
