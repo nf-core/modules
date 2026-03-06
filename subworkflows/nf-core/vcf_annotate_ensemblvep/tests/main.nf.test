@@ -12,7 +12,7 @@ nextflow_workflow {
 
     config "./nextflow.config"
 
-    test("WBcel235 caenorhabditis_elegans 114 - test.vcf.gz") {
+    test("WBcel235 caenorhabditis_elegans 115 - test.vcf.gz") {
 
         when {
             workflow {
@@ -30,7 +30,7 @@ nextflow_workflow {
                 input[1] = [[id:'null'],[]]
                 input[2] = "WBcel235"
                 input[3] = "caenorhabditis_elegans"
-                input[4] = "114"
+                input[4] = "115"
                 input[5] = vep_cache
                 input[6] = []
                 """
@@ -50,7 +50,7 @@ nextflow_workflow {
         }
     }
 
-    test("WBcel235 caenorhabditis_elegans 114 - test.vcf.gz - stub") {
+    test("WBcel235 caenorhabditis_elegans 115 - test.vcf.gz - stub") {
 
         options "-stub"
 
@@ -70,7 +70,7 @@ nextflow_workflow {
                 input[1] = [[id:'null'],[]]
                 input[2] = "WBcel235"
                 input[3] = "caenorhabditis_elegans"
-                input[4] = "114"
+                input[4] = "115"
                 input[5] = vep_cache
                 input[6] = []
                 """
