@@ -2,7 +2,7 @@
 
 To update this tool :
 
-1. Navigate tho the mat2json [repository](https://github.com/qbic-pipelines/mat2json), go to the latest release and get the link and sha256 checksum.
+1. Navigate tho the mat2json [repository](https://github.com/qbic-pipelines/mat2json/releases), go to the latest release and get the link and sha256 checksum.
 2. Edit the Dockerfile in the following lines:
 
 ```diff
