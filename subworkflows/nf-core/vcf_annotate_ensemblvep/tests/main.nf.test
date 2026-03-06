@@ -57,7 +57,10 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                vep_cache = channel.of(file("${projectDir}")).collect()
+                vep_cache = channel.of([
+                    [ id:'115_WBcel235' ],
+                    file("${projectDir}")
+                ).collect()
 
                 input[0] = channel.of([
                     [ id:'test'],
