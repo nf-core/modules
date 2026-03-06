@@ -12,6 +12,7 @@ process METABULI_BUILD {
     path taxonomy_nodes, stageAs: 'taxonomy/nodes.dmp'
     path taxonomy_merged, stageAs: 'taxonomy/merged.dmp'
     path accession2taxid, stageAs: 'taxonomy/*'
+    path cds_info
 
     output:
     tuple val(meta), path("$prefix"), emit: db
@@ -24,9 +25,11 @@ process METABULI_BUILD {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     make_merged = taxonomy_merged ? "" : "touch taxonomy/merged.dmp"
+    cds_info_arg = cds_info ? "--cds-info cds_info.txt" : ""
     """
     $make_merged
     echo $fasta | tr ' ' '\\n' > fasta.txt
+    echo $cds_info | tr ' ' '\\n' > cds_info.txt
 
     metabuli build \\
         "${prefix}" \\
@@ -35,8 +38,9 @@ process METABULI_BUILD {
         --taxonomy-path taxonomy \\
         --max-ram ${task.memory.toGiga()} \\
         --threads ${task.cpus} \\
+        ${cds_info_arg} \\
         $args
-        
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         metabuli: \$(metabuli version)
