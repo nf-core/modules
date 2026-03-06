@@ -28,7 +28,7 @@ nextflow_process {
 
                 input[2] = [
                     [ id:'hg38' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/bacteroides_fragilis/genome/human_mt_rCRS.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/human_mt_rCRS.fasta', checkIfExists: true),
                 ]
 
                 input[3] = 15
@@ -75,7 +75,7 @@ nextflow_process {
 
                 input[2] = [
                     [ id:'hg38' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/bacteroides_fragilis/genome/human_mt_rCRS.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/human_mt_rCRS.fasta', checkIfExists: true),
                 ]
 
                 input[3] = 15
