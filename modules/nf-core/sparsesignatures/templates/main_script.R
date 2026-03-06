@@ -216,11 +216,10 @@ writeLines(paste("    SparseSignatures:", SparseSignatures_version), f)
 writeLines(paste("    dplyr:", dplyr_version), f)
 writeLines(paste("    ggplot2:", ggplot2_version), f)
 writeLines(paste("    patchwork:", patchwork_version), f)
-if (opt[["genome"]] == "GRCh37") {
-    bsg_hs37_version = sessionInfo()\$otherPkgs\$BSgenome.Hsapiens.1000genomes.hs37d5\$Version
-    writeLines(paste("    BSgenome.Hsapiens.1000genomes.hs37d5:", bsg_hs37_version), f)
-} else if (opt[["genome"]] == "GRCh38"){
-    bsg_hg38_version = sessionInfo()\$otherPkgs\$BSgenome.Hsapiens.UCSC.hg38\$Version
-    writeLines(paste("    BSgenome.Hsapiens.UCSC.hg38:", bsg_hg38_version), f)
-}
+library(BSgenome.Hsapiens.1000genomes.hs37d5)
+bsg_hs37_version = sessionInfo()\$otherPkgs\$BSgenome.Hsapiens.1000genomes.hs37d5\$Version
+writeLines(paste("    BSgenome.Hsapiens.1000genomes.hs37d5:", bsg_hs37_version), f)
+library(BSgenome.Hsapiens.UCSC.hg38)
+bsg_hg38_version = sessionInfo()\$otherPkgs\$BSgenome.Hsapiens.UCSC.hg38\$Version
+writeLines(paste("    BSgenome.Hsapiens.UCSC.hg38:", bsg_hg38_version), f)
 close(f)
