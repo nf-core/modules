@@ -27,8 +27,8 @@ input:
           e.g. `[ id:'sample1' ]`
     - rds_join:
         type: file
-        description: RDS file containing the mCNAqc object with joint mutations and
-          copy number segments
+        description: RDS file containing the mCNAqc object with joint mutations
+          and copy number segments
         pattern: "*.rds"
         ontologies: []
     - tumour_samples:
@@ -87,13 +87,14 @@ output:
         pattern: "versions.yml"
         ontologies:
           - edam: http://edamontology.org/format_3750
-
 topics:
   versions:
-    - versions:
-        type: string
-        description: The name of the process
-
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
 authors:
   - "@giorgiagandolfi"
   - "@elena-buscaroli"
