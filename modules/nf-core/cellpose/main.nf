@@ -16,9 +16,9 @@ process CELLPOSE {
     tuple val(meta), path("${prefix}/*masks.tif"), emit: mask
     tuple val(meta), path("${prefix}/*flows.tif"), emit: flows, optional: true
     tuple val(meta), path("${prefix}/*seg.npy"), emit: cells, optional: true
-    tuple val("${task.process}"), val('cellpose'), eval("pip show cellpose | grep '^Version:' | sed 's/Version: //'"), topic: versions, emit: versions_cellpose
+    tuple val("${task.process}"), val('cellpose'), eval("pip show cellpose | sed -n 's/^Version: //p'"), topic: versions, emit: versions_cellpose
     tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //'"), topic: versions, emit: versions_python
-    tuple val("${task.process}"), val('torch'), eval("pip show torch | grep '^Version:' | sed 's/Version: //'"), topic: versions, emit: versions_torch
+    tuple val("${task.process}"), val('torch'), eval("pip show torch | sed -n 's/^Version: //p'"), topic: versions, emit: versions_torch
 
     when:
     task.ext.when == null || task.ext.when
