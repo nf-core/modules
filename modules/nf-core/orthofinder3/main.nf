@@ -14,7 +14,8 @@ process ORTHOFINDER3 {
     output:
     tuple val(meta), path("$prefix")                     , emit: orthofinder
     tuple val(meta), path("$prefix/WorkingDirectory")    , emit: working
-    path "versions.yml"                                  , emit: versions
+    tuple val("${task.process}"), val('orthofinder'), eval('orthofinder --version 2>&1 | sed "s/OrthoFinder:v//"'), emit: versions_orthofinder, topic: versions
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,8 +26,6 @@ process ORTHOFINDER3 {
     def include_command = prior_run   ? "-b $prior_run" : ''
 
     """
-    mkdir temp_pickle
-
     orthofinder \\
         -t $task.cpus \\
         -a $task.cpus \\
@@ -42,11 +41,6 @@ process ORTHOFINDER3 {
     if [ -e ${prior_run}/OrthoFinder/Results_$prefix ]; then
         mv ${prior_run}/OrthoFinder/Results_$prefix $prefix
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        orthofinder: \$(orthofinder -h | sed -n 's/.*version \\(.*\\) Copy.*/\\1/p')
-    END_VERSIONS
     """
 
     stub:
@@ -66,12 +60,6 @@ process ORTHOFINDER3 {
     mkdir       $prefix/Single_Copy_Orthologue_Sequences
     mkdir       $prefix/Species_Tree
     mkdir       $prefix/WorkingDirectory
-
     touch       $prefix/Log.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        orthofinder: \$(orthofinder -h | sed -n 's/.*version \\(.*\\) Copy.*/\\1/p')
-    END_VERSIONS
     """
 }
