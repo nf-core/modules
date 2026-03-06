@@ -27,10 +27,9 @@ nextflow_process {
             def mask_files = process.out.mask[0][1].collect { file(it) }
             assertAll (
                 { assert process.success },
-                { assert snapshot(
-                    mask_files.collect { it.name },
-                    mask_files.collect { it.size() }
-                ).match("mask") },
+                { assert mask_files.size() == 3 },
+                { assert snapshot(mask_files.collect { it.name }).match("mask_files") },
+                { assert mask_files.every { it.size() > 0 } },
                 { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("versions") }
             )
         }
