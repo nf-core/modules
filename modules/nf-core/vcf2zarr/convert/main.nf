@@ -23,9 +23,9 @@ process VCF2ZARR_CONVERT {
     """
     vcf2zarr \\
         convert \\
-        $args \\
-        --worker-processes $task.cpus \\
-        $vcf \\
+        ${args} \\
+        --worker-processes ${task.cpus} \\
+        ${vcf} \\
         ${prefix}.vcz
     """
 
@@ -33,7 +33,7 @@ process VCF2ZARR_CONVERT {
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
 
     mkdir ${prefix}.vcz
     """
