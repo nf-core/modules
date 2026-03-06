@@ -14,8 +14,7 @@ process ORTHOFINDER3 {
     output:
     tuple val(meta), path("$prefix")                     , emit: orthofinder
     tuple val(meta), path("$prefix/WorkingDirectory")    , emit: working
-    tuple val("${task.process}"), val('orthofinder'), eval('orthofinder --version 2>&1 | sed "s/OrthoFinder:v//"'), emit: versions_orthofinder, topic: versions
-
+    tuple val("${task.process}"), val('orthofinder'), eval("orthofinder --version 2>&1 | tail -1 | sed 's/\\x1b\\[[0-9;]*m//g; s/OrthoFinder:v//'"), emit: versions_orthofinder, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
