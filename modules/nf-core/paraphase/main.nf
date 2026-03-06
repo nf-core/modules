@@ -42,17 +42,19 @@ process PARAPHASE {
         ${config_file} \\
         --out .
 
-    for vcf in ${prefix}_paraphase_vcfs/*.vcf;
-    do
-        bgzip \\
-            ${args2} \\
-            --threads ${task.cpus} \\
-            \$vcf;
-        tabix \\
-            ${args3} \\
-            --threads ${task.cpus} \\
-            \$vcf.gz;
-    done
+    if compgen -G "${prefix}_paraphase_vcfs/*.vcf" > /dev/null; then
+        for vcf in ${prefix}_paraphase_vcfs/*.vcf;
+        do
+            bgzip \\
+                ${args2} \\
+                --threads ${task.cpus} \\
+                \$vcf;
+            tabix \\
+                ${args3} \\
+                --threads ${task.cpus} \\
+                \$vcf.gz;
+        done
+    fi
     """
 
     stub:
