@@ -1,0 +1,104 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test saltshaker/classify
+nextflow_process {
+
+    name "Test Process SALTSHAKER_CLASSIFY"
+    script "../main.nf"
+    process "SALTSHAKER_CLASSIFY"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "saltshaker"
+    tag "saltshaker/classify"
+
+    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used
+
+    setup {
+        run("SALTSHAKER_CALL") {
+            script "../../call/main.nf"
+            process {
+            """
+            input[0] = [
+                [ id:'test' ],
+                file(params.modules_testdata_base_path + 'delete_me/saltshaker/test_mitosalt.breakpoint', checkIfExists: true),
+            ]
+
+            input[1] = [
+                [ id:'test' ],
+                file(params.modules_testdata_base_path + 'delete_me/saltshaker/test_mitosalt.cluster', checkIfExists: true),
+            ]
+
+            input[2] = [
+                [ id:'hg38' ],
+                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/human_mt_rCRS.fasta', checkIfExists: true),
+            ]
+
+            input[3] = 15
+            input[4] = 0.01
+            input[5] = 16569
+            input[6] = 16081
+            input[7] = 407
+            input[8] = 5730
+            input[9] = 5763
+            """
+        }
+        }
+    }
+
+    test("classify - vcf") {
+
+        when {
+            process {
+                """
+                input[0] = SALTSHAKER_CALL.out.call
+                input[1] = 0.5
+                input[2] = 600
+                input[3] = 10
+                input[4] = 5
+                input[5] = 0.3
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                ).match() }
+
+            )
+        }
+
+    }
+
+    test("classify - vcf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = SALTSHAKER_CALL.out.call
+                input[1] = 0.5
+                input[2] = 600
+                input[3] = 10
+                input[4] = 5
+                input[5] = 0.3
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                ).match() }
+            )
+        }
+
+    }
+
+}
