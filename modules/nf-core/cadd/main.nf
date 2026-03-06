@@ -3,24 +3,28 @@ process CADD {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container 'docker.io/biocontainers/cadd-scripts-with-envs:1.6.post1_cv1'
+    container 'docker.io/clinicalgenomics/cadd-with-scripts:1.7.3'
 
-    containerOptions "${ prescored_dir ?
-        ['singularity', 'apptainer'].contains(workflow.containerEngine) ?
-            "-B ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations -B ${prescored_dir}:/opt/CADD-scripts-1.6.post1/data/prescored" :
-            "-v ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations -v ${prescored_dir}:/opt/CADD-scripts-1.6.post1/data/prescored" :
-        ['singularity', 'apptainer'].contains(workflow.containerEngine) ?
-            "-B ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations" :
-            "-v ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations" }"
+    containerOptions {
+        if (prescored_dir) {
+            ['singularity', 'apptainer'].contains(workflow.containerEngine) ?
+                "-B ${annotation_dir}:/cadd-scripts/data/annotations -B ${prescored_dir}:/cadd-scripts/data/prescored" :
+                "-v ${annotation_dir}:/cadd-scripts/data/annotations -v ${prescored_dir}:/cadd-scripts/data/prescored"
+        } else {
+            ['singularity', 'apptainer'].contains(workflow.containerEngine) ?
+                "-B ${annotation_dir}:/cadd-scripts/data/annotations" :
+                "-v ${annotation_dir}:/cadd-scripts/data/annotations"
+        }
+    }
 
     input:
     tuple val(meta), path(vcf)
-    tuple val(meta2), path(annotation_dir)
-    tuple val(meta3), path(prescored_dir)
+    tuple val(meta2), val(annotation_dir)
+    tuple val(meta3), val(prescored_dir)
 
     output:
     tuple val(meta), path("${prefix}.tsv.gz"), emit: tsv
-    tuple val("${task.process}"), val("cadd"), val("1.6.post1"), emit: versions_cadd, topic: versions
+    tuple val("${task.process}"), val("cadd"), val("1.7.3"), emit: versions_cadd, topic: versions
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
 
     when:
@@ -31,9 +35,11 @@ process CADD {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     export XDG_CACHE_HOME=\$PWD/snakemake_cache
+    export MPLCONFIGDIR=.
     mkdir -p \$XDG_CACHE_HOME
 
-    cadd.sh \\
+    CADD.sh \\
+        -m \\
         -o ${prefix}.tsv.gz \\
         ${args} \\
         ${vcf}

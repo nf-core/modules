@@ -66,5 +66,6 @@ repos:
     hooks:
       - id: nextflow-lint
         files: '\.nf$|nextflow\.config$'
-        # TODO add formating at a later stage
+        args: ["-output", "json"]
+        # TODO add formatting at a later stage
         # args: ["-format", "-sort-declarations", "-spaces", "4", "-harshil-alignment", "-output", "concise"]
