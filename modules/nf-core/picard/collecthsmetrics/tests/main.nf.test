@@ -40,11 +40,9 @@ nextflow_process {
                     size,
                     lines,
                     process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match()
-                }
+                ).match()}
             )
         }
-
     }
 
     test("sarscov2 - bam - gzippedfa") {
@@ -78,17 +76,13 @@ nextflow_process {
                     size,
                     lines,
                     process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match()
-                }
+                ).match()}
             )
         }
-
     }
 
     test("sarscov2 - bam - stub") {
-
         options "-stub"
-
         when {
             process {
                 """
@@ -110,10 +104,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("sarscov2 - bam - nofasta") {
@@ -147,11 +140,9 @@ nextflow_process {
                     size,
                     lines,
                     process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match()
-                }
+                ).match()}
             )
         }
-
     }
 
     test("sarscov2 - bam - bed") {
@@ -186,11 +177,9 @@ nextflow_process {
                     size,
                     lines,
                     process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match()
-                }
+                ).match()}
             )
         }
-
     }
 
     test("sarscov2 - bam - samebed") {
@@ -225,10 +214,8 @@ nextflow_process {
                     size,
                     lines,
                     process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match()
-                }
+                ).match()}
             )
         }
-
     }
 }

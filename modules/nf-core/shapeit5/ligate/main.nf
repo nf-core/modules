@@ -12,7 +12,7 @@ process SHAPEIT5_LIGATE {
 
     output:
     tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: merged_variants
-    path "versions.yml"                               , emit: versions
+    tuple val("${task.process}"), val('shapeit5'), eval('SHAPEIT5_ligate | sed "5!d;s/^.*Version *: //; s/ .*$//"'), topic: versions, emit: versions_shapeit5
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,19 +21,21 @@ process SHAPEIT5_LIGATE {
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
+
+    // Create file list using Groovy (most portable)
+    def file_list = input_list
+        .collect { file_path -> file_path.toString() }
+        .sort()
+        .join('\n')
+
     """
-    printf "%s\\n" ${input_list} | tr -d '[],' | sort -V > all_files.txt
+    echo "${file_list}" > all_files.txt
 
     SHAPEIT5_ligate \\
         ${args} \\
         --input all_files.txt \\
         --thread ${task.cpus} \\
         --output ${prefix}.${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        shapeit5: "\$(SHAPEIT5_ligate | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1)"
-    END_VERSIONS
     """
 
     stub:
@@ -43,10 +45,5 @@ process SHAPEIT5_LIGATE {
     def create_cmd = suffix.endsWith(".gz") ? "echo '' | gzip >" : "touch"
     """
     ${create_cmd} ${prefix}.${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        shapeit5: "\$(SHAPEIT5_ligate | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1)"
-    END_VERSIONS
     """
 }

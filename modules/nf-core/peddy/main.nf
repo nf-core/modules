@@ -4,8 +4,8 @@ process PEDDY {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/peddy:0.4.8--pyh5e36f6f_0' :
-        'biocontainers/peddy:0.4.8--pyh5e36f6f_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3a/3a1f7f39ed4c0e429d5a5805cdfa5251cbe56d4f2cf9cf4257172db1a56ab6bf/data' :
+        'community.wave.seqera.io/library/peddy:0.4.8--e3cef30bae621593' }"
 
     input:
     tuple val(meta), path(vcf), path(vcf_tbi)
@@ -13,17 +13,17 @@ process PEDDY {
     tuple val(meta3), path(sites)
 
     output:
-    tuple val(meta), path("${prefix}.vs.html")              , emit: vs_html
-    tuple val(meta), path("${prefix}.html")                 , emit: html
-    tuple val(meta), path("*.peddy.ped")                    , emit: ped
-    tuple val(meta), path("*.het_check.png")                , optional: true, emit: het_check_png
-    tuple val(meta), path("*.ped_check.png")                , optional: true, emit: ped_check_png
-    tuple val(meta), path("*.sex_check.png")                , optional: true, emit: sex_check_png
-    tuple val(meta), path("*.het_check.csv")                , optional: true, emit: het_check_csv
-    tuple val(meta), path("*.ped_check.csv")                , optional: true, emit: ped_check_csv
-    tuple val(meta), path("*.sex_check.csv")                , optional: true, emit: sex_check_csv
-    tuple val(meta), path("*.ped_check.rel-difference.csv") , optional: true, emit: ped_check_rel_difference_csv
-    path "versions.yml"                                     , emit: versions
+    tuple val(meta), path("${prefix}.vs.html")                      , emit: vs_html
+    tuple val(meta), path("${prefix}.html")                         , emit: html
+    tuple val(meta), path("${prefix}.peddy.ped")                    , emit: ped
+    tuple val(meta), path("${prefix}.het_check.png")                , optional: true, emit: het_check_png
+    tuple val(meta), path("${prefix}.ped_check.png")                , optional: true, emit: ped_check_png
+    tuple val(meta), path("${prefix}.sex_check.png")                , optional: true, emit: sex_check_png
+    tuple val(meta), path("${prefix}.het_check.csv")                , optional: true, emit: het_check_csv
+    tuple val(meta), path("${prefix}.ped_check.csv")                , optional: true, emit: ped_check_csv
+    tuple val(meta), path("${prefix}.sex_check.csv")                , optional: true, emit: sex_check_csv
+    tuple val(meta), path("${prefix}.ped_check.rel-difference.csv") , optional: true, emit: ped_check_rel_difference_csv
+    tuple val("${task.process}"), val("peddy"), eval("peddy --version | sed 's/peddy, version //'"), topic: versions, emit: versions_peddy
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,11 +42,6 @@ process PEDDY {
         $vcf \\
         $sites_arg \\
         $ped
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        peddy: \$( peddy --version 2>&1 | tail -1 | sed 's/peddy, version //' )
-    END_VERSIONS
     """
 
     stub:
@@ -64,10 +59,5 @@ process PEDDY {
     touch ${prefix}.ped_check.png
     touch ${prefix}.sex_check.png
     touch ${prefix}.ped_check.rel-difference.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        peddy: \$( peddy --version 2>&1 | tail -1 | sed 's/peddy, version //' )
-    END_VERSIONS
     """
 }

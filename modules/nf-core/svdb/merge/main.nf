@@ -4,8 +4,8 @@ process SVDB_MERGE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ff/ff995c756aa8a3c0af13b1d054eacd536a11d35de5fa288dacf558bc21696968/data':
-        'community.wave.seqera.io/library/bcftools_svdb:ae3b14d2d608fd81' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f5/f59712ead354411dd8bea4918d777737ca4ef2ad1360289507fe35acb688e74f/data':
+        'community.wave.seqera.io/library/bcftools_svdb:12db401acbacc624' }"
 
     input:
     tuple val(meta), path(vcfs)
@@ -37,10 +37,10 @@ process SVDB_MERGE {
     if (input_priority) {
         if (vcfs.collect().size() > 1 && sort_inputs) {
             // make vcf-priority pairs and sort on VCF name, so priority is also sorted the same
-            def pairs = vcfs.indices.collect { [vcfs[it], input_priority[it]] }
+            def pairs = vcfs.indices.collect { index -> [vcfs[index], input_priority[index]] }
             pairs = pairs.sort { a, b -> a[0].name <=> b[0].name }
-            vcfs = pairs.collect { it[0] }
-            priority = pairs.collect { it[1] }
+            vcfs = pairs.collect { vcf -> vcf[0] }
+            priority = pairs.collect { pair -> pair[1] }
         } else {
             priority = input_priority
         }
@@ -54,7 +54,7 @@ process SVDB_MERGE {
 
     } else {
         // if there's no priority input just sort the vcfs by name if possible
-        input = (vcfs.collect().size() > 1 && sort_inputs) ? vcfs.sort { it.name } : vcfs
+        input = (vcfs.collect().size() > 1 && sort_inputs) ? vcfs.sort { vcf_file -> vcf_file.name } : vcfs
     }
 
     def extension = args2.contains("--output-type b") || args2.contains("-Ob") ? "bcf.gz" :

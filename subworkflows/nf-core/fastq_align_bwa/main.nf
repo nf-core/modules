@@ -13,14 +13,13 @@ workflow FASTQ_ALIGN_BWA {
     ch_fasta        // channel (optional) : [ val(meta3), path(fasta) ]
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     //
     // Map reads with BWA
     //
 
     BWA_MEM ( ch_reads, ch_index, ch_fasta, val_sort_bam )
-    ch_versions = ch_versions.mix(BWA_MEM.out.versions.first())
 
     //
     // Sort, index BAM file and run samtools stats, flagstat and idxstats

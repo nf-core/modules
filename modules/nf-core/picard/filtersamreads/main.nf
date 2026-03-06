@@ -1,11 +1,11 @@
 process PICARD_FILTERSAMREADS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/0861295baa7c01fc593a9da94e82b44a729dcaf8da92be8e565da109aa549b25/data' :
-        'community.wave.seqera.io/library/picard:3.4.0--e9963040df0a9bf6' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/0861295baa7c01fc593a9da94e82b44a729dcaf8da92be8e565da109aa549b25/data'
+        : 'community.wave.seqera.io/library/picard:3.4.0--e9963040df0a9bf6'}"
 
     input:
     tuple val(meta), path(bam), path(readlist)
@@ -13,7 +13,7 @@ process PICARD_FILTERSAMREADS {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('picard'), eval("picard FilterSamReads --version 2>&1 | sed -n 's/.*Version://p'"), topic: versions, emit: versions_picard
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,56 +23,46 @@ process PICARD_FILTERSAMREADS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[Picard FilterSamReads] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        log.info('[Picard FilterSamReads] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue()
     }
 
-    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${bam}" == "${prefix}.bam") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
 
-    if ( filter == 'includeAligned' || filter == 'excludeAligned' ) {
+    if (filter == 'includeAligned' || filter == 'excludeAligned') {
         """
         picard \\
-            FilterSamReads \\
             -Xmx${avail_mem}M \\
-            --INPUT $bam \\
+            FilterSamReads \\
+            --INPUT ${bam} \\
             --OUTPUT ${prefix}.bam \\
-            --FILTER $filter \\
-            $args
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            picard: \$(picard FilterSamReads --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
-        END_VERSIONS
+            --FILTER ${filter} \\
+            ${args}
         """
-    } else if ( filter == 'includeReadList' || filter == 'excludeReadList' ) {
+    }
+    else if (filter == 'includeReadList' || filter == 'excludeReadList') {
         """
         picard \\
-            FilterSamReads \\
             -Xmx${avail_mem}M \\
-            --INPUT $bam \\
+            FilterSamReads \\
+            --INPUT ${bam} \\
             --OUTPUT ${prefix}.bam \\
-            --FILTER $filter \\
-            --READ_LIST_FILE $readlist \\
-            $args
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            picard: \$(picard FilterSamReads --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
-        END_VERSIONS
+            --FILTER ${filter} \\
+            --READ_LIST_FILE ${readlist} \\
+            ${args}
         """
     }
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${bam}" == "${prefix}.bam") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     touch ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(picard FilterSamReads --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
     """
-
 }

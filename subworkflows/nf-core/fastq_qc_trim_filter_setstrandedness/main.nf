@@ -121,6 +121,9 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     with_umi             // boolean: true/false: Enable UMI-based read deduplication.
     umi_discard_read     // integer: 0, 1 or 2
 
+    // Merging options
+    save_merged_fastq    // boolean: true/false: Save merged FastQ files even for single-library samples
+
     // Strandedness thresholds
     stranded_threshold   // float: The fraction of stranded reads that must be assigned to a strandedness for confident assignment. Must be at least 0.5
     unstranded_threshold // float: The difference in fraction of stranded reads assigned to 'forward' and 'reverse' below which a sample is classified as 'unstranded'
@@ -160,7 +163,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
 
     ch_reads
         .branch { meta, fastqs ->
-            single: fastqs.size() == 1 && fastqs.flatten()[0].name.endsWith('.gz')
+            single: fastqs.size() == 1 && fastqs.flatten()[0].name.endsWith('.gz') && !save_merged_fastq
             return [meta, fastqs.flatten()]
             multiple: true
             return [meta, fastqs.flatten()]
@@ -390,8 +393,13 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     )
 
     FASTQ_SUBSAMPLE_FQ_SALMON.out.lib_format_counts
-        .join(ch_strand_fastq.auto_strand)
+        .join(ch_strand_fastq.auto_strand, remainder: true)
         .map { meta, json, reads ->
+            if (json == null) {
+                error("Salmon failed to produce lib_format_counts for sample '${meta.id}' " +
+                    "which was set to 'auto' strandedness. Check that the Salmon " +
+                    "index matches your input reads, or set strandedness explicitly in the samplesheet.")
+            }
             def salmon_strand_analysis = getSalmonInferredStrandedness(json, stranded_threshold, unstranded_threshold)
             def strandedness = salmon_strand_analysis.inferred_strandedness
             if (strandedness == 'undetermined') {

@@ -12,9 +12,9 @@ workflow BAM_DOCOUNTS_CONTAMINATION_ANGSD {
     ch_hapmap_file // channel: [ val(meta), [ hapmap_file ] ]
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
-    ANGSD_DOCOUNTS ( ch_bam.combine(Channel.of([[]])) )
+    ANGSD_DOCOUNTS ( ch_bam.combine(channel.of([[]])) )
     ch_versions = ch_versions.mix(ANGSD_DOCOUNTS.out.versions)
 
     ANGSD_CONTAMINATION (

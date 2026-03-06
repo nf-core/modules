@@ -12,7 +12,8 @@ process VCFLIB_VCFFIXUP {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('vcflib'), val("1.0.14"), topic: versions, emit: versions_vcflib
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,7 +22,6 @@ process VCFLIB_VCFFIXUP {
     def args    = task.ext.args   ?: ''
     def args2   = task.ext.args2  ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}.fixed"
-    def VERSION = '1.0.14' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     if ( "$vcf" == "${prefix}.vcf.gz" ) {
         error "Input and output names are the same, set prefix in module configuration to disambiguate!"
@@ -32,16 +32,10 @@ process VCFLIB_VCFFIXUP {
         $args \\
         $vcf \\
         | bgzip -c $args2 > ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vcflib: $VERSION
-    END_VERSIONS
     """
 
     stub:
     def prefix  = task.ext.prefix ?: "${meta.id}.fixed"
-    def VERSION = '1.0.14' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     if ( "$vcf" == "${prefix}.vcf.gz" ) {
         error "Input and output names are the same, set prefix in module configuration to disambiguate!"
@@ -49,10 +43,5 @@ process VCFLIB_VCFFIXUP {
 
     """
     echo | gzip > ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vcflib: $VERSION
-    END_VERSIONS
     """
 }

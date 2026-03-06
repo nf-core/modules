@@ -10,8 +10,6 @@ workflow FASTQ_ALIGN_STAR {
     ch_index                    // channel: [ path(index) ]
     ch_gtf                      // channel: [ path(gtf) ]
     val_star_ignore_sjdbgtf     // boolean: when using pre-built STAR indices do not re-extract and use splice junctions from the GTF file
-    val_seq_platform            // string : sequencing platform
-    val_seq_center              // string : sequencing center
     ch_fasta                    // channel: [ val(meta), path(fasta) ]
     ch_transcripts_fasta        // channel: [ val(meta), path(fasta) ]
 
@@ -20,7 +18,7 @@ workflow FASTQ_ALIGN_STAR {
     //
     // Map reads with STAR
     //
-    STAR_ALIGN ( ch_reads, ch_index, ch_gtf, val_star_ignore_sjdbgtf, val_seq_platform, val_seq_center )
+    STAR_ALIGN ( ch_reads, ch_index, ch_gtf, val_star_ignore_sjdbgtf )
 
     //
     // Sort, index BAM file and run samtools stats, flagstat and idxstats

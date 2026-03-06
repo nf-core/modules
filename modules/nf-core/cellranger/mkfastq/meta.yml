@@ -15,7 +15,8 @@ tools:
       homepage: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
       documentation: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
       tool_dev_url: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
-      licence: [10X Genomics EULA]
+      licence:
+        - 10X Genomics EULA
       identifier: ""
 input:
   - - meta:
@@ -28,7 +29,7 @@ input:
         description: Sample sheet
         pattern: "*.csv"
         ontologies:
-          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3752
     - bcl:
         type: file
         description: Base call files
@@ -44,7 +45,7 @@ output:
           description: Read FastQ files
           pattern: "*_S[0-9]*_R?_00?.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   fastq_idx:
     - - meta:
           type: map
@@ -54,7 +55,7 @@ output:
           description: Index FastQ files
           pattern: "*_S[0-9]*_I?_00?.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   undetermined_fastq:
     - - meta:
           type: map
@@ -64,7 +65,7 @@ output:
           description: Undetermined FastQ files
           pattern: "Undetermined*.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   reports:
     - - meta:
           type: map
@@ -90,13 +91,27 @@ output:
           description: InterOp files
           pattern: "*.bin"
           ontologies: []
+  versions_cellranger:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellranger:
+          type: string
+          description: The name of the tool
+      - cellranger --version | sed "s/.*-//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software version
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellranger:
+          type: string
+          description: The name of the tool
+      - cellranger --version | sed "s/.*-//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ggabernet"
   - "@edmundmiller"
