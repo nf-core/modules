@@ -2,8 +2,10 @@ process GATK4_CNNSCOREVARIANTS {
     tag "${meta.id}"
     label 'process_low'
 
-    //Conda is not supported at the moment: https://github.com/broadinstitute/gatk/issues/7811
-    container "nf-core/gatk:4.5.0.0"
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ced519873646379e287bc28738bdf88e975edd39a92e7bc6a34bccd37153d9d0/data'
+        : 'community.wave.seqera.io/library/gatk4_gcnvkernel:edb12e4f0bf02cd3'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(aligned_input), path(intervals)
@@ -22,10 +24,6 @@ process GATK4_CNNSCOREVARIANTS {
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error("GATK4_CNNSCOREVARIANTS module does not support Conda. Please use Docker / Singularity / Podman instead.")
-    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def aligned_input_cmd = aligned_input ? "--input ${aligned_input}" : ""
