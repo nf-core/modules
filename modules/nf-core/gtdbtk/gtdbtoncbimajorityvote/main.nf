@@ -14,7 +14,7 @@ process GTDBTK_GTDBTONCBIMAJORITYVOTE {
 
     output:
     tuple val(meta), path("*.ncbi.tsv"), emit: tsv
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('gtdb_to_ncbi_majority_vote.py'), eval("gtdb_to_ncbi_majority_vote.py -v 2>&1 | grep -Eo '[0-9]+(\\.[0-9]+)+' | head -n 1"), topic: versions, emit: versions_gtdbtoncbimajorityvote
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,21 +36,11 @@ process GTDBTK_GTDBTONCBIMAJORITYVOTE {
         ${ar53} \\
         --output_file ${prefix}.ncbi.tsv \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gtdb_to_ncbi_majority_vote.py: \$(echo \$(gtdb_to_ncbi_majority_vote.py -v 2>/dev/null) | grep -o -E "[0-9]+(\\.[0-9]+)+" | head -n 1)
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch gtdbtk.${prefix}.ncbi.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gtdb_to_ncbi_majority_vote.py: \$(echo \$(gtdb_to_ncbi_majority_vote.py -v 2>/dev/null) | grep -o -E "[0-9]+(\\.[0-9]+)+" | head -n 1)
-    END_VERSIONS
     """
 }
