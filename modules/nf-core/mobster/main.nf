@@ -17,7 +17,7 @@ process MOBSTER {
     tuple val(meta), path("*_mobster_report.rds")     , emit: mobster_report_rds
     tuple val(meta), path("*_mobster_report.pdf")     , emit: mobster_report_pdf
     tuple val(meta), path("*_mobster_report.png")     , emit: mobster_report_png
-    path "versions.yml"                               , emit: versions
+    path "versions.yml"                               , emit: versions              , topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,11 +38,11 @@ process MOBSTER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        CNAqc: \$(Rscript -e 'library(CNAqc); sessionInfo()\$otherPkgs\$CNAqc\$Version')
-        mobster: \$(Rscript -e 'library(mobster); sessionInfo()\$otherPkgs\$mobster\$Version')
-        cli: \$(Rscript -e 'library(cli); sessionInfo()\$otherPkgs\$cli\$Version')
-        dplyr: \$(Rscript -e 'library(dplyr); sessionInfo()\$otherPkgs\$dplyr\$Version')
-        ggplot2: \$(Rscript -e 'library(ggplot2); sessionInfo()\$otherPkgs\$ggplot2\$Version')
+        CNAqc: \$(Rscript -e "library(CNAqc); cat(as.character(packageVersion('CNAqc')))")
+        mobster: \$(Rscript -e "library(mobster); cat(as.character(packageVersion('mobster')))")
+        cli: \$(Rscript -e "library(cli); cat(as.character(packageVersion('cli')))")
+        dplyr: \$(Rscript -e "library(dplyr); cat(as.character(packageVersion('dplyr')))")
+        ggplot2: \$(Rscript -e "library(ggplot2); cat(as.character(packageVersion('ggplot2')))")
     END_VERSIONS
     """
 }
