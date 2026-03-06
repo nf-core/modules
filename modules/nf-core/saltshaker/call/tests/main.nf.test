@@ -1,0 +1,104 @@
+nextflow_process {
+
+    name "Test Process SALTSHAKER_CALL"
+    script "../main.nf"
+    process "SALTSHAKER_CALL"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "saltshaker"
+    tag "saltshaker/call"
+
+    test("call - tsv") {
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/saltshaker/test_mitosalt.breakpoint', checkIfExists: true),
+                ]
+
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/saltshaker/test_mitosalt.cluster', checkIfExists: true),
+                ]
+
+                input[2] = [
+                    [ id:'hg38' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/bacteroides_fragilis/genome/human_mt_rCRS.fasta', checkIfExists: true),
+                ]
+
+                input[3] = 15
+                input[4] = 0.01
+                input[5] = 16569
+                input[6] = 16081
+                input[7] = 407
+                input[8] = 5730
+                input[9] = 5763
+
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+
+    }
+
+    test("call - tsv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                // TODO nf-core: define inputs of the process here. Example:
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/saltshaker/test_mitosalt.breakpoint', checkIfExists: true),
+                ]
+
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/saltshaker/test_mitosalt.cluster', checkIfExists: true),
+                ]
+
+                input[2] = [
+                    [ id:'hg38' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/bacteroides_fragilis/genome/human_mt_rCRS.fasta', checkIfExists: true),
+                ]
+
+                input[3] = 15
+                input[4] = 0.01
+                input[5] = 16569
+                input[6] = 16081
+                input[7] = 407
+                input[8] = 5730
+                input[9] = 5763
+
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+
+    }
+
+}
