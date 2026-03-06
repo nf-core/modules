@@ -1,18 +1,14 @@
-// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
-// nf-core modules test saltshaker/classify
 nextflow_process {
 
-    name "Test Process SALTSHAKER_CLASSIFY"
+    name "Test Process SALTSHAKER_PLOT"
     script "../main.nf"
-    process "SALTSHAKER_CLASSIFY"
+    process "SALTSHAKER_PLOT"
     config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "saltshaker"
-    tag "saltshaker/classify"
-
-    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used
+    tag "saltshaker/plot"
 
     setup {
         run("SALTSHAKER_CALL") {
@@ -42,13 +38,11 @@ nextflow_process {
             input[8] = 5730
             input[9] = 5763
             """
+            }
         }
-        }
-    }
 
-    test("classify - vcf") {
-
-        when {
+        run("SALTSHAKER_CLASSIFY") {
+            script "../../classify/main.nf"
             process {
                 """
                 input[0] = SALTSHAKER_CALL.out.call
@@ -60,6 +54,18 @@ nextflow_process {
                 """
             }
         }
+    }
+
+
+    test("plot - png") {
+
+        when {
+            process {
+                """
+                input[0] = SALTSHAKER_CLASSIFY.out.classify
+                """
+            }
+        }
 
         then {
             assert process.success
@@ -67,25 +73,19 @@ nextflow_process {
                 { assert snapshot(
                     process.out,
                 ).match() }
-
             )
         }
 
     }
 
-    test("classify - vcf - stub") {
+    test("plot - png - stub") {
 
         options "-stub"
 
         when {
             process {
                 """
-                input[0] = SALTSHAKER_CALL.out.call
-                input[1] = 0.5
-                input[2] = 600
-                input[3] = 10
-                input[4] = 5
-                input[5] = 0.3
+                input[0] = SALTSHAKER_CLASSIFY.out.classify
                 """
             }
         }

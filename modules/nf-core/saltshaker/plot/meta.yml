@@ -1,0 +1,63 @@
+name: "saltshaker_plot"
+description: mtDNA deletion and duplication plotting downstream of mitosalt
+keywords:
+  - saltshaker
+  - mitosalt
+  - mtDNA
+  - structural-variant calling
+tools:
+  - "saltshaker":
+      description: "A Python package for classifying and visualizing mitochondrial structural variants from MitoSAlt pipeline output."
+      homepage: "https://github.com/aksenia/saltshaker"
+      documentation: "https://github.com/aksenia/saltshaker/tree/main/saltshaker/docs"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - classify:
+        type: file
+        description: classify metadata file from saltshaker_classify
+        pattern: "*_classify_metadata.tsv"
+        ontologies: []
+
+output:
+  plot:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*saltshaker.png":
+          type: file
+          description: png file with saltshaker plot
+          pattern: "*saltshaker.png"
+          ontologies: []
+  versions_saltshaker:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "saltshaker":
+          type: string
+          description: The name of the tool
+      - "1.0.0":
+          type: string
+          description: Hardcoded version of saltshaker used in the module
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - saltshaker:
+          type: string
+          description: The name of the tool
+      - 1.0.0:
+          type: string
+          description: Hardcoded version of saltshaker used in the module
+authors:
+  - "@ieduba"
+maintainers:
+  - "@ieduba"

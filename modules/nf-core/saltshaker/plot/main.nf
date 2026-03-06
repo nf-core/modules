@@ -1,4 +1,4 @@
-process SALTSHAKER_CLASSIFY {
+process SALTSHAKER_PLOT {
     tag "$meta.id"
     label 'process_single'
 
@@ -8,17 +8,10 @@ process SALTSHAKER_CLASSIFY {
         'community.wave.seqera.io/library/pip_saltshaker:e08e38a6d45f8f32' }"
 
     input:
-    tuple val(meta), path(call)
-    val dom_frac
-    val group_radius
-    val high_het
-    val mult_thresh
-    val noise_thresh
+    tuple val(meta), path(classify)
 
     output:
-    tuple val(meta), path("*_classify_metadata.tsv"), emit: classify
-    tuple val(meta), path("*_classify.txt")         , emit: txt
-    tuple val(meta), path("*saltshaker.vcf")        , emit: vcf
+    tuple val(meta), path("*saltshaker.png"), emit: plot
     tuple val("${task.process}"), val('saltshaker'), val("1.0.0"), topic: versions, emit: versions_saltshaker
 
     when:
@@ -29,15 +22,9 @@ process SALTSHAKER_CLASSIFY {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    saltshaker classify \\
+    saltshaker plot \\
         --prefix $prefix \\
         --input-dir . \\
-        --vcf \\
-        --dominant-fraction $dom_frac \\
-        --radius $group_radius \\
-        --high-het $high_het \\
-        --multiple-threshold $mult_thresh \\
-        --noise $noise_thresh \\
         $args
 
     """
@@ -49,8 +36,6 @@ process SALTSHAKER_CLASSIFY {
     """
     echo $args
 
-    touch ${prefix}.saltshaker.vcf
-    touch ${prefix}.saltshaker_classify.txt
-    touch ${prefix}.saltshaker_classify_metadata.tsv
+    touch ${prefix}.saltshaker.png
     """
 }
