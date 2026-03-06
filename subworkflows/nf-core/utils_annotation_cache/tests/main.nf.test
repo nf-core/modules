@@ -3,9 +3,10 @@ nextflow_workflow {
     name "Test Workflow UTILS_ANNOTATION_CACHE"
     script "../main.nf"
     workflow "UTILS_ANNOTATION_CACHE"
-    tag 'subworkflows'
-    tag 'utils_annotation_cache'
-    tag 'subworkflows/utils_annotation_cache'
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "utils_annotation_cache"
+    tag "subworkflows/utils_annotation_cache"
 
     test("ensemblvep 115_WBcel235 - snpeff WBcel235.99") {
 
