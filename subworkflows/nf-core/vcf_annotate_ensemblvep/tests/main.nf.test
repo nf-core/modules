@@ -60,7 +60,7 @@ nextflow_workflow {
                 vep_cache = channel.of([
                     [ id:'115_WBcel235' ],
                     file("${projectDir}")
-                ).collect()
+                ]).collect()
 
                 input[0] = channel.of([
                     [ id:'test'],
