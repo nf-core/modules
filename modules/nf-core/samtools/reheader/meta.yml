@@ -30,6 +30,11 @@ input:
         description: BAM/CRAM file to be reheaded
         pattern: "*.{bam,cram}"
         ontologies: []
+    - bai:
+        type: file
+        description: BAM/CRAM index file to be reheaded
+        pattern: "*.{bai,crai,csi}"
+        ontologies: []
 output:
   bam:
     - - meta:
