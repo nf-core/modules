@@ -2,7 +2,7 @@ process MCSTAGING_MACSIMA2MC {
     tag "$meta.id"
     label 'process_single'
 
-    container "ghcr.io/schapirolabor/macsima2mc:v1.2.13"
+    container "ghcr.io/schapirolabor/macsima2mc:v1.2.15"
 
     input:
     tuple val(meta), path(input_dir), val(output_dir)
