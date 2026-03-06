@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "vcf2zarr_convert"
 description: Convert VCF data to the VCF Zarr specification reliably, in
   parallel or distributed over a cluster
@@ -13,24 +12,21 @@ tools:
       documentation: "https://sgkit-dev.github.io/bio2zarr/"
       tool_dev_url: "https://github.com/sgkit-dev/bio2zarr"
       doi: "10.1101/2024.06.11.598241"
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: biotools:bio2zarr
-
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-
     - vcf:
         type: file
         description: Input VCF file
         pattern: "*.{vcf,vcf.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_3016"
-
 output:
   vcz:
     - - meta:
@@ -44,15 +40,27 @@ output:
           pattern: "*.{vcz}"
           ontologies:
             - edam: "http://edamontology.org/format_3915"
-
+  versions_vcf2zarr:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcf2zarr:
+          type: string
+          description: The name of the tool
+      - vcf2zarr --version |& sed -n "s/.* //p":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcf2zarr:
+          type: string
+          description: The name of the tool
+      - vcf2zarr --version |& sed -n "s/.* //p":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@camlloyd"
 maintainers:
