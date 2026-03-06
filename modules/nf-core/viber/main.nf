@@ -18,7 +18,7 @@ process VIBER {
     tuple val(meta), path("*_viber_report.rds")                  , emit: viber_report_rds
     tuple val(meta), path("*_viber_report.pdf")                  , emit: viber_report_pdf
     tuple val(meta), path("*_viber_report.png")                  , emit: viber_report_png
-    path "versions.yml"                                          , emit: versions
+    path "versions.yml"                                          , emit: versions                  , topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,10 +40,10 @@ process VIBER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        VIBER: \$(Rscript -e 'library(VIBER); sessionInfo()\$otherPkgs\$VIBER\$Version')
-        cli: \$(Rscript -e 'library(cli); sessionInfo()\$otherPkgs\$cli\$Version')
-        dplyr: \$(Rscript -e 'library(dplyr); sessionInfo()\$otherPkgs\$dplyr\$Version')
-        ggplot2: \$(Rscript -e 'library(ggplot2); sessionInfo()\$otherPkgs\$ggplot2\$Version')
+        VIBER: \$(Rscript -e "library(VIBER); cat(as.character(packageVersion('VIBER')))")
+        cli: \$(Rscript -e "library(cli); cat(as.character(packageVersion('cli')))")
+        dplyr: \$(Rscript -e "library(dplyr); cat(as.character(packageVersion('dplyr')))")
+        ggplot2: \$(Rscript -e "library(ggplot2); cat(as.character(packageVersion('ggplot2')))")
     END_VERSIONS
     """
 }
