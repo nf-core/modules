@@ -42,7 +42,6 @@ process MCSTAGING_MACSIMA2MC {
         error "macsima2mc module in conda does not exist. Please use Docker / Singularity / Podman instead."
     }
 
-    def VERSION = '1.2.13'
 
     """
     mkdir input_dir
