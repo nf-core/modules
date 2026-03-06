@@ -1,4 +1,4 @@
-FROM matlabruntime/r2023a/release/update5/300000000000000000
+FROM ghcr.io/qbic-pipelines/matlabruntime-base:1.0.0
 
 ARG MAT2JSON_VERSION="1.0.0"
 ARG MAT2JSON_URL="https://github.com/qbic-pipelines/mat2json/releases/download/v1.0.0/mat2json"
@@ -10,7 +10,7 @@ LABEL org.opencontainers.image.licenses="MIT"
 LABEL org.opencontainers.image.version="$MAT2JSON_VERSION"
 
 RUN mkdir -p /usr/bin/mlrtapp
-
+RUN apt -y update && apt -y install curl
 RUN curl -fsSL "$MAT2JSON_URL" -o /usr/bin/mlrtapp/mat2json \
     && echo "$MAT2JSON_SHA256  /usr/bin/mlrtapp/mat2json" | sha256sum -c
 
