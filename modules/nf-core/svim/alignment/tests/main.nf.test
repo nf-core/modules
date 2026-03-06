@@ -7,6 +7,7 @@ nextflow_process {
 
     tag "modules"
     tag "modules_nfcore"
+    tag "svim"
     tag "svim/alignment"
 
     test("homo_sapiens - [bam, bai], fasta") {
@@ -36,7 +37,8 @@ nextflow_process {
                             meta,
                             file(vcf).name
                         ]
-                    }
+                    },
+                    process.out.versions
                 ).match() }
             )
         }
