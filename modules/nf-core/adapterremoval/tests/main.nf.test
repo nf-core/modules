@@ -29,9 +29,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.singles_truncated,
-                    process.out.settings,
-                    process.out.versions
+                    process.out
                 ).match() },
             )
         }
@@ -61,9 +59,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.paired_truncated,
-                    process.out.settings,
-                    process.out.versions
+                    process.out
                 ).match() }
             )
         }
@@ -92,11 +88,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.paired_truncated,
-                    process.out.collapsed,
-                    file(process.out.collapsed_truncated[0][1]).name, // Check for present but is empty
-                    process.out.settings,
-                    process.out.versions
+                    process.out
                 ).match() }
             )
         }
@@ -126,9 +118,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.paired_truncated,
-                    process.out.settings,
-                    process.out.versions
+                    process.out
                 ).match() }
             )
         }
@@ -158,8 +148,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
+                    process.out
                 ).match() }
             )
         }
@@ -186,8 +175,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
+                    process.out
                 ).match() }
             )
         }
@@ -217,8 +205,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
+                    process.out
                 ).match() }
             )
         }

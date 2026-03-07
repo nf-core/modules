@@ -122,13 +122,27 @@ output:
           pattern: "*.settings"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # Textual format
+  versions_adapterremoval:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - adapterremoval:
+          type: string
+          description: The tool name
+      - AdapterRemoval --version 2>&1 | sed "s/ ver. //g":
+          type: eval
+          description: The expression to obtain the version of adapterremoval
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - adapterremoval:
+          type: string
+          description: The tool name
+      - AdapterRemoval --version 2>&1 | sed "s/.* //g":
+          type: eval
+          description: The expression to obtain the version of adapterremoval
 authors:
   - "@maxibor"
   - "@jfy133"
