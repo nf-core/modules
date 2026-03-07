@@ -43,7 +43,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - out_dir:
+      - ${output_dir}/*:
           type: directory
           description: |
             Output directory containing subdirectories per well-rack-roi-exp combination.
