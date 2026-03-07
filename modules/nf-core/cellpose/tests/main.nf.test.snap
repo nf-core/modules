@@ -1,27 +1,49 @@
 {
-    "flows": {
+    "mask_files": {
         "content": [
             [
-                
+                "cycif_tonsil_registered.ome_cp_masks.tif",
+                "cycif_tonsil_registered.ome_dP_cp_masks.tif",
+                "cycif_tonsil_registered.ome_flows_cp_masks.tif"
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-07-04T13:21:35.054592365"
+        "timestamp": "2026-03-06T17:10:18.771259168"
     },
     "versions": {
         "content": [
-            [
-                "versions.yml:md5,398393e73a80fc622873765256d5ec79"
-            ]
+            {
+                "versions_cellpose": [
+                    [
+                        "CELLPOSE",
+                        "cellpose",
+                        "4.0.9"
+                    ]
+                ],
+                "versions_python": [
+                    [
+                        "CELLPOSE",
+                        "python",
+                        "3.12.12"
+                    ]
+                ],
+                "versions_torch": [
+                    [
+                        "CELLPOSE",
+                        "torch",
+                        "2.10.0"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-07-04T13:21:35.145644688"
+        "timestamp": "2026-03-06T15:04:19.24771681"
     },
     "cellpose - stub": {
         "content": [
@@ -38,7 +60,31 @@
                     
                 ],
                 "2": [
-                    "versions.yml:md5,398393e73a80fc622873765256d5ec79"
+                    
+                ],
+                "3": [
+                    [
+                        "CELLPOSE",
+                        "cellpose",
+                        "4.0.9"
+                    ]
+                ],
+                "4": [
+                    [
+                        "CELLPOSE",
+                        "python",
+                        "3.12.12"
+                    ]
+                ],
+                "5": [
+                    [
+                        "CELLPOSE",
+                        "torch",
+                        "2.10.0"
+                    ]
+                ],
+                "cells": [
+                    
                 ],
                 "flows": [
                     
@@ -51,32 +97,33 @@
                         "cycif_tonsil_registered.ome_cp_masks.tif:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,398393e73a80fc622873765256d5ec79"
+                "versions_cellpose": [
+                    [
+                        "CELLPOSE",
+                        "cellpose",
+                        "4.0.9"
+                    ]
+                ],
+                "versions_python": [
+                    [
+                        "CELLPOSE",
+                        "python",
+                        "3.12.12"
+                    ]
+                ],
+                "versions_torch": [
+                    [
+                        "CELLPOSE",
+                        "torch",
+                        "2.10.0"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-07-04T13:21:52.227498747"
-    },
-    "mask": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "cycif_tonsil_registered.ome_cp_masks.tif:md5,b151d6718fcb770b2fa3989da632d96e"
-                ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-07-04T13:21:34.95450341"
+        "timestamp": "2026-03-06T15:04:30.54054683"
     }
 }

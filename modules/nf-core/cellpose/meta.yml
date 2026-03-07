@@ -1,9 +1,11 @@
 name: "cellpose"
-description: cellpose segments cells in images
+description: cellpose segments cells in images using GPU-accelerated deep learning
 keywords:
   - segmentation
   - image
   - cellpose
+  - gpu
+  - spatial-transcriptomics
 tools:
   - "cellpose":
       description: "cellpose is an anatomical segmentation algorithm written in Python
@@ -22,13 +24,16 @@ input:
           (sample id)
     - image:
         type: file
-        description: tif file for ready for segmentation
+        description: tif file ready for segmentation
         pattern: "*.{tif,tiff}"
         ontologies: []
   - model:
       type: file
-      description: Optional input file. Cellpose 2 model trained by user using human-in-the-loop
-        approach.
+      description: |
+        Optional custom cellpose model file. When provided, passed as
+        --pretrained_model to cellpose. Pass [] (empty list) to use the
+        default model (cpsam in cellpose 4).
+      pattern: "*"
       ontologies: []
 output:
   mask:
@@ -37,10 +42,10 @@ output:
           description: |
             Groovy Map containing sample information
             [sample id]
-      - "*masks.tif":
+      - "${prefix}/*masks.tif":
           type: file
           description: labelled mask output from cellpose in tif format
-          pattern: "*.{tif, tiff}"
+          pattern: "${prefix}/*masks.tif"
           ontologies: []
   flows:
     - - meta:
@@ -48,21 +53,105 @@ output:
           description: |
             Groovy Map containing sample information
             [sample id]
-      - "*flows.tif":
+      - "${prefix}/*flows.tif":
           type: file
           description: cell flow output from cellpose
-          pattern: "*.{tif}"
+          pattern: "${prefix}/*flows.tif"
           ontologies: []
+  cells:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            [sample id]
+      - "${prefix}/*seg.npy":
+          type: file
+          description: numpy array with cell segmentation data
+          pattern: "${prefix}/*seg.npy"
+          ontologies: []
+  versions_cellpose:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellpose:
+          type: string
+          description: The name of the tool
+      - "pip show cellpose | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - "python --version | sed 's/Python //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_torch:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - torch:
+          type: string
+          description: The name of the tool
+      - "pip show torch | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellpose:
+          type: string
+          description: The name of the tool
+      - "pip show cellpose | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - "python --version | sed 's/Python //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - torch:
+          type: string
+          description: The name of the tool
+      - "pip show torch | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+notes: |
+  When `accelerator` is set (e.g. `accelerator = 1`), the module
+  automatically passes `--use_gpu` to cellpose. The container (built via Seqera
+  Containers) includes PyTorch 2.10.0 with CUDA 12.8 and falls back to CPU
+  automatically when no GPU is available. Use the `process_gpu` label to request
+  GPU resources from your executor. When running with conda/mamba, GPU support
+  depends on having a CUDA-enabled PyTorch installation in your environment.
+
+  Model selection via the model input channel:
+    - Custom model file: file("/path/to/model")
+    - Default (cpsam):   []
+
+  Additional cellpose CLI arguments can be passed via `task.ext.args`:
+    ext.args = '--diameter 30 --flow_threshold 0.4 --cellprob_threshold 0'
+
+  Deprecated in cellpose 4.0.1+: `--chan`, `--chan2`, `--invert`, `--all_channels`,
+  `--diam_mean`, `--pretrained_model_ortho`. Do not pass these via ext.args.
+
+  Model weights are not bundled in the container. Cellpose downloads them on first
+  use to `$CELLPOSE_LOCAL_MODELS_PATH` (set to the work directory).
 authors:
   - "@josenimo"
   - "@FloWuenne"
+  - "@dongzehe"
 maintainers:
   - "@josenimo"
   - "@FloWuenne"
