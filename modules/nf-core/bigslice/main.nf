@@ -9,7 +9,7 @@ process BIGSLICE {
         'biocontainers/bigslice:2.0.2--pyh8ed023e_0' }"
 
     input:
-    tuple val(meta), path(bgc)
+    tuple val(meta), path(bgc, stageAs: 'bgc_files/*')
     path(hmmdb)
 
     output:
@@ -23,11 +23,20 @@ process BIGSLICE {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def sample = meta.id
     """
+    mkdir -p input/dataset/${sample} input/taxonomy
+    cp bgc_files/* input/dataset/${sample}/
+
+    printf "# dataset_name\\tdataset_path\\ttaxonomy_path\\tdescription\\n" > input/datasets.tsv
+    printf "dataset\\tdataset\\ttaxonomy/taxonomy.tsv\\tBGC dataset\\n" >> input/datasets.tsv
+
+    touch input/taxonomy/taxonomy.tsv
+
     bigslice \\
         $args \\
         --num_threads ${task.cpus} \\
-        -i ${bgc} \\
+        -i input \\
         --program_db_folder ${hmmdb} \\
         ${prefix}
     """
