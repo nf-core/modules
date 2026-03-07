@@ -4,11 +4,11 @@ nextflow_process {
     config "./nextflow.config"
     script "../main.nf"
     process "BIOHANSEL"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "biohansel"
-   
+
     test("test_biohansel_paired_end") {
         when {
             params {
@@ -43,7 +43,7 @@ nextflow_process {
             params {
                 module_args = "--scheme typhi"
             }
-            
+
             process {
                 """
                 input[0] = [
@@ -71,7 +71,7 @@ nextflow_process {
             params {
                 module_args = "--scheme typhi"
             }
-            
+
             process {
                 """
                 input[0] = [
@@ -89,8 +89,8 @@ nextflow_process {
                     process.out.versions,
                     process.out.simple_summary.collect{ [it[0], path(it[1]).readLines()[0]] },
                     process.out.kmer_results.collect{ [it[0], path(it[1]).readLines()[0]] },
-                    process.out.summary.collect{ [it[0], path(it[1]).readLines().collect { line -> 
-                        line.replaceAll(/[^\t]*\/genome\.fasta\.gz/, 'genome.fasta.gz') 
+                    process.out.summary.collect{ [it[0], path(it[1]).readLines().collect { line ->
+                        line.replaceAll(/[^\t]*\/genome\.fasta\.gz/, 'genome.fasta.gz')
                     }] }
                 ).match() }
             )
@@ -105,7 +105,7 @@ nextflow_process {
             params {
                 module_args = "--scheme typhi"
             }
-            
+
             process {
                 """
                 input[0] = [

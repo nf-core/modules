@@ -14,41 +14,49 @@ tools:
       homepage: "https://github.com/andrewSharo/StrVCTVRE/tree/master"
       documentation: "https://github.com/andrewSharo/StrVCTVRE/tree/master"
       tool_dev_url: "https://github.com/andrewSharo/StrVCTVRE/tree/master"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:strvctvre
-
 input:
   - - meta:
         type: map
         description: Groovy Map containing sample information. e.g. `[
           id:'sample1' ]`
-    - sv_file: 
+    - sv_file:
         type: file
         description: Structural variants file in VCF or BED format
         pattern: "*.{vcf,bed}"
+        ontologies: []
     - sv_file_index:
         type: file
         description: Index file for the structural variants file VCF file
         pattern: "*.tbi"
+        ontologies: []
     - assembly:
         type: string
-        description: Genome assembly version, has to be one of 'GRCh38' or 'GRCh37'
-        enum: [ 'GRCh38', 'GRCh37' ]
+        description: Genome assembly version, has to be one of 'GRCh38' or
+          'GRCh37'
+        enum:
+          - "GRCh38"
+          - "GRCh37"
   - - meta2:
         type: map
         description: Groovy Map containing sample information. e.g. `[
           id:'sample1' ]`
     - phylop:
         type: file
-        description: PhyloP bigWig file (fetched from https://hgdownload.cse.ucsc.edu/goldenpath/hg38/phyloP100way/)
+        description: PhyloP bigWig file (fetched from
+          https://hgdownload.cse.ucsc.edu/goldenpath/hg38/phyloP100way/)
         pattern: "*.bw"
+        ontologies: []
   - - meta3:
         type: map
         description: Groovy Map containing sample information. e.g. `[
           id:'sample1' ]`
     - data_directory:
         type: directory
-        description: Directory containing the StrVCTVRE data files (fetched from https://github.com/andrewSharo/StrVCTVRE/tree/master/data)
+        description: Directory containing the StrVCTVRE data files (fetched from
+          https://github.com/andrewSharo/StrVCTVRE/tree/master/data)
 output:
   vcf:
     - - meta:
@@ -59,6 +67,7 @@ output:
           type: file
           description: Structural variants file in VCF format
           pattern: "*.vcf"
+          ontologies: []
   bed:
     - - meta:
           type: map
@@ -68,13 +77,28 @@ output:
           type: file
           description: Structural variants file in BED format
           pattern: "*.bed"
+          ontologies: []
+  versions_strvctvre:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - strvctvre:
+          type: string
+          description: The name of the tool
+      - "StrVCTVRE.py --help |& sed -n 's/StrVCTVRE: version *//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: versions.yml
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - strvctvre:
+          type: string
+          description: The name of the tool
+      - "StrVCTVRE.py --help |& sed -n 's/StrVCTVRE: version *//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

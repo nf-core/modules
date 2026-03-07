@@ -1,0 +1,104 @@
+name: "kmergenie"
+description: KmerGenie estimates the best k-mer length for genome de novo
+  assembly
+keywords:
+  - k-mer
+  - count
+  - genome assembly
+tools:
+  - "kmergenie":
+      description: "KmerGenie estimates the best k-mer length for genome de novo assembly.
+        Given a set of reads, KmerGenie first computes the k-mer abundance histogram
+        for many values of k. Then, for each value of k, it predicts the number of distinct
+        genomic k-mers in the dataset, and returns the k-mer length which maximizes
+        this number."
+      homepage: "http://kmergenie.bx.psu.edu/"
+      documentation: "http://kmergenie.bx.psu.edu/"
+      tool_dev_url: "https://github.com/movingpictures83/KMerGenie"
+      doi: "10.1093/bioinformatics/btt310"
+      licence:
+        - "MIT License"
+      identifier: biotools:kmergenie
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: Input reads in FastQ format
+        pattern: "*.{fastq.gz, fastq, fq.gz, fq}"
+        ontologies: []
+output:
+  html:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_report.html":
+          type: file
+          description: html file containing all the plotted histograms obtained
+            from different kmer size
+          pattern: "*_report.html"
+          ontologies: []
+  histo:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.histo":
+          type: file
+          description: histogram files (text) obtained from individual kmer sizes
+          pattern: "*.histo"
+          ontologies: []
+  dat:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.dat":
+          type: file
+          description: text file containing number of kmer for kmer sizes and
+            recommended coverage cut-off
+          pattern: "*.dat"
+          ontologies: []
+  pdf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pdf":
+          type: file
+          description: histogram plots obtained from individual kmer sizes
+          pattern: "*.pdf"
+          ontologies: []
+  versions_kmergenie:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kmergenie:
+          type: string
+          description: The name of the tool
+      - kmergenie --version |& sed "1!d ; s/KmerGenie //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kmergenie:
+          type: string
+          description: The name of the tool
+      - kmergenie --version |& sed "1!d ; s/KmerGenie //":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@LiaOb21"
+maintainers:
+  - "@LiaOb21"

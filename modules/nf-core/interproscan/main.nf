@@ -1,7 +1,7 @@
 process INTERPROSCAN {
     tag "$meta.id"
-    label 'process_medium'
-    label 'process_long'
+    // will throw NullPointer exceptions and crush with more than 1 cpu
+    label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -17,17 +17,21 @@ process INTERPROSCAN {
     tuple val(meta), path('*.xml') , optional: true, emit: xml
     tuple val(meta), path('*.gff3'), optional: true, emit: gff3
     tuple val(meta), path('*.json'), optional: true, emit: json
-    path "versions.yml"            , emit: versions
+    tuple val("${task.process}"), val("interproscan"), eval('interproscan.sh --version | sed "1!d; s/.*version //"'), topic: versions, emit: versions_interproscan
+
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def is_compressed = fasta.name.endsWith(".gz")
-    def fasta_name = fasta.name.replace(".gz", "")
+    def args             = task.ext.args ?: ''
+    def prefix           = task.ext.prefix ?: "${meta.id}"
+    def is_compressed    = fasta.getExtension() == "gz"
+    def fasta_name       = is_compressed ? fasta.getBaseName() : fasta
+    def uncompress_input = is_compressed ? "gzip -c -d ${fasta} > ${fasta_name}" : ''
     """
+    $uncompress_input
+
     if [ -d 'data' ]; then
         # Find interproscan.properties to link data/ from work directory
         INTERPROSCAN_DIR="\$( dirname "\$( dirname "\$( which interproscan.sh )" )" )"
@@ -37,30 +41,19 @@ process INTERPROSCAN {
         export INTERPROSCAN_CONF=interproscan.properties
     fi # else use sample DB included with conda ( testing only! )
 
-    if ${is_compressed} ; then
-        gzip -c -d ${fasta} > ${fasta_name}
-    fi
-
     interproscan.sh \\
         --cpu ${task.cpus} \\
         --input ${fasta_name} \\
         ${args} \\
         --output-file-base ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        interproscan: \$( interproscan.sh --version | sed '1!d; s/.*version //' )
-    END_VERSIONS
     """
 
     stub:
+    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.{tsv,xml,json,gff3}
+    echo ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        interproscan: \$( interproscan.sh --version | sed '1!d; s/.*version //' )
-    END_VERSIONS
+    touch ${prefix}.{tsv,xml,json,gff3}
     """
 }

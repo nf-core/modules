@@ -5,7 +5,7 @@ process PARABRICKS_DBSNP {
     // needed by the module to work properly can be removed when fixed upstream - see: https://github.com/nf-core/modules/issues/7226
     stageInMode 'copy'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.5.1-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-1"
 
     input:
     tuple val(meta), path(vcf_file), path(dbsnp_file), path(tabix_file)
@@ -13,7 +13,7 @@ process PARABRICKS_DBSNP {
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
     path "compatible_versions.yml", emit: compatible_versions, optional: true
-    path "versions.yml",            emit: versions
+    tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions_parabricks
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,11 +34,6 @@ process PARABRICKS_DBSNP {
         --out-vcf ${prefix}.vcf \\
         ${num_gpus} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 
     stub:
@@ -56,10 +51,5 @@ process PARABRICKS_DBSNP {
         compatible_with:
         \$(echo "\$pbrun_version_output" | awk '/Compatible With:/,/^---/{ if (\$1 ~ /^[A-Z]/ && \$1 != "Compatible" && \$1 != "---") { printf "  %s: %s\\n", \$1, \$2 } }')
     EOF
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 }

@@ -40,7 +40,7 @@ process SEQKIT_SANA {
     extension = reads.getName() - reads.getSimpleName()
     """
     echo $args
-    
+
     # Create empty output files conditionally based on extension
     if [[ "${extension}" == *.gz ]]; then
         echo -n | gzip -c > ${prefix}${extension}

@@ -5,8 +5,8 @@ process SENTIEON_WGSMETRICS {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f1dfe59ef66d7326b43db9ab1f39ce6220b358a311078c949a208f9c9815d4e/data'
-        : 'community.wave.seqera.io/library/sentieon:202503.01--1863def31ed8e4d5'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/73e9111552beb76e2ad3ad89eb75bed162d7c5b85b2433723ecb4fc96a02674a/data'
+        : 'community.wave.seqera.io/library/sentieon:202503.02--def60555294d04fa'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -16,7 +16,7 @@ process SENTIEON_WGSMETRICS {
 
     output:
     tuple val(meta), path('*.txt'), emit: wgs_metrics
-    path "versions.yml",            emit: versions
+    tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,7 +25,7 @@ process SENTIEON_WGSMETRICS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def interval = intervals_list ? "--interval ${intervals_list}" : ""
-    def input = bam.sort().collect { "-i ${it}" }.join(' ')
+    def input = bam.sort().collect {in -> "-i ${in}" }.join(' ')
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64
         ? "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; "
         : ""
@@ -41,21 +41,11 @@ process SENTIEON_WGSMETRICS {
         ${args} \\
         --algo WgsMetricsAlgo \\
         ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 }

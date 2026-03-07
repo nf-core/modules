@@ -49,10 +49,7 @@ process MEGAHIT {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def reads_command = meta.single_end || !reads2 ? "-r ${reads1}" : "-1 ${reads1.join(',')} -2 ${reads2.join(',')}"
     """
     mkdir -p intermediate_contigs
     echo "" | gzip > ${prefix}.contigs.fa.gz

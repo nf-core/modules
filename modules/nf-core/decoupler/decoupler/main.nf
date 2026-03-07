@@ -1,4 +1,4 @@
-process DECOUPLER {
+process DECOUPLER_DECOUPLER {
     tag "$meta.id"
     label 'process_medium'
     conda "${moduleDir}/environment.yml"

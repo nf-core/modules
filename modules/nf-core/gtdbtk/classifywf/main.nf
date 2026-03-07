@@ -3,15 +3,14 @@ process GTDBTK_CLASSIFYWF {
     label 'process_high_memory'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gtdbtk:2.5.2--pyh1f0d9b5_0':
-        'biocontainers/gtdbtk:2.5.2--pyh1f0d9b5_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c2/c2df03eec9c0805810e0ef6caec4347d7c6545eece61e941018945502fafc9b6/data'
+        : 'community.wave.seqera.io/library/gtdbtk_python:cee0379cf1ca2968'}"
 
     input:
     tuple val(meta)   , path("bins/*")
     tuple val(db_name), path(db)
     val use_pplacer_scratch_dir
-    path mash_db
 
     output:
     tuple val(meta), path("${prefix}")                               , emit: gtdb_outdir
@@ -24,7 +23,8 @@ process GTDBTK_CLASSIFYWF {
     tuple val(meta), path("${prefix}/identify/*.failed_genomes.tsv") , emit: failed     , optional: true
     tuple val(meta), path("${prefix}/${prefix}.log")                 , emit: log
     tuple val(meta), path("${prefix}/${prefix}.warnings.log")        , emit: warnings
-    path ("versions.yml")                                            , emit: versions
+    tuple val("${task.process}"), val('gtdbtk'), eval("gtdbtk --version 2>&1 | grep -Eo '[0-9]+(\\.[0-9]+)+' | head -1") , topic: versions, emit: versions_gtdbtk
+    tuple val("${task.process}"), val('gtdb_db'), eval('grep VERSION_DATA $GTDBTK_DATA_PATH/metadata/metadata.txt | sed "s/VERSION_DATA=//"'), topic: versions, emit: versions_gtdbtk_db
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,7 +33,6 @@ process GTDBTK_CLASSIFYWF {
     def args            = task.ext.args ?: ''
     prefix              = task.ext.prefix ?: "${meta.id}"
     def pplacer_scratch = use_pplacer_scratch_dir ? "--scratch_dir pplacer_tmp" : ""
-    def mash_mode       = mash_db ? "--mash_db ${mash_db}" : "--skip_ani_screen"
     """
     export GTDBTK_DATA_PATH="\$(find -L ${db} -name 'metadata' -type d -exec dirname {} \\;)"
 
@@ -47,17 +46,10 @@ process GTDBTK_CLASSIFYWF {
         --prefix "${prefix}" \\
         --out_dir ${prefix} \\
         --cpus ${task.cpus} \\
-        ${mash_mode} \\
         ${pplacer_scratch}
 
     mv ${prefix}/gtdbtk.log "${prefix}/${prefix}.log"
     mv ${prefix}/gtdbtk.warnings.log "${prefix}/${prefix}.warnings.log"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gtdbtk: \$(echo \$(gtdbtk --version 2>/dev/null) | sed "s/gtdbtk: version //; s/ Copyright.*//")
-        gtdb_db: \$(grep VERSION_DATA \$GTDBTK_DATA_PATH/metadata/metadata.txt | sed "s/VERSION_DATA=//")
-    END_VERSIONS
     """
 
     stub:
@@ -84,10 +76,5 @@ process GTDBTK_CLASSIFYWF {
     touch ${prefix}/${prefix}.log
     touch ${prefix}/${prefix}.warnings.log
     touch ${prefix}/${prefix}.failed_genomes.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gtdbtk: \$(echo \$(gtdbtk --version 2>/dev/null) | sed "s/gtdbtk: version //; s/ Copyright.*//")
-    END_VERSIONS
     """
 }

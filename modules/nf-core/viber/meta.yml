@@ -1,0 +1,126 @@
+name: viber
+description: Multisample subclonal deconvolution of cancer genome sequencing data.
+keywords:
+  - subclonal deconvolution
+  - genomics
+  - cancer evolution
+tools:
+  - "viber":
+      description: |
+        VIBER is a package that implements a variational Bayesian model to fit multi-variate Binomial mixtures.
+        The statistical model is semi-parametric and fit by a variational mean-field approximation to the model posterior.
+        The components are Binomial distributions which can model count data;
+        these can be used to model sequencing counts in the context of cancer, for instance.
+        The package implements methods to fit and visualize clustering results.
+      homepage: "https://caravagnalab.github.io/VIBER/"
+      documentation: "https://caravagnalab.github.io/VIBER/"
+      tool_dev_url: "https://github.com/caravagnalab/VIBER/"
+      doi: "10.1038/s41588-020-0675-5"
+      licence: ["GPL v3-or-later"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1']`
+    - rds_join:
+        type: file
+        description: Either a .rds object of class mCNAqc or a .csv mutations table
+        pattern: "*.{rds,csv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3752" # csv
+    - tumour_samples:
+        type: list
+        description: List of tumour sample identifiers for a specific patient
+output:
+  viber_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_viber_best_fit.rds":
+          type: file
+          description: Best viber fit as an .rds object
+          pattern: "*_viber_best_fit.rds"
+          ontologies: []
+  viber_heuristic_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_viber_best_heuristic_fit.rds":
+          type: file
+          description: Cluster-filtering heuristics viber fit as an .rds object
+          pattern: "*_viber_best_heuristic_fit.rds"
+          ontologies: []
+  viber_plots_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_viber_best_fit_plots.rds":
+          type: file
+          description: best fit plot
+          pattern: "_viber_best_fit_plots.rds"
+          ontologies: []
+  viber_heuristic_plots_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_viber_best_heuristic_fit_plots.rds":
+          type: file
+          description: heuristics fit plot
+          pattern: "*_viber_best_heuristic_fit_plots.rds"
+          ontologies: []
+  viber_report_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_viber_report.rds":
+          type: file
+          description: final report plots as a .pdf file
+          pattern: "*_viber_report.rds"
+          ontologies: []
+  viber_report_pdf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_viber_report.pdf":
+          type: file
+          description: final report plots as a .pdf file
+          pattern: "*_viber_report.pdf"
+          ontologies: []
+  viber_report_png:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_viber_report.png":
+          type: file
+          description: final report plots as a .png file
+          pattern: "*_viber_report.png"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@giorgiagandolfi"
+maintainers:
+  - "@giorgiagandolfi"

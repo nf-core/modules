@@ -14,6 +14,12 @@ nextflow_process {
     test("conservative indel model - variant") {
 
         when {
+            params {
+                module_args = ''
+                module_args2 = ''
+                module_args3 = ''
+                module_prefix = ''
+            }
             process {
                 """
                 input[0] = [
@@ -39,7 +45,7 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.summary,
                     file(process.out.vcf_tbi[0][1]).name,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -49,6 +55,12 @@ nextflow_process {
     test("conservative indel model - all") {
 
         when {
+            params {
+                module_args = ''
+                module_args2 = ''
+                module_args3 = ''
+                module_prefix = ''
+            }
             process {
                 """
                 input[0] = [
@@ -74,8 +86,7 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.summary,
                     file(process.out.vcf_tbi[0][1]).name,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -85,6 +96,12 @@ nextflow_process {
     test("hostile indel model - confident") {
 
         when {
+            params {
+                module_args = ''
+                module_args2 = ''
+                module_args3 = ''
+                module_prefix = ''
+            }
             process {
                 """
                 input[0] = [
@@ -110,8 +127,7 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.summary,
                     file(process.out.vcf_tbi[0][1]).name,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -121,6 +137,12 @@ nextflow_process {
     test("conversative indel model - variant - stub") {
         options '-stub'
         when {
+            params {
+                module_args = ''
+                module_args2 = ''
+                module_args3 = ''
+                module_prefix = ''
+            }
             process {
                 """
                 input[0] = [
@@ -145,7 +167,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )

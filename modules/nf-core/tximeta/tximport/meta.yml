@@ -7,6 +7,7 @@ keywords:
   - gene
   - kallisto
   - pseudoalignment
+  - rsem
   - salmon
   - transcript
 tools:
@@ -25,7 +26,11 @@ input:
         description: |
           Groovy Map containing information related to the experiment as a whole
           e.g. `[ id:'SRP123456' ]`
-    - quants/*: {}
+    - "quants/*":
+        type: file
+        description: |
+          Quantification files
+
   - - meta2:
         type: map
         description: |
@@ -40,7 +45,7 @@ input:
           - edam: http://edamontology.org/format_3475 # TSV
   - quant_type:
       type: string
-      description: Quantification type, 'kallisto' or 'salmon'
+      description: Quantification type, `kallisto`, `salmon`, or `rsem`
 output:
   tpm_gene:
     - - meta:

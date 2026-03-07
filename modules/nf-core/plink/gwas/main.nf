@@ -29,7 +29,6 @@ process PLINK_GWAS {
     // define input string based on provided input files
     // in hierarchical order
     def input_command = ""
-    def outmeta = ""
     if (bed){
         input_command = "--bed ${bed} --bim ${bim} --fam ${fam}"
         prefix = task.ext.prefix ?: "${meta.id}"
@@ -60,12 +59,10 @@ process PLINK_GWAS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = ""
     // define input string based on provided input files
     // in hierarchical order
     def input_command = ""
-    def outmeta = ""
     if (bed){
         input_command = "--bed ${bed} --bim ${bim} --fam ${fam}"
         prefix = task.ext.prefix ?: "${meta.id}"

@@ -1,15 +1,15 @@
 name: hmmcopy_generatemap
-description: Perl script (generateMap.pl) generates the mappability of a genome given
-  a certain size of reads, for input to hmmcopy mapcounter. Takes a very long time
-  on large genomes, is not parallelised at all.
+description: Perl script (generateMap.pl) generates the mappability of a genome
+  given a certain size of reads, for input to hmmcopy mapcounter. Takes a very
+  long time on large genomes, is not parallelised at all.
 keywords:
   - hmmcopy
   - mapcounter
   - mappability
 tools:
   - hmmcopy:
-      description: C++ based programs for analyzing BAM files and preparing read counts
-        -- used with bioconductor-hmmcopy
+      description: C++ based programs for analyzing BAM files and preparing read
+        counts -- used with bioconductor-hmmcopy
       homepage: https://github.com/shahcompbio/hmmcopy_utils
       documentation: https://github.com/shahcompbio/hmmcopy_utils
       tool_dev_url: https://github.com/shahcompbio/hmmcopy_utils
@@ -37,13 +37,29 @@ output:
           description: bigwig file containing the mappability of the genome
           pattern: "*.bw"
           ontologies: []
+  versions_hmmcopy:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hmmcopy:
+          type: string
+          description: The name of the tool
+      - echo 0.1.1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hmmcopy:
+          type: string
+          description: The name of the tool
+      - echo 0.1.1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@sppearce"
   - "@adamrtalbot"

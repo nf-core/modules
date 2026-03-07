@@ -45,13 +45,6 @@ input:
   - use_pplacer_scratch_dir:
       type: boolean
       description: Set to true to reduce pplacer memory usage by writing to disk (slower)
-  - mash_db:
-      type: file
-      description: The local copy of the Mash sketch database used by GTDB-tk if `ani_screen`
-        mode is used (optional)
-      pattern: "*.msh"
-      ontologies:
-        - edam: http://edamontology.org/format_3911 # msh
 output:
   gtdb_outdir:
     - - meta:
@@ -184,13 +177,46 @@ output:
           pattern: "*.{warnings.log}"
           ontologies:
             - edam: http://edamontology.org/data_3671 # Text
+  versions_gtdbtk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gtdbtk:
+          type: string
+          description: The name of the tool
+      - "gtdbtk --version 2>&1 | grep -Eo '[0-9]+(\\.[0-9]+)+' | head -1":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_gtdbtk_db:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gtdb_db:
+          type: string
+          description: The name of the database
+      - 'grep VERSION_DATA $GTDBTK_DATA_PATH/metadata/metadata.txt | sed "s/VERSION_DATA=//"':
+          type: eval
+          description: The expression to obtain the version of the database
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gtdbtk:
+          type: string
+          description: The name of the tool
+      - "gtdbtk --version 2>&1 | grep -Eo '[0-9]+(\\.[0-9]+)+' | head -1":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gtdb_db:
+          type: string
+          description: The name of the database
+      - 'grep VERSION_DATA $GTDBTK_DATA_PATH/metadata/metadata.txt | sed "s/VERSION_DATA=//"':
+          type: eval
+          description: The expression to obtain the version of the database
 authors:
   - "@skrakau"
   - "@prototaxites"

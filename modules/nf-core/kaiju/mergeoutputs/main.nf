@@ -22,7 +22,7 @@ process KAIJU_MERGEOUTPUTS {
     def args    = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
     def dbnodes = db ? '-t <(find -L ${db} -name "*nodes.dmp")' : ''
-    script:
+
     if ("$kaiju" == "${prefix}.tsv") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     if ("$kraken" == "${prefix}.tsv") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
@@ -40,7 +40,6 @@ process KAIJU_MERGEOUTPUTS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv

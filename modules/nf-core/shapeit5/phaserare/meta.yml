@@ -14,9 +14,9 @@ tools:
       documentation: "https://odelaneau.github.io/shapeit5/docs/documentation"
       tool_dev_url: "https://github.com/odelaneau/shapeit5"
       doi: "10.1101/2022.10.19.512867 "
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:shapeit5
-requirement: AVX2
 input:
   - - meta:
         type: map
@@ -31,8 +31,8 @@ input:
         ontologies: []
     - input_index:
         type: file
-        description: Index file of the input_plain VCF/BCF file containing genotype
-          likelihoods.
+        description: Index file of the input_plain VCF/BCF file containing
+          genotype likelihoods.
         pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
         ontologies: []
     - pedigree:
@@ -47,11 +47,6 @@ input:
           Region to be considered in --input-plain (e.g. chr20:1000000-2000000 or chr20).
           For chrX, please treat PAR and non-PAR regions as different choromosome in order to avoid mixing ploidy.
         pattern: "chrXX:leftBufferPosition-rightBufferPosition"
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
     - scaffold:
         type: file
         description: Scaffold of haplotypes in VCF/BCF format.
@@ -67,14 +62,9 @@ input:
         description: |
           Region to be considered in --scaffold (e.g. chr20:1000000-2000000 or chr20).
         pattern: "chrXX:leftBufferPosition-rightBufferPosition"
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
     - map:
         type: file
-        description: File containing the genetic map.
+        description: File containing the genetic map in Glimpse format.
         pattern: "*.gmap"
         ontologies: []
 output:
@@ -89,14 +79,29 @@ output:
           description: Phased variants in VCF/BCF format.
           pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
           ontologies: []
+  versions_shapeit5:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - shapeit5:
+          type: string
+          description: The name of the tool
+      - 'SHAPEIT5_phase_rare | sed "5!d;s/^.*Version *: //; s/ .*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - shapeit5:
+          type: string
+          description: The name of the tool
+      - 'SHAPEIT5_phase_rare | sed "5!d;s/^.*Version *: //; s/ .*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@LouisLeNezet"
 maintainers:
   - "@LouisLeNezet"
+requirement: AVX2

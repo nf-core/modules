@@ -5,7 +5,7 @@ process PARABRICKS_APPLYBQSR {
     // needed by the module to work properly can be removed when fixed upstream - see: https://github.com/nf-core/modules/issues/7226
     stageInMode 'copy'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.5.1-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-1"
 
     input:
     tuple val(meta),  path(bam)
@@ -17,7 +17,7 @@ process PARABRICKS_APPLYBQSR {
     output:
     tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path("*.bai"), emit: bai
-    path "versions.yml",            emit: versions
+    tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions_parabricks
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,7 +29,7 @@ process PARABRICKS_APPLYBQSR {
     }
     def args             = task.ext.args    ?: ''
     def prefix           = task.ext.prefix  ?: "${meta.id}"
-    def interval_command = intervals        ? intervals.collect { "--interval-file ${it}" }.join(' ') : ""
+    def interval_command = intervals        ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : ""
     def num_gpus         = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
     """
     pbrun \\
@@ -42,11 +42,6 @@ process PARABRICKS_APPLYBQSR {
         --num-threads ${task.cpus} \\
         ${num_gpus} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 
     stub:
@@ -54,10 +49,5 @@ process PARABRICKS_APPLYBQSR {
     """
     touch ${prefix}.bam
     touch ${prefix}.bam.bai
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 }

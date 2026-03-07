@@ -1,0 +1,84 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "samtools_samples"
+description: |
+  Write sample names and path to reference genome of an alignment to a text file.
+keywords:
+  - samples
+  - bam
+  - cram
+  - genomics
+tools:
+  - samtools:
+      description: |
+        SAMtools is a set of utilities for interacting with and post-processing
+        short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
+        These files are generated as output by short read aligners like BWA.
+      homepage: http://www.htslib.org/
+      documentation: http://www.htslib.org/doc/samtools.html
+      doi: 10.1093/bioinformatics/btp352
+      licence: ["MIT"]
+      identifier: biotools:samtools
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: alignment file
+        pattern: "*.{bam,sam,cram}"
+        ontologies:
+          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_2573 # SAM
+          - edam: http://edamontology.org/format_3462 # CRAM
+    - bai:
+        type: file
+        description: index file for the alignment
+        pattern: "*.{bai,crai}"
+  - - meta2:
+        type: map
+        description: Groovy Map containing reference information.
+    - fasta:
+        type: file
+        description: reference genome file (optional)
+        pattern: "*.{fasta,fa,fna}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+    - fai:
+        type: file
+        description: index file for the reference genome (optional)
+        pattern: "*.fai"
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - "*.tsv":
+          type: file
+          description: tab-separated file containing sample names, BAM filename and optionally reference genome path
+          pattern: "*.tsv"
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
+authors:
+  - "@Schmytzi"
+maintainers:
+  - "@Schmytzi"

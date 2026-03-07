@@ -1,45 +1,69 @@
-include { BCFTOOLS_CONCAT    } from '../../../modules/nf-core/bcftools/concat/main'
-include { BCFTOOLS_SORT      } from '../../../modules/nf-core/bcftools/sort/main'
-include { TABIX_TABIX        } from '../../../modules/nf-core/tabix/tabix/main'
+include { BCFTOOLS_CONCAT } from '../../../modules/nf-core/bcftools/concat/main'
+include { BCFTOOLS_SORT   } from '../../../modules/nf-core/bcftools/sort/main'
+include { TABIX_TABIX     } from '../../../modules/nf-core/tabix/tabix/main'
 
 workflow VCF_GATHER_BCFTOOLS {
-
     take:
-    ch_vcfs             // channel: [ meta, vcf, tbi ]
-    ch_scatter_output   // channel: [ meta, bed, gather_count ] => output from the scatter subworkflow, if you didn't use this subworkflow you can just use `[]` as bed since it isn't used
-    val_common_meta     // string:  The name of the meta field that should become the new id
-    val_sort            // boolean: Whether or not the output file should be sorted !! Add the config when using sort !!
+    ch_vcfs           // channel: [ meta, vcf, index, count ]
+    arr_common_meta   // array: The name of the meta fields that should be used for grouping
+    val_sort          // boolean: Whether or not the output file should be sorted !! Add the config when using sort !!
 
     main:
 
-    ch_versions = Channel.empty()
-
-    ch_concat_input = ch_vcfs.join(ch_scatter_output)
-        .map{ meta, vcf, tbi, _bed, gather_count ->
-            meta = val_common_meta ? meta + [id:meta[val_common_meta]] : meta
-            [ groupKey(meta, gather_count), vcf, tbi ]
-        }.groupTuple()
-        .map { meta, vcf, tbi -> [meta.target, vcf, tbi] }
-
-    BCFTOOLS_CONCAT ( ch_concat_input )
-    ch_versions = ch_versions.mix(BCFTOOLS_CONCAT.out.versions)
-
-    if (val_sort) {
-        BCFTOOLS_SORT(BCFTOOLS_CONCAT.out.vcf)
-        ch_versions = ch_versions.mix(BCFTOOLS_SORT.out.versions)
-
-        ch_tabix_input = BCFTOOLS_SORT.out.vcf
-
-    } else {
-        ch_tabix_input = BCFTOOLS_CONCAT.out.vcf
+    // Check if arr_common_meta is an array or list
+    if (!(arr_common_meta instanceof List || arr_common_meta instanceof Collection)) {
+        error("ERROR: arr_common_meta should be an array or list, got ${arr_common_meta.getClass()}")
     }
 
-    TABIX_TABIX ( ch_tabix_input )
-    ch_versions = ch_versions.mix(TABIX_TABIX.out.versions)
+    ch_concat_input = ch_vcfs
+        .map { meta, vcf, index, count ->
+            def missingKeys = arr_common_meta.findAll { key -> !(key in meta) }
+            if (missingKeys) {
+                error("ERROR: Keys ${missingKeys} from arr_common_meta not found in meta. Available keys: ${meta.keySet()}")
+            }
+            def newMeta = arr_common_meta ?
+                arr_common_meta.collectEntries { key -> [(key): meta[key]] } :
+                meta
+            [groupKey(newMeta, count), meta, vcf, index]
+        }
+        .groupTuple()
+        .ifEmpty {
+            error("ERROR: grouping operation resulted in an empty channel.")
+        }
+        .branch { key, meta, vcf, index ->
+            def cleanedMetas = meta.collect { m ->
+                m.findAll { k, _v -> !(k in arr_common_meta) }
+            }
+            def newMeta = arr_common_meta ? key.target + [metas: cleanedMetas] : meta[0]
+            def out_tuple = [newMeta, vcf, index]
+
+            one: vcf.size() == 1
+                return out_tuple
+            more: vcf.size() > 1
+                return out_tuple
+        }
+
+    // Concatenate vcf with more than one record
+    BCFTOOLS_CONCAT(ch_concat_input.more)
+
+    ch_vcf_concat = ch_concat_input.one
+        .map{ meta, vcf, _index -> [meta, vcf.get(0)] }
+        .mix(BCFTOOLS_CONCAT.out.vcf)
+
+    if (val_sort) {
+        BCFTOOLS_SORT(ch_vcf_concat)
+        ch_tabix_input = BCFTOOLS_SORT.out.vcf
+    } else {
+        ch_tabix_input = ch_vcf_concat
+    }
+
+    TABIX_TABIX(ch_tabix_input)
+
+    ch_vcf_index = ch_tabix_input
+        .join(TABIX_TABIX.out.index)
 
     emit:
-    vcf      = ch_tabix_input        // channel: [ val(meta), [ vcf ] ]
-    tbi      = TABIX_TABIX.out.tbi   // channel: [ val(meta), [ tbi ] ]
-
-    versions = ch_versions           // channel: [ versions.yml ]
+    vcf       = ch_vcf_concat         // channel: [ val(meta), [ vcf ] ]
+    index     = TABIX_TABIX.out.index // channel: [ val(meta), [ tbi or csi ] ]
+    vcf_index = ch_vcf_index          // channel: [ val(meta), [ vcf ], [ tbi or csi ] ]
 }

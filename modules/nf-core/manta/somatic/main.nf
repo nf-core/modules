@@ -23,7 +23,7 @@ process MANTA_SOMATIC {
     tuple val(meta), path("*.diploid_sv.vcf.gz.tbi")             , emit: diploid_sv_vcf_tbi
     tuple val(meta), path("*.somatic_sv.vcf.gz")                 , emit: somatic_sv_vcf
     tuple val(meta), path("*.somatic_sv.vcf.gz.tbi")             , emit: somatic_sv_vcf_tbi
-    path "versions.yml"                                          , emit: versions
+    tuple val("${task.process}"), val("manta"), eval("configManta.py --version"), topic: versions, emit: versions_manta
 
     when:
     task.ext.when == null || task.ext.when
@@ -61,11 +61,6 @@ process MANTA_SOMATIC {
         ${prefix}.somatic_sv.vcf.gz
     mv manta/results/variants/somaticSV.vcf.gz.tbi \\
         ${prefix}.somatic_sv.vcf.gz.tbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        manta: \$( configManta.py --version )
-    END_VERSIONS
     """
 
     stub:
@@ -79,10 +74,5 @@ process MANTA_SOMATIC {
     touch ${prefix}.diploid_sv.vcf.gz.tbi
     echo "" | gzip > ${prefix}.somatic_sv.vcf.gz
     touch ${prefix}.somatic_sv.vcf.gz.tbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        manta: \$( configManta.py --version )
-    END_VERSIONS
     """
 }

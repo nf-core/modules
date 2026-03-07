@@ -43,7 +43,7 @@ process ADAPTERREMOVALFIXPREFIX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        adapterremovalfixprefix: ${VERSION}
+        adapterremovalfixprefix: "${VERSION}"
     END_VERSIONS
     """
 }

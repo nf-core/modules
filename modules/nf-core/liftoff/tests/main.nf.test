@@ -34,9 +34,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.unmapped_txt).match("unmapped_txt") },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() },
                 { assert file(process.out.gff3[0][1]).text.contains("chr21\tLiftoff\texon\t34608061\t34608118\t.\t+\t.") },
                 { assert file(process.out.polished_gff3[0][1]).text.contains("chr21\tLiftoff\texon\t34608061\t34608118\t.\t+\t.") },
-                { assert snapshot(process.out.versions).match("versions") }
             )
         }
 
@@ -52,8 +52,8 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = [ 
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.fasta.gz', checkIfExists: true) 
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.fasta.gz', checkIfExists: true)
                     ]
                 input[2] = [
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.gtf', checkIfExists: true)

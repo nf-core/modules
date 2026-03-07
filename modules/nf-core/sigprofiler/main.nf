@@ -9,9 +9,9 @@ process SIGPROFILER {
 
     input:
     tuple val(meta), path(tsv_list, stageAs: '*.tsv')
-    val(genome)                  // genome version  
+    val(genome)                  // genome version
     path(genome_installed_path)  //optional
-    
+
     output:
     tuple val(meta), path("results/*")    , emit: results_sigprofiler
     path "versions.yml"                   , emit: versions
@@ -23,7 +23,6 @@ process SIGPROFILER {
     template "main_script.py"
 
     stub:
-    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def context_types = task.ext.context_type?.split(',') ?: ['96','DINUC','ID']
 
@@ -33,16 +32,16 @@ process SIGPROFILER {
         'DINUC' : 'DBS78',
         'ID'    : 'ID83'
     ]
-    def signatures = context_types.collect { context_map[it] }
+    def signatures = context_types.collect { index -> context_map[index] }
 
     """
     mkdir -p results/input
     touch results/input/input_data.txt
-    
+
     # Create per-context outputs
 
     for sig in ${signatures.join(" ")}; do
-       
+
         mkdir -p results/\$sig/\$sig/Suggested_Solution/COSMIC_\${sig}_Decomposed_Solution/Signatures/
         touch    results/\$sig/\$sig/Samples.txt
         touch    results/\$sig/\$sig/Suggested_Solution/COSMIC_\${sig}_Decomposed_Solution/Signatures/COSMIC_\${sig}_Signatures.txt
@@ -51,7 +50,7 @@ process SIGPROFILER {
         mkdir -p results/output/\$type
         touch    results/output/\$type/${prefix}.\${sig}.all
     done
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python3 -c 'import sys; print(".".join(map(str, sys.version_info[:3])))')

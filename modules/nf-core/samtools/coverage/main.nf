@@ -9,12 +9,11 @@ process SAMTOOLS_COVERAGE {
 
     input:
     tuple val(meta), path(input), path(input_index)
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fai)
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*.txt"), emit: coverage
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,28 +21,23 @@ process SAMTOOLS_COVERAGE {
     script:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def reference = fasta ? "--reference ${fasta}" : ""
+
+    if (input.name.endsWith('.cram') && (!fasta || !fai)) {
+        error "CRAM input file provided but no reference FASTA and/or FAI index for said reference, both are required for CRAM input."
+    }
     """
     samtools \\
         coverage \\
         $args \\
         -o ${prefix}.txt \\
-        --reference ${fasta} \\
+        $reference \\
         $input
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' )
-    END_VERSIONS
+    echo "#rname\tstartpos\tendpos\tnumreads\tcovbases\tcoverage\tmeandepth\tmeanbaseq\tmeanmapq" > ${prefix}.txt
     """
 }

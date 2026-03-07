@@ -38,12 +38,28 @@ output:
           pattern: "*.json"
           ontologies:
             - edam: http://edamontology.org/format_3464 # JSON
+  versions_bamstats:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bamstats:
+          type: string
+          description: The name of the tool
+      - 'bamstats --version | grep "version: " | sed -e s"/version: //"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bamstats:
+          type: string
+          description: The name of the tool
+      - 'bamstats --version | grep "version: " | sed -e s"/version: //"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@johnoooh"

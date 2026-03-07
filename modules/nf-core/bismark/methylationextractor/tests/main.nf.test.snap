@@ -1,5 +1,5 @@
 {
-    "sarscov2 paired-end methylated [bam] / sarscov2 genome [fasta]": {
+    "sarscov2 paired-end methylated [bam] | sarscov2 genome [fasta]": {
         "content": [
             {
                 "0": [
@@ -18,12 +18,12 @@
                             "single_end": false
                         },
                         [
-                            "CHG_OB_test.paired_end.methylated.txt.gz:md5,8d422420ab360664c27b29ce8cc5483e",
-                            "CHG_OT_test.paired_end.methylated.txt.gz:md5,84e64c2eb6e854b114b04dbd208a13f5",
-                            "CHH_OB_test.paired_end.methylated.txt.gz:md5,cd9c50d80121fabbc4271717cba36f35",
-                            "CHH_OT_test.paired_end.methylated.txt.gz:md5,06065f58f9d9a96a72113a51afd66086",
-                            "CpG_OB_test.paired_end.methylated.txt.gz:md5,6038c267818b39abbc5a87f1ccc019a6",
-                            "CpG_OT_test.paired_end.methylated.txt.gz:md5,f9bb76298974e18091a0fffd7d8b2041"
+                            "CHG_OB_test.paired_end.methylated.txt.gz:md5,dfd299b7d7661fc6e331bd4fe60c7c07",
+                            "CHG_OT_test.paired_end.methylated.txt.gz:md5,9a85dc0b1650f06ecda55643e081a66e",
+                            "CHH_OB_test.paired_end.methylated.txt.gz:md5,20d937df40f2fa9a1bd878873335d3c3",
+                            "CHH_OT_test.paired_end.methylated.txt.gz:md5,d3705b17290e017eb1244808dae2ef23",
+                            "CpG_OB_test.paired_end.methylated.txt.gz:md5,4c3619590c86e408dd60d0075fe08d1a",
+                            "CpG_OT_test.paired_end.methylated.txt.gz:md5,90b9b96895fcdae9785a7c35d829d379"
                         ]
                     ]
                 ],
@@ -42,7 +42,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.paired_end.methylated_splitting_report.txt:md5,8e640acac6b50edf7bcc64396882c65f"
+                        "test.paired_end.methylated_splitting_report.txt:md5,e09d4e72fb8752df4ad46a9ed2894943"
                     ]
                 ],
                 "4": [
@@ -55,7 +55,7 @@
                     ]
                 ],
                 "5": [
-                    "versions.yml:md5,c475a488ab7784145a0acfb7beafbc0e"
+                    "versions.yml:md5,b315aae5399b79e07b1e3e2a171494bd"
                 ],
                 "bedgraph": [
                     [
@@ -91,12 +91,12 @@
                             "single_end": false
                         },
                         [
-                            "CHG_OB_test.paired_end.methylated.txt.gz:md5,8d422420ab360664c27b29ce8cc5483e",
-                            "CHG_OT_test.paired_end.methylated.txt.gz:md5,84e64c2eb6e854b114b04dbd208a13f5",
-                            "CHH_OB_test.paired_end.methylated.txt.gz:md5,cd9c50d80121fabbc4271717cba36f35",
-                            "CHH_OT_test.paired_end.methylated.txt.gz:md5,06065f58f9d9a96a72113a51afd66086",
-                            "CpG_OB_test.paired_end.methylated.txt.gz:md5,6038c267818b39abbc5a87f1ccc019a6",
-                            "CpG_OT_test.paired_end.methylated.txt.gz:md5,f9bb76298974e18091a0fffd7d8b2041"
+                            "CHG_OB_test.paired_end.methylated.txt.gz:md5,dfd299b7d7661fc6e331bd4fe60c7c07",
+                            "CHG_OT_test.paired_end.methylated.txt.gz:md5,9a85dc0b1650f06ecda55643e081a66e",
+                            "CHH_OB_test.paired_end.methylated.txt.gz:md5,20d937df40f2fa9a1bd878873335d3c3",
+                            "CHH_OT_test.paired_end.methylated.txt.gz:md5,d3705b17290e017eb1244808dae2ef23",
+                            "CpG_OB_test.paired_end.methylated.txt.gz:md5,4c3619590c86e408dd60d0075fe08d1a",
+                            "CpG_OT_test.paired_end.methylated.txt.gz:md5,90b9b96895fcdae9785a7c35d829d379"
                         ]
                     ]
                 ],
@@ -106,18 +106,135 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.paired_end.methylated_splitting_report.txt:md5,8e640acac6b50edf7bcc64396882c65f"
+                        "test.paired_end.methylated_splitting_report.txt:md5,e09d4e72fb8752df4ad46a9ed2894943"
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,c475a488ab7784145a0acfb7beafbc0e"
+                    "versions.yml:md5,b315aae5399b79e07b1e3e2a171494bd"
                 ]
+            },
+            {
+                "BISMARK_METHYLATIONEXTRACTOR": {
+                    "bismark": "0.25.1"
+                }
             }
         ],
         "meta": {
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-08-04T10:56:42.370788657"
+        "timestamp": "2025-09-25T20:53:49.295672337"
+    },
+    "sarscov2 paired-end methylated [bam] | sarscov2 genome [fasta] | stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bedGraph.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.txt.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.cov.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_splitting_report.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "4": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.M-bias.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "5": [
+                    "versions.yml:md5,b315aae5399b79e07b1e3e2a171494bd"
+                ],
+                "bedgraph": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bedGraph.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "coverage": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.cov.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "mbias": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.M-bias.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "methylation_calls": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.txt.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "report": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_splitting_report.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,b315aae5399b79e07b1e3e2a171494bd"
+                ]
+            },
+            {
+                "BISMARK_METHYLATIONEXTRACTOR": {
+                    "bismark": "0.25.1"
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
+        },
+        "timestamp": "2025-09-25T20:54:00.05874602"
     }
 }

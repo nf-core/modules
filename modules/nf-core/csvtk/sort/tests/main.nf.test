@@ -1,0 +1,62 @@
+nextflow_process {
+
+    name "Test Process CSVTK_SORT"
+    script "../main.nf"
+    process "CSVTK_SORT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "csvtk"
+    tag "csvtk/sort"
+
+    test("tsv - sort - csv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'generic/tsv/test.tsv', checkIfExists: true),
+                ]
+                input[1] = "tsv"
+                input[2] = "csv"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("tsv - sort - csv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'generic/tsv/test.tsv', checkIfExists: true),
+                ]
+                input[1] = "tsv"
+                input[2] = "csv"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

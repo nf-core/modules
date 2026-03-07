@@ -30,7 +30,7 @@ nextflow_process {
             process {
                 """
                 input[0] = GUNZIP.out.gunzip.map{[
-                    [id:'homo_sapiens_chr20'], 
+                    [id:'homo_sapiens_chr20'],
                     it[1],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
                 ]}
@@ -49,12 +49,12 @@ nextflow_process {
     test("human chr20 - fasta - gtf - stub") {
 
         options '-stub'
-        
+
         when {
             process {
                 """
                 input[0] = GUNZIP.out.gunzip.map{[
-                    [id:'homo_sapiens_chr20'], 
+                    [id:'homo_sapiens_chr20'],
                     it[1],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
                 ]}
@@ -71,7 +71,3 @@ nextflow_process {
 
     }
 }
-
-
-
-

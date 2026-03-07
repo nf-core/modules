@@ -12,7 +12,7 @@ process GATK4_CREATEREADCOUNTPANELOFNORMALS {
 
     output:
     tuple val(meta), path("*.hdf5"), emit: pon
-    path "versions.yml",             emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,7 +20,7 @@ process GATK4_CREATEREADCOUNTPANELOFNORMALS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_list = counts.collect { "--input ${it}" }.join(" ")
+    def input_list = counts.collect { count -> "--input ${count}" }.join(" ")
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -35,21 +35,11 @@ process GATK4_CREATEREADCOUNTPANELOFNORMALS {
         ${args} \\
         ${input_list} \\
         --output ${prefix}.hdf5
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.hdf5
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

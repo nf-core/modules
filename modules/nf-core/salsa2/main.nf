@@ -27,8 +27,8 @@ process SALSA2 {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def gfa = gfa ? "--gfa $gfa" : ""
-    def dup = dup ? "--dup $dup" : ""
+    def gfa_opt = gfa ? "--gfa $gfa" : ""
+    def dup_opt = dup ? "--dup $dup" : ""
     def filter = filter_bed ? "--filter $filter_bed" : ""
     def VERSION = '2.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
@@ -37,8 +37,8 @@ process SALSA2 {
         --assembly $fasta \\
         --bed $bed \\
         --length $index \\
-        $gfa \\
-        $dup \\
+        $gfa_opt \\
+        $dup_opt \\
         $filter
 
     mv */scaffolds_FINAL.fasta ${prefix}_scaffolds_FINAL.fasta

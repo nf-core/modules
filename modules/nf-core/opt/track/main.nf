@@ -41,9 +41,8 @@ process OPT_TRACK {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    
+
     """
     mkdir -p ${prefix}
     touch "${prefix}/probe2targets.tsv"

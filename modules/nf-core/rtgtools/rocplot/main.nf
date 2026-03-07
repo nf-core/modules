@@ -4,8 +4,8 @@ process RTGTOOLS_ROCPLOT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/rtg-tools:3.12.1--hdfd78af_0':
-        'biocontainers/rtg-tools:3.12.1--hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dc/dca5ba13b7ec38bf7cacf00a33517b9080067bea638745c05d50a4957c75fc2e/data':
+        'community.wave.seqera.io/library/rtg-tools:3.13--3465421f1b0be0ce' }"
 
     input:
     tuple val(meta), path(input)
@@ -13,7 +13,7 @@ process RTGTOOLS_ROCPLOT {
     output:
     tuple val(meta), path("*.png"), emit: png
     tuple val(meta), path("*.svg"), emit: svg
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('rtgtools'), eval("rtg version | sed 's/Product: RTG Tools //; q'"), topic: versions, emit: versions_rtgtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,11 +28,6 @@ process RTGTOOLS_ROCPLOT {
         --png ${prefix}.png \\
         --svg ${prefix}.svg \\
         ${input}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rtg-tools: \$(echo \$(rtg version | head -n 1 | awk '{print \$4}'))
-    END_VERSIONS
     """
 
     stub:
@@ -40,10 +35,5 @@ process RTGTOOLS_ROCPLOT {
     """
     touch ${prefix}.png
     touch ${prefix}.svg
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rtg-tools: \$(echo \$(rtg version | head -n 1 | awk '{print \$4}'))
-    END_VERSIONS
     """
 }

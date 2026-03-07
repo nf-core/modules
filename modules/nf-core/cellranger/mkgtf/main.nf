@@ -2,7 +2,7 @@ process CELLRANGER_MKGTF {
     tag "$gtf"
     label 'process_low'
 
-    container "nf-core/cellranger:9.0.1"
+    container "nf-core/cellranger:10.0.0"
 
     input:
     path gtf
@@ -39,7 +39,6 @@ process CELLRANGER_MKGTF {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "CELLRANGER_MKGTF module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${gtf.baseName}.filtered"
     """
     touch ${prefix}.gtf

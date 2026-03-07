@@ -1,0 +1,48 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "traitar_pfamget"
+description: Download PFAM database for traitar phenotype prediction
+keywords:
+  - pfam
+  - database
+  - phenotype
+  - traitar
+tools:
+  - "traitar":
+      description: "Microbial trait prediction from genome sequences"
+      homepage: "https://github.com/hzi-bifo/traitar3"
+      documentation: "https://github.com/hzi-bifo/traitar3"
+      tool_dev_url: "https://github.com/hzi-bifo/traitar3"
+      licence: ["GPL v3"]
+      identifier: "biotools:traitar"
+
+output:
+  pfam_db:
+    - pfam_data:
+        type: directory
+        description: PFAM database directory containing HMM profiles
+        pattern: "pfam_data"
+  versions_traitar:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - traitar:
+          type: string
+          description: The name of the tool
+      - "traitar --version 2>&1 | tail -1":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - traitar:
+          type: string
+          description: The name of the tool
+      - traitar --version 2>&1 | tail -1:
+          type: eval
+          description: Version extraction command
+authors:
+  - "@brovolia"
+maintainers:
+  - "@brovolia"

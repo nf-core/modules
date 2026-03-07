@@ -47,74 +47,74 @@ input:
         description: Hintsfile to be passed to --hintsfile
         pattern: "*.{gff, gtf, gff3}"
 output:
-  - gtf:
-      - meta:
+  gtf:
+    - - meta:
           type: file
           description: Gene transfer format file as output by BRAKER3
           pattern: "*.{gtf}"
-      - $prefix/braker.gtf:
-          type: file
-          description: Gene transfer format file as output by BRAKER3
-          pattern: "*.{gtf}"
-  - cds:
-      - meta:
-          type: file
-          description: Coding sequence file as output by BRAKER3
-          pattern: "*.{codingseq}"
-      - $prefix/braker.codingseq:
+    - $prefix/braker.gtf:
+        type: file
+        description: Gene transfer format file as output by BRAKER3
+        pattern: "*.{gtf}"
+  cds:
+    - - meta:
           type: file
           description: Coding sequence file as output by BRAKER3
           pattern: "*.{codingseq}"
-  - aa:
-      - meta:
+    - $prefix/braker.codingseq:
+        type: file
+        description: Coding sequence file as output by BRAKER3
+        pattern: "*.{codingseq}"
+  aa:
+    - - meta:
           type: file
           description: Protein sequence file as output by BRAKER3
           pattern: "*.{aa}"
-      - $prefix/braker.aa:
-          type: file
-          description: Protein sequence file as output by BRAKER3
-          pattern: "*.{aa}"
-  - log:
-      - meta:
-          type: file
-          description: BRAKER3 log file
-          pattern: "*.log"
-      - $prefix/braker.log:
+    - $prefix/braker.aa:
+        type: file
+        description: Protein sequence file as output by BRAKER3
+        pattern: "*.{aa}"
+  log:
+    - - meta:
           type: file
           description: BRAKER3 log file
           pattern: "*.log"
-  - hintsfile:
-      - meta:
+    - $prefix/braker.log:
+        type: file
+        description: BRAKER3 log file
+        pattern: "*.log"
+  hintsfile:
+    - - meta:
           type: file
           description: Hints file as output by BRAKER3
           pattern: "*hintsfile.{gff}"
-      - $prefix/hintsfile.gff:
-          type: file
-          description: Hints file as output by BRAKER3
-          pattern: "*hintsfile.{gff}"
-  - gff3:
-      - meta:
-          type: file
-          description: GFF3 file as output by BRAKER3
-          pattern: "*.{gff3}"
-      - $prefix/braker.gff3:
+    - $prefix/hintsfile.gff:
+        type: file
+        description: Hints file as output by BRAKER3
+        pattern: "*hintsfile.{gff}"
+  gff3:
+    - - meta:
           type: file
           description: GFF3 file as output by BRAKER3
           pattern: "*.{gff3}"
-  - citations:
-      - meta:
+    - $prefix/braker.gff3:
+        type: file
+        description: GFF3 file as output by BRAKER3
+        pattern: "*.{gff3}"
+  citations:
+    - - meta:
           type: file
           description: BRAKER3 citations
           pattern: "what-to-cite.txt"
-      - $prefix/what-to-cite.txt:
-          type: file
-          description: BRAKER3 citations
-          pattern: "what-to-cite.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+    - "$prefix/what-to-cite.txt":
+        type: file
+        description: BRAKER3 citations
+        pattern: "what-to-cite.txt"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 authors:
   - "@kherronism"
   - "@GallVp"

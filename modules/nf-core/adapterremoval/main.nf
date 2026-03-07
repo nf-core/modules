@@ -90,7 +90,6 @@ process ADAPTERREMOVAL {
     }
 
     stub:
-    def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
 
     collapse_cmd = args.contains('--collapse')

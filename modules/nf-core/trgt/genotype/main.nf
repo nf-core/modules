@@ -4,8 +4,8 @@ process TRGT_GENOTYPE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/trgt:3.0.0--h9ee0642_0':
-        'biocontainers/trgt:3.0.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/trgt:5.0.0--h9ee0642_0':
+        'biocontainers/trgt:5.0.0--h9ee0642_0' }"
 
     input:
     tuple val(meta) , path(bam), path(bai), val(karyotype)
@@ -15,8 +15,8 @@ process TRGT_GENOTYPE {
 
     output:
     tuple val(meta), path("*.vcf.gz")      , emit: vcf
-    tuple val(meta), path("*.spanning.bam"), emit: bam     , optional: true
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*.spanning.bam"), emit: bam, optional: true
+    tuple val("${task.process}"), val('trgt'), eval("trgt --version | sed 's/.* //g'"), emit: versions_trgt, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,7 +42,6 @@ process TRGT_GENOTYPE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.spanning.bam

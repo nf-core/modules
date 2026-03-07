@@ -30,6 +30,7 @@ for ( ao in names(args_opt)) opt[[ao]] = args_opt[[ao]]
 library(CNAqc)
 library(mobster)
 library(dplyr)
+library(cli)
 library(ggplot2)
 
 description = "$meta.patient"
@@ -43,11 +44,15 @@ if ( grepl(".rds\$", tolower("$rds_join")) ) {
         input_table = lapply(names(original),
                              function(sample_name) {
                                  purity = original[[sample_name]][["purity"]]
-                                 original[[sample_name]] %>%
+                                 table_s = original[[sample_name]] %>%
                                      # keep only mutations on the diploid karyotype
                                      CNAqc::subset_by_segment_karyotype("1:1") %>%
                                      CNAqc::Mutations() %>%
                                      dplyr::mutate(sample_id=sample_name, purity=purity)
+                                 if (nrow(table_s) == 0) {
+                                     cli::cli_alert_warning("Sample {sample_name} has no diploid mutations!")
+                                 }
+                                 return(table_s)
                                  }) %>% dplyr::bind_rows()
     } else {
         cli::cli_abort("Object of class {class($rds_join)} not supported.")
@@ -65,6 +70,7 @@ run_mobster_fit = function(joint_table, descr) {
 
     # remove mutations with VAF < min_VAF
     inp_tb = joint_table %>%
+        dplyr::filter(VAF < 1) %>%
         dplyr::mutate(adj_VAF=VAF/!!purity) %>%
         dplyr::filter(adj_VAF>=as.numeric(opt[["min_VAF"]])) %>%
         dplyr::filter(karyotype=="1:1") %>%
@@ -75,6 +81,7 @@ run_mobster_fit = function(joint_table, descr) {
                 tail = eval(parse(text=opt[["tail"]])),
                 pi_cutoff = as.numeric(opt[["pi_cutoff"]]),
                 N_cutoff = as.integer(opt[["n_cutoff"]]),
+                parallel = FALSE,
                 description = descr)
 }
 
@@ -83,7 +90,7 @@ lapply(samples, function(sample_name) {
 
     fit = run_mobster_fit(joint_table=input_table %>% dplyr::filter(sample_id == !!sample_name),
                           descr=paste(description, sample_name, sep=":"))
-    
+
     if (any(fit[["fits.table"]][["tail"]])) {
         evoparams = evolutionary_parameters(fit)
         fit[["evolutionary_parameters"]] = evoparams

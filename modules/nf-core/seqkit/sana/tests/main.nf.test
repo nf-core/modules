@@ -14,7 +14,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [[ id:'test', single_end:true ], 
+                input[0] = [[ id:'test', single_end:true ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1_broken.fastq.gz', checkIfExists: true)
                 ]
                 """

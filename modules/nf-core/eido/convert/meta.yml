@@ -25,12 +25,6 @@ input:
   - format:
       type: string
       description: Extension of an output file
-  - pep_input_base_dir:
-      type: file
-      description: Optional path to the directory where files specified in a PEP config
-        file are stored. Any paths specified in the config will need to be relative
-        to this base directory.
-      ontologies: []
 output:
   versions:
     - versions.yml:
@@ -48,3 +42,4 @@ authors:
   - "@rafalstepien"
 maintainers:
   - "@rafalstepien"
+  - "@khoroshevskyi"

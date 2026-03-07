@@ -46,10 +46,10 @@ input:
       description: true = only build index; false = mapping
 output:
   index:
-    - bbsplit:
+    - bbsplit_index:
         type: directory
         description: Directory with index files
-        pattern: "bbsplit"
+        pattern: "bbsplit_index"
   primary_fastq:
     - - meta:
           type: map
@@ -96,16 +96,34 @@ output:
           description: Log file
           pattern: "*.log"
           ontologies: []
+  versions_bbmap:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bbmap:
+          type: string
+          description: The tool name
+      - bbversion.sh | grep -v "Duplicate cpuset":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bbmap:
+          type: string
+          description: The tool name
+      - bbversion.sh | grep -v "Duplicate cpuset":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@joseespinosa"
   - "@drpatelh"
+  - "@pinin4fjords"
 maintainers:
   - "@joseespinosa"
   - "@drpatelh"
+  - "@pinin4fjords"

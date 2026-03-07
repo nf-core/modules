@@ -1,33 +1,135 @@
 {
-    "homo sapiens - 2 VCFs - reference": {
+    "homo sapiens - 1 VCF - --force-single --output-type b --write-index": {
         "content": [
-            "ec69cbc40d4a9766d87a62ba4835ae52",
-            "VcfFile [chromosomes=[chr22], sampleCount=2, variantCount=1, phased=false, phasedAutodetect=false]",
-            2,
+            "test.bcf.gz",
             [
-                "versions.yml:md5,4bc00eaebda7d0f5100fafac64191a35"
-            ]
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.bcf.gz.csi:md5,25edb1e7fca90690371848b7c01b9631"
+                ]
+            ],
+            {
+                "versions_trgt": [
+                    [
+                        "TRGT_MERGE",
+                        "trgt",
+                        "5.0.0-e9acee0"
+                    ]
+                ]
+            }
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.6"
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2025-06-23T10:46:31.763223191"
+        "timestamp": "2025-12-10T15:42:21.803640957"
+    },
+    "homo sapiens - 2 VCFs - reference": {
+        "content": [
+            "497b2c70fe41ad0c67c5fc4e1f281227",
+            "VcfFile [chromosomes=[chr22], sampleCount=2, variantCount=1, phased=false, phasedAutodetect=false]",
+            2,
+            [
+                
+            ],
+            {
+                "versions_trgt": [
+                    [
+                        "TRGT_MERGE",
+                        "trgt",
+                        "5.0.0-e9acee0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
+        },
+        "timestamp": "2025-12-10T15:36:01.2063008"
     },
     "homo sapiens - 2 VCFs": {
         "content": [
-            "ec69cbc40d4a9766d87a62ba4835ae52",
+            "497b2c70fe41ad0c67c5fc4e1f281227",
             "VcfFile [chromosomes=[chr22], sampleCount=2, variantCount=1, phased=false, phasedAutodetect=false]",
             2,
             [
-                "versions.yml:md5,4bc00eaebda7d0f5100fafac64191a35"
-            ]
+                
+            ],
+            {
+                "versions_trgt": [
+                    [
+                        "TRGT_MERGE",
+                        "trgt",
+                        "5.0.0-e9acee0"
+                    ]
+                ]
+            }
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.6"
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2025-06-23T10:46:26.036171406"
+        "timestamp": "2025-12-10T15:35:55.048303885"
+    },
+    "homo sapiens - 2 VCFs - tbi index - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    [
+                        "TRGT_MERGE",
+                        "trgt",
+                        "5.0.0-e9acee0"
+                    ]
+                ],
+                "index": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_trgt": [
+                    [
+                        "TRGT_MERGE",
+                        "trgt",
+                        "5.0.0-e9acee0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
+        },
+        "timestamp": "2025-12-10T15:36:25.238838671"
     },
     "homo sapiens - 2 VCFs - stub": {
         "content": [
@@ -41,7 +143,17 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,4bc00eaebda7d0f5100fafac64191a35"
+                    
+                ],
+                "2": [
+                    [
+                        "TRGT_MERGE",
+                        "trgt",
+                        "5.0.0-e9acee0"
+                    ]
+                ],
+                "index": [
+                    
                 ],
                 "vcf": [
                     [
@@ -51,30 +163,105 @@
                         "test.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,4bc00eaebda7d0f5100fafac64191a35"
+                "versions_trgt": [
+                    [
+                        "TRGT_MERGE",
+                        "trgt",
+                        "5.0.0-e9acee0"
+                    ]
                 ]
             }
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.6"
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2025-06-23T10:46:49.073993621"
+        "timestamp": "2025-12-10T15:36:37.406628045"
     },
-    "homo sapiens - 1 VCF - --force-single": {
+    "homo sapiens - 1 VCF - --force-single --output-type z --write-index": {
         "content": [
-            "57131f453c695cbea40812f6c246d0f",
+            "bad30e1ef353973510fcf4125d127a13",
             "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=1, phased=false, phasedAutodetect=false]",
             1,
             [
-                "versions.yml:md5,4bc00eaebda7d0f5100fafac64191a35"
-            ]
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.vcf.gz.tbi:md5,bd5b91195c6b4b92b1727a170a2656e4"
+                ]
+            ],
+            {
+                "versions_trgt": [
+                    [
+                        "TRGT_MERGE",
+                        "trgt",
+                        "5.0.0-e9acee0"
+                    ]
+                ]
+            }
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.6"
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2025-06-23T10:46:43.196406115"
+        "timestamp": "2025-12-10T15:42:15.567594151"
+    },
+    "homo sapiens - 2 VCFs - csi index - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    [
+                        "TRGT_MERGE",
+                        "trgt",
+                        "5.0.0-e9acee0"
+                    ]
+                ],
+                "index": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_trgt": [
+                    [
+                        "TRGT_MERGE",
+                        "trgt",
+                        "5.0.0-e9acee0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
+        },
+        "timestamp": "2025-12-10T15:36:31.142452836"
     }
 }

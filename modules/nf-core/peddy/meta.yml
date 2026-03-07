@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: peddy
 description: Manipulation, validation and exploration of pedigrees
 keywords:
@@ -7,13 +6,14 @@ keywords:
   - family
 tools:
   - peddy:
-      description: genotype, ped correspondence check, ancestry check, sex check. directly,
-        quickly on VCF
+      description: genotype, ped correspondence check, ancestry check, sex check.
+        directly, quickly on VCF
       homepage: https://github.com/brentp/peddy
       documentation: https://peddy.readthedocs.io/en/latest/
       tool_dev_url: https://github.com/brentp/peddy
       doi: "10.1016/j.ajhg.2017.01.017"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -26,7 +26,7 @@ input:
         description: VCF file
         pattern: "*.vcf.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_3989
     - vcf_tbi:
         type: file
         description: TBI file
@@ -49,9 +49,11 @@ input:
           e.g. [ id:'test', single_end:false ]
     - sites:
         type: file
-        description: sites file. By defaults peddy uses hg19/GRCh37, "--sites hg38"
-          can be specified in the process argument or a custom file following syntax
-          https://github.com/brentp/peddy/blob/master/peddy/GRCH37.sites can be provided
+        description: sites file. By defaults peddy uses hg19/GRCh37, "--sites
+          hg38" can be specified in the process argument or a custom file
+          following syntax
+          https://github.com/brentp/peddy/blob/master/peddy/GRCH37.sites can be
+          provided
         pattern: "*.sites"
         ontologies: []
 output:
@@ -83,7 +85,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.peddy.ped":
+      - ${prefix}.peddy.ped:
           type: file
           description: Inferred PED file
           pattern: "*.peddy.ped"
@@ -94,7 +96,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.het_check.png":
+      - ${prefix}.het_check.png:
           type: file
           description: |
             PNG file containing heterozygosity check.
@@ -109,7 +111,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.ped_check.png":
+      - ${prefix}.ped_check.png:
           type: file
           description: |
             PNG file containing pedigree check between reported
@@ -122,7 +124,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.sex_check.png":
+      - ${prefix}.sex_check.png:
           type: file
           description: |
             PNG file with sex check performs a comparison
@@ -137,7 +139,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.het_check.csv":
+      - ${prefix}.het_check.csv:
           type: file
           description: |
             CSV file containing heterozygosity check.
@@ -146,28 +148,28 @@ output:
             genomes.
           pattern: "*.het_check.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
   ped_check_csv:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.ped_check.csv":
+      - ${prefix}.ped_check.csv:
           type: file
           description: |
             CSV file containing pedigree check between reported
             and inferred  sex
           pattern: "*.het_check.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
   sex_check_csv:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.sex_check.csv":
+      - ${prefix}.sex_check.csv:
           type: file
           description: |
             CSV file with sex check performs a comparison
@@ -176,27 +178,41 @@ output:
             of the X chromosome.
           pattern: "*.sex_check.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
   ped_check_rel_difference_csv:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.ped_check.rel-difference.csv":
+      - ${prefix}.ped_check.rel-difference.csv:
           type: file
           description: |
             CSV file with the comparison between inferred and given relatedness
           pattern: "*.ped_check.rel-difference.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
+  versions_peddy:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - peddy:
+          type: string
+          description: The name of the tool
+      - peddy --version | sed 's/peddy, version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - peddy:
+          type: string
+          description: The name of the tool
+      - peddy --version | sed 's/peddy, version //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rannick"
 maintainers:

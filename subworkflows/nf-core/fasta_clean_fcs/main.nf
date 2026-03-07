@@ -9,7 +9,7 @@ workflow FASTA_CLEAN_FCS {
     ramdisk_path // value: the path to the ramdisk
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     ch_fasta.map{
         meta, _fasta -> [ meta.taxid ?: error("taxid is mandatory in the meta map") ]

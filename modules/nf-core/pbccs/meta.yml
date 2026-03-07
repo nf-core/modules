@@ -65,14 +65,24 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.report.txt": {}
+      - "*.report.txt":
+          type: file
+          description: CCS report in text format
+          pattern: "*.report.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
   report_json:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.report.json": {}
+      - "*.report.json":
+          type: file
+          description: CCS report in JSON format
+          pattern: "*.report.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
   metrics:
     - - meta:
           type: map

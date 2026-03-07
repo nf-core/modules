@@ -11,7 +11,8 @@ tools:
       documentation: "https://github.com/TimoLassmann/kalign"
       tool_dev_url: "https://github.com/TimoLassmann/kalign"
       doi: "10.1093/bioinformatics/btz795"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: "biotools:kalign"
 input:
   - - meta:
@@ -21,16 +22,17 @@ input:
           e.g. [ id:'test']
     - fasta:
         type: file
-        description: Input sequences in FASTA format. May be gzipped or uncompressed.
+        description: Input sequences in FASTA format. May be gzipped or
+          uncompressed.
         pattern: "*.{fa,fasta}{.gz,}"
         ontologies:
           - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
           - edam: http://edamontology.org/format_1929 # FASTA
   - compress:
       type: boolean
-      description: Flag representing whether the output MSA should be compressed. Set
-        to true to enable/false to disable compression. Compression is done using pigz,
-        and is multithreaded.
+      description: Flag representing whether the output MSA should be compressed.
+        Set to true to enable/false to disable compression. Compression is done
+        using pigz, and is multithreaded.
 output:
   alignment:
     - - meta:
@@ -40,20 +42,53 @@ output:
             e.g. `[ id:'test']`
       - "*.aln{.gz,}":
           type: file
-          description: Alignment file. May be gzipped or uncompressed, depending on
-            if `compress` is set to `true` or `false`.
+          description: Alignment file. May be gzipped or uncompressed, depending
+            on if `compress` is set to `true` or `false`.
           pattern: "*.{aln}{.gz,}"
           ontologies:
             - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
             - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
             - edam: http://edamontology.org/format_1984 # FASTA-ALN
+  versions_kalign:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kalign:
+          type: string
+          description: The name of the tool
+      - kalign -v | sed "s/^.*kalign[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_pigz:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kalign:
+          type: string
+          description: The name of the tool
+      - kalign -v | sed "s/^.*kalign[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@luisas"
   - "@JoseEspinosa"

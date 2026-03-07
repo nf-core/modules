@@ -7,9 +7,10 @@ import os
 os.environ["MPLCONFIGDIR"] = "./tmp/mpl"
 os.environ["NUMBA_CACHE_DIR"] = "./tmp/numba"
 
-import yaml
-import scanpy as sc
 import platform
+
+import scanpy as sc
+import yaml
 from threadpoolctl import threadpool_limits
 
 threadpool_limits(int("${task.cpus}"))
@@ -25,9 +26,7 @@ if symbol_col != "index" and symbol_col not in adata.var.columns:
 symbol_series = adata.var.index if symbol_col == "index" else adata.var[symbol_col]
 adata.var["mt"] = symbol_series.str.lower().str.startswith("mt-")
 
-sc.pp.calculate_qc_metrics(
-    adata, qc_vars=["mt"], percent_top=None, log1p=False, inplace=True
-)
+sc.pp.calculate_qc_metrics(adata, qc_vars=["mt"], percent_top=None, log1p=False, inplace=True)
 
 adata = adata[adata.obs.pct_counts_mt < int("${max_mito_percentage}"), :].copy()
 
@@ -41,12 +40,7 @@ adata.write_h5ad(f"{prefix}.h5ad")
 
 # Versions
 
-versions = {
-    "${task.process}": {
-        "python": platform.python_version(),
-        "scanpy": sc.__version__
-    }
-}
+versions = {"${task.process}": {"python": platform.python_version(), "scanpy": sc.__version__}}
 
 with open("versions.yml", "w") as f:
     yaml.dump(versions, f)

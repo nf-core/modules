@@ -1,0 +1,252 @@
+{
+    "sarscov2 - fastq - trimmomatic - single-end": {
+        "content": [
+            "test.SE.paired.trim.fastq.gz:md5,e68abbd3b88f7ec12940a4f5c2b8bfb9",
+            "test_trim.log:md5,e4c3f619e9b0e26847f8f3e3d9af319b",
+            "test.summary:md5,24c973237557a1439c775ca19a5deaa5",
+            [
+                "test_out.log"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-11T11:27:07.921874"
+    },
+    "sarscov2 - fastq - leehom - single-end": {
+        "content": [
+            "test.fq.gz:md5,304af6f5f6bb58c70abf7924eacfa175",
+            [
+                "test.fail.fq.gz"
+            ],
+            [
+                "test.log"
+            ],
+            [
+                {
+                    "FASTQ_REMOVEADAPTERS_MERGE:LEEHOM": {
+                        "leehom": "1.2.15"
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-01-23T13:40:21.760186115"
+    },
+    "sarscov2 - fastq - trimmomatic - paired-end - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.paired.trim_1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test.paired.trim_2.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.unpaired.trim_1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ],
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.unpaired.trim_2.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_trim.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.summary:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "4": [
+                    
+                ],
+                "5": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_out.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "discarded_reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.unpaired.trim_1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ],
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.unpaired.trim_2.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "logfile": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_trim.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "multiqc_files": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_out.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "processed_reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.paired.trim_1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test.paired.trim_2.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
+                ],
+                "report": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.summary:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions": [
+                    
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-11T11:29:30.550179"
+    },
+    "sarscov2 - fastq - cutadapt - paired-end": {
+        "content": [
+            [
+                "test_1.trim.fastq.gz:md5,682dab8e982563cffac2bd60bf7444f4",
+                "test_2.trim.fastq.gz:md5,1a1e8ab23af40e6474be0cdf82fab907"
+            ],
+            [
+                "test.cutadapt.log"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2025-12-19T11:19:27.959952445"
+    },
+    "sarscov2 - fastq - bbduk - paired-end": {
+        "content": [
+            [
+                "test_bbduk_1.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec",
+                "test_bbduk_2.fastq.gz:md5,2ebae722295ea66d84075a3b042e2b42"
+            ],
+            [
+                "test_bbduk.bbduk.log"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2025-12-19T11:19:41.651709543"
+    },
+    "sarscov2 - fastq - trimgalore - single-end": {
+        "content": [
+            "test_trimmed.fq.gz:md5,566d44cca0d22c522d6cf0e50c7165dc",
+            60
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2025-12-19T11:19:34.98214978"
+    },
+    "sarscov2 - fastq - adapterremoval - paired-end - merge": {
+        "content": [
+            336,
+            [
+                "test.discarded.fastq.gz"
+            ],
+            [
+                {
+                    "FASTQ_REMOVEADAPTERS_MERGE:ADAPTERREMOVAL_PE": {
+                        "adapterremoval": "2.3.2"
+                    }
+                }
+            ],
+            [
+                "test.settings"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-01-23T13:40:37.717920729"
+    },
+    "sarscov2 - fastq - fastp - single-end": {
+        "content": [
+            "test.fastp.fastq.gz:md5,67b2bbae47f073e05a97a9c2edce23c7",
+            "test.fail.fastq.gz:md5,3e4aaadb66a5b8fc9b881bf39c227abd",
+            32,
+            2394,
+            [
+                "test.fastp.json"
+            ],
+            [
+                
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-01-23T13:40:29.253330708"
+    }
+}

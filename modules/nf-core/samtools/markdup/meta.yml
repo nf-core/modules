@@ -28,12 +28,17 @@ input:
   - - meta2:
         type: map
         description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
     - fasta:
         type: file
-        description: A reference genome in FASTA format
-        pattern: "*.fasta"
+        description: Reference genome file
+        pattern: "*.{fa,fasta}"
+        ontologies: []
+    - fai:
+        type: file
+        description: Reference genome index file
+        pattern: "*.fai"
         ontologies: []
 output:
   bam:
@@ -69,13 +74,27 @@ output:
           description: SAM file
           pattern: "*{.sam}"
           ontologies: []
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@priyanka-surana"
 maintainers:

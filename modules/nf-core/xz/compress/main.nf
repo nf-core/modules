@@ -12,7 +12,7 @@ process XZ_COMPRESS {
 
     output:
     tuple val(meta), path("$archive"), emit: archive
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('xz'), eval('xz --version | sed \'1!d;s/\\([^0-9.]*\\)//g\''), topic: versions, emit: versions_xz
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,21 +24,13 @@ process XZ_COMPRESS {
     # needs --stdout for xz to avoid the following issue:
     # xz: ${raw_file}: Is a symbolic link, skipping
     xz -T $task.cpus --stdout ${args} ${raw_file} > ${archive}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        xz: \$(xz --version | head -n1 | awk '{print \$NF}')
-    END_VERSIONS
     """
 
     stub:
+    def args = task.ext.args ?: ''
     archive = raw_file.toString() + ".xz"
     """
+    echo "${args}"
     touch "${archive}"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        xz: \$(xz --version | head -n1 | awk '{print \$NF}')
-    END_VERSIONS
     """
 }

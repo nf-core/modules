@@ -21,7 +21,7 @@ process MANTA_TUMORONLY {
     tuple val(meta), path("*candidate_sv.vcf.gz.tbi")          , emit: candidate_sv_vcf_tbi
     tuple val(meta), path("*tumor_sv.vcf.gz")                  , emit: tumor_sv_vcf
     tuple val(meta), path("*tumor_sv.vcf.gz.tbi")              , emit: tumor_sv_vcf_tbi
-    path "versions.yml"                                        , emit: versions
+    tuple val("${task.process}"), val("manta"), eval("configManta.py --version"), topic: versions, emit: versions_manta
 
     when:
     task.ext.when == null || task.ext.when
@@ -54,11 +54,6 @@ process MANTA_TUMORONLY {
         ${prefix}.tumor_sv.vcf.gz
     mv manta/results/variants/tumorSV.vcf.gz.tbi \\
         ${prefix}.tumor_sv.vcf.gz.tbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        manta: \$( configManta.py --version )
-    END_VERSIONS
     """
 
     stub:
@@ -70,10 +65,5 @@ process MANTA_TUMORONLY {
     touch ${prefix}.candidate_sv.vcf.gz.tbi
     echo "" | gzip > ${prefix}.tumor_sv.vcf.gz
     touch ${prefix}.tumor_sv.vcf.gz.tbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        manta: \$( configManta.py --version )
-    END_VERSIONS
     """
 }

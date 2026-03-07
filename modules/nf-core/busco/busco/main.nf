@@ -35,8 +35,7 @@ process BUSCO_BUSCO {
     tuple val(meta), path("busco_downloads/lineages/*"), emit: downloaded_lineages, optional: true
     tuple val(meta), path("*-busco/*/run_*/busco_sequences/single_copy_busco_sequences/*.faa"), emit: single_copy_faa, optional: true
     tuple val(meta), path("*-busco/*/run_*/busco_sequences/single_copy_busco_sequences/*.fna"), emit: single_copy_fna, optional: true
-
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('busco'), eval("busco --version 2> /dev/null | sed 's/BUSCO //g'"), emit: versions_busco, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -115,11 +114,6 @@ process BUSCO_BUSCO {
         echo "Busco run failed"
         exit 1
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        busco: \$( busco --version 2> /dev/null | sed 's/BUSCO //g' )
-    END_VERSIONS
     """
 
     stub:
@@ -128,10 +122,5 @@ process BUSCO_BUSCO {
     """
     touch ${prefix}-busco.batch_summary.txt
     mkdir -p ${prefix}-busco/${fasta_name}/run_${lineage}/busco_sequences
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        busco: \$( busco --version 2> /dev/null | sed 's/BUSCO //g' )
-    END_VERSIONS
     """
 }

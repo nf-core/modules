@@ -8,8 +8,7 @@ process SAMTOOLS_FAIDX {
         'biocontainers/samtools:1.22.1--h96c455f_0' }"
 
     input:
-    tuple val(meta), path(fasta)
-    tuple val(meta2), path(fai)
+    tuple val(meta), path(fasta), path(fai)
     val get_sizes
 
     output:
@@ -17,7 +16,7 @@ process SAMTOOLS_FAIDX {
     tuple val(meta), path ("*.sizes")      , emit: sizes, optional: true
     tuple val(meta), path ("*.fai")        , emit: fai, optional: true
     tuple val(meta), path ("*.gzi")        , emit: gzi, optional: true
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,11 +31,6 @@ process SAMTOOLS_FAIDX {
         $args
 
     ${get_sizes_command}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -51,11 +45,5 @@ process SAMTOOLS_FAIDX {
     fi
 
     ${get_sizes_command}
-
-    cat <<-END_VERSIONS > versions.yml
-
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }

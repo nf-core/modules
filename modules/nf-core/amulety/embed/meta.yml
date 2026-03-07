@@ -1,0 +1,82 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "amulety_embed"
+description: A module to create embeddings of B-cell receptor (BCR) or T-cell receptor
+  (TCR) amino acid sequences using amulety.
+keywords:
+  - embeddings
+  - BCR
+  - antibody
+  - GPU-accelerated
+  - immunoinformatics
+  - immunology
+tools:
+  - "amulety":
+      description: "Python package to create embeddings of BCR and TCR amino acid sequences."
+      homepage: "https://amulety.readthedocs.io/en/latest/"
+      documentation: "https://amulety.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/immcantation/amulety"
+      doi: "10.1101/2025.03.21.644583"
+      licence: ["GPL v3"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - tsv:
+        type: file
+        description: TSV with BCR/TCR nucleotide sequences in AIRR rearrangement format
+        pattern: "*.{tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - chain:
+      type: string
+      description: |
+        The chain to use for the embeddings. Can be either 'H' (high diversity chain: BCR heavy or TCR beta or delta),
+        'L' (low diversity chain: BCR light or TCR alpha or gamma) or 'HL'/'LH' (BCR heavy + light, and TCR alpha + beta or gamma + delta).
+      enum: ["L", "H", "HL", "LH"]
+  - model:
+      type: string
+      description: |
+        The embedding model to use. Options are detailed on the amulety documentation.
+
+output:
+  embedding:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tsv":
+          type: file
+          description: TSV with embeddings of BCR or TCR amino acid sequences.
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_amulety:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - amulety:
+          type: string
+          description: The tool name
+      - "amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - amulety:
+          type: string
+          description: The tool name
+      - "amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+'":
+          type: string
+          description: The command used to generate the version of the tool
+authors:
+  - "@ggabernet"
+maintainers:
+  - "@ggabernet"

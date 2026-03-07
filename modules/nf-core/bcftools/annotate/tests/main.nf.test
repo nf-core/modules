@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process BCFTOOLS_ANNOTATE"
     script "../main.nf"
+    config "./nextflow.config"
     process "BCFTOOLS_ANNOTATE"
 
     tag "modules"
@@ -11,9 +12,10 @@ nextflow_process {
 
     test("sarscov2 - [vcf, tbi, annotation, annotation_tbi], [], [], [] - vcf_output") {
 
-        config "./vcf.config"
-
         when {
+            params {
+                args_modules = "-x ID,INFO/DP,FORMAT/DP --output-type z"
+            }
             process {
                 """
                 input[0] = [
@@ -21,32 +23,32 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
+                    [], [], []
                 ]
-                input[1] = []
-                input[2] = []
-                input[3] = []
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.versions
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, [], annotation, annotation_tbi], [], [], [] - vcf_output") {
 
-        config "./vcf.config"
-
         when {
+            params {
+                args_modules = "-x ID,INFO/DP,FORMAT/DP --output-type z"
+            }
             process {
                 """
                 input[0] = [
@@ -54,32 +56,32 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
                     [],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
+                    [], [], []
                 ]
-                input[1] = []
-                input[2] = []
-                input[3] = []
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.versions
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, tbi, annotation, annotation_tbi], [], [], [] - vcf_gz_index") {
 
-        config "./vcf_gz_index.config"
-
         when {
+            params {
+                args_modules = "--output-type z --write-index --no-version"
+            }
             process {
                 """
                 input[0] = [
@@ -87,35 +89,32 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
+                    [], [], []
                 ]
-                input[1] = []
-                input[2] = []
-                input[3] = []
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.versions
-                ).match() },
-                { assert process.out.csi[0][1].endsWith(".csi") }
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, tbi, annotation, annotation_tbi], [], [], [] - vcf_gz_index_csi") {
 
-        config "./vcf_gz_index_csi.config"
-
         when {
+            params {
+                args_modules = "--output-type z --write-index=csi --no-version"
+            }
             process {
                 """
                 input[0] = [
@@ -123,35 +122,32 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
+                    [], [], []
                 ]
-                input[1] = []
-                input[2] = []
-                input[3] = []
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.versions
-                ).match() },
-                { assert process.out.csi[0][1].endsWith(".csi") }
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, tbi, annotation, annotation_tbi], [], [], [] - vcf_gz_index_tbi") {
 
-        config "./vcf_gz_index_tbi.config"
-
         when {
+            params {
+                args_modules = "--output-type z --write-index=tbi --no-version"
+            }
             process {
                 """
                 input[0] = [
@@ -159,142 +155,146 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
+                    [], [], []
                 ]
-                input[1] = []
-                input[2] = []
-                input[3] = []
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.versions
-                ).match() },
-                { assert process.out.tbi[0][1].endsWith(".tbi") }
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, [], annotation, annotation_tbi], [], header, [] - bcf_output") {
 
-        config "./bcf.config"
-
         when {
+            params {
+                args_modules = "-x ID,INFO/DP,FORMAT/DP --output-type u"
+            }
             process {
                 """
-                input[0] = [
+                header = channel.of(
+                    '##INFO=<ID=SGB,Number=1,Type=Float,Description="Segregation based metric.">',
+                    '##INFO=<ID=MQ0F,Number=1,Type=Float,Description="Fraction of MQ0 reads (smaller is better)">'
+                ).collectFile(name:"headers.vcf", newLine:true)
+                input[0] = channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
                     [],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
-                ]
-                input[1] = []
-                input[2] = Channel.of(
-                    '##INFO=<ID=SGB,Number=1,Type=Float,Description="Segregation based metric.">',
-                    '##INFO=<ID=MQ0F,Number=1,Type=Float,Description="Fraction of MQ0 reads (smaller is better)">'
-                ).collectFile(name:"headers.vcf", newLine:true)
-                input[3] = []
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
+                    []
+                ])
+                .combine(header)
+                .combine(channel.of([[]]))
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.versions
-                ).match("bcf-header") }
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, [], annotation, annotation_tbi], columns, [], [] - bcf_output") {
 
-        config "./bcf.config"
-
         when {
+            params {
+                args_modules = "-x ID,INFO/DP,FORMAT/DP --output-type u"
+            }
             process {
                 """
-                input[0] = [
+                columns = channel.of('INFO/ICB', 'INFO/HOB', 'INFO/DP4').collectFile(name:"columns.txt", newLine:true)
+                input[0] = channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
                     [],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
-                ]
-                input[1] = Channel.of('INFO/ICB', 'INFO/HOB', 'INFO/DP4').collectFile(name:"columns.txt", newLine:true)
-                input[2] = []
-                input[3] = []
+                ]).combine(columns)
+                .combine(channel.of([[], []]))
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.versions
-                ).match("bcf-columns") }
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, [], annotation, annotation_tbi], [], header, rename_chrs - vcf_gz_index") {
 
-        config "./vcf_gz_index.config"
- 
         when {
+            params {
+                args_modules = "--output-type z --write-index --no-version"
+            }
             process {
                 """
-                input[0] = [
+                headers = channel.of(
+                    '##INFO=<ID=SGB,Number=1,Type=Float,Description="Segregation based metric.">',
+                    '##INFO=<ID=MQ0F,Number=1,Type=Float,Description="Fraction of MQ0 reads (smaller is better)">'
+                ).collectFile(name:"headers.vcf", newLine:true)
+                rename = channel.of('MT192765.1 renamed').collectFile(name:"rename.txt", newLine:true)
+                input[0] = channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
                     [],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
-                ]
-                input[1] = []
-                input[2] = Channel.of(
-                    '##INFO=<ID=SGB,Number=1,Type=Float,Description="Segregation based metric.">',
-                    '##INFO=<ID=MQ0F,Number=1,Type=Float,Description="Fraction of MQ0 reads (smaller is better)">'
-                ).collectFile(name:"headers.vcf", newLine:true)
-                input[3] = Channel.of('MT192765.1 renamed').collectFile(name:"rename.txt", newLine:true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
+                    []
+                ]).combine(headers)
+                .combine(rename)
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert path(process.out.vcf.get(0).get(1)).LinesGzip.contains("##contig=<ID=renamed,length=29829>")},
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.versions
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, tbi, annotation, annotation_tbi], [], [], [] - stub") {
 
-        config "./vcf.config"
         options "-stub"
 
         when {
+            params {
+                args_modules = "-x ID,INFO/DP,FORMAT/DP --output-type z"
+            }
             process {
                 """
                 input[0] = [
@@ -302,30 +302,34 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
+                    [], [], []
                 ]
-                input[1] = []
-                input[2] = []
-                input[3] = []
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, tbi, annotation, annotation_tbi], [], [], [] - vcf_gz_index - stub") {
 
-        config "./vcf_gz_index.config"
         options "-stub"
 
         when {
+            params {
+                args_modules = "--output-type z --write-index --no-version"
+            }
             process {
                 """
                 input[0] = [
@@ -333,31 +337,34 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
+                    [], [], []
                 ]
-                input[1] = []
-                input[2] = []
-                input[3] = []
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match()},
-                { assert process.out.csi[0][1].endsWith(".csi") }
+                { assert snapshot(
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, tbi, annotation, annotation_tbi], [], [], [] - vcf_gz_index_csi - stub") {
 
-        config "./vcf_gz_index_csi.config"
         options "-stub"
 
         when {
+            params {
+                args_modules = "--output-type z --write-index=csi --no-version"
+            }
             process {
                 """
                 input[0] = [
@@ -365,31 +372,34 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
+                    [], [], []
                 ]
-                input[1] = []
-                input[2] = []
-                input[3] = []
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() },
-                { assert process.out.csi[0][1].endsWith(".csi") }
+                { assert snapshot(
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [vcf, tbi, annotation, annotation_tbi], [], [], [] - vcf_gz_index_tbi - stub") {
 
-        config "./vcf_gz_index_tbi.config"
         options "-stub"
 
         when {
+            params {
+                args_modules = "--output-type z --write-index=tbi --no-version"
+            }
             process {
                 """
                 input[0] = [
@@ -397,23 +407,23 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
+                    [], [], []
                 ]
-                input[1] = []
-                input[2] = []
-                input[3] = []
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() },
-                { assert process.out.tbi[0][1].endsWith(".tbi") }
+                { assert snapshot(
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
-
 }
