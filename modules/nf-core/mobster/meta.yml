@@ -18,7 +18,8 @@ tools:
       documentation: https://caravagnalab.github.io/mobster/
       tool_dev_url: https://github.com/caravagnalab/mobster
       doi: "10.1038/s41588-020-0675-5"
-      licence: ["GPL-3.0"]
+      licence:
+        - "GPL-3.0"
       identifier: biotools:mobster-R
 input:
   - - meta:
@@ -32,7 +33,7 @@ input:
           table
         pattern: "*.{rds,csv}"
         ontologies:
-          - edam: "http://edamontology.org/format_3752" # csv
+          - edam: "http://edamontology.org/format_3752"
 output:
   mobster_rds:
     - - meta:
@@ -89,7 +90,7 @@ output:
           description: Final report plots as a .pdf file
           pattern: "*_mobster_report.pdf"
           ontologies:
-            - edam: "http://edamontology.org/format_3508" # pdf
+            - edam: "http://edamontology.org/format_3508"
   mobster_report_png:
     - - meta:
           type: map
@@ -101,14 +102,22 @@ output:
           description: Final report plots as a .png file
           pattern: "*_mobster_report.png"
           ontologies:
-            - edam: "http://edamontology.org/format_3603" # png
+            - edam: "http://edamontology.org/format_3603"
+  versions_mobster:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
+topics:
   versions:
     - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+          - edam: http://edamontology.org/format_3750
 authors:
   - "@elena-buscaroli"
 maintainers:
