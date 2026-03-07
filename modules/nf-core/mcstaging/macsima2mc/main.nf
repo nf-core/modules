@@ -27,7 +27,7 @@ process MCSTAGING_MACSIMA2MC {
     """
     python /staging/macsima2mc/macsima2mc.py \
         -i ${input_dir} \
-        -o ${prefix} \
+        -o ${output_dir} \
         ${args}
 
     cat <<-END_VERSIONS > versions.yml
