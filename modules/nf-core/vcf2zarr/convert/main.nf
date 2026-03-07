@@ -12,7 +12,7 @@ process VCF2ZARR_CONVERT {
 
     output:
     tuple val(meta), path("*.vcz"), emit: vcz
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('vcf2zarr'), eval('vcf2zarr --version |& sed -n "s/.* //p"'), emit: versions_vcf2zarr, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,28 +23,18 @@ process VCF2ZARR_CONVERT {
     """
     vcf2zarr \\
         convert \\
-        $args \\
-        --worker-processes $task.cpus \\
-        $vcf \\
+        ${args} \\
+        --worker-processes ${task.cpus} \\
+        ${vcf} \\
         ${prefix}.vcz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vcf2zarr: \$(vcf2zarr --version |& sed -n 's/.* //p')
-    END_VERSIONS
     """
 
     stub:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
 
     mkdir ${prefix}.vcz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vcf2zarr: \$(vcf2zarr --version |& sed -n 's/.* //p')
-    END_VERSIONS
     """
 }
