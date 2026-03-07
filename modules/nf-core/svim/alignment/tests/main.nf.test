@@ -1,0 +1,74 @@
+nextflow_process {
+
+    name "Test Process SVIM_ALIGNMENT"
+    script "../main.nf"
+    process "SVIM_ALIGNMENT"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "svim"
+    tag "svim/alignment"
+
+    test("homo_sapiens - [bam, bai], fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf.collect { meta, vcf ->
+                        [
+                            meta,
+                            file(vcf).name
+                        ]
+                    },
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - [bam, bai], fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
