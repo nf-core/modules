@@ -1,4 +1,4 @@
-FROM quay.io/biocontainers/antismash:8.0.1--pyhdfd78af_0
+FROM quay.io/biocontainers/antismash:8.0.4--pyhdfd78af_0@sha256:e9f86a95ff31e975a82b4437f4d6b6b0c6d6ffb7c72bf5e41840b75d80ec263a
 
 ## Speeds up slightly builds: https://github.com/antismash/antismash/issues/837#issuecomment-2893858536
 ## From: https://github.com/antismash/containers/blob/main/standalone-lite/Dockerfile#L25
