@@ -16,7 +16,9 @@ tools:
       documentation: "https://caravagnalab.github.io/ctree/"
       tool_dev_url: "https://github.com/caravagnalab/ctree"
       doi: "10.1038/s41592-018-0108-x"
-      licence: ["GPL v3-or-later"]
+      licence:
+        - "GPL v3-or-later"
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -29,7 +31,7 @@ input:
           Either a .rds object of class `vb_bmm` or `dbpmm`, or a `.tsv` mutations table obtained after running the `pyclonevi` module
         pattern: "*.{rds,tsv}"
         ontologies:
-          - edam: "http://edamontology.org/format_3475" # tsv
+          - edam: "http://edamontology.org/format_3475"
 output:
   ctree_rds:
     - - meta:
@@ -46,6 +48,7 @@ output:
             named `ctree_VIBER.rds`. If the input is the `pyclonevi` `.tsv` file, the output will
             be one ctree object named `ctree_pyclonevi.rds`
           pattern: "**ctree_{mobster,VIBER,pyclonevi}.rds"
+          ontologies: []
   ctree_plots_rds:
     - - meta:
           type: map
@@ -57,6 +60,7 @@ output:
           description: |
             Final plots as an .rds object. The module outputs one file for each ctree object
           pattern: "**ctree_{mobster,VIBER,pyclonevi}_plots.rds"
+          ontologies: []
   ctree_report_rds:
     - - meta:
           type: map
@@ -68,6 +72,7 @@ output:
           description: |
             Final report plots as an .rds object. The module outputs one file for each ctree object
           pattern: "**ctree_{mobster,VIBER,pyclonevi}_report.rds"
+          ontologies: []
   ctree_report_pdf:
     - - meta:
           type: map
@@ -80,7 +85,7 @@ output:
             Final report plots as a pdf object. The module outputs one file for each ctree object
           pattern: "**ctree_{mobster,VIBER,pyclonevi}_report.pdf"
           ontologies:
-            - edam: "http://edamontology.org/format_3508" # pdf
+            - edam: "http://edamontology.org/format_3508"
   ctree_report_png:
     - - meta:
           type: map
@@ -93,12 +98,22 @@ output:
             Final report plots as a png object. The module outputs one file for each ctree object
           pattern: "**ctree_{mobster,VIBER,pyclonevi}_report.png"
           ontologies:
-            - edam: "http://edamontology.org/format_3603" # png
+            - edam: "http://edamontology.org/format_3603"
+  versions_ctree:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750"
+topics:
   versions:
     - "versions.yml":
         type: file
         description: File containing software versions
         pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750"
 authors:
   - "@elena-buscaroli"
 maintainers:
