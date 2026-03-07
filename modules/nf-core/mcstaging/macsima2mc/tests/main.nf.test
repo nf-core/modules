@@ -52,8 +52,10 @@ nextflow_process {
         then {
                 assertAll(
                     { assert process.success },
-                    { assert process.out.out_dir[0][1].flatten().any { it.toString().endsWith('markers.csv') } },
-                    { assert process.out.out_dir[0][1].flatten().any { it.toString().endsWith('.ome.tiff') } },
+                    { assert process.out.out_dir[0][1].size() >= 1 },
+                    { assert new File(process.out.out_dir[0][1][0].toString()).isDirectory() },
+                    { assert new File(process.out.out_dir[0][1][0].toString() + '/markers.csv').exists() },
+                    { assert new File(process.out.out_dir[0][1][0].toString() + '/raw').isDirectory() },
                     { assert snapshot(process.out.versions).match("versions") }
                 )
             }
