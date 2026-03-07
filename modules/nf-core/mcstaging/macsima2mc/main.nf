@@ -22,7 +22,6 @@ process MCSTAGING_MACSIMA2MC {
 
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.13'
 
     """
     python /staging/macsima2mc/macsima2mc.py \
