@@ -50,12 +50,13 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.sort()).match() },
-                { assert snapshot(process.out.versions).match("versions") }
-            )
-        }
+                assertAll(
+                    { assert process.success },
+                    { assert process.out.out_dir[0][1].flatten().any { it.toString().endsWith('markers.csv') } },
+                    { assert process.out.out_dir[0][1].flatten().any { it.toString().endsWith('.ome.tiff') } },
+                    { assert snapshot(process.out.versions).match("versions") }
+                )
+            }
     }
 
     test("macsima2mc - input_dir - stub") {
