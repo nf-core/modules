@@ -4,8 +4,8 @@ process EMU_ABUNDANCE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/89/89f51e5b1961b27efc33dbafe25ae7f85c1ccfc2e2df5341849237a6db2023a1/data'
-        : 'community.wave.seqera.io/library/emu:3.5.4--c9ac9572d0d77ae9'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/66/66a9b54eaa307623ad2900c87069a5731bf3c3e91f855303aa70476f9535640f/data'
+        : 'community.wave.seqera.io/library/emu:3.6.2--0adcfa4809f061f6'}"
 
     input:
     tuple val(meta), path(reads)
@@ -37,7 +37,6 @@ process EMU_ABUNDANCE {
     if [ -d results ]; then
         mv results/* .
     fi
-
     """
 
     stub:
@@ -50,6 +49,5 @@ process EMU_ABUNDANCE {
     touch ${prefix}_emu_alignments.sam
     touch ${prefix}_unclassified_mapped.fasta
     touch ${prefix}_unmapped.fasta
-
     """
 }
