@@ -21,7 +21,7 @@ process RMATS_PREP {
     output:
     // TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
     tuple val(meta), path("*.rmats"), emit: prep_rmats_file
-    tuple val(meta), path("*outcomes_by_bam.txt"), emit: prep_read_outcomes_file
+    tuple val(meta), path("*read_outcomes_by_bam.txt"), emit: prep_read_outcomes_file
     tuple val("${task.process}"), val('rmats'), eval('rmats.py --version | sed -e "s/v//g"'), emit: versions_rmats, topic: versions
 
     when:
@@ -35,11 +35,11 @@ process RMATS_PREP {
     //               e.g. https://github.com/nf-core/modules/blob/master/modules/nf-core/homer/annotatepeaks/main.nf
     //               Each software used MUST provide the software name and version number in the YAML version file (versions.yml)
 
-    //   --readLength READLENGTH
+    // NOTES   --readLength READLENGTH
     //                    The length of each read. Required parameter, with the
     //                    value set according to the RNA-seq read length
-    // TODO - question. Does this definition mean I should change it by read length? If so, look at a samtools command to figure it out. Samtools stats!
-    // TODO - should I modify the prefix to include rmats_prep only in a subworkflow via modules.config? It seems so, see example at https://github.com/nf-core/rnaseq/blob/e049f51f0214b2aef7624b9dd496a404a7c34d14/conf/modules.config#L576
+    //          I should change it by read length (in workflow)! Look at Samtools stats!
+    // NOTES - Following example at https://github.com/nf-core/rnaseq/blob/e049f51f0214b2aef7624b9dd496a404a7c34d14/conf/modules.config#L576, the files are saved as prefix only. When using this in a workflow, I will modify the prefix to include prep/post/etc.
     """
     echo ${genome_bam} > ${prefix}.prep.b1.txt
 
@@ -53,10 +53,8 @@ process RMATS_PREP {
         --tmp ${prefix}_rmats_tmp \\
         --od ${prefix}_rmats_prep
 
-    for file in `ls ${prefix}_rmats_tmp/*`
-    do
-    cp \${file} ${prefix}_prep_\$(basename \${file})
-    done
+    cp ${prefix}_rmats_tmp/*.txt ${prefix}_read_outcomes_by_bam.txt
+    cp ${prefix}_rmats_tmp/*.rmats ${prefix}.rmats
     """
 
     // NOTES for post - post requires the rmats files to be in the tmp directory, otherwise it fails
@@ -68,6 +66,6 @@ process RMATS_PREP {
     echo ${args}
 
     touch ${prefix}.rmats
-    touch ${prefix}_outcomes_by_bam.txt
+    touch ${prefix}_read_outcomes_by_bam.txt
     """
 }
