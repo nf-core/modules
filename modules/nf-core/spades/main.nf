@@ -69,7 +69,6 @@ process SPADES {
     if [ -f warnings.log ]; then
         mv warnings.log ${prefix}.warnings.log
     fi
-
     """
 
     stub:
@@ -82,6 +81,5 @@ process SPADES {
     echo "" | gzip > ${prefix}.assembly.gfa.gz
     touch ${prefix}.spades.log
     touch ${prefix}.warnings.log
-
     """
 }
