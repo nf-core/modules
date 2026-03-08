@@ -17,7 +17,7 @@ process EMU_ABUNDANCE {
     tuple val(meta), path("${prefix}_emu_alignments.sam")               , emit: samfile          , optional: true
     tuple val(meta), path("${prefix}_unclassified_mapped.*")            , emit: unclassified     , optional: true
     tuple val(meta), path("${prefix}_unmapped.*")                       , emit: unmapped         , optional: true
-    path "versions.yml"                                                 , emit: versions
+    tuple val("${task.process}"), val('emu'), eval('emu --version 2>&1 | sed "s/^.*emu //; s/Using.*$//"'), topic: versions, emit: versions_emu
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,10 +38,6 @@ process EMU_ABUNDANCE {
         mv results/* .
     fi
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        emu: \$(echo \$(emu --version 2>&1) | sed 's/^.*emu //; s/Using.*\$//' )
-    END_VERSIONS
     """
 
     stub:
@@ -55,9 +51,5 @@ process EMU_ABUNDANCE {
     touch ${prefix}_unclassified_mapped.fasta
     touch ${prefix}_unmapped.fasta
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        emu: \$(echo \$(emu --version 2>&1) | sed 's/^.*emu //; s/Using.*\$//' )
-    END_VERSIONS
     """
 }
