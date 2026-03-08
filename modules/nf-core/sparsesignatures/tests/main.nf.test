@@ -37,7 +37,7 @@ nextflow_process {
                     process.out.signatures_mutCounts_rds,
                     process.out.signatures_cv_rds,
                     process.out.signatures_bestConf_rds,
-                    process.out.versions
+                    file(process.out.versions_sparsesignatures[0]).name
                 ).match() },
                 // Check nondeterministic files exist
                 { assert file(process.out.signatures_nmfOut_rds[0][1]).exists() },
@@ -102,7 +102,7 @@ nextflow_process {
                     process.out.signatures_mutCounts_rds,
                     process.out.signatures_cv_rds,
                     process.out.signatures_bestConf_rds,
-                    process.out.versions
+                    file(process.out.versions_sparsesignatures[0]).name
                 ).match() },
                 { assert file(process.out.signatures_nmfOut_rds[0][1]).exists() },
                 { assert file(process.out.signatures_plot_pdf[0][1]).exists() },
