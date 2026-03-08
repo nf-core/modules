@@ -27,7 +27,6 @@ process NANOQ {
         ${args} \\
         -r ${prefix}.stats \\
         -o ${prefix}.${output_format}
-
     """
 
     stub:
@@ -35,6 +34,5 @@ process NANOQ {
     """
     echo "" | gzip > ${prefix}.${output_format}
     touch ${prefix}.stats
-
     """
 }
