@@ -85,7 +85,7 @@ output:
       - emu:
           type: string
           description: The tool name
-      - "emu --version 2>&1 | sed 's/^.*emu //; s/Using.*$//'":
+      - 'emu --version 2>&1 | sed "s/^.*emu //; s/Using.*$//"':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -96,7 +96,7 @@ topics:
       - emu:
           type: string
           description: The name of the tool
-      - "emu --version 2>&1 | sed 's/^.*emu //; s/Using.*$//'":
+      - 'emu --version 2>&1 | sed "s/^.*emu //; s/Using.*$//"':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
