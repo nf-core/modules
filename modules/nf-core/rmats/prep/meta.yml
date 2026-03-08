@@ -55,11 +55,11 @@ output:
           type: map
           description: Groovy Map containing sample information. e.g. `[
             id:'sample1'single_end:false, strandness:'auto']`
-      - "*outcomes_by_bam.txt":
+      - "*read_outcomes_by_bam.txt":
           type: file
           description: text file detailing number of reads used and not used for
             various reasons (clipped, not paired, wrong length, etc.)
-          pattern: "*outcomes_by_bam.txt"
+          pattern: "*read_outcomes_by_bam.txt"
           ontologies:
             - edam: http://edamontology.org/format_2330
   versions_rmats:
