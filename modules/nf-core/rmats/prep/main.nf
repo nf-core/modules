@@ -9,8 +9,6 @@ process RMATS_PREP {
         : 'biocontainers/rmats:4.3.0--py311hf2f0b74_5'}"
 
     input:
-    // TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
-
     tuple val(meta), path(genome_bam)
     // TODO - post seems to need only the BAM *names*, not the actual files. Could we just get the first line of each file to get the names?
     // for file in `ls multi_bam_rmats_prep_tmp/*.rmats`; do head -1 $file; done | tr '\n' ','
@@ -19,7 +17,6 @@ process RMATS_PREP {
     val rmats_read_len
 
     output:
-    // TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
     tuple val(meta), path("*.rmats"), emit: prep_rmats_file
     tuple val(meta), path("*read_outcomes_by_bam.txt"), emit: prep_read_outcomes_file
     tuple val("${task.process}"), val('rmats'), eval('rmats.py --version | sed -e "s/v//g"'), emit: versions_rmats, topic: versions
@@ -30,11 +27,6 @@ process RMATS_PREP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
-    //               If the software is unable to output a version number on the command-line then it can be manually specified
-    //               e.g. https://github.com/nf-core/modules/blob/master/modules/nf-core/homer/annotatepeaks/main.nf
-    //               Each software used MUST provide the software name and version number in the YAML version file (versions.yml)
-
     // NOTES   --readLength READLENGTH
     //                    The length of each read. Required parameter, with the
     //                    value set according to the RNA-seq read length
