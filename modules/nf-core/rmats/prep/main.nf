@@ -2,7 +2,6 @@ process RMATS_PREP {
     tag "${meta.id}"
     label 'process_single'
 
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/rmats:4.3.0--py311hf2f0b74_5'
@@ -10,9 +9,9 @@ process RMATS_PREP {
 
     input:
     tuple val(meta), path(genome_bam)
-    // TODO - post seems to need only the BAM *names*, not the actual files. Could we just get the first line of each file to get the names?
+    // NOTES - post seems to need only the BAM *names*, not the actual files. Could we just get the first line of each file to get the names?
     // for file in `ls multi_bam_rmats_prep_tmp/*.rmats`; do head -1 $file; done | tr '\n' ','
-    // TODO - for stats, it should be possible to parse the formula using patsy, but if we include PAIRADISE we might have R - just do this in R, first pass
+    // NOTES - for stats, it should be possible to parse the formula using patsy, but if we include PAIRADISE we might have R - just do this in R, first pass
     path reference_gtf
     val rmats_read_len
 
