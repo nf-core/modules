@@ -20,7 +20,7 @@ process SPADES {
     tuple val(meta), path('*.assembly.gfa.gz')    , optional:true, emit: gfa
     tuple val(meta), path('*.warnings.log')         , optional:true, emit: warnings
     tuple val(meta), path('*.spades.log')         , emit: log
-    path  "versions.yml"                          , emit: versions
+    tuple val("${task.process}"), val('spades'), eval("spades.py --version 2>&1 | sed -n 's/^.*SPAdes genome assembler v//p'"), topic: versions, emit: versions_spades
 
     when:
     task.ext.when == null || task.ext.when
@@ -70,10 +70,6 @@ process SPADES {
         mv warnings.log ${prefix}.warnings.log
     fi
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        spades: \$(spades.py --version 2>&1 | sed -n 's/^.*SPAdes genome assembler v//p')
-    END_VERSIONS
     """
 
     stub:
@@ -87,9 +83,5 @@ process SPADES {
     touch ${prefix}.spades.log
     touch ${prefix}.warnings.log
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        spades: \$(spades.py --version 2>&1 | sed -n 's/^.*SPAdes genome assembler v//p')
-    END_VERSIONS
     """
 }
