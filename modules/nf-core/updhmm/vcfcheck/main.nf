@@ -11,7 +11,7 @@ process UPDHMM_VCFCHECK {
     tuple val(meta), path(vcf), path(tbi)
 
     output:
-    tuple val(meta), path("*.processed.rds")    , emit: processed_vcf
+    tuple val(meta), path("*.processed.rds")    , emit: processed_rds
     tuple val(meta), path("*.R_sessionInfo.log"), emit: session_info
     path "versions.yml", emit: versions, topic: versions
 

@@ -51,9 +51,16 @@ nextflow_process {
         }
 
         then {
+            def session_text = path(process.out.session_info[0][1]).getText()
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() }
+                { assert session_text.contains("R version") },
+                { assert session_text.contains("UPDhmm_1.6.0") },
+                { assert session_text.contains("VariantAnnotation_1.52.0") },
+                { assert snapshot(
+                    process.out.processed_rds,
+                    process.out.versions
+                ).match() }
             )
         }
     }
@@ -80,9 +87,14 @@ nextflow_process {
         }
 
         then {
+            def session_text = path(process.out.session_info[0][1]).getText()
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(
+                    process.out.processed_rds,
+                    process.out.session_info,
+                    process.out.versions
+                ).match() }
             )
         }
     }
