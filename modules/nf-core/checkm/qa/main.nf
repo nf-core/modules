@@ -29,7 +29,7 @@ process CHECKM_QA {
     def exclude = exclude_marker_file && exclude_marker_file.isFile() ? "--exclude_markers ${exclude_marker_file}" : ""
     """
     ${checkm_db}
-    
+
     checkm \\
         qa \\
         --threads ${task.cpus} \\
