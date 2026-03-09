@@ -37,7 +37,7 @@ process CATPACK_READS {
     tuple val(meta), path("*_unmapped.fasta"), emit: unmapped_fasta
     tuple val(meta), path("*.unmapped2classification.txt"), emit: unmapped2classification
 
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('catpack'), eval("CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g'"), topic: versions, emit: versions_catpack
 
     when:
     task.ext.when == null || task.ext.when
@@ -71,11 +71,6 @@ process CATPACK_READS {
         ${insert_u2c} \\
         ${insert_proteins} \\
         ${insert_diamond_alignment}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
-    END_VERSIONS
     """
 
     stub:
@@ -122,10 +117,5 @@ process CATPACK_READS {
     touch ${prefix}.unclassified_unmapped.alignment.diamond
     touch ${prefix}.unclassified_unmapped.fasta
     touch ${prefix}.unmapped2classification.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
-    END_VERSIONS
     """
 }
