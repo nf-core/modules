@@ -134,7 +134,7 @@ topics:
       - megahit:
           type: string
           description: The name of the tool
-      - "megahit -v 2>&1 | sed 's/MEGAHIT v//'":
+      - "megahit -v | sed 's/MEGAHIT v//'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
