@@ -3,7 +3,7 @@ nextflow_process {
     name "Test Process UPDHMM_VCFCHECK"
     script "../main.nf"
     process "UPDHMM_VCFCHECK"
-    
+
     tag "modules"
     tag "modules_nfcore"
     tag "bcftools/view"
@@ -29,9 +29,9 @@ nextflow_process {
     }
 
     test("trio vcf") {
-    
+
         config './nextflow.config'
-    
+
         when {
             process {
                 """
@@ -40,7 +40,7 @@ nextflow_process {
                         [ id:'test_trio',
                           proband_id: 'hugelymodelbat',
                           mother_id: 'slowlycivilbuck',
-                          father_id: 'earlycasualcaiman' 
+                          father_id: 'earlycasualcaiman'
                         ],
                         vcf,
                         []
@@ -70,7 +70,7 @@ nextflow_process {
                     [ id:'test_trio',
                       proband_id: 'hugelymodelbat',
                       mother_id: 'slowlycivilbuck',
-                      father_id: 'earlycasualcaiman' 
+                      father_id: 'earlycasualcaiman'
                     ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz', checkIfExists: true),
                     []

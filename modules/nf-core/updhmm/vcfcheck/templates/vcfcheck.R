@@ -48,9 +48,9 @@ opt <- list(
     vcf = '$vcf',
     tbi = '$tbi',
     genome_build = 'hg38',
-    proband_id = '$meta.proband_id',    
-    mother_id = '$meta.mother_id',      
-    father_id = '$meta.father_id'       
+    proband_id = '$meta.proband_id',
+    mother_id = '$meta.mother_id',
+    father_id = '$meta.father_id'
 )
 
 opt_types <- lapply(opt, class)
@@ -115,9 +115,9 @@ vcf <- readVcf(opt\$vcf, opt\$genome_build)
 ################################################
 
 tryCatch({
-    processedVcf <- vcfCheck(vcf, 
-                           proband = opt\$proband_id, 
-                           mother = opt\$mother_id, 
+    processedVcf <- vcfCheck(vcf,
+                           proband = opt\$proband_id,
+                           mother = opt\$mother_id,
                            father = opt\$father_id)
 }, error = function(e) {
     cat("ERROR in vcfCheck:", conditionMessage(e), "\\n")
@@ -133,7 +133,7 @@ tryCatch({
 
 processed_rds_file <- paste0(opt\$output_prefix, ".processed.rds")
 saveRDS(processedVcf, file = processed_rds_file)
-  
+
 
 ################################################
 ################################################
