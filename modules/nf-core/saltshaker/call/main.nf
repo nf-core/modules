@@ -9,8 +9,8 @@ process SALTSHAKER_CALL {
 
     input:
     tuple val(meta), path(breakpoint)
-    tuple val(meta), path(cluster)
-    tuple val(meta2), path(mtfasta)
+    tuple val(meta2), path(cluster)
+    tuple val(meta3), path(mtfasta)
     val flank
     val heteroplasmy_limit
     val mito_length
