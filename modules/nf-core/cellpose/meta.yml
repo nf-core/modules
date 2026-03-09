@@ -76,7 +76,7 @@ output:
       - cellpose:
           type: string
           description: The name of the tool
-      - "pip show cellpose | sed -n 's/^Version: //p'":
+      - "cellpose --version | sed -n 's/cellpose version:[[:space:]]*//p' | tr -d '[:space:]'":
           type: eval
           description: The expression to obtain the version of the tool
   versions_python:
@@ -86,7 +86,7 @@ output:
       - python:
           type: string
           description: The name of the tool
-      - "python --version | sed 's/Python //'":
+      - "cellpose --version | sed -n 's/python version:[[:space:]]*//p' | tr -d '[:space:]'":
           type: eval
           description: The expression to obtain the version of the tool
   versions_torch:
@@ -96,7 +96,7 @@ output:
       - torch:
           type: string
           description: The name of the tool
-      - "pip show torch | sed -n 's/^Version: //p'":
+      - "cellpose --version | sed -n 's/torch version:[[:space:]]*//p' | tr -d '[:space:]'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -107,7 +107,7 @@ topics:
       - cellpose:
           type: string
           description: The name of the tool
-      - "pip show cellpose | sed -n 's/^Version: //p'":
+      - "cellpose --version | sed -n 's/cellpose version:[[:space:]]*//p' | tr -d '[:space:]'":
           type: eval
           description: The expression to obtain the version of the tool
     - - ${task.process}:
@@ -116,7 +116,7 @@ topics:
       - python:
           type: string
           description: The name of the tool
-      - "python --version | sed 's/Python //'":
+      - "cellpose --version | sed -n 's/python version:[[:space:]]*//p' | tr -d '[:space:]'":
           type: eval
           description: The expression to obtain the version of the tool
     - - ${task.process}:
@@ -125,7 +125,7 @@ topics:
       - torch:
           type: string
           description: The name of the tool
-      - "pip show torch | sed -n 's/^Version: //p'":
+      - "cellpose --version | sed -n 's/torch version:[[:space:]]*//p' | tr -d '[:space:]'":
           type: eval
           description: The expression to obtain the version of the tool
 notes: |
