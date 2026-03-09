@@ -33,7 +33,7 @@ input:
           table
         pattern: "*.{rds,csv}"
         ontologies:
-          - edam: "http://edamontology.org/format_3752"
+          - edam: "http://edamontology.org/format_3752" # csv
 output:
   mobster_rds:
     - - meta:
@@ -90,7 +90,7 @@ output:
           description: Final report plots as a .pdf file
           pattern: "*_mobster_report.pdf"
           ontologies:
-            - edam: "http://edamontology.org/format_3508"
+            - edam: "http://edamontology.org/format_3508" # pdf
   mobster_report_png:
     - - meta:
           type: map
@@ -102,14 +102,14 @@ output:
           description: Final report plots as a .png file
           pattern: "*_mobster_report.png"
           ontologies:
-            - edam: "http://edamontology.org/format_3603"
+            - edam: "http://edamontology.org/format_3603" # png
   versions_mobster:
     - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750
+          - edam: http://edamontology.org/format_3750 # YAML
 topics:
   versions:
     - versions.yml:
@@ -117,7 +117,7 @@ topics:
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@elena-buscaroli"
 maintainers:
