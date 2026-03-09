@@ -57,7 +57,9 @@ process CTREE {
         VIBER: \$(Rscript -e "library(VIBER); cat(as.character(packageVersion('VIBER')))")
         cli: \$(Rscript -e "library(cli); cat(as.character(packageVersion('cli')))")
         dplyr: \$(Rscript -e "library(dplyr); cat(as.character(packageVersion('dplyr')))")
+        tidyr: \$(Rscript -e "library(tidyr); cat(as.character(packageVersion('tidyr')))")
         ggplot2: \$(Rscript -e "library(ggplot2); cat(as.character(packageVersion('ggplot2')))")
+        ggpubr: \$(Rscript -e "library(ggpubr); cat(as.character(packageVersion('ggpubr')))")
     END_VERSIONS
     """
 }
