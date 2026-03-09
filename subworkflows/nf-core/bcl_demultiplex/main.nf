@@ -123,7 +123,6 @@ def generateReadgroupBCLCONVERT(ch_fastq_list_csv, ch_fastq) {
                         samplename: row.RGSM,
                         readgroup: rg,
                         single_end: !fastq2,
-                        lane: row.Lane,
                     ]
 
                     meta_fastq << [new_meta, fastq2 ? [fastq1, fastq2] : [fastq1]]
