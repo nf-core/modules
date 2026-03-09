@@ -1,51 +1,5 @@
 {
-    "mask_files": {
-        "content": [
-            [
-                "cycif_tonsil_registered.ome_cp_masks.tif",
-                "cycif_tonsil_registered.ome_dP_cp_masks.tif",
-                "cycif_tonsil_registered.ome_flows_cp_masks.tif"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-03-06T17:10:18.771259168"
-    },
-    "versions": {
-        "content": [
-            {
-                "versions_cellpose": [
-                    [
-                        "CELLPOSE",
-                        "cellpose",
-                        "4.0.9"
-                    ]
-                ],
-                "versions_python": [
-                    [
-                        "CELLPOSE",
-                        "python",
-                        "3.12.12"
-                    ]
-                ],
-                "versions_torch": [
-                    [
-                        "CELLPOSE",
-                        "torch",
-                        "2.10.0+cu128"
-                    ]
-                ]
-            }
-        ],
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-03-09T17:04:23.355608629"
-    },
-    "cellpose - stub": {
+    "cellpose - gpu - stub": {
         "content": [
             {
                 "0": [
@@ -80,7 +34,7 @@
                     [
                         "CELLPOSE",
                         "torch",
-                        "2.10.0+cu128"
+                        "2.10.0"
                     ]
                 ],
                 "cells": [
@@ -115,7 +69,7 @@
                     [
                         "CELLPOSE",
                         "torch",
-                        "2.10.0+cu128"
+                        "2.10.0"
                     ]
                 ]
             }
@@ -124,6 +78,52 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-03-09T17:04:40.207673084"
+        "timestamp": "2026-03-09T15:04:09.037710153"
+    },
+    "mask_files": {
+        "content": [
+            [
+                "cycif_tonsil_registered.ome_cp_masks.tif",
+                "cycif_tonsil_registered.ome_dP_cp_masks.tif",
+                "cycif_tonsil_registered.ome_flows_cp_masks.tif"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-03-09T15:04:01.076800875"
+    },
+    "versions": {
+        "content": [
+            {
+                "versions_cellpose": [
+                    [
+                        "CELLPOSE",
+                        "cellpose",
+                        "4.0.9"
+                    ]
+                ],
+                "versions_python": [
+                    [
+                        "CELLPOSE",
+                        "python",
+                        "3.12.12"
+                    ]
+                ],
+                "versions_torch": [
+                    [
+                        "CELLPOSE",
+                        "torch",
+                        "2.10.0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-03-09T15:04:01.110561727"
     }
 }
