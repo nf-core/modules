@@ -32,7 +32,7 @@ process DASTOOL_DASTOOL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def bin_list = bins instanceof List ? bins.join(",") : "${bins}"
+    def bin_list = bins.join(",")
     def db_dir = db_directory ? "--db_directory ${db_directory}" : ""
     def clean_contigs = contigs.toString() - ".gz"
     def decompress_contigs = contigs.toString() == clean_contigs ? "" : "gunzip -q -f ${contigs}"
