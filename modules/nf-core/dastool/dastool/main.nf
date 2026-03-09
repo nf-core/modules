@@ -8,7 +8,7 @@ process DASTOOL_DASTOOL {
         : 'biocontainers/das_tool:1.1.7--r44hdfd78af_1'}"
 
     input:
-    tuple val(meta), path(contigs), path(bins), path(proteins)
+    tuple val(meta), path(contigs), path(bins, arity: '1..*'), path(proteins)
     path db_directory
 
     output:
