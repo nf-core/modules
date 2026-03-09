@@ -13,7 +13,7 @@ process FILTLONG {
     output:
     tuple val(meta), path("*.fastq.gz"), emit: reads
     tuple val(meta), path("*.log")     , emit: log
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('filtlong'), eval('filtlong --version | sed -e "s/Filtlong v//g"'), topic: versions, emit: versions_filtlong
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,10 +30,5 @@ process FILTLONG {
         $longreads \\
         2>| >(tee ${prefix}.log >&2) \\
         | gzip -n > ${prefix}.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        filtlong: \$( filtlong --version | sed -e "s/Filtlong v//g" )
-    END_VERSIONS
     """
 }
