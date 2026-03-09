@@ -16,7 +16,7 @@ process MEGAHIT {
     tuple val(meta), path("intermediate_contigs/k*.local.fa.gz")        , emit: local_contigs
     tuple val(meta), path("intermediate_contigs/k*.final.contigs.fa.gz"), emit: kfinal_contigs
     tuple val(meta), path('*.log')                                      , emit: log
-    tuple val("${task.process}"), val('megahit'), eval("megahit -v 2>&1 | sed 's/MEGAHIT v//'"), topic: versions, emit: versions_megahit
+    tuple val("${task.process}"), val('megahit'), eval("megahit -v | sed 's/MEGAHIT v//'"), topic: versions, emit: versions_megahit
 
     when:
     task.ext.when == null || task.ext.when
