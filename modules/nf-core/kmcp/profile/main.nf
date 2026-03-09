@@ -39,7 +39,6 @@ process KMCP_PROFILE {
     END_VERSIONS
     """
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.profile

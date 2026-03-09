@@ -20,7 +20,6 @@ process SEQKIT_PAIR {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     seqkit \\
         pair \\

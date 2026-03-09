@@ -23,7 +23,6 @@ process MIRTOP_EXPORT {
 
     script:
     def args = task.ext.args ?: '--format isomir'
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mirtop \\
         export \\
@@ -41,7 +40,6 @@ process MIRTOP_EXPORT {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir export

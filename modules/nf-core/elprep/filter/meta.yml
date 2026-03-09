@@ -16,7 +16,8 @@ tools:
       documentation: "https://github.com/ExaScience/elprep"
       tool_dev_url: "https://github.com/ExaScience/elprep"
       doi: "10.1371/journal.pone.0244471"
-      licence: ["AGPL v3"]
+      licence:
+        - "AGPL v3"
       identifier: biotools:elprep
 input:
   - - meta:
@@ -36,8 +37,8 @@ input:
         ontologies: []
     - target_regions_bed:
         type: file
-        description: Optional BED file containing target regions for BQSR and variant
-          calling.
+        description: Optional BED file containing target regions for BQSR and
+          variant calling.
         pattern: "*.bed"
         ontologies: []
     - filter_regions_bed:
@@ -47,8 +48,8 @@ input:
         ontologies: []
     - intermediate_bqsr_tables:
         type: file
-        description: Optional list of BQSR tables, used when parsing files created by
-          `elprep split`
+        description: Optional list of BQSR tables, used when parsing files created
+          by `elprep split`
         pattern: "*.table"
         ontologies: []
     - recall_file:
@@ -88,22 +89,23 @@ input:
         ontologies: []
   - run_haplotypecaller:
       type: boolean
-      description: Run variant calling on the input files. Needed to generate gvcf output.
+      description: Run variant calling on the input files. Needed to generate gvcf
+        output.
   - run_bqsr:
       type: boolean
       description: Run BQSR on the input files. Needed to generate recall metrics.
   - bqsr_tables_only:
       type: boolean
-      description: Write intermediate BQSR tables, used when parsing files created by
-        `elprep split`.
+      description: Write intermediate BQSR tables, used when parsing files created
+        by `elprep split`.
   - get_activity_profile:
       type: boolean
-      description: Get the activity profile calculated by the haplotypecaller to the
-        given file in IGV format.
+      description: Get the activity profile calculated by the haplotypecaller to
+        the given file in IGV format.
   - get_assembly_regions:
       type: boolean
-      description: Get the assembly regions calculated by haplotypecaller to the specified
-        file in IGV format.
+      description: Get the assembly regions calculated by haplotypecaller to the
+        specified file in IGV format.
 output:
   bam:
     - - meta:
@@ -115,6 +117,7 @@ output:
           type: file
           description: BAM/SAM file
           pattern: "*.{bam,sam}"
+          ontologies: []
   logs:
     - - meta:
           type: map
@@ -125,6 +128,7 @@ output:
           type: file
           description: Log file
           pattern: "elprep-*.log"
+          ontologies: []
   metrics:
     - - meta:
           type: map
@@ -135,6 +139,7 @@ output:
           type: file
           description: Metrics file
           pattern: "*.{metrics.txt}"
+          ontologies: []
   recall:
     - - meta:
           type: map
@@ -145,6 +150,7 @@ output:
           type: file
           description: Recall file
           pattern: "*.{recall}"
+          ontologies: []
   gvcf:
     - - meta:
           type: map
@@ -155,6 +161,7 @@ output:
           type: file
           description: VCF file
           pattern: "*.{vcf.gz}"
+          ontologies: []
   table:
     - - meta:
           type: map
@@ -165,6 +172,7 @@ output:
           type: file
           description: Table
           pattern: "*.{table}"
+          ontologies: []
   activity_profile:
     - - meta:
           type: map
@@ -175,6 +183,7 @@ output:
           type: file
           description: Activity profile
           pattern: "*.{activity_profile.igv}"
+          ontologies: []
   assembly_regions:
     - - meta:
           type: map
@@ -185,13 +194,28 @@ output:
           type: file
           description: Assembly regions
           pattern: "*.{assembly_regions.igv}"
+          ontologies: []
+  versions_elprep:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - elprep:
+          type: string
+          description: The name of the tool
+      - elprep 2>&1 | sed -n '2s/^.*version //;s/ compiled.*$//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - elprep:
+          type: string
+          description: The name of the tool
+      - elprep 2>&1 | sed -n '2s/^.*version //;s/ compiled.*$//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@matthdsm"
 maintainers:

@@ -1,0 +1,87 @@
+nextflow_process {
+
+
+    name "Test Process HIFITRIMMER_PROCESSBLAST"
+    script "../main.nf"
+    process "HIFITRIMMER_PROCESSBLAST"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hifitrimmer"
+    tag "hifitrimmer/processblast"
+
+    config './nextflow.config'
+
+    test("hifi_trimmer process_blast test") {
+
+        when {
+            params {
+                process_blast_args = "-hf"
+            }
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.blastout.gz', checkIfExists: true)
+                    ]
+                )
+                input[1] = Channel.of(
+                    [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.yaml', checkIfExists: true)
+                    ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bed,
+                    process.out.summary.collect{ meta, summary_file ->
+                        [ meta, path(summary_file).json.tap { it.remove('run_info') } ]
+                    },
+                    process.out.hits,
+                    process.out.versions_hifitrimmer
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("hifi_trimmer process_blast test - stub") {
+
+        options "-stub"
+
+        when {
+
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.blastout.gz', checkIfExists: true)
+                    ]
+                )
+                input[1] = Channel.of(
+                    [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.yaml', checkIfExists: true)
+                    ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert snapshot(process.out.versions_hifitrimmer).match("versions") }
+            )
+        }
+    }
+}

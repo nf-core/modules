@@ -48,7 +48,6 @@ process MIRDEEP2_MIRDEEP2 {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '2.0.1'
     """

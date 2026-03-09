@@ -1,0 +1,136 @@
+nextflow_process {
+
+    name "Test Process MULTIQCSAV"
+    script "../main.nf"
+    process "MULTIQCSAV"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "untar"
+    tag "multiqcsav"
+
+    test("NovaSeq6000") {
+        setup {
+            run("UNTAR") {
+                script "../../untar/main.nf"
+                process {
+                """
+                input[0] = [
+                    [ id: 'NovaSeq6000' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bcl/200624_A00834_0183_BHMTFYDRXX.tar.gz', checkIfExists: true)
+                ]
+                """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                ch_sav_in = UNTAR.out.untar.map{ meta, untar ->
+
+                    def xml = []
+                    untar.eachFileRecurse { file ->
+                        if (file.fileName.toString() == 'RunInfo.xml') {
+                            xml << file
+                        }
+                    }
+
+                    def interop = []
+                    untar.eachFileRecurse { file ->
+                        if (file.parent.name == 'InterOp' && file.fileName.toString().endsWith(".bin")) {
+                            interop << file
+                        }
+                    }
+
+                    return [
+                        meta,
+                        xml,
+                        interop,
+                        [],
+                        [],
+                        [],
+                        [],
+                        []
+                    ]
+                }
+
+                input[0] = ch_sav_in
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    file(process.out.report[0][1]).name,
+                    file(process.out.data[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions")
+                }).match() }
+            )
+        }
+    }
+
+    test("NovaSeq6000 - stub") {
+
+        options "-stub"
+
+        setup {
+            run("UNTAR") {
+                script "../../untar/main.nf"
+                process {
+                """
+                input[0] = [
+                    [ id: 'NovaSeq6000' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bcl/200624_A00834_0183_BHMTFYDRXX.tar.gz', checkIfExists: true)
+                ]
+                """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                ch_sav_in = UNTAR.out.untar.map{ meta, untar ->
+
+                    def xml = []
+                    untar.eachFileRecurse { file ->
+                        if (file.fileName.toString() == 'RunInfo.xml') {
+                            xml << file
+                        }
+                    }
+
+                    def interop = []
+                    untar.eachFileRecurse { file ->
+                        if (file.parent.name == 'InterOp' && file.fileName.toString().endsWith(".bin")) {
+                            interop << file
+                        }
+                    }
+
+                    return [
+                        meta,
+                        xml,
+                        interop,
+                        [],
+                        [],
+                        [],
+                        [],
+                        []
+                    ]
+                }
+
+                input[0] = ch_sav_in
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

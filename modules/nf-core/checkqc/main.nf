@@ -2,7 +2,9 @@ process CHECKQC {
     tag "$meta.id"
     label 'process_single'
 
-    container "community.wave.seqera.io/library/python_numpy_pip_checkqc_interop:b5301d9801b8e66b"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6e/6ec3d6e7260c79ecd92ff53e66337a8f1db4ca8d0a3ba561c35f21fa9acdd6ba/data':
+        'community.wave.seqera.io/library/sample-sheet_numpy_pandas_pip_pruned:0b9dc0869e46a949' }"
 
     input:
     tuple val(meta), path(run_dir)
@@ -10,7 +12,7 @@ process CHECKQC {
 
     output:
     tuple val(meta), path("*checkqc_report.json"), emit: report
-    path "versions.yml"                          , emit: versions
+    tuple val("${task.process}"), val('checkqc'), eval('checkqc --version | sed -e "s/checkqc, version //g"'), emit: versions_checkqc, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,21 +38,10 @@ process CHECKQC {
         echo "Error: Empty JSON files. Most likely due to missing files in run directory. See .command.log file for errors."
         exit 1
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        checkqc: \$( checkqc --version | sed -e "s/checkqc, version //g" )
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     """
     touch checkqc_report.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        checkqc: \$( checkqc --version | sed -e "s/checkqc, version //g" )
-    END_VERSIONS
     """
 }

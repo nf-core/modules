@@ -11,7 +11,8 @@ tools:
       homepage: https://blast.ncbi.nlm.nih.gov/Blast.cgi
       documentation: https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=Blastdocs
       doi: 10.1016/S0022-2836(05)80360-2
-      licence: ["US-Government-Work"]
+      licence:
+        - "US-Government-Work"
       identifier: ""
 input:
   - - meta:
@@ -35,13 +36,27 @@ output:
           type: directory
           description: Output directory containing blast database files
           pattern: "*"
+  versions_makeblastdb:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - makeblastdb:
+          type: string
+          description: The name of the tool
+      - "makeblastdb -version 2>&1 | sed 's/^.*makeblastdb: //; s/ .*\\$//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - makeblastdb:
+          type: string
+          description: The name of the tool
+      - "makeblastdb -version 2>&1 | sed 's/^.*makeblastdb: //; s/ .*\\$//'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@joseespinosa"
   - "@drpatelh"

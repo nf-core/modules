@@ -16,7 +16,8 @@ process QUILT_QUILT {
     tuple val(meta), path("*.vcf.gz.tbi")      , emit: tbi  , optional: true
     tuple val(meta), path("RData", type: "dir"), emit: rdata, optional: true
     tuple val(meta), path("plots", type: "dir"), emit: plots, optional: true
-    path "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val('r-quilt'), eval('Rscript -e "cat(as.character(packageVersion(\'QUILT\')))"'), topic: versions, emit: versions_r_quilt
+    tuple val("${task.process}"), val('r-base'), eval('R --version | sed "1!d; s/.*version //; s/ .*//"'), topic: versions, emit: versions_r_base
 
     when:
     task.ext.when == null || task.ext.when
@@ -70,13 +71,6 @@ process QUILT_QUILT {
         --reference_legend_file=${reference_legend_file} \\
         --output_filename=${prefix}.${suffix} \\
         ${args}
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
-        r-quilt: \$(Rscript -e "cat(as.character(utils::packageVersion(\\"QUILT\\")))")
-    END_VERSIONS
     """
 
     stub:
@@ -109,11 +103,5 @@ process QUILT_QUILT {
             done
         done
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
-        r-quilt: \$(Rscript -e "cat(as.character(utils::packageVersion(\\"QUILT\\")))")
-    END_VERSIONS
     """
 }

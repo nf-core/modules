@@ -37,11 +37,6 @@ input:
         pattern: "*.{fa,fasta}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
     - ref_gb:
         type: file
         description: Reference mitochondrial genome annotation
@@ -246,14 +241,51 @@ output:
           pattern: "shared_genes.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: directory
+          description: Log file describing Mitohifi run
+          pattern: "*.log"
+          ontologies:
+            - edam: http://edamontology.org/data_3671 # Text
+  all_files:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*":
+          type: file
+          description: All files output by Mitohifi in a single channel.
+          ontologies: []
+  versions_mitohifi:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - mitohifi:
+          type: string
+          description: The name of the tool
+      - echo 3.2.3:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - mitohifi:
+          type: string
+          description: The name of the tool
+      - echo 3.2.3:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ksenia-krasheninnikova"
+  - "@prototaxites"
 maintainers:
   - "@ksenia-krasheninnikova"

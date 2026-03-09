@@ -20,8 +20,8 @@ nextflow_process {
                 process {
                     """
                     input[0] = Channel.fromList([
-                        tuple([ id: 'arc16s' ], file("https://raw.githubusercontent.com/tseemann/barrnap/master/db/arc.hmm")),
-                        tuple([ id: 'bac16s' ], file("https://raw.githubusercontent.com/tseemann/barrnap/master/db/bac.hmm"))
+                        tuple([ id: 'arc16s' ], file("https://raw.githubusercontent.com/tseemann/barrnap/0.9/db/arc.hmm", checkIfExists: true)),
+                        tuple([ id: 'bac16s' ], file("https://raw.githubusercontent.com/tseemann/barrnap/0.9/db/bac.hmm", checkIfExists: true))
                     ])
                     input[1] = Channel.of('16S_rRNA').first()
                     input[2] = []

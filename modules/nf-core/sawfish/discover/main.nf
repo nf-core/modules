@@ -25,7 +25,7 @@ process SAWFISH_DISCOVER {
     tuple val(meta), path("${prefix}/debug.breakpoint_clusters.bed"), emit: debug_breakpoint_clusters
     tuple val(meta), path("${prefix}/debug.cluster.refinement.txt") , emit: debug_cluster_refinement
     tuple val(meta), path("${prefix}/discover.settings.json")       , emit: discover_settings
-    tuple val(meta), path("${prefix}/genome.gclevels.mpack")        , emit: genome_gclevels
+    tuple val(meta), path("${prefix}/genome.gclevels.mpack")        , emit: genome_gclevels          , optional: true
     tuple val(meta), path("${prefix}/max.depth.bed")                , emit: max_depth
     tuple val(meta), path("${prefix}/run.stats.json")               , emit: run_stats
     tuple val(meta), path("${prefix}/sample.gcbias.mpack")          , emit: sample_gcbias            , optional: true

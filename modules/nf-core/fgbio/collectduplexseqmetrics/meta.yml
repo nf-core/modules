@@ -31,16 +31,16 @@ input:
           e.g. `[ id:'sample1' ]`
     - grouped_bam:
         type: file
-        description: It has to be either 1)The exact BAM output by the GroupReadsByUmi
-          tool (in the sort-order it was produced in) 2)A BAM file that has MI tags
-          present on all reads (usually set by GroupReadsByUmi and has been sorted with
-          SortBam into TemplateCoordinate order.
+        description: It has to be either 1)The exact BAM output by the
+          GroupReadsByUmi tool (in the sort-order it was produced in) 2)A BAM file
+          that has MI tags present on all reads (usually set by GroupReadsByUmi
+          and has been sorted with SortBam into TemplateCoordinate order.
         pattern: "*.bam"
         ontologies: []
   - interval_list:
       type: file
-      description: Calculation of metrics may be restricted to a set of regions using
-        the --intervals parameter. The file format is descripted here
+      description: Calculation of metrics may be restricted to a set of regions
+        using the --intervals parameter. The file format is descripted here
         https://samtools.github.io/htsjdk/javadoc/htsjdk/index.html?htsjdk/samtools/util/Interval.html
       pattern: "*.{tsv|txt|interval_list}"
       ontologies: []
@@ -53,8 +53,8 @@ output:
             e.g. `[ id:'sample1' ]`
       - "**.family_sizes.txt":
           type: file
-          description: Metrics on the frequency of different types of families of different
-            sizes
+          description: Metrics on the frequency of different types of families of
+            different sizes
           pattern: "*.txt"
           ontologies: []
   duplex_family_sizes:
@@ -65,8 +65,8 @@ output:
             e.g. `[ id:'sample1' ]`
       - "**.duplex_family_sizes.txt":
           type: file
-          description: Metrics on the frequency of duplex tag families by the number
-            of observations from each strand
+          description: Metrics on the frequency of duplex tag families by the
+            number of observations from each strand
           pattern: "*.txt"
           ontologies: []
   duplex_yield_metrics:
@@ -77,8 +77,8 @@ output:
             e.g. `[ id:'sample1' ]`
       - "**.duplex_yield_metrics.txt":
           type: file
-          description: Summary QC metrics produced using 5%, 10%, 15%...100% of the
-            data
+          description: Summary QC metrics produced using 5%, 10%, 15%...100% of
+            the data
           pattern: "*.txt"
           ontologies: []
   umi_counts:
@@ -89,8 +89,8 @@ output:
             e.g. `[ id:'sample1' ]`
       - "**.umi_counts.txt":
           type: file
-          description: Metrics on the frequency of observations of UMIs within reads
-            and tag families
+          description: Metrics on the frequency of observations of UMIs within
+            reads and tag families
           pattern: "*.txt"
           ontologies: []
   duplex_qc:
@@ -101,8 +101,8 @@ output:
             e.g. `[ id:'sample1' ]`
       - "**.duplex_qc.pdf":
           type: file
-          description: A series of plots generated from the preceding metrics files
-            for visualization
+          description: A series of plots generated from the preceding metrics
+            files for visualization
           pattern: "*.pdf"
           ontologies: []
   duplex_umi_counts:
@@ -113,17 +113,52 @@ output:
             e.g. `[ id:'sample1' ]`
       - "**.duplex_umi_counts.txt":
           type: file
-          description: Metrics on the frequency of observations of duplex UMIs within
-            reads and tag families.
+          description: Metrics on the frequency of observations of duplex UMIs
+            within reads and tag families.
           pattern: "*.txt"
           ontologies: []
+  versions_fgbio:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fgbio:
+          type: string
+          description: The tool name
+      - "fgbio --version 2>&1 | tr -d \"[:cntrl:]\" | sed -e \"s/^.*Version: //;s/\\[.*$//\"":
+          type: eval
+          description: The command used to generate the version of the tool
+  versions_ggplot2:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - ggplot2:
+          type: string
+          description: The tool name
+      - Rscript -e "cat(as.character(packageVersion('ggplot2')))":
+          type: eval
+          description: The command used to generate the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fgbio:
+          type: string
+          description: The tool name
+      - 'fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\[.*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - ggplot2:
+          type: string
+          description: The tool name
+      - Rscript -e "cat(as.character(packageVersion('ggplot2')))":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@georgiakes"
 maintainers:

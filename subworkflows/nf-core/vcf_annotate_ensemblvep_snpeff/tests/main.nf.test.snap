@@ -34,6 +34,8 @@
                         "id": "custom_test0_annotated",
                         "single_end": false
                     },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:SNPEFF_SNPEFF",
+                    "snpeff",
                     "custom_test0_annotated.csv"
                 ],
                 [
@@ -41,6 +43,8 @@
                         "id": "custom_test1_annotated",
                         "single_end": false
                     },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:SNPEFF_SNPEFF",
+                    "snpeff",
                     "custom_test1_annotated.csv"
                 ],
                 [
@@ -48,6 +52,8 @@
                         "id": "test0_annotated",
                         "single_end": false
                     },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:SNPEFF_SNPEFF",
+                    "snpeff",
                     "test0_annotated.csv"
                 ],
                 [
@@ -55,6 +61,8 @@
                         "id": "test1_annotated",
                         "single_end": false
                     },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:SNPEFF_SNPEFF",
+                    "snpeff",
                     "test1_annotated.csv"
                 ]
             ],
@@ -64,6 +72,8 @@
                         "id": "custom_test0_annotated",
                         "single_end": false
                     },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:SNPEFF_SNPEFF",
+                    "snpeff",
                     "snpEff_summary.html"
                 ],
                 [
@@ -71,6 +81,8 @@
                         "id": "custom_test1_annotated",
                         "single_end": false
                     },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:SNPEFF_SNPEFF",
+                    "snpeff",
                     "snpEff_summary.html"
                 ],
                 [
@@ -78,6 +90,8 @@
                         "id": "test0_annotated",
                         "single_end": false
                     },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:SNPEFF_SNPEFF",
+                    "snpeff",
                     "snpEff_summary.html"
                 ],
                 [
@@ -85,6 +99,8 @@
                         "id": "test1_annotated",
                         "single_end": false
                     },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:SNPEFF_SNPEFF",
+                    "snpeff",
                     "snpEff_summary.html"
                 ]
             ],
@@ -94,6 +110,8 @@
                         "id": "custom_test0_annotated",
                         "single_end": false
                     },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:SNPEFF_SNPEFF",
+                    "snpeff",
                     "custom_test0_annotated.genes.txt"
                 ],
                 [
@@ -101,6 +119,8 @@
                         "id": "custom_test1_annotated",
                         "single_end": false
                     },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:SNPEFF_SNPEFF",
+                    "snpeff",
                     "custom_test1_annotated.genes.txt"
                 ],
                 [
@@ -108,6 +128,8 @@
                         "id": "test0_annotated",
                         "single_end": false
                     },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:SNPEFF_SNPEFF",
+                    "snpeff",
                     "test0_annotated.genes.txt"
                 ],
                 [
@@ -115,22 +137,20 @@
                         "id": "test1_annotated",
                         "single_end": false
                     },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:SNPEFF_SNPEFF",
+                    "snpeff",
                     "test1_annotated.genes.txt"
                 ]
             ],
             [
-                "versions.yml",
-                "versions.yml",
-                "versions.yml",
-                "versions.yml",
-                "versions.yml"
+                
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2025-10-29T11:42:55.57866235"
+        "timestamp": "2026-01-27T15:42:18.478291"
     },
     "sarscov2 - ensemblvep - large chunks": {
         "content": [
@@ -148,7 +168,15 @@
                 ]
             ],
             [
-                "custom_test0_annotated.vep.vcf.gz_summary.html"
+                [
+                    {
+                        "id": "custom_test0_annotated",
+                        "single_end": false
+                    },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:ENSEMBLVEP_VEP",
+                    "ensemblvep",
+                    "custom_test0_annotated.vep.vcf.gz_summary.html"
+                ]
             ],
             [
                 
@@ -160,17 +188,14 @@
                 
             ],
             [
-                "versions.yml",
-                "versions.yml",
-                "versions.yml",
-                "versions.yml"
+                
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-28T15:05:08.526580844"
+        "timestamp": "2026-01-20T12:44:15.673809362"
     },
     "sarscov2 - snpeff + ensemblvep": {
         "content": [
@@ -188,8 +213,24 @@
                 ]
             ],
             [
-                "custom_test0_annotated.vep.vcf.gz_summary.html",
-                "custom_test1_annotated.vep.vcf.gz_summary.html"
+                [
+                    {
+                        "id": "custom_test0_annotated",
+                        "single_end": false
+                    },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:ENSEMBLVEP_VEP",
+                    "ensemblvep",
+                    "custom_test0_annotated.vep.vcf.gz_summary.html"
+                ],
+                [
+                    {
+                        "id": "custom_test1_annotated",
+                        "single_end": false
+                    },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:ENSEMBLVEP_VEP",
+                    "ensemblvep",
+                    "custom_test1_annotated.vep.vcf.gz_summary.html"
+                ]
             ],
             [
                 [
@@ -197,6 +238,8 @@
                         "id": "custom_test0_annotated",
                         "single_end": false
                     },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:SNPEFF_SNPEFF",
+                    "snpeff",
                     "custom_test0_annotated.csv"
                 ],
                 [
@@ -204,6 +247,8 @@
                         "id": "custom_test1_annotated",
                         "single_end": false
                     },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:SNPEFF_SNPEFF",
+                    "snpeff",
                     "custom_test1_annotated.csv"
                 ]
             ],
@@ -213,6 +258,8 @@
                         "id": "custom_test0_annotated",
                         "single_end": false
                     },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:SNPEFF_SNPEFF",
+                    "snpeff",
                     "snpEff_summary.html"
                 ],
                 [
@@ -220,6 +267,8 @@
                         "id": "custom_test1_annotated",
                         "single_end": false
                     },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:SNPEFF_SNPEFF",
+                    "snpeff",
                     "snpEff_summary.html"
                 ]
             ],
@@ -229,6 +278,8 @@
                         "id": "custom_test0_annotated",
                         "single_end": false
                     },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:SNPEFF_SNPEFF",
+                    "snpeff",
                     "custom_test0_annotated.genes.txt"
                 ],
                 [
@@ -236,23 +287,20 @@
                         "id": "custom_test1_annotated",
                         "single_end": false
                     },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:SNPEFF_SNPEFF",
+                    "snpeff",
                     "custom_test1_annotated.genes.txt"
                 ]
             ],
             [
-                "versions.yml",
-                "versions.yml",
-                "versions.yml",
-                "versions.yml",
-                "versions.yml",
-                "versions.yml"
+                
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2025-10-29T11:43:20.014782103"
+        "timestamp": "2026-01-27T15:43:01.336201"
     },
     "sarscov2 - ensemblvep - no scatter": {
         "content": [
@@ -267,7 +315,15 @@
                 ]
             ],
             [
-                "custom_test.vep.vcf.gz_summary.html"
+                [
+                    {
+                        "id": "custom_test",
+                        "single_end": false
+                    },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:ENSEMBLVEP_VEP",
+                    "ensemblvep",
+                    "custom_test.vep.vcf.gz_summary.html"
+                ]
             ],
             [
                 
@@ -279,14 +335,14 @@
                 
             ],
             [
-                "versions.yml"
+                
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-28T15:05:34.860678122"
+        "timestamp": "2026-01-20T10:47:27.604904698"
     },
     "sarscov2 - ensemblvep": {
         "content": [
@@ -304,8 +360,24 @@
                 ]
             ],
             [
-                "custom_test0_annotated.vep.vcf.gz_summary.html",
-                "custom_test1_annotated.vep.vcf.gz_summary.html"
+                [
+                    {
+                        "id": "custom_test0_annotated",
+                        "single_end": false
+                    },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:ENSEMBLVEP_VEP",
+                    "ensemblvep",
+                    "custom_test0_annotated.vep.vcf.gz_summary.html"
+                ],
+                [
+                    {
+                        "id": "custom_test1_annotated",
+                        "single_end": false
+                    },
+                    "VCF_ANNOTATE_ENSEMBLVEP_SNPEFF:ENSEMBLVEP_VEP",
+                    "ensemblvep",
+                    "custom_test1_annotated.vep.vcf.gz_summary.html"
+                ]
             ],
             [
                 
@@ -317,16 +389,13 @@
                 
             ],
             [
-                "versions.yml",
-                "versions.yml",
-                "versions.yml",
-                "versions.yml"
+                
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-28T15:03:18.747847891"
+        "timestamp": "2026-01-20T12:42:57.541734749"
     }
 }

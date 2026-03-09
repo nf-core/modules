@@ -1,4 +1,30 @@
 {
+    "test-picard-sortvcf  stub": {
+        "content": [
+            {
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_sorted.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_picard": [
+                    [
+                        "PICARD_SORTVCF",
+                        "picard",
+                        "3.4.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-02-20T10:40:26.218029661",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
     "test-picard-sortvcf": {
         "content": [
             [
@@ -8,14 +34,20 @@
                 "##INFO=<ID=AC,Number=A,Type=Integer,Description=\"Allele count in genotypes for each ALT allele, in the same order as listed\">",
                 "##INFO=<ID=AN,Number=1,Type=Integer,Description=\"Total number of alleles in called genotypes\">"
             ],
-            [
-                "versions.yml:md5,3a0b6f68e4a4212059b64ef654dc9c8c"
-            ]
+            {
+                "versions_picard": [
+                    [
+                        "PICARD_SORTVCF",
+                        "picard",
+                        "3.4.0"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-02-02T11:47:50.61817621",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
-        },
-        "timestamp": "2025-09-15T11:09:28.061609948"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        }
     }
 }

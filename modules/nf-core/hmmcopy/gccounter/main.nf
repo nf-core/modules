@@ -12,7 +12,7 @@ process HMMCOPY_GCCOUNTER {
 
     output:
     tuple val(meta), path("*.wig"), emit: wig
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('hmmcopy'), eval("echo 0.1.1"), topic: versions, emit: versions_hmmcopy
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,26 +20,14 @@ process HMMCOPY_GCCOUNTER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_gc"
-    def VERSION = '0.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    gcCounter \\
-        $args \\
+    gcCounter \
+        $args \
         ${fasta} > ${prefix}.wig
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmcopy: $VERSION
-    END_VERSIONS
     """
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}_gc"
-    def VERSION = '0.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.wig
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmcopy: $VERSION
-    END_VERSIONS
     """
 }

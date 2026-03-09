@@ -7,12 +7,13 @@ keywords:
   - bcf
 tools:
   - delly:
-      description: Structural variant discovery by integrated paired-end and split-read
-        analysis
+      description: Structural variant discovery by integrated paired-end and
+        split-read analysis
       homepage: https://github.com/dellytools/delly
       documentation: https://github.com/dellytools/delly/blob/master/README.md
       doi: "10.1093/bioinformatics/bts378"
-      licence: ["BSD-3-Clause"]
+      licence:
+        - "BSD-3-Clause"
       identifier: ""
 input:
   - - meta:
@@ -22,8 +23,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - input:
         type: file
-        description: BAM/CRAM file from alignment must be sorted, indexed, and duplicate
-          marked
+        description: BAM/CRAM file from alignment must be sorted, indexed, and
+          duplicate marked
         pattern: "*.{bam,cram}"
         ontologies: []
     - input_index:
@@ -33,8 +34,8 @@ input:
         ontologies: []
     - vcf:
         type: file
-        description: A BCF/VCF file to genotype with Delly. If this is supplied, the
-          variant calling will be skipped
+        description: A BCF/VCF file to genotype with Delly. If this is supplied,
+          the variant calling will be skipped
         pattern: "*.{vcf.gz,bcf}"
         ontologies: []
     - vcf_index:
@@ -44,8 +45,8 @@ input:
         ontologies: []
     - exclude_bed:
         type: file
-        description: An optional bed file containing regions to exclude from the called
-          VCF
+        description: An optional bed file containing regions to exclude from the
+          called VCF
         pattern: "*.bed"
         ontologies: []
   - - meta2:
@@ -77,8 +78,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.{bcf,vcf.gz}":
           type: file
-          description: Called variants in BCF/VCF format. Specify either "bcf" or "vcf"
-            in ext.suffix to define the output type
+          description: Called variants in BCF/VCF format. Specify either "bcf" or
+            "vcf" in ext.suffix to define the output type
           pattern: "*.{bcf,vcf.gz}"
           ontologies: []
   csi:
@@ -89,17 +90,31 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.{csi,tbi}":
           type: file
-          description: A generated csi index that matches the bcf output (not generated
-            for vcf files)
+          description: A generated csi index that matches the bcf output (not
+            generated for vcf files)
           pattern: "*.{bcf.csi}"
           ontologies: []
+  versions_delly:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - delly:
+          type: string
+          description: The name of the tool
+      - "delly --version |& sed -n '1s/Delly version: *v//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - delly:
+          type: string
+          description: The name of the tool
+      - "delly --version |& sed -n '1s/Delly version: *v//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@projectoriented"
   - "@nvnieuwk"

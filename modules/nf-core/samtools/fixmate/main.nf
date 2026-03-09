@@ -14,7 +14,7 @@ process SAMTOOLS_FIXMATE {
     tuple val(meta), path("${prefix}.bam") , emit: bam , optional: true
     tuple val(meta), path("${prefix}.cram"), emit: cram, optional: true
     tuple val(meta), path("${prefix}.sam") , emit: sam , optional: true
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,12 +34,7 @@ process SAMTOOLS_FIXMATE {
         $args \\
         --threads ${task.cpus-1} \\
         $input \\
-        ${prefix}.${extension} \\
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
+        ${prefix}.${extension}
     """
 
     stub:
@@ -52,10 +47,5 @@ process SAMTOOLS_FIXMATE {
     if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }

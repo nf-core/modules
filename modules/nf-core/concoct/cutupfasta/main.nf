@@ -40,9 +40,7 @@ process CONCOCT_CUTUPFASTA {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def bedfile = bed ? "-b ${prefix}.bed" : ""
     if ("${fasta}" == "${prefix}.fasta") {
         error("Input and output names are the same, set prefix in module configuration to disambiguate!")
     }

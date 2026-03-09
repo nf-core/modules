@@ -12,35 +12,93 @@
             [
                 "@SQ\tSN:MT192765.1\tLN:29829"
             ],
-            [
-                "versions.yml:md5,1c199f83f54556a51c500ed49ea6102a"
-            ]
+            {
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_SPLITHEADER",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ]
+            }
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.04.2"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-27T10:16:40.848026"
+        "timestamp": "2026-02-03T14:24:15.761619219"
     },
     "test-samtools-splitheader - stub": {
         "content": [
-            [
-                "@RG\tID:test\tSM:test\tPL:ILLUMINA"
-            ],
-            [
-                "@PG\tID:samtools.4\tPN:samtools\tPP:samtools.3\tVN:1.22.1\tCL:samtools view -H test.paired_end.bam"
-            ],
-            [
-                "@SQ\tSN:chr1\tLN:10000"
-            ],
-            [
-                "versions.yml:md5,1c199f83f54556a51c500ed49ea6102a"
-            ]
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_readgroups.txt:md5,2753555b7fee08ebda25868f78ae34a4"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_programs.txt:md5,fd5e1967fc571c61456c9289350d002b"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_sequences.txt:md5,8366d818a88a379ca885eb497aefc999"
+                    ]
+                ],
+                "3": [
+                    [
+                        "SAMTOOLS_SPLITHEADER",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ],
+                "programs": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_programs.txt:md5,fd5e1967fc571c61456c9289350d002b"
+                    ]
+                ],
+                "readgroup": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_readgroups.txt:md5,2753555b7fee08ebda25868f78ae34a4"
+                    ]
+                ],
+                "sequences": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_sequences.txt:md5,8366d818a88a379ca885eb497aefc999"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_SPLITHEADER",
+                        "samtools",
+                        "1.22.1"
+                    ]
+                ]
+            }
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.04.2"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-27T10:16:43.794756"
+        "timestamp": "2026-02-03T14:24:23.230770372"
     }
 }

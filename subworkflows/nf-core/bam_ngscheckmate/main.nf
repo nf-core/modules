@@ -6,13 +6,14 @@ workflow BAM_NGSCHECKMATE {
     take:
     ch_input            // channel: [ val(meta1), bam/cram ]
     ch_snp_bed          // channel: [ val(meta2), bed ]
-    ch_fasta            // channel: [ val(meta3), fasta ]
+    ch_fasta            // channel: [ val(meta3), fasta, fai ]
 
     main:
-    ch_input_bed = ch_input.combine(ch_snp_bed)
-                        .map{ input_meta, input_file, _bed_meta, bed_file ->
-                            [input_meta, input_file, bed_file]
-                        }
+    ch_input_bed = ch_input
+        .combine(ch_snp_bed)
+        .map{ input_meta, input_file, _bed_meta, bed_file ->
+            [input_meta, input_file, bed_file, []]
+        }
 
     BCFTOOLS_MPILEUP (ch_input_bed, ch_fasta.collect(), false)
 

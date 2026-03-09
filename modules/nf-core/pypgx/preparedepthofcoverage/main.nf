@@ -34,7 +34,6 @@ process PYPGX_PREPAREDEPTHOFCOVERAGE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     python -c 'import zipfile; zipfile.ZipFile("${prefix}.zip", "w").close()'

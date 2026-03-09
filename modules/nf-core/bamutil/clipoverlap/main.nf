@@ -39,7 +39,6 @@ process BAMUTIL_CLIPOVERLAP {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_clipoverlap"
     """
     touch ${prefix}.bam

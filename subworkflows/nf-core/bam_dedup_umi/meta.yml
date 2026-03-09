@@ -79,6 +79,15 @@ input:
             type: file
             description: Transcript FASTA file
             pattern: "*.{fa,fasta}"
+  - umitools_dedup_primary_only:
+      description: Whether to filter to primary alignments before UMI-tools dedup
+      structure:
+        - value:
+            type: boolean
+            description: |
+              When true, secondary and supplementary alignments (SAM flag 0x900) are
+              removed before running UMI-tools dedup so that dedup statistics reflect
+              only primary alignments.
 
 output:
   - bam:

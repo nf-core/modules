@@ -14,8 +14,6 @@ workflow VCF_IMPUTE_MINIMAC4 {
 
     main:
 
-    ch_versions = channel.empty()
-
     ch_panel_branched = ch_panel.branch { _meta, file, _index ->
         def name = file.toString()
         vcf: name.matches(/.*\.(vcf|bcf)(\.gz)?$/)
@@ -29,7 +27,6 @@ workflow VCF_IMPUTE_MINIMAC4 {
 
     // Compress reference panel to MSAV format
     MINIMAC4_COMPRESSREF(ch_panel_branched.vcf)
-    ch_versions = ch_versions.mix(MINIMAC4_COMPRESSREF.out.versions.first())
 
     ch_panel_msav = MINIMAC4_COMPRESSREF.out.msav.mix(
         ch_panel_branched.msav.map { meta, file, _index -> [meta, file] }
@@ -61,11 +58,9 @@ workflow VCF_IMPUTE_MINIMAC4 {
         }
     // Perform imputation
     MINIMAC4_IMPUTE(ch_minimac4_input)
-    ch_versions = ch_versions.mix(MINIMAC4_IMPUTE.out.versions.first())
 
     // Index the output VCF file
     BCFTOOLS_INDEX_PHASE(MINIMAC4_IMPUTE.out.vcf)
-    ch_versions = ch_versions.mix(BCFTOOLS_INDEX_PHASE.out.versions.first())
 
     // Ligate all phased files in one and index it
     ligate_input = MINIMAC4_IMPUTE.out.vcf
@@ -81,10 +76,8 @@ workflow VCF_IMPUTE_MINIMAC4 {
         .groupTuple()
 
     GLIMPSE2_LIGATE(ligate_input)
-    ch_versions = ch_versions.mix(GLIMPSE2_LIGATE.out.versions.first())
 
     BCFTOOLS_INDEX_LIGATE(GLIMPSE2_LIGATE.out.merged_variants)
-    ch_versions = ch_versions.mix(BCFTOOLS_INDEX_LIGATE.out.versions.first())
 
     // Join imputed and index files
     ch_vcf_index = GLIMPSE2_LIGATE.out.merged_variants.join(
@@ -95,5 +88,4 @@ workflow VCF_IMPUTE_MINIMAC4 {
 
     emit:
     vcf_index = ch_vcf_index // channel: [ [id, panel, chr], vcf, index ]
-    versions  = ch_versions  // channel: [ versions.yml ]
 }

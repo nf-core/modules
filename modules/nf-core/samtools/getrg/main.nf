@@ -1,11 +1,3 @@
-def deprecation_message = """
-WARNING: This module has been deprecated. Please use nf-core/modules/samtools/splitheader
-
-Reason:
-This module has been renamed to samtools/splitheader, which has the same functionality but
-extends the outputs to include other types of SAM header.
-"""
-
 process SAMTOOLS_GETRG {
     tag "$meta.id"
     label 'process_low'
@@ -19,20 +11,32 @@ process SAMTOOLS_GETRG {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), file("readgroups.txt"),    emit: readgroup
-    path  "versions.yml",                       emit: versions
+    tuple val(meta), file("readgroups.txt"), emit: readgroup
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/samtools/splitheader
+
+Reason:
+This module has been renamed to samtools/splitheader, which has the same functionality but
+extends the outputs to include other types of SAM header.
+"""
     assert false: deprecation_message
     """
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/samtools/splitheader
+
+Reason:
+This module has been renamed to samtools/splitheader, which has the same functionality but
+extends the outputs to include other types of SAM header.
+"""
     assert false: deprecation_message
     """
     """

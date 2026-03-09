@@ -36,7 +36,6 @@ process EIDO_CONVERT {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "samplesheet_converted"
     """
     touch ${prefix}.${format}

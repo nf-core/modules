@@ -58,8 +58,7 @@ nextflow_workflow {
                         path(it[1]).vcf.summary,
                         path(it[1]).vcf.variantsMD5
                     ]},
-                    workflow.out.chunks,
-                    workflow.out.versions
+                    workflow.out.chunks
                 ).match() }
             )
         }
@@ -158,8 +157,7 @@ nextflow_workflow {
                         path(it[1]).vcf.header.getGenotypeSamples().sort(),
                         path(it[1]).vcf.variantsMD5
                     ]},
-                    workflow.out.chunks,
-                    workflow.out.versions
+                    workflow.out.chunks
                 ).match() }
             )
         }
@@ -195,10 +193,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }
