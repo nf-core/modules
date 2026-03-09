@@ -46,13 +46,27 @@ output:
             Output directory containing subdirectories per well-rack-roi-exp combination.
             Each subdirectory contains a markers.csv table and a raw/ folder with ome.tif files.
           pattern: "*/"
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750
+  versions_macsima2mc:
+      - - ${task.process}:
+            type: string
+            description: The process the versions were collected from
+        - macsima2mc:
+            type: string
+            description: The tool name
+        - "python -m pip show macsima2mc | grep \"Version\" | sed -e \"s/Version: //g\"":
+            type: string
+            description: The command used to generate the version of the tool
+  topics:
+    versions:
+      - - ${task.process}:
+            type: string
+            description: The process the versions were collected from
+        - macsima2mc:
+            type: string
+            description: The tool name
+        - "python -m pip show macsima2mc | grep \"Version\" | sed -e \"s/Version: //g\"":
+            type: string
+            description: The command used to generate the version of the tool
 authors:
   - "@EfraMP"
 maintainers:
