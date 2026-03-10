@@ -42,9 +42,6 @@ process MACSYFINDER_SEARCH {
 
     mv macsyfinder.err ${prefix}/
     mv macsyfinder.out ${prefix}/
-
-    # Remove empty error files to avoid snapshot pollution
-    find ${prefix} -name "*.err" -type f -size 0 -delete
     """
 
     stub:

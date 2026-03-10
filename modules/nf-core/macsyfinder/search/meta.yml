@@ -1,5 +1,10 @@
 name: "macsyfinder_search"
 description: Search for macromolecular systems in protein datasets using MacSyFinder
+notes: |
+  The current input structure searches all specified models in a single MacSyFinder process
+  (using internal parallelization via --worker). For Nextflow-level parallelization across
+  individual models, the inputs could be combined into a single tuple:
+  tuple val(meta), path(proteins), path(models), val(model_names)
 keywords:
   - genomics
   - protein
@@ -8,8 +13,9 @@ keywords:
   - search
 tools:
   - "macsyfinder":
-      description: "Detection of macromolecular systems in protein datasets using systems\
-        \ modelling and similarity search"
+      description: |
+        Detection of macromolecular systems in protein datasets using systems
+        modelling and similarity search
       homepage: "https://github.com/gem-pasteur/macsyfinder"
       documentation: "https://macsyfinder.readthedocs.io"
       tool_dev_url: "https://github.com/gem-pasteur/macsyfinder"

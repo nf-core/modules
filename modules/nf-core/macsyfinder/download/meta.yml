@@ -8,8 +8,9 @@ keywords:
   - database
 tools:
   - "macsyfinder":
-      description: "Detection of macromolecular systems in protein datasets using systems\
-        \ modelling and similarity search"
+      description: |
+        Detection of macromolecular systems in protein datasets using systems  
+        modelling and similarity search
       homepage: "https://github.com/gem-pasteur/macsyfinder"
       documentation: "https://macsyfinder.readthedocs.io"
       tool_dev_url: "https://github.com/gem-pasteur/macsyfinder"
@@ -44,7 +45,7 @@ output:
       - msf_data:
           type: string
           description: The name of the tool
-      - msf_data --version 2>&1 | awk "NR==4" | sed "s/^- MacSyLib //;s/ *$//":
+      - msf_data --version 2>&1 | sed "4!d;s/^- MacSyLib //;s/ *$//":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -64,7 +65,7 @@ topics:
       - msf_data:
           type: string
           description: The name of the tool
-      - msf_data --version 2>&1 | awk "NR==4" | sed "s/^- MacSyLib //;s/ *$//":
+      - msf_data --version 2>&1 | sed "4!d;s/^- MacSyLib //;s/ *$//":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
