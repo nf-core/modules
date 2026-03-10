@@ -17,7 +17,8 @@ tools:
       documentation: "https://github.com/davidemms/OrthoFinder"
       tool_dev_url: "https://github.com/davidemms/OrthoFinder"
       doi: "10.1186/s13059-019-1832-y"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:OrthoFinder
 input:
   - - meta:
@@ -45,7 +46,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "$prefix":
+      - $prefix:
           type: directory
           description: OrthoFinder output directory
   working:
@@ -54,28 +55,28 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "$prefix/WorkingDirectory":
+      - $prefix/WorkingDirectory:
           type: directory
           description: OrthoFinder WorkingDirectory (used for the resume function)
   versions_orthofinder:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
       - orthofinder:
           type: string
           description: The name of the tool
-      - "orthofinder --version 2>&1 | tail -1 | sed 's/\\x1b\\[[0-9;]*m//g; s/OrthoFinder:v//'":
+      - "NO_COLOR=1 orthofinder --version | cut -d 'v' -f2 | perl -pe 's/\\e\\[[0-9;]*m//g'":
           type: eval
-          description: The version of OrthoFinder
+          description: The expression to obtain the version of the tool
 topics:
   versions:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
-          description: The process the versions were collected from
+          description: The name of the process
       - orthofinder:
           type: string
-          description: The tool name
-      - "orthofinder --version 2>&1 | tail -1 | sed 's/\\x1b\\[[0-9;]*m//g; s/OrthoFinder:v//'":
+          description: The name of the tool
+      - "NO_COLOR=1 orthofinder --version | cut -d 'v' -f2 | perl -pe 's/\\e\\[[0-9;]*m//g'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
