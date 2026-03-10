@@ -65,7 +65,7 @@ output:
       - famsa:
           type: string
           description: The tool name
-      - famsa -help 2>&1 | head -n 2 | tail -n 1 | sed 's/ (.*//; s/^.* //' | xargs:
+      - famsa -help 2>&1 | sed '2!d;s/ (.*//; s/^.* //':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -76,7 +76,7 @@ topics:
       - famsa:
           type: string
           description: The name of the tool
-      - famsa -help 2>&1 | head -n 2 | tail -n 1 | sed 's/ (.*//; s/^.* //' | xargs:
+      - famsa -help 2>&1 | sed '2!d;s/ (.*//; s/^.* //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
