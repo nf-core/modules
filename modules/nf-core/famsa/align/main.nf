@@ -1,5 +1,3 @@
-
-
 process FAMSA_ALIGN {
     tag "$meta.id"
     label 'process_medium'
@@ -16,7 +14,7 @@ process FAMSA_ALIGN {
 
     output:
     tuple val(meta), path("*.aln{.gz,}"), emit: alignment
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('famsa'), eval("famsa -help 2>&1 | head -n 2 | tail -n 1 | sed 's/ version //' | awk '{print \$1}' | xargs"), topic: versions, emit: versions_famsa
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,21 +31,14 @@ process FAMSA_ALIGN {
         -t ${task.cpus} \\
         ${fasta} \\
         ${prefix}.aln${compress ? '.gz':''}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        famsa: \$( famsa -help 2>&1 | head -n 2 | tail -n 1 | sed 's/ version //g' )
-    END_VERSIONS
     """
 
     stub:
+    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.aln${compress ? '.gz' : ''}
+    echo $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        famsa: \$( famsa -help 2>&1 | head -n 2 | tail -n 1 | sed 's/ version //g' )
-    END_VERSIONS
+    ${compress ? "echo '' | gzip > ${prefix}.aln.gz" : "touch ${prefix}.aln"}
     """
 }
