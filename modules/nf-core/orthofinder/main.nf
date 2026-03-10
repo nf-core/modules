@@ -14,9 +14,7 @@ process ORTHOFINDER {
     output:
     tuple val(meta), path("$prefix")                     , emit: orthofinder
     tuple val(meta), path("$prefix/WorkingDirectory")    , emit: working
-    tuple val("${task.process}"), val('orthofinder'), \
-    eval("orthofinder --version | cut -d 'v' -f2"), \
-    emit: versions_orthofinder, topic: versions
+    tuple val("${task.process}"), val('orthofinder'), eval("NO_COLOR=1 orthofinder --version | cut -d 'v' -f2 | perl -pe 's/\\e\\[[0-9;]*m//g'"), emit: versions_orthofinder, topic: versions
 
 
 
