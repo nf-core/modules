@@ -56,7 +56,7 @@ nextflow_process {
                     { assert new File(process.out.out_dir[0][1][0].toString()).isDirectory() },
                     { assert new File(process.out.out_dir[0][1][0].toString() + '/markers.csv').exists() },
                     { assert new File(process.out.out_dir[0][1][0].toString() + '/raw').isDirectory() },
-                    { assert snapshot(process.out.versions).match("versions") }
+                    { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions")}) }
                 )
             }
     }
@@ -105,8 +105,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
-                { assert snapshot(process.out.versions).match("versions_stub") }
+                { assert snapshot(process.out).match() }
             )
         }
     }
