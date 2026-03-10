@@ -71,9 +71,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = PIGZ_COMPRESS.out.archive.map { meta, file ->
-                    [[ id: 'test' ], file]
-                }
+                input[0] = PIGZ_COMPRESS.out.archive
                 input[1] = MACSYFINDER_DOWNLOAD.out.models
                 input[2] = 'TXSScan'
                 """
