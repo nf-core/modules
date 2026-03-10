@@ -136,7 +136,7 @@ nextflow_process {
                     [ [id:'fasta2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome_test.faa', checkIfExists: true) ],
                     [ [id:'fasta2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome_test.faa', checkIfExists: true) ]
                 )
-                input[1] = FIRST_DB.out.db.mix(SECOND_DB.out.db).mix(FIRST_DB.out.db).mix(SECOND_DB.out.db)
+                input[1] = FIRST_DB.out.db.concat(SECOND_DB.out.db).concat(FIRST_DB.out.db).concat(SECOND_DB.out.db)
                 input[2] = 6
                 input[3] = []
                 """
