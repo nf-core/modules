@@ -4,7 +4,7 @@ process AMULETY_TRANSLATE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/53/53bd60c3aa7a937df11e4a3cbf66a274edd1d580aac1ef49a0c8d96d13d1f1fa/data':
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/88/88db7c962bd369a7886f2aeafb01a83e29092e4447365e7d00cea4f0a8971794/data':
         'community.wave.seqera.io/library/amulety_igblast_wget:e477bc17f7c35e7c' }"
 
     input:
@@ -26,6 +26,7 @@ process AMULETY_TRANSLATE {
     export IGDATA=${reference_igblast}
     amulety \\
     translate-igblast \\
+    --nproc ${task.cpus} \\
     $args \\
     --input-file $tsv \\
     --output-dir . \\

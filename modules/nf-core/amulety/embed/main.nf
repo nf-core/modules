@@ -4,9 +4,7 @@ process AMULETY_EMBED {
     label 'process_gpu'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bd/bdc2f42370e0aa9a3f0b2a50ad4c613d07a76d2923cc4d2741b1a64a2cca552b/data':
-        'community.wave.seqera.io/library/amulety_curl_wget:1b7068eb7e2d4527' }"
+    container "docker.io/immcantation/amulety:2.1.2" // Seqera containers cannot be used since GPU is needed at runtime for pytorch with CUDA support to be installed
 
     input:
     tuple val(meta), path(tsv)
