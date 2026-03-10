@@ -12,7 +12,8 @@ tools:
       documentation: https://github.com/bbuchfink/diamond/wiki
       tool_dev_url: https://github.com/bbuchfink/diamond
       doi: "10.1038/s41592-021-01101-x"
-      licence: ["GPL v3.0"]
+      licence:
+        - "GPL v3.0"
       identifier: biotools:diamond
 input:
   - - meta:
@@ -25,7 +26,7 @@ input:
         description: Input fasta file containing query sequences
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1929
   - - meta2:
         type: map
         description: |
@@ -62,46 +63,42 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', db:'ncbi-refseq' ]
-          pattern: "*.{blast,blast.gz}"
       - "*.{blast,blast.gz}":
           type: file
           description: File containing blastp hits
           pattern: "*.{blast,blast.gz}"
           ontologies:
-            - edam: http://edamontology.org/format_3836 # BLAST XML v2 results format
+            - edam: http://edamontology.org/format_3836
   xml:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', db:'ncbi-refseq' ]
-          pattern: "*.{xml,xml.gz}"
       - "*.{xml,xml.gz}":
           type: file
           description: File containing blastp hits
           pattern: "*.{xml,xml.gz}"
           ontologies:
-            - edam: http://edamontology.org/format_2332 # XML
+            - edam: http://edamontology.org/format_2332
   txt:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', db:'ncbi-refseq' ]
-          pattern: "*.{txt,txt.gz}"
       - "*.{txt,txt.gz}":
           type: file
           description: File containing hits in tabular BLAST format.
           pattern: "*.{txt,txt.gz}"
           ontologies:
-            - edam: http://edamontology.org/format_1333 # BLAST results
+            - edam: http://edamontology.org/format_1333
   daa:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', db:'ncbi-refseq' ]
-          pattern: "*.{daa,daa.gz}"
       - "*.{daa,daa.gz}":
           type: file
           description: File containing hits DAA format
@@ -113,45 +110,58 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', db:'ncbi-refseq' ]
-          pattern: "*.{sam,sam.gz}"
       - "*.{sam,sam.gz}":
           type: file
           description: File containing aligned reads in SAM format
           pattern: "*.{sam,sam.gz}"
           ontologies:
-            - edam: http://edamontology.org/format_2573 # SAM
+            - edam: http://edamontology.org/format_2573
   tsv:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', db:'ncbi-refseq' ]
-          pattern: "*.{tsv,tsv.gz}"
       - "*.{tsv,tsv.gz}":
           type: file
-          description: Tab separated file containing taxonomic classification of hits
+          description: Tab separated file containing taxonomic classification of
+            hits
           pattern: "*.{tsv,tsv.gz}"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   paf:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', db:'ncbi-refseq' ]
-          pattern: "*.{paf,paf.gz}"
       - "*.{paf,paf.gz}":
           type: file
-          description: File containing aligned reads in pairwise mapping format format
+          description: File containing aligned reads in pairwise mapping format
+            format
           pattern: "*.{paf,paf.gz}"
           ontologies: []
+  versions_diamond:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - diamond:
+          type: string
+          description: The name of the tool
+      - diamond --version 2>&1 | tail -n 1 | sed "s/^diamond version //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - diamond:
+          type: string
+          description: The name of the tool
+      - diamond --version 2>&1 | tail -n 1 | sed "s/^diamond version //":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@spficklin"
   - "@jfy133"
