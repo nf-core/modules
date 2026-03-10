@@ -28,7 +28,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
+                { assert snapshot(process.out.versions_pyclonevi).match() },
                 { assert file(process.out.ctree_input[0][1]).exists() },
                 { assert file(process.out.pyclone_input[0][1][0]).exists() },
                 { assert file(process.out.pyclone_input[0][1][1]).exists() },
