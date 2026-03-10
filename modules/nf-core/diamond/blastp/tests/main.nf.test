@@ -33,25 +33,14 @@ nextflow_process {
             }
         }
     }
-                /**
-                input[0] = Channel.fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
-                    .map { f -> [ [ id: 'f0' ], f ] }
-                    .mix(
-                        Channel.fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
-                            .map { f -> [ [ id: 'f1' ], f ] }
-                    )
-                    **/
 
     test("sarscov2 - proteome - txt") {
 
         when {
             process {
                 """
-                input[0] = Channel.of(
-                    [ [id:'txt0'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true) ],
-                    [ [id:'txt1'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true) ]
-                )
-                input[1] = FIRST_DB.out.db.mix(SECOND_DB.out.db)
+                input[0] = [ [id:'txt'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true) ]
+                input[1] = FIRST_DB.out.db
                 input[2] = 6
                 input[3] = 'qseqid qlen'
                 """
@@ -131,6 +120,33 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match("txt_gz") }
+            )
+        }
+
+    }
+
+    test("sarscov2 - proteome - double fasta/double db input") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [ [id:'fasta1'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true) ],
+                    [ [id:'fasta1'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true) ],
+                    [ [id:'fasta2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true) ],
+                    [ [id:'fasta2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true) ]
+                )
+                input[1] = FIRST_DB.out.db.mix(SECOND_DB.out.db).mix(FIRST_DB.out.db).mix(SECOND_DB.out.db)
+                input[2] = 6
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
 
