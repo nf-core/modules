@@ -77,8 +77,6 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
                 ]
                 input[1] = FAMSA_GUIDETREE.out.tree
-                    .collect{ meta, tree -> tree }
-                    .map{ tree -> [[ id: 'test_summary'], tree] }
                 input[2] = true
                 """
             }
