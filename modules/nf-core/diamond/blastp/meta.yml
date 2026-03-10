@@ -19,7 +19,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - fasta:
         type: file
         description: Input fasta file containing query sequences
@@ -30,7 +30,7 @@ input:
         type: map
         description: |
           Groovy Map containing db information
-          e.g. [ id:'test2', single_end:false ]
+          e.g. [ id:'test2' ]
     - db:
         type: file
         description: File of the indexed DIAMOND database
@@ -61,7 +61,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false, db:'ncbi-refseq' ]
+            e.g. [ id:'test', db:'ncbi-refseq' ]
           pattern: "*.{blast,blast.gz}"
       - "*.{blast,blast.gz}":
           type: file
@@ -74,7 +74,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false, db:'ncbi-refseq' ]
+            e.g. [ id:'test', db:'ncbi-refseq' ]
           pattern: "*.{xml,xml.gz}"
       - "*.{xml,xml.gz}":
           type: file
@@ -87,7 +87,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false, db:'ncbi-refseq' ]
+            e.g. [ id:'test', db:'ncbi-refseq' ]
           pattern: "*.{txt,txt.gz}"
       - "*.{txt,txt.gz}":
           type: file
@@ -100,7 +100,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false, db:'ncbi-refseq' ]
+            e.g. [ id:'test', db:'ncbi-refseq' ]
           pattern: "*.{daa,daa.gz}"
       - "*.{daa,daa.gz}":
           type: file
@@ -112,7 +112,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false, db:'ncbi-refseq' ]
+            e.g. [ id:'test', db:'ncbi-refseq' ]
           pattern: "*.{sam,sam.gz}"
       - "*.{sam,sam.gz}":
           type: file
@@ -125,7 +125,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false, db:'ncbi-refseq' ]
+            e.g. [ id:'test', db:'ncbi-refseq' ]
           pattern: "*.{tsv,tsv.gz}"
       - "*.{tsv,tsv.gz}":
           type: file
@@ -138,7 +138,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false, db:'ncbi-refseq' ]
+            e.g. [ id:'test', db:'ncbi-refseq' ]
           pattern: "*.{paf,paf.gz}"
       - "*.{paf,paf.gz}":
           type: file
