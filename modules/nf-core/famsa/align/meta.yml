@@ -49,7 +49,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test']`
-      - "*.aln{.gz,}":
+      - ${prefix}.aln{.gz,}:
           type: file
           description: Alignment file, in FASTA format. May be gzipped or uncompressed,
             depending on if compress is set to true or false

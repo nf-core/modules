@@ -13,7 +13,7 @@ process FAMSA_ALIGN {
     val(compress)
 
     output:
-    tuple val(meta), path("*.aln{.gz,}"), emit: alignment
+    tuple val(meta), path("${prefix}.aln{.gz,}"), emit: alignment
     tuple val("${task.process}"), val('famsa'), eval("famsa -help 2>&1 | head -n 2 | tail -n 1 | sed 's/ version //' | awk '{print \$1}' | xargs"), topic: versions, emit: versions_famsa
 
     when:
@@ -22,7 +22,7 @@ process FAMSA_ALIGN {
     script:
     def args = task.ext.args ?: ''
     def compress_args = compress ? '-gz' : ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def options_tree = tree ? "-gt import $tree" : ""
     """
     famsa $options_tree \\
@@ -35,7 +35,7 @@ process FAMSA_ALIGN {
 
     stub:
     def args   = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo $args
 
