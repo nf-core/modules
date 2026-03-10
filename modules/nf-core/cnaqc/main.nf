@@ -22,13 +22,16 @@ process CNAQC {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+
+    "echo ${args}"
 
     template "main_script.R"
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
+    args = task.ext.args ?: ''
     """
     touch ${prefix}_qc.rds
     touch ${prefix}_data_plot.rds

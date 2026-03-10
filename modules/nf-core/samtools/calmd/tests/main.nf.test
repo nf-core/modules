@@ -10,30 +10,24 @@ nextflow_process {
     tag "samtools/calmd"
 
     test("bam") {
-
         when {
             process {
                 """
-                input[0] = Channel.of([
-                    [ id:'test', single_end:false ], // meta map
+                input[0] = [
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
-                ])
-                input[1] = Channel.of([
-                    [ id:'fasta' ], // meta map
+                ]
+                input[1] = [
+                    [ id:'fasta' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                ])
+                ]
                 """
             }
         }
-
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(file(process.out.bam[0][1]).name).match("bam_reads") },
-                { assert snapshot(process.out.versions).match("bam_versions") }
-            )
+            assert process.success
+            assert snapshot(process.out).match()
         }
-
     }
 
     test("bam_stub") {
@@ -43,26 +37,20 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
-                    [ id:'test', single_end:false ], // meta map
+                input[0] = [
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
-                ])
-                input[1] = Channel.of([
-                    [ id:'fasta' ], // meta map
+                ]
+                input[1] = [
+                    [ id:'fasta' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                ])
+                ]
                 """
             }
         }
-
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(file(process.out.bam[0][1]).name).match("bam_stub_reads") },
-                { assert snapshot(process.out.versions).match("bam_stub_versions") }
-            )
+            assert process.success
+            assert snapshot(process.out).match()
         }
-
     }
-
 }

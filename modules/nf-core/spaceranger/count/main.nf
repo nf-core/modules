@@ -24,14 +24,14 @@ process SPACERANGER_COUNT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     // Add flags for optional inputs on demand.
-    probeset = probeset ? "--probe-set=\"${probeset}\"" : ""
-    alignment = alignment ? "--loupe-alignment=\"${alignment}\"" : ""
-    slidefile = slidefile ? "--slidefile=\"${slidefile}\"" : ""
-    image = image ? "--image=\"${image}\"" : ""
-    cytaimage = cytaimage ? "--cytaimage=\"${cytaimage}\"" : ""
-    darkimage = darkimage ? "--darkimage=\"${darkimage}\"" : ""
-    colorizedimage = colorizedimage ? "--colorizedimage=\"${colorizedimage}\"" : ""
-    if (slide.matches("visium-(.*)") && area == "" && slidefile == "") {
+    def probeset_opt = probeset ? "--probe-set=\"${probeset}\"" : ""
+    def alignment_opt = alignment ? "--loupe-alignment=\"${alignment}\"" : ""
+    def slidefile_opt = slidefile ? "--slidefile=\"${slidefile}\"" : ""
+    def image_opt = image ? "--image=\"${image}\"" : ""
+    def cytaimage_opt = cytaimage ? "--cytaimage=\"${cytaimage}\"" : ""
+    def darkimage_opt = darkimage ? "--darkimage=\"${darkimage}\"" : ""
+    def colorizedimage_opt = colorizedimage ? "--colorizedimage=\"${colorizedimage}\"" : ""
+    if (slide.matches("visium-(.*)") && area == "" && slidefile_opt == "") {
         slide_and_area = "--unknown-slide=\"${slide}\""
     } else {
         slide_and_area = "--slide=\"${slide}\" --area=\"${area}\""
@@ -44,11 +44,14 @@ process SPACERANGER_COUNT {
         --transcriptome="${reference}" \\
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
-        $image $cytaimage $darkimage $colorizedimage \\
+        $image_opt \\
+        $cytaimage_opt \\
+        $darkimage_opt \\
+        $colorizedimage_opt \\
         $slide_and_area \\
-        $probeset \\
-        $alignment \\
-        $slidefile \\
+        $probeset_opt \\
+        $alignment_opt \\
+        $slidefile_opt \\
         $args
     mv ${prefix}/outs outs
     """

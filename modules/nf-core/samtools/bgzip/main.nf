@@ -13,7 +13,7 @@ process SAMTOOLS_BGZIP {
     output:
     tuple val(meta), path("${output}"), emit: fasta
     // samtools-bgzip has no --version option so let's use lastal from the same suite
-    tuple val("${task.process}"), val('samtools'), eval("samtools --version | head -n 1 | sed 's/^.*samtools //'"), emit: versions_samtools, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,7 +44,7 @@ process SAMTOOLS_BGZIP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     output = "${prefix}.gz"
     """
-    [ "\$(basename $fasta)" == "\$(basename ${output})" ] && echo "Filename collision (\$basename $fasta)" && exit 1
+    [ "\$(basename $fasta)" == "\$(basename ${output})" ] && echo "Filename collision \$(basename $fasta)" && exit 1
     echo '' | bgzip > ${output}
     """
 }

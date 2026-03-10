@@ -1,0 +1,85 @@
+nextflow_process {
+
+    name "Test Process PYGENPROP_BUILD"
+    script "../main.nf"
+    process "PYGENPROP_BUILD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pygenprop"
+    tag "pygenprop/build"
+    tag "aria2"
+    tag "gunzip"
+
+    setup {
+        run("ARIA2") {
+            script "../../../aria2/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test_genprops' ],
+                    params.modules_testdata_base_path + 'proteomics/interproscan/genomeProperties.txt.gz'
+                ]
+                """
+            }
+        }
+
+        run("GUNZIP") {
+            script "../../../gunzip/main.nf"
+                process {
+                """
+                input[0] = ARIA2.out.downloaded_file
+                """
+            }
+        }
+    }
+
+    test("human_skin_metagenome - ips - micro") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/interproscan/human_skin_metagenome_ips_result.tsv', checkIfExists: true)
+                ])
+                input[1] = GUNZIP.out.gunzip.map{ it -> it[1] }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("human_skin_metagenome - ips - micro - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test_genprops' ],
+                    file(params.modules_testdata_base_path + 'proteomics/interproscan/human_skin_metagenome_ips_result.tsv', checkIfExists: true)
+                ])
+                input[1] = GUNZIP.out.gunzip.map{ it -> it[1] }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

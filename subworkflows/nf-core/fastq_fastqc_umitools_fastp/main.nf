@@ -48,7 +48,6 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
     min_trimmed_reads // integer: > 0
 
     main:
-    ch_versions = channel.empty()
     fastqc_raw_html = channel.empty()
     fastqc_raw_zip = channel.empty()
     umi_log = channel.empty()
@@ -82,7 +81,6 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
         trimmer_reads = UMITOOLS_EXTRACT.out.reads
         umi_reads = UMITOOLS_EXTRACT.out.reads
         umi_log = UMITOOLS_EXTRACT.out.log
-        ch_versions = ch_versions.mix(UMITOOLS_EXTRACT.out.versions.first())
 
         // Discard R1 / R2 if required
         if (umi_discard_read in [1, 2]) {
@@ -159,5 +157,4 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
     trim_read_count   // channel: [ val(meta), val(count) ]
     fastqc_trim_html  // channel: [ val(meta), [ html ] ]
     fastqc_trim_zip   // channel: [ val(meta), [ zip ] ]
-    versions          = ch_versions // channel: [ versions.yml ]
 }

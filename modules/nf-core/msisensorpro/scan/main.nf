@@ -12,7 +12,7 @@ process MSISENSORPRO_SCAN {
 
     output:
     tuple val(meta), path("*.list"), emit: list
-    path "versions.yml"            , emit: versions
+    tuple val("${task.process}"), val('msisensor-pro'), eval("msisensor-pro --version 2>&1 | sed -nE 's/Version:\\s*//p'") , emit: versions_msisensorpro, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,21 +26,11 @@ process MSISENSORPRO_SCAN {
         -d $fasta \\
         -o ${prefix}.msisensor_scan.list \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        msisensor-pro: \$(msisensor-pro 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.msisensor_scan.list
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        msisensor-pro: \$(msisensor-pro 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p')
-    END_VERSIONS
     """
 }

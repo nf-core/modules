@@ -33,7 +33,6 @@ This module is now renamed as FCSGX_RUNGX and as been updated to the latest vers
         error "FCS_FCSGX module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def FCSGX_VERSION = '0.4.0'
 
     """

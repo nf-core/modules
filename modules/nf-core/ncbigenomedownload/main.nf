@@ -34,7 +34,6 @@ process NCBIGENOMEDOWNLOAD {
 
     script:
     def args           = task.ext.args ?: ''
-    def prefix         = task.ext.prefix ?: "${meta.id}"
     def accessions_opt = accessions ? "-A ${accessions}" : ""
     def taxids_opt     = taxids ? "-t ${taxids}" : ""
     """

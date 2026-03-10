@@ -73,11 +73,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'test', 'method_differential':'deseq2'],
-                    file(params.test_data['generic']['tsv']['expression'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'generic/tsv/expression.tsv', checkIfExists: true)
                 ]
                 input[1] = [
                     ['id':'network'],
-                    file(params.test_data['generic']['tsv']['network'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'generic/tsv/network.tsv', checkIfExists: true)
                 ]
                 input[2] = [
                     ['id':'annot'],
@@ -126,11 +126,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'test' ],
-                    file(params.test_data['generic']['tsv']['expression'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'generic/tsv/expression.tsv', checkIfExists: true)
                 ]
                 input[1] = [
                     ['id':'network'],
-                    file(params.test_data['generic']['tsv']['network'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'generic/tsv/network.tsv', checkIfExists: true)
                 ]
                 input[2] = [
                     ['id':'annot'],

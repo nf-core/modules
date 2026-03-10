@@ -29,6 +29,7 @@ process MITOHIFI_MITOHIFI {
     tuple val(meta), path("reads_mapping_and_assembly/")    , emit: reads_mapping_and_assembly , optional: true
     tuple val(meta), path("shared_genes.tsv")               , emit: shared_genes               , optional: true
     tuple val(meta), path("*.log")                          , emit: log
+    tuple val(meta), path("*")                              , emit: all_files
     // WARN: Incorrect version information is provided by tool on CLI. Please update this string when bumping container versions.
     // old version command: \$(mitohifi.py -v | sed 's/.* //')
     tuple val("${task.process}"), val('mitohifi'), eval('echo 3.2.3'), emit: versions_mitohifi, topic: versions

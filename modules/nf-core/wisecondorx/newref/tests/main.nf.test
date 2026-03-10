@@ -54,7 +54,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.findAll { it.key.startsWith("versions_") },
                     process.out.npz.collect { it.collect { it instanceof Map ? it : file(it).name }}
                 ).match() }
             )
