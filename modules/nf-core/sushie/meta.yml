@@ -1,5 +1,6 @@
 name: "sushie"
-description: Software to perform multi-ancestry SNP fine-mapping on molecular data
+description: Software to perform multi-ancestry SNP fine-mapping on molecular
+  data
 keywords:
   - gwas
   - fine mapping
@@ -70,13 +71,6 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
       - "*.sushie.weights.tsv": {}
-  log:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "*.log": {}
 topics:
   versions:
     - - ${task.process}:
