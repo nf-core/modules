@@ -17,7 +17,7 @@
 
 process VCFEXPRESS {
     tag "$meta.id"
-    label 'single'
+    label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -38,6 +38,7 @@ process VCFEXPRESS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_express"
+    def suffix = task.ext.suffix ?: 'vcf.gz'
 
     def lua_prelude = prelude ? "--lua-prelude $prelude" : ''
 
@@ -46,15 +47,16 @@ process VCFEXPRESS {
     $args \
     $lua_prelude \
     ${vcf} \
-    --output ${prefix}.vcf.gz    
+    --output ${prefix}.${suffix}   
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_express"
+    def suffix = task.ext.suffix ?: 'vcf.gz'
     
     """
-    touch ${prefix}.vcf.gz
+    touch ${prefix}.${suffix}
 
     echo $args
     """
