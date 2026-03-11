@@ -36,13 +36,11 @@ process ABRICATE_RUN {
         ${datadir} \\
         --threads ${task.cpus} \\
         > ${prefix}.txt
-
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
-
     """
 }
