@@ -1,6 +1,6 @@
----
 name: "stacks_refmap"
-description: ref_map.pl script from Stacks for the analysis of RAD-seq data when a reference genome is available.
+description: ref_map.pl script from Stacks for the analysis of RAD-seq data when
+  a reference genome is available.
 keywords:
   - rad-seq
   - gbs
@@ -9,18 +9,20 @@ keywords:
   - genomics
 tools:
   - "stacks":
-      description: "Stacks is a software pipeline for building loci from short-read sequences."
+      description: "Stacks is a software pipeline for building loci from short-read
+        sequences."
       homepage: "https://catchenlab.life.illinois.edu/stacks/"
       documentation: "https://catchenlab.life.illinois.edu/stacks/manual/"
       tool_dev_url: "http://groups.google.com/group/stacks-users"
       doi: "10.1111/mec.12354"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:stacks
-
 input:
   - - meta:
         type: map
-        description: Groovy Map containing sample information e.g. [ id:'test' ]
+        description: Groovy Map containing sample information e.g. [ id:'test',
+          single_end:false ]
     - bam_path:
         type: directory
         description: Directory containing BAM files aligned to a reference genome
@@ -33,86 +35,161 @@ input:
         - edam: http://edamontology.org/format_3475
 output:
   catalog_calls:
-    - catalog_calls:
-        type: file
-        description: Stacks catalog calls output file
-        pattern: "catalog.calls"
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - catalog.calls:
+          type: file
+          description: Stacks catalog calls output file
+          pattern: "catalog.calls"
   catalog_chrs:
-    - catalog_chrs:
-        type: file
-        description: Stacks catalog chrs output file
-        pattern: "catalog.chrs"
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - catalog.chrs.tsv:
+          type: file
+          description: Stacks catalog chrs output file
+          pattern: "catalog.chrs.tsv"
   catalog_fa:
-    - catalog_fa:
-        type: file
-        description: Stacks catalog fasta output file
-        pattern: "catalog.fa.gz"
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - catalog.fa.gz:
+          type: file
+          description: Stacks catalog fasta output file
+          pattern: "catalog.fa.gz"
   gstacks_log:
-    - gstacks_log:
-        type: file
-        description: Stacks gstacks log output file
-        pattern: "gstacks.log"
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - gstacks.log:
+          type: file
+          description: Stacks gstacks log output file
+          pattern: "gstacks.log"
   gstacks_log_distribs:
-    - gstacks_log_distribs:
-        type: file
-        description: Stacks gstacks log distribs output file
-        pattern: "gstacks.log.distribs"
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - gstacks.log.distribs:
+          type: file
+          description: Stacks gstacks log distribs output file
+          pattern: "gstacks.log.distribs"
   haplotypes:
-    - haplotypes:
-        type: file
-        description: Stacks haplotypes output file
-        pattern: "populations.haplotypes.tsv"
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - populations.haplotypes.tsv:
+          type: file
+          description: Stacks haplotypes output file
+          pattern: "populations.haplotypes.tsv"
   hapstats:
-    - hapstats:
-        type: file
-        description: Stacks hapstats output file
-        pattern: "populations.hapstats.tsv"
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - populations.hapstats.tsv:
+          type: file
+          description: Stacks hapstats output file
+          pattern: "populations.hapstats.tsv"
   sumstats:
-    - sumstats:
-        type: file
-        description: Stacks populations sumstats output file
-        pattern: "populations.sumstats.tsv"
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - populations.sumstats.tsv:
+          type: file
+          description: Stacks populations sumstats output file
+          pattern: "populations.sumstats.tsv"
   sumstats_summary:
-    - sumstats_summary:
-        type: file
-        description: Stacks populations sumstats summary output file
-        pattern: "populations.sumstats_summary.tsv"
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - populations.sumstats_summary.tsv:
+          type: file
+          description: Stacks populations sumstats summary output file
+          pattern: "populations.sumstats_summary.tsv"
   populations_log:
-    - populations_log:
-        type: file
-        description: Stacks populations log output file
-        pattern: "populations.log"
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - populations.log:
+          type: file
+          description: Stacks populations log output file
+          pattern: "populations.log"
   populations_log_distribs:
-    - populations_log_distribs:
-        type: file
-        description: Stacks populations log distribs output file
-        pattern: "populations.log.distribs"
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - populations.log.distribs:
+          type: file
+          description: Stacks populations log distribs output file
+          pattern: "populations.log.distribs"
   ref_map_log:
-    - ref_map_log:
-        type: file
-        description: Stacks ref_map log output file
-        pattern: "ref_map.log"
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - ref_map.log:
+          type: file
+          description: Stacks ref_map log output file
+          pattern: "ref_map.log"
   vcf:
-    - vcf:
-        type: file
-        description: Stacks populations vcf output file
-        pattern: "populations.snps.vcf"
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - populations.snps.vcf:
+          type: file
+          description: Stacks populations vcf output file
+          pattern: "populations.snps.vcf"
   genepop:
-    - genepop:
-        type: file
-        description: Stacks populations genepop output file
-        pattern: "populations.snps.genepop"
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - populations.snps.genepop:
+          type: file
+          description: Stacks populations genepop output file
+          pattern: "populations.snps.genepop"
   structure:
-    - structure:
-        type: file
-        description: Stacks populations structure output file
-        pattern: "populations.structure"
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test',
+            single_end:false ]
+      - populations.structure:
+          type: file
+          description: Stacks populations structure output file
+          pattern: "populations.structure"
+  versions_stacks_refmap:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stacks_refmap:
+          type: string
+          description: The name of the tool
+      - "populations -v 2>&1 | sed 's/^.* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stacks_refmap:
+          type: string
+          description: The name of the tool
+      - "populations -v 2>&1 | sed 's/^.* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@TheGreatJack"
 maintainers:

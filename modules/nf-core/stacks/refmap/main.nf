@@ -30,7 +30,7 @@ process STACKS_REFMAP {
     tuple val(meta), path("populations.snps.vcf"), emit: vcf , optional: true
     tuple val(meta), path("populations.snps.genepop"), emit: genepop , optional: true
     tuple val(meta), path("populations.structure"), emit: structure , optional: true
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('stacks_refmap'), eval("populations -v 2>&1 | sed 's/^.* //'"), emit: versions_stacks_refmap, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
