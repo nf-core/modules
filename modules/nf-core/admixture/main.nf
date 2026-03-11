@@ -15,7 +15,7 @@ process ADMIXTURE {
     output:
     tuple val(meta), path("*.Q"), emit: ancestry_fractions
     tuple val(meta), path("*.P"), emit: allele_frequencies
-    path "versions.yml"         , emit: versions
+    tuple val("${task.process}"), val('admixture'), eval('admixture --version | tail -n 1'), emit: versions_admixture, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,11 +28,6 @@ process ADMIXTURE {
         ${K} \\
         -j${task.cpus} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        admixture: \$(echo \$(admixture 2>&1) | head -n 1 | grep -o "ADMIXTURE Version [0-9.]*" | sed 's/ADMIXTURE Version //' )
-    END_VERSIONS
     """
 
     stub:
@@ -40,10 +35,5 @@ process ADMIXTURE {
     """
     touch "${prefix}.Q"
     touch "${prefix}.P"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        admixture: \$(echo \$(admixture 2>&1) | head -n 1 | grep -o "ADMIXTURE Version [0-9.]*" | sed 's/ADMIXTURE Version //' )
-    END_VERSIONS
     """
 }
