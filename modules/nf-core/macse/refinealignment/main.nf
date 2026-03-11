@@ -28,8 +28,8 @@ process MACSE_REFINEALIGNMENT {
     tuple val(meta) , path(fasta)
 
     output:
-    tuple val(meta), path("*_NT"), emit: result_fas_NT
-    tuple val(meta), path("*_AA"), emit: result_fas_AA
+    tuple val(meta), path("*_NT.{fas,fasta,aln}"), emit: nt
+    tuple val(meta), path("*_AA.{fas,fasta,aln}"), emit: aa
     tuple val("${task.process}"), val("macse"), eval("macse --version 2>&1 | sed 's/ (.*) //g'"), topic: versions, emit: versions_macse
 
     when:
@@ -42,15 +42,14 @@ process MACSE_REFINEALIGNMENT {
     """
     macse -prog refineAlignment \
         -align ${fasta} \
-        $args \\
-        -out_NT ${prefix}_NT \\
-        -out_AA ${prefix}_AA \\
+        $args
     """
 
     stub:
     def prefix = task.ext.prefix ?: fasta.baseName
     """
     echo $args
-    touch ${prefix}.fas
+    touch ${prefix}_NT.fas
+    touch ${prefix}_AA.fas
     """
 }
