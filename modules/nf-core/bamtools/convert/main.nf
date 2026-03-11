@@ -12,7 +12,7 @@ process BAMTOOLS_CONVERT {
 
     output:
     tuple val(meta), path("*.{bed,fasta,fastq,json,pileup,sam,yaml}"), emit: data
-    tuple val("${task.process}"), val('bamtools'), eval('bamtools --version | grep -e "bamtools" | sed "s/^.*bamtools //"'), emit: versions_bamtools, topic: versions
+    tuple val("${task.process}"), val('bamtools'), eval("bamtools --version | sed '2!d;s/bamtools //g'"), emit: versions_bamtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

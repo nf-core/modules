@@ -43,7 +43,7 @@ output:
       - bamtools:
           type: string
           description: The name of the tool
-      - 'bamtools --version | grep -e "bamtools" | sed "s/^.*bamtools //"':
+      - "bamtools --version | sed '2!d;s/bamtools //g'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
@@ -58,6 +58,6 @@ topics:
       - bamtools:
           type: string
           description: The name of the tool
-      - 'bamtools --version | grep -e "bamtools" | sed "s/^.*bamtools //"':
+      - "bamtools --version | sed '2!d;s/bamtools //g'":
           type: eval
           description: The expression to obtain the version of the tool
