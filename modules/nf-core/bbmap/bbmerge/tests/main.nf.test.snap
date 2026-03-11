@@ -1,80 +1,38 @@
 {
     "sarscov2_illumina_paired - fastq_gz": {
         "content": [
+            "test.bbmerge.log",
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test_ihist.txt:md5,08aa1ace205ee59f963290c20f8d450f"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test_merged.fastq.gz:md5,c3e84153bea89db3cbbdb64dce14dfdf"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "test_1_unmerged.fastq.gz:md5,c9d75c039507197fd7366ca2dbb52b07",
+                        "test_2_unmerged.fastq.gz:md5,29707bbd33908c32685c0864a8241b4f"
+                    ]
+                ]
+            ],
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_merged.fastq.gz:md5,c3e84153bea89db3cbbdb64dce14dfdf"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        [
-                            "test_1_unmerged.fastq.gz:md5,c9d75c039507197fd7366ca2dbb52b07",
-                            "test_2_unmerged.fastq.gz:md5,29707bbd33908c32685c0864a8241b4f"
-                        ]
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_ihist.txt:md5,08aa1ace205ee59f963290c20f8d450f"
-                    ]
-                ],
-                "3": [
-                    [
-                        "BBMAP_BBMERGE",
-                        "bbmap",
-                        "39.18"
-                    ]
-                ],
-                "4": [
-                    "test.bbmerge.log:md5,93e4559e28c4f81e9a44d281c60dd51b"
-                ],
-                "ihist": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_ihist.txt:md5,08aa1ace205ee59f963290c20f8d450f"
-                    ]
-                ],
-                "log": [
-                    "test.bbmerge.log:md5,93e4559e28c4f81e9a44d281c60dd51b"
-                ],
-                "merged": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_merged.fastq.gz:md5,c3e84153bea89db3cbbdb64dce14dfdf"
-                    ]
-                ],
-                "unmerged": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        [
-                            "test_1_unmerged.fastq.gz:md5,c9d75c039507197fd7366ca2dbb52b07",
-                            "test_2_unmerged.fastq.gz:md5,29707bbd33908c32685c0864a8241b4f"
-                        ]
-                    ]
-                ],
                 "versions_bbmap": [
                     [
                         "BBMAP_BBMERGE",
@@ -84,7 +42,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-11T13:59:20.243970978",
+        "timestamp": "2026-03-11T14:38:38.719750995",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.4"
@@ -177,6 +135,34 @@
     },
     "sarscov2_illumina_interleaved - fastq_gz": {
         "content": [
+            "test.bbmerge.log",
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test_ihist.txt:md5,08aa1ace205ee59f963290c20f8d450f"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test_merged.fastq.gz:md5,c3e84153bea89db3cbbdb64dce14dfdf"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test_unmerged.fastq.gz:md5,fb1d064d2fb3ad621bf14562d0161439"
+                ]
+            ],
             {
                 "versions_bbmap": [
                     [
@@ -187,7 +173,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-11T13:49:15.4290146",
+        "timestamp": "2026-03-11T14:38:45.65666545",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.4"
