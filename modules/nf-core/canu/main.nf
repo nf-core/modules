@@ -21,7 +21,7 @@ process CANU {
     tuple val(meta), path("*.contigs.layout")           , emit: metadata                , optional: true
     tuple val(meta), path("*.contigs.layout.readToTig") , emit: contig_position         , optional: true
     tuple val(meta), path("*.contigs.layout.tigInfo")   , emit: contig_info             , optional: true
-    path "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('canu'), eval('canu --version 2>&1 | sed \'s/^.*canu //; s/Using.*$//\''), emit: versions_canu, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,11 +40,6 @@ process CANU {
         $mode $reads
 
     gzip *.fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        canu: \$(echo \$(canu --version 2>&1) | sed 's/^.*canu //; s/Using.*\$//' )
-    END_VERSIONS
     """
 
     stub:
@@ -66,10 +61,5 @@ process CANU {
     touch ${prefix}.contigs.layout.readToTig
     touch ${prefix}.contigs.layout.tigInfo
     touch ${prefix}.report
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        canu: \$(echo \$(canu --version 2>&1) | sed 's/^.*canu //; s/Using.*\$//' )
-    END_VERSIONS
     """
 }
