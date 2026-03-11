@@ -53,7 +53,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(process.out.output_gtf.collect { file(it[1]).getName() } +
                                 process.out.log.collect { file(it[1]).getName() } +
-                                process.out.versions ).match() }
+                                process.out.findAll { key, val -> key.startsWith("versions")}
+                            ).match() }
             )
         }
 
