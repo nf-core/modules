@@ -3,24 +3,21 @@
 name: "macse_refinealignment"
 description: write your description here
 keywords:
-  - sort
-  - example
-  - genomics
+  - Alignment
+  - macse
+  - fasta
 tools:
   ## TODO nf-core: Add a description and other details for the software below
   - "macse":
       description: "MACSE: Multiple Alignment of Coding SEquences Accounting for Frameshifts
         and Stop Codons."
-      homepage: "None"
+      homepage: https://github.com/nf-core/
       documentation: "None"
-      tool_dev_url: "None"
+      tool_dev_url: https://github.com/nf-core/masce
       doi: ""
       licence: ["CeCILL 2.1"]
       identifier: biotools:macse
-
 input:
-  ### TODO nf-core: Add a description of all of the variables used as input
-  fas:
     - - meta:
           type: map
           description: |
@@ -29,14 +26,13 @@ input:
       - "*.fas{.gz,}":
           type: file
           description: Aligned sequences in FASTA format. May be gzipped or uncompressed.
-          pattern: "*.fas{.gz,}"
+          pattern: "*.{fas,fasta,aln}"
           ontologies:
             - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
             - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
             - edam: http://edamontology.org/format_1984 # FASTA-ALN
 output:
-  ### TODO nf-core: Add a description of all of the variables used as output
-  result_fas_NT:
+  nt:
     - - meta:
           type: map
           description: |
@@ -45,12 +41,12 @@ output:
       - "*.fas{.gz,}":
           type: file
           description: Aligned sequences in FASTA format. May be gzipped or uncompressed.
-          pattern: "*_NT"
+          pattern: "*_NT.{fas,fasta,aln}"
           ontologies:
             - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
             - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
             - edam: http://edamontology.org/format_1984 # FASTA-ALN
-  result_fas_AA:
+  aa:
     - - meta:
           type: map
           description: |
@@ -59,7 +55,7 @@ output:
       - "*.fas{.gz,}":
           type: file
           description: Aligned sequences in FASTA format. May be gzipped or uncompressed.
-          pattern: "*_AA"
+          pattern: "*_AA.{fas,fasta,aln}"
           ontologies:
             - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
             - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
@@ -68,22 +64,21 @@ output:
     - - "${task.process}":
           type: string
           description: The name of the process
-      - "macse":
+      - macse:
           type: string
           description: The name of the tool
-      - "macse --version":
+      - "macse --version 2>&1 | sed 's/ (.*) //g'":
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
-    - - ${task.process}:
+    - - "${task.process}":
           type: string
           description: The name of the process
       - macse:
           type: string
           description: The name of the tool
-      - macse --version:
+      - "macse --version 2>&1 | sed 's/ (.*) //g'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
