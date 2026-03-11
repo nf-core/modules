@@ -4,7 +4,7 @@ process BFF {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/bioconductor-cellhashr_r-seurat:1c94360d8ed188c4':
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/21/21d3acad5fd1818f00b1c267fcc8c8be88c930cf31e74fb6b5ce444f96827604/data':
         'community.wave.seqera.io/library/bioconductor-cellhashr_r-seurat:25c4bc76749af5ac' }"
 
     input:
@@ -14,7 +14,9 @@ process BFF {
     tuple val(meta), path("*_assignment_bff.csv"), emit: assignment
     tuple val(meta), path("*_metrics_bff.csv")   , emit: metrics
     tuple val(meta), path("*_params_bff.csv")    , emit: params
-    path "versions.yml"                          , emit: versions
+    tuple val("${task.process}"), val('r-base'), val('R --version | sed "1!d; s/.*version //; s/ .*//"'), emit: versions_rbase, topic: versions
+    tuple val("${task.process}"), val('Seurat'), val("Rscript -e \"cat(as.character(packageVersion('Seurat')))\""), emit: versions_seurat, topic: versions
+    tuple val("${task.process}"), val('cellhashR'), val("Rscript -e \"cat(as.character(packageVersion('cellhashR')))\""), emit: versions_cellhashR, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

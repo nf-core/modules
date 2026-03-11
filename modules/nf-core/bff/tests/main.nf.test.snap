@@ -27,7 +27,25 @@
                     ]
                 ],
                 "3": [
-                    "versions.yml:md5,71a50af83aebf56493d64a87f468a6f2"
+                    [
+                        "BFF",
+                        "r-base",
+                        "R --version | sed \"1!d; s/.*version //; s/ .*//\""
+                    ]
+                ],
+                "4": [
+                    [
+                        "BFF",
+                        "Seurat",
+                        "Rscript -e \"cat(as.character(packageVersion('Seurat')))\""
+                    ]
+                ],
+                "5": [
+                    [
+                        "BFF",
+                        "cellhashR",
+                        "Rscript -e \"cat(as.character(packageVersion('cellhashR')))\""
+                    ]
                 ],
                 "assignment": [
                     [
@@ -53,16 +71,34 @@
                         "test_params_bff.csv:md5,a8885b3d8aaa64b3350137e91856ca3b"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,71a50af83aebf56493d64a87f468a6f2"
+                "versions_cellhashR": [
+                    [
+                        "BFF",
+                        "cellhashR",
+                        "Rscript -e \"cat(as.character(packageVersion('cellhashR')))\""
+                    ]
+                ],
+                "versions_rbase": [
+                    [
+                        "BFF",
+                        "r-base",
+                        "R --version | sed \"1!d; s/.*version //; s/ .*//\""
+                    ]
+                ],
+                "versions_seurat": [
+                    [
+                        "BFF",
+                        "Seurat",
+                        "Rscript -e \"cat(as.character(packageVersion('Seurat')))\""
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.3"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2025-08-07T09:36:16.222081"
+        "timestamp": "2026-03-11T14:48:25.217205114"
     },
     "hto_matrix - combined - preprocessing - stub": {
         "content": [
@@ -92,7 +128,25 @@
                     ]
                 ],
                 "3": [
-                    "versions.yml:md5,71a50af83aebf56493d64a87f468a6f2"
+                    [
+                        "BFF",
+                        "r-base",
+                        "R --version | sed \"1!d; s/.*version //; s/ .*//\""
+                    ]
+                ],
+                "4": [
+                    [
+                        "BFF",
+                        "Seurat",
+                        "Rscript -e \"cat(as.character(packageVersion('Seurat')))\""
+                    ]
+                ],
+                "5": [
+                    [
+                        "BFF",
+                        "cellhashR",
+                        "Rscript -e \"cat(as.character(packageVersion('cellhashR')))\""
+                    ]
                 ],
                 "assignment": [
                     [
@@ -118,16 +172,34 @@
                         "test_params_bff.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,71a50af83aebf56493d64a87f468a6f2"
+                "versions_cellhashR": [
+                    [
+                        "BFF",
+                        "cellhashR",
+                        "Rscript -e \"cat(as.character(packageVersion('cellhashR')))\""
+                    ]
+                ],
+                "versions_rbase": [
+                    [
+                        "BFF",
+                        "r-base",
+                        "R --version | sed \"1!d; s/.*version //; s/ .*//\""
+                    ]
+                ],
+                "versions_seurat": [
+                    [
+                        "BFF",
+                        "Seurat",
+                        "Rscript -e \"cat(as.character(packageVersion('Seurat')))\""
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.3"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2025-06-17T23:03:24.350098"
+        "timestamp": "2026-03-11T14:52:17.294492676"
     },
     "hto_matrix - combined - no preprocessing": {
         "content": [
@@ -157,7 +229,25 @@
                     ]
                 ],
                 "3": [
-                    "versions.yml:md5,71a50af83aebf56493d64a87f468a6f2"
+                    [
+                        "BFF",
+                        "r-base",
+                        "R --version | sed \"1!d; s/.*version //; s/ .*//\""
+                    ]
+                ],
+                "4": [
+                    [
+                        "BFF",
+                        "Seurat",
+                        "Rscript -e \"cat(as.character(packageVersion('Seurat')))\""
+                    ]
+                ],
+                "5": [
+                    [
+                        "BFF",
+                        "cellhashR",
+                        "Rscript -e \"cat(as.character(packageVersion('cellhashR')))\""
+                    ]
                 ],
                 "assignment": [
                     [
@@ -183,16 +273,34 @@
                         "test_params_bff.csv:md5,a8885b3d8aaa64b3350137e91856ca3b"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,71a50af83aebf56493d64a87f468a6f2"
+                "versions_cellhashR": [
+                    [
+                        "BFF",
+                        "cellhashR",
+                        "Rscript -e \"cat(as.character(packageVersion('cellhashR')))\""
+                    ]
+                ],
+                "versions_rbase": [
+                    [
+                        "BFF",
+                        "r-base",
+                        "R --version | sed \"1!d; s/.*version //; s/ .*//\""
+                    ]
+                ],
+                "versions_seurat": [
+                    [
+                        "BFF",
+                        "Seurat",
+                        "Rscript -e \"cat(as.character(packageVersion('Seurat')))\""
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.3"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2025-08-07T09:36:51.751444"
+        "timestamp": "2026-03-11T14:51:24.263972745"
     },
     "hto_matrix - combined - preprocessing - test ext.args": {
         "content": [
@@ -222,7 +330,25 @@
                     ]
                 ],
                 "3": [
-                    "versions.yml:md5,71a50af83aebf56493d64a87f468a6f2"
+                    [
+                        "BFF",
+                        "r-base",
+                        "R --version | sed \"1!d; s/.*version //; s/ .*//\""
+                    ]
+                ],
+                "4": [
+                    [
+                        "BFF",
+                        "Seurat",
+                        "Rscript -e \"cat(as.character(packageVersion('Seurat')))\""
+                    ]
+                ],
+                "5": [
+                    [
+                        "BFF",
+                        "cellhashR",
+                        "Rscript -e \"cat(as.character(packageVersion('cellhashR')))\""
+                    ]
                 ],
                 "assignment": [
                     [
@@ -248,16 +374,34 @@
                         "test_params_bff.csv:md5,fbc8cbbe0c24be222cb2a0ea6261db99"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,71a50af83aebf56493d64a87f468a6f2"
+                "versions_cellhashR": [
+                    [
+                        "BFF",
+                        "cellhashR",
+                        "Rscript -e \"cat(as.character(packageVersion('cellhashR')))\""
+                    ]
+                ],
+                "versions_rbase": [
+                    [
+                        "BFF",
+                        "r-base",
+                        "R --version | sed \"1!d; s/.*version //; s/ .*//\""
+                    ]
+                ],
+                "versions_seurat": [
+                    [
+                        "BFF",
+                        "Seurat",
+                        "Rscript -e \"cat(as.character(packageVersion('Seurat')))\""
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.3"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2025-08-07T09:48:46.370263"
+        "timestamp": "2026-03-11T14:49:31.323996208"
     },
     "hto_matrix - raw - preprocessing": {
         "content": [
@@ -287,7 +431,25 @@
                     ]
                 ],
                 "3": [
-                    "versions.yml:md5,71a50af83aebf56493d64a87f468a6f2"
+                    [
+                        "BFF",
+                        "r-base",
+                        "R --version | sed \"1!d; s/.*version //; s/ .*//\""
+                    ]
+                ],
+                "4": [
+                    [
+                        "BFF",
+                        "Seurat",
+                        "Rscript -e \"cat(as.character(packageVersion('Seurat')))\""
+                    ]
+                ],
+                "5": [
+                    [
+                        "BFF",
+                        "cellhashR",
+                        "Rscript -e \"cat(as.character(packageVersion('cellhashR')))\""
+                    ]
                 ],
                 "assignment": [
                     [
@@ -313,16 +475,34 @@
                         "test_params_bff.csv:md5,1e3c54b1dc9786e9e21c7baf2247ddef"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,71a50af83aebf56493d64a87f468a6f2"
+                "versions_cellhashR": [
+                    [
+                        "BFF",
+                        "cellhashR",
+                        "Rscript -e \"cat(as.character(packageVersion('cellhashR')))\""
+                    ]
+                ],
+                "versions_rbase": [
+                    [
+                        "BFF",
+                        "r-base",
+                        "R --version | sed \"1!d; s/.*version //; s/ .*//\""
+                    ]
+                ],
+                "versions_seurat": [
+                    [
+                        "BFF",
+                        "Seurat",
+                        "Rscript -e \"cat(as.character(packageVersion('Seurat')))\""
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.3"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2025-08-07T09:36:35.771859"
+        "timestamp": "2026-03-11T14:50:32.863395172"
     },
     "hto_matrix - combined - preprocessing - with ext.args": {
         "content": [
