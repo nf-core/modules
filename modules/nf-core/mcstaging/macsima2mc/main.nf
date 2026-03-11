@@ -21,7 +21,6 @@ process MCSTAGING_MACSIMA2MC {
     }
 
     def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     python /staging/macsima2mc/macsima2mc.py \
@@ -36,18 +35,11 @@ process MCSTAGING_MACSIMA2MC {
         error "macsima2mc module in conda does not exist. Please use Docker / Singularity / Podman instead."
     }
 
-
     """
-    mkdir input_dir
     mkdir output_dir
     mkdir output_dir/well-rack-roi-exp
     touch output_dir/markers.csv
     mkdir output_dir/well-rack-roi-exp/raw
     touch output_dir/well-rack-roi-exp/raw/well-rack-roi-exp.ome.tif
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        macsima2mc: \$( python -m pip show --version macsima2mc | grep "Version" | sed -e "s/Version: //g" )
-    END_VERSIONS
     """
 }
