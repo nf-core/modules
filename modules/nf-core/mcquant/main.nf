@@ -12,14 +12,13 @@ process MCQUANT {
 
     output:
     tuple val(meta), path("*.csv"), emit: csv
-    tuple val("${task.process}"), val('mcquant'), eval("echo 1.5.4"), emit: versions_mcquant, topic: versions
+    tuple val("${task.process}"), val('mcquant'), eval("echo 1.5.4"), emit: versions_mcquant, topic: versions // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def VERSION = '1.5.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     python /app/CommandSingleCellExtraction.py \
         --masks $mask \
@@ -30,7 +29,6 @@ process MCQUANT {
     """
 
     stub:
-    def VERSION = '1.5.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch cycif_tonsil_registered_cell.csv
     """
