@@ -12,7 +12,6 @@ process ADAPTERREMOVALFIXPREFIX {
     tuple val(meta), path(fastq)
     output:
     tuple val(meta), path("*.fq.gz"), emit: fixed_fastq
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     tuple val("${task.process}"), val('adapterremovalfixprefix'), eval('echo 0.0.5'), emit: versions_adapterremovalfixprefix, topic: versions
 
     when:
