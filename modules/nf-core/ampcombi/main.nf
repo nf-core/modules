@@ -24,7 +24,7 @@ process AMPCOMBI {
     tuple val(meta), path("amp_ref_database/*.dmnd")        , emit: results_db_dmnd , optional:true
     tuple val(meta), path("amp_ref_database/*.clean.fasta") , emit: results_db_fasta, optional:true
     tuple val(meta), path("amp_ref_database/*.tsv")         , emit: results_db_tsv  , optional:true
-    path "versions.yml"                                     , emit: versions
+    tuple val("${task.process}"), val('ampcombi'), eval("ampcombi --version | sed 's/ampcombi //'"), emit: versions_ampcombi, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -54,11 +54,6 @@ process AMPCOMBI {
         ${args} \\
         --log True \\
         --threads ${task.cpus} \\
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ampcombi: \$(ampcombi --version | sed 's/ampcombi //')
-    END_VERSIONS
     """
     stub:
     def deprecation_message = """
@@ -88,10 +83,5 @@ process AMPCOMBI {
     touch amp_ref_database/*.dmnd
     touch amp_ref_database/*.clean.fasta
     touch amp_ref_database/*.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ampcombi: \$(ampcombi --version | sed 's/ampcombi //')
-    END_VERSIONS
     """
 }
