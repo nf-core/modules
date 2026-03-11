@@ -89,7 +89,7 @@ output:
       - abritamr:
           type: string
           description: The name of the tool
-      - abritamr --version 2>&1 | sed 's/^.*abritamr \([0-9.]*\).*/\1/'':
+      - abritamr --version 2>&1 | sed 's/^.*abritamr \([0-9.]*\).*/\1/':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -100,7 +100,7 @@ topics:
       - abritamr:
           type: string
           description: The name of the tool
-      - abritamr --version 2>&1 | sed 's/^.*abritamr \([0-9.]*\).*/\1/'':
+      - abritamr --version 2>&1 | sed 's/^.*abritamr \([0-9.]*\).*/\1/':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
