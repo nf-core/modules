@@ -15,7 +15,7 @@ process BACPHLIP {
     tuple val(meta), path("*.hmmsearch.tsv")    , emit: hmmsearch_results
     tuple val("${task.process}"), val('bacphlip'), val('0.9.6'), emit: versions_bacphlip, topic: versions
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    
+
     when:
     task.ext.when == null || task.ext.when
 
