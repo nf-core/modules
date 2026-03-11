@@ -1,54 +1,73 @@
-nextflow_process {
-
-    config "./nextflow.config"
-
-    name "Test Process ANNOTSV_ANNOTSV"
-    script "../main.nf"
-    process "ANNOTSV_ANNOTSV"
-
-    tag "modules"
-    tag "modules_nfcore"
-    tag "annotsv"
-    tag "annotsv/annotsv"
-
-    test("homo_sapiens - sv_vcf, sv_tbi, snv_vcf, annotations - stub") {
-
-        options "-stub"
-
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz"),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz.tbi"),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz")
+{
+    "homo_sapiens - sv_vcf, sv_tbi, snv_vcf, annotations - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.unannotated.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.unannotated.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "3": [
+                    "versions.yml:md5,21e6c75c29cc9aae39ee9b2fb4da2070"
+                ],
+                "tsv": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.unannotated.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "unannotated_tsv": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.unannotated.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,21e6c75c29cc9aae39ee9b2fb4da2070"
                 ]
-                input[1] = [
-                    [ id:'annotations' ],
-                    []
-                ]
-                input[2] = Channel.of('GENE1', 'GENE2', 'GENE3')
-                    .collectFile(name:'gene_candidates.txt')
-                    .map { [[ id:'genes' ], it] }
-                input[3] = [
-                    [ id:'false_positives' ],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz")
-                ]
-                input[4] = Channel.of('GENE1 GENE2 GENE3')
-                    .collectFile(name:'gene_transcripts.txt')
-                    .map { [[ id:'gene_transcripts'], it] }
-                """
             }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.7"
+        },
+        "timestamp": "2025-09-16T14:21:14.191475094"
     }
-
 }
