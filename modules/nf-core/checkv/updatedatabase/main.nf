@@ -34,7 +34,8 @@ process CHECKV_UPDATEDATABASE {
     stub:
     prefix    = task.ext.prefix ?: "${meta.id}"
     """
-    touch -p ${prefix}/**
+    mkdir -p ${prefix}/
+    touch ${prefix}/README.txt
     """
 
 }
