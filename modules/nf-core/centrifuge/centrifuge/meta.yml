@@ -24,18 +24,19 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
-  - - db:
-        type: directory
-        description: Path to directory containing centrifuge database files
-  - - save_unaligned:
-        type: boolean
-        description: If true unmapped fastq files are saved
-  - - save_aligned:
-        type: boolean
-        description: If true mapped fastq files are saved
+        ontologies: []
+  - db:
+      type: directory
+      description: Path to directory containing centrifuge database files
+  - save_unaligned:
+      type: boolean
+      description: If true unmapped fastq files are saved
+  - save_aligned:
+      type: boolean
+      description: If true mapped fastq files are saved
 output:
-  - report:
-      - meta:
+  report:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,8 +46,9 @@ output:
           description: |
             File containing a classification summary
           pattern: "*.{report.txt}"
-  - results:
-      - meta:
+          ontologies: []
+  results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -56,8 +58,9 @@ output:
           description: |
             File containing classification results
           pattern: "*.{results.txt}"
-  - sam:
-      - meta:
+          ontologies: []
+  sam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,8 +70,10 @@ output:
           description: |
             Optional output file containing read alignments (SAM format )or a table of per-read hit information (TAB)s
           pattern: "*.{sam,tab}"
-  - fastq_mapped:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  fastq_mapped:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -77,8 +82,10 @@ output:
           type: file
           description: Mapped fastq files
           pattern: "*.mapped.fastq.gz"
-  - fastq_unmapped:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  fastq_unmapped:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -87,11 +94,15 @@ output:
           type: file
           description: Unmapped fastq files
           pattern: "*.unmapped.fastq.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sofstam"
   - "@jfy133"

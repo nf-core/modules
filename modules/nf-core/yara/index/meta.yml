@@ -24,21 +24,26 @@ input:
     - fasta:
         type: file
         description: Input genome fasta file
+        ontologies: []
 output:
-  - index:
-      - meta:
+  index:
+    - - meta:
           type: file
           description: YARA genome index files
           pattern: "yara.*"
+          ontologies: []
       - ${fasta}*:
           type: file
           description: YARA genome index files
           pattern: "yara.*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@apeltzer"
 maintainers:

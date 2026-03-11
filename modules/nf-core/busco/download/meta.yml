@@ -17,21 +17,39 @@ tools:
       licence: ["MIT"]
       identifier: biotools:busco
 input:
-  - - lineage:
-        type: string
-        description: The BUSCO lineage to use, or "auto", "auto_prok" or "auto_euk"
-          to automatically select lineage
+  - lineage:
+      type: string
+      description: The BUSCO lineage to use, or "auto", "auto_prok" or "auto_euk" to
+        automatically select lineage
 output:
-  - download_dir:
-      - busco_downloads:
-          type: file
-          description: Directory with busco database
-          pattern: "busco_downloads"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  download_dir:
+    - busco_downloads:
+        type: file
+        description: Directory with busco database
+        pattern: "busco_downloads"
+        ontologies: []
+  versions_busco:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - busco:
+          type: string
+          description: The name of the tool
+      - busco --version 2> /dev/null | sed 's/BUSCO //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - busco:
+          type: string
+          description: The name of the tool
+      - busco --version 2> /dev/null | sed 's/BUSCO //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@zachary-foster"
 maintainers:

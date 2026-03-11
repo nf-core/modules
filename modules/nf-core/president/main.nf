@@ -50,7 +50,6 @@ process PRESIDENT {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     compress_command = compress ? "gzip ${prefix}*.fasta" : ""
 

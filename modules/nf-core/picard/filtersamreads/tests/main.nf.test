@@ -13,21 +13,21 @@ nextflow_process {
 
     setup {
         run("PICARD_SORTSAM") {
-	    script "../../../picard/sortsam/main.nf"
-	    process {
-	        """
-	        input[0] = [
-		    [ id:'test', single_end:false, strandedness:'forward' ], // meta map
-		    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true)
-	        ]
-	        input[1] = 'queryname'
-	        """
-	    }
+            script "../../../picard/sortsam/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false, strandedness:'forward' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = 'queryname'
+                """
+            }
         }
     }
 
     test("sarscov2 - bam") {
-        
+
         when {
             process {
                 """
@@ -42,16 +42,14 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
     }
 
     test("sarscov2 - stub") {
-        
         options "-stub"
-        
         when {
             process {
                 """
@@ -64,21 +62,21 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
     test("sarscov2 - bam - readlist") {
-        
+
         when {
             process {
                 """
-	        input[0] = [
-		    [ id:'test', single_end:false, strandedness:'forward' ], // meta map
-		    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true),
-		    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/picard/test.single_end.bam.readlist.txt', checkIfExists: true)
-	        ]
+                input[0] = [
+                    [ id:'test', single_end:false, strandedness:'forward' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/picard/test.single_end.bam.readlist.txt', checkIfExists: true)
+                ]
                 input[1] = 'includeReadList'
                 """
             }
@@ -89,24 +87,22 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
     }
 
     test("sarscov2 - bam - readlist - stub") {
-        
         options "-stub"
-        
         when {
             process {
                 """
-	        input[0] = [
-		    [ id:'test', single_end:false, strandedness:'forward' ], // meta map
-		    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true),
-		    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/picard/test.single_end.bam.readlist.txt', checkIfExists: true)
-	        ]
+                input[0] = [
+                    [ id:'test', single_end:false, strandedness:'forward' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/picard/test.single_end.bam.readlist.txt', checkIfExists: true)
+                ]
                 input[1] = 'includeReadList'
                 """
             }
@@ -115,7 +111,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

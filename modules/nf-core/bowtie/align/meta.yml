@@ -28,6 +28,7 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -37,43 +38,46 @@ input:
         type: file
         description: Bowtie genome index files
         pattern: "*.ebwt"
-  - - save_unaligned:
-        type: boolean
-        description: Whether to save fastq files containing the reads which did not
-          align.
+        ontologies: []
+  - save_unaligned:
+      type: boolean
+      description: Whether to save fastq files containing the reads which did not align.
 output:
-  - bam:
-      - meta:
-          type: file
-          description: Output BAM file containing read alignments
-          pattern: "*.{bam}"
+  bam:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.bam":
           type: file
           description: Output BAM file containing read alignments
           pattern: "*.{bam}"
-  - log:
-      - meta:
-          type: file
-          description: Log file
-          pattern: "*.log"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.out":
           type: file
           description: Log file
           pattern: "*.log"
-  - fastq:
-      - meta:
-          type: file
-          description: Unaligned FastQ files
-          pattern: "*.fastq.gz"
+          ontologies: []
+  fastq:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*fastq.gz":
           type: file
           description: Unaligned FastQ files
           pattern: "*.fastq.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kevinmenden"
 maintainers:

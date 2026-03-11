@@ -4,8 +4,8 @@ process SEVERUS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/severus:1.5--pyhdfd78af_0':
-        'biocontainers/severus:1.5--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/severus:1.6--pyhdfd78af_0':
+        'biocontainers/severus:1.6--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(target_input), path(target_index), path(control_input), path(control_index), path(vcf)
@@ -56,7 +56,6 @@ process SEVERUS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """

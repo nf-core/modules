@@ -1,0 +1,126 @@
+nextflow_process {
+
+    name "Test Process VARSCAN_FPFILTER"
+    script "../main.nf"
+    process "VARSCAN_FPFILTER"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "varscan"
+    tag "varscan/fpfilter"
+    tag "varscan/processsomatic"
+    tag "varscan/somatic"
+    tag "bamreadcount"
+
+    setup {
+
+        run("VARSCAN_SOMATIC") {
+            script "../../somatic/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/mpileup/test.mpileup.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/mpileup/test2.mpileup.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("VARSCAN_PROCESSSOMATIC") {
+            script "../../processsomatic/main.nf"
+            process {
+                """
+                input[0] = VARSCAN_SOMATIC.out.vcf_snvs
+                    .map { meta, vcf ->
+                        def meta2 = [ id:'test', single_end:false ]
+                        tuple(meta2, vcf)
+                    }
+                """
+            }
+        }
+
+        run("BAMREADCOUNT") {
+            script "../../../bamreadcount/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true),
+                ]
+                input[2] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("human - mpileup") {
+
+        when {
+            params {
+                fpfilter_args = "--min-ref-avgrl 0 --min-var-avgrl 0 --min-var-count 1 --min-var-freq 0.0001"
+                somatic_args = "--output-vcf 1"
+            }
+            process {
+                """
+                input[0] = VARSCAN_PROCESSSOMATIC.out.somatic_hc_vcf
+                    .combine(BAMREADCOUNT.out.rc)
+                    .map { vcf_meta, vcf, rc_meta, rc ->
+                        tuple(vcf_meta, vcf, rc)
+                    }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        path(process.out.pass_vcf.get(0).get(1)).vcf.variantsMD5,
+                        path(process.out.fail_vcf.get(0).get(1)).vcf.variantsMD5,
+                        process.out.versions,
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("human - mpileup - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                fpfilter_args = '--min-ref-avgrl 0 --min-var-avgrl 0'
+                somatic_args = "--output-vcf 1"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/empty.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

@@ -24,10 +24,12 @@ input:
         type: file
         description: Input BAM file
         pattern: "*.{bam}"
+        ontologies: []
     - bai:
         type: file
         description: Input BAM index file
         pattern: "*.{bam.bai}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -37,16 +39,10 @@ input:
         type: file
         description: Reference genome file
         pattern: "*.{fasta,fa,fna,fasta.gz,fa.gz,fna.gz}"
-  - - pgx_genes:
-        type: list
-        description: List of PGx genes supported by PyPGx to include in variant calling.
-  - - assembly_version:
-        type: string
-        description: Genome assembly version to use for variant calling.
-        pattern: "{GRCh37,GRCh38}"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,8 +51,10 @@ output:
           type: file
           description: VCF file containing called SNVs/indels
           pattern: "*.vcf.gz"
-  - tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,11 +63,14 @@ output:
           type: file
           description: File containing the VCF tabix index
           pattern: "*.vcf.gz.tbi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jorisvansteenbrugge"
 maintainers:

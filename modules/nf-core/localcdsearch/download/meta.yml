@@ -1,0 +1,59 @@
+name: "localcdsearch_download"
+description: A command-line tool for downloading databases for local protein domain annotation using
+  NCBI's Conserved Domain Database (CDD)
+keywords:
+  - cdd
+  - rpsblast
+  - rpsbproc
+  - protein
+  - domain
+  - annotation
+  - download
+tools:
+  - "localcdsearch":
+      description: "Protein annotation using local PSSM databases from CDD."
+      homepage: "https://github.com/apcamargo/local-cd-search"
+      documentation: "https://github.com/apcamargo/local-cd-search"
+      tool_dev_url: "https://github.com/apcamargo/local-cd-search"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - databases:
+      type: list
+      description: |
+        List of database names to download. Can be a single database name or multiple names.
+        Valid options: cdd, cdd_ncbi, cog, kog, pfam, prk, smart, tigr
+      pattern: "cdd|cdd_ncbi|cog|kog|pfam|prk|smart|tigr"
+output:
+  db:
+    - "database/":
+        type: directory
+        description: Directory containing downloaded CDD databases
+        ontologies:
+          - edam: http://edamontology.org/data_1049 # The name of a directory
+  versions_localcdsearch:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - local-cd-search:
+          type: string
+          description: The name of the tool
+      - echo ${VERSION}:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - local-cd-search:
+          type: string
+          description: The name of the tool
+      - echo ${VERSION}:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@Ales-ibt"
+maintainers:
+  - "@Ales-ibt"

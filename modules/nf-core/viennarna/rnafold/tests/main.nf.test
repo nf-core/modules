@@ -13,9 +13,9 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
-                    [:],
+                    [ id: "test" ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true)
                 ]
                 """
@@ -36,9 +36,9 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
-                    [:],
+                    [ id1: "no meta id and no prefix" ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true)
                 ]
                 """

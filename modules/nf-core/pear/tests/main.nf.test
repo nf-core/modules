@@ -25,14 +25,56 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
-                { assert snapshot(process.out.assembled,
-                                  process.out.unassembled,
-                                  process.out.versions).match() }
-            )
+            assert process.success
+            assert snapshot(process.out.collectEntries { key, val ->
+                if (key[0].isNumber()) {
+                    // Skip numbered outputs
+                    return
+                }
+                if (key == "discarded") {
+                    // Discarded fastq is empty, causing a lint failure => only check filename for this output
+                    return [key, val.collect { meta, fastq -> [ meta, file(fastq).name ]}]
+                } else if (key == "versions") {
+                    return [key, val.collect { file -> path(file).yaml }]
+                } else {
+                    return [key, val]
+                }
+            } ).match()
+        }
+    }
+
+    test("sarscov2 - [fastq_gz_1, fastq_gz_2] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
         }
 
+        then {
+            assert process.success
+            assert snapshot(process.out.collectEntries { key, val ->
+                if (key[0].isNumber()) {
+                    // Skip numbered outputs
+                    return
+                }
+                if (key == "versions") {
+                    return [key, val.collect { file -> path(file).yaml }]
+                } else {
+                    return [key, val]
+                }
+            } ).match()
+        }
     }
 
 }

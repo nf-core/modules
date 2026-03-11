@@ -27,6 +27,7 @@ input:
     - bam:
         type: file
         description: BAM file produced using Biscuit
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -35,6 +36,7 @@ input:
     - fasta:
         type: file
         description: Input genome fasta file
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -44,8 +46,8 @@ input:
         type: directory
         description: Directory containing biscuit genome index
 output:
-  - reports:
-      - meta:
+  reports:
+    - - meta:
           type: file
           description: |
             Summary files containing the following information:
@@ -57,6 +59,7 @@ output:
               - Proportion of reads mapping to each strand
               - Read-averaged cytosine conversion rate for CpA, CpC, CpG, and CpT
           pattern: "*.txt"
+          ontologies: []
       - "*.txt":
           type: file
           description: |
@@ -69,11 +72,14 @@ output:
               - Proportion of reads mapping to each strand
               - Read-averaged cytosine conversion rate for CpA, CpC, CpG, and CpT
           pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@njspix"
 maintainers:

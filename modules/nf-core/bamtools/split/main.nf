@@ -20,7 +20,7 @@ process BAMTOOLS_SPLIT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_list = bam.collect{"-in $it"}.join(' ')
+    def input_list = bam.collect{ bam_file -> "-in ${bam_file}"}.join(' ')
     """
     bamtools \\
         merge \\

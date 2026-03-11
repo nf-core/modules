@@ -1,0 +1,59 @@
+nextflow_process {
+
+    name "Test Process MULTISEQDEMUX"
+    script "../main.nf"
+    process "MULTISEQDEMUX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "multiseqdemux"
+
+    test("seuratObject - rds") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/htodemux.rds', checkIfExists: true),
+                    "HTO"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("seuratObject - rds - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/htodemux.rds', checkIfExists: true),
+                    "HTO"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

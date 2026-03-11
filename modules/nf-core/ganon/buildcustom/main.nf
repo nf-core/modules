@@ -43,10 +43,7 @@ process GANON_BUILDCUSTOM {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def taxonomy_args = taxonomy_files ? "--taxonomy-files ${taxonomy_files}" : ""
-    def genome_size_args = genome_size_files ? "--genome-size-files ${genome_size_files}" : ""
     """
     touch ${prefix}.hibf
     touch ${prefix}.tax

@@ -4,8 +4,8 @@ process SOURMASH_COMPARE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sourmash:4.8.14--hdfd78af_0':
-        'biocontainers/sourmash:4.8.14--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/sourmash:4.9.4--hdfd78af_0':
+        'biocontainers/sourmash:4.9.4--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(signatures)
@@ -29,7 +29,7 @@ process SOURMASH_COMPARE {
     def csv    = save_csv          ? "--csv ${prefix}_comp.csv" : ''
     if ( !save_numpy_matrix && !save_csv ) error "Supply either save_numpy_matrix, save_csv, or both or no output will be created"
     def ffile = file_list ? "--from-file ${file_list}" : ''
-    def sigs = signatures ? "${signatures.sort{it.toString()}.join(' ')}" : ''
+    def sigs = signatures ? "${signatures.sort{ signature -> signature.toString()}.join(' ')}" : ''
     if ( !file_list && !signatures ) error "Supply either signatures, file_list, or both"
     """
     sourmash compare \\

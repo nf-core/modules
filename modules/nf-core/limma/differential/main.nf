@@ -1,5 +1,5 @@
 process LIMMA_DIFFERENTIAL {
-    tag "$meta"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -8,7 +8,7 @@ process LIMMA_DIFFERENTIAL {
         'community.wave.seqera.io/library/bioconductor-edger_bioconductor-limma:176c202c82450990' }"
 
     input:
-    tuple val(meta), val(contrast_variable), val(reference), val(target)
+    tuple val(meta), val(contrast_variable), val(reference), val(target), val(formula), val(comparison)
     tuple val(meta2), path(samplesheet), path(intensities)
 
     output:

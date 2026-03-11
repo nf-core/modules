@@ -56,8 +56,12 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = KRAKEN2_ADD.out.db
-                input[1] = true
+                ch_seqid2taxid = KRAKEN2_ADD.out.seqid2taxid_map.ifEmpty([[:],[]])
+
+                input[0] = KRAKEN2_ADD.out.library_added_files
+                input[1] = ch_seqid2taxid
+                input[2] = KRAKEN2_ADD.out.taxonomy_files
+                input[3] = true
                 """
             }
         }
@@ -65,7 +69,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.db.get(0).get(1) ==~ ".*/test" },
+                { assert process.out.db.get(0).get(1) ==~ ".*/kraken2-database" },
                 { assert snapshot (
                         path("${process.out.db[0][1]}/hash.k2d"),
                         path("${process.out.db[0][1]}/taxo.k2d"),
@@ -104,8 +108,12 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = KRAKEN2_ADD_SEQID2TAXID.out.db
-                input[1] = false
+                ch_seqid2taxid = KRAKEN2_ADD_SEQID2TAXID.out.seqid2taxid_map.ifEmpty([[:],[]])
+
+                input[0] = KRAKEN2_ADD_SEQID2TAXID.out.library_added_files
+                input[1] = ch_seqid2taxid
+                input[2] = KRAKEN2_ADD_SEQID2TAXID.out.taxonomy_files
+                input[3] = true
                 """
             }
         }
@@ -113,7 +121,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.db.get(0).get(1) ==~ ".*/test" },
+                { assert process.out.db.get(0).get(1) ==~ ".*/kraken2-database" },
                 { assert snapshot (
                         path("${process.out.db[0][1]}/hash.k2d"),
                         path("${process.out.db[0][1]}/taxo.k2d"),
@@ -154,8 +162,12 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = KRAKEN2_ADD_STUB.out.db
-                input[1] = true
+                ch_seqid2taxid = KRAKEN2_ADD_STUB.out.seqid2taxid_map.ifEmpty([[:],[]])
+
+                input[0] = KRAKEN2_ADD_STUB.out.library_added_files
+                input[1] = ch_seqid2taxid
+                input[2] = KRAKEN2_ADD_STUB.out.taxonomy_files
+                input[3] = true
                 """
             }
         }

@@ -1,0 +1,70 @@
+name: "biomformat_convert"
+description: |
+  Convert biom table to different format.
+  Conversion between text tab-delimited, BIOM-v1 (JSON), and BIOM-v2 (HDF5) formats are supported
+keywords:
+  - biom
+  - feature table
+  - formatting
+  - conversion
+  - amplicon sequences
+  - metagenomics
+  - metatranscriptomics
+tools:
+  - "biomformat":
+      description: |
+        Biological Observation Matrix (BIOM) format.
+        This package includes basic tools for converting, summarizing, and adding metadata to biom-format files.
+      homepage: "http://biom-format.org/index.html"
+      documentation: "http://biom-format.org/documentation/index.html"
+      tool_dev_url: "https://github.com/biocore/biom-format"
+      doi: "10.1186/2047-217X-1-7"
+      licence: ["BSD License"]
+      identifier: biotools:biomformat
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - biom:
+        type: file
+        description: Biom formatted feature table file
+        pattern: "*.{biom,txt,tsv}"
+output:
+  biom:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.biom":
+          type: file
+          description: Converted biom file
+          pattern: "*.biom"
+          ontologies:
+            - edam: http://edamontology.org/format_3746 # BIOM format
+  txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.txt":
+          type: file
+          description: Converted txt file
+          pattern: "*.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV/TAB format
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@jcbioinformatics"
+maintainers:
+  - "@jcbioinformatics"

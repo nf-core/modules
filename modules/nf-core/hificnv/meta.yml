@@ -1,0 +1,121 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "hificnv"
+description: "Copy number variant calling from PacBio HiFi reads"
+keywords:
+  - "copy number variation"
+  - "cnv"
+  - "PacBio"
+  - "HiFi"
+  - "long reads"
+  - "structural variation"
+tools:
+  - "hificnv":
+      description: "Copy number variant caller designed for PacBio HiFi reads"
+      homepage: "https://github.com/PacificBiosciences/HiFiCNV"
+      documentation: "https://github.com/PacificBiosciences/HiFiCNV"
+      tool_dev_url: "https://github.com/PacificBiosciences/HiFiCNV"
+      doi: "10.1093/bioinformatics/btac808"
+      licence: ["Pacific Biosciences Software License Agreement"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - bam:
+        type: file
+        description: "Sorted BAM or CRAM file from PacBio HiFi reads"
+        pattern: "*.{bam,cram}"
+    - bai:
+        type: file
+        description: BAM index file (CSI, CRAI, or BAI format)
+        pattern: "*.{bai,csi,crai}"
+    - maf:
+        type: file
+        description: "Minor allele frequency file (VCF format)"
+        pattern: "*.{vcf,vcf.gz}"
+        optional: true
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference genome information
+          e.g. `[ id:'GATK.GRCh38' ]`
+    - ref:
+        type: file
+        description: "Reference genome FASTA file"
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing exclude regions information
+          e.g. `[ id:'excluded_regions' ]`
+    - exclude:
+        type: file
+        description: "BED file containing regions to exclude from CNV calling"
+        pattern: "*.{bed,bed.gz}"
+        optional: true
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing expected copy number information
+          e.g. `[ id:'male_expected_cn' ]`
+    - expected_cn:
+        type: file
+        description: "BED file containing expected copy number regions"
+        pattern: "*.{bed,bed.gz}"
+        optional: true
+
+output:
+  copynum:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.copynum.bedgraph":
+          type: file
+          description: "Copy number bedGraph file"
+          pattern: "*.copynum.bedgraph"
+  depth:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.depth.bw":
+          type: file
+          description: "Depth coverage bigWig file"
+          pattern: "*.depth.bw"
+  maf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.maf.bw":
+          type: file
+          description: "Minor allele frequency bigWig file"
+          pattern: "*.maf.bw"
+          optional: true
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.vcf.gz":
+          type: file
+          description: "Copy number variants in VCF format"
+          pattern: "*.{vcf.gz}"
+  versions:
+    - "versions.yml":
+        type: file
+        description: "File containing software versions"
+        pattern: "versions.yml"
+
+authors:
+  - "@chaochaowong"
+
+maintainers:
+  - "@chaochaowong"

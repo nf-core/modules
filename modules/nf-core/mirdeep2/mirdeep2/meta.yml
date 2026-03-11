@@ -26,10 +26,12 @@ input:
         type: file
         description: FASTA file containing the processed sequencing reads.
         pattern: "*.fa"
+        ontologies: []
     - genome_mappings:
         type: file
         description: ARF format file with mapped reads to the genome.
         pattern: "*.arf"
+        ontologies: []
   - - meta2:
         type: map
         description: Groovy Map for genome FASTA file metadata, e.g. `[ id:'genome']`
@@ -37,6 +39,7 @@ input:
         type: file
         description: FASTA file of the corresponding genome.
         pattern: "*.fa"
+        ontologies: []
   - - meta3:
         type: map
         description: Groovy Map for miRNA metadata, e.g. `[ id:'mirbase', single_end:false
@@ -46,30 +49,37 @@ input:
         description: FASTA file containing known mature miRNAs of the species being
           analyzed.
         pattern: "*.fa"
+        ontologies: []
     - hairpin:
         type: file
         description: FASTA file containing hairpin sequences (miRNA precursors).
         pattern: "*.fa"
+        ontologies: []
     - mature_other_species:
         type: file
         description: FASTA file containing known mature miRNAs of other species.
         pattern: "*.fa"
+        ontologies: []
 output:
-  - outputs:
-      - meta:
+  outputs:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. `[ id:'sample1',
             single_end:false ]`
       - result*.{bed,csv,html}:
           type: file
-          description: Output files, including BED, CSV, and HTML results files with an
-            overview of detected miRNAs.
+          description: Output files, including BED, CSV, and HTML results files with
+            an overview of detected miRNAs.
           pattern: "result*.{bed,csv,html}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@atrigila"
 maintainers:

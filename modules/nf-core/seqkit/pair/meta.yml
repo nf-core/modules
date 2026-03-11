@@ -24,9 +24,10 @@ input:
         type: file
         description: |
           List of input paired-end FastQ files.
+        ontologies: []
 output:
-  - reads:
-      - meta:
+  reads:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,8 +36,10 @@ output:
           type: file
           description: Paired fastq reads
           pattern: "*.paired.fastq.gz"
-  - unpaired_reads:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  unpaired_reads:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,11 +48,15 @@ output:
           type: file
           description: Unpaired reads (optional)
           pattern: "*.unpaired.fastq.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sateeshperi"
   - "@mjcipriano"

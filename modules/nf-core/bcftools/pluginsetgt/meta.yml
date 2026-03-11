@@ -1,6 +1,6 @@
----
 name: "bcftools_pluginsetgt"
-description: Sets genotypes according to the specified criteria and filtering expressions. For example, missing genotypes can be set to ref, but much more than that.
+description: Sets genotypes according to the specified criteria and filtering expressions.
+  For example, missing genotypes can be set to ref, but much more than that.
 keywords:
   - setgt
   - bcftools
@@ -23,7 +23,9 @@ tools:
       identifier: biotools:bcftools
   - "bcftools plugin setGT":
       description: "Bcftools plugins are tools that can be used with bcftools to manipulate
-        variant calls in Variant Call Format (VCF) and BCF. The setGT plugin sets genotypes according to the specified criteria and filtering expressions. For example, missing genotypes can be set to ref, but much more than that."
+        variant calls in Variant Call Format (VCF) and BCF. The setGT plugin sets genotypes
+        according to the specified criteria and filtering expressions. For example,
+        missing genotypes can be set to ref, but much more than that."
       homepage: "https://samtools.github.io/bcftools/howtos/plugins.html"
       documentation: "https://samtools.github.io/bcftools/howtos/plugin.setGT.html"
       tool_dev_url: "https://github.com/samtools/bcftools"
@@ -43,32 +45,36 @@ input:
         description: |
           The vcf file to be inspected.
           e.g. 'file.vcf'
+        ontologies: []
     - index:
         type: file
         description: |
           The tab index for the VCF file to be inspected.
           e.g. 'file.tbi'
-  - - target_gt:
-        type: string
-        description: |
-          Genotypes to change
-  - - new_gt:
-        type: string
-        description: |
-          Genotypes to set
-  - - regions:
-        type: file
-        description: |
-          Optionally, restrict the operation to regions listed in this file.
-          e.g. 'file.vcf'
-  - - targets:
-        type: file
-        description: |
-          Optionally, restrict the operation to regions listed in this file (doesn't rely upon index files)
-          e.g. 'file.vcf'
+        ontologies: []
+  - target_gt:
+      type: string
+      description: |
+        Genotypes to change
+  - new_gt:
+      type: string
+      description: |
+        Genotypes to set
+  - regions:
+      type: file
+      description: |
+        Optionally, restrict the operation to regions listed in this file.
+        e.g. 'file.vcf'
+      ontologies: []
+  - targets:
+      type: file
+      description: |
+        Optionally, restrict the operation to regions listed in this file (doesn't rely upon index files)
+        e.g. 'file.vcf'
+      ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -77,8 +83,9 @@ output:
           type: file
           description: VCF output file containing set genotypes
           pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
-  - tbi:
-      - meta:
+          ontologies: []
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -87,8 +94,9 @@ output:
           type: file
           description: Alternative VCF file index
           pattern: "*.tbi"
-  - csi:
-      - meta:
+          ontologies: []
+  csi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -97,11 +105,28 @@ output:
           type: file
           description: Default VCF file index
           pattern: "*.csi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_bcftools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@eweizy"
 maintainers:

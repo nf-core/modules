@@ -13,7 +13,7 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
@@ -28,8 +28,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(file(process.out.pdf.get(0).get(1)).name,
                                   file(process.out.matrix.get(0).get(1)).name,
-                                  process.out.metrics.collect { file(it[1]).readLines().contains("0.24184576629880325") },                                
-                                  process.out.versions)
+                                  process.out.metrics.collect { file(it[1]).readLines().contains("0.24184576629880325") },
+                                  process.out.findAll { key, val -> key.startsWith('version') })
                                   .match()
                 }
             )
@@ -42,7 +42,7 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),

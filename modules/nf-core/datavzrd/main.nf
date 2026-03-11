@@ -1,18 +1,18 @@
 process DATAVZRD {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c4/c44b3faa30ec68edb0ca92766fb49bd8f526d56c1a034d1acdb0d1448b42adec/data':
-        'community.wave.seqera.io/library/datavzrd:2.36.12--dcdc5d4c72e652e2' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fac402dd116a0e60cbda098a2362d7d732fda3f903b1b851179737e981ea1ae6/data'
+        : 'community.wave.seqera.io/library/datavzrd:2.63.3--b2276ffa6612b97f'}"
 
     input:
-    tuple val(meta), file(config_file), file(table)
+    tuple val(meta), path(config_file), path(table)
 
     output:
     tuple val(meta), path("${prefix}"), emit: report
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('datavzrd'),  eval("datavzrd --version | sed -e 's/[^0-9.]//g'"), topic: versions, emit: versions_datavzrd
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,11 +26,6 @@ process DATAVZRD {
         ${args} \\
         ${config_file} \\
         --output ${prefix} \\
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        datavzrd: \$(echo \$( datavzrd --version | sed -e 's/[^0-9.]//g' ))
-    END_VERSIONS
     """
 
     stub:
@@ -54,10 +49,5 @@ process DATAVZRD {
     touch ./${prefix}/network/heatmap.js
     touch ./${prefix}/network/data/data_1.js
     touch ./${prefix}/network/plots/plot_0.js
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        datavzrd: \$(echo \$( datavzrd --version | sed -e 's/[^0-9.]//g' ))
-    END_VERSIONS
     """
 }
