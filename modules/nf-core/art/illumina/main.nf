@@ -18,7 +18,7 @@ process ART_ILLUMINA {
     tuple val(meta), path("*.fq.gz"), emit: fastq
     tuple val(meta), path("*.aln")  , emit: aln, optional:true
     tuple val(meta), path("*.sam")  , emit: sam, optional:true
-    tuple val("${task.process}"), val('art/illumina'), eval("echo '${VERSION}'"), emit: versions_art_illumina, topic: versions
+    tuple val("${task.process}"), val('art'), eval("echo '${VERSION}'"), emit: versions_art_illumina, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
