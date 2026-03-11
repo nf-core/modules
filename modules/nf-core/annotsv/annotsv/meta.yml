@@ -122,13 +122,6 @@ output:
           pattern: "*.vcf"
           ontologies:
             - edam: "http://edamontology.org/format_3016" # VCF
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
   versions_annotsv:
     - - ${task.process}:
           type: string
