@@ -37,7 +37,6 @@ process STACKS_REFMAP {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "refmap_output"
     """
     ref_map.pl \\
         --samples ./ \\
@@ -53,14 +52,11 @@ process STACKS_REFMAP {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "refmap_output"
-
     """
 
     touch catalog.calls
     touch catalog.chrs.tsv
-    touch catalog.fa.gz
+    echo "" | gzip > catalog.fa.gz
     touch gstacks.log
     touch gstacks.log.distribs
     touch populations.haplotypes.tsv
@@ -74,9 +70,5 @@ process STACKS_REFMAP {
     touch populations.snps.genepop
     touch populations.structure
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        stacks: \$(populations -v)
-    END_VERSIONS
     """
 }
