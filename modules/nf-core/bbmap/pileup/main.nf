@@ -30,6 +30,5 @@ process BBMAP_PILEUP {
         out=${prefix}.coverage.stats.txt \\
         hist=${prefix}.coverage.hist.txt \\
         $args
-
     """
 }
