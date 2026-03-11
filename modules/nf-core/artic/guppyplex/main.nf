@@ -12,7 +12,6 @@ process ARTIC_GUPPYPLEX {
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: fastq
-    // path  "versions.yml"               , emit: versions
     tuple val("${task.process}"), val('artic'), eval('artic -v 2>&1 | sed "s/^.*artic //; s/ .*$//"')   , emit: versions_artic, topic: versions
 
     when:
