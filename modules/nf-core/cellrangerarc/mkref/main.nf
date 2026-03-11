@@ -14,7 +14,7 @@ process CELLRANGERARC_MKREF {
     output:
     path "${reference_name}", emit: reference
     path "config"           , emit: config
-    path "versions.yml"     , emit: versions
+    tuple val("${task.process}"), val('cellrangerarc_mkref'), eval("cellranger-arc --version 2>&1 | sed 's/^.[^0-9]\\([0-9]\\.[0-9]\\.[0-9]\\).*/\\1/'"), emit: versions_cellrangerarc_mkref, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -75,11 +75,7 @@ process CELLRANGERARC_MKREF {
         --config=config \\
         --nthreads=${task.cpus} \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellrangerarc: \$(echo \$( cellranger-arc --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-    END_VERSIONS
+    
     """
 
     stub:
@@ -92,9 +88,5 @@ process CELLRANGERARC_MKREF {
     mkdir -p "${reference_name}/"
     touch config
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellrangerarc: \$(echo \$( cellranger-arc --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-    END_VERSIONS
     """
 }
