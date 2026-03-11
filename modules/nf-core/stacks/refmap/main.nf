@@ -45,11 +45,6 @@ process STACKS_REFMAP {
         -o . \\
         -T $task.cpus \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        stacks: \$(populations -v)
-    END_VERSIONS
     """
 
     stub:
