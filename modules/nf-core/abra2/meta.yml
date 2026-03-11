@@ -124,7 +124,7 @@ output:
       - abra2:
           type: string
           description: The name of the tool
-      - "abra2 2>&1 | grep 'Abra version:' | sed 's/.*Abra version: //'":
+      - "abra2 2>&1 | sed -n 's/.*Abra version: //p'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -135,7 +135,7 @@ topics:
       - abra2:
           type: string
           description: The name of the tool
-      - "abra2 2>&1 | grep 'Abra version:' | sed 's/.*Abra version: //'":
+      - "abra2 2>&1 | sed -n 's/.*Abra version: //p'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
