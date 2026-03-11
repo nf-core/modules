@@ -37,7 +37,6 @@ process STACKS_REFMAP {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "refmap_output"
     """
     ref_map.pl \\
         --samples ./ \\
@@ -53,9 +52,6 @@ process STACKS_REFMAP {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "refmap_output"
-
     """
 
     touch catalog.calls
