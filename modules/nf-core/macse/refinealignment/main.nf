@@ -28,8 +28,8 @@ process MACSE_REFINEALIGNMENT {
     tuple val(meta) , path(fasta)
 
     output:
-    tuple val(meta), path("*_NT.aln{.gz,}"), emit: result_fas_NT
-    tuple val(meta), path("*_AA.aln{.gz,}"), emit: result_fas_AA
+    tuple val(meta), path("*_NT"), emit: result_fas_NT
+    tuple val(meta), path("*_AA"), emit: result_fas_AA
     tuple val("${task.process}"), val("macse"), eval("macse --version 2>&1 | sed 's/ (.*) //g'"), topic: versions, emit: versions_macse
 
     when:
@@ -37,13 +37,14 @@ process MACSE_REFINEALIGNMENT {
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: fasta.baseName
 
     """
     macse -prog refineAlignment \
         -align ${fasta} \
         $args \\
-        -out_NT ${prefix}_NT.aln \\
-        -out_AA ${prefix}_AA.aln \\
+        -out_NT ${prefix}_NT \\
+        -out_AA ${prefix}_AA \\
     """
 
     stub:
