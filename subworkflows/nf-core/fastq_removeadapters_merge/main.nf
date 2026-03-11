@@ -53,7 +53,6 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
         BBMAP_BBDUK( ch_input_reads, ch_custom_adapters_file )
 
         ch_processed_reads = BBMAP_BBDUK.out.reads
-        ch_versions        = ch_versions.mix(BBMAP_BBDUK.out.versions.first())
         ch_multiqc_files   = ch_multiqc_files.mix(BBMAP_BBDUK.out.log)
     } else if (val_adapter_tool == "leehom") {
         LEEHOM( ch_input_reads )
