@@ -56,7 +56,7 @@ nextflow_process {
                     pvalsFiles.collect { f -> f.getText().contains("\tAndrogen\tEGFR\tEstrogen\tHypoxia\tJAK-STAT\tMAPK\tNFkB\tPI3K\tTGFb\tTNFa\tTrail\tVEGF\tWNT\tp53")},
                     pvalsFiles.find { it.getFileName().toString().contains("mlm_pvals") }?.getText()?.contains("treatment_mCherry_hND6\t0.9"),
                     pvalsFiles.find { it.getFileName().toString().contains("consensus_pvals") }?.getText()?.contains("treatment_mCherry_hND6\t0.9"),
-                    process.out.versions
+                    process.out.versions_decoupler
             ).match()}
         )
     }
@@ -109,7 +109,7 @@ nextflow_process {
                     pvalsFiles.collect { f -> f.getText().contains("\tT1\tT2\tT3\tT4\tT5")},
                     pvalsFiles.find { it.getFileName().toString().contains("ulm_pvals") }?.getText()?.contains("S01\t0.0"),
                     pvalsFiles.find { it.getFileName().toString().contains("consensus_pvals") }?.getText()?.contains("S01\t0.2"),
-                    process.out.versions
+                    process.out.versions_decoupler
             ).match()}
             )
         }
