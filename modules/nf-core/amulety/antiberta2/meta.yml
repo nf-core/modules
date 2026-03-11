@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "amulety_antiberta2"
-description: A module to create antiberta2 embeddings of antibody (BCR) amino acid
-  sequences using amulety.
+description: A module to create antiberta2 embeddings of antibody (BCR) amino
+  acid sequences using amulety.
 keywords:
   - embeddings
   - BCR
@@ -16,9 +15,9 @@ tools:
       documentation: "https://amulety.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/immcantation/amulety"
       doi: "10.1101/2025.03.21.644583"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -27,7 +26,8 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - tsv:
         type: file
-        description: TSV with BCR/TCR nucleotide sequences in AIRR rearrangement format
+        description: TSV with BCR/TCR nucleotide sequences in AIRR rearrangement
+          format
         pattern: "*.{tsv}"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
@@ -35,7 +35,6 @@ input:
       type: string
       description: |
         The chain to use for the embeddings. Can be either 'H' (heavy) or 'HL' (heavy + light, for single-cell data).
-
 output:
   embedding:
     - - meta:
@@ -47,17 +46,29 @@ output:
           type: file
           description: TSV with antiberta2 embeddings.
           pattern: "*.tsv"
-
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_amulety:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - amulety:
+          type: string
+          description: The name of the tool
+      - amulety --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - amulety:
+          type: string
+          description: The name of the tool
+      - amulety --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ggabernet"
 maintainers:
