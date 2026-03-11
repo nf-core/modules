@@ -28,7 +28,7 @@ input:
         description: A list of GFFs to merge
         pattern: "[ *.{gff,gff3} ]"
         ontologies:
-          - edam: "http://edamontology.org/format_2305"
+          - edam: "http://edamontology.org/format_2305" # GFF
   - config:
       type: file
       description: |
@@ -38,7 +38,7 @@ input:
         own AGAT config file (located elsewhere or named differently).
       pattern: "*.yaml"
       ontologies:
-        - edam: "http://edamontology.org/format_3750"
+        - edam: "http://edamontology.org/format_3750" # YAML
 output:
   gff:
     - - meta:
@@ -51,7 +51,7 @@ output:
           description: Output GFF file.
           pattern: "*.gff"
           ontologies:
-            - edam: "http://edamontology.org/format_2305"
+            - edam: "http://edamontology.org/format_2305" # GFF
   versions_agat:
     - - ${task.process}:
           type: string
