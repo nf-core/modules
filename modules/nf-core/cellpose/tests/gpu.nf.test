@@ -1,14 +1,15 @@
 nextflow_process {
 
-    name "Test Process CELLPOSE"
+    name "Test Process CELLPOSE on GPU"
     script "../main.nf"
     process "CELLPOSE"
 
     tag "modules"
     tag "modules_nfcore"
     tag "cellpose"
+    tag "gpu"
 
-    test("cellpose - with flows, no model") {
+    test("cellpose - gpu - with flows, no model") {
 
         when {
             config "./nextflow.config"
@@ -36,8 +37,7 @@ nextflow_process {
 
     }
 
-
-    test("cellpose - stub") {
+    test("cellpose - gpu - stub") {
 
         options "-stub"
 
