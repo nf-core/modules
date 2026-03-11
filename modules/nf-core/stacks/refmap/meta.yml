@@ -1,7 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "stacks_refmap"
-## TODO nf-core: Add a description of the module and list keywords
 description: ref_map.pl script from Stacks for the analysis of RAD-seq data when a reference genome is available.
 keywords:
   - rad-seq
@@ -11,7 +9,6 @@ keywords:
   - genomics
 tools:
   - "stacks":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Stacks is a software pipeline for building loci from short-read sequences."
       homepage: "https://catchenlab.life.illinois.edu/stacks/"
       documentation: "https://catchenlab.life.illinois.edu/stacks/manual/"
@@ -20,21 +17,20 @@ tools:
       licence: ["GPL v3"]
       identifier: biotools:stacks
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  #
-  ## TODO nf-core: Delete / customise this example input
-  - bam_path:
-      type: directory
-      description: Directory with all the bam files to process with stacks refmap
-      pattern: "*"
-      ontologies: []
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information e.g. [ id:'test' ]
+    - bam_path:
+        type: directory
+        description: Directory containing BAM files aligned to a reference genome
+        pattern: "*"
   - popmap:
       type: file
-      description: A tab-delimited text file with the columns sample name and population name
+      description: Tab-delimited population map file
       pattern: "*.tsv"
-      ontologies: []
-## TODO nf-core: Add a description of all of the variables used as output
+      ontologies:
+        - edam: http://edamontology.org/format_3475
 output:
   catalog_calls:
     - catalog_calls:
