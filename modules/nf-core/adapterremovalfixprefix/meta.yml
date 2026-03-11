@@ -26,7 +26,7 @@ input:
         description: FASTQ file from AdapterRemoval2
         pattern: "*.{fq.gz,fastq.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_1930"
+          - edam: "http://edamontology.org/format_1930" # FASTQ
 output:
   fixed_fastq:
     - - meta:
@@ -39,7 +39,7 @@ output:
           description: FASTQ file with fixed read prefixes for DeDup
           pattern: "*.{fq.gz}"
           ontologies:
-            - edam: "http://edamontology.org/format_1930"
+            - edam: "http://edamontology.org/format_1930" # FASTQ
   versions_adapterremovalfixprefix:
     - - ${task.process}:
           type: string
