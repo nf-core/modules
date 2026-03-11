@@ -12,7 +12,7 @@ process MCQUANT {
 
     output:
     tuple val(meta), path("*.csv"), emit: csv
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('mcquant'), eval("echo 1.5.4"), emit: versions_mcquant, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,21 +27,11 @@ process MCQUANT {
         --channel_names $markerfile \
         --output . \
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mcquant: $VERSION
-    END_VERSIONS
     """
 
     stub:
-    def VERSION = '1.5.4'
+    def VERSION = '1.5.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch cycif_tonsil_registered_cell.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mcquant: $VERSION
-    END_VERSIONS
     """
 }
