@@ -11,8 +11,7 @@ process MAT2JSON {
 
     output:
     tuple val(meta), path("${process}/*/*.*"),     emit: converted_file
-    path "versions.yml"                      ,     emit: versions
-
+    tuple val("${task.process}"), val('mat2json'), eval('mat2json 1.0.0'), emit: versions_mat2json, topic: versions
     when:
     task.ext.when == null || task.ext.when
 
@@ -32,10 +31,6 @@ process MAT2JSON {
     mv -f *.json \$results_dir 2>/dev/null || true
     mv -f *.csv \$results_dir 2>/dev/null || true
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mat2json: 1.0
-    END_VERSIONS
     """
 
     stub:
@@ -49,9 +44,5 @@ process MAT2JSON {
 
     touch \$results_dir/${prefix}.json
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mat2json: 1.0
-    END_VERSIONS
     """
 }

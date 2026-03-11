@@ -37,15 +37,33 @@ output:
             e.g. `[ id:'sample1']`
       - ${process}/*/*.*:
           type: file
-          description: JSON or CSV file containing the the data from the input .mat file
+          description: JSON or CSV file containing the the data from the input .mat
+            file
           pattern: "*.{json,csv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3464
+            - edam: http://edamontology.org/format_3752
+  versions_mat2json:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mat2json:
+          type: string
+          description: The name of the tool
+      - mat2json 1.0.0:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mat2json:
+          type: string
+          description: The name of the tool
+      - mat2json 1.0.0:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@CaroAMN"
 maintainers:
