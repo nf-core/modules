@@ -21,7 +21,7 @@ process ANNOTSV_ANNOTSV {
     tuple val(meta), path("*.tsv")            , emit: tsv
     tuple val(meta), path("*.unannotated.tsv"), emit: unannotated_tsv, optional: true
     tuple val(meta), path("*.vcf")            , emit: vcf            , optional: true
-    tuple val("${task.process}"), val('annotsv'), eval("AnnotSV -help 2>&1 | head -n1 | sed 's/^AnnotSV //'"), emit: versions_annotsv, topic: versions
+    tuple val("${task.process}"), val('annotsv'), eval("AnnotSV --version | sed 's/AnnotSV //'"), emit: versions_annotsv, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
