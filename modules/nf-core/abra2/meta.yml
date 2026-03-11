@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "abra2"
 description: "Assembly Based ReAligner for next-generation sequencing data"
 keywords:
@@ -17,9 +16,9 @@ tools:
       documentation: "https://github.com/mozack/abra2"
       tool_dev_url: "https://github.com/mozack/abra2"
       doi: "10.1093/bioinformatics/btz033"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -93,7 +92,6 @@ input:
         pattern: "*.{vcf,vcf.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_3016"
-
 output:
   bam:
     - - meta:
@@ -119,13 +117,27 @@ output:
           pattern: "*.abra.bam.bai"
           ontologies:
             - edam: "http://edamontology.org/format_3327"
+  versions_abra2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - abra2:
+          type: string
+          description: The name of the tool
+      - "abra2 2>&1 | grep 'Abra version:' | sed 's/.*Abra version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - abra2:
+          type: string
+          description: The name of the tool
+      - "abra2 2>&1 | grep 'Abra version:' | sed 's/.*Abra version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@adamrtalbot"
 maintainers:
