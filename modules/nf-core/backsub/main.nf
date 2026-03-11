@@ -10,9 +10,9 @@ process BACKSUB {
     tuple val(meta2), path(markerfile)
 
     output:
-    tuple val(meta), path("*.ome.tif"), emit: backsub_tif
-    tuple val(meta2), path("*.csv")   , emit: markerout
-    path "versions.yml"               , emit: versions
+    tuple val(meta), path("*.ome.tif")                                                    , emit: backsub_tif
+    tuple val(meta2), path("*.csv")                                                       , emit: markerout
+    tuple val("${task.process}"), val('backsub'), eval("backsub --version | sed 's/v//g'"), emit: versions_backsub, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,11 +28,6 @@ process BACKSUB {
         --output "${prefix}.ome.tif" \
         --marker-output "${prefix}.csv" \
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        backsub: \$(backsub --version | sed 's/v//g')
-    END_VERSIONS
     """
 
     stub:
@@ -40,9 +35,5 @@ process BACKSUB {
     """
     touch "${prefix}.ome.tif"
     touch "${prefix}.csv"
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        backsub: \$(backsub --version | sed 's/v//g')
-    END_VERSIONS
     """
 }
