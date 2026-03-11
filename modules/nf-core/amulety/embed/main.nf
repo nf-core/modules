@@ -7,7 +7,7 @@ process AMULETY_EMBED {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ee/eef2fbc7c8d1ba71b3890a83b520c3eefa136ec4de5a8e6a97db828ae354d7ab/data':
         'community.wave.seqera.io/library/igblast_curl_python_wget_pruned:07dda71433b05ed5' }"
-    
+
     input:
     tuple val(meta), path(tsv)
     val(chain)
