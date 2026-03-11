@@ -10,7 +10,7 @@ process STACKS_REFMAP {
 
     input:
     tuple val(meta), path(bam_path)
-    tuple val(meta1), path(popmap)
+    path(popmap)
 
     output:
 
