@@ -16,7 +16,7 @@ process PLINK_INDEPPAIRWISE {
     output:
     tuple val(meta), path("*.prune.in")                    , emit: prunein
     tuple val(meta), path("*.prune.out")    , optional:true, emit: pruneout
-    tuple val("${task.process}"), val('plink'), eval('plink --version 2>&1 | sed \'s/^PLINK v//;s/ .*//\''), emit: versions_plink, topic: versions
+    tuple val("${task.process}"), val('plink'), eval("plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'"), emit: versions_plink, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

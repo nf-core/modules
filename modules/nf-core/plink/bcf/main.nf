@@ -15,7 +15,7 @@ process PLINK_BCF {
     tuple val(meta), path("*.bim"), emit: bim, optional: true
     tuple val(meta), path("*.fam"), emit: fam, optional: true
 
-    tuple val("${task.process}"), val('plink'), eval('plink --version 2>&1 | sed \'s/^PLINK v//;s/ .*//\''), emit: versions_plink, topic: versions
+    tuple val("${task.process}"), val('plink'), eval("plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'"), emit: versions_plink, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
