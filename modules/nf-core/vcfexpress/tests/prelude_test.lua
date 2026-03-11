@@ -1,1 +1,1 @@
-header:add_info({ID="FOUND_IN",Number="1",Type="String",Description="Program that called the variant "})
+header:add_filter({ID="LowQual", Description="Qual less than 1000"})

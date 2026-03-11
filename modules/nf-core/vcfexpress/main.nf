@@ -41,6 +41,6 @@ process VCFEXPRESS {
     """
     echo $args
 
-    touch ${prefix}.${suffix}
+    echo "" | gzip > ${prefix}.${suffix}
     """
 }
