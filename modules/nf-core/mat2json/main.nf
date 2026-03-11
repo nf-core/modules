@@ -11,7 +11,7 @@ process MAT2JSON {
 
     output:
     tuple val(meta), path("${process}/*/*.*"),     emit: converted_file
-    tuple val("${task.process}"), val('mat2json'), eval('mat2json 1.0.0'), emit: versions_mat2json, topic: versions
+    tuple val("${task.process}"), val('mat2json'), val('1.0.0'), emit: versions_mat2json, topic: versions
     when:
     task.ext.when == null || task.ext.when
 
