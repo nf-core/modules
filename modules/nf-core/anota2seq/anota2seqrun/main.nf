@@ -27,8 +27,10 @@ process ANOTA2SEQ_ANOTA2SEQRUN {
     tuple val(meta), path("*.rvm_fit_for_omnibus_group.jpg")                   , emit: rvm_fit_for_omnibus_group_plot                   , optional: true
     tuple val(meta), path("*.simulated_vs_obt_dfbetas_without_interaction.pdf"), emit: simulated_vs_obt_dfbetas_without_interaction_plot, optional: true
     tuple val(meta), path("*.R_sessionInfo.log")                               , emit: session_info
-    path "versions.yml"                                                        , emit: versions
+    
 
+    tuple val("$task.process"), val('<bioconductor-anota2seq>'), eval("Rscript -e 'library(anota2seq); cat(as.character(packageVersion(\"anota2seq\")))'"),emit: versions_anota2seq, topic: versions
+    
     when:
     task.ext.when == null || task.ext.when
 

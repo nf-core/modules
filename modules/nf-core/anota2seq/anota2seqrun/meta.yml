@@ -268,12 +268,14 @@ output:
           ontologies:
             - edam: "http://edamontology.org/data_1678" # Log
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - versions_anota2seq:
+      - type: tuple
+        description: |
+          Software versions
+          Structure: [ val(task.process), val(tool_name), val(version) ]
+      - versions:
+          - topic: versions
+        
 authors:
   - "@pinin4fjords"
 maintainers:

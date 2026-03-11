@@ -39,7 +39,7 @@ nextflow_process {
                     process.out.total_mrna,
                     process.out.translation,
                     process.out.buffering,
-                    process.out.versions,
+                    process.out.versions_anota2seq,
                     file(process.out.fold_change_plot[0][1]).name,
                     file(process.out.interaction_p_distribution_plot[0][1]).name,
                     file(process.out.residual_distribution_summary_plot[0][1]).name,
@@ -48,8 +48,7 @@ nextflow_process {
                     file(process.out.rvm_fit_for_interactions_plot[0][1]).name,
                     file(process.out.rvm_fit_for_omnibus_group_plot[0][1]).name,
                     file(process.out.simulated_vs_obt_dfbetas_without_interaction_plot[0][1]).name,
-                    file(process.out.rdata[0][1]).name,
-                    path(process.out.versions[0]).yaml
+                    file(process.out.rdata[0][1]).name
                 ).match() }
             )
         }

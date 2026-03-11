@@ -426,15 +426,7 @@ sink()
 ################################################
 ################################################
 
-r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
-anota2seq.version <- as.character(packageVersion('anota2seq'))
-
-writeLines(
-    c(
-        '"${task.process}":',
-        paste('    bioconductor-anota2seq:', anota2seq.version)
-    ),
-'versions.yml')
+writeLines(capture.output(sessionInfo()), "${meta.id}.R_sessionInfo.log")
 
 ################################################
 ################################################
