@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "agat_convertgff2bed"
 description: Takes a GFF3 file and converts to a bed12 file
 keywords:
@@ -14,9 +13,9 @@ tools:
       documentation: "https://agat.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/NBISweden/AGAT"
       doi: "10.5281/zenodo.3552717"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:AGAT
-
 input:
   - - meta:
         type: map
@@ -28,8 +27,7 @@ input:
         description: Input GFF3 file
         pattern: "*.{gff}"
         ontologies:
-          - edam: "http://edamontology.org/format_1975" # GFF3
-
+          - edam: "http://edamontology.org/format_1975"
 output:
   bed:
     - - meta:
@@ -42,15 +40,28 @@ output:
           description: Output bed12 file
           pattern: "*.bed"
           ontologies:
-            - edam: "http://edamontology.org/format_3586" # bed12
+            - edam: "http://edamontology.org/format_3586"
+  versions_tool1:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - <agat_convert_sp_gff2bed.p>:
+          type: string
+          description: The name of the tool
+      - agat_convert_sp_gff2bed.pl --help:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
-
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - <agat_convert_sp_gff2bed.p>:
+          type: string
+          description: The name of the tool
+      - agat_convert_sp_gff2bed.pl --help:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@atrigila"
 maintainers:
