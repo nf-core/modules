@@ -56,7 +56,6 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
             )
 
             ch_bismark_index = ch_bismark_index_branched.unzipped.mix(UNTAR.out.untar)
-            ch_versions      = ch_versions.mix(UNTAR.out.versions)
         } else {
             BISMARK_GENOMEPREPARATION (
                 ch_fasta
@@ -85,7 +84,6 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
             )
 
             ch_bwameth_index = ch_bwameth_index_branched.unzipped.mix(UNTAR.out.untar)
-            ch_versions      = ch_versions.mix(UNTAR.out.versions)
         } else {
             if (use_mem2) {
                 BWAMETH_INDEX (
@@ -112,8 +110,7 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
             ch_fasta_index = fasta_index
         } else {
             SAMTOOLS_FAIDX(
-                ch_fasta,
-                [[:], []],
+                ch_fasta.combine(channel.of([[]])),
                 false
             )
             ch_fasta_index = SAMTOOLS_FAIDX.out.fai

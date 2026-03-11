@@ -39,7 +39,7 @@ nextflow_process {
                     process.out.initial_break_agp,
                     process.out.round_agp,
                     process.out.binary,
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith("versions")},
                 ).match() },
                 { file(process.out.log.get(0).get(1)).readLines().last().contains("Real time") }
             )
@@ -96,7 +96,7 @@ nextflow_process {
                     process.out.initial_break_agp,
                     process.out.round_agp,
                     process.out.binary,
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith("versions")},
                 ).match() },
                 { file(process.out.log.get(0).get(1)).readLines().last().contains("Real time") }
             )

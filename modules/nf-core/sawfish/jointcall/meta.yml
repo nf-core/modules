@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: sawfish_jointcall
-description: Joint calling of structural variants from multiple samples using
-  Sawfish
+description: Joint calling of structural variants from multiple samples using Sawfish
 keywords:
   - sawfish
   - structural-variant calling
@@ -16,7 +14,7 @@ tools:
       documentation: "https://github.com/PacificBiosciences/sawfish/tree/main/docs"
       doi: "10.1093/bioinformatics/btaf136"
       licence:
-        ["Pacific Biosciences Software License (https://github.com/PacificBiosciences/sawfish/blob/main/LICENSE.md)"]
+        - "Pacific Biosciences Software License (https://github.com/PacificBiosciences/sawfish/blob/main/LICENSE.md)"
       identifier: ""
 input:
   - - meta:
@@ -61,8 +59,8 @@ input:
           e.g. [ id:'csv' ]
     - sample_csv:
         type: file
-        description: CSV file listing sample sawfish discover output and the
-          sample bam file used with sawfish discover
+        description: CSV file listing sample sawfish discover output and the sample
+          bam file used with sawfish discover
         ontologies: []
 output:
   vcf:
@@ -76,7 +74,7 @@ output:
           description: Joint called variants in compressed VCF format
           pattern: "*_genotyped.sv.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   tbi:
     - - meta:
           type: map
@@ -121,7 +119,7 @@ output:
           description: Run statistics JSON file
           pattern: "*.json"
           ontologies:
-            - edam: http://edamontology.org/format_3464 # JSON
+            - edam: http://edamontology.org/format_3464
   depth_bw:
     - - meta:
           type: map
@@ -154,7 +152,8 @@ output:
           type: file
           description: Sample GC bias BigWig file
           pattern: "*.bw"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3006
   copynum_summary:
     - - meta:
           type: map
@@ -166,7 +165,19 @@ output:
           description: Sample copy number summary JSON file
           pattern: "*.json"
           ontologies:
-            - edam: http://edamontology.org/format_3464 # JSON
+            - edam: http://edamontology.org/format_3464
+  maf_bw:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*/samples/*/maf.bw":
+          type: file
+          description: Sample SNV MAF BigWig file
+          pattern: "*.bw"
+          ontologies:
+            - edam: http://edamontology.org/format_3006
   log:
     - - meta:
           type: map
@@ -178,14 +189,27 @@ output:
           description: Sawfish log file
           pattern: "*.log"
           ontologies: []
+  versions_sawfish:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - sawfish:
+          type: string
+          description: The tool name
+      - sawfish --version | sed "s/sawfish //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
-
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - sawfish:
+          type: string
+          description: The tool name
+      - sawfish --version | sed "s/sawfish //g":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@padraicc"
 maintainers:

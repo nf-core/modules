@@ -20,7 +20,6 @@ process BISMARK_DEDUPLICATE {
 
     script:
     def args    = task.ext.args ?: ''
-    def prefix  = task.ext.prefix ?: "${meta.id}"
     def seqtype = meta.single_end ? '-s' : '-p'
     """
     deduplicate_bismark \\
@@ -35,7 +34,6 @@ process BISMARK_DEDUPLICATE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.deduplicated.bam

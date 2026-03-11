@@ -1,0 +1,139 @@
+name: multiqcsav
+description: Aggregate results from bioinformatics analyses across many samples
+  into a single report, with support for multiqc_sav plugin
+keywords:
+  - QC
+  - bioinformatics tools
+  - Beautiful stand-alone HTML report
+  - Illumina
+  - Sequencing Analysis Viewer
+  - SAV
+tools:
+  - multiqc:
+      description: |
+        MultiQC searches a given directory for analysis logs and compiles a HTML report.
+        It's a general use tool, perfect for summarising the output from numerous bioinformatics tools.
+      homepage: https://multiqc.info/
+      documentation: https://multiqc.info/docs/
+      licence:
+        - "GPL-3.0-or-later"
+      identifier: biotools:multiqc
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1', single_end:false ]
+    - xml:
+        type: file
+        description: xml files from an Illumina sequencing run
+        pattern: "*.xml"
+        ontologies:
+          - edam: http://edamontology.org/format_2332
+    - interop_bin:
+        type: file
+        description: Illumina InterOp binary files
+        pattern: "InterOp/*.bin"
+        ontologies:
+          - edam: http://edamontology.org/format_2333
+    - extra_multiqc_files:
+        type: file
+        description: |
+          List of reports / files recognised by MultiQC, for example the html and zip output of FastQC
+        ontologies: []
+    - multiqc_config:
+        type: file
+        description: Optional config yml for MultiQC
+        pattern: "*.{yml,yaml}"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
+    - multiqc_logo:
+        type: file
+        description: Optional logo file for MultiQC
+        pattern: "*.{png}"
+        ontologies: []
+    - replace_names:
+        type: file
+        description: |
+          Optional two-column sample renaming file. First column a set of
+          patterns, second column a set of corresponding replacements. Passed via
+          MultiQC's `--replace-names` option.
+        pattern: "*.{tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+    - sample_names:
+        type: file
+        description: |
+          Optional TSV file with headers, passed to the MultiQC --sample_names
+          argument.
+        pattern: "*.{tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+output:
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1', single_end:false ]
+      - "*.html":
+          type: file
+          description: MultiQC report file
+          pattern: ".html"
+          ontologies: []
+  data:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1', single_end:false ]
+      - "*_data":
+          type: directory
+          description: MultiQC data dir
+          pattern: "multiqc_data"
+  plots:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1', single_end:false ]
+      - "*_plots":
+          type: file
+          description: Plots created by MultiQC
+          pattern: "*_data"
+          ontologies: []
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - multiqc:
+          type: string
+          description: The tool name
+      - multiqc --version | sed "s/.* //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_interop:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - interop:
+          type: string
+          description: The tool name
+      - python -c "import interop; print(interop.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_multiqcsav:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - multiqcsav:
+          type: string
+          description: The name of the tool
+      - python -c "import multiqc_sav; print(multiqc_sav.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@matthdsm"
+  - "@delfiterradas"
+maintainers:
+  - "@matthdsm"

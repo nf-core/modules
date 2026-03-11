@@ -33,7 +33,6 @@ workflow ARCHIVE_EXTRACT {
             UNZIP.out.unzipped_archive,
         )
 
-    versions = versions.mix(UNTAR.out.versions)
     versions = versions.mix(UNZIP.out.versions)
 
     emit:

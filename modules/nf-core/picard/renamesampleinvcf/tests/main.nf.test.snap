@@ -2,14 +2,46 @@
     "test-picard-renamesampleinvcf": {
         "content": [
             "e21a2349f41663d1fc38f47fbe65a6d5",
-            [
-                "versions.yml:md5,5df030a77d4f855597c779953cfc26e1"
-            ]
+            {
+                "versions_picard": [
+                    [
+                        "PICARD_RENAMESAMPLEINVCF",
+                        "picard",
+                        "3.4.0"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-02-02T15:51:56.010473",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
-        },
-        "timestamp": "2025-09-15T11:04:50.710270358"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        }
+    },
+    "test-picard-renamesampleinvcf - stub": {
+        "content": [
+            {
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_renam.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_picard": [
+                    [
+                        "PICARD_RENAMESAMPLEINVCF",
+                        "picard",
+                        "3.4.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-02-20T10:39:17.132250662",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     }
 }

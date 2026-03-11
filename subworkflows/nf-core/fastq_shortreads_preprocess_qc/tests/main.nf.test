@@ -1,0 +1,417 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTQ_SHORTREADS_PREPROCESS_QC"
+    script "../main.nf"
+    workflow "FASTQ_SHORTREADS_PREPROCESS_QC"
+    config './nextflow.config'
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_shortreads_preprocess_qc"
+    tag "subworkflows/fastq_qc_stats"
+    tag "fastqc"
+    tag "seqfu"
+    tag "seqfu/check"
+    tag "seqfu/stats"
+    tag "seqkit"
+    tag "seqkit/stats"
+    tag "seqtk"
+    tag "seqtk/comp"
+    tag "subworkflows/fastq_preprocess_seqkit"
+    tag "subworkflows/fastq_sanitise_seqkit"
+    tag "seqkit"
+    tag "seqkit/sana"
+    tag "seqkit/pair"
+    tag "seqkit/seq"
+    tag "seqkit/replace"
+    tag "seqkit/rmdup"
+    tag "umitools"
+    tag "umitools/extract"
+    tag "subworkflows/fastq_removeadapters_merge"
+    tag "trimmomatic"
+    tag "cutadapt"
+    tag "trimgalore"
+    tag "bbmap"
+    tag "bbmap/bbduk"
+    tag "leehom"
+    tag "fastp"
+    tag "adapterremoval"
+    tag "cat"
+    tag "cat/fastq"
+    tag "subworkflows/fastq_complexity_filter"
+    tag "prinseqplusplus"
+    tag "bbmap/clumpify"
+    tag "subworkflows/fastq_decontaminate_deacon_hostile"
+    tag "subworkflows/fastq_index_filter_deacon"
+    tag "subworkflows/fastq_fetch_clean_hostile"
+    tag "hostile"
+    tag "hostile/fetch"
+    tag "hostile/clean"
+    tag "bowtie2/build"
+    tag "deacon"
+    tag "deacon/filter"
+    tag "deacon/index"
+
+    test("sarscov2 - fastq - seqfu - seqkit - deacon - single_end") {
+
+        when {
+            params {
+                save_merged = false
+                adapterremoval_args = save_merged ? "--collapse" : ""
+            }
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1]  = true     // skip_fastqc
+                input[2]  = false    // skip_seqfu_check
+                input[3]  = false    // skip_seqfu_stats
+                input[4]  = true     // skip_seqkit_stats
+                input[5]  = true     // skip_seqtk_comp
+                input[6]  = false    // skip_seqkit_sana_pair
+                input[7]  = false    // skip_seqkit_seq
+                input[8]  = false    // skip_seqkit_replace
+                input[9]  = false    // skip_seqkit_rmdup
+                input[10] = true     // skip_umitools_extract
+                input[11] = 0        // val_umi_discard_read
+                input[12] = true     // skip_adapterremoval
+                input[13] = ""       // val_adapter_tool
+                input[14] = []       // ch_custom_adapters_file
+                input[15] = false    // val_save_merged
+                input[16] = false    // val_fastp_discard_trimmed_pass
+                input[17] = false    // val_fastp_save_trimmed_fail
+                input[18] = true     // skip_complexity_filtering
+                input[19] = ""       // val_complexity_filter_tool
+                input[20] = true     // skip_deduplication
+                input[21] = false    // skip_decontamination
+                input[22] = channel.of(
+                    [
+                        [ id:'test', single_end:true ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                )                    // ch_decontamination_fasta
+                input[23] = []       // ch_decontamination_reference
+                input[24] = []       // val_decontamination_index_name
+                input[25] = 'deacon' // val_decontamination_tool
+                input[26] = true     // skip_final_concatenation
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    workflow.out.reads[0][1],
+                    workflow.out.pre_stats_seqfu_check,
+                    workflow.out.pre_stats_seqfu_stats,
+                    workflow.out.post_stats_seqfu_check,
+                    workflow.out.post_stats_seqfu_stats,
+                    workflow.out.deacon_index,
+                    file(workflow.out.deacon_summary[0][1]).name,
+                    workflow.out.multiqc_files,
+                    workflow.out.versions.collect { path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - umitools - prinseq - clumpify - cat - single_end") {
+
+        when {
+            params {
+                save_merged = false
+                adapterremoval_args = save_merged ? "--collapse" : ""
+            }
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1]  = true              // skip_fastqc
+                input[2]  = true              // skip_seqfu_check
+                input[3]  = true              // skip_seqfu_stats
+                input[4]  = true              // skip_seqkit_stats
+                input[5]  = true              // skip_seqtk_comp
+                input[6]  = true              // skip_seqkit_sana_pair
+                input[7]  = true              // skip_seqkit_seq
+                input[8]  = true              // skip_seqkit_replace
+                input[9]  = true              // skip_seqkit_rmdup
+                input[10] = false             // skip_umitools_extract
+                input[11] = 0                 // val_umi_discard_read
+                input[12] = true              // skip_adapterremoval
+                input[13] = ""                // val_adapter_tool
+                input[14] = []                // ch_custom_adapters_file
+                input[15] = false             // val_save_merged
+                input[16] = false             // val_fastp_discard_trimmed_pass
+                input[17] = false             // val_fastp_save_trimmed_fail
+                input[18] = false             // skip_complexity_filtering
+                input[19] = 'prinseqplusplus' // val_complexity_filter_tool
+                input[20] = false             // skip_deduplication
+                input[21] = true              // skip_decontamination
+                input[22] = channel.of(
+                    [
+                        [ id:'test', single_end:true ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                )                             // ch_decontamination_fasta
+                input[23] = []                // ch_decontamination_reference
+                input[24] = []                // val_decontamination_index_name
+                input[25] = 'deacon'          // val_decontamination_tool
+                input[26] = false             // skip_final_concatenation
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    path(workflow.out.reads[0][1]).linesGzip.size(),
+                    path(workflow.out.umi_log[0][1]).readLines().size(),
+                    path(workflow.out.clumpify_log[0][1]).readLines().size(),
+                    workflow.out.versions.collect { path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - fastqc - seqkit - cutadapt - clumpify - cat - paired_end") {
+
+        when {
+            params {
+                save_merged = false
+                adapterremoval_args = save_merged ? "--collapse" : ""
+            }
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1]  = false      // skip_fastqc
+                input[2]  = true       // skip_seqfu_check
+                input[3]  = true       // skip_seqfu_stats
+                input[4]  = true       // skip_seqkit_stats
+                input[5]  = true       // skip_seqtk_comp
+                input[6]  = false      // skip_seqkit_sana_pair
+                input[7]  = false      // skip_seqkit_seq
+                input[8]  = false      // skip_seqkit_replace
+                input[9]  = false      // skip_seqkit_rmdup
+                input[10] = true       // skip_umitools_extract
+                input[11] = 0          // val_umi_discard_read
+                input[12] = false      // skip_adapterremoval
+                input[13] = "cutadapt" // val_adapter_tool
+                input[14] = []         // ch_custom_adapters_file
+                input[15] = false      // val_save_merged
+                input[16] = false      // val_fastp_discard_trimmed_pass
+                input[17] = false      // val_fastp_save_trimmed_fail
+                input[18] = true       // skip_complexity_filtering
+                input[19] = ""         // val_complexity_filter_tool
+                input[20] = false      // skip_deduplication
+                input[21] = true       // skip_decontamination
+                input[22] = []         // ch_decontamination_fasta
+                input[23] = []         // ch_decontamination_reference
+                input[24] = []         // val_decontamination_index_name
+                input[25] = ''         // val_decontamination_tool
+                input[26] = false      // skip_final_concatenation
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    path(workflow.out.reads[0][1][0]).linesGzip.size(),
+                    path(workflow.out.reads[0][1][1]).linesGzip.size(),
+                    file(workflow.out.pre_stats_fastqc_html[0][1][0]).name,
+                    file(workflow.out.pre_stats_fastqc_html[0][1][1]).name,
+                    file(workflow.out.post_stats_fastqc_html[0][1][0]).name,
+                    file(workflow.out.post_stats_fastqc_html[0][1][1]).name,
+                    file(workflow.out.pre_stats_fastqc_zip[0][1][0]).name,
+                    file(workflow.out.pre_stats_fastqc_zip[0][1][1]).name,
+                    file(workflow.out.post_stats_fastqc_zip[0][1][0]).name,
+                    file(workflow.out.post_stats_fastqc_zip[0][1][1]).name,
+                    path(workflow.out.clumpify_log[0][1]).readLines().size(),
+                    workflow.out.versions.collect { path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - adapterremoval - merge - cat more files - paired_end") {
+
+        when {
+            params {
+                save_merged = true
+                adapterremoval_args = save_merged ? "--collapse" : ""
+            }
+            workflow {
+                """
+                input[0] = channel.of(
+                    [
+                        [ id:'test', single_end:false ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ],
+                    [
+                        [ id:'test2', single_end:false ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                )
+                input[1]  = true               // skip_fastqc
+                input[2]  = true               // skip_seqfu_check
+                input[3]  = true               // skip_seqfu_stats
+                input[4]  = true               // skip_seqkit_stats
+                input[5]  = true               // skip_seqtk_comp
+                input[6]  = true               // skip_seqkit_sana_pair
+                input[7]  = true               // skip_seqkit_seq
+                input[8]  = true               // skip_seqkit_replace
+                input[9]  = true               // skip_seqkit_rmdup
+                input[10] = true               // skip_umitools_extract
+                input[11] = 0                  // val_umi_discard_read
+                input[12] = false              // skip_adapterremoval
+                input[13] = "adapterremoval"   // val_adapter_tool
+                input[14] = []                 // ch_custom_adapters_file
+                input[15] = params.save_merged // val_save_merged
+                input[16] = false              // val_fastp_discard_trimmed_pass
+                input[17] = false              // val_fastp_save_trimmed_fail
+                input[18] = true               // skip_complexity_filtering
+                input[19] = ""                 // val_complexity_filter_tool
+                input[20] = true               // skip_deduplication
+                input[21] = true               // skip_decontamination
+                input[22] = []                 // ch_decontamination_fasta
+                input[23] = []                 // ch_decontamination_reference
+                input[24] = []                 // val_decontamination_index_name
+                input[25] = ''                 // val_decontamination_tool
+                input[26] = false              // skip_final_concatenation
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    workflow.out.reads[0][1],
+                    workflow.out.reads[1][1],
+                    workflow.out.adapterremoval_discarded_reads.collect { file(it[1]).name },
+                    workflow.out.versions.collect { path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - skip all - single_end") {
+
+        when {
+            params {
+                save_merged = false
+                adapterremoval_args = save_merged ? "--collapse" : ""
+            }
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1]  = true  // skip_fastqc
+                input[2]  = true  // skip_seqfu_check
+                input[3]  = true  // skip_seqfu_stats
+                input[4]  = true  // skip_seqkit_stats
+                input[5]  = true  // skip_seqtk_comp
+                input[6]  = true  // skip_seqkit_sana_pair
+                input[7]  = true  // skip_seqkit_seq
+                input[8]  = true  // skip_seqkit_replace
+                input[9]  = true  // skip_seqkit_rmdup
+                input[10] = true  // skip_umitools_extract
+                input[11] = 0     // val_umi_discard_read
+                input[12] = true  // skip_adapterremoval
+                input[13] = ""    // val_adapter_tool
+                input[14] = []    // ch_custom_adapters_file
+                input[15] = false // val_save_merged
+                input[16] = false // val_fastp_discard_trimmed_pass
+                input[17] = false // val_fastp_save_trimmed_fail
+                input[18] = true  // skip_complexity_filtering
+                input[19] = ""    // val_complexity_filter_tool
+                input[20] = true  // skip_deduplication
+                input[21] = true  // skip_decontamination
+                input[22] = []    // ch_decontamination_fasta
+                input[23] = []    // ch_decontamination_reference
+                input[24] = []    // val_decontamination_index_name
+                input[25] = ""    // val_decontamination_tool
+                input[26] = true  // skip_final_concatenation
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    workflow.out.reads[0][1],
+                    workflow.out.versions.collect { path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - skip all - single_end - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                save_merged = false
+                adapterremoval_args = save_merged ? "--collapse" : ""
+            }
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1]  = true  // skip_fastqc
+                input[2]  = true  // skip_seqfu_check
+                input[3]  = true  // skip_seqfu_stats
+                input[4]  = true  // skip_seqkit_stats
+                input[5]  = true  // skip_seqtk_comp
+                input[6]  = true  // skip_seqkit_sana_pair
+                input[7]  = true  // skip_seqkit_seq
+                input[8]  = true  // skip_seqkit_replace
+                input[9]  = true  // skip_seqkit_rmdup
+                input[10] = true  // skip_umitools_extract
+                input[11] = 0     // val_umi_discard_read
+                input[12] = true  // skip_adapterremoval
+                input[13] = ""    // val_adapter_tool
+                input[14] = []    // ch_custom_adapters_file
+                input[15] = false // val_save_merged
+                input[16] = false // val_fastp_discard_trimmed_pass
+                input[17] = false // val_fastp_save_trimmed_fail
+                input[18] = true  // skip_complexity_filtering
+                input[19] = ""    // val_complexity_filter_tool
+                input[20] = true  // skip_deduplication
+                input[21] = true  // skip_decontamination
+                input[22] = []    // ch_decontamination_fasta
+                input[23] = []    // ch_decontamination_reference
+                input[24] = []    // val_decontamination_index_name
+                input[25] = ""    // val_decontamination_tool
+                input[26] = true  // skip_final_concatenation
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(workflow.out.reads).match() }
+            )
+        }
+    }
+}

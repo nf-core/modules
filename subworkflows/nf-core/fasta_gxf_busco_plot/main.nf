@@ -80,7 +80,6 @@ workflow FASTA_GXF_BUSCO_PLOT {
     ch_assembly_short_summaries_txt             = BUSCO_ASSEMBLY.out.short_summaries_txt
     ch_assembly_short_summaries_json            = BUSCO_ASSEMBLY.out.short_summaries_json
     ch_assembly_full_table                      = BUSCO_ASSEMBLY.out.full_table
-    ch_versions                                 = ch_versions.mix(BUSCO_ASSEMBLY.out.versions.first())
 
     // MODULE: BUSCO_GENERATEPLOT as PLOT_ASSEMBLY
     ch_assembly_plot_summary                    = ch_assembly_short_summaries_txt
@@ -96,7 +95,6 @@ workflow FASTA_GXF_BUSCO_PLOT {
     PLOT_ASSEMBLY( ch_assembly_plot_summary.collect() )
 
     ch_assembly_png                             = PLOT_ASSEMBLY.out.png
-    ch_versions                                 = ch_versions.mix(PLOT_ASSEMBLY.out.versions)
 
     // MODULE: GFFREAD as EXTRACT_PROTEINS
     ch_gffread_inputs                           = val_mode !in [ 'geno', 'genome' ]
@@ -162,7 +160,6 @@ workflow FASTA_GXF_BUSCO_PLOT {
     ch_annotation_short_summaries_txt           = BUSCO_ANNOTATION.out.short_summaries_txt
     ch_annotation_short_summaries_json          = BUSCO_ANNOTATION.out.short_summaries_json
     ch_annotation_full_table                    = BUSCO_ANNOTATION.out.full_table
-    ch_versions                                 = ch_versions.mix(BUSCO_ANNOTATION.out.versions.first())
 
     // MODULE: BUSCO_GENERATEPLOT as PLOT_ANNOTATION
     ch_annotation_plot_summary                  = ch_annotation_short_summaries_txt
@@ -178,7 +175,6 @@ workflow FASTA_GXF_BUSCO_PLOT {
     PLOT_ANNOTATION( ch_annotation_plot_summary.collect() )
 
     ch_annotation_png                           = PLOT_ANNOTATION.out.png
-    ch_versions                                 = ch_versions.mix(PLOT_ANNOTATION.out.versions)
 
 
     emit:

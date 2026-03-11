@@ -13,16 +13,16 @@ include { SAMTOOLS_SORT            } from '../../../modules/nf-core/samtools/sor
 
 workflow BAM_DEDUP_UMI {
     take:
-    ch_genome_bam         // channel: [ val(meta), path(bam), path(bai) ]
-    ch_fasta              // channel: [ val(meta), path(fasta) ]
-    umi_dedup_tool        // string: 'umicollapse' or 'umitools'
-    umitools_dedup_stats  // boolean: whether to generate UMI-tools dedup stats
-    bam_csi_index         // boolean: whether to generate CSI index
-    ch_transcriptome_bam  // channel: [ val(meta), path(bam) ]
-    ch_transcript_fasta   // channel: [ val(meta), path(fasta) ]
+    ch_genome_bam                // channel: [ val(meta), path(bam), path(bai) ]
+    ch_fasta                     // channel: [ val(meta), path(fasta) ]
+    umi_dedup_tool               // string: 'umicollapse' or 'umitools'
+    umitools_dedup_stats         // boolean: whether to generate UMI-tools dedup stats
+    bam_csi_index                // boolean: whether to generate CSI index
+    ch_transcriptome_bam         // channel: [ val(meta), path(bam) ]
+    ch_transcript_fasta          // channel: [ val(meta), path(fasta) ]
+    umitools_dedup_primary_only  // boolean: whether to filter to primary alignments before dedup
 
     main:
-    ch_versions = channel.empty()
     ch_tsv_edit_distance    = channel.empty()
     ch_tsv_per_umi          = channel.empty()
     ch_tsv_umi_per_position = channel.empty()
@@ -44,7 +44,8 @@ workflow BAM_DEDUP_UMI {
     } else if (umi_dedup_tool == "umitools") {
         BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS_GENOME (
             ch_genome_bam,
-            umitools_dedup_stats
+            umitools_dedup_stats,
+            umitools_dedup_primary_only
         )
         UMI_DEDUP_GENOME = BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS_GENOME
         ch_genomic_dedup_log = UMI_DEDUP_GENOME.out.deduplog
@@ -78,7 +79,8 @@ workflow BAM_DEDUP_UMI {
     } else if (umi_dedup_tool == "umitools") {
         BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS_TRANSCRIPTOME (
             ch_sorted_transcriptome_bam,
-            umitools_dedup_stats
+            umitools_dedup_stats,
+            umitools_dedup_primary_only
         )
         UMI_DEDUP_TRANSCRIPTOME = BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS_TRANSCRIPTOME
         ch_transcriptomic_dedup_log = UMI_DEDUP_TRANSCRIPTOME.out.deduplog
@@ -125,12 +127,6 @@ workflow BAM_DEDUP_UMI {
         .transpose()
         .map{ item -> item[1] }
 
-    // Record versions
-
-    ch_versions = UMI_DEDUP_GENOME.out.versions
-        .mix(BAM_SORT_STATS_SAMTOOLS.out.versions)
-        .mix(UMITOOLS_PREPAREFORRSEM.out.versions)
-
     emit:
     bam                        = UMI_DEDUP_GENOME.out.bam                                                // channel: [ val(meta), path(bam) ]
     bai                        = bam_csi_index ? UMI_DEDUP_GENOME.out.csi : UMI_DEDUP_GENOME.out.bai     // channel: [ val(meta), path(bai) ]
@@ -149,5 +145,4 @@ workflow BAM_DEDUP_UMI {
     transcriptome_sorted_bam   = SAMTOOLS_SORT.out.bam                                                   // channel: [ val(meta), path(bam) ] - name-sorted
     transcriptome_sorted_bam_bai = UMI_DEDUP_TRANSCRIPTOME.out.bai                                       // channel: [ val(meta), path(bai) ] - coordinate-sorted dedup index
     transcriptome_filtered_bam = UMITOOLS_PREPAREFORRSEM.out.bam                                         // channel: [ val(meta), path(bam) ] - paired-end filtered
-    versions                   = ch_versions                                                             // channel: [ path(versions.yml) ]
 }

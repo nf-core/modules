@@ -8,12 +8,12 @@ process SAMTOOLS_DEPTH {
         'biocontainers/samtools:1.22.1--h96c455f_0' }"
 
     input:
-    tuple val(meta1), path(bam)
+    tuple val(meta1), path(bam), path(index)
     tuple val(meta2), path(intervals)
 
     output:
     tuple val(meta1), path("*.tsv"), emit: tsv
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('samtools'), eval('samtools version | sed "1!d;s/.* //"'), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,10 +31,12 @@ process SAMTOOLS_DEPTH {
         $positions \\
         -o ${prefix}.tsv \\
         $bam
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
+    stub :
+    def prefix = task.ext.prefix ?: "${meta1.id}"
+
+    """
+    touch ${prefix}.tsv
     """
 }

@@ -47,7 +47,7 @@ process AMPCOMBI {
     def db = opt_amp_db? "--amp_database $opt_amp_db": ""
     """
     ampcombi \\
-        --path_list '${amp_input.collect{"$it"}.join("' '")}' \\
+        --path_list '${amp_input.collect{file_path -> "$file_path"}.join("' '")}' \\
         --sample_list ${prefix} \\
         ${db} \\
         --faa ${faa_input} \\

@@ -34,7 +34,6 @@ process VARIANTBAM {
     END_VERSIONS
     """
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.4.4a' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """

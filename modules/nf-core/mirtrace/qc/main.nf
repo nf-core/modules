@@ -23,8 +23,6 @@ process MIRTRACE_QC {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def mirtrace_mode = mirtrace_config ? "--config ${mirtrace_config}": "${reads}"
 
     """
@@ -42,7 +40,6 @@ process MIRTRACE_QC {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.fa

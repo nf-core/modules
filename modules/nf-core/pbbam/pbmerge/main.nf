@@ -49,7 +49,6 @@ Reason:
 This module is no longer fit for purpose because pbbam has been deprecated by PacificBiosciences
 
 """
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     assert false: deprecation_message
     """

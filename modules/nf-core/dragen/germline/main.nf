@@ -197,16 +197,19 @@ process DRAGEN {
     prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ""
 
-    // set RGID and RGSM - don't move this due to bug in version 24.10.4 and lower
-    def rgid = args.contains("--RGID") || (!fastq && !ora) ? "" : " --RGID ${meta.id}"
-    def rgsm = args.contains("--RGSM") || (!fastq && !ora) ? "" : " --RGSM ${meta.id}"
-    args = args + rgid + rgsm
-
     // input data
     def bam_rex = /\.bam$/
     def cram_rex = /\.cram$/
     def fastq_rex = /\.f(ast)?q(\.gz)?$/
     def ora_rex = /\.ora$/
+
+    // set RGID and RGSM - don't move this due to bug in version 24.10.4 and lower
+    def fastq_ora = input =~ fastq_rex || input =~ ora_rex
+    def rgid = args.contains("--RGID") || (!fastq_ora) ? "" : " --RGID ${meta.id}"
+    def rgsm = args.contains("--RGSM") || (!fastq_ora) ? "" : " --RGSM ${meta.id}"
+    args = args + rgid + rgsm
+
+
     def format_input = ""
     if (input instanceof List) {
         if (input.size() != 2) {
@@ -279,9 +282,10 @@ process DRAGEN {
         if (qc_coverage_region.size() > 3) {
             error "Error: cannot have more than 3 qc-coverage-region files."
         } else {
-            for (int i = 1; i < qc_coverage_region.size() + 1; i++) {
-                args = args + " --qc-coverage-region-" + i + " " + qc_coverage_region[i]
-            }
+            def region_args = qc_coverage_region.withIndex().collect { region, idx ->
+                " --qc-coverage-region-${idx + 1} ${region}"
+            }.join('')
+            args = args + region_args
         }
     }
     if (qc_cross_cont_vcf) {
@@ -399,6 +403,7 @@ process DRAGEN {
 
     stub:
     def VERSION = "stub"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch 20251120_usage.txt
 

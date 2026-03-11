@@ -14,7 +14,8 @@ process CUSTOM_ADDMOSTSEVERECONSEQUENCE {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('addmostsevereconsequence'), val("1.1"), topic: versions, emit: versions_addmostsevereconsequence
+    tuple val("${task.process}"), val('bgzip'), eval("bgzip --version | sed '1!d;s/.* //'"), topic: versions, emit: versions_bgzip
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,8 +24,6 @@ process CUSTOM_ADDMOSTSEVERECONSEQUENCE {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.1' // WARN: Version information not provided by tool on CLI.
-
     """
     add_most_severe_consequence.py \\
         $args \\
@@ -36,26 +35,11 @@ process CUSTOM_ADDMOSTSEVERECONSEQUENCE {
         $args2 \\
         --threads ${task.cpus} \\
         ${prefix}.vcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        add_most_severe_consequence: $VERSION
-        bgzip: \$(bgzip --version |& sed '1!d ; s/bgzip (htslib) //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.1' // WARN: Version information not provided by tool on CLI.
     """
     echo | gzip > ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        add_most_severe_consequence: $VERSION
-        bgzip: \$(bgzip --version |& sed '1!d ; s/bgzip (htslib) //')
-    END_VERSIONS
     """
 }
