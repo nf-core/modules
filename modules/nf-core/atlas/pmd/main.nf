@@ -17,7 +17,7 @@ process ATLAS_PMD {
     tuple val(meta), path("*_PMD_input_Exponential.txt"), emit: exponential
     tuple val(meta), path("*_PMD_Table_counts.txt")     , emit: counts
     tuple val(meta), path("*_PMD_Table.txt")            , emit: table
-    path "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('atlas'), eval('(atlas 2>&1) | grep Atlas | head -n 1 | sed -e "s/^[ \\t]*Atlas //"'), emit: versions_atlas, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,10 +32,5 @@ process ATLAS_PMD {
         bam=${bam} \\
         fasta=${fasta} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        atlas: \$((atlas 2>&1) | grep Atlas | head -n 1 | sed -e 's/^[ \t]*Atlas //')
-    END_VERSIONS
     """
 }
