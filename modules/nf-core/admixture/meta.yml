@@ -84,7 +84,7 @@ output:
       - admixture:
           type: string
           description: The name of the tool
-      - admixture --version:
+      - admixture --version | tail -n 1:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -95,7 +95,7 @@ topics:
       - admixture:
           type: string
           description: The name of the tool
-      - admixture --version:
+      - admixture --version | tail -n 1:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
