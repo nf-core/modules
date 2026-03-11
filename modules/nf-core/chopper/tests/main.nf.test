@@ -37,7 +37,7 @@ nextflow_process {
                 // Order of reads is not deterministic, so only assess whether the number of reads is correct
                 { assert snapshot(
                     fastq_content.size(),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match() }
             )
         }
@@ -73,7 +73,7 @@ nextflow_process {
                 // Order of reads is not deterministic, so only assess whether the number of reads is correct
                 { assert snapshot(
                     fastq_content.size(),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -99,7 +99,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }

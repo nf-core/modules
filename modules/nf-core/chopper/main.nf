@@ -13,7 +13,7 @@ process CHOPPER {
 
     output:
     tuple val(meta), path("*.fastq.gz") , emit: fastq
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('chopper'), eval("chopper --version 2>&1 | cut -d ' ' -f 2"), emit: versions_chopper, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,21 +36,11 @@ process CHOPPER {
         $args2 | \\
     gzip \\
         $args3 > ${prefix}.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        chopper: \$(chopper --version 2>&1 | cut -d ' ' -f 2)
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo | gzip > ${prefix}.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        chopper: \$(chopper --version 2>&1 | cut -d ' ' -f 2)
-    END_VERSIONS
     """
 }
