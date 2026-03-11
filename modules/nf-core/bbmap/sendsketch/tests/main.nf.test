@@ -29,10 +29,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-					file(process.out.hits[0][1]).readLines()[3..7],
-					process.out.findAll { key, val -> key.startsWith('versions') }
-					).match()
+                { assert snapshot(process.out).match()
 				}
             )
         }
@@ -58,10 +55,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-					file(process.out.hits[0][1]).readLines()[3..7],
-					process.out.findAll { key, val -> key.startsWith('versions') }
-					).match()
+                { assert snapshot(process.out).match()
 				}
             )
         }
