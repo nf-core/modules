@@ -9,18 +9,17 @@ nextflow_process {
     tag "checkm/lineagewf"
     tag "untar"
 
-    setup {
-        run("UNTAR") {
-            script "modules/nf-core/untar/main.nf"
-            process {
-                """
-                input[0] = [ [], file('https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz', checkIfExists: true) ]
-                """
+    test("checkm - lineage_wf") {
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = [ [], file('https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz', checkIfExists: true) ]
+                    """
+                }
             }
         }
-    }
-
-    test("checkm - lineage_wf") {
 
         when {
             process {
