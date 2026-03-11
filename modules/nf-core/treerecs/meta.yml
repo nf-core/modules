@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-# # TODO nf-core: Add a description of the module and list keywords
+
 name: "treerecs"
 description: Treerecs is an open-source (species- and gene-) tree reconciliation software distributed under the GNU AGPL licence. It can correct, rearrange and (re-)root gene trees with regard to a given species tree. It was designed to be both efficient and easy to install and to use.
 keywords:
@@ -7,49 +7,46 @@ keywords:
   - species tree
   - gene tree
 tools:
-  ## TODO nf-core: Add a description and other details for the software below
   - "treerecs":
       description: "correct, rearrange and (re-)root gene trees with regard to a given
         species tree"
       homepage: "https://project.inria.fr/treerecs/"
-      documentation: "None"
-      tool_dev_url: "None"
+      documentation: "https://project.inria.fr/treerecs/tutorial/"
+      tool_dev_url: "https://gitlab.inria.fr/Phylophile/Treerecs"
       doi: ""
       licence: ["AGPL"]
       identifier: biotools:Treerecs
 
 input:
-  ### TODO nf-core: Add a description of all of the variables used as input
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - bam:
+    - tree:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
+        description: phylogenetic tree file
+        pattern: "*.{nwk, nhk, xml}"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
-          - edam: "http://edamontology.org/format_3462" # SAM
-
+          - edam: "http://edamontology.org/format_2556" # Newick
+          - edam: "https://academic.oup.com/bioinformatics/article/34/21/3646/4995844" #recPhyloXML 
+          - edam: "http://edamontology.org/format_3160" #NHX
+          - edam: "http://edamontology.org/format_3159" #PhyloXML
 output:
   ### TODO nf-core: Add a description of all of the variables used as output
-  bam:
+  svg:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.bam":
-          type: file
-          description: Sorted BAM/CRAM/SAM file
-          pattern: "*.{bam,cram,sam}"
-          ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
-            - edam: "http://edamontology.org/format_2573" # CRAM
-            - edam: "http://edamontology.org/format_3462" # SAM
+        - svg:
+            type: file
+            description: graphical representation of reconciled phylogentic tree
+            pattern: "*.svg"
+            ontologies: 
+              - edam: "http://edamontology.org/format_3604"	 #SVG
+
   versions_treerecs:
     - - "${task.process}":
           type: string
