@@ -36,20 +36,48 @@ input:
 
 output:
   ### TODO nf-core: Add a description of all of the variables used as output
-  bam:
+  fas:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "*.bam":
+            e.g. [ id:'test', single_end:false ]
+      - "*.fas{.gz,}":
           type: file
-          description: Sorted BAM/CRAM/SAM file
-          pattern: "*.{bam,cram,sam}"
+          description: Aligned sequences in FASTA format. May be gzipped or uncompressed.
+          pattern: "*.fas{.gz,}"
           ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
-            - edam: "http://edamontology.org/format_2573" # CRAM
-            - edam: "http://edamontology.org/format_3462" # SAM
+            - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
+            - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+            - edam: http://edamontology.org/format_1984 # FASTA-ALN
+  result_fas_NT:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fas{.gz,}":
+          type: file
+          description: Aligned sequences in FASTA format. May be gzipped or uncompressed.
+          pattern: "*.fas{.gz,}"
+          ontologies:
+            - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
+            - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+            - edam: http://edamontology.org/format_1984 # FASTA-ALN
+  result_fas_AA:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fas{.gz,}":
+          type: file
+          description: Aligned sequences in FASTA format. May be gzipped or uncompressed.
+          pattern: "*.fas{.gz,}"
+          ontologies:
+            - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
+            - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+            - edam: http://edamontology.org/format_1984 # FASTA-ALN
   versions_macse:
     - - "${task.process}":
           type: string
