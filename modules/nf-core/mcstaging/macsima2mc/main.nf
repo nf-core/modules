@@ -36,10 +36,10 @@ process MCSTAGING_MACSIMA2MC {
     }
 
     """
-    mkdir output_dir
-    mkdir output_dir/well-rack-roi-exp
-    touch output_dir/well-rack-roi-exp/markers.csv
-    mkdir output_dir/well-rack-roi-exp/raw
-    touch output_dir/well-rack-roi-exp/raw/well-rack-roi-exp.ome.tif
+    mkdir ${output_dir}
+    mkdir ${output_dir}/well-rack-roi-exp
+    touch ${output_dir}/well-rack-roi-exp/markers.csv
+    mkdir ${output_dir}/well-rack-roi-exp/raw
+    touch ${output_dir}/well-rack-roi-exp/raw/well-rack-roi-exp.ome.tif
     """
 }

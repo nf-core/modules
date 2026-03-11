@@ -108,10 +108,13 @@ nextflow_process {
 
         then {
 
+            def stub_outputs = process.out.out_dir[0][1]
+            if (!(stub_outputs instanceof List)) stub_outputs = [stub_outputs]
+
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.out_dir[0][1].collect { path(it).fileName.toString() }.sort()
+                    stub_outputs.collect { it.toString().tokenize('/').last() }.sort()
                 ).match("stub_out_dir") },
                 { assert snapshot(
                     process.out.findAll { key, val -> key.startsWith("versions") }
