@@ -18,7 +18,7 @@ process ART_ILLUMINA {
     tuple val(meta), path("*.fq.gz"), emit: fastq
     tuple val(meta), path("*.aln")  , emit: aln, optional:true
     tuple val(meta), path("*.sam")  , emit: sam, optional:true
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('art'), eval("echo '${VERSION}'"), emit: versions_art_illumina, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,7 +27,7 @@ process ART_ILLUMINA {
     def args    = task.ext.args   ?: ''
     def args2   = task.ext.args2  ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '2016.06.05' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    VERSION = '2016.06.05' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     art_illumina \\
         -ss ${sequencing_system} \\
@@ -41,16 +41,11 @@ process ART_ILLUMINA {
         --no-name \\
         ${args2} \\
         ${prefix}*.fq
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        art: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '2016.06.05'
+    VERSION = '2016.06.05'
     """
     echo "" | gzip > ${prefix}.fq.gz
     echo "" | gzip >  ${prefix}1.fq.gz
@@ -61,10 +56,5 @@ process ART_ILLUMINA {
     touch ${prefix}.sam
     touch ${prefix}1.sam
     touch ${prefix}2.sam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        art: ${VERSION}
-    END_VERSIONS
     """
 }
