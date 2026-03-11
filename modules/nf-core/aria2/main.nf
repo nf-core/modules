@@ -36,6 +36,6 @@ process ARIA2 {
     echo ${args}
 
     touch ${downloaded_file}
-    echo "stub download from ${source_url}" > ${downloaded_file}
+    echo "stub download from ${source_url} to ${downloaded_file}"
     """
 }
