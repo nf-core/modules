@@ -13,7 +13,7 @@ process BBMAP_REPAIR {
     output:
     tuple val(meta), path("*_repaired.fastq.gz")         , emit: repaired
     tuple val(meta), path("${prefix}_singleton.fastq.gz"), emit: singleton
-    path  "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('bbmap'), eval('bbversion.sh | grep -v "Duplicate cpuset"'), emit: versions_bbmap, topic: versions
     path  "*.log"                                        , emit: log
 
     when:
@@ -34,11 +34,6 @@ process BBMAP_REPAIR {
         threads=${task.cpus}
         ${args} \\
         &> ${prefix}.repair.sh.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
-    END_VERSIONS
     """
 
     stub:
@@ -48,10 +43,5 @@ process BBMAP_REPAIR {
     echo "" | gzip > ${prefix}_2_repaired.fastq.gz
     echo "" | gzip > ${prefix}_singleton.fastq.gz
     touch ${prefix}.repair.sh.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
-    END_VERSIONS
     """
 }
