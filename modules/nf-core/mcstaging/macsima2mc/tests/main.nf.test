@@ -50,7 +50,7 @@ nextflow_process {
 
     then {
             def out_path = process.out.out_dir[0][1][0].toString()
-            
+
             assertAll(
                 { assert process.success },
                 { assert process.out.out_dir[0][1].size() >= 1 },
