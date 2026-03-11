@@ -1,0 +1,118 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fasta_classify_catpack"
+description: Taxonomic classification of binned MAGs and unbinned contigs using CAT/BAT (CAT_pack).
+keywords:
+  - metagenomics
+  - taxonomy
+  - classification
+  - bins
+  - MAGs
+  - contigs
+  - CAT
+  - BAT
+components:
+  - catpack/addnames
+  - catpack/bins
+  - catpack/contigs
+  - catpack/download
+  - catpack/prepare
+  - catpack/summarise
+  - untar
+input:
+  - ch_bins:
+      type: file
+      description: |
+        Channel containing binned MAG/contig FASTA files.
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.{fa,fasta,fna}"
+      ontologies:
+        - edam: "http://edamontology.org/format_1929"
+  - ch_unbins:
+      type: file
+      description: |
+        Channel containing unbinned contig FASTA files.
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.{fa,fasta,fna}"
+      ontologies:
+        - edam: "http://edamontology.org/format_1929"
+  - ch_cat_db:
+      type: directory
+      description: |
+        Channel containing a pre-built CAT/BAT database. Can be a directory with db/ and tax/
+        subdirectories, or a .tar.gz archive of such a directory. Provide channel.empty() to
+        trigger automatic database download using ch_cat_db_download_id.
+        Structure: [ val(meta), path(db) ]
+      ontologies:
+        - edam: "http://edamontology.org/data_1049"
+  - ch_cat_db_download_id:
+      type: string
+      description: |
+        Channel containing the database identifier to download via CATPACK_DOWNLOAD (e.g. 'nr').
+        Only used when ch_cat_db is channel.empty(). Provide channel.empty() when supplying a
+        pre-built database via ch_cat_db.
+        Structure: [ val(meta), val(db_id) ]
+  - classify_unbinned:
+      type: boolean
+      description: |
+        Whether to run taxonomic classification on unbinned contigs (ch_unbins).
+  - allow_unofficial_lineages:
+      type: boolean
+      description: |
+        Whether to skip the CATPACK_SUMMARISE step. When false, CATPACK_SUMMARISE is run to
+        filter classifications to official NCBI lineages only.
+  - bin_suffix:
+      type: string
+      description: |
+        File extension of the bin FASTA files passed to CATPACK_BINS (e.g. '.fa').
+output:
+  - bat_classification:
+      type: file
+      description: |
+        Per-bin taxonomic classification with human-readable names added by CATPACK_ADDNAMES.
+        Structure: [ val(meta), path(txt) ]
+      pattern: "*.txt"
+      ontologies:
+        - edam: "http://edamontology.org/format_3475"
+  - bat_summary:
+      type: file
+      description: |
+        Summary of bin classifications produced by CATPACK_SUMMARISE. Empty channel when
+        allow_unofficial_lineages is true.
+        Structure: [ val(meta), path(txt) ]
+      pattern: "*.txt"
+      ontologies:
+        - edam: "http://edamontology.org/format_3475"
+  - unbinned_classification:
+      type: file
+      description: |
+        Per-contig taxonomic classification with human-readable names for unbinned contigs.
+        Empty channel when classify_unbinned is false.
+        Structure: [ val(meta), path(txt) ]
+      pattern: "*.txt"
+      ontologies:
+        - edam: "http://edamontology.org/format_3475"
+  - unbinned_summary:
+      type: file
+      description: |
+        Summary of unbinned contig classifications. Empty channel when classify_unbinned is
+        false or allow_unofficial_lineages is true.
+        Structure: [ val(meta), path(txt) ]
+      pattern: "*.txt"
+      ontologies:
+        - edam: "http://edamontology.org/format_3475"
+  - versions:
+      type: file
+      description: |
+        Channel containing software versions.
+        Structure: versions
+authors:
+  - "@mberacochea"
+  - "@dialvarezs"
+maintainers:
+  - "@mberacochea"
+  - "@dialvarezs"
+  - "@jfy133"
+  - "@prototaxites"
+  - "@dialvarezs"
+  - "@d4straub"
+  - "@muabnezor"
