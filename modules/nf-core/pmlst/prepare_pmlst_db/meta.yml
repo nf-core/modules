@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "pmlst"
-description: Assign plasmid MLST profiles for assembled plasmid sequences.
+name: "pmlst_prepare_pmlst_db"
+description: Prepare a pMLST database directory for use with pMLST by running INSTALL.py kma_index.
 keywords:
   - plasmid
   - typing
@@ -22,45 +22,23 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - fasta:
-        type: file
-        description: Assembly FASTA for plasmid typing.
-        pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz}"
-        ontologies:
-          - edam: "http://edamontology.org/format_1929" # FASTA
-  - pmlst_db:
-      type: directory
-      description: Path to the pMLST database directory.
-      pattern: "*"
-  - scheme:
-      type: string
-      description: pMLST scheme name to run (for example `incf`).
+    - db_dir:
+        type: directory
+        description: Unprepared pMLST database directory containing INSTALL.py.
+        pattern: "*"
 
 output:
-  tsv:
+  db:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.tsv":
-          type: file
-          description: Tabular pMLST typing output.
-          pattern: "*.tsv"
-          ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
-  txt:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "*.txt":
-          type: file
-          description: Plain-text pMLST typing summary.
-          pattern: "*.txt"
-          ontologies:
-            - edam: "http://edamontology.org/format_2330" # Textual format
+      - pmlst_db:
+          type: directory
+          description: Prepared pMLST database directory.
+          pattern: "pmlst_db"
+
   versions_pmlst:
     - - ${task.process}:
           type: string

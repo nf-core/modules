@@ -1,4 +1,4 @@
-process PMLST {
+process PMLST_PMLST {
     tag "$meta.id"
     label 'process_low'
 
