@@ -5,8 +5,8 @@ process HAPPY_HAPPY {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hap.py:0.3.14--py27h5c5a3ab_0':
-        'biocontainers/hap.py:0.3.14--py27h5c5a3ab_0' }"
+        'https://depot.galaxyproject.org/singularity/hap.py:0.3.15--py27hcb73b3d_0':
+        'biocontainers/hap.py:0.3.15--py27hcb73b3d_0' }"
 
     input:
     tuple val(meta), path(query_vcf), path(truth_vcf), path(regions_bed), path(targets_bed)
@@ -28,7 +28,7 @@ process HAPPY_HAPPY {
     tuple val(meta), path('*.metrics.json.gz')                  , emit: metrics_json
     tuple val(meta), path('*.vcf.gz')                           , emit: vcf, optional:true
     tuple val(meta), path('*.tbi')                              , emit: tbi, optional:true
-    path "versions.yml"                                         , emit: versions
+    tuple val("${task.process}"), val('happy'), val('0.3.15'), topic: versions, emit: versions_happy
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,8 +39,7 @@ process HAPPY_HAPPY {
     def regions = regions_bed ? "-f ${regions_bed}" : ""
     def targets = targets_bed ? "-T ${targets_bed}" : ""
     def false_positives = false_positives_bed ? "--false-positives ${false_positives_bed}" : ""
-    def stratification = stratification_tsv ? "--stratification ${stratification_tsv}" : ""
-    def VERSION = '0.3.14' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def stratification = stratification_tsv && stratification_beds ? "--stratification ${stratification_tsv}" : ""
     """
     hap.py \\
         ${truth_vcf} \\
@@ -53,17 +52,10 @@ process HAPPY_HAPPY {
         ${false_positives} \\
         ${stratification} \\
         -o ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hap.py: $VERSION
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.3.14' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     echo "" | gzip > ${prefix}.roc.all.csv.gz
     echo "" | gzip > ${prefix}.roc.Locations.INDEL.csv.gz
@@ -77,10 +69,5 @@ process HAPPY_HAPPY {
     touch ${prefix}.extended.csv
     touch ${prefix}.runinfo.json
 
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hap.py: $VERSION
-    END_VERSIONS
     """
 }

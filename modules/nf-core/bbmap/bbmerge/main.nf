@@ -43,9 +43,9 @@ process BBMAP_BBMERGE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def out_files = ( interleave ) ? "${prefix}_merged.fastq.gz ${prefix}_unmerged.fastq.gz" : "${prefix}_merged.fastq.gz ${prefix}_1_unmerged.fastq.gz ${prefix}_2_unmerged.fastq.gz"
+    def out_files = ( interleave ) ? "${prefix}_merged.fastq.gz ${prefix}_unmerged.fastq.gz" :
+        "${prefix}_merged.fastq.gz ${prefix}_1_unmerged.fastq.gz ${prefix}_2_unmerged.fastq.gz"
 
     """
     echo "" | gzip | tee $out_files

@@ -19,7 +19,11 @@
                     ]
                 ],
                 "2": [
-                    "versions.yml:md5,fd95365619a316eb451190365b1b799e"
+                    [
+                        "UCSC_GTFTOGENEPRED",
+                        "ucsc",
+                        "482"
+                    ]
                 ],
                 "genepred": [
                     [
@@ -37,15 +41,76 @@
                         "test.refflat:md5,4101802f41d4cf7ee2667587da11bf42"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,fd95365619a316eb451190365b1b799e"
+                "versions_ucsc": [
+                    [
+                        "UCSC_GTFTOGENEPRED",
+                        "ucsc",
+                        "482"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.3"
         },
-        "timestamp": "2024-08-23T08:55:50.58172"
+        "timestamp": "2026-02-25T15:09:23.303909102"
+    },
+    "test-ucsc-gtftogenepred --stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.genepred:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.refflat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    [
+                        "UCSC_GTFTOGENEPRED",
+                        "ucsc",
+                        "482"
+                    ]
+                ],
+                "genepred": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.genepred:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "refflat": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.refflat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_ucsc": [
+                    [
+                        "UCSC_GTFTOGENEPRED",
+                        "ucsc",
+                        "482"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.3"
+        },
+        "timestamp": "2026-02-25T15:09:32.381357955"
     }
 }

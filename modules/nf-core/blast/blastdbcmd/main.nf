@@ -14,7 +14,7 @@ process BLAST_BLASTDBCMD {
     output:
     tuple val(meta), path("*.fasta"), optional: true, emit: fasta
     tuple val(meta), path("*.txt")  , optional: true, emit: text
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('blastdbcmd'), eval('blastdbcmd -version 2>&1 | head -n1 | sed \'s/^.*blastdbcmd: //; s/ .*\$//\''), topic: versions, emit: versions_blastdbcmd
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,10 +43,6 @@ process BLAST_BLASTDBCMD {
         -out ${prefix}.${extension} \\
         ${input}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blast: \$(blastdbcmd -version 2>&1 | head -n1 | sed 's/^.*blastdbcmd: //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -56,9 +52,5 @@ process BLAST_BLASTDBCMD {
     """
     touch ${prefix}.${extension}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blast: \$(blastdbcmd -version 2>&1 | head -n1 | sed 's/^.*blastdbcmd: //; s/ .*\$//')
-    END_VERSIONS
     """
 }

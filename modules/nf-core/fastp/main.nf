@@ -4,8 +4,8 @@ process FASTP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/52/527b18847a97451091dba07a886b24f17f742a861f9f6c9a6bfb79d4f1f3bf9d/data' :
-        'community.wave.seqera.io/library/fastp:1.0.1--c8b87fe62dcc103c' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/55/556474e164daf5a5e218cd5d497681dcba0645047cf24698f88e3e078eacbd09/data' :
+        'community.wave.seqera.io/library/fastp:1.1.0--08aa7c5662a30d57' }"
 
     input:
     tuple val(meta), path(reads), path(adapter_fasta)
@@ -20,7 +20,7 @@ process FASTP {
     tuple val(meta), path('*.log')            , emit: log
     tuple val(meta), path('*.fail.fastq.gz')  , optional:true, emit: reads_fail
     tuple val(meta), path('*.merged.fastq.gz'), optional:true, emit: reads_merged
-    path "versions.yml"                       , emit: versions
+    tuple val("${task.process}"), val('fastp'), eval('fastp --version 2>&1 | sed -e "s/fastp //g"'), emit: versions_fastp, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -49,11 +49,6 @@ process FASTP {
             $args \\
             2>| >(tee ${prefix}.fastp.log >&2) \\
         | gzip -c > ${prefix}.fastp.fastq.gz
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            fastp: \$(fastp --version 2>&1 | sed -e "s/fastp //g")
-        END_VERSIONS
         """
     } else if (meta.single_end) {
         """
@@ -69,11 +64,6 @@ process FASTP {
             $fail_fastq \\
             $args \\
             2>| >(tee ${prefix}.fastp.log >&2)
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            fastp: \$(fastp --version 2>&1 | sed -e "s/fastp //g")
-        END_VERSIONS
         """
     } else {
         def merge_fastq = save_merged ? "-m --merged_out ${prefix}.merged.fastq.gz" : ''
@@ -94,11 +84,6 @@ process FASTP {
             --detect_adapter_for_pe \\
             $args \\
             2>| >(tee ${prefix}.fastp.log >&2)
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            fastp: \$(fastp --version 2>&1 | sed -e "s/fastp //g")
-        END_VERSIONS
         """
     }
 
@@ -115,10 +100,5 @@ process FASTP {
     touch "${prefix}.fastp.json"
     touch "${prefix}.fastp.html"
     touch "${prefix}.fastp.log"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastp: \$(fastp --version 2>&1 | sed -e "s/fastp //g")
-    END_VERSIONS
     """
 }

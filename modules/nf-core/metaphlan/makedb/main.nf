@@ -6,8 +6,6 @@ process METAPHLAN_MAKEDB {
         'https://depot.galaxyproject.org/singularity/metaphlan:4.1.1--pyhdfd78af_0' :
         'biocontainers/metaphlan:4.1.1--pyhdfd78af_0' }"
 
-    input:
-
     output:
     path "metaphlan_db_latest"      , emit: db
     path "versions.yml"             , emit: versions
@@ -23,7 +21,7 @@ process METAPHLAN_MAKEDB {
         --install \\
         --nproc $task.cpus \\
         --bowtie2db metaphlan_db_latest \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

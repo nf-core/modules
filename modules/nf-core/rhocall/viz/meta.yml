@@ -10,9 +10,9 @@ tools:
       homepage: "https://github.com/dnil/rhocall"
       documentation: "https://github.com/dnil/rhocall"
       tool_dev_url: "https://github.com/dnil"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -57,13 +57,27 @@ output:
           description: Wig file containing roh calls
           pattern: "*.{wig}"
           ontologies: []
+  versions_rhocall:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rhocall:
+          type: string
+          description: The name of the tool
+      - rhocall --version | sed 's/rhocall, version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rhocall:
+          type: string
+          description: The name of the tool
+      - rhocall --version | sed 's/rhocall, version //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ramprasadn"
 maintainers:

@@ -13,7 +13,7 @@ process VEMBRANE_FILTER {
 
     output:
     tuple val(meta), path("*.{vcf,bcf,bcf.gz}"), emit: vcf
-    path "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val('vembrane'), eval("vembrane --version | sed '1!d;s/.* //'"), topic: versions, emit: versions_vembrane
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,22 +25,15 @@ process VEMBRANE_FILTER {
                     args.contains("--output-fmt bcf") || args.contains("-Obcf") ? "bcf" :
                     args.contains("--output-fmt uncompressed-bcf") || args.contains("-Ouncompressed-bcf") ? "bcf.gz" :
                     "vcf"
-
     if ("${vcf}" == "${prefix}.${extension}") {
         error("Input and output names are the same, use \"task.ext.prefix\" in module configuration to disambiguate!")
     }
-
     """
     vembrane filter \\
         ${args} \\
         ${expression} \\
         -o ${prefix}.${extension} \\
         ${vcf}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vembrane: \$(vembrane --version | sed '1!d;s/.* //')
-    END_VERSIONS
     """
 
     stub:
@@ -49,17 +42,10 @@ process VEMBRANE_FILTER {
                     args.contains("--output-fmt bcf") || args.contains("-Obcf") ? "bcf" :
                     args.contains("--output-fmt uncompressed-bcf") || args.contains("-Ouncompressed-bcf") ? "bcf.gz" :
                     "vcf"
-
     if ("${vcf}" == "${prefix}.${extension}") {
         error("Input and output names are the same, use \"task.ext.prefix\" in module configuration to disambiguate!")
     }
-
     """
     touch ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vembrane: \$(vembrane --version | sed '1!d;s/.* //')
-    END_VERSIONS
     """
 }

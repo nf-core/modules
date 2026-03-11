@@ -1,158 +1,113 @@
 {
-    "bam_bed_save_all_versions": {
+    "sarscov2 - bam, bed, save_cliprejects": {
         "content": [
-            [
-                "versions.yml:md5,450e731e4c2f5b30ef62d58fb7668a65"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-10T12:57:04.796663"
-    },
-    "bam_bed_save_all_rejects_bam": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.cliprejects.bam:md5,cd5bab882d453f9b66c61d8c87adbe35"
+            {
+                "bam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.clipallowed.bam"
+                    ]
+                ],
+                "rejects_bam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.cliprejects.bam:md5,3740ac9ac1b4e7b9e7447a5dc49cdfc1"
+                    ]
+                ],
+                "stats": [
+                    
+                ],
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_AMPLICONCLIP",
+                        "samtools",
+                        "1.22.1"
+                    ]
                 ]
-            ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2025-09-10T12:57:04.791549"
+        "timestamp": "2026-02-03T18:48:13.503343922"
     },
-    "bam_bed_versions": {
+    "sarscov2 - bam, bed, save_cliprejects, save_clipstats": {
         "content": [
-            [
-                "versions.yml:md5,450e731e4c2f5b30ef62d58fb7668a65"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-10T12:56:55.467705"
-    },
-    "bam_bed_save_clipsats_name": {
-        "content": [
-            "test.clipallowed.bam"
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.01.0"
-        },
-        "timestamp": "2024-02-13T16:13:25.204837359"
-    },
-    "bam_bed_name": {
-        "content": [
-            "test.clipallowed.bam"
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.04.3"
-        },
-        "timestamp": "2024-02-02T13:43:02.236777"
-    },
-    "bam_bed_save_clipsats_rejects_bam": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.cliprejects.bam:md5,3740ac9ac1b4e7b9e7447a5dc49cdfc1"
+            {
+                "bam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.clipallowed.bam"
+                    ]
+                ],
+                "rejects_bam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.cliprejects.bam:md5,cd5bab882d453f9b66c61d8c87adbe35"
+                    ]
+                ],
+                "stats": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.clipstats.txt:md5,2143cb7e8b5b7fcd3b12403fce17f10a"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_AMPLICONCLIP",
+                        "samtools",
+                        "1.22.1"
+                    ]
                 ]
-            ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2025-09-10T12:56:59.981101"
+        "timestamp": "2026-02-03T18:48:22.022422559"
     },
-    "bam_bed_stats": {
+    "sarscov2 - bam, bed": {
         "content": [
-            [
-                
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.04.3"
-        },
-        "timestamp": "2024-02-02T13:43:02.239309"
-    },
-    "bam_bed_save_clipsats_stats": {
-        "content": [
-            [
-                
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.01.0"
-        },
-        "timestamp": "2024-02-13T16:13:25.207756781"
-    },
-    "bam_bed_save_all_stats": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.clipstats.txt:md5,2143cb7e8b5b7fcd3b12403fce17f10a"
+            {
+                "bam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.clipallowed.bam"
+                    ]
+                ],
+                "rejects_bam": [
+                    
+                ],
+                "stats": [
+                    
+                ],
+                "versions_samtools": [
+                    [
+                        "SAMTOOLS_AMPLICONCLIP",
+                        "samtools",
+                        "1.22.1"
+                    ]
                 ]
-            ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.3"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2025-06-09T11:08:52.919891"
-    },
-    "bam_bed_save_clipsats_versions": {
-        "content": [
-            [
-                "versions.yml:md5,450e731e4c2f5b30ef62d58fb7668a65"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-10T12:56:59.998"
-    },
-    "bam_bed_save_all_name": {
-        "content": [
-            "test.clipallowed.bam"
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.04.3"
-        },
-        "timestamp": "2024-02-02T13:43:14.104507"
-    },
-    "bam_bed_rejects_bam": {
-        "content": [
-            [
-                
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.04.3"
-        },
-        "timestamp": "2024-02-02T13:43:02.240654"
+        "timestamp": "2026-02-03T18:47:59.908894092"
     }
 }

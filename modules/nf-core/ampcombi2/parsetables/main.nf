@@ -40,7 +40,7 @@ process AMPCOMBI2_PARSETABLES {
 
     """
     ampcombi parse_tables \\
-        --path_list '${amp_input.collect { "${it}" }.join("' '")}' \\
+        --path_list '${amp_input.collect { file_path -> "${file_path}" }.join("' '")}' \\
         --faa ${faa_input} \\
         --gbk ${gbk_input} \\
         --sample_list ${prefix} \\

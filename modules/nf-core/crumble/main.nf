@@ -23,14 +23,14 @@ process CRUMBLE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args       = task.ext.args ?: ''
-    def prefix     = task.ext.prefix ?: "${meta.id}"
-    def extension  = args.contains("-O sam") ? "sam" :
-                    args.contains("-O bam") ? "bam" :
-                    args.contains("-O cram") ? "cram" :
-                    "bam"
-    def bedin      = keepbed ? "-R ${keepbed}" : ""
-    def bedout     = bedout ? "-b ${prefix}.out.bed" : ""
+    def args        = task.ext.args ?: ''
+    def prefix      = task.ext.prefix ?: "${meta.id}"
+    def extension   = args.contains("-O sam") ? "sam" :
+                     args.contains("-O bam") ? "bam" :
+                     args.contains("-O cram") ? "cram" :
+                     "bam"
+    def bedin       = keepbed ? "-R ${keepbed}" : ""
+    def bedout_args = bedout ? "-b ${prefix}.out.bed" : ""
     if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
     def CRUMBLE_VERSION = '0.9.1' //WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
@@ -38,7 +38,7 @@ process CRUMBLE {
     crumble \\
         $args \\
         $bedin \\
-        $bedout \\
+        $bedout_args \\
         $input \\
         ${prefix}.${extension}
 
@@ -49,19 +49,19 @@ process CRUMBLE {
     """
 
     stub:
-    def args       = task.ext.args ?: ''
-    def prefix     = task.ext.prefix ?: "${meta.id}"
-    def extension  = args.contains("-O sam") ? "sam" :
-                    args.contains("-O bam") ? "bam" :
-                    args.contains("-O cram") ? "cram" :
-                    "bam"
-    def bedout     = bedout ? "touch ${prefix}.out.bed" : ''
+    def args        = task.ext.args ?: ''
+    def prefix      = task.ext.prefix ?: "${meta.id}"
+    def extension   = args.contains("-O sam") ? "sam" :
+                     args.contains("-O bam") ? "bam" :
+                     args.contains("-O cram") ? "cram" :
+                     "bam"
+    def bedout_args = bedout ? "touch ${prefix}.out.bed" : ''
     if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
     def CRUMBLE_VERSION = '0.9.1' //WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.${extension}
-    $bedout
+    $bedout_args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

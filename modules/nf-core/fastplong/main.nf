@@ -4,8 +4,8 @@ process FASTPLONG {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fastplong:0.3.0--h224cc79_0':
-        'biocontainers/fastplong:0.3.0--h224cc79_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e5/e53f2d854500cba9b85619f1ae987371c2890f28a6059f4957b1b95a7317b4c7/data':
+        'community.wave.seqera.io/library/fastplong:0.4.1--73e8274104613b58' }"
 
     input:
     tuple val(meta), path(reads)
@@ -19,7 +19,7 @@ process FASTPLONG {
     tuple val(meta), path('*.html')           , emit: html
     tuple val(meta), path('*.log')            , emit: log
     tuple val(meta), path('*.fail.fastq.gz')  , optional:true, emit: reads_fail
-    path "versions.yml"                       , emit: versions
+    tuple val("${task.process}"), val('fastplong'), eval('fastplong --version 2>&1 | sed -e "s/fastplong //g"'), emit: versions_fastplong, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,12 +43,6 @@ process FASTPLONG {
         --report_title $report_title\\
         $args \\
         2> >(tee ${prefix}.fastplong.log >&2)
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastplong: \$(fastplong --version 2>&1 | sed -e "s/fastplong //g")
-    END_VERSIONS
     """
 
     stub:
@@ -64,10 +58,5 @@ process FASTPLONG {
     touch ${prefix}.fastplong.json
     touch ${prefix}.fastplong.html
     touch ${prefix}.fastplong.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastplong: \$(fastplong --version 2>&1 | sed -e "s/fastplong //g")
-    END_VERSIONS
     """
 }

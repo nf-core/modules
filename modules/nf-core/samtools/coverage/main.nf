@@ -9,8 +9,7 @@ process SAMTOOLS_COVERAGE {
 
     input:
     tuple val(meta), path(input), path(input_index)
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fai)
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*.txt"), emit: coverage
@@ -39,11 +38,6 @@ process SAMTOOLS_COVERAGE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//' )
-    END_VERSIONS
+    echo "#rname\tstartpos\tendpos\tnumreads\tcovbases\tcoverage\tmeandepth\tmeanbaseq\tmeanmapq" > ${prefix}.txt
     """
 }

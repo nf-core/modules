@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "custom_addmostseverepli"
 description: Annotate a VEP annotated VCF with the most severe pLi field
 keywords:
@@ -11,9 +10,9 @@ tools:
       description: "Custom module to annotate a VEP annotated VCF with the most severe
         pLi field"
       tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/addmostseverepli/main.nf"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -24,7 +23,6 @@ input:
         type: file
         description: VEP annotated VCF file
         pattern: "*.{vcf,vcf.gz}"
-
         ontologies: []
 output:
   vcf:
@@ -37,17 +35,48 @@ output:
           type: file
           description: Annotated VCF file
           pattern: "*.vcf.gz"
-
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
+  versions_addmostseverepli:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - addmostseverepli:
+          type: string
+          description: The name of the tool
+      - "1.1":
+          type: string
+          description: The expression to obtain the version of the tool
+  versions_bgzip:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bgzip:
+          type: string
+          description: The name of the tool
+      - bgzip --version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - addmostseverepli:
+          type: string
+          description: The name of the tool
+      - "1.1":
+          type: string
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bgzip:
+          type: string
+          description: The name of the tool
+      - bgzip --version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ramprasadn"
   - "@fellen31"

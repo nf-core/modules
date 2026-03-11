@@ -33,8 +33,8 @@ process METACACHE_QUERY {
         query \\
         \$dbmeta \\
         ${input_file} \\
-        $abundance_opt \\
-        $args \\
+        ${abundance_opt} \\
+        ${args} \\
         -out ${prefix}.mapping.txt
 
     cat <<-END_VERSIONS > versions.yml
@@ -44,9 +44,7 @@ process METACACHE_QUERY {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_file = meta.single_end ? reads : "${reads[0]} ${reads[1]} -pairfiles"
     def abundance_opt = do_abundances ? "-abundances ${prefix}.abundances.txt" : ''
     """
     touch ${prefix}.mapping.txt

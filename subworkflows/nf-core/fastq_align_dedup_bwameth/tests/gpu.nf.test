@@ -68,7 +68,7 @@ nextflow_workflow {
                     workflow.out.samtools_stats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
+                    workflow.out.versions.collect().sort { a, b -> path(a).md5 <=> path(b).md5 }
                     ).match() }
             )
         }
@@ -113,7 +113,7 @@ nextflow_workflow {
                     workflow.out.samtools_stats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
+                    workflow.out.versions.collect().sort { a, b -> path(a).md5 <=> path(b).md5 }
                     ).match() }
             )
         }

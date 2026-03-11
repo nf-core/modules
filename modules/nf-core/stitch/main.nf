@@ -18,7 +18,8 @@ process STITCH {
     tuple val(meta), path("plots", type: "dir") , emit: plots , optional: { generate_input_only }
     tuple val(meta), path("*.vcf.gz")           , emit: vcf   , optional: { generate_input_only || bgen_output }
     tuple val(meta), path("*.bgen")             , emit: bgen  , optional: { generate_input_only || !bgen_output }
-    path "versions.yml"                         , emit: versions
+    tuple val("${task.process}"), val('r-quilt'), eval('Rscript -e "cat(as.character(packageVersion(\'STITCH\')))"'), topic: versions, emit: versions_r_quilt
+    tuple val("${task.process}"), val('r-base'), eval('R --version | sed "1!d; s/.*version //; s/ .*//"'), topic: versions, emit: versions_r_base
 
     when:
     task.ext.when == null || task.ext.when
@@ -69,13 +70,6 @@ process STITCH {
         ${genetic_map_command} \\
         --output_filename ${prefix}.${suffix} \\
         ${args2}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ${rsync_version_cmd}
-        r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
-        r-stitch: \$(Rscript -e "cat(as.character(utils::packageVersion('STITCH')))")
-    END_VERSIONS
     """
 
     stub:
@@ -117,12 +111,5 @@ process STITCH {
         touch "plots/metricsForPostImputationQCChromosomeWide.${chromosome_name}.sample.jpg"
         touch "plots/r2.${chromosome_name}.goodonly.jpg"
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ${rsync_version_cmd}
-        r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
-        r-stitch: \$(Rscript -e "cat(as.character(utils::packageVersion('STITCH')))")
-    END_VERSIONS
     """
 }

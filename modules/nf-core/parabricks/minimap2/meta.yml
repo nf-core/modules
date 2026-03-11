@@ -43,7 +43,7 @@ input:
         type: map
         description: |
           Groovy Map containing index information
-    - interval_file:
+    - intervals:
         type: file
         description: (optional) file(s) containing genomic intervals for use in base
           quality score recalibration (BQSR)
@@ -153,13 +153,27 @@ output:
         pattern: "compatible_versions.yml"
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
+  versions_parabricks:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - parabricks:
+          type: string
+          description: The tool name
+      - "pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - parabricks:
+          type: string
+          description: The tool name
+      - "pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@haidyi"
 maintainers:

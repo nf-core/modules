@@ -11,42 +11,31 @@ process VSEARCH_DEREPLICATE {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path('*.derep.fasta')   , emit: fasta
-    tuple val(meta), path('*.derep.uc')      , emit: clustering
-    path "*.derep.log"                       , emit: log
-    path "versions.yml"                      , emit: versions
+    tuple val(meta), path("${prefix}.fasta"), emit: fasta
+    tuple val(meta), path("${prefix}.uc")   , emit: clustering
+    tuple val(meta), path("${prefix}.log")  , emit: log
+    tuple val("${task.process}"), val('vsearch'), eval('vsearch --version 2>&1 | sed -n "1s/.*v\\([0-9.]*\\).*/\\\\1/p"'), emit: versions_vsearch, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}.derep"
     """
     vsearch \\
         --derep_fulllength ${fasta} \\
         $args \\
         --relabel "${prefix}." \\
-        --uc ${prefix}.derep.uc \\
-        --output ${prefix}.derep.fasta 2>&1 | tee ${prefix}.derep.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vsearch: \$(vsearch --version 2>&1 | head -n 1 | sed 's/vsearch //g' | sed 's/,.*//g' | sed 's/^v//' | sed 's/_.*//')
-    END_VERSIONS
+        --uc ${prefix}.uc \\
+        --output ${prefix}.fasta 2>&1 | tee ${prefix}.log
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}.derep"
     """
-    touch ${prefix}.derep.fasta
-    touch ${prefix}.derep.uc
-    touch myfile.derep.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vsearch: \$(vsearch --version 2>&1 | head -n 1 | sed 's/vsearch //g' | sed 's/,.*//g' | sed 's/^v//' | sed 's/_.*//')
-    END_VERSIONS
+    touch ${prefix}.fasta
+    touch ${prefix}.uc
+    touch ${prefix}.log
     """
 }

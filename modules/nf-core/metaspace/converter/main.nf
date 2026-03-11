@@ -24,6 +24,14 @@ process METASPACE_CONVERTER {
     use_tic          = task.ext.use_tic ?: "true"
     metadata_as_obs  = task.ext.metadata_as_obs ?: "false"
 
+    """
+    echo ${database_name}
+    echo ${database_version}
+    echo ${fdr}
+    echo ${use_tic}
+    echo ${metadata_as_obs}
+    """
+
     template 'run_metaspace_converter.py'
 
     stub:

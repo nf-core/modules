@@ -46,8 +46,8 @@ process CELLRANGER_VDJ {
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p "${meta.id}/outs/"
-    touch ${meta.id}/outs/fake_file.txt
+    mkdir -p "${prefix}/outs/"
+    touch ${prefix}/outs/fake_file.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

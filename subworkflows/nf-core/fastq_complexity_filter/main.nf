@@ -39,7 +39,6 @@ workflow FASTQ_COMPLEXITY_FILTER {
         ch_log            = FASTP.out.log
         ch_report         = FASTP.out.html
         ch_multiqc_files  = ch_multiqc_files.mix(FASTP.out.json)
-        ch_versions       = ch_versions.mix(FASTP.out.versions.first())
     } else {
         error('Please choose one of the available complexity filtering tools: ["prinseqplusplus", "bbduk", "fastp"]')
     }
