@@ -65,7 +65,7 @@ output:
       - chopper:
           type: string
           description: The name of the tool
-      - "chopper --version 2>&1 | cut -d ":
+      - chopper --version 2>&1 | cut -d ' ' -f 2:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -76,7 +76,7 @@ topics:
       - chopper:
           type: string
           description: The name of the tool
-      - "chopper --version 2>&1 | cut -d ":
+      - chopper --version 2>&1 | cut -d ' ' -f 2:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
