@@ -129,7 +129,7 @@ output:
       - annotsv:
           type: string
           description: The name of the tool
-      - AnnotSV -help 2>&1 | head -n1 | sed 's/^AnnotSV //':
+      - AnnotSV --version | sed 's/AnnotSV //':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -140,7 +140,7 @@ topics:
       - annotsv:
           type: string
           description: The name of the tool
-      - AnnotSV -help 2>&1 | head -n1 | sed 's/^AnnotSV //':
+      - AnnotSV --version | sed 's/AnnotSV //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
