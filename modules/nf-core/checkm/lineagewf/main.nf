@@ -43,6 +43,8 @@ process CHECKM_LINEAGEWF {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    mkdir -p checkm_dummy_db
+    export CHECKM_DATA_PATH=\$PWD/checkm_dummy_db
     mkdir ${prefix}/
     touch ${prefix}/lineage.ms ${prefix}.tsv
     """

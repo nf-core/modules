@@ -44,6 +44,8 @@ process CHECKM_QA {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    mkdir -p checkm_dummy_db
+    export CHECKM_DATA_PATH=\$PWD/checkm_dummy_db
     touch ${prefix}.txt ${prefix}.fasta
     """
 }
