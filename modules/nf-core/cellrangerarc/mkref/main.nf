@@ -75,7 +75,7 @@ process CELLRANGERARC_MKREF {
         --config=config \\
         --nthreads=${task.cpus} \\
         $args
-    
+
     """
 
     stub:
