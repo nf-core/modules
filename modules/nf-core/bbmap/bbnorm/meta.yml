@@ -26,7 +26,7 @@ input:
         description: fastq file
         pattern: "*.{fastq,fq}(.gz)?"
         ontologies:
-          - edam: http://edamontology.org/format_1930
+          - edam: http://edamontology.org/format_1930 # FASTQ
 output:
   fastq:
     - - meta:
@@ -39,7 +39,7 @@ output:
           description: fastq file
           pattern: "*.{fastq, fq}.gz"
           ontologies:
-            - edam: http://edamontology.org/format_1930
+            - edam: http://edamontology.org/format_1930 # FASTQ
   log:
     - - meta:
           type: map

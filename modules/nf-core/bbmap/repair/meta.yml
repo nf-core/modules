@@ -25,7 +25,7 @@ input:
           List of input paired end fastq files
         pattern: "*.{fastq,fq}.gz"
         ontologies:
-          - edam: http://edamontology.org/format_1930
+          - edam: http://edamontology.org/format_1930 # FASTQ
   - interleave:
       type: boolean
       description: |
@@ -42,7 +42,7 @@ output:
           description: re-paired reads
           pattern: "*_repaired.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   singleton:
     - - meta:
           type: map
@@ -54,7 +54,7 @@ output:
           description: singleton reads
           pattern: "*singleton.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   log:
     - "*.log":
         type: file

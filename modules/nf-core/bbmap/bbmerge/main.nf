@@ -14,8 +14,8 @@ process BBMAP_BBMERGE {
     tuple val(meta), path("*_merged.fastq.gz")  , emit: merged
     tuple val(meta), path("*_unmerged.fastq.gz"), emit: unmerged
     tuple val(meta), path("*_ihist.txt")        , emit: ihist
-    tuple val("${task.process}"), val('bbmap'), eval('bbversion.sh | grep -v "Duplicate cpuset"'), emit: versions_bbmap, topic: versions
     path  "*.log"                               , emit: log
+    tuple val("${task.process}"), val('bbmap'), eval('bbversion.sh | grep -v "Duplicate cpuset"'), emit: versions_bbmap, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

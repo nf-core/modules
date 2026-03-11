@@ -13,8 +13,8 @@ process BBMAP_REPAIR {
     output:
     tuple val(meta), path("*_repaired.fastq.gz")         , emit: repaired
     tuple val(meta), path("${prefix}_singleton.fastq.gz"), emit: singleton
-    tuple val("${task.process}"), val('bbmap'), eval('bbversion.sh | grep -v "Duplicate cpuset"'), emit: versions_bbmap, topic: versions
     path  "*.log"                                        , emit: log
+    tuple val("${task.process}"), val('bbmap'), eval('bbversion.sh | grep -v "Duplicate cpuset"'), emit: versions_bbmap, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

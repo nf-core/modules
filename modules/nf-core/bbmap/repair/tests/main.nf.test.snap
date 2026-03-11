@@ -1,6 +1,28 @@
 {
     "sarscov2_illumina_paired - fastq_gz": {
         "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "test_1_repaired.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec",
+                        "test_2_repaired.fastq.gz:md5,2ebae722295ea66d84075a3b042e2b42"
+                    ]
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test_singleton.fastq.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ]
+            ],
+            "test.repair.sh.log",
             {
                 "versions_bbmap": [
                     [
@@ -11,7 +33,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-11T13:52:05.508632144",
+        "timestamp": "2026-03-11T15:36:19.581377778",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.4"
@@ -42,14 +64,14 @@
                     ]
                 ],
                 "2": [
+                    "test.repair.sh.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "3": [
                     [
                         "BBMAP_REPAIR",
                         "bbmap",
                         "39.18"
                     ]
-                ],
-                "3": [
-                    "test.repair.sh.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                 ],
                 "log": [
                     "test.repair.sh.log:md5,d41d8cd98f00b204e9800998ecf8427e"
@@ -84,7 +106,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-11T13:52:25.200730485",
+        "timestamp": "2026-03-11T15:36:40.168493228",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.4"
@@ -92,6 +114,25 @@
     },
     "sarscov2_illumina_interleaved - fastq_gz": {
         "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test_repaired.fastq.gz:md5,efe40fe3df38b5a1c469890e5ad19874"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test_singleton.fastq.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ]
+            ],
+            "test.repair.sh.log",
             {
                 "versions_bbmap": [
                     [
@@ -102,7 +143,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-11T13:52:12.186357809",
+        "timestamp": "2026-03-11T15:36:26.82282807",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.4"
@@ -133,14 +174,14 @@
                     ]
                 ],
                 "2": [
+                    "test.repair.sh.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "3": [
                     [
                         "BBMAP_REPAIR",
                         "bbmap",
                         "39.18"
                     ]
-                ],
-                "3": [
-                    "test.repair.sh.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                 ],
                 "log": [
                     "test.repair.sh.log:md5,d41d8cd98f00b204e9800998ecf8427e"
@@ -175,7 +216,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-11T13:52:18.729726886",
+        "timestamp": "2026-03-11T15:36:33.497726286",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.4"
