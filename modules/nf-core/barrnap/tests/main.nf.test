@@ -23,8 +23,9 @@ nextflow_process {
 
         then {
             assertAll(
-            { assert process.success },
-            { assert snapshot(process.out).match() }
+                { assert process.success },
+                { assert snapshot(process.out.gff).match("gff") },
+                { assert snapshot(process.out.versions_barrnap).match("versions") }
             )
         }
     }
@@ -47,8 +48,9 @@ nextflow_process {
 
         then {
             assertAll(
-            { assert process.success },
-            { assert snapshot(process.out).match() }
+                { assert process.success },
+                { assert snapshot(process.out.gff).match("gff_stub") },
+                { assert snapshot(process.out.versions_barrnap).match("versions_stub") }
             )
         }
     }
