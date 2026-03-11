@@ -8,7 +8,7 @@ process SAMTOOLS_SORT {
         'biocontainers/samtools:1.22.1--h96c455f_0' }"
 
     input:
-    tuple val(meta) , path(bam)
+    tuple val(meta), path(bam)
     tuple val(meta2), path(fasta)
     val index_format
 
@@ -31,7 +31,10 @@ process SAMTOOLS_SORT {
                 args.contains("--output-fmt cram") ? "cram" :
                 "bam"
     def reference = fasta ? "--reference ${fasta}" : ""
-    output_file = index_format ? "${prefix}.${extension}##idx##${prefix}.${extension}.${index_format} --write-index" : "${prefix}.${extension}"
+    // output_file = index_format!='' ? "${prefix}.${extension}##idx##${prefix}.${extension}.${index_format} --write-index" : "${prefix}.${extension}"
+    def write_index = (index_format != '' && index_format) ? "--write-index" : ""
+    output_file = "${prefix}.${extension}"
+    def is_sam = bam instanceof List ? bam[0].name.endsWith('.sam') : bam.name.endsWith('.sam')
     if (index_format) {
         if (!index_format.matches('bai|csi|crai')) {
             error "Index format not one of bai, csi, crai."
@@ -39,20 +42,22 @@ process SAMTOOLS_SORT {
             error "Indexing not compatible with SAM output"
         }
     }
-    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("$bam" == "${prefix}.bam") {
+        error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    }
+
+    def input_source = is_sam ? "${bam}" : "-"
+    def pre_command = is_sam ? "" : "samtools cat ${bam} | "
 
     """
-    samtools cat \\
-        ${bam} \\
-    | \\
-    samtools sort \\
+    ${pre_command}samtools sort \\
         $args \\
         -T ${prefix} \\
         --threads $task.cpus \\
         ${reference} \\
         -o ${output_file} \\
-        -
-
+        ${write_index} \\
+        ${input_source}
     """
 
     stub:
@@ -61,6 +66,7 @@ process SAMTOOLS_SORT {
     extension = args.contains("--output-fmt sam") ? "sam" :
                 args.contains("--output-fmt cram") ? "cram" :
                 "bam"
+
     if (index_format) {
         if (!index_format.matches('bai|csi|crai')) {
             error "Index format not one of bai, csi, crai."
@@ -68,11 +74,11 @@ process SAMTOOLS_SORT {
             error "Indexing not compatible with SAM output"
         }
     }
+
     index = index_format ? "touch ${prefix}.${extension}.${index_format}" : ""
 
     """
     touch ${prefix}.${extension}
     ${index}
-
     """
 }
