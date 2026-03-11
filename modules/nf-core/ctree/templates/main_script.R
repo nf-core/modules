@@ -84,7 +84,8 @@ initialize_ctree_obj_pyclone = function(ctree_input) {
         dplyr::select(patientID, sample_id, variantID, cluster, is.driver, is.clonal, CCF) %>%
         dplyr::filter(is.driver==TRUE) %>%
         dplyr::mutate(variantID=replace(variantID, is.na(variantID), "")) %>%
-        tidyr::pivot_wider(names_from="sample_id", values_from="CCF", values_fill=0)
+        tidyr::pivot_wider(names_from="sample_id", values_from="CCF", values_fill=0) %>%
+        dplyr::mutate(cluster=as.character(cluster))
 
     samples = unique(ctree_input[["sample_id"]])  # if multisample, this is a list
     patient = unique(ctree_input[["patientID"]])
