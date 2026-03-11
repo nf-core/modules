@@ -27,7 +27,7 @@ input:
         description: Assembled contigs in FASTA format
         pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_1929"
+          - edam: "http://edamontology.org/format_1929" # FASTA
 output:
   matches:
     - - meta:
@@ -39,7 +39,7 @@ output:
             representing functional drug classes
           pattern: "*.summary_matches.txt"
           ontologies:
-            - edam: "http://edamontology.org/format_2330"
+            - edam: "http://edamontology.org/format_2330" # Textual format
   partials:
     - - meta:
           type: map
@@ -50,7 +50,7 @@ output:
             representing partial hits to functional drug classes
           pattern: "*.summary_partials.txt"
           ontologies:
-            - edam: "http://edamontology.org/format_2330"
+            - edam: "http://edamontology.org/format_2330" # Textual format
   virulence:
     - - meta:
           type: map
@@ -61,7 +61,7 @@ output:
             representing AMRFinderPlus virulence gene classification
           pattern: "*.summary_virulence.txt"
           ontologies:
-            - edam: "http://edamontology.org/format_2330"
+            - edam: "http://edamontology.org/format_2330" # Textual format
   out:
     - - meta:
           type: map
@@ -71,7 +71,7 @@ output:
           description: raw output from AMRFinder plus (per sequence)
           pattern: "*.amrfinder.txt"
           ontologies:
-            - edam: "http://edamontology.org/format_2330"
+            - edam: "http://edamontology.org/format_2330" # Textual format
   txt:
     - - meta:
           type: map
@@ -81,7 +81,7 @@ output:
           description: Tab-delimited file, combining non-empty summary files
           pattern: "*.abritamr.txt"
           ontologies:
-            - edam: "http://edamontology.org/format_2330"
+            - edam: "http://edamontology.org/format_2330" # Textual format
   versions_abritamr:
     - - ${task.process}:
           type: string
