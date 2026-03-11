@@ -20,7 +20,6 @@ process ICOUNTMINI_SEGMENT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${gtf.simpleName}_seg"
     def regions_prefix = task.ext.regions_prefix ?: "${gtf.simpleName}"
     """

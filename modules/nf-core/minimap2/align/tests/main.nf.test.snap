@@ -4,20 +4,26 @@
             [
                 "@HD\tVN:1.6\tSO:coordinate",
                 "@SQ\tSN:MT192765.1\tLN:29829",
-                "@PG\tID:minimap2\tPN:minimap2\tVN:2.28-r1209\tCL:minimap2 -t 2 -a genome.fasta -",
-                "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.20\tCL:samtools sort -@ 1 -o test.bam##idx##test.bam.bai --write-index"
+                "@PG\tID:minimap2\tPN:minimap2\tVN:2.29-r1283\tCL:minimap2 -t 2 -a genome.fasta -",
+                "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.21\tCL:samtools sort -@ 1 -o test.bam##idx##test.bam.bai --write-index"
             ],
             "5d426b9a5f5b2c54f1d7f1e4c238ae94",
             "test.bam.bai",
-            [
-                "versions.yml:md5,3548eeba9066efbf8d78ea99f8d813fd"
-            ]
+            {
+                "versions_minimap2": [
+                    [
+                        "MINIMAP2_ALIGN",
+                        "minimap2",
+                        "2.29-r1283"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-07-25T09:03:00.827260362"
+        "timestamp": "2026-01-22T15:02:10.851485367"
     },
     "sarscov2 - bam, fasta, true, 'bai', false, false - stub": {
         "content": [
@@ -44,7 +50,11 @@
                     ]
                 ],
                 "3": [
-                    "versions.yml:md5,98b8f5f36aa54b82210094f0b0d11938"
+                    [
+                        "MINIMAP2_ALIGN",
+                        "minimap2",
+                        "2.29-r1283"
+                    ]
                 ],
                 "bam": [
                     [
@@ -67,16 +77,20 @@
                 "paf": [
                     
                 ],
-                "versions": [
-                    "versions.yml:md5,98b8f5f36aa54b82210094f0b0d11938"
+                "versions_minimap2": [
+                    [
+                        "MINIMAP2_ALIGN",
+                        "minimap2",
+                        "2.29-r1283"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-07-23T11:21:37.92353539"
+        "timestamp": "2026-01-22T15:02:56.708796666"
     },
     "sarscov2 - fastq, fasta, true, 'bai', false, false - stub": {
         "content": [
@@ -103,7 +117,11 @@
                     ]
                 ],
                 "3": [
-                    "versions.yml:md5,98b8f5f36aa54b82210094f0b0d11938"
+                    [
+                        "MINIMAP2_ALIGN",
+                        "minimap2",
+                        "2.29-r1283"
+                    ]
                 ],
                 "bam": [
                     [
@@ -126,16 +144,20 @@
                 "paf": [
                     
                 ],
-                "versions": [
-                    "versions.yml:md5,98b8f5f36aa54b82210094f0b0d11938"
+                "versions_minimap2": [
+                    [
+                        "MINIMAP2_ALIGN",
+                        "minimap2",
+                        "2.29-r1283"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-06-03T11:29:44.669021368"
+        "timestamp": "2026-01-22T15:02:32.614463827"
     },
     "sarscov2 - fastq, fasta, false, [], false, false - stub": {
         "content": [
@@ -156,7 +178,11 @@
                     
                 ],
                 "3": [
-                    "versions.yml:md5,98b8f5f36aa54b82210094f0b0d11938"
+                    [
+                        "MINIMAP2_ALIGN",
+                        "minimap2",
+                        "2.29-r1283"
+                    ]
                 ],
                 "bam": [
                     
@@ -173,16 +199,20 @@
                         "test.paf:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,98b8f5f36aa54b82210094f0b0d11938"
+                "versions_minimap2": [
+                    [
+                        "MINIMAP2_ALIGN",
+                        "minimap2",
+                        "2.29-r1283"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-06-03T11:15:52.738781039"
+        "timestamp": "2026-01-22T15:02:40.02163098"
     },
     "sarscov2 - fastq, fasta, true, [], false, false - stub": {
         "content": [
@@ -203,7 +233,11 @@
                     
                 ],
                 "3": [
-                    "versions.yml:md5,98b8f5f36aa54b82210094f0b0d11938"
+                    [
+                        "MINIMAP2_ALIGN",
+                        "minimap2",
+                        "2.29-r1283"
+                    ]
                 ],
                 "bam": [
                     [
@@ -220,93 +254,121 @@
                 "paf": [
                     
                 ],
-                "versions": [
-                    "versions.yml:md5,98b8f5f36aa54b82210094f0b0d11938"
+                "versions_minimap2": [
+                    [
+                        "MINIMAP2_ALIGN",
+                        "minimap2",
+                        "2.29-r1283"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-06-03T11:15:23.033808223"
+        "timestamp": "2026-01-22T15:02:25.102539679"
     },
     "sarscov2 - [fastq1, fastq2], fasta, true, false, false": {
         "content": [
             [
                 "@HD\tVN:1.6\tSO:coordinate",
                 "@SQ\tSN:MT192765.1\tLN:29829",
-                "@PG\tID:minimap2\tPN:minimap2\tVN:2.28-r1209\tCL:minimap2 -t 2 -a genome.fasta test_1.fastq.gz test_2.fastq.gz",
-                "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.20\tCL:samtools sort -@ 1 -o test.bam"
+                "@PG\tID:minimap2\tPN:minimap2\tVN:2.29-r1283\tCL:minimap2 -t 2 -a genome.fasta test_1.fastq.gz test_2.fastq.gz",
+                "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.21\tCL:samtools sort -@ 1 -o test.bam"
             ],
             "1bc392244f228bf52cf0b5a8f6a654c9",
-            [
-                "versions.yml:md5,3548eeba9066efbf8d78ea99f8d813fd"
-            ]
+            {
+                "versions_minimap2": [
+                    [
+                        "MINIMAP2_ALIGN",
+                        "minimap2",
+                        "2.29-r1283"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-07-23T11:18:18.964586894"
+        "timestamp": "2026-01-22T15:01:46.456636022"
     },
     "sarscov2 - fastq, fasta, true, [], false, false": {
         "content": [
             [
                 "@HD\tVN:1.6\tSO:coordinate",
                 "@SQ\tSN:MT192765.1\tLN:29829",
-                "@PG\tID:minimap2\tPN:minimap2\tVN:2.28-r1209\tCL:minimap2 -t 2 -a genome.fasta test_1.fastq.gz",
-                "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.20\tCL:samtools sort -@ 1 -o test.bam"
+                "@PG\tID:minimap2\tPN:minimap2\tVN:2.29-r1283\tCL:minimap2 -t 2 -a genome.fasta test_1.fastq.gz",
+                "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.21\tCL:samtools sort -@ 1 -o test.bam"
             ],
             "f194745c0ccfcb2a9c0aee094a08750",
-            [
-                "versions.yml:md5,3548eeba9066efbf8d78ea99f8d813fd"
-            ]
+            {
+                "versions_minimap2": [
+                    [
+                        "MINIMAP2_ALIGN",
+                        "minimap2",
+                        "2.29-r1283"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-07-23T11:17:48.667488325"
+        "timestamp": "2026-01-22T15:01:30.525133177"
     },
     "sarscov2 - fastq, fasta, true, 'bai', false, false": {
         "content": [
             [
                 "@HD\tVN:1.6\tSO:coordinate",
                 "@SQ\tSN:MT192765.1\tLN:29829",
-                "@PG\tID:minimap2\tPN:minimap2\tVN:2.28-r1209\tCL:minimap2 -t 2 -a genome.fasta test_1.fastq.gz",
-                "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.20\tCL:samtools sort -@ 1 -o test.bam##idx##test.bam.bai --write-index"
+                "@PG\tID:minimap2\tPN:minimap2\tVN:2.29-r1283\tCL:minimap2 -t 2 -a genome.fasta test_1.fastq.gz",
+                "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.21\tCL:samtools sort -@ 1 -o test.bam##idx##test.bam.bai --write-index"
             ],
             "f194745c0ccfcb2a9c0aee094a08750",
             "test.bam.bai",
-            [
-                "versions.yml:md5,3548eeba9066efbf8d78ea99f8d813fd"
-            ]
+            {
+                "versions_minimap2": [
+                    [
+                        "MINIMAP2_ALIGN",
+                        "minimap2",
+                        "2.29-r1283"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-07-23T11:18:02.517416733"
+        "timestamp": "2026-01-22T15:01:38.84829029"
     },
     "sarscov2 - bam, fasta, true, [], false, false": {
         "content": [
             [
                 "@HD\tVN:1.6\tSO:coordinate",
                 "@SQ\tSN:MT192765.1\tLN:29829",
-                "@PG\tID:minimap2\tPN:minimap2\tVN:2.28-r1209\tCL:minimap2 -t 2 -a genome.fasta -",
-                "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.20\tCL:samtools sort -@ 1 -o test.bam"
+                "@PG\tID:minimap2\tPN:minimap2\tVN:2.29-r1283\tCL:minimap2 -t 2 -a genome.fasta -",
+                "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.21\tCL:samtools sort -@ 1 -o test.bam"
             ],
             "5d426b9a5f5b2c54f1d7f1e4c238ae94",
-            [
-                "versions.yml:md5,3548eeba9066efbf8d78ea99f8d813fd"
-            ]
+            {
+                "versions_minimap2": [
+                    [
+                        "MINIMAP2_ALIGN",
+                        "minimap2",
+                        "2.29-r1283"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-07-25T09:02:49.64829488"
+        "timestamp": "2026-01-22T15:02:02.351060285"
     },
     "sarscov2 - bam, fasta, true, [], false, false - stub": {
         "content": [
@@ -327,7 +389,11 @@
                     
                 ],
                 "3": [
-                    "versions.yml:md5,98b8f5f36aa54b82210094f0b0d11938"
+                    [
+                        "MINIMAP2_ALIGN",
+                        "minimap2",
+                        "2.29-r1283"
+                    ]
                 ],
                 "bam": [
                     [
@@ -344,16 +410,20 @@
                 "paf": [
                     
                 ],
-                "versions": [
-                    "versions.yml:md5,98b8f5f36aa54b82210094f0b0d11938"
+                "versions_minimap2": [
+                    [
+                        "MINIMAP2_ALIGN",
+                        "minimap2",
+                        "2.29-r1283"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-07-23T11:21:22.162291795"
+        "timestamp": "2026-01-22T15:02:47.579634041"
     },
     "sarscov2 - fastq, [], true, false, false": {
         "content": [
@@ -459,18 +529,24 @@
                 "@SQ\tSN:ERR5069949.3258358\tLN:151",
                 "@SQ\tSN:ERR5069949.1476386\tLN:151",
                 "@SQ\tSN:ERR5069949.2415814\tLN:150",
-                "@PG\tID:minimap2\tPN:minimap2\tVN:2.28-r1209\tCL:minimap2 -t 2 -a test_1.fastq.gz test_1.fastq.gz",
-                "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.20\tCL:samtools sort -@ 1 -o test.bam"
+                "@PG\tID:minimap2\tPN:minimap2\tVN:2.29-r1283\tCL:minimap2 -t 2 -a test_1.fastq.gz test_1.fastq.gz",
+                "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.21\tCL:samtools sort -@ 1 -o test.bam"
             ],
             "16c1c651f8ec67383bcdee3c55aed94f",
-            [
-                "versions.yml:md5,3548eeba9066efbf8d78ea99f8d813fd"
-            ]
+            {
+                "versions_minimap2": [
+                    [
+                        "MINIMAP2_ALIGN",
+                        "minimap2",
+                        "2.29-r1283"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-07-23T11:18:34.246998277"
+        "timestamp": "2026-01-22T15:01:54.090788633"
     }
 }

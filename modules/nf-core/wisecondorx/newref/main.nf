@@ -2,7 +2,6 @@ process WISECONDORX_NEWREF {
     tag "$meta.id"
     label 'process_medium'
 
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/wisecondorx:1.2.9--pyhdfd78af_0':
@@ -13,7 +12,7 @@ process WISECONDORX_NEWREF {
 
     output:
     tuple val(meta), path("*.npz"), emit: npz
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('wisecondorx'), eval("pip list |& sed -n 's/wisecondorx *//p'"), emit: versions_wisecondorx, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,9 +20,10 @@ process WISECONDORX_NEWREF {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.9' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
-    inputs.each { if("${it}" == "${prefix}.npz") error "${it} has the same name as the output file, set prefix in module configuration to disambiguate!"}
+    inputs.each { input ->
+        if("${input}" == "${prefix}.npz") error "${input} has the same name as the output file, set prefix in module configuration to disambiguate!"
+    }
 
     """
     WisecondorX \\
@@ -32,25 +32,16 @@ process WISECONDORX_NEWREF {
         ${prefix}.npz \\
         --cpus ${task.cpus} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        wisecondorx: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.9' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
-    inputs.each { if("${it}" == "${prefix}.npz") error "${it} has the same name as the output file, set prefix in module configuration to disambiguate!"}
+    inputs.each { input ->
+        if("${input}" == "${prefix}.npz") error "${input} has the same name as the output file, set prefix in module configuration to disambiguate!"
+    }
 
     """
     touch ${prefix}.npz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        wisecondorx: ${VERSION}
-    END_VERSIONS
     """
 }

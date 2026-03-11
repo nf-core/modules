@@ -24,9 +24,10 @@ input:
         type: file
         description: Variant calling file (vcf)
         pattern: "*.{vcf}"
+        ontologies: []
 output:
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,8 +36,9 @@ output:
           type: file
           description: PLINK binary biallelic genotype table
           pattern: "*.{bed}"
-  - bim:
-      - meta:
+          ontologies: []
+  bim:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,8 +47,9 @@ output:
           type: file
           description: PLINK extended MAP file
           pattern: "*.{bim}"
-  - fam:
-      - meta:
+          ontologies: []
+  fam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,11 +58,14 @@ output:
           type: file
           description: PLINK sample information file
           pattern: "*.{fam}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Mxrcon"
   - "@abhi18av"

@@ -24,14 +24,17 @@ input:
         type: file
         description: BAM/CRAM file from alignment
         pattern: "*.{bam,cram}"
+        ontologies: []
     - bai:
         type: file
         description: BAI/CRAI file from alignment
         pattern: "*.{bai,crai}"
+        ontologies: []
     - regions_file:
         type: file
         description: Optional. Restrict to regions listed in a file
         pattern: "*.{vcf,bed,gtf,gff,vcf.gz,bed.gz,gtf.gz,gff.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -41,28 +44,34 @@ input:
         type: file
         description: Reference genome
         pattern: "*.{fasta,fa}"
+        ontologies: []
     - fasta_index:
         type: file
         description: Reference genome information for fasta index
         pattern: "*.{fasta.fai,fa.fai}"
+        ontologies: []
     - fasta_dict:
         type: file
         description: Reference genome information for fasta dict
         pattern: "*.{.dict}"
 
+        ontologies: []
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: Groovy Map containing TSV information e.g. [ id:'test' ]
       - "*.tsv":
           type: file
           description: Output file
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@lmfaber"
 maintainers:

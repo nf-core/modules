@@ -31,23 +31,25 @@ input:
         type: list
         description: List of gene prediction files in gtf
         pattern: "*.gtf"
-  - - hints_files:
-        type: list
-        description: List of files containing extrinsic evidence in gff
-        pattern: "*.gff"
-  - - keep_gtfs:
-        type: list
-        description: |
-          List of gene prediction files in gtf. These gene sets are used the same way as other inputs, but TSEBRA ensures that all
-          transcripts from these gene sets are included in the output
-        pattern: "*.gtf"
-  - - config:
-        type: file
-        description: Configuration file that sets the parameter for TSEBRA
-        pattern: "*.cfg"
+  - hints_files:
+      type: list
+      description: List of files containing extrinsic evidence in gff
+      pattern: "*.gff"
+  - keep_gtfs:
+      type: list
+      description: |
+        List of gene prediction files in gtf. These gene sets are used the same way as other inputs, but TSEBRA ensures that all
+        transcripts from these gene sets are included in the output
+      pattern: "*.gtf"
+  - config:
+      type: file
+      description: Configuration file that sets the parameter for TSEBRA
+      pattern: "*.cfg"
+      ontologies:
+        - edam: http://edamontology.org/format_4005 # Configuration file format
 output:
-  - tsebra_gtf:
-      - meta:
+  tsebra_gtf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -56,8 +58,9 @@ output:
           type: file
           description: Output file for the combined gene predictions in gtf
           pattern: "*.gtf"
-  - tsebra_scores:
-      - meta:
+          ontologies: []
+  tsebra_scores:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,11 +69,15 @@ output:
           type: file
           description: Transcript scores as a table
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@GallVp"
 maintainers:

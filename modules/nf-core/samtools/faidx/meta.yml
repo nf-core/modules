@@ -1,5 +1,6 @@
 name: samtools_faidx
-description: Index FASTA file, and optionally generate a file of chromosome sizes
+description: Index FASTA file, and optionally generate a file of chromosome
+  sizes
 keywords:
   - index
   - fasta
@@ -14,7 +15,8 @@ tools:
       homepage: http://www.htslib.org/
       documentation: http://www.htslib.org/doc/samtools.html
       doi: 10.1093/bioinformatics/btp352
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:samtools
 input:
   - - meta:
@@ -26,22 +28,18 @@ input:
         type: file
         description: FASTA file
         pattern: "*.{fa,fasta}"
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing reference information
-          e.g. [ id:'test' ]
+        ontologies: []
     - fai:
         type: file
         description: FASTA index file
         pattern: "*.{fai}"
-  - - get_sizes:
-        type: boolean
-        description: use cut to get the sizes of the index (true) or not (false)
-
+        ontologies: []
+  - get_sizes:
+      type: boolean
+      description: use cut to get the sizes of the index (true) or not (false)
 output:
-  - fa:
-      - meta:
+  fa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,18 +48,9 @@ output:
           type: file
           description: FASTA file
           pattern: "*.{fa}"
-  - fai:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.fai":
-          type: file
-          description: FASTA index file
-          pattern: "*.{fai}"
-  - sizes:
-      - meta:
+          ontologies: []
+  sizes:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -70,8 +59,20 @@ output:
           type: file
           description: File containing chromosome lengths
           pattern: "*.{sizes}"
-  - gzi:
-      - meta:
+          ontologies: []
+  fai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fai":
+          type: file
+          description: FASTA index file
+          pattern: "*.{fai}"
+          ontologies: []
+  gzi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -80,11 +81,28 @@ output:
           type: file
           description: Optional gzip index file for compressed inputs
           pattern: "*.gzi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: eval
+          description: The command used to generate the version of the tool
 authors:
   - "@drpatelh"
   - "@ewels"

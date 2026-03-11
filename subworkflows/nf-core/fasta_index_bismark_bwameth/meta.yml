@@ -35,6 +35,18 @@ input:
       description: |
         Bwameth genome index files
         Structure: [ val(meta), path(bwameth_index) ]
+  - aligner:
+      type: string
+      description: |
+        Aligner name (bismark, bismark_hisat, or bwameth)
+  - collecthsmetrics:
+      type: boolean
+      description: |
+        Whether to run picard collecthsmetrics tool
+  - use_mem2:
+      type: boolean
+      description: |
+        Build a mem2 index when bwameth is chosen as an aligner, and an index path is not supplied
 output:
   - fasta:
       type: file
@@ -68,5 +80,7 @@ output:
       pattern: "versions.yml"
 authors:
   - "@sateeshperi"
+  - "dcarrillox"
 maintainers:
   - "@sateeshperi"
+  - "@dcarrillox"

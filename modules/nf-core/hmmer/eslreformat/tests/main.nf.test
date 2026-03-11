@@ -1,0 +1,112 @@
+nextflow_process {
+
+    name "Test Process HMMER_ESLREFORMAT"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "HMMER_ESLREFORMAT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hmmer"
+    tag "hmmer/hmmalign"
+    tag "hmmer/eslreformat"
+
+    setup {
+        run("HMMER_HMMALIGN") {
+            script "../../hmmalign/main.nf"
+
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true)
+                ]
+                input[1] = file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true)
+                """
+            }
+        }
+    }
+
+    test("ecoli - sto afa") {
+        when {
+            params {
+                module_args = 'afa'
+                module_postprocessing = ''
+            }
+            process {
+                """
+                input[0] = HMMER_HMMALIGN.out.sto
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    test("ecoli - sto phylip") {
+        when {
+            params {
+                module_args = '-u phylip'
+                module_postprocessing = ''
+            }
+            process {
+                """
+                input[0] = HMMER_HMMALIGN.out.sto
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("ecoli - sto unalign") {
+        when {
+            params {
+                module_args = '--gapsym=- afa'
+                module_postprocessing = '| sed "/^>/!s/-//g"'
+            }
+            process {
+                """
+                input[0] = HMMER_HMMALIGN.out.sto
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("ecoli - sto -- stub") {
+        options '-stub'
+        when {
+            params {
+                module_args = '--gapsym=- afa'
+                module_postprocessing = ''
+            }
+            process {
+                """
+                input[0] = HMMER_HMMALIGN.out.sto
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

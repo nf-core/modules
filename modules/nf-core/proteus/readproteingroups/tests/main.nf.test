@@ -18,7 +18,11 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [[ id:"fakeBatch" ], file(params.test_data['proteomics']['maxquant']['mq_samplesheet'], checkIfExists: true), file(params.test_data['proteomics']['maxquant']['mq_proteingroups'], checkIfExists: true)]
+                input[0] = [
+                    [ id:"fakeBatch" ],
+                    file(params.modules_testdata_base_path + 'proteomics/maxquant/MaxQuant_samplesheet.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'proteomics/maxquant/MaxQuant_proteinGroups.txt', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -52,7 +56,11 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [[ id:"fakeBatch" ], file(params.test_data['proteomics']['maxquant']['mq_samplesheet'], checkIfExists: true), file(params.test_data['proteomics']['maxquant']['mq_proteingroups'], checkIfExists: true)]
+                input[0] = [
+                    [ id:"fakeBatch" ],
+                    file(params.modules_testdata_base_path + 'proteomics/maxquant/MaxQuant_samplesheet.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'proteomics/maxquant/MaxQuant_proteinGroups.txt', checkIfExists: true)
+                ]
                 """
             }
         }

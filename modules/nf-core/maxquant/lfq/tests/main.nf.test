@@ -1,0 +1,70 @@
+nextflow_process {
+
+    name "Test Process MAXQUANT_LFQ"
+
+    script "../main.nf"
+    process "MAXQUANT_LFQ"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "maxquant"
+    tag "maxquant/lfq"
+
+    test("yeast_UPS - msspectra raw") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'proteomics/parameter/mqpar.xml', checkIfExists:true)
+                ]
+                input[1] = Channel.of([
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/OVEMB150205_12.raw'),
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/OVEMB150205_14.raw')
+                ]).collect()
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot( // Need to check only the file names as empty files are created
+                    process.out.maxquant_txt.collect{
+                        it[1].collect{ file(it).getName() }
+                    },
+                    process.out.versions,
+                ).match() }
+            )
+        }
+    }
+
+    test("yeast_UPS - msspectra raw -- stub") {
+        tag "stub"
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'proteomics/parameter/mqpar.xml', checkIfExists:true)
+                ]
+                input[1] = Channel.of([
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/OVEMB150205_12.raw'),
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/OVEMB150205_14.raw')
+                ]).collect()
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

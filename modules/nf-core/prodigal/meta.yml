@@ -24,12 +24,13 @@ input:
     - genome:
         type: file
         description: fasta/fasta.gz file
-  - - output_format:
-        type: string
-        description: Output format ("gbk"/"gff"/"sqn"/"sco")
+        ontologies: []
+  - output_format:
+      type: string
+      description: Output format ("gbk"/"gff"/"sqn"/"sco")
 output:
-  - gene_annotations:
-      - meta:
+  gene_annotations:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,8 +39,9 @@ output:
           type: file
           description: gene annotations in output_format given as input
           pattern: "*.{output_format}"
-  - nucleotide_fasta:
-      - meta:
+          ontologies: []
+  nucleotide_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,8 +50,9 @@ output:
           type: file
           description: nucleotide sequences file
           pattern: "*.{fna}"
-  - amino_acid_fasta:
-      - meta:
+          ontologies: []
+  amino_acid_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -58,8 +61,9 @@ output:
           type: file
           description: protein translations file
           pattern: "*.{faa}"
-  - all_gene_annotations:
-      - meta:
+          ontologies: []
+  all_gene_annotations:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -68,11 +72,14 @@ output:
           type: file
           description: complete starts file
           pattern: "*.{_all.txt}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@grst"
 maintainers:

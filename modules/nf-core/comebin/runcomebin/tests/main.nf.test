@@ -1,0 +1,47 @@
+nextflow_process {
+
+    name "Test Process COMEBIN_RUNCOMEBIN"
+    script "../main.nf"
+    process "COMEBIN_RUNCOMEBIN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "comebin"
+    tag "comebin/runcomebin"
+
+    // Tool requires a large input dataset of sufficient complexity to run
+    // that's larger than anything in test-datasets - stub test only
+    //
+    // Should revisit in future!
+
+    test("sarscov2 - stub") {
+
+        options "-stub"
+
+        when {
+
+            process {
+                """
+                input[0] = Channel.of([
+                        [id: "ref"],
+                        file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta.gz",
+                            checkIfExists: true),
+                        [
+                            file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam",
+                            checkIfExists: true),
+                        ]
+                    ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

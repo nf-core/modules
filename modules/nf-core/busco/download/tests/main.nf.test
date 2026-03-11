@@ -23,7 +23,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.download_dir.get(0)).exists() },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions")}).match() }
             )
         }
 

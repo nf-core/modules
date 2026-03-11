@@ -25,9 +25,11 @@ input:
         type: file
         description: Pangenome graph in GFA v1.0 format or in ODGI binary format
         pattern: "*.{gfa,og}"
+        ontologies:
+          - edam: http://edamontology.org/format_3975 # GFA 1
 output:
-  - sorted_graph:
-      - meta:
+  sorted_graph:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,11 +38,14 @@ output:
           type: file
           description: 1D sorted pangenome graph in ODGI binary format
           pattern: "*.{og}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@subwaystation"
 maintainers:

@@ -28,10 +28,11 @@ input:
         type: file
         description: Single-channel tiff file to be corrected.
         pattern: "*.{tif,tiff}"
+        ontologies: []
 output:
   #Only when we have meta
-  - img_clahe:
-      - meta:
+  img_clahe:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,11 +41,14 @@ output:
           type: file
           description: CLAHE corrected tiff file.
           pattern: "*.{tiff}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kbestak"
 maintainers:

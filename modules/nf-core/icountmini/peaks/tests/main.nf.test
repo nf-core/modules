@@ -1,0 +1,86 @@
+nextflow_process {
+
+    name "Test Process ICOUNTMINI_PEAKS"
+
+    script "../main.nf"
+    process "ICOUNTMINI_PEAKS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "icountmini"
+    tag "icountmini/segment"
+    tag "icountmini/sigxls"
+    tag "icountmini/peaks"
+
+    setup {
+        run("ICOUNTMINI_SEGMENT") {
+            script "../../segment/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists:true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists:true)
+                """
+            }
+        }
+
+        run("ICOUNTMINI_SIGXLS") {
+            script "../../sigxls/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/crosslinks/clippy.bed", checkIfExists: true)
+                ]
+                input[1] = ICOUNTMINI_SEGMENT.out.gtf.map{ it[1] }
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - sigxls") {
+        when {
+            process {
+                """
+                input[0] = ICOUNTMINI_SIGXLS.out.sigxls
+                    .combine(Channel.of(file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/crosslinks/clippy.bed", checkIfExists: true)))
+                    .map{ meta, sigxls, bed -> [ meta, bed, sigxls ] }
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    path(process.out.peaks[0][1]).linesGzip
+                ).match() }
+            )
+        }
+    }
+
+
+    test("homo_sapiens - sigxls -- stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = input[0] = ICOUNTMINI_SIGXLS.out.sigxls
+                    .combine(Channel.of(file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/crosslinks/clippy.bed", checkIfExists: true)))
+                    .map{ meta, sigxls, bed -> [ meta, bed, sigxls ] }
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

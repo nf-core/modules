@@ -4,11 +4,6 @@ process CELLRANGERATAC_COUNT {
 
     container "nf-core/cellranger-atac:2.1.0"
 
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "CELLRANGERATAC_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-
     input:
     tuple val(meta), path(reads)
     path reference
@@ -21,6 +16,10 @@ process CELLRANGERATAC_COUNT {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "CELLRANGERATAC_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def sample_arg = meta.samples.unique().join(",")
     def reference_name = reference.name
@@ -44,7 +43,18 @@ process CELLRANGERATAC_COUNT {
     stub:
     """
     mkdir -p "${meta.id}/outs/"
-    touch ${meta.id}/outs/fake_file.txt
+    touch ${meta.id}/outs/{filtered_peak_bc_matrix.h5,filtered_tf_bc_matrix.h5,raw_peak_bc_matrix.h5,summary.csv,summary.json,peak_motif_mapping.bed,peak_annotation.tsv,cut_sites.bigwig,singlecell.csv}
+
+    mkdir -p "${meta.id}/outs/filtered_peak_bc_matrix/"
+    touch ${meta.id}/outs/filtered_peak_bc_matrix/{barcodes.tsv,peaks.bed,matrix.mtx}
+
+    mkdir -p "${meta.id}/outs/filtered_tf_bc_matrix/"
+    touch ${meta.id}/outs/filtered_tf_bc_matrix/motifs.tsv
+    echo | gzip > "${meta.id}/outs/filtered_tf_bc_matrix/barcodes.tsv.gz"
+    echo | gzip > "${meta.id}/outs/filtered_tf_bc_matrix/matrix.mtx.gz"
+
+    mkdir -p "${meta.id}/outs/raw_peak_bc_matrix/"
+    touch ${meta.id}/outs/raw_peak_bc_matrix/{barcodes.tsv,peaks.bed,matrix.mtx}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

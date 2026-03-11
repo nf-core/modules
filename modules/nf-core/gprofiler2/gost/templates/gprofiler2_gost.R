@@ -191,6 +191,7 @@ for (file_input in c('de_file')) {
 
 library(gprofiler2)
 library(ggplot2)
+library(yaml)
 
 ################################################
 ################################################
@@ -221,9 +222,6 @@ if (nrow(de.genes) > 0) {
     set.seed(1) # This will ensure that reruns have the same plot colors
 
     sources <- opt\$sources
-    if (!is.null(sources)) {
-        sources <-  strsplit(opt\$sources, split = ",")[[1]]
-    }
     if (!is.null(sources)) {
         sources <-  strsplit(opt\$sources, split = ",")[[1]]
     }
@@ -450,13 +448,23 @@ sink()
 r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
 gprofiler2.version <- as.character(packageVersion('gprofiler2'))
 ggplot2.version <- as.character(packageVersion('ggplot2'))
-writeLines(
-    c(
-        '"$task.process":',
-        paste('    r-ggplot2:', ggplot2.version),
-        paste('    r-gprofiler2:', gprofiler2.version)
+if (is.null(opt\$token) & !is.null(opt\$organism)) {
+    gprofiler_data.version <- as.yaml(get_version_info(opt\$organism))
+} else {
+    gprofiler_data.version <- as.yaml(get_version_info())
+}
+# The YAML comes out a bit messy for the gprofiler data, not nested correctly
+# when we use writeLines and gprofiler_data, so I write it via yaml
+write_yaml(
+    list(
+    '"$task.process"'=list(
+        "r-ggplot2"=ggplot2.version,
+        "r-gprofiler2"=gprofiler2.version,
+        "gprofiler-data"=gprofiler_data.version
+        )
     ),
-'versions.yml')
+    file='versions.yml'
+)
 
 ################################################
 ################################################

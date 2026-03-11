@@ -25,6 +25,7 @@ input:
         type: file
         description: Processed interval list file (processed_intervals.interval_list)
         pattern: "*.interval_list"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -34,6 +35,8 @@ input:
         type: file
         description: Read counts input file
         pattern: "*.{tsv, hdf5}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
   - - meta3:
         type: map
         description: |
@@ -43,9 +46,11 @@ input:
         type: file
         description: Annotated intervals TSV file (annotated_intervals.tsv).
         pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - interval_list:
-      - meta:
+  interval_list:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,15 +59,28 @@ output:
           type: file
           description: Filtered interval list file
           pattern: "*.interval_list"
-      - _list:
-          type: file
-          description: Filtered interval list file
-          pattern: "*.interval_list"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_gatk4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ryanjameskennedy"
   - "@ViktorHy"

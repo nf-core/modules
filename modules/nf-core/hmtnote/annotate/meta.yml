@@ -22,9 +22,10 @@ input:
         type: file
         description: vcf file
         pattern: "*.vcf"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -32,11 +33,14 @@ output:
           type: file
           description: annotated vcf
           pattern: "*_annotated.vcf"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sysbiocoder"
 maintainers:

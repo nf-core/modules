@@ -15,7 +15,7 @@ process DELLY_CALL {
     output:
     tuple val(meta), path("*.{bcf,vcf.gz}")  , emit: bcf
     tuple val(meta), path("*.{csi,tbi}")     , emit: csi
-    path "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val('delly'), eval("delly --version |& sed -n '1s/Delly version: *v//p'"), emit: versions_delly, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,11 +43,6 @@ process DELLY_CALL {
         ${exclude} \\
         ${input} \\
         ${vcf_output}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        delly: \$( echo \$(delly --version 2>&1) | sed 's/^.*Delly version: v//; s/ using.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -60,10 +55,5 @@ process DELLY_CALL {
     """
     ${bcf_output}
     ${vcf_output}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        delly: \$( echo \$(delly --version 2>&1) | sed 's/^.*Delly version: v//; s/ using.*\$//')
-    END_VERSIONS
     """
 }

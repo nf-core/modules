@@ -2,20 +2,21 @@ process BASES2FASTQ {
     tag "$meta.id"
     label 'process_high'
 
-    container "docker.io/elembio/bases2fastq:1.8.0"
+    container "docker.io/elembio/bases2fastq:2.3.0"
 
     input:
-    tuple val(meta), path(run_manifest), path(run_dir)
+    tuple val(meta), path(run_manifest), path(run_dir, stageAs: 'input_dir')
 
     output:
-    tuple val(meta), path('output/Samples/**/*_R*.fastq.gz'), emit: sample_fastq
-    tuple val(meta), path('output/Samples/**/*_stats.json') , emit: sample_json
-    tuple val(meta), path('output/*.html')                  , emit: qc_report
-    tuple val(meta), path('output/RunStats.json')           , emit: run_stats
-    tuple val(meta), path('output/RunManifest.json')        , emit: generated_run_manifest
-    tuple val(meta), path('output/Metrics.csv')             , emit: metrics
-    tuple val(meta), path('output/UnassignedSequences.csv') , emit: unassigned
-    path "versions.yml"                                     , emit: versions
+    tuple val(meta), path("${prefix}/Samples/**/*_R*.fastq.gz"), emit: sample_fastq
+    tuple val(meta), path("${prefix}/Samples/**/*_stats.json") , emit: sample_json
+    tuple val(meta), path("${prefix}/*_QC.html")               , emit: qc_report
+    tuple val(meta), path("${prefix}/multiqc_report.html")     , emit: multiqc_report, optional: true
+    tuple val(meta), path("${prefix}/RunStats.json")           , emit: run_stats
+    tuple val(meta), path("${prefix}/RunManifest.json")        , emit: generated_run_manifest
+    tuple val(meta), path("${prefix}/Metrics.csv")             , emit: metrics
+    tuple val(meta), path("${prefix}/UnassignedSequences.csv") , emit: unassigned
+    tuple val("${task.process}"), val('bases2fastq'), eval('bases2fastq --version | sed "s/.*version //;s/,.*//"'), emit: versions_bases2fastq, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,7 +27,7 @@ process BASES2FASTQ {
         error "BASES2FASTQ module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def runManifest = run_manifest ? "-r ${run_manifest}" : ""
     """
     bases2fastq \\
@@ -34,28 +35,22 @@ process BASES2FASTQ {
         $runManifest \\
         $args \\
         $run_dir \\
-        output
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bases2fastq: \$(bases2fastq --version | sed -e "s/bases2fastq version //g")
-    END_VERSIONS
+        ${prefix}
     """
 
     stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir output
-    mkdir output/Samples
-    mkdir output/Samples/DefaultSample
+    mkdir -p ${prefix}/Samples/DefaultSample
 
-    touch output/Metrics.csv
-    touch output/RunManifest.json
-    touch output/UnassignedSequences.csv
-    echo | gzip > output/Samples/DefaultSample/DefaultSample_R1.fastq.gz
-    echo | gzip > output/Samples/DefaultSample/DefaultSample_R2.fastq.gz
-    touch output/Bases2Fastq-Sim_QC.html
-    touch output/RunStats.json
-    touch output/Samples/DefaultSample/DefaultSample_stats.json
-    touch versions.yml
+    touch ${prefix}/Metrics.csv
+    touch ${prefix}/RunManifest.json
+    touch ${prefix}/UnassignedSequences.csv
+    echo | gzip > ${prefix}/Samples/DefaultSample/DefaultSample_R1.fastq.gz
+    echo | gzip > ${prefix}/Samples/DefaultSample/DefaultSample_R2.fastq.gz
+    touch ${prefix}/Bases2Fastq-Sim_QC.html
+    touch ${prefix}/multiqc_report.html
+    touch ${prefix}/RunStats.json
+    touch ${prefix}/Samples/DefaultSample/DefaultSample_stats.json
     """
 }

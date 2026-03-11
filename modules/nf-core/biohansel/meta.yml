@@ -11,7 +11,8 @@ tools:
       documentation: "https://github.com/phac-nml/biohansel"
       tool_dev_url: "https://github.com/phac-nml/biohansel"
       doi: "10.1101/2020.01.10.902056"
-      licence: ["Apache-2.0 license"]
+      licence:
+        - "Apache-2.0 license"
       identifier: biotools:biohansel
 input:
   - - meta:
@@ -23,13 +24,16 @@ input:
         type: file
         description: FASTA or FASTQ
         pattern: "*.{fasta.gz,fa.gz,fna.gz,fastq.gz,fq.gz}"
-  - - scheme_metadata:
-        type: file
-        description: Scheme subtype metadata table
-        pattern: "*.{tab,tsv,txt}"
+        ontologies: []
+  - scheme_metadata:
+      type: file
+      description: Scheme subtype metadata table
+      pattern: "*.{tab,tsv,txt}"
+      ontologies:
+        - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - summary:
-      - meta:
+  summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,8 +42,9 @@ output:
           type: file
           description: Tab-delimited subtyping summary output
           pattern: "*summary.txt"
-  - kmer_results:
-      - meta:
+          ontologies: []
+  kmer_results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,8 +53,9 @@ output:
           type: file
           description: Tab-delimited subtyping kmer matching output
           pattern: "*kmer-results.txt"
-  - simple_summary:
-      - meta:
+          ontologies: []
+  simple_summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -58,11 +64,28 @@ output:
           type: file
           description: A simple version of summary output
           pattern: "*simple-summary.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_biohansel:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - biohansel:
+          type: string
+          description: The name of the tool
+      - hansel --version 2>&1 | sed 's/^.*hansel //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - biohansel:
+          type: string
+          description: The name of the tool
+      - hansel --version 2>&1 | sed 's/^.*hansel //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rpetit3"
 maintainers:

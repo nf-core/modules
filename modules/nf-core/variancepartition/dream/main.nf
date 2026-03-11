@@ -8,12 +8,13 @@ process VARIANCEPARTITION_DREAM {
         'community.wave.seqera.io/library/bioconductor-edger_bioconductor-variancepartition_r-optparse:ba778938d72f30c5' }"
 
     input:
-    tuple val(meta), val(contrast_variable), val(reference), val(target), val(formula)
+    tuple val(meta), val(contrast_variable), val(reference), val(target), val(formula), val(comparison)
     tuple val(meta2), path(samplesheet), path(counts)
 
     output:
     tuple val(meta), path("*.dream.results.tsv")        , emit: results
     tuple val(meta), path("*.dream.model.txt")          , emit: model
+    tuple val(meta), path("*.normalised_counts.tsv")    , emit: normalised_counts, optional: true
     path "versions.yml"                                 , emit: versions
 
     when:

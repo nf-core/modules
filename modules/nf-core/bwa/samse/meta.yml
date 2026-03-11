@@ -37,6 +37,7 @@ input:
         type: file
         description: SAI file specified alongside meta and reads in input channel.
         pattern: "*.sai"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -48,10 +49,10 @@ input:
           BWA_INDEX
         pattern: "bwa/"
         ontologies:
-        - edam: "http://edamontology.org/data_3210" # Genome index
+          - edam: "http://edamontology.org/data_3210" # Genome index
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,11 +63,47 @@ output:
           pattern: "*.bam"
           ontologies:
             - edam: "http://edamontology.org/format_2572" # BAM
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions_bwa:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bwa:
+          type: string
+          description: The tool name
+      - 'bwa 2>&1 | sed -n "s/^Version: //p"':
+          type: string
+          description: The command used to generate the version of the tool
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bwa:
+          type: string
+          description: The tool name
+      - 'bwa 2>&1 | sed -n "s/^Version: //p"':
+          type: string
+          description: The command used to generate the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
+
 authors:
   - "@jfy133"
 maintainers:

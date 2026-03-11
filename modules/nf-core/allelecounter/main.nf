@@ -20,15 +20,15 @@ process ALLELECOUNTER {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference_options = fasta ? "-r $fasta": ""
     """
     alleleCounter \\
-        $args \\
-        -l $loci \\
-        -b $input \\
-        $reference_options \\
+        ${args} \\
+        -l ${loci} \\
+        -b ${input} \\
+        ${reference_options} \\
         -o ${prefix}.alleleCount
 
     cat <<-END_VERSIONS > versions.yml
@@ -38,7 +38,6 @@ process ALLELECOUNTER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.alleleCount

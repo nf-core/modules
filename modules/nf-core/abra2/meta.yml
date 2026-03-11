@@ -1,0 +1,132 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "abra2"
+description: "Assembly Based ReAligner for next-generation sequencing data"
+keywords:
+  - alignment
+  - realignment
+  - indels
+  - bam
+  - dna
+  - rna
+  - splice-junctions
+  - assembly
+tools:
+  - "abra2":
+      description: "Assembly Based ReAligner for next-generation sequencing data"
+      homepage: "https://github.com/mozack/abra2"
+      documentation: "https://github.com/mozack/abra2"
+      tool_dev_url: "https://github.com/mozack/abra2"
+      doi: "10.1093/bioinformatics/btz033"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bams:
+        type: file
+        description: Input BAM file - must be coordinate sorted
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - bais:
+        type: file
+        description: BAM index file
+        pattern: "*.bai"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'genome' ]`
+    - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference index information
+          e.g. `[ id:'genome' ]`
+    - fai:
+        type: file
+        description: Reference genome FASTA index file
+        pattern: "*.{fai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3326"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing target regions information
+          e.g. `[ id:'targets' ]`
+    - targets:
+        type: file
+        description: BED file containing target regions for realignment (optional)
+        pattern: "*.{bed}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing GTF annotation information
+          e.g. `[ id:'annotation' ]`
+    - gtf:
+        type: file
+        description: GTF annotation file for RNA-seq data (optional)
+        pattern: "*.{gtf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2306"
+  - - meta6:
+        type: map
+        description: |
+          Groovy Map containing known indels information
+          e.g. `[ id:'known_indels' ]`
+    - known_indels:
+        type: file
+        description: VCF file containing known indels (optional)
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.bam":
+          type: file
+          description: Realigned BAM file
+          pattern: "*.abra.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  bai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.bam.bai":
+          type: file
+          description: BAM index file (optional)
+          pattern: "*.abra.bam.bai"
+          ontologies:
+            - edam: "http://edamontology.org/format_3327"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@adamrtalbot"
+maintainers:
+  - "@adamrtalbot"

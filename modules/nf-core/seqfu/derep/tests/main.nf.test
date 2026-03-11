@@ -10,18 +10,18 @@ nextflow_process {
     tag "seqfu/derep"
 
     test("derep - 3 fastas") {
- 
+
         when {
             process {
                 """
                 input[0] = [
-                            [ id:'test' ],
-                            [
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true),
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
-                            ]
-                        ]
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                    ]
+                ]
                 """
             }
         }
@@ -29,14 +29,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
-                { assert process.out.fasta.size() == 1 }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
     test("derep - conflict") {
- 
+
         when {
             process {
                 """
@@ -54,10 +52,9 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("derep - stub") {
@@ -78,10 +75,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
-
 }

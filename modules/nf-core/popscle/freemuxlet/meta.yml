@@ -33,8 +33,8 @@ input:
         type: integer
         description: Number of samples multiplexed together.
 output:
-  - result:
-      - meta:
+  result:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,8 +44,10 @@ output:
           description: Output file contains the best guess of the sample identity, with
             detailed statistics to reach to the best guess.
           pattern: "*.clust1.samples.gz"
-  - vcf:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,8 +56,10 @@ output:
           type: file
           description: Output vcf file for each sample inferred and clustered from freemuxlet.
           pattern: "*.clust1.vcf.gz"
-  - lmix:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  lmix:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,8 +68,9 @@ output:
           type: file
           description: Output file contains basic statistics for each barcode.
           pattern: "*.lmix"
-  - singlet_result:
-      - meta:
+          ontologies: []
+  singlet_result:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,10 +78,13 @@ output:
       - "*.clust0.samples.gz":
           type: file
           description: Optional output file contains the best sample identity assuming
-            all droplets are singlets when writing auxiliary output files is turned on.
+            all droplets are singlets when writing auxiliary output files is turned
+            on.
           pattern: "*.clust0.samples.gz"
-  - singlet_vcf:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  singlet_vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -87,11 +95,15 @@ output:
             from freemuxlet assuming all droplets are singlets when writing auxiliary
             output files is turned on.
           pattern: "*.clust0.vcf.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@wxicu"
 maintainers:

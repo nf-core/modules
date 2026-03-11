@@ -18,12 +18,11 @@ process ABRICATE_SUMMARY {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     abricate \\
         --summary \\
-        $reports > ${prefix}.txt
+        ${reports} > ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

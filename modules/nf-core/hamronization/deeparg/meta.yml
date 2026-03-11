@@ -25,21 +25,22 @@ input:
         type: file
         description: Output .mapping.ARG file from DeepARG
         pattern: "*.mapping.ARG"
-  - - format:
-        type: string
-        description: Type of report file to be produced
-        pattern: "tsv|json"
-  - - software_version:
-        type: string
-        description: Version of DeepARG used
-        pattern: "[0-9].[0-9].[0-9]"
-  - - reference_db_version:
-        type: integer
-        description: Database version of DeepARG used
-        pattern: "[0-9]"
+        ontologies: []
+  - format:
+      type: string
+      description: Type of report file to be produced
+      pattern: "tsv|json"
+  - software_version:
+      type: string
+      description: Version of DeepARG used
+      pattern: "[0-9].[0-9].[0-9]"
+  - reference_db_version:
+      type: integer
+      description: Database version of DeepARG used
+      pattern: "[0-9]"
 output:
-  - json:
-      - meta:
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,8 +49,10 @@ output:
           type: file
           description: hAMRonised report in JSON format
           pattern: "*.json"
-  - tsv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -58,11 +61,15 @@ output:
           type: file
           description: hAMRonised report in TSV format
           pattern: "*.json"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

@@ -8,7 +8,7 @@ process RIBOWALTZ {
         'biocontainers/ribowaltz:2.0--r43hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta) , path(bam)
     tuple val(meta2), path(gtf)
     tuple val(meta3), path(fasta)
 
@@ -22,6 +22,7 @@ process RIBOWALTZ {
     tuple val(meta), path("*.cds_coverage_psite.tsv{,.gz}")   , emit: cds_coverage         , optional: true
     tuple val(meta), path("*nt_coverage_psite.tsv{,.gz}")     , emit: cds_window_coverage  , optional: true
     tuple val(meta), path("ribowaltz_qc/*.pdf")               , emit: ribowaltz_qc         , optional: true
+    tuple val(meta), path("ribowaltz_qc/*.tsv")               , emit: ribowaltz_qc_data    , optional: true
     path "versions.yml"                                       , emit: versions
 
     when:
@@ -41,6 +42,9 @@ process RIBOWALTZ {
     touch ${prefix}.cds_coverage_psite.tsv
     mkdir -p offset_plot/${prefix} && touch offset_plot/${prefix}/29.pdf
     mkdir -p ribowaltz_qc && touch ribowaltz_qc/${prefix}.metaprofile_psite.pdf
+    touch ribowaltz_qc/${prefix}.psite_region.tsv
+    touch ribowaltz_qc/${prefix}.frames.tsv
+    touch ribowaltz_qc/${prefix}.frames_stratified.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

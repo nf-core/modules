@@ -22,13 +22,15 @@ input:
         type: file
         description: FASTA file containing the microRNA query sequences
         pattern: "*.{fa,fasta}"
-  - - mirbase:
-        type: file
-        description: FASTA file containing the sequence(s) to be scanned
-        pattern: "*.{fa,fasta}"
+        ontologies: []
+  - mirbase:
+      type: file
+      description: FASTA file containing the sequence(s) to be scanned
+      pattern: "*.{fa,fasta}"
+      ontologies: []
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,11 +39,14 @@ output:
           type: file
           description: Reformatted TXT file containing microRNA targets
           pattern: "*.{txt}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@BarryDigby"
 maintainers:

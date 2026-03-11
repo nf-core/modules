@@ -1,0 +1,91 @@
+nextflow_process {
+
+    name "Test Process CRISPRESSO2"
+    script "../main.nf"
+    process "CRISPRESSO2"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "crispresso2"
+
+    test("crispresso2 - single_end") {
+
+        config "./single_end.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("single_end_versions") },
+                { assert process.out.results[0][1].size() > 0 },
+                { assert process.out.html[0][1].size() > 0 },
+                { assert process.out.txt[0][1].size() > 0 }
+            )
+        }
+    }
+
+    test("crispresso2 - paired_end") {
+
+        config "./paired_end.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'paired_test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("paired_end_versions") },
+                { assert process.out.results[0][1].size() > 0 },
+                { assert process.out.html[0][1].size() > 0 },
+                { assert process.out.txt[0][1].size() > 0 }
+            )
+        }
+    }
+
+    test("crispresso2 - nhej_analysis") {
+
+        config "./nhej.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'nhej_test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("nhej_analysis_versions") },
+                { assert process.out.results[0][1].size() > 0 },
+                { assert process.out.html[0][1].size() > 0 },
+                { assert process.out.txt[0][1].size() > 0 }
+            )
+        }
+    }
+}

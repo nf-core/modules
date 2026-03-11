@@ -45,9 +45,7 @@ process GANON_CLASSIFY {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input = meta.single_end ? "--single-reads ${fastqs}" : "--paired-reads ${fastqs}"
     """
     touch ${prefix}.tre
     touch ${prefix}.rep

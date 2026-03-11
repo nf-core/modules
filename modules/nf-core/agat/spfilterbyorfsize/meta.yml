@@ -31,21 +31,21 @@ input:
         description: Input GFF3/GTF file
         pattern: "*.{gff,gff3,gtf}"
         ontologies:
-          - edam: http://edamontology.org/format_2305 # GFF
-          - edam: http://edamontology.org/format_1975 # GFF3
-          - edam: http://edamontology.org/format_2306 # GTF
-  - - config:
-        type: file
-        description: |
-          Input agat config file. By default AGAT takes as input agat_config.yaml file from the working directory if any,
-          otherwise it takes the orignal agat_config.yaml shipped with AGAT. To get the agat_config.yaml locally type: "agat config --expose".
-          The --config option gives you the possibility to use your own AGAT config file (located elsewhere or named differently).
-        pattern: "*.{yaml}"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+          - edam: "http://edamontology.org/format_2305" # GFF
+          - edam: "http://edamontology.org/format_1975" # GFF3
+          - edam: "http://edamontology.org/format_2306" # GTF
+  - config:
+      type: file
+      description: |
+        Input agat config file. By default AGAT takes as input agat_config.yaml file from the working directory if any,
+        otherwise it takes the orignal agat_config.yaml shipped with AGAT. To get the agat_config.yaml locally type: "agat config --expose".
+        The --config option gives you the possibility to use your own AGAT config file (located elsewhere or named differently).
+      pattern: "*.{yaml}"
+      ontologies:
+        - edam: "http://edamontology.org/format_3750" # YAML
 output:
-  - passed_gff:
-      - meta:
+  passed_gff:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -58,9 +58,9 @@ output:
             e.g. `[ id:'sample1' ]
           pattern: "*.passed.{gff}"
           ontologies:
-            - edam: http://edamontology.org/format_2305
-  - failed_gff:
-      - meta:
+            - edam: "http://edamontology.org/format_2305" # GFF
+  failed_gff:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,13 +73,14 @@ output:
             e.g. `[ id:'sample1' ]
           pattern: "*.failed.{gff}"
           ontologies:
-            - edam: http://edamontology.org/format_2305
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies: []
+            - edam: "http://edamontology.org/format_2305" # GFF
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@GallVp"
 maintainers:

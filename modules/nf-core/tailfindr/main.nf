@@ -25,9 +25,9 @@ process TAILFINDR {
     R --vanilla --slave -e "library(tailfindr);
     find_tails(fast5_dir = './' ,
     save_dir = './' ${args},
-    csv_filename = \'${meta.id}.csv\',
+    csv_filename = \'${prefix}.csv\',
     num_cores = ${task.cpus})";
-    gzip ${meta.id}.csv
+    gzip ${prefix}.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

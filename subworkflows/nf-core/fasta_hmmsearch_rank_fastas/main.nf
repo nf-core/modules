@@ -10,41 +10,41 @@ workflow FASTA_HMMSEARCH_RANK_FASTAS {
 
     main:
 
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     ch_hmms
         .combine(ch_fasta)
-        .map { [ it[0], it[1], it[2], false, true, false ] }
+        .map { index -> [ index[0], index[1], index[2], false, true, false ] }
         .set { ch_hmmsearch }
 
     HMMER_HMMSEARCH ( ch_hmmsearch )
     ch_versions = ch_versions.mix(HMMER_HMMSEARCH.out.versions.first())
 
     HMMER_HMMSEARCH.out.target_summary
-        .collect { it[1] }
-        .map { [ [ id: 'rank' ], it ] }
+        .collect { index -> index[1] }
+        .map { index -> [ [ id: 'rank' ], index ] }
         .set { ch_hmmrank }
 
     HMMER_HMMRANK ( ch_hmmrank )
     ch_versions = ch_versions.mix(HMMER_HMMRANK.out.versions.first())
 
     HMMER_HMMRANK.out.hmmrank
-        .map { it[1] }
+        .map { index -> index[1] }
         .splitCsv(header: true, sep: '\t')
-        .filter { it.rank == '1' }
-        .collectFile { [ "${it.profile}.txt", "${it.accno}\n" ] }
-        .map { [ [ id: it.baseName ], it ] }
+        .filter { index -> index.rank == '1' }
+        .collectFile { index -> [ "${index.profile}.txt", "${index.accno}\n" ] }
+        .map { index -> [ [ id: index.baseName ], index ] }
         .groupTuple(sort: true)
         .set { ch_subseq_filter }
 
     ch_subseq_filter
         .combine(ch_fasta)
-        .map { [ it[0], it[2] ] }
+        .map { index -> [ index[0], index[2] ] }
         .groupTuple(sort: true)
         .set { ch_subseq_fasta }
 
-    SEQTK_SUBSEQ ( ch_subseq_fasta, ch_subseq_filter.map { it[1] } )
-    ch_versions = ch_versions.mix(SEQTK_SUBSEQ.out.versions.first())
+    SEQTK_SUBSEQ ( ch_subseq_fasta, ch_subseq_filter.map { index -> index[1] } )
+    // SEQTK_SUBSEQ emits version as a topic channel
 
     emit:
     hmmrank                 = HMMER_HMMRANK.out.hmmrank       // channel: [ [ id: 'rank' ], hmmrank_tsv ]
@@ -52,4 +52,3 @@ workflow FASTA_HMMSEARCH_RANK_FASTAS {
 
     versions                = ch_versions                     // channel: [ versions.yml ]
 }
-

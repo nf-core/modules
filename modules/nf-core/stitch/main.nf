@@ -1,16 +1,16 @@
 process STITCH {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-stitch:1.7.3--r44h64f727c_0':
-        'biocontainers/r-stitch:1.7.3--r44h64f727c_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/r-stitch:1.7.3--r44h64f727c_0'
+        : 'biocontainers/r-stitch:1.7.3--r44h64f727c_0'}"
 
     input:
-    tuple val(meta), path(collected_crams), path(collected_crais), path(cramlist), path(samplename), path(posfile), path(input, stageAs: "input"), path(rdata, stageAs: "RData_in"), val(chromosome_name), val(K), val(nGen)
+    tuple val(meta), path(collected_crams), path(collected_crais), path(cramlist), path(samplename), path(posfile), path(input, stageAs: "input"), path(genetic_map), path(rdata, stageAs: "RData_in"), val(chromosome_name), val(start), val(end), val(K), val(nGen)
     tuple val(meta2), path(fasta), path(fasta_fai)
-    val(seed)
+    val seed
 
     output:
     tuple val(meta), path("input", type: "dir") , emit: input
@@ -18,27 +18,40 @@ process STITCH {
     tuple val(meta), path("plots", type: "dir") , emit: plots , optional: { generate_input_only }
     tuple val(meta), path("*.vcf.gz")           , emit: vcf   , optional: { generate_input_only || bgen_output }
     tuple val(meta), path("*.bgen")             , emit: bgen  , optional: { generate_input_only || !bgen_output }
-    path "versions.yml"                         , emit: versions
+    tuple val("${task.process}"), val('r-quilt'), eval('Rscript -e "cat(as.character(packageVersion(\'STITCH\')))"'), topic: versions, emit: versions_r_quilt
+    tuple val("${task.process}"), val('r-base'), eval('R --version | sed "1!d; s/.*version //; s/ .*//"'), topic: versions, emit: versions_r_base
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix               = task.ext.prefix ?: "${meta.id}"
-    def args                 = task.ext.args   ?: ""
-    def args2                = task.ext.args2  ?: ""
-    def generate_input_only  = args2.contains( "--generateInputOnly TRUE" )
-    def bgen_output          = args2.contains( "--output_format bgen" )
-    def suffix               = bgen_output     ? "bgen"    : "vcf.gz"
-    def reads_ext            = collected_crams             ? collected_crams.extension.unique()                                : []
-    def rsync_cmd            = rdata                       ? "rsync -rL ${rdata}/ RData"                                       : ""
-    def stitch_cmd           = seed                        ? "Rscript <(cat \$(which STITCH.R) | tail -n +2 | cat <(echo 'set.seed(${seed})') -)" : "STITCH.R"
-    def cramlist_cmd         = cramlist && reads_ext == ["cram"] ? "--cramlist ${cramlist}"                                    : ""
-    def bamlist_cmd          = cramlist && reads_ext == ["bam" ] ? "--bamlist ${cramlist}"                                     : ""
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args   = task.ext.args   ?: ""
+    def args2  = task.ext.args2  ?: ""
+
+    generate_input_only = args2.contains("--generateInputOnly TRUE")
+    bgen_output         = args2.contains("--output_format bgen")
+    def suffix          = bgen_output ? "bgen" : "vcf.gz"
+
+    def crams_list = collected_crams instanceof Collection ? collected_crams : [collected_crams]
+    def reads_ext  = crams_list ? crams_list.collect { path -> path.extension }.unique() : []
+
+    if (reads_ext.size() > 1) {
+        error("STITCH process: Mixed input read file types detected: ${reads_ext}. Please provide either all BAM or all CRAM files.")
+    }
+    def cramlist_cmd         = cramlist && reads_ext == ["cram"] ? "--cramlist ${cramlist}"           : ""
+    def bamlist_cmd          = cramlist && reads_ext == ["bam" ] ? "--bamlist ${cramlist}"            : ""
+
     def reference_cmd        = fasta                       ? "--reference ${fasta}"                                            : ""
     def regenerate_input_cmd = input && rdata && !cramlist ? "--regenerateInput FALSE --originalRegionName ${chromosome_name}" : ""
-    def rsync_version_cmd    = rdata                       ? "rsync: \$(rsync --version | head -n1 | sed 's/^rsync  version //; s/ .*\$//')" : ""
-    def samplename_cmd       = samplename                  ? "--sampleNames_file ${samplename}"                               : ""
+    def samplename_cmd       = samplename                  ? "--sampleNames_file ${samplename}"                                : ""
+    def genetic_map_command  = genetic_map                 ? "--genetic_map_file=${genetic_map}"                               : ""
+
+    // Rsync and Stitch command to copy RData from previous run if available
+    def rsync_cmd            = rdata ? "rsync -rL ${rdata}/ RData" : ""
+    def rsync_version_cmd    = rdata ? "rsync: \$(rsync --version | head -n1 | sed 's/^rsync  version //; s/ .*\$//')" : ""
+    def stitch_cmd           = seed  ? "Rscript <(cat \$(which STITCH.R) | tail -n +2 | cat <(echo 'set.seed(${seed})') -)" : "STITCH.R"
+
     """
     ${rsync_cmd} ${args}
 
@@ -54,30 +67,26 @@ process STITCH {
         ${reference_cmd} \\
         ${regenerate_input_cmd} \\
         ${samplename_cmd} \\
+        ${genetic_map_command} \\
         --output_filename ${prefix}.${suffix} \\
         ${args2}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ${rsync_version_cmd}
-        r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
-        r-stitch: \$(Rscript -e "cat(as.character(utils::packageVersion('STITCH')))")
-    END_VERSIONS
     """
 
     stub:
-    def prefix               = task.ext.prefix      ?: "${meta.id}"
-    def _args                = task.ext.args        ?: ""
-    def args2                = task.ext.args2       ?: ""
-    def nb_samples           = collected_crams.size()
-    def generate_input_only  = args2.contains( "--generateInputOnly TRUE" )
-    def bgen_output          = args2.contains( "--output_format bgen" )
-    def generate_plots_cmd   = !generate_input_only
-    def generate_file_cmd    = !generate_input_only ? bgen_output ? "touch ${prefix}.bgen" : "echo '' | gzip > ${prefix}.vcf.gz"            : ""
-    def rsync_version_cmd    = rdata                ? "rsync: \$(rsync --version | head -n1 | sed 's/^rsync  version //; s/ .*\$//')" : ""
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def _args  = task.ext.args   ?: ""
+    def args2  = task.ext.args2  ?: ""
+
+    def nb_samples      = collected_crams.size()
+    generate_input_only = args2.contains("--generateInputOnly TRUE")
+    bgen_output         = args2.contains("--output_format bgen")
+
+    def generate_plots_cmd = !generate_input_only
+    def generate_file_cmd  = !generate_input_only ? bgen_output ? "touch ${prefix}.bgen" : "echo '' | gzip > ${prefix}.vcf.gz" : ""
+    def rsync_version_cmd  = rdata ? "rsync: \$(rsync --version | head -n1 | sed 's/^rsync  version //; s/ .*\$//')" : ""
     """
     mkdir -p input
-    for i in {1..$nb_samples}
+    for i in {1..${nb_samples}}
     do
         touch "input/sample.\$i.input.${chromosome_name}.RData"
     done
@@ -102,12 +111,5 @@ process STITCH {
         touch "plots/metricsForPostImputationQCChromosomeWide.${chromosome_name}.sample.jpg"
         touch "plots/r2.${chromosome_name}.goodonly.jpg"
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ${rsync_version_cmd}
-        r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
-        r-stitch: \$(Rscript -e "cat(as.character(utils::packageVersion('STITCH')))")
-    END_VERSIONS
     """
 }

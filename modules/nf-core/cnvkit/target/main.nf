@@ -1,11 +1,11 @@
 process CNVKIT_TARGET {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cnvkit:0.9.10--pyhdfd78af_0':
-        'biocontainers/cnvkit:0.9.10--pyhdfd78af_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/cnvkit:0.9.12--pyhdfd78af_0'
+        : 'biocontainers/cnvkit:0.9.12--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(baits)
@@ -13,7 +13,7 @@ process CNVKIT_TARGET {
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
-    path "versions.yml"           , emit: versions
+    path "versions.yml",            emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,13 +21,13 @@ process CNVKIT_TARGET {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def annotate_cmd = annotation ? "--annotate $annotation" : ""
+    def annotate_cmd = annotation ? "--annotate ${annotation}" : ""
     """
     cnvkit.py \\
         target \\
-        $baits \\
-        $annotate_cmd \\
-        $args \\
+        ${baits} \\
+        ${annotate_cmd} \\
+        ${args} \\
         --output ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml

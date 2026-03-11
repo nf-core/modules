@@ -21,12 +21,13 @@ input:
         type: file
         description: Output taxonomic profile from sylph-tax taxprof command.
         pattern: "*.{sylphmpa}"
-  - - data_type:
-        type: string
-        description: Can be ANI, relative abundance, or sequence abundance.
+        ontologies: []
+  - data_type:
+      type: string
+      description: Can be ANI, relative abundance, or sequence abundance.
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,11 +36,15 @@ output:
           type: file
           description: Output profile with the merged taxonomic profiles in tsv format.
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sofstam"
 maintainers:

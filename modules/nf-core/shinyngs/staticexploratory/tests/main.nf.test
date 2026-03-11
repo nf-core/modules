@@ -19,8 +19,8 @@ nextflow_process {
                 expression_sample_sheet = file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true)
                 expression_feature_meta = file(expression_test_data_dir + 'SRP254919.gene_meta.tsv', checkIfExists: true)
                 expression_matrix_file = file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
-                
-                input[0] = [ [ "id":"treatment" ], expression_sample_sheet, expression_feature_meta, [ expression_matrix_file ] ]
+
+                input[0] = [ [ "id":"treatment" ], expression_sample_sheet, expression_feature_meta, [ expression_matrix_file ], "treatment" ]
                 """
             }
         }
@@ -41,9 +41,9 @@ nextflow_process {
         }
 
     }
-    
+
     test("mouse - defaults - stub") {
-        
+
         options "-stub"
 
         when {
@@ -54,8 +54,8 @@ nextflow_process {
                 expression_sample_sheet = file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true)
                 expression_feature_meta = file(expression_test_data_dir + 'SRP254919.gene_meta.tsv', checkIfExists: true)
                 expression_matrix_file = file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
-                
-                input[0] = [ [ "id":"treatment" ], expression_sample_sheet, expression_feature_meta, [ expression_matrix_file ] ]
+
+                input[0] = [ [ "id":"treatment" ], expression_sample_sheet, expression_feature_meta, [ expression_matrix_file ], "treatment" ]
                 """
             }
         }
@@ -89,8 +89,8 @@ nextflow_process {
                 expression_sample_sheet = file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true)
                 expression_feature_meta = file(expression_test_data_dir + 'SRP254919.gene_meta.tsv', checkIfExists: true)
                 expression_matrix_file = file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
-                
-                input[0] = [ [ "id":"treatment" ], expression_sample_sheet, expression_feature_meta, [ expression_matrix_file ] ]
+
+                input[0] = [ [ "id":"treatment" ], expression_sample_sheet, expression_feature_meta, [ expression_matrix_file ], "treatment" ]
                 """
             }
         }
@@ -111,7 +111,7 @@ nextflow_process {
         }
 
     }
-    
+
     test("mouse - html") {
 
         config './nextflow_html.conf'
@@ -124,8 +124,8 @@ nextflow_process {
                 expression_sample_sheet = file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true)
                 expression_feature_meta = file(expression_test_data_dir + 'SRP254919.gene_meta.tsv', checkIfExists: true)
                 expression_matrix_file = file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
-                
-                input[0] = [ [ "id":"treatment" ], expression_sample_sheet, expression_feature_meta, [ expression_matrix_file ] ]
+
+                input[0] = [ [ "id":"treatment" ], expression_sample_sheet, expression_feature_meta, [ expression_matrix_file ], "treatment" ]
                 """
             }
         }

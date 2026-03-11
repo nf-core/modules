@@ -35,13 +35,12 @@ process LTRHARVEST {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        LTR_HARVEST_parallel: \$(LTR_HARVEST_parallel -h | sed -n '/Version/s/Version: //p')
+        LTR_HARVEST_parallel: \$(LTR_HARVEST_parallel -h | sed -n '/Version/s/Version: v//p')
         genometools: \$(gt --version | sed '1!d ; s/gt (GenomeTools) //')
     END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch "${prefix}.gff3"
@@ -49,7 +48,7 @@ process LTRHARVEST {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        LTR_HARVEST_parallel: \$(LTR_HARVEST_parallel -h | sed -n '/Version/s/Version: //p')
+        LTR_HARVEST_parallel: \$(LTR_HARVEST_parallel -h | sed -n '/Version/s/Version: v//p')
         genometools: \$(gt --version | sed '1!d ; s/gt (GenomeTools) //')
     END_VERSIONS
     """

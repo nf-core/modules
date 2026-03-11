@@ -21,10 +21,12 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1']`
-    - '"*.mzML"':
+    - "*.mzML":
         type: file
-        description: mzML open source mass spectrometry raw data format
-        pattern: "*.{mzML, mzML.gz}"
+        description: mzML files for proteomics search
+        pattern: "*.mzML"
+        ontologies:
+          - edam: http://edamontology.org/format_3244 # mzML
   - - meta2:
         type: map
         description: |
@@ -33,7 +35,9 @@ input:
     - fasta_proteome:
         type: file
         description: proteome database in fasta format
-        pattern: "*.{fasta, fasta.gz}"
+        pattern: "*.{fasta,fasta.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta3:
         type: map
         description: |
@@ -42,10 +46,12 @@ input:
     - base_config:
         type: file
         description: sage configuration json
-        pattern: "*.{json}"
+        pattern: "*.json"
+        ontologies:
+          - edam: http://edamontology.org/format_3464 # JSON
 output:
-  - results_tsv:
-      - meta:
+  results_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,8 +60,10 @@ output:
           type: file
           description: tsv output results
           pattern: "results.sage.tsv"
-  - results_json:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  results_json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,8 +72,10 @@ output:
           type: file
           description: json output results
           pattern: "results.json"
-  - results_pin:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  results_pin:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,13 +84,16 @@ output:
           type: file
           description: pin format output results
           pattern: "results.sage.pin"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-  - tmt_tsv:
-      - meta:
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  tmt_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -89,8 +102,10 @@ output:
           type: file
           description: tandem mass tag quantification
           pattern: "tmt.tsv"
-  - lfq_tsv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  lfq_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -99,6 +114,8 @@ output:
           type: file
           description: label free quantification
           pattern: "lfq.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
 authors:
   - "@dgemperline-lilly"
 maintainers:

@@ -3,8 +3,8 @@ process CHECKV_UPDATEDATABASE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/checkv:1.0.1--pyhdfd78af_0':
-        'biocontainers/checkv:1.0.1--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/checkv:1.0.3--pyhdfd78af_0':
+        'biocontainers/checkv:1.0.3--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path (fasta)
@@ -37,10 +37,7 @@ process CHECKV_UPDATEDATABASE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix    = task.ext.prefix ?: "${meta.id}"
-    def checkv_db = db ?: ''
-    def update_sequence = fasta ?: ''
     """
     touch -p ${prefix}/**
 

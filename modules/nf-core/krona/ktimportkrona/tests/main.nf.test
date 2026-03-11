@@ -1,0 +1,83 @@
+nextflow_process {
+
+    name "Test Process KRONA_KTIMPORTKRONA"
+    script "../main.nf"
+    process "KRONA_KTIMPORTKRONA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "krona"
+    tag "krona/ktimportkrona"
+    tag "krona/ktimporttext"
+    tag "krakentools/kreport2krona"
+
+
+    setup {
+        run("KRAKENTOOLS_KREPORT2KRONA") {
+            script "../../../krakentools/kreport2krona/main.nf"
+            process {
+                """
+                first_file = Channel.of([
+                    [id: 'testreport1'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.report.txt', checkIfExists: true)
+                    ])
+                second_file = Channel.of([
+                    [id: 'testreport2'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.report.txt', checkIfExists: true)
+                    ])
+                input[0] = first_file.concat(second_file)
+                """
+            }
+        }
+
+        run("KRONA_KTIMPORTTEXT") {
+            script "../../ktimporttext/main.nf"
+            process {
+                """
+                input[0] = KRAKENTOOLS_KREPORT2KRONA.out.txt
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - multiple fastq") {
+        when {
+            process {
+                """
+                input[0] = KRONA_KTIMPORTTEXT.out.html.map{it[1]}.collect()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out.versions,
+                        path(process.out.html.get(0)).getText().contains("s__Severe_acute_respiratory_syndrome-related_coronavirus"),
+                        path(process.out.html.get(0)).getText().contains("testreport1"),
+                        path(process.out.html.get(0)).getText().contains("testreport2")
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("sarscov2 - multiple fastq - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = KRONA_KTIMPORTTEXT.out.html.map{it[1]}.collect()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

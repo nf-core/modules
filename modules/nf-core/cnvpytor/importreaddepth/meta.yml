@@ -25,22 +25,26 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram}"
+        ontologies: []
     - index:
         type: file
         description: bam file index
         pattern: "*.{bai,crai}"
-  - - fasta:
-        type: file
-        description: specifies reference genome file (only for cram file without reference
-          genome)
-        pattern: "*.{fasta,fasta.gz,fa,fa.gz}"
-  - - fai:
-        type: file
-        description: Index of reference fasta file
-        pattern: "*.fai"
+        ontologies: []
+  - fasta:
+      type: file
+      description: specifies reference genome file (only for cram file without reference
+        genome)
+      pattern: "*.{fasta,fasta.gz,fa,fa.gz}"
+      ontologies: []
+  - fai:
+      type: file
+      description: Index of reference fasta file
+      pattern: "*.fai"
+      ontologies: []
 output:
-  - pytor:
-      - meta:
+  pytor:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,11 +54,14 @@ output:
           description: read depth root file in which read depth data binned to 100 base
             pair bins will be stored.
           pattern: "*.{pytor}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sima-r"
   - "@ramprasadn"

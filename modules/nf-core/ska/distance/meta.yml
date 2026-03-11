@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "ska_distance"
 description: Calculate pairwise distances and basic clustering from SKA sketches
@@ -16,8 +15,8 @@ tools:
       documentation: "https://github.com/simonrharris/SKA/wiki"
       tool_dev_url: "https://github.com/simonrharris/SKA"
       doi: "10.1101/453142"
-      licence: ['MIT']
-
+      licence: ["MIT"]
+      identifier: ""
 
 input:
   - - meta:
@@ -29,60 +28,68 @@ input:
         type: file
         description: SKA sketch files
         pattern: "*.skf"
+        ontologies: []
     - sketch_list:
         type: file
         description: List of SKA sketch files
         pattern: "*.txt"
 
+        ontologies: []
 output:
-  - distances:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-    - "*distances.tsv":
-        type: file
-        description: Pairwise distance table
-        pattern: "*distance.tsv"
-        ontologies:
-          - edam: "http://edamontology.org/format_3475"
-  - cluster_list:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-    - "*clusters.tsv":
-        type: file
-        description: List of samples and their clusters
-        pattern: "*clusters.tsv"
-  - cluster_files:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-    - "*cluster*.txt":
-        type: file
-        description: Cluster files
-        pattern: "*cluster*.txt"
-  - dot:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-    - "*.dot":
-        type: file
-        description: DOT file for visualization
-        pattern: "*.dot"
-  - versions:
-    - "versions.yml":
+  distances:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*distances.tsv":
+          type: file
+          description: Pairwise distance table
+          pattern: "*distance.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  cluster_list:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*clusters.tsv":
+          type: file
+          description: List of samples and their clusters
+          pattern: "*clusters.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  cluster_files:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*cluster*.txt":
+          type: file
+          description: Cluster files
+          pattern: "*cluster*.txt"
+          ontologies: []
+  dot:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.dot":
+          type: file
+          description: DOT file for visualization
+          pattern: "*.dot"
+          ontologies: []
+  versions:
+    - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@itrujnara"
 maintainers:

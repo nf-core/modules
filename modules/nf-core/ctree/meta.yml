@@ -1,0 +1,105 @@
+name: "ctree"
+description: Clone trees for Cancer Evolution studies from bulk sequencing data.
+keywords:
+  - phylogenetic-trees
+  - cancer-genomics
+  - cancer-evolution
+  - clonal-evolution
+tools:
+  - "ctree":
+      description: |
+        The ctree package implements clones trees for cancer evolutionary studies. These models are built from
+        Cancer Cell Franctions (CCFs) clusters computed via tumour subclonal deconvolution, using either one or
+        more tumour biopsies at once. They can be used to model evolutionary trajectories from bulk sequencing
+        data, especially if whole-genome sequencing is available.
+      homepage: "https://caravagnalab.github.io/ctree/"
+      documentation: "https://caravagnalab.github.io/ctree/"
+      tool_dev_url: "https://github.com/caravagnalab/ctree"
+      doi: "10.1038/s41592-018-0108-x"
+      licence: ["GPL v3-or-later"]
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - ctree_input:
+        type: file
+        description: |
+          Either a .rds object of class `vb_bmm` or `dbpmm`, or a `.tsv` mutations table obtained after running the `pyclonevi` module
+        pattern: "*.{rds,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # tsv
+output:
+  ctree_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "**ctree_{mobster,VIBER,pyclonevi}.rds":
+          type: file
+          description: |
+            The output varies based on the input. If the input is an object of class `dbpmm`,
+            the module outputs one object per sample as follows: `SampleID/ctree_mobster.rds`.
+            If the input is an object of class `vb_bmm`, the output will be one ctree object
+            named `ctree_VIBER.rds`. If the input is the `pyclonevi` `.tsv` file, the output will
+            be one ctree object named `ctree_pyclonevi.rds`
+          pattern: "**ctree_{mobster,VIBER,pyclonevi}.rds"
+  ctree_plots_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "**ctree_{mobster,VIBER,pyclonevi}_plots.rds":
+          type: file
+          description: |
+            Final plots as an .rds object. The module outputs one file for each ctree object
+          pattern: "**ctree_{mobster,VIBER,pyclonevi}_plots.rds"
+  ctree_report_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "**ctree_{mobster,VIBER,pyclonevi}_report.rds":
+          type: file
+          description: |
+            Final report plots as an .rds object. The module outputs one file for each ctree object
+          pattern: "**ctree_{mobster,VIBER,pyclonevi}_report.rds"
+  ctree_report_pdf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "**ctree_{mobster,VIBER,pyclonevi}_report.pdf":
+          type: file
+          description: |
+            Final report plots as a pdf object. The module outputs one file for each ctree object
+          pattern: "**ctree_{mobster,VIBER,pyclonevi}_report.pdf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3508" # pdf
+  ctree_report_png:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "**ctree_{mobster,VIBER,pyclonevi}_report.png":
+          type: file
+          description: |
+            Final report plots as a png object. The module outputs one file for each ctree object
+          pattern: "**ctree_{mobster,VIBER,pyclonevi}_report.png"
+          ontologies:
+            - edam: "http://edamontology.org/format_3603" # png
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+authors:
+  - "@elena-buscaroli"
+maintainers:
+  - "@elena-buscaroli"

@@ -26,6 +26,7 @@ input:
         type: file
         description: unmapped BAM file
         pattern: "*.bam"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -35,6 +36,7 @@ input:
         type: file
         description: mapped BAM/SAM file
         pattern: "*.{bam,sam}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -44,6 +46,7 @@ input:
         type: file
         description: fasta file containing genomic sequence information
         pattern: "*.{fasta,fa}"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -53,9 +56,10 @@ input:
         type: file
         description: dict file containing a sequence dictionary for the fasta file
         pattern: "*.{dict}"
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,11 +68,29 @@ output:
           type: file
           description: Zipped BAM file
           pattern: "*.bam"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_fgbio:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fgbio:
+          type: string
+          description: The tool name
+      - 'fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\[.*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fgbio:
+          type: string
+          description: The tool name
+      - 'fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\[.*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@lescai"
 maintainers:

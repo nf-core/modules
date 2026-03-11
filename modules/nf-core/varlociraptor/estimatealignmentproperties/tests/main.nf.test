@@ -1,4 +1,3 @@
-
 nextflow_process {
 
     name "Test Process VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES"
@@ -10,24 +9,18 @@ nextflow_process {
     tag "varlociraptor"
     tag "varlociraptor/estimatealignmentproperties"
 
-    test("test-varlociraptor-estimatealignmentproperties") {
+    test("sarscov2 - [bam,fasta]") {
 
         when {
             process {
                 """
                 input[0] = [
 				    [ id:'test', single_end:false ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true),
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
 				]
-				input[1] = [
-				    [ id:'test', single_end:false ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-				]
-				input[2] = [
-				    [ id:'test', single_end:false ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
-				]
-
                 """
             }
         }
@@ -35,13 +28,18 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
-                { assert file(process.out.alignment_properties_json[0][1]).text.contains('wildtype_homopolymer_error_model') }
+                { assert snapshot(
+                    path(process.out.alignment_properties_json[0][1]).json.sort { a, b -> a.key <=> b.key }.collectEntries { k, v ->
+                        [k, v instanceof Map ? v.sort { it.key } : v]
+                    }.toString().md5(),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match() }
             )
         }
     }
 
-    test("test-varlociraptor-estimatealignmentproperties-stub") {
+    test("sarscov2 - [bam,fasta] - stub") {
+
         options '-stub'
 
         when {
@@ -49,17 +47,11 @@ nextflow_process {
                 """
                 input[0] = [
 				    [ id:'test', single_end:false ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true),
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
 				]
-				input[1] = [
-				    [ id:'test', single_end:false ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-				]
-				input[2] = [
-				    [ id:'test', single_end:false ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
-				]
-
                 """
             }
         }
