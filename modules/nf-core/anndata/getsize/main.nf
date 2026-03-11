@@ -13,24 +13,22 @@ process ANNDATA_GETSIZE {
 
     output:
     tuple val(meta), path("*.txt"), emit: size
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val("python"), eval('python3 -c "import platform; print(platform.python_version())"'), topic: versions, emit: versions_python
+    tuple val("${task.process}"), val("anndata"), eval('python3 -c "import anndata; print(anndata.__version__)"'), topic: versions, emit: versions_anndata
+
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"    
     template 'getsize.py'
-
+    
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    
     touch ${prefix}.txt
 
-    cat <<-END_VERSIONS > versions.yml
-    ${task.process}:
-        python: \$(python3 -c 'import platform; print(platform.python_version())')
-        anndata: \$(python3 -c 'import anndata; print(anndata.__version__)')
-    END_VERSIONS
     """
 }

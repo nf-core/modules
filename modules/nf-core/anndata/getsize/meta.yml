@@ -1,6 +1,6 @@
 name: "anndata_getsize"
-description: Get the size (n_cells or n_genes) of an anndata object stored as a h5ad
-  file
+description: Get the size (n_cells or n_genes) of an anndata object stored as a
+  h5ad file
 keywords:
   - anndata
   - single-cell
@@ -12,27 +12,24 @@ tools:
       documentation: "http://anndata.rtfd.io"
       tool_dev_url: "https://github.com/theislab/anndata"
       doi: "10.21105/joss.04371"
-      licence: ["BSD-3-clause"]
+      licence:
+        - "BSD-3-clause"
       identifier: biotools:anndata
-
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-
+          e.g. `[ id:'sample1' ]`
     - h5ad:
         type: file
         description: H5AD file of anndata object
         pattern: "*.h5ad"
         ontologies:
-          - edam: "http://edamontology.org/format_3590" # HDF5
-
+          - edam: "http://edamontology.org/format_3590"
   - size_type:
       type: string
       description: either 'cells', 'genes', 'obs', or 'var'
-
 output:
   size:
     - - meta:
@@ -45,17 +42,68 @@ output:
           description: text file containing the requested size
           pattern: "*.txt"
           ontologies:
-            - edam: "http://edamontology.org/format_2330" # Textual format
-
+            - edam: "http://edamontology.org/format_2330"
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python3 -c 'import platform; print(platform.python_version())':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_anndata:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - anndata:
+          type: string
+          description: The name of the tool
+      - python3 -c 'import anndata; print(anndata.__version__)':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
-
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python3 -c 'import platform; print(platform.python_version())':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - anndata:
+          type: string
+          description: The name of the tool
+      - python3 -c 'import anndata; print(anndata.__version__)':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@LeonHafner"
 maintainers:
   - "@LeonHafner"
+versions_python:
+  - - ${task.process}:
+        type: string
+        description: The name of the process
+    - python:
+        type: string
+        description: The name of the tool
+    - python3 -c 'import platform; print(platform.python_version())':
+        type: eval
+        description: The expression to obtain the version of the tool
+versions_anndata:
+  - - ${task.process}:
+        type: string
+        description: The name of the process
+    - anndata:
+        type: string
+        description: The name of the tool
+    - python3 -c 'import anndata; print(anndata.__version__)':
+        type: eval
+        description: The expression to obtain the version of the tool
