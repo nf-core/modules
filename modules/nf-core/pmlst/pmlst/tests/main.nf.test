@@ -65,9 +65,7 @@ nextflow_process {
                 { assert path(process.out.tsv.get(0).get(1)).text.trim() == "" },
                 { assert path(process.out.txt.get(0).get(1)).text.trim() == "" },
                 { assert snapshot(
-                    file(process.out.tsv.get(0).get(1)).name,
-                    file(process.out.txt.get(0).get(1)).name,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    process.out
                 ).match() }
             )
         }
@@ -98,9 +96,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.tsv.get(0).get(1)).name,
-                    file(process.out.txt.get(0).get(1)).name,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    process.out
                 ).match() }
             )
         }
