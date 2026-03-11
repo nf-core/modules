@@ -1,5 +1,4 @@
 name: "decoupler_decoupler"
-
 description: |
   decoupler is a package containing different statistical methods
   to extract biological activities from omics data within a unified framework.
@@ -9,14 +8,12 @@ description: |
   biological process based on prior knowledge. For example, in transcriptomics
   gene sets regulated by a transcription factor, or in phospho-proteomics
   phosphosites that are targeted by a kinase.
-
 keywords:
   - enrichment
   - omics
   - biological activity
   - functional analysis
   - prior knowledge
-
 tools:
   - "decoupler":
       description: "Ensemble of methods to infer biological activities from omics data"
@@ -24,9 +21,9 @@ tools:
       documentation: "https://decoupler-py.readthedocs.io/en/latest/api.html"
       tool_dev_url: "https://decoupler-py.readthedocs.io"
       doi: "10.1093/bioadv/vbac016"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:decoupler
-
 input:
   - - meta:
         type: map
@@ -40,7 +37,7 @@ input:
           Should be in in tab-separated format (`*.tab`)
         pattern: "*.tsv"
         ontologies:
-          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3475
   - - meta2:
         type: map
         description: Groovy map
@@ -52,7 +49,7 @@ input:
           transcription factor, kinase, etc.)
         pattern: "*.tsv"
         ontologies:
-          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3475
   - - meta3:
         type: map
         description: Groovy map
@@ -65,7 +62,7 @@ input:
         pattern: "*.tsv"
         required: false
         ontologies:
-          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3475
 output:
   dc_estimate:
     - - meta:
@@ -79,7 +76,7 @@ output:
             The file containing the estimation results of the enrichment(s)
           pattern: "*estimate_decoupler.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   dc_pvals:
     - - meta:
           type: map
@@ -93,7 +90,7 @@ output:
             results of the enrichment(s)
           pattern: "*pvals_decoupler.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   png:
     - - meta:
           type: map
@@ -107,14 +104,18 @@ output:
             results of the enrichment(s)
           pattern: "*estimate_decoupler_plot.png"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
+  versions_decoupler:
+    - versions.yml:
+        type: file
+        description: YAML file containing versions of tools used in the module
+        ontologies: []
+topics:
   versions:
     - versions.yml:
         type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+        description: YAML file containing versions of tools used in the module
+        ontologies: []
 authors:
   - "@gabora"
   - "@vicpaton"
