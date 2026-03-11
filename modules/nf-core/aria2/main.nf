@@ -12,7 +12,7 @@ process ARIA2 {
 
     output:
     tuple val(meta), path("$downloaded_file"), emit: downloaded_file
-    tuple val("${task.process}"), val("aria2"), eval("aria2c --version 2>&1 | grep 'aria2 version' | cut -f3 -d ' '"), emit: versions_aria2, topic: versions
+    tuple val("${task.process}"), val("aria2"), eval("aria2c --version 2>&1 | sed -n 's/^aria2 version \\([^ ]*\\).*/\\1/p'"), emit: versions_aria2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

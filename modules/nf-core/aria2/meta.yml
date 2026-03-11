@@ -40,26 +40,26 @@ output:
           pattern: "*.*"
           ontologies: []
   versions_aria2:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: Process name
-      - "aria2":
+      - aria2:
           type: string
           description: Tool name
-      - "aria2c --version 2>&1 | grep 'aria2 version' | cut -f3 -d ' '":
+      - aria2c --version 2>&1 | sed -n 's/^aria2 version \([^ ]*\).*/\1/p':
           type: eval
-          description: aria2 version
+          description: The expression to obtain the version of the tool
 topics:
   versions:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: Process name
-      - "aria2":
+      - aria2:
           type: string
           description: Tool name
-      - "aria2c --version 2>&1 | grep 'aria2 version' | cut -f3 -d ' '":
+      - aria2c --version 2>&1 | sed -n 's/^aria2 version \([^ ]*\).*/\1/p':
           type: eval
-          description: aria2 version
+          description: The expression to obtain the version of the tool
 authors:
   - "@JoseEspinosa"
   - "@leoisl"
