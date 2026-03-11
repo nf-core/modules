@@ -13,7 +13,7 @@ process AGAT_SPKEEPLONGESTISOFORM {
 
     output:
     tuple val(meta), path("${output}"), emit: gff
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('agat'), eval("agat --version | sed 's/v//'"), topic: versions, emit: versions_agat
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,11 +29,6 @@ process AGAT_SPKEEPLONGESTISOFORM {
         ${config_param} \\
         --out ${output} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        agat: \$(agat --version)
-    END_VERSIONS
     """
 
     stub:
@@ -42,10 +37,5 @@ process AGAT_SPKEEPLONGESTISOFORM {
     """
     touch ${output}
     touch ${gxf}.agat.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        agat: \$(agat --version)
-    END_VERSIONS
     """
 }
