@@ -39,7 +39,7 @@ process STACKS_REFMAP {
     def args = task.ext.args ?: ''
     """
     ref_map.pl \\
-        --samples ./ \\
+        --samples ${bam_path} \\
         --popmap ${popmap} \\
         -o . \\
         -T $task.cpus \\
