@@ -12,7 +12,7 @@ process ARIA2 {
 
     output:
     tuple val(meta), path("$downloaded_file"), emit: downloaded_file
-    path "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val("aria2"), eval("aria2c --version 2>&1 | grep 'aria2 version' | cut -f3 -d ' '"), emit: versions_aria2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,11 +26,6 @@ process ARIA2 {
         --check-certificate=false \\
         ${args} \\
         ${source_url}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        aria2: \$(echo \$(aria2c --version 2>&1) | grep 'aria2 version' | cut -f3 -d ' ')
-    END_VERSIONS
     """
 
     stub:
@@ -38,10 +33,5 @@ process ARIA2 {
 
     """
     touch ${downloaded_file}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        aria2: \$(echo \$(aria2c --version 2>&1) | grep 'aria2 version' | cut -f3 -d ' ')
-    END_VERSIONS
     """
 }
