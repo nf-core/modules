@@ -24,7 +24,7 @@ process SIGPROFILER {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def context_types = task.ext.context_type?.split(',') ?: ['96','DINUC','ID']
+    def context_types = ['96','DINUC','ID']
 
     // Map context to signature type
     def context_map = [
