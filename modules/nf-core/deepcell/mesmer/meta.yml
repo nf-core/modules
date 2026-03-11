@@ -25,8 +25,8 @@ input:
         description: Multichannel image file
         pattern: "*.{tiff,tif,h5,hdf5}"
         ontologies:
-          - edam: http://edamontology.org/format_3590
-          - edam: http://edamontology.org/format_3591
+          - edam: http://edamontology.org/format_3590 # HDF5
+          - edam: http://edamontology.org/format_3591 # TIFF
   - - meta2:
         type: map
         description: |
@@ -37,8 +37,8 @@ input:
         description: Optional membrane image to be provided separately.
         pattern: "*.{tiff,tif,h5,hdf5}"
         ontologies:
-          - edam: http://edamontology.org/format_3590
-          - edam: http://edamontology.org/format_3591
+          - edam: http://edamontology.org/format_3590 # HDF5
+          - edam: http://edamontology.org/format_3591 # TIFF
 output:
   mask:
     - - meta:
