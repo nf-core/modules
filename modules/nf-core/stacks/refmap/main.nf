@@ -1,5 +1,5 @@
 process STACKS_REFMAP {
-    tag '$bam'
+    tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
