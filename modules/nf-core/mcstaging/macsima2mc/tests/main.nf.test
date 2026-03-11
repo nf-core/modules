@@ -48,9 +48,9 @@ nextflow_process {
             }
         }
 
-        then {
+    then {
             def out_path = process.out.out_dir[0][1][0].toString()
-
+            
             assertAll(
                 { assert process.success },
                 { assert process.out.out_dir[0][1].size() >= 1 },
@@ -59,7 +59,7 @@ nextflow_process {
                 { assert new File(out_path + '/raw').isDirectory() },
                 { assert snapshot(
                     process.out.findAll { key, val -> key.startsWith("versions") },
-                    file(out_path + '/markers.csv')
+                    file(out_path + '/markers.csv').name
                 ).match() }
             )
         }
@@ -107,9 +107,14 @@ nextflow_process {
         }
 
         then {
+            def out_path = process.out.out_dir[0][1][0].toString()
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.out_dir).match() }
+                { assert snapshot(process.out.out_dir).match() },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith("versions") },
+                    file(out_path + '/markers.csv')
+                ).match() }
             )
         }
     }
