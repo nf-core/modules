@@ -72,13 +72,6 @@ output:
         type: directory
         description: Directory of per sample output PDFs organised by reference
         pattern: "pdf_candidate_profiles/"
-  # versions:
-  #   - versions.yml:
-  #       type: file
-  #       description: File containing software versions
-  #       pattern: "versions.yml"
-  #       ontologies:
-  #         - edam: "http://edamontology.org/format_3750"
   versions_hops:
     - - ${task.process}:
           type: string
@@ -86,7 +79,7 @@ output:
       - hops:
           type: string
           description: The name of the tool
-      - hops --version:
+      - "hops --version 2>&1 | sed 's/HOPS version//' ":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -97,7 +90,7 @@ topics:
       - hops:
           type: string
           description: The name of the tool
-      - hops --version:
+      - "hops --version 2>&1 | sed 's/HOPS version//' ":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
