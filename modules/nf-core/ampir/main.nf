@@ -16,8 +16,8 @@ process AMPIR {
     output:
     tuple val(meta), path("*.faa"), emit: amps_faa
     tuple val(meta), path("*.tsv"), emit: amps_tsv
-    path "versions.yml"           , emit: versions
-
+    tuple val("${task.process}"), val('ampir'), eval('packageVersion("ampir")'), emit: versions_ampir, topic: versions
+    
     when:
     task.ext.when == null || task.ext.when
 
@@ -34,14 +34,6 @@ process AMPIR {
     output_seqs <- input_seqs[row.names(prediction), ]
     write.table(prediction, file = "${prefix}.tsv", row.names = FALSE, sep = "\t", quote = FALSE, dec = '.')
     df_to_faa(output_seqs, "${prefix}.faa")
-
-    version_file_path <- "versions.yml"
-    version_ampir <- paste(unlist(packageVersion("ampir")), collapse = ".")
-    f <- file(version_file_path, "w")
-    writeLines('"${task.process}":', f)
-    writeLines("    ampir: ", f, sep = "")
-    writeLines(version_ampir, f)
-    close(f)
     """
 
     stub:
@@ -56,13 +48,5 @@ process AMPIR {
 
     a <- file("${prefix}.faa", "w")
     close(a)
-
-    version_file_path <- "versions.yml"
-    version_ampir <- paste(unlist(packageVersion("ampir")), collapse = ".")
-    f <- file(version_file_path, "w")
-    writeLines('"${task.process}":', f)
-    writeLines("    ampir: ", f, sep = "")
-    writeLines(version_ampir, f)
-    close(f)
     """
 }

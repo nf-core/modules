@@ -65,13 +65,19 @@ output:
           pattern: "*.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
+  topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - "$10168":
+        type: string
+        description: The name of the process
+    - "ampir":
+        type: string
+        description: The name of the tool
+    - "packageVersion('ampir')":
+        type: eval
+        description: The expression to obtain the version of the tool
+          
+
 authors:
   - "@jasmezz"
 maintainers:
