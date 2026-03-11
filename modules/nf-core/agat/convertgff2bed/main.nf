@@ -12,7 +12,7 @@ process AGAT_CONVERTGFF2BED {
 
     output:
     tuple val(meta), path("*.bed")      , emit: bed
-    tuple val("${task.process}"), val('<agat_convert_sp_gff2bed.p>'), eval('agat_convert_sp_gff2bed.pl --help'), emit: versions_tool1, topic: versions
+    tuple val("${task.process}"), val('<agat_convert_sp_gff2bed.p>'), eval("agat_convert_sp_gff2bed.pl --help | sed -n 's/.*(AGAT) - Version: \\(.*\\) .*/\\1/p'"), emit: versions_tool1, topic: versions
 
 
     when:
