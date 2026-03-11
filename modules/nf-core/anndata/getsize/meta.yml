@@ -50,7 +50,7 @@ output:
       - python:
           type: string
           description: The name of the tool
-      - python3 -c 'import platform; print(platform.python_version())':
+      - python3 -c "import platform; print(platform.python_version())":
           type: eval
           description: The expression to obtain the version of the tool
   versions_anndata:
@@ -60,7 +60,7 @@ output:
       - anndata:
           type: string
           description: The name of the tool
-      - python3 -c 'import anndata; print(anndata.__version__)':
+      - python3 -c "import anndata; print(anndata.__version__)":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -71,7 +71,7 @@ topics:
       - python:
           type: string
           description: The name of the tool
-      - python3 -c 'import platform; print(platform.python_version())':
+      - python3 -c "import platform; print(platform.python_version())":
           type: eval
           description: The expression to obtain the version of the tool
     - - ${task.process}:
@@ -80,7 +80,7 @@ topics:
       - anndata:
           type: string
           description: The name of the tool
-      - python3 -c 'import anndata; print(anndata.__version__)':
+      - python3 -c "import anndata; print(anndata.__version__)":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
