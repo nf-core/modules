@@ -26,7 +26,7 @@ input:
         description: Input fasta file containing query sequences
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1929
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta2:
         type: map
         description: |
@@ -68,7 +68,7 @@ output:
           description: File containing blastp hits
           pattern: "*.{blast,blast.gz}"
           ontologies:
-            - edam: http://edamontology.org/format_3836
+            - edam: http://edamontology.org/format_3836 # BLAST XML v2 results format
   xml:
     - - meta:
           type: map
@@ -80,7 +80,7 @@ output:
           description: File containing blastp hits
           pattern: "*.{xml,xml.gz}"
           ontologies:
-            - edam: http://edamontology.org/format_2332
+            - edam: http://edamontology.org/format_2332 # XML
   txt:
     - - meta:
           type: map
@@ -92,7 +92,7 @@ output:
           description: File containing hits in tabular BLAST format.
           pattern: "*.{txt,txt.gz}"
           ontologies:
-            - edam: http://edamontology.org/format_1333
+            - edam: http://edamontology.org/format_1333 # BLAST results
   daa:
     - - meta:
           type: map
@@ -128,7 +128,7 @@ output:
             hits
           pattern: "*.{tsv,tsv.gz}"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
   paf:
     - - meta:
           type: map
