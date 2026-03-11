@@ -1,7 +1,7 @@
 name: "admixture"
-description: ADMIXTURE is a program for estimating ancestry in a model-based manner
-  from large autosomal SNP genotype datasets, where the individuals are unrelated
-  (for example, the individuals in a case-control association study).
+description: ADMIXTURE is a program for estimating ancestry in a model-based
+  manner from large autosomal SNP genotype datasets, where the individuals are
+  unrelated (for example, the individuals in a case-control association study).
 keywords:
   - ancestry
   - population genetics
@@ -15,7 +15,8 @@ tools:
       homepage: "https://dalexander.github.io/admixture/"
       documentation: "https://dalexander.github.io/admixture/admixture-manual.pdf"
       doi: "10.1101/gr.094052.109"
-      licence: ["Free for Academic Use"]
+      licence:
+        - "Free for Academic Use"
       identifier: ""
 input:
   - - meta:
@@ -25,24 +26,24 @@ input:
           e.g. [ id:'test', single_end:false ]
     - bed_ped_geno:
         type: file
-        description: One of PLINK ".bed" file or PLINK ".ped" or EIGENSTRAT ".geno"
-          file. If you provide ".bed" then you need to provide ".bim" and  "fam" files.
-          If you provide ".ped" or ".geno" then you need to provide a ".map" file and
-          an empty channel.
+        description: One of PLINK ".bed" file or PLINK ".ped" or EIGENSTRAT
+          ".geno" file. If you provide ".bed" then you need to provide ".bim" and
+          "fam" files. If you provide ".ped" or ".geno" then you need to provide a
+          ".map" file and an empty channel.
         pattern: "*.{bed}"
         ontologies:
           - edam: "http://edamontology.org/format_3586" # bed12
     - bim_map:
         type: file
-        description: Mandatory accompanying file. One of PLINK ".bim" file or PLINK
-          ".map" file. Provide ".bim" if ".bed" is the input. Provide ".map" if ".ped"
-          or ".geno" is the input.
+        description: Mandatory accompanying file. One of PLINK ".bim" file or
+          PLINK ".map" file. Provide ".bim" if ".bed" is the input. Provide ".map"
+          if ".ped" or ".geno" is the input.
         pattern: "*.{bim}"
         ontologies: []
     - fam:
         type: file
-        description: PLINK ".fam" file. Mandatory if you provide ".bed" as input. Replace
-          with an empty channel if input is ".ped" or ".geno".
+        description: PLINK ".fam" file. Mandatory if you provide ".bed" as input.
+          Replace with an empty channel if input is ".ped" or ".geno".
         pattern: "*.{fam}"
         ontologies: []
   - K:
@@ -58,8 +59,9 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.Q":
           type: file
-          description: Space-delimited files containing ancestry fractions. The output
-            filenames have the number of populations (K) that was assumed for the analysis.
+          description: Space-delimited files containing ancestry fractions. The
+            output filenames have the number of populations (K) that was assumed
+            for the analysis.
           pattern: "*.{Q}"
           ontologies: []
   allele_frequencies:
@@ -70,18 +72,32 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.P":
           type: file
-          description: Space-delimited files containing the allele frequencies of the
-            inferred ancestral populations. The output filenames have the number of
-            populations (K) that was assumed for the analysis.
+          description: Space-delimited files containing the allele frequencies of
+            the inferred ancestral populations. The output filenames have the
+            number of populations (K) that was assumed for the analysis.
           pattern: "*.{P}"
           ontologies: []
+  versions_admixture:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - admixture:
+          type: string
+          description: The name of the tool
+      - admixture --version | tail -n 1:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - admixture:
+          type: string
+          description: The name of the tool
+      - admixture --version | tail -n 1:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@atrigila"
 maintainers:
