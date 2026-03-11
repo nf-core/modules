@@ -1,0 +1,38 @@
+nextflow_process {
+
+    config "./nextflow.config"
+
+    name "Test Process KNOTANNOTSV"
+    script "../main.nf"
+    process "KNOTANNOTSV"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "knotannotsv"
+
+    test("homo_sapiens - annotsv_tsv, knot_out_xl - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('annots_tsv', checkIfExists: false)
+                ]
+                input[1] = [
+                    false
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
