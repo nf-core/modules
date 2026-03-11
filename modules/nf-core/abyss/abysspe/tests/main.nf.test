@@ -1,0 +1,107 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test abyss/abysspe
+nextflow_process {
+
+    name "Test Process ABYSS_ABYSSPE"
+    script "../main.nf"
+    process "ABYSS_ABYSSPE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "abyss"
+    tag "abyss/abysspe"
+
+    test("sarscov2 - fastq - se") {
+
+
+        when {
+            process {
+                """
+                input[0] = [ [id:"test", single_end:true],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    [
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]    
+                ]
+                input[1] = 21  // kmersize value
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.contigs,
+                    process.out.scaffolds,
+                    process.out.stats,
+                    process.out.log,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq - pe") {
+
+
+        when {
+            process {
+                """
+                input[0] = [ [id:"test", single_end:false],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                input[1] = 21  // kmersize value
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.contigs,
+                    process.out.scaffolds,
+                    process.out.stats,
+                    process.out.log,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+
+    }
+
+    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used but keep the " - stub" suffix.
+    test("sarscov2 - fastq - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [id:"test", single_end:false],
+                    [],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                input[1] = 21  // kmersize value
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+
+    }
+
+}

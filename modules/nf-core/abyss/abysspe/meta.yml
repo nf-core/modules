@@ -1,0 +1,73 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+# # TODO nf-core: Add a description of the module and list keywords
+name: "abyss_abysspe"
+description: write your description here
+keywords:
+  - sort
+  - example
+  - genomics
+tools:
+  ## TODO nf-core: Add a description and other details for the software below
+  - "abyss":
+      description: "Assembly By Short Sequences - a de novo, parallel, paired-end short
+        read sequence assembler."
+      homepage: "https://github.com/bcgsc/abyss/blob/v2.3.10/README.md"
+      documentation: "https://github.com/bcgsc/abyss/blob/v2.3.10/README.md"
+      tool_dev_url: "https://github.com/bcgsc/abyss"
+      doi: ""
+      licence: ["GPL v3"]
+      identifier: biotools:abyss
+
+input:
+  # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1' ]`
+    - dna_sequence_(raw):
+        type: file
+        description: dna_sequence_(raw) file
+        pattern: "*.{fastq,fasta}"
+        ontologies:
+          - edam: http://edamontology.org/data_3497 # DNA sequence (raw)
+          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_1929 # FASTA
+output:
+  # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
+  sequence_assembly:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - "*.{fasta}":
+          type: file
+          description: sequence_assembly file
+          pattern: "*.{fasta}"
+          ontologies:
+            - edam: http://edamontology.org/data_0925 # Sequence assembly
+            - edam: http://edamontology.org/format_1929 # FASTA
+  versions_abyss:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - abyss:
+          type: string
+          description: The name of the tool
+      - abyss --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - abyss:
+          type: string
+          description: The name of the tool
+      - abyss --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@LiaOb21"
+maintainers:
+  - "@LiaOb21"
