@@ -29,7 +29,7 @@ input:
         description: Multi-channel image file
         pattern: "*.{tif,tiff}"
         ontologies:
-          - edam: http://edamontology.org/format_3591
+          - edam: http://edamontology.org/format_3591 # TIFF
   - - meta2:
         type: map
         description: |
@@ -41,7 +41,7 @@ input:
           background to subtract (and remove to exclude channels from output)
         pattern: "*.csv"
         ontologies:
-          - edam: http://edamontology.org/format_3752
+          - edam: http://edamontology.org/format_3752 # CSV
 output:
   backsub_tif:
     - - meta:
@@ -54,7 +54,7 @@ output:
           description: Background corrected pyramidal ome.tif
           pattern: "*.{tif}"
           ontologies:
-            - edam: http://edamontology.org/format_3727
+            - edam: http://edamontology.org/format_3727 # OME-TIFF
   markerout:
     - - meta2:
           type: map
@@ -67,7 +67,7 @@ output:
             image
           pattern: "*.{csv}"
           ontologies:
-            - edam: http://edamontology.org/format_3752
+            - edam: http://edamontology.org/format_3752 # CSV
   versions_backsub:
     - - ${task.process}:
           type: string
