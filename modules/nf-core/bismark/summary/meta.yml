@@ -61,7 +61,7 @@ output:
       - bismark:
           type: string
           description: The name of the tool
-      - 'bismark --version 2>&1 | sed "s/^.*Bismark Version: v//; s/Copyright.*//"':
+      - 'bismark --version 2>&1 | sed -n "s/^.*Bismark Version: v//p" | tr -d "[:space:]"':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -72,7 +72,7 @@ topics:
       - bismark:
           type: string
           description: The name of the tool
-      - 'bismark --version 2>&1 | sed "s/^.*Bismark Version: v//; s/Copyright.*//"':
+      - 'bismark --version 2>&1 | sed -n "s/^.*Bismark Version: v//p" | tr -d "[:space:]"':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
