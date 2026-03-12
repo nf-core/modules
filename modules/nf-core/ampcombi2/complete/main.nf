@@ -23,12 +23,10 @@ process AMPCOMBI2_COMPLETE {
     ampcombi complete \\
         --summaries_files '${summaries.collect{file_path -> "$file_path"}.join("' '")}' \\
         ${args}
-
     """
 
     stub:
     """
     touch Ampcombi_summary.tsv
-
     """
 }
