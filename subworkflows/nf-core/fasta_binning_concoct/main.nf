@@ -17,7 +17,6 @@ workflow FASTA_BINNING_CONCOCT {
     produce_bedfile = true
 
     CONCOCT_CUTUPFASTA ( ch_fasta, produce_bedfile )
-    ch_versions = ch_versions.mix(CONCOCT_CUTUPFASTA.out.versions.first())
 
     ch_cutupfasta_for_concoctcoveragetable = CONCOCT_CUTUPFASTA.out.bed
                                                 .join( ch_bam, failOnMismatch: true )
