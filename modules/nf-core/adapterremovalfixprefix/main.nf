@@ -29,8 +29,11 @@ process ADAPTERREMOVALFIXPREFIX {
     """
 
     stub:
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo ${args}
+
     echo | gzip > ${prefix}.fq.gz
     """
 }
