@@ -2,6 +2,7 @@ process SUSHIE {
     tag "$meta.id"
     label 'process_single'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     container "docker.io/cameronlloyd/sushie:0.19"
 
     input:
