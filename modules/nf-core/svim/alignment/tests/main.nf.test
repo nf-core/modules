@@ -13,6 +13,9 @@ nextflow_process {
 
     test("homo_sapiens - [bam, bai], fasta - vcf") {
         when {
+            params {
+                module_args = '--min_mapq 5'
+            }
             process {
                 """
                 input[0] = [
@@ -45,8 +48,10 @@ nextflow_process {
 
     test("homo_sapiens - [bam, bai], fasta - stub") {
         options "-stub"
-
         when {
+            params {
+                module_args = '--min_mapq 5'
+            }
             process {
                 """
                 input[0] = [
