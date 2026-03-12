@@ -64,7 +64,7 @@ output:
       - metabuli:
           type: string
           description: The name of the tool
-      - metabuli version:
+      - metabuli 2>&1 | awk '/metabuli Version:/ {print $3}':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -75,7 +75,7 @@ topics:
       - metabuli:
           type: string
           description: The name of the tool
-      - metabuli version:
+      - metabuli 2>&1 | awk '/metabuli Version:/ {print $3}':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
