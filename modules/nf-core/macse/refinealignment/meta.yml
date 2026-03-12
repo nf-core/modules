@@ -1,20 +1,18 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-# # TODO nf-core: Add a description of the module and list keywords
 name: "macse_refinealignment"
-description: write your description here
+description: refineAlignment: improves the input nucleotide alignment in a codon-aware manner
 keywords:
-  - Alignment
-  - macse
+  - multiple sequence alignment
+  - codon-aware
   - fasta
 tools:
-  ## TODO nf-core: Add a description and other details for the software below
   - "macse":
       description: "MACSE: Multiple Alignment of Coding SEquences Accounting for Frameshifts
         and Stop Codons."
-      homepage: https://github.com/nf-core/
-      documentation: "None"
+      homepage: https://www.agap-ge2pop.org/macse/
+      documentation: https://www.agap-ge2pop.org/macse/macse-documentation/
       tool_dev_url: https://github.com/nf-core/masce
-      doi: ""
+      doi: "10.1371/journal.pone.0022594"
       licence: ["CeCILL 2.1"]
       identifier: biotools:macse
 input:
@@ -82,6 +80,6 @@ topics:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
-  - "@charles-plessy"
+  - "@charles-plessy, @pmuskusv, @takiifujita-ui, @leapicard"
 maintainers:
-  - "@charles-plessy"
+  - "@leapicard"
