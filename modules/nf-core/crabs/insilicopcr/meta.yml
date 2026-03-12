@@ -49,7 +49,7 @@ output:
       - crabs:
           type: string
           description: The name of the tool
-      - crabs --help 2>/dev/null | sed -n 's/.*CRABS | v//p' | cut -d' ' -f1:
+      - crabs --help 2>/dev/null | grep -oE 'v[0-9.]+' | cut -c2-:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -60,7 +60,7 @@ topics:
       - crabs:
           type: string
           description: The name of the tool
-      - crabs --help 2>/dev/null | sed -n 's/.*CRABS | v//p' | cut -d' ' -f1:
+      - crabs --help 2>/dev/null | grep -oE 'v[0-9.]+' | cut -c2-:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
