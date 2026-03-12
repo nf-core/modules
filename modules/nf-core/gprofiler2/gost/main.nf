@@ -21,7 +21,7 @@ process GPROFILER2_GOST {
     tuple val(meta), path("*.gprofiler2.*.sub_enriched_pathways.png")   , emit: sub_plot    , optional: true
     tuple val(meta), path("*ENSG_filtered.gmt")                         , emit: filtered_gmt, optional: true
     tuple val(meta), path("*R_sessionInfo.log")                         , emit: session_info
-    path "versions.yml"                                                 , emit: versions
+    path "versions.yml"                                                 , emit: versions_gprofiler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
