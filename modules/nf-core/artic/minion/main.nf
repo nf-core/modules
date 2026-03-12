@@ -11,7 +11,7 @@ process ARTIC_MINION {
     tuple val(meta), path(fastq)
     tuple val(meta2), path(model_dir), val(model)
     tuple val(meta3), path(fasta), path(bed)
-    val hdf5_plugin_path
+    path hdf5_plugin_path
 
     output:
     tuple val(meta), path("${prefix}.*")                              , emit: results
