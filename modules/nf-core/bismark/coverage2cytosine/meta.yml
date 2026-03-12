@@ -19,7 +19,8 @@ tools:
       homepage: https://github.com/FelixKrueger/Bismark
       documentation: https://github.com/FelixKrueger/Bismark/tree/master/Docs
       doi: 10.1093/bioinformatics/btr167
-      licence: ["GPL-3.0-or-later"]
+      licence:
+        - "GPL-3.0-or-later"
       identifier: biotools:bismark
 input:
   - - meta:
@@ -63,7 +64,7 @@ output:
           description: A file containing methylation calls per position.
           pattern: "*.cov.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   report:
     - - meta:
           type: map
@@ -75,7 +76,7 @@ output:
           description: Genomic cytosine context results.
           pattern: "*report.txt.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   summary:
     - - meta:
           type: map
@@ -87,13 +88,27 @@ output:
           description: Cyotosine context summary report.
           pattern: "*cytosine_context_summary.txt"
           ontologies: []
+  versions_bismark:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bismark:
+          type: string
+          description: The name of the tool
+      - "bismark --version 2>&1 | sed -n 's/^.*Bismark Version: v//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bismark:
+          type: string
+          description: The name of the tool
+      - "bismark --version 2>&1 | sed -n 's/^.*Bismark Version: v//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ewels"
 maintainers:
