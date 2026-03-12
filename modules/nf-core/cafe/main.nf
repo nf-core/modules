@@ -16,8 +16,8 @@ process CAFE {
     path("$prefix/*.tre") , emit: cafe_significant_trees
     path("$prefix/*_report.cafe") , emit: cafe_report
     path("$prefix/*results.txt") , emit: cafe_results
-    tuple val("${task.process}"), val('cafe'), eval('echo 5.1.0'), emit: versions_cafe, topic: versions
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('cafe'), eval('echo 5.1.0'), emit: versions_cafe, topic: versions
     when:
     task.ext.when == null || task.ext.when
 
@@ -36,8 +36,11 @@ process CAFE {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo ${args}
+
     mkdir ${prefix}
     touch ${prefix}/*_count.tab
     touch ${prefix}/*.tre
