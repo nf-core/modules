@@ -48,6 +48,7 @@ output:
           pattern: "*.sushie.corr.tsv.gz"
           ontologies:
             - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3989
   cs:
     - - meta:
           type: map
@@ -60,6 +61,7 @@ output:
           pattern: "*.sushie.cs.tsv.gz"
           ontologies:
             - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3989
   weights:
     - - meta:
           type: map
@@ -72,6 +74,7 @@ output:
           pattern: "*.sushie.weights.tsv.gz"
           ontologies:
             - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3989
   versions_sushie:
     - - ${task.process}:
           type: string
@@ -82,6 +85,17 @@ output:
       - "0.19":
           type: string
           description: The expression to obtain the version of the tool
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.log":
+          type: file
+          description: Log file
+          pattern: "*.log"
+          ontologies: []
 topics:
   versions:
     - - ${task.process}:
