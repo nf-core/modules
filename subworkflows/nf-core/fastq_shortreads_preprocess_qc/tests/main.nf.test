@@ -110,8 +110,7 @@ nextflow_workflow {
                     workflow.out.post_stats_seqfu_stats,
                     workflow.out.deacon_index,
                     file(workflow.out.deacon_summary[0][1]).name,
-                    workflow.out.multiqc_files,
-                    workflow.out.versions.collect { path(it).yaml }
+                    workflow.out.multiqc_files
                 ).match() }
             )
         }
@@ -170,8 +169,7 @@ nextflow_workflow {
                 { assert snapshot(
                     path(workflow.out.reads[0][1]).linesGzip.size(),
                     path(workflow.out.umi_log[0][1]).readLines().size(),
-                    path(workflow.out.clumpify_log[0][1]).readLines().size(),
-                    workflow.out.versions.collect { path(it).yaml }
+                    path(workflow.out.clumpify_log[0][1]).readLines().size()
                 ).match() }
             )
         }
@@ -236,8 +234,7 @@ nextflow_workflow {
                     file(workflow.out.pre_stats_fastqc_zip[0][1][1]).name,
                     file(workflow.out.post_stats_fastqc_zip[0][1][0]).name,
                     file(workflow.out.post_stats_fastqc_zip[0][1][1]).name,
-                    path(workflow.out.clumpify_log[0][1]).readLines().size(),
-                    workflow.out.versions.collect { path(it).yaml }
+                    path(workflow.out.clumpify_log[0][1]).readLines().size()
                 ).match() }
             )
         }
@@ -303,8 +300,7 @@ nextflow_workflow {
                 { assert snapshot(
                     workflow.out.reads[0][1],
                     workflow.out.reads[1][1],
-                    workflow.out.adapterremoval_discarded_reads.collect { file(it[1]).name },
-                    workflow.out.versions.collect { path(it).yaml }
+                    workflow.out.adapterremoval_discarded_reads.collect { file(it[1]).name }
                 ).match() }
             )
         }
@@ -356,8 +352,7 @@ nextflow_workflow {
             assert workflow.success
             assertAll(
                 { assert snapshot(
-                    workflow.out.reads[0][1],
-                    workflow.out.versions.collect { path(it).yaml }
+                    workflow.out.reads[0][1]
                 ).match() }
             )
         }
