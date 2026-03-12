@@ -59,7 +59,7 @@ nextflow_process {
                 { assert path(process.out.results[0][1][5]).getText().contains("Python") },
                 { assert path(process.out.results[0][1][5]).getText().contains("OK") },
                 { assert path(process.out.results[0][1][5]).getText().contains("True") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("versions") }
             )
         }
 
