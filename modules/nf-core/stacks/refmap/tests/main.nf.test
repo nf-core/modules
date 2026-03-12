@@ -35,7 +35,6 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.catalog_calls,
                     process.out.catalog_chrs,
                     process.out.catalog_fa,
                     process.out.haplotypes,
@@ -48,6 +47,7 @@ nextflow_process {
                     process.out.structure,
                     process.out.versions_stacks_refmap
                 ).match() },
+                { assert path(process.out.catalog_calls.get(0).get(1)).exists() },
                 { assert path(process.out.gstacks_log.get(0).get(1)).exists() },
                 { assert path(process.out.gstacks_log_distribs.get(0).get(1)).exists() },
                 { assert path(process.out.populations_log.get(0).get(1)).exists() },
