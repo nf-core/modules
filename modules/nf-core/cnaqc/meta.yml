@@ -53,14 +53,12 @@ output:
             e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name' ]`
       - "*_data_plot.rds":
           type: file
-          description: R object containing plots of the CNA statistics for the
-            sample
+          description: R object containing plots of the CNA statistics for the sample
           pattern: "*{_data_plot.rds}"
           ontologies: []
       - "*_qc_plot.rds":
           type: file
-          description: R object containing plots of the quality control results
-            for the sample
+          description: R object containing plots of the quality control results for the sample
           pattern: "*{_qc_plot.rds}"
           ontologies: []
   qc_plot_rds:
@@ -71,8 +69,7 @@ output:
             e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name' ]`
       - "*_qc_plot.rds":
           type: file
-          description: R object containing plots of the quality control results
-            for the sample
+          description: R object containing plots of the quality control results for the sample
           pattern: "*{_qc_plot.rds}"
           ontologies: []
   plot_pdf_data:
@@ -99,46 +96,15 @@ output:
           pattern: "*{_qc.pdf}"
           ontologies:
             - edam: "http://edamontology.org/format_3508"
-  versions_cnaqc:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - cnaqc:
-          type: string
-          description: The name of the tool
-      - "":
-          type: eval
-          description: The expression to obtain the version of the tool
-  versions_dplyr:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - dplyr:
-          type: string
-          description: The name of the tool
-      - "":
-          type: eval
-          description: The expression to obtain the version of the tool
+  versions:
+    - versions.yml:
+        type: file
+        description: YAML file containing versions of tools used in the module
 topics:
   versions:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - cnaqc:
-          type: string
-          description: The name of the tool
-      - "":
-          type: eval
-          description: The expression to obtain the version of the tool
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - dplyr:
-          type: string
-          description: The name of the tool
-      - "":
-          type: eval
-          description: The expression to obtain the version of the tool
+    - versions.yml:
+        type: file
+        description: YAML file containing versions of tools used in the module
 authors:
   - "@vvvirgy"
 maintainers:
