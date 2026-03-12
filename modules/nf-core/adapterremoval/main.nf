@@ -19,7 +19,7 @@ process ADAPTERREMOVAL {
     tuple val(meta), path("${prefix}.collapsed.truncated.fastq.gz"), emit: collapsed_truncated, optional: true
     tuple val(meta), path("${prefix}.paired.fastq.gz")             , emit: paired_interleaved , optional: true
     tuple val(meta), path('*.settings')                            , emit: settings
-    tuple val("${task.process}"), val('AdapterRemoval'), eval('AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g"'), emit: versions_AdapterRemoval, topic: versions
+    tuple val("${task.process}"), val('AdapterRemoval'), eval('AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g"'), emit: versions_adapterremoval, topic: versions
 
 
     when:
@@ -81,10 +81,13 @@ process ADAPTERREMOVAL {
     }
 
     stub:
+    def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     collapse_cmd = args.contains('--collapse')
 
     """
+    echo ${args}
+
     touch '${prefix}.settings'
     echo | gzip > '${prefix}.truncated.fastq.gz'
     echo | gzip > '${prefix}.discarded.fastq.gz'
