@@ -25,7 +25,8 @@ process ASCAT {
     tuple val(meta), path("*png"),                        emit: png
     tuple val(meta), path("*purityploidy.txt"),           emit: purityploidy
     tuple val(meta), path("*segments.txt"),               emit: segments
-    path "versions.yml",                                  emit: versions
+    tuple val("${task.process}"), val('bioconductor-ascat'), eval('Rscript -e "library(ASCAT); cat(as.character(packageVersion(\'ASCAT\')))"'), topic: versions, emit: versions_ascat
+    tuple val("${task.process}"), val('alleleCounter'), eval("alleleCounter --version"), topic: versions, emit: versions_allelecounter
 
     when:
     task.ext.when == null || task.ext.when
@@ -63,7 +64,7 @@ process ASCAT {
     }
 
     """
-    #!/usr/bin/env Rscript
+    Rscript - <<'EOF'
     library(RColorBrewer)
     library(ASCAT)
     options(bitmapType='cairo')
@@ -217,15 +218,7 @@ process ASCAT {
     write.table(summary, file=paste0("${prefix}",".purityploidy.txt"), sep="\t", quote=F, row.names=F, col.names=T)
 
     write.table(QC, file=paste0("${prefix}", ".metrics.txt"), sep="\t", quote=F, row.names=F)
-
-    # Version export
-    f <- file("versions.yml","w")
-    alleleCounter_version = system(paste("alleleCounter --version"), intern = T)
-    ascat_version = as.character(packageVersion('ASCAT'))
-    writeLines(paste0('"', "${task.process}", '"', ":"), f)
-    writeLines(paste("    ascat:", ascat_version), f)
-    writeLines(paste("    alleleCounter:", alleleCounter_version), f)
-    close(f)
+    EOF
     """
 
     stub:
@@ -249,11 +242,5 @@ process ASCAT {
     touch ${prefix}.tumour_normalLogR.txt
     touch ${prefix}.tumour_tumourBAF.txt
     touch ${prefix}.tumour_tumourLogR.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bioconductor-ascat: \$(Rscript -e "library(ASCAT); cat(as.character(packageVersion('ASCAT')))")
-        alleleCounter: \$(alleleCounter --version)
-    END_VERSIONS
     """
 }

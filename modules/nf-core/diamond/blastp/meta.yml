@@ -12,14 +12,15 @@ tools:
       documentation: https://github.com/bbuchfink/diamond/wiki
       tool_dev_url: https://github.com/bbuchfink/diamond
       doi: "10.1038/s41592-021-01101-x"
-      licence: ["GPL v3.0"]
+      licence:
+        - "GPL v3.0"
       identifier: biotools:diamond
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - fasta:
         type: file
         description: Input fasta file containing query sequences
@@ -30,7 +31,7 @@ input:
         type: map
         description: |
           Groovy Map containing db information
-          e.g. [ id:'test2', single_end:false ]
+          e.g. [ id:'test2' ]
     - db:
         type: file
         description: File of the indexed DIAMOND database
@@ -61,7 +62,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', db:'ncbi-refseq' ]
       - "*.{blast,blast.gz}":
           type: file
           description: File containing blastp hits
@@ -73,7 +74,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', db:'ncbi-refseq' ]
       - "*.{xml,xml.gz}":
           type: file
           description: File containing blastp hits
@@ -85,7 +86,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', db:'ncbi-refseq' ]
       - "*.{txt,txt.gz}":
           type: file
           description: File containing hits in tabular BLAST format.
@@ -97,7 +98,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', db:'ncbi-refseq' ]
       - "*.{daa,daa.gz}":
           type: file
           description: File containing hits DAA format
@@ -108,22 +109,23 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', db:'ncbi-refseq' ]
       - "*.{sam,sam.gz}":
           type: file
           description: File containing aligned reads in SAM format
           pattern: "*.{sam,sam.gz}"
           ontologies:
-            - edam: http://edamontology.org/format_2573 # SAM
+            - edam: http://edamontology.org/format_2573
   tsv:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', db:'ncbi-refseq' ]
       - "*.{tsv,tsv.gz}":
           type: file
-          description: Tab separated file containing taxonomic classification of hits
+          description: Tab separated file containing taxonomic classification of
+            hits
           pattern: "*.{tsv,tsv.gz}"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -132,19 +134,34 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', db:'ncbi-refseq' ]
       - "*.{paf,paf.gz}":
           type: file
-          description: File containing aligned reads in pairwise mapping format format
+          description: File containing aligned reads in pairwise mapping format
+            format
           pattern: "*.{paf,paf.gz}"
           ontologies: []
+  versions_diamond:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - diamond:
+          type: string
+          description: The name of the tool
+      - diamond --version 2>&1 | tail -n 1 | sed "s/^diamond version //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - diamond:
+          type: string
+          description: The name of the tool
+      - diamond --version 2>&1 | tail -n 1 | sed "s/^diamond version //":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@spficklin"
   - "@jfy133"
