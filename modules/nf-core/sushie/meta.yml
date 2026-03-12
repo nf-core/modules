@@ -22,24 +22,56 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - study_locus_files: {}
-  - ld_files: {}
-  - sample_sizes: {}
+    - study_locus_files:
+        type: file
+        description: Study locus file(s)
+        pattern: "*"
+        ontologies: []
+  - ld_files:
+      type: file
+      description: LD file(s)
+      pattern: "*"
+      ontologies: []
+  - sample_sizes:
+      type: string
+      description: Sample size(s)
 output:
-  bam:
+  corr:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.bam":
+      - "*.sushie.corr.tsv":
           type: file
-          description: Sorted BAM/CRAM/SAM file
-          pattern: "*.{bam,cram,sam}"
+          description: Effect size correlation
+          pattern: "*.sushie.corr.tsv"
           ontologies:
-            - edam: "http://edamontology.org/format_2572"
-            - edam: "http://edamontology.org/format_2573"
-            - edam: "http://edamontology.org/format_3462"
+            - edam: http://edamontology.org/format_3475
+  cs:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.sushie.cs.tsv":
+          type: file
+          description: Credible set
+          pattern: "*.sushie.cs.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  weights:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.sushie.weights.tsv":
+          type: file
+          description: Prediction weights
+          pattern: "*.sushie.weights.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
   versions_sushie:
     - - ${task.process}:
           type: string
@@ -47,30 +79,9 @@ output:
       - sushie:
           type: string
           description: The name of the tool
-      - "0.17":
+      - "0.19":
           type: string
           description: The expression to obtain the version of the tool
-  corr:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "*.sushie.corr.tsv": {}
-  cs:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "*.sushie.cs.tsv": {}
-  weights:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "*.sushie.weights.tsv": {}
 topics:
   versions:
     - - ${task.process}:
@@ -79,7 +90,7 @@ topics:
       - sushie:
           type: string
           description: The name of the tool
-      - "0.17":
+      - "0.19":
           type: string
           description: The expression to obtain the version of the tool
 authors:
