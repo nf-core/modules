@@ -31,10 +31,16 @@ process SAMTOOLS_SORT {
                 args.contains("--output-fmt cram") ? "cram" :
                 "bam"
     def reference = fasta ? "--reference ${fasta}" : ""
-    // output_file = index_format!='' ? "${prefix}.${extension}##idx##${prefix}.${extension}.${index_format} --write-index" : "${prefix}.${extension}"
-    def write_index = (index_format != '' && index_format) ? "--write-index" : ""
-    output_file = "${prefix}.${extension}"
-    def is_sam = bam instanceof List ? bam[0].name.endsWith('.sam') : bam.name.endsWith('.sam')
+    //setting default values
+    def write_index = ""
+    def output_file = "${prefix}.${extension}"
+
+    // Update if index is requested
+    if (index_format != '' && index_format) {
+        write_index = "--write-index"
+        output_file = "${prefix}.${extension}##idx##${prefix}.${extension}.${index_format}"
+    }
+    def is_sam = (bam instanceof List ? bam[0] : bam).name.endsWith('.sam')
     if (index_format) {
         if (!index_format.matches('bai|csi|crai')) {
             error "Index format not one of bai, csi, crai."
