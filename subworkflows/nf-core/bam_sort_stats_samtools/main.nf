@@ -3,7 +3,6 @@
 //
 
 include { SAMTOOLS_SORT      } from '../../../modules/nf-core/samtools/sort/main'
-include { SAMTOOLS_INDEX     } from '../../../modules/nf-core/samtools/index/main'
 include { BAM_STATS_SAMTOOLS } from '../bam_stats_samtools/main'
 
 workflow BAM_SORT_STATS_SAMTOOLS {
@@ -13,8 +12,6 @@ workflow BAM_SORT_STATS_SAMTOOLS {
 
     main:
     SAMTOOLS_SORT ( ch_bam, ch_fasta, '' )
-
-    SAMTOOLS_INDEX ( SAMTOOLS_SORT.out.bam )
 
     SAMTOOLS_SORT.out.bam
         .join(SAMTOOLS_INDEX.out.bai, by: [0], remainder: true)
