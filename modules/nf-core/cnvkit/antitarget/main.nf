@@ -12,7 +12,7 @@ process CNVKIT_ANTITARGET {
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
-    path "versions.yml",            emit: versions
+    tuple val("${task.process}"), val('cnvkit'), eval('cnvkit.py version | sed -e "s/cnvkit v//g"'), emit: versions_cnvkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,20 +27,11 @@ process CNVKIT_ANTITARGET {
         ${targets} \\
         --output ${prefix}.antitarget.bed \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cnvkit: \$(cnvkit.py version | sed -e "s/cnvkit v//g")
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.antitarget.bed
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cnvkit: \$(cnvkit.py version | sed -e "s/cnvkit v//g")
-    END_VERSIONS
     """
 }
