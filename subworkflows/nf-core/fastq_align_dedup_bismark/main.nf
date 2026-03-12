@@ -122,7 +122,7 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
         ch_methylation_mbias.collect{ _meta, mbias -> mbias }
     )
     ch_bismark_summary = BISMARK_SUMMARY.out.summary
-    ch_versions        = ch_versions.mix(BISMARK_SUMMARY.out.versions)
+    //ch_versions        = ch_versions.mix(BISMARK_SUMMARY.out.versions)
 
     /*
      * Collect MultiQC inputs
