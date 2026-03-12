@@ -14,7 +14,7 @@ process SUSHIE {
     tuple val(meta), path("*.sushie.corr.tsv.gz")   , emit: corr
     tuple val(meta), path("*.sushie.cs.tsv.gz")     , emit: cs
     tuple val(meta), path("*.sushie.weights.tsv.gz"), emit: weights
-    tuple val(meta), path("*.log"), emit: log
+    tuple val(meta), path("*.log")                  , emit: log
     tuple val("${task.process}"), val('sushie'), val('0.19'), topic: versions, emit: versions_sushie
 
     when:
