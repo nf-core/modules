@@ -13,7 +13,8 @@ tools:
       documentation: "https://odelaneau.github.io/shapeit5/docs/documentation"
       tool_dev_url: "https://github.com/odelaneau/shapeit5"
       doi: "10.1101/2022.10.19.512867"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:shapeit5
 input:
   - - meta:
@@ -27,13 +28,15 @@ input:
           VCF/BCF files containing genotype probabilities (GP field).
           The files should be ordered by genomic position.
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+        ontologies: []
     - input_list_index:
         type: file
         description: VCF/BCF files index.
         pattern: "*.csi"
+        ontologies: []
 output:
-  - merged_variants:
-      - meta:
+  merged_variants:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,11 +47,28 @@ output:
             Output VCF/BCF file for the merged regions.
             Phased information (HS field) is updated accordingly for the full region.
           pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_shapeit5:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - shapeit5:
+          type: string
+          description: The name of the tool
+      - 'SHAPEIT5_ligate | sed "5!d;s/^.*Version *: //; s/ .*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - shapeit5:
+          type: string
+          description: The name of the tool
+      - 'SHAPEIT5_ligate | sed "5!d;s/^.*Version *: //; s/ .*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@louislenezet"
 maintainers:

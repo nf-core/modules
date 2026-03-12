@@ -4,12 +4,12 @@ nextflow_process {
     config "./nextflow.config"
     script "../main.nf"
     process "ENTREZDIRECT_ESEARCH"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "entrezdirect"
     tag "entrezdirect/esearch"
-   
+
     test("pubmed") {
         when {
             params {

@@ -24,22 +24,26 @@ tools:
       identifier: biotools:viennarna
 
 input:
-  - - fasta:
-        type: file
-        description: |
-          A fasta file containing RNA or transcript sequences
-        pattern: "*.{fasta,fa}"
+  - fasta:
+      type: file
+      description: |
+        A fasta file containing RNA or transcript sequences
+      pattern: "*.{fasta,fa}"
+      ontologies: []
 output:
-  - rnalfold_txt:
-      - "*.lfold":
-          type: file
-          description: The text Output of RNALfold
-          pattern: "*.{lfold}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  rnalfold_txt:
+    - "*.lfold":
+        type: file
+        description: The text Output of RNALfold
+        pattern: "*.{lfold}"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kokul-atx"
 maintainers:

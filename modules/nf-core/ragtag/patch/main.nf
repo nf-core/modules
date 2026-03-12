@@ -8,11 +8,11 @@ process RAGTAG_PATCH {
         : 'biocontainers/ragtag:2.1.0--pyhb7b1952_0'}"
 
     input:
-    tuple val(meta), path(target, name: 'target/*') 
+    tuple val(meta), path(target, name: 'target/*')
     tuple val(meta2), path(query, name: 'query/*')
     tuple val(meta3), path(exclude)
     tuple val(meta4), path(skip)
-    
+
     output:
     tuple val(meta), path("*.patch.fasta"),         emit: patch_fasta
     tuple val(meta), path("*.patch.agp"),           emit: patch_agp
@@ -23,7 +23,8 @@ process RAGTAG_PATCH {
     tuple val(meta), path("*.rename.agp"),          emit: qry_rename_agp,           optional: true
     tuple val(meta), path("*.rename.fasta"),        emit: qry_rename_fasta,         optional: true
     tuple val(meta), path("*.patch.err"),           emit: stderr
-    path "versions.yml",                            emit: versions
+    tuple val("${task.process}"), val('ragtag'), eval("ragtag.py -v | sed 's/v//'"), emit: versions_ragtag, topic: versions
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -56,7 +57,7 @@ process RAGTAG_PATCH {
         ${arg_exclude} \\
         ${arg_skip} \\
         ${args} \\
-        2> >( tee ${prefix}.stderr.log >&2 ) \\
+        2>| >( tee ${prefix}.stderr.log >&2 ) \\
          | tee ${prefix}.stdout.log
 
     kill -TERM "\$tailpid"
@@ -76,14 +77,9 @@ process RAGTAG_PATCH {
     mv ${prefix}/ragtag.patch.err ${prefix}.patch.err
     # Move the assembly files from prefix folder, and add prefix
     for alignment_file in \$(ls ${prefix}/ragtag.patch.asm.*);
-        do 
+        do
             mv "\$alignment_file" "\${alignment_file/${prefix}\\//${prefix}_}"
         done
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ragtag: \$(echo \$(ragtag.py -v | sed 's/v//'))
-    END_VERSIONS
     """
 
     stub:
@@ -101,9 +97,5 @@ process RAGTAG_PATCH {
     touch ${prefix}.rename.fasta
     touch ${prefix}.ragtag.patch.asm.1
     touch ${prefix}.patch.err
-    
-    cat <<-END_VERSIONS > versions.yml
-        ragtag: \$(echo \$(ragtag.py -v | sed 's/v//'))
-    END_VERSIONS
     """
 }

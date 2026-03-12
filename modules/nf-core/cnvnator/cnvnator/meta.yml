@@ -1,6 +1,6 @@
 name: "cnvnator_cnvnator"
-description: CNVnator is a command line tool for CNV/CNA analysis from depth-of-coverage
-  by mapped reads.
+description: CNVnator is a command line tool for CNV/CNA analysis from
+  depth-of-coverage by mapped reads.
 keywords:
   - cnvnator
   - cnv
@@ -11,7 +11,8 @@ tools:
       homepage: "https://github.com/abyzovlab/CNVnator"
       documentation: "https://github.com/abyzovlab/CNVnator/blob/master/README.md"
       tool_dev_url: "https://github.com/abyzovlab/CNVnator"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:cnvnator
 input:
   - - meta:
@@ -23,10 +24,12 @@ input:
         type: file
         description: Sorted BAM/CRAM/SAM file
         pattern: "*.bam"
+        ontologies: []
     - bai:
         type: file
         description: Sorted BAM/CRAM/SAM file
         pattern: "*.bam"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -36,6 +39,7 @@ input:
         type: file
         description: ROOT file
         pattern: "*.root"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -45,6 +49,7 @@ input:
         type: file
         description: Path to a directory containing fasta files or a fasta file
         pattern: "*.fa"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -54,9 +59,13 @@ input:
         type: file
         description: Path to a fasta file index
         pattern: "*.fai"
+        ontologies: []
+  - step:
+      type: string
+      description: One of "his", "rd", "call", "stat", and "partition"
 output:
-  - root:
-      - output_meta:
+  root:
+    - - output_meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,8 +74,9 @@ output:
           type: file
           description: A ROOT file
           pattern: "*.root"
-  - tab:
-      - output_meta:
+          ontologies: []
+  tab:
+    - - output_meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -75,11 +85,29 @@ output:
           type: file
           description: A tab file containing cnvnator calls
           pattern: "*.tab"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  versions_cnvnator:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cnvnator:
+          type: string
+          description: The name of the tool
+      - cnvnator 2>&1 | sed -n '3s/CNVnator v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cnvnator:
+          type: string
+          description: The name of the tool
+      - cnvnator 2>&1 | sed -n '3s/CNVnator v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ramprasadn"
 maintainers:

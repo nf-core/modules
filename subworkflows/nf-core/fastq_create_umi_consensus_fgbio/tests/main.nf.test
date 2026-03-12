@@ -19,7 +19,6 @@ nextflow_workflow {
     tag "fgbio/zipperbams"
     tag "samtools/fastq"
     tag "samtools/sort"
-    tag "samtools/view"
     tag "samtools/index"
 
     test("single_umi") {
@@ -55,9 +54,14 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(
+                    bam(workflow.out.ubam[0][1]).getReadsMD5(),
+                    bam(workflow.out.groupbam[0][1]).getReadsMD5(),
+                    bam(workflow.out.consensusbam[0][1]).getReadsMD5(),
+                    bam(workflow.out.mappedconsensusbam[0][1]).getReadsMD5(),
+                    ).match()}
             )
         }
     }
@@ -95,9 +99,14 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(
+                    bam(workflow.out.ubam[0][1]).getReadsMD5(),
+                    bam(workflow.out.groupbam[0][1]).getReadsMD5(),
+                    bam(workflow.out.consensusbam[0][1]).getReadsMD5(),
+                    bam(workflow.out.mappedconsensusbam[0][1]).getReadsMD5(),
+                    ).match()}
             )
         }
     }

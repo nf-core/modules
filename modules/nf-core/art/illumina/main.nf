@@ -1,5 +1,4 @@
 process ART_ILLUMINA {
-
     tag "$meta.id"
     label 'process_single'
 
@@ -17,41 +16,36 @@ process ART_ILLUMINA {
 
     output:
     tuple val(meta), path("*.fq.gz"), emit: fastq
-    tuple val(meta), path("*.aln"), optional:true , emit: aln
-    tuple val(meta), path("*.sam"), optional:true , emit: sam
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.aln")  , emit: aln, optional:true
+    tuple val(meta), path("*.sam")  , emit: sam, optional:true
+    tuple val("${task.process}"), val('art'), eval("echo '${VERSION}'"), emit: versions_art_illumina, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '2016.06.05' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def args    = task.ext.args   ?: ''
+    def args2   = task.ext.args2  ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
+    VERSION = '2016.06.05' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     art_illumina \\
-        -ss $sequencing_system \\
-        -i $fasta \\
-        -l $read_length \\
-        -f $fold_coverage \\
-        -o $prefix \\
-        $args
+        -ss ${sequencing_system} \\
+        -i ${fasta} \\
+        -l ${read_length} \\
+        -f ${fold_coverage} \\
+        -o ${prefix} \\
+        ${args}
 
     gzip \\
         --no-name \\
-        $args2 \\
-        $prefix*.fq
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        art: $VERSION
-    END_VERSIONS
+        ${args2} \\
+        ${prefix}*.fq
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '2016.06.05'
+    def prefix  = task.ext.prefix ?: "${meta.id}"
+    VERSION = '2016.06.05'
     """
     echo "" | gzip > ${prefix}.fq.gz
     echo "" | gzip >  ${prefix}1.fq.gz
@@ -62,10 +56,5 @@ process ART_ILLUMINA {
     touch ${prefix}.sam
     touch ${prefix}1.sam
     touch ${prefix}2.sam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        art: $VERSION
-    END_VERSIONS
     """
 }

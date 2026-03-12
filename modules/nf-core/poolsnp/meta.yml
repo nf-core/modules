@@ -29,6 +29,7 @@ input:
           for each position in the reference genome.
           It is used as input for variant calling and other downstream analyses.
         pattern: "*.mpileup"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -40,6 +41,7 @@ input:
           Reference genome in FASTA format.
           May NOT contain any special characters such as "/|,:"
         pattern: "*.{fasta,fa}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -65,20 +67,23 @@ input:
           and 200 for the last two samples on chromosomal arm 2L.
           Note: Provide `max_cov` or `max_cov_file` but not both.
           Read more: https://github.com/capoony/PoolSNP
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.vcf.gz":
           type: file
-          description: Gzipped VCF file containing allele counts and frequencies for every
-            position and library
+          description: Gzipped VCF file containing allele counts and frequencies for
+            every position and library
           pattern: "*.vcf.gz"
-  - max_cov:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  max_cov:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -88,8 +93,9 @@ output:
           description: File containing the maximum coverage thresholds for all chromosomal
             arms and libraries
           pattern: "*cov-*.txt"
-  - bad_sites:
-      - meta:
+          ontologies: []
+  bad_sites:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -100,11 +106,15 @@ output:
             did not pass the SNP calling criteria
           pattern: "*BS.txt.gz"
           optional: true
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@abhilesh"
 maintainers:

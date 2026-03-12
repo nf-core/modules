@@ -1,0 +1,75 @@
+name: bcftools_plotvcfstats
+description: Plots the output of bcftools stats
+keywords:
+  - visualization
+  - stats
+  - VCF
+tools:
+  - plot:
+      description: |
+        Script for processing output of bcftools stats, plots graphs and creates a PDF presentation.
+      homepage: http://samtools.github.io/bcftools/bcftools.html
+      documentation: http://www.htslib.org/doc/bcftools.html
+      doi: 10.1093/bioinformatics/btp352
+      licence:
+        - "MIT"
+      identifier: biotools:bcftools
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1' ]
+    - stats:
+        type: file
+        description: Text file from BCFtools stats output
+        pattern: "*_stats.txt"
+        ontologies:
+          - edam: "http://edamontology.org/format_2330"
+output:
+  plot_dir:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - "*plots*":
+          type: directory
+          description: Output directory containing plots, raw data, and log files
+          pattern: "*plots*"
+          ontologies: []
+  plot_pdf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - "*.pdf":
+          type: file
+          description: (Link to the original) summary output in PDF
+          pattern: "*.pdf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3508"
+  versions_bcftools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bcftools:
+          type: string
+          description: The name of the tool
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bcftools:
+          type: string
+          description: The name of the tool
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@yz533cb"

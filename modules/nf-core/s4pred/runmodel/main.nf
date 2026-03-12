@@ -18,8 +18,8 @@ process S4PRED_RUNMODEL {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args   ?: ''
+    prefix      = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.2.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     mkdir ${prefix}
@@ -38,7 +38,7 @@ process S4PRED_RUNMODEL {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix      = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.2.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     mkdir -p ${prefix}

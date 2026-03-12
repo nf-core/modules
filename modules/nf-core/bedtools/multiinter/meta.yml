@@ -24,13 +24,14 @@ input:
         type: list
         description: List of files to be merged
         pattern: "*.{bed,vcf,gff}"
-  - - chrom_sizes:
-        type: file
-        description: Chromosome sizes file
-        pattern: "*{.sizes,.txt}"
+  - chrom_sizes:
+      type: file
+      description: Chromosome sizes file
+      pattern: "*{.sizes,.txt}"
+      ontologies: []
 output:
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,11 +40,28 @@ output:
           type: file
           description: Common interval bed
           pattern: "*.{bed}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_bedtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bedtools:
+          type: string
+          description: The name of the tool
+      - "bedtools --version | sed -e 's/bedtools v//g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bedtools:
+          type: string
+          description: The name of the tool
+      - "bedtools --version | sed -e 's/bedtools v//g'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@matthdsm"
 maintainers:

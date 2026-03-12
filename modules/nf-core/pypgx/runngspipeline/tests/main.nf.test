@@ -28,8 +28,6 @@ nextflow_process {
                         [id: 'GRCh37'], // meta2 map
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/GRCh37_chr22.fasta.gz', checkIfExists: true)
                     ]
-                    input[2] = ["CYP2D6"] // Pharmacogene
-                    input[3] = "GRCh37" // assembly version
                     """
                 }
             }
@@ -42,8 +40,6 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.PGx.CYP2D6.bam', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.PGx.CYP2D6.bam.bai', checkIfExists: true)
                     ]
-                    input[1] = ["CYP2D6"] // Pharmacogene
-                    input[2] = "GRCh37" // assembly version
                     """
                 }
             }
@@ -57,7 +53,6 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.PGx.CYP2D6.bam.bai', checkIfExists: true)
                     ]
                     input[1] = "22:42512500-42551883"
-                    input[2] = "GRCh37" // assembly version
                     """
                 }
             }
@@ -82,15 +77,12 @@ nextflow_process {
                             .join(PYPGX_COMPUTECONTROLSTATISTICS.out.control_stats)
                             .combine(Channel.fromList(["CYP2D6"]))
                 input[1] = UNTAR.out.untar // resource bundle
-                input[2] = 'GRCh37' //assembly version
                 """
             }
         }
 
         then {
             def results = process.out.results[0][1]
-
-
             def zipFile = path(results).zip
             def paths = zipFile.extractAll()
             def metaFile = paths.find { it.getFileName().toString() == 'metadata.txt' }
@@ -113,7 +105,6 @@ nextflow_process {
                 """
                 input[0] = [[id: 'test'], [], [], [], [], 'gene']
                 input[1] = [[id: 'bundle'], []]
-                input[2] = ''
                 """
             }
         }

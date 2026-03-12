@@ -1,0 +1,92 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fastq_removeadapters_merge"
+description: Remove adapters and merge reads based on various module choices
+keywords:
+  - adapters
+  - removal
+  - short reads
+  - merge
+  - trim
+components:
+  - trimmomatic
+  - cutadapt
+  - trimgalore
+  - bbmap/bbduk
+  - leehom
+  - fastp
+  - adapterremoval
+  - cat/fastq
+input:
+  - ch_input_reads:
+      type: file
+      description: |
+        List of FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
+        Structure: [ val(meta), [ path(reads) ] ]
+  - val_adapter_tool:
+      type: string
+      description: |
+        Choose one of the available adapter removal and/or merging tools
+      enum: ["trimmomatic", "cutadapt", "trimgalore", "bbduk", "leehom", "fastp", "adapterremoval"]
+  - ch_custom_adapters_file:
+      type: file
+      description: |
+        Optional reference files, containing adapter and/or contaminant sequences for removal.
+        In fasta format for bbmap/bbduk and fastp, or in text format for AdapterRemoval (one adapter per line).
+  - val_save_merged:
+      type: boolean
+      description: |
+        Specify true to output merged reads instead
+        Used by fastp and adapterremoval
+  - val_fastp_discard_trimmed_pass:
+      type: boolean
+      description: |
+        Used only by fastp.
+        Specify true to not write any reads that pass trimming thresholds from the fastp process.
+        This can be used to use fastp for the output report only.
+  - val_fastp_save_trimmed_fail:
+      type: boolean
+      description: |
+        Used only by fastp.
+        Specify true to save files that failed to pass fastp trimming thresholds
+output:
+  - processed_reads:
+      type: file
+      description: |
+        Structure: [ val(meta), path(fastq.gz) ]
+        The trimmed/modified single or paired end or merged fastq reads
+      pattern: "*.fastq.gz"
+  - discarded_reads:
+      type: file
+      description: |
+        Structure: [ val(meta), path(fastq.gz) ]
+        The discarded reads
+      pattern: "*.fastq.gz"
+  - logfile:
+      type: file
+      description: |
+        Execution log file
+        (trimmomatic {log}, trimgalore {txt}, fastp {log})
+      pattern: "*.{log,txt}"
+  - report:
+      type: file
+      description: |
+        Execution report
+        (trimmomatic {summary}, trimgalore {html,zip}, fastp {html})
+      pattern: "*.{summary,html,zip}"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+  - multiqc_files:
+      type: file
+      description: |
+        MultiQC-compatible output files from tools used in preprocessing
+        (trimmomatic, cutadapt, bbduk, leehom, fastp, adapterremoval)
+authors:
+  - "@kornkv"
+  - "@vagkaratzas"
+maintainers:
+  - "@kornkv"
+  - "@vagkaratzas"

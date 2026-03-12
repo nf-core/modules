@@ -35,7 +35,6 @@ process TCOFFEE_EXTRACTFROMPDB {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     # Otherwise, tcoffee will crash when calling its version

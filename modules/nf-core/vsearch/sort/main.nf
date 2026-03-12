@@ -13,7 +13,7 @@ process VSEARCH_SORT {
 
     output:
     tuple val(meta), path("*.fasta"), emit: fasta
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('vsearch'), eval('vsearch --version 2>&1 | sed -n "1s/.*v\\([0-9.]*\\).*/\\\\1/p"'), emit: versions_vsearch, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,20 +28,11 @@ process VSEARCH_SORT {
         --threads $task.cpus \\
         --output ${prefix}.fasta \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vsearch: \$(vsearch --version 2>&1 | head -n 1 | sed 's/vsearch //g;s/,.*//g;s/^v//;s/_.*//')
-    END_VERSIONS
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vsearch: \$(vsearch --version 2>&1 | head -n 1 | sed 's/vsearch //g;s/,.*//g;s/^v//;s/_.*//')
-    END_VERSIONS
     """
 }

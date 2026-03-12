@@ -36,23 +36,23 @@ input:
         description: File of the indexed DIAMOND database
         pattern: "*.dmnd"
         ontologies: []
-  - - out_ext:
-        type: string
-        description: |
-          Specify the type of output file to be generated. `blast` corresponds to
-          BLAST pairwise format. `xml` corresponds to BLAST xml format.
-          `txt` corresponds to to BLAST tabular format. `tsv` corresponds to
-          taxonomic classification format.
-        pattern: "blast|xml|txt|daa|sam|tsv|paf"
-  - - blast_columns:
-        type: string
-        description: |
-          Optional space separated list of DIAMOND tabular BLAST output keywords
-          used for in conjunction with the 'txt' out_ext option (--outfmt 6). Options:
-          qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore
+  - out_ext:
+      type: string
+      description: |
+        Specify the type of output file to be generated. `blast` corresponds to
+        BLAST pairwise format. `xml` corresponds to BLAST xml format.
+        `txt` corresponds to to BLAST tabular format. `tsv` corresponds to
+        taxonomic classification format.
+      pattern: "blast|xml|txt|daa|sam|tsv|paf"
+  - blast_columns:
+      type: string
+      description: |
+        Optional space separated list of DIAMOND tabular BLAST output keywords
+        used for in conjunction with the 'txt' out_ext option (--outfmt 6). Options:
+        qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore
 output:
-  - blast:
-      - meta:
+  blast:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -63,8 +63,8 @@ output:
           pattern: "*.{blast}"
           ontologies:
             - edam: http://edamontology.org/format_3836 # BLAST XML v2 results format
-  - xml:
-      - meta:
+  xml:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -75,8 +75,8 @@ output:
           pattern: "*.{xml}"
           ontologies:
             - edam: http://edamontology.org/format_2332 # XML
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -86,8 +86,8 @@ output:
           description: File containing hits in tabular BLAST format.
           pattern: "*.{txt}"
           ontologies: []
-  - daa:
-      - meta:
+  daa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -97,8 +97,8 @@ output:
           description: File containing hits DAA format
           pattern: "*.{daa}"
           ontologies: []
-  - sam:
-      - meta:
+  sam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -109,8 +109,8 @@ output:
           pattern: "*.{sam}"
           ontologies:
             - edam: http://edamontology.org/format_2573 # SAM
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -121,8 +121,8 @@ output:
           pattern: "*.{tsv}"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
-  - paf:
-      - meta:
+  paf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -132,8 +132,8 @@ output:
           description: File containing aligned reads in pairwise mapping format format
           pattern: "*.{paf}"
           ontologies: []
-  - log:
-      - meta:
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -143,13 +143,13 @@ output:
           description: Log file containing stdout information
           pattern: "*.{log}"
           ontologies: []
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies: 
-              - edam: http://edamontology.org/format_3750 # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@spficklin"
   - "@jfy133"

@@ -23,9 +23,10 @@ input:
         type: file
         description: Variant calling file (vcf)
         pattern: "*.{vcf}, *.{vcf.gz}"
+        ontologies: []
 output:
-  - pgen:
-      - meta:
+  pgen:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,8 +35,9 @@ output:
           type: file
           description: PLINK 2 binary genotype table
           pattern: "*.{pgen}"
-  - psam:
-      - meta:
+          ontologies: []
+  psam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,8 +46,9 @@ output:
           type: file
           description: PLINK 2 sample information file
           pattern: "*.{psam}"
-  - pvar:
-      - meta:
+          ontologies: []
+  pvar:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,8 +57,9 @@ output:
           type: file
           description: PLINK 2 variant information file
           pattern: "*.{pvar.zst}"
-  - pvar_zst:
-      - meta:
+          ontologies: []
+  pvar_zst:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,11 +68,15 @@ output:
           type: file
           description: PLINK 2 variant information zst file
           pattern: "*.pvar.zst"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_4006 # Zstandard format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nebfield"
 maintainers:

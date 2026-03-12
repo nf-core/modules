@@ -18,21 +18,18 @@ nextflow_process {
                 """
                 split = false
 
-                input[0] = Channel.of([
-                    [ id:'test', single_end:false ], // meta map
+                input[0] = [
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.umi_converted.bam', checkIfExists: true)
-                ])
+                ]
                 input[1] = split
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(path(process.out.reads[0][1]).linesGzip[0..6]).match("bam_reads") },
-                { assert snapshot(process.out.versions).match("bam_versions") }
-            )
+            assert process.success
+            assert snapshot(process.out).match()
         }
 
     }
@@ -44,24 +41,77 @@ nextflow_process {
                 """
                 split = true
 
-                input[0] = Channel.of([
-                    [ id:'test', single_end:false ], // meta map
+                input[0] = [
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.umi_converted.bam', checkIfExists: true)
-                ])
+                ]
                 input[1] = split
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.reads[0][1].collect{
-                    if (it ==~ /.*(other|singleton)\.fq\.gz$/) return file(it).name
-                    return path(it).linesGzip[0..6]
-                }).match("bam_split_reads") },
-                { assert snapshot(process.out.versions).match("bam_split_versions") }
-            )
+            assert process.success
+            assert snapshot(
+                process.out.reads.collect{
+                    meta, read_gz ->
+                    [ meta, read_gz.collect{ read_file ->
+                        if (read_file ==~ /.*(other|singleton)\.fq\.gz$/) {
+                            return file(read_file).name
+                        } else {
+                            return read_file
+                        }
+                    }]
+                },
+                process.out.versions_samtools
+            ).match()
+        }
+    }
+
+    test("bam -- stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                split = false
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.umi_converted.bam', checkIfExists: true)
+                ]
+                input[1] = split
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+    test("bam_split -- stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                split = true
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.umi_converted.bam', checkIfExists: true)
+                ]
+                input[1] = split
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
         }
     }
 }

@@ -18,26 +18,31 @@ tools:
       licence: ["GPL v2"]
       identifier: biotools:rapidnj
 input:
-  - - alignment:
-        type: file
-        description: A FASTA format multiple sequence alignment file
-        pattern: "*.{fasta,fas,fa,mfa}"
+  - alignment:
+      type: file
+      description: A FASTA format multiple sequence alignment file
+      pattern: "*.{fasta,fas,fa,mfa}"
+      ontologies: []
 output:
-  - stockholm_alignment:
-      - "*.sth":
-          type: file
-          description: An alignment in Stockholm format
-          pattern: "*.{sth}"
-  - phylogeny:
-      - "*.tre":
-          type: file
-          description: A phylogeny in Newick format
-          pattern: "*.{tre}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  stockholm_alignment:
+    - "*.sth":
+        type: file
+        description: An alignment in Stockholm format
+        pattern: "*.{sth}"
+        ontologies: []
+  phylogeny:
+    - "*.tre":
+        type: file
+        description: A phylogeny in Newick format
+        pattern: "*.{tre}"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@aunderwo"
   - "@avantonder"

@@ -1,0 +1,62 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fastq_fetch_clean_hostile"
+description: Downloads required reference genomes for hostile and removes host reads from short-read FASTQ sequencing files
+keywords:
+  - hostile
+  - decontamination
+  - human removal
+  - download
+  - host removal
+  - clean
+components:
+  - hostile/fetch
+  - hostile/clean
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1', single_end:false ]`
+  - reads:
+      type: file
+      description: Input FASTQ files for hostile cleaning
+      pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
+  - reference_name:
+      type: string
+      description: Name of the reference to align against and thus remove mapped reads to.
+  - reference_dir:
+      type: directory
+      description: |
+        Directory containing index file(s) corresponding to the preferred aligner (bowtie2 short reads or minimap for long reads).
+        Note that single end data is assumed to be long reads. If you have single-end short read you must supply both the BowTie2
+        indices AND explicitly specify `--aligner bowtie2`
+  - index_name:
+      type: string
+      description: Name of the reference genome index to download for hostile fetch if the reference is not provided.
+output:
+  - reference:
+      type: channel
+      description: |
+        Channel containing reference name and directory with index files for Hostile.
+        Structure: [ val(reference_name), path(reference_dir) ]
+  - fastq:
+      type: file
+      description: |
+        Channel containing sample metadata and cleaned FASTQ files.
+        Structure: [ val(meta), path(*.fastq.gz) ]
+      pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+  - json:
+      type: channel
+      description: |
+        Channel containing sample metadata and Hostile cleaning log in JSON format.
+        Structure: [ val(meta), path(*.json) ]
+      pattern: "*.json"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@maia-munteanu"
+maintainers:
+  - "@maia-munteanu"
+  - "@vagkaratzas"

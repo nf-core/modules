@@ -47,13 +47,19 @@ input:
         type: file
         description: |
           CSV or TSV format sample sheet with sample metadata
+        ontologies:
+          - edam: "http://edamontology.org/format_3752" # CSV
+          - edam: "http://edamontology.org/format_3475" # TSV
     - counts:
         type: file
         description: |
           Raw TSV or CSV format expression matrix
+        ontologies:
+          - edam: "http://edamontology.org/format_3752" # CSV
+          - edam: "http://edamontology.org/format_3475" # TSV
 output:
-  - translated_mrna:
-      - meta:
+  translated_mrna:
+    - - meta:
           type: map
           description: |
             Groovy Map containing contrast information. e.g.  [ id:'contrast1',
@@ -64,8 +70,10 @@ output:
             differences in RNA levels across conditions for Ribo-seq samples. See https://rdrr.io/bioc/anota2seq/man/anota2seqGetOutput.html
             for description of output columns.
           pattern: ".translated_mRNA.anota2seq.results.tsv"
-  - total_mrna:
-      - meta:
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  total_mrna:
+    - - meta:
           type: map
           description: |
             Groovy Map containing contrast information. e.g.  [ id:'contrast1',
@@ -76,8 +84,10 @@ output:
             differences in RNA levels across conditions for RNA-seq samples. See https://rdrr.io/bioc/anota2seq/man/anota2seqGetOutput.html
             for description of output columns.
           pattern: ".total_mRNA.anota2seq.results.tsv"
-  - translation:
-      - meta:
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  translation:
+    - - meta:
           type: map
           description: |
             Groovy Map containing contrast information. e.g.  [ id:'contrast1',
@@ -89,8 +99,10 @@ output:
             RNA levels not explained by total RNA levels. See https://rdrr.io/bioc/anota2seq/man/anota2seqGetOutput.html
             for description of output columns.
           pattern: ".translation.anota2seq.results.tsv"
-  - buffering:
-      - meta:
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  buffering:
+    - - meta:
           type: map
           description: |
             Groovy Map containing contrast information. e.g.  [ id:'contrast1',
@@ -98,12 +110,15 @@ output:
       - "*.buffering.anota2seq.results.tsv":
           type: file
           description: anota2seq results for the 'translated mRNA' analysis, describing
-            buffering across conditions, being stable levels of translated RNA (from riboseq
-            samples) across conditions, despite changes in total mRNA.  See https://rdrr.io/bioc/anota2seq/man/anota2seqGetOutput.html
-            for description of output columns.
+            buffering across conditions, being stable levels of translated RNA (from
+            riboseq samples) across conditions, despite changes in total mRNA.  See
+            https://rdrr.io/bioc/anota2seq/man/anota2seqGetOutput.html for description
+            of output columns.
           pattern: ".buffering.anota2seq.results.tsv"
-  - mrna_abundance:
-      - meta:
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  mrna_abundance:
+    - - meta:
           type: map
           description: |
             Groovy Map containing contrast information. e.g.  [ id:'contrast1',
@@ -115,8 +130,10 @@ output:
             (RNA-seq and Riboseq samples).  See https://rdrr.io/bioc/anota2seq/man/anota2seqGetOutput.html
             for description of output columns.
           pattern: ".mRNA_abundance.anota2seq.results.tsv"
-  - rdata:
-      - meta:
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  rdata:
+    - - meta:
           type: map
           description: |
             Groovy Map containing contrast information. e.g.  [ id:'contrast1',
@@ -125,8 +142,9 @@ output:
           type: file
           description: Serialised Anota2seqDataSet object
           pattern: ".Anota2seqDataSet.rds"
-  - fold_change_plot:
-      - meta:
+          ontologies: []
+  fold_change_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing contrast information. e.g.  [ id:'contrast1',
@@ -137,8 +155,10 @@ output:
             A fold change plot in PNG format, from anota2seq's anota2seqPlotFC()
             method.
           pattern: ".fold_change.png"
-  - interaction_p_distribution_plot:
-      - meta:
+          ontologies:
+            - edam: "http://edamontology.org/format_3603" # PNG
+  interaction_p_distribution_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing contrast information. e.g.  [ id:'contrast1',
@@ -151,8 +171,10 @@ output:
             the pdf displays the same plots but for the RVM statistics if RVM is
             used.
           pattern: ".interaction_p_distribution.pdf"
-  - residual_distribution_summary_plot:
-      - meta:
+          ontologies:
+            - edam: "http://edamontology.org/format_3508" # PDF
+  residual_distribution_summary_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing contrast information. e.g.  [ id:'contrast1',
@@ -162,8 +184,10 @@ output:
           description: |
             Summary plot for assessing normal distribution of regression residuals.
           pattern: ".residual_distribution_summary.jpeg"
-  - residual_vs_fitted_plot:
-      - meta:
+          ontologies:
+            - edam: "http://edamontology.org/format_3579" # JPG
+  residual_vs_fitted_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing contrast information. e.g.  [ id:'contrast1',
@@ -173,8 +197,10 @@ output:
           description: |
             QC plot showing residuals against fitted values.
           pattern: ".residual_vs_fitted.jpeg"
-  - rvm_fit_for_all_contrasts_group_plot:
-      - meta:
+          ontologies:
+            - edam: "http://edamontology.org/format_3579" # JPG
+  rvm_fit_for_all_contrasts_group_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing contrast information. e.g.  [ id:'contrast1',
@@ -185,8 +211,10 @@ output:
             QC plot showing the CDF of variance (theoretical vs empirical), all
             contrasts.
           pattern: ".rvm_fit_for_all_contrasts_group.jpg"
-  - rvm_fit_for_interactions_plot:
-      - meta:
+          ontologies:
+            - edam: "http://edamontology.org/format_3579" # JPG
+  rvm_fit_for_interactions_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing contrast information. e.g.  [ id:'contrast1',
@@ -197,8 +225,10 @@ output:
             QC plot showing the CDF of variance (theoretical vs empirical), for
             interactions.
           pattern: ".rvm_fit_for_interactions.jpg"
-  - rvm_fit_for_omnibus_group_plot:
-      - meta:
+          ontologies:
+            - edam: "http://edamontology.org/format_3579" # JPG
+  rvm_fit_for_omnibus_group_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing contrast information. e.g.  [ id:'contrast1',
@@ -209,8 +239,10 @@ output:
             QC plot showing the CDF of variance (theoretical vs empirical), for
             omnibus group.
           pattern: ".rvm_fit_for_omnibus_group.jpg"
-  - simulated_vs_obt_dfbetas_without_interaction_plot:
-      - meta:
+          ontologies:
+            - edam: "http://edamontology.org/format_3579" # JPG
+  simulated_vs_obt_dfbetas_without_interaction_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing contrast information. e.g.  [ id:'contrast1',
@@ -221,8 +253,10 @@ output:
             Bar graphs of the frequencies of outlier dfbetas using different
             dfbetas thresholds.
           pattern: ".simulated_vs_obt_dfbetas_without_interaction.pdf"
-  - session_info:
-      - meta:
+          ontologies:
+            - edam: "http://edamontology.org/format_3508" # PDF
+  session_info:
+    - - meta:
           type: map
           description: |
             Groovy Map containing contrast information. e.g.  [ id:'contrast1',
@@ -231,11 +265,15 @@ output:
           type: file
           description: dump of R SessionInfo
           pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/data_1678" # Log
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@pinin4fjords"
 maintainers:

@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "vclust_prefilter"
+description: The prefilter command creates a pre-alignment filter that reduces the
+  number of genome pairs to be aligned by filtering out dissimilar sequences before
+  the alignment step.
+keywords:
+  - cluster
+  - virus
+  - filter
+  - contig
+  - scaffold
+  - phage
+tools:
+  - "vclust":
+      description: "Fast and accurate tool for calculating ANI and clustering virus
+        genomes and metagenomes."
+      homepage: "https://afproject.org/vclust/"
+      documentation: "https://github.com/refresh-bio/vclust/wiki"
+      tool_dev_url: "https://github.com/refresh-bio/vclust"
+      doi: "10.1038/s41592-025-02701-7"
+      licence: ["GPL v3-or-later"]
+      identifier: "biotools:vclust"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Input fasta file containing sequences needed for filtering
+        pattern: "*.{fasta,fna,fa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+
+output:
+  txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.txt":
+          type: file
+          description: Output text file containing relationships for filtering
+          pattern: "*.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # TXT
+            - edam: "http://edamontology.org/format_2082" # MATRIX
+
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@Joon-Klaps"
+maintainers:
+  - "@Joon-Klaps"

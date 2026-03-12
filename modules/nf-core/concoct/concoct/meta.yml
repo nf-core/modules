@@ -30,13 +30,16 @@ input:
         type: file
         description: Subcontig coverage TSV table (typically generated with concoct_coverage_table.py)
         pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
     - fasta:
         type: file
         description: FASTA file containing subcontigs (typically generated with cutup_fasta.py)
         pattern: "*.fasta"
+        ontologies: []
 output:
-  - args_txt:
-      - meta:
+  args_txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,8 +48,9 @@ output:
           type: file
           description: File containing execution parameters
           pattern: "*_args.txt"
-  - clustering_csv:
-      - meta:
+          ontologies: []
+  clustering_csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -56,8 +60,10 @@ output:
           description: CSV containing information which subcontig is assigned to which
             cluster
           pattern: "*_clustering_gt1000.csv"
-  - log_txt:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  log_txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,8 +72,9 @@ output:
           type: file
           description: Log file of tool execution
           pattern: "*_log.txt"
-  - original_data_csv:
-      - meta:
+          ontologies: []
+  original_data_csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -76,8 +83,10 @@ output:
           type: file
           description: Original CONCOCT GT1000 output
           pattern: "*_original_data_gt1000.csv"
-  - pca_components_csv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  pca_components_csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -86,8 +95,10 @@ output:
           type: file
           description: Untransformed PCA component values
           pattern: "*_PCA_components_data_gt1000.csv"
-  - pca_transformed_csv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  pca_transformed_csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -96,11 +107,15 @@ output:
           type: file
           description: Transformed PCA component values
           pattern: "*_PCA_transformed_data_gt1000.csv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

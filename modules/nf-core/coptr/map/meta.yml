@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "coptr_map"
 description: Maps the reads to the reference database
@@ -39,9 +38,10 @@ input:
         description: Directory with Bowtie2 genome index files
         pattern: "*.ebwt"
 
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,11 +52,13 @@ output:
           pattern: "*.{bam}"
           ontologies:
             - edam: "http://edamontology.org/format_2572"
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ramirobarrantes"
 maintainers:

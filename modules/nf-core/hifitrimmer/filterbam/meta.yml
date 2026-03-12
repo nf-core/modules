@@ -1,0 +1,104 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "hifitrimmer_filterbam"
+description: |
+  Run hifi_trimmer filter_bam to filter and trim adapter hits from PacBio HiFi reads (BAM/FASTA/FASTQ) using BLAST against
+  adapter sequences. Primary output is filtered FASTA/FASTQ.
+keywords:
+  - pacbio
+  - bam
+  - fasta
+  - hifi_trimmer
+  - filtering
+  - trimming
+  - quality control
+  - adapter removal
+tools:
+  - hifi_trimmer:
+      description: |
+        hifi_trimmer: tools for processing HiFi read BLAST results and filtering/trimming
+        read files to output processed FASTA/FASTQ and accompanying summary and hit (optional) files.
+      homepage: "https://github.com/sanger-tol/hifi-trimmer"
+      documentation: "https://github.com/sanger-tol/hifi-trimmer"
+      licence: ["MIT"]
+  - samtools:
+      description: |
+        SAMtools is a set of utilities for interacting with and post-processing
+        short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
+        These files are generated as output by short read aligners like BWA.
+      homepage: http://www.htslib.org/
+      documentation: http://www.htslib.org/doc/samtools.html
+      doi: 10.1093/bioinformatics/btp352
+      licence: ["MIT"]
+      identifier: biotools:samtools
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - input:
+        type: file
+        description: Input BAM/FASTA/FASTQ file to filter
+        pattern: "*.{bam,fa,fasta,fa.gz,fasta.gz,fastq,fq,fastq.gz,fq.gz}"
+    - bed:
+        type: file
+        description: Input gzipped bed file contains regions to filter/trim
+        pattern: "*.bed.gz"
+output:
+  filtered:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.fast{q,a}.gz":
+          type: file
+          description: Gzipped FASTA/FASTQ produced by hifi_trimmer
+          pattern: "*.fast{q,a}.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_1930" # FASTQ
+            - edam: "http://edamontology.org/format_1929" # FASTA
+  versions_hifitrimmer:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hifi_trimmer:
+          type: string
+          description: The name of the tool
+      - hifi_trimmer --version | cut -d' ' -f3:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - samtools:
+          type: string
+          description: Name of the tool
+      - 'samtools --version | head -1 | sed -e "s/samtools //"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hifi_trimmer:
+          type: string
+          description: The name of the tool
+      - hifi_trimmer --version | cut -d' ' -f3:
+          type: eval
+          description: The expression to obtain the version
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - samtools:
+          type: string
+          description: Name of the tool
+      - 'samtools --version | head -1 | sed -e "s/samtools //"':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@sainsachiko"
+maintainers:
+  - "@sainsachiko"

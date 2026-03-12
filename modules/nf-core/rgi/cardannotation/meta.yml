@@ -16,31 +16,33 @@ tools:
       licence: ["https://card.mcmaster.ca/about"]
       identifier: ""
 input:
-  - - card:
-        type: directory
-        description: Directory containing the CARD database
-        pattern: "*/"
+  - card:
+      type: directory
+      description: Directory containing the CARD database
+      pattern: "*/"
 output:
-  - db:
-      - card_database_processed:
-          type: directory
-          description: Directory containing the processed CARD database files
-          pattern: "*/"
-  - tool_version:
-      - RGI_VERSION:
-          type: string
-          description: The version of the tool in string format (useful for downstream
-            tools such as hAMRronization)
-  - db_version:
-      - DB_VERSION:
-          type: string
-          description: The version of the used database in string format (useful for downstream
-            tools such as hAMRronization)
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  db:
+    - card_database_processed:
+        type: directory
+        description: Directory containing the processed CARD database files
+        pattern: "*/"
+  tool_version:
+    - RGI_VERSION:
+        type: string
+        description: The version of the tool in string format (useful for downstream
+          tools such as hAMRronization)
+  db_version:
+    - DB_VERSION:
+        type: string
+        description: The version of the used database in string format (useful for downstream
+          tools such as hAMRronization)
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rpetit3"
   - "@jfy133"

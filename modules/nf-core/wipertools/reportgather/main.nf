@@ -22,8 +22,8 @@ process WIPERTOOLS_REPORTGATHER {
     prefix = task.ext.prefix ?: "${meta.id}_gather"
 
     // Check if the output file name is in the list of input files
-    if (report.any { it.name == "${prefix}.report" }) {
-        error 'Output file name "${prefix}.report}" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
+    if (report.any { file -> file.name == "${prefix}.report" }) {
+        error 'Output file name "${prefix}.report" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
     }
 
     """
@@ -43,8 +43,8 @@ process WIPERTOOLS_REPORTGATHER {
     prefix = task.ext.prefix ?: "${meta.id}_gather"
 
     // Check if the output file name is in the list of input files
-    if (report.any { it.name == "${prefix}.report" }) {
-        error 'Output file name "${prefix}.report}" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
+    if (report.any { file -> file.name == "${prefix}.report" }) {
+        error 'Output file name "${prefix}.report" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
     }
 
     """

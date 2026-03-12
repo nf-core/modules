@@ -1,0 +1,108 @@
+nextflow_workflow {
+
+    name "Test Subworkflow TIF_REGISTRATION_STAINWARPY"
+    script "../main.nf"
+    workflow "TIF_REGISTRATION_STAINWARPY"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/tif_registration_stainwarpy"
+    tag "stainwarpy/extractchannel"
+    tag "stainwarpy/register"
+    tag "stainwarpy/transformsegmask"
+
+    test("colon_tissue_local - ome.tif - with_mask") {
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id:'sample1' ],
+                    file(params.modules_testdata_base_path + 'imaging/hne_multiplexed/hne_image_colon.ome.tif', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'sample1' ],
+                    file(params.modules_testdata_base_path + 'imaging/hne_multiplexed/multiplexed_image_colon.ome.tif', checkIfExists: true),
+                ]
+                input[2] = [
+                    [ id:'sample1' ],
+                    file(params.modules_testdata_base_path + 'imaging/hne_multiplexed/hne_segmentation_mask.ome.tif', checkIfExists: true),
+                ]
+                input[3] = 'multiplexed'
+                input[4] = 'multiplexed'
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    file(workflow.out.transformed_image[0][1]).name,
+                    file(workflow.out.transformed_segmask[0][1]).name,
+                    file(workflow.out.metrics[0][1]).name
+                ).match() }
+            )
+        }
+    }
+
+    test("colon_tissue_local - ome.tif - no_mask") {
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id:'sample1' ],
+                    file(params.modules_testdata_base_path + 'imaging/hne_multiplexed/hne_image_colon.ome.tif', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'sample1' ],
+                    file(params.modules_testdata_base_path + 'imaging/hne_multiplexed/multiplexed_image_colon.ome.tif', checkIfExists: true),
+                ]
+                input[2] = []
+                input[3] = 'multiplexed'
+                input[4] = 'multiplexed'
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    file(workflow.out.transformed_image[0][1]).name,
+                    file(workflow.out.metrics[0][1]).name,
+                    workflow.out.transformed_segmask
+                ).match() }
+            )
+        }
+    }
+
+    test("colon_tissue_local - ome.tif - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id:'sample1' ],
+                    file(params.modules_testdata_base_path + 'imaging/hne_multiplexed/hne_image_colon.ome.tif', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'sample1' ],
+                    file(params.modules_testdata_base_path + 'imaging/hne_multiplexed/multiplexed_image_colon.ome.tif', checkIfExists: true),
+                ]
+                input[2] = [
+                    [ id:'sample1' ],
+                    file(params.modules_testdata_base_path + 'imaging/hne_multiplexed/hne_segmentation_mask.ome.tif', checkIfExists: true),
+                ]
+                input[3] = 'multiplexed'
+                input[4] = 'multiplexed'
+                """
+            }
+        }
+        then {
+            { assert workflow.success }
+            { assert snapshot(workflow.out).match() }
+        }
+    }
+}

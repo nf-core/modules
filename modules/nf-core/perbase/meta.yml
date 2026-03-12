@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "perbase"
 description: Per-base metrics on BAM/CRAM files.
 keywords:
@@ -8,8 +7,8 @@ keywords:
 tools:
   - "perbase":
       description: "Per-base metrics on BAM/CRAM files."
-      homepage: "https://github.com/sstadick/perbase/blob/v0.10.2/README.md"
-      documentation: "https://github.com/sstadick/perbase/blob/v0.10.2/README.md"
+      homepage: "https://github.com/sstadick/perbase"
+      documentation: "https://github.com/sstadick/perbase"
       tool_dev_url: "https://github.com/sstadick/perbase"
       licence: ["MIT"]
       identifier: biotools:perbase
@@ -35,6 +34,13 @@ input:
         pattern: "*.{bai,crai}"
         ontologies:
           - edam: "http://edamontology.org/format_3327"
+    - bed:
+        type: file
+        description: bed file containing regions of interest, where only bases from
+          the given regions will be reported
+        pattern: "*.{bed}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
   - - meta2:
         type: map
         description: |
@@ -50,10 +56,10 @@ input:
         type: file
         description: FAI file (optional)
         pattern: "*.{fai}"
+        ontologies: []
 output:
-  - tsv:
-      #Only when we have meta
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,11 +71,28 @@ output:
           ontologies:
             - edam: "http://edamontology.org/format_3475"
 
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions_perbase:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - perbase:
+          type: string
+          description: The name of the tool
+      - perbase --version |& sed "1!d ; s/perbase //":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - perbase:
+          type: string
+          description: The name of the tool
+      - perbase --version |& sed "1!d ; s/perbase //":
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
   - "@camlloyd"

@@ -13,7 +13,7 @@ process SEQTK_COMP {
 
     output:
     tuple val(meta), path("*.seqtk_stats.tsv"), emit: seqtk_stats
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('seqtk'), eval("seqtk 2>&1 | sed -n 's/^Version: //p'"), emit: versions_seqtk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,23 +26,12 @@ process SEQTK_COMP {
     seqtk comp \\
         ${args} \\
         ${fastx} > ${prefix}.seqtk_stats.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqtk: \$(seqtk |& sed '/Version/!d; s/.* //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     echo "" > ${prefix}.seqtk_stats.tsv
-    
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqtk: \$(seqtk |& sed '/Version/!d; s/.* //')
-    END_VERSIONS
     """
 }
