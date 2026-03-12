@@ -18,7 +18,7 @@ process PLINK_GWAS {
     tuple val(meta), path("*.assoc"),  emit: assoc
     tuple val(meta), path("*.log")  ,  emit: log
     tuple val(meta), path("*.nosex"),  emit: nosex   , optional:true
-    path "versions.yml"             ,  emit: versions
+    tuple val("${task.process}"), val('plink'), eval("plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'"), emit: versions_plink, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -51,11 +51,6 @@ process PLINK_GWAS {
         --assoc \\
         $args \\
         --out $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')
-    END_VERSIONS
     """
 
     stub:
@@ -81,10 +76,5 @@ process PLINK_GWAS {
     touch ${prefix}.assoc
     touch ${prefix}.nosex
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')
-    END_VERSIONS
     """
 }
