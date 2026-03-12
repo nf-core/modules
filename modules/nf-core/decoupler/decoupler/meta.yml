@@ -37,7 +37,7 @@ input:
           Should be in in tab-separated format (`*.tab`)
         pattern: "*.tsv"
         ontologies:
-          - edam: http://edamontology.org/format_3475
+          - edam: http://edamontology.org/format_3475 # TSV
   - - meta2:
         type: map
         description: Groovy map
@@ -49,7 +49,7 @@ input:
           transcription factor, kinase, etc.)
         pattern: "*.tsv"
         ontologies:
-          - edam: http://edamontology.org/format_3475
+          - edam: http://edamontology.org/format_3475 # TSV
   - - meta3:
         type: map
         description: Groovy map
@@ -62,7 +62,7 @@ input:
         pattern: "*.tsv"
         required: false
         ontologies:
-          - edam: http://edamontology.org/format_3475
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
   dc_estimate:
     - - meta:
@@ -76,7 +76,7 @@ output:
             The file containing the estimation results of the enrichment(s)
           pattern: "*estimate_decoupler.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
   dc_pvals:
     - - meta:
           type: map
@@ -90,7 +90,7 @@ output:
             results of the enrichment(s)
           pattern: "*pvals_decoupler.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
   png:
     - - meta:
           type: map
@@ -104,7 +104,7 @@ output:
             results of the enrichment(s)
           pattern: "*estimate_decoupler_plot.png"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
   versions_decoupler:
     - versions.yml:
         type: file
