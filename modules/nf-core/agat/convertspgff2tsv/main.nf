@@ -12,8 +12,7 @@ process AGAT_CONVERTSPGFF2TSV {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    tuple val("${task.process}"), val('agat'), eval('agat --version'), emit: versions_agat, topic: versions
-
+    tuple val("${task.process}"), val('agat'), eval("agat --version | sed 's/^v//'"), emit: versions_agat, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
