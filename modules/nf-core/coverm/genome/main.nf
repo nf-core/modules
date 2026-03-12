@@ -16,7 +16,7 @@ process COVERM_GENOME {
 
     output:
     tuple val(meta), path("*.tsv"),                                                                            emit: coverage
-    tuple val("${task.process}"), val('coverm'), eval('coverm --version | sed "s/coverm //"'), emit: versions, topic: versions
+    tuple val("${task.process}"), val('coverm'), eval('coverm --version | sed "s/coverm //"'), emit: versions_coverm, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
