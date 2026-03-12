@@ -13,6 +13,7 @@ process ABACAS {
 
     output:
     tuple val(meta), path("${prefix}.*"), emit: results
+    tuple val("${task.process}"), val('abacas'), eval('abacas.pl --version'), emit: versions_abacas, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
