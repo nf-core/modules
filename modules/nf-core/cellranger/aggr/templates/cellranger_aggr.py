@@ -24,14 +24,17 @@ run(
 )
 # fmt: on
 
-version = run(
-    ["cellranger", "--version"],
-    text=True,
-    check=True,
-    capture_output=True,
-).stdout.strip().replace("cellranger cellranger-", "")
+version = (
+    run(
+        ["cellranger", "--version"],
+        text=True,
+        check=True,
+        capture_output=True,
+    )
+    .stdout.strip()
+    .replace("cellranger cellranger-", "")
+)
 
 with open("versions.yml", "w") as f:
     f.write('"${task.process}":\\n')
     f.write(f'    cellranger: "{version}"\\n')
-
