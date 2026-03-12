@@ -1,52 +1,69 @@
 name: treerecs
-description: Correct or reconcile gene trees against a species tree using Treerecs
+description: Correct or reconcile gene trees against a species tree using
+  Treerecs
 keywords:
   - phylogeny
   - gene tree
   - species tree
   - reconciliation
-
 tools:
   - treerecs:
       description: Reconciles and corrects gene trees using a species tree
       homepage: https://project.inria.fr/treerecs/
       documentation: https://project.inria.fr/treerecs/tutorial/
       tool_dev_url: https://gitlab.inria.fr/Phylophile/Treerecs
-      licence: ["CECILL-C"]
-
+      licence:
+        - CECILL-C
+      identifier: biotools:Treerecs
 input:
   - - meta:
         type: map
-        description: Groovy Map containing sample information, for example [ id:'test' ]
+        description: Groovy Map containing sample information, for example [
+          id:'test' ]
     - species_tree:
         type: file
         description: Species tree file
         pattern: "*.{nwk,newick,nhx,xml,txt}"
+        ontologies:
+          - edam: http://edamontology.org/format_2332
     - gene_trees:
         type: file
         description: Gene tree file
         pattern: "*.{nwk,newick,nhx,xml,txt}"
-
+        ontologies:
+          - edam: http://edamontology.org/format_2332
 output:
-  - corrected_trees:
-      - - meta:
-            type: map
-            description: Groovy Map containing sample information
-        - "treerecs_output/${prefix}.nwk":
-            type: file
-            description: Corrected or reconciled tree in Newick format
-            pattern: "*.nwk"
-
-  - versions_treerecs:
-      - - process:
-            type: string
-            description: Process name
-        - tool:
-            type: string
-            description: Tool name
-        - version:
-            type: string
-            description: Treerecs version
-
+  corrected_trees:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.nwk":
+          type: file
+          description: Corrected or reconciled tree in Newick format
+          pattern: "*.nwk"
+          ontologies: []
+  versions_treerecs:
+    - - "${task.process}":
+          type: string
+          description: Process name
+      - "treerecs":
+          type: string
+          description: Tool name
+      - "treerecs --version 2>/dev/null | sed 's/ (.*) //g'":
+          type: eval
+          description: Tool version
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: Process name
+      - "treerecs":
+          type: string
+          description: Tool name
+      - "treerecs --version 2>/dev/null | sed 's/ (.*) //g'":
+          type: eval
+          description: Tool version
 authors:
-  - "@takahiro_fujita"
+  - "@charles-plessy, @pmuskusv, @takiifujita-ui, @leapicard"
+maintainers:
+  - "@leapicard"
