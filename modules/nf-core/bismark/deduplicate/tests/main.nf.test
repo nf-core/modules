@@ -25,8 +25,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out)).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
