@@ -12,7 +12,7 @@ process CONCOCT_CONCOCTCOVERAGETABLE {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    tuple val("${task.process}"), val('concoct'), eval('concoct --version'), emit: versions_concoct, topic: versions
+    tuple val("${task.process}"), val('concoct'), eval('concoct --version | cut -d " " -f2'), emit: versions_concoct, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

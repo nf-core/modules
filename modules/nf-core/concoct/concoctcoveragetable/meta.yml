@@ -63,7 +63,7 @@ output:
       - concoct:
           type: string
           description: The name of the tool
-      - concoct --version:
+      - concoct --version | cut -d " " -f2:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -74,7 +74,7 @@ topics:
       - concoct:
           type: string
           description: The name of the tool
-      - concoct --version:
+      - concoct --version | cut -d " " -f2:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
