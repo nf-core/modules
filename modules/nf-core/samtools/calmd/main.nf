@@ -9,7 +9,7 @@ process SAMTOOLS_CALMD {
 
     input:
     tuple val(meta), path(bam)
-    tuple val(meta2), path(fasta)
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam

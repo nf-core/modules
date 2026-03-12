@@ -31,8 +31,8 @@ input:
             type: file
             description: BAM index file
             pattern: "*.bai"
-  - ch_fasta:
-      description: Channel with genome FASTA file
+  - ch_fasta_fai:
+      description: Channel with genome FASTA file and index
       structure:
         - meta:
             type: map
@@ -40,7 +40,11 @@ input:
         - fasta:
             type: file
             description: Genome FASTA file
-            pattern: "*.{fa,fasta}"
+            pattern: "*.{fa,fna,fasta}"
+        - fai:
+            type: file
+            description: Genome FASTA index file
+            pattern: "*.fai"
   - umi_dedup_tool:
       description: UMI deduplication tool to use
       structure:
