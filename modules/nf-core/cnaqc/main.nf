@@ -16,7 +16,8 @@ process CNAQC {
     tuple val(meta), path("*_qc_plot.rds"),                             emit: qc_plot_rds
     tuple val(meta), path("*_data.pdf"),                                emit: plot_pdf_data
     tuple val(meta), path("*_qc.pdf"),                                  emit: plot_pdf_qc
-    path "versions.yml",                                                emit: versions
+    tuple val("${task.process}"), val('cnaqc'), eval("""Rscript -e "cat(as.character(packageVersion('CNAqc')))" """), topic: versions, emit: versions_cnaqc
+    tuple val("${task.process}"), val('dplyr'), eval("""Rscript -e "cat(as.character(packageVersion('dplyr')))" """), topic: versions, emit: versions_dplyr
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,10 +40,5 @@ process CNAQC {
     touch ${prefix}_qc.pdf
     touch ${prefix}_data.pdf
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cnaqc: \$(Rscript -e "library(CNAqc); cat(as.character(packageVersion('CNAqc')))")
-        dplyr: \$(Rscript -e "library(dplyr); cat(as.character(packageVersion('dplyr')))")
-    END_VERSIONS
     """
 }
