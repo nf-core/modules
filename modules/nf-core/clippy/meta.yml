@@ -45,7 +45,7 @@ output:
           description: BED file of peaks called by Clippy
           pattern: "*_broadPeaks.bed.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   summits:
     - - meta:
           type: map
@@ -55,7 +55,7 @@ output:
           description: BED file of peak summits called by Clippy
           pattern: "*[0-9].bed.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   intergenic_gtf:
     - - meta:
           type: map
