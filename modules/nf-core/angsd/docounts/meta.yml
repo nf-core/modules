@@ -27,14 +27,14 @@ input:
         description: A list of BAM or CRAM files
         pattern: "*.{bam,cram}"
         ontologies:
-          - edam: "http://edamontology.org/format_2572"
-          - edam: "http://edamontology.org/format_3462"
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_3462" # CRAM
     - bai:
         type: file
         description: List of BAM/CRAM index files
         pattern: "*.{bai,csi}"
         ontologies:
-          - edam: "http://edamontology.org/format_3327"
+          - edam: "http://edamontology.org/format_3327" # BAI
     - minqfile:
         type: file
         description: File with individual quality score thresholds
@@ -85,8 +85,8 @@ output:
           description: Various types of depth statistics (depending on value for -dumpCounts)
           pattern: "*.pos.gz"
           ontologies:
-            - edam: "http://edamontology.org/format_3675"
-            - edam: http://edamontology.org/format_3989
+            - edam: "http://edamontology.org/format_3675" # Compressed file
+            - edam: http://edamontology.org/format_3989 # GZIP format
   counts:
     - - meta:
           type: map
@@ -98,7 +98,7 @@ output:
           description: Various types of statistics (related to pos.gz)
           pattern: "*.counts.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   icounts:
     - - meta:
           type: map
@@ -111,7 +111,7 @@ output:
             contamination
           pattern: "*.icnts.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   versions_angsd:
     - - ${task.process}:
           type: string
