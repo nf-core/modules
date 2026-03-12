@@ -1,0 +1,59 @@
+name: "centrifuger_build"
+description: Build centrifuger database for taxonomic profiling
+keywords:
+  - metagenomics
+  - taxonomic-classification
+  - database-build
+tools:
+  - "centrifuger":
+      description: "Lossless compression of microbial genomes for efficient and accurate
+        metagenomic sequence classification."
+      homepage: "https://github.com/mourisl/centrifuger"
+      documentation: "https://github.com/mourisl/centrifuger"
+      tool_dev_url: "https://github.com/mourisl/centrifuger"
+      doi: "10.1186/s13059-024-03244-4"
+      licence:
+        - "MIT"
+      identifier: biotools:centrifuger
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[id:'sample1'
+          ]`
+    - reference:
+        type: file
+        description: Reference genome FASTA file
+        ontologies: []
+  - conversion_table:
+      type: file
+      description: Mapping of sequence IDs to taxonomy IDs
+      ontologies: []
+  - taxonomy_nodes:
+      type: file
+      description: NCBI taxonomy nodes.dmp file
+      ontologies: []
+  - taxonomy_names:
+      type: file
+      description: NCBI taxonomy names.dmp file
+      ontologies: []
+output:
+  db:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "${task.ext.prefix ?: meta.id}.*":
+          type: file
+          description: Centrifuger database index files
+          pattern: "${task.ext.prefix ?: meta.id}.*"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
+authors:
+  - "@haris18s"
+maintainers:
+  - "@haris18s"
