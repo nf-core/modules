@@ -159,7 +159,7 @@ nextflow_process {
                         file("${process.out.db[0][1]}/split").name,
                         path("${process.out.db[0][1]}/taxID_list"),
                         file("${process.out.db[0][1]}/db.parameters").name,
-                        process.out.findAll { key, val -> key.startsWith("versions")}
+                        process.out.versions_metabuli
                         ).match()
                 }
             )
