@@ -3,7 +3,7 @@ process SUSHIE {
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    container "docker.io/cameronlloyd/sushie:0.19"
+    container "quay.io/nf-core/sushie:0.19"
 
     input:
     tuple val(meta), path(study_locus_files)
