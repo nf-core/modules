@@ -1,19 +1,14 @@
 process SINGLEM_DBDOWNLOAD {
-    tag '$bam'
+    
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'biocontainers/YOUR-TOOL-HERE' }"
-
-    input:
-    
-    path dna_sequence
+    'https://depot.galaxyproject.org/singularity/singlem:0.18.3--pyhdfd78af_0' :
+    'biocontainers/singlem:0.19.0--pyhdfd78af_0' }"
 
     output:
-    path taxonomy, emit: taxonomy
-    tuple val("${task.process}"), val('singlem'), eval("singlem --version"), topic: versions, emit: versions_singlem
+    path("*.smpkg.zb"), emit: singlem_database
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,19 +17,13 @@ process SINGLEM_DBDOWNLOAD {
     def args = task.ext.args ?: ''
     
     """
-    singlem \\
-        $args \\
-        -@ $task.cpus \\
-        $dna_sequence \\
+    singlem data \\
+        --output-directory . \\
+        ${args}
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    
     """
-    echo $args
-    
-    touch ${prefix}.fastq
-    touch ${prefix}.fasta
+    touch S4.3.0.GTDB_r220.metapackage_20240523.smpkg.zb
     """
 }
