@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "macse_refinealignment"
-description: refineAlignment: improves the input nucleotide alignment in a codon-aware manner
+description: improves the input nucleotide alignment in a codon-aware manner
 keywords:
   - multiple sequence alignment
   - codon-aware
@@ -21,7 +21,7 @@ input:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.fas{.gz,}":
+      - fasta:
           type: file
           description: Aligned sequences in FASTA format. May be gzipped or uncompressed.
           pattern: "*.{fas,fasta,aln}"
@@ -36,7 +36,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.fas{.gz,}":
+      - "*_NT.{fas,fasta,aln}":
           type: file
           description: Aligned sequences in FASTA format. May be gzipped or uncompressed.
           pattern: "*_NT.{fas,fasta,aln}"
@@ -50,7 +50,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.fas{.gz,}":
+      - "*_AA.{fas,fasta,aln}":
           type: file
           description: Aligned sequences in FASTA format. May be gzipped or uncompressed.
           pattern: "*_AA.{fas,fasta,aln}"
