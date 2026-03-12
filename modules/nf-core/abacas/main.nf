@@ -14,7 +14,6 @@ process ABACAS {
     output:
     tuple val(meta), path("${prefix}.*"), emit: results
     tuple val("${task.process}"), val('abacas'), eval("abacas.pl --version 2>&1 | grep 'ABACAS\\.' | sed 's/ABACAS\\.//' || true"), topic: versions, emit: versions_abacas
-
     when:
     task.ext.when == null || task.ext.when
 
