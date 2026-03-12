@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-
 name: "svim_alignment"
-description: Structural variant detection from long-read sequencing alignments using SVIM.
+description: Structural variant detection from long-read sequencing alignments using
+  SVIM.
 keywords:
   - structural variants
   - long reads
@@ -9,17 +8,18 @@ keywords:
   - pacbio
   - genomics
   - variant calling
-
 tools:
   - "svim":
-      description: "SVIM is a structural variant caller for long-read sequencing data that detects deletions, insertions, duplications, inversions and translocations from read alignments."
+      description: "SVIM is a structural variant caller for long-read sequencing data
+        that detects deletions, insertions, duplications, inversions and translocations
+        from read alignments."
       homepage: "https://github.com/eldariont/svim"
       documentation: "https://github.com/eldariont/svim/wiki"
       tool_dev_url: "https://github.com/eldariont/svim"
       doi: "10.1093/bioinformatics/btz041"
-      licence: ["GPL-3.0"]
+      licence:
+        - "GPL-3.0"
       identifier: "biotools:svim"
-
 input:
   - - meta:
         type: map
@@ -28,7 +28,8 @@ input:
           e.g. [ id:'test' ]
     - bam:
         type: file
-        description: Coordinate-sorted BAM/CRAM/SAM alignment file generated from long-read mapping
+        description: Coordinate-sorted BAM/CRAM/SAM alignment file generated from long-read
+          mapping
         pattern: "*.{bam,cram,sam}"
         ontologies:
           - edam: "http://edamontology.org/format_2572"
@@ -51,7 +52,6 @@ input:
         pattern: "*.{fa,fasta,fna}"
         ontologies:
           - edam: "http://edamontology.org/format_1929"
-
 output:
   vcf:
     - - meta:
@@ -72,10 +72,9 @@ output:
       - svim:
           type: string
           description: The tool name
-      - svim --version | sed "/svim v/!d; s/.*v//":
+      - svim --version | sed "s/^.*svim //; s/ .*//":
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -84,12 +83,10 @@ topics:
       - svim:
           type: string
           description: The tool name
-      - svim --version | sed "/svim v/!d; s/.*v//":
+      - svim --version | sed "s/^.*svim //; s/ .*//":
           type: eval
           description: The expression to obtain the version of the tool
-
 authors:
   - "@nourmahfel"
-
 maintainers:
   - "@nourmahfel"
