@@ -136,7 +136,7 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
 
     emit:
     bam                        = SAMTOOLS_SORT.out.bam         // channel: [ val(meta), [ bam ] ]
-    bai                        = SAMTOOLS_INDEX.out.bai        // channel: [ val(meta), [ bai ] ]
+    index                      = SAMTOOLS_INDEX.out.index      // channel: [ val(meta), [ index ] ]
     coverage2cytosine_coverage = ch_coverage2cytosine_coverage // channel: [ val(meta), [ coverage ] ]
     coverage2cytosine_report   = ch_coverage2cytosine_report   // channel: [ val(meta), [ report ] ]
     coverage2cytosine_summary  = ch_coverage2cytosine_summary  // channel: [ val(meta), [ summary ] ]
