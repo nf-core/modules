@@ -12,8 +12,7 @@ process BRACKEN_COMBINEBRACKENOUTPUTS {
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    tuple val("${task.process}"), val('combine_bracken_outputs'), val("3.0.1"), emit: versions_combine_bracken_outputs, topic: versions
-    // WARN: Version information not provided by tool on CLI. Plaease update this string when bumping container versions.
+    tuple val("${task.process}"), val('combine_bracken_outputs'), val('bracken -v | cut -f2 -d"v"'), emit: versions_combine_bracken_outputs, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
