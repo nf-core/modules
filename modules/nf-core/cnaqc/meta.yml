@@ -10,7 +10,8 @@ tools:
       homepage: "https://caravagnalab.github.io/CNAqc/"
       documentation: "https://caravagnalab.github.io/CNAqc/"
       tool_dev_url: "https://github.com/caravagnalab/CNAqc"
-      licence: ["GPL v3-or-later"]
+      licence:
+        - "GPL v3-or-later"
       identifier: ""
 input:
   - - meta:
@@ -52,13 +53,14 @@ output:
             e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name' ]`
       - "*_data_plot.rds":
           type: file
-          description: R object containing plots of the CNA statistics for the sample
+          description: R object containing plots of the CNA statistics for the
+            sample
           pattern: "*{_data_plot.rds}"
           ontologies: []
       - "*_qc_plot.rds":
           type: file
-          description: R object containing plots of the quality control results for
-            the sample
+          description: R object containing plots of the quality control results
+            for the sample
           pattern: "*{_qc_plot.rds}"
           ontologies: []
   qc_plot_rds:
@@ -69,8 +71,8 @@ output:
             e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name' ]`
       - "*_qc_plot.rds":
           type: file
-          description: R object containing plots of the quality control results for
-            the sample
+          description: R object containing plots of the quality control results
+            for the sample
           pattern: "*{_qc_plot.rds}"
           ontologies: []
   plot_pdf_data:
@@ -84,7 +86,7 @@ output:
           description: plots of the CNA statistics for the sample
           pattern: "*{_data.pdf}"
           ontologies:
-            - edam: "http://edamontology.org/format_3508" # pdf
+            - edam: "http://edamontology.org/format_3508"
   plot_pdf_qc:
     - - meta:
           type: map
@@ -96,14 +98,47 @@ output:
           description: plots of the quality control results for the sample
           pattern: "*{_qc.pdf}"
           ontologies:
-            - edam: "http://edamontology.org/format_3508" # pdf
+            - edam: "http://edamontology.org/format_3508"
+  versions_cnaqc:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cnaqc:
+          type: string
+          description: The name of the tool
+      - "":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_dplyr:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dplyr:
+          type: string
+          description: The name of the tool
+      - "":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cnaqc:
+          type: string
+          description: The name of the tool
+      - "":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dplyr:
+          type: string
+          description: The name of the tool
+      - "":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@vvvirgy"
 maintainers:
