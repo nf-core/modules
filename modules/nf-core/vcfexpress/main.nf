@@ -22,7 +22,6 @@ process VCFEXPRESS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_express"
     def suffix = task.ext.suffix ?: 'vcf.gz'
-
     def lua_prelude = prelude ? "--lua-prelude $prelude" : ''
 
     """
