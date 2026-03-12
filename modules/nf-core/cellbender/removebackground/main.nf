@@ -22,7 +22,7 @@ process CELLBENDER_REMOVEBACKGROUND {
     tuple val(meta), path("${prefix}.pdf")              , emit: pdf
     tuple val(meta), path("${prefix}.log")              , emit: log
     tuple val(meta), path("ckpt.tar.gz")                , emit: checkpoint
-    path "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('cellbender'), eval('cellbender --version'), emit: versions_cellbender, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,10 +40,6 @@ process CELLBENDER_REMOVEBACKGROUND {
         --input ${h5ad} \
         --output ${prefix}.h5
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellbender: \$(cellbender --version)
-    END_VERSIONS
     """
 
     stub:
@@ -59,9 +55,5 @@ process CELLBENDER_REMOVEBACKGROUND {
     touch "${prefix}.log"
     echo "" | gzip > ckpt.tar.gz
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellbender: \$(cellbender --version)
-    END_VERSIONS
     """
 }
