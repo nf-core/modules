@@ -21,7 +21,8 @@ process PARABRICKS_MINIMAP2 {
     tuple val(meta), path("*.table"),                 emit: bqsr_table,          optional: true
     tuple val(meta), path("*_qc_metrics"),            emit: qc_metrics,          optional: true
     tuple val(meta), path("*.duplicate-metrics.txt"), emit: duplicate_metrics,   optional: true
-    tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions_parabricks
+    path "compatible_versions.yml",                   emit: compatible_versions, optional: true
+    tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -65,6 +66,19 @@ process PARABRICKS_MINIMAP2 {
         ${intervals_command} \\
         ${num_gpus} \\
         ${args}
+
+    # Capture the full version output once and store it in a variable
+    pbrun_version_output=\$(pbrun minimap2 --version 2>&1)
+
+    # We handle this different to the other modules because minimap does not begin with an Uppercase letter
+
+    # Generate compatible_versions.yml
+    cat <<EOF > compatible_versions.yml
+    "${task.process}":
+        pbrun_version: \$(echo "\$pbrun_version_output" | grep "pbrun:" | awk '{print \$2}')
+        compatible_with:
+        \$(echo "\$pbrun_version_output" | tr '\\t' ' ' | awk -F':' '/Compatible With:/,/^---/ { if (\$0 !~ /Compatible With:/ && \$0 !~ /^---\$/ && index(\$0,":")>0) { key=\$1; val=\$2; gsub(/^[ ]+|[ ]+\$/, "", key); gsub(/^[ ]+|[ ]+\$/, "", val); printf "  %s: %s\\n", key, val } }')
+    EOF
     """
 
     stub:
@@ -85,5 +99,17 @@ process PARABRICKS_MINIMAP2 {
     ${known_sites_output}
     ${qc_metrics_output}
     ${duplicate_metrics_output}
+    # Capture the full version output once and store it in a variable
+    pbrun_version_output=\$(pbrun minimap2 --version 2>&1)
+
+    # We handle this different to the other modules because minimap does not begin with an Uppercase letter
+
+    # Generate compatible_versions.yml
+    cat <<EOF > compatible_versions.yml
+    "${task.process}":
+        pbrun_version: \$(echo "\$pbrun_version_output" | grep "pbrun:" | awk '{print \$2}')
+        compatible_with:
+        \$(echo "\$pbrun_version_output" | tr '\\t' ' ' | awk -F':' '/Compatible With:/,/^---/ { if (\$0 !~ /Compatible With:/ && \$0 !~ /^---\$/ && index(\$0,":")>0) { key=\$1; val=\$2; gsub(/^[ ]+|[ ]+\$/, "", key); gsub(/^[ ]+|[ ]+\$/, "", val); printf "  %s: %s\\n", key, val } }')
+    EOF
     """
 }
