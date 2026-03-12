@@ -68,7 +68,7 @@ output:
           description: Aggregated FastQ files
           pattern: "*.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   bam:
     - - meta:
           type: map
@@ -180,7 +180,7 @@ output:
           description: JSON file for MultiQC
           pattern: "*.json"
           ontologies:
-            - edam: http://edamontology.org/format_3464
+            - edam: http://edamontology.org/format_3464 # JSON
   versions_artic:
     - - ${task.process}:
           type: string
