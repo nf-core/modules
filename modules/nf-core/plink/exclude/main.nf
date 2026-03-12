@@ -14,7 +14,7 @@ process PLINK_EXCLUDE {
     tuple val(meta), path("*.bed"), emit: bed
     tuple val(meta), path("*.bim"), emit: bim
     tuple val(meta), path("*.fam"), emit: fam
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('plink'), eval("plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'"), emit: versions_plink, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,11 +31,6 @@ process PLINK_EXCLUDE {
         --threads $task.cpus \\
         --make-bed \\
         --out $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')
-    END_VERSIONS
     """
 
     stub:
@@ -45,11 +40,6 @@ process PLINK_EXCLUDE {
     touch ${prefix}.bed
     touch ${prefix}.bim
     touch ${prefix}.fam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink: \$(echo \$(plink --version 2>&1) | sed 's/^PLINK v//' | sed 's/..-bit.*//' )
-    END_VERSIONS
     """
 
 }
