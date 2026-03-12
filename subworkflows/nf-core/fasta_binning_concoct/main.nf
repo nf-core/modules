@@ -28,7 +28,6 @@ workflow FASTA_BINNING_CONCOCT {
                                                     .join(CONCOCT_CUTUPFASTA.out.fasta, failOnMismatch: true)
 
     CONCOCT_CONCOCT( ch_concoctcoveragetable_for_concoctconcoct )
-    ch_versions = ch_versions.mix(CONCOCT_CONCOCT.out.versions.first())
 
     CONCOCT_MERGECUTUPCLUSTERING ( CONCOCT_CONCOCT.out.clustering_csv )
     ch_versions = ch_versions.mix( CONCOCT_MERGECUTUPCLUSTERING.out.versions.first())
