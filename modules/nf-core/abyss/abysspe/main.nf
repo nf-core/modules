@@ -15,7 +15,7 @@ process ABYSS_ABYSSPE {
     tuple val(meta), path("*-contigs.fa"),   emit: contigs
     tuple val(meta), path("*-scaffolds.fa"), emit: scaffolds
     tuple val(meta), path("*-stats"),        emit: stats
-    tuple val(meta), path("*-abyss.log"),            emit: log 
+    tuple val(meta), path("*-abyss.log"),            emit: log
     tuple val("${task.process}"), val('abyss'), eval("abyss-pe version | grep abyss | cut -d\" \" -f3"), topic: versions, emit: versions_abyss
 
     when:
