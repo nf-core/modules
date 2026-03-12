@@ -26,7 +26,7 @@ input:
         description: Single channel nuclear image
         pattern: "*.{tiff,tif}"
         ontologies:
-            - edam: http://edamontology.org/format_3591 # TIFF
+          - edam: http://edamontology.org/format_3591 # TIFF
 output:
   mask:
     - - meta:
@@ -58,16 +58,6 @@ output:
           type: string
           description: The name of the tool
       - python --version:
-          type: eval
-          description: The expression to obtain the version of the tool
-  versions_ilastik:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - ilastik:
-          type: string
-          description: The name of the tool
-      - /opt/ilastik-1.4.0-Linux/run_ilastik.sh --headless --version:
           type: eval
           description: The expression to obtain the version of the tool
   versions_tensorflow:
@@ -108,15 +98,6 @@ topics:
           type: string
           description: The name of the tool
       - python --version:
-          type: eval
-          description: The expression to obtain the version of the tool
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - ilastik:
-          type: string
-          description: The name of the tool
-      - /opt/ilastik-1.4.0-Linux/run_ilastik.sh --headless --version:
           type: eval
           description: The expression to obtain the version of the tool
     - - ${task.process}:
