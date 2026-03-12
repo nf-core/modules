@@ -31,7 +31,7 @@ version = run(
     capture_output=True,
 ).stdout.strip().replace("cellranger cellranger-", "")
 
-# alas, no `pyyaml` pre-installed in the cellranger container
 with open("versions.yml", "w") as f:
     f.write('"${task.process}":\\n')
     f.write(f'    cellranger: "{version}"\\n')
+
