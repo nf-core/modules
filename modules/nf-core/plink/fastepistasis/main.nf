@@ -19,7 +19,7 @@ process PLINK_FASTEPISTASIS {
     tuple val(meta), path("*.epi.cc.summary"),  emit: fepisummary, optional:true
     tuple val(meta), path("*.log")           ,  emit: flog
     tuple val(meta), path("*.nosex")         ,  emit: fnosex,      optional:true
-    path "versions.yml"                      ,  emit: versions
+    tuple val("${task.process}"), val('plink'), eval("plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'"), emit: versions_plink, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -51,11 +51,6 @@ process PLINK_FASTEPISTASIS {
         --fast-epistasis \\
         $args \\
         --out $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')
-    END_VERSIONS
     """
 
     stub:
@@ -82,10 +77,5 @@ process PLINK_FASTEPISTASIS {
     touch ${prefix}.fepisummary
     touch ${prefix}.flog
     touch ${prefix}.fnosex
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')
-    END_VERSIONS
     """
 }
