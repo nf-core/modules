@@ -195,13 +195,27 @@ output:
           description: Tab-delimited text file reporting statistics for the assembly
           pattern: "*_assembly_stats.txt"
           ontologies: []
+  versions_ncbigenomedownload:
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - ncbigenomedownload:
+          type: string
+          description: The tool name
+      - ncbi-genome-download --version:
+          type: eval
+          description: The tool version
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - ncbigenomedownload:
+          type: string
+          description: The tool name
+      - ncbi-genome-download --version:
+          type: eval
+          description: The tool version
 authors:
   - "@rpetit3"
 maintainers:
