@@ -1,0 +1,125 @@
+nextflow_process {
+
+    name "Test Process MCSTAGING_MACSIMA2MC"
+    script "../main.nf"
+    process "MCSTAGING_MACSIMA2MC"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mcstaging"
+    tag "mcstaging/macsima2mc"
+
+    test("macsima2mc - input_dir") {
+
+        when {
+            process {
+                """
+                // Input files
+                input_files = [
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-001_A-Laminin_C-_D-FITC_EXP-1200.tif', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-001_A-Laminin_C-_D-FITC_EXP-150.tif', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-001_D-DAPI_EXP-50.tif', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-002_A-Laminin_C-_D-FITC_EXP-1200.tif', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-002_A-Laminin_C-_D-FITC_EXP-150.tif', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-002_D-DAPI_EXP-50.tif', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-001_A-Laminin_C-_D-FITC_EXP-1200.tif', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-001_A-Laminin_C-_D-FITC_EXP-150.tif', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-001_D-DAPI_EXP-50.tif', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-002_A-Laminin_C-_D-FITC_EXP-1200.tif', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-002_A-Laminin_C-_D-FITC_EXP-150.tif', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-002_D-DAPI_EXP-50.tif', checkIfExists: true)
+                ]
+
+                // Creates the input directory
+                def dir = new File('8_Cycle1')
+                dir.mkdir()
+
+                for (f in input_files) {
+                    def outFile = new File(dir, f.getName())
+                    outFile.bytes = f.bytes
+                }
+
+                input[0] = [
+                    [ id:'test' ],
+                        file("8_Cycle1", checkIfExists: true, type: 'dir'),
+                        "output_dir"
+                ]
+                """
+            }
+        }
+
+    then {
+            def out_path = process.out.out_dir[0][1][0].toString()
+
+            assertAll(
+                { assert process.success },
+                { assert process.out.out_dir[0][1].size() >= 1 },
+                { assert new File(out_path).isDirectory() },
+                { assert new File(out_path + '/markers.csv').exists() },
+                { assert new File(out_path + '/raw').isDirectory() },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith("versions") },
+                    file(out_path + '/markers.csv').name
+                ).match() }
+            )
+        }
+    }
+
+    test("macsima2mc - input_dir - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                // Input files
+                input_files = [
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-001_A-Laminin_C-_D-FITC_EXP-1200.tif', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-001_A-Laminin_C-_D-FITC_EXP-150.tif', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-001_D-DAPI_EXP-50.tif', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-002_A-Laminin_C-_D-FITC_EXP-1200.tif', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-002_A-Laminin_C-_D-FITC_EXP-150.tif', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-002_D-DAPI_EXP-50.tif', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-001_A-Laminin_C-_D-FITC_EXP-1200.tif', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-001_A-Laminin_C-_D-FITC_EXP-150.tif', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-001_D-DAPI_EXP-50.tif', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-002_A-Laminin_C-_D-FITC_EXP-1200.tif', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-002_A-Laminin_C-_D-FITC_EXP-150.tif', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-002_D-DAPI_EXP-50.tif', checkIfExists: true)
+                ]
+
+                // Creates the input directory
+                def dir = new File('8_Cycle1')
+                dir.mkdir()
+
+                for (f in input_files) {
+                    def outFile = new File(dir, f.getName())
+                    outFile.bytes = f.bytes
+                }
+
+                input[0] = [
+                    [ id:'test' ],
+                        file("8_Cycle1", checkIfExists: true, type: 'dir'),
+                        "output_dir"
+                ]
+                """
+            }
+        }
+
+        then {
+
+            def stub_outputs = process.out.out_dir[0][1]
+            if (!(stub_outputs instanceof List)) stub_outputs = [stub_outputs]
+
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    stub_outputs.collect { it.toString().tokenize('/').last() }.sort()
+                ).match("stub_out_dir") },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match("stub_versions") }
+            )
+        }
+    }
+}
