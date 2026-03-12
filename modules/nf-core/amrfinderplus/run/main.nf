@@ -56,21 +56,10 @@ process AMRFINDERPLUS_RUN {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
     """
-    mkdir -p amrfinderdb
+    echo ${args}
     touch ${prefix}.tsv
     ${meta.containsKey("organism") ? "touch ${prefix}-mutations.tsv" : ""}
-
-    cat << 'EOF' > amrfinder
-#!/usr/bin/env bash
-if [[ "\$1" == "--version" ]]; then
-    echo "amrfinderplus 4.2.7"
-elif [[ "\$1" == "--database" ]]; then
-    echo "Database version: 2024-01-01.1"
-fi
-EOF
-
-    chmod +x amrfinder
-    export PATH="\$PWD:\$PATH"
     """
 }
