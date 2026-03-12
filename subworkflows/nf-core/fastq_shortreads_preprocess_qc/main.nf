@@ -139,7 +139,6 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
         BBMAP_CLUMPIFY(ch_reads)
         ch_reads = BBMAP_CLUMPIFY.out.reads
         ch_clumpify_log = BBMAP_CLUMPIFY.out.log
-        ch_versions = ch_versions.mix(BBMAP_CLUMPIFY.out.versions.first())
     }
 
     // host decontamination

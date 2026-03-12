@@ -1,6 +1,6 @@
 name: "mcquant"
-description: Mcquant extracts single-cell data given a multi-channel image and a segmentation
-  mask.
+description: Mcquant extracts single-cell data given a multi-channel image and a
+  segmentation mask.
 keywords:
   - quantification
   - image_analysis
@@ -14,7 +14,8 @@ tools:
       documentation: "https://github.com/labsyspharm/quantification/blob/master/README.md"
       tool_dev_url: "https://github.com/labsyspharm/quantification"
       doi: 10.1038/s41592-021-01308-y
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -26,7 +27,9 @@ input:
         type: file
         description: Multi-channel image file
         pattern: "*.{tiff,tif,h5,hdf5}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3590 # HDF5
+          - edam: http://edamontology.org/format_3591 # TIFF
   - - meta2:
         type: map
         description: |
@@ -36,7 +39,9 @@ input:
         type: file
         description: Labeled segmentation mask for image
         pattern: "*.{tiff,tif,h5,hdf5}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3590 # HDF5
+          - edam: http://edamontology.org/format_3591 # TIFF
   - - meta3:
         type: map
         description: |
@@ -61,13 +66,27 @@ output:
           pattern: "*.{csv}"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
+  versions_mcquant:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mcquant:
+          type: string
+          description: The name of the tool
+      - echo 1.5.4:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mcquant:
+          type: string
+          description: The name of the tool
+      - echo 1.5.4:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@FloWuenne"
 maintainers:

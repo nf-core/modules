@@ -9,7 +9,7 @@ process ANNOTSV_INSTALLANNOTATIONS {
 
     output:
     path "AnnotSV_annotations", emit: annotations
-    path "versions.yml"       , emit: versions
+    tuple val("${task.process}"), val('annotsv'), eval("AnnotSV --version | sed 's/AnnotSV //'"), emit: versions_annotsv, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,21 +27,11 @@ process ANNOTSV_INSTALLANNOTATIONS {
         echo "Install with tag 'v\$TAG' and '\$TAG' failed - falling back to 'master'" >&2
         INSTALL_annotations.sh master || { echo "Install with 'master' failed" >&2; exit 1; }
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        annotsv: \$(echo \$(AnnotSV --version | sed 's/AnnotSV //'))
-    END_VERSIONS
     """
 
     stub:
     """
     mkdir AnnotSV_annotations
     touch AnnotSV_annotations/stub_file.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        annotsv: \$(echo \$(AnnotSV --version | sed 's/AnnotSV //'))
-    END_VERSIONS
     """
 }
