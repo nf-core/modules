@@ -11,7 +11,6 @@ process BASICPY {
     tuple val(meta), path("*-dfp.ome.tif"), path("*-ffp.ome.tif"), emit: profiles
     tuple val("${task.process}"), val('basicpy'), val("1.2.0"), emit: versions_basicpy, topic: versions
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping
-    
     when:
     task.ext.when == null || task.ext.when
 
