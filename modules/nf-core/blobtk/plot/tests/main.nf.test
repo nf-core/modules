@@ -11,7 +11,7 @@ nextflow_process {
 
     config './nextflow.config'
 
-    test("bacteroides_fragilis - fasta") {
+    test("homo_sapiens - fasta - png") {
 
         when {
 
@@ -29,10 +29,11 @@ nextflow_process {
                 input[3] = Channel.of(
                     [
                         name: "BLOB_VIEW",
-                        args: "-v blob"
+                        args: "-v blob",
                     ]
                 )
-                """
+
+                input[4] = Channel.of("png")
             }
         }
 
@@ -49,7 +50,124 @@ nextflow_process {
         }
     }
 
-    test("bacteroides fragilis - fasta - stub") {
+    test("homo_sapiens - fasta - snail - png") {
+
+        when {
+
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
+
+                input[1] = []
+
+                input[2] = "https://blobtoolkit.genomehubs.org/api/v1/dataset/id/CALUEP01"
+
+                input[3] = Channel.of(
+                    [
+                        name: "SNAIL_VIEW",
+                        args: "-v snail",
+                    ]
+                )
+
+                input[4] = Channel.of("png")
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        process.out.png.collect { meta, image -> [meta, file(image).name] },
+                        process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens - fasta - cumulative - png") {
+
+        when {
+
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
+
+                input[1] = []
+
+                input[2] = "https://blobtoolkit.genomehubs.org/api/v1/dataset/id/CALUEP01"
+
+                input[3] = Channel.of(
+                    [
+                        name: "CUMULATIVE_VIEW",
+                        args: "-v cumulative",
+                    ]
+                )
+
+                input[4] = Channel.of("png")
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        process.out.png.collect { meta, image -> [meta, file(image).name] },
+                        process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens - fasta - svg") {
+
+        when {
+
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
+
+                input[1] = []
+
+                input[2] = "https://blobtoolkit.genomehubs.org/api/v1/dataset/id/CALUEP01"
+
+                input[3] = Channel.of(
+                    [
+                        name: "BLOB_VIEW",
+                        args: "-v blob",
+                    ]
+                )
+
+                input[4] = Channel.of("svg")
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        process.out.svg.collect { meta, image -> [meta, file(image).name] },
+                        process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens - fasta - stub") {
 
         options "-stub"
 
@@ -72,6 +190,8 @@ nextflow_process {
                         args: "-v blob"
                     ]
                 )
+
+                input[4] = Channel.of("png")
                 """
             }
         }
