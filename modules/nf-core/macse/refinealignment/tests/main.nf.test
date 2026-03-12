@@ -13,7 +13,7 @@ nextflow_process {
     test("Raphidioptera - fasta") {
         when {
             process {
-                """               
+                """
                 input[0] = [
                     [ id:'test' ],
                     file('https://www.agap-ge2pop.org/wp-content/uploads/macse/data/Ref_ali_files/Raphidioptera_BOLD_COI_final_align_NT.aln', checkIfExists: true),
