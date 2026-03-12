@@ -14,7 +14,7 @@ process KNOTANNOTSV {
     output:
     tuple val(meta), path("*.html"), emit: html, optional: true
     tuple val(meta), path("*.xlsm"), emit: xl, optional: true
-    path "versions.yml"            , emit: versions
+    tuple val("${task.process}"), val('knotannotsv'), eval('echo ${knot_version}'), emit: versions_knotannotsv, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,11 +33,6 @@ process KNOTANNOTSV {
         --configFile knotAnnotSV/config_AnnotSV.yaml \\
         ${knot_prefix} \\
         --annotSVfile ${annotsv_tsv}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        knotAnnotSV: \$(echo ${knot_version})
-    END_VERSIONS
     """
 
     stub:
@@ -49,10 +44,5 @@ process KNOTANNOTSV {
 
     touch ${knot_prefix}_${meta.id}.html
     touch ${knot_prefix}_${meta.id}.xlsm
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        knotAnnotSV: \$(echo ${knot_version})
-    END_VERSIONS
     """
 }
