@@ -65,6 +65,16 @@ input:
       description: |
         File extension of the bin FASTA files passed to CATPACK_BINS (e.g. '.fa').
 output:
+  - bin2classification:
+      type: file
+      description: |
+        Raw per-bin taxonomic classification file produced by CATPACK_BINS, before human-readable
+        names are added by CATPACK_ADDNAMES. Useful for downstream tools that consume the raw
+        CAT_pack output directly.
+        Structure: [ val(meta), path(txt) ]
+      pattern: "*.bin2classification.txt"
+      ontologies:
+        - edam: "http://edamontology.org/format_3475" # Textual format (TSV)
   - bat_classification:
       type: file
       description: |
@@ -80,6 +90,16 @@ output:
         run_summarise is false.
         Structure: [ val(meta), path(txt) ]
       pattern: "*.txt"
+      ontologies:
+        - edam: "http://edamontology.org/format_3475" # Textual format (TSV)
+  - contig2classification:
+      type: file
+      description: |
+        Raw per-contig taxonomic classification file produced by CATPACK_CONTIGS (unbinned path),
+        before human-readable names are added by CATPACK_ADDNAMES. Empty channel when ch_unbins
+        is channel.empty(). Useful for downstream tools that consume the raw CAT_pack output directly.
+        Structure: [ val(meta), path(txt) ]
+      pattern: "*.contig2classification.txt"
       ontologies:
         - edam: "http://edamontology.org/format_3475" # Textual format (TSV)
   - unbinned_classification:
