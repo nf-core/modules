@@ -13,7 +13,7 @@ process CELLRANGERATAC_MKREF {
 
     output:
     path "${reference_name}", emit: reference
-    path "versions.yml"     , emit: versions
+    tuple val("${task.process}"), val('cellrangeratac'), eval("cellranger-atac --version 2>&1 | sed 's/.*cellranger-atac-//'"), topic: versions, emit: versions_cellrangeratac
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,11 +29,6 @@ process CELLRANGERATAC_MKREF {
         mkref \\
         --config=$reference_config \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellrangeratac: \$(echo \$( cellranger-atac --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-    END_VERSIONS
     """
 
     stub:
@@ -51,10 +46,5 @@ process CELLRANGERATAC_MKREF {
 
     mkdir -p "${reference_name}/regions/"
     touch ${reference_name}/regions/{motifs.pfm,transcripts.bed,tss.bed}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellrangeratac: \$(echo \$( cellranger-atac --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-    END_VERSIONS
     """
 }
