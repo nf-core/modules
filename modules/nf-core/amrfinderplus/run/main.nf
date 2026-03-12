@@ -18,7 +18,7 @@ process AMRFINDERPLUS_RUN {
     env 'DBVER'                                     , emit: db_version
     tuple val("${task.process}"), val("amrfinderplus"), eval("amrfinder --version"), emit: versions_amrfinderplus, topic: versions
     tuple val("${task.process}"), val("amrfinderplus-database"), eval("amrfinder --database amrfinderdb --database_version 2>&1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[0-9]+' | tail -1"), emit: versions_amrfinderplus_database, topic: versions
-    
+
     when:
     task.ext.when == null || task.ext.when
 
