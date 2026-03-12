@@ -11,6 +11,7 @@ process ARTIC_MINION {
     tuple val(meta), path(fastq)
     tuple val(meta2), path(model_dir), val(model)
     tuple val(meta3), path(fasta), path(bed)
+    val hdf5_plugin_path
 
     output:
     tuple val(meta), path("${prefix}.*")                              , emit: results
@@ -33,10 +34,10 @@ process ARTIC_MINION {
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
 
-    def model_dir_cmd   = model_dir                ? "--model-dir ${model_dir}" : "--model-dir \$(which artic | sed 's/artic/models/')"
-    def hd5_plugin_path = task.ext.hd5_plugin_path ? "export HDF5_PLUGIN_PATH=${task.ext.hd5_plugin_path}" : "export HDF5_PLUGIN_PATH=/usr/local/lib/python3.6/site-packages/ont_fast5_api/vbz_plugin"
+    def model_dir_val   = model_dir ?: "\$(which artic | sed 's/artic/models/')"
+    def hd5_plugin_path = hdf5_plugin_path?: "/usr/local/lib/python3.6/site-packages/ont_fast5_api/vbz_plugin"
     """
-    ${hd5_plugin_path}
+    export HDF5_PLUGIN_PATH=${hd5_plugin_path}
 
     artic \\
         minion \\
@@ -45,7 +46,7 @@ process ARTIC_MINION {
         --read-file ${fastq} \\
         --bed ${bed} \\
         --ref ${fasta} \\
-        ${model_dir_cmd} \\
+        --model-dir ${model_dir_val} \\
         --model ${model} \\
         ${prefix}
 
