@@ -12,7 +12,7 @@ process CRABS_INSILICOPCR {
 
     output:
     tuple val(meta), path("${prefix}.txt"), emit: txt
-    tuple val("${task.process}"), val('crabs'), eval("crabs --help 2>/dev/null | grep -oE 'v[0-9.]+' | cut -c2-"), emit: versions_crabs, topic: versions
+    tuple val("${task.process}"), val('crabs'), eval("crabs --help 2>/dev/null | sed -n 's/.*CRABS | v\\([0-9.]*\\).*/\\1/p'"), emit: versions_crabs, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
