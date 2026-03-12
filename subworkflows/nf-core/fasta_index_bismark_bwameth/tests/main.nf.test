@@ -278,7 +278,7 @@ nextflow_workflow {
                     workflow.out.fasta_index,
                     workflow.out.bismark_index,
                     workflow.out.bwameth_index,
-                    workflow.out.versions
+                    workflow.out.findAll { key, val -> key.startsWith('versions') }
                     ).match() }
             )
         }
@@ -308,7 +308,7 @@ nextflow_workflow {
                     workflow.out.fasta_index,
                     workflow.out.bismark_index,
                     workflow.out.bwameth_index,
-                    workflow.out.versions
+                    workflow.out.findAll { key, val -> key.startsWith('versions') }
                     ).match() }
             )
         }

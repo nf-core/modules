@@ -297,7 +297,7 @@ nextflow_workflow {
                     workflow.out.bismark_index,
                     workflow.out.bwameth_index,
                     workflow.out.bwamem_index,
-                    workflow.out.versions
+                    workflow.out.findAll { key, val -> key.startsWith('versions') }
                     ).match() }
             )
         }
@@ -329,7 +329,7 @@ nextflow_workflow {
                     workflow.out.bismark_index,
                     workflow.out.bwameth_index,
                     workflow.out.bwamem_index,
-                    workflow.out.versions
+                    workflow.out.findAll { key, val -> key.startsWith('versions') }
                     ).match() }
             )
         }
@@ -425,7 +425,7 @@ nextflow_workflow {
                     workflow.out.bismark_index,
                     workflow.out.bwameth_index,
                     workflow.out.bwamem_index,
-                    workflow.out.versions
+                    workflow.out.findAll { key, val -> key.startsWith('versions') }
                     ).match() }
             )
         }
@@ -457,7 +457,7 @@ nextflow_workflow {
                     workflow.out.bismark_index,
                     workflow.out.bwameth_index,
                     workflow.out.bwamem_index,
-                    workflow.out.versions
+                    workflow.out.findAll { key, val -> key.startsWith('versions') }
                     ).match() }
             )
         }
