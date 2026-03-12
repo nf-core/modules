@@ -98,7 +98,7 @@ output:
       - ataqv:
           type: string
           description: The name of the tool
-      - $(ataqv --version ):
+      - echo \$(ataqv --version):
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -109,7 +109,7 @@ topics:
       - ataqv:
           type: string
           description: The name of the tool
-      - $(ataqv --version ):
+      - echo \$(ataqv --version):
           type: eval
           description: The expression to obtain the version of the tool
 authors:
