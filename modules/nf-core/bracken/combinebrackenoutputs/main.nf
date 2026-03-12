@@ -21,7 +21,7 @@ process BRACKEN_COMBINEBRACKENOUTPUTS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    
+
     """
     combine_bracken_outputs.py \\
         $args \\
