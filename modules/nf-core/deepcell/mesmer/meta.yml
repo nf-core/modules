@@ -11,10 +11,10 @@ tools:
       documentation: "https://github.com/vanvalenlab/intro-to-deepcell/tree/master/pretrained_models"
       tool_dev_url: "https://githu/b.com/vanvalenlab/deepcell-tf"
       doi: 10.1038/s41587-021-01094-0
-      licence: ["APACHE2"]
+      licence:
+        - "APACHE2"
       identifier: biotools:deepcell
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
@@ -24,7 +24,9 @@ input:
         type: file
         description: Multichannel image file
         pattern: "*.{tiff,tif,h5,hdf5}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3590 # HDF5
+          - edam: http://edamontology.org/format_3591 # TIFF
   - - meta2:
         type: map
         description: |
@@ -34,9 +36,10 @@ input:
         type: file
         description: Optional membrane image to be provided separately.
         pattern: "*.{tiff,tif,h5,hdf5}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3590 # HDF5
+          - edam: http://edamontology.org/format_3591 # TIFF
 output:
-  #Only when we have meta
   mask:
     - - meta:
           type: map
@@ -47,14 +50,29 @@ output:
           type: file
           description: File containing the mask.
           pattern: "*.{tif, tiff}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3591 # TIFF
+  versions_mesmer:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deepcell_mesmer:
+          type: string
+          description: The name of the tool
+      - 0.4.1:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deepcell_mesmer:
+          type: string
+          description: The name of the tool
+      - 0.4.1:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@migueLib"
   - "@chiarasch"
