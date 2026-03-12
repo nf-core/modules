@@ -38,7 +38,6 @@ workflow FASTA_BINNING_CONCOCT {
                                                     .join(CONCOCT_MERGECUTUPCLUSTERING.out.csv, failOnMismatch: false)
 
     CONCOCT_EXTRACTFASTABINS ( ch_mergecutupclustering_for_extractfastabins )
-    ch_versions = ch_versions.mix(CONCOCT_EXTRACTFASTABINS.out.versions.first())
 
     emit:
     coverage_table      = CONCOCT_CONCOCTCOVERAGETABLE.out.tsv     // channel: [ val(meta), [ tsv ] ]
