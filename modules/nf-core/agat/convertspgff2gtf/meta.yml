@@ -14,7 +14,8 @@ tools:
       documentation: "https://agat.readthedocs.io/"
       tool_dev_url: "https://github.com/NBISweden/AGAT"
       doi: "10.5281/zenodo.3552717"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:AGAT
 input:
   - - meta:
@@ -27,8 +28,8 @@ input:
         description: Annotation file in GFF3/GTF format
         pattern: "*.{gff, gtf}"
         ontologies:
-          - edam: "http://edamontology.org/format_1975" # GFF3
-          - edam: "http://edamontology.org/format_2306" # GTF
+          - edam: "http://edamontology.org/format_1975"
+          - edam: "http://edamontology.org/format_2306"
 output:
   output_gtf:
     - - meta:
@@ -39,7 +40,7 @@ output:
           description: Annotation file in GTF format
           pattern: "*.{gtf}"
           ontologies:
-            - edam: "http://edamontology.org/format_2306" # GTF
+            - edam: "http://edamontology.org/format_2306"
   log:
     - - meta:
           type: map
@@ -49,15 +50,29 @@ output:
           description: Log file of the conversion process
           pattern: "*.{log}"
           ontologies:
-            - edam: "http://edamontology.org/data_1678" # Log file
-            - edam: "http://edamontology.org/format_2330" # Plain text
+            - edam: "http://edamontology.org/data_1678"
+            - edam: "http://edamontology.org/format_2330"
+  versions_agat:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - agat:
+          type: string
+          description: The name of the tool
+      - agat --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - agat:
+          type: string
+          description: The name of the tool
+      - agat --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@toniher"
 maintainers:
