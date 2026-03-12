@@ -28,7 +28,7 @@ input:
         description: fasta/fastq file
         pattern: "*.{fasta,fastq}"
         ontologies:
-          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_1930 # FASTQ file
   - mode:
       type: string
       description: Canu mode depending on the input data (source and error rate)
@@ -140,8 +140,8 @@ output:
       - canu:
           type: string
           description: The name of the tool
-      - canu --version 2>&1 | sed 's/^.*canu //; s/Using.*$//':
-          type: eval
+      - "'2.3'":
+          type: string
           description: The expression to obtain the version of the tool
 topics:
   versions:
@@ -151,8 +151,8 @@ topics:
       - canu:
           type: string
           description: The name of the tool
-      - canu --version 2>&1 | sed 's/^.*canu //; s/Using.*$//':
-          type: eval
+      - "'2.3'":
+          type: string
           description: The expression to obtain the version of the tool
 authors:
   - "@scorreard"
