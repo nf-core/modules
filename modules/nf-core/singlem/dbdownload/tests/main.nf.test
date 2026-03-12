@@ -23,7 +23,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.singlem_database.get(0)).exists() },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(["versions_singlem": process.out.versions_singlem]).match() }
             )
         }
 
@@ -44,8 +44,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.singlem_database +
-                    process.out.versions
+                    ["singlem_database": process.out.singlem_database,
+                     "versions_singlem": process.out.versions_singlem]
                     ).match() }
             )
         }

@@ -2,9 +2,9 @@ process SINGLEM_DBDOWNLOAD {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-    'community.wave.seqera.io/library/singlem:0.20.3--52ee62e56540a33a' :
-    'biocontainers/singlem:0.19.0--pyhdfd78af_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/singlem:0.20.3--pyhdfd78af_2'
+        : 'biocontainers/singlem:0.20.3--pyhdfd78af_2'}"
 
     output:
     path("*.smpkg.zb")                                                                                                     , emit: singlem_database
