@@ -23,7 +23,6 @@ workflow FASTA_BINNING_CONCOCT {
                                                 .join( ch_bam, failOnMismatch: true )
 
     CONCOCT_CONCOCTCOVERAGETABLE ( ch_cutupfasta_for_concoctcoveragetable )
-    ch_versions = ch_versions.mix(CONCOCT_CONCOCTCOVERAGETABLE.out.versions.first())
 
     ch_concoctcoveragetable_for_concoctconcoct = CONCOCT_CONCOCTCOVERAGETABLE.out.tsv
                                                     .join(CONCOCT_CUTUPFASTA.out.fasta, failOnMismatch: true)
