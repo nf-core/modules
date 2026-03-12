@@ -10,10 +10,9 @@ process ADAPTERREMOVALFIXPREFIX {
 
     input:
     tuple val(meta), path(fastq)
-
     output:
     tuple val(meta), path("*.fq.gz"), emit: fixed_fastq
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('adapterremovalfixprefix'), eval('echo 0.0.5'), emit: versions_adapterremovalfixprefix, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,28 +21,19 @@ process ADAPTERREMOVALFIXPREFIX {
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     if ("${fastq}" == "${prefix}.fq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
-    def VERSION = '0.0.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     AdapterRemovalFixPrefix \\
         ${fastq} \\
         ${args} \\
         | gzip > ${prefix}.fq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        adapterremovalfixprefix: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.0.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    echo | gzip > ${prefix}.fq.gz
+    echo ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        adapterremovalfixprefix: "${VERSION}"
-    END_VERSIONS
+    echo | gzip > ${prefix}.fq.gz
     """
 }
