@@ -10,7 +10,10 @@ process STARDIST {
 
     output:
     tuple val(meta), path("*.stardist.tif"), emit: mask
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val('stardist'), eval("python -c \"import stardist; print(stardist.__version__)\""), emit: versions_stardist, topic: versions
+    tuple val("${task.process}"), val('python'), eval("python --version"), emit: versions_python, topic: versions
+    tuple val("${task.process}"), val('tensorflow'), eval("python -m pip show --version tensorflow | grep \"Version\" | sed -e \"s/Version: //g\""), emit: versions_tensorflow, topic: versions
+    tuple val("${task.process}"), val('tifffile'), eval("python -m pip show --version tifffile | grep \"Version\" | sed -e \"s/Version: //g\""), emit: versions_tifffile, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,27 +25,11 @@ process STARDIST {
         -i $image \\
         -o . \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        stardist: \$( python -m pip show --version stardist | grep "Version" | sed -e "s/Version: //g" )
-        python: \$( python --version | sed -e "s/Python //g" )
-        tensorflow: \$( python -m pip show --version tensorflow | grep "Version" | sed -e "s/Version: //g" )
-        tifffile: \$( python -m pip show --version tifffile | grep "Version" | sed -e "s/Version: //g" )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.stardist.tif
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        stardist: \$( python -m pip show --version stardist | grep "Version" | sed -e "s/Version: //g" )
-        python: \$( python --version | sed -e "s/Python //g" )
-        tensorflow: \$( python -m pip show --version tensorflow | grep "Version" | sed -e "s/Version: //g" )
-        tifffile: \$( python -m pip show --version tifffile | grep "Version" | sed -e "s/Version: //g" )
-    END_VERSIONS
     """
 }

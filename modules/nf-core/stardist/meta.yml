@@ -12,9 +12,9 @@ tools:
       documentation: "https://stardist.net/faq/"
       tool_dev_url: "https://github.com/stardist/stardist"
       doi: "10.1109/ISBIC56247.2022.9854534"
-      licence: ["BSD 3-Clause"]
+      licence:
+        - "BSD 3-Clause"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -25,7 +25,8 @@ input:
         type: file
         description: Single channel nuclear image
         pattern: "*.{tiff,tif}"
-        ontologies: []
+        ontologies:
+            - edam: http://edamontology.org/format_3591 # TIFF
 output:
   mask:
     - - meta:
@@ -37,14 +38,105 @@ output:
           type: file
           description: labelled mask output from stardist in tif format.
           pattern: "*.{tiff,tif}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3591 # TIFF
+  versions_stardist:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stardist:
+          type: string
+          description: The name of the tool
+      - python -c "import stardist; print(stardist.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_ilastik:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ilastik:
+          type: string
+          description: The name of the tool
+      - /opt/ilastik-1.4.0-Linux/run_ilastik.sh --headless --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_tensorflow:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tensorflow:
+          type: string
+          description: The name of the tool
+      - 'python -m pip show --version tensorflow | grep "Version" | sed -e "s/Version: //g"':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_tifffile:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tifffile:
+          type: string
+          description: The name of the tool
+      - 'python -m pip show --version tifffile | grep "Version" | sed -e "s/Version: //g"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stardist:
+          type: string
+          description: The name of the tool
+      - python -c "import stardist; print(stardist.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ilastik:
+          type: string
+          description: The name of the tool
+      - /opt/ilastik-1.4.0-Linux/run_ilastik.sh --headless --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tensorflow:
+          type: string
+          description: The name of the tool
+      - 'python -m pip show --version tensorflow | grep "Version" | sed -e "s/Version: //g"':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tifffile:
+          type: string
+          description: The name of the tool
+      - 'python -m pip show --version tifffile | grep "Version" | sed -e "s/Version: //g"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@migueLib"
 maintainers:
