@@ -82,7 +82,7 @@ nextflow_process {
                 { assert process.success },
                 {
                     assert snapshot(
-                        process.out.png.collect { meta, image -> [meta, file(image).name] },
+                        process.out.image.collect { meta, image -> [meta, file(image).name] },
                         process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
