@@ -12,7 +12,7 @@ process BRACKEN_COMBINEBRACKENOUTPUTS {
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    tuple val("${task.process}"), val('combine_bracken_outputs'), val('bracken -v | cut -f2 -d"v"'), emit: versions_combine_bracken_outputs, topic: versions
+    tuple val("${task.process}"), val('combine_bracken_outputs'), eval('bracken -v | cut -f2 -d"v"'), emit: versions_combine_bracken_outputs, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
