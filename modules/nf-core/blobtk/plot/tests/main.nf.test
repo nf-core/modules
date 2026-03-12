@@ -17,7 +17,7 @@ nextflow_process {
 
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id: "test" ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ])
@@ -26,14 +26,15 @@ nextflow_process {
 
                 input[2] = "https://blobtoolkit.genomehubs.org/api/v1/dataset/id/CALUEP01"
 
-                input[3] = Channel.of(
+                input[3] = channel.of(
                     [
                         name: "BLOB_VIEW",
                         args: "-v blob",
                     ]
                 )
 
-                input[4] = Channel.of("png")
+                input[4] = "png"
+                """
             }
         }
 
@@ -56,7 +57,7 @@ nextflow_process {
 
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id: "test" ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ])
@@ -65,14 +66,15 @@ nextflow_process {
 
                 input[2] = "https://blobtoolkit.genomehubs.org/api/v1/dataset/id/CALUEP01"
 
-                input[3] = Channel.of(
+                input[3] = channel.of(
                     [
                         name: "SNAIL_VIEW",
                         args: "-v snail",
                     ]
                 )
 
-                input[4] = Channel.of("png")
+                input[4] = "png"
+                """
             }
         }
 
@@ -95,7 +97,7 @@ nextflow_process {
 
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id: "test" ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ])
@@ -104,14 +106,15 @@ nextflow_process {
 
                 input[2] = "https://blobtoolkit.genomehubs.org/api/v1/dataset/id/CALUEP01"
 
-                input[3] = Channel.of(
+                input[3] = channel.of(
                     [
                         name: "CUMULATIVE_VIEW",
                         args: "-v cumulative",
                     ]
                 )
 
-                input[4] = Channel.of("png")
+                input[4] = "png"
+                """
             }
         }
 
@@ -134,7 +137,7 @@ nextflow_process {
 
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id: "test" ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ])
@@ -143,14 +146,15 @@ nextflow_process {
 
                 input[2] = "https://blobtoolkit.genomehubs.org/api/v1/dataset/id/CALUEP01"
 
-                input[3] = Channel.of(
+                input[3] = channel.of(
                     [
                         name: "BLOB_VIEW",
                         args: "-v blob",
                     ]
                 )
 
-                input[4] = Channel.of("svg")
+                input[4] = "svg"
+                """
             }
         }
 
@@ -175,7 +179,7 @@ nextflow_process {
 
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id: "test" ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ])
@@ -184,14 +188,14 @@ nextflow_process {
 
                 input[2] = "https://blobtoolkit.genomehubs.org/api/v1/dataset/id/CALUEP01"
 
-                input[3] = Channel.of(
+                input[3] = channel.of(
                     [
                         name: "BLOB_VIEW",
                         args: "-v blob"
                     ]
                 )
 
-                input[4] = Channel.of("png")
+                input[4] = "png"
                 """
             }
         }
