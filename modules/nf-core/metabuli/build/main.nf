@@ -3,8 +3,8 @@ process METABULI_BUILD {
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/metabuli:1.1.0--pl5321hd6d6fdc_0':
-        'biocontainers/metabuli:1.1.0--pl5321hd6d6fdc_0' }"
+        'https://depot.galaxyproject.org/singularity/metabuli:1.1.1--pl5321h0bb26bb_0':
+        'biocontainers/metabuli:1.1.1--pl5321h0bb26bb_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -16,7 +16,7 @@ process METABULI_BUILD {
 
     output:
     tuple val(meta), path("$prefix"), emit: db
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('metabuli'), eval("metabuli version"), emit: versions_metabuli, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,11 +40,6 @@ process METABULI_BUILD {
         --threads ${task.cpus} \\
         ${cds_info_arg} \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        metabuli: \$(metabuli version)
-    END_VERSIONS
     """
 
     stub:
@@ -59,10 +54,5 @@ process METABULI_BUILD {
     touch "$prefix/split"
     touch "$prefix/taxID_list"
     touch "$prefix/db.parameters"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        metabuli: metabuli_version
-    END_VERSIONS
     """
 }
