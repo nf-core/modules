@@ -84,13 +84,27 @@ output:
           pattern: "*.sorted.bam"
           ontologies:
             - edam: "http://edamontology.org/format_2572" # BAM
+  versions_arcashla:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "arcashla":
+          type: string
+          description: The name of the tool
+      - "echo 0.5.0":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "arcashla":
+          type: string
+          description: The name of the tool
+      - "echo 0.5.0":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@christopher-mohr"
 maintainers:
