@@ -11,7 +11,7 @@ process TREERECS {
 
     output:
     
-     tuple val(meta), path("*.nwk"), emit: corrected_trees
+     tuple val(meta), path("treerecs_output/*.nwk"), emit: corrected_trees
      tuple val("${task.process}"), val("treerecs"), eval("treerecs --version 2>/dev/null | sed 's/ (.*) //g'"), topic: versions, emit: versions_treerecs
 
     when:
