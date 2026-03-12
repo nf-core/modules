@@ -2,7 +2,7 @@ process SUSHIE {
     tag "$meta.id"
     label 'process_single'
 
-    container "docker.io/cameronlloyd/sushie:latest"
+    container "docker.io/cameronlloyd/sushie:0.19"
 
     input:
     tuple val(meta), path(study_locus_files)
