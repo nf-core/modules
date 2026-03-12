@@ -21,8 +21,7 @@ process CANU {
     tuple val(meta), path("*.contigs.layout")           , emit: metadata                , optional: true
     tuple val(meta), path("*.contigs.layout.readToTig") , emit: contig_position         , optional: true
     tuple val(meta), path("*.contigs.layout.tigInfo")   , emit: contig_info             , optional: true
-    tuple val("${task.process}"), val('canu'), eval('canu --version 2>&1 | sed \'s/^.*canu //; s/Using.*$//\''), emit: versions_canu, topic: versions
-
+    tuple val("${task.process}"), val('canu'), val("2.3"), emit: versions_canu, topic: versions
     when:
     task.ext.when == null || task.ext.when
 
