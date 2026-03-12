@@ -1,5 +1,4 @@
 process SINGLEM_DBDOWNLOAD {
-    
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -8,16 +7,18 @@ process SINGLEM_DBDOWNLOAD {
     'biocontainers/singlem:0.19.0--pyhdfd78af_0' }"
 
     output:
-    path("*.smpkg.zb"), emit: singlem_database
+    path("*.smpkg.zb")                                                                                                     , emit: singlem_database
+    tuple val("${task.process}"), val('singlem'), eval('singlem --version'), topic: versions                                , emit: versions_singlem
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    
+
     """
-    singlem data \\
+    singlem \\
+        data \\
         --output-directory . \\
         ${args}
     """

@@ -1,46 +1,35 @@
 name: "singlem_dbdownload"
-description: write your description here
+description: Download the SingleM metapackage database used for metagenome profiling
 keywords:
-  - sort
-  - example
-  - genomics
+  - metagenomics
+  - database
+  - download
+  - profiling
+  - singlem
+  - metapackage
 tools:
   - "singlem":
-      description: "At heart, SingleM is a tool for profiling shotgun metagenomes. It
-        was originally designed to determine the relative abundance of bacterial and
-        archaeal taxa in a sample. As of version 0.19.0, it can also be used to profile
-        dsDNA phages (see Lyrebird). It shows good accuracy in estimating the relative
-        abundances of community members, and has a particular strength in dealing with
-        novel lineages. The method it uses also makes it suitable for some related tasks,
-        such as assessing eukaryotic contamination, finding bias in genome recovery,
-        and lineage-targeted MAG recovery. It can also be used as the basis for choosing
-        metagenomes which, when coassembled, maximise the recovery of novel MAGs (see
-        Bin Chicken)."
+      description: |
+        SingleM is a tool for profiling shotgun metagenomes. It determines the relative
+        abundance of bacterial and archaeal taxa in a sample and can also profile dsDNA
+        phages. It has particular strength in dealing with novel lineages and is suitable
+        for tasks such as assessing eukaryotic contamination, finding bias in genome
+        recovery, and lineage-targeted MAG recovery.
       homepage: "https://wwood.github.io/singlem"
       documentation: "https://wwood.github.io/singlem"
       tool_dev_url: "https://github.com/wwood/singlem"
-      doi: ""
-      licence: ["GPL v3-or-later"]
+      doi: "10.1038/s41587-024-02492-w"
+      licence: ["GPL-3.0-or-later"]
       identifier: biotools:singlem
 
-input:
-  - dna_sequence:
-      type: file
-      description: dna_sequence file
-      pattern: "*.{fastq,fasta}"
-      ontologies:
-        - edam: http://edamontology.org/data_3494 # DNA sequence
-        - edam: http://edamontology.org/format_1930 # FASTQ
-        - edam: http://edamontology.org/format_1929 # FASTA
 output:
-  taxonomy:
-    - "*.{csv}":
+  singlem_database:
+    - "*.smpkg.zb":
         type: file
-        description: taxonomy file
-        pattern: "*.{csv}"
+        description: SingleM metapackage database file used for taxonomic profiling
+        pattern: "*.smpkg.zb"
         ontologies:
-          - edam: http://edamontology.org/data_3028 # Taxonomy
-          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/data_0955 # Data index
   versions_singlem:
     - - ${task.process}:
           type: string
@@ -51,6 +40,7 @@ output:
       - singlem --version:
           type: eval
           description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -62,6 +52,7 @@ topics:
       - singlem --version:
           type: eval
           description: The expression to obtain the version of the tool
+
 authors:
   - "@TheGreatJack"
 maintainers:
