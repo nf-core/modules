@@ -25,6 +25,7 @@ nextflow_process {
                     file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.reference.fasta', checkIfExists:true),
                     file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.primer.bed', checkIfExists:true)
                 ]
+                input[3] = []
                 """
             }
         }
@@ -72,6 +73,7 @@ nextflow_process {
                     file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.reference.fasta', checkIfExists:true),
                     file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.primer.bed', checkIfExists:true)
                 ]
+                input[3] = []
                 """
             }
         }

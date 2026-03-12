@@ -56,6 +56,9 @@ input:
         description: Scheme BED file
         pattern: "*.{bed}"
         ontologies: []
+  - hdf5_plugin_path:
+      type: directory
+      description: Optional path to HDF5 plugin library
 output:
   results:
     - - meta:
@@ -68,7 +71,7 @@ output:
           description: Aggregated FastQ files
           pattern: "*.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   bam:
     - - meta:
           type: map
