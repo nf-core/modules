@@ -28,6 +28,9 @@ input:
           CSV file listing all samples to aggregate. Must contain columns
           'sample_id' and 'molecule_h5' pointing to molecule_info.h5 files
           from cellranger count or cellranger multi outputs.
+          Library depth normalization defaults to 'mapped' (normalize by the
+          number of mapped reads). To disable normalization, pass
+          '--normalize none' via ext.args.
         pattern: "*.csv"
         ontologies:
           - edam: http://edamontology.org/format_3752 # CSV
@@ -53,4 +56,7 @@ output:
             - edam: http://edamontology.org/format_3750 # YAML
 
 authors:
+  - "@alenaboos"
+
+maintainers:
   - "@alenaboos"
