@@ -56,7 +56,7 @@ output:
       - ampcombi:
           type: string
           description: The name of the tool
-      - ampcombi --version:
+      - "ampcombi --version | sed 's/ampcombi //' ":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -67,7 +67,7 @@ topics:
       - ampcombi:
           type: string
           description: The name of the tool
-      - ampcombi --version:
+      - "ampcombi --version | sed 's/ampcombi //' ":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
