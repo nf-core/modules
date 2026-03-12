@@ -17,7 +17,7 @@ process CONCOCT_CONCOCT {
     tuple val(meta), path("*_original_data_gt1000.csv"), emit: original_data_csv
     tuple val(meta), path("*_PCA_components_data_gt1000.csv"), emit: pca_components_csv
     tuple val(meta), path("*_PCA_transformed_data_gt1000.csv"), emit: pca_transformed_csv
-    tuple val("${task.process}"), val('concoct'), eval('concoct --version'), emit: versions_concoct, topic: versions
+    tuple val("${task.process}"), val('concoct'), eval('concoct --version | cut -d " " -f2'), emit: versions_concoct, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
