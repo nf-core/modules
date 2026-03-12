@@ -9,8 +9,8 @@ process CELLRANGERATAC_MKFASTQ {
     path csv
 
     output:
-    path "versions.yml", emit: versions
     path "${bcl.getSimpleName()}/outs/fastq_path/*.fastq.gz"  , emit: fastq
+    tuple val("${task.process}"), val('cellrangeratac'), eval("cellranger-atac --version | sed 's/.*cellranger-atac-//'"), emit: versions_cellrangeratac, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,11 +27,6 @@ process CELLRANGERATAC_MKFASTQ {
         --run=$bcl \
         --csv=$csv \
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellrangeratac: \$(echo \$( cellranger-atac --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-    END_VERSIONS
     """
 
     stub:
@@ -43,10 +38,5 @@ process CELLRANGERATAC_MKFASTQ {
     """
     mkdir -p "${bcl.getSimpleName()}/outs/fastq_path/"
     echo "" | gzip > ${bcl.getSimpleName()}/outs/fastq_path/fake_file.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellrangeratac: \$(echo \$( cellranger-atac --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-    END_VERSIONS
     """
 }

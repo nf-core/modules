@@ -15,7 +15,7 @@ process PLINK_HWE {
 
     output:
     tuple val(meta), path("*.hwe")      , emit: hwe
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('plink'), eval("plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'"), emit: versions_plink, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -48,11 +48,6 @@ process PLINK_HWE {
         --hardy \\
         $args \\
         --out $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')
-    END_VERSIONS
     """
 
     stub:
@@ -76,10 +71,5 @@ process PLINK_HWE {
     }
     """
     touch ${prefix}.hwe
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')
-    END_VERSIONS
     """
 }
