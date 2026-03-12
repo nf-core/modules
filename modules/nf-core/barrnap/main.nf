@@ -14,7 +14,6 @@ process BARRNAP {
     tuple val(meta), path("*.gff"), emit: gff
     tuple val("${task.process}"), val('barrnap'), eval('barrnap --version 2>&1 | sed "s/barrnap //g"'), emit: versions_barrnap, topic: versions
 
-
     when:
     task.ext.when == null || task.ext.when
 
