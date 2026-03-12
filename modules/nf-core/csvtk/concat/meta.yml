@@ -1,75 +1,75 @@
 name: csvtk_concat
 description: Concatenate two or more CSV (or TSV) tables into a single table
 keywords:
-- concatenate
-- tsv
-- csv
+  - concatenate
+  - tsv
+  - csv
 tools:
-- csvtk:
-    description: A cross-platform, efficient, practical CSV/TSV toolkit
-    homepage: http://bioinf.shenwei.me/csvtk
-    documentation: http://bioinf.shenwei.me/csvtk
-    tool_dev_url: https://github.com/shenwei356/csvtk
-    licence:
-    - "MIT"
-    identifier: ""
+  - csvtk:
+      description: A cross-platform, efficient, practical CSV/TSV toolkit
+      homepage: http://bioinf.shenwei.me/csvtk
+      documentation: http://bioinf.shenwei.me/csvtk
+      tool_dev_url: https://github.com/shenwei356/csvtk
+      licence:
+        - "MIT"
+      identifier: ""
 input:
-- - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - csv:
-      type: file
-      description: CSV/TSV formatted files
-      pattern: "*.{csv,tsv}"
-      ontologies:
-      - edam: http://edamontology.org/format_3752
-      - edam: http://edamontology.org/format_3475
-- in_format:
-    type: string
-    description: Input format (csv, tab, or a delimiting character)
-    pattern: "*"
-- out_format:
-    type: string
-    description: Output format (csv, tab, or a delimiting character)
-    pattern: "*"
-output:
-  csv:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - ${prefix}.${out_extension}:
+    - csv:
         type: file
-        description: Concatenated CSV/TSV file
+        description: CSV/TSV formatted files
         pattern: "*.{csv,tsv}"
         ontologies:
-        - edam: http://edamontology.org/format_3752
-        - edam: http://edamontology.org/format_3475
+          - edam: http://edamontology.org/format_3752
+          - edam: http://edamontology.org/format_3475
+  - in_format:
+      type: string
+      description: Input format (csv, tab, or a delimiting character)
+      pattern: "*"
+  - out_format:
+      type: string
+      description: Output format (csv, tab, or a delimiting character)
+      pattern: "*"
+output:
+  csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.${out_extension}:
+          type: file
+          description: Concatenated CSV/TSV file
+          pattern: "*.{csv,tsv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+            - edam: http://edamontology.org/format_3475
   versions_csvtk:
-  - - ${task.process}:
-        type: string
-        description: The name of the process
-    - csvtk:
-        type: string
-        description: The name of the tool
-    - 'csvtk version | sed -e "s/csvtk v//g"':
-        type: eval
-        description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - csvtk:
+          type: string
+          description: The name of the tool
+      - 'csvtk version | sed -e "s/csvtk v//g"':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
-  - - ${task.process}:
-        type: string
-        description: The name of the process
-    - csvtk:
-        type: string
-        description: The name of the tool
-    - 'csvtk version | sed -e "s/csvtk v//g"':
-        type: eval
-        description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - csvtk:
+          type: string
+          description: The name of the tool
+      - 'csvtk version | sed -e "s/csvtk v//g"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
-- "@rpetit3"
+  - "@rpetit3"
 maintainers:
-- "@rpetit3"
+  - "@rpetit3"
