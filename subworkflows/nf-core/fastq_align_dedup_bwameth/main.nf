@@ -24,7 +24,6 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
     ch_samtools_stats    = channel.empty()
     ch_picard_metrics    = channel.empty()
     ch_multiqc_files     = channel.empty()
-    ch_versions          = channel.empty()
 
     /*
      * Align with bwameth
@@ -50,7 +49,6 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
             ch_bwameth_index
         )
         ch_alignment = BWAMETH_ALIGN.out.bam
-        ch_versions  = BWAMETH_ALIGN.out.versions
     }
 
     /*
@@ -123,5 +121,4 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
     samtools_stats    = ch_samtools_stats                // channel: [ val(meta), [ stats ]     ]
     picard_metrics    = ch_picard_metrics                // channel: [ val(meta), [ metrics ]   ]
     multiqc           = ch_multiqc_files                 // channel: [ *{html,txt}              ]
-    versions          = ch_versions                      // channel: [ versions.yml             ]
 }
