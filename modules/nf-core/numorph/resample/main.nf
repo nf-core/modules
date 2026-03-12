@@ -2,7 +2,7 @@ process NUMORPH_RESAMPLE {
     tag "$meta.id"
     label 'process_low'
 
-    container "nf-core/numorph_analyze:1.0.1"
+    container "nf-core/numorph_analyze:1.0.0"
 
     input:
     tuple val(meta), path(stitch_directory), path(parameter_file)
