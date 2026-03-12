@@ -4,8 +4,8 @@ process CENTRIFUGER_BUILD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'biocontainers/YOUR-TOOL-HERE' }"
+        'https://depot.galaxyproject.org/singularity/centrifuger:1.1.0--hf426362_0':
+        'biocontainers/centrifuger:1.1.0--hf426362_0' }"
 
     input:    
     tuple val(meta), path(reference)
@@ -16,7 +16,7 @@ process CENTRIFUGER_BUILD {
 
     output:
     tuple val(meta), path("${task.ext.prefix ?: meta.id}.*"), emit: db
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val("centrifuger"), eval("centrifuger -v "), emit: versions_centrifuger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,10 +35,7 @@ process CENTRIFUGER_BUILD {
         -o ${prefix} 
 
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        centrifuger: \$(centrifuger-build --version)
-    END_VERSIONS
+
     """
 
     stub:
@@ -49,11 +46,7 @@ process CENTRIFUGER_BUILD {
     touch ${prefix}.2.cfr
     touch ${prefix}.3.cfr
     touch ${prefix}.4.cfr 
- 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        centrifuger: "stub"
-    END_VERSIONS
+
     """
 
 
