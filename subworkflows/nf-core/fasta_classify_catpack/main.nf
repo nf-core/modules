@@ -124,5 +124,4 @@ workflow FASTA_CLASSIFY_CATPACK {
     bat_summary             = ch_summarise_bins               // channel: [ val(meta), path(txt) ]
     unbinned_classification = CATPACK_ADDNAMES_UNBINS.out.txt // channel: [ val(meta), path(txt) ]
     unbinned_summary        = ch_summarise_unbins             // channel: [ val(meta), path(txt) ]
-    versions                = channel.topic('versions')       // channel: versions
 }
