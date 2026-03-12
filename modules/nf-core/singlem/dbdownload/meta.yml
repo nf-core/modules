@@ -1,0 +1,73 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+# # TODO nf-core: Add a description of the module and list keywords
+name: "singlem_dbdownload"
+description: write your description here
+keywords:
+  - sort
+  - example
+  - genomics
+tools:
+  ## TODO nf-core: Add a description and other details for the software below
+  - "singlem":
+      description: "At heart, SingleM is a tool for profiling shotgun metagenomes. It
+        was originally designed to determine the relative abundance of bacterial and
+        archaeal taxa in a sample. As of version 0.19.0, it can also be used to profile
+        dsDNA phages (see Lyrebird). It shows good accuracy in estimating the relative
+        abundances of community members, and has a particular strength in dealing with
+        novel lineages. The method it uses also makes it suitable for some related tasks,
+        such as assessing eukaryotic contamination, finding bias in genome recovery,
+        and lineage-targeted MAG recovery. It can also be used as the basis for choosing
+        metagenomes which, when coassembled, maximise the recovery of novel MAGs (see
+        Bin Chicken)."
+      homepage: "https://wwood.github.io/singlem"
+      documentation: "https://wwood.github.io/singlem"
+      tool_dev_url: "https://github.com/wwood/singlem"
+      doi: ""
+      licence: ["GPL v3-or-later"]
+      identifier: biotools:singlem
+
+input:
+  # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
+  - dna_sequence:
+      type: file
+      description: dna_sequence file
+      pattern: "*.{fastq,fasta}"
+      ontologies:
+        - edam: http://edamontology.org/data_3494 # DNA sequence
+        - edam: http://edamontology.org/format_1930 # FASTQ
+        - edam: http://edamontology.org/format_1929 # FASTA
+output:
+  # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
+  taxonomy:
+    - "*.{csv}":
+        type: file
+        description: taxonomy file
+        pattern: "*.{csv}"
+        ontologies:
+          - edam: http://edamontology.org/data_3028 # Taxonomy
+          - edam: http://edamontology.org/format_3752 # CSV
+  versions_singlem:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - singlem:
+          type: string
+          description: The name of the tool
+      - singlem --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - singlem:
+          type: string
+          description: The name of the tool
+      - singlem --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@TheGreatJack"
+maintainers:
+  - "@TheGreatJack"
