@@ -56,6 +56,9 @@ input:
         description: Scheme BED file
         pattern: "*.{bed}"
         ontologies: []
+  - hdf5_plugin_path:
+      type: directory
+      description: Optional path to HDF5 plugin library
 output:
   results:
     - - meta:
@@ -180,7 +183,7 @@ output:
           description: JSON file for MultiQC
           pattern: "*.json"
           ontologies:
-            - edam: http://edamontology.org/format_3464
+            - edam: http://edamontology.org/format_3464 # JSON
   versions_artic:
     - - ${task.process}:
           type: string
