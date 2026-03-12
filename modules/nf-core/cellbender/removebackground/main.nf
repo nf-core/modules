@@ -25,35 +25,32 @@ process CELLBENDER_REMOVEBACKGROUND {
     tuple val("${task.process}"), val('cellbender'), eval('cellbender --version'), emit: versions_cellbender, topic: versions
 
     when:
-    task.ext.when == null || task.ext.when
-
+        task.ext.when == null || task.ext.when
     script:
-    prefix = task.ext.prefix ?: "${meta.id}"
-    args = task.ext.args ?: ""
-    use_gpu = task.ext.use_gpu ? "--cuda" : ""
-    """
-    TMPDIR=. cellbender remove-background \
-        ${args} \
-        --cpu-threads ${task.cpus} \
-        --estimator-multiple-cpu \
-        ${use_gpu} \
-        --input ${h5ad} \
-        --output ${prefix}.h5
-
-    """
+        prefix = task.ext.prefix ?: "${meta.id}"
+        args = task.ext.args ?: ""
+        use_gpu = task.ext.use_gpu ? "--cuda" : ""
+        """
+        TMPDIR=. cellbender remove-background \
+            ${args} \
+            --cpu-threads ${task.cpus} \
+            --estimator-multiple-cpu \
+            ${use_gpu} \
+            --input ${h5ad} \
+            --output ${prefix}.h5
+        """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    touch "${prefix}.h5"
-    touch "${prefix}_filtered.h5"
-    touch "${prefix}_posterior.h5"
-    touch "${prefix}_cell_barcodes.csv"
-    touch "${prefix}_metrics.csv"
-    touch "${prefix}_report.html"
-    touch "${prefix}.pdf"
-    touch "${prefix}.log"
-    echo "" | gzip > ckpt.tar.gz
-
-    """
+        prefix = task.ext.prefix ?: "${meta.id}"
+        """
+        touch "${prefix}.h5"
+        touch "${prefix}_filtered.h5"
+        touch "${prefix}_posterior.h5"
+        touch "${prefix}_cell_barcodes.csv"
+        touch "${prefix}_metrics.csv"
+        touch "${prefix}_report.html"
+        touch "${prefix}.pdf"
+        touch "${prefix}.log"
+        echo "" | gzip > ckpt.tar.gz
+        """
 }
