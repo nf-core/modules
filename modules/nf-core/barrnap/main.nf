@@ -12,7 +12,7 @@ process BARRNAP {
 
     output:
     tuple val(meta), path("*.gff"), emit: gff
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('barrnap'), eval('barrnap --version 2>&1 | sed "s/barrnap //g"'), emit: versions_barrnap, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,11 +34,6 @@ process BARRNAP {
         $input \\
         > ${prefix}_${db}.gff
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        barrnap: \$(echo \$(barrnap --version 2>&1) | sed 's/barrnap//; s/Using.*\$//' )
-    END_VERSIONS
-
     """
 
     stub:
@@ -46,10 +41,5 @@ process BARRNAP {
     db = dbname ? "${dbname}" : 'bac'
     """
     touch ${prefix}_${db}.gff
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        barrnap: \$(echo \$(barrnap --version 2>&1) | sed 's/barrnap//; s/Using.*\$//' )
-    END_VERSIONS
     """
 }
