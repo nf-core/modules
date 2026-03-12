@@ -58,23 +58,46 @@ output:
           pattern: "*-mutations.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
+  versions_amrfinderplus:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - amrfinderplus:
+          type: string
+          description: The name of the tool
+      - amrfinder --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_amrfinderplus_database:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - amrfinderplus-database:
+          type: string
+          description: The name of the tool
+      - "amrfinder --database amrfinderdb --database_version 2>&1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[0-9]+' | tail -1":
+          type: eval
+          description: The expression to obtain the database version
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
-  tool_version:
-    - VER:
-        type: string
-        description: The version of the tool in string format (useful for downstream
-          tools such as hAMRronization)
-  db_version:
-    - DBVER:
-        type: string
-        description: The version of the used database in string format (useful for downstream
-          tools such as hAMRronization)
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - amrfinderplus:
+          type: string
+          description: The name of the tool
+      - amrfinder --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - amrfinderplus-database:
+          type: string
+          description: The name of the tool
+      - "amrfinder --database amrfinderdb --database_version 2>&1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[0-9]+' | tail -1":
+          type: eval
+          description: The expression to obtain the database version
 authors:
   - "@rpetit3"
   - "@louperelo"
