@@ -12,7 +12,7 @@ process BRACKEN_COMBINEBRACKENOUTPUTS {
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    tuple val("${task.process}"), val('combine_bracken_outputs'), val("${VERSION}"), emit: versions_combine_bracken_outputs, topic: versions
+    tuple val("${task.process}"), val('combine_bracken_outputs'), val('2.9'), emit: versions_combine_bracken_outputs, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +23,6 @@ process BRACKEN_COMBINEBRACKENOUTPUTS {
 
     // WARN: Version information not provided by tool on CLI.
     // Please update version string below when bumping container versions.
-    VERSION = '2.9'
     """
     combine_bracken_outputs.py \\
         $args \\
@@ -40,7 +39,6 @@ process BRACKEN_COMBINEBRACKENOUTPUTS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     // WARN: Version information not provided by tool on CLI.
     // Please update version string below when bumping container versions.
-    VERSION = '2.9'
     """
     touch ${prefix}.txt
     """
