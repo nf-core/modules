@@ -11,7 +11,8 @@ process DEEPCELL_MESMER {
     // Output a .tif image, don't touch versions
     output:
     tuple val(meta), path("*.tif"), emit: mask
-    tuple val("${task.process}"), val('deepcell_mesmer'), eval("echo 0.4.1"), emit: versions_mesmer, topic: versions // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    tuple val("${task.process}"), val('deepcell_mesmer'), eval("echo 0.4.1"), emit: versions_mesmer, topic: versions
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
