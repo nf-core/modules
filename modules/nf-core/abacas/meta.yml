@@ -58,7 +58,6 @@ output:
           pattern: "${prefix}.*"
           ontologies:
             - edam: "http://edamontology.org/format_3750"
-
   versions_abacas:
     - - ${task.process}:
           type: string
@@ -66,7 +65,7 @@ output:
       - abacas:
           type: string
           description: The name of the tool
-      - abacas.pl --version:
+      - abacas.pl --version 2>&1 | grep 'ABACAS\.' | sed 's/ABACAS\.//' || true:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -77,7 +76,7 @@ topics:
       - abacas:
           type: string
           description: The name of the tool
-      - abacas.pl --version:
+      - abacas.pl --version 2>&1 | grep 'ABACAS\.' | sed 's/ABACAS\.//' || true:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
