@@ -83,7 +83,6 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
     ch_methylation_coverage = BISMARK_METHYLATIONEXTRACTOR.out.coverage
     ch_methylation_report   = BISMARK_METHYLATIONEXTRACTOR.out.report
     ch_methylation_mbias    = BISMARK_METHYLATIONEXTRACTOR.out.mbias
-    ch_versions             = ch_versions.mix(BISMARK_METHYLATIONEXTRACTOR.out.versions)
 
     /*
      * Run bismark coverage2cytosine
