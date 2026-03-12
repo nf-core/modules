@@ -3,7 +3,7 @@ process SINGLEM_DBDOWNLOAD {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/singlem:0.20.3--pyhdfd78af_0'
+        ? 'https://depot.galaxyproject.org/singularity/singlem:0.20.3--pyhdfd78af_2'
         : 'biocontainers/singlem:0.20.3--pyhdfd78af_2'}"
 
     output:
