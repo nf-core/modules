@@ -4,8 +4,8 @@ process FASTQE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/fastqe:0.3.3--pyhdfd78af_0'
-        : 'biocontainers/fastqe:0.3.3--pyhdfd78af_0'}"
+        ? 'https://depot.galaxyproject.org/singularity/fastqe:0.5.2--pyhdfd78af_0'
+        : 'biocontainers/fastqe:0.5.2--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(fastq)
@@ -13,7 +13,7 @@ process FASTQE {
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    tuple val("${task.process}"), val('fastqe'), eval("echo 0.3.3"), emit: versions_fastqe, topic: versions
+    tuple val("${task.process}"), val('fastqe'), eval("echo 0.5.2"), emit: versions_fastqe, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
