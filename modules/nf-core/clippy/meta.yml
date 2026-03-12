@@ -11,7 +11,8 @@ tools:
       documentation: "https://github.com/ulelab/clippy"
       tool_dev_url: "https://github.com/ulelab/clippy"
       doi: "10.7554/eLife.84034"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -64,13 +65,27 @@ output:
           description: GTF file of intergenic regions
           pattern: "*_intergenic_regions.gtf"
           ontologies: []
+  versions_clippy:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - clippy:
+          type: string
+          description: The name of the tool
+      - clippy -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - clippy:
+          type: string
+          description: The name of the tool
+      - clippy -v:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@marc-jones"
   - "@CharlotteAnne"
