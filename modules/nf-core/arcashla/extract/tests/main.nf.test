@@ -33,7 +33,7 @@ nextflow_process {
                     process.out.intermediate_bam[0][1].collect { bam(it).getReadsMD5() },
                     file(process.out.intermediate_sam[0][1]).name,
                     bam(process.out.intermediate_sorted_bam[0][1]).getReadsMD5(),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -62,7 +62,7 @@ nextflow_process {
                     process.out.intermediate_bam[0][1].collect { bam(it).getReadsMD5() },
                     file(process.out.intermediate_sam[0][1]).name,
                     bam(process.out.intermediate_sorted_bam[0][1]).getReadsMD5(),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
