@@ -46,7 +46,7 @@ output:
       - cnvkit:
           type: string
           description: The name of the tool
-      - cnvkit.py version | sed -e "s/cnvkit v//g:
+      - 'cnvkit.py version | sed -e "s/cnvkit v//g"':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -57,7 +57,7 @@ topics:
       - cnvkit:
           type: string
           description: The name of the tool
-      - cnvkit.py version | sed -e "s/cnvkit v//g:
+      - 'cnvkit.py version | sed -e "s/cnvkit v//g"':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
