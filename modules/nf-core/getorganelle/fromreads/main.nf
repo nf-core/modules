@@ -51,7 +51,10 @@ process GETORGANELLE_FROMREADS {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "${args}"
-    touch results/${prefix}.${organelle_type}.fasta.gz
+    mkdir results
+    touch results/test_1.fastq
+    touch results/test_2.fastq
+    echo "" | gzip > results/${prefix}.${organelle_type}.fasta.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -1,0 +1,79 @@
+nextflow_process {
+
+    name "Test Process GETORGANELLE_FROMREADS"
+    script "modules/nf-core/getorganelle/fromreads/main.nf"
+    process "GETORGANELLE_FROMREADS"
+
+    test("Should run without failures") {
+        setup {
+            run("GETORGANELLE_CONFIG") {
+                script "../../config/main.nf"
+                process {
+                    """
+                    input[0] = 'animal_mt' 
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                    ]
+                ]
+                input[1] = GETORGANELLE_CONFIG.out.db
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success }, 
+                { assert snapshot(
+                    process.out.etc[0][0], 
+                    process.out.etc[0][1], 
+                    process.out.etc[0][3], 
+                    process.out.fasta, 
+                    process.out.versions).match('main_output') },
+                { assert process.out.etc[0][2] ==~ '.*/test.get_org.log.txt'}
+            )
+        }
+
+    }
+
+    test("Should run without failures with stub option") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                    ]
+                ]
+                input[1] = [
+                    'animal_mt',
+                    file('mock/getorganelle')
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match('file_list') }
+            )
+        }
+
+    }
+
+}
