@@ -12,7 +12,9 @@ process BIOAWK {
 
     output:
     tuple val(meta), path("*.gz"), emit: output
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('bioawk'), eval("echo ${VERSION}"),
+        emit: versions_bioawk,
+        topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,10 +31,5 @@ process BIOAWK {
         > ${prefix}
 
     gzip ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bioawk: $VERSION
-    END_VERSIONS
     """
 }
