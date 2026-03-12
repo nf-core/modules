@@ -74,10 +74,5 @@ process AMPCOMBI2_PARSETABLES {
     touch amp_${opt_amp_db}_database/mmseqs2/ref_DB.index
     touch amp_${opt_amp_db}_database/mmseqs2/ref_DB.lookup
     touch amp_${opt_amp_db}_database/mmseqs2/ref_DB.source
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ampcombi: \$(ampcombi --version | sed 's/ampcombi //')
-    END_VERSIONS
     """
 }
