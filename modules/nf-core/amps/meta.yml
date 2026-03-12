@@ -1,5 +1,6 @@
 name: amps
-description: Post-processing script of the MaltExtract component of the HOPS package
+description: Post-processing script of the MaltExtract component of the HOPS
+  package
 keywords:
   - malt
   - MaltExtract
@@ -19,12 +20,14 @@ keywords:
   - visualisation
 tools:
   - amps:
-      description: Post-processing script of the MaltExtract tool for ancient metagenomics
+      description: Post-processing script of the MaltExtract tool for ancient
+        metagenomics
       homepage: "https://github.com/rhuebler/HOPS"
       documentation: "https://github.com/keyfm/amps"
       tool_dev_url: "https://github.com/keyfm/amps"
       doi: "10.1186/s13059-019-1903-0"
-      licence: ["GPL >=3"]
+      licence:
+        - "GPL >=3"
       identifier: ""
 input:
   - maltextract_results:
@@ -36,7 +39,7 @@ input:
       description: List of target taxa to evaluate used in MaltExtract
       pattern: "*.txt"
       ontologies:
-        - edam: "http://edamontology.org/format_2330" # Plain text
+        - edam: "http://edamontology.org/format_2330"
   - filter:
       type: string
       description: The filter mode used in MaltExtract
@@ -49,33 +52,47 @@ output:
         description: Candidate summary heatmap in MultiQC compatible JSON format
         pattern: "heatmap_overview_Wevid.json"
         ontologies:
-          - edam: "http://edamontology.org/format_3464" # JSON
+          - edam: "http://edamontology.org/format_3464"
   summary_pdf:
     - results/heatmap_overview_Wevid.pdf:
         type: file
         description: Candidate summary heatmap in PDF format
         pattern: "heatmap_overview_Wevid.pdf"
         ontologies:
-          - edam: "http://edamontology.org/format_3508" # PDF
+          - edam: "http://edamontology.org/format_3508"
   tsv:
     - results/heatmap_overview_Wevid.tsv:
         type: file
         description: Candidate summary heatmap in TSV format
         pattern: "heatmap_overview_Wevid.tsv"
         ontologies:
-          - edam: "http://edamontology.org/format_3475" # TSV
+          - edam: "http://edamontology.org/format_3475"
   candidate_pdfs:
     - results/pdf_candidate_profiles/:
         type: directory
         description: Directory of per sample output PDFs organised by reference
         pattern: "pdf_candidate_profiles/"
+  versions_hops:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hops:
+          type: string
+          description: The name of the tool
+      - "hops --version 2>&1 | sed 's/HOPS version//' ":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hops:
+          type: string
+          description: The name of the tool
+      - "hops --version 2>&1 | sed 's/HOPS version//' ":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:
