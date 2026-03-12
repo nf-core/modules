@@ -82,11 +82,11 @@
                 }
             ]
         ],
-        "timestamp": "2026-02-20T11:59:23.009553213",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.4"
-        }
+        },
+        "timestamp": "2026-02-20T11:59:23.009553213"
     },
     "sarscov2 - fastq - adapterremoval - merge - cat more files - paired_end": {
         "content": [
@@ -97,18 +97,14 @@
                 "test2.discarded.fastq.gz"
             ],
             [
-                {
-                    "FASTQ_SHORTREADS_PREPROCESS_QC:FASTQ_REMOVEADAPTERS_MERGE:ADAPTERREMOVAL_PE": {
-                        "adapterremoval": "2.3.2"
-                    }
-                }
+                
             ]
         ],
-        "timestamp": "2026-02-13T09:13:49.235042821",
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
-        }
+        },
+        "timestamp": "2026-03-12T10:30:41.862555999"
     },
     "sarscov2 - fastq - fastqc - seqkit - cutadapt - clumpify - cat - paired_end": {
         "content": [
@@ -124,11 +120,6 @@
             "test_2_fastqc.zip",
             41,
             [
-                {
-                    "FASTQ_SHORTREADS_PREPROCESS_QC:BBMAP_CLUMPIFY": {
-                        "bbmap": 39.18
-                    }
-                },
                 {
                     "FASTQ_SHORTREADS_PREPROCESS_QC:FASTQ_PREPROCESS_SEQKIT:SEQKIT_RMDUP": {
                         "seqkit": "v2.9.0"
@@ -151,11 +142,11 @@
                 }
             ]
         ],
-        "timestamp": "2026-02-13T09:13:35.929830095",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        }
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        },
+        "timestamp": "2026-03-11T14:04:20.502786984"
     },
     "sarscov2 - fastq - skip all - single_end": {
         "content": [
@@ -164,11 +155,11 @@
                 
             ]
         ],
-        "timestamp": "2026-02-13T09:13:58.592190153",
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
-        }
+        },
+        "timestamp": "2026-02-13T09:13:58.592190153"
     },
     "sarscov2 - fastq - umitools - prinseq - clumpify - cat - single_end": {
         "content": [
@@ -177,22 +168,17 @@
             41,
             [
                 {
-                    "FASTQ_SHORTREADS_PREPROCESS_QC:BBMAP_CLUMPIFY": {
-                        "bbmap": 39.18
-                    }
-                },
-                {
                     "FASTQ_SHORTREADS_PREPROCESS_QC:FASTQ_COMPLEXITY_FILTER:PRINSEQPLUSPLUS": {
                         "prinseqplusplus": 1.2
                     }
                 }
             ]
         ],
-        "timestamp": "2026-02-13T09:13:13.566464264",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        }
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        },
+        "timestamp": "2026-03-11T14:03:56.411938309"
     },
     "sarscov2 - fastq - skip all - single_end - stub": {
         "content": [
@@ -206,10 +192,10 @@
                 ]
             ]
         ],
-        "timestamp": "2026-01-13T12:17:19.455574032",
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
-        }
+        },
+        "timestamp": "2026-01-13T12:17:19.455574032"
     }
 }
