@@ -5,8 +5,9 @@ nextflow_process {
 
     tag "modules"
     tag "modules_nfcore"
-    tag "kmercounter"
-    tag "modules/nf-core/gunzip"
+    tag "gunzip"
+    tag "cobiontid"
+    tag "cobiontid/kmercounter"
 
     setup {
         nfcoreInitialise("${launchDir}/library/")
