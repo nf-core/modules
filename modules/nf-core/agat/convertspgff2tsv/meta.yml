@@ -29,8 +29,8 @@ input:
         description: Annotation file in GFF3/GTF format
         pattern: "*.{gff, gtf}"
         ontologies:
-          - edam: "http://edamontology.org/format_1975"
-          - edam: "http://edamontology.org/format_2306"
+          - edam: "http://edamontology.org/format_1975" # GFF3
+          - edam: "http://edamontology.org/format_2306" # GTF
 output:
   tsv:
     - - meta:
@@ -41,7 +41,7 @@ output:
           description: Annotation file in TSV format
           pattern: "*.{gtf}"
           ontologies:
-            - edam: http://edamontology.org/format_2306
+            - edam: http://edamontology.org/format_2306 # GTF
   versions_agat:
     - - ${task.process}:
           type: string
