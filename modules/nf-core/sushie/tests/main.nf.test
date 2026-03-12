@@ -8,17 +8,17 @@ nextflow_process {
     tag "modules_nfcore"
     tag "sushie"
 
-    test("sushie - gwas") {
+    test("homo_sapiens - popgen - afr") {
 
         when {
             process {
                 """
                 input[0] = [
                     [ id: 'test' ],
-                    [ file('https://github.com/mancusolab/sushie/raw/main/data/AFR.gwas', checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/AFR.gwas', checkIfExists: true) ]
                 ]
                 input[1] = [
-                    file('https://github.com/mancusolab/sushie/raw/main/data/AFR.ld', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/AFR.ld', checkIfExists: true)
                 ]
                 input[2] = "408112"
                 """
@@ -39,7 +39,7 @@ nextflow_process {
         }
     }
 
-    test("sushie - gwas - stub") {
+    test("homo_sapiens - popgen - afr - stub") {
 
         options "-stub"
 
@@ -48,10 +48,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'test' ],
-                    [ file('https://github.com/mancusolab/sushie/raw/main/data/AFR.gwas', checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/AFR.gwas', checkIfExists: true) ]
                 ]
                 input[1] = [
-                    file('https://github.com/mancusolab/sushie/raw/main/data/AFR.ld', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/AFR.ld', checkIfExists: true)
                 ]
                 input[2] = "408112"
                 """
