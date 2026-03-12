@@ -86,11 +86,8 @@ workflow FASTA_CLASSIFY_CATPACK {
 
     CATPACK_ADDNAMES_BINS(CATPACK_BINS.out.bin2classification, ch_taxonomy)
 
-    ch_summarise_bins = channel.empty()
-    if (run_summarise) {
-        CATPACK_SUMMARISE_BINS(CATPACK_ADDNAMES_BINS.out.txt, [[:], []])
+        CATPACK_SUMMARISE_BINS(CATPACK_ADDNAMES_BINS.out.txt.filter { it -> run_summarise }, [[:], []])
         ch_summarise_bins = CATPACK_SUMMARISE_BINS.out.txt
-    }
 
     //
     // Unbinned contigs taxonomic classification (optional - skipped when ch_unbins is channel.empty())
