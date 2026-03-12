@@ -1,20 +1,21 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "modkit_callmods"
-description: Call mods from a modbam, creates a new modbam with probabilities set to 100% if a base modification is called or 0% if called canonical
+description: Call mods from a modbam, creates a new modbam with probabilities
+  set to 100% if a base modification is called or 0% if called canonical
 keywords:
   - methylation
   - ont
   - long-read
 tools:
   - "modkit":
-      description: "A bioinformatics tool for working with modified bases in Oxford Nanopore sequencing data."
+      description: "A bioinformatics tool for working with modified bases in Oxford
+        Nanopore sequencing data."
       homepage: "https://nanoporetech.github.io/modkit/"
       documentation: "https://nanoporetech.github.io/modkit/"
       tool_dev_url: "https://github.com/nanoporetech/modkit"
       doi: "no DOI available"
-      licence: ["Oxford Nanopore Technologies PLC. Public License Version 1.0"]
+      licence:
+        - "Oxford Nanopore Technologies PLC. Public License Version 1.0"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -26,8 +27,7 @@ input:
         description: BAM file
         pattern: "*.bam"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-
+          - edam: "http://edamontology.org/format_2572"
 output:
   bam:
     - - meta:
@@ -39,7 +39,7 @@ output:
           type: file
           description: BAM file with base modification probabilities
           ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
+            - edam: "http://edamontology.org/format_2572"
   log:
     - - meta:
           type: map
@@ -50,7 +50,7 @@ output:
           type: file
           description: File for debug logs to be written to
           ontologies:
-            - edam: "http://edamontology.org/data_1678" # log
+            - edam: "http://edamontology.org/data_1678"
   versions_modkit:
     - - ${task.process}:
           type: string
@@ -61,7 +61,6 @@ output:
       - modkit --version | sed 's/modkit //':
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -73,7 +72,6 @@ topics:
       - modkit --version | sed 's/modkit //':
           type: eval
           description: The expression to obtain the version of the tool
-
 authors:
   - "@YiJin-Xiong"
 maintainers:
