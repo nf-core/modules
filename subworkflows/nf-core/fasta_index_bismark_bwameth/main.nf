@@ -21,7 +21,6 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
     ch_fasta_index   = channel.empty()
     ch_bismark_index = channel.empty()
     ch_bwameth_index = channel.empty()
-    ch_versions      = channel.empty()
 
     // Check if fasta file is gzipped and decompress if needed
     fasta
@@ -61,7 +60,6 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
                 ch_fasta
             )
             ch_bismark_index = BISMARK_GENOMEPREPARATION.out.index
-            ch_versions      = ch_versions.mix(BISMARK_GENOMEPREPARATION.out.versions)
         }
     }
 
@@ -122,5 +120,4 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
     fasta_index   = ch_fasta_index   // channel: [ val(meta), [ fasta index ] ]
     bismark_index = ch_bismark_index // channel: [ val(meta), [ bismark index ] ]
     bwameth_index = ch_bwameth_index // channel: [ val(meta), [ bwameth index ] ]
-    versions      = ch_versions      // channel: [ versions.yml ]
 }
