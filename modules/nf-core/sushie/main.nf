@@ -10,9 +10,9 @@ process SUSHIE {
     val(sample_sizes)
 
     output:
-    tuple val(meta), path("*.sushie.corr.tsv")   , emit: corr
-    tuple val(meta), path("*.sushie.cs.tsv")     , emit: cs
-    tuple val(meta), path("*.sushie.weights.tsv"), emit: weights
+    tuple val(meta), path("*.sushie.corr.tsv.gz")   , emit: corr
+    tuple val(meta), path("*.sushie.cs.tsv.gz")     , emit: cs
+    tuple val(meta), path("*.sushie.weights.tsv.gz"), emit: weights
     tuple val("${task.process}"), val('sushie'), val('0.19'), topic: versions, emit: versions_sushie
 
     when:
@@ -28,6 +28,7 @@ process SUSHIE {
     --gwas ${study_locus_files.join(' ')} \\
     --ld ${ld_files.join(' ')} \\
     --sample-size ${sample_sizes} \\
+    --compress \\
     --output ${prefix} \\
     ${args}
     """
@@ -38,8 +39,8 @@ process SUSHIE {
     """
     echo ${args}
 
-    touch ${prefix}.sushie.corr.tsv
-    touch ${prefix}.sushie.cs.tsv
-    touch ${prefix}.sushie.weights.tsv
+    echo "" | gzip > ${prefix}.sushie.corr.tsv.gz
+    echo "" | gzip > ${prefix}.sushie.cs.tsv.gz
+    echo "" | gzip > ${prefix}.sushie.weights.tsv.gz
     """
 }

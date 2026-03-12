@@ -42,10 +42,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.sushie.corr.tsv":
+      - "*.sushie.corr.tsv.gz":
           type: file
           description: Effect size correlation
-          pattern: "*.sushie.corr.tsv"
+          pattern: "*.sushie.corr.tsv.gz"
           ontologies:
             - edam: http://edamontology.org/format_3475
   cs:
@@ -54,10 +54,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.sushie.cs.tsv":
+      - "*.sushie.cs.tsv.gz":
           type: file
           description: Credible set
-          pattern: "*.sushie.cs.tsv"
+          pattern: "*.sushie.cs.tsv.gz"
           ontologies:
             - edam: http://edamontology.org/format_3475
   weights:
@@ -66,10 +66,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.sushie.weights.tsv":
+      - "*.sushie.weights.tsv.gz":
           type: file
           description: Prediction weights
-          pattern: "*.sushie.weights.tsv"
+          pattern: "*.sushie.weights.tsv.gz"
           ontologies:
             - edam: http://edamontology.org/format_3475
   versions_sushie:
