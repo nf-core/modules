@@ -42,5 +42,6 @@ process AMULETY_EMBED {
 
     """
     touch ${prefix}.tsv
+    touch ${prefix}_metadata.tsv
     """
 }
