@@ -1,6 +1,6 @@
 process DEEPCELL_MESMER {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_high'
 
     container "nf-core/deepcell_mesmer:0.4.1_noentry"
 
@@ -8,7 +8,6 @@ process DEEPCELL_MESMER {
     tuple val(meta) , path(img)
     tuple val(meta2), path(membrane_img)
 
-    // Output a .tif image, don't touch versions
     output:
     tuple val(meta), path("*.tif"), emit: mask
     tuple val("${task.process}"), val('deepcell_mesmer'), eval("echo 0.4.1"), emit: versions_mesmer, topic: versions
