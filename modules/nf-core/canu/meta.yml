@@ -28,7 +28,7 @@ input:
         description: fasta/fastq file
         pattern: "*.{fasta,fastq}"
         ontologies:
-          - edam: http://edamontology.org/format_1930
+          - edam: http://edamontology.org/format_1930 # FASTQ format
   - mode:
       type: string
       description: Canu mode depending on the input data (source and error rate)
@@ -85,7 +85,7 @@ output:
           description: The reads after correction.
           pattern: "*.correctedReads.fasta.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   corrected_trimmed_reads:
     - - meta:
           type: map
@@ -97,7 +97,7 @@ output:
           description: The corrected reads after overlap based trimming
           pattern: "*.trimmedReads.fasta.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   metadata:
     - - meta:
           type: map
@@ -143,9 +143,6 @@ output:
       - "'2.3'":
           type: string
           description: The expression to obtain the version of the tool
-        "2.3":
-          type: string
-          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -155,9 +152,6 @@ topics:
           type: string
           description: The name of the tool
       - "'2.3'":
-          type: string
-          description: The expression to obtain the version of the tool
-        "2.3":
           type: string
           description: The expression to obtain the version of the tool
 authors:
