@@ -37,20 +37,17 @@ process PMLST_PMLST {
         -o ${prefix}_${scheme}\\
         -p $pmlst_db \\
         -s ${scheme} \\
+        -x \\
         $args
 
     # If output files exist, move them to expected names
     # Else touch empty files to avoid Nextflow errors
     if [ -f "${prefix}_${scheme}/results_tab.tsv" ]; then
         mv "${prefix}_${scheme}/results_tab.tsv" "${prefix}.tsv"
-    else
-        touch "${prefix}.tsv"
     fi
 
     if [ -f "${prefix}_${scheme}/results.txt" ]; then
         mv "${prefix}_${scheme}/results.txt" "${prefix}.txt"
-    else
-        touch "${prefix}.txt"
     fi
     """
 
