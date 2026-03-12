@@ -16,6 +16,8 @@ process AMRFINDERPLUS_RUN {
     tuple val(meta), path("${prefix}-mutations.tsv"), emit: mutation_report, optional: true
     tuple val("${task.process}"), val("amrfinderplus"), eval("amrfinder --version"), emit: versions_amrfinderplus, topic: versions
     tuple val("${task.process}"), val("amrfinderplus-database"), eval("amrfinder --database amrfinderdb --database_version 2>&1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[0-9]+' | tail -1"), emit: versions_amrfinderplus_database, topic: versions
+    env 'VER'    , emit: tool_version
+    env 'DBVER'  , emit: db_version
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,6 +25,7 @@ process AMRFINDERPLUS_RUN {
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
+    def db_ver_pattern = /[0-9]{4}-[0-9]{2}-[0-9]{2}\.[0-9]+/
     def is_compressed_fasta = fasta.getName().endsWith(".gz") ? true : false
     def is_compressed_db = db.getName().endsWith(".gz") ? true : false
 
@@ -52,14 +55,23 @@ process AMRFINDERPLUS_RUN {
         ${args} \\
         --database amrfinderdb \\
         --threads ${task.cpus} > ${prefix}.tsv
+
+    VER=\$(amrfinder --version)
+    DBVER=\$(amrfinder --database amrfinderdb --database_version 2>&1 | grep -oE '${db_ver_pattern}' | tail -1)
+    export VER DBVER
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ''
+    def db_ver_pattern = /[0-9]{4}-[0-9]{2}-[0-9]{2}\.[0-9]+/
     """
     echo ${args}
     touch ${prefix}.tsv
     ${meta.containsKey("organism") ? "touch ${prefix}-mutations.tsv" : ""}
+
+    VER=\$(amrfinder --version)
+    DBVER=\$(amrfinder --database amrfinderdb --database_version 2>&1 | grep -oE '${db_ver_pattern}' | tail -1)
+    export VER DBVER
     """
 }

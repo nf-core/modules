@@ -6,13 +6,14 @@ keywords:
   - antibiotic resistance
 tools:
   - amrfinderplus:
-      description: AMRFinderPlus finds antimicrobial resistance and other genes in protein
-        or nucleotide sequences.
+      description: AMRFinderPlus finds antimicrobial resistance and other genes in
+        protein or nucleotide sequences.
       homepage: https://github.com/ncbi/amr/wiki
       documentation: https://github.com/ncbi/amr/wiki
       tool_dev_url: https://github.com/ncbi/amr
       doi: "10.1038/s41598-021-91456-0"
-      licence: ["Public Domain"]
+      licence:
+        - "Public Domain"
       identifier: biotools:amrfinderplus
 input:
   - - meta:
@@ -78,6 +79,16 @@ output:
       - "amrfinder --database amrfinderdb --database_version 2>&1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[0-9]+' | tail -1":
           type: eval
           description: The expression to obtain the database version
+  tool_version:
+    - VER:
+        type: string
+        description: The version of the tool in string format (useful for
+          downstream tools such as hAMRronization)
+  db_version:
+    - DBVER:
+        type: string
+        description: The version of the used database in string format (useful for
+          downstream tools such as hAMRronization)
 topics:
   versions:
     - - ${task.process}:
