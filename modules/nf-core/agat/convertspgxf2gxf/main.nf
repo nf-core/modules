@@ -13,7 +13,7 @@ process AGAT_CONVERTSPGXF2GXF {
     output:
     tuple val(meta), path("*.agat.gff"), emit: output_gff
     tuple val(meta), path("*.log")     , emit: log
-    tuple val("${task.process}"), val('agat'), eval('agat --version'), emit: versions_agat, topic: versions
+    tuple val("${task.process}"), val('agat'), eval("agat --version | sed 's/^v//'"), emit: versions_agat, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

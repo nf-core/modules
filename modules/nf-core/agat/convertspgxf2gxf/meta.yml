@@ -28,8 +28,8 @@ input:
         description: Annotation file in GFF3/GTF format
         pattern: "*.{gff, gtf}"
         ontologies:
-          - edam: "http://edamontology.org/format_1975"
-          - edam: "http://edamontology.org/format_2306"
+          - edam: "http://edamontology.org/format_1975" # GFF3
+          - edam: "http://edamontology.org/format_2306" # GTF
 output:
   output_gff:
     - - meta:
@@ -40,7 +40,7 @@ output:
           description: Cleaned annotation file in GFF3 format
           pattern: "*.{gff}"
           ontologies:
-            - edam: "http://edamontology.org/format_1975"
+            - edam: "http://edamontology.org/format_1975" # GFF3
   log:
     - - meta:
           type: map
@@ -50,7 +50,7 @@ output:
           description: Log file of the conversion process
           pattern: "*.{log}"
           ontologies:
-            - edam: "http://edamontology.org/format_2330"
+            - edam: "http://edamontology.org/format_2330" # Textual format
   versions_agat:
     - - ${task.process}:
           type: string
@@ -58,7 +58,7 @@ output:
       - agat:
           type: string
           description: The name of the tool
-      - agat --version:
+      - agat --version | sed 's/^v//':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -69,7 +69,7 @@ topics:
       - agat:
           type: string
           description: The name of the tool
-      - agat --version:
+      - agat --version | sed 's/^v//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
