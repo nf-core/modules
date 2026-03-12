@@ -12,7 +12,7 @@ process COPTR_EXTRACT {
 
     output:
     tuple val(meta), path("*.pkl"), emit: coverage
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('coptr'), eval("coptr |& sed -E '11!d ; s/CoPTR.*?\\(v(.*?)\\).*/\\1/'"), emit: versions_coptr, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,20 +27,11 @@ process COPTR_EXTRACT {
         bamfolder/ \\
         .
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        coptr: \$(coptr |& sed -E '11!d ; s/CoPTR.*?\\(v(.*?)\\).*/\\1/')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.pkl
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        coptr: \$(coptr |& sed -E '11!d ; s/CoPTR.*?\\(v(.*?)\\).*/\\1/')
-    END_VERSIONS
     """
 }

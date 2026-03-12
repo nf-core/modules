@@ -4,8 +4,8 @@ process BISCUIT_BSCONV {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/33/33a9ca30b4154f11253c8d91a75382065dcb8282ba99b74dbee59ed8faceabd7/data':
-        'community.wave.seqera.io/library/biscuit:1.5.0.20240506--ca92d9d0a37b5fa8' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a0/a08017a6f4d3c9849d56375068fbe75b8440ed2a1407699958dc3a28759558d1/data':
+        'community.wave.seqera.io/library/biscuit:1.8.0.20260217--7d70c1bb73e42ce3' }"
 
     input:
     tuple val(meta), path(bam)
@@ -15,7 +15,7 @@ process BISCUIT_BSCONV {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('biscuit'), eval("biscuit version |& sed '1!d; s/^.*BISCUIT Version: //'"), emit: versions_biscuit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,22 +32,12 @@ process BISCUIT_BSCONV {
         $index/$fasta \\
         $bam \\
         ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
-    END_VERSIONS
     """
 
 
