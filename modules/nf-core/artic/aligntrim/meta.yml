@@ -30,8 +30,8 @@ input:
         description: BAM or SAM file containing aligned reads
         pattern: "*.{bam,sam}"
         ontologies:
-          - edam: "http://edamontology.org/format_2572"
-          - edam: "http://edamontology.org/format_2573"
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2573" # SAM
     - scheme_bed:
         type: file
         description: BED file containing amplicon scheme primer locations
