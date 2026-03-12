@@ -27,7 +27,7 @@ input:
         description: Input GFF3 file
         pattern: "*.{gff}"
         ontologies:
-          - edam: "http://edamontology.org/format_1975"
+          - edam: "http://edamontology.org/format_1975" # GFF3
 output:
   bed:
     - - meta:
@@ -40,7 +40,7 @@ output:
           description: Output bed12 file
           pattern: "*.bed"
           ontologies:
-            - edam: "http://edamontology.org/format_3586"
+            - edam: "http://edamontology.org/format_3586" # bed12
   versions_agat:
     - - ${task.process}:
           type: string
