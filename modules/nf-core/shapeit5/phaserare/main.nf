@@ -19,6 +19,7 @@ process SHAPEIT5_PHASERARE {
 
     input:
     tuple val(meta), path(input), path(input_index), path(pedigree), val(input_region), path(scaffold), path(scaffold_index), val(scaffold_region), path(map)
+    val(output_suffix)
 
     output:
     tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: phased_variant
@@ -30,7 +31,7 @@ process SHAPEIT5_PHASERARE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "vcf.gz"
+    def suffix = output_suffix ?: "vcf.gz"
 
     if ("${input}" == "${prefix}.${suffix}") {
         error("Input and output names are the same, set prefix in module configuration to disambiguate!")
@@ -57,7 +58,7 @@ process SHAPEIT5_PHASERARE {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "vcf.gz"
+    def suffix = output_suffix ?: "vcf.gz"
 
     def create_cmd = suffix.endsWith(".gz") ? "echo '' | gzip >" : "touch"
     """
