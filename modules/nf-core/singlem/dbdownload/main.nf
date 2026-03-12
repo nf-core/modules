@@ -4,7 +4,7 @@ process SINGLEM_DBDOWNLOAD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-    'https://depot.galaxyproject.org/singularity/singlem:0.18.3--pyhdfd78af_0' :
+    'community.wave.seqera.io/library/singlem:0.20.3--52ee62e56540a33a' :
     'biocontainers/singlem:0.19.0--pyhdfd78af_0' }"
 
     output:
