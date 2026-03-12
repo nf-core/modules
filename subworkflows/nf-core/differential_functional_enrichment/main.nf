@@ -141,7 +141,6 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
 
     // collect versions info
     ch_versions = ch_versions
-        .mix(GPROFILER2_GOST.out.versions)
         .mix(CUSTOM_TABULARTOGSEAGCT.out.versions)
         .mix(CUSTOM_TABULARTOGSEACLS.out.versions)
         .mix(CUSTOM_TABULARTOGSEACHIP.out.versions)
