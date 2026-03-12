@@ -17,7 +17,7 @@ process ANGSD_DOCOUNTS {
     tuple val(meta), path("*.pos.gz")     , emit: pos         , optional: true
     tuple val(meta), path("*.counts.gz")  , emit: counts      , optional: true
     tuple val(meta), path("*.icnts.gz")   , emit: icounts     , optional: true
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('angsd'), eval('angsd 2>&1 | grep version | head -n 1 | sed "s/.*version: //g;s/ .*//g"'), emit: versions_angsd, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,10 +37,7 @@ process ANGSD_DOCOUNTS {
         -out ${prefix} \\
         ${minq}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        angsd: \$(echo \$(angsd 2>&1) | grep version | head -n 1 | sed 's/.*version: //g;s/ .*//g')
-    END_VERSIONS
+
     """
 
     stub:
@@ -61,9 +58,5 @@ process ANGSD_DOCOUNTS {
     ${counts_cmd}
     ${icounts_cmd}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        angsd: \$(echo \$(angsd 2>&1) | grep version | head -n 1 | sed 's/.*version: //g;s/ .*//g')
-    END_VERSIONS
     """
 }

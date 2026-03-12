@@ -12,7 +12,7 @@ process CIRCEXPLORER2_PARSE {
 
     output:
     tuple val(meta), path("*.bed"), emit: junction
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('circexplorer2'), eval("CIRCexplorer2 --version 2>&1; true"), topic: versions, emit: versions_circexplorer2
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,21 +29,11 @@ process CIRCEXPLORER2_PARSE {
         $fusions \\
         -b ${prefix}.bed \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        circexplorer2: \$( echo \$(CIRCexplorer2 --version 2>&1) )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        circexplorer2: \$( echo \$(CIRCexplorer2 --version 2>&1) )
-    END_VERSIONS
     """
 }
