@@ -1,51 +1,97 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-# # TODO nf-core: Add a description of the module and list keywords
 name: "abyss_abysspe"
 description: write your description here
 keywords:
-  - sort
-  - example
-  - genomics
+  - genome
+  - assembly
+  - genome assembler
+  - short reads
+  - de novo assembler
 tools:
-  ## TODO nf-core: Add a description and other details for the software below
   - "abyss":
       description: "Assembly By Short Sequences - a de novo, parallel, paired-end short
         read sequence assembler."
       homepage: "https://github.com/bcgsc/abyss/blob/v2.3.10/README.md"
       documentation: "https://github.com/bcgsc/abyss/blob/v2.3.10/README.md"
       tool_dev_url: "https://github.com/bcgsc/abyss"
-      doi: ""
-      licence: ["GPL v3"]
+      doi: "10.1101/gr.214346.116"
+      licence:
+        - "GPL v3"
       identifier: biotools:abyss
-
 input:
-  # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
   - - meta:
         type: map
-        description: Groovy Map containing sample information. e.g. `[
-          id:'sample1' ]`
-    - dna_sequence_(raw):
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - reads:
         type: file
-        description: dna_sequence_(raw) file
-        pattern: "*.{fastq,fasta}"
+        description: |
+          List of input paired-end FastQ files (R1 and R2).
+          Must be paired-end reads; ABySS requires paired reads for assembly.
+        pattern: "*.{fastq.gz,fastq,fq.gz,fq}"
         ontologies:
-          - edam: http://edamontology.org/data_3497 # DNA sequence (raw)
-          - edam: http://edamontology.org/format_1930 # FASTQ
-          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1930
+    - merged:
+        type: file
+        description: |
+          Optional merged/overlapping paired-end reads or supplementary single-end reads.
+          Use empty list `[]` if not available.
+        pattern: "*.{fastq.gz,fastq,fq.gz,fq}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930
+  - kmersize:
+      type: integer
+      description: |
+        K-mer size for assembly. Must be an odd number.
 output:
-  # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
-  sequence_assembly:
+  contigs:
     - - meta:
           type: map
-          description: Groovy Map containing sample information. e.g. `[
-            id:'sample1' ]`
-      - "*.{fasta}":
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*-contigs.fa":
           type: file
-          description: sequence_assembly file
-          pattern: "*.{fasta}"
+          description: Assembled contigs in FASTA format
+          pattern: "*-contigs.fa"
           ontologies:
-            - edam: http://edamontology.org/data_0925 # Sequence assembly
-            - edam: http://edamontology.org/format_1929 # FASTA
+            - edam: http://edamontology.org/data_0925
+            - edam: http://edamontology.org/format_1929
+  scaffolds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*-scaffolds.fa":
+          type: file
+          description: Assembled scaffolds in FASTA format
+          pattern: "*-scaffolds.fa"
+          ontologies:
+            - edam: http://edamontology.org/data_0925
+            - edam: http://edamontology.org/format_1929
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*-stats":
+          type: file
+          description: Assembly statistics file
+          pattern: "*-stats"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*-abyss.log":
+          type: file
+          description: ABySS assembly log file
+          pattern: "*-abyss.log"
+          ontologies: []
   versions_abyss:
     - - ${task.process}:
           type: string
@@ -53,7 +99,7 @@ output:
       - abyss:
           type: string
           description: The name of the tool
-      - abyss --version:
+      - 'abyss-pe version | grep abyss | cut -d" " -f3':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -64,7 +110,7 @@ topics:
       - abyss:
           type: string
           description: The name of the tool
-      - abyss --version:
+      - 'abyss-pe version | grep abyss | cut -d" " -f3':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
