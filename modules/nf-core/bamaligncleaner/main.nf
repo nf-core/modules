@@ -12,7 +12,7 @@ process BAMALIGNCLEANER {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    tuple val("${task.process}"), val('bamaligncleaner'), val("bamAlignCleaner --version | sed 's/.*version //"), emit: versions_bamaligncleaner, topic: versions
+    tuple val("${task.process}"), val('bamaligncleaner'), eval("bamAlignCleaner --version | sed 's/.*version //'"), emit: versions_bamaligncleaner, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

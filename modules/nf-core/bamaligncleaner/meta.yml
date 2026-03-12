@@ -43,8 +43,8 @@ output:
       - bamaligncleaner:
           type: string
           description: The name of the tool
-      - bamAlignCleaner --version | sed 's/.*version //:
-          type: string
+      - bamAlignCleaner --version | sed 's/.*version //':
+          type: eval
           description: The expression to obtain the version of the tool
 topics:
   versions:
@@ -54,8 +54,8 @@ topics:
       - bamaligncleaner:
           type: string
           description: The name of the tool
-      - bamAlignCleaner --version | sed 's/.*version //:
-          type: string
+      - bamAlignCleaner --version | sed 's/.*version //':
+          type: eval
           description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
