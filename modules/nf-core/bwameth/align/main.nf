@@ -14,7 +14,7 @@ process BWAMETH_ALIGN {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path  "versions.yml"          , emit: versions
+    tuple val("${task.process}"), val('bwameth'), eval("bwameth.py --version | cut -f2 -d ' '"), emit: versions_bwameth, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,20 +36,11 @@ process BWAMETH_ALIGN {
         ${reads} \\
         | samtools view ${args2} -@ ${task.cpus} -bhS -o ${prefix}.bam -
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bwameth: \$(bwameth.py --version | cut -f2 -d" ")
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bwameth: \$(bwameth.py --version | cut -f2 -d" ")
-    END_VERSIONS
     """
 }
