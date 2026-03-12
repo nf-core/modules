@@ -12,7 +12,8 @@ process BRACKEN_COMBINEBRACKENOUTPUTS {
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    tuple val("${task.process}"), val('combine_bracken_outputs'), val('2.9'), emit: versions_combine_bracken_outputs, topic: versions
+    tuple val("${task.process}"), val('combine_bracken_outputs'), val("3.0.1"), emit: versions_combine_bracken_outputs, topic: versions
+    // WARN: Version information not provided by tool on CLI. Plaease update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,24 +22,16 @@ process BRACKEN_COMBINEBRACKENOUTPUTS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    // WARN: Version information not provided by tool on CLI.
-    // Please update version string below when bumping container versions.
+    
     """
     combine_bracken_outputs.py \\
         $args \\
         --files ${input} \\
         -o ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        combine_bracken_output: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // WARN: Version information not provided by tool on CLI.
-    // Please update version string below when bumping container versions.
     """
     touch ${prefix}.txt
     """
