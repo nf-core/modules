@@ -1,17 +1,19 @@
 name: cellbender_removebackground
-description: Module to use CellBender to estimate ambient RNA from single-cell RNA-seq
-  data
+description: Module to use CellBender to estimate ambient RNA from single-cell
+  RNA-seq data
 keywords:
   - single-cell
   - scRNA-seq
   - ambient RNA removal
 tools:
   - cellbender:
-      description: CellBender is a software package for eliminating technical artifacts
-        from high-throughput single-cell RNA sequencing (scRNA-seq) data.
+      description: CellBender is a software package for eliminating technical
+        artifacts from high-throughput single-cell RNA sequencing (scRNA-seq)
+        data.
       documentation: https://cellbender.readthedocs.io/en/latest/
       tool_dev_url: https://github.com/broadinstitute/CellBender
-      licence: ["BSD-3-Clause"]
+      licence:
+        - "BSD-3-Clause"
       identifier: biotools:CellBender
 input:
   - - meta:
@@ -31,8 +33,8 @@ output:
           description: Groovy Map containing sample information
       - ${prefix}.h5:
           type: file
-          description: Full count matrix as an h5 file, with background RNA removed.
-            This file contains all the original droplet barcodes.
+          description: Full count matrix as an h5 file, with background RNA
+            removed. This file contains all the original droplet barcodes.
           pattern: "*.h5"
           ontologies: []
   filtered_h5:
@@ -67,7 +69,7 @@ output:
             but is included as a separate output for convenient use in certain downstream applications.
           pattern: "*.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
   metrics:
     - - meta:
           type: map
@@ -79,7 +81,7 @@ output:
             when using CellBender as part of a large-scale automated pipeline.
           pattern: "*.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
   report:
     - - meta:
           type: map
@@ -96,8 +98,8 @@ output:
           description: Groovy Map containing sample information
       - ${prefix}.pdf:
           type: file
-          description: PDF file that provides a standard graphical summary of the inference
-            procedure.
+          description: PDF file that provides a standard graphical summary of the
+            inference procedure.
           pattern: "*.pdf"
           ontologies: []
   log:
@@ -115,17 +117,31 @@ output:
           description: Groovy Map containing sample information
       - ckpt.tar.gz:
           type: file
-          description: Checkpoint file which contains the trained model and the full
-            posterior.
+          description: Checkpoint file which contains the trained model and the
+            full posterior.
           pattern: "*.ckpt"
           ontologies: []
+  versions_cellbender:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellbender:
+          type: string
+          description: The name of the tool
+      - cellbender --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software version
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellbender:
+          type: string
+          description: The name of the tool
+      - cellbender --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nictru"
 maintainers:
