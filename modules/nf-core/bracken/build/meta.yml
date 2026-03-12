@@ -14,9 +14,9 @@ tools:
       documentation: "https://ccb.jhu.edu/software/bracken/"
       tool_dev_url: "https://github.com/jenniferlu717/Bracken/"
       doi: "10.7717/peerj-cs.104 "
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:bracken
-
 input:
   - - meta:
         type: map
@@ -27,18 +27,24 @@ input:
         type: file
         description: Kraken2 k2d binary database files
         pattern: "*.k2d"
+        ontologies: []
     - map:
         type: file
-        description: Kraken2 k2d binary database taxonomy to sequencing mapping file
+        description: Kraken2 k2d binary database taxonomy to sequencing mapping
+          file
         pattern: "*.map"
+        ontologies: []
     - library:
         type: file
         description: Kraken2 masked FASTA files used to build the database
         pattern: "*.fasta"
+        ontologies: []
     - taxonomy:
         type: file
-        description: Kraken2 nodes.dmp, names.dmp, and .accession2taxid taxonomy files
+        description: Kraken2 nodes.dmp, names.dmp, and .accession2taxid taxonomy
+          files
         pattern: "*.{dmp,accession2taxid}"
+        ontologies: []
 output:
   db:
     - - meta:
@@ -69,29 +75,50 @@ output:
           type: file
           description: Bracken kmer distribution files
           pattern: "database*"
+          ontologies: []
       - bracken-database/*k2d:
           type: file
           description: Kraken2 k2d binary database files
           pattern: "*.k2d"
+          ontologies: []
       - bracken-database/*map:
           type: file
-          description: Kraken2 k2d binary database taxonomy to sequencing mapping file
+          description: Kraken2 k2d binary database taxonomy to sequencing mapping
+            file
           pattern: "*.map"
+          ontologies: []
       - bracken-database/library/added/*:
           type: file
           description: Kraken2 masked FASTA files used to build the database
           pattern: "*.fasta"
+          ontologies: []
       - bracken-database/taxonomy/*:
           type: file
-          description: Kraken2 nodes.dmp, names.dmp, and .accession2taxid taxonomy files
+          description: Kraken2 nodes.dmp, names.dmp, and .accession2taxid taxonomy
+            files
           pattern: "*.{dmp,accession2taxid}"
+          ontologies: []
+  versions_bracken:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bracken:
+          type: string
+          description: The name of the tool
+      - bracken -v | cut -f2 -d'v':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bracken:
+          type: string
+          description: The name of the tool
+      - bracken -v | cut -f2 -d'v':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:
