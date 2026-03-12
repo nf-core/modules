@@ -4,8 +4,8 @@ process ADAPTERREMOVAL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/adapterremoval:2.3.2--hb7ba0dd_0' :
-        'biocontainers/adapterremoval:2.3.2--hb7ba0dd_0' }"
+        'https://depot.galaxyproject.org/singularity/adapterremoval:2.3.4--pl5321haf24da9_2' :
+        'biocontainers/adapterremoval:2.3.4--pl5321haf24da9_2' }"
 
     input:
     tuple val(meta), path(reads)
@@ -19,7 +19,8 @@ process ADAPTERREMOVAL {
     tuple val(meta), path("${prefix}.collapsed.truncated.fastq.gz"), emit: collapsed_truncated, optional: true
     tuple val(meta), path("${prefix}.paired.fastq.gz")             , emit: paired_interleaved , optional: true
     tuple val(meta), path('*.settings')                            , emit: settings
-    path "versions.yml"                                            , emit: versions
+    tuple val("${task.process}"), val('AdapterRemoval'), eval('AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g"'), emit: versions_adapterremoval, topic: versions
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -49,11 +50,6 @@ process ADAPTERREMOVAL {
 
         ensure_fastq '${prefix}.truncated.gz'
         ensure_fastq '${prefix}.discarded.gz'
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            adapterremoval: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
-        END_VERSIONS
         """
     } else {
         """
@@ -81,20 +77,17 @@ process ADAPTERREMOVAL {
         ensure_fastq '${prefix}.collapsed.gz'
         ensure_fastq '${prefix}.collapsed.truncated.gz'
         ensure_fastq '${prefix}.paired.gz'
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            adapterremoval: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
-        END_VERSIONS
         """
     }
 
     stub:
+    def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
-
     collapse_cmd = args.contains('--collapse')
 
     """
+    echo ${args}
+
     touch '${prefix}.settings'
     echo | gzip > '${prefix}.truncated.fastq.gz'
     echo | gzip > '${prefix}.discarded.fastq.gz'
@@ -109,10 +102,5 @@ process ADAPTERREMOVAL {
             echo | gzip > '${prefix}.collapsed.fastq.gz'
         fi
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        adapterremoval: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
-    END_VERSIONS
     """
 }
