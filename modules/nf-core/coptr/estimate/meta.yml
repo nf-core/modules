@@ -44,15 +44,28 @@ output:
           ontologies:
             - edam: "http://edamontology.org/format_3752"
 
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  versions_coptr:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - coptr:
+          type: string
+          description: The name of the tool
+      - "coptr |& sed -E '11!d ; s/CoPTR.*?\\(v(.*?)\\).*/\\1/'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ramirobarrantes"
 maintainers:
   - "@ramirobarrantes"
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - coptr:
+          type: string
+          description: The name of the tool
+      - "coptr |& sed -E '11!d ; s/CoPTR.*?\\(v(.*?)\\).*/\\1/'":
+          type: eval
+          description: The expression to obtain the version of the tool
