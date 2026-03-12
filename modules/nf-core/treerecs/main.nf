@@ -10,7 +10,7 @@ process TREERECS {
     tuple val(meta), path(species_tree), path(gene_trees)
 
     output:
-    
+
      tuple val(meta), path("*.nwk"), emit: corrected_trees
      tuple val("${task.process}"), val("treerecs"), eval("treerecs --version 2>/dev/null | sed 's/ (.*) //g'"), topic: versions, emit: versions_treerecs
 
@@ -27,10 +27,10 @@ process TREERECS {
     treerecs \\
          -s ${species_tree} \\
          -g ${gene_trees} \\
-         $args 
-    
+         $args
+
     mv treerecs_output/*.nwk ${prefix}.nwk || true
-    """ 
+    """
 
     stub:
     def args = task.ext.args ?: ''

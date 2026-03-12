@@ -12,7 +12,7 @@ nextflow_process {
 
         when {
             process {
-                """              
+                """
                 input[0] = [
                     [ id:'test' ],
                     file('https://gitlab.inria.fr/Phylophile/Treerecs/-/raw/master/examples/polytomy_example/speciesTree.txt?ref_type=heads', checkIfExists: true),
