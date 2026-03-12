@@ -14,37 +14,35 @@ include { UNTAR as CAT_DB_UNTAR                         } from '../../../modules
 workflow FASTA_CLASSIFY_CATPACK {
 
     take:
-    ch_bins                   // channel: [ val(meta), path(fasta) ] - binned MAGs/contigs
-    ch_unbins                 // channel: [ val(meta), path(fasta) ] - unbinned contigs
-    ch_cat_db                 // channel: [ val(meta), path(db) ] - pre-built db as directory (with db/ and tax/ subdirs) or .tar.gz
-                              //          provide channel.empty() to trigger automatic download via ch_cat_db_download_id
-    ch_cat_db_download_id     // channel: [ val(meta), val(db_id) ] - db ID for CATPACK_DOWNLOAD (e.g. 'nr')
-                              //          provide channel.empty() if supplying a pre-built db via ch_cat_db
-    classify_unbinned         // val: boolean - whether to classify unbinned contigs
-    allow_unofficial_lineages // val: boolean - whether to allow unofficial lineages in the summarise step
-    bin_suffix                // val: string - file extension of bin FASTA files (e.g. '.fa')
+    ch_bins               // channel: [ val(meta), path(fasta) ] - binned MAGs/contigs
+    ch_unbins             // channel: [ val(meta), path(fasta) ] - unbinned contigs; provide channel.empty() to skip unbinned classification
+    ch_cat_db             // channel: [ val(meta), path(db) ] - pre-built db as directory (with db/ and tax/ subdirs) or .tar.gz
+                          //          provide channel.empty() to trigger automatic download via ch_cat_db_download_id
+    ch_cat_db_download_id // channel: [ val(meta), val(db_id) ] - db ID for CATPACK_DOWNLOAD (e.g. 'nr')
+                          //          provide channel.empty() if supplying a pre-built db via ch_cat_db
+                          //          supplying both ch_cat_db and ch_cat_db_download_id will cause a runtime error
+    run_summarise         // val: boolean - whether to run CATPACK_SUMMARISE; requires ext.args = "--only_official" on CATPACK_ADDNAMES_BINS/UNBINS
+    bin_suffix            // val: string - file extension of bin FASTA files (e.g. '.fa' or '.fasta')
 
     main:
-    ch_versions = channel.empty()
 
     //
     // Database preparation
     //
 
     // Handle pre-built db: untar if compressed, or use directory directly
-    ch_cat_db
+    ch_cat_db_input = ch_cat_db
         .branch { _meta, db ->
-            tar: db.name.endsWith('.tar.gz')
-            dir: db.isDirectory()
+            tar:   db.name.endsWith('.tar.gz')
+            dir:   db.isDirectory()
             other: true
          }
-        .set { ch_cat_db_input }
 
-ch_cat_db.other.subscribe { db -> 
-    exit("Error: A DB was provided to FASTA_CLASSIFY_CATPACK that is not a `.tar.gz` or a directory!")
-}
+    ch_cat_db_input.other.subscribe { _meta, _db ->
+        error("Error: A DB was provided to FASTA_CLASSIFY_CATPACK that is not a `.tar.gz` or a directory.")
+    }
+
     CAT_DB_UNTAR(ch_cat_db_input.tar)
-    ch_versions = ch_versions.mix(CAT_DB_UNTAR.out.versions_untar.first())
 
     ch_prepared_from_dir = ch_cat_db_input.dir
         .mix(CAT_DB_UNTAR.out.untar)
@@ -55,7 +53,6 @@ ch_cat_db.other.subscribe { db ->
 
     // Download and prepare db from scratch if no pre-built db provided
     CATPACK_DOWNLOAD(ch_cat_db_download_id)
-    ch_versions = ch_versions.mix(CATPACK_DOWNLOAD.out.versions_catpack.first())
 
     CATPACK_PREPARE(
         CATPACK_DOWNLOAD.out.fasta,
@@ -63,16 +60,15 @@ ch_cat_db.other.subscribe { db ->
         CATPACK_DOWNLOAD.out.nodes.map   { _meta, nodes -> nodes },
         CATPACK_DOWNLOAD.out.acc2tax.map { _meta, acc2tax -> acc2tax },
     )
-    ch_versions = ch_versions.mix(CATPACK_PREPARE.out.versions_catpack.first())
 
     // Combine db sources - one of these channels will be empty depending on inputs
-    ch_db       = ch_prepared_from_dir.db.mix(CATPACK_PREPARE.out.db).first()
-    
-    ch_db.collect().subscribe { db_list -> 
-        if(db_list.size() > 1) {
-            error("Error: More than 1 DB has been provided to FASTA_CLASSIFY_CATPACK! Probably you supplied a DB and downloaded it too.")
-        }
+    // Guard: fail if both ch_cat_db and ch_cat_db_download_id are provided simultaneously.
+    // .combine() only emits when both channels have at least one element.
+    ch_prepared_from_dir.db.combine(CATPACK_PREPARE.out.db).subscribe {
+        error("Error: Both a pre-built DB and a download ID were provided to FASTA_CLASSIFY_CATPACK! Provide only one via ch_cat_db or ch_cat_db_download_id.")
     }
+
+    ch_db       = ch_prepared_from_dir.db.mix(CATPACK_PREPARE.out.db).first()
     ch_taxonomy = ch_prepared_from_dir.taxonomy.mix(CATPACK_PREPARE.out.taxonomy).first()
 
     //
@@ -87,58 +83,46 @@ ch_cat_db.other.subscribe { db ->
         [[:], []],
         bin_suffix,
     )
-    ch_versions = ch_versions.mix(CATPACK_BINS.out.versions_catpack.first())
 
     CATPACK_ADDNAMES_BINS(CATPACK_BINS.out.bin2classification, ch_taxonomy)
-    ch_versions = ch_versions.mix(CATPACK_ADDNAMES_BINS.out.versions_catpack.first())
 
     ch_summarise_bins = channel.empty()
-    if (!allow_unofficial_lineages) {
+    if (run_summarise) {
         CATPACK_SUMMARISE_BINS(CATPACK_ADDNAMES_BINS.out.txt, [[:], []])
-        ch_versions = ch_versions.mix(CATPACK_SUMMARISE_BINS.out.versions_catpack.first())
         ch_summarise_bins = CATPACK_SUMMARISE_BINS.out.txt
     }
 
     //
-    // Unbinned contigs taxonomic classification (optional)
+    // Unbinned contigs taxonomic classification (optional - skipped when ch_unbins is channel.empty())
     //
 
-    ch_unbins_addnames  = channel.empty()
+    CATPACK_UNBINS(
+        ch_unbins,
+        ch_db,
+        ch_taxonomy,
+        [[:], []],
+        [[:], []],
+    )
+
+    CATPACK_ADDNAMES_UNBINS(CATPACK_UNBINS.out.contig2classification, ch_taxonomy)
+
     ch_summarise_unbins = channel.empty()
+    if (run_summarise) {
+        ch_unbin_input = CATPACK_ADDNAMES_UNBINS.out.txt
+            .join(ch_unbins)
+            .multiMap { meta, names, contigs ->
+                names:   [meta, names]
+                contigs: [meta, contigs]
+            }
 
-    if (classify_unbinned) {
-        CATPACK_UNBINS(
-            ch_unbins,
-            ch_db,
-            ch_taxonomy,
-            [[:], []],
-            [[:], []],
-        )
-        ch_versions = ch_versions.mix(CATPACK_UNBINS.out.versions_catpack.first())
-
-        CATPACK_ADDNAMES_UNBINS(CATPACK_UNBINS.out.contig2classification, ch_taxonomy)
-        ch_versions = ch_versions.mix(CATPACK_ADDNAMES_UNBINS.out.versions_catpack.first())
-
-        ch_unbins_addnames = CATPACK_ADDNAMES_UNBINS.out.txt
-
-        if (!allow_unofficial_lineages) {
-            ch_unbin_input = CATPACK_ADDNAMES_UNBINS.out.txt
-                .join(ch_unbins)
-                .multiMap { meta, names, contigs ->
-                    names:   [meta, names]
-                    contigs: [meta, contigs]
-                }
-
-            CATPACK_SUMMARISE_UNBINS(ch_unbin_input.names, ch_unbin_input.contigs)
-            ch_versions = ch_versions.mix(CATPACK_SUMMARISE_UNBINS.out.versions_catpack.first())
-            ch_summarise_unbins = CATPACK_SUMMARISE_UNBINS.out.txt
-        }
+        CATPACK_SUMMARISE_UNBINS(ch_unbin_input.names, ch_unbin_input.contigs)
+        ch_summarise_unbins = CATPACK_SUMMARISE_UNBINS.out.txt
     }
 
     emit:
-    bat_classification      = CATPACK_ADDNAMES_BINS.out.txt // channel: [ val(meta), path(txt) ]
-    bat_summary             = ch_summarise_bins             // channel: [ val(meta), path(txt) ]
-    unbinned_classification = ch_unbins_addnames            // channel: [ val(meta), path(txt) ]
-    unbinned_summary        = ch_summarise_unbins           // channel: [ val(meta), path(txt) ]
-    versions                = ch_versions                   // channel: versions
+    bat_classification      = CATPACK_ADDNAMES_BINS.out.txt   // channel: [ val(meta), path(txt) ]
+    bat_summary             = ch_summarise_bins               // channel: [ val(meta), path(txt) ]
+    unbinned_classification = CATPACK_ADDNAMES_UNBINS.out.txt // channel: [ val(meta), path(txt) ]
+    unbinned_summary        = ch_summarise_unbins             // channel: [ val(meta), path(txt) ]
+    versions                = channel.topic('versions')       // channel: versions
 }
