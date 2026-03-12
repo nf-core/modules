@@ -1,5 +1,4 @@
 process TREERECS {
-    tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
@@ -20,15 +19,14 @@ process TREERECS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: 'treerecs'
 
     """
-    treerecs \
-        treerecs \
-         -s species_tree \
-         -g gene_tree
+    treerecs \\
+         -s ${species_tree} \\
+         -g ${gene_trees} \\
          $args 
-    """
+    """ 
 
     stub:
     def args = task.ext.args ?: ''

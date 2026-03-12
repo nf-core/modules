@@ -1,82 +1,52 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-
-name: "treerecs"
-description: Treerecs is an open-source (species- and gene-) tree reconciliation software distributed under the GNU AGPL licence. It can correct, rearrange and (re-)root gene trees with regard to a given species tree. It was designed to be both efficient and easy to install and to use.
+name: treerecs
+description: Correct or reconcile gene trees against a species tree using Treerecs
 keywords:
-  - tree reconciliation
-  - species tree
+  - phylogeny
   - gene tree
+  - species tree
+  - reconciliation
+
 tools:
-  - "treerecs":
-      description: "correct, rearrange and (re-)root gene trees with regard to a given
-        species tree"
-      homepage: "https://project.inria.fr/treerecs/"
-      documentation: "https://project.inria.fr/treerecs/tutorial/"
-      tool_dev_url: "https://gitlab.inria.fr/Phylophile/Treerecs"
-      doi: ""
-      licence: ["AGPL"]
-      identifier: biotools:Treerecs
+  - treerecs:
+      description: Reconciles and corrects gene trees using a species tree
+      homepage: https://project.inria.fr/treerecs/
+      documentation: https://project.inria.fr/treerecs/tutorial/
+      tool_dev_url: https://gitlab.inria.fr/Phylophile/Treerecs
+      licence: ["CECILL-C"]
 
 input:
   - - meta:
         type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-    - tree:
+        description: Groovy Map containing sample information, for example [ id:'test' ]
+    - species_tree:
         type: file
-        description: phylogenetic tree file
-        pattern: "*.{nwk, nhk, xml}"
-        ontologies:
-          - edam: "http://edamontology.org/format_2556" # Newick
-          - edam: "https://academic.oup.com/bioinformatics/article/34/21/3646/4995844" #recPhyloXML 
-          - edam: "http://edamontology.org/format_3160" #NHX
-          - edam: "http://edamontology.org/format_3159" #PhyloXML
+        description: Species tree file
+        pattern: "*.{nwk,newick,nhx,xml,txt}"
+    - gene_trees:
+        type: file
+        description: Gene tree file
+        pattern: "*.{nwk,newick,nhx,xml,txt}"
+
 output:
-
-  tree:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-        - svg:
+  - corrected_trees:
+      - - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - "treerecs_output/${prefix}.nwk":
             type: file
-            description: graphical representation of reconciled phylogentic tree
-            pattern: "*.svg"
-            ontologies: 
-              - edam: "http://edamontology.org/format_3604"	 #SVG
-       - tree:
-           type: file
-           description: Output files (Newick or RecPhyloXML) show the gene tree with nodes annotated by event types (duplication or loss).
-           pattern: "*.{nwk, xml}"
-           ontologies:
-             - edam: "http://edamontology.org/format_2556" # Newick
-             - edam: "https://academic.oup.com/bioinformatics/article/34/21/3646/4995844" #recPhyloXML
+            description: Corrected or reconciled tree in Newick format
+            pattern: "*.nwk"
 
-  versions_treerecs:
-    - - "${task.process}":
-          type: string
-          description: The name of the process
-      - "treerecs":
-          type: string
-          description: The name of the tool
-      - "treerecs --version":
-          type: eval
-          description: The expression to obtain the version of the tool
+  - versions_treerecs:
+      - - process:
+            type: string
+            description: Process name
+        - tool:
+            type: string
+            description: Tool name
+        - version:
+            type: string
+            description: Treerecs version
 
-topics:
-  versions:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - treerecs:
-          type: string
-          description: The name of the tool
-      - treerecs --version:
-          type: eval
-          description: The expression to obtain the version of the tool
 authors:
-  - "@leapicard"
-maintainers:
-  - "@leapicard"
+  - "@takahiro_fujita"
