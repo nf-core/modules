@@ -14,7 +14,7 @@ process ATLAS_RECAL {
 
     output:
     tuple val(meta), path("*.txt"), emit:recal_patterns
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('atlas'), eval('((atlas 2>&1) | grep Atlas | head -n 1 | sed -e \'s/^[ \t]*Atlas //\')'), emit: versions_atlas, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,9 +39,5 @@ process ATLAS_RECAL {
         out=${prefix} \\
         ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        atlas: \$((atlas 2>&1) | grep Atlas | head -n 1 | sed -e 's/^[ \t]*Atlas //')
-    END_VERSIONS
     """
 }
