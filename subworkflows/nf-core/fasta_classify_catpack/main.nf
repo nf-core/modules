@@ -67,6 +67,12 @@ ch_cat_db.other.subscribe { db ->
 
     // Combine db sources - one of these channels will be empty depending on inputs
     ch_db       = ch_prepared_from_dir.db.mix(CATPACK_PREPARE.out.db).first()
+    
+    ch_db.collect().subscribe { db_list -> 
+        if(db_list.size() > 1) {
+            error("Error: More than 1 DB has been provided to FASTA_CLASSIFY_CATPACK! Probably you supplied a DB and downloaded it too.")
+        }
+    }
     ch_taxonomy = ch_prepared_from_dir.taxonomy.mix(CATPACK_PREPARE.out.taxonomy).first()
 
     //
