@@ -3,7 +3,6 @@
 //
 
 include { SAMTOOLS_SORT      } from '../../../modules/nf-core/samtools/sort/main'
-include { SAMTOOLS_INDEX     } from '../../../modules/nf-core/samtools/index/main'
 include { BAM_STATS_SAMTOOLS } from '../bam_stats_samtools/main'
 
 workflow BAM_SORT_STATS_SAMTOOLS {
@@ -12,29 +11,18 @@ workflow BAM_SORT_STATS_SAMTOOLS {
     ch_fasta // channel: [ val(meta), path(fasta) ]
 
     main:
-    SAMTOOLS_SORT ( ch_bam, ch_fasta, '' )
-
-    SAMTOOLS_INDEX ( SAMTOOLS_SORT.out.bam )
+    SAMTOOLS_SORT ( ch_bam, ch_fasta, 'bai' )
 
     SAMTOOLS_SORT.out.bam
-        .join(SAMTOOLS_INDEX.out.bai, by: [0], remainder: true)
-        .join(SAMTOOLS_INDEX.out.csi, by: [0], remainder: true)
-        .map {
-            meta, bam, bai, csi ->
-                if (bai) {
-                    [ meta, bam, bai ]
-                } else {
-                    [ meta, bam, csi ]
-                }
-        }
+        .join(SAMTOOLS_SORT.out.bai, by: [0], remainder: true)
         .set { ch_bam_bai }
 
     BAM_STATS_SAMTOOLS ( ch_bam_bai, ch_fasta )
 
     emit:
     bam      = SAMTOOLS_SORT.out.bam           // channel: [ val(meta), [ bam ] ]
-    bai      = SAMTOOLS_INDEX.out.bai          // channel: [ val(meta), [ bai ] ]
-    csi      = SAMTOOLS_INDEX.out.csi          // channel: [ val(meta), [ csi ] ]
+    bai      = SAMTOOLS_SORT.out.bai          // channel: [ val(meta), [ bai ] ]
+    csi      = SAMTOOLS_SORT.out.csi          // channel: [ val(meta), [ csi ] ]
 
     stats    = BAM_STATS_SAMTOOLS.out.stats    // channel: [ val(meta), [ stats ] ]
     flagstat = BAM_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), [ flagstat ] ]
