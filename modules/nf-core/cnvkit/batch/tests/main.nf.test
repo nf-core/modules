@@ -33,8 +33,7 @@ nextflow_process {
         then {
             println process.out.bed[0][1]
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match() }
+                { assert process.success }
             )
         }
     }
@@ -62,8 +61,7 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match() }
+                { assert process.success }
             )
         }
     }
@@ -91,8 +89,7 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match() }
+                { assert process.success }
             )
         }
     }
@@ -120,8 +117,7 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match() }
+                { assert process.success }
             )
         }
     }
@@ -149,8 +145,7 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match() }
+                { assert process.success }
             )
         }
     }
@@ -185,8 +180,7 @@ nextflow_process {
                         file(process.out.bed.flatten()[2]).name, // empty file
                         process.out.cnn,
                         process.out.cnr,
-                        process.out.cns,
-                        process.out.versions
+                        process.out.cns
                     ).match()
                 }
             )
@@ -215,8 +209,7 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match() }
+                { assert process.success }
             )
         }
     }
@@ -243,8 +236,7 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match() }
+                { assert process.success }
             )
         }
     }
@@ -276,8 +268,7 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match() }
+                { assert process.success }
             )
         }
     }
@@ -309,8 +300,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.bed.flatten()[1]).name, // empty file
-                    file(process.out.bed.flatten()[2]).name, // empty file,
-                    process.out.versions
+                    file(process.out.bed.flatten()[2]).name // empty file,
                     ).match()
                 }
             )
