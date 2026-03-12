@@ -35,10 +35,14 @@ workflow FASTA_CLASSIFY_CATPACK {
     ch_cat_db
         .branch { _meta, db ->
             tar: db.name.endsWith('.tar.gz')
-            dir: true
-        }
+            dir: db.isDirectory()
+            other: true
+         }
         .set { ch_cat_db_input }
 
+ch_cat_db.other.subscribe { db -> 
+    exit("Error: A DB was provided to FASTA_CLASSIFY_CATPACK that is not a `.tar.gz` or a directory!")
+}
     CAT_DB_UNTAR(ch_cat_db_input.tar)
     ch_versions = ch_versions.mix(CAT_DB_UNTAR.out.versions_untar.first())
 
