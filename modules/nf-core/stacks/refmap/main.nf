@@ -7,7 +7,6 @@ process STACKS_REFMAP {
         'https://depot.galaxyproject.org/singularity/stacks:2.68--h077b44d_0':
         'biocontainers/stacks:2.68--h077b44d_0' }"
 
-
     input:
     tuple val(meta), path(bam_path)
     path(popmap)
@@ -46,7 +45,6 @@ process STACKS_REFMAP {
 
     stub:
     """
-
     touch catalog.calls
     touch catalog.chrs.tsv
     echo "" | gzip > catalog.fa.gz
@@ -62,6 +60,5 @@ process STACKS_REFMAP {
     touch populations.snps.vcf
     touch populations.snps.genepop
     touch populations.structure
-
     """
 }
