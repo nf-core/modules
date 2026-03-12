@@ -14,7 +14,7 @@ process KNOTANNOTSV {
     output:
     tuple val(meta), path("*.html"), emit: html, optional: true
     tuple val(meta), path("*.xlsm"), emit: xl, optional: true
-    tuple val("${task.process}"), val('knotannotsv'), eval('echo ${knot_version}'), emit: versions_knotannotsv, topic: versions
+    tuple val("${task.process}"), val('knotannotsv'), eval('echo v1.1.5'), emit: versions_knotannotsv, topic: versions // CHANGE when UPDATE
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,11 +22,10 @@ process KNOTANNOTSV {
     script:
     def args = task.ext.args ?: ''
     def knot_prefix = task.ext.prefix ? "--outPrefix ${task.ext.prefix}" : "" // For knotAnnotSV, this a true prefix
-    def knot_version = 'v1.1.5' // CHANGE when UPDATE
     def knot_script = knot_out_xl ? 'knotAnnotSV2XL.pl' : 'knotAnnotSV.pl'
     // TODO felix: Allow Excel output
     """
-    git clone https://github.com/mobidic/knotAnnotSV.git --branch ${knot_version} --single-branch
+    git clone https://github.com/mobidic/knotAnnotSV.git --branch v1.1.5 --single-branch # CHANGE when UPDATE
 
     perl knotAnnotSV/${knot_script} \\
         ${args} \\
@@ -38,7 +37,6 @@ process KNOTANNOTSV {
     stub:
     def args = task.ext.args ?: ''
     def knot_prefix = task.ext.prefix // For knotAnnotSV, this a true prefix
-    def knot_version = 'v1.1.5' // CHANGE when UPDATE
     """
     echo $args
 
