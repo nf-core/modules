@@ -27,10 +27,6 @@ process CLUSTALO_GUIDETREE {
         --threads=${task.cpus} \\
         $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        clustalo: \$( clustalo --version )
-    END_VERSIONS
     """
 
     stub:
@@ -38,7 +34,7 @@ process CLUSTALO_GUIDETREE {
     """
     touch ${prefix}.dnd
 
-    cat <<-END_VERSIONS > versions.yml
+    cat <<-END_VERSIONS > tuple val("${task.process}"), val('<tool1>'), eval('tool1 --version'), emit: versions_tool1, topic: versions
     "${task.process}":
         clustalo: \$( clustalo --version )
     END_VERSIONS
