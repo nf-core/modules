@@ -53,12 +53,14 @@ output:
             e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name' ]`
       - "*_data_plot.rds":
           type: file
-          description: R object containing plots of the CNA statistics for the sample
+          description: R object containing plots of the CNA statistics for the
+            sample
           pattern: "*{_data_plot.rds}"
           ontologies: []
       - "*_qc_plot.rds":
           type: file
-          description: R object containing plots of the quality control results for the sample
+          description: R object containing plots of the quality control results
+            for the sample
           pattern: "*{_qc_plot.rds}"
           ontologies: []
   qc_plot_rds:
@@ -69,7 +71,8 @@ output:
             e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name' ]`
       - "*_qc_plot.rds":
           type: file
-          description: R object containing plots of the quality control results for the sample
+          description: R object containing plots of the quality control results
+            for the sample
           pattern: "*{_qc_plot.rds}"
           ontologies: []
   plot_pdf_data:
@@ -83,7 +86,7 @@ output:
           description: plots of the CNA statistics for the sample
           pattern: "*{_data.pdf}"
           ontologies:
-            - edam: "http://edamontology.org/format_3508" # PDF
+            - edam: "http://edamontology.org/format_3508"
   plot_pdf_qc:
     - - meta:
           type: map
@@ -95,11 +98,12 @@ output:
           description: plots of the quality control results for the sample
           pattern: "*{_qc.pdf}"
           ontologies:
-            - edam: "http://edamontology.org/format_3508" # PDF
+            - edam: "http://edamontology.org/format_3508"
   versions:
     - versions.yml:
         type: file
         description: YAML file containing versions of tools used in the module
+        ontologies: []
 topics:
   versions:
     - versions.yml:
