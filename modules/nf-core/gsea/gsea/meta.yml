@@ -95,7 +95,7 @@ output:
           description: Main TSV results report file for the reference group.
           pattern: "gsea_report_for_reference*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 #TSV
   report_htmls_ref:
     - - meta:
           type: map
@@ -117,7 +117,7 @@ output:
           description: Main TSV results report file for the target group.
           pattern: "gsea_report_for_target*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 #TSV
   report_htmls_target:
     - - meta:
           type: map
@@ -138,7 +138,7 @@ output:
           description: TSV file with ranked gene list and scores
           pattern: "ranked_gene_list*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 #TSV
   gene_set_sizes:
     - - meta:
           type: map
@@ -149,7 +149,7 @@ output:
           description: TSV file with gene set sizes
           pattern: "gene_set_sizes.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 #TSV
   histogram:
     - - meta:
           type: map
@@ -272,7 +272,7 @@ output:
             outputs
           pattern: "*.zip"
           ontologies:
-            - edam: http://edamontology.org/format_3987
+            - edam: http://edamontology.org/format_3987 # ZIP format
   versions_gsea:
     - - ${task.process}:
           type: string
