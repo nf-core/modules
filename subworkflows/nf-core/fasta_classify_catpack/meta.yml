@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fasta_classify_catpack"
-description: Taxonomic classification of binned MAGs and unbinned contigs using CAT/BAT (CAT_pack).
+description: Taxonomic classification of binned MAGs and contigs using CAT/BAT (CAT_pack).
 keywords:
   - metagenomics
   - taxonomy
@@ -22,16 +22,16 @@ input:
   - ch_bins:
       type: file
       description: |
-        Channel containing binned MAG/contig FASTA files.
+        Channel containing binned MAG FASTA files.
         Structure: [ val(meta), path(fasta) ]
       pattern: "*.{fa,fasta,fna}"
       ontologies:
         - edam: "http://edamontology.org/format_1929" # FASTA
-  - ch_unbins:
+  - ch_contigs:
       type: file
       description: |
-        Channel containing unbinned contig FASTA files. Provide channel.empty() to skip
-        unbinned classification.
+        Channel containing contig FASTA files. Provide channel.empty() to skip
+        contig classification.
         Structure: [ val(meta), path(fasta) ]
       pattern: "*.{fa,fasta,fna}"
       ontologies:
@@ -58,7 +58,7 @@ input:
       description: |
         Whether to run CATPACK_SUMMARISE on the classification outputs. Requires
         ext.args = "--only_official" to be set on CATPACK_ADDNAMES_BINS and
-        CATPACK_ADDNAMES_UNBINS in the pipeline configuration, as CATPACK_SUMMARISE
+        CATPACK_ADDNAMES_CONTIGS in the pipeline configuration, as CATPACK_SUMMARISE
         requires official-rank headers in its input.
   - bin_suffix:
       type: string
@@ -95,27 +95,27 @@ output:
   - contig2classification:
       type: file
       description: |
-        Raw per-contig taxonomic classification file produced by CATPACK_CONTIGS (unbinned path),
-        before human-readable names are added by CATPACK_ADDNAMES. Empty channel when ch_unbins
+        Raw per-contig taxonomic classification file produced by CATPACK_CONTIGS, before
+        human-readable names are added by CATPACK_ADDNAMES. Empty channel when ch_contigs
         is channel.empty(). Useful for downstream tools that consume the raw CAT_pack output directly.
         Structure: [ val(meta), path(txt) ]
       pattern: "*.contig2classification.txt"
       ontologies:
         - edam: "http://edamontology.org/format_3475" # Textual format (TSV)
-  - unbinned_classification:
+  - contigs_classification:
       type: file
       description: |
-        Per-contig taxonomic classification with human-readable names for unbinned contigs.
-        Empty channel when ch_unbins is channel.empty().
+        Per-contig taxonomic classification with human-readable names added by CATPACK_ADDNAMES.
+        Empty channel when ch_contigs is channel.empty().
         Structure: [ val(meta), path(txt) ]
       pattern: "*.txt"
       ontologies:
         - edam: "http://edamontology.org/format_3475" # Textual format (TSV)
-  - unbinned_summary:
+  - contigs_summary:
       type: file
       description: |
-        Summary of unbinned contig classifications. Empty channel when ch_unbins is
-        channel.empty() or run_summarise is false.
+        Summary of contig classifications produced by CATPACK_SUMMARISE. Empty channel when
+        ch_contigs is channel.empty() or run_summarise is false.
         Structure: [ val(meta), path(txt) ]
       pattern: "*.txt"
       ontologies:

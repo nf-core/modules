@@ -1,27 +1,27 @@
 /*
  * CAT/BAT/RAT: tools for taxonomic classification of contigs and metagenome-assembled genomes (MAGs)
  */
-include { CATPACK_ADDNAMES as CATPACK_ADDNAMES_BINS     } from '../../../modules/nf-core/catpack/addnames/main'
-include { CATPACK_ADDNAMES as CATPACK_ADDNAMES_UNBINS   } from '../../../modules/nf-core/catpack/addnames/main'
-include { CATPACK_BINS                                  } from '../../../modules/nf-core/catpack/bins/main'
-include { CATPACK_CONTIGS as CATPACK_UNBINS             } from '../../../modules/nf-core/catpack/contigs/main'
-include { CATPACK_DOWNLOAD                              } from '../../../modules/nf-core/catpack/download/main'
-include { CATPACK_PREPARE                               } from '../../../modules/nf-core/catpack/prepare/main'
-include { CATPACK_SUMMARISE as CATPACK_SUMMARISE_BINS   } from '../../../modules/nf-core/catpack/summarise/main'
-include { CATPACK_SUMMARISE as CATPACK_SUMMARISE_UNBINS } from '../../../modules/nf-core/catpack/summarise/main'
-include { UNTAR as CAT_DB_UNTAR                         } from '../../../modules/nf-core/untar/main'
+include { CATPACK_ADDNAMES as CATPACK_ADDNAMES_BINS    } from '../../../modules/nf-core/catpack/addnames/main'
+include { CATPACK_ADDNAMES as CATPACK_ADDNAMES_CONTIGS } from '../../../modules/nf-core/catpack/addnames/main'
+include { CATPACK_BINS                                 } from '../../../modules/nf-core/catpack/bins/main'
+include { CATPACK_CONTIGS                              } from '../../../modules/nf-core/catpack/contigs/main'
+include { CATPACK_DOWNLOAD                             } from '../../../modules/nf-core/catpack/download/main'
+include { CATPACK_PREPARE                              } from '../../../modules/nf-core/catpack/prepare/main'
+include { CATPACK_SUMMARISE as CATPACK_SUMMARISE_BINS    } from '../../../modules/nf-core/catpack/summarise/main'
+include { CATPACK_SUMMARISE as CATPACK_SUMMARISE_CONTIGS } from '../../../modules/nf-core/catpack/summarise/main'
+include { UNTAR as CAT_DB_UNTAR                        } from '../../../modules/nf-core/untar/main'
 
 workflow FASTA_CLASSIFY_CATPACK {
 
     take:
     ch_bins               // channel: [ val(meta), path(fasta) ] - binned MAGs/contigs
-    ch_unbins             // channel: [ val(meta), path(fasta) ] - unbinned contigs; provide channel.empty() to skip unbinned classification
+    ch_contigs            // channel: [ val(meta), path(fasta) ] - contigs; provide channel.empty() to skip contig classification
     ch_cat_db             // channel: [ val(meta), path(db) ] - pre-built db as directory (with db/ and tax/ subdirs) or .tar.gz
                           //          provide channel.empty() to trigger automatic download via ch_cat_db_download_id
     ch_cat_db_download_id // channel: [ val(meta), val(db_id) ] - db ID for CATPACK_DOWNLOAD (e.g. 'nr')
                           //          provide channel.empty() if supplying a pre-built db via ch_cat_db
                           //          supplying both ch_cat_db and ch_cat_db_download_id will cause a runtime error
-    run_summarise         // val: boolean - whether to run CATPACK_SUMMARISE; requires ext.args = "--only_official" on CATPACK_ADDNAMES_BINS/UNBINS
+    run_summarise         // val: boolean - whether to run CATPACK_SUMMARISE; requires ext.args = "--only_official" on CATPACK_ADDNAMES_BINS/CONTIGS
     bin_suffix            // val: string - file extension of bin FASTA files (e.g. '.fa' or '.fasta')
 
     main:
@@ -93,37 +93,37 @@ workflow FASTA_CLASSIFY_CATPACK {
     }
 
     //
-    // Unbinned contigs taxonomic classification (optional - skipped when ch_unbins is channel.empty())
+    // Contig taxonomic classification (optional - skipped when ch_contigs is channel.empty())
     //
 
-    CATPACK_UNBINS(
-        ch_unbins,
+    CATPACK_CONTIGS(
+        ch_contigs,
         ch_db,
         ch_taxonomy,
         [[:], []],
         [[:], []],
     )
 
-    CATPACK_ADDNAMES_UNBINS(CATPACK_UNBINS.out.contig2classification, ch_taxonomy)
+    CATPACK_ADDNAMES_CONTIGS(CATPACK_CONTIGS.out.contig2classification, ch_taxonomy)
 
-    ch_summarise_unbins = channel.empty()
+    ch_contigs_summary = channel.empty()
     if (run_summarise) {
-        ch_unbin_input = CATPACK_ADDNAMES_UNBINS.out.txt
-            .join(ch_unbins)
+        ch_contigs_input = CATPACK_ADDNAMES_CONTIGS.out.txt
+            .join(ch_contigs)
             .multiMap { meta, names, contigs ->
                 names:   [meta, names]
                 contigs: [meta, contigs]
             }
 
-        CATPACK_SUMMARISE_UNBINS(ch_unbin_input.names, ch_unbin_input.contigs)
-        ch_summarise_unbins = CATPACK_SUMMARISE_UNBINS.out.txt
+        CATPACK_SUMMARISE_CONTIGS(ch_contigs_input.names, ch_contigs_input.contigs)
+        ch_contigs_summary = CATPACK_SUMMARISE_CONTIGS.out.txt
     }
 
     emit:
-    bin2classification      = CATPACK_BINS.out.bin2classification      // channel: [ val(meta), path(txt) ]
-    bat_classification      = CATPACK_ADDNAMES_BINS.out.txt            // channel: [ val(meta), path(txt) ]
-    bat_summary             = ch_bat_summary                           // channel: [ val(meta), path(txt) ]
-    contig2classification   = CATPACK_UNBINS.out.contig2classification // channel: [ val(meta), path(txt) ]
-    unbinned_classification = CATPACK_ADDNAMES_UNBINS.out.txt          // channel: [ val(meta), path(txt) ]
-    unbinned_summary        = ch_summarise_unbins                      // channel: [ val(meta), path(txt) ]
+    bin2classification      = CATPACK_BINS.out.bin2classification        // channel: [ val(meta), path(txt) ]
+    bat_classification      = CATPACK_ADDNAMES_BINS.out.txt              // channel: [ val(meta), path(txt) ]
+    bat_summary             = ch_bat_summary                             // channel: [ val(meta), path(txt) ]
+    contig2classification   = CATPACK_CONTIGS.out.contig2classification  // channel: [ val(meta), path(txt) ]
+    contigs_classification  = CATPACK_ADDNAMES_CONTIGS.out.txt           // channel: [ val(meta), path(txt) ]
+    contigs_summary         = ch_contigs_summary                         // channel: [ val(meta), path(txt) ]
 }
