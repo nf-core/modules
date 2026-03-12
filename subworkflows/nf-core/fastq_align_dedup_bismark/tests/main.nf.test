@@ -87,7 +87,7 @@ nextflow_workflow {
                     workflow.out.bismark_report.collect { meta, report -> file(report).name },
                     workflow.out.bismark_summary[0][1],
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.findAll { key, val -> key.startsWith('versions') }
+                    workflow.out.versions
                     ).match() }
             )
         }
@@ -139,7 +139,7 @@ nextflow_workflow {
                     workflow.out.bismark_report.collect { meta, report -> file(report).name },
                     workflow.out.bismark_summary[0][1],
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.findAll { key, val -> key.startsWith('versions') }
+                    workflow.out.versions
                     ).match() }
             )
         }
@@ -190,7 +190,7 @@ nextflow_workflow {
                     workflow.out.bismark_report.collect { meta, report -> file(report).name },
                     workflow.out.bismark_summary[0][1],
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.findAll { key, val -> key.startsWith('versions') }
+                    workflow.out.versions
                     ).match() }
             )
         }
@@ -241,7 +241,7 @@ nextflow_workflow {
                     workflow.out.bismark_report.collect { meta, report -> file(report).name },
                     workflow.out.bismark_summary[0][1],
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.findAll { key, val -> key.startsWith('versions') }
+                    workflow.out.versions
                     ).match() }
             )
         }
@@ -290,7 +290,7 @@ nextflow_workflow {
                     workflow.out.bismark_report.collect { meta, report -> file(report).name },
                     workflow.out.bismark_summary[0][1],
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.findAll { key, val -> key.startsWith('versions') }
+                    workflow.out.versions
                     ).match() }
             )
         }
@@ -342,7 +342,7 @@ nextflow_workflow {
                     workflow.out.bismark_report.collect { meta, report -> file(report).name },
                     workflow.out.bismark_summary[0][1],
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.findAll { key, val -> key.startsWith('versions') }
+                    workflow.out.versions
                     ).match() }
             )
         }
@@ -393,7 +393,7 @@ nextflow_workflow {
                     workflow.out.bismark_report.collect { meta, report -> file(report).name },
                     workflow.out.bismark_summary[0][1],
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.findAll { key, val -> key.startsWith('versions') }
+                    workflow.out.versions
                     ).match() }
             )
         }
@@ -444,7 +444,7 @@ nextflow_workflow {
                     workflow.out.bismark_report.collect { meta, report -> file(report).name },
                     workflow.out.bismark_summary[0][1],
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.findAll { key, val -> key.startsWith('versions') }
+                    workflow.out.versions
                     ).match() }
             )
         }
