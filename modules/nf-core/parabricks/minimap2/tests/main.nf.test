@@ -31,7 +31,8 @@ nextflow_process {
                 ]
                 input[2] = [ [], [] ]
                 input[3] = [ [], [] ]
-                input[4] = 'bam'
+                input[4] = [ [], [] ]
+                input[5] = 'bam'
                 """
             }
         }
@@ -41,7 +42,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
-                    file(process.out.bai[0][1]).name,
+                    file(process.out.index[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
@@ -68,7 +69,8 @@ nextflow_process {
                 ]
                 input[2] = [ [], [] ]
                 input[3] = [ [], [] ]
-                input[4] = 'bam'
+                input[4] = [ [], [] ]
+                input[5] = 'bam'
                 """
             }
         }
@@ -101,12 +103,13 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[2] = [
+                input[2] = [ [], [] ]
+                input[3] = [
                     [:],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
                 ]
-                input[3] = [ [], [] ]
-                input[4] = 'bam'
+                input[4] = [ [], [] ]
+                input[5] = 'bam'
                 """
             }
         }
@@ -116,7 +119,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
-                    file(process.out.bai[0][1]).name,
+                    file(process.out.index[0][1]).name,
                 ).match() }
             )
         }
@@ -141,12 +144,13 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[2] = [
+                input[2] = [ [], [] ]
+                input[3] = [
                     [:],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
                 ]
-                input[3] = [ [], [] ]
-                input[4] = 'bam'
+                input[4] = [ [], [] ]
+                input[5] = 'bam'
                 """
             }
         }
@@ -178,11 +182,12 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = [ [], [] ]
-                input[3] = [
+                input[3] = [ [], [] ]
+                input[4] = [
                     [:],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/ngscheckmate/test1.vcf.gz', checkIfExists: true)
                 ]
-                input[4] = 'bam'
+                input[5] = 'bam'
                 """
             }
         }
@@ -192,7 +197,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
-                    file(process.out.bai[0][1]).name,
+                    file(process.out.index[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
@@ -219,11 +224,12 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = [ [], [] ]
-                input[3] = [
+                input[3] = [ [], [] ]
+                input[4] = [
                     [:],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/ngscheckmate/test1.vcf.gz', checkIfExists: true)
                 ]
-                input[4] = 'bam'
+                input[5] = 'bam'
                 """
             }
         }
@@ -254,15 +260,16 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[2] = [
+                input[2] = [ [], [] ]
+                input[3] = [
                     [:],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
                 ]
-                input[3] = [
+                input[4] = [
                     [:],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/ngscheckmate/test1.vcf.gz', checkIfExists: true)
                 ]
-                input[4] = 'bam'
+                input[5] = 'bam'
                 """
             }
         }
@@ -272,7 +279,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
-                    file(process.out.bai[0][1]).name,
+                    file(process.out.index[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
@@ -298,15 +305,16 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[2] = [
+                input[2] = [ [], [] ]
+                input[3] = [
                     [:],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
                 ]
-                input[3] = [
+                input[4] = [
                     [:],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/ngscheckmate/test1.vcf.gz', checkIfExists: true)
                 ]
-                input[4] = 'bam'
+                input[5] = 'bam'
                 """
             }
         }
@@ -339,7 +347,8 @@ nextflow_process {
                 ]
                 input[2] = [ [], [] ]
                 input[3] = [ [], [] ]
-                input[4] = 'bam'
+                input[4] = [ [], [] ]
+                input[5] = 'bam'
                 """
             }
         }
@@ -349,7 +358,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
-                    file(process.out.bai[0][1]).name,
+                    file(process.out.index[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
@@ -376,7 +385,8 @@ nextflow_process {
                 ]
                 input[2] = [ [], [] ]
                 input[3] = [ [], [] ]
-                input[4] = 'bam'
+                input[4] = [ [], [] ]
+                input[5] = 'bam'
                 """
             }
         }
@@ -408,7 +418,8 @@ nextflow_process {
                 ]
                 input[2] = [ [], [] ]
                 input[3] = [ [], [] ]
-                input[4] = 'cram'
+                input[4] = [ [], [] ]
+                input[5] = 'cram'
                 """
             }
         }
@@ -419,10 +430,10 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     cram(
-                        process.out.cram[0][1],
+                        process.out.bam[0][1],
                         fasta,
                         ).getReadsMD5(),
-                    file(process.out.crai[0][1]).name,
+                    file(process.out.index[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
@@ -449,7 +460,8 @@ nextflow_process {
                 ]
                 input[2] = [ [], [] ]
                 input[3] = [ [], [] ]
-                input[4] = 'cram'
+                input[4] = [ [], [] ]
+                input[5] = 'cram'
                 """
             }
         }
@@ -481,7 +493,8 @@ nextflow_process {
                 ]
                 input[2] = [ [], [] ]
                 input[3] = [ [], [] ]
-                input[4] = 'cram'
+                input[4] = [ [], [] ]
+                input[5] = 'cram'
                 """
             }
         }
@@ -492,10 +505,10 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     cram(
-                        process.out.cram[0][1],
+                        process.out.bam[0][1],
                         fasta,
                         ).getReadsMD5(),
-                    file(process.out.crai[0][1]).name,
+                    file(process.out.index[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
@@ -522,7 +535,8 @@ nextflow_process {
                 ]
                 input[2] = [ [], [] ]
                 input[3] = [ [], [] ]
-                input[4] = 'cram'
+                input[4] = [ [], [] ]
+                input[5] = 'cram'
                 """
             }
         }
