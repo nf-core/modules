@@ -11,8 +11,8 @@ process MACSE_REFINEALIGNMENT {
     tuple val(meta) , path(fasta)
 
     output:
-    tuple val(meta), path("*_NT.{fas,fasta,aln}"), emit: nt
-    tuple val(meta), path("*_AA.{fas,fasta,aln}"), emit: aa
+    tuple val(meta), path("*_NT.{fa,fas,fasta,aln}"), emit: nt
+    tuple val(meta), path("*_AA.{fa,fas,fasta,aln}"), emit: aa
     tuple val("${task.process}"), val("macse"), eval("macse --version 2>&1 | sed 's/ (.*) //g'"), topic: versions, emit: versions_macse
 
     when:
