@@ -12,14 +12,14 @@ process SKESA {
 
     output:
     tuple val(meta), path("*.fa"), emit: fasta
-    tuple val("${task.process}"), val('skesa'), eval("skesa --version 2>&1 | tail -n 1 | sed -e \"s/SKESA //g\""), topic: versions, emit: versions_skesa
+    tuple val("${task.process}"), val('skesa'), eval("skesa --version 2>&1 | sed -n 's/^SKESA //p'"), topic: versions, emit: versions_skesa
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def memory = task.memory ? "--memory ${task.memory}" : ''
+    def memory = task.memory ? "--memory ${task.memory.toMega()} MB" : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def paired_end = meta.single_end ? "" : "--use_paired_ends"
     """
