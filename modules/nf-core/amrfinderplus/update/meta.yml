@@ -23,8 +23,8 @@ output:
         description: The latest AMRFinder+ database in a compressed tarball
         pattern: "*.tar.gz"
         ontologies:
-          - edam: "http://edamontology.org/format_3981"
-          - edam: http://edamontology.org/format_3989
+          - edam: "http://edamontology.org/format_3981" # TAR format
+          - edam: http://edamontology.org/format_3989 # GZIP format
   versions_amrfinder:
     - - ${task.process}:
           type: string
@@ -35,6 +35,8 @@ output:
       - amrfinder --version:
           type: eval
           description: The expression to obtain the version of the tool
+          ontologies:
+            - edam: "http://edamontology.org/format_3750" # YAML
 topics:
   versions:
     - - ${task.process}:
