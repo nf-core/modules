@@ -118,7 +118,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
 
     emit:
     bam               = ch_alignment                     // channel: [ val(meta), [ bam ]       ]
-    index               = ch_alignment_index             // channel: [ val(meta), [ index ]     ]
+    index             = ch_alignment_index             // channel: [ val(meta), [ index ]     ]
     samtools_flagstat = ch_samtools_flagstat             // channel: [ val(meta), [ flagstat ]  ]
     samtools_stats    = ch_samtools_stats                // channel: [ val(meta), [ stats ]     ]
     picard_metrics    = ch_picard_metrics                // channel: [ val(meta), [ metrics ]   ]

@@ -65,7 +65,7 @@ workflow FASTQ_ALIGN_MAPAD {
     bam_unsorted = MAPAD_MAP.out.bam                    // channel: [ val(meta), path(bam) ]
 
     bam          = BAM_SORT_STATS_SAMTOOLS.out.bam      // channel: [ val(meta), path(bam) ]
-    bai          = BAM_SORT_STATS_SAMTOOLS.out.bai      // channel: [ val(meta), path(bai) ]
+    bai          = BAM_SORT_STATS_SAMTOOLS.out.index      // channel: [ val(meta), path(bai) ]
     csi          = BAM_SORT_STATS_SAMTOOLS.out.csi      // channel: [ val(meta), path(csi) ]
     stats        = BAM_SORT_STATS_SAMTOOLS.out.stats    // channel: [ val(meta), path(stats) ]
     flagstat     = BAM_SORT_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), path(flagstat) ]
