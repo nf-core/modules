@@ -33,7 +33,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.quality[0][1]).name, // Unstable
-                    process.out.celltypes,
+                    file(process.out.celltypes[0][1]).name, // Unstable
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match('versions') }
             )
