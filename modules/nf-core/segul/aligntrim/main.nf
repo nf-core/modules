@@ -29,6 +29,7 @@ process SEGUL_ALIGNTRIM {
     def data_type     = datatype   ? "--datatype ${datatype}"        : '--datatype dna'
     def trim_mode     = args.contains('--missing-data') || args.contains('--pinf') ? '' : '--missing-data 0.5'
     """
+    # Rename input files to .fa if they have non-standard extensions
     mkdir -p staged_input
     for f in input_dir/*; do
         name=\$(basename "\$f")
