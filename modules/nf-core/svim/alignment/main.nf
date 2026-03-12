@@ -13,7 +13,7 @@ process SVIM_ALIGNMENT {
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('svim'), eval('svim --version | sed "/svim v/!d; s/.*v//"'), emit: versions_svim, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +22,6 @@ process SVIM_ALIGNMENT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    # Set matplotlib config to avoid warnings
     export MPLCONFIGDIR=\$(mktemp -d)
 
     svim alignment \\
@@ -33,20 +32,11 @@ process SVIM_ALIGNMENT {
 
     mv ${prefix}/variants.vcf ${prefix}.vcf
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        svim: \$(svim --version 2>/dev/null | tail -1 | sed 's/.*svim //g' | sed 's/[^0-9.].*//g')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch "${prefix}.vcf"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        svim: 2.0.0
-    END_VERSIONS
     """
 }

@@ -1,24 +1,4 @@
 {
-    "homo_sapiens - [bam, bai], fasta": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.vcf"
-                ]
-            ],
-            [
-                "versions.yml:md5,b4ea76277bc840e153ff0194d5180f1d"
-            ]
-        ],
-        "timestamp": "2026-03-06T16:10:08.77341375",
-        "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
-        }
-    },
     "homo_sapiens - [bam, bai], fasta - stub": {
         "content": [
             {
@@ -31,7 +11,11 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,b4ea76277bc840e153ff0194d5180f1d"
+                    [
+                        "SVIM_ALIGNMENT",
+                        "svim",
+                        ""
+                    ]
                 ],
                 "vcf": [
                     [
@@ -41,12 +25,57 @@
                         "test.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,b4ea76277bc840e153ff0194d5180f1d"
+                "versions_svim": [
+                    [
+                        "SVIM_ALIGNMENT",
+                        "svim",
+                        ""
+                    ]
                 ]
             }
         ],
-        "timestamp": "2026-03-06T16:10:14.2752323",
+        "timestamp": "2026-03-12T09:05:07.05593635",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "versions": {
+        "content": null,
+        "timestamp": "2026-03-12T10:26:34.291718026",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "homo_sapiens - [bam, bai], fasta - vcf": {
+        "content": [
+            null,
+            "test.vcf",
+            "##fileformat=VCFv4.2",
+            [
+                "##source=SVIM-v2.0.0",
+                "##contig=<ID=chr22,length=40001>",
+                "##ALT=<ID=DEL,Description=\"Deletion\">",
+                "##ALT=<ID=INV,Description=\"Inversion\">",
+                "##ALT=<ID=DUP,Description=\"Duplication\">",
+                "##ALT=<ID=DUP:TANDEM,Description=\"Tandem Duplication\">",
+                "##ALT=<ID=DUP:INT,Description=\"Interspersed Duplication\">",
+                "##ALT=<ID=INS,Description=\"Insertion\">",
+                "##ALT=<ID=BND,Description=\"Breakend\">",
+                "##INFO=<ID=SVTYPE,Number=1,Type=String,Description=\"Type of structural variant\">",
+                "##INFO=<ID=CUTPASTE,Number=0,Type=Flag,Description=\"Genomic origin of interspersed duplication seems to be deleted\">",
+                "##INFO=<ID=END,Number=1,Type=Integer,Description=\"End position of the variant described in this record\">",
+                "##INFO=<ID=SVLEN,Number=1,Type=Integer,Description=\"Difference in length between REF and ALT alleles\">",
+                "##INFO=<ID=SUPPORT,Number=1,Type=Integer,Description=\"Number of reads supporting this variant\">",
+                "##INFO=<ID=STD_SPAN,Number=1,Type=Float,Description=\"Standard deviation in span of merged SV signatures\">",
+                "##INFO=<ID=STD_POS,Number=1,Type=Float,Description=\"Standard deviation in position of merged SV signatures\">",
+                "##INFO=<ID=STD_POS1,Number=1,Type=Float,Description=\"Standard deviation of breakend 1 position\">",
+                "##INFO=<ID=STD_POS2,Number=1,Type=Float,Description=\"Standard deviation of breakend 2 position\">",
+                "##FILTER=<ID=hom_ref,Description=\"Genotype is homozygous reference\">"
+            ]
+        ],
+        "timestamp": "2026-03-12T09:14:54.283504851",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.4"
