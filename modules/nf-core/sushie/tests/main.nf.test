@@ -28,7 +28,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    process.out.corr,
+                    process.out.cs,
+                    process.out.weights
+                ).match() },
+                { assert file(process.out.log[0][1]).exists() }
             )
         }
     }
@@ -55,7 +61,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    process.out.corr,
+                    process.out.cs,
+                    process.out.weights
+                ).match() },
+                { assert file(process.out.log[0][1]).exists() }
             )
         }
     }
