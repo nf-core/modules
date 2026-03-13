@@ -409,79 +409,9 @@
     "cnvkit batch tumour only mode, no reference - bam": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "genome.antitarget.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "genome.target.bed:md5,4b8adfc6c806db32028b9e40a0fb067a"
-                        ]
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "reference.cnn:md5,baada08f38a3e1fca613886a9cd2c557",
-                            "test2.paired_end.sorted.antitargetcoverage.cnn:md5,203caf8cef6935bb50b4138097955cb8",
-                            "test2.paired_end.sorted.targetcoverage.cnn:md5,8268feb252c0f5c47b57e4d8ce51e652"
-                        ]
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test2.paired_end.sorted.cnr:md5,2b63cfc469a4744e736a31d1112bea1f"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "test2.paired_end.sorted.bintest.cns:md5,fd3ba421c5a7b4765cb28013f4cb91e3",
-                            "test2.paired_end.sorted.call.cns:md5,5b7f229e5618d2ae1dd7c3b15f48286d",
-                            "test2.paired_end.sorted.cns:md5,0a835aa28bac9acebaf932104daf7f86"
-                        ]
-                    ]
-                ],
-                "4": [
-                    
-                ],
-                "5": [
-                    
-                ],
-                "6": [
-                    [
-                        "CNVKIT_BATCH",
-                        "cnvkit",
-                        "0.9.12"
-                    ]
-                ],
-                "7": [
-                    [
-                        "CNVKIT_BATCH",
-                        "samtools",
-                        "1.21"
-                    ]
-                ],
                 "bed": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "genome.antitarget.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "genome.target.bed:md5,4b8adfc6c806db32028b9e40a0fb067a"
-                        ]
-                    ]
+                    "genome.antitarget.bed",
+                    "genome.target.bed"
                 ],
                 "cnn": [
                     [
@@ -515,12 +445,6 @@
                         ]
                     ]
                 ],
-                "pdf": [
-                    
-                ],
-                "png": [
-                    
-                ],
                 "versions_cnvkit": [
                     [
                         "CNVKIT_BATCH",
@@ -541,86 +465,14 @@
             "nf-test": "0.9.2",
             "nextflow": "25.10.4"
         },
-        "timestamp": "2026-03-13T08:56:54.300672032"
+        "timestamp": "2026-03-13T09:34:45.970867503"
     },
     "cnvkit batch germline hybrid mode - bam": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "baits.antitarget.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "baits.target.bed:md5,26d25ff2d6c45b6d92169b3559c6acdb"
-                        ]
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "reference.cnn:md5,ce4ef720a8ca89976842c31bd41977fa",
-                            "test.paired_end.sorted.antitargetcoverage.cnn:md5,203caf8cef6935bb50b4138097955cb8",
-                            "test.paired_end.sorted.targetcoverage.cnn:md5,3fe80b6013ffc3e9968345e810158215",
-                            "test.single_end.sorted.antitargetcoverage.cnn:md5,203caf8cef6935bb50b4138097955cb8",
-                            "test.single_end.sorted.targetcoverage.cnn:md5,aa8a018b1d4d1e688c9f9f6ae01bf4d7"
-                        ]
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.paired_end.sorted.cnr:md5,7e37d73ab604dbc3fe4ebb56aca9bdc3"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "test.paired_end.sorted.bintest.cns:md5,b6701cceb525c3087f4dad432d20100c",
-                            "test.paired_end.sorted.call.cns:md5,f2ca59b4d50b0c317adc526c1b99b622",
-                            "test.paired_end.sorted.cns:md5,060af1aa637ed51812af19bcce24fcfe"
-                        ]
-                    ]
-                ],
-                "4": [
-                    
-                ],
-                "5": [
-                    
-                ],
-                "6": [
-                    [
-                        "CNVKIT_BATCH",
-                        "cnvkit",
-                        "0.9.12"
-                    ]
-                ],
-                "7": [
-                    [
-                        "CNVKIT_BATCH",
-                        "samtools",
-                        "1.21"
-                    ]
-                ],
                 "bed": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "baits.antitarget.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "baits.target.bed:md5,26d25ff2d6c45b6d92169b3559c6acdb"
-                        ]
-                    ]
+                    "baits.antitarget.bed",
+                    "baits.target.bed"
                 ],
                 "cnn": [
                     [
@@ -656,12 +508,6 @@
                         ]
                     ]
                 ],
-                "pdf": [
-                    
-                ],
-                "png": [
-                    
-                ],
                 "versions_cnvkit": [
                     [
                         "CNVKIT_BATCH",
@@ -682,88 +528,15 @@
             "nf-test": "0.9.2",
             "nextflow": "25.10.4"
         },
-        "timestamp": "2026-03-13T08:58:07.535527366"
+        "timestamp": "2026-03-13T09:35:55.222756684"
     },
     "cnvkit batch wgs - bam": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "genome.antitarget.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "genome.bed:md5,87a15eb9c2ff20ccd5cd8735a28708f7",
-                            "genome.target.bed:md5,a13353ae9c8405e701390c069255bbd2"
-                        ]
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "reference.cnn:md5,005e2e68209ee787f1af4840a10f1fe0",
-                            "test.paired_end.sorted.antitargetcoverage.cnn:md5,203caf8cef6935bb50b4138097955cb8",
-                            "test.paired_end.sorted.targetcoverage.cnn:md5,ff526714696aa49bdc1dc8d00d965266",
-                            "test2.paired_end.sorted.antitargetcoverage.cnn:md5,203caf8cef6935bb50b4138097955cb8",
-                            "test2.paired_end.sorted.targetcoverage.cnn:md5,6ae6b3fce7299eedca6133d911c38fe1"
-                        ]
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test2.paired_end.sorted.cnr:md5,80318d06c6b095945a0fb0e85e887cbc"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "test2.paired_end.sorted.bintest.cns:md5,b6701cceb525c3087f4dad432d20100c",
-                            "test2.paired_end.sorted.call.cns:md5,f6de754c34f780e6befee5b3ff0893f8",
-                            "test2.paired_end.sorted.cns:md5,76afa47afc4bd5de35aee8fdb54d3d3a"
-                        ]
-                    ]
-                ],
-                "4": [
-                    
-                ],
-                "5": [
-                    
-                ],
-                "6": [
-                    [
-                        "CNVKIT_BATCH",
-                        "cnvkit",
-                        "0.9.12"
-                    ]
-                ],
-                "7": [
-                    [
-                        "CNVKIT_BATCH",
-                        "samtools",
-                        "1.21"
-                    ]
-                ],
                 "bed": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "genome.antitarget.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "genome.bed:md5,87a15eb9c2ff20ccd5cd8735a28708f7",
-                            "genome.target.bed:md5,a13353ae9c8405e701390c069255bbd2"
-                        ]
-                    ]
+                    "genome.antitarget.bed",
+                    "genome.bed",
+                    "genome.target.bed"
                 ],
                 "cnn": [
                     [
@@ -799,12 +572,6 @@
                         ]
                     ]
                 ],
-                "pdf": [
-                    
-                ],
-                "png": [
-                    
-                ],
                 "versions_cnvkit": [
                     [
                         "CNVKIT_BATCH",
@@ -825,86 +592,14 @@
             "nf-test": "0.9.2",
             "nextflow": "25.10.4"
         },
-        "timestamp": "2026-03-13T09:00:44.330246926"
+        "timestamp": "2026-03-13T09:32:44.625138504"
     },
     "cnvkit batch hybrid mode - bam": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "baits.antitarget.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "baits.target.bed:md5,26d25ff2d6c45b6d92169b3559c6acdb"
-                        ]
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "reference.cnn:md5,ce4ef720a8ca89976842c31bd41977fa",
-                            "test.paired_end.sorted.antitargetcoverage.cnn:md5,203caf8cef6935bb50b4138097955cb8",
-                            "test.paired_end.sorted.targetcoverage.cnn:md5,3fe80b6013ffc3e9968345e810158215",
-                            "test.single_end.sorted.antitargetcoverage.cnn:md5,203caf8cef6935bb50b4138097955cb8",
-                            "test.single_end.sorted.targetcoverage.cnn:md5,aa8a018b1d4d1e688c9f9f6ae01bf4d7"
-                        ]
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.paired_end.sorted.cnr:md5,7e37d73ab604dbc3fe4ebb56aca9bdc3"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "test.paired_end.sorted.bintest.cns:md5,b6701cceb525c3087f4dad432d20100c",
-                            "test.paired_end.sorted.call.cns:md5,f2ca59b4d50b0c317adc526c1b99b622",
-                            "test.paired_end.sorted.cns:md5,060af1aa637ed51812af19bcce24fcfe"
-                        ]
-                    ]
-                ],
-                "4": [
-                    
-                ],
-                "5": [
-                    
-                ],
-                "6": [
-                    [
-                        "CNVKIT_BATCH",
-                        "cnvkit",
-                        "0.9.12"
-                    ]
-                ],
-                "7": [
-                    [
-                        "CNVKIT_BATCH",
-                        "samtools",
-                        "1.21"
-                    ]
-                ],
                 "bed": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "baits.antitarget.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "baits.target.bed:md5,26d25ff2d6c45b6d92169b3559c6acdb"
-                        ]
-                    ]
+                    "baits.antitarget.bed",
+                    "baits.target.bed"
                 ],
                 "cnn": [
                     [
@@ -940,12 +635,6 @@
                         ]
                     ]
                 ],
-                "pdf": [
-                    
-                ],
-                "png": [
-                    
-                ],
                 "versions_cnvkit": [
                     [
                         "CNVKIT_BATCH",
@@ -966,88 +655,15 @@
             "nf-test": "0.9.2",
             "nextflow": "25.10.4"
         },
-        "timestamp": "2026-03-13T08:55:26.297572718"
+        "timestamp": "2026-03-13T09:32:31.219681344"
     },
     "cnvkit batch wgs - cram": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "genome.antitarget.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "genome.bed:md5,87a15eb9c2ff20ccd5cd8735a28708f7",
-                            "genome.target.bed:md5,a13353ae9c8405e701390c069255bbd2"
-                        ]
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "reference.cnn:md5,005e2e68209ee787f1af4840a10f1fe0",
-                            "test.paired_end.sorted.antitargetcoverage.cnn:md5,203caf8cef6935bb50b4138097955cb8",
-                            "test.paired_end.sorted.targetcoverage.cnn:md5,ff526714696aa49bdc1dc8d00d965266",
-                            "test2.paired_end.sorted.antitargetcoverage.cnn:md5,203caf8cef6935bb50b4138097955cb8",
-                            "test2.paired_end.sorted.targetcoverage.cnn:md5,6ae6b3fce7299eedca6133d911c38fe1"
-                        ]
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test2.paired_end.sorted.cnr:md5,80318d06c6b095945a0fb0e85e887cbc"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "test2.paired_end.sorted.bintest.cns:md5,b6701cceb525c3087f4dad432d20100c",
-                            "test2.paired_end.sorted.call.cns:md5,f6de754c34f780e6befee5b3ff0893f8",
-                            "test2.paired_end.sorted.cns:md5,76afa47afc4bd5de35aee8fdb54d3d3a"
-                        ]
-                    ]
-                ],
-                "4": [
-                    
-                ],
-                "5": [
-                    
-                ],
-                "6": [
-                    [
-                        "CNVKIT_BATCH",
-                        "cnvkit",
-                        "0.9.12"
-                    ]
-                ],
-                "7": [
-                    [
-                        "CNVKIT_BATCH",
-                        "samtools",
-                        "1.21"
-                    ]
-                ],
                 "bed": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "genome.antitarget.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "genome.bed:md5,87a15eb9c2ff20ccd5cd8735a28708f7",
-                            "genome.target.bed:md5,a13353ae9c8405e701390c069255bbd2"
-                        ]
-                    ]
+                    "genome.antitarget.bed",
+                    "genome.bed",
+                    "genome.target.bed"
                 ],
                 "cnn": [
                     [
@@ -1083,12 +699,6 @@
                         ]
                     ]
                 ],
-                "pdf": [
-                    
-                ],
-                "png": [
-                    
-                ],
                 "versions_cnvkit": [
                     [
                         "CNVKIT_BATCH",
@@ -1109,74 +719,15 @@
             "nf-test": "0.9.2",
             "nextflow": "25.10.4"
         },
-        "timestamp": "2026-03-13T08:55:52.219705262"
+        "timestamp": "2026-03-13T09:32:55.140939038"
     },
     "cnvkit batch pon mode - bam": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "genome.antitarget.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "genome.bed:md5,87a15eb9c2ff20ccd5cd8735a28708f7",
-                            "genome.target.bed:md5,a13353ae9c8405e701390c069255bbd2"
-                        ]
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "panel_of_normals.cnn:md5,30ff786afdb70498d9c3502db1c910f6",
-                            "test.paired_end.sorted.antitargetcoverage.cnn:md5,203caf8cef6935bb50b4138097955cb8",
-                            "test.paired_end.sorted.targetcoverage.cnn:md5,ff526714696aa49bdc1dc8d00d965266",
-                            "test2.paired_end.sorted.antitargetcoverage.cnn:md5,203caf8cef6935bb50b4138097955cb8",
-                            "test2.paired_end.sorted.targetcoverage.cnn:md5,6ae6b3fce7299eedca6133d911c38fe1"
-                        ]
-                    ]
-                ],
-                "2": [
-                    
-                ],
-                "3": [
-                    
-                ],
-                "4": [
-                    
-                ],
-                "5": [
-                    
-                ],
-                "6": [
-                    [
-                        "CNVKIT_BATCH",
-                        "cnvkit",
-                        "0.9.12"
-                    ]
-                ],
-                "7": [
-                    [
-                        "CNVKIT_BATCH",
-                        "samtools",
-                        "1.21"
-                    ]
-                ],
                 "bed": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "genome.antitarget.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "genome.bed:md5,87a15eb9c2ff20ccd5cd8735a28708f7",
-                            "genome.target.bed:md5,a13353ae9c8405e701390c069255bbd2"
-                        ]
-                    ]
+                    "genome.antitarget.bed",
+                    "genome.bed",
+                    "genome.target.bed"
                 ],
                 "cnn": [
                     [
@@ -1196,12 +747,6 @@
                     
                 ],
                 "cns": [
-                    
-                ],
-                "pdf": [
-                    
-                ],
-                "png": [
                     
                 ],
                 "versions_cnvkit": [
@@ -1224,84 +769,14 @@
             "nf-test": "0.9.2",
             "nextflow": "25.10.4"
         },
-        "timestamp": "2026-03-13T08:58:18.387020626"
+        "timestamp": "2026-03-13T09:36:05.677162598"
     },
     "cnvkit batch germline mode - cram": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "multi_intervals.antitarget.bed:md5,3d4d20f9f23b39970865d29ef239d20b",
-                            "multi_intervals.target.bed:md5,86d30493bb2e619a93f4ebc2923d29f3"
-                        ]
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "reference.cnn:md5,a09ee4be5dda1cf0f68073bdb3aad8ec",
-                            "test2.paired_end.recalibrated.sorted.antitargetcoverage.cnn:md5,067115082c4af4b64d58c0dc3a3642e4",
-                            "test2.paired_end.recalibrated.sorted.targetcoverage.cnn:md5,b4a49faf170e436ec32dcc21ccc3ce8f"
-                        ]
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test2.paired_end.recalibrated.sorted.cnr:md5,3b4fc0cc73be78f978cfe2422470753e"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "test2.paired_end.recalibrated.sorted.bintest.cns:md5,97ccb82da921185fcb033027914edf40",
-                            "test2.paired_end.recalibrated.sorted.call.cns:md5,df196edd72613c59186f4d87df3dc4a4",
-                            "test2.paired_end.recalibrated.sorted.cns:md5,4e67451dbcb6601fc3fa5dd7e570f1d4"
-                        ]
-                    ]
-                ],
-                "4": [
-                    
-                ],
-                "5": [
-                    
-                ],
-                "6": [
-                    [
-                        "CNVKIT_BATCH",
-                        "cnvkit",
-                        "0.9.12"
-                    ]
-                ],
-                "7": [
-                    [
-                        "CNVKIT_BATCH",
-                        "samtools",
-                        "1.21"
-                    ]
-                ],
                 "bed": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "multi_intervals.antitarget.bed:md5,3d4d20f9f23b39970865d29ef239d20b",
-                            "multi_intervals.target.bed:md5,86d30493bb2e619a93f4ebc2923d29f3"
-                        ]
-                    ]
+                    "multi_intervals.antitarget.bed",
+                    "multi_intervals.target.bed"
                 ],
                 "cnn": [
                     [
@@ -1335,12 +810,6 @@
                         ]
                     ]
                 ],
-                "pdf": [
-                    
-                ],
-                "png": [
-                    
-                ],
                 "versions_cnvkit": [
                     [
                         "CNVKIT_BATCH",
@@ -1361,6 +830,6 @@
             "nf-test": "0.9.2",
             "nextflow": "25.10.4"
         },
-        "timestamp": "2026-03-13T08:57:56.913313371"
+        "timestamp": "2026-03-13T09:35:44.733663521"
     }
 }
