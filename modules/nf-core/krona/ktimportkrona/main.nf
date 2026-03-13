@@ -10,7 +10,7 @@ process KRONA_KTIMPORTKRONA {
     path html
 
     output:
-    path "${output}.html", emit: html
+    path "${prefix}.html", emit: html
     tuple val("${task.process}"), val('krona'), eval("ktImportKrona | grep -Po '(?<=KronaTools )[0-9.]+'"), topic: versions, emit: versions_krona
 
     when:
@@ -18,16 +18,16 @@ process KRONA_KTIMPORTKRONA {
 
     script:
     def args = task.ext.args ?: ''
-    output = task.ext.prefix ? "${task.ext.prefix}" : 'krona.krona'
+    prefix = task.ext.prefix ? "${task.ext.prefix}" : 'krona.krona'
     """
     ktImportKrona ${html} \\
-        -o ${output}.html \\
+        -o ${prefix}.html \\
         ${args}
     """
 
     stub:
-    output = task.ext.prefix ? "${task.ext.prefix}" : 'krona.krona'
+    prefix = task.ext.prefix ? "${task.ext.prefix}" : 'krona.krona'
     """
-    touch ${output}.html
+    touch ${prefix}.html
     """
 }
