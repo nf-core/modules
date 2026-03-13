@@ -15,8 +15,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [ id:'test', single_end:false ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
                 ]
                 input[1] = [] // ptf
                 input[2] = [] //cds
@@ -27,23 +27,27 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.schema[0][1]).list().sort().findAll { file(it).name != ".genes_list" },
-                                process.out.cds_coordinates,
-                                process.out.invalid_cds,
-                                process.out.versions).match() }
+                { assert snapshot(
+                    file(process.out.schema[0][1]).list().sort().findAll { file(it).name != ".genes_list" },
+                    process.out.cds_coordinates,
+                    process.out.invalid_cds,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
 
-    test("sarscov2 illumina contigs & genome [fasta]") {
+    test("sarscov2 illumina contigs & genome [fasta, fasta]") {
 
         when {
             process {
                 """
                 input[0] = [
-                            [ id:'test', single_end:false ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
                 ]
                 input[1] = [] // ptf
                 input[2] = [] // cds
@@ -54,10 +58,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.schema[0][1]).list().sort().findAll { file(it).name != ".genes_list" },
-                                process.out.cds_coordinates,
-                                process.out.invalid_cds,
-                                process.out.versions).match() }
+                { assert snapshot(
+                    file(process.out.schema[0][1]).list().sort().findAll { file(it).name != ".genes_list" },
+                    process.out.cds_coordinates,
+                    process.out.invalid_cds,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
@@ -68,9 +74,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [ id:'test', single_end:false ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                    ]
                 ]
                 input[1] = [] // ptf
                 input[2] = [] // cds
@@ -81,10 +89,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.schema[0][1]).list().sort().findAll { file(it).name != ".genes_list" },
-                                process.out.cds_coordinates,
-                                process.out.invalid_cds,
-                                process.out.versions).match() }
+                { assert snapshot(
+                    file(process.out.schema[0][1]).list().sort().findAll { file(it).name != ".genes_list" },
+                    process.out.cds_coordinates,
+                    process.out.invalid_cds,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
@@ -97,9 +107,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [ id:'test', single_end:false ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                    ]
                 ]
                 input[1] = [] // ptf
                 input[2] = [] // cds
@@ -110,10 +122,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.schema[0][1]).list().sort().findAll { file(it).name != ".genes_list" },
-                                process.out.cds_coordinates,
-                                process.out.invalid_cds,
-                                process.out.versions).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
