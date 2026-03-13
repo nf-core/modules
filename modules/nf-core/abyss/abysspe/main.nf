@@ -27,7 +27,7 @@ process ABYSS_ABYSSPE {
     def memory = (task.memory.toGiga()*0.8).toInteger()
 
     def input_reads = ""
-    if (merged.name != 'input.1') {
+    if (merged) {
         input_reads = "in='${reads[0]} ${reads[1]}' se='${merged}'"
     } else {
         input_reads = "in='${reads[0]} ${reads[1]}'"
