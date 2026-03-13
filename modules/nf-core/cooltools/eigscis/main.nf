@@ -1,4 +1,4 @@
-process EIGSCIS {
+process COOLTOOLS_EIGSCIS {
     tag "$meta.id"
     label 'process_medium'
 
