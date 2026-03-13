@@ -17,7 +17,7 @@ process CELLSNP_MODEA {
     tuple val(meta), path('*.tag.AD.mtx')  , emit: allele_depth
     tuple val(meta), path('*.tag.DP.mtx')  , emit: depth_coverage
     tuple val(meta), path('*.tag.OTH.mtx') , emit: depth_other
-    path 'versions.yml'                    , emit: versions
+    tuple val("${task.process}"), val("cellsnp"), eval("cellsnp-lite --v | cut -f2 -d ' '"), emit: versions_cellsnp, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,11 +43,6 @@ process CELLSNP_MODEA {
     mv cellSNP.tag.DP.mtx ${prefix}.tag.DP.mtx
     mv cellSNP.tag.OTH.mtx ${prefix}.tag.OTH.mtx
     mv cellSNP.samples.tsv ${prefix}.samples.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellsnp: \$(cellsnp-lite --v | awk '{print \$2}')
-    END_VERSIONS
     """
 
     stub:
@@ -59,10 +54,5 @@ process CELLSNP_MODEA {
     touch ${prefix}.tag.AD.mtx
     touch ${prefix}.tag.DP.mtx
     touch ${prefix}.tag.OTH.mtx
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellsnp: \$(cellsnp-lite --v | awk '{print \$2}')
-    END_VERSIONS
     """
 }
