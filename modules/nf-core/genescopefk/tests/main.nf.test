@@ -50,9 +50,12 @@ nextflow_process {
             }
         }
         then {
+            def outputs = sanitizeOutput(process.out).findAll { key, val ->
+                ['linear_plot', 'log_plot', 'model', 'summary', 'transformed_linear_plot', 'transformed_log_plot', 'log', 'kmer_cov', 'versions'].contains(key)
+            }
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(outputs).match() }
             )
         }
     }
@@ -71,10 +74,13 @@ nextflow_process {
             }
         }
         then {
+            def outputs = sanitizeOutput(process.out).findAll { key, val ->
+                ['linear_plot', 'log_plot', 'model', 'summary', 'transformed_linear_plot', 'transformed_log_plot', 'log', 'kmer_cov', 'versions'].contains(key)
+            }
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
+                    outputs,
                     path(process.out.versions[0]).yaml
                 ).match() }
             )

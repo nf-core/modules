@@ -15,6 +15,7 @@ process GENESCOPEFK {
     tuple val(meta), path("*_summary.txt")                , emit: summary
     tuple val(meta), path("*_transformed_linear_plot.png"), emit: transformed_linear_plot
     tuple val(meta), path("*_transformed_log_plot.png")   , emit: transformed_log_plot
+    tuple val(meta), path("*_genescopefk.log")            , emit: log
     tuple val(meta), env('KMERCOV')                       , emit: kmer_cov
     path "versions.yml"                                   , emit: versions
 
@@ -35,7 +36,7 @@ process GENESCOPEFK {
         $args \\
         --input $fastk_histex_histogram \\
         --output . \\
-        --name_prefix ${prefix}
+        --name_prefix ${prefix} > ${prefix}_genescopefk.log
 
     printf -v KMERCOV "%.2f" \$( grep "^kmercov" *_model.txt | cut -d" " -f2 )
 
@@ -56,6 +57,7 @@ process GENESCOPEFK {
     touch "${prefix}_summary.txt"
     touch "${prefix}_transformed_linear_plot.png"
     touch "${prefix}_transformed_log_plot.png"
+    touch "${prefix}_genescopefk.log"
 
     printf -v KMERCOV "%.2f" \$( grep "^kmercov" *_model.txt | cut -d" " -f2 )
 

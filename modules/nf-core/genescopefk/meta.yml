@@ -9,7 +9,8 @@ tools:
       description: "A derivative of GenomeScope2.0 modified to work with FastK"
       homepage: "https://github.com/thegenemyers/GENESCOPE.FK"
       tool_dev_url: "https://github.com/thegenemyers/GENESCOPE.FK"
-      licence: ["https://github.com/thegenemyers/GENESCOPE.FK/blob/main/LICENSE"]
+      license:
+        - "https://github.com/thegenemyers/GENESCOPE.FK/blob/main/LICENSE"
       identifier: ""
 input:
   - - meta:
@@ -19,8 +20,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - fastk_histex_histogram:
         type: file
-        description: A histogram formatted for GeneScope using the -G parameter from
-          Fastk Histex
+        description: A histogram formatted for GeneScope using the -G parameter
+          from Fastk Histex
         pattern: "*.hist"
         ontologies: []
 output:
@@ -106,7 +107,18 @@ output:
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+          - edam: http://edamontology.org/format_3750
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_genescopefk.log":
+          type: file
+          description: GeneScopeFK command stdout log
+          pattern: "*_genescopefk.log"
+          ontologies: []
 authors:
   - "@mahesh-panchal"
 maintainers:
