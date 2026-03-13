@@ -1,11 +1,11 @@
 process OPENMS_PSMFEATUREEXTRACTOR {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/openms:3.5.0--h78fb946_0' :
-        'biocontainers/openms:3.5.0--h78fb946_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/openms:3.5.0--h78fb946_0'
+        : 'biocontainers/openms:3.5.0--h78fb946_0'}"
 
     input:
     tuple val(meta), path(id_file)
@@ -20,18 +20,22 @@ process OPENMS_PSMFEATUREEXTRACTOR {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    if ("$id_file" == "${prefix}.idXML") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${id_file}" == "${prefix}.idXML") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
     """
     PSMFeatureExtractor \\
-        -in $id_file \\
+        -in ${id_file} \\
         -out ${prefix}.idXML \\
-        -threads $task.cpus \\
-        $args
+        -threads ${task.cpus} \\
+        ${args}
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    if ("$id_file" == "${prefix}.idXML") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${id_file}" == "${prefix}.idXML") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
     """
     touch ${prefix}.idXML
     """
