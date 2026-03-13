@@ -48,6 +48,7 @@ nextflow_workflow {
                 input[1] = [
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
                 ]
                 input[2] = false
                 input[3] = [
@@ -104,6 +105,7 @@ nextflow_workflow {
                 input[1] = [
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
                 ]
                 input[2] = false
                 input[3] = [
@@ -161,6 +163,7 @@ nextflow_workflow {
                 input[1] = [
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
                 ]
                 input[2] = false
                 input[3] = [
