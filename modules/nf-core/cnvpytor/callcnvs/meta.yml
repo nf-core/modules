@@ -49,7 +49,7 @@ output:
       - cnvpytor:
           type: string
           description: The name of the tool
-      - cnvpytor --version | sed -n 's/.*CNVpytor (.*)/\1/p':
+      - cnvpytor --version | sed -n 's/.*CNVpytor \(.*\)/\1/p':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -60,7 +60,7 @@ topics:
       - cnvpytor:
           type: string
           description: The name of the tool
-      - cnvpytor --version | sed -n 's/.*CNVpytor (.*)/\1/p':
+      - cnvpytor --version | sed -n 's/.*CNVpytor \(.*\)/\1/p':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
