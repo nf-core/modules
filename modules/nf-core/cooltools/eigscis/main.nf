@@ -1,4 +1,4 @@
-process EIGSCIS {
+process COOLTOOLS_EIGSCIS {
     tag "$meta.id"
     label 'process_medium'
 
@@ -14,7 +14,7 @@ process EIGSCIS {
     output:
     tuple val(meta), path("*compartment*"), emit:result
     tuple val(meta), path("*.bw"), emit: bigwig, optional: true
-    path("versions.yml"), emit: versions
+    tuple val("${task.process}"), val('cooltools'), eval("cooltools --version | sed -n 's/cooltools, version //p'"), topic: versions, emit: versions_cooltools
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,22 +29,12 @@ process EIGSCIS {
         eigs-cis ${args} \\
         $phasing_track \\
         -o ${prefix}_compartments.bed ${cool}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cooltools: \$(cooltools --version | grep 'cooltools, version ' | sed 's/cooltools, version //')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_compartments.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cooltools: \$(cooltools --version 2>&1 | grep version | sed 's/cooltools, version //')
-    END_VERSIONS
     """
 
 }
