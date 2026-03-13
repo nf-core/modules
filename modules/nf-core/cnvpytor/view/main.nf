@@ -16,7 +16,7 @@ process CNVPYTOR_VIEW {
     tuple val(meta), path("*.vcf"), emit: vcf      , optional: true
     tuple val(meta), path("*.tsv"), emit: tsv      , optional: true
     tuple val(meta), path("*.xls"), emit: xls      , optional: true
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('cnvpytor'), eval("cnvpytor --version | sed -n 's/.*CNVpytor \\(.*\\)/\\1/p'"), emit: versions_tool1, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,11 +39,6 @@ process CNVPYTOR_VIEW {
         app.bin_size = int(binsize)
         app.print_calls_file()
     CODE
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cnvpytor: \$(cnvpytor --version | sed -n 's/.*CNVpytor \\(.*\\)/\\1/p')
-    END_VERSIONS
     """
 
     stub:
@@ -51,10 +46,5 @@ process CNVPYTOR_VIEW {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.${output_suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cnvpytor: \$(cnvpytor --version | sed -n 's/.*CNVpytor \\(.*\\)/\\1/p')
-    END_VERSIONS
     """
 }
