@@ -21,7 +21,7 @@ process DIAMOND_BLASTP {
     tuple val(meta), path('*.{sam,sam.gz}'), optional: true, emit: sam
     tuple val(meta), path('*.{tsv,tsv.gz}'), optional: true, emit: tsv
     tuple val(meta), path('*.{paf,paf.gz}'), optional: true, emit: paf
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('diamond'), eval("diamond --version | sed 's/diamond version //g'"), emit: versions_diamond, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -73,11 +73,6 @@ process DIAMOND_BLASTP {
         --outfmt ${outfmt} ${columns} \\
         ${args} \\
         --out ${prefix}.${out_ext}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        diamond: \$(diamond --version 2>&1 | tail -n 1 | sed 's/^diamond version //')
-    END_VERSIONS
     """
 
     stub:
@@ -119,10 +114,5 @@ process DIAMOND_BLASTP {
 
     """
     touch ${prefix}.${out_ext}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        diamond: \$(diamond --version 2>&1 | tail -n 1 | sed 's/^diamond version //')
-    END_VERSIONS
     """
 }
