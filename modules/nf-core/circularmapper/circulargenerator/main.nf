@@ -18,7 +18,7 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     output:
     tuple val(meta), path("*_${elongation_factor}.fasta")    , emit: fasta
     tuple val(meta), path("*${elongation_factor}_elongated") , emit: elongated
-    tuple val("${task.process}"), val('circulargenerator'), eval("circulargenerator -h | sed -n 's/usage: CircularGenerator//p'"), topic: versions, emit: versions_circulargenerator
+    tuple val("${task.process}"), val('circulargenerator'), eval("circulargenerator -h | sed -n 's/usage: CircularGeneratorv//p'"), topic: versions, emit: versions_circulargenerator
 
     when:
     task.ext.when == null || task.ext.when
