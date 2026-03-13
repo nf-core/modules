@@ -13,8 +13,8 @@ process CELESTA {
     output:
     tuple val(meta), path("*results.csv"), emit: celltypes
     tuple val(meta), path("*quality.csv"), emit: quality
-    tuple val("${task.process}"), val('celesta'), val("1.0.0"), topic: versions, emit: versions_celesta
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('celesta'), val("1.0.0"), topic: versions, emit: versions_celesta
 
     when:
     task.ext.when == null || task.ext.when
