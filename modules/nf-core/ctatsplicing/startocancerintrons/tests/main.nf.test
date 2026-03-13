@@ -91,7 +91,7 @@ nextflow_process {
                 input[0] = STAR_ALIGN.out.spl_junc_tab
                     .join(STAR_ALIGN.out.junction, by:[0])
                     .join(STAR_ALIGN.out.bam, by:[0])
-                    .join(SAMTOOLS_INDEX.out.bai, by:[0])
+                    .join(SAMTOOLS_INDEX.out.index, by:[0])
                 input[1] = CTATSPLICING_PREPGENOMELIB.out.reference
                 """
             }
@@ -166,7 +166,7 @@ nextflow_process {
                 input[0] = STAR_ALIGN.out.spl_junc_tab
                     .join(STAR_ALIGN.out.junction, by:[0])
                     .join(STAR_ALIGN.out.bam, by:[0])
-                    .join(SAMTOOLS_INDEX.out.bai, by:[0])
+                    .join(SAMTOOLS_INDEX.out.index, by:[0])
                 input[1] = CTATSPLICING_PREPGENOMELIB.out.reference
                 """
             }

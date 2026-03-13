@@ -15,7 +15,7 @@ process BISMARK_SUMMARY {
 
     output:
     path("*report.{html,txt}"), emit: summary
-    path "versions.yml"       , emit: versions
+    tuple val("${task.process}"), val('bismark'), eval('bismark --version 2>&1 | sed -n "s/^.*Bismark Version: v//p" | tr -d "[:space:]"'), emit: versions_bismark, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,21 +23,11 @@ process BISMARK_SUMMARY {
     script:
     """
     bismark2summary ${bam.join(' ')}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bismark: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
-    END_VERSIONS
     """
 
     stub:
     """
     touch bismark_summary_report.txt
     touch bismark_summary_report.html
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bismark: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
-    END_VERSIONS
     """
 }
