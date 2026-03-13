@@ -30,8 +30,6 @@ process ANGSD_CONTAMINATION {
         -h ${hapmap_file} \
         -p ${task.cpus} \
         2>| >(tee ${prefix}.txt >&2)
-
-
     """
 
     stub:
