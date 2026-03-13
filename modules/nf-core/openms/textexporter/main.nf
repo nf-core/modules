@@ -1,11 +1,11 @@
 process OPENMS_TEXTEXPORTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/openms:3.5.0--h78fb946_0' :
-        'biocontainers/openms:3.5.0--h78fb946_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/openms:3.5.0--h78fb946_0'
+        : 'biocontainers/openms:3.5.0--h78fb946_0'}"
 
     input:
     tuple val(meta), path(input_file)
@@ -22,10 +22,10 @@ process OPENMS_TEXTEXPORTER {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     TextExporter \\
-        -in $input_file \\
+        -in ${input_file} \\
         -out ${prefix}.tsv \\
-        -threads $task.cpus \\
-        $args
+        -threads ${task.cpus} \\
+        ${args}
     """
 
     stub:
