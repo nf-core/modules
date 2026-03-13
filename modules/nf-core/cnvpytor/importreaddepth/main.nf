@@ -14,7 +14,7 @@ process CNVPYTOR_IMPORTREADDEPTH {
 
     output:
     tuple val(meta), path("*.pytor")	, emit: pytor
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('cnvpytor'), eval('cnvpytor --version | sed -n "s/.*CNVpytor //p"')  , emit: versions_cnvpytor, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,21 +29,11 @@ process CNVPYTOR_IMPORTREADDEPTH {
         -rd $input_file \\
         $args \\
         $reference
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cnvpytor: \$(cnvpytor --version | sed -n 's/.*CNVpytor \\(.*\\)/\\1/p')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.pytor
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cnvpytor: \$(cnvpytor --version | sed -n 's/.*CNVpytor \\(.*\\)/\\1/p')
-    END_VERSIONS
     """
 }
