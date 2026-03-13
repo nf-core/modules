@@ -14,12 +14,12 @@ include { SAMTOOLS_SORT                                                         
 workflow BAM_DEDUP_UMI {
     take:
     ch_genome_bam // channel: [ val(meta), path(bam), path(bai) ]
-    ch_fasta_fai // channel: [ val(meta), path(fasta) ]
+    ch_fasta_fai // channel: [ val(meta), path(fasta), path(fai) ]
     umi_dedup_tool // string: 'umicollapse' or 'umitools'
     umitools_dedup_stats // boolean: whether to generate UMI-tools dedup stats
     bam_csi_index // boolean: whether to generate CSI index
     ch_transcriptome_bam // channel: [ val(meta), path(bam) ]
-    ch_transcript_fasta // channel: [ val(meta), path(fasta) ]
+    ch_transcript_fasta_fai // channel: [ val(meta), path(fasta), path(fai) ]
     umitools_dedup_primary_only // boolean: whether to filter to primary alignments before dedup
 
     main:
@@ -63,7 +63,7 @@ workflow BAM_DEDUP_UMI {
 
     BAM_SORT_STATS_SAMTOOLS(
         ch_transcriptome_bam,
-        ch_transcript_fasta,
+        ch_transcript_fasta_fai,
     )
     ch_sorted_transcriptome_bam = BAM_SORT_STATS_SAMTOOLS.out.bam.join(BAM_SORT_STATS_SAMTOOLS.out.bai)
 

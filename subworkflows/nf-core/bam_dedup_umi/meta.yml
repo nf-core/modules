@@ -73,8 +73,8 @@ input:
             type: file
             description: BAM file
             pattern: "*.bam"
-  - ch_transcript_fasta:
-      description: Channel with transcript FASTA file
+  - ch_transcript_fasta_fai:
+      description: Channel with transcript FASTA file and index
       structure:
         - meta:
             type: map
@@ -83,6 +83,10 @@ input:
             type: file
             description: Transcript FASTA file
             pattern: "*.{fa,fasta}"
+        - fai:
+            type: file
+            description: Transcript FASTA index file
+            pattern: "*.fai"
   - umitools_dedup_primary_only:
       description: Whether to filter to primary alignments before UMI-tools dedup
       structure:

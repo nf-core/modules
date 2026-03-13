@@ -9,7 +9,7 @@ include { BAM_STATS_SAMTOOLS } from '../bam_stats_samtools/main'
 workflow BAM_SORT_STATS_SAMTOOLS {
     take:
     ch_bam // channel: [ val(meta), [ bam ] ]
-    ch_fasta_fai // channel: [ val(meta), path(fasta) ]
+    ch_fasta_fai // channel: [ val(meta), path(fasta), path(fai) ]
 
     main:
     SAMTOOLS_SORT(ch_bam, ch_fasta_fai, '')

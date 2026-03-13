@@ -38,6 +38,12 @@ input:
         pattern: "*.{fa,fasta,fna}"
         optional: true
         ontologies: []
+    - fai:
+        type: file
+        description: Reference genome FASTA index file
+        pattern: "*.{fai}"
+        optional: true
+        ontologies: []
   - index_format:
       type: string
       description: Index format to use (optional)

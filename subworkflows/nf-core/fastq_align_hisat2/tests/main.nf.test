@@ -95,7 +95,8 @@ nextflow_workflow {
                 input[2] = HISAT2_EXTRACTSPLICESITES.out.txt
                 input[3] = Channel.of([
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta.fai", checkIfExists: true)
                 ])
                 input[4] = false
                 """
@@ -134,7 +135,8 @@ nextflow_workflow {
                 input[2] = HISAT2_EXTRACTSPLICESITES.out.txt
                 input[3] = Channel.of([
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta.fai", checkIfExists: true)
                 ])
                 input[4] = false
                 """
@@ -175,7 +177,8 @@ nextflow_workflow {
                 input[2] = HISAT2_EXTRACTSPLICESITES_STUB.out.txt
                 input[3] = Channel.of([
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta.fai", checkIfExists: true)
                 ])
                 input[4] = false
                 """
@@ -207,7 +210,8 @@ nextflow_workflow {
                 input[2] = HISAT2_EXTRACTSPLICESITES_STUB.out.txt
                 input[3] = Channel.of([
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta.fai", checkIfExists: true)
                 ])
                 input[4] = false
                 """
