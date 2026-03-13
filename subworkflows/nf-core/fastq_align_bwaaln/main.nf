@@ -91,13 +91,11 @@ workflow FASTQ_ALIGN_BWAALN {
 
     // Remove superfluous internal maps to minimise clutter as much as possible
     ch_bam_for_emit = ch_bam_for_index.map{ meta, bam -> [meta - meta.subMap('key_read_ref'), bam] }
-    ch_bai_for_emit = SAMTOOLS_INDEX.out.bai.map{ meta, bai -> [meta - meta.subMap('key_read_ref'), bai] }
-    ch_csi_for_emit = SAMTOOLS_INDEX.out.csi.map{ meta, csi -> [meta - meta.subMap('key_read_ref'), csi] }
+    ch_index_for_emit = SAMTOOLS_INDEX.out.index.map{ meta, index -> [meta - meta.subMap('key_read_ref'), index] }
 
     emit:
     // Note: output channels will contain meta with additional 'id_index' meta
     // value to allow association of BAM file with the meta.id of input indices
     bam      = ch_bam_for_emit     // channel: [ val(meta), path(bam) ]
-    bai      = ch_bai_for_emit     // channel: [ val(meta), path(bai) ]
-    csi      = ch_csi_for_emit     // channel: [ val(meta), path(csi) ]
+    index    = ch_index_for_emit     // channel: [ val(meta), path(index) ]
 }

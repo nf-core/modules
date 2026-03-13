@@ -16,7 +16,7 @@ process COVERM_GENOME {
 
     output:
     tuple val(meta), path("*.tsv"), emit: coverage
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('coverm'), eval("coverm --version | sed 's/coverm //'"), emit: versions_coverm, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -45,21 +45,11 @@ process COVERM_GENOME {
         ${reference_str} \\
         ${args} \\
         --output-file ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        coverm: \$(coverm --version | sed 's/coverm //')
-    END_VERSIONS
     """
 
     stub:
     def prefix        = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        coverm: \$(coverm --version | sed 's/coverm //')
-    END_VERSIONS
     """
 }
