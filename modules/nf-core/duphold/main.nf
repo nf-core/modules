@@ -14,7 +14,7 @@ process DUPHOLD {
 
     output:
     tuple val(meta), path("*.vcf.gz")   , emit: vcf
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('duphold'), eval('duphold -h | head -n 1 | sed -e "s/^version: //"'), emit: versions_duphold, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,21 +34,11 @@ process DUPHOLD {
         --bam ${alignment_file} \\
         --fasta ${fasta} \\
         ${snp_annotation}
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        duphold: \$(duphold -h | head -n 1 | sed -e "s/^version: //")
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.vcf.gz
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        duphold: \$(duphold -h | head -n 1 | sed -e "s/^version: //")
-    END_VERSIONS
     """
 }
