@@ -16,6 +16,7 @@ process BCFTOOLS_ROHVIZ {
     output:
     tuple val(meta), path("*.html") , emit: html
     tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
+    tuple val("${task.process}"), val('less'), eval("less --version | head -n1 | sed 's/less //'"), topic: versions, emit: versions_less
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,9 +40,11 @@ process BCFTOOLS_ROHVIZ {
     """
 
     stub:
+    def args = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    echo "args: ${args}"
     touch ${prefix}.roh-viz.html
     """
 }

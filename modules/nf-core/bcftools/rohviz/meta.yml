@@ -36,7 +36,7 @@ input:
         description: VCF file
         pattern: "*.{vcf,.vcf.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_3016
+          - edam: http://edamontology.org/format_3016 # VCF
   - regions_list:
       type: file
       description: "Regions can be specified either on command line or in a VCF, BED,
@@ -58,7 +58,7 @@ output:
           description: RoH visual report file.
           pattern: "*.html"
           ontologies:
-            - edam: http://edamontology.org/format_2331
+            - edam: http://edamontology.org/format_2331 # HTML
   versions_bcftools:
     - - ${task.process}:
           type: string
