@@ -241,9 +241,9 @@ nextflow_process {
                     process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fastq'  },
                     process.out.outs[0][1].findAll {  file(it).name.contains('consensus.bam.bai') },
                     process.out.outs[0][1].findAll {  file(it).name == 'regions.fa' },
-                    process.out.outs[0][1].findAll {  file(it).name.contains('.json') },
-					process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
+                    process.out.outs[0][1].findAll {  file(it).name.contains('.json') }
+                ).match() },
+                { assert snapshot(process.out.versions_cellranger).match("versions-PBMC") }
             )
         }
 
@@ -483,9 +483,9 @@ nextflow_process {
                     process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fastq'  },
                     process.out.outs[0][1].findAll {  file(it).name.contains('consensus.bam.bai') },
                     process.out.outs[0][1].findAll {  file(it).name == 'regions.fa' },
-                    process.out.outs[0][1].findAll {  file(it).name.contains('.json') },
-					process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
+                    process.out.outs[0][1].findAll {  file(it).name.contains('.json') }
+                ).match() },
+                { assert snapshot(process.out.versions_cellranger).match("versions-with-cmo") }
             )
         }
 
@@ -722,9 +722,9 @@ nextflow_process {
                     process.out.outs[0][1].findAll {  file(it).name == 'all_contig.fastq'  },
                     process.out.outs[0][1].findAll {  file(it).name.contains('consensus.bam.bai') },
                     process.out.outs[0][1].findAll {  file(it).name == 'regions.fa' },
-                    process.out.outs[0][1].findAll {  file(it).name.contains('.json') },
-					process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
+                    process.out.outs[0][1].findAll {  file(it).name.contains('.json') }
+                ).match() },
+                { assert snapshot(process.out.versions_cellranger).match("versions-with-vdj") }
             )
         }
 
@@ -869,9 +869,9 @@ nextflow_process {
                     process.out.outs[0][1].findAll { file(it).name == 'raw_feature_bc_matrix.h5' },
                     process.out.outs[0][1].findAll { file(it).name == 'sample_filtered_feature_bc_matrix.h5' },
                     process.out.outs[0][1].findAll { file(it).name == 'protospacer_calls_per_cell.csv' },
-                    process.out.outs[0][1].findAll { file(it).name == 'perturbation_efficiencies_by_feature.csv' },
-					process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
+                    process.out.outs[0][1].findAll { file(it).name == 'perturbation_efficiencies_by_feature.csv' }
+                ).match() },
+                { assert snapshot(process.out.versions_cellranger).match("versions-a549-crispr") }
             )
 
         }
@@ -981,9 +981,9 @@ nextflow_process {
                     process.out.outs[0][1].findAll {  file(it).name == 'filtered_feature_bc_matrix.h5'  },
                     process.out.outs[0][1].findAll {  file(it).name == 'raw_feature_bc_matrix.h5' },
                     process.out.outs[0][1].findAll {  file(it).name == 'sample_filtered_feature_bc_matrix.h5' },
-                    process.out.outs[0][1].findAll {  file(it).name == 'sample_raw_feature_bc_matrix.h5' },
-					process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
+                    process.out.outs[0][1].findAll {  file(it).name == 'sample_raw_feature_bc_matrix.h5' }
+                ).match() },
+                { assert snapshot(process.out.versions_cellranger).match("versions-flex-singleplex") }
             )
         }
 
