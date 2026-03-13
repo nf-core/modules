@@ -12,7 +12,7 @@ process SEQKIT_TRANSLATE {
 
     output:
     tuple val(meta), path("${prefix}.*"), emit: fastx
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('seqkit'), eval("seqkit version | sed 's/^.*v//'"), emit: versions_seqkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,11 +38,6 @@ process SEQKIT_TRANSLATE {
         ${fastx} \\
         ${call_gzip} \\
         > ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$(seqkit version | cut -d' ' -f2)
-    END_VERSIONS
     """
 
     stub:
@@ -57,10 +52,5 @@ process SEQKIT_TRANSLATE {
     }
     """
     touch ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$(seqkit version | cut -d' ' -f2)
-    END_VERSIONS
     """
 }
