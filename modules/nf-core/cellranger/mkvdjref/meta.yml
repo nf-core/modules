@@ -48,6 +48,14 @@ output:
     - ${reference_name}:
         type: directory
         description: Folder containing all the reference indices needed by Cell Ranger
+  versions_cellranger:
+    - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
   versions:
     - versions.yml:
         type: file
