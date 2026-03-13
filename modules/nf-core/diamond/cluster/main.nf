@@ -12,7 +12,7 @@ process DIAMOND_CLUSTER {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('diamond'), eval("diamond --version | sed 's/diamond version //g'"), emit: versions_diamond, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,11 +30,6 @@ process DIAMOND_CLUSTER {
         -p ${task.cpus} \\
         -d ${db} \\
         -o ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        diamond: \$(diamond --version |& sed '1!d ; s/diamond version //')
-    END_VERSIONS
     """
 
     stub:
@@ -43,10 +38,5 @@ process DIAMOND_CLUSTER {
     """
     echo "${args}"
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        diamond: \$(diamond --version |& sed '1!d ; s/diamond version //')
-    END_VERSIONS
     """
 }

@@ -12,8 +12,9 @@ process CELESTA {
 
     output:
     tuple val(meta), path("*results.csv"), emit: celltypes
-    path "*quality.csv"                  , emit: quality
-    path "versions.yml"                  , emit: versions
+    tuple val(meta), path("*quality.csv"), emit: quality
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('celesta'), val("1.0.0"), topic: versions, emit: versions_celesta
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,7 +26,6 @@ process CELESTA {
     def args               = task.ext.args ?: ''
     def prefix             = task.ext.prefix ?: "${meta.id}"
     def low_thresholds_cmd = low_thresholds ? "--low $low_thresholds" : ""
-    def VERSION = '1.0.0'
 
     """
     Rscript /local/CELESTA_CLI.R \\
@@ -36,11 +36,6 @@ process CELESTA {
         -o . \\
         -t $prefix \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        celesta: $VERSION
-    END_VERSIONS
     """
 
     stub:
@@ -53,10 +48,5 @@ process CELESTA {
     """
     touch ${prefix}_celesta_stub_results.csv
     touch ${prefix}_stub_quality.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        celesta: $VERSION
-    END_VERSIONS
     """
 }
