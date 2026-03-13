@@ -18,7 +18,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'QuantitativeTrait' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
                 ]
                 input[1] = Channel.of('{ print \$1, \$2, ((NR % 11) - 5) + (((NR * NR) % 7) / 10.0) }').collectFile(name:'quantitative_phenotype.awk')
                 input[2] = false
@@ -32,7 +32,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'covariates_quant' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
                 ]
                 input[1] = Channel.of('{ print \$1, \$2, ((NR % 9) - 4) / 3.0 }').collectFile(name:'quantitative_covariates.awk')
                 input[2] = false
@@ -46,7 +46,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'covariates_cat' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
                 ]
                 input[1] = Channel.of('{ print \$1, \$2, (NR % 2) + 1 }').collectFile(name:'categorical_covariates.awk')
                 input[2] = false
@@ -60,7 +60,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'bfile_ldms1_variants' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bim', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.bim', checkIfExists: true)
                 ]
                 input[1] = Channel.of('NR <= 800 { print \$2 }').collectFile(name:'ldms1_variants.awk')
                 input[2] = false
@@ -74,7 +74,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'bfile_ldms2_variants' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bim', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.bim', checkIfExists: true)
                 ]
                 input[1] = Channel.of('NR > 800 { print \$2 }').collectFile(name:'ldms2_variants.awk')
                 input[2] = false
@@ -92,13 +92,13 @@ nextflow_process {
                     [ id:'bfile_ldms1', part_gcta_job:1, nparts_gcta:1 ],
                     file('bfile.mbfile'),
                     [
-                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bed', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.bed', checkIfExists: true)
                     ],
                     [
-                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bim', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.bim', checkIfExists: true)
                     ],
                     [
-                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
                     ]
                 ]
                 input[1] = GAWK_LDMS1_VARIANTS.out.output
@@ -116,13 +116,13 @@ nextflow_process {
                     [ id:'bfile_ldms2', part_gcta_job:1, nparts_gcta:1 ],
                     file('bfile.mbfile'),
                     [
-                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bed', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.bed', checkIfExists: true)
                     ],
                     [
-                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bim', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.bim', checkIfExists: true)
                     ],
                     [
-                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
                     ]
                 ]
                 input[1] = GAWK_LDMS2_VARIANTS.out.output

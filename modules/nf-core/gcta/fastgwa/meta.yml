@@ -39,21 +39,23 @@ input:
         description: |
           Groovy map containing sparse GRM metadata
           e.g. `[ id:'plink_simulated_sp' ]`
+          Used for non-binary fastGWA MLM modes and ignored when `meta3.is_binary` is true
     - sparse_grm_id:
         type: file
-        description: Sparse GRM ID file (`.grm.id`)
+        description: Sparse GRM ID file (`.grm.id`), ignored when `meta3.is_binary` is true
         pattern: "*.grm.id"
         ontologies: []
     - sparse_grm_sp:
         type: file
-        description: Sparse GRM sparse matrix file (`.grm.sp`)
+        description: Sparse GRM sparse matrix file (`.grm.sp`), ignored when `meta3.is_binary` is true
         pattern: "*.grm.sp"
         ontologies: []
   - - meta3:
         type: map
         description: |
           Groovy map containing phenotype metadata
-          e.g. `[ id:'QuantitativeTrait' ]`
+          e.g. `[ id:'QuantitativeTrait', is_binary:false ]`
+          `meta3.is_binary` is required and selects logistic vs MLM fastGWA mode
           Optional phenotype selector may be supplied as `meta3.mpheno`
     - phenotype_file:
         type: file
@@ -83,6 +85,11 @@ input:
         pattern: "*.{covar,cov,txt,tsv}"
         ontologies:
           - edam: "http://edamontology.org/format_3475"
+  - mlm_exact:
+      type: boolean
+      description: |
+        Apply `--fastGWA-mlm-exact` for non-binary phenotypes.
+        Ignored when `meta3.is_binary` is true because binary phenotypes use `--fastGWA-lr`.
 output:
   results:
     - - meta:

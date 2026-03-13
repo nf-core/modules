@@ -3,8 +3,8 @@ process GCTA_FASTGWA {
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gcta:1.94.1--h9ee0642_0' :
-        'biocontainers/gcta:1.94.1--h9ee0642_0' }"
+        'docker://community.wave.seqera.io/library/gcta:1.94.1--9bc35dc424fcf6e9' :
+        'community.wave.seqera.io/library/gcta:1.94.1--9bc35dc424fcf6e9' }"
 
     input:
     tuple val(meta), path(bed_pgen), path(bim_pvar), path(fam_psam)
@@ -12,6 +12,7 @@ process GCTA_FASTGWA {
     tuple val(meta3), path(phenotype_file)
     tuple val(meta4), path(quant_covariates_file)
     tuple val(meta5), path(cat_covariates_file)
+    val mlm_exact
 
     output:
     tuple val(meta), val(meta3), path("${meta.id}_${meta3.id}.fastGWA"), emit: results
@@ -24,20 +25,20 @@ process GCTA_FASTGWA {
     def qcovar_arg = quant_covariates_file ? "--qcovar ${quant_covariates_file}" : ''
     def covar_arg = cat_covariates_file ? "--covar ${cat_covariates_file}" : ''
     def mpheno_arg = meta3.mpheno ? "--mpheno ${meta3.mpheno}" : ''
-    def grm_prefix = meta2.id
+    def grm_arg = meta3.is_binary ? '' : "--grm-sparse ${meta2.id}"
     def genotype_suffix = bed_pgen.name.tokenize('.').last()
     def genotype_flag = genotype_suffix == 'pgen' ? '--pfile' : '--bfile'
-    def genotype_prefix = bed_pgen.name.replaceFirst(/\.(bed|pgen)$/, '')
+    def genotype_prefix = meta.id
     def out = "${meta.id}_${meta3.id}"
     def extra_args = task.ext.args ?: ''
-    def mode_arg = extra_args.contains('--fastGWA-mlm-exact') || extra_args.contains('--fastGWA-lr') ? '' : '--fastGWA-mlm'
+    def mode_arg = meta3.is_binary ? '--fastGWA-lr' : (mlm_exact ? '--fastGWA-mlm-exact' : '--fastGWA-mlm')
 
     """
     set -euo pipefail
 
     gcta \\
         ${genotype_flag} ${genotype_prefix} \\
-        --grm-sparse ${grm_prefix} \\
+        ${grm_arg} \\
         ${mode_arg} \\
         --pheno ${phenotype_file} \\
         ${qcovar_arg} \\

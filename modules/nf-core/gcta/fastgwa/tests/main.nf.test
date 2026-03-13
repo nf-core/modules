@@ -11,6 +11,7 @@ nextflow_process {
     tag "gcta/makegrmpart"
     tag "gcta/makebksparse"
     tag "gawk"
+    config "./nextflow.config"
 
     setup {
         run("GAWK", alias: "GAWK_QUANTITATIVE_PHENO") {
@@ -22,6 +23,20 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
                 ]
                 input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$3 }').collectFile(name:'quantitative_phenotype.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_BINARY_PHENO") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'BinaryTrait' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_binary_phenoname.phe', checkIfExists: true)
+                ]
+                input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$3 }').collectFile(name:'binary_phenotype.awk')
                 input[2] = false
                 """
             }
@@ -95,13 +110,16 @@ nextflow_process {
         }
     }
 
-    test("homo_sapiens popgen - plink1 with sparse GRM and covariates") {
-        config "./nextflow.config"
+    test("homo_sapiens popgen - plink1 with sparse GRM and quantitative phenotype") {
         when {
             process {
                 """
                 sparse_grm = GCTA_MAKEBKSPARSE_DENSE.out.sparse_grm_files.map { meta, sparse_grm_id, sparse_grm_sp ->
                     [[ id:meta.id + '_sp' ], sparse_grm_id, sparse_grm_sp]
+                }
+
+                quantitative_pheno = GAWK_QUANTITATIVE_PHENO.out.output.map { meta, phenotype_file ->
+                    [[ id:meta.id, is_binary:false ], phenotype_file]
                 }
 
                 input[0] = [
@@ -111,9 +129,10 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
                 ]
                 input[1] = sparse_grm
-                input[2] = GAWK_QUANTITATIVE_PHENO.out.output
+                input[2] = quantitative_pheno
                 input[3] = GAWK_QUANTITATIVE_COVARIATES.out.output
                 input[4] = GAWK_CATEGORICAL_COVARIATES.out.output
+                input[5] = true
                 """
             }
         }
@@ -135,15 +154,62 @@ nextflow_process {
         }
     }
 
+    test("homo_sapiens popgen - plink1 with sparse GRM and binary phenotype") {
+        when {
+            process {
+                """
+                sparse_grm = GCTA_MAKEBKSPARSE_DENSE.out.sparse_grm_files.map { meta, sparse_grm_id, sparse_grm_sp ->
+                    [[ id:meta.id + '_sp' ], sparse_grm_id, sparse_grm_sp]
+                }
+
+                binary_pheno = GAWK_BINARY_PHENO.out.output.map { meta, phenotype_file ->
+                    [[ id:meta.id, is_binary:true ], phenotype_file]
+                }
+
+                input[0] = [
+                    [ id:"plink_simulated" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+                ]
+                input[1] = sparse_grm
+                input[2] = binary_pheno
+                input[3] = GAWK_QUANTITATIVE_COVARIATES.out.output
+                input[4] = GAWK_CATEGORICAL_COVARIATES.out.output
+                input[5] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.results.size() == 1 },
+                { assert process.out.results.get(0).get(0).id == "plink_simulated" },
+                { assert process.out.results.get(0).get(1).id == "BinaryTrait" },
+                { assert path(process.out.results.get(0).get(2)).fileName.toString() == "plink_simulated_BinaryTrait.fastGWA" },
+                {
+                    assert snapshot(
+                        process.out.results,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
     test("homo_sapiens popgen - plink2 with sparse GRM - stub") {
         options "-stub"
-        config "./nextflow.config"
 
         when {
             process {
                 """
                 sparse_grm = GCTA_MAKEBKSPARSE_DENSE.out.sparse_grm_files.map { meta, sparse_grm_id, sparse_grm_sp ->
                     [[ id:meta.id + '_sp' ], sparse_grm_id, sparse_grm_sp]
+                }
+
+                quantitative_pheno = GAWK_QUANTITATIVE_PHENO.out.output.map { meta, phenotype_file ->
+                    [[ id:meta.id, is_binary:false ], phenotype_file]
                 }
 
                 input[0] = [
@@ -153,9 +219,10 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.psam", checkIfExists: true)
                 ]
                 input[1] = sparse_grm
-                input[2] = GAWK_QUANTITATIVE_PHENO.out.output
+                input[2] = quantitative_pheno
                 input[3] = [[ id:'covariates_quant' ], []]
                 input[4] = [[ id:'covariates_cat' ], []]
+                input[5] = false
                 """
             }
         }
