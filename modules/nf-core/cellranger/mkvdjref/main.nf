@@ -12,7 +12,7 @@ process CELLRANGER_MKVDJREF {
 
     output:
     path "${reference_name}", emit: reference
-    path "versions.yml"     , emit: versions
+    tuple val("${task.process}"), val('cellranger'), eval('cellranger --version | sed "s/.*-//"'), emit: versions_cellranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
