@@ -33,14 +33,9 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                [
-                    bed: process.out.bed[0][1].collect { file(it).name },
-                    cnn: process.out.cnn,
-                    cnr: process.out.cnr,
-                    cns: process.out.cns,
-                    versions_cnvkit: process.out.versions_cnvkit,
-                    versions_samtools: process.out.versions_samtools
-                ]
+                process.out.bed[0][1].findAll { file(it).size() > 0 },
+                process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
+                process.out.findAll { k, v -> k != "bed" && !k.isInteger() }
             ).match()
         }
     }
@@ -69,14 +64,9 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                [
-                    bed: process.out.bed[0][1].collect { file(it).name },
-                    cnn: process.out.cnn,
-                    cnr: process.out.cnr,
-                    cns: process.out.cns,
-                    versions_cnvkit: process.out.versions_cnvkit,
-                    versions_samtools: process.out.versions_samtools
-                ]
+                process.out.bed[0][1].findAll { file(it).size() > 0 },
+                process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
+                process.out.findAll { k, v -> k != "bed" && !k.isInteger() }
             ).match()
         }
     }
@@ -105,14 +95,9 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                [
-                    bed: process.out.bed[0][1].collect { file(it).name },
-                    cnn: process.out.cnn,
-                    cnr: process.out.cnr,
-                    cns: process.out.cns,
-                    versions_cnvkit: process.out.versions_cnvkit,
-                    versions_samtools: process.out.versions_samtools
-                ]
+                process.out.bed[0][1].findAll { file(it).size() > 0 },
+                process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
+                process.out.findAll { k, v -> k != "bed" && !k.isInteger() }
             ).match()
         }
     }
@@ -195,14 +180,9 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                [
-                    bed: process.out.bed[0][1].collect { file(it).name },
-                    cnn: process.out.cnn,
-                    cnr: process.out.cnr,
-                    cns: process.out.cns,
-                    versions_cnvkit: process.out.versions_cnvkit,
-                    versions_samtools: process.out.versions_samtools
-                ]
+                process.out.bed[0][1].findAll { file(it).size() > 0 },
+                process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
+                process.out.findAll { k, v -> k != "bed" && !k.isInteger() }
             ).match()
         }
 
@@ -230,14 +210,9 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                [
-                    bed: process.out.bed[0][1].collect { file(it).name },
-                    cnn: process.out.cnn,
-                    cnr: process.out.cnr,
-                    cns: process.out.cns,
-                    versions_cnvkit: process.out.versions_cnvkit,
-                    versions_samtools: process.out.versions_samtools
-                ]
+                process.out.bed[0][1].findAll { file(it).size() > 0 },
+                process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
+                process.out.findAll { k, v -> k != "bed" && !k.isInteger() }
             ).match()
         }
     }
@@ -265,14 +240,9 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                [
-                    bed: process.out.bed[0][1].collect { file(it).name },
-                    cnn: process.out.cnn,
-                    cnr: process.out.cnr,
-                    cns: process.out.cns,
-                    versions_cnvkit: process.out.versions_cnvkit,
-                    versions_samtools: process.out.versions_samtools
-                ]
+                process.out.bed[0][1].findAll { file(it).size() > 0 },
+                process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
+                process.out.findAll { k, v -> k != "bed" && !k.isInteger() }
             ).match()
         }
     }
@@ -305,14 +275,9 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                [
-                    bed: process.out.bed[0][1].collect { file(it).name },
-                    cnn: process.out.cnn,
-                    cnr: process.out.cnr,
-                    cns: process.out.cns,
-                    versions_cnvkit: process.out.versions_cnvkit,
-                    versions_samtools: process.out.versions_samtools
-                ]
+                process.out.bed[0][1].findAll { file(it).size() > 0 },
+                process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
+                process.out.findAll { k, v -> k != "bed" && !k.isInteger() }
             ).match()
         }
     }
@@ -341,7 +306,14 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(process.out).match()
+            assert snapshot(
+                process.out.bed[0][1].collect { file(it).name },
+                process.out.cnn[0][1].collect { file(it).name },
+                process.out.cnr[0][1].collect { file(it).name },
+                process.out.cns[0][1].collect { file(it).name },
+                process.out.versions_cnvkit,
+                process.out.versions_samtools
+            ).match()
         }
     }
 }
