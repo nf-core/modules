@@ -16,7 +16,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file('https://www.agap-ge2pop.org/wp-content/uploads/macse/data/Ref_ali_files/Raphidioptera_BOLD_COI_final_align_NT.aln', checkIfExists: true),
+                    file('https://github.com/nf-core/test-datasets/blob/5636177eb32fef2c40032826233be58e52ba3bef/data/genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                 ]
                 """
             }
@@ -44,7 +44,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file('https://www.agap-ge2pop.org/wp-content/uploads/macse/data/Ref_ali_files/Raphidioptera_BOLD_COI_final_align_NT.aln', checkIfExists: true),
+                    file('https://github.com/nf-core/test-datasets/blob/5636177eb32fef2c40032826233be58e52ba3bef/data/genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                 ]
                 """
             }

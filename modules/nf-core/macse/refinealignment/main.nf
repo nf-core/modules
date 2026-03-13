@@ -23,8 +23,10 @@ process MACSE_REFINEALIGNMENT {
     def prefix = task.ext.prefix ?: fasta.baseName
 
     """
+    sed '/^>/!s/[[:space:]]//g' ${fasta} > ${prefix}.clean.fasta
+    
     macse -prog refineAlignment \
-        -align ${fasta} \
+        -align ${prefix}.clean.fasta \
         $args
     """
 
