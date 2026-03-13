@@ -12,7 +12,7 @@ process DIANN_INSILICOLIBRARYGENERATION {
     output:
     tuple val(meta), path("*.predicted.speclib"), emit: predict_speclib
     tuple val(meta), path("*.log"),               emit: log
-    path "versions.yml",                          emit: versions
+    tuple val("${task.process}"), val('diann'), eval('diann | grep "DIA-NN" | grep -oP "\\d+\\.\\d+(\\.\\w+)*(\\.[\\d]+)?"'), emit: versions_diann, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,11 +35,6 @@ process DIANN_INSILICOLIBRARYGENERATION {
             ${args}
 
     cp *lib.log.txt ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        diann: \$(diann 2>&1 | grep "DIA-NN" | grep -oP "\\d+\\.\\d+(\\.\\w+)*(\\.[\\d]+)?")
-    END_VERSIONS
     """
 
     stub:
@@ -52,10 +47,5 @@ process DIANN_INSILICOLIBRARYGENERATION {
     """
     touch ${prefix}.predicted.speclib
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        diann: \$(diann 2>&1 | grep "DIA-NN" | grep -oP "\\d+\\.\\d+(\\.\\w+)*(\\.[\\d]+)?")
-    END_VERSIONS
     """
 }
