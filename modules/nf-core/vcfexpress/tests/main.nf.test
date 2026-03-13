@@ -8,8 +8,6 @@ nextflow_process {
     tag "modules_nfcore"
     tag "vcfexpress"
 
-    config "./nextflow.config"
-
     test("vcfexpress - vcf") {
 
         when {
@@ -41,12 +39,16 @@ nextflow_process {
         when {
             process {
                 """
+                // Create dummy lua prelude file
+                def lua_file = file("${moduleDir}/tests/prelude_test.lua")
+                lua_file.text = 'header:add_filter({ID="LowQual", Description="Qual less than 1000"})'
+                
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
                 ]
 
-                input[1] = [file('${moduleDir}/tests/prelude_test.lua')]
+                input[1] = file(lua_file)
                 """
             }
         }
@@ -102,7 +104,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
                 ]
 
-                input[1] = [file('${moduleDir}/tests/prelude_test.lua')]
+                input[1] = file('${moduleDir}/tests/prelude_test.lua')
                 """
             }
         }
