@@ -4,8 +4,8 @@ process ORTHOFINDER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/orthofinder:2.5.5--hdfd78af_2':
-        'biocontainers/orthofinder:2.5.5--hdfd78af_2' }"
+        'https://depot.galaxyproject.org/singularity/orthofinder:3.1.3--hdfd78af_0':
+        'biocontainers/orthofinder:3.1.3--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fastas, stageAs: 'input/')
@@ -14,7 +14,9 @@ process ORTHOFINDER {
     output:
     tuple val(meta), path("$prefix")                     , emit: orthofinder
     tuple val(meta), path("$prefix/WorkingDirectory")    , emit: working
-    path "versions.yml"                                  , emit: versions
+    tuple val("${task.process}"), val('orthofinder'), eval("NO_COLOR=1 orthofinder --version | cut -d 'v' -f2 | perl -pe 's/\\e\\[[0-9;]*m//g'"), emit: versions_orthofinder, topic: versions
+
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,12 +27,9 @@ process ORTHOFINDER {
     def include_command = prior_run   ? "-b $prior_run" : ''
 
     """
-    mkdir temp_pickle
-
     orthofinder \\
         -t $task.cpus \\
         -a $task.cpus \\
-        -p temp_pickle \\
         -f input \\
         -n $prefix \\
         $include_command \\
@@ -43,11 +42,6 @@ process ORTHOFINDER {
     if [ -e ${prior_run}/OrthoFinder/Results_$prefix ]; then
         mv ${prior_run}/OrthoFinder/Results_$prefix $prefix
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        orthofinder: \$(orthofinder -h | sed -n 's/.*version \\(.*\\) Copy.*/\\1/p')
-    END_VERSIONS
     """
 
     stub:
@@ -67,12 +61,6 @@ process ORTHOFINDER {
     mkdir       $prefix/Single_Copy_Orthologue_Sequences
     mkdir       $prefix/Species_Tree
     mkdir       $prefix/WorkingDirectory
-
     touch       $prefix/Log.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        orthofinder: \$(orthofinder -h | sed -n 's/.*version \\(.*\\) Copy.*/\\1/p')
-    END_VERSIONS
     """
 }
