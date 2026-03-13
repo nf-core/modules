@@ -17,7 +17,7 @@ process GANON_CLASSIFY {
     tuple val(meta), path("*.all"), emit: all, optional: true
     tuple val(meta), path("*.unc"), emit: unc, optional: true
     tuple val(meta), path("*.log"), emit: log
-    tuple val("${task.process}"), val('ganon'), eval("ganon --version 2>1"), emit: versions_ganon, topic: versions
+    tuple val("${task.process}"), val('ganon'), eval("ganon --version 2>1 | sed 's/.*ganon //g'"), emit: versions_ganon, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

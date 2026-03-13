@@ -30,7 +30,7 @@ input:
         description: Single or paired FASTQ files, optionally gzipped
         pattern: "*.{fq,fq.gz,fastq,fastq.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1930
+          - edam: http://edamontology.org/format_1930 # FASTQ
   - db:
       type: file
       description: Ganon database files from build or build-custom
@@ -111,7 +111,7 @@ output:
       - ganon:
           type: string
           description: The name of the tool
-      - ganon --version 2>1:
+      - ganon --version 2>1 | sed 's/.*ganon //g':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -122,7 +122,7 @@ topics:
       - ganon:
           type: string
           description: The name of the tool
-      - ganon --version 2>1:
+      - ganon --version 2>1 | sed 's/.*ganon //g':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

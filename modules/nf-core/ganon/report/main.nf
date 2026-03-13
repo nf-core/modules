@@ -12,7 +12,7 @@ process GANON_REPORT {
 
     output:
     tuple val(meta), path("*.tre"), emit: tre
-    tuple val("${task.process}"), val('ganon'), eval("ganon --version 2>1"), emit: versions_ganon, topic: versions
+    tuple val("${task.process}"), val('ganon'), eval("ganon --version 2>1 | sed 's/.*ganon //g'"), emit: versions_ganon, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
