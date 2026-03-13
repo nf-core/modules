@@ -94,9 +94,8 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
             ch_bismark_index,
         )
         ch_coverage2cytosine_coverage = BISMARK_COVERAGE2CYTOSINE.out.coverage
-        ch_coverage2cytosine_report = BISMARK_COVERAGE2CYTOSINE.out.report
-        ch_coverage2cytosine_summary = BISMARK_COVERAGE2CYTOSINE.out.summary
-        ch_versions = ch_versions.mix(BISMARK_COVERAGE2CYTOSINE.out.versions)
+        ch_coverage2cytosine_report   = BISMARK_COVERAGE2CYTOSINE.out.report
+        ch_coverage2cytosine_summary  = BISMARK_COVERAGE2CYTOSINE.out.summary
     }
 
     /*
