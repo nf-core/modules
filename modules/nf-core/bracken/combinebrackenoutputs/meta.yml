@@ -7,14 +7,15 @@ keywords:
   - reporting
 tools:
   - "bracken":
-      description: Bracken (Bayesian Reestimation of Abundance with KrakEN) is a highly
-        accurate statistical method that computes the abundance of species in DNA sequences
-        from a metagenomics sample.
+      description: Bracken (Bayesian Reestimation of Abundance with KrakEN) is a
+        highly accurate statistical method that computes the abundance of species
+        in DNA sequences from a metagenomics sample.
       homepage: https://ccb.jhu.edu/software/bracken/
       documentation: https://ccb.jhu.edu/software/bracken/index.shtml?t=manual
       tool_dev_url: https://github.com/jenniferlu717/Bracken
       doi: "10.7717/peerj-cs.104"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:bracken
 input:
   - - meta:
@@ -39,13 +40,27 @@ output:
           description: Combined output in table format
           pattern: "*.txt"
           ontologies: []
+  versions_combine_bracken_outputs:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - combine_bracken_outputs:
+          type: string
+          description: The name of the tool
+      - bracken -v | cut -f2 -d"v":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - combine_bracken_outputs:
+          type: string
+          description: The name of the tool
+      - bracken -v | cut -f2 -d"v":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:
