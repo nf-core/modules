@@ -30,7 +30,7 @@ process CELLRANGER_MULTI {
     output:
     tuple val(meta), path("cellranger_multi_config.csv"), emit: config
     tuple val(meta), path("**/outs/**")                 , emit: outs
-    path "versions.yml"                                 , emit: versions
+    path "versions.yml"                                 , emit: versions_cellranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
