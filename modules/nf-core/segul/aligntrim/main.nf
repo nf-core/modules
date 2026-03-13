@@ -50,8 +50,15 @@ process SEGUL_ALIGNTRIM {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def args          = task.ext.args ?: ''
+    prefix            = task.ext.prefix ?: "${meta.id}"
+    def data_type     = datatype   ? "--datatype ${datatype}"        : '--datatype dna'
+    def input_format  = args.contains('--input-format')  ? '' : '--input-format auto'
+    def output_format = args.contains('--output-format') ? '' : '--output-format fasta'
+    def trim_mode     = args.contains('--missing-data') || args.contains('--pinf') ? '' : '--missing-data 0.5'
     """
+    echo ${data_type} ${input_format} ${output_format} ${trim_mode} ${args}
+
     mkdir -p ${prefix}/trimmed_alignments
     touch ${prefix}/trimmed_alignments/stub.fas
     touch ${prefix}/trimming_summary.csv
