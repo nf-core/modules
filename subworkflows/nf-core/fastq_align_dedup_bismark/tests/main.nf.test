@@ -75,7 +75,7 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
-                    workflow.out.bai.collect { meta, bai -> file(bai).name },
+                    workflow.out.index.collect { meta, index -> file(index).name },
                     workflow.out.coverage2cytosine_coverage,
                     workflow.out.coverage2cytosine_report,
                     workflow.out.coverage2cytosine_summary,
@@ -127,7 +127,7 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
-                    workflow.out.bai.collect { meta, bai -> file(bai).name },
+                    workflow.out.index.collect { meta, index -> file(index).name },
                     workflow.out.coverage2cytosine_coverage,
                     workflow.out.coverage2cytosine_report,
                     workflow.out.coverage2cytosine_summary,
@@ -178,7 +178,7 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
-                    workflow.out.bai.collect { meta, bai -> file(bai).name },
+                    workflow.out.index.collect { meta, index -> file(index).name },
                     workflow.out.coverage2cytosine_coverage,
                     workflow.out.coverage2cytosine_report,
                     workflow.out.coverage2cytosine_summary,
@@ -229,7 +229,7 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
-                    workflow.out.bai.collect { meta, bai -> file(bai).name },
+                    workflow.out.index.collect { meta, index -> file(index).name },
                     workflow.out.coverage2cytosine_coverage,
                     workflow.out.coverage2cytosine_report,
                     workflow.out.coverage2cytosine_summary,
@@ -278,7 +278,7 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
-                    workflow.out.bai.collect { meta, bai -> file(bai).name },
+                    workflow.out.index.collect { meta, index -> file(index).name },
                     workflow.out.coverage2cytosine_coverage,
                     workflow.out.coverage2cytosine_report,
                     workflow.out.coverage2cytosine_summary,
@@ -330,7 +330,7 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
-                    workflow.out.bai.collect { meta, bai -> file(bai).name },
+                    workflow.out.index.collect { meta, index -> file(index).name },
                     workflow.out.coverage2cytosine_coverage,
                     workflow.out.coverage2cytosine_report,
                     workflow.out.coverage2cytosine_summary,
@@ -381,7 +381,7 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
-                    workflow.out.bai.collect { meta, bai -> file(bai).name },
+                    workflow.out.index.collect { meta, index -> file(index).name },
                     workflow.out.coverage2cytosine_coverage,
                     workflow.out.coverage2cytosine_report,
                     workflow.out.coverage2cytosine_summary,
@@ -432,7 +432,7 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
-                    workflow.out.bai.collect { meta, bai -> file(bai).name },
+                    workflow.out.index.collect { meta, index -> file(index).name },
                     workflow.out.coverage2cytosine_coverage,
                     workflow.out.coverage2cytosine_report,
                     workflow.out.coverage2cytosine_summary,
