@@ -32,6 +32,7 @@ process CRISPRESSO2 {
     }
 
     """
+    export MPLCONFIGDIR=.matplotlib
     CRISPResso \\
         ${read_inputs} \\
         --name ${prefix} \\
@@ -44,6 +45,7 @@ process CRISPRESSO2 {
     """
     #!/usr/bin/env bash
     set -e
+    export MPLCONFIGDIR=.matplotlib
 
     mkdir -p CRISPResso_on_${prefix}
     touch CRISPResso_on_${prefix}/${prefix}.html
