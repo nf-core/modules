@@ -20,7 +20,7 @@ process GFFCOMPARE {
     tuple val(meta), path("*.loci")         , emit: loci
     tuple val(meta), path("*.stats")        , emit: stats
     tuple val(meta), path("*.tracking")     , emit: tracking
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('gffcompare'), eval('gffcompare --version 2>&1 | sed "s/gffcompare v//"'), emit: versions_gffcompare, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,10 +38,6 @@ process GFFCOMPARE {
         -o $prefix \\
         $gtfs
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gffcompare: \$(echo \$(gffcompare --version 2>&1) | sed 's/^gffcompare v//')
-    END_VERSIONS
     """
 
     stub:
@@ -55,9 +51,5 @@ process GFFCOMPARE {
     touch ${prefix}.stats
     touch ${prefix}.tracking
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gffcompare: \$(echo \$(gffcompare --version 2>&1) | sed 's/^gffcompare v//')
-    END_VERSIONS
     """
 }
