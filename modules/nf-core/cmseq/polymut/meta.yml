@@ -66,9 +66,9 @@ output:
       - cmseq:
           type: string
           description: The tool name
-      - "1.0.4":
+      - VERSION:
           type: string
-          description: The hardcoded version of the tool
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -77,9 +77,9 @@ topics:
       - cmseq:
           type: string
           description: The tool name
-      - "1.0.4":
+      - VERSION:
           type: string
-          description: The hardcoded version of the tool
+          description: The expression to obtain the version of the tool
 authors:
   - "@maxibor"
 maintainers:

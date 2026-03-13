@@ -13,12 +13,13 @@ process CMSEQ_POLYMUT {
 
     output:
     tuple val(meta), path("*.txt"), emit: polymut
-    tuple val("${task.process}"), val('cmseq'), val('1.0.4'), topic: versions, emit: versions_cmseq
+    tuple val("${task.process}"), val('cmseq'), val(VERSION), topic: versions, emit: versions_cmseq
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    VERSION = '1.0.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def fasta_refid = fasta ? "-c $fasta" : ""
@@ -33,6 +34,7 @@ process CMSEQ_POLYMUT {
     """
 
     stub:
+    VERSION = '1.0.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
