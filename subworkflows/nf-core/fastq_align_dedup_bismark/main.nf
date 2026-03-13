@@ -52,7 +52,6 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
         )
         ch_alignments        = BISMARK_DEDUPLICATE.out.bam
         ch_alignment_reports = BISMARK_ALIGN.out.report.join(BISMARK_DEDUPLICATE.out.report)
-        ch_versions          = ch_versions.mix(BISMARK_DEDUPLICATE.out.versions)
     }
 
     /*
