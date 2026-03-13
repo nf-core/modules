@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process MODKIT_CALLMODS"
+    script "../main.nf"
+    process "MODKIT_CALLMODS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "modkit"
+    tag "modkit/callmods"
+
+    test("homo_sapiens - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/bc_anchored_10_reads.sorted.bam', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    process.out.log.collect { tuple -> file(tuple[1]).name },
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/bc_anchored_10_reads.sorted.bam', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+}

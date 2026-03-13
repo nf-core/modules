@@ -4,8 +4,8 @@ process BBMAP_PILEUP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-008daec56b7aaf3f162d7866758142b9f889d690:e8a286b2e789c091bac0a57302cdc78aa0112353-0' :
-        'biocontainers/mulled-v2-008daec56b7aaf3f162d7866758142b9f889d690:e8a286b2e789c091bac0a57302cdc78aa0112353-0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5aae5977ff9de3e01ff962dc495bfa23f4304c676446b5fdf2de5c7edfa2dc4e/data' :
+        'community.wave.seqera.io/library/bbmap_pigz:07416fe99b090fa9' }"
 
     input:
     tuple val(meta), path(bam)
@@ -13,7 +13,9 @@ process BBMAP_PILEUP {
     output:
     tuple val(meta), path("*.stats.txt"), emit: covstats
     tuple val(meta), path("*.hist.txt") , emit: hist
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('bbmap'), eval("bbversion.sh | grep -v 'Duplicate cpuset'"), emit: versions_bbmap, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
+    tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,12 +30,5 @@ process BBMAP_PILEUP {
         out=${prefix}.coverage.stats.txt \\
         hist=${prefix}.coverage.hist.txt \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-    END_VERSIONS
     """
 }

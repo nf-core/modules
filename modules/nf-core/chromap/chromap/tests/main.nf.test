@@ -37,7 +37,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ]
                 input[1] = [
-                    [:], 
+                    [:],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = CHROMAP_INDEX.out.index
@@ -70,7 +70,7 @@ nextflow_process {
                     ]
                 ]
                 input[1] = [
-                    [:], 
+                    [:],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = CHROMAP_INDEX.out.index
@@ -96,18 +96,18 @@ nextflow_process {
         when {
 
             config "./nextflow.config"
-            
+
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    [ 
+                    [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ]
                 input[1] = [
-                    [:], 
+                    [:],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = CHROMAP_INDEX.out.index
@@ -122,12 +122,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { 
+                {
                     assert snapshot(
                         bam(process.out.bam[0][1]).getHeaderMD5(),
                         bam(process.out.bam[0][1]).getReadsMD5(),
                         process.out.versions
-                    )            
+                    )
                 }
             )
         }
@@ -146,7 +146,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ]
                 input[1] = [
-                    [:], 
+                    [:],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = CHROMAP_INDEX.out.index

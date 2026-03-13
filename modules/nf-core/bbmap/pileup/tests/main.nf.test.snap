@@ -2,27 +2,6 @@
     "test-bbmap-pileup": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.coverage.stats.txt:md5,c3fc9d0681589b69e3301ca3cb27b7a4"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.coverage.hist.txt:md5,96915920ef42ddc9483457dd4585a088"
-                    ]
-                ],
-                "2": [
-                    "versions.yml:md5,e293e3ed6387ce89f3443050f36fb079"
-                ],
                 "covstats": [
                     [
                         {
@@ -41,15 +20,33 @@
                         "test.coverage.hist.txt:md5,96915920ef42ddc9483457dd4585a088"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,e293e3ed6387ce89f3443050f36fb079"
+                "versions_bbmap": [
+                    [
+                        "BBMAP_PILEUP",
+                        "bbmap",
+                        "39.18"
+                    ]
+                ],
+                "versions_pigz": [
+                    [
+                        "BBMAP_PILEUP",
+                        "pigz",
+                        "2.8"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "BBMAP_PILEUP",
+                        "samtools",
+                        "1.21"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-03-11T12:28:51.196136035",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-26T14:33:48.464105"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     }
 }

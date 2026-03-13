@@ -22,7 +22,6 @@ components:
   - fgbio/filterconsensusreads
   - samblaster
   - samtools/bam2fq
-  - samtools/view
   - samtools/sort
   - samtools/index
   - samtools/fastq
@@ -59,10 +58,6 @@ input:
         - Adjacency
         - Paired
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - ubam:
       type: file
       description: unmapped bam file

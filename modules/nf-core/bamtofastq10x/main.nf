@@ -12,7 +12,7 @@ process BAMTOFASTQ10X {
 
     output:
     tuple val(meta), path("**/*.fastq.gz"), emit: fastq
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('bamtofastq10x'), eval('bamtofastq --version |& sed "1!d ; s/bamtofastq //"'), emit: versions_bamtofastq10x, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,22 +25,12 @@ process BAMTOFASTQ10X {
         $args \\
         $bam \\
         $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bamtofastq10x: \$(bamtofastq --version |& sed '1!d ; s/bamtofastq //')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}/bamtofastq10x
-    touch ${prefix}/bamtofastq10x/bamtofastq.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bamtofastq10x: \$(bamtofastq --version |& sed '1!d ; s/bamtofastq //')
-    END_VERSIONS
+    echo "" | gzip > ${prefix}/bamtofastq10x/bamtofastq.fastq.gz
     """
 }

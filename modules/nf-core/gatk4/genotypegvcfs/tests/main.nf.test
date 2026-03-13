@@ -55,16 +55,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.vcf.collect { [it[0], path(it[1]).vcf.variantsMD5] },
                     process.out.tbi.collect { [it[0], file(it[1]).name] },
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
-
     }
 
     test("homo_sapiens - [gvcf_gz, tbi, [], []], fasta, fai, dict, dbsnp, dbsnp_tbi") {
@@ -104,16 +103,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.vcf.collect { [it[0], path(it[1]).vcf.variantsMD5] },
                     process.out.tbi.collect { [it[0], file(it[1]).name] },
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
-
     }
 
     test("homo_sapiens - [gvcf_gz, tbi, bed, []], fasta, fai, dict, [], []") {
@@ -147,16 +145,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.vcf.collect { [it[0], path(it[1]).vcf.variantsMD5] },
                     process.out.tbi.collect { [it[0], file(it[1]).name] },
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
-
     }
 
     test("homo_sapiens - [gendb, [], [], []], fasta, fai, dict, [], []") {
@@ -184,16 +181,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.vcf.collect { [it[0], path(it[1]).vcf.variantsMD5] },
                     process.out.tbi.collect { [it[0], file(it[1]).name] },
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
-
     }
 
     test("homo_sapiens - [gendb, bed, [], []], fasta, fai, dict, [], []") {
@@ -201,14 +197,14 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map { meta, gendb -> 
-                    [ 
+                input[0] = UNTAR.out.untar.map { meta, gendb ->
+                    [
                         meta,
                         gendb,
                         [],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists:true),
                         []
-                    ] 
+                    ]
                 }
                 input[1] = [
                     [id:"fasta"],
@@ -229,16 +225,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.vcf.collect { [it[0], path(it[1]).vcf.variantsMD5] },
                     process.out.tbi.collect { [it[0], file(it[1]).name] },
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
-
     }
 
     test("homo_sapiens - [gvcf, idx, [], []], fasta, fai, dict, [], [] - stub") {
@@ -274,12 +269,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
 }

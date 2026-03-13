@@ -4,5 +4,7 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
+  ## Pinning numpy to 1.23 until https://github.com/open2c/pairtools/issues/170 is resolved
+  ## Not an issue with the biocontainers because they were built prior to numpy 1.24
   - bioconda::pairtools=1.0.2
   - conda-forge::numpy=1.23

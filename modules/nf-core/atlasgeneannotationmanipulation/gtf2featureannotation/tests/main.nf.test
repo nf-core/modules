@@ -43,7 +43,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.gtf")
                 ]
                 input[1] = [
-                    [ "id":"homo_sapiens" ], 
+                    [ "id":"homo_sapiens" ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta")
                 ]
                 """
@@ -60,9 +60,9 @@ nextflow_process {
     }
 
     test("human - gtf - stub") {
-        
+
         options '-stub'
-        
+
         when {
             process {
                 """

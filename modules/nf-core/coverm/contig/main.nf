@@ -2,10 +2,10 @@ process COVERM_CONTIG {
     tag "${meta.id}"
     label "process_medium"
 
-    conda "bioconda::coverm=0.7.0-0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/coverm:0.7.0--h07ea13f_0' :
-        'biocontainers/coverm:0.7.0--h07ea13f_0' }"
+        'https://depot.galaxyproject.org/singularity/coverm:0.7.0--hcb7b614_4' :
+        'biocontainers/coverm:0.7.0--hcb7b614_4' }"
 
     input:
     tuple val(meta), path(input)
@@ -14,8 +14,8 @@ process COVERM_CONTIG {
     val interleaved
 
     output:
-    tuple val(meta), path("*.depth.txt"), emit: coverage
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.depth.txt"),                                                                      emit: coverage
+    tuple val("${task.process}"), val('coverm'), eval('coverm --version | sed "s/coverm //"'), emit: versions_coverm, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,21 +35,11 @@ process COVERM_CONTIG {
         ${reference_str} \\
         ${args} \\
         --output-file ${prefix}.depth.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        coverm: \$(coverm --version | sed 's/coverm //')
-    END_VERSIONS
     """
 
     stub:
     def prefix        = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.depth.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        coverm: \$(coverm --version | sed 's/coverm //')
-    END_VERSIONS
     """
 }

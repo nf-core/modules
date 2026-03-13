@@ -1,18 +1,19 @@
 name: "bbmap_pileup"
-description: Calculates per-scaffold or per-base coverage information from an unsorted
-  sam or bam file.
+description: Calculates per-scaffold or per-base coverage information from an
+  unsorted sam or bam file.
 keywords:
   - fasta
   - genome
   - coverage
 tools:
   - bbmap:
-      description: BBMap is a short read aligner, as well as various other bioinformatic
-        tools.
-      homepage: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/
-      documentation: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/
+      description: BBMap is a short read aligner, as well as various other
+        bioinformatic tools.
+      homepage: https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/
+      documentation: https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/
       tool_dev_url: "https://github.com/BioInfoTools/BBMap/blob/master/sh/pileup.sh"
-      licence: ["UC-LBL license (see package)"]
+      licence:
+        - "UC-LBL license (see package)"
       identifier: biotools:bbmap
 input:
   - - meta:
@@ -24,9 +25,10 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
 output:
-  - covstats:
-      - meta:
+  covstats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,8 +37,9 @@ output:
           type: file
           description: Coverage statistics
           pattern: "*.stats.txt"
-  - hist:
-      - meta:
+          ontologies: []
+  hist:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,11 +48,66 @@ output:
           type: file
           description: "Histogram of # occurrences of each depth level"
           pattern: "*.hist.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_bbmap:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bbmap:
+          type: string
+          description: The name of the tool
+      - bbversion.sh | grep -v 'Duplicate cpuset':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_pigz:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bbmap:
+          type: string
+          description: The name of the tool
+      - bbversion.sh | grep -v 'Duplicate cpuset':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@edmundmiller"
 maintainers:

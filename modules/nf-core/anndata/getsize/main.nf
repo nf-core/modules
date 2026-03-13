@@ -23,7 +23,7 @@ process ANNDATA_GETSIZE {
     template 'getsize.py'
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
 

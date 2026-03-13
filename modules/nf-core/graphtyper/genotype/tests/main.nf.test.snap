@@ -1,0 +1,83 @@
+{
+    "multiple - region_args": {
+        "content": [
+            "000000001-000029829.vcf.gz.tbi",
+            "000000001-000029829.vcf.gz",
+            [
+                "versions.yml:md5,131488e7eb93b8c761765afcbc51a719"
+            ]
+        ],
+        "timestamp": "2026-02-14T13:12:02.090140452",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "single - region_file": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "e238475710bfaafe703704b006568720"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    [
+                        "000000001-000029829.vcf.gz.tbi:md5,6cf39cb5edec1dad83e9bd85b68ae9d9",
+                        "000001000-000005000.vcf.gz.tbi:md5,4cb176febbc8c26d717a6c6e67b9c905"
+                    ]
+                ]
+            ],
+            [
+                "versions.yml:md5,131488e7eb93b8c761765afcbc51a719"
+            ]
+        ],
+        "timestamp": "2026-02-16T16:05:22.263192697",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "single - region_file - stub": {
+        "content": [
+            {
+                "tbi": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "region1.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "region2.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "region1.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "region2.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,131488e7eb93b8c761765afcbc51a719"
+                ]
+            }
+        ],
+        "timestamp": "2026-02-14T12:28:22.719581642",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    }
+}

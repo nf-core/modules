@@ -2,31 +2,33 @@ process XENIUMRANGER_RENAME {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/xeniumranger:3.0.1"
+    container "nf-core/xeniumranger:4.0"
 
     input:
-    tuple val(meta), path(xenium_bundle)
-    val(region_name)
-    val(cassette_name)
+    tuple val(meta), path(xenium_bundle, stageAs: "bundle/"), val(region_name), val(cassette_name)
 
     output:
-    tuple val(meta), path("**/outs/**"), emit: outs
-    path "versions.yml", emit: versions
+    tuple val(meta), path("${prefix}"), emit: outs
+    tuple val("${task.process}"), val("xeniumranger"), eval("xeniumranger -V | sed -e 's/.*xenium-//'"), emit: versions_xeniumranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "XENIUMRANGER_RENAME module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    def args = task.ext.args ?: ""
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    rm -rf "${prefix}"
+
     xeniumranger rename \\
-        --id="${prefix}" \\
+        --id="XENIUMRANGER_RENAME" \\
         --xenium-bundle="${xenium_bundle}" \\
         --region-name="${region_name}" \\
         --cassette-name="${cassette_name}" \\
@@ -34,25 +36,15 @@ process XENIUMRANGER_RENAME {
         --localmem=${task.memory.toGiga()} \\
         ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        xeniumranger: \$(xeniumranger -V | sed -e "s/xeniumranger-/- /g")
-    END_VERSIONS
+    mv XENIUMRANGER_RENAME/outs "${prefix}"
     """
 
     stub:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "XENIUMRANGER_RENAME module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    mkdir -p "${prefix}/outs/"
-    touch "${prefix}/outs/fake_file.txt"
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        xeniumranger: \$(xeniumranger -V | sed -e "s/xeniumranger-/- /g")
-    END_VERSIONS
+    prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    mkdir -p "${prefix}"
+    touch "${prefix}/experiment.xenium"
     """
 }

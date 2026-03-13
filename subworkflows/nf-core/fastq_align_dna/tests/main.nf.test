@@ -22,6 +22,7 @@ nextflow_workflow {
     tag "snapaligner"
     tag "snapaligner/index"
     tag "snapaligner/align"
+    tag "strobealign"
 
     test("test_fastq_align_bowtie2_SE") {
         setup {
@@ -51,7 +52,6 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(
                     file(workflow.out.bam[0][1]).name,
-                    workflow.out.versions[0]
                 ).match() }
             )
         }
@@ -85,7 +85,6 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(
                     file(workflow.out.bam[0][1]).name,
-                    workflow.out.versions[0]
                 ).match() }
             )
         }
@@ -120,7 +119,6 @@ nextflow_workflow {
                     file(workflow.out.bam[0][1]).name,
                     workflow.out.bam_index,
                     workflow.out.reports,
-                    workflow.out.versions,
                     ).match()
                 }
             )
@@ -156,7 +154,6 @@ nextflow_workflow {
                     file(workflow.out.bam[0][1]).name,
                     workflow.out.bam_index,
                     workflow.out.reports,
-                    workflow.out.versions,
                     ).match()
                 }
             )
@@ -192,7 +189,6 @@ nextflow_workflow {
                     file(workflow.out.bam[0][1]).name,
                     workflow.out.bam_index,
                     workflow.out.reports,
-                    workflow.out.versions,
                     ).match()
                 }
             )
@@ -228,7 +224,6 @@ nextflow_workflow {
                     file(workflow.out.bam[0][1]).name,
                     workflow.out.bam_index,
                     workflow.out.reports,
-                    workflow.out.versions,
                     ).match()
                 }
             )
@@ -263,7 +258,6 @@ nextflow_workflow {
                 { assert snapshot(
                     file(workflow.out.bam[0][1]).name,
                     file(workflow.out.reports[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    file(workflow.out.versions[0]).name
                 ).match() }
             )
         }
@@ -297,7 +291,6 @@ nextflow_workflow {
                 { assert snapshot(
                     file(workflow.out.bam[0][1]).name,
                     file(workflow.out.reports[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    file(workflow.out.versions[0]).name
                 ).match() }
             )
         }
@@ -350,6 +343,46 @@ nextflow_workflow {
                 input[1] = SNAPALIGNER_INDEX.out.index
                 input[2] = Channel.of([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                 input[3] = "snap"
+                input[4] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+    test ("test_fastq_align_strobealign_SE"){
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([[ id:'test', single_end:true ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]])
+                input[1] = [[:],[]]
+                input[2] = Channel.of([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[3] = "strobealign"
+                input[4] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+    test ("test_fastq_align_strobealign_PE"){
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([[ id:'test', single_end:false ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]])
+                input[1] = [[:],[]]
+                input[2] = Channel.of([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[3] = "strobealign"
                 input[4] = true
                 """
             }

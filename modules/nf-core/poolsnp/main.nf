@@ -10,7 +10,7 @@ process POOLSNP {
     input:
     tuple val(meta) , path(mpileup)
     tuple val(meta2), path(reference)
-    tuple val(meta) , val(max_cov), path(max_cov_file)
+    tuple val(meta3), val(max_cov), path(max_cov_file)
 
     output:
     tuple val(meta), path("*.vcf.gz")  , emit: vcf
@@ -44,7 +44,6 @@ process POOLSNP {
     """
 
     stub:
-    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.0.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 

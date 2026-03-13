@@ -1,0 +1,76 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "metacache_query"
+description: Metacache query command for taxonomic classification
+keywords:
+  - metagenomics
+  - classification
+  - metacache
+tools:
+  - "metacache":
+      description: MetaCache is a classification system for mapping genomic sequences
+        (short reads, long reads, contigs, ...) from metagenomic samples to their most
+        likely taxon of origin.
+      homepage: https://github.com/muellan/metacache
+      documentation: https://muellan.github.io/metacache/
+      tool_dev_url: https://github.com/muellan/metacache
+      doi: 10.1093/bioinformatics/btx520
+      licence: ["GPL-3.0 license"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - reads:
+        type: file
+        description: FASTA or FASTQ files
+        pattern: "*.{fasta,fa,fastq,fq}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - db:
+      type: directory
+      description: A MetaCache database contains taxonomic information and min-hash
+        signatures of reference sequences (complete genomes, scaffolds, contigs, ...).
+  - do_abundances:
+      type: boolean
+      description: Flag indicating whether to produce the abundance table.
+output:
+  mapping_results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*mapping.txt":
+          type: file
+          description: Output file containing mapping results
+          pattern: "*mapping.txt"
+          ontologies: []
+  abundances:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*abundances.txt":
+          type: file
+          description: Output file showing absolute and relative abundance of each taxon
+          pattern: "*abundances.txt"
+
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@sofstam"
+  - "@Gullumluvl"
+maintainers:
+  - "@sofstam"
+  - "@Gullumluvl"

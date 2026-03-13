@@ -1,0 +1,93 @@
+nextflow_process {
+
+    name "Test Process SURVIVOR_FILTER"
+    script "../main.nf"
+    process "SURVIVOR_FILTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "survivor"
+    tag "survivor/filter"
+
+    test("homo sapiens - vcf") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true),
+                    []
+                    ]
+                input[1] = 51
+                input[2] = 10001
+                input[3] = 0.01
+                input[4] = 10
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - vcf - bed") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                    ]
+                input[1] = 51
+                input[2] = 10001
+                input[3] = 0.01
+                input[4] = 10
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - vcf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true),
+                    []
+                    ]
+                input[1] = 51
+                input[2] = 10001
+                input[3] = 0.01
+                input[4] = 10
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

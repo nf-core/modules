@@ -16,31 +16,31 @@ process AMPCOMBI2_PARSETABLES {
     path opt_interproscan
 
     output:
-    tuple val(meta), path("${meta.id}/")                                , emit: sample_dir
-    tuple val(meta), path("${meta.id}/contig_gbks/")                    , emit: contig_gbks
-    tuple val(meta), path("${meta.id}/${meta.id}_mmseqs_matches.tsv")   , emit: db_tsv
-    tuple val(meta), path("${meta.id}/${meta.id}_ampcombi.tsv")         , emit: tsv
-    tuple val(meta), path("${meta.id}/${meta.id}_amp.faa")              , emit: faa
-    tuple val(meta), path("${meta.id}/${meta.id}_ampcombi.log")         , emit: sample_log   , optional:true
-    tuple val(meta), path("Ampcombi_parse_tables.log")                  , emit: full_log     , optional:true
-    tuple val(meta), path("amp_${opt_amp_db}_database/")                , emit: db           , optional:true
-    tuple val(meta), path("amp_${opt_amp_db}_database/*.txt")           , emit: db_txt       , optional:true
-    tuple val(meta), path("amp_${opt_amp_db}_database/*.fasta")         , emit: db_fasta     , optional:true
-    tuple val(meta), path("amp_${opt_amp_db}_database/mmseqs2/")        , emit: db_mmseqs    , optional:true
-    path "versions.yml"                                                 , emit: versions
+    tuple val(meta), path("${prefix}/")                            , emit: sample_dir
+    tuple val(meta), path("${prefix}/contig_gbks/")                , emit: contig_gbks, optional:true
+    tuple val(meta), path("${prefix}/${prefix}_mmseqs_matches.tsv"), emit: db_tsv     , optional:true
+    tuple val(meta), path("${prefix}/${prefix}_ampcombi.tsv")      , emit: tsv        , optional:true
+    tuple val(meta), path("${prefix}/${prefix}_amp.faa")           , emit: faa        , optional:true
+    tuple val(meta), path("${prefix}/${prefix}_ampcombi.log")      , emit: sample_log , optional:true
+    tuple val(meta), path("Ampcombi_parse_tables.log")             , emit: full_log   , optional:true
+    tuple val(meta), path("amp_${opt_amp_db}_database/")           , emit: db         , optional:true
+    tuple val(meta), path("amp_${opt_amp_db}_database/*.txt")      , emit: db_txt     , optional:true
+    tuple val(meta), path("amp_${opt_amp_db}_database/*.fasta")    , emit: db_fasta   , optional:true
+    tuple val(meta), path("amp_${opt_amp_db}_database/mmseqs2/")   , emit: db_mmseqs  , optional:true
+    tuple val("${task.process}"), val('ampcombi'), eval("ampcombi --version | sed 's/ampcombi //'"), emit: versions_ampcombi, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def db_dir = opt_amp_db_dir ? "--amp_database_dir ${opt_amp_db_dir}" : ""
+    def args   = task.ext.args   ?: ''
+    prefix     = task.ext.prefix ?: "${meta.id}"
+    def db_dir = opt_amp_db_dir  ? "--amp_database_dir ${opt_amp_db_dir}" : ""
     def interpro = opt_interproscan ? "--interproscan_output ${opt_interproscan}" : ""
 
     """
     ampcombi parse_tables \\
-        --path_list '${amp_input.collect { "${it}" }.join("' '")}' \\
+        --path_list '${amp_input.collect { file_path -> "${file_path}" }.join("' '")}' \\
         --faa ${faa_input} \\
         --gbk ${gbk_input} \\
         --sample_list ${prefix} \\
@@ -49,19 +49,10 @@ process AMPCOMBI2_PARSETABLES {
         ${interpro} \\
         ${args} \\
         --threads ${task.cpus}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ampcombi: \$(ampcombi --version | sed 's/ampcombi //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def db_dir = opt_amp_db_dir ? "--amp_database_dir ${opt_amp_db_dir}" : ""
-    def interpro = opt_interproscan ? "--interproscan_output ${opt_interproscan}" : ""
-
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}
     mkdir -p ${prefix}/contig_gbks
@@ -83,10 +74,5 @@ process AMPCOMBI2_PARSETABLES {
     touch amp_${opt_amp_db}_database/mmseqs2/ref_DB.index
     touch amp_${opt_amp_db}_database/mmseqs2/ref_DB.lookup
     touch amp_${opt_amp_db}_database/mmseqs2/ref_DB.source
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ampcombi: \$(ampcombi --version | sed 's/ampcombi //')
-    END_VERSIONS
     """
 }

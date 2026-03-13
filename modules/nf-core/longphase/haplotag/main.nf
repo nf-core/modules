@@ -4,8 +4,8 @@ process LONGPHASE_HAPLOTAG {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/longphase:1.7.3--hf5e1c6e_0':
-        'biocontainers/longphase:1.7.3--hf5e1c6e_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b0/b0184a9a36d8612fbae38bbaad7b52f03b815ad17673740e107cf1f267a1f15d/data':
+        'community.wave.seqera.io/library/htslib_longphase:3071e61356fc25a4' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(snps), path(svs), path(mods)

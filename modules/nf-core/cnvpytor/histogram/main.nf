@@ -28,7 +28,7 @@ process CNVPYTOR_HISTOGRAM {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/CNVpytor //' )
+        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed -n 's/.*\\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\)\$/\\1/p' )
     END_VERSIONS
     """
 
@@ -38,7 +38,7 @@ process CNVPYTOR_HISTOGRAM {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/CNVpytor //' )
+        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed -n 's/.*\\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\)\$/\\1/p' )
     END_VERSIONS
     """
 }

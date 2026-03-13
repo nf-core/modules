@@ -97,6 +97,7 @@ nextflow_workflow {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
                 ])
+                input[4] = false
                 """
             }
         }
@@ -105,16 +106,14 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
-                    file(workflow.out.bai[0][1]).name,
+                    file(workflow.out.index[0][1]).name,
                     file(workflow.out.bam[0][1]).name,
                     file(workflow.out.orig_bam[0][1]).name,
-                    workflow.out.csi,
                     workflow.out.fastq,
                     workflow.out.flagstat,
                     workflow.out.idxstats,
                     workflow.out.stats,
-                    workflow.out.summary,
-                    workflow.out.versions).match()}
+                    workflow.out.summary).match()}
             )
         }
     }
@@ -136,6 +135,7 @@ nextflow_workflow {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
                 ])
+                input[4] = false
                 """
             }
         }
@@ -144,16 +144,14 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
-                    file(workflow.out.bai[0][1]).name,
+                    file(workflow.out.index[0][1]).name,
                     file(workflow.out.bam[0][1]).name,
                     file(workflow.out.orig_bam[0][1]).name,
-                    workflow.out.csi,
                     workflow.out.fastq,
                     workflow.out.flagstat,
                     workflow.out.idxstats,
                     workflow.out.stats,
-                    workflow.out.summary,
-                    workflow.out.versions).match()}
+                    workflow.out.summary).match()}
             )
         }
     }
@@ -177,6 +175,7 @@ nextflow_workflow {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
                 ])
+                input[4] = false
                 """
             }
         }
@@ -208,6 +207,7 @@ nextflow_workflow {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
                 ])
+                input[4] = false
                 """
             }
         }

@@ -1,9 +1,0 @@
-- name: midas run test_midas_run
-  command: nextflow run ./tests/modules/nf-core/midas/run -entry test_midas_run -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/midas/run/nextflow.config -stub-run
-  tags:
-    - midas/run
-    - midas
-  files:
-    - path: output/midas/results/species/log.txt
-    - path: output/midas/results/species/species_profile.tsv
-    - path: output/midas/versions.yml

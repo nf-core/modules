@@ -22,7 +22,8 @@ nextflow_process {
                         [ id:'test', single_end:false ], // meta map
                         file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                         file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
-                        []
+                        [],
+
                     ]
                     input[1] = [
                         [ id:'genome'],
@@ -56,7 +57,10 @@ nextflow_process {
                 input[0] = DEEPVARIANT_CALLVARIANTS.out.call_variants_tfrecords.join(
                     DEEPVARIANT_MAKEEXAMPLES.out.gvcf,
                     failOnMismatch: true
-                )
+                ).join(
+                    DEEPVARIANT_MAKEEXAMPLES.out.small_model_calls,
+                    failOnMismatch: true
+                ).map { meta, tf, gvcf, small_model_calls -> [ meta, tf, gvcf, small_model_calls, [] ] }
                 input[1] = [
                     [ id:'genome'],
                     file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
@@ -82,12 +86,13 @@ nextflow_process {
 
     test("homo_sapiens - wgs - stub") {
         options "-stub"
-        
+
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ],
+                    [],
                     [],
                     [],
                     [],

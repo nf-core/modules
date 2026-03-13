@@ -1,0 +1,70 @@
+nextflow_process {
+
+    name "Test Process MERQURYFK_PLOIDYPLOT"
+    script "../main.nf"
+    process "MERQURYFK_PLOIDYPLOT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "merquryfk"
+    tag "merquryfk/ploidyplot"
+    tag "fastk"
+    tag "fastk/fastk"
+
+    setup {
+        run("FASTK_FASTK") {
+            script "../../../fastk/fastk"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - Illumina") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = FASTK_FASTK.out.hist
+                    .join(FASTK_FASTK.out.ktab)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - Illumina - stub") {
+        config "./nextflow.config"
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = FASTK_FASTK.out.hist
+                    .join(FASTK_FASTK.out.ktab)                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

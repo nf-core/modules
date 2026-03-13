@@ -1,0 +1,63 @@
+nextflow_process {
+
+    name "Test Process COREOGRAPH"
+    script "../main.nf"
+    process "COREOGRAPH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "coreograph"
+
+    test("coreograph - tif") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'imaging/core_detection/single_core_dapi.tif', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.cores.collect{meta, cores -> [meta, file(cores).name, file(cores).size()]},
+                    process.out.masks.collect{meta, masks -> [meta, file(masks).name, file(masks).size()]},
+                    process.out.tma_map.collect{meta, tma_map -> [meta, file(tma_map).name, file(tma_map).size()]},
+                    process.out.centroids.collect{meta, centroids -> [meta, file(centroids).name, file(centroids).size()]},
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("coreograph - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'imaging/core_detection/single_core_dapi.tif', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

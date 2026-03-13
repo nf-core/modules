@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process AUTOCYCLER_SUBSAMPLE"
+    script "../main.nf"
+    process "AUTOCYCLER_SUBSAMPLE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "autocycler"
+    tag "autocycler/subsample"
+
+    test("Pseudomonas_fluorescens - fastq_gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true), // reads
+                ]
+                input[1] = 300 // set genome size very small to get sufficient depth
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("Pseudomonas_fluorescens - fastq_gz - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true), // reads
+                ]
+                input[1] = 30000 // genome size
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

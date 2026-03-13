@@ -20,13 +20,28 @@ process ROARY {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     roary \\
         $args \\
         -p $task.cpus \\
         -f results/ \\
         $gff
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        roary: \$( roary --version )
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    mkdir -p results/
+    touch results/core_gene_alignment.aln
+    touch results/gene_presence_absence.csv
+    touch results/gene_presence_absence.Rtab
+    touch results/accessory_binary_genes.fa
+    touch results/pan_genome_reference.fa
+    touch results/summary_statistics.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

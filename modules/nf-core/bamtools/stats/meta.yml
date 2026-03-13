@@ -23,9 +23,10 @@ input:
         type: file
         description: BAM file
         pattern: "*.bam"
+        ontologies: []
 output:
-  - stats:
-      - meta:
+  stats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,12 +35,29 @@ output:
           type: file
           description: File containing alignment statistics
           pattern: "*.stats"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_bamtools:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - bamtools:
+          type: string
+          description: The name of the tool
+      - "bamtools --version | sed '2!d;s/bamtools //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@lescai"
 maintainers:
   - "@lescai"
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - bamtools:
+          type: string
+          description: The name of the tool
+      - "bamtools --version | sed '2!d;s/bamtools //g'":
+          type: eval
+          description: The expression to obtain the version of the tool

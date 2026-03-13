@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fastq_sanitise_seqkit"
+description: |
+  Filters and reports malformed FASTQ sequences with seqkit/sana,
+  and then pairs any paired-end files using seqkit/pair
+keywords:
+  - fastq
+  - quality control
+  - filtering
+  - malformed
+  - pairing
+  - seqkit
+  - preprocessing
+components:
+  - seqkit/sana
+  - seqkit/pair
+input:
+  - ch_reads:
+      type: channel
+      description: |
+        Channel containing sample metadata and FASTQ files.
+        Structure: [ val(meta), [ fastq ] ]
+        Where meta is a map containing at least:
+        - id: sample identifier
+        - single_end: boolean indicating if data is single-end (true) or paired-end (false)
+      pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
+output:
+  - reads:
+      type: channel
+      description: |
+        Channel containing filtered (i.e., non-malformed) and paired FASTQ files.
+        For single-end data: returns filtered reads
+        For paired-end data: returns properly paired reads and any unpaired reads
+        Structure: [ val(meta), [ fastq ] ]
+      pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

@@ -30,7 +30,7 @@ process MAFFT_GUIDETREE {
     mv *.tree ${prefix}.dnd.tmp
 
     # remove all prefixes added by mafft which make the output incompatible with other tools
-    awk '{gsub(/[0-9]+_/, ""); print}' ${prefix}.dnd.tmp > ${prefix}.dnd
+    awk '{gsub(/^[0-9]+_/, ""); print}' ${prefix}.dnd.tmp > ${prefix}.dnd
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -39,7 +39,6 @@ process MAFFT_GUIDETREE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.dnd

@@ -7,16 +7,16 @@
                 "        \"total_cn\": 2,",
                 "        \"gene_cn\": null,",
                 "        \"final_haplotypes\": {",
-                "            \"12222212222111211221\": \"PRODH_hap1\",",
-                "            \"21111121111222122112\": \"PRODH_hap2\"",
+                "            \"21111121111222122112\": \"PRODH_hap1\",",
+                "            \"12222212222111211221\": \"PRODH_hap2\"",
                 "        },",
                 "        \"two_copy_haplotypes\": [],",
                 "        \"alleles_final\": [],",
-                "        \"hap_links\": {},",
+                "        \"haplotype_links\": {},",
                 "        \"highest_total_cn\": 2,",
                 "        \"assembled_haplotypes\": [",
-                "            \"12222212222111211221\",",
-                "            \"21111121111222122112\"",
+                "            \"21111121111222122112\",",
+                "            \"12222212222111211221\"",
                 "        ],",
                 "        \"sites_for_phasing\": [",
                 "            \"18913237_G_A\",",
@@ -41,73 +41,110 @@
                 "            \"18923644_G_A\"",
                 "        ],",
                 "        \"unique_supporting_reads\": {",
-                "            \"12222212222111211221\": ["
+                "            \"21111121111222122112\": ["
             ],
-            "VcfFile [chromosomes=[chr22], sampleCount=2, variantCount=16962, phased=true, phasedAutodetect=true]",
-            "add24d02bf7f37b3ca30771c44ab4ee2",
+            "VcfFile [chromosomes=[chr22], sampleCount=2, variantCount=75, phased=true, phasedAutodetect=true]",
+            "fcfb9a8752fedb1f49996c4fb03c7a9b",
             "test.paraphase.bam.bai",
             "test_PRODH.vcf.gz.tbi",
-            [
-                "versions.yml:md5,ba8254ef4c900b46713de8646aa613e3"
-            ]
+            {
+                "versions_minimap2": [
+                    [
+                        "PARAPHASE",
+                        "minimap2",
+                        "2.30-r1287"
+                    ]
+                ],
+                "versions_paraphase": [
+                    [
+                        "PARAPHASE",
+                        "paraphase",
+                        "3.5.0"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "PARAPHASE",
+                        "samtools",
+                        "1.23"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-03-05T14:04:38.827925407",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.3"
-        },
-        "timestamp": "2025-01-27T10:05:17.367446791"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "homo_sapiens - [ bam, bai ], no_vcf": {
+        "content": [
+            [
+                "{",
+                "    \"RIMBP3B\": {",
+                "        \"total_cn\": null,",
+                "        \"gene_cn\": null,",
+                "        \"final_haplotypes\": null,",
+                "        \"two_copy_haplotypes\": null,",
+                "        \"alleles_final\": null,",
+                "        \"haplotype_links\": null,",
+                "        \"highest_total_cn\": null,",
+                "        \"assembled_haplotypes\": null,",
+                "        \"sites_for_phasing\": null,",
+                "        \"unique_supporting_reads\": null,",
+                "        \"het_sites_not_used_in_phasing\": null,",
+                "        \"homozygous_sites\": null,",
+                "        \"haplotype_details\": null,",
+                "        \"nonunique_supporting_reads\": null,",
+                "        \"read_details\": null,",
+                "        \"genome_depth\": null,",
+                "        \"region_depth\": {",
+                "            \"median\": 0.0,",
+                "            \"percentile80\": 0.0",
+                "        },",
+                "        \"sample_sex\": null,",
+                "        \"heterozygous_sites\": null,",
+                "        \"phase_region\": \"38:chr22:21380000-21390000\",",
+                "        \"genes_in_region\": \"RIMBP3B,RIMBP3,RIMBP3C\",",
+                "        \"raw_alleles\": null,",
+                "        \"fusions_called\": null",
+                "    }"
+            ],
+            "test.paraphase.bam",
+            "test.paraphase.bam.bai",
+            {
+                "versions_minimap2": [
+                    [
+                        "PARAPHASE",
+                        "minimap2",
+                        "2.30-r1287"
+                    ]
+                ],
+                "versions_paraphase": [
+                    [
+                        "PARAPHASE",
+                        "paraphase",
+                        "3.5.0"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "PARAPHASE",
+                        "samtools",
+                        "1.23"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-03-05T14:22:39.219497979",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "homo_sapiens - [ bam, bai ], config - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.paraphase.json:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.paraphase.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.paraphase.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_stub.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "4": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_stub.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "5": [
-                    "versions.yml:md5,ba8254ef4c900b46713de8646aa613e3"
-                ],
                 "bai": [
                     [
                         {
@@ -153,16 +190,34 @@
                         "test_stub.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,ba8254ef4c900b46713de8646aa613e3"
+                "versions_minimap2": [
+                    [
+                        "PARAPHASE",
+                        "minimap2",
+                        "2.30-r1287"
+                    ]
+                ],
+                "versions_paraphase": [
+                    [
+                        "PARAPHASE",
+                        "paraphase",
+                        "3.5.0"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "PARAPHASE",
+                        "samtools",
+                        "1.23"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-03-05T14:05:34.4449022",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.3"
-        },
-        "timestamp": "2025-01-27T09:29:22.958553112"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "homo_sapiens - [ bam, bai ], config - csi_index": {
         "content": [
@@ -172,16 +227,16 @@
                 "        \"total_cn\": 2,",
                 "        \"gene_cn\": null,",
                 "        \"final_haplotypes\": {",
-                "            \"12222212222111211221\": \"PRODH_hap1\",",
-                "            \"21111121111222122112\": \"PRODH_hap2\"",
+                "            \"21111121111222122112\": \"PRODH_hap1\",",
+                "            \"12222212222111211221\": \"PRODH_hap2\"",
                 "        },",
                 "        \"two_copy_haplotypes\": [],",
                 "        \"alleles_final\": [],",
-                "        \"hap_links\": {},",
+                "        \"haplotype_links\": {},",
                 "        \"highest_total_cn\": 2,",
                 "        \"assembled_haplotypes\": [",
-                "            \"12222212222111211221\",",
-                "            \"21111121111222122112\"",
+                "            \"21111121111222122112\",",
+                "            \"12222212222111211221\"",
                 "        ],",
                 "        \"sites_for_phasing\": [",
                 "            \"18913237_G_A\",",
@@ -206,73 +261,45 @@
                 "            \"18923644_G_A\"",
                 "        ],",
                 "        \"unique_supporting_reads\": {",
-                "            \"12222212222111211221\": ["
+                "            \"21111121111222122112\": ["
             ],
-            "VcfFile [chromosomes=[chr22], sampleCount=2, variantCount=16962, phased=true, phasedAutodetect=true]",
-            "add24d02bf7f37b3ca30771c44ab4ee2",
+            "VcfFile [chromosomes=[chr22], sampleCount=2, variantCount=75, phased=true, phasedAutodetect=true]",
+            "fcfb9a8752fedb1f49996c4fb03c7a9b",
             "test.paraphase.bam.bai",
             "test_PRODH.vcf.gz.csi",
-            [
-                "versions.yml:md5,ba8254ef4c900b46713de8646aa613e3"
-            ]
+            {
+                "versions_minimap2": [
+                    [
+                        "PARAPHASE",
+                        "minimap2",
+                        "2.30-r1287"
+                    ]
+                ],
+                "versions_paraphase": [
+                    [
+                        "PARAPHASE",
+                        "paraphase",
+                        "3.5.0"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "PARAPHASE",
+                        "samtools",
+                        "1.23"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-03-05T14:05:16.809547984",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.3"
-        },
-        "timestamp": "2025-01-27T10:05:57.695310285"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "homo_sapiens - [ bam, bai ], [] - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.paraphase.json:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.paraphase.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.paraphase.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_stub.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "4": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_stub.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "5": [
-                    "versions.yml:md5,ba8254ef4c900b46713de8646aa613e3"
-                ],
                 "bai": [
                     [
                         {
@@ -318,16 +345,34 @@
                         "test_stub.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,ba8254ef4c900b46713de8646aa613e3"
+                "versions_minimap2": [
+                    [
+                        "PARAPHASE",
+                        "minimap2",
+                        "2.30-r1287"
+                    ]
+                ],
+                "versions_paraphase": [
+                    [
+                        "PARAPHASE",
+                        "paraphase",
+                        "3.5.0"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "PARAPHASE",
+                        "samtools",
+                        "1.23"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-03-05T14:05:25.477896955",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.3"
-        },
-        "timestamp": "2025-01-27T09:29:09.604922987"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "homo_sapiens - [ bam, bai ], config": {
         "content": [
@@ -337,16 +382,16 @@
                 "        \"total_cn\": 2,",
                 "        \"gene_cn\": null,",
                 "        \"final_haplotypes\": {",
-                "            \"12222212222111211221\": \"PRODH_hap1\",",
-                "            \"21111121111222122112\": \"PRODH_hap2\"",
+                "            \"21111121111222122112\": \"PRODH_hap1\",",
+                "            \"12222212222111211221\": \"PRODH_hap2\"",
                 "        },",
                 "        \"two_copy_haplotypes\": [],",
                 "        \"alleles_final\": [],",
-                "        \"hap_links\": {},",
+                "        \"haplotype_links\": {},",
                 "        \"highest_total_cn\": 2,",
                 "        \"assembled_haplotypes\": [",
-                "            \"12222212222111211221\",",
-                "            \"21111121111222122112\"",
+                "            \"21111121111222122112\",",
+                "            \"12222212222111211221\"",
                 "        ],",
                 "        \"sites_for_phasing\": [",
                 "            \"18913237_G_A\",",
@@ -371,73 +416,45 @@
                 "            \"18923644_G_A\"",
                 "        ],",
                 "        \"unique_supporting_reads\": {",
-                "            \"12222212222111211221\": ["
+                "            \"21111121111222122112\": ["
             ],
-            "VcfFile [chromosomes=[chr22], sampleCount=2, variantCount=16962, phased=true, phasedAutodetect=true]",
-            "add24d02bf7f37b3ca30771c44ab4ee2",
+            "VcfFile [chromosomes=[chr22], sampleCount=2, variantCount=75, phased=true, phasedAutodetect=true]",
+            "fcfb9a8752fedb1f49996c4fb03c7a9b",
             "test.paraphase.bam.bai",
             "test_PRODH.vcf.gz.tbi",
-            [
-                "versions.yml:md5,ba8254ef4c900b46713de8646aa613e3"
-            ]
+            {
+                "versions_minimap2": [
+                    [
+                        "PARAPHASE",
+                        "minimap2",
+                        "2.30-r1287"
+                    ]
+                ],
+                "versions_paraphase": [
+                    [
+                        "PARAPHASE",
+                        "paraphase",
+                        "3.5.0"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "PARAPHASE",
+                        "samtools",
+                        "1.23"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-03-05T14:04:52.751574184",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.3"
-        },
-        "timestamp": "2025-01-27T10:05:37.052015083"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "homo_sapiens - [ bam, bai ], config - stub - csi_index": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.paraphase.json:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.paraphase.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.paraphase.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_stub.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "4": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test_stub.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "5": [
-                    "versions.yml:md5,ba8254ef4c900b46713de8646aa613e3"
-                ],
                 "bai": [
                     [
                         {
@@ -483,15 +500,33 @@
                         "test_stub.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,ba8254ef4c900b46713de8646aa613e3"
+                "versions_minimap2": [
+                    [
+                        "PARAPHASE",
+                        "minimap2",
+                        "2.30-r1287"
+                    ]
+                ],
+                "versions_paraphase": [
+                    [
+                        "PARAPHASE",
+                        "paraphase",
+                        "3.5.0"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "PARAPHASE",
+                        "samtools",
+                        "1.23"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-03-05T14:05:43.65305743",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.3"
-        },
-        "timestamp": "2025-01-27T09:29:36.160560875"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     }
 }

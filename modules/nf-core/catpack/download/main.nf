@@ -1,6 +1,7 @@
 process CATPACK_DOWNLOAD {
     tag "${meta.id}"
     label 'process_single'
+    label 'process_long'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
@@ -11,8 +12,12 @@ process CATPACK_DOWNLOAD {
     tuple val(meta), val(db)
 
     output:
-    tuple val(meta), path("${prefix}/"), emit: rawdb
-    path "versions.yml", emit: versions
+    tuple val(meta), path("${prefix}/*.${db}.gz"), emit: fasta
+    tuple val(meta), path("${prefix}/*.names.dmp"), emit: names
+    tuple val(meta), path("${prefix}/*.nodes.dmp"), emit: nodes
+    tuple val(meta), path("${prefix}/*accession2taxid*.gz"), emit: acc2tax
+    tuple val(meta), path("${prefix}/*.log"), emit: log
+    tuple val("${task.process}"), val('catpack'), eval("CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g'"), topic: versions, emit: versions_catpack
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,13 +29,8 @@ process CATPACK_DOWNLOAD {
     CAT_pack \\
         download \\
         ${args} \\
-        --db ${db}
+        --db ${db} \\
         -o ${prefix}/
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
-    END_VERSIONS
     """
 
     stub:
@@ -44,10 +44,10 @@ process CATPACK_DOWNLOAD {
         -o ${prefix}/"
 
     mkdir ${prefix}/
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
-    END_VERSIONS
+    echo "" | gzip > ${prefix}/${prefix}.${db}.gz
+    touch ${prefix}/${prefix}.names.dmp
+    touch ${prefix}/${prefix}.nodes.dmp
+    echo "" | gzip > ${prefix}/${prefix}.accession2taxid.gz
+    touch ${prefix}/${prefix}.log
     """
 }

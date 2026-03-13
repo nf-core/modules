@@ -21,7 +21,7 @@ process GEM2_GEM2BEDMAPPABILITY {
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix  = task.ext.prefix ?: "${meta.id}"
     def VERSION = '20200110' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     gem-2-bed mappability \\
@@ -36,8 +36,7 @@ process GEM2_GEM2BEDMAPPABILITY {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix  = task.ext.prefix ?: "${meta.id}"
     def VERSION = '20200110' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """

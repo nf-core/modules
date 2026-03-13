@@ -12,7 +12,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test' ], // meta map
+                input[0] = [ [ id:'test',single_end:true ], // meta map
                             [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                     ]
@@ -25,7 +25,7 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                process.out.versions,
+                process.out.findAll { key, val -> key.startsWith("versions") },
                 file(process.out.profile_out[0][1]).readLines()[0]
             ).match()
         }
@@ -49,7 +49,7 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                process.out.versions,
+                process.out.findAll { key, val -> key.startsWith("versions") },
                 file(process.out.profile_out[0][1]).readLines()[0]
             ).match()
         }

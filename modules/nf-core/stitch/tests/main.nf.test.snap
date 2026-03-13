@@ -29,17 +29,41 @@
                 ]
             ],
             [
-                "stitch.chr21.vcf.gz"
+                [
+                    {
+                        "id": "test_reads"
+                    },
+                    "test_reads.vcf.gz",
+                    [
+                        "normal",
+                        "tumour"
+                    ],
+                    "VcfFile [chromosomes=[chr21], sampleCount=2, variantCount=10, phased=false, phasedAutodetect=false]",
+                    "e41c51d08be2cdacd81fc8800cffb156"
+                ]
             ],
-            [
-                "versions.yml:md5,23ba0a3cec10c1bdb411b3e1f31b008e"
-            ]
+            {
+                "versions_r_base": [
+                    [
+                        "STITCH",
+                        "r-base",
+                        "4.4.2"
+                    ]
+                ],
+                "versions_r_quilt": [
+                    [
+                        "STITCH",
+                        "r-quilt",
+                        "1.7.3"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-03-03T09:26:32.618722049",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.3"
-        },
-        "timestamp": "2024-10-22T20:16:19.412761604"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "test_no_seed": {
         "content": [
@@ -71,17 +95,117 @@
                 ]
             ],
             [
-                "stitch.chr21.vcf.gz"
+                [
+                    {
+                        "id": "test_reads"
+                    },
+                    "test_reads.vcf.gz",
+                    [
+                        "normal",
+                        "tumour"
+                    ],
+                    "VcfFile [chromosomes=[chr21], sampleCount=2, variantCount=10, phased=false, phasedAutodetect=false]"
+                ]
             ],
-            [
-                "versions.yml:md5,23ba0a3cec10c1bdb411b3e1f31b008e"
-            ]
+            {
+                "versions_r_base": [
+                    [
+                        "STITCH",
+                        "r-base",
+                        "4.4.2"
+                    ]
+                ],
+                "versions_r_quilt": [
+                    [
+                        "STITCH",
+                        "r-quilt",
+                        "1.7.3"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-03-03T09:25:09.963308648",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.3"
-        },
-        "timestamp": "2024-10-22T18:49:25.941823568"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "test_with_bam - bgen - stub": {
+        "content": [
+            {
+                "bgen": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        "test_reads.bgen:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "input": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        [
+                            "sample.1.input.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "sample.2.input.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "plots": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        [
+                            "alphaMat.chr21.all.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "alphaMat.chr21.normalized.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "hapSum.chr21.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "hapSum_log.chr21.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "metricsForPostImputationQC.chr21.sample.jpg:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "metricsForPostImputationQCChromosomeWide.chr21.sample.jpg:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "r2.chr21.goodonly.jpg:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "rdata": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        [
+                            "EM.all.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "end.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "sampleNames.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "start.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "startEM.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "vcf": [
+                    
+                ],
+                "versions_r_base": [
+                    [
+                        "STITCH",
+                        "r-base",
+                        "4.4.2"
+                    ]
+                ],
+                "versions_r_quilt": [
+                    [
+                        "STITCH",
+                        "r-quilt",
+                        "1.7.3"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-03-03T09:27:02.169672089",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "test_two_stage_imputation": {
         "content": [
@@ -113,17 +237,184 @@
                 ]
             ],
             [
-                "stitch.chr21.vcf.gz"
+                [
+                    {
+                        "id": "test_reads"
+                    },
+                    "test_reads.vcf.gz",
+                    [
+                        "normal",
+                        "tumour"
+                    ],
+                    "VcfFile [chromosomes=[chr21], sampleCount=2, variantCount=10, phased=false, phasedAutodetect=false]",
+                    "e41c51d08be2cdacd81fc8800cffb156"
+                ]
+            ],
+            {
+                "versions_r_base": [
+                    [
+                        "STITCH",
+                        "r-base",
+                        "4.4.2"
+                    ]
+                ],
+                "versions_r_quilt": [
+                    [
+                        "STITCH",
+                        "r-quilt",
+                        "1.7.3"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-03-03T09:26:03.848456048",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "test_with_bam - vcf - stub": {
+        "content": [
+            {
+                "bgen": [
+                    
+                ],
+                "input": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        [
+                            "sample.1.input.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "sample.2.input.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "plots": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        [
+                            "alphaMat.chr21.all.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "alphaMat.chr21.normalized.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "hapSum.chr21.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "hapSum_log.chr21.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "metricsForPostImputationQC.chr21.sample.jpg:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "metricsForPostImputationQCChromosomeWide.chr21.sample.jpg:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "r2.chr21.goodonly.jpg:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "rdata": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        [
+                            "EM.all.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "end.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "sampleNames.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "start.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "startEM.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        "test_reads.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_r_base": [
+                    [
+                        "STITCH",
+                        "r-base",
+                        "4.4.2"
+                    ]
+                ],
+                "versions_r_quilt": [
+                    [
+                        "STITCH",
+                        "r-quilt",
+                        "1.7.3"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-03-03T09:27:13.358669636",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "test_with_bam and renaming": {
+        "content": [
+            [
+                [
+                    "sample.1.input.chr21.RData",
+                    "sample.2.input.chr21.RData"
+                ]
             ],
             [
-                "versions.yml:md5,019f1127aacfb7d14a0c4ae3d740a07d"
-            ]
+                [
+                    "EM.all.chr21.RData",
+                    "end.chr21.RData",
+                    "endEM.chr21.RData",
+                    "sampleNames.chr21.RData",
+                    "start.chr21.RData",
+                    "startEM.chr21.RData"
+                ]
+            ],
+            [
+                [
+                    "alphaMat.chr21.all.s.1.png",
+                    "alphaMat.chr21.normalized.s.1.png",
+                    "hapSum.chr21.s.1.png",
+                    "hapSum_log.chr21.s.1.png",
+                    "metricsForPostImputationQC.chr21.sample.jpg",
+                    "metricsForPostImputationQCChromosomeWide.chr21.sample.jpg",
+                    "r2.chr21.goodonly.jpg"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test_reads"
+                    },
+                    "test_reads.vcf.gz",
+                    [
+                        "MySample1",
+                        "MySample2"
+                    ],
+                    "VcfFile [chromosomes=[chr21], sampleCount=2, variantCount=10, phased=false, phasedAutodetect=false]",
+                    "e41c51d08be2cdacd81fc8800cffb156"
+                ]
+            ],
+            {
+                "versions_r_base": [
+                    [
+                        "STITCH",
+                        "r-base",
+                        "4.4.2"
+                    ]
+                ],
+                "versions_r_quilt": [
+                    [
+                        "STITCH",
+                        "r-quilt",
+                        "1.7.3"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-03-03T09:26:51.361549794",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.3"
-        },
-        "timestamp": "2024-10-22T20:14:01.151837306"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "test_with_seed": {
         "content": [
@@ -155,16 +446,29 @@
                 ]
             ],
             [
-                "stitch.chr21.vcf.gz"
+                "test_reads.bgen"
             ],
-            [
-                "versions.yml:md5,23ba0a3cec10c1bdb411b3e1f31b008e"
-            ]
+            {
+                "versions_r_base": [
+                    [
+                        "STITCH",
+                        "r-base",
+                        "4.4.2"
+                    ]
+                ],
+                "versions_r_quilt": [
+                    [
+                        "STITCH",
+                        "r-quilt",
+                        "1.7.3"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-03-03T09:25:40.096184635",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.3"
-        },
-        "timestamp": "2024-10-22T18:59:46.592393397"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     }
 }

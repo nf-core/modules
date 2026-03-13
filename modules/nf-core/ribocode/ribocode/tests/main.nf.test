@@ -1,0 +1,127 @@
+nextflow_process {
+
+    name "Test Process RIBOCODE_RIBOCODE"
+    script "../main.nf"
+    process "RIBOCODE_RIBOCODE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ribocode"
+    tag "ribocode/ribocode"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'annotation' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/ribocode/annotation.tar.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("test_ribocode_ribocode") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887.Aligned.toTranscriptome.out.bam", checkIfExists: true)
+                ]
+                input[1] = UNTAR.out.untar
+                input[2] = [
+                    [ id:'config' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/ribocode/test_pre_config.txt", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.orf_txt,
+                    process.out.orf_txt_collapsed
+                    ).match("orf_outputs") },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match("versions") },
+                { assert process.out.orf_pdf[0][1].toString().endsWith('.pdf') },
+                { assert process.out.psites_hd5[0][1].toString().endsWith('.hd5') }
+            )
+        }
+    }
+
+    test("test_ribocode_ribocode - stub") {
+
+        options "-stub"
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887.Aligned.toTranscriptome.out.bam", checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'annotation' ],
+                    file("annotation")
+                ]
+                input[2] = [
+                    [ id:'config' ],
+                    file("config.txt")
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.orf_txt[0][1][0].toString().endsWith('.txt') },
+                { assert process.out.orf_txt_collapsed[0][1].toString().endsWith('_collapsed.txt') },
+                { assert process.out.orf_pdf[0][1].toString().endsWith('.pdf') },
+                { assert process.out.psites_hd5[0][1].toString().endsWith('.hd5') }
+            )
+        }
+    }
+
+    test("test_ribocode_ribocode - invalid config failure") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                // Create an invalid config with only a header (no data)
+                def invalid_cfg = new File('invalid_config.txt')
+                invalid_cfg.text = "sample_name\\tstrand\\tP-site\\treads\\n"
+
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887.Aligned.toTranscriptome.out.bam", checkIfExists: true)
+                ]
+                input[1] = UNTAR.out.untar
+                input[2] = [
+                    [ id:'test_cfg' ],
+                    invalid_cfg.toPath()
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.stdout.toString().contains("ERROR: RiboCode failed") }
+            )
+        }
+    }
+}

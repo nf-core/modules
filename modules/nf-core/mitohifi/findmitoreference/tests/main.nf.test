@@ -1,0 +1,54 @@
+nextflow_process {
+
+    name "Test Process MITOHIFI_FINDMITOREFERENCE"
+    script "../main.nf"
+    process "MITOHIFI_FINDMITOREFERENCE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mitohifi"
+    tag "mitohifi/findmitoreference"
+
+    test("mitohifi - findmitoreference - Aplysina cauliformis") {
+
+        when {
+            process {
+                // as of 2025-08-14 Aplysina cauliformis only has 1 mitochondrial sequence available
+                // this makes the test output more stable! (until someone sequences another one)
+                """
+                input[0] = [[id: "test"], "Aplysina cauliformis"]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("mitohifi - findmitoreference - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[id: "test"], "Aplysina cauliformis"]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

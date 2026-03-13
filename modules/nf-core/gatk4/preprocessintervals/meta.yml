@@ -26,6 +26,7 @@ input:
         type: file
         description: The reference fasta file
         pattern: "*.fasta"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -35,6 +36,7 @@ input:
         type: file
         description: Index of reference fasta file
         pattern: "*.fasta.fai"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -44,6 +46,7 @@ input:
         type: file
         description: GATK sequence dictionary
         pattern: "*.dict"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -54,6 +57,7 @@ input:
         description: Interval file (bed or interval_list) with the genomic regions to
           be included from the analysis (optional)
         pattern: "*.{bed,interval_list}"
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -64,9 +68,10 @@ input:
         description: Interval file (bed or interval_list) with the genomic regions to
           be excluded from the analysis (optional)
         pattern: "*.{bed,interval_list}"
+        ontologies: []
 output:
-  - interval_list:
-      - meta:
+  interval_list:
+    - - meta:
           type: map
           description: |
             Groovy Map containing reference information
@@ -75,15 +80,28 @@ output:
           type: file
           description: Processed interval list file
           pattern: "*.{bed,interval_list}"
-      - _list:
-          type: file
-          description: Processed interval list file
-          pattern: "*.{bed,interval_list}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_gatk4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ryanjameskennedy"
   - "@ViktorHy"

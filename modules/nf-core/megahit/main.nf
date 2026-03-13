@@ -16,7 +16,7 @@ process MEGAHIT {
     tuple val(meta), path("intermediate_contigs/k*.local.fa.gz")        , emit: local_contigs
     tuple val(meta), path("intermediate_contigs/k*.final.contigs.fa.gz"), emit: kfinal_contigs
     tuple val(meta), path('*.log')                                      , emit: log
-    path "versions.yml"                                                 , emit: versions
+    tuple val("${task.process}"), val('megahit'), eval("megahit -v | sed 's/MEGAHIT v//'"), topic: versions, emit: versions_megahit
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,9 +28,9 @@ process MEGAHIT {
     def reads_command = meta.single_end || !reads2 ? "-r ${reads1.join(',')}" : "-1 ${reads1.join(',')} -2 ${reads2.join(',')}"
     """
     megahit \\
-        ${reads_command} \\
         ${args} \\
         -t ${task.cpus} \\
+        ${reads_command} \\
         --out-prefix ${prefix}
 
     pigz \\
@@ -41,18 +41,10 @@ process MEGAHIT {
         megahit_out/intermediate_contigs/*.fa
 
     mv megahit_out/* .
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        megahit: \$(echo \$(megahit -v 2>&1) | sed 's/MEGAHIT v//')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def reads_command = meta.single_end || !reads2 ? "-r ${reads1}" : "-1 ${reads1.join(',')} -2 ${reads2.join(',')}"
     """
     mkdir -p intermediate_contigs
     echo "" | gzip > ${prefix}.contigs.fa.gz
@@ -61,10 +53,5 @@ process MEGAHIT {
     echo "" | gzip > intermediate_contigs/k21.local.fa.gz
     echo "" | gzip > intermediate_contigs/k21.final.contigs.fa.gz
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        megahit: \$(echo \$(megahit -v 2>&1) | sed 's/MEGAHIT v//')
-    END_VERSIONS
     """
 }

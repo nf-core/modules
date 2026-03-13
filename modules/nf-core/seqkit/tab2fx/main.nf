@@ -45,5 +45,5 @@ process SEQKIT_TAB2FX {
     "${task.process}":
         seqkit: \$( seqkit | sed '3!d; s/Version: //' )
     END_VERSIONS
-    """    
+    """
 }

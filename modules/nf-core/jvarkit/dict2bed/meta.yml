@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "jvarkit_dict2xml"
-description: Extract BED file from hts files containing a dictionary (VCF,BAM, CRAM, DICT, etc...)
+description: Extract BED file from hts files containing a dictionary (VCF,BAM, CRAM,
+  DICT, etc...)
 keywords:
   - vcf
   - bcf
@@ -29,9 +30,10 @@ input:
         type: file
         description: File(s) containing a dictionary VCF/BCF/BAM/DICT etc...
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz,dict,fai,bam,cram,interval_list}"
+        ontologies: []
 output:
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing VCF information
@@ -40,11 +42,14 @@ output:
           type: file
           description: BED output file
           pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@lindenb"
 maintainers:

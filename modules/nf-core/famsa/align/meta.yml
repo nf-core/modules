@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "famsa_align"
 description: Aligns sequences using FAMSA
 keywords:
@@ -24,6 +23,9 @@ input:
         type: file
         description: Input sequences in FASTA format
         pattern: "*.{fa,fasta}"
+        ontologies:
+          - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta2:
         type: map
         description: |
@@ -33,31 +35,54 @@ input:
         type: file
         description: Input guide tree in Newick format
         pattern: "*.{dnd}"
-  - - compress:
-        type: boolean
-        description: Flag representing whether the output MSA should be compressed.
-          Set to true to enable/false to disable compression. Compression is handled
-          by passing '-gz' to FAMSA along with any other options specified in task.ext.args.
+        ontologies:
+          - edam: http://edamontology.org/format_2006 # PHYLOGENETIC TREE
+  - compress:
+      type: boolean
+      description: Flag representing whether the output MSA should be compressed. Set
+        to true to enable/false to disable compression. Compression is handled by passing
+        '-gz' to FAMSA along with any other options specified in task.ext.args.
 output:
-  - alignment:
-      - meta:
+  alignment:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test']`
-      - "*.aln{.gz,}":
+      - ${prefix}.aln{.gz,}:
           type: file
           description: Alignment file, in FASTA format. May be gzipped or uncompressed,
             depending on if compress is set to true or false
           pattern: "*.aln{.gz,}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
+            - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+            - edam: http://edamontology.org/format_1984 # FASTA-ALN
+  versions_famsa:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - famsa:
+          type: string
+          description: The tool name
+      - famsa -help 2>&1 | sed '2!d;s/ (.*//; s/^.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - famsa:
+          type: string
+          description: The name of the tool
+      - famsa -help 2>&1 | sed '2!d;s/ (.*//; s/^.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@luisas"
   - "@JoseEspinosa"
 maintainers:
   - "@luisas"
   - "@JoseEspinosa"
+  - "@vagkaratzas"

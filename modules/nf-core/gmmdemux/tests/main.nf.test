@@ -10,17 +10,17 @@ nextflow_process {
     tag "gmmdemux"
     tag "untar"
 
-    
+
     test("Standard_Multiome - 10x mtx - simple") {
         setup {
             run("UNTAR") {
                 script "modules/nf-core/untar/main.nf"
                 process {
                 """
-                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ]) 
+                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
                 """
                 }
-            }   
+            }
         }
         when {
             process {
@@ -53,10 +53,10 @@ nextflow_process {
                 script "modules/nf-core/untar/main.nf"
                 process {
                 """
-                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ]) 
+                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
                 """
                 }
-            }   
+            }
         }
         when {
             process {
@@ -89,9 +89,9 @@ nextflow_process {
         when {
             process {
                 """
-                
+
                 input[0] = [
-                    [ id:'test'], 
+                    [ id:'test'],
                     file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true),
                     "MS-11,MS-12"
                     ]

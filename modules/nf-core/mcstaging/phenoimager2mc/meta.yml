@@ -28,8 +28,8 @@ input:
         description: Folder or list with .tif files of one cycle from PhenoImager
 output:
   #Only when we have meta
-  - tif:
-      - meta:
+  tif:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,11 +38,14 @@ output:
           type: file
           description: One output .tif file containing concatenated tiles of the cycle.
           pattern: "*.{tif,tiff}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@chiarasch"
 maintainers:

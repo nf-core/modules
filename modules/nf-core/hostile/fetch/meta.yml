@@ -16,22 +16,32 @@ tools:
       licence: ["MIT"]
       identifier: biotools:hostile
 
+input:
+  - index_name:
+      type: string
+      description: Name of the reference genome index to download
+
 output:
-  - reference:
-      - "reference/":
+  reference:
+    - - index_name:
           type: directory
-          description: Directory containing required reference genome files
-            for hostile clean
+          description: Name of the reference genome index downloaded
+      - reference/:
+          type: directory
+          description: Directory containing required reference genome files for hostile
+            clean
           pattern: "reference/"
           ontologies:
             - edam: "http://edamontology.org/data_1049"
 
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

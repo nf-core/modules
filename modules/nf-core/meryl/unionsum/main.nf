@@ -13,7 +13,7 @@ process MERYL_UNIONSUM {
 
     output:
     tuple val(meta), path("*.unionsum.meryl"), emit: meryl_db
-    path "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val('meryl'), eval("meryl --version |& sed 's/meryl //'"), emit: versions_meryl, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,22 +29,11 @@ process MERYL_UNIONSUM {
         $args \\
         output ${prefix}.unionsum.meryl \\
         $meryl_dbs
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        meryl: \$( meryl --version |& sed 's/meryl //' )
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.unionsum.meryl
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        meryl: \$( meryl --version |& sed 's/meryl //' )
-    END_VERSIONS
     """
 }

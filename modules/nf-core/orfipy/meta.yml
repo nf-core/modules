@@ -1,0 +1,68 @@
+name: "orfipy"
+description: orfipy is a tool written in python/cython to extract ORFs in an
+  extremely and fast and flexible manner.
+keywords:
+  - orfipy
+  - orfs
+  - open reading frames
+tools:
+  - "orfipy":
+      description: "orfipy: fast and flexible search for open reading frames in fasta
+        sequences"
+      homepage: "https://github.com/urmi-21/orfipy"
+      documentation: "https://github.com/urmi-21/orfipy/blob/master/README.md"
+      tool_dev_url: "https://github.com/urmi-21/orfipy"
+      licence: ["MIT"]
+      identifier: biotools:orfipy
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', fasta ]
+    - infile:
+        type: file
+        description: Input file, in plain Fasta/Fastq or gzipped format,
+          containing Nucletide sequences
+        pattern: "*.{fasta,fa,fastq,fastq.gz,fq,fa.gz,fq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+output:
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', fasta ]
+      - ${prefix}/${prefix}.bed:
+          type: file
+          description: Output BED file containing the coordinates of predicted
+            ORFs
+          ontologies:
+            - edam: http://edamontology.org/format_3673 # BED format
+  versions_orfipy:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - orfipy:
+          type: string
+          description: The tool name
+      - orfipy --version | sed 's/.*version //':
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - orfipy:
+          type: string
+          description: The tool name
+      - orfipy --version | sed 's/.*version //':
+          type: string
+          description: The command used to generate the version of the tool
+authors:
+  - "@khersameesh24"
+maintainers:
+  - "@khersameesh24"

@@ -24,13 +24,16 @@ input:
         description: Gene counts table (from OrthoMCL, SwiftOrtho, FastOrtho, OrthAgogue
           or OrthoFinder)
         pattern: "*.{txt,tsv,tab}"
-  - - tree:
-        type: file
-        description: Newick formatted tree
-        pattern: "*.{txt}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - tree:
+      type: file
+      description: Newick formatted tree
+      pattern: "*.{txt}"
+      ontologies: []
 output:
-  - cafe:
-      - meta:
+  cafe:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,31 +41,38 @@ output:
       - ${prefix}:
           type: directory
           description: A folder with all the cafe output
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-  - cafe_base_count:
-      - $prefix/*_count.tab:
-          type: file
-          description: File containing counts of genes per orthogroup
-          pattern: "*_count.tab"
-  - cafe_significant_trees:
-      - $prefix/*.tre:
-          type: file
-          description: File containing significant trees (newick format)
-          pattern: "*.tre"
-  - cafe_report:
-      - $prefix/*_report.cafe:
-          type: file
-          description: File containing the final report from cafe
-          pattern: "*_report.cafe"
-  - cafe_results:
-      - $prefix/*results.txt:
-          type: file
-          description: File containing the main result files from cafe
-          pattern: "*results.txt"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  cafe_base_count:
+    - $prefix/*_count.tab:
+        type: file
+        description: File containing counts of genes per orthogroup
+        pattern: "*_count.tab"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  cafe_significant_trees:
+    - $prefix/*.tre:
+        type: file
+        description: File containing significant trees (newick format)
+        pattern: "*.tre"
+        ontologies: []
+  cafe_report:
+    - $prefix/*_report.cafe:
+        type: file
+        description: File containing the final report from cafe
+        pattern: "*_report.cafe"
+        ontologies: []
+  cafe_results:
+    - $prefix/*results.txt:
+        type: file
+        description: File containing the main result files from cafe
+        pattern: "*results.txt"
+        ontologies: []
 authors:
   - "@chriswyatt1"
 maintainers:

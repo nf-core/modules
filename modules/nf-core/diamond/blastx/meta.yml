@@ -24,6 +24,8 @@ input:
         type: file
         description: Input fasta file containing query sequences
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta2:
         type: map
         description: |
@@ -33,23 +35,24 @@ input:
         type: file
         description: File of the indexed DIAMOND database
         pattern: "*.dmnd"
-  - - out_ext:
-        type: string
-        description: |
-          Specify the type of output file to be generated. `blast` corresponds to
-          BLAST pairwise format. `xml` corresponds to BLAST xml format.
-          `txt` corresponds to to BLAST tabular format. `tsv` corresponds to
-          taxonomic classification format.
-        pattern: "blast|xml|txt|daa|sam|tsv|paf"
-  - - blast_columns:
-        type: string
-        description: |
-          Optional space separated list of DIAMOND tabular BLAST output keywords
-          used for in conjunction with the 'txt' out_ext option (--outfmt 6). Options:
-          qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore
+        ontologies: []
+  - out_ext:
+      type: string
+      description: |
+        Specify the type of output file to be generated. `blast` corresponds to
+        BLAST pairwise format. `xml` corresponds to BLAST xml format.
+        `txt` corresponds to to BLAST tabular format. `tsv` corresponds to
+        taxonomic classification format.
+      pattern: "blast|xml|txt|daa|sam|tsv|paf"
+  - blast_columns:
+      type: string
+      description: |
+        Optional space separated list of DIAMOND tabular BLAST output keywords
+        used for in conjunction with the 'txt' out_ext option (--outfmt 6). Options:
+        qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore
 output:
-  - blast:
-      - meta:
+  blast:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -58,8 +61,10 @@ output:
           type: file
           description: File containing blastp hits
           pattern: "*.{blast}"
-  - xml:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3836 # BLAST XML v2 results format
+  xml:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -68,8 +73,10 @@ output:
           type: file
           description: File containing blastp hits
           pattern: "*.{xml}"
-  - txt:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_2332 # XML
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -78,8 +85,9 @@ output:
           type: file
           description: File containing hits in tabular BLAST format.
           pattern: "*.{txt}"
-  - daa:
-      - meta:
+          ontologies: []
+  daa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -88,8 +96,9 @@ output:
           type: file
           description: File containing hits DAA format
           pattern: "*.{daa}"
-  - sam:
-      - meta:
+          ontologies: []
+  sam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -98,8 +107,10 @@ output:
           type: file
           description: File containing aligned reads in SAM format
           pattern: "*.{sam}"
-  - tsv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_2573 # SAM
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -108,8 +119,10 @@ output:
           type: file
           description: Tab separated file containing taxonomic classification of hits
           pattern: "*.{tsv}"
-  - paf:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  paf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -118,8 +131,9 @@ output:
           type: file
           description: File containing aligned reads in pairwise mapping format format
           pattern: "*.{paf}"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -128,11 +142,14 @@ output:
           type: file
           description: Log file containing stdout information
           pattern: "*.{log}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@spficklin"
   - "@jfy133"

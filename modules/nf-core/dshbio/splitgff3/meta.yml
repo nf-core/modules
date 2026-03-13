@@ -24,9 +24,10 @@ input:
         type: file
         description: Features in gzipped GFF3 format to split
         pattern: "*.{gff3.gz}"
+        ontologies: []
 output:
-  - gff3:
-      - meta:
+  gff3:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,11 +36,14 @@ output:
           type: file
           description: Features in split gzipped GFF3 formatted files
           pattern: "*.{gff3.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@heuermh"
 maintainers:

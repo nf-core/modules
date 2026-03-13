@@ -4,8 +4,8 @@ process IVAR_TRIM {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ivar:1.4.3--h43eeafb_0' :
-        'biocontainers/ivar:1.4.3--h43eeafb_0' }"
+        'https://depot.galaxyproject.org/singularity/ivar:1.4.4--h077b44d_0' :
+        'biocontainers/ivar:1.4.4--h077b44d_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -24,10 +24,10 @@ process IVAR_TRIM {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     ivar trim \\
-        $args \\
-        -i $bam \\
-        -b $bed \\
-        -p $prefix \\
+        ${args} \\
+        -i ${bam} \\
+        -b ${bed} \\
+        -p ${prefix} \\
         > ${prefix}.ivar.log
 
     cat <<-END_VERSIONS > versions.yml
@@ -37,7 +37,6 @@ process IVAR_TRIM {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.ivar.log

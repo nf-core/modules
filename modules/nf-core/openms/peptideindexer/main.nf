@@ -4,48 +4,38 @@ process OPENMS_PEPTIDEINDEXER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/openms:3.2.0--haddbca4_4':
-        'biocontainers/openms:3.2.0--haddbca4_4' }"
+        'https://depot.galaxyproject.org/singularity/openms:3.5.0--h78fb946_0' :
+        'biocontainers/openms:3.5.0--h78fb946_0' }"
 
     input:
-    tuple val(meta), path(id_file)
-    tuple val(meta), path(id_fasta)
+    tuple val(meta), path(idxml), path(fasta)
 
     output:
-    tuple val(meta), path("*.idXML"), emit: id_file_pi
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path("*.idXML"), emit: indexed_idxml
+    tuple val("${task.process}"), val('openms'), eval("FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'"), emit: versions_openms, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}_pi"
+    def prefix = task.ext.prefix ?: "${meta.id}_indexed"
+    def fasta_file = fasta ? "-fasta ${fasta}": ""
+
 
     """
     PeptideIndexer \\
-        -in $id_file \\
-        -fasta $id_fasta \\
+        -in $idxml \\
+        $fasta_file \\
         -out ${prefix}.idXML \\
         -threads $task.cpus \\
-        $args \\
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        openms: \$(echo \$(FileInfo --help 2>&1) | sed 's/^.*Version: //; s/-.*\$//' | sed 's/ -*//; s/ .*\$//')
-    END_VERSIONS
+        $args
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}_pi"
+    def prefix = task.ext.prefix ?: "${meta.id}_indexed"
 
     """
     touch ${prefix}.idXML
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        openms: \$(echo \$(FileInfo --help 2>&1) | sed 's/^.*Version: //; s/-.*\$//' | sed 's/ -*//; s/ .*\$//')
-    END_VERSIONS
     """
 }

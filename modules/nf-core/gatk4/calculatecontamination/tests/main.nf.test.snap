@@ -1,59 +1,22 @@
 {
-    "versions_pair": {
-        "content": [
-            [
-                "versions.yml:md5,05685d2e6a839916a120c07b4db98914"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.0"
-        },
-        "timestamp": "2024-10-31T10:39:04.844937172"
-    },
-    "versions": {
-        "content": [
-            [
-                "versions.yml:md5,05685d2e6a839916a120c07b4db98914"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.0"
-        },
-        "timestamp": "2024-10-31T10:38:50.36175509"
-    },
-    "versions_segmentation": {
-        "content": [
-            [
-                "versions.yml:md5,05685d2e6a839916a120c07b4db98914"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.0"
-        },
-        "timestamp": "2024-10-31T10:39:22.516513354"
-    },
-    "segmentation": {
-        "content": [
-            "#<METADATA>SAMPLE=tumour"
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.0"
-        },
-        "timestamp": "2024-05-15T12:57:38.845287"
-    },
     "human - pileup-table": {
         "content": [
-            "sample\tcontamination\terror"
+            "sample\tcontamination\terror",
+            {
+                "versions_gatk4": [
+                    [
+                        "GATK4_CALCULATECONTAMINATION",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-05-15T11:09:16.292509"
+        "timestamp": "2026-01-21T15:50:57.391538082"
     },
     "human - pileup-table - stub": {
         "content": [
@@ -75,7 +38,11 @@
                     ]
                 ],
                 "2": [
-                    "versions.yml:md5,05685d2e6a839916a120c07b4db98914"
+                    [
+                        "GATK4_CALCULATECONTAMINATION",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
                 ],
                 "contamination": [
                     [
@@ -93,35 +60,58 @@
                         "test.segmentation.table:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,05685d2e6a839916a120c07b4db98914"
+                "versions_gatk4": [
+                    [
+                        "GATK4_CALCULATECONTAMINATION",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-10-31T10:39:40.353818746"
+        "timestamp": "2026-01-21T15:51:38.901543934"
     },
     "human - pileup-table - matched-pair": {
         "content": [
-            "sample\tcontamination\terror"
+            "sample\tcontamination\terror",
+            {
+                "versions_gatk4": [
+                    [
+                        "GATK4_CALCULATECONTAMINATION",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-05-15T11:09:26.408848"
+        "timestamp": "2026-01-21T15:51:12.172307513"
     },
-    "contamination": {
+    "human - pileup-table - segmentation": {
         "content": [
-            "sample\tcontamination\terror"
+            "sample\tcontamination\terror",
+            "#<METADATA>SAMPLE=tumour",
+            {
+                "versions_gatk4": [
+                    [
+                        "GATK4_CALCULATECONTAMINATION",
+                        "gatk4",
+                        "4.6.2.0"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.0"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-05-15T12:57:38.840651"
+        "timestamp": "2026-01-21T15:51:27.280277084"
     }
 }

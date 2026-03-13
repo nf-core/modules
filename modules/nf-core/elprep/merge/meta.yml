@@ -13,7 +13,8 @@ tools:
       documentation: "https://github.com/ExaScience/elprep"
       tool_dev_url: "https://github.com/ExaScience/elprep"
       doi: "10.1371/journal.pone.0244471"
-      licence: ["AGPL v3"]
+      licence:
+        - "AGPL v3"
       identifier: biotools:elprep
 input:
   - - meta:
@@ -25,9 +26,10 @@ input:
         type: file
         description: List of BAM/SAM chunks to merge
         pattern: "*.{bam,sam}"
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,11 +38,28 @@ output:
           type: file
           description: Merged BAM/SAM file
           pattern: "*.{bam,sam}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_elprep:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - elprep:
+          type: string
+          description: The name of the tool
+      - elprep 2>&1 | sed -n '2s/^.*version //;s/ compiled.*$//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - elprep:
+          type: string
+          description: The name of the tool
+      - elprep 2>&1 | sed -n '2s/^.*version //;s/ compiled.*$//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@matthdsm"
 maintainers:

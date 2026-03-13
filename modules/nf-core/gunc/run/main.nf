@@ -21,7 +21,6 @@ process GUNC_RUN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     ls input_files/* > input_files.txt
     gunc \\
@@ -40,7 +39,7 @@ process GUNC_RUN {
     stub:
     """
     touch maxCSS_level.tsv all_levels.tsv
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         gunc: \$( gunc --version )

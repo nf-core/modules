@@ -36,7 +36,7 @@ process IRESCUE {
         $genome_assembly \\
         --outdir $prefix \\
         --threads $task.cpus \\
-        $args 2> >(tee -a ${prefix}/irescue.log >&2)
+        $args 2>| >(tee -a ${prefix}/irescue.log >&2)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -45,7 +45,6 @@ process IRESCUE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}/counts

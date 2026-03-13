@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "mirtop_counts"
-description: mirtop counts generates a file with the minimal information about each
-  sequence and the count data in columns for each samples.
+description: mirtop counts generates a file with the minimal information about
+  each sequence and the count data in columns for each samples.
 keywords:
   - mirna
   - isomir
@@ -12,9 +11,9 @@ tools:
       homepage: "https://github.com/miRTop/mirtop"
       documentation: "https://mirtop.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/miRTop/mirtop"
-      licence: ["MIT License"]
+      licence:
+        - "MIT License"
       identifier: biotools:miRTop
-
 input:
   - - meta:
         type: map
@@ -25,6 +24,7 @@ input:
         type: file
         description: GFF file
         pattern: "*.{gff}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -34,6 +34,7 @@ input:
         type: file
         description: Hairpin file
         pattern: "*.{fa,fasta}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -43,12 +44,13 @@ input:
         type: file
         description: GTF file
         pattern: "*.{gtf}"
+        ontologies: []
     - species:
         type: string
         description: Species name of the GTF file
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,12 +59,17 @@ output:
           type: file
           description: TSV file
           pattern: "*.{tsv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@atrigila"
 maintainers:
   - "@atrigila"
+  - "@lpantano"

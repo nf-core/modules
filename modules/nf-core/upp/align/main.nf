@@ -1,71 +1,61 @@
 process UPP_ALIGN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/80/800667a716528cc6d655da1885d38f9d10385a184e0b1165985ae12034ff5f1d/data':
-        'community.wave.seqera.io/library/sepp_pigz:8f996974b960fc41' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/sepp:4.5.6--py312h87e0c26_4'
+        : 'biocontainers/sepp:4.5.6--py312h87e0c26_4'}"
 
     input:
-    tuple val(meta) , path(fasta)
+    tuple val(meta), path(fasta_unaligned), path(fasta_aligned)
     tuple val(meta2), path(tree)
     val(compress)
 
     output:
     tuple val(meta), path("*.aln{.gz,}"), emit: alignment
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('sepp'), eval('run_upp.py -v | grep "run_upp" | cut -f2 -d" "'), emit: versions_sepp, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def tree_args = tree ? "-t $tree" : ""
-    """
+    def tree_args = tree ? "-t ${tree}" : ""
+    def seq_cmd = fasta_unaligned ? "--sequence_file ${fasta_unaligned}" : ""
+    def align_cmd = fasta_aligned ? "--alignment ${fasta_aligned}" : ""
 
-    if [ "$workflow.containerEngine" = 'singularity' ]; then
-        export CONDA_PREFIX="/opt/conda/"
-        export PASTA_TOOLS_DEVDIR="/opt/conda/bin/"
+    """
+    if [ "${workflow.containerEngine}" = 'singularity' ]; then
+        export CONDA_PREFIX="/usr/local/"
+        export PASTA_TOOLS_DEVDIR="/usr/local/bin/"
     fi
 
     run_upp.py \\
-        $args \\
-        -x $task.cpus \\
-        -s ${fasta} \\
-        -d . \\
-        -o ${prefix} \\
-        -p ./upp-temporary
+        ${args} \\
+        ${tree_args} \\
+        ${seq_cmd} \\
+        ${align_cmd} \\
+        -x ${task.cpus} \\
+        -p ./upp_tmp/ \\
+        -d ./upp_output/ \\
+        -o ${prefix}
 
-    mv ${prefix}_alignment.fasta ${prefix}.aln
+    mv upp_output/${prefix}_alignment.fasta ${prefix}.aln
 
     if ${compress}; then
-        pigz -p ${task.cpus} ${prefix}.aln
+        gzip ${prefix}.aln
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        upp: \$(run_upp.py -v | grep "run_upp" | cut -f2 -d" ")
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-
-
-    if [ "$compress" = true ]; then
+    if [ "${compress}" = true ]; then
         echo | gzip > "${prefix}.aln.gz"
     else
         touch "${prefix}.aln"
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        upp: \$(run_upp.py -v | grep "run_upp" | cut -f2 -d" ")
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
-    END_VERSIONS
     """
 }

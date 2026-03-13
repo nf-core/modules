@@ -21,10 +21,12 @@ input:
         type: file
         description: BAM/BED/GFF/VCF
         pattern: "*.{bam|bed|gff|vcf}"
+        ontologies: []
     - intervals2:
         type: file
         description: BAM/BED/GFF/VCF
         pattern: "*.{bam|bed|gff|vcf}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -34,23 +36,41 @@ input:
         type: file
         description: Chromosome sizes file
         pattern: "*{.sizes,.txt}"
+        ontologies: []
 output:
-  - intersect:
-      - meta:
+  intersect:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.${extension}":
           type: file
-          description: File containing the description of overlaps found between the two
-            features
+          description: File containing the description of overlaps found between the
+            two features
           pattern: "*.${extension}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_bedtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bedtools:
+          type: string
+          description: The name of the tool
+      - "bedtools --version | sed -e 's/bedtools v//g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bedtools:
+          type: string
+          description: The name of the tool
+      - "bedtools --version | sed -e 's/bedtools v//g'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@edmundmiller"
   - "@sruthipsuresh"

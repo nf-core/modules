@@ -12,7 +12,8 @@ tools:
       homepage: https://artic.readthedocs.io/en/latest/
       documentation: https://artic.readthedocs.io/en/latest/
       tool_dev_url: https://github.com/artic-network/fieldbioinformatics
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:artic
 input:
   - - meta:
@@ -24,39 +25,43 @@ input:
         type: file
         description: FastQ file containing reads
         pattern: "*.{fastq.gz}"
-  - - fast5_dir:
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing model information
+          e.g. [ id:'test', single_end:false ]
+    - model_dir:
         type: directory
-        description: Directory containing MinION FAST5 files
+        description: Path containing clair3 models, defaults to models packaged with
+          conda installation
         pattern: "*"
-  - - sequencing_summary:
+    - model:
+        type: string
+        description: |
+          The model to use for clair3, if not provided the pipeline will try to figure
+          it out the appropriate model from the read fastq
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing scheme information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
         type: file
-        description: Path to Guppy sequencing summary
-        pattern: "*.{txt}"
-  - - '"primer-schemes/${scheme}/V${scheme_version}/${scheme}.reference.fasta"':
-        type: file
-        description: Scheme reference file
-  - - '"primer-schemes/${scheme}/V${scheme_version}/${scheme}.scheme.bed"':
+        description: Scheme reference fasta file
+        pattern: "*.{fasta}"
+        ontologies: []
+    - bed:
         type: file
         description: Scheme BED file
-  - - medaka_model_file:
-        type: file
-        description: |
-          Medaka model file to use (if option --medaka is set)
-        pattern: "*.hdf5"
-  - - medaka_model_string:
-        type: string
-        description: |
-          Medaka model string to use (if option --medaka is set)
-        pattern: "*"
-  - - scheme:
-        type: string
-        description: Name of the primer scheme
-  - - scheme_version:
-        type: string
-        description: Version of the primer scheme
+        pattern: "*.{bed}"
+        ontologies: []
+  - hdf5_plugin_path:
+      type: directory
+      description: Optional path to HDF5 plugin library
 output:
-  - results:
-      - meta:
+  results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,8 +70,10 @@ output:
           type: file
           description: Aggregated FastQ files
           pattern: "*.fastq.gz"
-  - bam:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -75,8 +82,9 @@ output:
           type: file
           description: BAM file
           pattern: "*.{sorted.bam}"
-  - bai:
-      - meta:
+          ontologies: []
+  bai:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -85,8 +93,9 @@ output:
           type: file
           description: BAM index file
           pattern: "*.{sorted.bai}"
-  - bam_trimmed:
-      - meta:
+          ontologies: []
+  bam_trimmed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -95,8 +104,9 @@ output:
           type: file
           description: BAM file with the primers left on
           pattern: "*.{trimmed.rg.sorted.bam}"
-  - bai_trimmed:
-      - meta:
+          ontologies: []
+  bai_trimmed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -105,8 +115,9 @@ output:
           type: file
           description: BAM index file of bam_trimmed
           pattern: "*.{sorted.bai}"
-  - bam_primertrimmed:
-      - meta:
+          ontologies: []
+  bam_primertrimmed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -115,8 +126,9 @@ output:
           type: file
           description: BAM containing reads after primer-binding site trimming
           pattern: "*.{trimmed.rg.sorted.bam}"
-  - bai_primertrimmed:
-      - meta:
+          ontologies: []
+  bai_primertrimmed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -125,8 +137,9 @@ output:
           type: file
           description: BAM index file of bam_primertrimmed
           pattern: "*.{primertrimmed.rg.sorted.bam.bai}"
-  - fasta:
-      - meta:
+          ontologies: []
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -135,8 +148,9 @@ output:
           type: file
           description: FAST file with consensus sequence
           pattern: "*.{consensus.fasta}"
-  - vcf:
-      - meta:
+          ontologies: []
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -145,8 +159,9 @@ output:
           type: file
           description: VCF file containing detected variants passing quality filter
           pattern: "*.{pass.vcf.gz}"
-  - tbi:
-      - meta:
+          ontologies: []
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -155,8 +170,9 @@ output:
           type: file
           description: VCF index
           pattern: "*.{pass.vcf.gz.tbi}"
-  - json:
-      - meta:
+          ontologies: []
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -165,11 +181,15 @@ output:
           type: file
           description: JSON file for MultiQC
           pattern: "*.json"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3464
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
 authors:
   - "@joseespinosa"
   - "@drpatelh"

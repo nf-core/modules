@@ -1,8 +1,23 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: abundance_differential_filter
+description: A subworkflow for filtering differential abundance results
+keywords:
+  - differential
+  - abundance
+  - expression
+  - count matrix
+  - fold-change
+components:
+  - limma/differential
+  - deseq2/differential
+  - propr/propd
+  - custom/filterdifferentialtable
+  - variancepartition/dream
 input:
   - ch_input:
       description: Channel with input data for differential analysis
       structure:
-        - meta_input:
+        - meta:
             type: map
             description: Metadata map
         - counts:
@@ -23,45 +38,56 @@ input:
   - ch_samplesheet:
       description: Channel with sample information
       structure:
-        - meta_exp:
+        - meta:
             type: map
-            description: Experiment metadata map
+            description: Metadata map
         - samplesheet:
             type: file
             description: Sample information file
   - ch_transcript_lengths:
       description: Channel with transcript length information
       structure:
-        - meta_exp:
+        - meta:
             type: map
-            description: Experiment metadata map
+            description: Metadata map
         - transcript_lengths:
             type: file
             description: Transcript length information file
   - ch_control_features:
       description: Channel with control features information
       structure:
-        - meta_exp:
+        - meta:
             type: map
-            description: Experiment metadata map
+            description: Metadata map
         - control_features:
             type: file
             description: Control features information file
   - ch_contrasts:
       description: Channel with contrast information
       structure:
+        - meta:
+            type: map
+            description: Metadata map
         - meta_contrast:
             type: map
-            description: Contrast metadata map
-        - contrast_variable:
-            type: value
-            description: Contrast variable
+            description: |
+              Map with all the contrast info, such as contrast
+              id, variable, reference, target, etc.
+        - variable:
+            type: list
+            description: List of contrast variable
         - reference:
-            type: value
-            description: Reference level
+            type: list
+            description: List of reference level
         - target:
-            type: value
-            description: Target level
+            type: list
+            description: List of target level
+        - formula:
+            type: list
+            description: List of contrast formula
+        - comparison:
+            type list:
+            description: List of contrast comparison
 
 output:
   - versions:
@@ -116,10 +142,11 @@ output:
         - meta:
             type: map
             description: Metadata map
-        - matrix:
-            type: file
-            description: Variance stabilised count matrix file
+        - matrices:
+            type: list
+            description: A list of variance stabilised count matrix files
             pattern: "*.{csv,tsv}"
+
   - model:
       description: Channel containing statistical model object from differential analysis
       structure:
@@ -135,6 +162,8 @@ authors:
   - "@bjlang"
   - "@caraiz2001"
   - "@suzannejin"
+  - "@delfiterradas"
+  - "@sofiromano"
 maintainers:
   - "@pinin4fjords"
   - "@suzannejin"

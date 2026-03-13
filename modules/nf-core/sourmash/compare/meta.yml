@@ -28,23 +28,25 @@ input:
         type: file
         description: Files containing signatures (hash sketches) of samples
         pattern: "*.{sig}"
-  - - file_list:
-        type: file
-        description: |
-          An optional file specifying a list of file paths that should be appended to the input signatures.
-  - - save_numpy_matrix:
-        type: boolean
-        description: |
-          If true, output will contain a (dis)similarity matrix numpy binary format.
-          At least one of save_numpy_matrix or save_csv is required.
-  - - save_csv:
-        type: boolean
-        description: |
-          If true, output will contain a (dis)similarity matrix in CSV format
-          At least one of save_numpy_matrix or save_csv is required.
+        ontologies: []
+  - file_list:
+      type: file
+      description: |
+        An optional file specifying a list of file paths that should be appended to the input signatures.
+      ontologies: []
+  - save_numpy_matrix:
+      type: boolean
+      description: |
+        If true, output will contain a (dis)similarity matrix numpy binary format.
+        At least one of save_numpy_matrix or save_csv is required.
+  - save_csv:
+      type: boolean
+      description: |
+        If true, output will contain a (dis)similarity matrix in CSV format
+        At least one of save_numpy_matrix or save_csv is required.
 output:
-  - matrix:
-      - meta:
+  matrix:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,8 +55,9 @@ output:
           type: file
           description: An optional (dis)similarity matrix numpy binary format
           pattern: "*.comp"
-  - labels:
-      - meta:
+          ontologies: []
+  labels:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -63,8 +66,9 @@ output:
           type: file
           description: A text file that specifies the labels in the output numpy_matrix
           pattern: "*.comp.labels.txt"
-  - csv:
-      - meta:
+          ontologies: []
+  csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,11 +77,15 @@ output:
           type: file
           description: An optional (dis)similarity matrix in CSV format
           pattern: "*.comp.csv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@taylorreiter"
 maintainers:
