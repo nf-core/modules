@@ -97,7 +97,6 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
         ch_coverage2cytosine_coverage = BISMARK_COVERAGE2CYTOSINE.out.coverage
         ch_coverage2cytosine_report   = BISMARK_COVERAGE2CYTOSINE.out.report
         ch_coverage2cytosine_summary  = BISMARK_COVERAGE2CYTOSINE.out.summary
-        ch_versions                   = ch_versions.mix(BISMARK_COVERAGE2CYTOSINE.out.versions)
     }
 
     /*
@@ -135,7 +134,7 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
 
     emit:
     bam                        = SAMTOOLS_SORT.out.bam         // channel: [ val(meta), [ bam ] ]
-    bai                        = SAMTOOLS_INDEX.out.bai        // channel: [ val(meta), [ bai ] ]
+    index                      = SAMTOOLS_INDEX.out.index      // channel: [ val(meta), [ index ] ]
     coverage2cytosine_coverage = ch_coverage2cytosine_coverage // channel: [ val(meta), [ coverage ] ]
     coverage2cytosine_report   = ch_coverage2cytosine_report   // channel: [ val(meta), [ report ] ]
     coverage2cytosine_summary  = ch_coverage2cytosine_summary  // channel: [ val(meta), [ summary ] ]
