@@ -9,7 +9,7 @@ process AMRFINDERPLUS_UPDATE {
 
     output:
     path "amrfinderdb.tar.gz", emit: db
-    path "versions.yml"      , emit: versions
+    tuple val("${task.process}"), val('amrfinder'), eval('amrfinder --version'), emit: versions_amrfinder, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -18,21 +18,11 @@ process AMRFINDERPLUS_UPDATE {
     """
     amrfinder_update -d amrfinderdb
     tar czvf amrfinderdb.tar.gz -C amrfinderdb/\$(readlink amrfinderdb/latest) ./
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        amrfinderplus: \$(amrfinder --version)
-    END_VERSIONS
     """
 
     stub:
     """
     touch amrfinderdb.tar
     gzip amrfinderdb.tar
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        amrfinderplus: \$(amrfinder --version)
-    END_VERSIONS
     """
 }
