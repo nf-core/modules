@@ -2,6 +2,7 @@ process RATTLE_CLUSTER {
     tag "$meta.id"
     label 'process_low'
 
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'docker://ecoflowucl/rattle:v1.0' :
         'ecoflowucl/rattle:v1.0' }"
@@ -18,7 +19,7 @@ process RATTLE_CLUSTER {
 
     script:
     def args = task.ext.args ?: ''
-    def RATTLE_VERSION = "v1.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def RATTLE_VERSION = "1.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     rattle \\
         cluster $args \\
