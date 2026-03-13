@@ -11,11 +11,11 @@ process BAMCLIPPER {
     input:
     tuple val(meta), path(bam), path(bai), path(bedpe)
 
-    output:
+output:
     tuple val(meta), path("*.primerclipped.bam")    , emit: bam
     tuple val(meta), path("*.primerclipped.bam.bai"), emit: bai
     tuple val("${task.process}"), val('bamclipper'), val("1.0.0"), emit: versions_bamclipper, topic: versions
-    tuple val("${task.process}"), val('samtools'), eval('samtools --version'), emit: versions_samtools, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools --version |& sed '1!d ; s/samtools //'"), emit: versions_samtools, topic: versions
     // WARN: Version information not provided by tool on CLI
     when:
     task.ext.when == null || task.ext.when
