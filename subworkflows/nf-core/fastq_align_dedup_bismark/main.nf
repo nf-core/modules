@@ -121,7 +121,6 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
         ch_methylation_mbias.collect{ _meta, mbias -> mbias }
     )
     ch_bismark_summary = BISMARK_SUMMARY.out.summary
-    ch_versions        = ch_versions.mix(BISMARK_SUMMARY.out.versions)
 
     /*
      * Collect MultiQC inputs
@@ -135,7 +134,7 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
 
     emit:
     bam                        = SAMTOOLS_SORT.out.bam         // channel: [ val(meta), [ bam ] ]
-    bai                        = SAMTOOLS_INDEX.out.bai        // channel: [ val(meta), [ bai ] ]
+    index                      = SAMTOOLS_INDEX.out.index      // channel: [ val(meta), [ index ] ]
     coverage2cytosine_coverage = ch_coverage2cytosine_coverage // channel: [ val(meta), [ coverage ] ]
     coverage2cytosine_report   = ch_coverage2cytosine_report   // channel: [ val(meta), [ report ] ]
     coverage2cytosine_summary  = ch_coverage2cytosine_summary  // channel: [ val(meta), [ summary ] ]
