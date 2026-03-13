@@ -29,8 +29,6 @@ process PLINK2_VCF2BGEN {
         --memory ${task.memory.toMega()} \
         --vcf ${vcf} 'dosage=${dosage_field}' \
         --export bgen-1.2 ${reffirst}\
-        --max-alleles 2 \
-        --vcf-half-call r \
         --${sample_name_mode} \
         --out ${prefix} \
         ${args}
