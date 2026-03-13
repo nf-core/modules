@@ -13,7 +13,7 @@ process CONTROLFREEC_ASSESSSIGNIFICANCE {
     output:
     tuple val(meta), path("*.p.value.txt"), emit: p_value_txt
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    tuple val("${task.process}"), val('controlfreec'), eval("echo 11.6b"), emit: versions_controlfreec, topic: versions
+    tuple val("${task.process}"), val('controlfreec'), val("11.6b"), emit: versions_controlfreec, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

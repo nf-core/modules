@@ -16,7 +16,7 @@ process COMEBIN_RUNCOMEBIN {
     tuple val(meta), path("${prefix}/comebin.log")             , emit: log
     tuple val(meta), path("${prefix}/embeddings.tsv")          , emit: embeddings
     tuple val(meta), path("${prefix}/covembeddings.tsv")       , emit: covembeddings
-    path "versions.yml"                                        , emit: versions
+    tuple val("${task.process}"), val('comebin'), eval("run_comebin.sh | sed '2!d;s/COMEBin version: //'"), topic: versions, emit: versions_comebin
 
     when:
     task.ext.when == null || task.ext.when
@@ -48,11 +48,6 @@ process COMEBIN_RUNCOMEBIN {
 
     # clean up
     rm local_assembly.fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        comebin: \$(run_comebin.sh | sed -n 2p | grep -o -E "[0-9]+(\\.[0-9]+)+")
-    END_VERSIONS
     """
 
     stub:
@@ -67,10 +62,5 @@ process COMEBIN_RUNCOMEBIN {
     touch ${prefix}/comebin.log
     touch ${prefix}/embeddings.tsv
     touch ${prefix}/covembeddings.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        comebin: \$(run_comebin.sh | sed -n 2p | grep -o -E "[0-9]+(\\.[0-9]+)+")
-    END_VERSIONS
     """
 }
