@@ -22,7 +22,7 @@ process DIAMOND_BLASTX {
     tuple val(meta), path('*.tsv'), optional: true, emit: tsv
     tuple val(meta), path('*.paf'), optional: true, emit: paf
     tuple val(meta), path("*.log"), emit: log
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('diamond'), eval("diamond --version | sed 's/diamond version //g'"), emit: versions_diamond, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -77,11 +77,6 @@ process DIAMOND_BLASTX {
         --log
 
     mv diamond.log ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        diamond: \$(diamond --version 2>&1 | tail -n 1 | sed 's/^diamond version //')
-    END_VERSIONS
     """
 
     stub:
@@ -118,10 +113,5 @@ process DIAMOND_BLASTX {
     echo "${args}"
     touch ${prefix}.${out_ext}
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        diamond: \$(diamond --version 2>&1 | tail -n 1 | sed 's/^diamond version //')
-    END_VERSIONS
     """
 }

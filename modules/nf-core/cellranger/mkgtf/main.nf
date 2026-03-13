@@ -8,8 +8,8 @@ process CELLRANGER_MKGTF {
     path gtf
 
     output:
-    path "*.gtf"         , emit: gtf
-    path "versions.yml"  , emit: versions
+    path "*.gtf", emit: gtf
+    tuple val("${task.process}"), val('cellranger'), eval('cellranger --version | sed "s/.*-//"'), emit: versions_cellranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,11 +27,6 @@ process CELLRANGER_MKGTF {
         $gtf \\
         ${prefix}.gtf \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-    END_VERSIONS
     """
 
     stub:
@@ -42,10 +37,5 @@ process CELLRANGER_MKGTF {
     def prefix = task.ext.prefix ?: "${gtf.baseName}.filtered"
     """
     touch ${prefix}.gtf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-    END_VERSIONS
     """
 }

@@ -11,9 +11,9 @@ tools:
       homepage: "https://agat.readthedocs.io/en/latest/"
       documentation: "https://agat.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/NBISweden/AGAT"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:AGAT
-
 input:
   - - meta:
         type: map
@@ -45,13 +45,27 @@ output:
           pattern: "*.gff"
           ontologies:
             - edam: "http://edamontology.org/format_1975" # GFF
+  versions_agat:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - agat:
+          type: string
+          description: The name of the tool
+      - agat --version | sed 's/^v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - agat:
+          type: string
+          description: The name of the tool
+      - agat --version | sed 's/^v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@anoronh4"
 maintainers:
