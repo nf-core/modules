@@ -12,7 +12,7 @@ process CONCOCT_CONCOCTCOVERAGETABLE {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('concoct'), eval('concoct --version | cut -d " " -f2'), emit: versions_concoct, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,10 +27,6 @@ process CONCOCT_CONCOCTCOVERAGETABLE {
         ${bamfiles} \\
         > ${prefix}.tsv
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        concoct: \$(echo \$(concoct --version 2> /dev/null) | sed 's/concoct //g' )
-    END_VERSIONS
     """
 
     stub:
@@ -38,9 +34,5 @@ process CONCOCT_CONCOCTCOVERAGETABLE {
     """
     touch ${prefix}.tsv
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        concoct: \$(echo \$(concoct --version 2> /dev/null) | sed 's/concoct //g' )
-    END_VERSIONS
     """
 }
