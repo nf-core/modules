@@ -68,13 +68,11 @@ workflow FASTA_INDEX_METHYLSEQ {
                     ch_fasta
                 )
                 ch_bismark_index = BISMARK_GENOMEPREPARATION_HISAT.out.index
-                ch_versions      = ch_versions.mix(BISMARK_GENOMEPREPARATION_HISAT.out.versions)
             } else {
                 BISMARK_GENOMEPREPARATION_BOWTIE (
                     ch_fasta
                 )
                 ch_bismark_index = BISMARK_GENOMEPREPARATION_BOWTIE.out.index
-                ch_versions      = ch_versions.mix(BISMARK_GENOMEPREPARATION_BOWTIE.out.versions)
             }
         }
     }

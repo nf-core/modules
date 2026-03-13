@@ -1,6 +1,6 @@
 name: csvtk_join
-description: Join two or more CSV (or TSV) tables by selected fields into a single
-  table
+description: Join two or more CSV (or TSV) tables by selected fields into a
+  single table
 keywords:
   - join
   - tsv
@@ -11,7 +11,8 @@ tools:
       homepage: http://bioinf.shenwei.me/csvtk
       documentation: http://bioinf.shenwei.me/csvtk
       tool_dev_url: https://github.com/shenwei356/csvtk
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -40,13 +41,27 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_csvtk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - csvtk:
+          type: string
+          description: The name of the tool
+      - csvtk version | sed -e "s/csvtk v//g":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "version.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - csvtk:
+          type: string
+          description: The name of the tool
+      - csvtk version | sed -e "s/csvtk v//g":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@anoronh4"
 maintainers:
