@@ -41,10 +41,10 @@ output:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - "${prefix}/":
+      - "${task.ext.prefix ?: meta.id}.*":
           type: file
           description: Centrifuger database index files
-          pattern: "${prefix}/"
+          pattern: "${task.ext.prefix ?: meta.id}.*"
           ontologies: []
   versions_centrifuger:
     - - "${task.process}":
