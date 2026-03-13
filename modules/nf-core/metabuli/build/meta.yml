@@ -26,36 +26,36 @@ input:
         type: file
         description: List of fasta files with input assemblies
         ontologies:
-         - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1929
   - taxonomy_names:
       type: file
       description: File describing individual members of a taxonomic tree in NCBI
         nodes.dmp format
       ontologies:
-        - edam: http://edamontology.org/data_3028 # Taxonomy
+        - edam: http://edamontology.org/data_3028
   - taxonomy_nodes:
       type: file
       description: File describing parent-child relationships of a taxonomic tree
         in NCBI nodes.dmp format
       ontologies:
-        - edam: http://edamontology.org/data_3028 # Taxonomy
+        - edam: http://edamontology.org/data_3028
   - taxonomy_merged:
       type: file
       description: Optional input to map old/deprecated TaxID to new ones
       ontologies:
-        - edam: http://edamontology.org/data_3028 # Taxonomy
+        - edam: http://edamontology.org/data_3028
   - accession2taxid:
       type: directory
       description: TSV file (with no header) of first column with mapping
         accession (from first part of each fasta entry) and second column the
         corresponding TaxID
       ontologies:
-         - edam: http://edamontology.org/data_3028 # Taxonomy
+        - edam: http://edamontology.org/data_3028
   - cds_info:
       type: file
       description: List of files to cds files
       ontologies:
-          - edam: "http://edamontology.org/format_1936" # GenBank
+        - edam: "http://edamontology.org/format_1936"
 output:
   db:
     - - meta:
