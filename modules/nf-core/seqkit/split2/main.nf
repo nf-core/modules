@@ -12,7 +12,7 @@ process SEQKIT_SPLIT2 {
 
     output:
     tuple val(meta), path("${prefix}/*"), emit: reads
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('seqkit'), eval("seqkit version | sed 's/^.*v//'"), emit: versions_seqkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,11 +28,6 @@ process SEQKIT_SPLIT2 {
             --threads $task.cpus \\
             $reads \\
             --out-dir ${prefix}
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            seqkit: \$(echo \$(seqkit 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-        END_VERSIONS
         """
     } else {
         """
@@ -43,11 +38,6 @@ process SEQKIT_SPLIT2 {
             --read1 ${reads[0]} \\
             --read2 ${reads[1]} \\
             --out-dir ${prefix}
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            seqkit: \$(echo \$(seqkit 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-        END_VERSIONS
         """
     }
 
@@ -57,22 +47,12 @@ process SEQKIT_SPLIT2 {
         """
         mkdir -p ${prefix}
         echo "" | gzip > ${prefix}/${reads[0]}
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            seqkit: \$(echo \$(seqkit 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-        END_VERSIONS
         """
     } else {
         """
         mkdir -p ${prefix}
         echo "" | gzip > ${prefix}/${reads[0]}
         echo "" | gzip > ${prefix}/${reads[1]}
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            seqkit: \$(echo \$(seqkit 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-        END_VERSIONS
         """
     }
 }

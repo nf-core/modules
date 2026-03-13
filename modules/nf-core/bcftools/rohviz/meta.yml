@@ -1,0 +1,103 @@
+name: "bcftools_rohviz"
+description: Visualise the output of bcftools roh
+keywords:
+  - visualisation
+  - RoH
+  - VCF
+tools:
+  - "roh-viz":
+      description: |
+        "Visualise the output of bcftools roh. It creates an HTML/JavaScript document which can be interactively viewed in a web browser."
+      homepage: http://samtools.github.io/bcftools/bcftools.html
+      documentation: http://www.htslib.org/doc/bcftools.html
+      doi: 10.1093/bioinformatics/btp352
+      licence:
+        - "MIT"
+      identifier: biotools:bcftools
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1' ]
+    - roh:
+        type: file
+        description: Output of BCFtools_roh. Contains site-specific and/or
+          per-region runs of homo/autozygosity calls.
+        pattern: "*.roh"
+        ontologies: []
+  - - meta1:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1' ]
+    - vcf:
+        type: file
+        description: VCF file
+        pattern: "*.{vcf,.vcf.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3016 # VCF
+  - regions_list:
+      type: file
+      description: "Regions can be specified either on command line or in a VCF, BED,
+        or tab-delimited file (the default)."
+      ontologies: []
+  - samples_file:
+      type: file
+      description: "File of sample names to include or exclude if prefixed with '^'."
+      ontologies: []
+output:
+  html:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - "*.html":
+          type: file
+          description: RoH visual report file.
+          pattern: "*.html"
+          ontologies:
+            - edam: http://edamontology.org/format_2331 # HTML
+  versions_bcftools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
+          description: The command used to generate the version of the tool
+  versions_less:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - less:
+          type: string
+          description: The tool name
+      - less --version | head -n1 | sed 's/less //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
+          description: The command used to generate the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - less:
+          type: string
+          description: The tool name
+      - less --version | head -n1 | sed 's/less //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@yz533cb"
