@@ -4,11 +4,11 @@ process PRETEXTSNAPSHOT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pretextsnapshot:0.0.5--h9948957_0':
-        'biocontainers/pretextsnapshot:0.0.5--h9948957_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fd/fde9c7892c9878e4aa8cbcb744039045a182efabac3e311a7fdb1e43b1fbb4d6/data':
+        'community.wave.seqera.io/library/pretextsnapshot:0.0.7--9470b2ea6b8991c8' }"
 
     input:
-    tuple val(meta), path(pretext_map)
+    tuple val(meta), path(pretext_map), path(order_file)
 
     output:
     tuple val(meta), path('*.{jpeg,png,bmp}'), emit: image
@@ -20,9 +20,11 @@ process PRETEXTSNAPSHOT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_"
+    def order_arg = order_file ? "--order ${order_file}" : ""
     """
     PretextSnapshot \\
-        $args \\
+        ${args} \\
+        ${order_arg} \\
         --map $pretext_map \\
         --prefix $prefix \\
         --folder .
