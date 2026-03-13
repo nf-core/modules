@@ -1,8 +1,8 @@
 name: "coreograph"
-description: Great....yet another TMA dearray program. What does this one do? Coreograph
-  uses UNet, a deep learning model, to identify complete/incomplete tissue cores on
-  a tissue microarray. It has been trained on 9 TMA slides of different sizes and
-  tissue types.
+description: Great....yet another TMA dearray program. What does this one do?
+  Coreograph uses UNet, a deep learning model, to identify complete/incomplete
+  tissue cores on a tissue microarray. It has been trained on 9 TMA slides of
+  different sizes and tissue types.
 keywords:
   - UNet
   - TMA dearray
@@ -16,7 +16,8 @@ tools:
       documentation: "https://mcmicro.org/troubleshooting/tuning/coreograph.html"
       tool_dev_url: "https://github.com/HMS-IDAC/UNetCoreograph"
       doi: 10.1038/s41592-021-01308-y
-      license: ["MIT License"]
+      license:
+        - "MIT License"
       identifier: ""
 input:
   - - meta:
@@ -29,7 +30,6 @@ input:
         pattern: "*.{ome.tif,tif,tiff}"
         ontologies: []
 output:
-  #
   cores:
     - - meta:
           type: map
@@ -74,13 +74,27 @@ output:
           description: A text file listing centroids of each core in format Y, X
           pattern: "centroidsY-X.txt"
           ontologies: []
+  versions_coreograph:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - coreograph:
+          type: string
+          description: The name of the tool
+      - 2.2.9:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - coreograph:
+          type: string
+          description: The name of the tool
+      - 2.2.9:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@arozhada"
   - "@MargotCh"

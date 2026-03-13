@@ -12,7 +12,7 @@ process AGAT_CONVERTGFF2BED {
 
     output:
     tuple val(meta), path("*.bed")      , emit: bed
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('agat'), eval("agat --version | sed 's/v//'"), emit: versions_agat, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,10 +26,6 @@ process AGAT_CONVERTGFF2BED {
         -o ${prefix}.bed \\
         ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        agat: \$(agat_convert_sp_gff2bed.pl --help | sed -n 's/.*(AGAT) - Version: \\(.*\\) .*/\\1/p')
-    END_VERSIONS
     """
 
     stub:
