@@ -50,10 +50,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*-contigs.fa":
+      - "*-contigs.fa.gz":
           type: file
           description: Assembled contigs in FASTA format
-          pattern: "*-contigs.fa"
+          pattern: "*-contigs.fa.gz"
           ontologies:
             - edam: http://edamontology.org/data_0925
             - edam: http://edamontology.org/format_1929
@@ -63,10 +63,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*-scaffolds.fa":
+      - "*-scaffolds.fa.gz":
           type: file
           description: Assembled scaffolds in FASTA format
-          pattern: "*-scaffolds.fa"
+          pattern: "*-scaffolds.fa.gz"
           ontologies:
             - edam: http://edamontology.org/data_0925
             - edam: http://edamontology.org/format_1929

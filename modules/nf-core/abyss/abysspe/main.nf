@@ -12,10 +12,10 @@ process ABYSS_ABYSSPE {
     val kmersize
 
     output:
-    tuple val(meta), path("*-contigs.fa"),   emit: contigs
-    tuple val(meta), path("*-scaffolds.fa"), emit: scaffolds
-    tuple val(meta), path("*-stats"),        emit: stats
-    tuple val(meta), path("*-abyss.log"),            emit: log
+    tuple val(meta), path("*-contigs.fa.gz"),   emit: contigs
+    tuple val(meta), path("*-scaffolds.fa.gz"), emit: scaffolds
+    tuple val(meta), path("*-stats"),           emit: stats
+    tuple val(meta), path("*-abyss.log"),       emit: log
     tuple val("${task.process}"), val('abyss'), eval("abyss-pe version | grep abyss | cut -d\" \" -f3"), topic: versions, emit: versions_abyss
 
     when:
@@ -41,6 +41,13 @@ process ABYSS_ABYSSPE {
         k=$kmersize \\
         $input_reads \\
         name=$prefix > ${prefix}-abyss.log
+
+    if [ -f ${prefix}-contigs.fa ]; then
+        gzip -cn ${prefix}-contigs.fa > ${prefix}-contigs.fa.gz
+    fi
+    if [ -f ${prefix}-scaffolds.fa ]; then
+        gzip -cn ${prefix}-scaffolds.fa > ${prefix}-scaffolds.fa.gz
+    fi
     """
 
     stub:
@@ -48,8 +55,8 @@ process ABYSS_ABYSSPE {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}-contigs.fa
-    touch ${prefix}-scaffolds.fa
+    echo "" | gzip -n > ${prefix}-contigs.fa.gz
+    echo "" | gzip -n > ${prefix}-scaffolds.fa.gz
     touch ${prefix}-stats
     touch ${prefix}-abyss.log
     """
