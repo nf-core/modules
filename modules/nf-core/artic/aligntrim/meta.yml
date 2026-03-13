@@ -30,14 +30,14 @@ input:
         description: BAM or SAM file containing aligned reads
         pattern: "*.{bam,sam}"
         ontologies:
-          - edam: "http://edamontology.org/format_2572"
-          - edam: "http://edamontology.org/format_2573"
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2573" # SAM
     - scheme_bed:
         type: file
         description: BED file containing amplicon scheme primer locations
         pattern: "*.bed"
         ontologies:
-          - edam: "http://edamontology.org/format_3617"
+          - edam: "http://edamontology.org/format_3617" # BED
     - normalise_depth:
         type: integer
         description: Normalise the read depth to this value
@@ -56,7 +56,7 @@ output:
           description: BAM file with primer sequences soft clipped
           pattern: "*.primertrimmed*.bam"
           ontologies:
-            - edam: http://edamontology.org/format_2572
+            - edam: http://edamontology.org/format_2572 # BAM
   align_trim_report:
     - - meta:
           type: map
@@ -69,7 +69,7 @@ output:
             each read / read pair
           pattern: "*.align_trim_report.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3750
+            - edam: http://edamontology.org/format_3750 #TSV
             - edam: http://edamontology.org/format_3475
   amp_depth_report:
     - - meta:
@@ -82,7 +82,7 @@ output:
           description: TSV report containing mean depth per amplicon
           pattern: "*.amp_depth_report.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3750
+            - edam: http://edamontology.org/format_3750 # TSV
             - edam: http://edamontology.org/format_3475
   versions_align_trim:
     - - ${task.process}:
