@@ -14,7 +14,7 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
     output:
     tuple val(meta), path("*.anno.tsv"), emit: feature_annotation
     tuple val(meta), path("*.fa.gz")   , emit: filtered_cdna, optional: true
-    tuple val("${task.process}"), val('atlasgeneannotationmanipulation'), eval("echo ${VERSION}"), emit: versions_atlasgeneannotationmanipulation, topic: versions
+    tuple val("${task.process}"), val('atlas-gene-annotation-manipulation'), eval("echo ${VERSION}"), emit: versions_atlasgeneannotationmanipulation, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
