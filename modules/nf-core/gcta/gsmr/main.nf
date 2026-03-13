@@ -17,7 +17,8 @@ process GCTA_GSMR {
     tuple val(meta), val(meta2), path("*.gsmr")          , emit: gsmr
     tuple val(meta), val(meta2), path("*.eff_plot.gz")   , emit: eff_plot, optional: true
     tuple val(meta), val(meta2), path("*.mono.badsnps"), emit: mono_badsnps, optional: true
-    tuple val("${task.process}"), val('gcta'), eval('gcta 2>&1 | grep -oE "v[0-9]+\\.[0-9]+\\.[0-9]+" | sed \'s/v//\''), emit: versions_gcta, topic: versions    
+    tuple val("${task.process}"), val('gcta'), eval('gcta 2>&1 | grep -oE "v[0-9]+\\.[0-9]+\\.[0-9]+" | sed \'s/v//\''), emit: versions_gcta, topic: versions
+
     when:
     task.ext.when == null || task.ext.when
 

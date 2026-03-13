@@ -33,15 +33,15 @@ input:
         description: Outcome GWAS summary statistics formatted for GSMR
         pattern: "*.txt"
         ontologies: []
-  - reference:
-      type: file
-      description: PLINK reference dataset files (BED/BIM/FAM)
-      pattern: "*.{bed,bim,fam}"
-      multiple: true
-      ontologies: []
+      reference:
+        type: file
+        description: PLINK reference dataset files (BED/BIM/FAM)
+        pattern: "*.{bed,bim,fam}"
+        multiple: true
+        ontologies: []
 output:
-  log:
-    - - meta:
+  - log:
+      - meta:
           type: map
           description: Groovy Map containing sample information for exposure
       - meta2:
@@ -51,9 +51,8 @@ output:
           type: file
           description: Log file from GSMR analysis
           pattern: "*.log"
-          ontologies: []
-  gsmr:
-    - - meta:
+  - gsmr:
+      - meta:
           type: map
           description: Groovy Map containing sample information for exposure
       - meta2:
@@ -63,42 +62,17 @@ output:
           type: file
           description: Result file from GSMR analysis
           pattern: "*.gsmr"
-          ontologies: []
-  eff_plot:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample information for exposure
-      - meta2:
-          type: map
-          description: Groovy Map containing sample information for outcome
-      - "*.eff_plot.gz":
-          type: file
-          description: Effect plot file from GSMR analysis
-          pattern: "*.eff_plot.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989
-  mono_badsnps:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample information for exposure
-      - meta2:
-          type: map
-          description: Groovy Map containing sample information for outcome
-      - "*.mono.badsnps":
-          type: file
-          description: Bad SNPs file from GSMR analysis
-          pattern: "*.mono.badsnps"
-          ontologies: []
-  versions_gcta:
-    - - ${task.process}:
+  - versions_gcta:
+      - "${task.process}":
           type: string
           description: The name of the process
       - gcta:
           type: string
           description: The name of the tool
-      - gcta 2>&1 | grep -oE "v[0-9]+\.[0-9]+\.[0-9]+" | sed 's/v//':
-          type: eval
+      - gcta 2>&1 | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+' | sed 's/v//':
+          type: string
           description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -107,8 +81,8 @@ topics:
       - gcta:
           type: string
           description: The name of the tool
-      - gcta 2>&1 | grep -oE "v[0-9]+\.[0-9]+\.[0-9]+" | sed 's/v//':
-          type: eval
+      - gcta 2>&1 | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+' | sed 's/v//':
+          type: string
           description: The expression to obtain the version of the tool
 authors:
   - "@juliaapolonio"
