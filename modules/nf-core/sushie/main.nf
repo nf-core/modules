@@ -23,7 +23,11 @@ process SUSHIE {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    // HOME is set to a writable location to avoid pathlib to fail when creating cache files
+
     """
+    export HOME=\$PWD/nxf_home
+
     sushie \\
     finemap \\
     --summary \\
