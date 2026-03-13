@@ -79,7 +79,7 @@ output:
       - duphold:
           type: string
           description: The name of the tool
-      - 'duphold -h | head -n 1 | sed -e "s/^version: //"':
+      - 'duphold -h | sed -e "s/^version: //";q':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -90,7 +90,7 @@ topics:
       - duphold:
           type: string
           description: The name of the tool
-      - 'duphold -h | head -n 1 | sed -e "s/^version: //"':
+      - 'duphold -h | sed -e "s/^version: //";q':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
