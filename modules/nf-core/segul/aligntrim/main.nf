@@ -9,8 +9,6 @@ process SEGUL_ALIGNTRIM {
 
     input:
     tuple val(meta), path(aln, stageAs: "input_dir/*")
-    val in_format
-    val out_format
     val datatype
 
     output:
@@ -24,9 +22,9 @@ process SEGUL_ALIGNTRIM {
     script:
     def args          = task.ext.args ?: ''
     prefix            = task.ext.prefix ?: "${meta.id}"
-    def input_format  = in_format  ? "--input-format ${in_format}"  : '--input-format auto'
-    def output_format = out_format ? "--output-format ${out_format}" : '--output-format fasta'
     def data_type     = datatype   ? "--datatype ${datatype}"        : '--datatype dna'
+    def input_format  = args.contains('--input-format')  ? '' : '--input-format auto'
+    def output_format = args.contains('--output-format') ? '' : '--output-format fasta'
     def trim_mode     = args.contains('--missing-data') || args.contains('--pinf') ? '' : '--missing-data 0.5'
     """
     # Rename input files to .fa if they have non-standard extensions

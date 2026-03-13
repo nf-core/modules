@@ -28,33 +28,14 @@ input:
           extensions are automatically renamed to .fa for SEGUL compatibility.
         pattern: "*.{fa,fas,fasta,nex,nexus,phy,phylip,aln,alnfaa,clipkit,trimal,msa}"
         ontologies:
-          - edam: http://edamontology.org/format_1921
-  - in_format:
-      type: string
-      description: |
-        Input alignment format. If empty, defaults to 'auto'.
-        Note: auto-detection relies on standard file extensions (.fas, .nex, .phy).
-      enum:
-        - auto
-        - fasta
-        - nexus
-        - phylip
-  - out_format:
-      type: string
-      description: |
-        Output alignment format. If empty, defaults to 'fasta'.
-      enum:
-        - fasta
-        - nexus
-        - phylip
+          - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1912 # NEXUS
+          - edam: http://edamontology.org/format_1997 # PHYLIP
   - datatype:
+      description: Sequence data type. If empty, defaults to 'dna'.
       type: string
-      description: |
-        Sequence data type. If empty, defaults to 'dna'.
-      enum:
-        - dna
-        - aa
-        - ignore
+      enum: ["dna", "aa", "ignore"]
 output:
   trimmed:
     - - meta:
