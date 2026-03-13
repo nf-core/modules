@@ -12,7 +12,7 @@ process BIOAWK {
 
     output:
     tuple val(meta), path("*.gz"), emit: output
-    tuple val("${task.process}"), val('bioawk'), val(1.0), emit: versions_bioawk, topic: versions
+    tuple val("${task.process}"), val('bioawk'), val("1.0"), emit: versions_bioawk, topic: versions
     // WARN: Version information not provided by tool on CLI. Please update version string above when bumping container versions.
 
     when:
