@@ -47,8 +47,8 @@ output:
           description: Effect size correlation
           pattern: "*.sushie.corr.tsv.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3475
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3989 # GZIP format
   cs:
     - - meta:
           type: map
@@ -60,8 +60,8 @@ output:
           description: Credible set
           pattern: "*.sushie.cs.tsv.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3475
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3989 # GZIP format
   weights:
     - - meta:
           type: map
@@ -73,8 +73,8 @@ output:
           description: Prediction weights
           pattern: "*.sushie.weights.tsv.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3475
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3989 # GZIP format
   versions_sushie:
     - - ${task.process}:
           type: string
