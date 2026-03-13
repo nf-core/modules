@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process GETORGANELLE_FROMREADS"
-    script "modules/nf-core/getorganelle/fromreads/main.nf"
+    script "../main.nf"
     process "GETORGANELLE_FROMREADS"
 
     tag "modules"
@@ -9,7 +9,7 @@ nextflow_process {
     tag "getorganelle"
     tag "getorganelle/config"
 
-    test("Should run without failures") {
+    test("homo_sapiens - animal_mt db, fastq.gz - fasta") {
         setup {
             run("GETORGANELLE_CONFIG") {
                 script "../../config/main.nf"
@@ -44,13 +44,13 @@ nextflow_process {
                     process.out.etc[0][1],
                     process.out.etc.flatten().collect { file(it).name }.sort(),
                     process.out.fasta,
-                    process.out.versions_getorganelle).match('main_output') },
+                    process.out.findAll { key, val -> key.startsWith('versions') }).match('main_output') },
             )
         }
 
     }
 
-    test("Should run without failures with stub option") {
+    test("homo_sapiens - animal_mt db, fastq.gz - fasta - stub") {
         options '-stub'
         when {
             process {
@@ -79,7 +79,7 @@ nextflow_process {
                 { assert snapshot(
                         fileList_results,
                         fileList_fasta,
-                        process.out.versions_getorganelle
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match('file_list') }
 
             )
