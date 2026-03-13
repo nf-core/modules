@@ -63,7 +63,7 @@ nextflow_process {
                     path(process.out.pos[0][1]).linesGzip[0..5],
                     path(process.out.counts[0][1]).linesGzip[0..5],
                     file(process.out.icounts[0][1]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -92,7 +92,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }

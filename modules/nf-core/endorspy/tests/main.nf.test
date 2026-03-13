@@ -60,7 +60,7 @@ nextflow_process {
             process {
                 """
                 input[0] = SAMTOOLS_VIEW.out.bam
-                    .mix(SAMTOOLS_INDEX.out.bai)
+                    .mix(SAMTOOLS_INDEX.out.index)
                     .groupTuple(by:0)
                     .map{[it[0], it[1][0], it[1][1]]}
                 """
@@ -73,7 +73,7 @@ nextflow_process {
             process {
                 """
                 input[0] = SAMTOOLS_VIEW.out.bam
-                    .mix(SAMTOOLS_INDEX.out.bai)
+                    .mix(SAMTOOLS_INDEX.out.index)
                     .groupTuple(by:0)
                     .map{[it[0], it[1][0], it[1][1]]}
                 """

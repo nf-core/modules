@@ -12,9 +12,9 @@ tools:
       documentation: https://arriba.readthedocs.io/en/latest/
       tool_dev_url: https://github.com/suhrig/arriba
       doi: "10.1101/gr.257246.119"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:Arriba
-
 input:
   - genome:
       type: string
@@ -33,7 +33,7 @@ output:
           to draw ideograms
         pattern: ".tsv"
         ontologies:
-          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3475
   protein_domains:
     - protein_domains*${genome}*.gff3:
         type: file
@@ -47,13 +47,27 @@ output:
           rate of expected or highly relevant events, such as recurrent fusions
         pattern: "*.tsv.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_3989
+  versions_arriba:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - arriba:
+          type: string
+          description: The name of the tool
+      - arriba -h | grep "Version:" 2>&1 | sed "s/Version:\s//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - arriba:
+          type: string
+          description: The name of the tool
+      - arriba -h | grep "Version:" 2>&1 | sed "s/Version:\s//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@peterpru"

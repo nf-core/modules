@@ -20,7 +20,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - fasta:
         type: file
         description: Input fasta file containing query sequences
@@ -31,7 +31,7 @@ input:
         type: map
         description: |
           Groovy Map containing db information
-          e.g. [ id:'test2', single_end:false ]
+          e.g. [ id:'test2' ]
     - db:
         type: file
         description: File of the indexed DIAMOND database
@@ -62,7 +62,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', db:'ncbi-refseq' ]
       - "*.{blast,blast.gz}":
           type: file
           description: File containing blastp hits
@@ -74,7 +74,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', db:'ncbi-refseq' ]
       - "*.{xml,xml.gz}":
           type: file
           description: File containing blastp hits
@@ -86,7 +86,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', db:'ncbi-refseq' ]
       - "*.{txt,txt.gz}":
           type: file
           description: File containing hits in tabular BLAST format.
@@ -98,7 +98,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', db:'ncbi-refseq' ]
       - "*.{daa,daa.gz}":
           type: file
           description: File containing hits DAA format
@@ -109,19 +109,19 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', db:'ncbi-refseq' ]
       - "*.{sam,sam.gz}":
           type: file
           description: File containing aligned reads in SAM format
           pattern: "*.{sam,sam.gz}"
           ontologies:
-            - edam: http://edamontology.org/format_2573 # SAM
+            - edam: http://edamontology.org/format_2573
   tsv:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', db:'ncbi-refseq' ]
       - "*.{tsv,tsv.gz}":
           type: file
           description: Tab separated file containing taxonomic classification of
@@ -134,7 +134,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test', db:'ncbi-refseq' ]
       - "*.{paf,paf.gz}":
           type: file
           description: File containing aligned reads in pairwise mapping format
