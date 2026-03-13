@@ -16,7 +16,7 @@ process CRABS_IMPORT {
 
     output:
     tuple val(meta), path("*.txt"), emit: crabsdb
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('crabs'), eval("crabs --help 2>/dev/null | grep -oE 'v[0-9.]+' | cut -c2-"), emit: versions_crabs, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,10 +27,7 @@ process CRABS_IMPORT {
     def is_compressed  = fasta.name.endsWith(".gz")
     def fasta_name     = fasta.name.replace(".gz", "")
     def import_fmt_cmd = "--import-format ${import_format}"
-    def version_cmd    = "\$(crabs --help 2>/dev/null | grep 'CRABS |' | sed 's/.*CRABS | v\\([0-9.]*\\).*/\\1/')"
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        version_cmd    = '1.0.7'
-    }
+
     """
     if [ "${is_compressed}" == "true" ]; then
         gzip -c -d ${fasta} > ${fasta_name}
@@ -46,25 +43,12 @@ process CRABS_IMPORT {
         ${args}
 
     rm ${fasta_name}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        crabs: ${version_cmd}
-    END_VERSIONS
     """
 
     stub:
     def prefix       = task.ext.prefix ?: "${meta.id}"
-    def version_cmd  = "\$(crabs --help 2>/dev/null | grep 'CRABS |' | sed 's/.*CRABS | v\\([0-9.]*\\).*/\\1/')"
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        version_cmd  = '1.0.7'
-    }
+
     """
     touch ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        crabs: ${version_cmd}
-    END_VERSIONS
     """
 }

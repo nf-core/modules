@@ -16,7 +16,7 @@ process ABRITAMR_RUN {
     tuple val(meta), path("*.summary_virulence.txt"), emit: virulence
     tuple val(meta), path("*.amrfinder.out")        , emit: out
     tuple val(meta), path("*.abritamr.txt")         , emit: txt, optional: true
-    path "versions.yml"                             , emit: versions
+    tuple val("${task.process}"), val('abritamr'), eval("abritamr --version 2>&1 | sed 's/^.*abritamr \\([0-9.]*\\).*/\\1/'"), emit: versions_abritamr, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,11 +46,6 @@ process ABRITAMR_RUN {
         # This file is not always present
         mv ${prefix}/abritamr.txt ${prefix}.abritamr.txt
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        \$(echo \$(abritamr --version 2>&1) | sed 's/^.*abritamr \\([0-9.]*\\).*/\\1/')
-    END_VERSIONS
     """
 
     stub:
@@ -61,10 +56,5 @@ process ABRITAMR_RUN {
     touch ${prefix}.summary_virulence.txt
     touch ${prefix}.amrfinder.out
     touch ${prefix}.amrfinder.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        \$(echo \$(abritamr --version 2>&1) | sed 's/^.*abritamr \\([0-9.]*\\).*/\\1/')
-    END_VERSIONS
     """
 }

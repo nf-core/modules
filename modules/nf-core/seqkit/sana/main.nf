@@ -13,7 +13,7 @@ process SEQKIT_SANA {
     output:
     tuple val(meta), path("${prefix}${extension}"), emit: reads
     tuple val(meta), path("${prefix}.log")        , emit: log
-    path "versions.yml"                           , emit: versions
+    tuple val("${task.process}"), val('seqkit'), eval("seqkit version | sed 's/^.*v//'"), emit: versions_seqkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,11 +27,6 @@ process SEQKIT_SANA {
         $args \\
         ${reads} \\
         -o ${prefix}${extension} > ${prefix}.log 2>&1
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$( seqkit version | sed 's/seqkit v//' )
-    END_VERSIONS
     """
 
     stub:
@@ -48,10 +43,5 @@ process SEQKIT_SANA {
         touch ${prefix}${extension}
     fi
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$( seqkit version | sed 's/seqkit v//' )
-    END_VERSIONS
     """
 }

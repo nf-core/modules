@@ -13,7 +13,8 @@ tools:
       documentation: "https://lbgi.fr/AnnotSV/"
       tool_dev_url: "https://github.com/lgmgeo/AnnotSV"
       doi: 10.1093/bioinformatics/bty304
-      licence: ["GPL-3.0"]
+      licence:
+        - "GPL-3.0"
       identifier: biotools:AnnotSV
 input:
   - - meta:
@@ -23,7 +24,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - sv_vcf:
         type: file
-        description: A VCF or BED file containing the structural variants to be annotated
+        description: A VCF or BED file containing the structural variants to be
+          annotated
         pattern: "*.{bed,vcf,vcf.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_3003" # BED
@@ -55,8 +57,8 @@ input:
           Groovy Map containing candidate genes information
     - candidate_genes:
         type: file
-        description: OPTIONAL - A file containing genes (either space-separated, tab-separated
-          or line-break-separated)
+        description: OPTIONAL - A file containing genes (either space-separated,
+          tab-separated or line-break-separated)
         pattern: "*.txt"
         ontologies:
           - edam: "http://edamontology.org/format_2330" # Text file
@@ -76,8 +78,9 @@ input:
           Groovy Map containing candidate gene transcripts information
     - gene_transcripts:
         type: file
-        description: OPTIONAL - A file containing the preferred gene transcripts to
-          be used in priority during annotation (either space-separated or tab-separated)
+        description: OPTIONAL - A file containing the preferred gene transcripts
+          to be used in priority during annotation (either space-separated or
+          tab-separated)
         pattern: "*.txt"
         ontologies:
           - edam: "http://edamontology.org/format_2330" # Text file
@@ -119,13 +122,27 @@ output:
           pattern: "*.vcf"
           ontologies:
             - edam: "http://edamontology.org/format_3016" # VCF
+  versions_annotsv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - annotsv:
+          type: string
+          description: The name of the tool
+      - AnnotSV --version | sed 's/AnnotSV //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - annotsv:
+          type: string
+          description: The name of the tool
+      - AnnotSV --version | sed 's/AnnotSV //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:
