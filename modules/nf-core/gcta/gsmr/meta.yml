@@ -1,108 +1,115 @@
-name: gcta_gsmr
-description: Module that performs a Mendelian Randomization analysis with summary
-  data and plink bfile.
+name: "gcta_gsmr"
+description: Perform GSMR Mendelian Randomization analysis using GCTA with
+  exposure and outcome summary statistics.
 keywords:
   - Mendelian Randomization
   - GWAS
-  - gsmr
+  - GSMR
+  - causal inference
 tools:
-  - gcta:
-      description: |
-        GCTA (Genome-wide Complex Trait Analysis) estimates the proportion of phenotypic variance explained
-        by all genome-wide SNPs for complex traits.
-      homepage: https://yanglab.westlake.edu.cn/software/gcta
-      documentation: https://yanglab.westlake.edu.cn/software/gcta/
-      tool_dev_url: https://github.com/jianyangqt/gcta
-      doi: 10.1038/s41467-017-02317-2
-      licence: ["GPL v3"]
+  - "gcta":
+      description: "GCTA implements GSMR for Mendelian Randomization using summary statistics."
+      homepage: "https://yanglab.westlake.edu.cn/software/gcta"
+      documentation: "https://yanglab.westlake.edu.cn/software/gcta/"
+      tool_dev_url: "https://github.com/jianyangqt/gcta"
+      doi: "10.1038/s41467-017-02317-2"
+      licence:
+        - "GPL v3"
       identifier: biotools:gcta
 input:
   - - meta:
         type: map
-        description: |
-          Groovy Map containing sample information for exposure
-          e.g. [ id:'sample1' ]
+        description: Groovy Map containing exposure dataset metadata
     - exposure:
         type: file
-        description: Exposure data file for GSMR analysis
+        description: Exposure GWAS summary statistics formatted for GSMR
         pattern: "*.txt"
         ontologies: []
   - - meta2:
         type: map
-        description: |
-          Groovy Map containing sample information for outcome
-          e.g. [ id:'sample2' ]
+        description: Groovy Map containing outcome dataset metadata
     - outcome:
         type: file
-        description: Outcome data file for GSMR analysis
+        description: Outcome GWAS summary statistics formatted for GSMR
         pattern: "*.txt"
         ontologies: []
-  - - reference:
-        type: file
-        description: Reference files (BED, BIM, FAM) for GCTA analysis
-        pattern: "*.{bed,bim,fam}"
-        multiple: true
-        ontologies: []
+  - reference:
+      type: file
+      description: PLINK reference dataset files (BED/BIM/FAM)
+      pattern: "*.{bed,bim,fam}"
+      multiple: true
+      ontologies: []
 output:
-  - log:
-      - meta:
+  log:
+    - - meta:
           type: map
-          description: |
-            Groovy Map containing sample information for exposure
+          description: Groovy Map containing sample information for exposure
       - meta2:
           type: map
-          description: |
-            Groovy Map containing sample information for outcome
+          description: Groovy Map containing sample information for outcome
       - "*.log":
           type: file
           description: Log file from GSMR analysis
           pattern: "*.log"
-  - gsmr:
-      - meta:
+          ontologies: []
+  gsmr:
+    - - meta:
           type: map
-          description: |
-            Groovy Map containing sample information for exposure
+          description: Groovy Map containing sample information for exposure
       - meta2:
           type: map
-          description: |
-            Groovy Map containing sample information for outcome
+          description: Groovy Map containing sample information for outcome
       - "*.gsmr":
           type: file
           description: Result file from GSMR analysis
           pattern: "*.gsmr"
-  - eff_plot:
-      - meta:
+          ontologies: []
+  eff_plot:
+    - - meta:
           type: map
-          description: |
-            Groovy Map containing sample information for exposure
+          description: Groovy Map containing sample information for exposure
       - meta2:
           type: map
-          description: |
-            Groovy Map containing sample information for outcome
+          description: Groovy Map containing sample information for outcome
       - "*.eff_plot.gz":
           type: file
-          description: Effect plot file from GSMR analysis (gzipped)
+          description: Effect plot file from GSMR analysis
           pattern: "*.eff_plot.gz"
-          optional: true
-  - mono_badsnps:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  mono_badsnps:
+    - - meta:
           type: map
-          description: |
-            Groovy Map containing sample information for exposure
+          description: Groovy Map containing sample information for exposure
       - meta2:
           type: map
-          description: |
-            Groovy Map containing sample information for outcome
-      - "*.mono.badsnsps":
+          description: Groovy Map containing sample information for outcome
+      - "*.mono.badsnps":
           type: file
           description: Bad SNPs file from GSMR analysis
           pattern: "*.mono.badsnps"
-          optional: true
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_gcta:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gcta:
+          type: string
+          description: The name of the tool
+      - gcta 2>&1 | grep -oE "v[0-9]+\.[0-9]+\.[0-9]+" | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gcta:
+          type: string
+          description: The name of the tool
+      - gcta 2>&1 | grep -oE "v[0-9]+\.[0-9]+\.[0-9]+" | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@juliaapolonio"
 maintainers:

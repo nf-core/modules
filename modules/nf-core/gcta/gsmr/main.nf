@@ -13,12 +13,11 @@ process GCTA_GSMR {
     path(reference)
 
     output:
-    tuple val(meta), val(meta2), path("*.log")          , emit: log
-    tuple val(meta), val(meta2), path("*.gsmr")         , emit: gsmr
-    tuple val(meta), val(meta2), path("*.eff_plot.gz")  , emit: eff_plot, optional: true
-    tuple val(meta), val(meta2), path("*.mono.badsnsps"), emit: mono_badsnps, optional: true
-    path "versions.yml"                                 , emit: versions
-
+    tuple val(meta), val(meta2), path("*.log")           , emit: log
+    tuple val(meta), val(meta2), path("*.gsmr")          , emit: gsmr
+    tuple val(meta), val(meta2), path("*.eff_plot.gz")   , emit: eff_plot, optional: true
+    tuple val(meta), val(meta2), path("*.mono.badsnps"), emit: mono_badsnps, optional: true
+    tuple val("${task.process}"), val('gcta'), eval('gcta 2>&1 | grep -oE "v[0-9]+\\.[0-9]+\\.[0-9]+" | sed \'s/v//\''), emit: versions_gcta, topic: versions    
     when:
     task.ext.when == null || task.ext.when
 
@@ -36,11 +35,6 @@ process GCTA_GSMR {
         --mbfile reference.txt  \\
         --gsmr-file ${meta.id}.input.txt outcome.txt \\
         --out "${prefix}"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            gcta: \$(gcta 2>&1 | awk '/no analysis has been launched/ {exit 0} {print}' | sed -n 's/.*version \\(v[0-9.]*\\).*/\\1/p')
-    END_VERSIONS
     """
 
     stub:
@@ -52,9 +46,5 @@ process GCTA_GSMR {
     touch ${prefix}.mono.badsnps
     echo "" | gzip > ${prefix}.eff_plot.gz
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            gcta: \$(gcta 2>&1 | awk '/no analysis has been launched/ {exit 0} {print}' | sed -n 's/.*version \\(v[0-9.]*\\).*/\\1/p')
-    END_VERSIONS
     """
 }
