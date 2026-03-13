@@ -13,6 +13,7 @@ process SEQKIT_SLIDING {
     output:
     tuple val(meta), path("*.fast*"), emit: fastx
     tuple val("${task.process}"), val('seqkit'), eval("seqkit version | sed 's/^.*v//'"), emit: versions_seqkit, topic: versions
+
     when:
     task.ext.when == null || task.ext.when
 
