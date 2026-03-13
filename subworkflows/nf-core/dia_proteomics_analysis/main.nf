@@ -360,7 +360,7 @@ workflow DIA_PROTEOMICS_ANALYSIS {
         .join(DIANN_FINALQUANTIFICATION.out.pg_matrix)                                                    // [meta_exp_searchdb, report, pg_matrix]
         .join(DIANN_FINALQUANTIFICATION.out.pr_matrix)                                                    // [meta_exp_searchdb, report, pg_matrix, pr_matrix]
         .combine(DIANN_FINALQUANTIFICATION.out.versions_diann.map{ _process, _tool, version -> version }) // [meta_exp_searchdb, report, pg_matrix, pr_matrix, version]
-    
+
     //
     // MODULE: Generate mzML statistics
     //
