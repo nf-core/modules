@@ -1,6 +1,6 @@
 process CAFE {
     label 'process_high'
-
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cafe:5.1.0--h43eeafb_0':
@@ -16,7 +16,6 @@ process CAFE {
     path("$prefix/*.tre") , emit: cafe_significant_trees
     path("$prefix/*_report.cafe") , emit: cafe_report
     path("$prefix/*results.txt") , emit: cafe_results
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('cafe'), eval('echo 5.1.0'), emit: versions_cafe, topic: versions
     when:
     task.ext.when == null || task.ext.when
