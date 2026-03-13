@@ -13,7 +13,7 @@ process ARIBA_RUN {
 
     output:
     tuple val(meta), path("${prefix}/*"), emit: results
-    tuple val("${task.process}"), val('ariba'), eval('ariba version 2>/dev/null | head -1 | sed "s/ARIBA version: //"'), emit: versions_ariba, topic: versions
+    tuple val("${task.process}"), val('ariba'), eval('ariba version 2>/dev/null | sed "1!d;s/ARIBA version: //"'), emit: versions_ariba, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,5 +31,17 @@ process ARIBA_RUN {
         ${prefix} \\
         ${args} \\
         --threads ${task.cpus}
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p ${prefix}
+    touch ${prefix}/report.tsv
+    touch ${prefix}/debug.report.tsv
+    echo '' | gzip > ${prefix}/assembled_genes.fa.gz
+    echo '' | gzip > ${prefix}/assembled_seqs.fa.gz
+    echo '' | gzip > ${prefix}/assemblies.fa.gz
+    touch ${prefix}/version_info.txt
     """
 }

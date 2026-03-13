@@ -64,4 +64,42 @@ nextflow_process {
         }
 
     }
+
+    test("sarscov2 illumina paired-end [fastq] - stub") {
+
+        options "-stub"
+
+        setup {
+            run("ARIBA_GETREF") {
+                    script "../../../ariba/getref/main.nf"
+                    process {
+                        """
+                        input[0] = [ [ id:'test' ], // meta map
+                            "card"
+                            ]
+                        """
+                    }
+                }
+        }
+        when {
+            process {
+                """
+
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                        [   file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ],
+                        ]
+                input[1] = ARIBA_GETREF.out.db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
 }
