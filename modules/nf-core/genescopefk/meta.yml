@@ -101,13 +101,6 @@ output:
           type: float
           description: Average kmer coverage value extracted from summary file
           pattern: "[0-9.]+"
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750
   log:
     - - meta:
           type: map
@@ -119,6 +112,27 @@ output:
           description: GeneScopeFK command stdout log
           pattern: "*_genescopefk.log"
           ontologies: []
+  versions_genescopefk:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - genescopefk:
+          type: string
+          description: Name of the tool
+      - "R --version | sed '1!d; s/.*version //; s/ .*//'":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - genescopefk:
+          type: string
+          description: Name of the tool
+      - "R --version | sed '1!d; s/.*version //; s/ .*//'":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@mahesh-panchal"
 maintainers:
