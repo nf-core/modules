@@ -31,7 +31,7 @@ process FASTK_FASTK {
         -T$task.cpus \\
         -M${task.memory.toGiga()} \\
         -N${prefix} \\
-        $reads
+        $reads \\
         1>${prefix}.fastK.log 2>&1
 
     find . -name '*.ktab*' -exec chmod a+r {} \\;
@@ -53,7 +53,6 @@ process FASTK_FASTK {
         -T$task.cpus \\
         -M${task.memory.toGiga()} \\
         -N${prefix}_fk \\
-        $reads"
-        1>${prefix}.fastK.log 2>&1
+        $reads" 1>${prefix}.fastK.log 2>&1
     """
 }
