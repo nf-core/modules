@@ -11,6 +11,7 @@ process ARTIC_MINION {
     tuple val(meta), path(fastq)
     tuple val(meta2), path(model_dir), val(model)
     tuple val(meta3), path(fasta), path(bed)
+    path hdf5_plugin_path
 
     output:
     tuple val(meta), path("${prefix}.*")                              , emit: results
@@ -24,7 +25,7 @@ process ARTIC_MINION {
     tuple val(meta), path("${prefix}.pass.vcf.gz")                    , emit: vcf
     tuple val(meta), path("${prefix}.pass.vcf.gz.tbi")                , emit: tbi
     tuple val(meta), path("*.json")                                   , emit: json, optional:true
-    path  "versions.yml"                                              , emit: versions
+    tuple val("${task.process}"), val('artic'), eval("artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//'"), topic: versions, emit: versions_artic
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,10 +34,10 @@ process ARTIC_MINION {
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
 
-    def model_dir_cmd   = model_dir                ? "--model-dir ${model_dir}" : "--model-dir \$(which artic | sed 's/artic/models/')"
-    def hd5_plugin_path = task.ext.hd5_plugin_path ? "export HDF5_PLUGIN_PATH=${task.ext.hd5_plugin_path}" : "export HDF5_PLUGIN_PATH=/usr/local/lib/python3.6/site-packages/ont_fast5_api/vbz_plugin"
+    def model_dir_val   = model_dir ?: "\$(which artic | sed 's/artic/models/')"
+    def hd5_plugin_path = hdf5_plugin_path?: "/usr/local/lib/python3.6/site-packages/ont_fast5_api/vbz_plugin"
     """
-    ${hd5_plugin_path}
+    export HDF5_PLUGIN_PATH=${hd5_plugin_path}
 
     artic \\
         minion \\
@@ -45,14 +46,9 @@ process ARTIC_MINION {
         --read-file ${fastq} \\
         --bed ${bed} \\
         --ref ${fasta} \\
-        ${model_dir_cmd} \\
+        --model-dir ${model_dir_val} \\
         --model ${model} \\
         ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        artic: \$(artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -100,10 +96,5 @@ process ARTIC_MINION {
     touch ${prefix}.sorted.bam.bai
     touch ${prefix}.trimmed.rg.sorted.bam
     touch ${prefix}.trimmed.rg.sorted.bam.bai
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        artic: \$(artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//')
-    END_VERSIONS
     """
 }
