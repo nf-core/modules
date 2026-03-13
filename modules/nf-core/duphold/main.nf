@@ -14,7 +14,7 @@ process DUPHOLD {
 
     output:
     tuple val(meta), path("*.vcf.gz")   , emit: vcf
-    tuple val("${task.process}"), val('duphold'), eval('duphold -h | head -n 1 | sed -e "s/^version: //"'), emit: versions_duphold, topic: versions
+    tuple val("${task.process}"), val('duphold'), eval('duphold -h | sed -e "s/^version: //";q'), emit: versions_duphold, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
