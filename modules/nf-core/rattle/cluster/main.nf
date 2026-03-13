@@ -2,9 +2,10 @@ process RATTLE_CLUSTER {
     tag "$meta.id"
     label 'process_low'
 
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/rattle%3A1.0--h5ca1c30_0' :
-        'quay.io/biocontainers/rattle:1.0--h5ca1c30_0' }"
+        'https://depot.galaxyproject.org/singularity/rattle:1.0--h5ca1c30_0' :
+        'biocontainers/rattle:1.0--h5ca1c30_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -18,7 +19,7 @@ process RATTLE_CLUSTER {
 
     script:
     def args = task.ext.args ?: ''
-    def RATTLE_VERSION = "v1.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def RATTLE_VERSION = "1.0"
     """
     rattle \\
         cluster $args \\
@@ -32,7 +33,7 @@ process RATTLE_CLUSTER {
     """
 
     stub:
-    def RATTLE_VERSION = "v1.0"
+    def RATTLE_VERSION = "1.0"
     """
     touch clusters.out
 
