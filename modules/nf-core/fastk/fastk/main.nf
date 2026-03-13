@@ -13,6 +13,7 @@ process FASTK_FASTK {
 
     output:
     tuple val(meta), path("*.hist")                      , emit: hist
+    tuple val(meta), path("*.log" )                      , emit: log
     tuple val(meta), path("*.ktab*", hidden: true)       , emit: ktab, optional: true
     tuple val(meta), path("*.{prof,pidx}*", hidden: true), emit: prof, optional: true
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
@@ -31,6 +32,7 @@ process FASTK_FASTK {
         -M${task.memory.toGiga()} \\
         -N${prefix} \\
         $reads
+        1>${prefix}.fastK.log 2>&1
 
     find . -name '*.ktab*' -exec chmod a+r {} \\;
     """
@@ -52,5 +54,6 @@ process FASTK_FASTK {
         -M${task.memory.toGiga()} \\
         -N${prefix}_fk \\
         $reads"
+        1>${prefix}.fastK.log 2>&1
     """
 }
