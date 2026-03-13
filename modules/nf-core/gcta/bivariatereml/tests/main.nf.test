@@ -1,0 +1,86 @@
+nextflow_process {
+    name "Test Process GCTA_BIVARIATEREML"
+    script "../main.nf"
+    process "GCTA_BIVARIATEREML"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gcta"
+    tag "gcta/bivariatereml"
+
+    test("homo_sapiens popgen - bivariate phenotype with dense GRM and covariates") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:"Trait1__Trait2" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/gcta_grm_bivariate.noheader.txt", checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:"gcta_grm_0" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/gcta_grm_0.grm.id", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/gcta_grm_0.grm.bin", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/gcta_grm_0.grm.N.bin", checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:"covariates_quant" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/gcta_grm_covariates.quant.noheader.txt", checkIfExists: true)
+                ]
+                input[3] = [
+                    [ id:"covariates_cat" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/gcta_grm_covariates.cat.noheader.txt", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.bivariate_results.size() == 1 },
+                { assert process.out.log_file.size() == 1 },
+                { assert process.out.bivariate_results.get(0).get(0).id == "Trait1__Trait2" },
+                { assert file(process.out.log_file.get(0).get(1)).name == "Trait1__Trait2.log" },
+                { assert file(process.out.log_file.get(0).get(1)).exists() },
+                {
+                    assert snapshot(
+                        process.out.bivariate_results,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - bivariate phenotype with dense GRM - stub") {
+        options "-stub"
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:"Trait1__Trait2" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/gcta_grm_bivariate.noheader.txt", checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:"gcta_grm_0" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/gcta_grm_0.grm.id", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/gcta_grm_0.grm.bin", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/gcta_grm_0.grm.N.bin", checkIfExists: true)
+                ]
+                input[2] = [[ id:"covariates_quant" ], []]
+                input[3] = [[ id:"covariates_cat" ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
