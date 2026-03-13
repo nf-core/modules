@@ -46,13 +46,13 @@ workflow FASTQ_ALIGN_STAR {
     orig_bam_transcript = STAR_ALIGN.out.bam_transcript                      // channel: [ val(meta), path(bam)            ]
 
     bam                 = BAM_SORT_STATS_SAMTOOLS_GENOME.out.bam             // channel: [ val(meta), path(bam) ]
-    bai                 = BAM_SORT_STATS_SAMTOOLS_GENOME.out.bai             // channel: [ val(meta), path(bai) ]
+    index               = BAM_SORT_STATS_SAMTOOLS_GENOME.out.index           // channel: [ val(meta), path(index) ]
     stats               = BAM_SORT_STATS_SAMTOOLS_GENOME.out.stats           // channel: [ val(meta), path(stats) ]
     flagstat            = BAM_SORT_STATS_SAMTOOLS_GENOME.out.flagstat        // channel: [ val(meta), path(flagstat) ]
     idxstats            = BAM_SORT_STATS_SAMTOOLS_GENOME.out.idxstats        // channel: [ val(meta), path(idxstats) ]
 
     bam_transcript      = BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME.out.bam      // channel: [ val(meta), path(bam) ]
-    bai_transcript      = BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME.out.bai      // channel: [ val(meta), path(bai) ]
+    index_transcript      = BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME.out.index  // channel: [ val(meta), path(index) ]
     stats_transcript    = BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME.out.stats    // channel: [ val(meta), path(stats) ]
     flagstat_transcript = BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME.out.flagstat // channel: [ val(meta), path(flagstat) ]
     idxstats_transcript = BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME.out.idxstats // channel: [ val(meta), path(idxstats) ]
