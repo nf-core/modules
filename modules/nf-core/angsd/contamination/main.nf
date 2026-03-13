@@ -36,6 +36,5 @@ process ANGSD_CONTAMINATION {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
-
     """
 }
