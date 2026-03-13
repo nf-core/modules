@@ -10,9 +10,8 @@ process TREERECS {
     tuple val(meta), path(species_tree), path(gene_trees)
 
     output:
-
-     tuple val(meta), path("*.nwk"), emit: corrected_trees
-     tuple val("${task.process}"), val("treerecs"), eval("treerecs --version 2>/dev/null | sed 's/ (.*) //g'"), topic: versions, emit: versions_treerecs
+    tuple val(meta), path("*.nwk"), emit: corrected_trees
+    tuple val("${task.process}"), val("treerecs"), eval("treerecs --version 2>/dev/null | sed 's/ (.*) //g'"), topic: versions, emit: versions_treerecs
 
     when:
     task.ext.when == null || task.ext.when
