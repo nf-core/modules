@@ -60,33 +60,16 @@ process AMRFINDERPLUS_RUN {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    // WARN: DB version information will not be provided for the database in the stub run, since it is not actually downloaded through the update module
     """
+    echo ${args}
+
     touch ${prefix}.tsv
     ${meta.containsKey("organism") ? "touch ${prefix}-mutations.tsv" : ""}
 
-    # Create a mock amrfinder script in a bin directory
-    mkdir -p bin
-    cat << 'EOF' > bin/amrfinder
-#!/usr/bin/env bash
-if [[ "\$1" == "--version" ]]; then
-    echo "4.2.7"
-elif [[ "\$*" == *"--database_version"* ]]; then
-    echo "Database version: 2026-01-01.1"
-fi
-EOF
-
-    chmod +x bin/amrfinder
-
-    # Prepend bin to PATH for both env variables AND eval() calls
-    export PATH="\$PWD/bin:\$PATH"
-
-    # Create fake database directory
-    mkdir -p amrfinderdb
-
-    # Set env variables using our mock script
     VER=\$(amrfinder --version)
-    DBVER=\$(amrfinder --database amrfinderdb --database_version 2>&1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[0-9]+' | tail -1)
+    DBVER="2026-01-01.1"
     """
 }
