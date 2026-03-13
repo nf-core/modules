@@ -12,7 +12,7 @@ process DSHBIO_SPLITBED {
 
     output:
     tuple val(meta), path("*.bed.gz"), emit: bed
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('dsh-bio'), eval("dsh-bio --version | head -n 1 | sed 's/dsh-bio-tools //'"), emit: versions_dshbio, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,11 +27,6 @@ process DSHBIO_SPLITBED {
         -p $prefix \\
         -s '.bed.gz' \\
         -i $bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dshbio: \$(dsh-bio --version 2>&1 | grep -o 'dsh-bio-tools .*' | cut -f2 -d ' ')
-    END_VERSIONS
     """
 
     stub:
@@ -39,10 +34,5 @@ process DSHBIO_SPLITBED {
     """
     echo | gzip > ${prefix}0.bed.gz
     echo | gzip > ${prefix}1.bed.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dshbio: \$(dsh-bio --version 2>&1 | grep -o 'dsh-bio-tools .*' | cut -f2 -d ' ')
-    END_VERSIONS
     """
 }

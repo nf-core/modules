@@ -13,7 +13,9 @@ process BBMAP_PILEUP {
     output:
     tuple val(meta), path("*.stats.txt"), emit: covstats
     tuple val(meta), path("*.hist.txt") , emit: hist
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('bbmap'), eval("bbversion.sh | grep -v 'Duplicate cpuset'"), emit: versions_bbmap, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
+    tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,12 +30,5 @@ process BBMAP_PILEUP {
         out=${prefix}.coverage.stats.txt \\
         hist=${prefix}.coverage.hist.txt \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-    END_VERSIONS
     """
 }

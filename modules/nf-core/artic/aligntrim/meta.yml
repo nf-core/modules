@@ -37,7 +37,7 @@ input:
         description: BED file containing amplicon scheme primer locations
         pattern: "*.bed"
         ontologies:
-          - edam: "http://edamontology.org/format_3617" # BED
+          - edam: "http://edamontology.org/format_3617"
     - normalise_depth:
         type: integer
         description: Normalise the read depth to this value
@@ -56,7 +56,7 @@ output:
           description: BAM file with primer sequences soft clipped
           pattern: "*.primertrimmed*.bam"
           ontologies:
-            - edam: http://edamontology.org/format_2572 # BAM
+            - edam: http://edamontology.org/format_2572
   align_trim_report:
     - - meta:
           type: map
