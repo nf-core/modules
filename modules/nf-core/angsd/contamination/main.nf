@@ -13,7 +13,7 @@ process ANGSD_CONTAMINATION {
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('angsd'), eval("angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'"), emit: versions_angsd, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,22 +30,11 @@ process ANGSD_CONTAMINATION {
         -h ${hapmap_file} \
         -p ${task.cpus} \
         2>| >(tee ${prefix}.txt >&2)
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        angsd: \$(echo \$(angsd 2>&1) | grep version | head -n 1 | sed 's/.*version: //g;s/ .*//g')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        angsd: \$(echo \$(angsd 2>&1) | grep version | head -n 1 | sed 's/.*version: //g;s/ .*//g')
-    END_VERSIONS
     """
 }
