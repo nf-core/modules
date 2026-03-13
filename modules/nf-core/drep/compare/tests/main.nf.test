@@ -25,8 +25,7 @@ nextflow_process {
             }
         }
 
-then {
-
+        then {
             def stablefiles = []
             file(process.out.directory.get(0).get(1)).eachFileRecurse{ file -> if (!file.isDirectory() && ["Secondary_clustering_MDS.pdf", "Secondary_clustering_dendrograms.pdf", "cluster_arguments.json", "warnings.txt", "Cdb.csv", "Ndb.csv"].find {file.toString().endsWith(it)}) {stablefiles.add(file)} }
             def unstablefiles = []
@@ -38,9 +37,9 @@ then {
                     stablefiles.sort(),
                     unstablefiles.sort(),
                     process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
-
     }
 
     test("sarscov2 - fasta - stub") {
@@ -67,7 +66,5 @@ then {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
 }
