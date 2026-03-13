@@ -15,6 +15,7 @@ process KMERGENIE {
     tuple val(meta), path("*.histo")      , emit: histo
     tuple val(meta), path("*.dat")        ,emit: dat
     tuple val(meta), path("*.pdf")        ,emit: pdf
+    tuple val(meta), path("*.kmergenie.log")        , emit: log
     tuple val("${task.process}"), val('kmergenie'), eval('kmergenie --version |& sed "1!d ; s/KmerGenie //"'), emit: versions_kmergenie, topic: versions
 
 
@@ -33,7 +34,8 @@ process KMERGENIE {
         $args \\
         -o ${prefix} \\
         -t $task.cpus \\
-        ${prefix}_reads.txt
+        ${prefix}_reads.txt \\
+        2>&1 | tee ${prefix}.kmergenie.log
     """
 
     stub:
@@ -47,5 +49,6 @@ process KMERGENIE {
     touch ${prefix}*.histo
     touch ${prefix}.dat
     touch ${prefix}*.pdf
+    touch ${prefix}.kmergenie.log
     """
 }
