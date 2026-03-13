@@ -64,7 +64,6 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
                 ch_fasta_fai
             )
             ch_bismark_index = BISMARK_GENOMEPREPARATION.out.index
-            ch_versions = ch_versions.mix(BISMARK_GENOMEPREPARATION.out.versions)
         }
     }
     else if (aligner == 'bwameth') {

@@ -34,7 +34,8 @@ nextflow_workflow {
                 input[4] = false
                 input[5] = [
                     [ id:'test'], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.umi.sorted.bam', checkIfExists: true)                ]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.umi.sorted.bam', checkIfExists: true)
+                ]
                 input[6] = [
                     [id:'genome'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true),
