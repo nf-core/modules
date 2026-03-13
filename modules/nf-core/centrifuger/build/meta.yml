@@ -18,7 +18,8 @@ tools:
 input:
   - - meta:
         type: map
-        description: Groovy Map containing sample information. e.g. `[id:'sample1']`
+        description: Groovy Map containing sample information. e.g.
+          `[id:'sample1']`
     - reference:
         type: file
         description: Reference genome FASTA file
@@ -40,30 +41,30 @@ output:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - "${task.ext.prefix ?: meta.id}.*":
+      - "${prefix}/":
           type: file
           description: Centrifuger database index files
-          pattern: "${task.ext.prefix ?: meta.id}.*"
+          pattern: "${prefix}/"
           ontologies: []
   versions_centrifuger:
-    - - ${task.process}:
+    - - "${task.process}":
           type: string
           description: The name of the process
       - centrifuger:
           type: string
           description: The name of the tool
-      - "centrifuger -v ":
+      - "centrifuger -v 2>&1 | head -n 1":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
   versions:
-    - - ${task.process}:
+    - - "${task.process}":
           type: string
           description: The name of the process
       - centrifuger:
           type: string
           description: The name of the tool
-      - "centrifuger -v ":
+      - "centrifuger -v 2>&1 | head -n 1":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
