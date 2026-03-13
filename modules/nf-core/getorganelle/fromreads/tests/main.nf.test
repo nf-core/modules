@@ -1,0 +1,91 @@
+nextflow_process {
+
+    name "Test Process GETORGANELLE_FROMREADS"
+    script "../main.nf"
+    process "GETORGANELLE_FROMREADS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "getorganelle"
+    tag "getorganelle/config"
+    tag "getorganelle/fromreads"
+
+    test("homo_sapiens - animal_mt db, fastq.gz - fasta") {
+        setup {
+            run("GETORGANELLE_CONFIG") {
+                script "../../config/main.nf"
+                process {
+                    """
+                    input[0] = 'animal_mt'
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                    ]
+                ]
+                input[1] = GETORGANELLE_CONFIG.out.db
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.etc[0][0],
+                    process.out.etc[0][1],
+                    process.out.etc.flatten().collect { file(it).name }.sort(),
+                    process.out.fasta,
+                    process.out.findAll { key, val -> key.startsWith('versions') }).match('main_output') },
+            )
+        }
+
+    }
+
+    test("homo_sapiens - animal_mt db, fastq.gz - fasta - stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                        file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                    ]
+                ]
+                input[1] = [
+                    'animal_mt',
+                    file('mock/getorganelle')
+                ]
+
+                """
+            }
+        }
+
+        then {
+            def fileList_results = process.out.etc.flatten().collect { file(it).name }.sort()
+            def fileList_fasta = file(process.out.fasta[0][1]).name
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        fileList_results,
+                        fileList_fasta,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match('file_list') }
+
+            )
+        }
+
+    }
+
+}
