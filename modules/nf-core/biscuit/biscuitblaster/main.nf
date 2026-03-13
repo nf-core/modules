@@ -4,8 +4,8 @@ process BISCUIT_BLASTER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/22/22f141a92e12f98040054b9a47a51fb4de9c544174bbfa6d251a110f5e26fddc/data':
-        'community.wave.seqera.io/library/biscuit_samblaster_samtools:a683d0887e7a91bf' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/aa/aaeb89e389e66d5353d6c5b92ecb9f237298c1a774cdd9bf515101d55433c0c8/data':
+        'community.wave.seqera.io/library/biscuit_samblaster_samtools:43a8310dd6e0bec1' }"
 
     input:
     tuple val(meta), path(reads)
@@ -15,8 +15,9 @@ process BISCUIT_BLASTER {
     output:
     tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path("*.bai"), emit: bai
-    path "versions.yml"           , emit: versions
-
+    tuple val("${task.process}"), val('biscuit'), eval("biscuit version |& sed '1!d; s/^.*BISCUIT Version: //'"), emit: versions_biscuit, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools --version |& sed '1!d; s/^.*samtools //'"), emit: versions_samtools, topic: versions
+    tuple val("${task.process}"), val('samblaster'), eval("samblaster --version |& sed 's/^.*samblaster: Version //'"), emit: versions_samblaster, topic: versions
     when:
     task.ext.when == null || task.ext.when
 
@@ -43,13 +44,6 @@ process BISCUIT_BLASTER {
             -o ${prefix}.bam -O BAM -
 
     samtools index ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
-        samtools: \$( samtools --version |& sed '1!d; s/^.*samtools //' )
-        samblaster: \$( samblaster --version |& sed 's/^.*samblaster: Version //' )
-    END_VERSIONS
     """
 
     stub:
@@ -57,13 +51,6 @@ process BISCUIT_BLASTER {
     """
     touch ${prefix}.bam
     touch ${prefix}.bam.bai
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
-        samtools: \$( samtools --version |& sed '1!d; s/^.*samtools //' )
-        samblaster: \$( samblaster --version |& sed 's/^.*samblaster: Version //' )
-    END_VERSIONS
     """
 
 }

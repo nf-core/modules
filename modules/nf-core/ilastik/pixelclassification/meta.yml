@@ -1,9 +1,9 @@
 name: "ilastik_pixelclassification"
-description: Ilastik is a tool that utilizes machine learning algorithms to classify
-  pixels, segment, track and count cells in images. Ilastik contains a graphical user
-  interface to interactively label pixels. However, this nextflow module will implement
-  the --headless mode, to apply pixel classification using a pre-trained .ilp file
-  on an input image.
+description: Ilastik is a tool that utilizes machine learning algorithms to
+  classify pixels, segment, track and count cells in images. Ilastik contains a
+  graphical user interface to interactively label pixels. However, this nextflow
+  module will implement the --headless mode, to apply pixel classification using
+  a pre-trained .ilp file on an input image.
 keywords:
   - pixel_classification
   - segmentation
@@ -15,49 +15,68 @@ tools:
       homepage: "https://www.ilastik.org/"
       documentation: "https://www.ilastik.org/documentation/"
       tool_dev_url: "https://github.com/ilastik/ilastik"
-      licence: ["GPL3"]
+      licence:
+        - "GPL3"
       identifier: biotools:ilastik
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information for h5 file
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - input_img:
         type: file
-        description: Input img file containing image stack to classify
+        description: Input img file containing image stack to classify. Input
+          format is specified within the .ilp project file.
         ontologies: []
     - output_format:
         type: string
-        description: String specifying the output format passed as the file extension
-          to the output file specified with the `output_filename_format` parameter.
+        description: String specifying the output format passed as the file
+          extension to the output file specified with the `output_filename_format`
+          parameter.
     - export_source:
         type: string
-        description: String passed to the `export_source` parameter - valid options
-          are 'probabilities', '"simple segmentation"', 'uncertainty', 'features', 'labels']
+        description: String passed to the `export_source` parameter - valid
+          options are 'probabilities', '"simple segmentation"', 'uncertainty',
+          'features', 'labels']
   - ilp:
       type: file
       description: Trained ilastik pixel classification .ilp project file
       pattern: "*.{ilp}"
-      ontologies: []
+      ontologies: [] # no existing ontology
 output:
   output:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*.${output_format}":
           type: file
-          description: Output file from ilastik pixel classification.
+          description: Output file from ilastik pixel classification, as
+            specified by the `output_format` parameter.
           ontologies: []
+  versions_ilastik:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ilastik:
+          type: string
+          description: The name of the tool
+      - /opt/ilastik-1.4.0-Linux/run_ilastik.sh --headless --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ilastik:
+          type: string
+          description: The name of the tool
+      - /opt/ilastik-1.4.0-Linux/run_ilastik.sh --headless --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@FloWuenne"
 maintainers:

@@ -13,7 +13,7 @@ process AGAT_SPADDINTRONS {
 
     output:
     tuple val(meta), path("${output}"), emit: gff
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('agat'), eval("agat --version | sed 's/^v//'"), emit: versions_agat, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,10 +30,6 @@ process AGAT_SPADDINTRONS {
         --out ${output} \\
         ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        agat: \$(agat_sp_add_introns.pl --help | sed -n 's/.*(AGAT) - Version: \\(.*\\) .*/\\1/p')
-    END_VERSIONS
     """
 
     stub:
@@ -42,9 +38,5 @@ process AGAT_SPADDINTRONS {
     """
     touch ${output}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        agat: \$(agat_sp_add_introns.pl --help | sed -n 's/.*(AGAT) - Version: \\(.*\\) .*/\\1/p')
-    END_VERSIONS
     """
 }

@@ -14,7 +14,7 @@ process AMPCOMBI2_CLUSTER {
     path("Ampcombi_summary_cluster.tsv")                   , emit: cluster_tsv
     path("Ampcombi_summary_cluster_representative_seq.tsv"), emit: rep_cluster_tsv
     path("Ampcombi_cluster.log")                           , emit: log, optional:true
-    path "versions.yml"                                    , emit: versions
+    tuple val("${task.process}"), val('ampcombi'), eval("ampcombi --version | sed 's/ampcombi //'"), emit: versions_ampcombi, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,11 +26,6 @@ process AMPCOMBI2_CLUSTER {
         --ampcombi_summary ${summary_file} \\
         ${args} \\
         --threads ${task.cpus}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ampcombi: \$(ampcombi --version | sed 's/ampcombi //')
-    END_VERSIONS
     """
 
     stub:
@@ -38,10 +33,5 @@ process AMPCOMBI2_CLUSTER {
     touch Ampcombi_summary_cluster.tsv
     touch Ampcombi_summary_cluster_representative_seq.tsv
     touch Ampcombi_cluster.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ampcombi: \$(ampcombi --version | sed 's/ampcombi //')
-    END_VERSIONS
     """
 }

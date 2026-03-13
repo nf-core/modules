@@ -23,8 +23,19 @@ nextflow_workflow {
 
     test("single_umi") {
 
-        config './single.config'
+        config './nextflow.config'
         when {
+            params {
+                fastqtobam_args        = "--read-structures +T 12M11S+T"
+                fastqtobam_prefix      = "test_single_unaligned"
+                bam2fastq_pre_args     = "-N"
+                zipperbams_pre_args    = "--compression 1"
+                zipperbams_pre_prefix  = "test_single_zipped"
+                bamfilter_args         = "-f 1 --output-fmt bam"
+                zipperbams_post_args   = "--compression 0"
+                zipperbams_post_args2  = "--tags-to-reverse Consensus --tags-to-revcomp Consensus"
+                zipperbams_post_prefix = "test_single_zipped"
+            }
             workflow {
                 """
                 input[0] = [
@@ -68,8 +79,19 @@ nextflow_workflow {
 
     test("duplex_umi") {
 
-        config './duplex.config'
+        config './nextflow.config'
         when {
+            params {
+                fastqtobam_args        = "--read-structures 38S2M1S+T 2M34S+T"
+                fastqtobam_prefix      = "test_single_unaligned"
+                bam2fastq_pre_args     = "-N"
+                zipperbams_pre_args    = "--compression 1"
+                zipperbams_pre_prefix  = "test_single_zipped"
+                bamfilter_args         = "-f 1 --output-fmt bam"
+                zipperbams_post_args   = "--compression 0"
+                zipperbams_post_args2  = "--tags-to-reverse Consensus --tags-to-revcomp Consensus"
+                zipperbams_post_prefix = "test_single_zipped"
+            }
             workflow {
                 """
                 input[0] = [
@@ -114,8 +136,19 @@ nextflow_workflow {
     test("single_umi - stub") {
 
         options "-stub"
-        config './single.config'
+        config './nextflow.config'
         when {
+            params {
+                fastqtobam_args        = "--read-structures +T 12M11S+T"
+                fastqtobam_prefix      = "test_single_unaligned"
+                bam2fastq_pre_args     = "-N"
+                zipperbams_pre_args    = "--compression 1"
+                zipperbams_pre_prefix  = "test_single_zipped"
+                bamfilter_args         = "-f 1 --output-fmt bam"
+                zipperbams_post_args   = "--compression 0"
+                zipperbams_post_args2  = "--tags-to-reverse Consensus --tags-to-revcomp Consensus"
+                zipperbams_post_prefix = "test_single_zipped"
+            }
             workflow {
                 """
                 input[0] = [

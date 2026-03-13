@@ -49,7 +49,7 @@ nextflow_process {
                                     process.out.db_txt.collect { file(it[1]).readLines()[0] } +
                                     process.out.db_fasta.collect { file(it[1]).readLines()[0] } +
                                     process.out.db_mmseqs.collect { file(it[1]).getName() } +
-                                    process.out.versions ).match() }
+                                    process.out.findAll { key, val -> key.startsWith('versions') } ).match() }
             )
         }
     }

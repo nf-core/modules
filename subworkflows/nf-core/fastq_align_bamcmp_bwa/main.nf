@@ -53,15 +53,13 @@ workflow FASTQ_ALIGN_BAMCMP_BWA {
 
     emit:
     bam      = BAM_SORT_STATS_SAMTOOLS_FILTERED.out.bam                   // channel: [ val(meta), path(bam) ]
-    bai      = BAM_SORT_STATS_SAMTOOLS_FILTERED.out.bai                   // channel: [ val(meta), path(bai) ]
-    csi      = BAM_SORT_STATS_SAMTOOLS_FILTERED.out.csi                   // channel: [ val(meta), path(csi) ]
+    index    = BAM_SORT_STATS_SAMTOOLS_FILTERED.out.index                 // channel: [ val(meta), path(index) ]
     stats    = BAM_SORT_STATS_SAMTOOLS_FILTERED.out.stats                 // channel: [ val(meta), path(stats) ]
     flagstat = BAM_SORT_STATS_SAMTOOLS_FILTERED.out.flagstat              // channel: [ val(meta), path(flagstat) ]
     idxstats = BAM_SORT_STATS_SAMTOOLS_FILTERED.out.idxstats              // channel: [ val(meta), path(idxstats) ]
     contaminant_bam = BAMCMP.out.contamination_bam                        // channel: [ val(meta), path(bam) ]
     unfiltered_bam = BAM_SORT_STATS_SAMTOOLS_UNFILTERED.out.bam           // channel: [ val(meta), path(bam) ]
-    unfiltered_bai = BAM_SORT_STATS_SAMTOOLS_UNFILTERED.out.bai           // channel: [ val(meta), path(bai) ]
-    unfiltered_csi = BAM_SORT_STATS_SAMTOOLS_UNFILTERED.out.csi           // channel: [ val(meta), path(csi) ]
+    unfiltered_index = BAM_SORT_STATS_SAMTOOLS_UNFILTERED.out.index         // channel: [ val(meta), path(index) ]
     unfiltered_stats = BAM_SORT_STATS_SAMTOOLS_UNFILTERED.out.stats       // channel: [ val(meta), path(stats) ]
     unfiltered_flagstat = BAM_SORT_STATS_SAMTOOLS_UNFILTERED.out.flagstat // channel: [ val(meta), path(flagstat) ]
     unfiltered_idxstats = BAM_SORT_STATS_SAMTOOLS_UNFILTERED.out.idxstats // channel: [ val(meta), path(idxstats) ]

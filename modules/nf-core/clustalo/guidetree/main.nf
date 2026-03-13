@@ -12,7 +12,7 @@ process CLUSTALO_GUIDETREE {
 
     output:
     tuple val(meta), path("*.dnd"), emit: tree
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('clustalo'), eval('clustalo --version'), emit: versions_clustalo, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,21 +26,11 @@ process CLUSTALO_GUIDETREE {
         --guidetree-out ${prefix}.dnd \\
         --threads=${task.cpus} \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        clustalo: \$( clustalo --version )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.dnd
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        clustalo: \$( clustalo --version )
-    END_VERSIONS
     """
 }

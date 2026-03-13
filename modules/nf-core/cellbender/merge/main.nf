@@ -9,6 +9,7 @@ process CELLBENDER_MERGE {
 
     input:
     tuple val(meta), path(filtered), path(unfiltered), path(cellbender_h5)
+    val(output_layer_name)
 
     output:
     tuple val(meta), path("${prefix}.h5ad"), emit: h5ad
@@ -19,12 +20,7 @@ process CELLBENDER_MERGE {
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
-    output_layer = task.ext.output_layer ?: "cellbender"
-
-    """
-    echo ${output_layer}
-    """
-
+    output_layer = output_layer_name ?: "cellbender"
     template 'merge.py'
 
     stub:
