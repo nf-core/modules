@@ -1,7 +1,6 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "artic_aligntrim"
-description: Standalone version of fieldbioinformatics aligntrim. Soft clips amplicon scheme primer sites in BAM/SAM files.
+description: Standalone version of fieldbioinformatics aligntrim. Soft clips
+  amplicon scheme primer sites in BAM/SAM files.
 keywords:
   - artic
   - primer trimming
@@ -12,12 +11,14 @@ keywords:
   - illumina
 tools:
   - "align_trim":
-      description: "ARTIC align_trim: A tool for trimming amplicon sequencing primers from aligned reads."
+      description: "ARTIC align_trim: A tool for trimming amplicon sequencing primers
+        from aligned reads."
       homepage: "https://github.com/artic-network/align_trim"
       documentation: "https://github.com/artic-network/align_trim/blob/master/README.md"
       tool_dev_url: "https://github.com/artic-network/align_trim"
-      licence: ["MIT"]
-
+      licence:
+        - "MIT"
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -36,7 +37,7 @@ input:
         description: BED file containing amplicon scheme primer locations
         pattern: "*.bed"
         ontologies:
-          - edam: "http://edamontology.org/format_3617" # BED
+          - edam: "http://edamontology.org/format_3617"
     - normalise_depth:
         type: integer
         description: Normalise the read depth to this value
@@ -55,7 +56,7 @@ output:
           description: BAM file with primer sequences soft clipped
           pattern: "*.primertrimmed*.bam"
           ontologies:
-            - edam: http://edamontology.org/format_2572 # BAM
+            - edam: http://edamontology.org/format_2572
   align_trim_report:
     - - meta:
           type: map
@@ -64,10 +65,12 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.align_trim_report.tsv":
           type: file
-          description: TSV report containing full details of primer trimming for each read / read pair
+          description: TSV report containing full details of primer trimming for
+            each read / read pair
           pattern: "*.align_trim_report.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3750 # TSV
+            - edam: http://edamontology.org/format_3750
+            - edam: http://edamontology.org/format_3475
   amp_depth_report:
     - - meta:
           type: map
@@ -79,14 +82,29 @@ output:
           description: TSV report containing mean depth per amplicon
           pattern: "*.amp_depth_report.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3750 # TSV
+            - edam: http://edamontology.org/format_3750
+            - edam: http://edamontology.org/format_3475
+  versions_align_trim:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - align_trim:
+          type: string
+          description: The name of the tool
+      - align_trim --version | sed 's/align_trim //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - align_trim:
+          type: string
+          description: The name of the tool
+      - align_trim --version | sed 's/align_trim //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@BioWilko"
 maintainers:
