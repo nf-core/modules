@@ -22,8 +22,8 @@ input:
           e.g. [ id:'sample1' ]
     - roh:
         type: file
-        description: Output of BCFtools_roh. Contains site-specific and/or per-region runs of homo/autozygosity
-          calls.
+        description: Output of BCFtools_roh. Contains site-specific and/or
+          per-region runs of homo/autozygosity calls.
         pattern: "*.roh"
         ontologies: []
   - - meta1:
@@ -69,6 +69,16 @@ output:
       - bcftools --version | sed '1!d; s/^.*bcftools //':
           type: eval
           description: The command used to generate the version of the tool
+  versions_less:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - less:
+          type: string
+          description: The tool name
+      - less --version | head -n1 | sed 's/less //':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -80,5 +90,14 @@ topics:
       - bcftools --version | sed '1!d; s/^.*bcftools //':
           type: eval
           description: The command used to generate the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - less:
+          type: string
+          description: The tool name
+      - less --version | head -n1 | sed 's/less //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@yz533cb"
