@@ -12,7 +12,8 @@ process COWPY {
 
     output:
     tuple val(meta), path("${prefix}.txt"), emit: txt
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('cowpy'), val("1.1.5"), emit: versions_cowpy, topic: versions
+    // WARN: Version information not provided by tool on CLI. Plaease update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,26 +21,13 @@ process COWPY {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSIONS = '1.1.5'
     """
-
     cat ${text} | cowpy ${args} > ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cowpy: ${VERSIONS}
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSIONS = '1.1.5'
     """
     touch ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cowpy: ${VERSIONS}
-    END_VERSIONS
     """
 }
