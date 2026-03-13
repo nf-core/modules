@@ -8,7 +8,8 @@
                             "id": "plink_simulated"
                         },
                         {
-                            "id": "QuantitativeTrait"
+                            "id": "QuantitativeTrait",
+                            "is_binary": false
                         },
                         "plink_simulated_QuantitativeTrait.fastGWA:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -26,7 +27,8 @@
                             "id": "plink_simulated"
                         },
                         {
-                            "id": "QuantitativeTrait"
+                            "id": "QuantitativeTrait",
+                            "is_binary": false
                         },
                         "plink_simulated_QuantitativeTrait.fastGWA:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -44,9 +46,9 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.4"
         },
-        "timestamp": "2026-03-13T14:13:39.722374131"
+        "timestamp": "2026-03-13T18:15:29.679228048"
     },
-    "homo_sapiens popgen - plink1 with sparse GRM and covariates": {
+    "homo_sapiens popgen - plink1 with sparse GRM and quantitative phenotype": {
         "content": [
             [
                 [
@@ -54,7 +56,8 @@
                         "id": "plink_simulated"
                     },
                     {
-                        "id": "QuantitativeTrait"
+                        "id": "QuantitativeTrait",
+                        "is_binary": false
                     },
                     "plink_simulated_QuantitativeTrait.fastGWA:md5,ba64c9460f412ffa7afb4060eaa029e4"
                 ]
@@ -73,6 +76,36 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.4"
         },
-        "timestamp": "2026-03-13T15:35:49.465395409"
+        "timestamp": "2026-03-13T18:11:54.793137401"
+    },
+    "homo_sapiens popgen - plink1 with sparse GRM and binary phenotype": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "plink_simulated"
+                    },
+                    {
+                        "id": "BinaryTrait",
+                        "is_binary": true
+                    },
+                    "plink_simulated_BinaryTrait.fastGWA:md5,723602dcb94b8a08b3652f1491dcd2ee"
+                ]
+            ],
+            {
+                "versions_gcta": [
+                    [
+                        "GCTA_FASTGWA",
+                        "gcta",
+                        "*******************************************************************"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.4"
+        },
+        "timestamp": "2026-03-13T18:15:22.74128729"
     }
 }

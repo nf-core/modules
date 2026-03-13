@@ -3,11 +3,12 @@ process GCTA_CALCULATELDSCORES {
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gcta:1.94.1--h9ee0642_0' :
-        'biocontainers/gcta:1.94.1--h9ee0642_0' }"
+        'docker://community.wave.seqera.io/library/gcta_r-base:31127c93877b38de' :
+        'community.wave.seqera.io/library/gcta_r-base:31127c93877b38de' }"
 
     input:
     tuple val(meta), path(bed), path(bim), path(fam)
+    val ld_score_region
 
     output:
     tuple val(meta), path("${meta.id}_gcta_ld.score.ld"), emit: ld_scores
@@ -19,7 +20,6 @@ process GCTA_CALCULATELDSCORES {
 
     script:
     def extra_args = task.ext.args ?: ''
-    def ld_score_region = task.ext.ld_score_region ?: 200
 
     """
     set -euo pipefail
@@ -30,38 +30,29 @@ process GCTA_CALCULATELDSCORES {
         --out ${meta.id}_gcta_ld \\
         --thread-num ${task.cpus} ${extra_args}
 
-    ld_file="${meta.id}_gcta_ld.score.ld"
-    sorted_file="ldscore.sorted.tsv"
+    Rscript - ${meta.id}_gcta_ld.score.ld ${meta.id} <<'EOF'
+    args <- commandArgs(trailingOnly = TRUE)
+    filename <- args[1]
+    out_prefix <- args[2]
 
-    awk 'NR > 1 { print \$1 "\\t" \$8 }' "${meta.id}_gcta_ld.score.ld" | sort -k2,2n > "\${sorted_file}"
+    lds_seg <- read.table(
+      filename,
+      header = TRUE,
+      colClasses = c("character", rep("numeric", 8))
+    )
 
-    count=\$(wc -l < "\${sorted_file}")
-    q1_idx=\$(( (count + 3) / 4 ))
-    q2_idx=\$(( (count + 1) / 2 ))
-    q3_idx=\$(( (3 * count + 1) / 4 ))
+    quartiles <- summary(lds_seg\$ldscore_SNP)
 
-    q1=\$(awk -v idx="\${q1_idx}" 'NR == idx { print \$2 }' "\${sorted_file}")
-    q2=\$(awk -v idx="\${q2_idx}" 'NR == idx { print \$2 }' "\${sorted_file}")
-    q3=\$(awk -v idx="\${q3_idx}" 'NR == idx { print \$2 }' "\${sorted_file}")
+    lb1 <- which(lds_seg\$ldscore_SNP <= quartiles[2])
+    lb2 <- which(lds_seg\$ldscore_SNP > quartiles[2] & lds_seg\$ldscore_SNP <= quartiles[3])
+    lb3 <- which(lds_seg\$ldscore_SNP > quartiles[3] & lds_seg\$ldscore_SNP <= quartiles[5])
+    lb4 <- which(lds_seg\$ldscore_SNP > quartiles[5])
 
-    : > "${meta.id}_snp_group1.txt"
-    : > "${meta.id}_snp_group2.txt"
-    : > "${meta.id}_snp_group3.txt"
-    : > "${meta.id}_snp_group4.txt"
-
-    awk -v q1="\${q1}" -v q2="\${q2}" -v q3="\${q3}" -v prefix="${meta.id}" '
-    NR > 1 {
-        if (\$8 <= q1) {
-            print \$1 >> prefix "_snp_group1.txt"
-        } else if (\$8 <= q2) {
-            print \$1 >> prefix "_snp_group2.txt"
-        } else if (\$8 <= q3) {
-            print \$1 >> prefix "_snp_group3.txt"
-        } else {
-            print \$1 >> prefix "_snp_group4.txt"
-        }
-    }
-    ' "\${ld_file}"
+    write.table(lds_seg\$SNP[lb1], paste(out_prefix, "snp_group1.txt", sep = "_"), row.names = FALSE, quote = FALSE, col.names = FALSE, append = TRUE)
+    write.table(lds_seg\$SNP[lb2], paste(out_prefix, "snp_group2.txt", sep = "_"), row.names = FALSE, quote = FALSE, col.names = FALSE, append = TRUE)
+    write.table(lds_seg\$SNP[lb3], paste(out_prefix, "snp_group3.txt", sep = "_"), row.names = FALSE, quote = FALSE, col.names = FALSE, append = TRUE)
+    write.table(lds_seg\$SNP[lb4], paste(out_prefix, "snp_group4.txt", sep = "_"), row.names = FALSE, quote = FALSE, col.names = FALSE, append = TRUE)
+    EOF
     """
 
     stub:

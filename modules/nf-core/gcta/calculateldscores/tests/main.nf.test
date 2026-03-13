@@ -18,10 +18,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'bfile' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bed', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bim', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
                 ]
+                input[1] = 50
                 """
             }
         }
@@ -56,10 +57,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'bfile' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bed', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bim', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
                 ]
+                input[1] = 200
                 """
             }
         }

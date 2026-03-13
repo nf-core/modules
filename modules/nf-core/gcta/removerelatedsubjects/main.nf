@@ -3,8 +3,8 @@ process GCTA_REMOVERELATEDSUBJECTS {
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gcta:1.94.1--h9ee0642_0' :
-        'biocontainers/gcta:1.94.1--h9ee0642_0' }"
+        'docker://community.wave.seqera.io/library/gcta:1.94.1--9bc35dc424fcf6e9' :
+        'community.wave.seqera.io/library/gcta:1.94.1--9bc35dc424fcf6e9' }"
 
     input:
     tuple val(meta), path(grm_id), path(grm_bin), path(grm_n_bin)
