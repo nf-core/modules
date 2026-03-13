@@ -37,7 +37,7 @@ input:
           by AMP tools.
         pattern: "[*amptool.tsv, *amptool.tsv]"
         ontologies:
-          - edam: "http://edamontology.org/format_3475" # TSV
+          - edam: "http://edamontology.org/format_3475"
   - faa_input:
       type: file
       description: The path to the file corresponding to the respective protein fasta
@@ -45,7 +45,7 @@ input:
         name, i.e. sample_1.faa
       pattern: "*.faa"
       ontologies:
-        - edam: "http://edamontology.org/format_1929" # FASTA
+        - edam: "http://edamontology.org/format_1929"
   - opt_amp_db:
       type: directory
       description: The path to the folder containing the fasta and tsv database files.
@@ -74,7 +74,7 @@ output:
             step done on all AMP hits.
           pattern: "/*/*_diamond_matches.txt"
           ontologies:
-            - edam: "http://edamontology.org/format_2330" # Text file
+            - edam: "http://edamontology.org/format_2330"
   csv:
     - - meta:
           type: map
@@ -88,7 +88,7 @@ output:
             classification from the alignment step.
           pattern: "/*/*_ampcombi.csv"
           ontologies:
-            - edam: "http://edamontology.org/format_3752" # CSV
+            - edam: "http://edamontology.org/format_3752"
   faa:
     - - meta:
           type: map
@@ -101,7 +101,7 @@ output:
             AMP hits.
           pattern: "/*/*_amp.faa"
           ontologies:
-            - edam: "http://edamontology.org/format_1929" # FASTA
+            - edam: "http://edamontology.org/format_1929"
   summary_csv:
     - - meta:
           type: map
@@ -114,7 +114,7 @@ output:
             is activated with `--complete_summary true`.
           pattern: "AMPcombi_summary.csv"
           ontologies:
-            - edam: "http://edamontology.org/format_3752" # CSV
+            - edam: "http://edamontology.org/format_3752"
   summary_html:
     - - meta:
           type: map
@@ -127,7 +127,7 @@ output:
             is activated with `--complete_summary true`.
           pattern: "AMPcombi_summary.html"
           ontologies:
-            - edam: "http://edamontology.org/format_2331" # HTML
+            - edam: "http://edamontology.org/format_2331"
   log:
     - - meta:
           type: map
@@ -140,7 +140,7 @@ output:
             be activated by `--log`.
           pattern: "*.log"
           ontologies:
-            - edam: "http://edamontology.org/format_2330" # Text file
+            - edam: "http://edamontology.org/format_2330"
   results_db:
     - - meta:
           type: map
@@ -176,7 +176,7 @@ output:
             characters.
           pattern: "/amp_ref_database/*.clean.fasta"
           ontologies:
-            - edam: "http://edamontology.org/format_1929" # FASTA
+            - edam: "http://edamontology.org/format_1929"
   results_db_tsv:
     - - meta:
           type: map
@@ -189,7 +189,7 @@ output:
             header and sequence.
           pattern: "/amp_ref_database/*.tsv"
           ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: "http://edamontology.org/format_3475"
   versions_ampcombi:
     - - ${task.process}:
           type: string
@@ -197,7 +197,7 @@ output:
       - ampcombi:
           type: string
           description: The name of the tool
-      - ampcombi --version | sed 's/ampcombi //':
+      - 0.1.7:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -208,7 +208,7 @@ topics:
       - ampcombi:
           type: string
           description: The name of the tool
-      - ampcombi --version | sed 's/ampcombi //':
+      - 0.1.7:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
