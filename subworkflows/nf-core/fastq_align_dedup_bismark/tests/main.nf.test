@@ -61,7 +61,8 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = BOWTIE2.out.untar
                 input[3] = params.skip_deduplication
@@ -113,7 +114,8 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = BOWTIE2.out.untar
                 input[3] = params.skip_deduplication
@@ -164,7 +166,8 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = BOWTIE2.out.untar
                 input[3] = params.skip_deduplication
@@ -215,7 +218,8 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = BOWTIE2.out.untar
                 input[3] = params.skip_deduplication
@@ -264,7 +268,8 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = HISAT2.out.untar
                 input[3] = params.skip_deduplication
@@ -316,7 +321,8 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = HISAT2.out.untar
                 input[3] = params.skip_deduplication
@@ -367,7 +373,8 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = HISAT2.out.untar
                 input[3] = params.skip_deduplication
@@ -418,7 +425,8 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = HISAT2.out.untar
                 input[3] = params.skip_deduplication

@@ -10,7 +10,7 @@ include { BISMARK_SUMMARY              } from '../../../modules/nf-core/bismark/
 workflow FASTQ_ALIGN_DEDUP_BISMARK {
     take:
     ch_reads // channel: [ val(meta), [ reads ] ]
-    ch_fasta // channel: [ val(meta), [ fasta ] ]
+    ch_fasta_fai // channel: [ val(meta), [ fasta ], [ fai ] ]
     ch_bismark_index // channel: [ val(meta), [ bismark index ] ]
     skip_deduplication // boolean: whether to deduplicate alignments
     cytosine_report // boolean: whether the run coverage2cytosine
@@ -36,7 +36,7 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
      */
     BISMARK_ALIGN(
         ch_reads,
-        ch_fasta,
+        ch_fasta_fai,
         ch_bismark_index,
     )
     ch_alignments = BISMARK_ALIGN.out.bam
@@ -59,7 +59,7 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
      */
     SAMTOOLS_SORT(
         ch_alignments,
-        [[:], []],
+        ch_fasta_fai,
         '',
     )
 
@@ -90,7 +90,7 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
     if (cytosine_report) {
         BISMARK_COVERAGE2CYTOSINE(
             ch_methylation_coverage,
-            ch_fasta,
+            ch_fasta_fai,
             ch_bismark_index,
         )
         ch_coverage2cytosine_coverage = BISMARK_COVERAGE2CYTOSINE.out.coverage
