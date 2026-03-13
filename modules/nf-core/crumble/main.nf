@@ -17,7 +17,8 @@ process CRUMBLE {
     tuple val(meta), path("*.cram"), emit: cram,    optional: true
     tuple val(meta), path("*.sam"),  emit: sam,     optional: true
     tuple val(meta), path("*.bed"),  emit: bed,     optional: true
-    path "versions.yml",             emit: versions
+    //WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('crumble'), val('0.9.1'), emit: versions_crumble, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,7 +34,6 @@ process CRUMBLE {
     def bedout_args = bedout ? "-b ${prefix}.out.bed" : ""
     if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
-    def CRUMBLE_VERSION = '0.9.1' //WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     crumble \\
         $args \\
@@ -41,11 +41,6 @@ process CRUMBLE {
         $bedout_args \\
         $input \\
         ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        crumble: $CRUMBLE_VERSION
-    END_VERSIONS
     """
 
     stub:
@@ -58,14 +53,8 @@ process CRUMBLE {
     def bedout_args = bedout ? "touch ${prefix}.out.bed" : ''
     if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
-    def CRUMBLE_VERSION = '0.9.1' //WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.${extension}
     $bedout_args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        crumble: $CRUMBLE_VERSION
-    END_VERSIONS
     """
 }
