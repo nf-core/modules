@@ -1,9 +1,9 @@
 name: "duphold"
-description: SV callers like lumpy look at split-reads and pair distances to find
-  structural variants. This tool is a fast way to add depth information to those calls.
-  This can be used as additional information for filtering variants; for example we
-  will be skeptical of deletion calls that do not have lower than average coverage
-  compared to regions with similar gc-content.
+description: SV callers like lumpy look at split-reads and pair distances to
+  find structural variants. This tool is a fast way to add depth information to
+  those calls. This can be used as additional information for filtering
+  variants; for example we will be skeptical of deletion calls that do not have
+  lower than average coverage compared to regions with similar gc-content.
 keywords:
   - sort
   - duphold
@@ -18,7 +18,8 @@ tools:
       documentation: "https://github.com/brentp/duphold"
       tool_dev_url: "https://github.com/brentp/duphold"
       doi: "10.1093/gigascience/giz040"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -71,13 +72,27 @@ output:
           pattern: "*.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_duphold:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - duphold:
+          type: string
+          description: The name of the tool
+      - 'duphold -h | head -n 1 | sed -e "s/^version: //"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - duphold:
+          type: string
+          description: The name of the tool
+      - 'duphold -h | head -n 1 | sed -e "s/^version: //"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:
