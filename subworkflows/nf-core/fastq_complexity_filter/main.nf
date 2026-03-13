@@ -26,7 +26,6 @@ workflow FASTQ_COMPLEXITY_FILTER {
 
         ch_filtered_reads = BBMAP_BBDUK.out.reads
         ch_multiqc_files  = ch_multiqc_files.mix(BBMAP_BBDUK.out.log)
-        ch_versions       = ch_versions.mix(BBMAP_BBDUK.out.versions.first())
     } else if (val_complexity_filter_tool == "fastp") {
         FASTP(
             ch_reads.map { meta, files ->  [ meta, files, [] ] },

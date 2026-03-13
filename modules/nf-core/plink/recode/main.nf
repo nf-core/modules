@@ -35,7 +35,7 @@ process PLINK_RECODE {
     tuple val(meta), path("*.tfam")                   , optional:true, emit: tfam
     tuple val(meta), path("*.vcf")                    , optional:true, emit: vcf
     tuple val(meta), path("*.vcf.gz")                 , optional:true, emit: vcfgz
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('plink'), eval("plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'"), emit: versions_plink, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -53,11 +53,6 @@ process PLINK_RECODE {
         --recode \\
         ${args} \\
         --out ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')
-    END_VERSIONS
     """
 
     stub:
@@ -66,10 +61,5 @@ process PLINK_RECODE {
     """
     touch ${prefix}.ped
     touch ${prefix}.map
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')
-    END_VERSIONS
     """
 }
