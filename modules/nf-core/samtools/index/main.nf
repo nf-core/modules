@@ -11,9 +11,7 @@ process SAMTOOLS_INDEX {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*.bai"), optional: true, emit: bai
-    tuple val(meta), path("*.csi"), optional: true, emit: csi
-    tuple val(meta), path("*.crai"), optional: true, emit: crai
+    tuple val(meta), path("*.{bai,csi,crai}"), emit: index
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
 
     when:

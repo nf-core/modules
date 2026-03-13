@@ -55,7 +55,7 @@ nextflow_workflow {
                     workflow.out.flagstat,
                     workflow.out.idxstats
                 ).match() },
-                { assert path(workflow.out.bai.get(0).get(1)).exists() }
+                { assert path(workflow.out.index.get(0).get(1)).exists() }
             )
         }
 
@@ -95,7 +95,7 @@ nextflow_workflow {
                     workflow.out.flagstat,
                     workflow.out.idxstats
                 ).match() },
-                { assert path(workflow.out.bai.get(0).get(1)).exists() }
+                { assert path(workflow.out.index.get(0).get(1)).exists() }
             )
         }
     }

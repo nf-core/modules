@@ -40,7 +40,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
             ch_fasta_fai,
         )
                 ch_alignment = BAM_SORT_STATS_SAMTOOLS.out.bam
-                ch_alignment_index = BAM_SORT_STATS_SAMTOOLS.out.bai
+                ch_alignment_index = BAM_SORT_STATS_SAMTOOLS.out.index
                 ch_stats = BAM_SORT_STATS_SAMTOOLS.out.stats
     }
     else {
@@ -71,7 +71,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
             PICARD_MARKDUPLICATES.out.bam
         )
                 ch_alignment = PICARD_MARKDUPLICATES.out.bam
-                ch_alignment_index = SAMTOOLS_INDEX.out.bai
+                ch_alignment_index = SAMTOOLS_INDEX.out.index
                 ch_picard_metrics = PICARD_MARKDUPLICATES.out.metrics
     }
         /*
@@ -84,7 +84,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
 
     emit:
     bam               = ch_alignment // channel: [ val(meta), [ bam ]       ]
-    bai               = ch_alignment_index // channel: [ val(meta), [ bai ]       ]
+    index             = ch_alignment_index // channel: [ val(meta), [ index ]     ]
     samtools_flagstat = ch_flagstat // channel: [ val(meta), [ flagstat ]  ]
     samtools_stats    = ch_stats // channel: [ val(meta), [ stats ]     ]
     samtools_idxstats = ch_idxstats // channel: [ val(meta), [ idxstats ]  ]
