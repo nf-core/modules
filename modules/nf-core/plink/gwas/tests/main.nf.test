@@ -39,7 +39,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.assoc,
                     process.out.nosex,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -77,7 +77,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.assoc,
                     process.out.nosex,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -113,7 +113,7 @@ nextflow_process {
                 { assert process.out.log.get(0).get(1) ==~ ".*/*.log" },
                 { assert snapshot(
                     process.out.assoc,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -151,7 +151,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.assoc,
                     process.out.nosex,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -189,7 +189,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.assoc,
                     process.out.nosex,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
