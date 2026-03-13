@@ -13,7 +13,7 @@ process FASTQE {
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    tuple val("${task.process}"), val('fastqe'), eval("echo 0.5.2"), emit: versions_fastqe, topic: versions
+    tuple val("${task.process}"), val('fastqe'), val("0.5.2"), emit: versions_fastqe, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
