@@ -6,14 +6,13 @@ keywords:
   - antibiotic resistance
 tools:
   - amrfinderplus:
-      description: AMRFinderPlus finds antimicrobial resistance and other genes in
-        protein or nucleotide sequences.
+      description: AMRFinderPlus finds antimicrobial resistance and other genes in protein
+        or nucleotide sequences.
       homepage: https://github.com/ncbi/amr/wiki
       documentation: https://github.com/ncbi/amr/wiki
       tool_dev_url: https://github.com/ncbi/amr
       doi: "10.1038/s41598-021-91456-0"
-      licence:
-        - "Public Domain"
+      licence: ["Public Domain"]
       identifier: biotools:amrfinderplus
 input:
   - - meta:
@@ -27,13 +26,13 @@ input:
         pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
-  - db:
-      type: file
-      description: A compressed tarball of the AMRFinderPlus database to query
-      pattern: "*.tar.gz"
-      ontologies:
-        - edam: "http://edamontology.org/format_3981" # TAR format
-        - edam: http://edamontology.org/format_3989 # GZIP format
+  - - db:
+        type: file
+        description: A compressed tarball of the AMRFinderPlus database to query
+        pattern: "*.tar.gz"
+        ontologies:
+          - edam: "http://edamontology.org/format_3981" # TAR format
+          - edam: http://edamontology.org/format_3989 # GZIP format
 output:
   report:
     - - meta:
@@ -59,56 +58,56 @@ output:
           pattern: "*-mutations.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
-  versions_amrfinderplus:
-    - - ${task.process}:
+  tool_version:
+    - - VER:
           type: string
-          description: The name of the process
+          description: The version of the tool in string format (useful for downstream
+            tools such as hAMRronization)
+  db_version:
+    - - DBVER:
+          type: string
+          description: The version of the used database in string format (useful for downstream
+            tools such as hAMRronization)
+  versions_amrfinderplus:
+    - - "${task.process}":
+          type: string
+          description: Process name
       - amrfinderplus:
           type: string
-          description: The name of the tool
-      - amrfinder --version:
-          type: eval
-          description: The expression to obtain the version of the tool
+          description: Tool name
+      - version:
+          type: string
+          description: Version string for AMRFinderPlus
   versions_amrfinderplus_database:
-    - - ${task.process}:
+    - - "${task.process}":
           type: string
-          description: The name of the process
-      - amrfinderplus-database:
+          description: Process name
+      - amrfinderplus_database:
           type: string
-          description: The name of the tool
-      - "amrfinder --database amrfinderdb --database_version 2>&1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[0-9]+' | tail -1":
-          type: eval
-          description: The expression to obtain the database version
-  tool_version:
-    - VER:
-        type: string
-        description: The version of the tool in string format (useful for
-          downstream tools such as hAMRronization)
-  db_version:
-    - DBVER:
-        type: string
-        description: The version of the used database in string format (useful for
-          downstream tools such as hAMRronization)
+          description: Tool name for database
+      - version:
+          type: string
+          description: Version string for AMRFinderPlus database
 topics:
   versions:
-    - - ${task.process}:
+    - - "${task.process}":
           type: string
-          description: The name of the process
+          description: Process name
       - amrfinderplus:
           type: string
-          description: The name of the tool
-      - amrfinder --version:
-          type: eval
-          description: The expression to obtain the version of the tool
-    - - ${task.process}:
+          description: Tool name
+      - version:
           type: string
-          description: The name of the process
-      - amrfinderplus-database:
+          description: Version string for AMRFinderPlus
+    - - "${task.process}":
           type: string
-          description: The name of the tool
-      - "amrfinder --database amrfinderdb --database_version 2>&1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[0-9]+' | tail -1":
-          type: eval
-          description: The expression to obtain the database version
+          description: Process name
+      - amrfinderplus_database:
+          type: string
+          description: Tool name for database
+      - version:
+          type: string
+          description: Version string for AMRFinderPlus database
 authors:
   - "@rpetit3"
   - "@louperelo"
