@@ -1,4 +1,4 @@
-python3 - <<'EOF'
+#!/usr/bin/env python3
 
 """
 Author:
@@ -58,5 +58,3 @@ versions = {"${task.process}": {"python": platform.python_version(), "anndata": 
 
 with open("versions.yml", "w") as f:
     f.write(format_yaml_like(versions))
-
-EOF
