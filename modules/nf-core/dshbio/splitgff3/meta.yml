@@ -42,10 +42,10 @@ output:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - dshbio:
+      - dsh-bio:
           type: string
           description: The name of the tool
-      - dshbio --version:
+      - dsh-bio --version | head -n 1 | sed 's/dsh-bio-tools //':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -53,10 +53,10 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - dshbio:
+      - dsh-bio:
           type: string
           description: The name of the tool
-      - dshbio --version:
+      - dsh-bio --version | head -n 1 | sed 's/dsh-bio-tools //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
