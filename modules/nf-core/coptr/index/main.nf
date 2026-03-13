@@ -12,7 +12,7 @@ process COPTR_INDEX {
 
     output:
     tuple val(meta), path("bowtie2"), emit: index_dir
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('coptr'), eval("coptr |& sed -E '11!d ; s/CoPTR.*?\\(v(.*?)\\).*/\\1/'"), emit: versions_coptr, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,11 +29,6 @@ process COPTR_INDEX {
         --bt2-threads $task.cpus \
         fastafolder \
         bowtie2/${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        coptr: \$(coptr |& sed -E '11!d ; s/CoPTR.*?\\(v(.*?)\\).*/\\1/')
-    END_VERSIONS
     """
 
     stub:
@@ -43,10 +38,5 @@ process COPTR_INDEX {
     touch bowtie2/${prefix}.{1..4}.bt2
     touch bowtie2/${prefix}.rev.{1,2}.bt2
     touch bowtie2/${prefix}.genomes
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        coptr: \$(coptr |& sed -E '11!d ; s/CoPTR.*?\\(v(.*?)\\).*/\\1/')
-    END_VERSIONS
     """
 }

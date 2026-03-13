@@ -12,7 +12,7 @@ process BISMARK_GENOMEPREPARATION {
 
     output:
     tuple val(meta), path("BismarkIndex"), emit: index
-    path "versions.yml"                  , emit: versions
+    tuple val("${task.process}"), val('bismark'), eval("bismark --version 2>&1 | sed -n 's/^.*Bismark Version: v//p'"), emit: versions_bismark, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,11 +23,6 @@ process BISMARK_GENOMEPREPARATION {
     bismark_genome_preparation \\
         ${args} \\
         BismarkIndex
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bismark: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -51,10 +46,5 @@ process BISMARK_GENOMEPREPARATION {
     touch BismarkIndex/Bisulfite_Genome/GA_conversion/BS_GA.rev.1.bt2
     touch BismarkIndex/Bisulfite_Genome/GA_conversion/BS_GA.rev.2.bt2
     touch BismarkIndex/Bisulfite_Genome/GA_conversion/genome_mfa.GA_conversion.fa
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bismark: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
-    END_VERSIONS
     """
 }
