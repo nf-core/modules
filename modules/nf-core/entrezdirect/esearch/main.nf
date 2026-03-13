@@ -13,7 +13,7 @@ process ENTREZDIRECT_ESEARCH {
 
     output:
     tuple val(meta), path("*.xml") , emit: xml
-    tuple val("${task.process}"), val('esearch'), eval('esearch -version 2>&1'), emit: versions_esearch, topic: versions
+    tuple val("${task.process}"), val('ENTREZDIRECT'), eval('esearch -version 2>&1'), emit: versions_esearch, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
