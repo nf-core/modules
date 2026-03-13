@@ -13,7 +13,7 @@ process BAMUTIL_CLIPOVERLAP {
     output:
     tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path("*.log"), emit: stats_log, optional: true
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('bamutil'), eval("bam clipOverlap 2>&1 | grep '^Version:' | sed 's/^Version: //;s/;.*//'"), emit: versions_bamutil, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,12 +30,6 @@ process BAMUTIL_CLIPOVERLAP {
         ${args} \\
         2> >( tee ${prefix}.log >&2 ) \\
         | tee ${prefix}.err
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bamutil: \$(bam clipOverlap 2>&1 | grep '^Version:' | sed 's/^Version: //;s/;.*//')
-    END_VERSIONS
     """
 
     stub:
@@ -43,10 +37,5 @@ process BAMUTIL_CLIPOVERLAP {
     """
     touch ${prefix}.bam
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bamutil: \$(bam clipOverlap 2>&1 | grep '^Version:' | sed 's/^Version: //;s/;.*//')
-    END_VERSIONS
     """
 }

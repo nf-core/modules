@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "molkartgarage_clahe"
-description: Contrast-limited adjusted histogram equalization (CLAHE) on single-channel
-  tif images.
+description: Contrast-limited adjusted histogram equalization (CLAHE) on
+  single-channel tif images.
 keywords:
   - clahe
   - image_processing
@@ -14,11 +13,10 @@ tools:
       homepage: https://github.com/SchapiroLabor/molkart-local/tree/main
       documentation: https://github.com/SchapiroLabor/molkart-local/tree/main
       tool_dev_url: https://github.com/SchapiroLabor/molkart-local/blob/main/scripts/molkart_clahe.py
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
@@ -28,9 +26,9 @@ input:
         type: file
         description: Single-channel tiff file to be corrected.
         pattern: "*.{tif,tiff}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3591 # TIFF
 output:
-  #Only when we have meta
   img_clahe:
     - - meta:
           type: map
@@ -41,14 +39,48 @@ output:
           type: file
           description: CLAHE corrected tiff file.
           pattern: "*.{tiff}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3591 # TIFF
+  versions_clahe:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - clahe:
+          type: string
+          description: The name of the tool
+      - python /local/scripts/molkart_clahe.py --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_scikitimage:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - scikit-image:
+          type: string
+          description: The name of the tool
+      - python -c 'import skimage; print(skimage.__version__)':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - clahe:
+          type: string
+          description: The name of the tool
+      - python /local/scripts/molkart_clahe.py --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - scikit-image:
+          type: string
+          description: The name of the tool
+      - python -c 'import skimage; print(skimage.__version__)':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@kbestak"
 maintainers:
