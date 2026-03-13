@@ -29,6 +29,7 @@ nextflow_process {
                     file(process.out.ctree_report_rds[0][1]).name,
                     file(process.out.ctree_report_pdf[0][1]).name,
                     file(process.out.ctree_report_png[0][1]).name,
+                    process.out.versions,
                     path(process.out.versions[0]).yaml
                 ).match() },
             )
