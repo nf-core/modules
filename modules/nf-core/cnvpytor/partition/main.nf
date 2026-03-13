@@ -1,11 +1,11 @@
 process CNVPYTOR_PARTITION {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cnvpytor:1.3.1--pyhdfd78af_1':
-        'biocontainers/cnvpytor:1.3.1--pyhdfd78af_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/cnvpytor:1.3.1--pyhdfd78af_1'
+        : 'biocontainers/cnvpytor:1.3.1--pyhdfd78af_1'}"
 
     input:
     tuple val(meta), path(pytor)
@@ -13,15 +13,15 @@ process CNVPYTOR_PARTITION {
 
     output:
     tuple val(meta), path("${prefix}.pytor"), emit: pytor
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('cnvpytor'), eval('cnvpytor --version | sed -n \'s/.*CNVpytor \\(.*\\)/\\1/p\''), topic: versions, emit: versions_cnvpytor
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def bins = bin_sizes       ?: '1000'
-    def args = task.ext.args   ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    def bins = bin_sizes ?: '1000'
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     export MPLCONFIGDIR=\$(pwd)/.mplconfig
 
@@ -31,21 +31,11 @@ process CNVPYTOR_PARTITION {
         ${args}
 
     cp ${pytor} ${prefix}.pytor
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cnvpytor: \$(cnvpytor --version | sed -n 's/.*CNVpytor \\(.*\\)/\\1/p')
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.pytor
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cnvpytor: \$(cnvpytor --version | sed -n 's/.*CNVpytor \\(.*\\)/\\1/p')
-    END_VERSIONS
     """
 }
