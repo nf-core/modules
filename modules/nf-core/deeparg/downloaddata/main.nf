@@ -18,15 +18,16 @@ process DEEPARG_DOWNLOADDATA {
 
     output:
     path "db/", emit: db
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('deeparg'), val('1.0.4'), emit: versions_deeparg, topic: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+
+
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def VERSION = '1.0.4'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
 
     # Theano needs a writable space and uses the home directory by default,
@@ -39,16 +40,10 @@ process DEEPARG_DOWNLOADDATA {
         download_data \\
         ${args} \\
         -o db/
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deeparg: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
-    def VERSION = '1.0.4'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     echo "deeparg \\
@@ -57,10 +52,5 @@ process DEEPARG_DOWNLOADDATA {
         -o db/"
 
     mkdir db/
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deeparg: ${VERSION}
-    END_VERSIONS
     """
 }
