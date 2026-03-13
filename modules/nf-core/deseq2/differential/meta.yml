@@ -97,7 +97,7 @@ output:
             output by DESeq2
           pattern: "*.deseq2.results.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
   dispersion_plot_png:
     - - meta:
           type: map
@@ -108,7 +108,7 @@ output:
           description: DESeq2 dispersion plot in PNG format
           pattern: "*.deseq2.dispersion.png"
           ontologies:
-            - edam: "http://edamontology.org/format_3603"
+            - edam: "http://edamontology.org/format_3603" # PNG
   dispersion_plot_pdf:
     - - meta:
           type: map
@@ -119,7 +119,7 @@ output:
           description: DESeq2 dispersion plot in PDF format
           pattern: "*.deseq2.dispersion.pdf"
           ontologies:
-            - edam: "http://edamontology.org/format_3508"
+            - edam: "http://edamontology.org/format_3508" # PDF
   rdata:
     - - meta:
           type: map
@@ -140,7 +140,7 @@ output:
           description: TSV-format table containing DESeq2 size factors
           pattern: "*.deseq2.sizefactors.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
   normalised_counts:
     - - meta:
           type: map
@@ -151,7 +151,7 @@ output:
           description: TSV-format counts matrix, normalised to size factors
           pattern: "*.normalised_counts.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
   rlog_counts:
     - - meta:
           type: map
@@ -177,7 +177,7 @@ output:
             variance stabilisation applied via `vst()`.
           pattern: "*.vst.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/ # TSV
   model:
     - - meta:
           type: map
@@ -188,7 +188,7 @@ output:
           description: TXT-format DESeq2 model
           pattern: "*.deseq2.model.txt"
           ontologies:
-            - edam: http://edamontology.org/format_2330
+            - edam: http://edamontology.org/format_2330 # TXT
   session_info:
     - - meta:
           type: map
