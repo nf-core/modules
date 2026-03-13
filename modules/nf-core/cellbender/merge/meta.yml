@@ -11,7 +11,8 @@ tools:
         from high-throughput single-cell RNA sequencing (scRNA-seq) data.
       documentation: https://cellbender.readthedocs.io/en/latest/
       tool_dev_url: https://github.com/broadinstitute/CellBender
-      licence: ["BSD-3-Clause"]
+      licence:
+        - "BSD-3-Clause"
       identifier: biotools:CellBender
 input:
   - - meta:
@@ -34,6 +35,9 @@ input:
         description: CellBender h5 file containing ambient RNA estimates
         pattern: "*.h5"
         ontologies: []
+  - output_layer_name:
+      type: string
+      description: The name of the layer to store counts
 output:
   h5ad:
     - - meta:
@@ -52,7 +56,7 @@ output:
         description: File containing software version
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+          - edam: http://edamontology.org/format_3750
 authors:
   - "@nictru"
 maintainers:
