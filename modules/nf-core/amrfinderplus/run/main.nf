@@ -16,8 +16,8 @@ process AMRFINDERPLUS_RUN {
     tuple val(meta), path("${prefix}-mutations.tsv"), emit: mutation_report, optional: true
     env 'VER'                                       , emit: tool_version
     env 'DBVER'                                     , emit: db_version
-    tuple val("${task.process}"), val("amrfinderplus"), env(AMRFINDER_VERSION), emit: versions_amrfinderplus, topic: versions
-    tuple val("${task.process}"), val("amrfinderplus_database"), env(AMRFINDER_DB_VERSION), emit: versions_amrfinderplus_database, topic: versions
+    tuple val("${task.process}"), val("amrfinderplus"), eval("amrfinder --version"), emit: versions_amrfinderplus, topic: versions
+    tuple val("${task.process}"), val("amrfinderplus_database"), eval("amrfinder --database amrfinderdb --database_version 2>&1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[0-9]+' | tail -1"), emit: versions_amrfinderplus_database, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -55,38 +55,38 @@ process AMRFINDERPLUS_RUN {
         --database amrfinderdb \\
         --threads ${task.cpus} > ${prefix}.tsv
 
-    # Capture versions for environment variables
     VER=\$(amrfinder --version)
     DBVER=\$(amrfinder --database amrfinderdb --database_version 2>&1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[0-9]+' | tail -1)
-
-    # Capture versions for the new versions system
-    AMRFINDER_VERSION=\$(amrfinder --version)
-    AMRFINDER_DB_VERSION=\$(amrfinder --database amrfinderdb --database_version 2>&1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[0-9]+' | tail -1)
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ''
     """
-    echo ${args}
     touch ${prefix}.tsv
     ${meta.containsKey("organism") ? "touch ${prefix}-mutations.tsv" : ""}
 
-    # Set version environment variables for stub mode
-    cat << 'EOF' > amrfinder
-    #!/usr/bin/env bash
-    if [[ "\$1" == "--version" ]]; then
-        echo "4.2.7"
-    elif [[ "\$1" == "--database" ]]; then
-        echo "Database version 2026-01-01.1"
-    fi
-    EOF
+    # Create a mock amrfinder script in a bin directory
+    mkdir -p bin
+    cat << 'EOF' > bin/amrfinder
+#!/usr/bin/env bash
+if [[ "\$1" == "--version" ]]; then
+    echo "4.2.7"
+elif [[ "\$*" == *"--database_version"* ]]; then
+    echo "Database version: 2026-01-01.1"
+fi
+EOF
 
-    chmod +x amrfinder
+    chmod +x bin/amrfinder
 
-    VER=\$(./amrfinder --version)
-    DBVER=\$(./amrfinder --database amrfinderdb --database_version 2>&1 | rev | cut -f 1 -d ' ' | rev)
-    AMRFINDER_VERSION=\$(amrfinder --version)
-    AMRFINDER_DB_VERSION=\$(./amrfinder --database amrfinderdb --database_version 2>&1 | rev | cut -f 1 -d ' ' | rev)
+    # Prepend bin to PATH for both env variables AND eval() calls
+    export PATH="\$PWD/bin:\$PATH"
+
+    # Create fake database directory
+    mkdir -p amrfinderdb
+
+    # Set env variables using our mock script
+    VER=\$(amrfinder --version)
+    DBVER=\$(amrfinder --database amrfinderdb --database_version 2>&1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[0-9]+' | tail -1)
     """
 }
