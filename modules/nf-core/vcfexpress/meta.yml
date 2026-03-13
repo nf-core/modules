@@ -3,7 +3,9 @@ description: Filter a VCF/BCF and optionally print by template expression. If no
   template is given the output will be VCF/BCF
 keywords:
   - vcf
+  - bcf
   - filter
+  - lua
   - expressions
   - genomics
 tools:
@@ -28,7 +30,8 @@ input:
         pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
   - prelude:
       type: file
-      description: File(s) containing lua(u) code to run once before any variants are processed. `header` is available here to access or modify the header
+      description: File(s) containing lua(u) code to run once before any variants
+        are processed. `header` is available here to access or modify the header
       pattern: "*.lua"
 output:
   vcf:
@@ -48,7 +51,7 @@ output:
       - vcfexpress:
           type: string
           description: The name of the tool
-      - vcfexpress --version:
+      - vcfexpress --version | sed 's/vcfexpress //':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -59,7 +62,7 @@ topics:
       - vcfexpress:
           type: string
           description: The name of the tool
-      - vcfexpress --version:
+      - vcfexpress --version | sed 's/vcfexpress //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
