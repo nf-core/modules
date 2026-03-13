@@ -14,7 +14,7 @@ process AGAT_SPEXTRACTSEQUENCES {
 
     output:
     tuple val(meta), path("*.fasta"), emit: fasta
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('agat'), eval("agat --version | sed 's/v//'"), topic: versions, emit: versions_agat
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,11 +31,6 @@ process AGAT_SPEXTRACTSEQUENCES {
         -f ${fasta} \\
         ${config_arg} \\
         -o ${prefix}.fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        agat: \$(agat_sp_extract_sequences.pl -h | sed -n 's/.*(AGAT) - Version: \\(.*\\) .*/\\1/p')
-    END_VERSIONS
     """
 
     stub:
@@ -43,10 +38,5 @@ process AGAT_SPEXTRACTSEQUENCES {
     if( "${fasta}" == "${prefix}.fasta" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${prefix}.fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        agat: \$(agat_sp_extract_sequences.pl -h | sed -n 's/.*(AGAT) - Version: \\(.*\\) .*/\\1/p')
-    END_VERSIONS
     """
 }
