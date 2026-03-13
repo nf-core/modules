@@ -14,7 +14,7 @@ process SEQKIT_RMDUP {
     output:
     tuple val(meta), path("${prefix}.${extension}") , emit: fastx
     tuple val(meta), path("*.log")                  , emit: log
-    tuple val("${task.process}"), val('seqkit'), eval("seqkit version | cut -d' ' -f2 | sed 's/^v//'"), emit: versions_seqkit, topic: versions
+    tuple val("${task.process}"), val('seqkit'), eval("seqkit version | sed 's/^.*v//'"), emit: versions_seqkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

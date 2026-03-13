@@ -13,7 +13,7 @@ process SEQKIT_PAIR {
     output:
     tuple val(meta), path("*.paired.fastq.gz")                  , emit: reads
     tuple val(meta), path("*.unpaired.fastq.gz"), optional: true, emit: unpaired_reads
-    tuple val("${task.process}"), val('seqkit'), eval("seqkit version | cut -d' ' -f2 | sed 's/^v//'"), emit: versions_seqkit, topic: versions
+    tuple val("${task.process}"), val('seqkit'), eval("seqkit version | sed 's/^.*v//'"), emit: versions_seqkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
