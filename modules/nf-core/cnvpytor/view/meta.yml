@@ -57,7 +57,7 @@ output:
           description: tsv file containing cnv calls
           pattern: "*.{tsv}"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   xls:
     - - meta:
           type: map
@@ -69,15 +69,15 @@ output:
           description: xls file containing cnv calls
           pattern: "*.{xls}"
           ontologies: []
-  versions_tool1:
+  versions_cnvpytor:
     - - ${task.process}:
           type: string
           description: The name of the process
       - cnvpytor:
           type: string
           description: The name of the tool
-      - cnvpytor --version | sed -n 's/.*CNVpytor \(.*\)/\1/p':
-          type: eval
+      - 1.3.2:
+          type: string
           description: The expression to obtain the version of the tool
 topics:
   versions:
@@ -87,8 +87,8 @@ topics:
       - cnvpytor:
           type: string
           description: The name of the tool
-      - cnvpytor --version | sed -n 's/.*CNVpytor \(.*\)/\1/p':
-          type: eval
+      - 1.3.2:
+          type: string
           description: The expression to obtain the version of the tool
 authors:
   - "@sima-r"
