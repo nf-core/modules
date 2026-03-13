@@ -4,16 +4,14 @@ process SAMTOOLS_INDEX {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.22.1--h96c455f_0' :
-        'biocontainers/samtools:1.22.1--h96c455f_0' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.23--h96c455f_0' :
+        'biocontainers/samtools:1.23--h96c455f_0' }"
 
     input:
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*.bai") , optional:true, emit: bai
-    tuple val(meta), path("*.csi") , optional:true, emit: csi
-    tuple val(meta), path("*.crai"), optional:true, emit: crai
+    tuple val(meta), path("*.{bai,csi,crai}"), emit: index
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
 
     when:
