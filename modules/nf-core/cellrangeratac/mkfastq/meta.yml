@@ -32,21 +32,34 @@ input:
       ontologies:
         - edam: http://edamontology.org/format_3752
 output:
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software version
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
   fastq:
-    - "${bcl.getSimpleName()}/outs/fastq_path/*.fastq.gz":
+    - ${bcl.getSimpleName()}/outs/fastq_path/*.fastq.gz:
         type: file
         description: Unaligned FastQ files
         pattern: "*.fastq.gz"
         ontologies:
           - edam: http://edamontology.org/format_3989 # GZIP format
-
+  versions_cellrangeratac:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellrangeratac:
+          type: string
+          description: The name of the tool
+      - cellranger-atac --version | sed 's/.*cellranger-atac-//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellrangeratac:
+          type: string
+          description: The name of the tool
+      - cellranger-atac --version | sed 's/.*cellranger-atac-//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ggabernet"
   - "@edmundmiller"

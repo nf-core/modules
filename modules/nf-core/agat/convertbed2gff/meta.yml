@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: agat_convertbed2gff
 description: |
   Takes a bed12 file and converts to a GFF3 file
@@ -15,7 +14,8 @@ tools:
       documentation: "https://agat.readthedocs.io/"
       tool_dev_url: "https://github.com/NBISweden/AGAT"
       doi: "10.5281/zenodo.3552717"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:AGAT
 input:
   - - meta:
@@ -28,7 +28,7 @@ input:
         description: Input bed12 file
         pattern: "*.bed"
         ontologies:
-          - edam: "http://edamontology.org/format_3586" # bed12
+          - edam: "http://edamontology.org/format_3586"
 output:
   gff:
     - - meta:
@@ -39,15 +39,28 @@ output:
           description: Output GFF3 file
           pattern: "*.{gff}"
           ontologies:
-            - edam: "http://edamontology.org/format_1975" # GFF3
+            - edam: "http://edamontology.org/format_1975"
+  versions_agat:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - agat:
+          type: string
+          description: The name of the tool
+      - agat_convert_bed2gff.pl --help | grep Version | cut -d" " -f11:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
-
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - agat:
+          type: string
+          description: The name of the tool
+      - agat_convert_bed2gff.pl --help | grep Version | cut -d" " -f11:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@GallVp"
 maintainers:
