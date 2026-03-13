@@ -307,10 +307,13 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                process.out.bed[0][1].collect { file(it).name },
-                process.out.cnn[0][1].collect { file(it).name },
-                process.out.cnr[0][1].collect { file(it).name },
-                process.out.cns[0][1].collect { file(it).name },
+                [process.out.bed, process.out.cnn, process.out.cnr, process.out.cns]
+                .collectMany { channel ->
+                def files = channel[0][1]
+                files instanceof Collection ? files : [files]
+                }
+                .collect { file(it).name }
+                .sort(),
                 process.out.versions_cnvkit,
                 process.out.versions_samtools
             ).match()
