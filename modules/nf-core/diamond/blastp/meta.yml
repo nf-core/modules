@@ -26,7 +26,7 @@ input:
         description: Input fasta file containing query sequences
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1929
   - - meta2:
         type: map
         description: |
@@ -148,7 +148,7 @@ output:
       - diamond:
           type: string
           description: The name of the tool
-      - diamond --version | sed 's/diamond version //g':
+      - diamond --version 2>&1 | sed 's/diamond version //g':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -159,7 +159,7 @@ topics:
       - diamond:
           type: string
           description: The name of the tool
-      - diamond --version | sed 's/diamond version //g':
+      - diamond --version 2>&1 | sed 's/diamond version //g':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
