@@ -13,7 +13,6 @@ nextflow_workflow {
     tag "mapad/map"
     tag "mapad/index"
 
-
     test("sarscov2 - bam - single_end") {
         setup {
             run("MAPAD_INDEX") {
@@ -51,8 +50,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                        workflow.out.bai,
-                        workflow.out.csi,
+                        workflow.out.index,
                         workflow.out.stats,
                         workflow.out.flagstat,
                         workflow.out.idxstats,

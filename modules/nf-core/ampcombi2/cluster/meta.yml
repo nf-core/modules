@@ -55,13 +55,27 @@ output:
         pattern: "*.log"
         ontologies:
           - edam: "http://edamontology.org/format_2330" # Log
+  versions_ampcombi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ampcombi:
+          type: string
+          description: The name of the tool
+      - ampcombi --version | sed 's/ampcombi //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ampcombi:
+          type: string
+          description: The name of the tool
+      - ampcombi --version | sed 's/ampcombi //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@darcy220606"
 maintainers:
