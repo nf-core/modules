@@ -15,7 +15,7 @@ process ARTIC_ALIGNTRIM {
     tuple val(meta), path("*.primertrimmed*.bam"),    emit: primertrimmed_bam
     tuple val(meta), path("*.align_trim_report.tsv"), emit: align_trim_report
     tuple val(meta), path("*.amp_depth_report.tsv"),  emit: amp_depth_report
-    path "versions.yml",                              emit: versions
+    tuple val("${task.process}"), val('align_trim'), eval("align_trim --version | sed 's/align_trim //'"), emit: versions_align_trim, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,11 +36,6 @@ process ARTIC_ALIGNTRIM {
         ${scheme_bed}
 
     ${sort_bam_cmd}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        align_trim: \$(align_trim --version | sed 's/align_trim //')
-    END_VERSIONS
     """
 
     stub:
@@ -52,10 +47,5 @@ process ARTIC_ALIGNTRIM {
     ${sort_bam_cmd}
     touch ${prefix}.align_trim_report.tsv
     touch ${prefix}.amp_depth_report.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        align_trim: \$(align_trim --version | sed 's/align_trim //')
-    END_VERSIONS
     """
 }
