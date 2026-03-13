@@ -8,7 +8,7 @@ process NUMORPH_RESAMPLE {
     tuple val(meta), path(stitch_directory), path(parameter_file)
 
     output:
-    tuple val(meta), path("results/resampled/*")                , emit: resampled
+    tuple val(meta), path("results/resampled/")                        , emit: resampled
     tuple val("${task.process}"), val('numorph_resample'), val('1.0.0'), emit: versions_numorph_analyze, topic: versions
 
     when:
@@ -19,12 +19,12 @@ process NUMORPH_RESAMPLE {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    mkdir -p results/stitched/
+    mkdir -p ./results/stitched
 
     ln -sr ${stitch_directory}/* results/stitched
 
     # resolve symlinks and paths
-    stitch_directory=\$(readlink -f ./results/stitched/)
+    stitch_directory=\$(readlink -f ./results/stitched)
     parameter_file=\$(readlink -f ${parameter_file})
     results_dir=\$(readlink -f ./results)
 

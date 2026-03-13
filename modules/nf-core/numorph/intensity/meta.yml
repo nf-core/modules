@@ -36,17 +36,39 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_3752"
 output:
-  results:
+  variables:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - ./results:
+      - results/variables/:
           type: directory
-          description: Directory containing QC images for tile normalization and intensity
+          description: Directory containing tile normalization factors and intensity
             thresholds
-          pattern: "/{results}/*"
+          pattern: "/{results}/variables/*"
+  samples:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - results/samples/:
+          type: directory
+          description: Directory containing QC images for tile normalization and intensity adjusted example images
+          pattern: "/{results}/samples/*"
+  NM_variable:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - results/NM_variables.mat:
+          type: file
+          description: File containing processing parameters and varaiables in .mat format
+          pattern: "/{results}/NM_variables.mat"
+          ontologies:
+            - edam: "http://edamontology.org/format_3626"
   versions_numorph_intensity:
     - - ${task.process}:
           type: string
@@ -59,7 +81,7 @@ output:
           description: The expression to obtain the version of the tool
 topics:
   versions:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
       - numorph_intensity:

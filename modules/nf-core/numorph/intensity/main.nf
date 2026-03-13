@@ -9,7 +9,10 @@ process NUMORPH_INTENSITY {
     tuple val(meta), path(img_directory), path(parameter_file)
 
     output:
-    tuple val(meta), path("./results")                                  , emit: results
+    tuple val(meta), path("results/variables/")                         , emit: variables
+    tuple val(meta), path("results/samples/")                           , emit: samples
+    tuple val(meta), path("results/NM_variables.mat")                   , emit: NM_variable
+
     tuple val("${task.process}"), val('numorph_intensity'), val('1.0.0'), emit: versions_numorph_intensity, topic: versions
 
     when:
@@ -37,13 +40,13 @@ process NUMORPH_INTENSITY {
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    mkdir -p results/samples/intensity_adjustment
-    mkdir -p results/variables
+    mkdir -p ./results/samples/intensity_adjustment
+    mkdir -p ./results/variables
 
-    touch results/variables/adj_params.mat
-    touch results/variables/path_table.mat
-    touch results/variables/thresholds.mat
-    touch results/NM_variables.mat
-    touch results/samples/intensity_adjustment/${meta.id}.png
+    touch ./results/variables/adj_params.mat
+    touch ./results/variables/path_table.mat
+    touch ./results/variables/thresholds.mat
+    touch ./results/NM_variables.mat
+    touch ./results/samples/intensity_adjustment/${meta.id}.png
     """
 }
