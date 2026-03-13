@@ -15,7 +15,7 @@ nextflow_process {
             script "../../../untar/main.nf"
             process {
                 """
-                input[0] = Channel.of(
+                input[0] = channel.of(
                     [
                         [ id:'checkv_minimal_db' ],
                         file("https://github.com/nf-core/test-datasets/raw/phageannotator/modules/nfcore/checkv/endtoend/checkv_minimal_db.tar", checkIfExists: true)
@@ -29,9 +29,6 @@ nextflow_process {
     test("sarscov2 - genome - genome_fasta") {
 
         when {
-            params {
-                outdir   = "${outputDir}"
-            }
             process {
                 """
                 input[0] = [
@@ -46,26 +43,25 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert new File("${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.dmnd.log").exists() },
-                { assert new File("${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.dmnd").exists() },
                 { assert snapshot(
-                    "${process.out.checkv_db.get(0).get(1).get(0)}",
-                    "${process.out.checkv_db.get(0).get(1).get(2)}",
-                    "${process.out.checkv_db.get(0).get(1).get(1)}/changelog.tsv",
-                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_error.tsv",
-                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_info.tsv",
-                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.faa",
-                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.fna",
-                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.log",
-                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.tsv",
-                    process.out.versions
-                    ).match()
-                },
+                    process.out.checkv_db.collect { meta, folder ->
+                        [
+                            meta,
+                            folder[0],  // README.txt
+                            file(folder[1]).listFiles().sort().findAll { !it.name.endsWith(".log") },  // genome_db files without logs
+                            folder[2]   // hmm_db
+                        ]
+                    },
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match()},
             )
         }
     }
 
     test("sarscov2 - genome - genome_fasta - stub") {
+
+        options "-stub"
+
         when {
             process {
                 """
@@ -81,21 +77,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert new File("${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.dmnd.log").exists() },
-                { assert new File("${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.dmnd").exists() },
-                { assert snapshot(
-                    "${process.out.checkv_db.get(0).get(1).get(0)}",
-                    "${process.out.checkv_db.get(0).get(1).get(2)}",
-                    "${process.out.checkv_db.get(0).get(1).get(1)}/changelog.tsv",
-                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_error.tsv",
-                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_info.tsv",
-                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.faa",
-                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.fna",
-                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.log",
-                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.tsv",
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match()}
             )
         }
     }
