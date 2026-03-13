@@ -13,6 +13,9 @@ nextflow_process {
         config "./nextflow.config"
 
         when {
+            params {
+                plink2_vcf2bgen_args = "--max-alleles 2 --vcf-half-call r"
+            }
             process {
                 """
                 input[0] = [
@@ -43,6 +46,9 @@ nextflow_process {
         config "./nextflow.config"
 
         when {
+            params {
+                plink2_vcf2bgen_args = "--max-alleles 2 --vcf-half-call r"
+            }
             process {
                 """
                 input[0] = [
@@ -73,6 +79,9 @@ nextflow_process {
         config "./nextflow.config"
 
         when {
+            params {
+                plink2_vcf2bgen_args = "--max-alleles 2 --vcf-half-call r"
+            }
             process {
                 """
                 input[0] = [
@@ -104,6 +113,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                plink2_vcf2bgen_args = "--max-alleles 2 --vcf-half-call r"
+            }
             process {
                 """
                 input[0] = [
