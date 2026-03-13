@@ -243,7 +243,7 @@ nextflow_process {
                     process.out.outs[0][1].findAll {  file(it).name == 'regions.fa' },
                     process.out.outs[0][1].findAll {  file(it).name.contains('.json') }
                 ).match() },
-                { assert snapshot(process.out.versions).match("versions-PBMC") }
+                { assert snapshot(process.out.versions_cellranger).match("versions-PBMC") }
             )
         }
 
@@ -485,7 +485,7 @@ nextflow_process {
                     process.out.outs[0][1].findAll {  file(it).name == 'regions.fa' },
                     process.out.outs[0][1].findAll {  file(it).name.contains('.json') }
                 ).match() },
-                { assert snapshot(process.out.versions).match("versions-with-cmo") }
+                { assert snapshot(process.out.versions_cellranger).match("versions-with-cmo") }
             )
         }
 
@@ -724,7 +724,7 @@ nextflow_process {
                     process.out.outs[0][1].findAll {  file(it).name == 'regions.fa' },
                     process.out.outs[0][1].findAll {  file(it).name.contains('.json') }
                 ).match() },
-                { assert snapshot(process.out.versions).match("versions-with-vdj") }
+                { assert snapshot(process.out.versions_cellranger).match("versions-with-vdj") }
             )
         }
 
@@ -871,7 +871,7 @@ nextflow_process {
                     process.out.outs[0][1].findAll { file(it).name == 'protospacer_calls_per_cell.csv' },
                     process.out.outs[0][1].findAll { file(it).name == 'perturbation_efficiencies_by_feature.csv' }
                 ).match() },
-                { assert snapshot(process.out.versions).match("versions-a549-crispr") }
+                { assert snapshot(process.out.versions_cellranger).match("versions-a549-crispr") }
             )
 
         }
@@ -983,7 +983,7 @@ nextflow_process {
                     process.out.outs[0][1].findAll {  file(it).name == 'sample_filtered_feature_bc_matrix.h5' },
                     process.out.outs[0][1].findAll {  file(it).name == 'sample_raw_feature_bc_matrix.h5' }
                 ).match() },
-                { assert snapshot(process.out.versions).match("versions-flex-singleplex") }
+                { assert snapshot(process.out.versions_cellranger).match("versions-flex-singleplex") }
             )
         }
 
