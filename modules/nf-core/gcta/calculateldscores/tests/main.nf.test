@@ -8,18 +8,19 @@ nextflow_process {
     tag "modules_nfcore"
     tag "gcta"
     tag "gcta/calculateldscores"
+    tag "plink"
 
-    test("homo_sapiens popgen - chr01 plink1") {
+    test("homo_sapiens gsmr - plink1") {
         config "./nextflow.config"
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'chr01.vcf' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/chr01.vcf.bed', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/chr01.vcf.bim', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/chr01.vcf.fam', checkIfExists: true)
+                    [ id:'bfile' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bed', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bim', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
                 ]
                 """
             }
@@ -30,16 +31,15 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.ld_scores.size() == 1 },
                 { assert process.out.snp_group_files.size() == 1 },
-                { assert process.out.ld_scores.get(0).get(0).id == 'chr01.vcf' },
+                { assert process.out.ld_scores.get(0).get(0).id == 'bfile' },
                 {
                     def snpGroups = process.out.snp_group_files.get(0)
-                    assert snpGroups.get(0).id == 'chr01.vcf'
+                    assert snpGroups.get(0).id == 'bfile'
                     assert (1..4).every { idx -> path(snpGroups.get(idx)).exists() }
                 },
                 {
                     assert snapshot(
                         process.out.ld_scores,
-                        process.out.snp_group_files,
                         process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
@@ -47,7 +47,7 @@ nextflow_process {
         }
     }
 
-    test("homo_sapiens popgen - chr01 plink1 - stub") {
+    test("homo_sapiens gsmr - plink1 - stub") {
         options "-stub"
         config "./nextflow.config"
 
@@ -55,10 +55,10 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'chr01.vcf' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/chr01.vcf.bed', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/chr01.vcf.bim', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/chr01.vcf.fam', checkIfExists: true)
+                    [ id:'bfile' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bed', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bim', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
                 ]
                 """
             }

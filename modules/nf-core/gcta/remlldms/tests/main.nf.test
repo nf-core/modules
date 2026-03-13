@@ -8,36 +8,150 @@ nextflow_process {
     tag "modules_nfcore"
     tag "gcta"
     tag "gcta/remlldms"
+    tag "gcta/makegrmpart"
+    tag "gawk"
 
-    test("homo_sapiens popgen - quantitative phenotype with ldms mgrm and covariates") {
+    setup {
+        run("GAWK", alias: "GAWK_QUANTITATIVE_PHENO") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'QuantitativeTrait' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
+                ]
+                input[1] = Channel.of('{ print \$1, \$2, ((NR % 11) - 5) + (((NR * NR) % 7) / 10.0) }').collectFile(name:'quantitative_phenotype.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_QUANTITATIVE_COVARIATES") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'covariates_quant' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
+                ]
+                input[1] = Channel.of('{ print \$1, \$2, ((NR % 9) - 4) / 3.0 }').collectFile(name:'quantitative_covariates.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_CATEGORICAL_COVARIATES") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'covariates_cat' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
+                ]
+                input[1] = Channel.of('{ print \$1, \$2, (NR % 2) + 1 }').collectFile(name:'categorical_covariates.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_LDMS1_VARIANTS") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'bfile_ldms1_variants' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bim', checkIfExists: true)
+                ]
+                input[1] = Channel.of('NR <= 800 { print \$2 }').collectFile(name:'ldms1_variants.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_LDMS2_VARIANTS") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'bfile_ldms2_variants' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bim', checkIfExists: true)
+                ]
+                input[1] = Channel.of('NR > 800 { print \$2 }').collectFile(name:'ldms2_variants.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GCTA_MAKEGRMPART", alias: "GCTA_MAKEGRMPART_LDMS1") {
+            script "../../makegrmpart/main.nf"
+            process {
+                """
+                file('bfile.mbfile').text = 'bfile\\n'
+
+                input[0] = [
+                    [ id:'bfile_ldms1', part_gcta_job:1, nparts_gcta:1 ],
+                    file('bfile.mbfile'),
+                    [
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bed', checkIfExists: true)
+                    ],
+                    [
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bim', checkIfExists: true)
+                    ],
+                    [
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
+                    ]
+                ]
+                input[1] = GAWK_LDMS1_VARIANTS.out.output
+                """
+            }
+        }
+
+        run("GCTA_MAKEGRMPART", alias: "GCTA_MAKEGRMPART_LDMS2") {
+            script "../../makegrmpart/main.nf"
+            process {
+                """
+                file('bfile.mbfile').text = 'bfile\\n'
+
+                input[0] = [
+                    [ id:'bfile_ldms2', part_gcta_job:1, nparts_gcta:1 ],
+                    file('bfile.mbfile'),
+                    [
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bed', checkIfExists: true)
+                    ],
+                    [
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.bim', checkIfExists: true)
+                    ],
+                    [
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
+                    ]
+                ]
+                input[1] = GAWK_LDMS2_VARIANTS.out.output
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens gsmr - quantitative phenotype with ldms mgrm and covariates") {
         config "./nextflow.config"
         when {
             process {
                 """
-                input[0] = [
-                    [ id:"QuantitativeTrait" ],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_quantitative.noheader.txt", checkIfExists: true)
-                ]
-                input[1] = [
-                    [ id:"plink_simulated_ldms" ],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_ldms.mgrm", checkIfExists: true),
-                    [
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_ldms1.grm.id", checkIfExists: true),
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_ldms1.grm.bin", checkIfExists: true),
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_ldms1.grm.N.bin", checkIfExists: true),
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_ldms2.grm.id", checkIfExists: true),
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_ldms2.grm.bin", checkIfExists: true),
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_ldms2.grm.N.bin", checkIfExists: true)
-                    ]
-                ]
-                input[2] = [
-                    [ id:"covariates_quant" ],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_covariates.quant.noheader.txt", checkIfExists: true)
-                ]
-                input[3] = [
-                    [ id:"covariates_cat" ],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_covariates.cat.noheader.txt", checkIfExists: true)
-                ]
+                mgrm_file = Channel
+                    .of('bfile_ldms1.part_1_1\\nbfile_ldms2.part_1_1')
+                    .collectFile(name:'bfile_ldms.mgrm', newLine: true)
+
+                ldms_grm_files = GCTA_MAKEGRMPART_LDMS1.out.grm_files
+                    .mix(GCTA_MAKEGRMPART_LDMS2.out.grm_files)
+                    .map { meta, grm_id, grm_bin, grm_n_bin -> [grm_id, grm_bin, grm_n_bin] }
+                    .collect()
+                    .map { rows -> rows.flatten() }
+
+                input[0] = GAWK_QUANTITATIVE_PHENO.out.output
+                input[1] = mgrm_file
+                    .combine(ldms_grm_files)
+                    .map { row -> [[ id:'bfile_ldms' ], row[0], row[1..-1]] }
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output
                 """
             }
         }
@@ -57,31 +171,29 @@ nextflow_process {
         }
     }
 
-    test("homo_sapiens popgen - quantitative phenotype with ldms mgrm - stub") {
+    test("homo_sapiens gsmr - quantitative phenotype with ldms mgrm - stub") {
         options "-stub"
         config "./nextflow.config"
 
         when {
             process {
                 """
-                input[0] = [
-                    [ id:"QuantitativeTrait" ],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_quantitative.noheader.txt", checkIfExists: true)
-                ]
-                input[1] = [
-                    [ id:"plink_simulated_ldms" ],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_ldms.mgrm", checkIfExists: true),
-                    [
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_ldms1.grm.id", checkIfExists: true),
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_ldms1.grm.bin", checkIfExists: true),
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_ldms1.grm.N.bin", checkIfExists: true),
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_ldms2.grm.id", checkIfExists: true),
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_ldms2.grm.bin", checkIfExists: true),
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_ldms2.grm.N.bin", checkIfExists: true)
-                    ]
-                ]
-                input[2] = [[ id:"covariates_quant" ], []]
-                input[3] = [[ id:"covariates_cat" ], []]
+                mgrm_file = Channel
+                    .of('bfile_ldms1.part_1_1\\nbfile_ldms2.part_1_1')
+                    .collectFile(name:'bfile_ldms.mgrm', newLine: true)
+
+                ldms_grm_files = GCTA_MAKEGRMPART_LDMS1.out.grm_files
+                    .mix(GCTA_MAKEGRMPART_LDMS2.out.grm_files)
+                    .map { meta, grm_id, grm_bin, grm_n_bin -> [grm_id, grm_bin, grm_n_bin] }
+                    .collect()
+                    .map { rows -> rows.flatten() }
+
+                input[0] = GAWK_QUANTITATIVE_PHENO.out.output
+                input[1] = mgrm_file
+                    .combine(ldms_grm_files)
+                    .map { row -> [[ id:'bfile_ldms' ], row[0], row[1..-1]] }
+                input[2] = [[ id:'covariates_quant' ], []]
+                input[3] = [[ id:'covariates_cat' ], []]
                 """
             }
         }
