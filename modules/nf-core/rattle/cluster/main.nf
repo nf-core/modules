@@ -3,8 +3,8 @@ process RATTLE_CLUSTER {
     label 'process_low'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'docker://ecoflowucl/rattle:v1.0' :
-        'ecoflowucl/rattle:v1.0' }"
+        'https://depot.galaxyproject.org/singularity/rattle%3A1.0--h5ca1c30_0' :
+        'quay.io/biocontainers/rattle:1.0--h5ca1c30_0' }"
 
     input:
     tuple val(meta), path(reads)
