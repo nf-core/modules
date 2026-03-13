@@ -24,7 +24,7 @@ process AMPCOMBI {
     tuple val(meta), path("amp_ref_database/*.dmnd")        , emit: results_db_dmnd , optional:true
     tuple val(meta), path("amp_ref_database/*.clean.fasta") , emit: results_db_fasta, optional:true
     tuple val(meta), path("amp_ref_database/*.tsv")         , emit: results_db_tsv  , optional:true
-    tuple val("${task.process}"), val('ampcombi'), eval("0.1.7"), emit: versions_ampcombi, topic: versions
+    tuple val("${task.process}"), val('ampcombi'), val('0.1.7'), emit: versions_ampcombi, topic: versions
 // As the module is deprecated and not run, we're hardcoding the version as instructed in
 // https://nf-co.re/docs/guidelines/components/modules#emission-of-versions
 
