@@ -21,11 +21,8 @@ nextflow_process {
         }
 
         then {
-            def bc_lines = file(process.out.cafe_base_count[0]).readLines()
             assertAll(
-                // process.success is true
                 { assert process.success },
-                //
                 { assert snapshot(
                     process.out.cafe_significant_trees,
                     file(process.out.cafe_base_count[0]).readLines(),
