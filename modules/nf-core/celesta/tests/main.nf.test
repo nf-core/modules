@@ -35,7 +35,7 @@ nextflow_process {
                     file(process.out.quality[0][1]).name, // Unstable
                     file(process.out.celltypes[0][1]).name, // Unstable
                     process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match('versions') }
+                ).match() }
             )
         }
 
