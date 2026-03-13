@@ -28,7 +28,7 @@ input:
         pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
   - prelude:
       type: file
-      description: lua file
+      description: File(s) containing lua(u) code to run once before any variants are processed. `header` is available here to access or modify the header
       pattern: "*.lua"
 output:
   vcf:
