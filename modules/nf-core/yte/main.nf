@@ -14,27 +14,24 @@ process YTE {
 
     output:
     tuple val(meta), path("*.yaml"), emit: rendered
-    tuple val("${task.process}"), val('yte'), eval("echo $VERSION"), topic: versions, emit: versions_yte
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('yte'), val("1.9.4"), topic: versions, emit: versions_yte
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args  = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     // Use map_file if provided, otherwise use map to create key=value pairs for mapping command
     def mapping_cmd = map_file ? "--variable-file ${map_file}" : "--variables " + map.collect { k, v -> "${k}=${v}" }.join(' ')
-    VERSION = "1.9.4"
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping
     """
     yte ${mapping_cmd} ${args} < ${template} > ${prefix}.yaml
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    VERSION = "1.9.4"
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping
     """
     touch ${prefix}.yaml
     """

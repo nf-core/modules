@@ -39,7 +39,7 @@ nextflow_process {
                     process.out.fepi,
                     process.out.fepisummary,
                     process.out.fnosex,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -77,7 +77,7 @@ nextflow_process {
                     process.out.fepi,
                     process.out.fepisummary,
                     process.out.fnosex,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -114,7 +114,7 @@ nextflow_process {
                     process.out.fepi,
                     process.out.fepisummary,
                     process.out.fnosex,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -152,7 +152,7 @@ nextflow_process {
                     process.out.fepi,
                     process.out.fepisummary,
                     process.out.fnosex,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -190,7 +190,7 @@ nextflow_process {
                     process.out.fepi,
                     process.out.fepisummary,
                     process.out.fnosex,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )

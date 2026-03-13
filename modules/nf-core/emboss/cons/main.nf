@@ -12,7 +12,7 @@ process EMBOSS_CONS {
 
     output:
     tuple val(meta), path("*.fa") , emit: consensus
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('emboss'), eval('cons -version 2>&1 | sed "s/EMBOSS://"'), emit: versions_emboss, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,12 +26,8 @@ process EMBOSS_CONS {
         ${args} \\
         -name ${prefix} \\
         -sequence $fasta \\
-        -outseq ${prefix}.fa \\
+        -outseq ${prefix}.fa
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        emboss: \$(echo \$(cons -version 2>&1) | sed 's/EMBOSS://')
-    END_VERSIONS
     """
 
     stub:
@@ -40,9 +36,5 @@ process EMBOSS_CONS {
     """
     touch ${prefix}.fa
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        emboss: \$(echo \$(cons -version 2>&1) | sed 's/EMBOSS://')
-    END_VERSIONS
     """
 }
