@@ -7,36 +7,56 @@ process TREERECS {
         'biocontainers/treerecs:1.2--h9f5acd7_3' }"
 
     input:
-    tuple val(meta), path(species_tree), path(gene_trees)
+    tuple val(meta), path(gene_trees)
+    path(species_tree) 
+    path(smap) optional: true
+    
 
     output:
-    tuple val(meta), path("*.nwk"), emit: corrected_trees
-    tuple val("${task.process}"), val("treerecs"), eval("treerecs --version 2>/dev/null | sed 's/ (.*) //g'"), topic: versions, emit: versions_treerecs
-
-    when:
-    task.ext.when == null || task.ext.when
+    tuple val(meta), path("*.nwk"), emit: corrected_trees_newick
+    tuple val(meta), path("*.nhx"), emit: corrected_trees_nhx, optional: true
+    tuple val(meta), path("*.phylo.xml"), emit: corrected_trees_phyloxml, optional: true
+    tuple val(meta), path("*.recphylo.xml"), emit: corrected_trees_recphyloxml, optional: true
+    tuple val(meta), path("*.svg"), emit: corrected_trees_svg, optional: true
+    tuple val(meta), path("*.relationships_summary.txt"), emit: relationships_summary, optional: true
+    path "versions.yml", emit: versions
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: 'treerecs'
+    def prefix = task.ext.prefix ?: meta?.id ?: "output"
+    def smap_arg = smap ? "-S ${smap}" : ''
 
     """
-    mkdir -p treerecs_output
-
     treerecs \\
          -s ${species_tree} \\
          -g ${gene_trees} \\
+         -o treerecs_output/ \\
+         ${smap_arg} \\
          $args
 
-    mv treerecs_output/*.nwk ${prefix}.nwk || true
+    mv treerecs_output/* . || true
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+    treerecs: \$(treerecs --version 2>/dev/null | sed 's/Treerecs //')
+END_VERSIONS
+
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    //def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: meta?.id ?: "stub"
+"""
+touch ${prefix}.nwk
+touch ${prefix}.nhx
+touch ${prefix}.phylo.xml
+touch ${prefix}.recphylo.xml
+touch ${prefix}.svg
+touch ${prefix}.relationships_summary.txt
 
-    """
-    echo $args
-    touch ${prefix}.nwk
-    """
+cat <<-END_VERSIONS > versions.yml
+"${task.process}":
+    treerecs: stub
+END_VERSIONS
+"""
 }

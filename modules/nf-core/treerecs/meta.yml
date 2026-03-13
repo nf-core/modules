@@ -25,23 +25,81 @@ input:
         description: Species tree file
         pattern: "*.{nwk,newick,nhx,xml,txt}"
         ontologies:
-          - edam: http://edamontology.org/format_2332
+          - edam: http://edamontology.org/format_1910
+
     - gene_trees:
         type: file
         description: Gene tree file
         pattern: "*.{nwk,newick,nhx,xml,txt}"
         ontologies:
-          - edam: http://edamontology.org/format_2332
+          - edam: http://edamontology.org/format_1910
+    
+  - - smap:
+        type: file
+        description: Gene-species mapping file
+        pattern: "*.txt"
+        ontologies: 
+          - edam: http://edamontology.org/format_2330
 output:
-  corrected_trees:
     - - meta:
           type: map
           description: Groovy Map containing sample information
+  corrected_trees_newick:
       - "*.nwk":
           type: file
           description: Corrected or reconciled tree in Newick format
           pattern: "*.nwk"
+          ontologies:
+            - edam: http://edamontology.org/format_1910
+  corrected_trees_nhx:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.nhx":
+          type: file
+          description: Corrected or reconciled tree in NHX format
+          pattern: "*.nhx"
           ontologies: []
+  corrected_trees_phyloxml:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.phylo.xml":
+          type: file
+          description: Corrected or reconciled tree in PhyloXML format
+          pattern: "*.phylo.xml"
+          ontologies:
+            - edam: http://edamontology.org/format_3159
+  corrected_trees_recphyloxml:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.recphylo.xml":
+          type: file
+          description: Corrected or reconciled tree in recPhyloXML format
+          pattern: "*.recphylo.xml"
+          ontologies:
+            - edam: http://edamontology.org/format_2332
+  corrected_trees_svg:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.svg":
+          type: file
+          description: Visualisation of corrected gene tree embedded in species tree
+          pattern: "*.svg"
+          ontologies:
+            - edam: http://edamontology.org/format_3604
+  relationships_summary:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*_relationships_summary.txt":
+          type: file
+          description: Summary of orthology/paralogy relationships
+          pattern: "*_relationships_summary.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330
   versions_treerecs:
     - - "${task.process}":
           type: string
