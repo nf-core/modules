@@ -26,21 +26,21 @@ input:
         description: Input file in FASTA/FASTQ format.
         pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fa,fq,fa.gz,fq.gz}"
 output:
-  - clusters:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', suffix:'bacteria' ]
-    - "clusters.out":
+  clusters:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', suffix:'bacteria' ]`
+      - "clusters.out":
           type: file
           description: Output clusters in binary format.
-          pattern: "cluster.out"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          pattern: "clusters.out"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 authors:
   - "@chriswyatt1"
 maintainers:
