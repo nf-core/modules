@@ -24,12 +24,14 @@ nextflow_process {
         }
 
         then {
-            assertAll(
+        assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("single_end_versions") },
-                { assert process.out.results[0][1].size() > 0 },
-                { assert process.out.html[0][1].size() > 0 },
-                { assert process.out.txt[0][1].size() > 0 }
+                { assert snapshot(
+                    process.out.results[0][1].size(),
+                    process.out.html[0][1].size(),
+                    process.out.txt[0][1].size(),
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() },
             )
         }
     }
@@ -55,10 +57,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("paired_end_versions") },
-                { assert process.out.results[0][1].size() > 0 },
-                { assert process.out.html[0][1].size() > 0 },
-                { assert process.out.txt[0][1].size() > 0 }
+                { assert snapshot(
+                    process.out.results[0][1].size(),
+                    process.out.html[0][1].size(),
+                    process.out.txt[0][1].size(),
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() },
             )
         }
     }
@@ -81,10 +85,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("nhej_analysis_versions") },
-                { assert process.out.results[0][1].size() > 0 },
-                { assert process.out.html[0][1].size() > 0 },
-                { assert process.out.txt[0][1].size() > 0 }
+                { assert snapshot(
+                    process.out.results[0][1].size(),
+                    process.out.html[0][1].size(),
+                    process.out.txt[0][1].size(),
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() },
             )
         }
     }
