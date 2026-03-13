@@ -1,9 +1,9 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "deepsomatic"
-description: DeepSomatic is an extension of deep learning-based variant caller DeepVariant
-  that takes aligned reads (in BAM or CRAM format) from tumor and normal data, produces
-  pileup image tensors from them, classifies each tensor using a convolutional neural
-  network, and finally reports somatic variants in a standard VCF or gVCF file.
+description: DeepSomatic is an extension of deep learning-based variant caller
+  DeepVariant that takes aligned reads (in BAM or CRAM format) from tumor and
+  normal data, produces pileup image tensors from them, classifies each tensor
+  using a convolutional neural network, and finally reports somatic variants in
+  a standard VCF or gVCF file.
 keywords:
   - variant calling
   - machine learning
@@ -15,9 +15,9 @@ tools:
       documentation: "https://github.com/google/deepsomatic"
       tool_dev_url: "https://github.com/google/deepsomatic"
       doi: "10.1101/2024.08.16.608331"
-      licence: ["BSD-3-clause"]
+      licence:
+        - "BSD-3-clause"
       identifier: "biotools:deepsomatic"
-
 input:
   - - meta:
         type: map
@@ -82,7 +82,6 @@ input:
         type: file
         description: GZI index of reference fasta file
         pattern: "*.gzi"
-
         ontologies: []
 output:
   vcf:
@@ -96,7 +95,7 @@ output:
           description: Compressed VCF file
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   vcf_tbi:
     - - meta:
           type: map
@@ -119,7 +118,7 @@ output:
           description: Compressed GVCF file
           pattern: "*.g.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   gvcf_tbi:
     - - meta:
           type: map
@@ -131,13 +130,27 @@ output:
           description: Index of compressed Genotyped VCF file
           pattern: "*.g.vcf.gz.tbi"
           ontologies: []
+  versions_deepsomatic:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deepsomatic:
+          type: string
+          description: The name of the tool
+      - echo ${VERSION}:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deepsomatic:
+          type: string
+          description: The name of the tool
+      - echo ${VERSION}:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@vaxyzek"
 maintainers:

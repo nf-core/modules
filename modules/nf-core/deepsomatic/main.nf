@@ -15,7 +15,7 @@ process DEEPSOMATIC {
     tuple val(meta), path("${prefix}.vcf.gz.tbi")  ,  emit: vcf_tbi
     tuple val(meta), path("${prefix}.g.vcf.gz")    ,  emit: gvcf
     tuple val(meta), path("${prefix}.g.vcf.gz.tbi"),  emit: gvcf_tbi
-    path "versions.yml"                            ,  emit: versions
+    tuple val("${task.process}"), val("deepsomatic"), eval("echo ${VERSION}"), emit: versions_deepsomatic, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,7 +28,7 @@ process DEEPSOMATIC {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def regions = intervals ? "--regions=${intervals}" : ""
-    def VERSION = '1.7.0'
+    VERSION = '1.7.0'
 
     """
     run_deepsomatic \\
@@ -43,11 +43,6 @@ process DEEPSOMATIC {
         ${regions} \\
         --intermediate_results_dir=tmp \\
         --num_shards=${task.cpus}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deepsomatic: $VERSION
-    END_VERSIONS
     """
 
     stub:
@@ -56,7 +51,8 @@ process DEEPSOMATIC {
         error "DEEPSOMATIC module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.7.0'
+    VERSION = '1.7.0'
+
     """
     echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
