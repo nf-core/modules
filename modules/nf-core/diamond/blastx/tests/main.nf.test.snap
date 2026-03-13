@@ -1,15 +1,21 @@
 {
     "Should search for transcriptome hits against a DIAMOND db and return the daa format output file of hits": {
         "content": [
-            [
-                "versions.yml:md5,10195fdb80a7480561c5f2480ddfb538"
-            ]
+            {
+                "versions_diamond": [
+                    [
+                        "DIAMOND_BLASTX",
+                        "diamond",
+                        "2.1.16"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-03-13T13:57:52.653837571",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.10.0"
-        },
-        "timestamp": "2025-11-11T20:03:34.681350957"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "Should search for transcriptome hits against a DIAMOND db and return the default tab separated output file of hits": {
         "content": [
@@ -21,14 +27,20 @@
                     "test.txt:md5,33dc682dabfa44c7089abbc8fe8b84e4"
                 ]
             ],
-            [
-                "versions.yml:md5,10195fdb80a7480561c5f2480ddfb538"
-            ]
+            {
+                "versions_diamond": [
+                    [
+                        "DIAMOND_BLASTX",
+                        "diamond",
+                        "2.1.16"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-03-13T13:57:44.281029658",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.10.0"
-        },
-        "timestamp": "2025-11-11T20:03:27.776075212"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     }
 }

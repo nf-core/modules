@@ -12,7 +12,7 @@ process SEQKIT_FQ2FA {
 
     output:
     tuple val(meta), path("*.fa.gz"), emit: fasta
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('seqkit'), eval("seqkit version | sed 's/^.*v//'"), emit: versions_seqkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,21 +28,11 @@ process SEQKIT_FQ2FA {
         -j $task.cpus \\
         -o ${prefix}.fa.gz \\
         $fastq
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$( seqkit | sed '3!d; s/Version: //' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.fa.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$( seqkit | sed '3!d; s/Version: //' )
-    END_VERSIONS
     """
 }
