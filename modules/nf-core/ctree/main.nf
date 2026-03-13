@@ -16,7 +16,7 @@ process CTREE {
     tuple val(meta), path("**ctree_{mobster,VIBER,pyclonevi}_report.rds"), emit: ctree_report_rds, optional: true
     tuple val(meta), path("**ctree_{mobster,VIBER,pyclonevi}_report.pdf"), emit: ctree_report_pdf, optional: true
     tuple val(meta), path("**ctree_{mobster,VIBER,pyclonevi}_report.png"), emit: ctree_report_png, optional: true
-    path "versions.yml"                                                  , emit: versions_ctree  , topic: versions
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
