@@ -11,7 +11,8 @@ tools:
       documentation: https://github.com/abyzovlab/CNVpytor
       tool_dev_url: https://github.com/abyzovlab/CNVpytor
       doi: "10.1101/2021.01.27.428472v1"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:cnvpytor
 input:
   - - meta:
@@ -21,13 +22,14 @@ input:
           e.g. [ id:'test']
     - pytor:
         type: file
-        description: pytor file containing partitions of read depth histograms using
-          mean-shift method
+        description: pytor file containing partitions of read depth histograms
+          using mean-shift method
         pattern: "*.{pytor}"
         ontologies: []
   - bin_sizes:
       type: string
-      description: list of binsizes separated by space e.g. "1000 10000" and "1000"
+      description: list of binsizes separated by space e.g. "1000 10000" and
+        "1000"
 output:
   pytor:
     - - meta:
@@ -40,13 +42,27 @@ output:
           description: pytor files containing cnv calls
           pattern: "*.{pytor}"
           ontologies: []
+  versions_cnvpytor:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cnvpytor:
+          type: string
+          description: The name of the tool
+      - cnvpytor --version | sed -n 's/.*CNVpytor \(.*\)/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cnvpytor:
+          type: string
+          description: The name of the tool
+      - cnvpytor --version | sed -n 's/.*CNVpytor \(.*\)/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@sima-r"
 maintainers:

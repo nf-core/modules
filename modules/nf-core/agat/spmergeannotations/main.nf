@@ -13,7 +13,7 @@ process AGAT_SPMERGEANNOTATIONS {
 
     output:
     tuple val(meta), path("*.gff"), emit: gff
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('agat'), eval("agat --version | sed 's/v//'"), topic: versions, emit: versions_agat
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,11 +31,6 @@ process AGAT_SPMERGEANNOTATIONS {
         ${config_param} \\
         ${args} \\
         --output ${prefix}.gff
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        agat: \$(agat_sp_merge_annotations.pl -h | sed -n 's/.*(AGAT) - Version: \\(.*\\) .*/\\1/p')
-    END_VERSIONS
     """
 
     stub:
@@ -44,10 +39,5 @@ process AGAT_SPMERGEANNOTATIONS {
     if ( file_names.contains ( "${prefix}.gff" ) ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${prefix}.gff
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        agat: \$(agat_sp_merge_annotations.pl -h | sed -n 's/.*(AGAT) - Version: \\(.*\\) .*/\\1/p')
-    END_VERSIONS
     """
 }

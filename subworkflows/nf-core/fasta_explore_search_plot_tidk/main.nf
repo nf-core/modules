@@ -22,13 +22,11 @@ workflow FASTA_EXPLORE_SEARCH_PLOT_TIDK {
     FILTER_BY_LENGTH ( ch_fasta )
 
     ch_filtered_fasta       = FILTER_BY_LENGTH.out.fastx
-    ch_versions             = ch_versions.mix(FILTER_BY_LENGTH.out.versions.first())
 
     // MODULE: SEQKIT_SORT as SORT_BY_LENGTH
     SORT_BY_LENGTH ( ch_filtered_fasta )
 
     ch_sorted_fasta         = SORT_BY_LENGTH.out.fastx
-    ch_versions             = ch_versions.mix(SORT_BY_LENGTH.out.versions.first())
 
     // TIDK_EXPLORE
     TIDK_EXPLORE ( ch_filtered_fasta )

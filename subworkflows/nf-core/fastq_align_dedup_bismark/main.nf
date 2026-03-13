@@ -52,7 +52,6 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
         )
         ch_alignments        = BISMARK_DEDUPLICATE.out.bam
         ch_alignment_reports = BISMARK_ALIGN.out.report.join(BISMARK_DEDUPLICATE.out.report)
-        ch_versions          = ch_versions.mix(BISMARK_DEDUPLICATE.out.versions)
     }
 
     /*
@@ -83,7 +82,6 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
     ch_methylation_coverage = BISMARK_METHYLATIONEXTRACTOR.out.coverage
     ch_methylation_report   = BISMARK_METHYLATIONEXTRACTOR.out.report
     ch_methylation_mbias    = BISMARK_METHYLATIONEXTRACTOR.out.mbias
-    ch_versions             = ch_versions.mix(BISMARK_METHYLATIONEXTRACTOR.out.versions)
 
     /*
      * Run bismark coverage2cytosine
@@ -97,7 +95,6 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
         ch_coverage2cytosine_coverage = BISMARK_COVERAGE2CYTOSINE.out.coverage
         ch_coverage2cytosine_report   = BISMARK_COVERAGE2CYTOSINE.out.report
         ch_coverage2cytosine_summary  = BISMARK_COVERAGE2CYTOSINE.out.summary
-        ch_versions                   = ch_versions.mix(BISMARK_COVERAGE2CYTOSINE.out.versions)
     }
 
     /*
@@ -122,7 +119,6 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
         ch_methylation_mbias.collect{ _meta, mbias -> mbias }
     )
     ch_bismark_summary = BISMARK_SUMMARY.out.summary
-    ch_versions        = ch_versions.mix(BISMARK_SUMMARY.out.versions)
 
     /*
      * Collect MultiQC inputs
@@ -136,7 +132,7 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
 
     emit:
     bam                        = SAMTOOLS_SORT.out.bam         // channel: [ val(meta), [ bam ] ]
-    bai                        = SAMTOOLS_INDEX.out.bai        // channel: [ val(meta), [ bai ] ]
+    index                      = SAMTOOLS_INDEX.out.index      // channel: [ val(meta), [ index ] ]
     coverage2cytosine_coverage = ch_coverage2cytosine_coverage // channel: [ val(meta), [ coverage ] ]
     coverage2cytosine_report   = ch_coverage2cytosine_report   // channel: [ val(meta), [ report ] ]
     coverage2cytosine_summary  = ch_coverage2cytosine_summary  // channel: [ val(meta), [ summary ] ]

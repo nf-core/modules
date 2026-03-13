@@ -12,7 +12,7 @@ process CONCOCT_MERGECUTUPCLUSTERING {
 
     output:
     tuple val(meta), path("*.csv"), emit: csv
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('concoct'), eval('concoct --version | cut -d " " -f2'), emit: versions_concoct, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,10 +29,6 @@ process CONCOCT_MERGECUTUPCLUSTERING {
         ${clustering_csv} \\
         > ${prefix}.csv
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        concoct: \$(echo \$(concoct --version 2> /dev/null) | sed 's/concoct //g' )
-    END_VERSIONS
     """
 
     stub:
@@ -43,9 +39,5 @@ process CONCOCT_MERGECUTUPCLUSTERING {
     """
     touch ${prefix}.csv
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        concoct: \$(echo \$(concoct --version 2> /dev/null) | sed 's/concoct //g' )
-    END_VERSIONS
     """
 }

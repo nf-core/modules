@@ -14,7 +14,7 @@ process BAMREADCOUNT {
 
     output:
     tuple val(meta), path("*.rc"), emit: rc
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('bamreadcount'), eval("bam-readcount --version | awk -F'version: ' '{print \$2}' | awk -F'-' '{print \$1}'"), emit: versions_bamreadcount, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,10 +31,6 @@ process BAMREADCOUNT {
         $bam \\
         > ${prefix}.rc
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bamreadcount: \$(bam-readcount --version | awk -F'version: ' '{print \$2}' | awk -F'-' '{print \$1}')
-    END_VERSIONS
     """
 
     stub:
@@ -44,10 +40,5 @@ process BAMREADCOUNT {
     echo $args
 
     touch ${prefix}.rc
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bamreadcount: \$(bam-readcount --version | awk -F'version: ' '{print \$2}' | awk -F'-' '{print \$1}')
-    END_VERSIONS
     """
 }
