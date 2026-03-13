@@ -43,7 +43,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions,
+                { assert snapshot(process.out.versions_bioconductoraffy,
+                                  process.out.versions_rbase,
                                   process.out.expression,
                                   file(process.out.rds.get(0).get(1)).name,
                                   process.out.log).match() }
