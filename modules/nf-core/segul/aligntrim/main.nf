@@ -9,7 +9,6 @@ process SEGUL_ALIGNTRIM {
 
     input:
     tuple val(meta), path(aln, stageAs: "input_dir/*")
-    val datatype
 
     output:
     tuple val(meta), path("${prefix}/trimmed_alignments/*"), emit: trimmed
@@ -22,7 +21,7 @@ process SEGUL_ALIGNTRIM {
     script:
     def args          = task.ext.args ?: ''
     prefix            = task.ext.prefix ?: "${meta.id}"
-    def data_type     = datatype   ? "--datatype ${datatype}"        : '--datatype dna'
+    def data_type     = args.contains('--datatype')      ? '' : '--datatype dna'
     def input_format  = args.contains('--input-format')  ? '' : '--input-format auto'
     def output_format = args.contains('--output-format') ? '' : '--output-format fasta'
     def trim_mode     = args.contains('--missing-data') || args.contains('--pinf') ? '' : '--missing-data 0.5'
@@ -52,7 +51,7 @@ process SEGUL_ALIGNTRIM {
     stub:
     def args          = task.ext.args ?: ''
     prefix            = task.ext.prefix ?: "${meta.id}"
-    def data_type     = datatype   ? "--datatype ${datatype}"        : '--datatype dna'
+    def data_type     = args.contains('--datatype')       ? '' : '--datatype dna'
     def input_format  = args.contains('--input-format')  ? '' : '--input-format auto'
     def output_format = args.contains('--output-format') ? '' : '--output-format fasta'
     def trim_mode     = args.contains('--missing-data') || args.contains('--pinf') ? '' : '--missing-data 0.5'
