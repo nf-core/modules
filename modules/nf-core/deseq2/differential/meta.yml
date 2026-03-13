@@ -13,7 +13,8 @@ tools:
       documentation: "https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html"
       tool_dev_url: "https://github.com/mikelove/DESeq2"
       doi: "10.1186/s13059-014-0550-8"
-      licence: ["LGPL >=3"]
+      licence:
+        - "LGPL >=3"
       identifier: biotools:deseq2
 input:
   - - meta:
@@ -40,10 +41,12 @@ input:
           should be used to derive the target samples
     - formula:
         type: string
-        description: (Optional) R formula string used for modeling, e.g. '~ treatment'.
+        description: (Optional) R formula string used for modeling, e.g. '~
+          treatment'.
     - comparison:
         type: string
-        description: (Optional, mandatory if formula is provided) Literal string for contrasts, e.g. 'treatmenthND6'.
+        description: (Optional, mandatory if formula is provided) Literal string
+          for contrasts, e.g. 'treatmenthND6'.
   - - meta2:
         type: map
         description: |
@@ -90,10 +93,11 @@ output:
             Groovy Map containing contrast information, same as input meta
       - "*.deseq2.results.tsv":
           type: file
-          description: TSV-format table of differential expression information as output by DESeq2
+          description: TSV-format table of differential expression information as
+            output by DESeq2
           pattern: "*.deseq2.results.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   dispersion_plot_png:
     - - meta:
           type: map
@@ -104,7 +108,7 @@ output:
           description: DESeq2 dispersion plot in PNG format
           pattern: "*.deseq2.dispersion.png"
           ontologies:
-            - edam: "http://edamontology.org/format_3603" # PNG
+            - edam: "http://edamontology.org/format_3603"
   dispersion_plot_pdf:
     - - meta:
           type: map
@@ -115,7 +119,7 @@ output:
           description: DESeq2 dispersion plot in PDF format
           pattern: "*.deseq2.dispersion.pdf"
           ontologies:
-            - edam: "http://edamontology.org/format_3508" # PDF
+            - edam: "http://edamontology.org/format_3508"
   rdata:
     - - meta:
           type: map
@@ -136,7 +140,7 @@ output:
           description: TSV-format table containing DESeq2 size factors
           pattern: "*.deseq2.sizefactors.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   normalised_counts:
     - - meta:
           type: map
@@ -147,7 +151,7 @@ output:
           description: TSV-format counts matrix, normalised to size factors
           pattern: "*.normalised_counts.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   rlog_counts:
     - - meta:
           type: map
@@ -160,7 +164,7 @@ output:
             variance stabilisation applied via `rlog()`.
           pattern: "*.rlog.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   vst_counts:
     - - meta:
           type: map
@@ -173,7 +177,7 @@ output:
             variance stabilisation applied via `vst()`.
           pattern: "*.vst.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   model:
     - - meta:
           type: map
@@ -184,7 +188,7 @@ output:
           description: TXT-format DESeq2 model
           pattern: "*.deseq2.model.txt"
           ontologies:
-            - edam: http://edamontology.org/format_2330 # TXT
+            - edam: http://edamontology.org/format_2330
   session_info:
     - - meta:
           type: map
@@ -198,10 +202,13 @@ output:
   versions:
     - versions.yml:
         type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+        description: YAML file containing versions of tools used in the module
+        ontologies: []
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
 authors:
   - "@pinin4fjords"
 maintainers:
