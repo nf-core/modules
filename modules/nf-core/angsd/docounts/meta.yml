@@ -13,7 +13,8 @@ tools:
       documentation: "http://www.popgen.dk/angsd/"
       tool_dev_url: "https://github.com/ANGSD/angsd"
       doi: "10.1186/s12859-014-0356-4"
-      licence: ["GPL v3, MIT"]
+      licence:
+        - "GPL v3, MIT"
       identifier: biotools:angsd
 input:
   - - meta:
@@ -111,13 +112,27 @@ output:
           pattern: "*.icnts.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_angsd:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - angsd:
+          type: string
+          description: The name of the tool
+      - 'angsd 2>&1 | grep version | head -n 1 | sed "s/.*version: //g;s/ .*//g"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - angsd:
+          type: string
+          description: The name of the tool
+      - 'angsd 2>&1 | grep version | head -n 1 | sed "s/.*version: //g;s/ .*//g"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:
