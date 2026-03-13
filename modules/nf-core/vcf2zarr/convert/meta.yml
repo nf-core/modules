@@ -27,7 +27,7 @@ input:
         description: Input VCF file
         pattern: "*.{vcf,vcf.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_3016"
+          - edam: "http://edamontology.org/format_3016" # VCF
 output:
   vcz:
     - - meta:
@@ -40,7 +40,7 @@ output:
           description: Output VCF Zarr store
           pattern: "*.{vcz}"
           ontologies:
-            - edam: "http://edamontology.org/format_3915"
+            - edam: "http://edamontology.org/format_3915" # Zarr
   versions_vcf2zarr:
     - - ${task.process}:
           type: string
