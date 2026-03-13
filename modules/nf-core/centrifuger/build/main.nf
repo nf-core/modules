@@ -15,7 +15,7 @@ process CENTRIFUGER_BUILD {
 
 
     output:
-    tuple val(meta), path("${task.ext.prefix ?: meta.id}.*"), emit: db
+    tuple val(meta), path("*.cfr"), emit: db
     tuple val("${task.process}"), val("centrifuger"), eval("centrifuger -v 2>&1 | head -n 1"), emit: versions_centrifuger, topic: versions
 
     when:
@@ -26,7 +26,6 @@ process CENTRIFUGER_BUILD {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
    """
-
     centrifuger-build \\
         $args \\
         -t ${task.cpus} \\
@@ -35,21 +34,15 @@ process CENTRIFUGER_BUILD {
         --taxonomy-tree $taxonomy_nodes \\
         --name-table $taxonomy_names \\
         -o ${prefix} 
-
-
-
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-
     touch ${prefix}.1.cfr
     touch ${prefix}.2.cfr
     touch ${prefix}.3.cfr
     touch ${prefix}.4.cfr
-
     """
 
 
