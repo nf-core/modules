@@ -1,0 +1,72 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "skesa"
+description: Assemble microbial genomes from short-read FASTQ files into contigs in FASTA format using SKESA.
+keywords:
+  - assembly
+  - de-novo assembly
+  - microbial genomics
+  - fasta
+  - fastq
+tools:
+  - "skesa":
+      description: "SKESA is a de-novo sequence read assembler for microbial genomes based on DeBruijn graphs."
+      homepage: "https://github.com/ncbi/SKESA"
+      documentation: "https://github.com/ncbi/SKESA/blob/master/README.md"
+      tool_dev_url: "https://github.com/ncbi/SKESA"
+      doi: "10.1186/s13059-018-1540-z"
+      licence: ["Public Domain"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fastq:
+        type: file
+        description: |
+          One or more input FASTQ files containing sequencing reads for assembly.
+          Provide a single file for single-end data and one or more files for paired-end data.
+        pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1930" # FASTQ
+
+output:
+  fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.fa":
+          type: file
+          description: Assembled contigs in FASTA format
+          pattern: "*.fa"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929" # FASTA
+  versions_skesa:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "skesa":
+          type: string
+          description: The name of the tool
+      - "skesa --version 2>&1 | sed -n 's/^SKESA //p'":
+          type: eval
+          description: The command used to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - skesa:
+          type: string
+          description: The name of the tool
+      - "skesa --version 2>&1 | sed -n 's/^SKESA //p'":
+          type: eval
+          description: The command used to obtain the version of the tool
+authors:
+  - "@paulwolk"
+maintainers:
+  - "@paulwolk"

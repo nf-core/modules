@@ -16,7 +16,7 @@ process CLIPPY {
     tuple val(meta), path("*_Peaks.bed")             ,emit: peaks
     tuple val(meta), path("*_Summits.bed")           ,emit: summits
     tuple val(meta), path("*_intergenic_regions.gtf"),emit: intergenic_gtf, optional: true
-    path "versions.yml"                              ,emit: versions
+    tuple val("${task.process}"), val("clippy"), eval("clippy -v"), emit: versions_clippy, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,11 +31,6 @@ process CLIPPY {
         -g $fai \
         -t ${task.cpus} \
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        clippy: \$(clippy -v)
-    END_VERSIONS
     """
 
     stub:
@@ -44,11 +39,6 @@ process CLIPPY {
     touch ${prefix}_Peaks.bed
     touch ${prefix}_Summits.bed
     touch ${prefix}_intergenic_regions.gtf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        clippy: \$(clippy -v)
-    END_VERSIONS
     """
 
 }
