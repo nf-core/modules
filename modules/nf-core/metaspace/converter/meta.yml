@@ -20,7 +20,7 @@ input:
   - ds_id:
       type: string
       description: METASPACE dataset identifier to retrieve and convert to AnnData and SpatialData formats.
-  - database_name_: 
+  - database_name_:
       type: string
       description: Name of the metabolite annotation database to use (e.g., HMDB)
   - database_version_:
@@ -30,7 +30,7 @@ input:
       type: string
       description: False Discovery Rate threshold for filtering metabolite annotations.
       pattern: "^(0(\\.[0-9]+)?|1(\\.0+)?)$"
-  - use_tic_: 
+  - use_tic_:
       type: string
       description: |
         Controls whether intensity values are scaled by the total ion count per pixel.
