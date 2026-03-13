@@ -68,7 +68,7 @@ output:
       - macse:
           type: string
           description: The name of the tool
-      - "macse --version 2>/dev/null | sed 's/ (.*) //g'":
+      - "macse --version | sed -n 's/.*V\\([0-9]*\\.[0-9]*\\).*/\\1/p'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -79,10 +79,13 @@ topics:
       - macse:
           type: string
           description: The name of the tool
-      - "macse --version 2>/dev/null | sed 's/ (.*) //g'":
+      - "macse --version | sed -n 's/.*V\\([0-9]*\\.[0-9]*\\).*/\\1/p'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
-  - "@charles-plessy, @pmuskusv, @takiifujita-ui, @leapicard"
+  - "@charles-plessy"
+  - "@pmuskusv"
+  - "@takiifujita-ui"
+  - "@leapicard"
 maintainers:
   - "@leapicard"

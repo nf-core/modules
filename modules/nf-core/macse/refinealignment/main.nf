@@ -13,7 +13,7 @@ process MACSE_REFINEALIGNMENT {
     output:
     tuple val(meta), path("*_NT.{fa,fas,fasta,aln}"), emit: nt
     tuple val(meta), path("*_AA.{fa,fas,fasta,aln}"), emit: aa
-    tuple val("${task.process}"), val("macse"), eval("macse --version 2>/dev/null | sed 's/ (.*) //g'"), topic: versions, emit: versions_macse
+    tuple val("${task.process}"), val("macse"), eval("macse --version | sed -n 's/.*V\\([0-9]*\\.[0-9]*\\).*/\\1/p'"), topic: versions, emit: versions_macse
 
     when:
     task.ext.when == null || task.ext.when
