@@ -8,6 +8,33 @@ nextflow_process {
     tag "modules_nfcore"
     tag "gcta"
     tag "gcta/makebksparse"
+    tag "gcta/makegrmpart"
+
+    setup {
+        run("GCTA_MAKEGRMPART", alias: "GCTA_MAKEGRMPART_DENSE") {
+            script "../../makegrmpart/main.nf"
+            process {
+                """
+                file('plink_simulated.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'plink_simulated_dense', part_gcta_job:1, nparts_gcta:1 ],
+                    file('plink_simulated.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                input[1] = [[ id:'all_variants' ], []]
+                """
+            }
+        }
+    }
 
     test("homo_sapiens popgen - create sparse GRM") {
         config "./nextflow.config"
@@ -15,13 +42,13 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
-                    [ id:"plink_simulated" ],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.grm.id", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.grm.bin", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.grm.N.bin", checkIfExists: true)
-                ]
-                input[1] = 0.05
+                dense_grm = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
+
+                input[0] = dense_grm
+                input[1] = Channel.value(0.05)
                 """
             }
         }
@@ -30,7 +57,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.sparse_grm_files.size() == 1 },
-                { assert process.out.sparse_grm_files.get(0).get(0).id == "plink_simulated" },
+                { assert process.out.sparse_grm_files.get(0).get(0).id == "plink_simulated_dense.part_1_1" },
                 {
                     assert snapshot(
                         process.out.sparse_grm_files,
@@ -48,13 +75,13 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
-                    [ id:"plink_simulated" ],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.grm.id", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.grm.bin", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.grm.N.bin", checkIfExists: true)
-                ]
-                input[1] = 0.05
+                dense_grm = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
+
+                input[0] = dense_grm
+                input[1] = Channel.value(0.05)
                 """
             }
         }

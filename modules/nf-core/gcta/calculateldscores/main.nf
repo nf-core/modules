@@ -19,13 +19,14 @@ process GCTA_CALCULATELDSCORES {
 
     script:
     def extra_args = task.ext.args ?: ''
+    def ld_score_region = task.ext.ld_score_region ?: 200
 
     """
     set -euo pipefail
 
     gcta \\
         --bfile ${meta.id} \\
-        --ld-score-region 200 \\
+        --ld-score-region ${ld_score_region} \\
         --out ${meta.id}_gcta_ld \\
         --thread-num ${task.cpus} ${extra_args}
 
@@ -42,6 +43,11 @@ process GCTA_CALCULATELDSCORES {
     q1=\$(awk -v idx="\${q1_idx}" 'NR == idx { print \$2 }' "\${sorted_file}")
     q2=\$(awk -v idx="\${q2_idx}" 'NR == idx { print \$2 }' "\${sorted_file}")
     q3=\$(awk -v idx="\${q3_idx}" 'NR == idx { print \$2 }' "\${sorted_file}")
+
+    : > "${meta.id}_snp_group1.txt"
+    : > "${meta.id}_snp_group2.txt"
+    : > "${meta.id}_snp_group3.txt"
+    : > "${meta.id}_snp_group4.txt"
 
     awk -v q1="\${q1}" -v q2="\${q2}" -v q3="\${q3}" -v prefix="${meta.id}" '
     NR > 1 {
@@ -60,10 +66,10 @@ process GCTA_CALCULATELDSCORES {
 
     stub:
     """
-    touch ${meta.id}_gcta_ld.score.ld
-    touch ${meta.id}_snp_group1.txt
-    touch ${meta.id}_snp_group2.txt
-    touch ${meta.id}_snp_group3.txt
-    touch ${meta.id}_snp_group4.txt
+    printf "SNP\tA1\tA2\tFreq\tb\tse\tp\tldscore\n" > ${meta.id}_gcta_ld.score.ld
+    printf "stub_snp1\n" > ${meta.id}_snp_group1.txt
+    printf "stub_snp2\n" > ${meta.id}_snp_group2.txt
+    printf "stub_snp3\n" > ${meta.id}_snp_group3.txt
+    printf "stub_snp4\n" > ${meta.id}_snp_group4.txt
     """
 }
