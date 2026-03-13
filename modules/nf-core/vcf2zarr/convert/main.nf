@@ -4,8 +4,8 @@ process VCF2ZARR_CONVERT {
 
     conda "${moduleDir}/environment.yml"
         container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/eb/ebfe707031ebecc7c4f597bb0f310465a6493ba44a16af56ab3d3872ee7492d2/data':
-        'community.wave.seqera.io/library/bio2zarr:0.1.6--8ee007f51aad5560' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9e/9e0bf4a8a21faa7319626812bc557404bb37b440df1af2bbc89a80771aca1f94/data':
+        'community.wave.seqera.io/library/bio2zarr:0.1.7--a742d2d9b8ee4347' }"
 
     input:
     tuple val(meta), path(vcf)
