@@ -1,19 +1,19 @@
 process SAMTOOLS_SAMPLES {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.22.1--h96c455f_0':
-        'biocontainers/samtools:1.22.1--h96c455f_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e5/e5598451c6d348cce36191bafe1911ad71e440137d7a329da946f2b0dbb0e7f3/data'
+        : 'community.wave.seqera.io/library/htslib_samtools:1.23--cde2c40a51d6f752'}"
 
     input:
-    tuple val(meta) , path(bam)  , path(bai)
+    tuple val(meta), path(bam), path(bai)
     tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-   tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,11 +27,11 @@ process SAMTOOLS_SAMPLES {
     def bai_arg = args.contains('-X') ? bai : ''
     """
     samtools samples \\
-        $args \\
-        $fasta_arg \\
-        $out_arg \\
-        $bam \\
-        $bai_arg
+        ${args} \\
+        ${fasta_arg} \\
+        ${out_arg} \\
+        ${bam} \\
+        ${bai_arg}
     """
 
     stub:
@@ -49,7 +49,7 @@ process SAMTOOLS_SAMPLES {
         }
     }
     """
-    echo $args
-    echo -ne "$headers" > ${prefix}.tsv
+    echo ${args}
+    echo -ne "${headers}" > ${prefix}.tsv
     """
 }

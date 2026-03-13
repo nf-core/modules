@@ -28,15 +28,11 @@ input:
         respectively.
         Structure: [ val(meta), [ path(reads) ] ]
       pattern: "*.{fastq,fastq.gz}"
-  - ch_fasta:
+  - ch_fasta_fai:
       type: file
       description: |
-        Structure: [ val(meta), path(fasta) ]
+        Structure: [ val(meta), path(fasta), path(fai) ]
       pattern: "*.{fa,fa.gz}"
-  - ch_fasta_index:
-      type: file
-      description: |
-        Structure: [ val(meta), path(fasta index) ]
   - ch_bwameth_index:
       description: |
         Bwa-meth genome index files
