@@ -28,7 +28,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.results[0][1].size(),
-                    process.out.html[0][1].size(),
+                    process.out.html[0][1].collect{ html -> file(html).name }.sort(),
                     process.out.txt[0][1].size(),
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() },
@@ -59,7 +59,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.results[0][1].size(),
-                    process.out.html[0][1].size(),
+                    process.out.html[0][1].collect{ html -> file(html).name }.sort(),
                     process.out.txt[0][1].size(),
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() },
@@ -87,7 +87,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.results[0][1].size(),
-                    process.out.html[0][1].size(),
+                    process.out.html[0][1].collect{ html -> file(html).name }.sort(),
                     process.out.txt[0][1].size(),
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() },
