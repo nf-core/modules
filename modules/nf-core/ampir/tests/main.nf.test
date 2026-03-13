@@ -30,10 +30,9 @@ nextflow_process {
                 { assert snapshot(
                     process.out.amps_faa,
                     path(process.out.amps_tsv[0][1]).csv(sep: "\t")["columns"].findAll {
-                        key, _ -> key != "prob_AMP" // prob_AMP has floating-point inprecision issues
+                        key, _ -> key != "prob_AMP" 
                     },
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -62,8 +61,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml,
+                    process.out.findAll { key, val -> key.startsWith('versions') == false },
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
