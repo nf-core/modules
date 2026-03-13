@@ -4,6 +4,11 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - "bioconda::amulety=2.1.2"
-  - "bioconda::igblast=1.22.0"
-  - "conda-forge::wget=1.25.0"
+  - bioconda::igblast=1.22.0
+  - conda-forge::curl=8.18.0
+  - conda-forge::python=3.12.13
+  - conda-forge::wget=1.25.0
+  - pip:
+      - amulety==2.1.2
+      - torch==2.10.0
+      - transformers==4.49.0

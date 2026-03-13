@@ -14,7 +14,7 @@ process CONCOCT_CUTUPFASTA {
     output:
     tuple val(meta), path("*.fasta"), emit: fasta
     tuple val(meta), path("*.bed"), optional: true, emit: bed
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('concoct'), eval('concoct --version | cut -d " " -f2'), emit: versions_concoct, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,10 +33,6 @@ process CONCOCT_CUTUPFASTA {
         ${bedfile} \\
         > ${prefix}.fasta
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        concoct: \$(echo \$(concoct --version 2> /dev/null) | sed 's/concoct //g' )
-    END_VERSIONS
     """
 
     stub:
@@ -47,9 +43,5 @@ process CONCOCT_CUTUPFASTA {
     """
     touch ${prefix}.fasta
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        concoct: \$(echo \$(concoct --version 2> /dev/null) | sed 's/concoct //g' )
-    END_VERSIONS
     """
 }
