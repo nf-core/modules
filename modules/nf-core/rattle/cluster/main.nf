@@ -2,10 +2,9 @@ process RATTLE_CLUSTER {
     tag "$meta.id"
     label 'process_low'
 
-    if (params.enable_conda) {
-        error "Conda environments are not set up for rattle (when this module was built). Please use docker or singularity containers."
-    }
-    container 'ecoflowucl/rattle:v1.0'
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'docker://ecoflowucl/rattle:v1.0' :
+        'ecoflowucl/rattle:v1.0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -19,7 +18,6 @@ process RATTLE_CLUSTER {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def RATTLE_VERSION = "v1.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     rattle \\
@@ -34,8 +32,7 @@ process RATTLE_CLUSTER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def RATTLE_VERSION = "v1.0"
     """
     touch clusters.out
 
