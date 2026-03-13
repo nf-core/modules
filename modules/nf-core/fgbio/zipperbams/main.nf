@@ -21,8 +21,8 @@ process FGBIO_ZIPPERBAMS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args  = task.ext.args ?: ''
-    def compression = task.ext.compression ?: '0'
+    def args   = task.ext.args ?: ''  // fgbio common options
+    def args2  = task.ext.args2 ?: '' // fgbio tool options
     prefix = task.ext.prefix ?: "${meta.id}_zipped"
     def mem_gb = 8
     if (!task.memory) {
@@ -37,16 +37,20 @@ process FGBIO_ZIPPERBAMS {
 
     if ("${unmapped_bam}" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     if ("${mapped_bam}" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
-
+    if (!args.contains('--async-io=')) {
+        args = "--async-io=true ${args}"
+    }
+    if (!args.contains('--compression ')) {
+        args = "--compression 0 ${args}"
+    }
     """
     fgbio -Xmx${mem_gb}g \\
-        --compression ${compression} \\
-        --async-io=true \\
+        ${args} \\
         ZipperBams \\
         --unmapped ${unmapped_bam} \\
         --input ${mapped_bam} \\
         --ref ${fasta} \\
-        ${args} \\
+        ${args2} \\
         --output ${prefix}.bam
     """
 
