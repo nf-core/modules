@@ -16,9 +16,7 @@ process SAMTOOLS_SORT {
     tuple val(meta), path("${prefix}.bam"), emit: bam, optional: true
     tuple val(meta), path("${prefix}.cram"), emit: cram, optional: true
     tuple val(meta), path("${prefix}.sam"), emit: sam, optional: true
-    tuple val(meta), path("${prefix}.${extension}.crai"), emit: crai, optional: true
-    tuple val(meta), path("${prefix}.${extension}.csi"), emit: csi, optional: true
-    tuple val(meta), path("${prefix}.${extension}.bai"), emit: bai, optional: true
+    tuple val(meta), path("${prefix}.${extension}.{crai,csi,bai}"), emit: index, optional: true
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
@@ -54,8 +52,8 @@ process SAMTOOLS_SORT {
     if ("${bam}" == "${prefix}.bam") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
-    if ("$bam" == "${prefix}.bam") {
-        error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${bam}" == "${prefix}.bam") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
 
     def input_source = is_sam ? "${bam}" : "-"
@@ -63,7 +61,7 @@ process SAMTOOLS_SORT {
 
     """
     ${pre_command}samtools sort \\
-        $args \\
+        ${args} \\
         -T ${prefix} \\
         --threads ${task.cpus} \\
         ${reference} \\
@@ -75,9 +73,11 @@ process SAMTOOLS_SORT {
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    extension = args.contains("--output-fmt sam") ? "sam" :
-                args.contains("--output-fmt cram") ? "cram" :
-                "bam"
+    extension = args.contains("--output-fmt sam")
+        ? "sam"
+        : args.contains("--output-fmt cram")
+            ? "cram"
+            : "bam"
 
     if (index_format) {
         if (!index_format.matches('bai|csi|crai')) {

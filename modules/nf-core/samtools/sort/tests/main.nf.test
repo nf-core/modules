@@ -34,7 +34,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         process.out.bam,
-                        process.out.bai,
+                        process.out.index,
                         process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()}
             )
@@ -67,7 +67,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         process.out.bam,
-                        process.out.bai,
+                        process.out.index,
                         process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()}
             )
@@ -100,7 +100,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         process.out.bam,
-                        process.out.csi,
+                        process.out.index,
                         process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()}
             )
@@ -136,7 +136,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         process.out.bam,
-                        process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name } },
+                        process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name } },
                         process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()}
             )
@@ -172,7 +172,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         process.out.bam,
-                        process.out.bai.collect { it.collect { it instanceof Map ? it : file(it).name } },
+                        process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name } },
                         process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()}
             )
@@ -208,7 +208,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         process.out.bam,
-                        process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name } },
+                        process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name } },
                         process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()}
             )
@@ -241,7 +241,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.cram.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.crai.collect { it.collect { it instanceof Map ? it : file(it).name } },
+                    process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name } },
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()}
             )
@@ -366,7 +366,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.bam.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.bai.collect { it.collect { it instanceof Map ? it : file(it).name } },
+                    process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name } },
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()}
             )
@@ -401,7 +401,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.bam.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.bai.collect { it.collect { it instanceof Map ? it : file(it).name } },
+                    process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name } },
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()}
             )
