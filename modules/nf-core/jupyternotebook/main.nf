@@ -60,7 +60,7 @@ process JUPYTERNOTEBOOK {
 
     # Convert notebook to ipynb using jupytext, execute using papermill, convert using nbconvert
     jupytext --to notebook --output - --set-kernel ${kernel} ${notebook} > ${notebook}.ipynb
-    papermill -f .params.yml ${notebook}.ipynb ${notebook}.executed.ipynb
+    papermill -f params.yml ${notebook}.ipynb ${notebook}.executed.ipynb
     jupyter nbconvert --stdin --to html --output ${prefix}.html < ${notebook}.executed.ipynb
 
     cat <<-END_VERSIONS > versions.yml
