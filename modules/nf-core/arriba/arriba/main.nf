@@ -19,7 +19,7 @@ process ARRIBA_ARRIBA {
     output:
     tuple val(meta), path("*.fusions.tsv")          , emit: fusions
     tuple val(meta), path("*.fusions.discarded.tsv"), emit: fusions_fail
-    path "versions.yml"                             , emit: versions
+    tuple val("${task.process}"), val('arriba'), eval('arriba -h | grep \'Version:\' 2>&1 |  sed \'s/Version:\\s//\''), emit: versions_arriba, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,10 +46,6 @@ process ARRIBA_ARRIBA {
         ${protein_domains_arg} \\
         ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        arriba: \$(arriba -h | grep 'Version:' 2>&1 |  sed 's/Version:\s//')
-    END_VERSIONS
     """
 
     stub:
@@ -58,9 +54,5 @@ process ARRIBA_ARRIBA {
     echo stub > ${prefix}.fusions.tsv
     echo stub > ${prefix}.fusions.discarded.tsv
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        arriba: \$(arriba -h | grep 'Version:' 2>&1 |  sed 's/Version:\s//')
-    END_VERSIONS
     """
 }

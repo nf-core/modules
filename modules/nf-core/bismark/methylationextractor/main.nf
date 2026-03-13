@@ -17,7 +17,7 @@ process BISMARK_METHYLATIONEXTRACTOR {
     tuple val(meta), path("*.cov.gz")              , emit: coverage
     tuple val(meta), path("*_splitting_report.txt"), emit: report
     tuple val(meta), path("*.M-bias.txt")          , emit: mbias
-    path "versions.yml"                            , emit: versions
+    tuple val("${task.process}"), val('bismark'), eval("bismark -v 2>&1 | sed -n 's/^.*Bismark Version: v//p'"), emit: versions_bismark, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,11 +43,6 @@ process BISMARK_METHYLATIONEXTRACTOR {
         --report \\
         ${seqtype} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bismark: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -58,10 +53,5 @@ process BISMARK_METHYLATIONEXTRACTOR {
     echo | gzip > ${prefix}.cov.gz
     touch ${prefix}_splitting_report.txt
     touch ${prefix}.M-bias.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bismark: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
-    END_VERSIONS
     """
 }

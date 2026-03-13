@@ -31,7 +31,7 @@ nextflow_process {
 					path(process.out.gbk[0][1]).linesGzip[3..7],
 					path(process.out.fna[0][1]).linesGzip[3..7],
 					process.out.stats,
-					process.out.versions
+					process.out.findAll { key, val -> key.startsWith('versions') }
 					).match()
 				}
             )
