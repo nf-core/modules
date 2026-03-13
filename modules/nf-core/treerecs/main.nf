@@ -18,7 +18,7 @@ process TREERECS {
     tuple val(meta), path("*.recphylo.xml"), emit: corrected_trees_recphyloxml, optional: true
     tuple val(meta), path("*.svg"), emit: corrected_trees_svg, optional: true
     tuple val(meta), path("*.relationships_summary.txt"), emit: relationships_summary, optional: true
-    tuple val("${task.process}"), val("treerecs"), eval("treerecs --version 2>/dev/null | sed 's/Treerecs //'"), emit: versions_treerecs, topic: versions
+    tuple val("${task.process}"), val("treerecs"), eval("treerecs --version | sed -n 's/.*(\\([0-9.]*\\)).*/\\1/p'"), emit: versions_treerecs, topic: versions
 
     script:
     def args = task.ext.args ?: ''
@@ -45,5 +45,7 @@ process TREERECS {
     touch ${prefix}.recphylo.xml
     touch ${prefix}.svg
     touch ${prefix}.relationships_summary.txt
+
+    mv treerecs_output/* . || true
     """
 }

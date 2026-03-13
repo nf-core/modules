@@ -24,6 +24,7 @@ nextflow_process {
         then {
     assertAll(
         { assert process.success },
+        // since treerecs doesn't reproduce result, it will check only file name
         { assert process.out.corrected_trees_newick.size() == 1 },
         { assert process.out.corrected_trees_newick[0][1].endsWith(".nwk") },
         { assert path(process.out.corrected_trees_newick[0][1]).text.contains("total cost") },
@@ -50,8 +51,8 @@ nextflow_process {
 
         then {
             assert process.success
-            assert process.out.corrected_trees.size() == 1
-            assert process.out.corrected_trees[0][1].endsWith(".nwk")
+            assert process.out.corrected_trees_newick.size() == 1
+            assert process.out.corrected_trees_newick[0][1].endsWith(".nwk")
 
             assert snapshot(
                 process.out.findAll { key, val -> key.startsWith("versions") }
