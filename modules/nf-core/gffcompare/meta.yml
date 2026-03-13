@@ -149,7 +149,7 @@ output:
       - gffcompare:
           type: string
           description: The name of the tool
-      - gffcompare --version:
+      - gffcompare --version 2>&1 | sed "s/gffcompare v//":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -160,7 +160,7 @@ topics:
       - gffcompare:
           type: string
           description: The name of the tool
-      - gffcompare --version:
+      - gffcompare --version 2>&1 | sed "s/gffcompare v//":
           type: eval
           description: The expression to obtain the version of the tool
 authors:

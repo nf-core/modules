@@ -20,7 +20,7 @@ process GFFCOMPARE {
     tuple val(meta), path("*.loci")         , emit: loci
     tuple val(meta), path("*.stats")        , emit: stats
     tuple val(meta), path("*.tracking")     , emit: tracking
-    tuple val("${task.process}"), val('gffcompare'), eval('gffcompare --version'), emit: versions_gffcompare, topic: versions
+    tuple val("${task.process}"), val('gffcompare'), eval('gffcompare --version 2>&1 | sed "s/gffcompare v//"'), emit: versions_gffcompare, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
