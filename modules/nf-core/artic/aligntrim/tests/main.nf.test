@@ -28,7 +28,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        process.out.versions,
+                        process.out.findAll { key, val -> key.startsWith('versions') },
                         file(process.out.primertrimmed_bam.get(0).get(1)).name,
                         process.out.align_trim_report,
                         process.out.amp_depth_report
@@ -57,7 +57,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        process.out.versions,
+                        process.out.findAll { key, val -> key.startsWith('versions') },
                         file(process.out.primertrimmed_bam.get(0).get(1)).name,
                         process.out.align_trim_report,
                         process.out.amp_depth_report
@@ -86,7 +86,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        process.out.versions,
+                        process.out.findAll { key, val -> key.startsWith('versions') },
                         file(process.out.primertrimmed_bam.get(0).get(1)).name,
                         process.out.align_trim_report,
                         process.out.amp_depth_report

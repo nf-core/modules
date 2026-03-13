@@ -16,7 +16,7 @@ process CNAQC {
     tuple val(meta), path("*_qc_plot.rds"),                             emit: qc_plot_rds
     tuple val(meta), path("*_data.pdf"),                                emit: plot_pdf_data
     tuple val(meta), path("*_qc.pdf"),                                  emit: plot_pdf_qc
-    path "versions.yml",                                                emit: versions
+    path "versions.yml",                                                emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
