@@ -24,23 +24,12 @@ process SIGPROFILER {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def context_types = ['96','DINUC','ID']
-
-    // Map context to signature type
-    def context_map = [
-        '96'    : 'SBS96',
-        'DINUC' : 'DBS78',
-        'ID'    : 'ID83'
-    ]
-    def signatures = context_types.collect { index -> context_map[index] }
-
     """
     mkdir -p results/input
     touch results/input/input_data.txt
 
     # Create per-context outputs
-
-    for sig in ${signatures.join(" ")}; do
+    for sig in SBS96 DBS78 ID83; do
 
         mkdir -p results/\$sig/\$sig/Suggested_Solution/COSMIC_\${sig}_Decomposed_Solution/Signatures/
         touch    results/\$sig/\$sig/Samples.txt
