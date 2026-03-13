@@ -16,7 +16,8 @@ tools:
       documentation: "https://concoct.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/BinPro/CONCOCT"
       doi: "10.1038/nmeth.3103"
-      licence: ["FreeBSD"]
+      licence:
+        - "FreeBSD"
       identifier: biotools:concoct
 input:
   - - meta:
@@ -26,19 +27,20 @@ input:
           e.g. [ id:'test', single_end:false ]
     - bed:
         type: file
-        description: BED file describing where each contig was cut up (typically output
-          from CONCOCT's cut_up_fasta.py)
+        description: BED file describing where each contig was cut up (typically
+          output from CONCOCT's cut_up_fasta.py)
         pattern: "*.bed"
         ontologies: []
     - bamfiles:
         type: file
-        description: A single or list of BAM files of reads mapped back to original
-          contigs (prior cutting up)
+        description: A single or list of BAM files of reads mapped back to
+          original contigs (prior cutting up)
         pattern: "*.bam"
         ontologies: []
     - baifiles:
         type: file
-        description: A single or list of BAM index files (.bai) corresponding to BAM
+        description: A single or list of BAM index files (.bai) corresponding to
+          BAM
         pattern: "*.bam"
         ontologies: []
 output:
@@ -53,14 +55,28 @@ output:
           description: Contig coverage table
           pattern: "*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
+  versions_concoct:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - concoct:
+          type: string
+          description: The name of the tool
+      - concoct --version | cut -d " " -f2:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - concoct:
+          type: string
+          description: The name of the tool
+      - concoct --version | cut -d " " -f2:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:
