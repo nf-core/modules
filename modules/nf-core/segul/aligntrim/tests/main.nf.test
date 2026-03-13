@@ -28,14 +28,12 @@ nextflow_process {
     test("PF14720 - aa - default missing data") {
         when {
             params {
-                module_args = ""
+                module_args = "--input-format fasta"
             }
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
-                input[1] = "fasta"
-                input[2] = []
-                input[3] = "aa"
+                input[1] = "aa"
                 """
             }
         }
@@ -43,11 +41,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out.trimmed,
-                    process.out.summary,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
+               { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -55,14 +49,12 @@ nextflow_process {
     test("PF14720 - aa - missing data 0.3 - nexus output") {
         when {
             params {
-                module_args = "--missing-data 0.3"
+                module_args = "--input-format fasta --output-format nexus --missing-data 0.3"
             }
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
-                input[1] = "fasta"
-                input[2] = "nexus"
-                input[3] = "aa"
+                input[1] = "aa"
                 """
             }
         }
@@ -70,11 +62,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out.trimmed,
-                    process.out.summary,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
+               { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -82,14 +70,12 @@ nextflow_process {
     test("PF14720 - aa - parsimony informative sites") {
         when {
             params {
-                module_args = "--pinf 1"
+                module_args = "--input-format fasta --pinf 1"
             }
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
-                input[1] = "fasta"
-                input[2] = "fasta"
-                input[3] = "aa"
+                input[1] = "aa"
                 """
             }
         }
@@ -97,11 +83,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out.trimmed,
-                    process.out.summary,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
+               { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -117,8 +99,6 @@ nextflow_process {
                 """
                 input[0] = GUNZIP.out.gunzip
                 input[1] = []
-                input[2] = []
-                input[3] = []
                 """
             }
         }
@@ -126,11 +106,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out.trimmed,
-                    process.out.summary,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
+               { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
