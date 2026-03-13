@@ -2,6 +2,7 @@ process CANU {
     tag "$meta.id"
     label 'process_high'
 
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/canu:2.3--h3fb4750_1':
@@ -21,6 +22,7 @@ process CANU {
     tuple val(meta), path("*.contigs.layout")           , emit: metadata                , optional: true
     tuple val(meta), path("*.contigs.layout.readToTig") , emit: contig_position         , optional: true
     tuple val(meta), path("*.contigs.layout.tigInfo")   , emit: contig_info             , optional: true
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('canu'), val("2.3"), emit: versions_canu, topic: versions
     when:
     task.ext.when == null || task.ext.when
