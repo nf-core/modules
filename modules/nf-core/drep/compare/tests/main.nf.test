@@ -37,8 +37,7 @@ then {
                 { assert snapshot(
                     stablefiles.sort(),
                     unstablefiles.sort(),
-                    process.out.versions
-                    ).match() }
+                    process.out.findAll { key, val -> key.startsWith('versions') }
             )
         }
 
