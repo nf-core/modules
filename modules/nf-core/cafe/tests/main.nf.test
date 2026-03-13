@@ -28,13 +28,11 @@ nextflow_process {
                 //
                 { assert snapshot(
                     process.out.cafe_significant_trees,
+                    file(process.out.cafe_base_count[0]).readLines(),
                     file(process.out.cafe_report[0]).readLines()[3..4],
-                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
-                },
-                // Handling Inconsistent md5sum for cafe_base_count
-                { assert snapshot(bc_lines.size()).match("test_cafe_base_count_line_count") },
-                { assert snapshot(bc_lines).match("test_cafe_base_count_all_lines") },
+                }
             )
         }
     }
