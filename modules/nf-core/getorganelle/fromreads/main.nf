@@ -15,7 +15,7 @@ process GETORGANELLE_FROMREADS {
     tuple val(meta), path("results/${prefix}.${organelle_type}.fasta.gz"), emit: fasta, optional: true
     path "results/*", emit: etc
     // the rest of the result files
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('getorganelle_from_reads'), eval("get_organelle_from_reads.py --version 2>&1 | sed -n 's/GetOrganelle //p'"), topic: versions, emit: versions_getorganelle
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,23 +39,16 @@ process GETORGANELLE_FROMREADS {
         cp results/${prefix}.${organelle_type}*graph1.1*fasta results/${prefix}.${organelle_type}.fasta
         gzip results/${prefix}.${organelle_type}.fasta
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        getorganelle: \$(get_organelle_from_reads.py --version | sed 's/^GetOrganelle v//g' )
-    END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "${args}"
-    touch results/${prefix}.${organelle_type}.fasta.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        getorganelle: \$(get_organelle_from_reads.py --version | sed 's/^GetOrganelle v//g' )
-    END_VERSIONS
+    echo '${args}'
+    mkdir results
+    touch results/test_1.fastq
+    touch results/test_2.fastq
+    echo ''| gzip > results/${prefix}.${organelle_type}.fasta.gz
     """
 }
