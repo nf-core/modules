@@ -147,13 +147,14 @@
                     "20251120_usage.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                 ],
                 "141": [
-                    [
-                        "20251120_usage.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "versions.yml:md5,0800f35b86c052ff03f30ce186300e7e"
-                    ]
+                    "20251120_usage.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                 ],
                 "142": [
-                    "versions.yml:md5,0800f35b86c052ff03f30ce186300e7e"
+                    [
+                        "DRAGEN",
+                        "dragen",
+                        "bash: line 1: dragen: command not found"
+                    ]
                 ],
                 "15": [
                     
@@ -444,10 +445,7 @@
                     
                 ],
                 "all": [
-                    [
-                        "20251120_usage.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "versions.yml:md5,0800f35b86c052ff03f30ce186300e7e"
-                    ]
+                    "20251120_usage.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                 ],
                 "baf_bedgraph_gz": [
                     
@@ -848,8 +846,12 @@
                 "vcf_gz_tbi": [
                     
                 ],
-                "versions": [
-                    "versions.yml:md5,0800f35b86c052ff03f30ce186300e7e"
+                "versions_dragen": [
+                    [
+                        "DRAGEN",
+                        "dragen",
+                        "bash: line 1: dragen: command not found"
+                    ]
                 ],
                 "wgs_contig_mean_cov_csv": [
                     
@@ -867,18 +869,20 @@
                     
                 ]
             },
-            [
-                {
-                    "DRAGEN": {
-                        "dragen": "stub"
-                    }
-                }
-            ]
+            {
+                "versions_dragen": [
+                    [
+                        "DRAGEN",
+                        "dragen",
+                        "bash: line 1: dragen: command not found"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-03-13T15:19:38.853918291",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-10-23T13:05:07.784959115"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.0"
+        }
     }
 }
