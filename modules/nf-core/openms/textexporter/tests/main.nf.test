@@ -25,6 +25,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                // TSV rows are prefixed with their data type (PROTEIN, PEPTIDE, etc.)
                 { assert file(process.out.tsv[0][1]).readLines().any { it.contains('PROTEIN') } },
                 { assert file(process.out.tsv[0][1]).readLines().any { it.contains('PEPTIDE') } },
                 { assert snapshot(
