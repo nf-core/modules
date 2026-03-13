@@ -12,7 +12,7 @@ process SEQKIT_TAB2FX {
 
     output:
     tuple val(meta), path("*.f*"), emit: fastx
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('seqkit'), eval("seqkit version | sed 's/^.*v//'"), emit: versions_seqkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,11 +28,6 @@ process SEQKIT_TAB2FX {
         --threads $task.cpus \\
         $text \\
         -o ${prefix}.${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$( seqkit | sed '3!d; s/Version: //' )
-    END_VERSIONS
     """
 
     stub:
@@ -40,10 +35,5 @@ process SEQKIT_TAB2FX {
     def suffix = task.ext.suffix ?: "fa.zst"
     """
     touch ${prefix}.${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$( seqkit | sed '3!d; s/Version: //' )
-    END_VERSIONS
     """
 }
