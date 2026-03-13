@@ -3,9 +3,9 @@ process HISAT2_BUILD {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/36/36d51b1badc0ccff79b9f0f9d1dfa4207a71af8e1be8de6b39afc63f20f42a87/data' :
-        'community.wave.seqera.io/library/hisat2:2.2.2--36d51b1badc0ccff' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/hisat2:2.2.2--h503566f_0' :
+        'biocontainers/hisat2:2.2.2--h503566f_0'}"
 
     input:
     tuple val(meta), path(fasta)
