@@ -1,8 +1,7 @@
 process MCQUANT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     container "nf-core/quantification:1.5.4"
 
     input:
@@ -12,7 +11,8 @@ process MCQUANT {
 
     output:
     tuple val(meta), path("*.csv"), emit: csv
-    tuple val("${task.process}"), val('mcquant'), eval("echo 1.5.4"), emit: versions_mcquant, topic: versions // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('mcquant'), val("1.5.4"), emit: versions_mcquant, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,11 +21,11 @@ process MCQUANT {
     def args = task.ext.args ?: ''
     """
     python /app/CommandSingleCellExtraction.py \
-        --masks $mask \
-        --image $image \
-        --channel_names $markerfile \
+        --masks ${mask} \
+        --image ${image} \
+        --channel_names ${markerfile} \
         --output . \
-        $args
+        ${args}
     """
 
     stub:
