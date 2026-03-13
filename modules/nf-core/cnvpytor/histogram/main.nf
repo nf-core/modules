@@ -14,7 +14,7 @@ process CNVPYTOR_HISTOGRAM {
 
     output:
     tuple val(meta), path("${pytor.baseName}.pytor")	, emit: pytor
-    path "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('cnvpytor'), eval("cnvpytor --version | sed -n 's/.*CNVpytor \\(.*\\)/\\1/p'"), emit: versions_cnvpytor, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,20 +25,10 @@ process CNVPYTOR_HISTOGRAM {
     cnvpytor \\
         -root $pytor \\
         -his $bins
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed -n 's/.*\\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\)\$/\\1/p' )
-    END_VERSIONS
     """
 
     stub:
     """
     touch ${pytor.baseName}.pytor
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed -n 's/.*\\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\)\$/\\1/p' )
-    END_VERSIONS
     """
 }
