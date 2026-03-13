@@ -8,9 +8,9 @@ process CELLRANGER_MKGTF {
     path gtf
 
     output:
-    path "*.gtf"         , emit: gtf
+    path "*.gtf", emit: gtf
     tuple val("${task.process}"), val('cellranger'), eval('cellranger --version | sed "s/.*-//"'), emit: versions_cellranger, topic: versions
-    
+
     when:
     task.ext.when == null || task.ext.when
 
