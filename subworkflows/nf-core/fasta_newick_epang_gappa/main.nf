@@ -114,7 +114,6 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
         ch_clustalo_data.map { it -> [ it.meta, it.data.refseqfile ] }
             .join(CLUSTALO_ALIGN.out.alignment)
     )
-    ch_versions = ch_versions.mix(EPANG_SPLIT_CLUSTALO.out.versions)
 
     // 3.a MAFFT profile alignment of query sequences to reference alignment
     MAFFT_ALIGN (
@@ -132,7 +131,6 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
         ch_mafft_data.map { it -> [ it.meta, it.data.refseqfile ] }
             .join(MAFFT_ALIGN.out.fas)
     )
-    ch_versions = ch_versions.mix(EPANG_SPLIT_MAFFT.out.versions)
 
     // 4. Do the placement
     ch_epang_query = ch_pp_data.map { it -> [ it.meta, it.data.model, it.data.refphylogeny ] }
