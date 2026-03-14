@@ -1,16 +1,18 @@
 nextflow_process {
-    name "Test Process STARDIST"
+
+    name "Test Process STARDIST on GPU"
     script "../main.nf"
     process "STARDIST"
-    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "stardist"
+    tag "gpu"
 
-    test("stardist2d - tif") {
+    test("stardist2d - gpu - tif") {
 
         when {
+            config "./nextflow.config"
             process {
                 """
                 input[0] = [
@@ -31,7 +33,7 @@ nextflow_process {
 
     }
 
-    test("stardist2d - tif - stub") {
+    test("stardist2d - gpu - tif - stub") {
 
         options "-stub"
 
