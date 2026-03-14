@@ -1,10 +1,13 @@
 process HOMER_POS2BED {
     tag "${meta.id}"
     label 'process_medium'
+
     conda "${moduleDir}/environment.yml"
+    // singularity build url: https://wave.seqera.io/view/builds/bd-9c603739ae7d4fd3_1
+    // docker build url: https://wave.seqera.io/view/builds/bd-08c7bb832e96c6bd_1
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0fe4a3875b78dce3c66b43fb96489769cc32e55e329e2525d2af09096af2252a/data'
-        : 'community.wave.seqera.io/library/bioconductor-deseq2_bioconductor-edger_homer_samtools_pruned:a8f4c58755bb281b'}"
+        ? 'oras://community.wave.seqera.io/library/bioconductor-deseq2_bioconductor-edger_homer_samtools_pruned:9c603739ae7d4fd3'
+        : 'community.wave.seqera.io/library/bioconductor-deseq2_bioconductor-edger_homer_samtools_pruned:08c7bb832e96c6bd'}"
 
     input:
     tuple val(meta), path(peaks)
@@ -18,7 +21,7 @@ process HOMER_POS2BED {
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '4.11'
+    def VERSION = '5.1'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     pos2bed.pl ${peaks} > ${prefix}.bed
@@ -31,7 +34,7 @@ process HOMER_POS2BED {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '4.11'
+    def VERSION = '5.1'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
