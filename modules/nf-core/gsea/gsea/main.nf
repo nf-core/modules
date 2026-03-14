@@ -34,7 +34,8 @@ process GSEA_GSEA {
     tuple val(meta), path("*enplot*.png")                      , emit: gene_set_enplot , optional: true
     tuple val(meta), path("*gset_rnd_es_dist*.png")            , emit: gene_set_dist   , optional: true
     tuple val(meta), path("*.zip")                             , emit: archive         , optional: true
-    path "versions.yml"                                        , emit: versions
+    tuple val("${task.process}"), val('gsea'), val('4.3.2')    , emit: versions_gsea, topic: versions // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,7 +45,6 @@ process GSEA_GSEA {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def rpt_label = prefix.replaceAll('\\.$', '') // Remove any trailing dots from prefix when passed as report label, so GSEA doesn't produce double-dotted top-level outputs
     def chip_command = chip ? "-chip $chip -collapse true" : ''
-    def VERSION = '4.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     # Run GSEA
@@ -112,17 +112,10 @@ process GSEA_GSEA {
 
     # Rename .png files
     rename_files "\$png_pattern" "\$png_exclude" ".png"
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gsea: $VERSION
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '4.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.rpt
     touch ${prefix}.index.html
@@ -137,9 +130,5 @@ process GSEA_GSEA {
     touch ${prefix}.heat_map_1.png
     touch ${prefix}.pvalues_vs_nes_plot.png
     touch ${prefix}.ranked_list_corr_2.png
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gsea: $VERSION
     """
 }

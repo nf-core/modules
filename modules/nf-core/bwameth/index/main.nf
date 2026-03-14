@@ -1,14 +1,14 @@
 process BWAMETH_INDEX {
-    tag "$fasta"
+    tag "${fasta}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bwameth:0.2.9--pyh7e72e81_0' :
-        'biocontainers/bwameth:0.2.9--pyh7e72e81_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/bwameth:0.2.9--pyh7e72e81_0'
+        : 'biocontainers/bwameth:0.2.9--pyh7e72e81_0'}"
 
     input:
-    tuple val(meta), path(fasta, name:"BwamethIndex/")
+    tuple val(meta), path(fasta, name: "BwamethIndex/")
     val use_mem2
 
     output:
@@ -22,14 +22,14 @@ process BWAMETH_INDEX {
     def index_cmd = use_mem2 ? "index-mem2" : "index"
     """
 
-    bwameth.py ${index_cmd} $fasta
+    bwameth.py ${index_cmd} ${fasta}
 
     rm $fasta
     """
 
     stub:
     """
-    rm $fasta
+    rm ${fasta}
 
     mkdir -p BwamethIndex/
     touch BwamethIndex/genome.fasta.bwameth.c2t

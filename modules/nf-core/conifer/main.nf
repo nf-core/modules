@@ -13,7 +13,7 @@ process CONIFER {
 
     output:
     tuple val(meta), path("*.score"), emit: score
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('conifer'), eval("conifer --version 2>&1 | sed 's/^.*Conifer //'"), topic: versions, emit: versions_conifer
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,21 +26,11 @@ process CONIFER {
         $args \\
         --input $kraken_result \\
         --db $kraken_taxon_db > ${prefix}.score
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        conifer: \$(echo \$(conifer --version 2>&1) | sed 's/^.*Conifer //')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.score
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        conifer: \$(echo \$(conifer --version 2>&1) | sed 's/^.*Conifer //')
-    END_VERSIONS
     """
 }
