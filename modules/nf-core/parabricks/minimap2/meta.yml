@@ -43,13 +43,22 @@ input:
         type: map
         description: |
           Groovy Map containing index information
+    - index:
+        type: file
+        description: (optional) minimap2 index file for the reference
+        pattern: "*.mmi"
+        ontologies: []
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing intervals information
     - intervals:
         type: file
         description: (optional) file(s) containing genomic intervals for use in base
           quality score recalibration (BQSR)
         pattern: "*.{bed,interval_list,picard,list,intervals}"
         ontologies: []
-  - - meta4:
+  - - meta5:
         type: map
         description: |
           Groovy Map containing known sites information
@@ -72,44 +81,22 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.bam":
+      - "*.{bam,cram}":
           type: file
-          description: Sorted BAM file
-          pattern: "*.bam"
+          description: Sorted BAM or CRAM file
+          pattern: "*.{bam,cram}"
           ontologies:
             - edam: "http://edamontology.org/format_2572" # BAM
-  bai:
+  index:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.bai":
+      - "*.{bai,crai}":
           type: file
-          description: index corresponding to sorted BAM file
-          pattern: "*.bai"
-          ontologies: []
-  cram:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.cram":
-          type: file
-          description: Sorted CRAM file
-          pattern: "*.cram"
-          ontologies: []
-  crai:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.crai":
-          type: file
-          description: index corresponding to sorted CRAM file
-          pattern: "*.crai"
+          description: Index corresponding to sorted BAM or CRAM file
+          pattern: "*.{bai,crai}"
           ontologies: []
   bqsr_table:
     - - meta:
@@ -178,3 +165,4 @@ authors:
   - "@haidyi"
 maintainers:
   - "@haidyi"
+  - "@gburnett-nvidia"
