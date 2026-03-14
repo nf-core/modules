@@ -1,11 +1,11 @@
 process VELOCYTO {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/velocyto.py:0.17.17--py38h24c8ff8_6':
-        'biocontainers/velocyto.py:0.17.17--py38h24c8ff8_6' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/velocyto.py:0.17.17--py38h24c8ff8_6'
+        : 'biocontainers/velocyto.py:0.17.17--py38h24c8ff8_6'}"
 
     stageInMode 'copy'
 
@@ -15,7 +15,7 @@ process VELOCYTO {
 
     output:
     tuple val(meta), path("*.loom"), path("*.velocyto.log"), emit: loom
-    path "versions.yml"            , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,7 +24,7 @@ process VELOCYTO {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    velocyto run $args -e ${meta.id} -b ${barcodes} -o . ${bam} ${gtf} > ${prefix}.velocyto.log
+    velocyto run ${args} -e ${meta.id} -b ${barcodes} -o . ${bam} ${gtf} > ${prefix}.velocyto.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

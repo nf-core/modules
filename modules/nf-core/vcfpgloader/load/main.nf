@@ -34,8 +34,9 @@ process VCFPGLOADER_LOAD {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // NOTE: batch_size exposed via task.ext for pipeline-level tuning of memory/performance tradeoffs
-    def batch_size = task.ext.batch_size ?: '10000'
+    if (!args.contains('--batch ')) {
+        args += " --batch 10000"
+    }
     """
     vcf-pg-loader load \\
         --host ${db_host} \\
@@ -43,7 +44,6 @@ process VCFPGLOADER_LOAD {
         --database ${db_name} \\
         --user ${db_user} \\
         --schema ${db_schema} \\
-        --batch ${batch_size} \\
         --workers ${task.cpus} \\
         --sample-id ${meta.id} \\
         --report ${prefix}.load_report.json \\

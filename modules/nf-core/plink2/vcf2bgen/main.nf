@@ -22,18 +22,14 @@ process PLINK2_VCF2BGEN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def reffirst = bgen_reffirst || task.ext.reffirst ? "ref-first" : ""
-    def dosage = task.ext.dosage_field ? task.ext.dosage_field : dosage_field
-    def sample_name_opt = task.ext.sample_name_mode ? task.ext.sample_name_mode : sample_name_mode
+    def reffirst = bgen_reffirst ? "ref-first" : ""
     """
     plink2 \
         --threads ${task.cpus} \
         --memory ${task.memory.toMega()} \
-        --vcf ${vcf} 'dosage=${dosage}' \
+        --vcf ${vcf} 'dosage=${dosage_field}' \
         --export bgen-1.2 ${reffirst}\
-        --max-alleles 2 \
-        --vcf-half-call r \
-        --${sample_name_opt} \
+        --${sample_name_mode} \
         --out ${prefix} \
         ${args}
 
