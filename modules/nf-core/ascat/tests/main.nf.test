@@ -55,7 +55,7 @@ nextflow_process {
                     process.out.png.collect{it[1].collect{file(it).name}},
                     process.out.purityploidy,
                     process.out.segments,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -108,7 +108,7 @@ nextflow_process {
                     process.out.png.collect{it[1].collect{file(it).name}},
                     process.out.purityploidy,
                     process.out.segments,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -161,7 +161,7 @@ nextflow_process {
                     process.out.png.collect{it[1].collect{file(it).name}},
                     process.out.purityploidy,
                     process.out.segments,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -215,7 +215,7 @@ nextflow_process {
                     process.out.png.collect{it[1].collect{file(it).name}},
                     process.out.purityploidy,
                     process.out.segments,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -292,7 +292,7 @@ nextflow_process {
                     process.out.png.collect{it[1].collect{file(it).name}},
                     process.out.purityploidy,
                     process.out.segments,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
