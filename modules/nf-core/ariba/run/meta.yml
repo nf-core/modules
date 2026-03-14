@@ -48,13 +48,27 @@ output:
           description: A directory of Ariba analysis outputs
           pattern: "*"
           ontologies: []
+  versions_ariba:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "ariba":
+          type: string
+          description: The name of the tool
+      - 'ariba version 2>/dev/null | sed "1!d;s/ARIBA version: //"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "ariba":
+          type: string
+          description: The name of the tool
+      - 'ariba version 2>/dev/null | sed "1!d;s/ARIBA version: //"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rpetit3"
 maintainers:
