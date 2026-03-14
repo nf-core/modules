@@ -1,5 +1,6 @@
 name: gfaffix
-description: Collapse walk-preserving shared affixes in variation graphs in GFA format
+description: Collapse walk-preserving shared affixes in variation graphs in GFA
+  format
 keywords:
   - gfa
   - graph
@@ -12,7 +13,8 @@ tools:
         collapses them into a non-redundant graph structure.
       homepage: https://github.com/marschall-lab/GFAffix
       documentation: https://github.com/marschall-lab/GFAffix
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -25,7 +27,7 @@ input:
         description: Variation graph in GFA format
         pattern: "*.{gfa}"
         ontologies:
-          - edam: http://edamontology.org/format_3975 # GFA 1
+          - edam: http://edamontology.org/format_3975
 output:
   gfa:
     - - meta:
@@ -38,7 +40,7 @@ output:
           description: Non-redundant variation graph in GFA 1.0 format
           pattern: "*.{gfa}"
           ontologies:
-            - edam: http://edamontology.org/format_3975 # GFA 1
+            - edam: http://edamontology.org/format_3975
   affixes:
     - - meta:
           type: map
@@ -50,13 +52,27 @@ output:
           description: Shared affixes in tab-separated values (TSV) text format
           pattern: "*.{txt}"
           ontologies: []
+  versions_tool1:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gfaffix:
+          type: string
+          description: The name of the tool
+      - gfaffix --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gfaffix:
+          type: string
+          description: The name of the tool
+      - gfaffix --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@heuermh"
 maintainers:
