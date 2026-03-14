@@ -1,0 +1,53 @@
+name: "stimulus_splitcsv"
+description: Split the data.
+keywords:
+  - machine learning
+  - neural network
+  - unit test
+tools:
+  - "stimulus":
+      description: "Stochastic Testing and Input Manipulation for Unbiased Learning\
+        \ Systems"
+      homepage: "https://github.com/mathysgrapotte/stimulus-py"
+      documentation: "https://github.com/mathysgrapotte/stimulus-py"
+      tool_dev_url: "https://github.com/mathysgrapotte/stimulus-py"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - split_json:
+        type: file
+        description: json file with the data split configuration
+        pattern: "*.json"
+  - - data_csv:
+        type: file
+        description: csv file with the data for training the models
+        pattern: "*.csv"
+
+output:
+  - split_csv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+          pattern: "*.csv"
+      - ${prefix}.csv:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+          pattern: "*.csv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@yocra3"
+maintainers:
+  - "@yocra3"
