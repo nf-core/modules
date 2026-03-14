@@ -14,7 +14,7 @@ process GFAFFIX {
     output:
     tuple val(meta), path("*.gfa"), emit: gfa
     tuple val(meta), path("*.txt"), emit: affixes
-    tuple val("${task.process}"), val('gfaffix'), eval('gfaffix --version'), emit: gfaffix, topic: versions
+    tuple val("${task.process}"), val('gfaffix'), eval('gfaffix --version'), emit: versions_gfaffix, topic: versions
 
 
     when:
