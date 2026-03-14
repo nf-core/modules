@@ -19,7 +19,27 @@ tools:
 input:
   - ds_id:
       type: string
-      description: METASPACE dataset ID
+      description: METASPACE dataset identifier to retrieve and convert to AnnData and SpatialData formats.
+  - database_name_:
+      type: string
+      description: Name of the metabolite annotation database to use (e.g., HMDB)
+  - database_version_:
+      type: string
+      description: Version of the annotation database to use (e.g., v4)
+  - fdr_:
+      type: string
+      description: False Discovery Rate threshold for filtering metabolite annotations.
+      pattern: "^(0(\\.[0-9]+)?|1(\\.0+)?)$"
+  - use_tic_:
+      type: string
+      description: |
+        Controls whether intensity values are scaled by the total ion count per pixel.
+      pattern: "^(true|false)$"
+  - metadata_as_obs_:
+      type: string
+      description: |
+        Whether to store metadata in the obs dataframe instead of uns.
+      pattern: "^(true|false)$"
 output:
   adata_object:
     - AnnData_${ds_id}.h5ad:
@@ -37,7 +57,7 @@ output:
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+          - edam: http://edamontology.org/format_3750
 authors:
   - "@bisho2122"
 maintainers:
