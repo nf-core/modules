@@ -4,8 +4,8 @@ process GECCO_RUN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gecco:0.10.1--pyhdfd78af_0':
-        'biocontainers/gecco:0.10.1--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gecco:0.10.3--pyhdfd78af_0':
+        'biocontainers/gecco:0.10.3--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(input), path(hmm)
@@ -18,7 +18,8 @@ process GECCO_RUN {
     tuple val(meta), path("*_cluster_*.gbk"), optional: true, emit: gbk
     tuple val(meta), path("*.json")         , optional: true, emit: json
 
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('gecco'), eval('gecco -V'), emit: versions_gecco, topic: versions
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,12 +42,6 @@ process GECCO_RUN {
     for i in \$(find -name '${input.baseName}*' -type f); do
         mv \$i \${i/${input.baseName}/${prefix}};
     done
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gecco: \$(echo \$(gecco --version) | cut -f 2 -d ' ' )
-    END_VERSIONS
     """
 
     stub:
@@ -56,10 +51,5 @@ process GECCO_RUN {
     touch ${prefix}.features.tsv
     touch ${prefix}.clusters.tsv
     touch NC_018507.1_cluster_1.gbk
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gecco: \$(echo \$(gecco --version) | cut -f 2 -d ' ' )
-    END_VERSIONS
     """
 }
