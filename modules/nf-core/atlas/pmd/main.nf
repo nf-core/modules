@@ -17,26 +17,20 @@ process ATLAS_PMD {
     tuple val(meta), path("*_PMD_input_Exponential.txt"), emit: exponential
     tuple val(meta), path("*_PMD_Table_counts.txt")     , emit: counts
     tuple val(meta), path("*_PMD_Table.txt")            , emit: table
-    path "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('atlas'), eval('atlas | sed -e "2!d;s/.*Atlas //"'), emit: versions_atlas, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def pool_rg_txt = pool_rg_txt ? "poolReadGroups=${pool_rg_txt}" : ""
+    def args    = task.ext.args   ?: ''
+    def pool_rg_txt_cmd = pool_rg_txt ? "poolReadGroups=${pool_rg_txt}" : ""
     """
     atlas \\
-        $pool_rg_txt \\
+        ${pool_rg_txt_cmd} \\
         task=PMD \\
         bam=${bam} \\
         fasta=${fasta} \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        atlas: \$((atlas 2>&1) | grep Atlas | head -n 1 | sed -e 's/^[ \t]*Atlas //')
-    END_VERSIONS
+        ${args}
     """
 }

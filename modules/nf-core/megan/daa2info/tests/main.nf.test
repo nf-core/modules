@@ -1,0 +1,96 @@
+nextflow_process {
+
+    name "Test Process MEGAN_DAA2INFO"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "MEGAN_DAA2INFO"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "diamond"
+    tag "diamond/makedb"
+    tag "diamond/blastx"
+    tag "megan"
+    tag "megan/daa2info"
+
+    setup {
+        run("DIAMOND_MAKEDB") {
+            script "../../../diamond/makedb/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists:true)
+                ]
+                input[1] = []
+                input[2] = []
+                input[3] = []
+                """
+            }
+        }
+
+        run("DIAMOND_BLASTX") {
+            script "../../../diamond/blastx/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists:true)
+                ]
+                input[1] = DIAMOND_MAKEDB.out.db
+                input[2] = 'daa'
+                input[3] = []
+                """
+            }
+        }
+    }
+
+    test("test_megan_daa2info") {
+        when {
+            params {
+                module_args = "-l"
+            }
+            process {
+                """
+                input[0] = DIAMOND_BLASTX.out.daa
+                input[1] = true
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.txt_gz,
+                    process.out.megan.collect{ file(it[1]).name }, // Test only the name due to timestamp
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("test_megan_daa2info -- stub") {
+        options '-stub'
+        when {
+            params {
+                module_args = "-l"
+            }
+            process {
+                """
+                input[0] = DIAMOND_BLASTX.out.daa
+                input[1] = true
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0])
+                ).match() }
+            )
+        }
+    }
+}

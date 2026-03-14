@@ -44,7 +44,7 @@ nextflow_process {
                 { assert snapshot(process.out.fps).match("fps") },
                 { assert snapshot(process.out.distances).match("distances") },
                 { assert snapshot(process.out.report).match("report") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match() }
             )
 
         }
@@ -85,7 +85,7 @@ nextflow_process {
                 { assert snapshot(process.out.fps).match("bed_fps") },
                 { assert snapshot(process.out.distances).match("bed_distances") },
                 { assert snapshot(process.out.report).match("bed_report") },
-                { assert snapshot(process.out.versions).match("bed_versions") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match() }
             )
         }
 

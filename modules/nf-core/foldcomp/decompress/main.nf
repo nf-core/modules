@@ -4,8 +4,8 @@ process FOLDCOMP_DECOMPRESS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/foldcomp:0.0.7--h43eeafb_0':
-        'biocontainers/foldcomp:0.0.7--h43eeafb_0' }"
+        'https://depot.galaxyproject.org/singularity/foldcomp:1.0.0--h7f5d12c_0':
+        'biocontainers/foldcomp:1.0.0--h7f5d12c_0' }"
 
     input:
     tuple val(meta), path(fcz)
@@ -19,7 +19,6 @@ process FOLDCOMP_DECOMPRESS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     foldcomp \\
         $args \\
@@ -34,7 +33,6 @@ process FOLDCOMP_DECOMPRESS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.pdb

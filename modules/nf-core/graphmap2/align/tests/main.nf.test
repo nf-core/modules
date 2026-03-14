@@ -1,0 +1,77 @@
+nextflow_process {
+
+    name "Test Process GRAPHMAP2_ALIGN"
+
+    script "../main.nf"
+    process "GRAPHMAP2_ALIGN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "graphmap2"
+    tag "graphmap2/index"
+    tag "graphmap2/align"
+
+    setup {
+        run("GRAPHMAP2_INDEX") {
+            script "../../index/main.nf"
+
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - fastq - fasta - index") {
+        when {
+
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists:true)]
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
+                input[2] = GRAPHMAP2_INDEX.out.index
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    // sam(process.out.sam[0][1]).getSamLinesMD5() htsjdk.samtools.SAMFormatException: Error parsing text SAM file. MAPQ must be zero if RNAME is not specified
+                    file(process.out.sam[0][1]).name
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - fasta - index -- stub") {
+        options '-stub'
+        when {
+
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists:true)]
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
+                input[2] = GRAPHMAP2_INDEX.out.index
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

@@ -18,7 +18,8 @@ process PILON {
     tuple val(meta), path("*.change"), emit: change_record     , optional : true
     tuple val(meta), path("*.bed")   , emit: tracks_bed        , optional : true
     tuple val(meta), path("*.wig")   , emit: tracks_wig        , optional : true
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('pilon'), eval("pilon --version | sed 's/^.*version //; s/ .*\$//'"), emit: versions_pilon, topic: versions
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,11 +44,6 @@ process PILON {
         --output ${prefix} \\
         $args \\
         --$pilon_mode $bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pilon: \$(echo \$(pilon --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
     """
 
     stub:
@@ -60,11 +56,6 @@ process PILON {
     touch ${prefix}.change
     touch ${prefix}.bed
     touch ${prefix}.wig
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pilon: \$(echo \$(pilon --version) | sed 's/^.*version //; s/ .*\$//' )
-    END_VERSIONS
     """
 
 }

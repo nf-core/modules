@@ -27,26 +27,32 @@ input:
         description: |
           Genome file in .gbk or .embl format.
           pattern: "*.{gbk, embl, gbff}"
+        ontologies: []
 output:
-  - gff:
-      - meta:
+  gff:
+    - - meta:
           type: file
           description: GFF file listing the predicted genomic islands and their coordinates
           pattern: "*.gff"
+          ontologies: []
       - "*.gff":
           type: file
           description: GFF file listing the predicted genomic islands and their coordinates
           pattern: "*.gff"
-  - log:
-      - Dimob.log:
-          type: file
-          description: Log file of the islandpath run
-          pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  log:
+    - Dimob.log:
+        type: file
+        description: Log file of the islandpath run
+        pattern: "*.log"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jvfe"
 maintainers:

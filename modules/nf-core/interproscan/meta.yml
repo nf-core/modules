@@ -29,70 +29,72 @@ input:
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
-  - - interproscan_database:
-        type: directory
-        description: Path to the interproscan database (untarred
-          http://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/${version_major}-${version_minor}/interproscan-${version_major}-${version_minor}-64-bit.tar.gz)
+  - interproscan_database:
+      type: directory
+      description: Path to the interproscan database (untarred
+        http://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/${version_major}-${version_minor}/interproscan-${version_major}-${version_minor}-64-bit.tar.gz)
 output:
-  - tsv:
-      - meta:
-          type: file
-          description: Tab separated file containing with detailed hits
-          pattern: "*.{tsv}"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+  tsv:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.tsv":
           type: file
           description: Tab separated file containing with detailed hits
           pattern: "*.{tsv}"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
-  - xml:
-      - meta:
-          type: file
-          description: XML file containing with detailed hits
-          pattern: "*.{xml}"
-          ontologies:
-            - edam: http://edamontology.org/format_2332 # XML
+  xml:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.xml":
           type: file
           description: XML file containing with detailed hits
           pattern: "*.{xml}"
           ontologies:
             - edam: http://edamontology.org/format_2332 # XML
-  - gff3:
-      - meta:
-          type: file
-          description: GFF3 file containing with detailed hits
-          pattern: "*.{gff3}"
-          ontologies:
-            - edam: http://edamontology.org/format_1975 # GFF3
+  gff3:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.gff3":
           type: file
           description: GFF3 file containing with detailed hits
           pattern: "*.{gff3}"
           ontologies:
             - edam: http://edamontology.org/format_1975 # GFF3
-  - json:
-      - meta:
-          type: file
-          description: JSON file containing with detailed hits
-          pattern: "*.{json}"
-          ontologies:
-            - edam: http://edamontology.org/format_3464 # JSON
+  json:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.json":
           type: file
           description: JSON file containing with detailed hits
           pattern: "*.{json}"
           ontologies:
             - edam: http://edamontology.org/format_3464 # JSON
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies: 
-              - edam: http://edamontology.org/format_3750 # YAML
+  versions_interproscan:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - interproscan:
+          type: string
+          description: The name of the tool
+      - interproscan.sh --version | sed "1!d; s/.*version //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - interproscan:
+          type: string
+          description: The name of the tool
+      - interproscan.sh --version | sed "1!d; s/.*version //":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@toniher"
   - "@mahesh-panchal"

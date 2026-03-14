@@ -11,68 +11,108 @@ nextflow_workflow {
     tag "subworkflows/bcl_demultiplex"
     tag "bclconvert"
     tag "bcl2fastq"
+    tag "multiqcsav"
+    tag "untar"
 
     test("bclconvert") {
-
-        when {
-
-            workflow {
+        setup {
+            run("UNTAR") {
+                script "../../../../modules/nf-core/untar/main.nf"
+                process {
                 """
                 input[0] = Channel.value([
                     [id:'HMTFYDRXX', lane:1],
-                    "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/bcl/SampleSheet.csv",
-                    "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/bcl/200624_A00834_0183_BHMTFYDRXX.tar.gz"
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/bcl/200624_A00834_0183_BHMTFYDRXX.tar.gz")
                 ])
-                input[1] = "bclconvert"
                 """
                 }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                input[0] = UNTAR.out.untar.map { meta, bcl -> [meta, file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/bcl/SampleSheet.csv"), bcl] }
+                input[1] = "bclconvert"
+                """
+            }
         }
 
         then {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.reports,
-                    workflow.out.versions,
-                    workflow.out.fastq,
-                    workflow.out.stats,
-                    workflow.out.interop.get(0).get(1).findAll { file(it).name != "IndexMetricsOut.bin" },
+                    sanitizeOutput(workflow.out, unstableKeys: ["empty_fastq", "logs", "sav_report", "sav_data", "sav_plots"]).collectEntries { key, val ->
+                        if (key == "interop") {
+                            return [ key, val.collect { meta, files ->
+                                [
+                                    meta,
+                                    files.collect { interop_file ->
+                                        if (interop_file.endsWith("IndexMetricsOut.bin")) {
+                                            file(interop_file).name
+                                        } else {
+                                            interop_file
+                                        }
+                                    }
+                                ]
+                            } ]
+                        }
+                        return [ key, val ]
+                    },
                     ).match()
                 },
-                { assert file(workflow.out.interop.get(0).get(1).find { file(it).name == "IndexMetricsOut.bin" }).exists() },
-                { assert file(workflow.out.empty_fastq.get(0).get(1).find { file(it).name == "SampleZ_S5_L001_R1_001.fastq.gz" }).exists() }
             )
         }
     }
 
     test("bcl2fastq") {
-
-        when {
-
-            workflow {
+        setup {
+            run("UNTAR") {
+                script "../../../../modules/nf-core/untar/main.nf"
+                process {
                 """
                 input[0] = Channel.value([
                     [id:'test', lane:1 ],
-                    "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.csv",
-                    "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell.tar.gz"
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell.tar.gz")
                 ])
+                """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                input[0] = UNTAR.out.untar.map { meta, bcl -> [meta, file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.csv"), bcl] }
                 input[1] = "bcl2fastq"
                 """
-                    }
+            }
         }
 
         then {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.reports,
-                    workflow.out.versions,
-                    workflow.out.fastq,
-                    workflow.out.stats,
-                    workflow.out.interop.get(0).get(1).findAll { file(it).name != "IndexMetricsOut.bin" },
+                    sanitizeOutput(workflow.out, unstableKeys: ["empty_fastq", "logs", "sav_report", "sav_data", "sav_plots"]).collectEntries { key, val ->
+                        if (key == "fastq")
+                        if (key == "interop") {
+                            return [ key, val.collect { meta, files ->
+                                [
+                                    meta,
+                                    files.collect { interop_file ->
+                                        if (interop_file.endsWith("IndexMetricsOut.bin")) {
+                                            file(interop_file).name
+                                        } else {
+                                            interop_file
+                                        }
+                                    }
+                                ]
+                            } ]
+                        }
+                        return [ key, val ]
+                    },
                     ).match()
                 },
-                { assert file(workflow.out.interop.get(0).get(1).find { file(it).name == "IndexMetricsOut.bin" }).exists() }
             )
         }
     }

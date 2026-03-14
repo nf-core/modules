@@ -28,19 +28,20 @@ input:
         description: Folder containing the suffixerator index files
         pattern: "suffixerator"
 output:
-  - tabout:
-      - meta:
+  tabout:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
       - "*.tabout":
           type: file
-          description: Old tabular output by default or when `-tabout yes` argument is
-            present
+          description: Old tabular output by default or when `-tabout yes` argument
+            is present
           pattern: "*.tabout"
-  - gff3:
-      - meta:
+          ontologies: []
+  gff3:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,8 +50,9 @@ output:
           type: file
           description: GFF3 output when `-tabout no` argument is present
           pattern: "*.gff3"
-  - fasta:
-      - meta:
+          ontologies: []
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -59,8 +61,9 @@ output:
           type: file
           description: FASTA output when `-out` argument is present
           pattern: "*.{fa,fsa,fasta}"
-  - inner_fasta:
-      - meta:
+          ontologies: []
+  inner_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -69,11 +72,14 @@ output:
           type: file
           description: FASTA output for inner regions when `-outinner` argument is present
           pattern: "*.{fa,fsa,fasta}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@GallVp"
 maintainers:

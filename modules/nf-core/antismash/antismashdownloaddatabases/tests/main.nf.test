@@ -1,0 +1,57 @@
+nextflow_process {
+
+    name "Test Process ANTISMASH_ANTISMASHDOWNLOADDATABASES"
+    script "../main.nf"
+    process "ANTISMASH_ANTISMASHDOWNLOADDATABASES"
+    config './nextflow.config'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "antismash"
+    tag "antismash/antismashdownloaddatabases"
+
+    test("antismash/downloaddatabases") {
+
+        when {
+            process {
+                """
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.database.get(0)).list().sort(),
+                    path(process.out.versions[0]).yaml,
+                    file(process.out.versions[0]).name,
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("antismash/downloaddatabases - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        file(process.out.database.get(0)).list().sort(),
+                        file(process.out.versions[0]).name,
+                    ).match()
+                }
+            )
+        }
+    }
+}

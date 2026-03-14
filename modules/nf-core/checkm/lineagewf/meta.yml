@@ -21,7 +21,8 @@ tools:
       documentation: https://github.com/Ecogenomics/CheckM/wiki
       tool_dev_url: https://github.com/Ecogenomics/CheckM
       doi: "10.1101/gr.186072.114"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:checkm
 input:
   - - meta:
@@ -34,16 +35,17 @@ input:
         description: One or a list of multiple FASTA files of each bin, with extension
           defined with the fasta_ext value
         pattern: "*.{$fasta_ext}"
-  - - fasta_ext:
-        type: string
-        description: The file-type extension suffix of the input FASTA files (e.g.,
-          fasta, fna, fa, fas)
-  - - db:
-        type: directory
-        description: Optional directory pointing to checkM database to prevent re-downloading
+        ontologies: []
+  - fasta_ext:
+      type: string
+      description: The file-type extension suffix of the input FASTA files (e.g., fasta,
+        fna, fa, fas)
+  - db:
+      type: directory
+      description: Optional directory pointing to checkM database to prevent re-downloading
 output:
-  - checkm_output:
-      - meta:
+  checkm_output:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,8 +54,8 @@ output:
           type: directory
           description: CheckM output directory
           pattern: "*/"
-  - marker_file:
-      - meta:
+  marker_file:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,8 +64,9 @@ output:
           type: file
           description: Lineage file
           pattern: "*.ms"
-  - checkm_tsv:
-      - meta:
+          ontologies: []
+  checkm_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -72,11 +75,29 @@ output:
           type: file
           description: CheckM summary completeness statistics table
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  versions_checkm:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - checkm:
+          type: string
+          description: The name of the tool
+      - checkm 2>&1 | grep '...:::' | sed 's/.*CheckM v//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - checkm:
+          type: string
+          description: The name of the tool
+      - checkm 2>&1 | grep '...:::' | sed 's/.*CheckM v//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

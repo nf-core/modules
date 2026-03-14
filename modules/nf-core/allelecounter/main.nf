@@ -14,38 +14,27 @@ process ALLELECOUNTER {
 
     output:
     tuple val(meta), path("*.alleleCount"), emit: allelecount
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('alleleCounter'), eval('alleleCounter --version'), emit: versions_allelecounter, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference_options = fasta ? "-r $fasta": ""
     """
     alleleCounter \\
-        $args \\
-        -l $loci \\
-        -b $input \\
-        $reference_options \\
+        ${args} \\
+        -l ${loci} \\
+        -b ${input} \\
+        ${reference_options} \\
         -o ${prefix}.alleleCount
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        allelecounter: \$(alleleCounter --version)
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.alleleCount
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        allelecounter: \$(alleleCounter --version)
-    END_VERSIONS
     """
 }

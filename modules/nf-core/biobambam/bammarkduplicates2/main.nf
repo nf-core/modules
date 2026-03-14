@@ -1,17 +1,19 @@
 process BIOBAMBAM_BAMMARKDUPLICATES2 {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ? 'https://depot.galaxyproject.org/singularity/biobambam:2.0.183--h9f5acd7_1' : 'biocontainers/biobambam:2.0.183--h9f5acd7_1'}"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/biobambam:2.0.185--h85de650_1'
+        : 'biocontainers/biobambam:2.0.185--h85de650_1'}"
 
     input:
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path("*.bam")        , emit: bam
+    tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path("*.metrics.txt"), emit: metrics
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('biobambam'), eval("bammarkduplicates2 --version |& sed '1!d; s/.*version //; s/.\$//'"), topic: versions, emit: versions_biobambam
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,17 +23,12 @@ process BIOBAMBAM_BAMMARKDUPLICATES2 {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     bammarkduplicates2 \\
-        $args \\
-        I=$bam \\
+        ${args} \\
+        I=${bam} \\
         O=${prefix}.bam \\
         M=${prefix}.metrics.txt \\
-        tmpfile=$prefix \\
-        markthreads=$task.cpus
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bammarkduplicates2: \$(echo \$(bammarkduplicates2 --version 2>&1) | sed 's/^This is biobambam2 version //; s/..biobambam2 is .*\$//' )
-    END_VERSIONS
+        tmpfile=${prefix} \\
+        markthreads=${task.cpus}
     """
 
     stub:
@@ -39,10 +36,5 @@ process BIOBAMBAM_BAMMARKDUPLICATES2 {
     """
     touch ${prefix}.bam
     touch ${prefix}.metrics.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bammarkduplicates2: \$(echo \$(bammarkduplicates2 --version 2>&1) | sed 's/^This is biobambam2 version //; s/..biobambam2 is .*\$//' )
-    END_VERSIONS
     """
 }

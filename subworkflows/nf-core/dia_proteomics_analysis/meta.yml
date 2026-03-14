@@ -1,0 +1,196 @@
+name: "dia_proteomics_analysis"
+description: |
+  Complete DIA-NN proteomics analysis pipeline including in-silico library generation,
+  preliminary analysis, empirical library assembly, individual analysis, and final quantification.
+  This subworkflow combines DIA-NN modules with quantms-utils for comprehensive
+  data-independent acquisition (DIA) proteomics data processing.
+keywords:
+  - diann
+  - proteomics
+  - dia
+  - quantification
+  - spectral library
+  - quantms-utils
+tools:
+  - "diann":
+      description: |
+        DIA-NN is a universal software for data-independent acquisition (DIA) proteomics data processing.
+        It uses deep learning to predict spectral libraries and perform peptide identification and quantification.
+      homepage: "https://github.com/vdemichev/DiaNN"
+      documentation: "https://github.com/vdemichev/DiaNN"
+      tool_dev_url: "https://github.com/vdemichev/DiaNN"
+      doi: "10.1038/s41592-020-01009-0"
+      licence: ["https://github.com/vdemichev/DiaNN/blob/1.8.1/LICENSE.txt"]
+      identifier: "biotools:diann"
+  - "quantms-utils":
+      description: |
+        quantms-utils is a Python package with scripts and functions for quantitative proteomics data analysis.
+        Provides utilities for DIA-NN configuration, mzML statistics, and format conversion to mzTab.
+      homepage: "https://github.com/bigbio/quantms-utils"
+      documentation: "https://github.com/bigbio/quantms-utils"
+      tool_dev_url: "https://github.com/bigbio/quantms-utils"
+      licence: ["MIT"]
+      identifier: "biotools:quantms-utils"
+components:
+  - diann
+  - quantmsutils/dianncfg
+  - quantmsutils/mzmlstatistics
+  - quantmsutils/diann2mztab
+input:
+  - ch_input:
+      type: channel
+      description: |
+        Channel containing tuples of meta maps, mass spectrometry files, and search parameters.
+        Structure: [meta, ms_file, enzyme, fixed_mods, variable_mods, precursor_tolerance,
+        fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit]
+        e.g. `[[id:'sample1'], file('sample1.mzML'), 'Trypsin', 'Carbamidomethyl (C)',
+        'Oxidation (M)', 10, 20, 'ppm', 'ppm']`
+        Note: For Thermo RAW file conversion to mzML, the ThermoRawFileParser module is available
+        in nf-core/modules and can be used upstream of this subworkflow.
+      pattern: "*.{mzML,mzml}"
+  - ch_searchdb:
+      type: channel
+      description: |
+        Channel containing tuples of meta maps and protein sequence database in FASTA format.
+        Structure: [meta, fasta]
+        e.g. `[[id:'uniprot_human'], file('uniprot_human.fasta')]`
+      pattern: "*.{fasta,fa}"
+  - ch_expdesign:
+      type: channel
+      description: |
+        Channel containing tuples of meta maps and experimental design files.
+        Structure: [meta, expdesign]
+        e.g. `[[id:'experiment1'], file('design.tsv')]`
+      pattern: "*.tsv"
+  - random_preanalysis:
+      type: tuple
+      description: |
+        Tuple controlling random sampling for preliminary analysis.
+        Structure: [boolean, integer, integer] for [enable_random, n_samples, seed]
+        e.g. `[true, 5, 42]` to randomly sample 5 files with seed 42
+        Set to null or [false, null, null] to use all files
+  - wf_scan_window:
+      type: integer
+      description: |
+        Scan window parameter for DIA-NN individual analysis.
+        Only used if wf_scan_window_automatic is false.
+  - wf_mass_acc_automatic:
+      type: boolean
+      description: |
+        If true, use automatic mass accuracy settings extracted from DIA-NN preliminary analysis log.
+        If false, use user-provided precursor_tolerance and fragment_tolerance from ch_input.
+  - wf_scan_window_automatic:
+      type: boolean
+      description: |
+        If true, use automatic scan window settings extracted from DIA-NN preliminary analysis log.
+        If false, use user-provided wf_scan_window parameter.
+  - wf_diann_debug:
+      type: boolean
+      description: |
+        Enable DIA-NN debug output mode for troubleshooting.
+  - wf_pg_level:
+      type: string
+      description: |
+        Protein group level for DIA-NN analysis.
+        Options: 'genes', 'proteins', etc.
+  - ch_speclib_in:
+      type: channel
+      description: |
+        Optional channel containing pre-generated spectral library file.
+        If provided, skips in-silico library generation.
+        Applied to all samples in the workflow.
+        Structure: path(speclib)
+        e.g. `file('pregenerated.speclib')`
+      pattern: "*.{speclib,tsv}"
+  - ch_empirical_library_in:
+      type: channel
+      description: |
+        Optional channel containing pre-generated empirical library file.
+        If provided, skips preliminary analysis and empirical library assembly.
+        Applied to all samples in the workflow.
+        Structure: path(empirical_library)
+        e.g. `file('empirical_library.speclib')`
+      pattern: "*.speclib"
+  - ch_empirical_log_in:
+      type: channel
+      description: |
+        Optional channel containing assembly log from pre-generated empirical library.
+        Required if ch_empirical_library_in is provided (for extracting mass accuracy settings).
+        Structure: path(assembly_log)
+        e.g. `file('assembly.log')`
+      pattern: "*.log"
+output:
+  - versions:
+      description: File containing software versions
+      structure:
+        - versions:
+            type: file
+            description: File containing software versions
+            pattern: "versions.yml"
+  - diann_report:
+      description: Main DIA-NN report in TSV format containing quantification results
+      structure:
+        - meta:
+            type: map
+            description: Groovy Map containing experiment and search database information
+        - report:
+            type: file
+            description: Main DIA-NN report in TSV format
+            pattern: "*.tsv"
+  - diann_report_parquet:
+      description: Main DIA-NN report in Parquet format containing quantification results
+      structure:
+        - meta:
+            type: map
+            description: Groovy Map containing experiment and search database information
+        - report:
+            type: file
+            description: Main DIA-NN report in Parquet format
+            pattern: "*.parquet"
+  - mzml_statistics:
+      description: Statistics extracted from mzML files
+      structure:
+        - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - statistics:
+            type: file
+            description: mzML statistics in parquet format
+            pattern: "*_ms_info.parquet"
+  - msstats_in:
+      description: MSstats-compatible input file for statistical analysis
+      structure:
+        - meta:
+            type: map
+            description: Groovy Map containing experiment and search database information
+        - msstats:
+            type: file
+            description: MSstats input file
+            pattern: "*_msstats_in.csv"
+  - out_triqler:
+      description: Triqler-compatible input file for protein quantification with uncertainty
+      structure:
+        - meta:
+            type: map
+            description: Groovy Map containing experiment and search database information
+        - triqler:
+            type: file
+            description: Triqler input file
+            pattern: "*_triqler_in.tsv"
+  - final_result:
+      description: Final quantification results in mzTab format
+      structure:
+        - meta:
+            type: map
+            description: Groovy Map containing experiment and search database information
+        - mztab:
+            type: file
+            description: Final results in mzTab format (standard proteomics exchange format)
+            pattern: "*.mzTab"
+authors:
+  - "@daichengxin"
+  - "@wanghong"
+  - "@pinin4fjords"
+maintainers:
+  - "@daichengxin"
+  - "@pinin4fjords"

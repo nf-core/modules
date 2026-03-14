@@ -1,0 +1,94 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "nail_search"
+description: nail search is a fast and scalable tool for searching protein sequences
+  against protein databases
+keywords:
+  - alignment
+  - HMM
+  - fasta
+  - protein
+tools:
+  - "nail":
+      description: "Profile Hidden Markov Model (pHMM) biological sequence alignment
+        tool"
+      homepage: "https://github.com/TravisWheelerLab/nail"
+      documentation: "https://github.com/TravisWheelerLab/nail"
+      tool_dev_url: "https://github.com/TravisWheelerLab/nail"
+      doi: "10.1101/2024.01.27.577580"
+      licence: ["BSD-3-clause"]
+      identifier: biotools:nail
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - query:
+        type: file
+        description: Input query file
+        pattern: "*.{hmm,fasta,fa,fna}"
+        ontologies:
+          - edam: http://edamontology.org/data_3949 # Profile HMM
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - target:
+        type: file
+        description: Input target file
+        pattern: "*.{fasta,fa,fna}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - write_align:
+      type: boolean
+      description: Flag to save optional alignment output. Specify with 'true' to save.
+output:
+  output:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.txt:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.{txt}"
+  target_summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.tbl:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "results.tbl"
+  alignments:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.ali:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.ali"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

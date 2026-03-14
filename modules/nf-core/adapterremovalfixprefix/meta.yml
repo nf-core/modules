@@ -1,18 +1,19 @@
 name: adapterremovalfixprefix
-description: Fixes prefixes from AdapterRemoval2 output to make sure no clashing read
-  names are in the output. For use with DeDup.
+description: Fixes prefixes from AdapterRemoval2 output to make sure no clashing
+  read names are in the output. For use with DeDup.
 keywords:
   - adapterremoval
   - fastq
   - dedup
 tools:
   - adapterremovalfixprefix:
-      description: Fixes adapter removal prefixes to make sure no clashing read names
-        are in the output.
+      description: Fixes adapter removal prefixes to make sure no clashing read
+        names are in the output.
       homepage: https://github.com/apeltzer/AdapterRemovalFixPrefix
       tool_dev_url: https://github.com/apeltzer/AdapterRemovalFixPrefix
       doi: "10.1186/s13059-016-0918-z"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -24,9 +25,11 @@ input:
         type: file
         description: FASTQ file from AdapterRemoval2
         pattern: "*.{fq.gz,fastq.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1930" # FASTQ
 output:
-  - fixed_fastq:
-      - meta:
+  fixed_fastq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,11 +38,29 @@ output:
           type: file
           description: FASTQ file with fixed read prefixes for DeDup
           pattern: "*.{fq.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_1930" # FASTQ
+  versions_adapterremovalfixprefix:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - adapterremovalfixprefix:
+          type: string
+          description: The name of the tool
+      - echo 0.0.5:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - adapterremovalfixprefix:
+          type: string
+          description: The name of the tool
+      - echo 0.0.5:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

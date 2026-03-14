@@ -1,0 +1,389 @@
+nextflow_process {
+
+    name "Test Process GGET_GGET"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "GGET_GGET"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gget"
+    tag "gget/gget"
+
+    test("ref_json_mouse") {
+
+        when {
+            params {
+                module_args = 'ref -w dna -r 108 mouse'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    []
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.output,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+    test("ref_json_mouse - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = 'ref -w dna -r 108 mouse'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    []
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("ref_json_ciona_intestinalis") {
+
+        when {
+            params {
+                module_args = 'ref -d -w pep -r 108 ciona_intestinalis'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    []
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.output,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+    // test("search_json_human") {
+
+    //     when {
+    //         params {
+    //             module_args = 'search -s human gaba gamma-aminobutyric'
+    //         }
+    //         process {
+    //             """
+    //             input[0] = [
+    //                 [id:'test'],// meta map
+    //                 []
+    //                 ]
+    //             """
+    //         }
+    //     }
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(process.out.output,
+    //             path(process.out.versions[0]).yaml).match() }
+    //         )
+    //     }
+    // }
+
+    // test("search_csv_human") {
+
+    //     when {
+    //         params {
+    //             module_args = 'search --csv -s human gaba gamma-aminobutyric'
+    //         }
+    //         process {
+    //             """
+    //             input[0] = [
+    //                 [id:'test'],// meta map
+    //                 []
+    //                 ]
+    //             """
+    //         }
+    //     }
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(process.out.output,
+    //             path(process.out.versions[0]).yaml).match() }
+    //         )
+    //     }
+    // }
+
+    test("search_csv_human - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = 'search --csv -s human gaba gamma-aminobutyric'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    []
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.output,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+    test("gget_info") {
+
+        when {
+            params {
+                module_args = 'info ENSG00000034713 ENSG00000104853 ENSG00000170296'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    []
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.output,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+    test("seq_json_ENSG00000034713") {
+
+        when {
+            params {
+                module_args = 'seq -t -iso ENSG00000034713'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    []
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.output,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+    test("blat_json_taeGut2") {
+
+        when {
+            params {
+                module_args = 'blat -a taeGut2 MKWMFKEDHSLEHRCVESAKIRAKYPDRVPVIVEKVSGSQIVDIDKRKYLVPSDITVAQFMWIIRKRIQLPSEKAIFLFVDKTVPQSR'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    []
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.output,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+    //test("muscle_proteome") { // weirdly gives no output on docker/singularity, but does on conda?
+    // silently gives
+    // chmod: changing permissions of '/opt/conda/lib/python3.13/site-packages/gget/bins/Linux/muscle': Operation not permitted
+    // in the .command.err but returns successful exit code.
+    //
+    //    when {
+    //        params {
+    //            module_args = 'muscle'
+    //        }
+    //        process {
+    //            """
+    //            input[0] = [
+    //                [id:'test'],// meta map
+    //                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta',checkIfExists:true)
+    //                ]
+    //            """
+    //        }
+    //    }
+    //    then {
+    //        assertAll(
+    //            { assert process.success },
+    //            { assert snapshot(
+    //                process.out.output,
+    //                process.out.versions,
+    //                path(process.out.versions[0]).yaml
+    //                ).match() }
+    //        )
+    //    }
+    //}
+
+    test("enrichr_json_ontology") {
+
+        when {
+            params {
+                module_args = 'enrichr -db ontology ACE2 AGT AGTR1'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    []
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.output,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+    test("archs4_json_ACE2") {
+
+        when {
+            params {
+                module_args = 'archs4 ACE2'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    []
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.output,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+    test("pdb_pdb_7S7U") {
+
+        when {
+            params {
+                module_args = 'pdb 7S7U'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    []
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.output,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+    test("pdb_pdb_7S7U - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = 'pdb 7S7U'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    []
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.output,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+}

@@ -30,7 +30,8 @@ input:
           FASTA/FASTQ containing reads (can be gzipped), or sorted BAM files of reads mapped to a reference.
           If supplying PE fasta for multiple samples, should be in the order "sample1_1, sample1_2, sample2_1, sample2_2...".
         pattern: "*.{fa,fq,fa.gz,fq.gz,bam}"
-
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
   - - meta2:
         type: map
         description: |
@@ -43,17 +44,18 @@ input:
           Not required if using BAM input.
         pattern: "*.{fasta,fasta.gz,mmi,sti}"
 
-  - - bam_input:
-        type: boolean
-        description: True if input is bam files
+        ontologies: []
+  - bam_input:
+      type: boolean
+      description: True if input is bam files
 
-  - - interleaved:
-        type: boolean
-        description: True if input is interleaved fastq file
+  - interleaved:
+      type: boolean
+      description: True if input is interleaved fastq file
 
 output:
-  - coverage:
-      - meta:
+  coverage:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,11 +67,29 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
           pattern: "*.depths.{txt}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions_coverm:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - coverm:
+          type: string
+          description: The tool name
+      - 'coverm --version | sed "s/coverm //"':
+          type: string
+          description: Command used to collect the version
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - coverm:
+          type: string
+          description: The tool name
+      - 'coverm --version | sed "s/coverm //"':
+          type: string
+          description: Command used to collect the version
+
 authors:
   - "@prototaxites"
 maintainers:

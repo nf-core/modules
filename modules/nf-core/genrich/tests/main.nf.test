@@ -4,14 +4,14 @@ nextflow_process {
     config "./nextflow.config"
     script "../main.nf"
     process "GENRICH"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "genrich"
-   
+
     test("homo_sapiens - bam - pe - p0.1") {
-        
-        
+
+
         when {
             params {
                 module_args = '-p 0.1'
@@ -33,8 +33,8 @@ nextflow_process {
         }
     }
     test("homo_sapiens - bam - pe - ctrl - p0.9") {
-        
-        
+
+
         when {
             params {
                 module_args = '-p 0.9'
@@ -56,8 +56,8 @@ nextflow_process {
         }
     }
     test("homo_sapiens - bam - se - ctrl - p0.9") {
-        
-        
+
+
         when {
             params {
                 module_args = '-p 0.9'
@@ -79,12 +79,12 @@ nextflow_process {
         }
     }
     test("homo_sapiens - bam - pe - p0.9 - all_output") {
-        
-        
+
+
         when {
             params {
                 module_args = '-p 0.9  -k test.pileup.bedGraph -f test.pvalues.bedGraph -b test.intervals.bed -R test.duplicates.txt'
-                
+
             }
             process {
                 """
@@ -103,8 +103,8 @@ nextflow_process {
         }
     }
     test("homo_sapiens - blacklist") {
-        
-        
+
+
         when {
             params {
                 module_args = '-p 0.1'
@@ -126,8 +126,8 @@ nextflow_process {
         }
     }
     test("homo_sapiens - bam - pe - atacseq - p0.1") {
-        
-        
+
+
         when {
             params {
                 module_args = '-j -p 0.1'
@@ -149,8 +149,8 @@ nextflow_process {
         }
     }
     test("homo_sapiens - bam - pe - bed - p0.9") {
-        
-        
+
+
         when {
             params {
                 module_args = '-p 0.1'

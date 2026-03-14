@@ -1,19 +1,19 @@
 process SAMTOOLS_MPILEUP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.21--h50ea8bc_0' :
-        'biocontainers/samtools:1.21--h50ea8bc_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e5/e5598451c6d348cce36191bafe1911ad71e440137d7a329da946f2b0dbb0e7f3/data'
+        : 'community.wave.seqera.io/library/htslib_samtools:1.23--cde2c40a51d6f752'}"
 
     input:
-    tuple val(meta), path(input), path(intervals)
-    path  fasta
+    tuple val(meta), path(input), path(index), path(intervals)
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*.mpileup.gz"), emit: mpileup
-    path  "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,32 +21,21 @@ process SAMTOOLS_MPILEUP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def intervals_arg = intervals ? "-l ${intervals}" : ""
+    def fasta_cmd = fasta ? "--fasta-ref ${fasta}" : ""
+    def intervals_cmd = intervals ? "-l ${intervals}" : ""
     """
     samtools mpileup \\
-        --fasta-ref $fasta \\
+        ${fasta_cmd} \\
         --output ${prefix}.mpileup \\
-        $args \\
-        $intervals_arg \\
-        $input
+        ${args} \\
+        ${intervals_cmd} \\
+        ${input}
     bgzip ${prefix}.mpileup
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def intervals_arg = intervals ? "-l ${intervals}" : ""
     """
-    touch ${prefix}.mpileup.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
+    echo | gzip > ${prefix}.mpileup.gz
     """
 }

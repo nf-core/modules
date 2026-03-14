@@ -1,4 +1,4 @@
-VERSION = '1.2.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+
 process PNEUMOCAT {
     tag "$meta.id"
     label 'process_low'
@@ -21,13 +21,13 @@ process PNEUMOCAT {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.2.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     PneumoCaT.py \\
         --input_directory ./ \\
         $args \\
         --threads $task.cpus \\
-        --output_dir ./
+        --output_dir .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -36,8 +36,8 @@ process PNEUMOCAT {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.2.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.results.xml
     touch ${prefix}.txt

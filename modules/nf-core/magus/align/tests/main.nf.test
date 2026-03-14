@@ -34,7 +34,7 @@ nextflow_process {
                 { assert path(process.out.alignment[0][1]).getText().contains(">1atx") },
                 { assert path(process.out.alignment[0][1]).getText().contains(">1sh1") },
                 { assert path(process.out.alignment[0][1]).getText().contains(">1bds") },
-                { assert snapshot(process.out.versions).match("versions0") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
 
@@ -64,7 +64,7 @@ nextflow_process {
                 { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1atx") },
                 { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1sh1") },
                 { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1bds") },
-                { assert snapshot(process.out.versions).match("versions1") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
 
@@ -106,7 +106,7 @@ nextflow_process {
                 { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1atx") },
                 { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1sh1") },
                 { assert path(process.out.alignment[0][1]).getTextGzip().contains(">1bds") },
-                { assert snapshot(process.out.versions).match("with_guide_tree_versions") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
     }

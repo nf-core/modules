@@ -12,7 +12,8 @@ tools:
         or later.
       homepage: https://github.com/heuermh/dishevelled-bio
       documentation: https://github.com/heuermh/dishevelled-bio
-      licence: ["LGPL-3.0-or-later"]
+      licence:
+        - "LGPL-3.0-or-later"
       identifier: ""
 input:
   - - meta:
@@ -24,9 +25,10 @@ input:
         type: file
         description: Features in gzipped BED format to split
         pattern: "*.{bed.gz}"
+        ontologies: []
 output:
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,11 +37,28 @@ output:
           type: file
           description: Features in split gzipped BED formatted files
           pattern: "*.{bed.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_dshbio:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dsh-bio:
+          type: string
+          description: The name of the tool
+      - dsh-bio --version | head -n 1 | sed 's/dsh-bio-tools //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dsh-bio:
+          type: string
+          description: The name of the tool
+      - dsh-bio --version | head -n 1 | sed 's/dsh-bio-tools //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@heuermh"
 maintainers:

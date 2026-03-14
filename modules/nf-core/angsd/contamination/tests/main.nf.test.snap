@@ -1,42 +1,34 @@
 {
     "test-angsd-contamination": {
         "content": [
-            [
-                "Seed value of 0 (zero) will use time as seed",
-                "-----------------",
-                "[readhap] We now have: 58190 snpSites after filtering based on hapMapfile",
-                "[readicnts] fname:test.icnts.gz minDepth:2 maxDepth:200",
-                "[readicnts] Has read:1557012 sites,  1517472 sites (after depfilter) from ANGSD icnts file"
-            ],
-            [
-                "\"ANGSD_CONTAMINATION\":",
-                "    angsd: 0.940-dirty"
-            ],
-            [
-                "versions.yml:md5,e496b7eb11be581adf1781883ba2abff"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-09-09T05:53:42.620175303"
-    },
-    "test-angsd-contamination-stub": {
-        "content": [
             {
-                "0": [
+                "txt": [
                     [
                         {
                             "id": "test",
                             "single_end": false
                         },
-                        "test.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.txt:md5,82d1c4540168ebd71f572fb1bfd30dda"
                     ]
                 ],
-                "1": [
-                    "versions.yml:md5,e496b7eb11be581adf1781883ba2abff"
-                ],
+                "versions_angsd": [
+                    [
+                        "ANGSD_CONTAMINATION",
+                        "angsd",
+                        "0.940-dirty"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-03-13T11:44:27.648571",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "test-angsd-contamination-stub": {
+        "content": [
+            {
                 "txt": [
                     [
                         {
@@ -46,15 +38,19 @@
                         "test.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,e496b7eb11be581adf1781883ba2abff"
+                "versions_angsd": [
+                    [
+                        "ANGSD_CONTAMINATION",
+                        "angsd",
+                        "0.940-dirty"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-03-13T11:44:46.881613",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-09-09T05:53:56.844309422"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     }
 }

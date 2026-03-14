@@ -11,12 +11,13 @@ keywords:
   - quality control
 tools:
   - biscuit:
-      description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification
-        data
+      description: A utility for analyzing sodium bisulfite conversion-based DNA
+        methylation/modification data
       homepage: https://huishenlab.github.io/biscuit/
       documentation: https://huishenlab.github.io/biscuit/docs/subcommand_help.html#biscuit-qc
       tool_dev_url: https://github.com/huishenlab/biscuit
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:biscuit
 input:
   - - meta:
@@ -27,6 +28,7 @@ input:
     - bam:
         type: file
         description: BAM file produced using Biscuit
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -35,6 +37,7 @@ input:
     - fasta:
         type: file
         description: Input genome fasta file
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -44,8 +47,8 @@ input:
         type: directory
         description: Directory containing biscuit genome index
 output:
-  - reports:
-      - meta:
+  reports:
+    - - meta:
           type: file
           description: |
             Summary files containing the following information:
@@ -57,6 +60,7 @@ output:
               - Proportion of reads mapping to each strand
               - Read-averaged cytosine conversion rate for CpA, CpC, CpG, and CpT
           pattern: "*.txt"
+          ontologies: []
       - "*.txt":
           type: file
           description: |
@@ -69,11 +73,28 @@ output:
               - Proportion of reads mapping to each strand
               - Read-averaged cytosine conversion rate for CpA, CpC, CpG, and CpT
           pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_biscuit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - biscuit:
+          type: string
+          description: The name of the tool
+      - "biscuit version |& sed '1!d; s/^.*BISCUIT Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - biscuit:
+          type: string
+          description: The name of the tool
+      - "biscuit version |& sed '1!d; s/^.*BISCUIT Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@njspix"
 maintainers:

@@ -1,19 +1,19 @@
 process SAMTOOLS_DEPTH {
-    tag "$meta1.id"
+    tag "${meta1.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.21--h50ea8bc_0' :
-        'biocontainers/samtools:1.21--h50ea8bc_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e5/e5598451c6d348cce36191bafe1911ad71e440137d7a329da946f2b0dbb0e7f3/data'
+        : 'community.wave.seqera.io/library/htslib_samtools:1.23--cde2c40a51d6f752'}"
 
     input:
-    tuple val(meta1), path(bam)
+    tuple val(meta1), path(bam), path(index)
     tuple val(meta2), path(intervals)
 
     output:
     tuple val(meta1), path("*.tsv"), emit: tsv
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('samtools'), eval('samtools version | sed "1!d;s/.* //"'), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,17 +23,20 @@ process SAMTOOLS_DEPTH {
     def prefix = task.ext.prefix ?: "${meta1.id}"
     def positions = intervals ? "-b ${intervals}" : ""
     """
+    # Note: --threads value represents *additional* CPUs to allocate (total CPUs = 1 + --threads).
     samtools \\
         depth \\
-        --threads ${task.cpus-1} \\
-        $args \\
-        $positions \\
+        --threads ${task.cpus - 1} \\
+        ${args} \\
+        ${positions} \\
         -o ${prefix}.tsv \\
-        $bam
+        ${bam}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta1.id}"
+
+    """
+    touch ${prefix}.tsv
     """
 }

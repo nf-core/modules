@@ -14,8 +14,8 @@ process SHINYNGS_APP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5b/5b0b2383d86ddb37ad7c2b8bc3c373926e8bc0cd08b137f457756c39e1589dd0/data' :
-        'community.wave.seqera.io/library/r-shinyngs:2.2.2--09ebd939fb477d18' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d0/d0937af0a2b5efe1c18565ef320956e630a03c00c6d75ea5df92ec9f9ff2d14e/data' :
+        'community.wave.seqera.io/library/r-shinyngs:2.3.0--140cda6231347fbb' }"
 
     input:
     tuple val(meta), path(sample), path(feature_meta), path(assay_files)    // Experiment-level info
@@ -37,13 +37,13 @@ process SHINYNGS_APP {
 
     """
     make_app_from_files.R \\
-        --sample_metadata $sample \\
-        --feature_metadata $feature_meta \\
-        --assay_files ${assay_files.join(',')} \\
-        --contrast_file $contrasts \\
-        --contrast_stats_assay $contrast_stats_assay \\
-        --differential_results ${differential_results.join(',')} \\
-        --output_dir $prefix \\
+        --sample_metadata "$sample" \\
+        --feature_metadata "$feature_meta" \\
+        --assay_files "${assay_files.join(',')}" \\
+        --contrast_file "$contrasts" \\
+        --contrast_stats_assay "$contrast_stats_assay" \\
+        --differential_results "${differential_results.join(',')}" \\
+        --output_dir "$prefix" \\
         $args \\
 
     cat <<-END_VERSIONS > versions.yml
@@ -53,13 +53,12 @@ process SHINYNGS_APP {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: meta.id
 
     """
-    mkdir -p $prefix
-    touch ${prefix}/data.rds
-    touch ${prefix}/app.R
+    mkdir -p "$prefix"
+    touch "${prefix}/data.rds"
+    touch "${prefix}/app.R"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

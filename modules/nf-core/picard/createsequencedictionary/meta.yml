@@ -23,9 +23,10 @@ input:
         type: file
         description: The reference fasta file
         pattern: "*.fasta"
+        ontologies: []
 output:
-  - reference_dict:
-      - meta:
+  reference_dict:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,11 +35,28 @@ output:
           type: file
           description: picard dictionary file
           pattern: "*.{dict}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_picard:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - picard:
+          type: string
+          description: The tool name
+      - "picard CreateSequenceDictionary --version 2>&1 | sed -n 's/.*Version://p'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - picard:
+          type: string
+          description: The tool name
+      - "picard CreateSequenceDictionary --version 2>&1 | sed -n 's/.*Version://p'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@sateeshperi"
   - "@mjcipriano"

@@ -1,16 +1,4 @@
 {
-    "versions": {
-        "content": [
-            [
-                "versions.yml:md5,a2bd31a65e8350eaf790ac1acf6c3c0d"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-25T07:42:11.951591199"
-    },
     "cellranger - vdj - test_10x - stub": {
         "content": [
             {
@@ -25,7 +13,11 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,a2bd31a65e8350eaf790ac1acf6c3c0d"
+                    [
+                        "CELLRANGER_VDJ",
+                        "cellranger",
+                        "cellranger 10.0.0"
+                    ]
                 ],
                 "outs": [
                     [
@@ -37,21 +29,34 @@
                         "fake_file.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,a2bd31a65e8350eaf790ac1acf6c3c0d"
+                "versions_cellranger": [
+                    [
+                        "CELLRANGER_VDJ",
+                        "cellranger",
+                        "cellranger 10.0.0"
+                    ]
+                ]
+            },
+            {
+                "versions_cellranger": [
+                    [
+                        "CELLRANGER_VDJ",
+                        "cellranger",
+                        "cellranger 10.0.0"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-03-13T15:57:35.886161143",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-25T07:42:27.004474742"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "cellranger - vdj - test_10x": {
         "content": [
             [
-                "vdj_contig_info.pb:md5,96b60732c9406ec733fec244b79017e1"
+                "vdj_contig_info.pb:md5,40aa01ec2caeb83397e93801d692b939"
             ],
             [
                 "metrics_summary.csv:md5,7994a492bd179334628e65b322c9df15"
@@ -60,13 +65,22 @@
                 "reference.json:md5,384f6efabad59f6da5c89b862aee71a8"
             ],
             [
-                "web_summary.html:md5,7c0ead24cd24f3513b8e13771480b063"
-            ]
+                "web_summary.html:md5,dfb0ebd832313ca19c6dc81a23c32fd7"
+            ],
+            {
+                "versions_cellranger": [
+                    [
+                        "CELLRANGER_VDJ",
+                        "cellranger",
+                        "cellranger 10.0.0"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-03-13T15:57:28.044458331",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-25T07:42:11.889448783"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     }
 }

@@ -1,12 +1,12 @@
 process MGIKIT_DEMULTIPLEX {
-    tag {"$run_id"}
-    label 'process_high'
+    tag "$run_id"
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mgikit:1.0.0--h3ab6199_0' :
-        'biocontainers/mgikit:1.0.0--h3ab6199_0' }"
+        'https://depot.galaxyproject.org/singularity/mgikit:2.1.0--h3ab6199_0' :
+        'biocontainers/mgikit:2.1.0--h3ab6199_0' }"
 
     input:
     tuple val(meta), path(samplesheet), path(run_dir)
@@ -21,7 +21,7 @@ process MGIKIT_DEMULTIPLEX {
     tuple val(meta), path("${prefix}/*mgikit.info")                                                  , emit: index_reports
     tuple val(meta), path("${prefix}/*mgikit.sample_stats")                                          , emit: sample_stat_reports
     tuple val(meta), path("${prefix}/*mgikit.{info,general,ambiguous_barcode,undetermined_barcode}") , emit: qc_reports
-    path("versions.yml")                                                                             , emit: versions
+    tuple val("${task.process}"), val('mgikit'), eval('mgikit --version | sed -n "s/.*kit. //p"'), emit: versions_mgikit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -48,10 +48,6 @@ process MGIKIT_DEMULTIPLEX {
         mv ${prefix}/Ambiguous*.fastq.gz ${prefix}_ambiguous/
     fi
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mgikit: \$(mgikit --version 2>&1 | grep 'MGIKIT - MGI data demultipexing kit' | sed -e 's/MGIKIT - MGI data demultipexing kit. //g')
-    END_VERSIONS
     """
 
     stub:
@@ -73,9 +69,5 @@ process MGIKIT_DEMULTIPLEX {
 
     echo "@R001:0001:FC1:1:60:1:3 1:N:0:GACGAATG\\nNNNNNNNN\\n+\\nDDDDDDDD" | gzip > "${prefix}_undetermined/Undetermined_L01_R1_001.fastq.gz"
     echo "@R001:0001:FC1:1:60:1:3 2:N:0:GACGAATG\\nNNNNNNNN\\n+\\nDDDDDDDD" | gzip > "${prefix}_undetermined/Undetermined_L01_R2_001.fastq.gz"
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mgikit: \$(mgikit --version 2>&1 | grep 'MGIKIT - MGI data demultipexing kit' | sed -e 's/MGIKIT - MGI data demultipexing kit. //g')
-    END_VERSIONS
     """
 }

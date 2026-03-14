@@ -1,39 +1,33 @@
 process SAMTOOLS_CAT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.21--h50ea8bc_0' :
-        'biocontainers/samtools:1.21--h50ea8bc_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e5/e5598451c6d348cce36191bafe1911ad71e440137d7a329da946f2b0dbb0e7f3/data'
+        : 'community.wave.seqera.io/library/htslib_samtools:1.23--cde2c40a51d6f752'}"
 
     input:
-    tuple val(meta),  path(input_files, stageAs: "?/*")
+    tuple val(meta), path(input_files, stageAs: "?/*")
 
     output:
-    tuple val(meta), path("${prefix}.bam") , optional:true, emit: bam
-    tuple val(meta), path("${prefix}.cram"), optional:true, emit: cram
-    path  "versions.yml"                                  , emit: versions
-
+    tuple val(meta), path("${prefix}.bam"), optional: true, emit: bam
+    tuple val(meta), path("${prefix}.cram"), optional: true, emit: cram
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args   ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
     def file_type = input_files instanceof List ? input_files[0].getExtension() : input_files.getExtension()
     """
     samtools \\
         cat \\
-        $args \\
+        ${args} \\
         -o ${prefix}.${file_type} \\
-        $input_files
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
+        ${input_files}
     """
 
     stub:
@@ -41,10 +35,5 @@ process SAMTOOLS_CAT {
     def file_type = input_files instanceof List ? input_files[0].getExtension() : input_files.getExtension()
     """
     touch ${prefix}.${file_type}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }

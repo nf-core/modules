@@ -4,8 +4,8 @@ process PHAROKKA_PHAROKKA {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pharokka:1.7.3--pyhdfd78af_0':
-        'biocontainers/pharokka:1.7.3--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/pharokka:1.9.1--pyhdfd78af_0':
+        'biocontainers/pharokka:1.9.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(phage_fasta)
@@ -44,7 +44,6 @@ process PHAROKKA_PHAROKKA {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
