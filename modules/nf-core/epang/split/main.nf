@@ -13,7 +13,7 @@ process EPANG_SPLIT {
     output:
     tuple val(meta), path("*query.fasta.gz")    , emit: query
     tuple val(meta), path("*reference.fasta.gz"), emit: reference
-    tuple val("${task.process}"), val('epa-ng'), eval('epa-ng --version'), emit: versions_epang, topic: versions
+    tuple val("${task.process}"), val('epa-ng'), eval('epa-ng --version | sed "s/EPA-ng v//"'), emit: versions_epang, topic: versions
 
 
     when:

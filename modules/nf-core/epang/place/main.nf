@@ -16,7 +16,7 @@ process EPANG_PLACE {
     tuple val(meta), path("./.")                   , emit: epang   , optional: true
     tuple val(meta), path("*.epa_result.jplace.gz"), emit: jplace  , optional: true
     path "*.epa_info.log"                          , emit: log
-    tuple val("${task.process}"), val('epa-ng'), eval('epa-ng --version'), emit: versions_epang, topic: versions
+    tuple val("${task.process}"), val('epa-ng'), eval('epa-ng --version | sed "s/EPA-ng v//"'), emit: versions_epang, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

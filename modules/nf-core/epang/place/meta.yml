@@ -83,7 +83,7 @@ output:
       - epa-ng:
           type: string
           description: The name of the tool
-      - epa-ng --version:
+      - epa-ng --version | sed "s/EPA-ng v//":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -94,7 +94,7 @@ topics:
       - epa-ng:
           type: string
           description: The name of the tool
-      - epa-ng --version:
+      - epa-ng --version | sed "s/EPA-ng v//":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
