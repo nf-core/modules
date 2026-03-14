@@ -13,7 +13,8 @@ process FASTAVALIDATOR {
     output:
     tuple val(meta), path('*.success.log')  , emit: success_log , optional: true
     tuple val(meta), path('*.error.log')    , emit: error_log   , optional: true
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('py_fasta_validator'), eval('py_fasta_validator --version'), emit: versions_py_fasta_validator, topic: versions
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,11 +42,6 @@ process FASTAVALIDATOR {
         echo "Validation successful..." \\
             > "${prefix}.success.log"
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        py_fasta_validator: \$(py_fasta_validator -v | sed 's/.* version //')
-    END_VERSIONS
     """
 
     stub:
@@ -53,10 +49,5 @@ process FASTAVALIDATOR {
     """
     echo "Validation successful..." \\
         > "${prefix}.success.log"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        py_fasta_validator: \$(py_fasta_validator -v | sed 's/.* version //')
-    END_VERSIONS
     """
 }
