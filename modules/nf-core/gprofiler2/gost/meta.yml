@@ -141,12 +141,18 @@ output:
             Log file containing information about the R session that was run for this module
           pattern: "*R_sessionInfo.log"
           ontologies: []
-  versions:
+  versions_gprofiler:
     - versions.yml:
         type: file
-        description: File containing software versions
+        description: YAML file containing versions of tools used in the module
         pattern: "versions.yml"
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: YAML file containing versions of tools used in the module
+        ontologies: []
 authors:
   - "@WackerO"
