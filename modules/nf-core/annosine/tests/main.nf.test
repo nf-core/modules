@@ -30,7 +30,7 @@ nextflow_process {
                 { assert path(process.out.log[0][1]).text.contains('AnnoSINE COMPLETE!') },
                 { assert snapshot(
                     process.out.fa,
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     ).match()
                 }
             )
