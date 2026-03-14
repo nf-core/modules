@@ -15,7 +15,7 @@ process CONTROLFREEC_MAKEGRAPH2 {
     tuple val(meta), path("*_ratio.log2.png"), emit: png_ratio_log2
     tuple val(meta), path("*_ratio.png"), emit: png_ratio
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    tuple val("${task.process}"), val('controlfreec'), eval("echo 11.6b"), emit: versions_controlfreec, topic: versions
+    tuple val("${task.process}"), val('controlfreec'), val("11.6b"), emit: versions_controlfreec, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

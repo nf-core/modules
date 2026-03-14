@@ -11,7 +11,7 @@ process GANON_TABLE {
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('ganon'), eval("ganon --version 2>1 | sed 's/.*ganon //g'"), emit: versions_ganon, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,10 +26,6 @@ process GANON_TABLE {
         --output-file ${prefix}.txt \\
         ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ganon: \$(echo \$(ganon --version 2>1) | sed 's/.*ganon //g')
-    END_VERSIONS
     """
 
     stub:
@@ -38,9 +34,5 @@ process GANON_TABLE {
     """
     touch ${prefix}.txt
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ganon: \$(echo \$(ganon --version 2>1) | sed 's/.*ganon //g')
-    END_VERSIONS
     """
 }
