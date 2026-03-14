@@ -16,7 +16,7 @@ process GCTA_FASTGWA {
 
     output:
     tuple val(meta), val(meta3), path("${meta.id}_${meta3.id}.fastGWA"), emit: results
-    tuple val("${task.process}"), val("gcta"), eval("gcta --version 2>&1 | head -n 1"), emit: versions_gcta, topic: versions
+    tuple val("${task.process}"), val("gcta"), eval("gcta --version 2>&1 | grep 'version v' | tr -s ' ' | cut -d' ' -f3 | sed 's/^v//'"), emit: versions_gcta, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

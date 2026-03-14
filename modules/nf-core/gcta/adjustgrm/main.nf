@@ -11,7 +11,7 @@ process GCTA_ADJUSTGRM {
 
     output:
     tuple val(meta), path("${meta.id}_adj.grm.id"), path("${meta.id}_adj.grm.bin"), path("${meta.id}_adj.grm.N.bin"), emit: grm_files
-    tuple val("${task.process}"), val("gcta"), eval("gcta --version 2>&1 | head -n 1"), emit: versions_gcta, topic: versions
+    tuple val("${task.process}"), val("gcta"), eval("gcta --version 2>&1 | grep 'version v' | tr -s ' ' | cut -d' ' -f3 | sed 's/^v//'"), emit: versions_gcta, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
