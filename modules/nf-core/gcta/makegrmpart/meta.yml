@@ -80,7 +80,7 @@ output:
       - "gcta":
           type: string
           description: The tool name
-      - "gcta --version 2>&1 | head -n 1":
+      - "gcta --version 2>&1 | grep 'version v' | tr -s ' ' | cut -d' ' -f3 | sed 's/^v//'":
           type: eval
           description: The command used to generate the version of the tool
 topics:
@@ -91,7 +91,7 @@ topics:
       - gcta:
           type: string
           description: The tool name
-      - gcta --version 2>&1 | head -n 1:
+      - gcta --version 2>&1 | grep 'version v' | tr -s ' ' | cut -d' ' -f3 | sed 's/^v//':
           type: eval
           description: The command used to generate the version of the tool
 authors:

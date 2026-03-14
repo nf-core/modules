@@ -15,7 +15,7 @@ process GCTA_BIVARIATEREMLLDMS {
     output:
     tuple val(meta), path("${meta.id}.hsq"), emit: bivariate_results
     tuple val(meta), path("${meta.id}.log"), emit: log_file
-    tuple val("${task.process}"), val("gcta"), eval("gcta --version 2>&1 | head -n 1"), emit: versions_gcta, topic: versions
+    tuple val("${task.process}"), val("gcta"), eval("gcta --version 2>&1 | grep 'version v' | tr -s ' ' | cut -d' ' -f3 | sed 's/^v//'"), emit: versions_gcta, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
