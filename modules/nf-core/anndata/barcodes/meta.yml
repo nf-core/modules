@@ -1,6 +1,6 @@
 name: anndata_barcodes
-description: Module to subset AnnData object to cells with matching barcodes from
-  the csv file
+description: Module to subset AnnData object to cells with matching barcodes
+  from the csv file
 keywords:
   - single-cell
   - barcodes
@@ -14,7 +14,8 @@ tools:
       documentation: "https://anndata.readthedocs.io"
       tool_dev_url: "https://github.com/theislab/anndata"
       doi: "10.21105/joss.04371"
-      licence: ["BSD-3-clause"]
+      licence:
+        - "BSD-3-clause"
       identifier: biotools:anndata
 input:
   - - meta:
@@ -57,6 +58,11 @@ output:
         pattern: "versions.yml"
         ontologies:
           - edam: "http://edamontology.org/format_3750" # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
 authors:
   - "@nictru"
   - "@chaochaowong"
