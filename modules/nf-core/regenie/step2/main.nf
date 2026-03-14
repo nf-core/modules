@@ -24,8 +24,7 @@ process REGENIE_STEP2 {
     script:
     def args = task.ext.args ?: ''
     def binary_arg = meta2.is_binary ? '--bt' : ''
-    def covar_file = covar instanceof List ? covar.find() : covar
-    def covar_arg = covar_file ? "--covarFile ${covar_file}" : ''
+    def covar_arg = covar ? "--covarFile ${covar}" : ''
     def genotype_flag = plink_genotype_file.name.endsWith('.pgen') ? '--pgen' : '--bed'
     def genotype_prefix = plink_genotype_file.baseName
     def base_prefix = meta.chr_prefix ?: meta.id
