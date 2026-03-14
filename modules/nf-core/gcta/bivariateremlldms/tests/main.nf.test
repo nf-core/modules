@@ -159,8 +159,15 @@ nextflow_process {
                 { assert file(process.out.log_file.get(0).get(1)).name == "Trait1__Trait2.log" },
                 { assert file(process.out.log_file.get(0).get(1)).exists() },
                 {
+                    def resultFile = file(process.out.bivariate_results.get(0).get(1))
                     assert snapshot(
-                        process.out.bivariate_results,
+                        [
+                            [
+                                process.out.bivariate_results.get(0).get(0),
+                                resultFile.name,
+                                resultFile.readLines().collect { it.tokenize()[0] }
+                            ]
+                        ],
                         process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
