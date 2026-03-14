@@ -157,7 +157,6 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
         ch_epang_query,
         [], []
     )
-    ch_versions = ch_versions.mix(EPANG_PLACE.out.versions)
 
     // 5. Calculate a tree with the placed sequences
     GAPPA_GRAFT ( EPANG_PLACE.out.jplace )
