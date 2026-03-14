@@ -57,6 +57,7 @@ nextflow_process {
                 """
             }
         }
+
     }
 
     test("homo_sapiens popgen - quantitative plink1 with covariates") {
@@ -141,6 +142,50 @@ nextflow_process {
                 { assert process.out.log.size() == 1 },
                 { assert process.out.results.get(0).get(0).id == 'plink_simulated' },
                 { assert process.out.results.get(0).get(1).id == 'BinaryTrait' },
+                { assert path(process.out.log.get(0).get(2)).exists() },
+                {
+                    assert snapshot(
+                        process.out.results,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("homo_sapiens popgen - quantitative plink1 without covariates") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [ id:'QuantitativeTrait', is_binary:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ]
+
+                input[2] = REGENIE_STEP1_QUANTITATIVE.out.predictions
+
+                input[3] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.results.size() == 1 },
+                { assert process.out.log.size() == 1 },
+                { assert process.out.results.get(0).get(0).id == 'plink_simulated' },
+                { assert process.out.results.get(0).get(1).id == 'QuantitativeTrait' },
                 { assert path(process.out.log.get(0).get(2)).exists() },
                 {
                     assert snapshot(
