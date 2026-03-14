@@ -98,6 +98,7 @@ def generateReadgroupBCLCONVERT(ch_fastq_list_csv, ch_fastq) {
     return ch_fastq_list_csv
         .join(ch_fastq, by: [0])
         .map { meta, csv_file, fastq_list ->
+            def fastq_files = fastq_list instanceof List ? fastq_list : [fastq_list]
             def meta_fastq = []
             csv_file
                 .splitCsv(header: true)
@@ -114,8 +115,8 @@ def generateReadgroupBCLCONVERT(ch_fastq_list_csv, ch_fastq) {
                     rg.PL = "ILLUMINA"
 
                     // dereference the fastq files in the csv
-                    def fastq1 = fastq_list.find { fq -> file(fq).name == file(row.Read1File).name }
-                    def fastq2 = row.Read2File ? fastq_list.find { fq -> file(fq).name == file(row.Read2File).name } : null
+                    def fastq1 = fastq_files.find { fq -> file(fq).name == file(row.Read1File).name }
+                    def fastq2 = row.Read2File ? fastq_files.find { fq -> file(fq).name == file(row.Read2File).name } : null
 
                     // set fastq metadata
                     def new_meta = meta + [id: fastq1.getSimpleName().toString() - ~/_R[0-9]_001.*$/, readgroup: rg, single_end: !fastq2]
