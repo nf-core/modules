@@ -101,23 +101,6 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
         }
     }
 
-    /*
-    * Generate fasta index if not supplied for bwameth workflow or picard collecthsmetrics tool
-    */
-    if (aligner == 'bwameth' || collecthsmetrics) {
-        // already exising fasta index
-        if (fasta_index) {
-            ch_fasta_index = fasta_index
-        } else {
-            SAMTOOLS_FAIDX(
-                ch_fasta.combine(channel.of([[]])),
-                false
-            )
-            ch_fasta_index = SAMTOOLS_FAIDX.out.fai
-            // samtools/faidx version emitted into the topic channel
-        }
-    }
-
     emit:
     fasta_fai     = ch_fasta_fai // channel: [ val(meta), [ fasta ], [ fai ] ]
     bismark_index = ch_bismark_index // channel: [ val(meta), [ bismark index ] ]
