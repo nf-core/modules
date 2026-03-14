@@ -17,9 +17,7 @@ process GECCO_RUN {
     tuple val(meta), path("*.clusters.tsv") , optional: true, emit: clusters
     tuple val(meta), path("*_cluster_*.gbk"), optional: true, emit: gbk
     tuple val(meta), path("*.json")         , optional: true, emit: json
-
-    tuple val("${task.process}"), val('gecco'), eval('gecco -V'), emit: versions_gecco, topic: versions
-
+    tuple val("${task.process}"), val('gecco'), eval('gecco -V | cut -d" " -f2'), emit: versions_gecco, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
