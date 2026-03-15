@@ -13,7 +13,7 @@ process FASTAVALIDATOR {
     output:
     tuple val(meta), path('*.success.log')  , emit: success_log , optional: true
     tuple val(meta), path('*.error.log')    , emit: error_log   , optional: true
-    tuple val("${task.process}"), val('py_fasta_validator'), eval('py_fasta_validator --version'), emit: versions_py_fasta_validator, topic: versions
+    tuple val("${task.process}"), val('py_fasta_validator'), eval('py_fasta_validator --version | sed "s/.* version //")'), emit: versions_py_fasta_validator, topic: versions
 
 
     when:
