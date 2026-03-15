@@ -16,7 +16,7 @@ process GATK_REALIGNERTARGETCREATOR {
 
     output:
     tuple val(meta), path("*.intervals"), emit: intervals
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('gatk'), eval('gatk3 --version'), emit: versions_gatk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -45,9 +45,5 @@ process GATK_REALIGNERTARGETCREATOR {
         ${known} \\
         $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk: \$(echo \$(gatk3 --version))
-    END_VERSIONS
     """
 }

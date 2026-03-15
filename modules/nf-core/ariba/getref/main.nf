@@ -12,7 +12,7 @@ process ARIBA_GETREF {
 
     output:
     tuple val(meta), path("${db_name}.tar.gz"), emit: db
-    path "versions.yml"                       , emit: versions
+    tuple val("${task.process}"), val('ariba'), eval('ariba version | sed -nE "s/ARIBA version: //p"'), emit: versions_ariba, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,20 +32,10 @@ process ARIBA_GETREF {
         ${db_name}
 
     tar -zcvf ${db_name}.tar.gz ${db_name}/
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ariba:  \$(echo \$(ariba version 2>&1) | sed 's/^.*ARIBA version: //;s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
     """
     echo "" | gzip > ${db_name}.tar.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ariba:  \$(echo \$(ariba version 2>&1) | sed 's/^.*ARIBA version: //;s/ .*\$//')
-    END_VERSIONS
     """
 }

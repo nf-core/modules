@@ -50,7 +50,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.stats_txt.collect { file(it[1]).getName() } +
-                                process.out.versions ).match() }
+                                process.out.findAll { key, val -> key.startsWith('versions') } ).match() }
             )
         }
 
