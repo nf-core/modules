@@ -164,7 +164,7 @@ output:
             variance stabilisation applied via `rlog()`.
           pattern: "*.rlog.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
   vst_counts:
     - - meta:
           type: map
@@ -177,7 +177,7 @@ output:
             variance stabilisation applied via `vst()`.
           pattern: "*.vst.tsv"
           ontologies:
-            - edam: http://edamontology.org/ # TSV
+            - edam: http://edamontology.org/format_3475 # TSV
   model:
     - - meta:
           type: map
@@ -203,7 +203,8 @@ output:
     - versions.yml:
         type: file
         description: YAML file containing versions of tools used in the module
-        ontologies: []
+        ontologies:
+        - edam: http://edamontology.org/format_3750 # YAML
 topics:
   versions:
     - versions.yml:
