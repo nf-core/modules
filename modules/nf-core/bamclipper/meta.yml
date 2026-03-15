@@ -1,5 +1,4 @@
 name: "bamclipper"
-
 description: This module is used to clip primer sequences from your alignments.
 keywords:
   - primer
@@ -8,15 +7,14 @@ keywords:
   - bam
 tools:
   - "bamclipper":
-      description: "BAMClipper: removing primers from alignments to minimize false-negative
-        mutations in amplicon next-generation sequencing"
+      description: "BAMClipper: removing primers from alignments to minimize false-negative mutations in amplicon next-generation sequencing"
       homepage: "https://github.com/tommyau/bamclipper"
       documentation: "https://github.com/tommyau/bamclipper"
       tool_dev_url: "https://github.com/tommyau/bamclipper"
       doi: "10.1038/s41598-017-01703-6"
-      licence: ["MIT"]
+      license:
+        - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -45,8 +43,7 @@ output:
             Groovy Map containing sample information `[ id:'sample1']`
       - "*.primerclipped.bam":
           type: file
-          description: Sorted BAM file containing clipped query sequences according
-            to the given primer pair locations
+          description: Sorted BAM file containing clipped query sequences according to the given primer pair locations
           pattern: "*.primerclipped.bam"
           ontologies: []
   bai:
@@ -56,16 +53,51 @@ output:
             Groovy Map containing sample information `[ id:'sample1']`
       - "*.primerclipped.bam.bai":
           type: file
-          description: "BAI index of the output BAM file"
+          description: BAI index of the output BAM file
           pattern: "*.primerclipped.bam.bai"
           ontologies: []
+  versions_bamclipper:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "bamclipper":
+          type: string
+          description: The name of the tool
+      - "1.0.0":
+          type: string
+          description: The hardcoded version of the tool
+  versions_samtools:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "samtools":
+          type: string
+          description: The name of the tool
+      - "samtools --version |& sed '1!d ; s/samtools //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "bamclipper":
+          type: string
+          description: The name of the tool
+      - "1.0.0":
+          type: string
+          description: The hardcoded version of the tool
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "samtools":
+          type: string
+          description: The name of the tool
+      - "samtools --version |& sed '1!d ; s/samtools //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@krannich479"
 maintainers:
