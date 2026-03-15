@@ -14,7 +14,7 @@ process AMULETY_ANTIBERTA2 {
 
     output:
     tuple val(meta), path("*.tsv"), emit: embedding
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('amulety'), eval('amulety --version'), emit: versions_amulety, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
