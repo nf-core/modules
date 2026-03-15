@@ -1,0 +1,61 @@
+name: "cellranger_aggr"
+description: Aggregate outputs from multiple Cell Ranger count or multi runs
+  into a single feature-barcode matrix and secondary analysis.
+keywords:
+  - single-cell
+  - aggregation
+  - 10x genomics
+  - scRNA-seq
+  - cellranger
+tools:
+  - "cellranger":
+      description: "Cell Ranger is a set of analysis pipelines that process Chromium
+        single-cell data to align reads, generate feature-barcode matrices, perform
+        clustering and other secondary analysis."
+      homepage: "https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger"
+      documentation: "https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/aggregate"
+      tool_dev_url: "https://github.com/10XGenomics/cellranger"
+      licence:
+        - 10x Genomics EULA
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing aggregation-level metadata, e.g. [ id:'aggregation' ]
+    - aggr_csv:
+        type: file
+        description: |
+          CSV file listing all samples to aggregate. Must contain columns
+          'sample_id' and 'molecule_h5' pointing to molecule_info.h5 files
+          from cellranger count or cellranger multi outputs.
+          Library depth normalization defaults to 'mapped' (normalize by the
+          number of mapped reads). To disable normalization, pass
+          '--normalize none' via ext.args.
+        pattern: "*.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752
+output:
+  outs:
+    - - meta:
+          type: map
+          description: Groovy Map containing aggregation-level metadata.
+      - "**/outs/**":
+          type: file
+          description: |
+            Files containing the outputs of Cell Ranger aggr, including aggregated
+            feature-barcode matrices (filtered and raw), clustering results, and a
+            web summary. See the 10x Genomics documentation for a complete list.
+          pattern: "**/outs/**"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions.
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
+authors:
+  - "@alenaboos"
+maintainers:
+  - "@alenaboos"
