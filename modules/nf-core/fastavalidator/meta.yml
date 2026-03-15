@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "fastavalidator"
 description: |
   "Python C-extension for a simple validator for fasta files. The module emits the validated file or an
@@ -60,7 +61,7 @@ output:
       - py_fasta_validator:
           type: string
           description: The name of the tool
-      - py_fasta_validator --version:
+      - py_fasta_validator --version | cut -d" " -f3:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -71,7 +72,7 @@ topics:
       - py_fasta_validator:
           type: string
           description: The name of the tool
-      - py_fasta_validator --version:
+      - py_fasta_validator --version | cut -d" " -f3:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
