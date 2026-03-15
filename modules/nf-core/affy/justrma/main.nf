@@ -15,7 +15,7 @@ process AFFY_JUSTRMA {
     tuple val(meta), path("*.rds")           , emit: rds
     tuple val(meta), path("*matrix.tsv")     , emit: expression
     tuple val(meta), path("*.annotation.tsv"), emit: annotation, optional: true
-    path "versions.yml"                      , emit: versions
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
