@@ -16,7 +16,8 @@ process CALDER2 {
     output:
     tuple val(meta), path("${prefix}/")                     , emit: output_folder
     tuple val(meta), path("${prefix}/intermediate_data/")   , emit: intermediate_data_folder      , optional: true
-    path "versions.yml"                                     , emit: versions
+    tuple val("${task.process}"), val('calder'), val('0.7'), emit: versions_calder, topic: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,7 +27,6 @@ process CALDER2 {
     prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = resolution ? "::/resolutions/$resolution" : ""
     def cpus = task.cpus ?: 1
-    def VERSION = '0.7' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     # getting binsize as mandatory input for calder
     binsize="\$(cooler info --field bin-size $cool$suffix)"
@@ -37,16 +37,10 @@ process CALDER2 {
         --type cool \\
         --bin_size "\${binsize}" \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        calder: $VERSION
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.7' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     mkdir -p ${prefix}/sub_compartments
     mkdir -p ${prefix}/sub_domains
@@ -58,10 +52,5 @@ process CALDER2 {
     touch ${prefix}/sub_compartments/cor_with_ref.txt
 
     touch ${prefix}/sub_domains/all_nested_boundaries.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        calder: $VERSION
-    END_VERSIONS
     """
 }

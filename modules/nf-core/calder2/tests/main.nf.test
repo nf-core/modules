@@ -52,7 +52,7 @@ nextflow_process {
                     assert snapshot(
                         all_file_names,
                         stable_files,
-                        process.out.versions[0]
+                        process.out.versions_calder[0]
                     ).match()
                 }
             )
@@ -100,7 +100,7 @@ nextflow_process {
                     assert snapshot(
                         all_file_names,
                         stable_files,
-                        process.out.versions[0]
+                        process.out.versions_calder[0]
                     ).match()
                 }
             )
