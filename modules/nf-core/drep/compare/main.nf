@@ -12,7 +12,7 @@ process DREP_COMPARE {
 
     output:
     tuple val(meta), path("${prefix}"), emit: directory
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val("drep"), eval("dRep | head -n 2 | sed 's/.*v//g;s/ .*//g' | tail -n 1"), emit:versions_drep, topic:versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,11 +27,6 @@ process DREP_COMPARE {
         -p ${task.cpus} \\
         ${args} \\
         -g fastas/*
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        drep: \$(dRep | head -n 2 | sed 's/.*v//g;s/ .*//g' | tail -n 1)
-    END_VERSIONS
     """
 
     stub:
@@ -40,10 +35,5 @@ process DREP_COMPARE {
     """
     echo "${args}"
     mkdir -p ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        drep: \$(dRep | head -n 2 | sed 's/.*v//g;s/ .*//g' | tail -n 1)
-    END_VERSIONS
     """
 }
