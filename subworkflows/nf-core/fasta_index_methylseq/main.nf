@@ -26,7 +26,6 @@ workflow FASTA_INDEX_METHYLSEQ {
     ch_bismark_index = channel.empty()
     ch_bwameth_index = channel.empty()
     ch_bwamem_index  = channel.empty()
-    ch_versions      = channel.empty()
 
     // Check if fasta file is gzipped and decompress if needed
     fasta
@@ -102,7 +101,6 @@ workflow FASTA_INDEX_METHYLSEQ {
                 use_mem2
             )
             ch_bwameth_index = BWAMETH_INDEX.out.index
-            ch_versions      = ch_versions.mix(BWAMETH_INDEX.out.versions)
         }
     }
 
@@ -158,5 +156,4 @@ workflow FASTA_INDEX_METHYLSEQ {
     bismark_index = ch_bismark_index // channel: [ val(meta), [ bismark index ] ]
     bwameth_index = ch_bwameth_index // channel: [ val(meta), [ bwameth index ] ]
     bwamem_index  = ch_bwamem_index  // channel: [ val(meta), [ bwamem index ] ]
-    versions      = ch_versions      // channel: [ versions.yml ]
 }
