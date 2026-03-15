@@ -1,0 +1,80 @@
+name: "kmercounter"
+description: |
+  A rust based tool based on Needletail's FASTA parser tallies k-mer counts
+  for large sequencing rounds. Written with downstream processing with Tensorflow
+  or numpy in mind.
+keywords:
+  - cobiontid
+  - kmer
+  - counts
+  - npy
+  - fasta
+tools:
+  - kmer-counter:
+      description: |
+        A rust based tool based on Needletail's FASTA parser tallies k-mer counts
+        for large sequencing rounds. Written with downstream processing with Tensorflow
+        or numpy in mind.
+      homepage: https://github.com/CobiontID/kmer-counter
+      documentation: https://github.com/CobiontID/kmer-counter
+      license:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: |
+          Input fasta assembly file
+        ontologies: []
+  - kmer_size:
+      type: integer
+      description: |
+        Size of kmer to scan the genome for.
+output:
+  npy:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - fasta:
+          type: file
+          description: |
+            Input fasta assembly file
+          ontologies: []
+      - "*.npy":
+          type: file
+          description: |
+            A Numpy file containing the kmer counts.
+          ontologies: []
+  versions_kmercounter:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kmer-counter:
+          type: string
+          description: The name of the tool
+      - kmer-counter --version | sed -e "s/K-mer counter v//g":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  version:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kmer-counter:
+          type: string
+          description: The name of the tool
+      - kmer-counter --version | sed -e "s/K-mer counter v//g":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@DLBPointon"
+maintainers:
+  - "@DLBPointon"
