@@ -1,0 +1,74 @@
+name: hdl_rg
+description: Estimate pairwise genetic correlation from GWAS summary statistics using HDL.rg
+keywords:
+  - hdl
+  - genetic correlation
+  - gwas
+tools:
+  - hdl:
+      description: High-definition likelihood method for genetic correlation and heritability from summary statistics
+      homepage: https://github.com/zhenin/HDL
+      documentation: https://github.com/zhenin/HDL/wiki
+input:
+  - - meta:
+        type: map
+        description: Metadata map for the first trait input. The `meta.id` value is used as the first trait label.
+    - sumstats1:
+        type: file
+        description: Canonicalized GWAS summary statistics for the first trait.
+  - - meta2:
+        type: map
+        description: Metadata map for the second trait input. The `meta2.id` value is used as the second trait label.
+    - sumstats2:
+        type: file
+        description: Canonicalized GWAS summary statistics for the second trait.
+  - - ref_meta:
+        type: map
+        description: Metadata map for the HDL reference panel directory.
+    - hdl_ref_panel_dir:
+        type: directory
+        description: Directory containing HDL LD reference panel files.
+output:
+  correlation_results:
+    - - meta:
+          type: map
+          description: Propagated first-trait metadata map.
+      - meta2:
+          type: map
+          description: Propagated second-trait metadata map.
+      - ${meta.id}.${meta2.id}.rg.tsv:
+          type: file
+          description: Tab-delimited HDL genetic correlation summary output.
+  rg_log:
+    - - meta:
+          type: map
+          description: Propagated first-trait metadata map.
+      - meta2:
+          type: map
+          description: Propagated second-trait metadata map.
+      - ${meta.id}.${meta2.id}.hdl.log:
+          type: file
+          description: HDL genetic-correlation run log.
+  versions_hdl:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - hdl:
+          type: string
+          description: Name of the tool
+      - 1.4.0:
+          type: string
+          description: Version of the HDL R package bundled for the module
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - hdl:
+          type: string
+          description: Name of the tool
+      - 1.4.0:
+          type: string
+          description: Version of the HDL R package bundled for the module
+authors:
+  - andongni

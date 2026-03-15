@@ -1,0 +1,72 @@
+nextflow_process {
+
+    name "Test Process HDL_RG"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "HDL_RG"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hdl"
+    tag "hdl/rg"
+
+    test("trait1 trait2 - real") {
+        when {
+            process {
+                """
+                input[0] = tuple(
+                    [id: "trait1"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/sumstats/trait1_canonical.tsv", checkIfExists: true)
+                )
+                input[1] = tuple(
+                    [id: "trait2"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/sumstats/trait2_canonical.tsv", checkIfExists: true)
+                )
+                input[2] = tuple(
+                    [id: "hdl_reference"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference", checkIfExists: true)
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.correlation_results.size() == 1 },
+                { assert process.out.rg_log.size() == 1 },
+                { assert process.out.versions_hdl.size() == 1 }
+            )
+        }
+    }
+
+    test("trait1 trait2 - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = tuple(
+                    [id: "trait1"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/sumstats/trait1_canonical.tsv", checkIfExists: true)
+                )
+                input[1] = tuple(
+                    [id: "trait2"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/sumstats/trait2_canonical.tsv", checkIfExists: true)
+                )
+                input[2] = tuple(
+                    [id: "hdl_reference"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/reference", checkIfExists: true)
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.correlation_results.size() == 1 },
+                { assert process.out.rg_log.size() == 1 },
+                { assert process.out.versions_hdl.size() == 1 }
+            )
+        }
+    }
+}
