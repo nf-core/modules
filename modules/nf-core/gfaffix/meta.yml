@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: gfaffix
 description: Collapse walk-preserving shared affixes in variation graphs in GFA
   format
@@ -27,7 +28,7 @@ input:
         description: Variation graph in GFA format
         pattern: "*.{gfa}"
         ontologies:
-          - edam: http://edamontology.org/format_3975
+          - edam: http://edamontology.org/format_3975 # GFA 1
 output:
   gfa:
     - - meta:
@@ -40,7 +41,7 @@ output:
           description: Non-redundant variation graph in GFA 1.0 format
           pattern: "*.{gfa}"
           ontologies:
-            - edam: http://edamontology.org/format_3975
+            - edam: http://edamontology.org/format_3975 # GFA 1
   affixes:
     - - meta:
           type: map
@@ -59,7 +60,7 @@ output:
       - gfaffix:
           type: string
           description: The name of the tool
-      - gfaffix --version:
+      - gfaffix --version | cut -d" " -f2:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -70,7 +71,7 @@ topics:
       - gfaffix:
           type: string
           description: The name of the tool
-      - gfaffix --version:
+      - gfaffix --version | cut -d" " -f2:
           type: eval
           description: The expression to obtain the version of the tool
 authors:

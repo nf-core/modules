@@ -14,7 +14,7 @@ process GFAFFIX {
     output:
     tuple val(meta), path("*.gfa"), emit: gfa
     tuple val(meta), path("*.txt"), emit: affixes
-    tuple val("${task.process}"), val('gfaffix'), eval('gfaffix --version'), emit: versions_gfaffix, topic: versions
+    tuple val("${task.process}"), val('gfaffix'), eval('gfaffix --version | cut -d" " -f2'), emit: versions_gfaffix, topic: versions
 
 
     when:
@@ -27,7 +27,8 @@ process GFAFFIX {
     gfaffix \\
         $args \\
         $gfa \\
-        -o ${prefix}.gfaffix.gfa > ${prefix}.affixes.txt
+        -o ${prefix}.gfaffix.gfa \\
+        -a ${prefix}.affixes.txt
     """
 
     stub:
