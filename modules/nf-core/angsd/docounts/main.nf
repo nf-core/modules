@@ -4,8 +4,8 @@ process ANGSD_DOCOUNTS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/angsd:0.939--h468462d_0':
-        'biocontainers/angsd:0.939--h468462d_0' }"
+        'https://depot.galaxyproject.org/singularity/angsd:0.940--hce60e53_2':
+        'biocontainers/angsd:0.940--hce60e53_2' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(minqfile)
@@ -17,7 +17,7 @@ process ANGSD_DOCOUNTS {
     tuple val(meta), path("*.pos.gz")     , emit: pos         , optional: true
     tuple val(meta), path("*.counts.gz")  , emit: counts      , optional: true
     tuple val(meta), path("*.icnts.gz")   , emit: icounts     , optional: true
-    tuple val("${task.process}"), val('angsd'), eval('angsd 2>&1 | grep version | head -n 1 | sed "s/.*version: //g;s/ .*//g"'), emit: versions_angsd, topic: versions
+    tuple val("${task.process}"), val('angsd'), eval("angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'"), emit: versions_angsd, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,8 +36,6 @@ process ANGSD_DOCOUNTS {
         -bam bamlist.txt \\
         -out ${prefix} \\
         ${minq}
-
-
     """
 
     stub:
@@ -57,6 +55,5 @@ process ANGSD_DOCOUNTS {
     ${pos_cmd}
     ${counts_cmd}
     ${icounts_cmd}
-
     """
 }
