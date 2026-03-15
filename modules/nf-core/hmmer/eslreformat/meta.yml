@@ -12,7 +12,8 @@ tools:
       homepage: http://hmmer.org/
       documentation: http://hmmer.org/documentation.html
       doi: "10.1371/journal.pcbi.1002195"
-      licence: ["BSD-3-Clause"]
+      licence:
+        - "BSD-3-Clause"
       identifier: ""
 input:
   - - meta:
@@ -25,6 +26,10 @@ input:
         description: Sequences, aligned or not, in any supported format
         pattern: "*"
         ontologies: []
+  - postprocessing_script:
+      type: string
+      description: Post processing script in shell, e.g., '| sed "/^>/!s/-//g"'
+      pattern: "| *"
 output:
   seqreformated:
     - - meta:
@@ -37,14 +42,14 @@ output:
           description: Reformatted sequence file
           pattern: "*.*.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   versions:
     - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+          - edam: http://edamontology.org/format_3750
 authors:
   - "@erikrikarddaniel"
 maintainers:
