@@ -1,0 +1,62 @@
+name: hdl_h2
+description: Estimate SNP heritability from GWAS summary statistics using HDL.h2
+keywords:
+  - hdl
+  - heritability
+  - gwas
+tools:
+  - hdl:
+      description: High-definition likelihood method for genetic correlation and heritability from summary statistics
+      homepage: https://github.com/zhenin/HDL
+      documentation: https://github.com/zhenin/HDL/wiki
+input:
+  - - meta:
+        type: map
+        description: Metadata map for the trait input. The `meta.id` value is used to label output files.
+    - sumstats:
+        type: file
+        description: Canonicalized GWAS summary statistics for the trait in `meta.id`.
+  - - ref_meta:
+        type: map
+        description: Metadata map for the HDL reference panel directory.
+    - hdl_ref_panel_dir:
+        type: directory
+        description: Directory containing HDL LD reference panel files.
+output:
+  heritability_results:
+    - - meta:
+          type: map
+          description: Propagated trait metadata map.
+      - ${meta.id}.h2.tsv:
+          type: file
+          description: Tab-delimited HDL heritability summary output.
+  h2_log:
+    - - meta:
+          type: map
+          description: Propagated trait metadata map.
+      - ${meta.id}.hdl.log:
+          type: file
+          description: HDL heritability run log.
+  versions_hdl:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - hdl:
+          type: string
+          description: Name of the tool
+      - 1.4.0:
+          type: string
+          description: Version of the HDL R package bundled for the module
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - hdl:
+          type: string
+          description: Name of the tool
+      - 1.4.0:
+          type: string
+          description: Version of the HDL R package bundled for the module
+authors:
+  - andongni
