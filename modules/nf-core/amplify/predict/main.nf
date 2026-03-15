@@ -14,7 +14,7 @@ process AMPLIFY_PREDICT {
 
     output:
     tuple val(meta), path('*.tsv'), emit: tsv
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('amplify/predict'), eval( "AMPlify --help | grep 'AMPlify v' | sed -e 's/^.*AMPlify v//' " ), emit: versions_amplify_predict, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,10 +32,6 @@ process AMPLIFY_PREDICT {
     #rename output, because tool includes date and time in name
     mv *.tsv ${prefix}.tsv
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        AMPlify: \$(AMPlify --help | grep 'AMPlify v' | sed -e "s/^.*AMPlify v//")
-    END_VERSIONS
     """
 
     stub:
@@ -43,9 +39,5 @@ process AMPLIFY_PREDICT {
     """
     touch ${prefix}.tsv
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        AMPlify: \$(AMPlify --help | grep 'AMPlify v' | sed -e "s/^.*AMPlify v//")
-    END_VERSIONS
     """
 }

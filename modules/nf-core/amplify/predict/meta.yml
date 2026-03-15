@@ -1,6 +1,6 @@
 name: "amplify_predict"
-description: AMPlify is an attentive deep learning model for antimicrobial peptide
-  prediction.
+description: AMPlify is an attentive deep learning model for antimicrobial
+  peptide prediction.
 keywords:
   - antimicrobial peptides
   - AMPs
@@ -13,7 +13,8 @@ tools:
       documentation: "https://github.com/bcgsc/AMPlify"
       tool_dev_url: "https://github.com/bcgsc/AMPlify"
       doi: "10.1186/s12864-022-08310-4"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:amplify
 input:
   - - meta:
@@ -26,7 +27,7 @@ input:
         description: amino acid sequences fasta
         pattern: "*.{fa,fa.gz,faa,faa.gz,fasta,fasta.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/format_1929"
   - model_dir:
       type: directory
       description: Directory of where models are stored (optional)
@@ -39,18 +40,32 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.tsv":
           type: file
-          description: amino acid sequences with prediction (AMP, non-AMP) and probability
-            scores
+          description: amino acid sequences with prediction (AMP, non-AMP) and
+            probability scores
           pattern: "*.{tsv}"
           ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: "http://edamontology.org/format_3475"
+  versions_amplify_predict:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - amplify/predict:
+          type: string
+          description: The name of the tool
+      - "AMPlify --help | grep 'AMPlify v' | sed -e 's/^.*AMPlify v//' ":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - amplify/predict:
+          type: string
+          description: The name of the tool
+      - "AMPlify --help | grep 'AMPlify v' | sed -e 's/^.*AMPlify v//' ":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@louperelo"
 maintainers:
