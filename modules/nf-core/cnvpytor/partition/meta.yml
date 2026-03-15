@@ -1,6 +1,6 @@
 name: cnvpytor_partition
-description: Calculate segmentation for specified bin size (multiple bin sizes separate
-  by space)
+description: Calculate segmentation for specified bin size (multiple bin sizes
+  separate by space)
 keywords:
   - cnv
   - call
@@ -13,7 +13,8 @@ tools:
       documentation: https://github.com/abyzovlab/CNVpytor
       tool_dev_url: https://github.com/abyzovlab/CNVpytor
       doi: "10.1101/2021.01.27.428472v1"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:cnvpytor
 input:
   - - meta:
@@ -28,8 +29,8 @@ input:
         ontologies: []
   - bin_sizes:
       type: string
-      description: list of binsizes separated by space e.g. "1000 10000" default is
-        "1000"
+      description: list of binsizes separated by space e.g. "1000 10000" default
+        is "1000"
 output:
   pytor:
     - - meta:
@@ -42,13 +43,27 @@ output:
           description: pytor file
           pattern: "*.pytor"
           ontologies: []
+  versions_cnvpytor:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - cnvpytor:
+          type: string
+          description: The tool name
+      - 1.3.2:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - cnvpytor:
+          type: string
+          description: The tool name
+      - 1.3.2:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@sima-r"
   - "@ramprasadn"
