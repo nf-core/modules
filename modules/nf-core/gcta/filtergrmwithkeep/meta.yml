@@ -1,0 +1,96 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gcta_filtergrmwithkeep"
+description: Filter a dense GRM to the individuals listed in a keep file
+keywords:
+  - gcta
+  - grm
+  - genetics
+tools:
+  - "gcta":
+      description: "Genome-wide Complex Trait Analysis (GCTA) estimates genetic relationships, variance components, and association statistics from genome-wide data."
+      homepage: "https://yanglab.westlake.edu.cn/software/gcta/"
+      documentation: "https://yanglab.westlake.edu.cn/software/gcta/static/gcta_doc_latest.pdf"
+      tool_dev_url: "https://yanglab.westlake.edu.cn/software/gcta/"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy map containing dense GRM metadata
+          e.g. `[ id:'plink_simulated' ]`
+    - grm_id:
+        type: file
+        description: Dense GRM sample identifier file
+        pattern: "*.grm.id"
+        ontologies: []
+    - grm_bin:
+        type: file
+        description: Dense GRM binary matrix file
+        pattern: "*.grm.bin"
+        ontologies: []
+    - grm_n_bin:
+        type: file
+        description: Dense GRM sample-count matrix file
+        pattern: "*.grm.N.bin"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy map containing keep-file metadata
+          e.g. `[ id:'plink_simulated_keep' ]`
+    - keep_file:
+        type: file
+        description: Keep file listing the individuals to retain
+        pattern: "*.{keep,txt,id}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2330"
+
+output:
+  filtered_grm:
+    - - meta:
+          type: map
+          description: |
+            Groovy map containing dense GRM metadata
+            e.g. `[ id:'plink_simulated' ]`
+      - "${meta.id}_unrel.grm.id":
+          type: file
+          description: Filtered GRM sample identifier file
+          pattern: "${meta.id}_unrel.grm.id"
+          ontologies: []
+      - "${meta.id}_unrel.grm.bin":
+          type: file
+          description: Filtered GRM binary matrix file
+          pattern: "${meta.id}_unrel.grm.bin"
+          ontologies: []
+      - "${meta.id}_unrel.grm.N.bin":
+          type: file
+          description: Filtered GRM sample-count matrix file
+          pattern: "${meta.id}_unrel.grm.N.bin"
+          ontologies: []
+  versions_gcta:
+    - - "${task.process}":
+          type: string
+          description: The process the version was collected from
+      - "gcta":
+          type: string
+          description: The tool name
+      - "gcta --version 2>&1 | grep 'version v' | tr -s ' ' | cut -d' ' -f3 | sed 's/^v//'":
+          type: eval
+          description: The command used to retrieve the GCTA version
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - gcta:
+          type: string
+          description: The tool name
+      - gcta --version 2>&1 | grep 'version v' | tr -s ' ' | cut -d' ' -f3 | sed 's/^v//':
+          type: eval
+          description: The command used to retrieve the GCTA version
+
+authors:
+  - "@andongni"
+maintainers:
+  - "@andongni"

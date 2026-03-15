@@ -1,0 +1,135 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gcta_fastgwa"
+description: Run GCTA fastGWA-MLM with PLINK genotype inputs and a sparse GRM
+keywords:
+  - gcta
+  - fastgwa
+  - gwas
+  - genetics
+tools:
+  - "gcta":
+      description: "Genome-wide Complex Trait Analysis (GCTA) estimates genetic relationships, variance components, and association statistics from genome-wide data."
+      homepage: "https://yanglab.westlake.edu.cn/software/gcta/"
+      documentation: "https://yanglab.westlake.edu.cn/software/gcta/static/gcta_doc_latest.pdf"
+      tool_dev_url: "https://yanglab.westlake.edu.cn/software/gcta/"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy map containing PLINK genotype metadata
+          e.g. `[ id:'plink_simulated' ]`
+    - bed_pgen:
+        type: file
+        description: PLINK primary genotype file, either `.bed` or `.pgen`
+        pattern: "*.{bed,pgen}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+    - bim_pvar:
+        type: file
+        description: PLINK sidecar file, either `.bim` or `.pvar`
+        pattern: "*.{bim,pvar}"
+        ontologies: []
+    - fam_psam:
+        type: file
+        description: PLINK sidecar file, either `.fam` or `.psam`
+        pattern: "*.{fam,psam}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy map containing sparse GRM metadata
+          e.g. `[ id:'plink_simulated_sp' ]`
+          Used for non-binary fastGWA MLM modes and ignored when `meta3.is_binary` is true
+    - sparse_grm_id:
+        type: file
+        description: Sparse GRM ID file (`.grm.id`), ignored when `meta3.is_binary` is true
+        pattern: "*.grm.id"
+        ontologies: []
+    - sparse_grm_sp:
+        type: file
+        description: Sparse GRM sparse matrix file (`.grm.sp`), ignored when `meta3.is_binary` is true
+        pattern: "*.grm.sp"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy map containing phenotype metadata
+          e.g. `[ id:'QuantitativeTrait', is_binary:false ]`
+          `meta3.is_binary` is required and selects logistic vs MLM fastGWA mode
+          Optional phenotype selector may be supplied as `meta3.mpheno`
+    - phenotype_file:
+        type: file
+        description: Phenotype file
+        pattern: "*.{phe,pheno,txt,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+  - - meta4:
+        type: map
+        description: |
+          Groovy map containing quantitative covariate metadata
+          e.g. `[ id:'covariates_quant' ]`
+    - quant_covariates_file:
+        type: file
+        description: Quantitative covariates file, pass `[]` when absent
+        pattern: "*.{covar,cov,txt,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+  - - meta5:
+        type: map
+        description: |
+          Groovy map containing categorical covariate metadata
+          e.g. `[ id:'covariates_cat' ]`
+    - cat_covariates_file:
+        type: file
+        description: Categorical covariates file, pass `[]` when absent
+        pattern: "*.{covar,cov,txt,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+  - mlm_exact:
+      type: boolean
+      description: |
+        Apply `--fastGWA-mlm-exact` for non-binary phenotypes.
+        Ignored when `meta3.is_binary` is true because binary phenotypes use `--fastGWA-lr`.
+output:
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy map containing PLINK genotype metadata
+            e.g. `[ id:'plink_simulated' ]`
+      - meta3:
+          type: map
+          description: |
+            Groovy map containing phenotype metadata
+            e.g. `[ id:'QuantitativeTrait' ]`
+      - "${meta.id}_${meta3.id}.fastGWA":
+          type: file
+          description: FastGWA association results
+          pattern: "${meta.id}_${meta3.id}.fastGWA"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  versions_gcta:
+    - - "${task.process}":
+          type: string
+          description: The process the version was collected from
+      - "gcta":
+          type: string
+          description: The tool name
+      - "gcta --version 2>&1 | grep 'version v' | tr -s ' ' | cut -d' ' -f3 | sed 's/^v//'":
+          type: eval
+          description: The command used to retrieve the GCTA version
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - gcta:
+          type: string
+          description: The tool name
+      - gcta --version 2>&1 | grep 'version v' | tr -s ' ' | cut -d' ' -f3 | sed 's/^v//':
+          type: eval
+          description: The command used to retrieve the GCTA version
+authors:
+  - "@andongni"
+maintainers:
+  - "@andongni"
