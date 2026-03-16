@@ -24,7 +24,7 @@ process MACSE_REFINEALIGNMENT {
 
     """
     sed '/^>/!s/[[:space:]]//g' ${fasta} > ${prefix}.clean.fasta
-    
+
     macse -prog refineAlignment \
         -align ${prefix}.clean.fasta \
         $args
