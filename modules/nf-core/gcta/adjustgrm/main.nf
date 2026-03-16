@@ -8,6 +8,7 @@ process GCTA_ADJUSTGRM {
 
     input:
     tuple val(meta), path(grm_id), path(grm_bin), path(grm_n_bin)
+    val grm_adj
 
     output:
     tuple val(meta), path("${meta.id}_adj.grm.id"), path("${meta.id}_adj.grm.bin"), path("${meta.id}_adj.grm.N.bin"), emit: grm_files
@@ -18,11 +19,12 @@ process GCTA_ADJUSTGRM {
 
     script:
     def args = task.ext.args ?: ''
+    def grm_adj_value = (grm_adj == null || grm_adj == '') ? 0 : grm_adj
 
     """
     gcta \\
         --grm ${meta.id} \\
-        --grm-adj 0 \\
+        --grm-adj ${grm_adj_value} \\
         --make-grm \\
         --out ${meta.id}_adj \\
         --thread-num ${task.cpus} \\

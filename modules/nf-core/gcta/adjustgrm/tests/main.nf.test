@@ -48,6 +48,39 @@ nextflow_process {
                 }
 
                 input[0] = dense_grm
+                input[1] = 1
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.grm_files.size() == 1 },
+                { assert process.out.grm_files.get(0).get(0).id == "plink_simulated_dense.part_1_1" },
+                {
+                    assert snapshot(
+                        process.out.grm_files,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - adjust dense GRM with fallback default") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                dense_grm = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
+
+                input[0] = dense_grm
+                input[1] = ''
                 """
             }
         }
@@ -80,6 +113,7 @@ nextflow_process {
                 }
 
                 input[0] = dense_grm
+                input[1] = 1
                 """
             }
         }

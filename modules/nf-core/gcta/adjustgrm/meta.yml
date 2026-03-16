@@ -33,6 +33,11 @@ input:
         description: Dense GRM sample-count matrix file
         pattern: "*.grm.N.bin"
         ontologies: []
+  - grm_adj:
+      type: number
+      description: |
+        GRM adjustment value passed to `--grm-adj`.
+        When an empty string is supplied, the module falls back to `0`.
 
 output:
   grm_files:
