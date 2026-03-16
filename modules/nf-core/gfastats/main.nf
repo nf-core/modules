@@ -35,6 +35,9 @@ process GFASTATS {
     def output_sequences = out_fmt ? "--out-format ${prefix}.${out_fmt}.gz" : ""
     """
     gfastats \\
+        $assembly \\
+        $genome_size \\
+        $target \\
         $args \\
         --threads $task.cpus \\
         $agp \\
@@ -42,9 +45,6 @@ process GFASTATS {
         $ebed \\
         $sak \\
         $output_sequences \\
-        --input-sequence $assembly \\
-        $genome_size \\
-        $target \\
         > ${prefix}.assembly_summary
     """
 
