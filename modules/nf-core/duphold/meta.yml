@@ -79,6 +79,9 @@ output:
       - duphold:
           type: string
           description: The name of the tool
+      - 'duphold -h | sed -e "s/^version: //;q"':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
