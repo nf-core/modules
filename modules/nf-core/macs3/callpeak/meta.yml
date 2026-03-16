@@ -102,7 +102,7 @@ output:
       - macs3:
           type: string
           description: The name of the tool
-      - macs3 --version | sed -e 's/macs3 //g':
+      - "macs3 --version | sed -e 's/macs3 //g'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -113,10 +113,11 @@ topics:
       - macs3:
           type: string
           description: The name of the tool
-      - macs3 --version | sed -e 's/macs3 //g':
+      - "macs3 --version | sed -e 's/macs3 //g'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
   - "@JoseEspinosa"
 maintainers:
   - "@JoseEspinosa"
+  - "@Kevin-Brockers"
