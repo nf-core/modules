@@ -244,7 +244,6 @@ workflow DIA_PROTEOMICS_ANALYSIS {
 
     DIANN_INSILICOLIBRARYGENERATION(ch_insilico_library_input)
     ch_speclib = ch_speclib.mix(DIANN_INSILICOLIBRARYGENERATION.out.predict_speclib)
-    ch_versions = ch_versions.mix(DIANN_INSILICOLIBRARYGENERATION.out.versions)
 
     // In-silico libraries have been generated for combinations of FASTA and configuration, which
     // may have been the same over multiple inputs. Use a combine to annotate inputs with in silico libraries.
@@ -291,7 +290,6 @@ workflow DIA_PROTEOMICS_ANALYSIS {
             [meta, ms_file, [], [], speclib, []]  // DIANN module input: [meta, ms_files, ms_file_names, fasta, library, quant]
         }
     )
-    ch_versions = ch_versions.mix(DIANN_PRELIMINARYANALYSIS.out.versions)
 
     //
     // MODULE: Assemble empirical library with all inputs from the same experiment + search DB
@@ -306,7 +304,6 @@ workflow DIA_PROTEOMICS_ANALYSIS {
         }
 
     DIANN_ASSEMBLEEMPIRICALLIBRARY(ch_empirical_input)
-    ch_versions = ch_versions.mix(DIANN_ASSEMBLEEMPIRICALLIBRARY.out.versions)
 
     //
     // Derive suggested settings from DIA-NN log
@@ -342,7 +339,6 @@ workflow DIA_PROTEOMICS_ANALYSIS {
             [meta, ms_file, [], fasta, empirical_library, []]  // DIANN module input: [meta, ms_files, ms_file_names, fasta, library, quant]
         }
     )
-    ch_versions = ch_versions.mix(DIANN_INDIVIDUALANALYSIS.out.versions)
 
     //
     // MODULE: Final quantification
@@ -358,13 +354,12 @@ workflow DIA_PROTEOMICS_ANALYSIS {
         }
 
     DIANN_FINALQUANTIFICATION(ch_final_quantification_input)
-    ch_versions = ch_versions.mix(DIANN_FINALQUANTIFICATION.out.versions)
     ch_final_quantification_combined_output = DIANN_FINALQUANTIFICATION.out.main_report
-        .mix(DIANN_FINALQUANTIFICATION.out.report_parquet)       // [meta_exp_searchdb, report]
-        .last()                                                  // [meta_exp_searchdb, report]
-        .join(DIANN_FINALQUANTIFICATION.out.pg_matrix)           // [meta_exp_searchdb, report, pg_matrix]
-        .join(DIANN_FINALQUANTIFICATION.out.pr_matrix)           // [meta_exp_searchdb, report, pg_matrix, pr_matrix]
-        .combine(DIANN_FINALQUANTIFICATION.out.versions.last())  // [meta_exp_searchdb, report, pg_matrix, pr_matrix, versions]
+        .mix(DIANN_FINALQUANTIFICATION.out.report_parquet)                                                // [meta_exp_searchdb, report]
+        .last()                                                                                           // [meta_exp_searchdb, report]
+        .join(DIANN_FINALQUANTIFICATION.out.pg_matrix)                                                    // [meta_exp_searchdb, report, pg_matrix]
+        .join(DIANN_FINALQUANTIFICATION.out.pr_matrix)                                                    // [meta_exp_searchdb, report, pg_matrix, pr_matrix]
+        .combine(DIANN_FINALQUANTIFICATION.out.versions_diann.map{ _process, _tool, version -> version }) // [meta_exp_searchdb, report, pg_matrix, pr_matrix, version]
 
     //
     // MODULE: Generate mzML statistics
@@ -397,10 +392,10 @@ workflow DIA_PROTEOMICS_ANALYSIS {
         .first()
 
     ch_diann2mztab_input = ch_first_config
-        .join(ch_final_quantification_combined_output)             // [meta_exp_searchdb, meta_input, report, pg_matrix, pr_matrix, versions]
-        .join(input.expdesign.unique())                            // [meta_exp_searchdb, meta_input, report, pg_matrix, pr_matrix, versions, exp_design]
-        .join(ch_statistics)                                       // [meta_exp_searchdb, meta_input, report, pg_matrix, pr_matrix, versions, exp_design, ms_statistics]
-        .join(input.search_db_by_exp)                              // [meta_exp_searchdb, meta_input, report, pg_matrix, pr_matrix, versions, exp_design, ms_statistics, fasta]
+        .join(ch_final_quantification_combined_output)             // [meta_exp_searchdb, meta_input, report, pg_matrix, pr_matrix, version]
+        .join(input.expdesign.unique())                            // [meta_exp_searchdb, meta_input, report, pg_matrix, pr_matrix, version, exp_design]
+        .join(ch_statistics)                                       // [meta_exp_searchdb, meta_input, report, pg_matrix, pr_matrix, version, exp_design, ms_statistics]
+        .join(input.search_db_by_exp)                              // [meta_exp_searchdb, meta_input, report, pg_matrix, pr_matrix, version, exp_design, ms_statistics, fasta]
         .map { meta_exp_searchdb, meta_input, report, pg_matrix, pr_matrix, versions, exp_design, ms_statistics, fasta ->
             [meta_input + meta_exp_searchdb, report, pg_matrix, pr_matrix, versions, exp_design, ms_statistics, fasta]
         }
