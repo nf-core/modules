@@ -1,5 +1,5 @@
 process REGENIE_STEP2 {
-    tag "${meta.id}:${meta2.id}"
+    tag "${meta.id}:${meta2.pheno_col}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -12,6 +12,8 @@ process REGENIE_STEP2 {
     tuple val(meta2), path(pheno)
     tuple val(meta3), path(predictions), path(loco_files)
     tuple val(meta4), path(covar)
+    val(bsize)
+    val(test_model)
 
     output:
     tuple val(meta), val(meta2), path("*.regenie.gz"), emit: results
@@ -25,24 +27,23 @@ process REGENIE_STEP2 {
     def args = task.ext.args ?: ''
     def binary_arg = meta2.is_binary ? '--bt' : ''
     def covar_arg = covar ? "--covarFile ${covar}" : ''
+    def pheno_col = meta2.pheno_col
     def genotype_flag = plink_genotype_file.name.endsWith('.pgen') ? '--pgen' : '--bed'
-    def genotype_prefix = plink_genotype_file.baseName
-    def base_prefix = meta.chr_prefix ?: meta.id
-    def prefix = task.ext.prefix ?: "${base_prefix}.regenie.step2"
-    def bsize = task.ext.bsize ?: 400
-    def test_model = task.ext.regenie_test ?: 'additive'
+    def prefix = meta.chr != null ? "${meta.id}.chr${meta.chr}" : "${meta.id}"
+    def bsize_arg = bsize ?: 400
+    def test_model_arg = test_model ?: 'additive'
 
     """
     regenie \\
         --step 2 \\
-        ${genotype_flag} ${genotype_prefix} \\
+        ${genotype_flag} ${prefix} \\
         --phenoFile ${pheno} \\
-        --phenoColList ${meta2.id} \\
+        --phenoColList ${pheno_col} \\
         --pred ${predictions} \\
         ${covar_arg} \\
         ${binary_arg} \\
-        --test ${test_model} \\
-        --bsize ${bsize} \\
+        --test ${test_model_arg} \\
+        --bsize ${bsize_arg} \\
         --gz \\
         --threads ${task.cpus} \\
         ${args} \\
@@ -50,10 +51,9 @@ process REGENIE_STEP2 {
     """
 
     stub:
-    def base_prefix = meta.chr_prefix ?: meta.id
-    def prefix = task.ext.prefix ?: "${base_prefix}.regenie.step2"
+    def prefix = meta.chr != null ? "${meta.id}.chr${meta.chr}" : "${meta.id}"
     """
-    printf '' | gzip > ${prefix}_${meta2.id}.regenie.gz
+    printf '' | gzip > ${prefix}_${meta2.pheno_col}.regenie.gz
     touch ${prefix}.log
     """
 }

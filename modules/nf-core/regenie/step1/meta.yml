@@ -22,6 +22,8 @@ input:
         type: map
         description: |
           Groovy Map containing genotype information
+          Keep only the genotype analysis identifier in this map
+          The PLINK bundle must already be staged with basename `meta.id`
           e.g. `[ id:'cohort' ]`
     - plink_genotype_file:
         type: file
@@ -42,8 +44,9 @@ input:
   - - meta2:
         type: map
         description: |
-          Groovy Map containing phenotype information
-          e.g. `[ id:'Phenotype', is_binary:true ]`
+          Groovy Map containing phenotype file information and phenotype selector
+          Keep `id` for the phenotype file identity and use `pheno_col` for the phenotype column passed to `--phenoColList`
+          e.g. `[ id:'plink_simulated_quantitative_phenoname', pheno_col:'QuantitativeTrait', is_binary:true ]`
     - pheno:
         type: file
         description: Phenotype file passed to `--phenoFile`
@@ -62,14 +65,17 @@ input:
         pattern: "*.{covar,cov,txt,tsv}"
         ontologies:
           - edam: "http://edamontology.org/format_3475" # TSV
+  - bsize:
+      type: integer
+      description: Optional block size passed to `--bsize`; pass `[]` to use the module default of `1000`
 
 output:
   predictions:
     - - meta2:
           type: map
           description: |
-            Groovy Map containing phenotype information
-            e.g. `[ id:'Phenotype', is_binary:true ]`
+            Groovy Map containing phenotype file information and phenotype selector
+            e.g. `[ id:'plink_simulated_quantitative_phenoname', pheno_col:'QuantitativeTrait', is_binary:true ]`
       - "*_pred.list":
           type: file
           description: REGENIE prediction list file
@@ -85,8 +91,8 @@ output:
     - - meta2:
           type: map
           description: |
-            Groovy Map containing phenotype information
-            e.g. `[ id:'Phenotype', is_binary:true ]`
+            Groovy Map containing phenotype file information and phenotype selector
+            e.g. `[ id:'plink_simulated_quantitative_phenoname', pheno_col:'QuantitativeTrait', is_binary:true ]`
       - "*.log":
           type: file
           description: REGENIE step 1 log file
