@@ -13,7 +13,7 @@ process BWAMETH_INDEX {
 
     output:
     tuple val(meta), path("BwamethIndex"), emit: index
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('bwameth'), eval('bwameth.py --version | cut -f2 -d\' \''), emit: versions_bwameth_index, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,12 +24,7 @@ process BWAMETH_INDEX {
 
     bwameth.py ${index_cmd} ${fasta}
 
-    rm ${fasta}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bwameth: \$(bwameth.py --version | cut -f2 -d" ")
-    END_VERSIONS
+    rm $fasta
     """
 
     stub:
@@ -43,11 +38,5 @@ process BWAMETH_INDEX {
     touch BwamethIndex/genome.fasta.bwameth.c2t.bwt
     touch BwamethIndex/genome.fasta.bwameth.c2t.pac
     touch BwamethIndex/genome.fasta.bwameth.c2t.sa
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bwameth: \$(bwameth.py --version | cut -f2 -d" ")
-    END_VERSIONS
     """
 }

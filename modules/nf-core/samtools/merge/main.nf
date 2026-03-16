@@ -14,8 +14,7 @@ process SAMTOOLS_MERGE {
     output:
     tuple val(meta), path("${prefix}.bam"), optional: true, emit: bam
     tuple val(meta), path("${prefix}.cram"), optional: true, emit: cram
-    tuple val(meta), path("*.csi"), optional: true, emit: csi
-    tuple val(meta), path("*.crai"), optional: true, emit: crai
+    tuple val(meta), path("*.{bai,crai,csi}"), optional: true, emit: index
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
