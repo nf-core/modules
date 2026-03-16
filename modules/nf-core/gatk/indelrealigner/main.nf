@@ -16,7 +16,7 @@ process GATK_INDELREALIGNER {
 
     output:
     tuple val(meta), path("*.bam"), path("*.bai"), emit: bam
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('gatk'), eval('gatk3 --version'), emit: versions_gatk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -49,10 +49,6 @@ process GATK_INDELREALIGNER {
         -o ${prefix}.bam \\
         ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk: \$(echo \$(gatk3 --version))
-    END_VERSIONS
     """
 
     stub:
@@ -73,9 +69,5 @@ process GATK_INDELREALIGNER {
     touch ${prefix}.bam
     touch ${prefix}.bam.bai
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk: \$(echo \$(gatk3 --version))
-    END_VERSIONS
     """
 }
