@@ -29,7 +29,7 @@
                     [
                         "SAMTOOLS_ADDREPLACERG",
                         "samtools",
-                        "1.22.1"
+                        "1.23"
                     ]
                 ],
                 "bai": [
@@ -59,7 +59,7 @@
                     [
                         "SAMTOOLS_ADDREPLACERG",
                         "samtools",
-                        "1.22.1"
+                        "1.23"
                     ]
                 ]
             }
@@ -78,7 +78,7 @@
                         {
                             "id": "test"
                         },
-                        "test.bam:md5,650547c668995e0e0f4131052542f388"
+                        "test.bam:md5,ce382b332f0c373a35e106f179b13e09"
                     ]
                 ],
                 "1": [
@@ -95,7 +95,7 @@
                         {
                             "id": "test"
                         },
-                        "test.bam.csi:md5,8b681445a826210081c8446f705031e7"
+                        "test.bam.csi:md5,d405f1a6739af65f61e66e01abfd72be"
                     ]
                 ],
                 "5": [
@@ -105,7 +105,7 @@
                     [
                         "SAMTOOLS_ADDREPLACERG",
                         "samtools",
-                        "1.22.1"
+                        "1.23"
                     ]
                 ],
                 "bai": [
@@ -116,7 +116,7 @@
                         {
                             "id": "test"
                         },
-                        "test.bam:md5,650547c668995e0e0f4131052542f388"
+                        "test.bam:md5,ce382b332f0c373a35e106f179b13e09"
                     ]
                 ],
                 "crai": [
@@ -130,7 +130,7 @@
                         {
                             "id": "test"
                         },
-                        "test.bam.csi:md5,8b681445a826210081c8446f705031e7"
+                        "test.bam.csi:md5,d405f1a6739af65f61e66e01abfd72be"
                     ]
                 ],
                 "sam": [
@@ -140,16 +140,16 @@
                     [
                         "SAMTOOLS_ADDREPLACERG",
                         "samtools",
-                        "1.22.1"
+                        "1.23"
                     ]
                 ]
             }
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.4"
         },
-        "timestamp": "2026-02-28T00:48:10.318914737"
+        "timestamp": "2026-03-12T16:53:36.584917"
     },
     "homo-sapiens - cram": {
         "content": [
@@ -186,7 +186,7 @@
                     [
                         "SAMTOOLS_ADDREPLACERG",
                         "samtools",
-                        "1.22.1"
+                        "1.23"
                     ]
                 ]
             },
@@ -197,15 +197,15 @@
                     "@RG\tID:1\tPU:1\tSM:testN\tLB:testN\tPL:illumina\tDS:replaced_read_group_test",
                     "@PG\tID:bwa\tPN:bwa\tVN:0.7.17-r1188\tCL:bwa mem -K 100000000 -R @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina -t 19 -M genome.fasta test_1.retry.fq.gz test_2.retry.fq.gz",
                     "@PG\tID:samtools\tPN:samtools\tPP:bwa\tVN:1.13\tCL:samtools view -C -T ../../genome/genome.fasta -o test.paired_end.sorted.cram test.paired_end.sorted.bam",
-                    "@PG\tID:samtools.1\tPN:samtools\tPP:samtools\tVN:1.22.1\tCL:samtools addreplacerg --threads 1 --write-index -O cram,version=3.0 -w -r @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina\\tDS:replaced_read_group_test --reference genome.fasta -o test.cram test.paired_end.sorted.cram"
+                    "@PG\tID:samtools.1\tPN:samtools\tPP:samtools\tVN:1.23\tCL:samtools addreplacerg --threads 1 --write-index -O cram,version=3.0 -w -r @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina\\tDS:replaced_read_group_test --reference genome.fasta -o test.cram test.paired_end.sorted.cram"
                 ]
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.4"
         },
-        "timestamp": "2026-02-28T00:48:01.943990031"
+        "timestamp": "2026-03-12T16:53:29.399523"
     },
     "sarscov2 - bam": {
         "content": [
@@ -215,7 +215,7 @@
                         {
                             "id": "test"
                         },
-                        "test.bam:md5,c158e1dd90fb9a40d22accd63990be46"
+                        "test.bam:md5,0a507ab21698c88283e9d473c9b5b748"
                     ]
                 ],
                 "1": [
@@ -237,7 +237,7 @@
                     [
                         "SAMTOOLS_ADDREPLACERG",
                         "samtools",
-                        "1.22.1"
+                        "1.23"
                     ]
                 ],
                 "bai": [
@@ -248,7 +248,7 @@
                         {
                             "id": "test"
                         },
-                        "test.bam:md5,c158e1dd90fb9a40d22accd63990be46"
+                        "test.bam:md5,0a507ab21698c88283e9d473c9b5b748"
                     ]
                 ],
                 "crai": [
@@ -267,15 +267,15 @@
                     [
                         "SAMTOOLS_ADDREPLACERG",
                         "samtools",
-                        "1.22.1"
+                        "1.23"
                     ]
                 ]
             }
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.4"
         },
-        "timestamp": "2026-02-28T00:47:53.904862393"
+        "timestamp": "2026-03-12T16:53:22.393597"
     }
 }

@@ -12,7 +12,7 @@ process COPTR_ESTIMATE {
 
     output:
     tuple val(meta), path("*.csv"), emit: ptr
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('coptr'), eval("coptr |& sed -E '11!d ; s/CoPTR.*?\\(v(.*?)\\).*/\\1/'"), emit: versions_coptr, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,21 +26,11 @@ process COPTR_ESTIMATE {
         $args \\
         coverage_maps/ \\
         ${prefix}.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        coptr: \$(coptr |& sed -E '11!d ; s/CoPTR.*?\\(v(.*?)\\).*/\\1/')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        coptr: \$(coptr |& sed -E '11!d ; s/CoPTR.*?\\(v(.*?)\\).*/\\1/')
-    END_VERSIONS
     """
 }
