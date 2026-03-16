@@ -19,7 +19,8 @@ tools:
       documentation: https://eucancan.github.io/variant-extractor/
       tool_dev_url: https://github.com/EUCANCan/variant-extractor
       doi: "10.1016/j.xgen.2024.100639"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:variant_extractor
 input:
   - - meta:
@@ -46,27 +47,11 @@ output:
             MNPs decomposed, SV breakends deduplicated).
           pattern: "*.vcf"
           ontologies: []
-  versions_variantextractor:
-    - - ${task.process}:
-          type: string
-          description: The process the versions were collected from
-      - variant-extractor:
-          type: string
-          description: The tool name
-      - 'python3 -c "import variant_extractor; print(variant_extractor.__version__)"':
-          type: string
-          description: The command used to generate the version of the tool
-topics:
   versions:
-    - - ${task.process}:
-          type: string
-          description: The process the versions were collected from
-      - variant-extractor:
-          type: string
-          description: The tool name
-      - 'python3 -c "import variant_extractor; print(variant_extractor.__version__)"':
-          type: string
-          description: The command used to generate the version of the tool
+    - versions.yml:
+        type: file
+        description: File containing software versions.
+        pattern: "versions.yml"
 authors:
   - "@sbreuch"
 maintainers:
