@@ -17,7 +17,7 @@ process CATPACK_DOWNLOAD {
     tuple val(meta), path("${prefix}/*.nodes.dmp"), emit: nodes
     tuple val(meta), path("${prefix}/*accession2taxid*.gz"), emit: acc2tax
     tuple val(meta), path("${prefix}/*.log"), emit: log
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('catpack'), eval("CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g'"), topic: versions, emit: versions_catpack
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,11 +31,6 @@ process CATPACK_DOWNLOAD {
         ${args} \\
         --db ${db} \\
         -o ${prefix}/
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
-    END_VERSIONS
     """
 
     stub:
@@ -54,10 +49,5 @@ process CATPACK_DOWNLOAD {
     touch ${prefix}/${prefix}.nodes.dmp
     echo "" | gzip > ${prefix}/${prefix}.accession2taxid.gz
     touch ${prefix}/${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
-    END_VERSIONS
     """
 }

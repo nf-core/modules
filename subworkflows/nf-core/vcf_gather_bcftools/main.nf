@@ -17,7 +17,7 @@ workflow VCF_GATHER_BCFTOOLS {
 
     ch_concat_input = ch_vcfs
         .map { meta, vcf, index, count ->
-            def missingKeys = arr_common_meta.findAll { key -> !(key in meta) }
+            def missingKeys = arr_common_meta.findAll { key -> !(key in meta.keySet()) }
             if (missingKeys) {
                 error("ERROR: Keys ${missingKeys} from arr_common_meta not found in meta. Available keys: ${meta.keySet()}")
             }
@@ -27,9 +27,6 @@ workflow VCF_GATHER_BCFTOOLS {
             [groupKey(newMeta, count), meta, vcf, index]
         }
         .groupTuple()
-        .ifEmpty {
-            error("ERROR: grouping operation resulted in an empty channel.")
-        }
         .branch { key, meta, vcf, index ->
             def cleanedMetas = meta.collect { m ->
                 m.findAll { k, _v -> !(k in arr_common_meta) }

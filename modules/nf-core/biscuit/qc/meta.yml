@@ -11,12 +11,13 @@ keywords:
   - quality control
 tools:
   - biscuit:
-      description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification
-        data
+      description: A utility for analyzing sodium bisulfite conversion-based DNA
+        methylation/modification data
       homepage: https://huishenlab.github.io/biscuit/
       documentation: https://huishenlab.github.io/biscuit/docs/subcommand_help.html#biscuit-qc
       tool_dev_url: https://github.com/huishenlab/biscuit
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:biscuit
 input:
   - - meta:
@@ -73,13 +74,27 @@ output:
               - Read-averaged cytosine conversion rate for CpA, CpC, CpG, and CpT
           pattern: "*.txt"
           ontologies: []
+  versions_biscuit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - biscuit:
+          type: string
+          description: The name of the tool
+      - "biscuit version |& sed '1!d; s/^.*BISCUIT Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - biscuit:
+          type: string
+          description: The name of the tool
+      - "biscuit version |& sed '1!d; s/^.*BISCUIT Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@njspix"
 maintainers:
