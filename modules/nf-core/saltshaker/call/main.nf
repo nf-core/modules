@@ -8,9 +8,8 @@ process SALTSHAKER_CALL {
         'community.wave.seqera.io/library/pip_saltshaker:e08e38a6d45f8f32' }"
 
     input:
-    tuple val(meta), path(breakpoint)
-    tuple val(meta2), path(cluster)
-    tuple val(meta3), path(mtfasta)
+    tuple val(meta), path(breakpoint), path(cluster)
+    tuple val(meta2), path(mtfasta)
     val flank
     val heteroplasmy_limit
     val mito_length
