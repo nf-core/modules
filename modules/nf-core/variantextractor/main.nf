@@ -12,43 +12,24 @@ process VARIANTEXTRACTOR {
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
-    tuple val("${task.process}"), val('variant-extractor'), eval("python3 -c \"import variant_extractor; print(variant_extractor.__version__)\""), topic: versions, emit: versions_variantextractor
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args         = task.ext.args ?: ''
-    def prefix       = task.ext.prefix ?: "${meta.id}"
-    def pass_only    = args.contains('--pass-only')       ? 'True'  : 'False'
-    def ensure_pairs = args.contains('--no-ensure-pairs') ? 'False' : 'True'
-    """
-    python3 << 'PYEOF'
-import pysam
-from variant_extractor import VariantExtractor
-
-vcf_in   = pysam.VariantFile("${vcf}")
-header   = str(vcf_in.header).rstrip("\\n")
-vcf_in.close()
-
-extractor = VariantExtractor(
-    "${vcf}",
-    pass_only=${pass_only},
-    ensure_pairs=${ensure_pairs}
-)
-
-with open("${prefix}.extracted.vcf", "w") as out:
-    out.write(header + "\\n")
-    for variant_record in extractor:
-        out.write(str(variant_record) + "\\n")
-
-extractor.close()
-PYEOF
-    """
+    prefix       = task.ext.prefix ?: "${meta.id}"
+    pass_only    = task.ext.args?.contains('--pass-only')       ? 'True'  : 'False'
+    ensure_pairs = task.ext.args?.contains('--no-ensure-pairs') ? 'False' : 'True'
+    template 'variantextractor.py'
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.extracted.vcf
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        variant-extractor: \$(python3 -c 'import variant_extractor; print(variant_extractor.__version__)')
+    END_VERSIONS
     """
 }
