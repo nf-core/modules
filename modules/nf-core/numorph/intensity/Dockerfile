@@ -1,4 +1,4 @@
-FROM ghcr.io/qbic-pipelines/matlabruntime-numorphtools:1.0.0
+FROM ghcr.io/qbic-pipelines/matlabruntime-numorphtools:1.0.0@sha256:e05a941552a1f9c741530d68a0d3877363c8e05bb385190f0acade97db73656b
 
 ARG NUMORPH_PREPROCESSING_VERSION="1.0.0"
 ARG NUMORPH_PREPROCESSING_URL="https://github.com/qbic-pipelines/Numorph-toolkit/releases/download/1.0.0/numorph_preprocessing"
