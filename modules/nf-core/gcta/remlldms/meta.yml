@@ -18,6 +18,7 @@ input:
         description: |
           Groovy map containing phenotype metadata
           e.g. `[ id:'QuantitativeTrait' ]`
+          Optional phenotype selector may be supplied as `meta.mpheno`
     - phenotypes_file:
         type: file
         description: Phenotype file passed to `--pheno`
@@ -69,6 +70,7 @@ output:
           description: |
             Groovy map containing phenotype metadata
             e.g. `[ id:'QuantitativeTrait' ]`
+            Preserves optional `meta.mpheno` when supplied
       - "${meta.id}.hsq":
           type: file
           description: REML-LDMS result file

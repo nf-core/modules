@@ -26,6 +26,20 @@ nextflow_process {
             }
         }
 
+        run("GAWK", alias: "GAWK_MULTI_PHENO") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'QuantitativeTraits' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/gsmr/bfile/bfile.fam', checkIfExists: true)
+                ]
+                input[1] = Channel.of('{ trait1 = ((NR % 11) - 5) + (((NR * NR) % 7) / 10.0); print \$1, \$2, trait1, trait1 + ((NR % 5) / 10.0) }').collectFile(name:'multi_phenotype.awk')
+                input[2] = false
+                """
+            }
+        }
+
         run("GAWK", alias: "GAWK_QUANTITATIVE_COVARIATES") {
             script "../../../gawk/main.nf"
             process {
@@ -128,6 +142,51 @@ nextflow_process {
                 input[1] = GAWK_LDMS2_VARIANTS.out.output
                 """
             }
+        }
+    }
+
+    test("homo_sapiens gsmr - ldms mgrm with mpheno selection") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                mgrm_file = Channel
+                    .of('bfile_ldms1.part_1_1\\nbfile_ldms2.part_1_1')
+                    .collectFile(name:'bfile_ldms.mgrm', newLine: true)
+
+                ldms_grm_files = GCTA_MAKEGRMPART_LDMS1.out.grm_files
+                    .mix(GCTA_MAKEGRMPART_LDMS2.out.grm_files)
+                    .map { meta, grm_id, grm_bin, grm_n_bin -> [grm_id, grm_bin, grm_n_bin] }
+                    .collect()
+                    .map { rows -> rows.flatten() }
+
+                multi_pheno = GAWK_MULTI_PHENO.out.output.map { meta, phenotype_file ->
+                    [[ id:'QuantitativeTraitMpheno2', mpheno:2 ], phenotype_file]
+                }
+
+                input[0] = multi_pheno
+                input[1] = mgrm_file
+                    .combine(ldms_grm_files)
+                    .map { row -> [[ id:'bfile_ldms' ], row[0], row[1..-1]] }
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "QuantitativeTraitMpheno2" },
+                { assert process.out.reml_results.get(0).get(0).mpheno == 2 },
+                {
+                    assert snapshot(
+                        process.out.reml_results,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
         }
     }
 

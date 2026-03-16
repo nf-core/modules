@@ -20,6 +20,7 @@ process GCTA_REMLLDMS {
     task.ext.when == null || task.ext.when
 
     script:
+    def mpheno_param = meta.mpheno ? "--mpheno ${meta.mpheno}" : ''
     def qcovar_param = quant_covariates_file ? "--qcovar ${quant_covariates_file}" : ''
     def covar_param = cat_covariates_file ? "--covar ${cat_covariates_file}" : ''
     def extra_args = task.ext.args ?: ''
@@ -31,6 +32,7 @@ process GCTA_REMLLDMS {
         --reml-no-constrain \\
         --mgrm ${mgrm_file} \\
         --pheno ${phenotypes_file} \\
+        ${mpheno_param} \\
         ${qcovar_param} \\
         ${covar_param} \\
         --out "${meta.id}" \\

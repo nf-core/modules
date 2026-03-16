@@ -26,6 +26,20 @@ nextflow_process {
             }
         }
 
+        run("GAWK", alias: "GAWK_MULTI_PHENO") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'QuantitativeTraits' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ]
+                input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$3, (\$3 * 1.7) + ((NR % 5) / 10.0) }').collectFile(name:'multi_phenotype.awk')
+                input[2] = false
+                """
+            }
+        }
+
         run("GAWK", alias: "GAWK_QUANTITATIVE_COVARIATES") {
             script "../../../gawk/main.nf"
             process {
@@ -76,6 +90,44 @@ nextflow_process {
                 input[1] = [[ id:'all_variants' ], []]
                 """
             }
+        }
+    }
+
+    test("homo_sapiens popgen - dense GRM with mpheno selection") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                dense_grm = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
+
+                multi_pheno = GAWK_MULTI_PHENO.out.output.map { meta, phenotype_file ->
+                    [[ id:'QuantitativeTraitMpheno2', mpheno:2 ], phenotype_file]
+                }
+
+                input[0] = multi_pheno
+                input[1] = dense_grm
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "QuantitativeTraitMpheno2" },
+                { assert process.out.reml_results.get(0).get(0).mpheno == 2 },
+                {
+                    assert snapshot(
+                        process.out.reml_results,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
         }
     }
 
