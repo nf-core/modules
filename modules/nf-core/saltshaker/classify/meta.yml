@@ -22,22 +22,21 @@ input:
         description: call metadata file from saltshaker_call
         pattern: "*_call_metadata.tsv"
         ontologies: []
-  - dominant_fraction:
+  - dom_frac:
       type: float
-      description: Minimum fraction required for a call to be considered dominant
+      description: Minimum heteroplasmy fraction to classify as dominant in saltshaker
   - group_radius:
       type: integer
       description: Spatial clustering radius for saltshaker grouping
-  - high_heteroplasmy:
-      type: integer
+  - high_het:
+      type: float
       description: High heteroplasmy threshold for saltshaker classification
-  - multiple_threshold:
-      type: integer
+  - mult_thresh:
+      type: float
       description: Heteroplasmy threshold for multiple classification in saltshaker
-  - noise_threshold:
+  - noise_thresh:
       type: float
       description: Heteroplasmy threshold for noise in saltshaker classification
-
 output:
   classify:
     - - meta:
@@ -67,22 +66,21 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*_classify.vcf":
+      - "*saltshaker.vcf":
           type: file
-          description: vcf file with variant calls
+          description: vcf file with classified calls
           pattern: "*saltshaker.vcf"
           ontologies: []
   versions_saltshaker:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "saltshaker":
+      - saltshaker:
           type: string
           description: The name of the tool
-      - "1.0.0":
+      - 1.0.0:
           type: string
           description: Hardcoded version of saltshaker used in the module
-
 topics:
   versions:
     - - ${task.process}:
