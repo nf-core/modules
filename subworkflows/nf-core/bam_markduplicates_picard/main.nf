@@ -7,31 +7,27 @@ include { SAMTOOLS_INDEX        } from '../../../modules/nf-core/samtools/index/
 include { BAM_STATS_SAMTOOLS    } from '../bam_stats_samtools/main'
 
 workflow BAM_MARKDUPLICATES_PICARD {
-
     take:
-    ch_reads   // channel: [ val(meta), path(reads) ]
-    ch_fasta // channel: [ val(meta), path(fasta) ]
-    ch_fai   // channel: [ val(meta), path(fai) ]
+    ch_reads // channel: [ val(meta), path(reads) ]
+    ch_fasta_fai // channel: [ val(meta), path(fasta), path(fai)]
 
     main:
-    PICARD_MARKDUPLICATES ( ch_reads, ch_fasta, ch_fai )
+    PICARD_MARKDUPLICATES(ch_reads, ch_fasta_fai)
 
     ch_markdup = PICARD_MARKDUPLICATES.out.bam.mix(PICARD_MARKDUPLICATES.out.cram)
 
-    SAMTOOLS_INDEX ( ch_markdup )
+    SAMTOOLS_INDEX(ch_markdup)
 
-    ch_reads_index = ch_markdup
-        .join(SAMTOOLS_INDEX.out.index,  by: [0])
+    ch_reads_index = ch_markdup.join(SAMTOOLS_INDEX.out.index, by: [0])
 
-    BAM_STATS_SAMTOOLS ( ch_reads_index, ch_fasta )
+    BAM_STATS_SAMTOOLS(ch_reads_index, ch_fasta_fai)
 
     emit:
-    bam      = PICARD_MARKDUPLICATES.out.bam     // channel: [ val(meta), path(bam) ]
-    cram     = PICARD_MARKDUPLICATES.out.cram    // channel: [ val(meta), path(cram) ]
+    bam      = PICARD_MARKDUPLICATES.out.bam // channel: [ val(meta), path(bam) ]
+    cram     = PICARD_MARKDUPLICATES.out.cram // channel: [ val(meta), path(cram) ]
     metrics  = PICARD_MARKDUPLICATES.out.metrics // channel: [ val(meta), path(metrics) ]
-    index    = SAMTOOLS_INDEX.out.index          // channel: [ val(meta), path(index) ]
-
-    stats    = BAM_STATS_SAMTOOLS.out.stats      // channel: [ val(meta), path(stats) ]
-    flagstat = BAM_STATS_SAMTOOLS.out.flagstat   // channel: [ val(meta), path(flagstat) ]
-    idxstats = BAM_STATS_SAMTOOLS.out.idxstats   // channel: [ val(meta), path(idxstats) ]
+    index    = SAMTOOLS_INDEX.out.index // channel: [ val(meta), path(index) ]
+    stats    = BAM_STATS_SAMTOOLS.out.stats // channel: [ val(meta), path(stats) ]
+    flagstat = BAM_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), path(flagstat) ]
+    idxstats = BAM_STATS_SAMTOOLS.out.idxstats // channel: [ val(meta), path(idxstats) ]
 }
