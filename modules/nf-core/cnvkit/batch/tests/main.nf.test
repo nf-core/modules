@@ -31,11 +31,12 @@ nextflow_process {
         }
 
         then {
-            println process.out.bed[0][1]
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match() }
-            )
+            assert process.success
+            assert snapshot(
+                process.out.bed[0][1].findAll { file(it).size() > 0 },
+                process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
+                process.out.findAll { k, v -> k != "bed" && !k.isInteger() }
+            ).match()
         }
     }
 
@@ -61,10 +62,12 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match() }
-            )
+            assert process.success
+            assert snapshot(
+                process.out.bed[0][1].findAll { file(it).size() > 0 },
+                process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
+                process.out.findAll { k, v -> k != "bed" && !k.isInteger() }
+            ).match()
         }
     }
 
@@ -90,10 +93,12 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match() }
-            )
+            assert process.success
+            assert snapshot(
+                process.out.bed[0][1].findAll { file(it).size() > 0 },
+                process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
+                process.out.findAll { k, v -> k != "bed" && !k.isInteger() }
+            ).match()
         }
     }
 
@@ -119,10 +124,8 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match() }
-            )
+            assert process.success
+            assert snapshot(process.out).match()
         }
     }
 
@@ -148,10 +151,8 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match() }
-            )
+            assert process.success
+            assert snapshot(process.out).match()
         }
     }
 
@@ -177,19 +178,12 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                {
-                    assert snapshot(
-                        file(process.out.bed.flatten()[1]).name, // empty file
-                        file(process.out.bed.flatten()[2]).name, // empty file
-                        process.out.cnn,
-                        process.out.cnr,
-                        process.out.cns,
-                        process.out.versions
-                    ).match()
-                }
-            )
+            assert process.success
+            assert snapshot(
+                process.out.bed[0][1].findAll { file(it).size() > 0 },
+                process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
+                process.out.findAll { k, v -> k != "bed" && !k.isInteger() }
+            ).match()
         }
 
     }
@@ -214,10 +208,12 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match() }
-            )
+            assert process.success
+            assert snapshot(
+                process.out.bed[0][1].findAll { file(it).size() > 0 },
+                process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
+                process.out.findAll { k, v -> k != "bed" && !k.isInteger() }
+            ).match()
         }
     }
 
@@ -242,10 +238,12 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match() }
-            )
+            assert process.success
+            assert snapshot(
+                process.out.bed[0][1].findAll { file(it).size() > 0 },
+                process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
+                process.out.findAll { k, v -> k != "bed" && !k.isInteger() }
+            ).match()
         }
     }
 
@@ -275,10 +273,12 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match() }
-            )
+            assert process.success
+            assert snapshot(
+                process.out.bed[0][1].findAll { file(it).size() > 0 },
+                process.out.bed[0][1].findAll { file(it).size() == 0 }.collect { file(it).name },
+                process.out.findAll { k, v -> k != "bed" && !k.isInteger() }
+            ).match()
         }
     }
 
@@ -305,15 +305,8 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    file(process.out.bed.flatten()[1]).name, // empty file
-                    file(process.out.bed.flatten()[2]).name, // empty file,
-                    process.out.versions
-                    ).match()
-                }
-            )
+            assert process.success
+            assert snapshot(process.out).match()
         }
     }
 }
