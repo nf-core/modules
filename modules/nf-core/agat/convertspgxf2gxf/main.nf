@@ -4,16 +4,15 @@ process AGAT_CONVERTSPGXF2GXF {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/03/033434db0bd6ba28660401e1059286f36641fd8ce55faa11973fe5eaf312adcd/data' :
-        'community.wave.seqera.io/library/agat:1.5.1--ae3cd948ce5e9795' }"
+        'https://depot.galaxyproject.org/singularity/agat:1.6.1--pl5321hdfd78af_1' :
+        'biocontainers/agat:1.6.1--pl5321hdfd78af_1' }"
 
     input:
     tuple val(meta), path(gxf)
 
     output:
     tuple val(meta), path("*.agat.gff"), emit: output_gff
-    tuple val(meta), path("*.log")     , emit: log
-    tuple val("${task.process}"), val('agat'), eval("agat --version | sed 's/^v//'"), emit: versions_agat, topic: versions
+    tuple val("${task.process}"), val('agat'), eval("agat --version | sed 's/v//'"), topic: versions, emit: versions_agat
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,6 +31,5 @@ process AGAT_CONVERTSPGXF2GXF {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.agat.gff
-    touch ${gxf}.agat.log
     """
 }
