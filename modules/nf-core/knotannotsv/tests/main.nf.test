@@ -10,6 +10,50 @@ nextflow_process {
     tag "modules_nfcore"
     tag "knotannotsv"
 
+    test("homo_sapiens - annotsv_tsv, knot_out_xl - HTML output") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('https://github.com/nf-core/test-datasets/raw/1657be40f475956306087cb699425ddba4420f2a/data/genomics/homo_sapiens/illumina/tsv/sv_query.tsv', checkIfExists: true)
+                ]
+                input[1] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - annotsv_tsv, knot_out_xl - XLSM output") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('https://github.com/nf-core/test-datasets/raw/1657be40f475956306087cb699425ddba4420f2a/data/genomics/homo_sapiens/illumina/tsv/sv_query.tsv', checkIfExists: true)
+                ]
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
+            )
+        }
+    }
+
     test("homo_sapiens - annotsv_tsv, knot_out_xl - stub") {
 
         options "-stub"
@@ -21,9 +65,7 @@ nextflow_process {
                     [ id:'test' ],
                     file('annots_tsv', checkIfExists: false)
                 ]
-                input[1] = [
-                    false
-                ]
+                input[1] = false
                 """
             }
         }
