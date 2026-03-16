@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "crispresso2"
 description: "A software pipeline for the analysis of genome editing outcomes from
   deep sequencing data"
@@ -29,7 +30,7 @@ input:
           paired-end data, respectively.
         pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1930
+          - edam: http://edamontology.org/format_1930 # FASTQ
 output:
   results:
     - - meta:
@@ -52,7 +53,7 @@ output:
           description: CRISPResso HTML report
           pattern: "*.html"
           ontologies:
-            - edam: http://edamontology.org/format_2331
+            - edam: http://edamontology.org/format_2331 # HTML
   txt:
     - - meta:
           type: map
@@ -64,7 +65,7 @@ output:
           description: CRISPResso text output files
           pattern: "CRISPResso_on_*/*.txt"
           ontologies:
-            - edam: http://edamontology.org/format_2330
+            - edam: http://edamontology.org/format_2330 # Textual format
   versions_crispresso2:
     - - ${task.process}:
           type: string
