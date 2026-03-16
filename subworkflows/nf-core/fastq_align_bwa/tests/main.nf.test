@@ -20,7 +20,7 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/bwa/index/main.nf"
                 process {
                     """
-                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)])
                     """
                 }
             }
@@ -31,7 +31,7 @@ nextflow_workflow {
                 input[0] = Channel.of([[ id:'test', single_end:true ],[ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]])
                 input[1] = BWA_INDEX.out.index
                 input[2] = false
-                input[3] = Channel.value([[id: 'genome'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[3] = Channel.value([[id: 'genome'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)])
                 """
             }
         }
@@ -50,7 +50,7 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/bwa/index/main.nf"
                 process {
                     """
-                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)])
                     """
                 }
             }
@@ -62,7 +62,7 @@ nextflow_workflow {
              ] )
                 input[1] = BWA_INDEX.out.index
                 input[2] = false
-                input[3] = Channel.value([[id: 'genome'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[3] = Channel.value([[id: 'genome'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)])
                 """
             }
         }
