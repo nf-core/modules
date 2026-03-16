@@ -22,17 +22,12 @@ input:
         description: breakpoint file from mitosalt
         pattern: "*.{breakpoint}"
         ontologies: []
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
     - cluster:
         type: file
         description: cluster file from mitosalt
         pattern: "*.{cluster}"
         ontologies: []
-  - - meta3:
+  - - meta2:
         type: map
         description: |
           Groovy Map containing reference information
