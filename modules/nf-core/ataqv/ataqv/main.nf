@@ -18,7 +18,7 @@ process ATAQV_ATAQV {
     output:
     tuple val(meta), path("*.ataqv.json"), emit: json
     tuple val(meta), path("*.problems")  , emit: problems, optional: true
-    path "versions.yml"                  , emit: versions
+    tuple val("${task.process}"), val('ataqv'), eval("echo \$(ataqv --version)"), emit: versions_ataqv, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,10 +46,6 @@ process ATAQV_ATAQV {
         ${organism} \\
         ${bam}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ataqv: \$( ataqv --version )
-    END_VERSIONS
     """
 
     stub:
@@ -59,9 +55,6 @@ process ATAQV_ATAQV {
     """
     touch ${prefix}.ataqv.json
     ${problems_cmd}
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ataqv: \$( ataqv --version )
-    END_VERSIONS
+
     """
 }

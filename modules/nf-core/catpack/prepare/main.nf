@@ -18,7 +18,7 @@ process CATPACK_PREPARE {
     output:
     tuple val(meta), path("${prefix}/db/"), emit: db
     tuple val(meta), path("${prefix}/tax/"), emit: taxonomy
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('catpack'), eval("CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g'"), topic: versions, emit: versions_catpack
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,11 +35,6 @@ process CATPACK_PREPARE {
         --acc2tax ${acc2tax} \\
         --db_dir ${prefix}/ \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
-    END_VERSIONS
     """
 
     stub:
@@ -53,10 +48,5 @@ process CATPACK_PREPARE {
     mkdir -p ${prefix}/tax
     touch ${prefix}/tax/nodes.dmp
     touch ${prefix}/tax/names.dmp
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
-    END_VERSIONS
     """
 }

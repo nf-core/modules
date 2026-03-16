@@ -1,5 +1,5 @@
 name: "pretextsnapshot"
-description: a module to generate images from Pretext contact maps.
+description: A module to generate images from Pretext contact maps.
 keywords:
   - pretext
   - image
@@ -26,6 +26,12 @@ input:
         description: pretext hic map
         pattern: "*.pretext"
         ontologies: []
+    - order_file:
+        type: file
+        description: |
+          Custom ordering of scaffolds in pretext snapshot output.
+          This is a single column file of scaffold names
+
 output:
   image:
     - - meta:
