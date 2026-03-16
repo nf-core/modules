@@ -12,7 +12,7 @@ process CHROMAP_INDEX {
 
     output:
     tuple val(meta), path ("*.index"), emit: index
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('chromap'), eval("chromap --version 2>&1"), topic: versions, emit: versions_chromap
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,21 +27,11 @@ process CHROMAP_INDEX {
         -t $task.cpus \\
         -r $fasta \\
         -o ${prefix}.index
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        chromap: \$(echo \$(chromap --version 2>&1))
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${fasta.baseName}"
     """
     touch ${prefix}.index
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        chromap: \$(echo \$(chromap --version 2>&1))
-    END_VERSIONS
     """
 }

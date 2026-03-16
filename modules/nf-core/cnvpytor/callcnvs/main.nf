@@ -13,7 +13,7 @@ process CNVPYTOR_CALLCNVS {
 
     output:
     tuple val(meta), path("${pytor.baseName}.pytor")	, emit: pytor
-    path "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('cnvpytor'), eval("cnvpytor --version | sed -n 's/.*CNVpytor \\(.*\\)/\\1/p'"), emit: versions_cnvpytor, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,20 +24,10 @@ process CNVPYTOR_CALLCNVS {
     cnvpytor \\
         -root ${pytor} \\
         ${bins_cmd}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cnvpytor: \$(cnvpytor --version | sed -n 's/.*CNVpytor \\(.*\\)/\\1/p')
-    END_VERSIONS
     """
 
     stub:
     """
     touch ${pytor.baseName}.pytor
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cnvpytor: \$(cnvpytor --version | sed -n 's/.*CNVpytor \\(.*\\)/\\1/p')
-    END_VERSIONS
     """
 }
