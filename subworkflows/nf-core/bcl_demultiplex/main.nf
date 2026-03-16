@@ -48,6 +48,7 @@ workflow BCL_DEMULTIPLEX {
         ch_interop = ch_interop.mix(BCL2FASTQ.out.interop)
         ch_reports = ch_reports.mix(BCL2FASTQ.out.reports)
         ch_stats = ch_stats.mix(BCL2FASTQ.out.stats)
+        ch_undetermined = ch_undetermined.mix(BCL2FASTQ.out.undetermined)
         ch_sav_files = ch_sav_files.mix(BCL2FASTQ.out.stats)
         ch_fastq_with_meta = ch_fastq_with_meta.mix(
             generateReadgroupBCL2FASTQ(
