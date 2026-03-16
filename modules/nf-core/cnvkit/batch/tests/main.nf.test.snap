@@ -271,37 +271,140 @@
     },
     "cnvkit batch - bam - stub": {
         "content": [
-            [
-                "baits.antitarget.bed",
-                "baits.target.bed",
-                "reference.cnn",
-                "test.paired_end.sorted.antitargetcoverage.cnn",
-                "test.paired_end.sorted.bintest.cns",
-                "test.paired_end.sorted.call.cns",
-                "test.paired_end.sorted.cnr",
-                "test.paired_end.sorted.cns",
-                "test.paired_end.sorted.targetcoverage.cnn"
-            ],
-            [
-                [
-                    "CNVKIT_BATCH",
-                    "cnvkit",
-                    "0.9.12"
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "baits.antitarget.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "baits.target.bed:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "reference.cnn:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.paired_end.sorted.antitargetcoverage.cnn:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.paired_end.sorted.targetcoverage.cnn:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.paired_end.sorted.cnr:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test.paired_end.sorted.bintest.cns:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.paired_end.sorted.call.cns:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.paired_end.sorted.cns:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "4": [
+                    
+                ],
+                "5": [
+                    
+                ],
+                "6": [
+                    [
+                        "CNVKIT_BATCH",
+                        "cnvkit",
+                        "0.9.12"
+                    ]
+                ],
+                "7": [
+                    [
+                        "CNVKIT_BATCH",
+                        "samtools",
+                        "1.21"
+                    ]
+                ],
+                "bed": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "baits.antitarget.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "baits.target.bed:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "cnn": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "reference.cnn:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.paired_end.sorted.antitargetcoverage.cnn:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.paired_end.sorted.targetcoverage.cnn:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "cnr": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.paired_end.sorted.cnr:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "cns": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test.paired_end.sorted.bintest.cns:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.paired_end.sorted.call.cns:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.paired_end.sorted.cns:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "pdf": [
+                    
+                ],
+                "png": [
+                    
+                ],
+                "versions_cnvkit": [
+                    [
+                        "CNVKIT_BATCH",
+                        "cnvkit",
+                        "0.9.12"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "CNVKIT_BATCH",
+                        "samtools",
+                        "1.21"
+                    ]
                 ]
-            ],
-            [
-                [
-                    "CNVKIT_BATCH",
-                    "samtools",
-                    "1.21"
-                ]
-            ]
+            }
         ],
         "meta": {
             "nf-test": "0.9.2",
             "nextflow": "25.10.4"
         },
-        "timestamp": "2026-03-13T16:02:51.609521924"
+        "timestamp": "2026-03-16T13:53:08.398621464"
     },
     "cnvkit batch tumour only mode, no reference - bam": {
         "content": [
