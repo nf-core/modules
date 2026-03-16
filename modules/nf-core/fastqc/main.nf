@@ -8,7 +8,7 @@ process FASTQC {
         'biocontainers/fastqc:0.12.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(reads, stageAs: '?/*')
 
     output:
     tuple val(meta)             , path("*.html")                                                       , emit: html
