@@ -1,0 +1,339 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fastq_shortreads_preprocess_qc"
+description: |
+  Quality check and preprocessing subworkflow of Illumina short reads
+  that can do: quality check of input reads and generate statistics,
+  preprocess and validate reads, barcode removal, remove adapters and merge reads,
+  filter by sequence complexity, deduplicate reads, remove host contamination,
+  concatenate reads and generate statistics for post-processing reads.
+  WARNING: requires at least the process configurations from the nextflow.config
+  to be added to the modules.config in the pipeline in order to work as intended.
+keywords:
+  - fastq
+  - illumina
+  - short
+  - reads
+  - qc
+  - stats
+  - preprocessing
+  - barcoding
+  - adapters
+  - merge
+  - complexity
+  - deduplication
+  - host
+  - decontamination
+components:
+  - fastq_qc_stats
+  - fastqc
+  - seqfu/check
+  - seqfu/stats
+  - seqkit/stats
+  - seqtk/comp
+  - fastq_preprocess_seqkit
+  - fastq_sanitise_seqkit
+  - seqkit/sana
+  - seqkit/pair
+  - seqkit/seq
+  - seqkit/replace
+  - seqkit/rmdup
+  - umitools/extract
+  - fastq_removeadapters_merge
+  - trimmomatic
+  - cutadapt
+  - trimgalore
+  - bbmap/bbduk
+  - leehom
+  - fastp
+  - adapterremoval
+  - cat/fastq
+  - fastq_complexity_filter
+  - prinseqplusplus
+  - bbmap/clumpify
+  - fastq_decontaminate_deacon_hostile
+  - fastq_index_filter_deacon
+  - fastq_fetch_clean_hostile
+  - hostile/fetch
+  - hostile/clean
+  - bowtie2/build
+  - deacon/filter
+  - deacon/index
+
+input:
+  - ch_reads:
+      type: file
+      description: |
+        List of FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
+        Structure: [ val(meta), [ path(reads) ] ]
+      pattern: "*.fastq.gz"
+  - skip_fastqc:
+      type: boolean
+      description: |
+        Skip FastQC quality control step
+  - skip_seqfu_check:
+      type: boolean
+      description: |
+        Skip SeqFu check step
+  - skip_seqfu_stats:
+      type: boolean
+      description: |
+        Skip SeqFu statistics step
+  - skip_seqkit_stats:
+      type: boolean
+      description: |
+        Skip SeqKit statistics step
+  - skip_seqtk_comp:
+      type: boolean
+      description: |
+        Skip SeqTk composition analysis step
+  - skip_seqkit_sana_pair:
+      type: boolean
+      description: |
+        Skip SeqKit sanitize and pair step
+  - skip_seqkit_seq:
+      type: boolean
+      description: |
+        Skip SeqKit sequence processing step
+  - skip_seqkit_replace:
+      type: boolean
+      description: |
+        Skip SeqKit replace step
+  - skip_seqkit_rmdup:
+      type: boolean
+      description: |
+        Skip SeqKit remove duplicates step
+  - skip_umitools_extract:
+      type: boolean
+      description: |
+        Skip UMI-tools extract barcoding step
+  - val_umi_discard_read:
+      type: integer
+      description: |
+        Discard R1 or R2 after UMI extraction (0 = keep both, 1 = discard R1, 2 = discard R2)
+  - skip_adapterremoval:
+      type: boolean
+      description: |
+        Skip the adapter removal and merge subworkflow completely
+  - val_adapter_tool:
+      type: string
+      description: |
+        Choose one of the available adapter removal and/or merging tools
+      enum: ["trimmomatic", "cutadapt", "trimgalore", "bbduk", "leehom", "fastp", "adapterremoval"]
+  - ch_custom_adapters_file:
+      type: file
+      description: |
+        Optional reference files, containing adapter and/or contaminant sequences for removal.
+        In fasta format for bbmap/bbduk and fastp, or in text format for AdapterRemoval (one adapter per line).
+  - val_save_merged:
+      type: boolean
+      description: |
+        Specify true to output merged reads instead
+        Used by fastp and adapterremoval
+  - val_fastp_discard_trimmed_pass:
+      type: boolean
+      description: |
+        Used only by fastp.
+        Specify true to not write any reads that pass trimming thresholds from the fastp process.
+        This can be used to use fastp for the output report only.
+  - val_fastp_save_trimmed_fail:
+      type: boolean
+      description: |
+        Used only by fastp.
+        Specify true to save files that failed to pass fastp trimming thresholds
+  - skip_complexity_filtering:
+      type: boolean
+      description: |
+        Skip PRINSEQ++ complexity filtering step
+  - val_complexity_filter_tool:
+      type: string
+      description: |
+        Complexity filtering tool to use.
+        Must be one of: 'prinseqplusplus', 'bbduk', or 'fastp'.
+  - skip_deduplication:
+      type: boolean
+      description: |
+        Skip BBMap Clumpify deduplication step
+  - skip_decontamination:
+      type: boolean
+      description: |
+        Skip host decontamination step
+  - ch_decontamination_fasta:
+      type: file
+      description: |
+        Reference genome FASTA file for decontamination (optional)
+        Structure: [ val(meta), [ path(fasta) ] ]
+      pattern: "*.{fasta,fa,fna}"
+  - ch_decontamination_reference:
+      type: directory
+      description: |
+        Pre-built reference index directory for decontamination (optional)
+        Structure: [ val(reference_name), path(reference_dir) ]
+  - val_decontamination_index_name:
+      type: string
+      description: |
+        Name for the decontamination index (optional)
+  - val_decontamination_tool:
+      type: string
+      description: |
+        Decontamination tool to use ('hostile' or 'deacon')
+  - skip_final_concatenation:
+      type: boolean
+      description: |
+        Skip final FASTQ concatenation step
+
+output:
+  - reads:
+      type: file
+      description: |
+        Channel containing processed short reads
+        Structure: [ val(meta), path(reads) ]
+      pattern: "*.fastq.gz"
+  - pre_stats_fastqc_html:
+      type: file
+      description: |
+        FastQC HTML reports for pre-processing reads
+        Structure: [ val(meta), path(html) ]
+      pattern: "*.html"
+  - pre_stats_fastqc_zip:
+      type: file
+      description: |
+        FastQC ZIP archives for pre-processing reads
+        Structure: [ val(meta), path(zip) ]
+      pattern: "*.zip"
+  - pre_stats_seqfu_check:
+      type: file
+      description: |
+        SeqFu check results for pre-processing reads
+        Structure: [ val(meta), path(check) ]
+  - pre_stats_seqfu_stats:
+      type: file
+      description: |
+        SeqFu statistics for pre-processing reads
+        Structure: [ val(meta), path(stats) ]
+  - pre_stats_seqfu_multiqc:
+      type: file
+      description: |
+        SeqFu MultiQC-compatible stats for pre-processing reads
+        Structure: [ val(meta), path(multiqc) ]
+  - pre_stats_seqkit_stats:
+      type: file
+      description: |
+        SeqKit statistics for pre-processing reads
+        Structure: [ val(meta), path(stats) ]
+  - pre_stats_seqtk_stats:
+      type: file
+      description: |
+        SeqTk composition statistics for pre-processing reads
+        Structure: [ val(meta), path(stats) ]
+  - post_stats_fastqc_html:
+      type: file
+      description: |
+        FastQC HTML reports for post-processing reads
+        Structure: [ val(meta), path(html) ]
+      pattern: "*.html"
+  - post_stats_fastqc_zip:
+      type: file
+      description: |
+        FastQC ZIP archives for post-processing reads
+        Structure: [ val(meta), path(zip) ]
+      pattern: "*.zip"
+  - post_stats_seqfu_check:
+      type: file
+      description: |
+        SeqFu check results for post-processing reads
+        Structure: [ val(meta), path(check) ]
+  - post_stats_seqfu_stats:
+      type: file
+      description: |
+        SeqFu statistics for post-processing reads
+        Structure: [ val(meta), path(stats) ]
+  - post_stats_seqfu_multiqc:
+      type: file
+      description: |
+        SeqFu MultiQC-compatible stats for post-processing reads
+        Structure: [ val(meta), path(multiqc) ]
+  - post_stats_seqkit_stats:
+      type: file
+      description: |
+        SeqKit statistics for post-processing reads
+        Structure: [ val(meta), path(stats) ]
+  - post_stats_seqtk_stats:
+      type: file
+      description: |
+        SeqTk composition statistics for post-processing reads
+        Structure: [ val(meta), path(stats) ]
+  - umi_log:
+      type: file
+      description: |
+        UMI-tools extract log file
+        Structure: [ val(meta), path(log) ]
+  - adapterremoval_discarded_reads:
+      type: file
+      description: |
+        Reads discarded during adapter removal or merging
+        Structure: [ val(meta), path(fastq) ]
+      pattern: "*.fastq.gz"
+  - adapterremoval_logfile:
+      type: file
+      description: |
+        Adapter removal execution log file
+        (trimmomatic {log}, trimgalore {txt}, fastp {log})
+        Structure: [ val(meta), path({log,txt}) ]
+  - adapterremoval_report:
+      type: file
+      description: |
+        Adapter removal report
+        (trimmomatic {summary}, trimgalore {html,zip}, fastp {html})
+        Structure: [ val(meta), path({summary,html,zip}) ]
+  - complexity_filter_log:
+      type: file
+      description: |
+        Log file from complexity filtering
+        Structure: [ val(meta), path(log) ]
+  - complexity_filter_report:
+      type: file
+      description: |
+        Report generated by complexity filtering
+        HTML report generated by fastp. Empty for other tools.
+        Structure: [ val(meta), path(html) ]
+  - clumpify_log:
+      type: file
+      description: |
+        BBMap Clumpify log file
+        Structure: [ val(meta), path(log) ]
+  - hostile_reference:
+      type: file
+      description: |
+        Hostile reference files used for decontamination
+        Structure: [ val(reference_name), path(reference_dir) ]
+  - hostile_json:
+      type: file
+      description: |
+        Hostile JSON report
+        Structure: [ val(meta), path(json) ]
+  - deacon_index:
+      type: directory
+      description: |
+        Deacon index directory
+        Structure: [ val(meta), path(index) ]
+  - deacon_summary:
+      type: file
+      description: |
+        Deacon decontamination summary file
+        Structure: [ val(meta), path(log) ]
+  - multiqc_files:
+      type: file
+      description: |
+        MultiQC compatible files for aggregated reporting
+        Structure: [ path(files) ]
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

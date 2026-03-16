@@ -25,13 +25,13 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [id: "NA12878"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists:true)
                 ])
                 input[1] = Channel.of([
                     [panel: "1000GP", chr: "chr22"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true)
                 ])
                 input[2] = Channel.of([[panel: "1000GP", chr: "chr22"], "chr22"]) // chunks
                 input[3] = Channel.of([[panel: "1000GP", chr: "chr22"], []])
@@ -40,21 +40,17 @@ nextflow_workflow {
         }
 
         then {
-            assertAll(
-                { assert workflow.success },
-                { assert snapshot(
-                    workflow.out.vcf_index.collect{[
-                        it[0],
-                        path(it[1]).getFileName().toString(),
-                        path(it[2]).getFileName().toString(),
-                        path(it[1]).vcf.summary,
-                        path(it[1]).vcf.header.getGenotypeSamples().sort(),
-                        path(it[1]).vcf.variantsMD5
-                    ]},
-                    workflow.out.versions,
-                    workflow.out.versions.collect{ path(it).yaml }
-                ).match() }
-            )
+            assert workflow.success
+            assert snapshot(
+                workflow.out.vcf_index.collect{[
+                    it[0],
+                    path(it[1]).getFileName().toString(),
+                    path(it[2]).getFileName().toString(),
+                    path(it[1]).vcf.summary,
+                    path(it[1]).vcf.header.getGenotypeSamples().sort(),
+                    path(it[1]).vcf.variantsMD5
+                ]}
+            ).match()
         }
     }
 
@@ -66,8 +62,8 @@ nextflow_workflow {
                     """
                     input[0] = channel.of([
                         [id: "NA12878"],
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExist:true),
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExist:true)
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists:true)
                     ])
                     input[1] = []
                     input[2] = []
@@ -85,12 +81,12 @@ nextflow_workflow {
                 input[0] = BCFTOOLS_VIEW_BCF.out.vcf.join(BCFTOOLS_VIEW_BCF.out.csi)
                 input[1] = channel.of([
                     [panel: "1000GP", chr: "chr22"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true)
                 ],[
                     [panel: "1000GP", chr: "chr21"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz.csi", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz.csi", checkIfExists:true)
                 ])
                 input[2] = channel.of(
                     [[chr: "chr22", panel: "1000GP"], "chr22:16570065-16592216"],
@@ -100,30 +96,27 @@ nextflow_workflow {
                 )
                 input[3] = channel.of([
                     [panel: "1000GP", chr: "chr22"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.plink.map", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.plink.map", checkIfExists:true)
                 ],[
                     [panel: "1000GP", chr: "chr21"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.plink.map", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.plink.map", checkIfExists:true)
                 ])
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert workflow.success },
-                { assert snapshot(
-                    workflow.out.vcf_index.collect{[
-                        it[0],
-                        path(it[1]).getFileName().toString(),
-                        path(it[2]).getFileName().toString(),
-                        path(it[1]).vcf.summary,
-                        path(it[1]).vcf.header.getGenotypeSamples().sort(),
-                        path(it[1]).vcf.variantsMD5
-                    ]},
-                    workflow.out.versions.collect{ path(it).yaml }
-                ).match() }
-            )
+            assert workflow.success
+            assert snapshot(
+                workflow.out.vcf_index.collect{[
+                    it[0],
+                    path(it[1]).getFileName().toString(),
+                    path(it[2]).getFileName().toString(),
+                    path(it[1]).vcf.summary,
+                    path(it[1]).vcf.header.getGenotypeSamples().sort(),
+                    path(it[1]).vcf.variantsMD5
+                ]}
+            ).match()
         }
     }
 
@@ -134,8 +127,8 @@ nextflow_workflow {
                 """
                 input[0] = channel.of([
                     [id: "NA12878"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists:true)
                 ])
                 input[1] = channel.of(
                     [[panel: "1000GP", chr: "chr22"], [], []],
@@ -155,13 +148,8 @@ nextflow_workflow {
             }
         }
         then {
-            assertAll(
-                { assert workflow.success },
-                { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect{ path(it).yaml }
-                ).match() }
-            )
+            assert workflow.success
+            assert snapshot(sanitizeOutput(workflow.out)).match()
         }
     }
 
@@ -172,8 +160,8 @@ nextflow_workflow {
                 """
                 input[0] = channel.of([
                     [id: "NA12878"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.minimac.map", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.minimac.map", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists:true)
                 ])
                 input[1] = channel.of(
                     [[panel: "1000GP", chr: "chr22"], [], []],
@@ -193,10 +181,8 @@ nextflow_workflow {
             }
         }
         then {
-            assertAll(
-                { assert workflow.failed },
-                { assert workflow.errorMessage.contains("ERROR: genome.GRCh38.chr22.minimac.map in ch_input channel must be in VCF or BCF format.") }
-            )
+            assert workflow.failed
+            assert workflow.errorMessage.contains("ERROR: genome.GRCh38.chr22.minimac.map in ch_input channel must be in VCF or BCF format.")
         }
     }
 
@@ -207,8 +193,8 @@ nextflow_workflow {
                 """
                 input[0] = channel.of([
                     [id: "NA12878"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExist:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists:true)
                 ])
                 input[1] = channel.of(
                     [[panel: "1000GP_1", chr: "chr22"], [], []], // Wrong panel
@@ -228,10 +214,8 @@ nextflow_workflow {
             }
         }
         then {
-            assertAll(
-                { assert workflow.failed },
-                { assert workflow.errorMessage.contains("ERROR: join operation resulted in an empty channel. Please provide a valid ch_panel and ch_map channel as input.") }
-            )
+            assert workflow.failed
+            assert workflow.errorMessage.contains("ERROR: join operation resulted in an empty channel. Please provide a valid ch_panel and ch_map channel as input.")
         }
     }
 }

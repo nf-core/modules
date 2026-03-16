@@ -21,15 +21,6 @@ include { DIANN as DIANN_FINALQUANTIFICATION } from '../../../modules/nf-core/di
 */
 
 /**
- * Comparator function to sort file paths by filename
- *
- * @param a First file path
- * @param b Second file path
- * @return Comparison result for sorting (negative, zero, or positive integer)
- */
-def sortByFilename = { a, b -> file(a).getName() <=> file(b).getName() }
-
-/**
  * Sort all lists in a tuple based on the filename order of a reference list
  *
  * This function takes a tuple where the first element is metadata and the remaining
@@ -44,11 +35,11 @@ def sortByFilename = { a, b -> file(a).getName() <=> file(b).getName() }
  *   Input:  [[meta], [file_c, file_a, file_b], [data_c, data_a, data_b]], 1
  *   Output: [[meta], [file_a, file_b, file_c], [data_a, data_b, data_c]]
  */
-def sortListsByPathName = { tuple, sortIndex ->
+def sortListsByPathName(tuple, sortIndex) {
     def meta = tuple[0]
     def sortOrder = tuple[sortIndex].withIndex()
-        .sort { it[0].name }
-        .collect { it[1] }
+        .sort { a, b -> a[0].name <=> b[0].name }
+        .collect { entry -> entry[1] }
 
     [meta] + (1..<tuple.size()).collect { i ->
         sortOrder.collect { j -> tuple[i][j] }
@@ -69,8 +60,8 @@ def sortListsByPathName = { tuple, sortIndex ->
  *         - scan_window: Scan window parameter
  *         Returns null values if the settings line is not found in the log
  */
-def extractDiannMassAccuracyFromLog = { diann_log ->
-    def settingsLine = diann_log.text.split('\n').find { it.contains('Averaged recommended settings') }
+def extractDiannMassAccuracyFromLog(diann_log) {
+    def settingsLine = diann_log.text.split('\n').find { line -> line.contains('Averaged recommended settings') }
     if (settingsLine) {
         def fields = settingsLine.split()
         return [
@@ -106,8 +97,10 @@ def extractDiannMassAccuracyFromLog = { diann_log ->
  * @param wf_pg_level Protein group level for DIA-NN analysis
  * @return Map containing final settings with keys: mass_acc_ms1, mass_acc_ms2, scan_window, pg_level
  */
-def defineMassAccuracySettings = { logSettings, precursor_tolerance, fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit, wf_scan_window, wf_mass_acc_automatic, wf_scan_window_automatic, wf_pg_level ->
-    def mass_acc_ms1, mass_acc_ms2, scan_window
+def defineMassAccuracySettings(logSettings, precursor_tolerance, fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit, wf_scan_window, wf_mass_acc_automatic, wf_scan_window_automatic, wf_pg_level) {
+    def mass_acc_ms1 = null
+    def mass_acc_ms2 = null
+    def scan_window = null
 
     if (wf_mass_acc_automatic || wf_scan_window_automatic) {
         mass_acc_ms1 = logSettings.mass_acc_ms1
@@ -141,7 +134,7 @@ workflow DIA_PROTEOMICS_ANALYSIS {
     wf_scan_window           // Integer: Scan window for DIA-NN individual analysis
     wf_mass_acc_automatic    // Boolean: Whether to use automatic mass accuracy from preliminary analysis
     wf_scan_window_automatic // Boolean: Whether to use automatic scan window from preliminary analysis
-    wf_diann_debug           // Boolean: Enable DIA-NN debug output
+    _wf_diann_debug          // Boolean: Enable DIA-NN debug output
     wf_pg_level              // String: Protein group level for DIA-NN analysis
     ch_speclib_in            // Channel of path(speclib) to use for all inputs
     ch_empirical_library_in  // Channel of path(empirical_library) to use for all inputs
@@ -149,7 +142,7 @@ workflow DIA_PROTEOMICS_ANALYSIS {
 
     main:
 
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
     (random_preanalysis, random_preanalysis_n, random_preanalysis_seed) = random_preanalysis ?: [false, null, null]
 
     //
@@ -230,8 +223,8 @@ workflow DIA_PROTEOMICS_ANALYSIS {
 
     ch_config_input = input.enzyme_mods.unique() // [meta_enzyme_mods, enzyme, fixed_mods, variable_mods]
         .combine(ch_speclib.ifEmpty(null))
-        .filter{tuple -> tuple.any { it == null }}
-        .map{ meta, enzyme, fixed_mods, variable_mods, _ ->
+        .filter{tuple -> tuple.any { elem -> elem == null }}
+        .map{ meta, enzyme, fixed_mods, variable_mods, _speclib ->
             [meta, enzyme, fixed_mods, variable_mods]
         }
 
@@ -245,20 +238,19 @@ workflow DIA_PROTEOMICS_ANALYSIS {
     ch_insilico_library_input = input.search_db_by_enzyme    // [meta_enzyme_mods, meta_fasta_enzyme, meta_fasta, fasta]
         .combine(QUANTMSUTILS_DIANNCFG.out.diann_cfg, by: 0) // [meta_enzyme_mods, meta_fasta_enzyme, meta_fasta, fasta, cfg_file]
         .unique() // Multiple inputs might have the same config
-        .map { meta_enzyme_mods, meta_fasta_enzyme, meta_fasta, fasta, cfg_file ->
+        .map { _meta_enzyme_mods, meta_fasta_enzyme, _meta_fasta, fasta, cfg_file ->
             [meta_fasta_enzyme + [config: cfg_file.text], [], [], fasta, [], []] // Added ms_file_names as []
         }
 
     DIANN_INSILICOLIBRARYGENERATION(ch_insilico_library_input)
     ch_speclib = ch_speclib.mix(DIANN_INSILICOLIBRARYGENERATION.out.predict_speclib)
-    ch_versions = ch_versions.mix(DIANN_INSILICOLIBRARYGENERATION.out.versions)
 
     // In-silico libraries have been generated for combinations of FASTA and configuration, which
     // may have been the same over multiple inputs. Use a combine to annotate inputs with in silico libraries.
     ch_fasta_input_with_speclib = ch_speclib
-        .map{ meta, speclib -> [meta.findAll { key, value -> key != 'config' }, speclib] } // Filter out config from meta to allow the combine by: 0
+        .map{ meta, speclib -> [meta.findAll { key, _value -> key != 'config' }, speclib] } // Filter out config from meta to allow the combine by: 0
         .combine(input.ms_file_fasta, by: 0)
-        .map { meta_fasta_enzyme, speclib, meta_input_fasta, ms_file ->
+        .map { _meta_fasta_enzyme, speclib, meta_input_fasta, ms_file ->
             [meta_input_fasta, ms_file, speclib]
         }
 
@@ -275,14 +267,14 @@ workflow DIA_PROTEOMICS_ANALYSIS {
     preliminary_branches = ch_fasta_input_with_speclib
         .join(ch_empirical, remainder: true)
         .filter { tuple ->
-            tuple.any { it == null } // ch_empirical was an empty channel
+            tuple.any { elem -> elem == null } // ch_empirical was an empty channel
         }
-        .map { meta_input_fasta, ms_file, speclib, _ ->
+        .map { meta_input_fasta, ms_file, speclib, _empirical ->
             [meta_input_fasta, ms_file, speclib]
         }
         .branch {
             random_preanalysis: random_preanalysis
-            no_random_preanalysis: no_random_preanalysis
+            no_random_preanalysis: true
         }
 
     ch_preliminary_analysis_input = preliminary_branches.no_random_preanalysis
@@ -298,22 +290,20 @@ workflow DIA_PROTEOMICS_ANALYSIS {
             [meta, ms_file, [], [], speclib, []]  // DIANN module input: [meta, ms_files, ms_file_names, fasta, library, quant]
         }
     )
-    ch_versions = ch_versions.mix(DIANN_PRELIMINARYANALYSIS.out.versions)
 
     //
     // MODULE: Assemble empirical library with all inputs from the same experiment + search DB
     //
-    ch_empirical_input = ch_preliminary_analysis_input    // [meta_input_fasta, ms_file, speclib]
-        .join(DIANN_PRELIMINARYANALYSIS.out.diann_quant)  // [meta_input_fasta, ms_file, speclib, diann_quant]
-        .map { [it[0].experiment] + it.drop(1)}           // [meta_exp_searchdb, ms_file, speclib, diann_quant]
-        .groupTuple()                                     // [meta_exp_searchdb, [ms_file], [speclib], [diann_quant]]
-        .map{ sortListsByPathName(it, 1) }                // [meta_exp_searchdb, [sorted_ms_file], [sorted_speclib], [sorted_diann_quant]]
+    ch_empirical_input = ch_preliminary_analysis_input           // [meta_input_fasta, ms_file, speclib]
+        .join(DIANN_PRELIMINARYANALYSIS.out.diann_quant)         // [meta_input_fasta, ms_file, speclib, diann_quant]
+        .map { tuple -> [tuple[0].experiment] + tuple.drop(1) }  // [meta_exp_searchdb, ms_file, speclib, diann_quant]
+        .groupTuple()                                            // [meta_exp_searchdb, [ms_file], [speclib], [diann_quant]]
+        .map{ tuple -> sortListsByPathName(tuple, 1) }           // [meta_exp_searchdb, [sorted_ms_file], [sorted_speclib], [sorted_diann_quant]]
         .map { meta, ms_files, speclib, diann_quant ->
             [meta, ms_files, [], [], speclib, diann_quant]    // DIANN module input: add ms_file_names and fasta placeholders
         }
 
     DIANN_ASSEMBLEEMPIRICALLIBRARY(ch_empirical_input)
-    ch_versions = ch_versions.mix(DIANN_ASSEMBLEEMPIRICALLIBRARY.out.versions)
 
     //
     // Derive suggested settings from DIA-NN log
@@ -331,10 +321,10 @@ workflow DIA_PROTEOMICS_ANALYSIS {
     // Generate mass accuracy settings combining the settings from the log and the settings from the input
     //
 
-    ch_individual_analysis_input = input.mass_tolerance_settings // [meta_input_fasta, precursor_tolerance, fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit, ms_file, fasta]
-        .map{ [it[0].experiment] + it } // [meta_exp_searchdb, meta_input_fasta, precursor_tolerance, fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit, ms_file, fasta]
-        .combine(ch_empirical_output, by: 0) // [meta_exp_searchdb, meta_input_fasta, precursor_tolerance, fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit, ms_file, fasta, logSettings, empirical_library]
-        .map { meta_exp, meta_input_fasta, precursor_tolerance, fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit, ms_file, fasta, logSettings, empirical_library ->
+    ch_individual_analysis_input = input.mass_tolerance_settings   // [meta_input_fasta, precursor_tolerance, fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit, ms_file, fasta]
+        .map{ tuple -> [tuple[0].experiment] + tuple }               // [meta_exp_searchdb, meta_input_fasta, precursor_tolerance, fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit, ms_file, fasta]
+        .combine(ch_empirical_output, by: 0)                         // [meta_exp_searchdb, meta_input_fasta, precursor_tolerance, fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit, ms_file, fasta, logSettings, empirical_library]
+        .map { _meta_exp, meta_input_fasta, precursor_tolerance, fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit, ms_file, fasta, logSettings, empirical_library ->
             def mass_settings = defineMassAccuracySettings(logSettings, precursor_tolerance, fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit, wf_scan_window, wf_mass_acc_automatic, wf_scan_window_automatic, wf_pg_level)
             def meta_with_settings = meta_input_fasta + mass_settings
             [meta_with_settings, ms_file, fasta, empirical_library]
@@ -349,35 +339,33 @@ workflow DIA_PROTEOMICS_ANALYSIS {
             [meta, ms_file, [], fasta, empirical_library, []]  // DIANN module input: [meta, ms_files, ms_file_names, fasta, library, quant]
         }
     )
-    ch_versions = ch_versions.mix(DIANN_INDIVIDUALANALYSIS.out.versions)
 
     //
     // MODULE: Final quantification
     //
 
-    ch_final_quantification_input = ch_individual_analysis_input // [meta_with_settings, ms_file, fasta, empirical_library]
-        .join(DIANN_INDIVIDUALANALYSIS.out.diann_quant)          // [meta_with_settings, ms_file, fasta, empirical_library, diann_quant]
-        .map { [it[0].experiment] + it.drop(1)}                  // [meta_exp_searchdb, ms_file, fasta, empirical_library, diann_quant]
-        .groupTuple()                                            // [meta_exp_searchdb, [ms_file], [fasta], [empirical_library], [diann_quant]]
-        .map{ sortListsByPathName(it, 1) }                       // [meta_exp_searchdb, [sorted_ms_file], [sorted_fasta], [sorted_empirical_library], [sorted_diann_quant]]
+    ch_final_quantification_input = ch_individual_analysis_input   // [meta_with_settings, ms_file, fasta, empirical_library]
+        .join(DIANN_INDIVIDUALANALYSIS.out.diann_quant)              // [meta_with_settings, ms_file, fasta, empirical_library, diann_quant]
+        .map { tuple -> [tuple[0].experiment] + tuple.drop(1) }     // [meta_exp_searchdb, ms_file, fasta, empirical_library, diann_quant]
+        .groupTuple()                                                // [meta_exp_searchdb, [ms_file], [fasta], [empirical_library], [diann_quant]]
+        .map{ tuple -> sortListsByPathName(tuple, 1) }              // [meta_exp_searchdb, [sorted_ms_file], [sorted_fasta], [sorted_empirical_library], [sorted_diann_quant]]
         .map { meta, ms_files, fasta, empirical_library, diann_quant ->
-            [meta, [], ms_files.collect{ it.name}, fasta, empirical_library, diann_quant] // Use ms_file_names instead of ms_files for final quant
+            [meta, [], ms_files.collect{ f -> f.name}, fasta, empirical_library, diann_quant] // Use ms_file_names instead of ms_files for final quant
         }
 
     DIANN_FINALQUANTIFICATION(ch_final_quantification_input)
-    ch_versions = ch_versions.mix(DIANN_FINALQUANTIFICATION.out.versions)
     ch_final_quantification_combined_output = DIANN_FINALQUANTIFICATION.out.main_report
-        .mix(DIANN_FINALQUANTIFICATION.out.report_parquet)       // [meta_exp_searchdb, report]
-        .last()                                                  // [meta_exp_searchdb, report]
-        .join(DIANN_FINALQUANTIFICATION.out.pg_matrix)           // [meta_exp_searchdb, report, pg_matrix]
-        .join(DIANN_FINALQUANTIFICATION.out.pr_matrix)           // [meta_exp_searchdb, report, pg_matrix, pr_matrix]
-        .combine(DIANN_FINALQUANTIFICATION.out.versions.last())  // [meta_exp_searchdb, report, pg_matrix, pr_matrix, versions]
+        .mix(DIANN_FINALQUANTIFICATION.out.report_parquet)                                                // [meta_exp_searchdb, report]
+        .last()                                                                                           // [meta_exp_searchdb, report]
+        .join(DIANN_FINALQUANTIFICATION.out.pg_matrix)                                                    // [meta_exp_searchdb, report, pg_matrix]
+        .join(DIANN_FINALQUANTIFICATION.out.pr_matrix)                                                    // [meta_exp_searchdb, report, pg_matrix, pr_matrix]
+        .combine(DIANN_FINALQUANTIFICATION.out.versions_diann.map{ _process, _tool, version -> version }) // [meta_exp_searchdb, report, pg_matrix, pr_matrix, version]
 
     //
     // MODULE: Generate mzML statistics
     //
     ch_mzml_stats_input = input.ms_file
-        .map {meta_input, meta_input_fasta, ms_file ->
+        .map { meta_input, _meta_input_fasta, ms_file ->
             [meta_input, ms_file]
         }
         .unique()
@@ -385,9 +373,9 @@ workflow DIA_PROTEOMICS_ANALYSIS {
     QUANTMSUTILS_MZMLSTATISTICS(ch_mzml_stats_input)
     ch_versions = ch_versions.mix(QUANTMSUTILS_MZMLSTATISTICS.out.versions)
 
-    ch_statistics = QUANTMSUTILS_MZMLSTATISTICS.out.ms_statistics // [meta_input, ms_statistics]
-        .map{[it[0].experiment, it[1]]}                           // [meta_exp_searchdb, ms_statistics]
-        .groupTuple()                                             // [meta_exp_searchdb, [ms_statistics]]
+    ch_statistics = QUANTMSUTILS_MZMLSTATISTICS.out.ms_statistics   // [meta_input, ms_statistics]
+        .map{ tuple -> [tuple[0].experiment, tuple[1]] }             // [meta_exp_searchdb, ms_statistics]
+        .groupTuple()                                                // [meta_exp_searchdb, [ms_statistics]]
 
     //
     // MODULE: Convert results
@@ -398,16 +386,16 @@ workflow DIA_PROTEOMICS_ANALYSIS {
     // be input-wise values
 
     ch_first_config = input.ms_file
-        .map { meta_input, meta_input_fasta, ms_file ->
+        .map { meta_input, _meta_input_fasta, _ms_file ->
             [meta_input.experiment, meta_input]
         }
         .first()
 
     ch_diann2mztab_input = ch_first_config
-        .join(ch_final_quantification_combined_output)             // [meta_exp_searchdb, meta_input, report, pg_matrix, pr_matrix, versions]
-        .join(input.expdesign.unique())                            // [meta_exp_searchdb, meta_input, report, pg_matrix, pr_matrix, versions, exp_design]
-        .join(ch_statistics)                                       // [meta_exp_searchdb, meta_input, report, pg_matrix, pr_matrix, versions, exp_design, ms_statistics]
-        .join(input.search_db_by_exp)                              // [meta_exp_searchdb, meta_input, report, pg_matrix, pr_matrix, versions, exp_design, ms_statistics, fasta]
+        .join(ch_final_quantification_combined_output)             // [meta_exp_searchdb, meta_input, report, pg_matrix, pr_matrix, version]
+        .join(input.expdesign.unique())                            // [meta_exp_searchdb, meta_input, report, pg_matrix, pr_matrix, version, exp_design]
+        .join(ch_statistics)                                       // [meta_exp_searchdb, meta_input, report, pg_matrix, pr_matrix, version, exp_design, ms_statistics]
+        .join(input.search_db_by_exp)                              // [meta_exp_searchdb, meta_input, report, pg_matrix, pr_matrix, version, exp_design, ms_statistics, fasta]
         .map { meta_exp_searchdb, meta_input, report, pg_matrix, pr_matrix, versions, exp_design, ms_statistics, fasta ->
             [meta_input + meta_exp_searchdb, report, pg_matrix, pr_matrix, versions, exp_design, ms_statistics, fasta]
         }

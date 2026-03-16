@@ -41,7 +41,6 @@ process MALT_BUILD {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     """
     touch malt-build.log
     mkdir malt_index/

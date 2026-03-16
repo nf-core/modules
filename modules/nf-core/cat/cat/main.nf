@@ -20,7 +20,7 @@ process CAT_CAT {
     script:
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
-    def file_list = files_in.collect { it.toString() }
+    def file_list = files_in.collect { file -> file.toString() }
 
     // choose appropriate concatenation tool depending on input and output format
 
@@ -55,7 +55,7 @@ process CAT_CAT {
     """
 
     stub:
-    def file_list   = files_in.collect { it.toString() }
+    def file_list   = files_in.collect { file -> file.toString() }
     prefix          = task.ext.prefix ?: "${meta.id}${file_list[0].substring(file_list[0].lastIndexOf('.'))}"
     if(file_list.contains(prefix.trim())) {
         error "The name of the input file can't be the same as for the output prefix in the " +

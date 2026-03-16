@@ -14,10 +14,10 @@ process GATK4_PRINTREADS {
     tuple val(meta4), path(dict)
 
     output:
-    tuple val(meta), path("${prefix}.bam"),  emit: bam,  optional: true
+    tuple val(meta), path("${prefix}.bam"), emit: bam, optional: true
     tuple val(meta), path("${prefix}.cram"), emit: cram, optional: true
-    tuple val(meta), path("${prefix}.sam"),  emit: sam,  optional: true
-    path "versions.yml",                     emit: versions
+    tuple val(meta), path("${prefix}.sam"), emit: sam, optional: true
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,11 +44,6 @@ process GATK4_PRINTREADS {
         --input ${input} \\
         --read-index ${index} \\
         --output ${prefix}.${input.getExtension()}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -57,10 +52,5 @@ process GATK4_PRINTREADS {
     touch ${prefix}.${input.getExtension()}
     touch ${prefix}.${input.getExtension()}
     touch ${prefix}.${input.getExtension()}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

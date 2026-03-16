@@ -14,10 +14,10 @@ process GATK4SPARK_MARKDUPLICATES {
     path dict
 
     output:
-    tuple val(meta), path("${prefix}"),     emit: output
+    tuple val(meta), path("${prefix}"), emit: output
     tuple val(meta), path("${prefix}.bai"), emit: bam_index, optional: true
-    tuple val(meta), path("*.metrics"),     emit: metrics,   optional: true
-    path "versions.yml",                    emit: versions
+    tuple val(meta), path("*.metrics"), emit: metrics, optional: true
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,7 +25,7 @@ process GATK4SPARK_MARKDUPLICATES {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}.bam"
-    def input_list = bam.collect { "--input ${it}" }.join(' ')
+    def input_list = bam.collect { bam_ -> "--input ${bam_}" }.join(' ')
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -43,11 +43,6 @@ process GATK4SPARK_MARKDUPLICATES {
         --spark-master local[${task.cpus}] \\
         --tmp-dir . \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -56,10 +51,5 @@ process GATK4SPARK_MARKDUPLICATES {
     touch ${prefix}
     touch ${prefix}.bai
     touch ${prefix}.metrics
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

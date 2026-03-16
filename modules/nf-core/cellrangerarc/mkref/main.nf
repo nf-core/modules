@@ -27,7 +27,7 @@ process CELLRANGERARC_MKREF {
     def fast_name = fasta.name
     def gtf_name = gtf.name
     def motifs_name = motifs.name
-    def reference_config = reference_config.name
+    def reference_config_name = reference_config.name
     def args = task.ext.args ?: ''
 
     if ( !reference_name ){
@@ -46,7 +46,7 @@ process CELLRANGERARC_MKREF {
     gtf = "${gtf_name}"
     motifs = "${motifs_name}"
     add = "${args}"
-    reference_config = "${reference_config}"
+    reference_config = "${reference_config_name}"
 
     if ( reference_config == "[]" ):
 
@@ -87,7 +87,7 @@ process CELLRANGERARC_MKREF {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "CELLRANGERARC_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
+
     """
     mkdir -p "${reference_name}/"
     touch config

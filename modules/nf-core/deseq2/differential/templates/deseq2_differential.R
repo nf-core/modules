@@ -512,6 +512,12 @@ png(
 plotDispEsts(dds)
 dev.off()
 
+pdf(
+  file = paste(opt\$output_prefix, 'deseq2.dispersion.pdf', sep = '.')
+)
+plotDispEsts(dds)
+dev.off()
+
 # R object for other processes to use
 
 saveRDS(dds, file = paste(opt\$output_prefix, 'dds.rld.rds', sep = '.'))

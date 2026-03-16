@@ -118,13 +118,48 @@ output:
             - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
             - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
             - edam: http://edamontology.org/format_1984 # FASTA-ALN
+  versions_mafft:
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - mafft:
+          type: string
+          description: The tool name
+      - mafft --version 2>&1 | sed 's/ (.*) //g':
+          type: eval
+          description: The tool version
+  versions_pigz:
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - pigz:
+          type: string
+          description: The tool name
+      - pigz --version 2>&1 | sed 's/pigz //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - mafft:
+          type: string
+          description: The tool name
+      - mafft --version 2>&1 | sed 's/ (.*) //g':
+          type: eval
+          description: The tool version
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - pigz:
+          type: string
+          description: The tool name
+      - pigz --version 2>&1 | sed 's/pigz //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@MillironX"
 maintainers:

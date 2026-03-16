@@ -8,13 +8,13 @@ process METAMDBG_ASM {
         'biocontainers/metamdbg:1.2--h077b44d_0' }"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(reads, arity: '1..*')
     val(input_type)
 
     output:
     tuple val(meta), path("*.contigs.fasta.gz"), emit: contigs
     tuple val(meta), path("*.metaMDBG.log")    , emit: log
-    path "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val('metamdbg'), eval('metaMDBG | sed -n "s/.*Version: //p"'), emit: versions_metamdbg, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,23 +36,14 @@ process METAMDBG_ASM {
 
     mv contigs.fasta.gz ${prefix}.contigs.fasta.gz
     mv metaMDBG.log ${prefix}.metaMDBG.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        metamdbg: \$(metaMDBG | grep "Version" | sed 's/ Version: //')
-    END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo ${args}
     touch ${prefix}.metaMDBG.log
     touch ${prefix}.contigs.fasta.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        metamdbg: \$(metaMDBG | grep "Version" | sed 's/ Version: //')
-    END_VERSIONS
     """
 }

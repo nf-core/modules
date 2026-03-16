@@ -9,17 +9,16 @@ workflow BAM_STRINGTIE_MERGE {
     ch_chrgtf  // channel: [ meta, gtf ]
 
     main:
-    ch_versions       = Channel.empty()
-    ch_stringtie_gtfs = Channel.empty()
+    ch_versions       = channel.empty()
+    ch_stringtie_gtfs = channel.empty()
 
     STRINGTIE_STRINGTIE(
         bam_sorted,
         ch_chrgtf.map { _meta, gtf -> [ gtf ] }
     )
-    ch_versions = ch_versions.mix(STRINGTIE_STRINGTIE.out.versions)
 
     STRINGTIE_STRINGTIE.out.transcript_gtf
-        .map { it[1] }
+        .map { _meta, gtf -> [ gtf ] }
         .set { stringtie_gtfs }
 
     STRINGTIE_MERGE(

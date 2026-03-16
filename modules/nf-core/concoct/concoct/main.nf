@@ -17,7 +17,7 @@ process CONCOCT_CONCOCT {
     tuple val(meta), path("*_original_data_gt1000.csv"), emit: original_data_csv
     tuple val(meta), path("*_PCA_components_data_gt1000.csv"), emit: pca_components_csv
     tuple val(meta), path("*_PCA_transformed_data_gt1000.csv"), emit: pca_transformed_csv
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('concoct'), eval('concoct --version | cut -d " " -f2'), emit: versions_concoct, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,14 +33,9 @@ process CONCOCT_CONCOCT {
         --composition_file ${fasta} \\
         -b ${prefix}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        concoct: \$(echo \$(concoct --version 2> /dev/null) | sed 's/concoct //g' )
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_args.txt
@@ -50,9 +45,5 @@ process CONCOCT_CONCOCT {
     touch ${prefix}_PCA_components_data_gt1000.csv
     touch ${prefix}_PCA_transformed_data_gt1000.csv
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        concoct: \$(echo \$(concoct --version 2> /dev/null) | sed 's/concoct //g' )
-    END_VERSIONS
     """
 }

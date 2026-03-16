@@ -1,66 +1,137 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "clipkit"
-description: ClipKIT is a fast and flexible alignment trimming tool that keeps phylogenetically
-  informative sites and removes those that display characteristics poor phylogenetic
-  signal.
+description: A multiple sequence alignment-trimming algorithm for accurate phylogenomic inference.
 keywords:
   - alignment
   - trimming
   - phylogeny
 tools:
   - "clipkit":
-      description: "Alignment trimming software for phylogenetics."
+      description: |
+        ClipKIT is a fast and flexible alignment trimming tool that keeps
+        phylogenetically informative sites and removes those with poor phylogenetic signal.
       homepage: "https://jlsteenwyk.com/ClipKIT/"
       documentation: "https://jlsteenwyk.com/ClipKIT/"
       tool_dev_url: "https://github.com/JLSteenwyk/ClipKIT"
       doi: "10.1371/journal.pbio.3001007"
-      licence: ["MIT"]
-      identifier: ""
+      licence:
+        - "MIT"
+      identifier: "biotools:clipkit"
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
+          e.g. `[ id:'sample1']`
     - aln:
         type: file
         description: Multiple sequence alignment file in various supported formats.
-        pattern: "*.{fa,fasta,fa,fna,faa,alnfaa,aln,sto,stk,mauve,alignment,clustal}"
-        ontologies: []
+        pattern: "*.{fa,fasta,fna,faa,alnfaa,aln,sto,stk,mauve,alignment,clustal}"
+        ontologies:
+          - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+          - edam: http://edamontology.org/format_1984 # FASTA-ALN
+          - edam: http://edamontology.org/format_1929 # FASTA
   - out_format:
       type: string
       description: Output format (aln,msa,fas,etc.), default is clipkit.
       pattern: "*"
+  - auxiliary_file:
+      type: file
+      description: |
+        Optional tab-delimited auxiliary file specifying which sites to keep or
+        trim. Used in conjunction with the custom site trimming (cst) mode.
+      pattern: "*.tsv"
+      ontologies:
+        - edam: http://edamontology.org/format_3475 # TSV
 output:
   clipkit:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
       - ${prefix}.${out_extension}:
           type: file
-          description: Trimmed multiple sequence alignment file
+          description: Trimmed multiple sequence alignment file.
           pattern: "*.*"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+            - edam: http://edamontology.org/format_1984 # FASTA-ALN
   log:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}.log:
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.${out_extension}.log:
           type: file
-          description: Log file with statistics from the tool's execution
+          description: Log file with per-site trimming statistics from ClipKIT execution.
           pattern: "*.log"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
+  metadata:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.${out_extension}.txt:
+          type: file
+          description: |
+            Tab-delimited text file with per-site statistics including site position,
+            parsimony-informativeness status, and whether the site was kept or trimmed.
+          pattern: "*.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
+  complementary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.${out_extension}.complement:
+          type: file
+          description: |
+            File containing the trimmed/removed sites from the alignment, i.e. the
+            complement of the clipkit output. Optional; only produced when the
+            complementary input is true (passes `-c` to clipkit).
+          pattern: "*.complement"
+          ontologies:
+            - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.${out_extension}.report.json:
+          type: file
+          description: |
+            JSON report file with summary statistics of the trimming run.
+            Optional; only produced when ClipKIT is run with the appropriate reporting flag.
+          pattern: "*.report.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions_clipkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - clipkit:
+          type: string
+          description: The name of the tool
+      - clipkit --version 2>&1 | sed 's/clipkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - clipkit:
+          type: string
+          description: The name of the tool
+      - clipkit --version 2>&1 | sed 's/clipkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@vagkaratzas"
 maintainers:

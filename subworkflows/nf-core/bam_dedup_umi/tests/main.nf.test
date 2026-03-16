@@ -26,18 +26,22 @@ nextflow_workflow {
                 ]
                 input[1] = [
                     [id:'genome'],
-                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[2] = 'umitools'
                 input[3] = false
                 input[4] = false
                 input[5] = [
                     [ id:'test'], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.umi.sorted.bam', checkIfExists: true)                ]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.umi.sorted.bam', checkIfExists: true)
+                ]
                 input[6] = [
                     [id:'genome'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true),
+                    []
                 ]
+                input[7] = false
                 """
             }
         }
@@ -50,10 +54,9 @@ nextflow_workflow {
                     bam(workflow.out.transcriptome_bam[0][1]).getReadsMD5(),
                     workflow.out.stats,
                     workflow.out.flagstat,
-                    workflow.out.idxstats,
-                    workflow.out.versions
+                    workflow.out.idxstats
                 ).match() },
-                { assert path(workflow.out.bai.get(0).get(1)).exists() }
+                { assert path(workflow.out.index.get(0).get(1)).exists() }
             )
         }
 
@@ -71,13 +74,15 @@ nextflow_workflow {
                 ]
                 input[1] = [
                     [id:'genome'],
-                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[2] = 'umicollapse'
                 input[3] = false
                 input[4] = false
                 input[5] = Channel.empty()
                 input[6] = Channel.empty()
+                input[7] = false
                 """
             }
         }
@@ -89,10 +94,9 @@ nextflow_workflow {
                     bam(workflow.out.bam[0][1]).getReadsMD5(),
                     workflow.out.stats,
                     workflow.out.flagstat,
-                    workflow.out.idxstats,
-                    workflow.out.versions
+                    workflow.out.idxstats
                 ).match() },
-                { assert path(workflow.out.bai.get(0).get(1)).exists() }
+                { assert path(workflow.out.index.get(0).get(1)).exists() }
             )
         }
     }

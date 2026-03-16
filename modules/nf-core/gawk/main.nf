@@ -4,8 +4,8 @@ process GAWK {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gawk:5.3.0' :
-        'biocontainers/gawk:5.3.0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a1/a125c778baf3865331101a104b60d249ee15fe1dca13bdafd888926cc5490a34/data' :
+        'community.wave.seqera.io/library/gawk:5.3.1--e09efb5dfc4b8156' }"
 
     input:
     tuple val(meta), path(input, arity: '0..*')
@@ -14,7 +14,7 @@ process GAWK {
 
     output:
     tuple val(meta), path("*.${suffix}"), emit: output
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('gawk'), eval("awk -Wversion | sed '1!d; s/.*Awk //; s/,.*//'"), topic: versions, emit: versions_gawk
 
     when:
     task.ext.when == null || task.ext.when
@@ -47,24 +47,14 @@ process GAWK {
         ${output}
 
     ${cleanup}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gawk: \$(awk -Wversion | sed '1!d; s/.*Awk //; s/,.*//')
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = task.ext.suffix ?: "${input.getExtension()}"
+    suffix = task.ext.suffix ?: "${input.collect{ file -> file.getExtension()}.get(0)}"
     def create_cmd = suffix.endsWith("gz") ? "echo '' | gzip >" : "touch"
 
     """
     ${create_cmd} ${prefix}.${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gawk: \$(awk -Wversion | sed '1!d; s/.*Awk //; s/,.*//')
-    END_VERSIONS
     """
 }

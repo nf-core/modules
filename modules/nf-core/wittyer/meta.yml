@@ -78,13 +78,27 @@ output:
           description: Index of merged query and truth entries VCF file
           pattern: "*.vcf.gz.tbi"
           ontologies: []
+  versions_wittyer:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - wittyer:
+          type: string
+          description: The name of the tool
+      - "dotnet /opt/Wittyer/Wittyer.dll --version | sed '1!d ; s/witty.er //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - wittyer:
+          type: string
+          description: The name of the tool
+      - "dotnet /opt/Wittyer/Wittyer.dll --version | sed '1!d ; s/witty.er //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@famosab"
 maintainers:

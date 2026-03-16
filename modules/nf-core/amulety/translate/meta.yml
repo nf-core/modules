@@ -60,14 +60,48 @@ output:
 
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+  versions_amulety:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - amulety:
+          type: string
+          description: The tool name
+      - "amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+'":
+          type: string
+          description: The command used to generate the version of the tool
+  versions_igblastn:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - igblastn:
+          type: string
+          description: The tool name
+      - "igblastn -version | grep -o 'igblast[0-9\\. ]\\+' | grep -o '[0-9\\. ]\\+'":
+          type: string
+          description: The command used to generate the version of the tool
 
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - amulety:
+          type: string
+          description: The tool name
+      - "amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+'":
+          type: string
+          description: The command used to generate the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - igblastn:
+          type: string
+          description: The tool name
+      - "igblastn -version | grep -o 'igblast[0-9\\. ]\\+' | grep -o '[0-9\\. ]\\+'":
+          type: string
+          description: The command used to generate the version of the tool
+
 authors:
   - "@ggabernet"
 maintainers:

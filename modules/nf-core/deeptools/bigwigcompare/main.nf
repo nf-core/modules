@@ -13,7 +13,7 @@ process DEEPTOOLS_BIGWIGCOMPARE {
 
     output:
     tuple val(meta), path("*.{bigWig,bedgraph}"), emit: output
-    path "versions.yml"                         , emit: versions
+    tuple val("${task.process}"), val('deeptools'), eval('bigwigCompare --version | sed "s/bigwigCompare //g"') , emit: versions_deeptools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,11 +32,6 @@ process DEEPTOOLS_BIGWIGCOMPARE {
         --numberOfProcessors $task.cpus \\
         $blacklist_cmd \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deeptools: \$(bigwigCompare --version | sed -e "s/bigwigCompare //g")
-    END_VERSIONS
     """
 
     stub:
@@ -46,10 +41,5 @@ process DEEPTOOLS_BIGWIGCOMPARE {
 
     """
     touch ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deeptools: \$(bigwigCompare --version | sed -e "s/bigwigCompare //g")
-    END_VERSIONS
     """
 }

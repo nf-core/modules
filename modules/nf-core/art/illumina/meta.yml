@@ -1,6 +1,6 @@
 name: "art_illumina"
-description: Simulation tool to generate synthetic Illumina next-generation sequencing
-  reads
+description: Simulation tool to generate synthetic Illumina next-generation
+  sequencing reads
 keywords:
   - fastq
   - fasta
@@ -15,7 +15,8 @@ tools:
         error model or quality profiles. "
       homepage: "https://www.niehs.nih.gov/research/resources/software/biostatistics/art/index.cfm"
       doi: "10.1093/bioinformatics/btr708"
-      licence: ["GPL version 3 license"]
+      licence:
+        - "GPL version 3 license"
       identifier: ""
 input:
   - - meta:
@@ -30,12 +31,12 @@ input:
         ontologies: []
   - sequencing_system:
       type: string
-      description: The name of Illumina sequencing system of the built-in profile used
-        for simulation
+      description: The name of Illumina sequencing system of the built-in profile
+        used for simulation
   - fold_coverage:
       type: integer
-      description: The fold of read coverage to be simulated or number of reads/read
-        pairs generated for each amplicon
+      description: The fold of read coverage to be simulated or number of
+        reads/read pairs generated for each amplicon
   - read_length:
       type: integer
       description: The length of reads to be simulated
@@ -60,8 +61,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.aln":
           type: file
-          description: OPTIONAL Alignment file of the simulated reads. Enabled by default,
-            to disable, use -na/--noALN.
+          description: OPTIONAL Alignment file of the simulated reads. Enabled by
+            default, to disable, use -na/--noALN.
           pattern: "*.aln"
           ontologies: []
   sam:
@@ -72,17 +73,31 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.sam":
           type: file
-          description: OPTIONAL Alignment file in SAM format of the simulated reads.
-            Enabled with -sam/--samout.
+          description: OPTIONAL Alignment file in SAM format of the simulated
+            reads. Enabled with -sam/--samout.
           pattern: "*.sam"
           ontologies: []
+  versions_art_illumina:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - art:
+          type: string
+          description: The name of the tool
+      - 2016.06.05:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - art:
+          type: string
+          description: The name of the tool
+      - 2016.06.05:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@MarieLataretu"
 maintainers:

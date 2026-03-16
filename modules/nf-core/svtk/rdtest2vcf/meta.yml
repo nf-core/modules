@@ -62,13 +62,27 @@ output:
           description: The index of the converted VCF
           pattern: "*.vcf.gz.tbi"
           ontologies: []
+  versions_svtk:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - svtk:
+          type: string
+          description: The tool name
+      - "0.0.20190615":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - svtk:
+          type: string
+          description: The tool name
+      - "0.0.20190615":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

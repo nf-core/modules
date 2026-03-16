@@ -19,7 +19,7 @@ process GATK4_ANNOTATEINTERVALS {
 
     output:
     tuple val(meta), path("*.tsv"), emit: annotated_intervals
-    path "versions.yml",            emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,7 +28,7 @@ process GATK4_ANNOTATEINTERVALS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def inputs = intervals.collect { "--intervals ${it}" }.join(" ")
+    def inputs = intervals.collect { interval -> "--intervals ${interval}" }.join(" ")
     def mappability_track = mappable_regions ? "--mappability-track ${mappable_regions}" : ""
     def segmental_duplication_tracks = segmental_duplication_regions ? "--segmental-duplication-track ${segmental_duplication_regions}" : ""
 
@@ -50,21 +50,11 @@ process GATK4_ANNOTATEINTERVALS {
         ${segmental_duplication_tracks} \\
         --tmp-dir . \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }
