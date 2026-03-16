@@ -5,8 +5,8 @@ process MACS3_CALLPEAK {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/macs3:3.0.1--py311h0152c62_3':
-        'biocontainers/macs3:3.0.1--py311h0152c62_3' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2f/2fb492856efb63a7f824f0801b1386d08468cd4b7819ddc4c21e7f10e09b4fda/data':
+        'community.wave.seqera.io/library/macs3:3.0.4--e0346d811b8b428e' }"
 
     input:
     tuple val(meta), path(ipbam), path(controlbam)
@@ -15,7 +15,7 @@ process MACS3_CALLPEAK {
     output:
     tuple val(meta), path("*.{narrowPeak,broadPeak}"), emit: peak
     tuple val(meta), path("*.xls")                   , emit: xls
-    path  "versions.yml"                             , emit: versions
+    tuple val("${task.process}"), val('macs3'), eval("macs3 --version | sed -e 's/macs3 //g'"), topic: versions, emit: versions_macs3
 
     tuple val(meta), path("*.gappedPeak"), optional:true, emit: gapped
     tuple val(meta), path("*.bed")       , optional:true, emit: bed
@@ -45,11 +45,6 @@ process MACS3_CALLPEAK {
         --name $prefix \\
         --treatment $ipbam \\
         $control
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        macs3: \$(macs3 --version | sed -e "s/macs3 //g")
-    END_VERSIONS
     """
 
     stub:
@@ -60,10 +55,5 @@ process MACS3_CALLPEAK {
     touch ${prefix}.bdg
     touch ${prefix}.narrowPeak
     touch ${prefix}.xls
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        macs3: \$(macs3 --version | sed -e "s/macs3 //g")
-    END_VERSIONS
     """
 }
