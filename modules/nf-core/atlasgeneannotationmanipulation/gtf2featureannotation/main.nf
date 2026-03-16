@@ -14,7 +14,7 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
     output:
     tuple val(meta), path("*.anno.tsv"), emit: feature_annotation
     tuple val(meta), path("*.fa.gz")   , emit: filtered_cdna, optional: true
-    path("versions.yml")               , emit: versions
+    tuple val("${task.process}"), val('atlas-gene-annotation-manipulation'), val("${VERSION}"), emit: versions_atlasgeneannotationmanipulation, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +23,7 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference_cdna = fasta ? "--parse-cdnas ${fasta}" : ""
-    def VERSION = '1.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    VERSION = '1.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     gtf2featureAnnotation.R \\
@@ -31,16 +31,11 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
         --output-file ${prefix}.anno.tsv \\
         ${reference_cdna} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        atlas-gene-annotation-manipulation: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    VERSION = '1.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.anno.tsv
 
