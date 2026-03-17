@@ -9,7 +9,7 @@ process PLASMIDFINDER {
         'biocontainers/plasmidfinder:2.1.6--py310hdfd78af_1' }"
 
     input:
-    tuple val(meta), path(seqs)
+    tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("*.json")                 , emit: json
@@ -26,16 +26,17 @@ process PLASMIDFINDER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed = seqs.getName().endsWith(".gz") ? true : false
+    def fasta_name = fasta.getName().replace(".gz", "")
     def VERSION = '2.1.6' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
 
     if [ "$is_compressed" == "true" ]; then
-        gzip -c -d $seqs > $seqs_name
+        gzip -c -d $fasta > $fasta_name
     fi
 
     plasmidfinder.py \\
         $args \\
-        -i $seqs_name \\
+        -i $fasta_name \\
         -o ./ \\
         -x
 
