@@ -26,7 +26,7 @@ process BAKTA_BAKTA {
     tuple val(meta), path("${prefix}.hypotheticals.faa"), emit: hypotheticals_faa
     tuple val(meta), path("${prefix}.tsv"), emit: tsv
     tuple val(meta), path("${prefix}.txt"), emit: txt
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('bakta'), eval("bakta --version 2>&1 | cut -f2 -d ' '"), emit: versions_bakta, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -50,11 +50,6 @@ process BAKTA_BAKTA {
         ${regions_opt} \\
         ${hmms_opt} \\
         --db ${db}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bakta: \$(echo \$(bakta --version) 2>&1 | cut -f '2' -d ' ')
-    END_VERSIONS
     """
 
     stub:
@@ -70,10 +65,5 @@ process BAKTA_BAKTA {
     touch ${prefix}.hypotheticals.faa
     touch ${prefix}.tsv
     touch ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bakta: \$(echo \$(bakta --version) 2>&1 | cut -f '2' -d ' ')
-    END_VERSIONS
     """
 }
