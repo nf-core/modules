@@ -44,9 +44,9 @@ process CELLRANGER_MULTI {
     if ([ocm_barcodes, cmo_barcodes, frna_sampleinfo].count { input -> input } >= 2) {
         error "The ocm barcodes; cmo barcodes and frna probes are mutually exclusive features. Please use only one per sample, or reach out in slack in case it is really intended."
     }
-    args            = task.ext.args            ?: ''
-    prefix          = task.ext.prefix          ?: "${meta.id}"
-    singleplex_flex = task.ext.singleplex_flex ?: ''
+    args               = task.ext.args               ?: ''
+    prefix             = task.ext.prefix             ?: "${meta.id}"
+    force_include_frna = task.ext.force_include_frna ?: ''
 
     // if references + FASTQ are empty, then don't run corresponding analyses
     // get names of references, if they exist
@@ -77,7 +77,7 @@ process CELLRANGER_MULTI {
     target_panel = gex_targetpanel_name != '' ? "target-panel,./$gex_targetpanel_name" : ''
 
     // fixed RNA reference (not sample info!) also goes under GEX section
-    frna_probeset = ( include_frna || singleplex_flex ) && gex_frna_probeset_name != '' ? "probe-set,./$gex_frna_probeset_name" : ''
+    frna_probeset = ( include_frna || force_include_frna ) && gex_frna_probeset_name != '' ? "probe-set,./$gex_frna_probeset_name" : ''
 
     // VDJ inner primer set
     primer_index = vdj_primer_index ? "inner-enrichment-primers,./references/primers/${vdj_primer_index.getName()}" : ''
