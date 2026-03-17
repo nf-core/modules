@@ -25,11 +25,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.disambiguated_bam_a },
-                { assert process.out.disambiguated_bam_b },
-                { assert process.out.ambiguous_bam_a },
-                { assert process.out.ambiguous_bam_b },
-                { assert process.out.summary },
                 { assert snapshot(process.out).match() }
             )
         }
