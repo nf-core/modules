@@ -25,11 +25,17 @@ process PLASMIDFINDER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def is_compressed = seqs.getName().endsWith(".gz") ? true : false
     def VERSION = '2.1.6' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
+
+    if [ "$is_compressed" == "true" ]; then
+        gzip -c -d $seqs > $seqs_name
+    fi
+
     plasmidfinder.py \\
         $args \\
-        -i $seqs \\
+        -i $seqs_name \\
         -o ./ \\
         -x
 
