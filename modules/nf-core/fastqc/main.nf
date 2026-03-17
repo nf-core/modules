@@ -32,6 +32,7 @@ process FASTQC {
     def memory_in_mb = task.memory ? ((int) (task.memory.toUnit('MB') / task.cpus)) : null
     // FastQC memory value allowed range (100 - 10000)
     def fastqc_memory = memory_in_mb > 10000 ? 10000 : (memory_in_mb < 100 ? 100 : memory_in_mb)
+    def fastqc_memory_arg = fastqc_memory ? "--memory ${fastqc_memory}" : ''
 
     """
     printf "%s %s\\n" ${rename_to} | while read old_name new_name; do
@@ -41,7 +42,7 @@ process FASTQC {
     fastqc \\
         ${args} \\
         --threads ${task.cpus} \\
-        --memory ${fastqc_memory} \\
+        ${fastqc_memory_arg} \\
         ${renamed_files}
     """
 
