@@ -9,6 +9,8 @@ nextflow_process {
     tag "untar"
     tag "multiqcsav"
 
+    config "./nextflow.config"
+
     test("NovaSeq6000") {
         setup {
             run("UNTAR") {
