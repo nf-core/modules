@@ -17,7 +17,8 @@ process PLASMIDFINDER {
     tuple val(meta), path("*.tsv")                  , emit: tsv
     tuple val(meta), path("*-hit_in_genome_seq.fsa"), emit: genome_seq
     tuple val(meta), path("*-plasmid_seqs.fsa")     , emit: plasmid_seq
-    path "versions.yml"                             , emit: versions
+    tuple val("${task.process}"), val('plasmidfinder'), val('2.1.6'), topic: versions, emit: versions_plasmidfinder
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,9 +28,8 @@ process PLASMIDFINDER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed = fasta.getName().endsWith(".gz") ? true : false
     def fasta_name = fasta.getName().replace(".gz", "")
-    def VERSION = '2.1.6' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-
+    # Decompress input FASTA if needed
     if [ "$is_compressed" == "true" ]; then
         gzip -c -d $fasta > $fasta_name
     fi
@@ -47,9 +47,15 @@ process PLASMIDFINDER {
     mv Hit_in_genome_seq.fsa ${prefix}-hit_in_genome_seq.fsa
     mv Plasmid_seqs.fsa ${prefix}-plasmid_seqs.fsa
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plasmidfinder: $VERSION
-    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.json
+    touch ${prefix}.txt
+    touch ${prefix}.tsv
+    touch ${prefix}-hit_in_genome_seq.fsa
+    touch ${prefix}-plasmid_seqs.fsa
     """
 }
