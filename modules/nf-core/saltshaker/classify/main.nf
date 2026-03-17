@@ -44,13 +44,12 @@ process SALTSHAKER_CLASSIFY {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def touch_vcf = args.contains('--vcf') ? "touch ${prefix}.saltshaker.vcf" : ''
 
     """
     echo $args
 
-    if [[ "$args" == *"--vcf"* ]]; then
-        touch ${prefix}.saltshaker.vcf
-    fi
+    $touch_vcf
     touch ${prefix}.saltshaker_classify.txt
     touch ${prefix}.saltshaker_classify_metadata.tsv
     """
