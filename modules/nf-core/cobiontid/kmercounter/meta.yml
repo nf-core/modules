@@ -30,7 +30,8 @@ input:
         type: file
         description: |
           Input fasta assembly file
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
   - kmer_size:
       type: integer
       description: |
@@ -42,16 +43,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - fasta:
-          type: file
-          description: |
-            Input fasta assembly file
-          ontologies: []
       - "*.npy":
           type: file
           description: |
             A Numpy file containing the kmer counts.
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_4003"
   versions_kmercounter:
     - - ${task.process}:
           type: string
@@ -59,7 +56,7 @@ output:
       - kmer-counter:
           type: string
           description: The name of the tool
-      - kmer-counter --version | sed -e "s/K-mer counter v//g":
+      - kmer-counter --version | sed -e "s/K-mer counter //g":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -70,7 +67,7 @@ topics:
       - kmer-counter:
           type: string
           description: The name of the tool
-      - kmer-counter --version | sed -e "s/K-mer counter v//g":
+      - kmer-counter --version | sed -e "s/K-mer counter //g":
           type: eval
           description: The expression to obtain the version of the tool
 
