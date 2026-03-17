@@ -21,7 +21,9 @@ input:
         type: file
         description: call metadata file from saltshaker_call
         pattern: "*_call_metadata.tsv"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/operation_3227 #variant calling
+          - edam: http://edamontology.org/format_3475 #tsv
   - dom_frac:
       type: float
       description: Minimum heteroplasmy fraction to classify as dominant in saltshaker
@@ -48,7 +50,9 @@ output:
           type: file
           description: tsv with classified call metadata to be used in saltshaker_plot
           pattern: "*_classify_metadata.tsv"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/operation_3225 #classification
+            - edam: http://edamontology.org/format_3475 #tsv
   txt:
     - - meta:
           type: map
@@ -59,7 +63,9 @@ output:
           type: file
           description: txt file with case classification
           pattern: "*_classify.txt"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/operation_3225 #classification
+            - edam: http://edamontology.org/format_2330 #txt
   vcf:
     - - meta:
           type: map
@@ -70,7 +76,9 @@ output:
           type: file
           description: vcf file with classified calls
           pattern: "*saltshaker.vcf"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/operation_3225 #classification
+            - edam: http://edamontology.org/format_3016 #vcf
   versions_saltshaker:
     - - ${task.process}:
           type: string

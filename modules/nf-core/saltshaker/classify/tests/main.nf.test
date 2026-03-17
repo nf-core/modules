@@ -11,7 +11,6 @@ nextflow_process {
     tag "saltshaker/call"
     tag "saltshaker/classify"
 
-
     setup {
         run("SALTSHAKER_CALL") {
             script "../../call/main.nf"
@@ -43,6 +42,9 @@ nextflow_process {
     test("classify - vcf") {
 
         when {
+            params {
+                module_args = '--blacklist --vcf'
+            }
             process {
                 """
                 input[0] = SALTSHAKER_CALL.out.call
@@ -72,6 +74,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = '--blacklist --vcf'
+            }
             process {
                 """
                 input[0] = SALTSHAKER_CALL.out.call

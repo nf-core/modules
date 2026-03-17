@@ -9,16 +9,16 @@ process SALTSHAKER_CLASSIFY {
 
     input:
     tuple val(meta), path(call)
-    val dom_frac
+    val dominant_fraction
     val group_radius
-    val high_het
-    val mult_thresh
-    val noise_thresh
+    val high_heteroplasmy
+    val multiple_threshold
+    val noise_threshold
 
     output:
     tuple val(meta), path("*_classify_metadata.tsv"), emit: classify
     tuple val(meta), path("*_classify.txt")         , emit: txt
-    tuple val(meta), path("*saltshaker.vcf")        , emit: vcf
+    tuple val(meta), path("*saltshaker.vcf")        , emit: vcf, optional: true
     tuple val("${task.process}"), val('saltshaker'), val("1.0.0"), topic: versions, emit: versions_saltshaker
 
     when:
@@ -32,12 +32,11 @@ process SALTSHAKER_CLASSIFY {
     saltshaker classify \\
         --prefix $prefix \\
         --input-dir . \\
-        --vcf \\
-        --dominant-fraction $dom_frac \\
+        --dominant-fraction $dominant_fraction \\
         --radius $group_radius \\
-        --high-het $high_het \\
-        --multiple-threshold $mult_thresh \\
-        --noise $noise_thresh \\
+        --high-het $high_heteroplasmy \\
+        --multiple-threshold $multiple_threshold \\
+        --noise $noise_threshold \\
         $args
 
     """
