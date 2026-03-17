@@ -24,19 +24,19 @@ input:
         ontologies:
           - edam: http://edamontology.org/operation_3227 #variant calling
           - edam: http://edamontology.org/format_3475 #tsv
-  - dom_frac:
+  - dominant_fraction:
       type: float
       description: Minimum heteroplasmy fraction to classify as dominant in saltshaker
   - group_radius:
       type: integer
       description: Spatial clustering radius for saltshaker grouping
-  - high_het:
+  - high_heteroplasmy:
       type: float
       description: High heteroplasmy threshold for saltshaker classification
-  - mult_thresh:
+  - multiple_threshold:
       type: float
       description: Heteroplasmy threshold for multiple classification in saltshaker
-  - noise_thresh:
+  - noise_threshold:
       type: float
       description: Heteroplasmy threshold for noise in saltshaker classification
 output:
