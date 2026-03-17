@@ -21,7 +21,9 @@ input:
         type: file
         description: classify metadata file from saltshaker_classify
         pattern: "*_classify_metadata.tsv"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/operation_3225 #classification
+          - edam: http://edamontology.org/format_3475 #tsv
 
 output:
   plot:
@@ -34,7 +36,9 @@ output:
           type: file
           description: png file with saltshaker plot
           pattern: "*saltshaker.png"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/operation_0337 #visualization
+            - edam: http://edamontology.org/format_3603 #png
   versions_saltshaker:
     - - "${task.process}":
           type: string
