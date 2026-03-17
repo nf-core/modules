@@ -882,11 +882,6 @@ nextflow_process {
         config "./singleplex_flex.config"
 
         when {
-
-            params {
-                singleplex_flex = true
-            }
-
             process {
                 """
                 //
