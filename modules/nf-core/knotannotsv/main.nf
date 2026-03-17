@@ -23,7 +23,6 @@ process KNOTANNOTSV {
     def args = task.ext.args ?: ''
     def knot_prefix = task.ext.prefix ? "--outPrefix ${task.ext.prefix}" : "" // For knotAnnotSV, this a true prefix
     def knot_script = knot_out_xl ? 'knotAnnotSV2XL.pl' : 'knotAnnotSV.pl'
-    // TODO felix: Allow Excel output
     """
     git clone https://github.com/mobidic/knotAnnotSV.git --branch v1.1.5 --single-branch # CHANGE when UPDATE
 
