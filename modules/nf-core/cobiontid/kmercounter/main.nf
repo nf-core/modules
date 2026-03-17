@@ -23,9 +23,9 @@ process KMERCOUNTER {
     def args    = task.ext.args     ?: ""
     """
     kmer-counter \\
-        -f $fasta \\
-        -k $kmer_size \\
-        $args \\
+        -f ${fasta} \\
+        -k ${kmer_size} \\
+        ${args} \\
         -o ${prefix}_kmer_counts.npy
     """
 
