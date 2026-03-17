@@ -1,4 +1,4 @@
-process PMLST_PREPARE_PMLST_DB {
+process PMLST_PREPAREDB {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
