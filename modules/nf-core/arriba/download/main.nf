@@ -15,7 +15,8 @@ process ARRIBA_DOWNLOAD {
     path "cytobands*${genome}*.tsv"       , emit: cytobands
     path "protein_domains*${genome}*.gff3", emit: protein_domains
     path "known_fusions*${genome}*.tsv.gz", emit: known_fusions
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('arriba'), eval('arriba -h | grep "Version:" 2>&1 | sed "s/Version:\\s//"'), emit: versions_arriba, topic: versions
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,10 +30,7 @@ process ARRIBA_DOWNLOAD {
     mv arriba_v${arriba_version}/database/* .
     rm -r arriba_v${arriba_version}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        arriba_download: \$(arriba -h | grep 'Version:' 2>&1 |  sed 's/Version:\s//')
-    END_VERSIONS
+
     """
 
     stub:
@@ -43,9 +41,6 @@ process ARRIBA_DOWNLOAD {
     touch cytobands_hg38_GRCh38_v${arriba_version}.tsv
     echo | gzip > known_fusions_hg38_GRCh38_v${arriba_version}.tsv.gz
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        arriba_download: \$(arriba -h | grep 'Version:' 2>&1 |  sed 's/Version:\s//')
-    END_VERSIONS
+
     """
 }

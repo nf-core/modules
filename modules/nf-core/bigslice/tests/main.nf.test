@@ -60,7 +60,12 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR_GBK.out.untar
+                // Flatten the GBK directory into a list of individual GBK files with meta
+                input[0] = UNTAR_GBK.out.untar.map { meta, dir ->
+                    def gbk_files = []
+                    dir.eachFileRecurse { if (it.name.endsWith('.gbk')) gbk_files << it }
+                    [ meta, gbk_files ]
+                }
                 input[1] = UNTAR_HMMDB.out.untar.map{ it -> it[1] }
                 """
             }
@@ -86,7 +91,12 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR_GBK.out.untar
+                // Flatten the GBK directory into a list of individual GBK files with meta
+                input[0] = UNTAR_GBK.out.untar.map { meta, dir ->
+                    def gbk_files = []
+                    dir.eachFileRecurse { if (it.name.endsWith('.gbk')) gbk_files << it }
+                    [ meta, gbk_files ]
+                }
                 input[1] = UNTAR_HMMDB.out.untar.map{ it -> it[1] }
                 """
             }

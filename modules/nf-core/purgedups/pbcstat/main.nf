@@ -24,8 +24,8 @@ process PURGEDUPS_PBCSTAT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     pbcstat \\
-        $args \\
-        $paf_alignment
+        ${args} \\
+        ${paf_alignment}
 
     for PBFILE in PB.*; do mv \$PBFILE ${prefix}.\$PBFILE; done
     """
