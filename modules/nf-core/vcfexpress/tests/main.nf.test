@@ -104,7 +104,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
                 ]
 
-                input[1] = file('${moduleDir}/tests/prelude_test.lua')
+                input[1] = []
                 """
             }
         }
