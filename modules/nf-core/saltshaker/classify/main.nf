@@ -48,7 +48,9 @@ process SALTSHAKER_CLASSIFY {
     """
     echo $args
 
-    touch ${prefix}.saltshaker.vcf
+    if [[ "$args" == *"--vcf"* ]]; then
+        touch ${prefix}.saltshaker.vcf
+    fi
     touch ${prefix}.saltshaker_classify.txt
     touch ${prefix}.saltshaker_classify_metadata.tsv
     """
