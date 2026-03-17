@@ -15,7 +15,7 @@ process MACS3_CALLPEAK {
     output:
     tuple val(meta), path("*.{narrowPeak,broadPeak}"), emit: peak
     tuple val(meta), path("*.xls")                   , emit: xls
-    tuple val("${task.process}"), val('macs3'), eval("macs3 --version | sed -e 's/macs3 //g'"), topic: versions, emit: versions_macs3
+    tuple val("${task.process}"), val('macs3'), eval("macs3 --version | sed -e 's/macs3 //'"), topic: versions, emit: versions_macs3
 
     tuple val(meta), path("*.gappedPeak"), optional:true, emit: gapped
     tuple val(meta), path("*.bed")       , optional:true, emit: bed
