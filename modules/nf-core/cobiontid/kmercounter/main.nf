@@ -1,4 +1,4 @@
-process KMERCOUNTER {
+process COBIONTID_KMERCOUNTER {
     tag "${meta.id}"
     label 'process_low'
 
