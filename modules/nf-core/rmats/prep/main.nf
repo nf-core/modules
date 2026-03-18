@@ -11,8 +11,9 @@ process RMATS_PREP {
     tuple val(meta), path(genome_bam)
     // NOTES - post seems to need only the BAM *names*, not the actual files. Could we just get the first line of each file to get the names?
     // for file in `ls multi_bam_rmats_prep_tmp/*.rmats`; do head -1 $file; done | tr '\n' ','
+    // possible suggestions from @SPPearce - pass ${prefix}.prep.b1.txt as outut
     // NOTES - for stats, it should be possible to parse the formula using patsy, but if we include PAIRADISE we might have R - just do this in R, first pass
-    path reference_gtf
+    tuple val(meta2), path(reference_gtf)
     val rmats_read_len
 
     output:
@@ -30,7 +31,6 @@ process RMATS_PREP {
     //                    The length of each read. Required parameter, with the
     //                    value set according to the RNA-seq read length
     //          I should change it by read length (in workflow)! Look at Samtools stats!
-    // NOTES - Following example at https://github.com/nf-core/rnaseq/blob/e049f51f0214b2aef7624b9dd496a404a7c34d14/conf/modules.config#L576, the files are saved as prefix only. When using this in a workflow, I will modify the prefix to include prep/post/etc.
     """
     echo ${genome_bam} > ${prefix}.prep.b1.txt
 
