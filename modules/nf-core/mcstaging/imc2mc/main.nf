@@ -8,7 +8,7 @@ process MCSTAGING_IMC2MC {
 
     output:
     tuple val(meta), path("*.tif"), emit: tif
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('imc2mc'), eval("python /imc2mc/scripts/imc2mc.py --version | sed 's/v//g'"), emit: versions_imc2mc, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,17 +20,13 @@ process MCSTAGING_IMC2MC {
     }
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     python /imc2mc/scripts/imc2mc.py \
         -i ${txtfile} \
         -o "${prefix}.tif" \
         $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        imc2mc: \$(python /imc2mc/scripts/imc2mc.py --version | sed 's/v//g')
-    END_VERSIONS
+    sed -i -E 's/UUID="urn:uuid:[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}"/                                                    /g' ${prefix}.tif
     """
 
     stub:
@@ -41,10 +37,5 @@ process MCSTAGING_IMC2MC {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tif
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        imc2mc: \$(python /imc2mc/scripts/imc2mc.py --version | sed 's/v//g')
-    END_VERSIONS
     """
 }

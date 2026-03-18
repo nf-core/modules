@@ -1,7 +1,7 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "mcstaging_imc2mc"
-description: Staging module for MCMICRO transforming Imaging Mass Cytometry .txt files
-  to .tif files with OME-XML metadata. Includes optional hot pixel removal.
+description: Staging module for MCMICRO transforming Imaging Mass Cytometry .txt
+  files to .tif files with OME-XML metadata. Includes optional hot pixel
+  removal.
 keywords:
   - imaging
   - ome-tif
@@ -13,41 +13,55 @@ tools:
       homepage: "https://github.com/SchapiroLabor/imc2mc"
       documentation: "https://github.com/SchapiroLabor/imc2mc/README.md"
       tool_dev_url: "https://github.com/SchapiroLabor/imc2mc"
-      licence: ["GPL-3.0 license"]
+      licence:
+        - "GPL-3.0 license"
       identifier: ""
-
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
+          e.g. `[ id:'sample1' ]`
     - txtfile:
         type: file
-        description: Acquisition .txt file
+        description: Acquisition TXT file
         pattern: "*.{txt}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1964
 output:
-  #Only when we have meta
   tif:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
       - "*.tif":
           type: file
           description: One output .tif file containing acquisition and metadata
           pattern: "*.{tif}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3591
+  versions_imc2mc:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - imc2mc:
+          type: string
+          description: The name of the tool
+      - python /imc2mc/scripts/imc2mc.py --version | sed 's/v//g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - imc2mc:
+          type: string
+          description: The name of the tool
+      - python /imc2mc/scripts/imc2mc.py --version | sed 's/v//g':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@MargotCh"
 maintainers:
