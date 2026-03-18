@@ -17,8 +17,7 @@ process GECCO_RUN {
     tuple val(meta), path("*.clusters.tsv") , optional: true, emit: clusters
     tuple val(meta), path("*_cluster_*.gbk"), optional: true, emit: gbk
     tuple val(meta), path("*.json")         , optional: true, emit: json
-
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('gecco'), eval('gecco -V | cut -d" " -f2'), emit: versions_gecco, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,12 +40,6 @@ process GECCO_RUN {
     for i in \$(find -name '${input.baseName}*' -type f); do
         mv \$i \${i/${input.baseName}/${prefix}};
     done
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gecco: \$(echo \$(gecco --version) | cut -f 2 -d ' ' )
-    END_VERSIONS
     """
 
     stub:
@@ -56,10 +49,5 @@ process GECCO_RUN {
     touch ${prefix}.features.tsv
     touch ${prefix}.clusters.tsv
     touch NC_018507.1_cluster_1.gbk
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gecco: \$(echo \$(gecco --version) | cut -f 2 -d ' ' )
-    END_VERSIONS
     """
 }

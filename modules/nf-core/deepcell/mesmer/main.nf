@@ -20,7 +20,6 @@ process DEEPCELL_MESMER {
     def args             = task.ext.args ?: ''
     def prefix           = task.ext.prefix ?: "${meta.id}"
     def membrane_command = membrane_img ? "--membrane-image $membrane_img" : ""
-    def VERSION          = "0.4.1"
 
     """
     python /usr/src/app/run_app.py mesmer \\

@@ -9,8 +9,7 @@ process PICARD_MARKDUPLICATES {
 
     input:
     tuple val(meta), path(reads)
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fai)
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam, optional: true
