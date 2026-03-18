@@ -34,6 +34,10 @@ process COBIONTID_KMERCOUNTER {
         -k ${kmer_size} \\
         ${args} \\
         -o ${prefix}_kmer_counts.npy
+
+    if [ "${is_compressed}" == "true" ]; then
+        rm ${fasta_name}
+    fi
     """
 
     stub:
