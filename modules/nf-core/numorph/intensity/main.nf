@@ -19,7 +19,6 @@ process NUMORPH_INTENSITY {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
@@ -30,13 +29,10 @@ process NUMORPH_INTENSITY {
     parameter_file=\$(readlink -f ${parameter_file})
     results_dir=\$(readlink -f ./results)
 
-
     numorph_preprocessing 'input_dir' \$img_dir 'output_dir' \$results_dir 'parameter_file' \$parameter_file 'sample_name' ${meta.id} 'stage' 'intensity'
-
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """

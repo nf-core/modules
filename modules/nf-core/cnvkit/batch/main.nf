@@ -101,14 +101,11 @@ process CNVKIT_BATCH {
     """
     stub:
     def tumor_exists = tumor ? true : false
-    def normal_exists = normal ? true : false
     def reference_exists = reference ? true : false
     // identify BED naming pattern
     def bed_prefix = reference_exists ? reference.BaseName : targets ? targets.BaseName : ""
     def bed_suffix = reference_exists ? "-tmp.bed" : ".bed"
     // execute samtools only when cram files are input, cnvkit runs natively on cram but is prohibitively slow
-    def tumor_cram = tumor_exists && tumor.Extension == "cram" ? true : false
-    def normal_cram = normal_exists && normal.Extension == "cram" ? true : false
     def out_base_name = tumor_exists ? tumor.BaseName : normal.BaseName
     """
     touch ${bed_prefix}.antitarget${bed_suffix}
