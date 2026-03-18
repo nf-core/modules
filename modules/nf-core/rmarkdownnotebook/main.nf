@@ -16,11 +16,11 @@ process RMARKDOWNNOTEBOOK {
     path input_files
 
     output:
-    tuple val(meta), path("*.html")                               , emit: report
-    tuple val(meta), path("*.parameterised.Rmd")                  , emit: parameterised_notebook, optional: true
-    tuple val(meta), path("${notebook_parameters.artifact_dir}/*"), emit: artifacts, optional: true
-    tuple val(meta), path("session_info.log")                     , emit: session_info
-    path  "versions.yml"                                          , emit: versions
+    tuple val(meta), path("*.html")             , emit: report
+    tuple val(meta), path("*.parameterised.Rmd"), emit: parameterised_notebook, optional: true
+    tuple val(meta), path("artifacts/*")        , emit: artifacts, optional: true
+    tuple val(meta), path("session_info.log")   , emit: session_info
+    path  "versions.yml"                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,7 +30,6 @@ process RMARKDOWNNOTEBOOK {
     notebook_parameters = [
         meta: meta,
         cpus: task.cpus,
-        artifact_dir: "artifacts",
     ] + (parameters ?: [:])
 
     // Dump parameters to yaml file.
@@ -47,7 +46,7 @@ process RMARKDOWNNOTEBOOK {
     END_YAML_PARAMS
 
     # Create output directory
-    mkdir "${notebook_parameters.artifact_dir}"
+    mkdir artifacts
 
     # Set parallelism for BLAS/MKL etc. to avoid over-booking of resources
     export MKL_NUM_THREADS="$task.cpus"
@@ -118,12 +117,6 @@ process RMARKDOWNNOTEBOOK {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    notebook_parameters = [
-        meta: meta,
-        cpus: task.cpus,
-        artifact_dir: "artifacts",
-        input_dir: "./",
-    ] + (parameters ?: [:])
     """
     touch ${prefix}.html
     touch session_info.log
