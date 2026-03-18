@@ -30,6 +30,7 @@ nextflow_process {
     }
 
     test("Bakta database download - stub") {
+        tag "stub"
 
         options "-stub"
 
@@ -43,7 +44,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOuptu(process.out)).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

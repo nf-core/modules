@@ -16,6 +16,8 @@ process BAKTA_BAKTADBDOWNLOAD {
     script:
     def args = task.ext.args ?: ''
     """
+    export MPLCONFIGDIR=\$PWD/.matplotlib
+
     bakta_db \\
         download \\
         ${args}
@@ -24,10 +26,14 @@ process BAKTA_BAKTADBDOWNLOAD {
     stub:
     def args = task.ext.args ?: ''
     """
+    export MPLCONFIGDIR=\$PWD/.matplotlib
+
     echo "bakta_db \\
         download \\
         ${args}"
 
-    mkdir db
+    mkdir -p db
+    touch db/version.json
+    touch db/bakta.db
     """
 }

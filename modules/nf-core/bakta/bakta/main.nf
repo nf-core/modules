@@ -26,7 +26,7 @@ process BAKTA_BAKTA {
     tuple val(meta), path("${prefix}.hypotheticals.faa"), emit: hypotheticals_faa
     tuple val(meta), path("${prefix}.tsv"), emit: tsv
     tuple val(meta), path("${prefix}.txt"), emit: txt
-    tuple val("${task.process}"), val('bakta'), eval("bakta --version 2>&1 | cut -f2 -d ' '"), emit: versions_bakta, topic: versions
+    tuple val("${task.process}"), val('bakta'), eval("bakta --version 2>&1 | sed 's/bakta //'"), emit: versions_bakta, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,6 +40,8 @@ process BAKTA_BAKTA {
     def hmms_opt = hmms ? "--hmms ${hmms}" : ""
 
     """
+    export MPLCONFIGDIR=\$PWD/.matplotlib
+
     bakta \\
         ${fasta} \\
         ${args} \\
@@ -55,6 +57,8 @@ process BAKTA_BAKTA {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export MPLCONFIGDIR=\$PWD/.matplotlib
+
     touch ${prefix}.embl
     touch ${prefix}.faa
     touch ${prefix}.ffn
