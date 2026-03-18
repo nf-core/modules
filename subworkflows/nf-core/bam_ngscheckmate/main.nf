@@ -17,20 +17,21 @@ workflow BAM_NGSCHECKMATE {
 
     BCFTOOLS_MPILEUP (ch_input_bed, ch_fasta.collect(), false)
 
-    BCFTOOLS_MPILEUP
-    .out
-    .vcf
-    .map{_meta, vcf -> vcf}    // discard individual metas
-    .collect()                // group into one channel
-    .map{files -> [files]}    // make the channel into [vcf1, vcf2, ...]
-    .set {ch_collected_vcfs}
+    BCFTOOLS_MPILEUP.out.vcf
+        .map{_meta, vcf -> vcf}    // discard individual metas
+        .collect()                // group into one channel
+        .map{files -> [files]}    // make the channel into [vcf1, vcf2, ...]
+        .set {ch_collected_vcfs}
 
     ch_snp_bed
-    .map{meta, _bed -> meta} // use the snp_bed file meta as the meta for the merged channel
-    .combine(ch_collected_vcfs) // add the vcf files after the meta, now looks like [meta, [vcf1, vcf2, ... ] ]
-    .set {ch_vcfs}
+        .map{meta, _bed -> meta} // use the snp_bed file meta as the meta for the merged channel
+        .combine(ch_collected_vcfs) // add the vcf files after the meta, now looks like [meta, [vcf1, vcf2, ... ] ]
+        .set {ch_vcfs}
 
-    NGSCHECKMATE_NCM (ch_vcfs, ch_snp_bed, ch_fasta)
+    NGSCHECKMATE_NCM (
+        ch_vcfs, ch_snp_bed,
+        ch_fasta.map{ meta, fasta, fai, _gzi -> [ meta, fasta, fai]}
+    )
 
     emit:
     corr_matrix  = NGSCHECKMATE_NCM.out.corr_matrix  // channel: [ meta, corr_matrix ]
