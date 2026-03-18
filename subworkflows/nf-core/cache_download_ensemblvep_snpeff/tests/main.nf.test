@@ -1,0 +1,37 @@
+nextflow_workflow {
+
+    name "Test Workflow CACHE_DOWNLOAD_ENSEMBLVEP_SNPEFF"
+    script "../main.nf"
+    config "./nextflow.config"
+    workflow "CACHE_DOWNLOAD_ENSEMBLVEP_SNPEFF"
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "cache_download_ensemblvep_snpeff"
+    tag "subworkflows/cache_download_ensemblvep_snpeff"
+    tag "ensemblvep/download"
+    tag "snpeff/download"
+
+    test("ensemblvep 115_WBcel235 - snpeff WBcel235.99") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [id:"115_WBcel235"],
+                    params.vep_genome,
+                    params.vep_species,
+                    params.vep_cache_version
+                ])
+                input[1] = [ [ id:"WBcel235.99" ], "WBcel235.99" ]
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
+            )
+        }
+    }
+}
