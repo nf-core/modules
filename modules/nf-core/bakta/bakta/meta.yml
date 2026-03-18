@@ -188,7 +188,7 @@ output:
       - bakta:
           type: string
           description: The name of the tool
-      - bakta --version 2>&1 | cut -f2 -d ' ':
+      - bakta --version 2>&1 | sed 's/bakta //':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -199,7 +199,7 @@ topics:
       - bakta:
           type: string
           description: The name of the tool
-      - bakta --version 2>&1 | cut -f2 -d ' ':
+      - bakta --version 2>&1 | sed 's/bakta //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
