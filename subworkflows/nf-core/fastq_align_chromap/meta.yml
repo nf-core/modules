@@ -41,12 +41,12 @@ input:
         Structure: [val(meta2), path(index)]
         Chromap genome index files
       pattern: "*.index"
-  - ch_fasta:
+  - ch_fasta_fai:
       type: file
       description: |
-        Structure: [val(meta2), path(fasta)]
-        Reference fasta file
-      pattern: "*.{fasta,fa}"
+        Structure: [val(meta2), path(fasta), path(fai)]
+        Reference fasta file and index
+      pattern: "*.{fasta,fa},*.fai"
   - ch_barcodes:
       type: file
       description: |
