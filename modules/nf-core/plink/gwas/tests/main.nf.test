@@ -74,6 +74,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.log.get(0).get(1) ==~ ".*/*.log" },
+                {
+                    def assocFile = path(process.out.assoc.get(0).get(1))
+                    def commandText = assocFile.parent.resolve(".command.sh").text
+                    assert commandText.contains("--pheno-name Phenotype")
+                },
                 { assert snapshot(
                     process.out.assoc,
                     process.out.nosex,
@@ -115,6 +120,47 @@ nextflow_process {
                     process.out.assoc,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
+                }
+            )
+        }
+    }
+
+    test("plink - binary phenotype metadata with bed and chromosome restriction") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                outdir = "test"
+            }
+            process {
+                """
+                input[0] = [
+                        [id:"test", chr:1],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+                input[1] = [ [id:"null"], []]
+                input[2] = [ [id:"null"], []]
+                input[3] = [
+                    [id:"plink_simulated_binary_phenoname", is_binary:true],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_binary_phenoname.phe', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.assoc.size() == 1 },
+                { assert process.out.assoc.get(0).get(0).chr == 1 },
+                {
+                    def assocFile = path(process.out.assoc.get(0).get(1))
+                    def commandText = assocFile.parent.resolve(".command.sh").text
+                    assert commandText.contains("--pheno ")
+                    assert commandText.contains("--chr 1")
                 }
             )
         }

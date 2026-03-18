@@ -15,7 +15,7 @@ process PLINK_GWAS {
     tuple val(meta4), path(phe)
 
     output:
-    tuple val(meta), path("*.assoc"),  emit: assoc
+    tuple val(meta), path("*.{assoc,qassoc}"),  emit: assoc
     tuple val(meta), path("*.log")  ,  emit: log
     tuple val(meta), path("*.nosex"),  emit: nosex   , optional:true
     tuple val("${task.process}"), val('plink'), eval("plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'"), emit: versions_plink, topic: versions
@@ -26,18 +26,23 @@ process PLINK_GWAS {
     script:
     def args = task.ext.args ?: ''
     def prefix = ""
+    def chr_arg = ""
     // define input string based on provided input files
     // in hierarchical order
     def input_command = ""
     if (bed){
-        input_command = "--bed ${bed} --bim ${bim} --fam ${fam}"
+        def pheno_arg = phe ? "--pheno ${phe}" : ""
+        input_command = "--bed ${bed} --bim ${bim} --fam ${fam} ${pheno_arg}".trim()
+        chr_arg = meta.chr != null ? "--chr ${meta.chr}" : ""
         prefix = task.ext.prefix ?: "${meta.id}"
     } else if (vcf) {
         input_command = "--vcf ${vcf} --pheno ${phe}"
+        chr_arg = meta2.chr != null ? "--chr ${meta2.chr}" : ""
         prefix = task.ext.prefix ?: "${meta2.id}"
         meta = meta2
     } else if (bcf) {
         input_command = "--bcf ${bcf} --pheno ${phe}"
+        chr_arg = meta3.chr != null ? "--chr ${meta3.chr}" : ""
         prefix = task.ext.prefix ?: "${meta3.id}"
         meta = meta3
     } else {
@@ -49,6 +54,7 @@ process PLINK_GWAS {
         $input_command \\
         --threads $task.cpus \\
         --assoc \\
+        $chr_arg \\
         $args \\
         --out $prefix
     """

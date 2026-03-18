@@ -9,7 +9,7 @@ tools:
       description: "Whole genome association analysis toolset, designed to perform a
         range of basic, large-scale analyses in a computationally efficient manner."
       homepage: "https://www.cog-genomics.org/plink"
-      documentation: "https://www.cog-genomics.org/plink/1.9/data#recode"
+      documentation: "https://www.cog-genomics.org/plink/1.9/assoc"
       tool_dev_url: "https://www.cog-genomics.org/plink/1.9/dev"
       licence: ["GPL"]
       identifier: ""
@@ -18,9 +18,9 @@ input:
   - - meta:
         type: map
         description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-          meta is associated to the PLINK native file input
+          Groovy Map containing genotype sample information for PLINK BED/BIM/FAM input
+          May optionally include `chr` for chromosome-restricted analysis
+          e.g. [ id:'test' ] or [ id:'test', chr:1 ]
     - bed:
         type: file
         description: PLINK binary biallelic genotype table file
@@ -39,36 +39,37 @@ input:
   - - meta2:
         type: map
         description: |
-          Groovy Map containing sample information,
-          e.g. [ id:'test', single_end:false ]
-          meta2 is associated to VCF file input
+          Groovy Map containing genotype sample information for VCF input
+          May optionally include `chr` for chromosome-restricted analysis
+          e.g. [ id:'test' ] or [ id:'test', chr:1 ]
     - vcf:
         type: file
-        description: Variant calling file (vcf)
-        pattern: "*.{vcf}"
+        description: Variant calling file (vcf), optionally gzip-compressed
+        pattern: "*.{vcf,vcf.gz}"
         ontologies: []
   - - meta3:
         type: map
         description: |
-          Groovy Map containing sample information,
-          e.g. [ id:'test', single_end:false ]
-          meta3 is associated to BCF file input
+          Groovy Map containing genotype sample information for BCF input
+          May optionally include `chr` for chromosome-restricted analysis
+          e.g. [ id:'test' ] or [ id:'test', chr:1 ]
     - bcf:
         type: file
         description: PLINK variant information + sample ID + genotype call binary file
-        pattern: "*.{bcf}"
+        pattern: "*.{bcf,bcf.gz}"
         ontologies: []
   - - meta4:
         type: map
         description: |
-          Groovy Map containing sample information,
-          e.g. [ id:'test', single_end:false ]
-          meta4 is associated to phenotype file input
+          Groovy Map containing phenotype information for `--pheno`
+          May optionally include `is_binary` to annotate binary traits
+          e.g. [ id:'test' ] or [ id:'test', is_binary:true ]
+          The phenotype file can be paired with BED/BIM/FAM, VCF, or BCF genotype inputs
     - phe:
         type: file
-        description: PLINK file containing phenotype information. This phenotype information
-          can be read from the third column with the --pheno option or from a specific
-          column with the --pheno-name option
+        description: PLINK phenotype file passed with `--pheno` for BED/BIM/FAM, VCF, or BCF input modes.
+          Phenotypes can be read from the third column by default or from a named
+          column with `--pheno-name` via module arguments
         pattern: "*.{phe}"
         ontologies: []
 output:
@@ -78,10 +79,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.assoc":
+      - "*.{assoc,qassoc}":
           type: file
-          description: PLINK GWAS association file
-          pattern: "*.{assoc}"
+          description: PLINK GWAS association output file (`.assoc` for case/control traits, `.qassoc` for quantitative traits)
+          pattern: "*.{assoc,qassoc}"
           ontologies: []
   log:
     - - meta:
