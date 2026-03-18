@@ -59,6 +59,7 @@ nextflow_workflow {
                     [id: "GRCh38"],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz', checkIfExists:true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz.fai', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz.gzi', checkIfExists:true)
                 ]).collect()
                 input[3] = "id"
                 input[4] = "all_samples"
@@ -119,6 +120,7 @@ nextflow_workflow {
                     [id: "GRCh38"],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz', checkIfExists:true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz.fai', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz.gzi', checkIfExists:true)
                 ]).collect()
                 input[3] = "id"
                 input[4] = "all_samples"
@@ -182,6 +184,7 @@ nextflow_workflow {
                     [id: "GRCh38"],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz', checkIfExists:true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz.fai', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz.gzi', checkIfExists:true)
                 ]).collect()
                 input[3] = "id"
                 input[4] = "all_samples"

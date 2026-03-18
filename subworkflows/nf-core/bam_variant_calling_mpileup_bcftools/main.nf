@@ -8,7 +8,7 @@ workflow BAM_VARIANT_CALLING_MPILEUP_BCFTOOLS {
     take:
     ch_bam                   // channel: [ [id], bam, bai ]
     ch_posfile               // channel: [ [panel_id, chr], posfile_comma]
-    ch_fasta                 // channel: [ [genome], fasta, fai ]
+    ch_fasta                 // channel: [ [genome], fasta, fai, gzi ]
     meta_sample_merge_key    // val    : [ "id" ]
     meta_sample_merge_value  // val    : [ "all_samples" ]
     meta_region_gather_keys  // val    : [ "panel_id", "id" ]

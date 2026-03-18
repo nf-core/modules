@@ -18,11 +18,10 @@ nextflow_workflow {
 
             workflow {
                 """
-
                 bed_file = file('test_snp.bed')
                 bed_file.text = "MT192765.1\t1262\t1263\\nMT192765.1\t1263\t1264\\nMT192765.1\t1575\t1576"
 
-                input[0] = Channel.fromList([
+                input[0] = channel.of(
                     [
                         [ id:'test1' ],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
@@ -31,13 +30,14 @@ nextflow_workflow {
                         [ id:'test2' ],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true)
                     ]
-                ])
-                input[1] = Channel.of([ [id:'test_bed'], bed_file])
-                input[2] = Channel.of([
+                )
+                input[1] = channel.of([ [id:'test_bed'], bed_file])
+                input[2] = channel.of([
                     [ id:'sarscov2'],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
-                        []
-                    ])
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    [],
+                    []
+                ])
                 """
             }
         }
@@ -51,7 +51,7 @@ nextflow_workflow {
                     workflow.out.all,
                     workflow.out.vcf.collect {meta, vcf -> path(vcf).vcf.variantsMD5 },
                     file(workflow.out.pdf[0][1]).name
-                    ).match()}
+                ).match()}
             )
         }
     }
@@ -65,20 +65,22 @@ nextflow_workflow {
                 bed_file = file('test_snp.bed')
                 bed_file.text = "chr22\t1981\t1982\\nchr22\t2122\t2123\\nchr22\t3139\t3140\\nchr22\t3265\t3266\\nchr22\t3412\t3413"
 
-                input[0] = Channel.fromList([[
-                            [ id:'test1' ],
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
-                        ],[
-                            [ id:'test2' ],
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.sorted.cram', checkIfExists: true)
-                        ]
-                ])
-                input[1] = Channel.of([ [id:'test_bed'], bed_file])
-                input[2] = Channel.of([
+                input[0] = channel.of(
+                    [
+                        [ id:'test1' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
+                    ],[
+                        [ id:'test2' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.sorted.cram', checkIfExists: true)
+                    ]
+                )
+                input[1] = channel.of([ [id:'test_bed'], bed_file])
+                input[2] = channel.of([
                     [ id:'homo_sapiens'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
-                        []
-                    ])
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    [],
+                    []
+                ])
                 """
             }
         }
@@ -92,7 +94,7 @@ nextflow_workflow {
                     workflow.out.all,
                     workflow.out.vcf.collect {meta, vcf -> path(vcf).vcf.variantsMD5 },
                     file(workflow.out.pdf[0][1]).name
-                    ).match()}
+                ).match()}
             )
         }
     }
@@ -107,7 +109,7 @@ nextflow_workflow {
                 bed_file = file('test_snp.bed')
                 bed_file.text = "MT192765.1\t1262\t1263\\nMT192765.1\t1263\t1264\\nMT192765.1\t1575\t1576"
 
-                input[0] = Channel.fromList([
+                input[0] = channel.of(
                     [
                         [ id:'test1' ],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
@@ -116,13 +118,14 @@ nextflow_workflow {
                         [ id:'test2' ],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true)
                     ]
-                ])
-                input[1] = Channel.of([ [id:'test_bed'], bed_file])
-                input[2] = Channel.of([
+                )
+                input[1] = channel.of([ [id:'test_bed'], bed_file])
+                input[2] = channel.of([
                     [ id:'sarscov2'],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
-                        []
-                    ])
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    [],
+                    []
+                ])
                 """
             }
         }
@@ -130,7 +133,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(sanitizeOutput(workflow.out)).match()}
             )
         }
     }
