@@ -19,11 +19,18 @@ process COBIONTID_KMERCOUNTER {
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix  = task.ext.prefix   ?: "${meta.id}"
-    def args    = task.ext.args     ?: ""
+    def prefix          = task.ext.prefix   ?: "${meta.id}"
+    def args            = task.ext.args     ?: ""
+    def is_compressed   = fasta.getExtension() == "gz" ? true : false
+    def fasta_name      = is_compressed ? fasta.getBaseName() : fasta
+
     """
+    if [ "${is_compressed}" == "true" ]; then
+        gzip -c -d ${fasta} > ${fasta_name}
+    fi
+
     kmer-counter \\
-        -f ${fasta} \\
+        -f ${fasta_name} \\
         -k ${kmer_size} \\
         ${args} \\
         -o ${prefix}_kmer_counts.npy
