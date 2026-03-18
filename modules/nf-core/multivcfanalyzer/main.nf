@@ -4,8 +4,8 @@ process MULTIVCFANALYZER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/83ae9e52b1c7d8dfec31c1e045908153c9c575b212f0d89c56885315f51d98d3/data' :
-        'community.wave.seqera.io/library/htslib_multivcfanalyzer:71bddf4ac37aff5b' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/07/0713bc8b2176da50f1967ae24dd955f913b7288b966408220596e91c5c14aeeb/data' :
+        'community.wave.seqera.io/library/htslib_multivcfanalyzer:6387733614faccad' }"
 
     input:
     tuple val(meta), path(vcfs)
