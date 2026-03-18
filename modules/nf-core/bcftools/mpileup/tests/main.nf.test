@@ -286,4 +286,32 @@ nextflow_process {
             )
         }
     }
+
+    test("sarscov2 - [bam, []], fasta.gz, false - error no gzi") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    [],
+                    []
+                ]
+                input[1] = [
+                    [ id:'sarscov2' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true),
+                    [],
+                    []
+                ]
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assert process.failed
+            assert process.errorReport.contains("Fasta file seems to be compressed but no `.gzi` index provided")
+        }
+    }
 }

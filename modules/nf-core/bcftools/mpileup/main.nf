@@ -31,6 +31,11 @@ process BCFTOOLS_MPILEUP {
     def bgzip_mpileup = save_mpileup ? "bgzip ${prefix}.mpileup" : ""
     def intervals_mpileup_cmd = intervals_mpileup ? "-T ${intervals_mpileup}" : ""
     def intervals_call_cmd = intervals_call ? "-T ${intervals_call}" : ""
+
+    if (fasta.name =~ /\.(gz|bgz)$/ && !gzi) {
+        error "Fasta file seems to be compressed but no `.gzi` index provided"
+    }
+
     """
     echo "${meta.id}" > sample_name.list
 
