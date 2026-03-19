@@ -1,0 +1,185 @@
+name: ldak_he
+description: Run LDAK Haseman-Elston regression on a (possibly adjusted) GRM and phenotype
+keywords:
+  - ldak
+  - he
+  - heritability
+tools:
+  - ldak6:
+      description: LDAK toolset for kinship, heritability, and association analyses
+      homepage: https://dougspeed.com/ldak/
+      documentation: https://dougspeed.com/ldak/
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing phenotype metadata.
+          Expected keys:
+            - id (string): Output prefix for HE artifacts.
+    - phenotype_file:
+        type: file
+        description: Headerless phenotype file passed to `--pheno`
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing GRM metadata.
+          Expected keys:
+            - id (string): GRM identifier.
+            - grm_prefix (string, optional): GRM prefix passed to `--grm` (without `.grm.*` suffixes).
+    - grm_bin:
+        type: file
+        description: GRM binary matrix (`.grm.bin`)
+    - grm_id:
+        type: file
+        description: GRM sample identifiers (`.grm.id`)
+    - grm_details:
+        type: file
+        description: GRM details (`.grm.details`)
+    - grm_adjust:
+        type: file
+        description: GRM adjustment factors (`.grm.adjust`)
+    - grm_root:
+        type: file
+        description: Optional adjusted GRM root file (`.grm.root`); pass [] for non-adjusted GRM
+  - subset_prefix:
+      type: string
+      description: Optional subset prefix for batch-wise genotype error mode; pass '' when unused
+  - subset_number:
+      type: integer
+      description: Optional number of subsets for batch-wise mode; pass 0 when unused
+  - - meta3:
+        type: map
+        description: Metadata map paired with optional keep input.
+    - keep_file:
+        type: file
+        description: Optional keep file for sample filtering; pass [] when GRM is pre-filtered
+  - - meta4:
+        type: map
+        description: Metadata map paired with optional quantitative covariates input.
+    - quant_covariates_file:
+        type: file
+        description: Optional quantitative covariates file passed to `--covar`; pass [] when absent
+  - - meta5:
+        type: map
+        description: Metadata map paired with optional categorical covariates input.
+    - cat_covariates_file:
+        type: file
+        description: Optional categorical covariates file passed to `--factors`; pass [] when absent
+  - mpheno:
+      type: integer
+      description: Optional phenotype column index passed to `--mpheno`; pass [] to use fallback `1`
+output:
+  he_results:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.he:
+          type: file
+          description: HE summary output (`<meta.id>.he`)
+  coeff:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.coeff:
+          type: file
+          description: Optional coefficient output (`<meta.id>.coeff`)
+  combined:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.combined:
+          type: file
+          description: Optional combined output (`<meta.id>.combined`)
+  cross:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.cross:
+          type: file
+          description: Optional cross output (`<meta.id>.cross`)
+  progress:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.progress:
+          type: file
+          description: Optional progress output (`<meta.id>.progress`)
+  share:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.share:
+          type: file
+          description: Optional share output (`<meta.id>.share`)
+  he_within:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.he.within:
+          type: file
+          description: Optional within-subset HE output (`<meta.id>.he.within`)
+  he_across:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.he.across:
+          type: file
+          description: Optional across-subset HE output (`<meta.id>.he.across`)
+  he_compare:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.he.compare:
+          type: file
+          description: Optional subset comparison output (`<meta.id>.he.compare`)
+  cross_within:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.cross.within:
+          type: file
+          description: Optional within-subset cross output (`<meta.id>.cross.within`)
+  cross_across:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.cross.across:
+          type: file
+          description: Optional across-subset cross output (`<meta.id>.cross.across`)
+  share_within:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.share.within:
+          type: file
+          description: Optional within-subset share output (`<meta.id>.share.within`)
+  share_across:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.share.across:
+          type: file
+          description: Optional across-subset share output (`<meta.id>.share.across`)
+  versions_ldak6:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ldak6:
+          type: string
+          description: The tool name
+      - ldak6 --version 2>&1 | head -n 1:
+          type: eval
+          description: The expression used to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ldak6:
+          type: string
+          description: The tool name
+      - ldak6 --version 2>&1 | head -n 1:
+          type: eval
+          description: The expression used to obtain the version of the tool
+authors:
+  - "andongni"
