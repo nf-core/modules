@@ -6,7 +6,7 @@
                     [
                         "MULTIVCFANALYZER",
                         "multivcfanalyzer",
-                        "0.88.1"
+                        "0.89.0"
                     ]
                 ],
                 "versions_tabix": [
@@ -28,7 +28,7 @@
                     {
                         "id": "testVCF"
                     },
-                    "snpTableForSnpEff.tsv:md5,8d7ab4ec98a89d290e301d6feae461aa"
+                    "sarscov2_snpTableForSnpEff.tsv:md5,2056fa86583ae7bd017c88d7f5bb7d04"
                 ]
             ],
             true,
@@ -38,10 +38,10 @@
                 "test.vcf.gz": {
                     "SNP Calls (all)": 1,
                     "SNP Calls (het)": 0,
-                    "coverage (fold)": 0.0,
-                    "coverage (percent)": 0.010000000000005116,
+                    "coverage (fold)": 6.0,
+                    "coverage (percent)": 100.0,
                     "refCall": 0,
-                    "allPos": 18807,
+                    "allPos": 1,
                     "noCall": 0,
                     "discardedRefCall": 0,
                     "discardedVarCall": 0,
@@ -67,7 +67,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.3"
         },
-        "timestamp": "2026-02-27T11:55:59.598575"
+        "timestamp": "2026-03-18T15:41:27.085433"
     },
     "sarscov2 - vcf - stub": {
         "content": [
@@ -77,7 +77,7 @@
                         {
                             "id": "testVCF"
                         },
-                        "fullAlignment.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "sarscov2_fullAlignment.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "1": [
@@ -85,7 +85,7 @@
                         {
                             "id": "testVCF"
                         },
-                        "info.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "sarscov2_info.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "10": [
@@ -93,14 +93,14 @@
                         {
                             "id": "testVCF"
                         },
-                        "MultiVCFAnalyzer.json:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "sarscov2_MultiVCFAnalyzer.json:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "11": [
                     [
                         "MULTIVCFANALYZER",
                         "multivcfanalyzer",
-                        "0.88.1"
+                        "0.89.0"
                     ]
                 ],
                 "12": [
@@ -115,7 +115,7 @@
                         {
                             "id": "testVCF"
                         },
-                        "snpAlignment.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "sarscov2_snpAlignment.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "3": [
@@ -123,7 +123,7 @@
                         {
                             "id": "testVCF"
                         },
-                        "snpAlignmentIncludingRefGenome.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "sarscov2_snpAlignmentIncludingRefGenome.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "4": [
@@ -131,7 +131,7 @@
                         {
                             "id": "testVCF"
                         },
-                        "snpStatistics.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "sarscov2_snpStatistics.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "5": [
@@ -139,7 +139,7 @@
                         {
                             "id": "testVCF"
                         },
-                        "snpTable.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "sarscov2_snpTable.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "6": [
@@ -147,7 +147,7 @@
                         {
                             "id": "testVCF"
                         },
-                        "snpTableForSnpEff.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "sarscov2_snpTableForSnpEff.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "7": [
@@ -155,7 +155,7 @@
                         {
                             "id": "testVCF"
                         },
-                        "snpTableWithUncertaintyCalls.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "sarscov2_snpTableWithUncertaintyCalls.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "8": [
@@ -163,7 +163,7 @@
                         {
                             "id": "testVCF"
                         },
-                        "structureGenotypes.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "sarscov2_structureGenotypes.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "9": [
@@ -171,7 +171,7 @@
                         {
                             "id": "testVCF"
                         },
-                        "structureGenotypes_noMissingData-Columns.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "sarscov2_structureGenotypes_noMissingData-Columns.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "full_alignment": [
@@ -179,7 +179,7 @@
                         {
                             "id": "testVCF"
                         },
-                        "fullAlignment.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "sarscov2_fullAlignment.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "info_txt": [
@@ -187,7 +187,7 @@
                         {
                             "id": "testVCF"
                         },
-                        "info.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "sarscov2_info.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "json": [
@@ -195,7 +195,7 @@
                         {
                             "id": "testVCF"
                         },
-                        "MultiVCFAnalyzer.json:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "sarscov2_MultiVCFAnalyzer.json:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "snp_alignment": [
@@ -203,7 +203,7 @@
                         {
                             "id": "testVCF"
                         },
-                        "snpAlignment.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "sarscov2_snpAlignment.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "snp_genome_alignment": [
@@ -211,7 +211,7 @@
                         {
                             "id": "testVCF"
                         },
-                        "snpAlignmentIncludingRefGenome.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "sarscov2_snpAlignmentIncludingRefGenome.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "snpstatistics": [
@@ -219,7 +219,7 @@
                         {
                             "id": "testVCF"
                         },
-                        "snpStatistics.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "sarscov2_snpStatistics.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "snptable": [
@@ -227,7 +227,7 @@
                         {
                             "id": "testVCF"
                         },
-                        "snpTable.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "sarscov2_snpTable.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "snptable_snpeff": [
@@ -235,7 +235,7 @@
                         {
                             "id": "testVCF"
                         },
-                        "snpTableForSnpEff.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "sarscov2_snpTableForSnpEff.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "snptable_uncertainty": [
@@ -243,7 +243,7 @@
                         {
                             "id": "testVCF"
                         },
-                        "snpTableWithUncertaintyCalls.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "sarscov2_snpTableWithUncertaintyCalls.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "structure_genotypes": [
@@ -251,7 +251,7 @@
                         {
                             "id": "testVCF"
                         },
-                        "structureGenotypes.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "sarscov2_structureGenotypes.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "structure_genotypes_nomissing": [
@@ -259,14 +259,14 @@
                         {
                             "id": "testVCF"
                         },
-                        "structureGenotypes_noMissingData-Columns.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "sarscov2_structureGenotypes_noMissingData-Columns.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "versions_multivcfanalyzer": [
                     [
                         "MULTIVCFANALYZER",
                         "multivcfanalyzer",
-                        "0.88.1"
+                        "0.89.0"
                     ]
                 ],
                 "versions_tabix": [
@@ -282,7 +282,7 @@
                     [
                         "MULTIVCFANALYZER",
                         "multivcfanalyzer",
-                        "0.88.1"
+                        "0.89.0"
                     ]
                 ],
                 "versions_tabix": [
@@ -298,6 +298,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.3"
         },
-        "timestamp": "2026-02-23T17:08:05.521239"
+        "timestamp": "2026-03-18T15:45:17.21456"
     }
 }
