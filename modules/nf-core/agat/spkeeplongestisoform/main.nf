@@ -1,6 +1,6 @@
 process AGAT_SPKEEPLONGESTISOFORM {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -26,6 +26,7 @@ process AGAT_SPKEEPLONGESTISOFORM {
     """
     agat_sp_keep_longest_isoform.pl \\
         --gff ${gxf} \\
+        --cpu ${task.cpus} \\
         ${config_param} \\
         --out ${output} \\
         ${args}
