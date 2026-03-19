@@ -44,7 +44,7 @@ process FGBIO_CALLMOLECULARCONSENSUSREADS {
         --min-reads ${min_reads} \\
         --min-input-base-quality ${min_baseq} \\
         --threads ${task.cpus} \\
-        ${args};
+        ${args}
     """
 
     stub:
