@@ -15,6 +15,7 @@ process PICARD_MARKDUPLICATES {
     tuple val(meta), path("*.bam"), emit: bam, optional: true
     tuple val(meta), path("*.bai"), emit: bai, optional: true
     tuple val(meta), path("*.cram"), emit: cram, optional: true
+    tuple val(meta), path("*.crai"), emit: crai, optional: true
     tuple val(meta), path("*.metrics.txt"), emit: metrics
     tuple val("${task.process}"), val('picard'), eval("picard MarkDuplicates --version 2>&1 | sed -n 's/.*Version://p'"), topic: versions, emit: versions_picard
 
@@ -38,6 +39,20 @@ process PICARD_MARKDUPLICATES {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
     """
+    # Detect UMI (RX tag) presence in first 1000 reads
+    has_umi=\$(picard ViewSam --INPUT "${reads}" | grep -v '^@' | head -n 1000 | awk 'BEGIN{n=0} /\\tRX:Z:/{n++} END{print (n>0)?1:0}')
+    barcode_tag=""
+    if [ "\${has_umi}" = "1" ]; then
+        barcode_tag="--BARCODE_TAG RX"
+    fi
+
+    # Create index only if output will be coordinate-sorted
+    # (skip if args request queryname sort order, which cannot be indexed)
+    create_index=""
+    if ! echo "${args}" | grep -qiE "QUERYNAME"; then
+        create_index="--CREATE_INDEX true"
+    fi
+
     picard \\
         -Xmx${avail_mem}M \\
         MarkDuplicates \\
@@ -45,7 +60,14 @@ process PICARD_MARKDUPLICATES {
         --INPUT ${reads} \\
         --OUTPUT ${prefix}.${suffix} \\
         ${reference} \\
+        ${create_index} \\
+        ${barcode_tag} \\
         --METRICS_FILE ${prefix}.metrics.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        picard: \$(echo \$(picard MarkDuplicates --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
+    END_VERSIONS
     """
 
     stub:
