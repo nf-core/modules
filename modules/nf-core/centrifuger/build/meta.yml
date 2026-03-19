@@ -18,16 +18,13 @@ tools:
 input:
   - - meta:
         type: map
-        description: Groovy Map containing sample information. e.g.
-          `[id:'sample1']`
+        description: Groovy Map containing sample information. e.g. `[id:'test',
+          single_end:false ]`
     - reference:
         type: file
-        description: Reference genome FASTA file
+        description: |
+          One or more reference genome sequence files in FASTA format.
         ontologies: []
-  - conversion_table:
-      type: file
-      description: Mapping of sequence IDs to taxonomy IDs
-      ontologies: []
   - taxonomy_nodes:
       type: file
       description: NCBI taxonomy nodes.dmp file
@@ -36,35 +33,53 @@ input:
       type: file
       description: NCBI taxonomy names.dmp file
       ontologies: []
+  - conversion_table:
+      type: file
+      description: |
+        Optional mapping of sequence IDs to taxonomy IDs.
+        Optional.When not provided, exapcts reference_list with 2-columns format (file_path, taxID).
+      ontologies: []
+  - reference_list:
+      type: file
+      description: |
+        Optional file containing a list of refenrece sequence files (one per line).
+        Can include taxonomy ID mapping in the second column (tab-seperated).
+        Alternative to providing individual reference files.
+      pattern: "*.{txt,tsv,list}"
+      optional: true
+      ontologies:
+        - edam: http://edamontology.org/format_3475
 output:
   db:
     - - meta:
           type: map
-          description: Groovy Map containing sample information
-      - "*.cfr":
-          type: file
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/:
+          type: directory
           description: Centrifuger database index files
-          pattern: "*.cfr"
+          pattern: "${prefix}/"
           ontologies: []
   versions_centrifuger:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
       - centrifuger:
           type: string
           description: The name of the tool
-      - "centrifuger -v 2>&1 | head -n 1":
+      - centrifuger -v 2>&1 | head -n 1 | cut -d ' ' -f 2:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
   versions:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
       - centrifuger:
           type: string
           description: The name of the tool
-      - "centrifuger -v 2>&1 | head -n 1":
+      - centrifuger -v 2>&1 | head -n 1 | cut -d ' ' -f 2:
           type: eval
           description: The expression to obtain the version of the tool
 authors:

@@ -14,20 +14,18 @@ nextflow_process {
         when {
             process {
                 """
-
                 input[0] = [[ id:'test' ],file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)]
-
-                input[1] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/seqid2taxid.map", checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/nodes.dmp", checkIfExists: true)
-                input[3] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/names.dmp", checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/nodes.dmp", checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/names.dmp", checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/seqid2taxid.map", checkIfExists: true)
+                input[4] = []
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
-
+                { assert snapshot(process.out.versions_centrifuger).match() }
             )
         }
 
@@ -39,12 +37,11 @@ nextflow_process {
         when {
             process {
                 """
-
                 input[0] = [[ id:'test' ],file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)]
-
-                input[1] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/seqid2taxid.map", checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/nodes.dmp", checkIfExists: true)
-                input[3] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/names.dmp", checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/nodes.dmp", checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/names.dmp", checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/seqid2taxid.map", checkIfExists: true)
+                input[4] = []
                 """
             }
         }
@@ -52,9 +49,56 @@ nextflow_process {
     then {
         assertAll(
         { assert process.success },
+        { assert snapshot(process.out.versions_centrifuger).match() }
     )
         }
 
     }
+
+    test("sarscov2 - fasta with reference list") {
+
+        when {
+            process {
+                """
+                input[0] = [[ id:'test' ],file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)]
+                input[1] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/nodes.dmp", checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/names.dmp", checkIfExists: true)
+                input[3] = []
+                input[4] = Channel.of("genome.fasta\\t0.1").collectFile(name: 'refs_list.txt', newLine:false).first()
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions_centrifuger).match() }
+            )
+        }
+
+    }
+
+   test("sarscov2 - fasta with reference list-stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[ id:'test' ], file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)]
+                input[1] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/nodes.dmp", checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/names.dmp", checkIfExists: true)
+                input[3] = []
+                input[4] = Channel.of("genome.fasta\\t0.1").collectFile(name: 'refs_list.txt', newLine:false).first()
+                """
+            }
+        }
+    then {
+        assertAll(
+        { assert process.success },
+        { assert snapshot(process.out.versions_centrifuger).match() }
+    )
+        }
+
+    }
+
 
 }
