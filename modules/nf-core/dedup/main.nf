@@ -12,10 +12,10 @@ process DEDUP {
 
     output:
     // _rmdup is hardcoded output from dedup
-    tuple val(meta), path("*_rmdup.bam"), emit: bam
-    tuple val(meta), path("*.json"),      emit: json
-    tuple val(meta), path("*.hist"),      emit: hist
-    tuple val(meta), path("*log"),        emit: log
+    tuple val(meta), path("${prefix}.bam"),  emit: bam
+    tuple val(meta), path("${prefix}.json"), emit: json
+    tuple val(meta), path("${prefix}.hist"), emit: hist
+    tuple val(meta), path("${prefix}.log"),  emit: log
     tuple val("${task.process}"), val('dedup'), eval("dedup --version | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+'"), emit: versions_dedup, topic: versions
 
     when:
@@ -24,21 +24,26 @@ process DEDUP {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-
+    def bam_prefix = bam.baseName
     """
     dedup \\
         -Xmx${task.memory.toGiga()}g  \\
         -i ${bam} \\
         -o . \\
         ${args}
+
+    mv ${bam_prefix}_rmdup.bam ${prefix}.bam
+    mv *.json ${prefix}.json
+    mv *.hist ${prefix}.hist
+    mv *.log ${prefix}.log
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.paired_end.dedup.json
-    touch ${prefix}.paired_end.hist
-    touch ${prefix}.paired_end.log
-    touch ${prefix}.paired_end_rmdup.bam
+    touch ${prefix}.json
+    touch ${prefix}.hist
+    touch ${prefix}.log
+    touch ${prefix}.bam
     """
 }
