@@ -14,7 +14,7 @@ process KNOTANNOTSV {
     output:
     tuple val(meta), path("*.html"), emit: html, optional: true
     tuple val(meta), path("*.xlsm"), emit: xl, optional: true
-    tuple val("${task.process}"), val('knotannotsv'), eval('echo v1.1.5'), emit: versions_knotannotsv, topic: versions // CHANGE when UPDATE
+    tuple val("${task.process}"), val('knotannotsv'), val('1.1.5'), emit: versions_knotannotsv, topic: versions // CHANGE when UPDATE
 
     when:
     task.ext.when == null || task.ext.when
