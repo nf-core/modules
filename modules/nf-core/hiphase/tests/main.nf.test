@@ -7,27 +7,27 @@ nextflow_process {
     tag "modules_nfcore"
     tag "hiphase"
 
-    test("homo_sapiens pacbio [vcf] [csi] [bam] [bai] [fasta]") {
+    test("homo_sapiens - pacbio - [bam, bai, snv_vcf, snv_csi, [], [], []] - fasta - fai - false") {
+
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/NA03697B2_new.pbmm2.repeats.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/NA03697B2_new.pbmm2.repeats.vcf.gz.csi', checkIfExists: true),
-
-                ]
-
-                input[1] = [
-                    [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/NA03697B2_new.pbmm2.repeats.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/NA03697B2_new.pbmm2.repeats.vcf.gz.csi', checkIfExists: true),
+                    [],
+                    [],
+                    []
                 ]
-
-                input[2] = [
-                    [ id:'test' ], // meta map
+                input[1] = [
+                    [ id:'genome' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                    []
                 ]
+                input[2] = false
                 """
             }
         }
@@ -35,16 +35,47 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.vcf[0][1]).name == "test.phased.vcf" },
-                { assert file(process.out.csv[0][1]).name == "test.stats.csv" },
                 { assert snapshot(process.out).match() }
-
             )
         }
 
     }
 
-    test("hiphase - vcf - stub") {
+    test("homo_sapiens - pacbio - [bam, bai, snv_vcf, snv_csi, [], [], []] - fasta - fai - true") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/NA03697B2_new.pbmm2.repeats.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/NA03697B2_new.pbmm2.repeats.vcf.gz.csi', checkIfExists: true),
+                    [],
+                    [],
+                    []
+                ]
+                input[1] = [
+                    [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                    []
+                ]
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - pacbio - [bam, bai, snv_vcf, snv_csi, [], [], []] - fasta - fai - false - stub") {
 
         options "-stub"
 
@@ -53,21 +84,56 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/NA03697B2_new.pbmm2.repeats.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/NA03697B2_new.pbmm2.repeats.vcf.gz.csi', checkIfExists: true),
-
+                    [],
+                    [],
+                    []
                 ]
-
                 input[1] = [
+                    [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                    []
+                ]
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - pacbio - [bam, bai, snv_vcf, snv_csi, [], [], []] - fasta - fai - true - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/NA03697B2_new.pbmm2.repeats.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/NA03697B2_new.pbmm2.repeats.vcf.gz.csi', checkIfExists: true),
+                    [],
+                    [],
+                    []
                 ]
-
-                input[2] = [
-                    [ id:'test' ], // meta map
+                input[1] = [
+                    [ id:'genome' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                    []
                 ]
+                input[2] = true
                 """
             }
         }
