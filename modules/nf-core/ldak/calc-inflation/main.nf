@@ -11,25 +11,15 @@ process CALC_INFLATION {
 
     output:
     tuple val(meta), path("${meta.id}.txt"), emit: inflation_results
-    tuple val("${task.process}"), val("r-base"), eval("Rscript --version 2>&1 | cut -d\" \" -f3"), emit: versions_r_base, topic: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def calc_inflation_script_b64 = new File("${moduleDir}/templates/calc_inflation.R").bytes.encodeBase64().toString()
-    def quarter_reml_args = quarter_reml_files.sort { a, b -> a.name <=> b.name }.collect { quarterFile -> "\"${quarterFile}\"" }.join(' ')
-
-    """
-    set -euo pipefail
-
-    printf '%s' '${calc_inflation_script_b64}' | base64 -d > calc_inflation.R
-
-    Rscript calc_inflation.R \\
-        "${ldak_reml_file}" \\
-        ${quarter_reml_args} \\
-        "${meta.id}.txt"
-    """
+    quarter_reml_files_r = quarter_reml_files.sort { a, b -> a.name <=> b.name }.collect { quarterFile -> "\"${quarterFile}\"" }.join(', ')
+    output_file = "${meta.id}.txt"
+    template('calc_inflation.R')
 
     stub:
     """
@@ -39,5 +29,10 @@ LDAK Inflation Analysis Results
 
 Stub run
 TXT
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
+    END_VERSIONS
     """
 }

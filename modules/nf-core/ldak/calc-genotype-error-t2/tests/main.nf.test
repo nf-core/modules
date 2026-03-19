@@ -135,9 +135,13 @@ nextflow_process {
                 { assert process.out.genotype_error_results.size() == 1 },
                 {
                     def resultFile = path(process.out.genotype_error_results.get(0).get(1))
+                    def commandText = resultFile.parent.resolve(".command.sh").text
                     assert resultFile.fileName.toString() == "genotype_error_he_Y1_ldak_grm_adj.txt"
                     assert resultFile.text.contains("T2 Statistic")
                     assert resultFile.text.contains("P-value (H0: T2 <= 0)")
+                    assert commandText.contains("#!/usr/bin/env Rscript")
+                    assert !commandText.contains("base64 -d > calc_genotype_error_t2.R")
+                    assert !commandText.contains("Rscript calc_genotype_error_t2.R")
                 },
                 {
                     def stableResults = process.out.genotype_error_results.collect { resultTuple ->

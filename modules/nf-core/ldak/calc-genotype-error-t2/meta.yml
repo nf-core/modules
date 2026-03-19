@@ -34,26 +34,9 @@ output:
       - ${meta.id}.txt:
           type: file
           description: Genotype error T2 summary report (`<meta.id>.txt`)
-  versions_r_base:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - r-base:
-          type: string
-          description: The tool name
-      - Rscript --version 2>&1 | cut -d" " -f3:
-          type: eval
-          description: The expression used to obtain the version of the tool
-topics:
   versions:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - r-base:
-          type: string
-          description: The tool name
-      - Rscript --version 2>&1 | cut -d" " -f3:
-          type: eval
-          description: The expression used to obtain the version of the tool
+    - versions.yml:
+        type: file
+        description: File containing software versions
 authors:
   - "andongni"

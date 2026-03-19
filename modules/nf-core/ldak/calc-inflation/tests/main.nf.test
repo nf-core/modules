@@ -124,8 +124,12 @@ nextflow_process {
                 { assert process.out.inflation_results.size() == 1 },
                 {
                     def resultFile = path(process.out.inflation_results.get(0).get(1))
+                    def commandText = resultFile.parent.resolve(".command.sh").text
                     assert resultFile.fileName.toString() == "inflation_Y1.txt"
                     assert resultFile.text.contains("LDAK Inflation Analysis Results")
+                    assert commandText.contains("#!/usr/bin/env Rscript")
+                    assert !commandText.contains("base64 -d > calc_inflation.R")
+                    assert !commandText.contains("Rscript calc_inflation.R")
                 },
                 {
                     def stableInflation = process.out.inflation_results.collect { resultTuple ->

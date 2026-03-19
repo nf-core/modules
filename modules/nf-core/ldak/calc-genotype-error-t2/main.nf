@@ -11,25 +11,14 @@ process CALC_GENOTYPE_ERROR_T2 {
 
     output:
     tuple val(meta), path("${meta.id}.txt"), emit: genotype_error_results
-    tuple val("${task.process}"), val("r-base"), eval("Rscript --version 2>&1 | cut -d\" \" -f3"), emit: versions_r_base, topic: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def calc_genotype_error_t2_script_b64 = new File("${moduleDir}/templates/calc_genotype_error_t2.R").bytes.encodeBase64().toString()
-
-    """
-    set -euo pipefail
-
-    printf '%s' '${calc_genotype_error_t2_script_b64}' | base64 -d > calc_genotype_error_t2.R
-
-    Rscript calc_genotype_error_t2.R \\
-        "${he_overall_file}" \\
-        "${he_within_file}" \\
-        "${he_across_file}" \\
-        "${meta.id}.txt"
-    """
+    output_file = "${meta.id}.txt"
+    template('calc_genotype_error_t2.R')
 
     stub:
     """
@@ -39,5 +28,10 @@ LDAK Genotype Error Analysis Results (T2 Statistic)
 
 Stub run
 TXT
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
+    END_VERSIONS
     """
 }

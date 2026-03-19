@@ -1,15 +1,9 @@
 #!/usr/bin/env Rscript
 
-args <- commandArgs(trailingOnly = TRUE)
-
-if (length(args) != 4) {
-  stop("Usage: calc_genotype_error_t2.R <he_overall_file> <he_within_file> <he_across_file> <output_file>")
-}
-
-he_overall_file <- args[1]
-he_within_file <- args[2]
-he_across_file <- args[3]
-output_file <- args[4]
+he_overall_file <- "$he_overall_file"
+he_within_file <- "$he_within_file"
+he_across_file <- "$he_across_file"
+output_file <- "$output_file"
 
 parse_he_file <- function(file_path) {
   if (!file.exists(file_path)) {
@@ -25,7 +19,7 @@ parse_he_file <- function(file_path) {
     return(NULL)
   }
 
-  parts <- strsplit(her_all_line, "\\s+")[[1]]
+  parts <- strsplit(her_all_line, "\\\\s+")[[1]]
 
   if (length(parts) < 3) {
     warning(paste("Invalid Her_All line format in file:", file_path))
@@ -59,18 +53,18 @@ statistical_test_results <- list(
 )
 
 if (!is.null(overall_result)) {
-  h2_overall <- overall_result$heritability
-  h2_overall_se <- overall_result$se
+  h2_overall <- overall_result\$heritability
+  h2_overall_se <- overall_result\$se
 }
 
 if (!is.null(within_result)) {
-  h2_same <- within_result$heritability
-  h2_same_se <- within_result$se
+  h2_same <- within_result\$heritability
+  h2_same_se <- within_result\$se
 }
 
 if (!is.null(across_result)) {
-  h2_diff <- across_result$heritability
-  h2_diff_se <- across_result$se
+  h2_diff <- across_result\$heritability
+  h2_diff_se <- across_result\$se
 }
 
 if (!is.na(h2_same) && !is.na(h2_diff)) {
@@ -81,9 +75,9 @@ if (!is.na(h2_same) && !is.na(h2_same_se) && !is.na(h2_diff) && !is.na(h2_diff_s
   mean_t2 <- h2_same - h2_diff
   sd_t2 <- sqrt(h2_same_se^2 + h2_diff_se^2)
 
-  statistical_test_results$pvalue <- pnorm(0, mean = mean_t2, sd = sd_t2)
-  statistical_test_results$mean_T2samp <- mean_t2
-  statistical_test_results$sd_T2samp <- sd_t2
+  statistical_test_results\$pvalue <- pnorm(0, mean = mean_t2, sd = sd_t2)
+  statistical_test_results\$mean_T2samp <- mean_t2
+  statistical_test_results\$sd_T2samp <- sd_t2
 }
 
 output_lines <- c(
@@ -117,15 +111,15 @@ output_lines <- c(
   "  T2 < 0: Unexpected pattern (may indicate over-correction)",
   "",
   "Statistical Test Results:",
-  paste("  P-value (H0: T2 <= 0):", round(statistical_test_results$pvalue, 6)),
-  paste("  Mean T2 (analytical):", round(statistical_test_results$mean_T2samp, 6)),
-  paste("  SD T2 (analytical):", round(statistical_test_results$sd_T2samp, 6)),
+  paste("  P-value (H0: T2 <= 0):", round(statistical_test_results\$pvalue, 6)),
+  paste("  Mean T2 (analytical):", round(statistical_test_results\$mean_T2samp, 6)),
+  paste("  SD T2 (analytical):", round(statistical_test_results\$sd_T2samp, 6)),
   "",
   "Significance:",
   ifelse(
-    !is.na(statistical_test_results$pvalue),
+    !is.na(statistical_test_results\$pvalue),
     ifelse(
-      statistical_test_results$pvalue < 0.05,
+      statistical_test_results\$pvalue < 0.05,
       "  SIGNIFICANT: Genotype errors detected (p < 0.05)",
       "  NOT SIGNIFICANT: No strong evidence of genotype errors (p >= 0.05)"
     ),
@@ -134,3 +128,11 @@ output_lines <- c(
 )
 
 writeLines(output_lines, output_file)
+
+writeLines(
+  c(
+    "\"${task.process}\":",
+    paste("    r-base:", paste(R.version[['major']], R.version[['minor']], sep = "."))
+  ),
+  "versions.yml"
+)
