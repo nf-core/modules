@@ -17,8 +17,7 @@ process CALC_GENOTYPE_ERROR_T2 {
     task.ext.when == null || task.ext.when
 
     script:
-    output_file = "${meta.id}.txt"
-    template('calc_genotype_error_t2.R')
+    template 'calc_genotype_error_t2.R'
 
     stub:
     """

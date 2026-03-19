@@ -2,7 +2,6 @@
 
 ldak_reml_file <- "$ldak_reml_file"
 quarter_files <- c($quarter_reml_files_r)
-output_file <- "$output_file"
 
 parse_reml_file <- function(file_path) {
   if (!file.exists(file_path)) {
@@ -141,7 +140,7 @@ for (i in seq_len(nrow(all_results))) {
   )
 }
 
-writeLines(output_lines, output_file)
+writeLines(output_lines, "${meta.id}.txt")
 
 writeLines(
   c(

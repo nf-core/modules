@@ -18,8 +18,7 @@ process CALC_INFLATION {
 
     script:
     quarter_reml_files_r = quarter_reml_files.sort { a, b -> a.name <=> b.name }.collect { quarterFile -> "\"${quarterFile}\"" }.join(', ')
-    output_file = "${meta.id}.txt"
-    template('calc_inflation.R')
+    template 'calc_inflation.R'
 
     stub:
     """

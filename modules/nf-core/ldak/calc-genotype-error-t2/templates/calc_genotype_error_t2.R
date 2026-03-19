@@ -3,7 +3,6 @@
 he_overall_file <- "$he_overall_file"
 he_within_file <- "$he_within_file"
 he_across_file <- "$he_across_file"
-output_file <- "$output_file"
 
 parse_he_file <- function(file_path) {
   if (!file.exists(file_path)) {
@@ -127,7 +126,7 @@ output_lines <- c(
   )
 )
 
-writeLines(output_lines, output_file)
+writeLines(output_lines, "${meta.id}.txt")
 
 writeLines(
   c(
