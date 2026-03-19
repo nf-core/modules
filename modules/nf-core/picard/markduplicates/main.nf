@@ -60,8 +60,8 @@ process PICARD_MARKDUPLICATES {
         --INPUT ${reads} \\
         --OUTPUT ${prefix}.${suffix} \\
         ${reference} \\
-        ${create_index} \\
-        ${barcode_tag} \\
+        \${create_index} \\
+        \${barcode_tag} \\
         --METRICS_FILE ${prefix}.metrics.txt
 
     cat <<-END_VERSIONS > versions.yml
