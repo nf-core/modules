@@ -30,7 +30,7 @@ nextflow_process {
                 { assert process.success },
 
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     process.out.qc_rds.collect { file(it[1]).getName() },
                     process.out.data_plot_rds.collect { file(it[1]).getName() },
                     process.out.qc_plot_rds.collect { file(it[1]).getName() },
@@ -74,12 +74,11 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out,
-                path(process.out.versions[0]).yaml).match() },
-            )
-        }
+        assertAll(
+            { assert process.success },
+            { assert snapshot(sanitizeOutput(process.out)).match() },
+        )
+    }
 
     }
 

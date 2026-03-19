@@ -17,7 +17,7 @@ process CLONALFRAMEML {
     tuple val(meta), path("*.labelled_tree.newick")        , emit: newick
     tuple val(meta), path("*.ML_sequence.fasta")           , emit: fasta
     tuple val(meta), path("*.position_cross_reference.txt"), emit: pos_ref
-    path "versions.yml"                                    , emit: versions
+    tuple val("${task.process}"), val("clonalframeml"), eval("ClonalFrameML -version 2>&1 | sed 's/^.*ClonalFrameML v//'"), topic: versions, emit: versions_clonalframeml
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,10 +31,17 @@ process CLONALFRAMEML {
         <(gzip -cdf $msa) \\
         $prefix \\
         $args
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        clonalframeml: \$( echo \$(ClonalFrameML -version 2>&1) | sed 's/^.*ClonalFrameML v//' )
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}.emsim.txt
+    touch ${prefix}.em.txt
+    touch ${prefix}.importation_status.txt
+    touch ${prefix}.labelled_tree.newick
+    touch ${prefix}.ML_sequence.fasta
+    touch ${prefix}.position_cross_reference.txt
     """
 }
