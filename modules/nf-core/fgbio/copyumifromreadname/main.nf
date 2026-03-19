@@ -1,11 +1,11 @@
 process FGBIO_COPYUMIFROMREADNAME {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container workflow.containerEngine in ['singularity', 'apptainer'] ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fe/fe9479adc5e6e0a1c125d346fdfa0dd313834249e9c55c40e8d44ec3a48c6559/data' :
-        'community.wave.seqera.io/library/fgbio:3.1.1--6c9a88faf1d62b6c'
+    container workflow.containerEngine in ['singularity', 'apptainer']
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fe/fe9479adc5e6e0a1c125d346fdfa0dd313834249e9c55c40e8d44ec3a48c6559/data'
+        : 'community.wave.seqera.io/library/fgbio:3.1.1--6c9a88faf1d62b6c'
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -23,11 +23,13 @@ process FGBIO_COPYUMIFROMREADNAME {
     def prefix = task.ext.prefix ?: "${meta.id}_umi_extracted"
     def mem_gb = 8
     if (!task.memory) {
-        log.info '[fgbio CopyUmiFromReadName] Available memory not known - defaulting to 8GB. Specify process memory requirements to change this.'
-    } else if (mem_gb > task.memory.giga) {
+        log.info('[fgbio CopyUmiFromReadName] Available memory not known - defaulting to 8GB. Specify process memory requirements to change this.')
+    }
+    else if (mem_gb > task.memory.giga) {
         if (task.memory.giga < 2) {
             mem_gb = 1
-        } else {
+        }
+        else {
             mem_gb = task.memory.giga - 1
         }
     }
