@@ -1,6 +1,6 @@
 name: "angsd_docounts"
-description: Calculates base frequency statistics across reference positions from
-  BAM.
+description: Calculates base frequency statistics across reference positions
+  from BAM.
 keywords:
   - angsd
   - population genetics
@@ -13,7 +13,8 @@ tools:
       documentation: "http://www.popgen.dk/angsd/"
       tool_dev_url: "https://github.com/ANGSD/angsd"
       doi: "10.1186/s12859-014-0356-4"
-      licence: ["GPL v3, MIT"]
+      licence:
+        - "GPL v3, MIT"
       identifier: biotools:angsd
 input:
   - - meta:
@@ -81,7 +82,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.pos.gz":
           type: file
-          description: Various types of depth statistics (depending on value for -dumpCounts)
+          description: Various types of depth statistics (depending on value for
+            -dumpCounts)
           pattern: "*.pos.gz"
           ontologies:
             - edam: "http://edamontology.org/format_3675" # Compressed file
@@ -106,18 +108,32 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.icnts.gz":
           type: file
-          description: Internal format for dumping binary single chrs. Useful for ANGSD
-            contamination
+          description: Internal format for dumping binary single chrs. Useful for
+            ANGSD contamination
           pattern: "*.icnts.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_angsd:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - angsd:
+          type: string
+          description: The name of the tool
+      - "angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - angsd:
+          type: string
+          description: The name of the tool
+      - "angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

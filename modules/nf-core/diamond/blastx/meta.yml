@@ -12,7 +12,8 @@ tools:
       documentation: https://github.com/bbuchfink/diamond/wiki
       tool_dev_url: https://github.com/bbuchfink/diamond
       doi: "10.1038/s41592-021-01101-x"
-      licence: ["GPL v3.0"]
+      licence:
+        - "GPL v3.0"
       identifier: biotools:diamond
 input:
   - - meta:
@@ -117,7 +118,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.tsv":
           type: file
-          description: Tab separated file containing taxonomic classification of hits
+          description: Tab separated file containing taxonomic classification of
+            hits
           pattern: "*.{tsv}"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -129,7 +131,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.paf":
           type: file
-          description: File containing aligned reads in pairwise mapping format format
+          description: File containing aligned reads in pairwise mapping format
+            format
           pattern: "*.{paf}"
           ontologies: []
   log:
@@ -143,13 +146,27 @@ output:
           description: Log file containing stdout information
           pattern: "*.{log}"
           ontologies: []
+  versions_diamond:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - diamond:
+          type: string
+          description: The name of the tool
+      - diamond --version | sed 's/diamond version //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - diamond:
+          type: string
+          description: The name of the tool
+      - diamond --version | sed 's/diamond version //g':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@spficklin"
   - "@jfy133"

@@ -36,10 +36,10 @@ input:
       type: list
       description: list umi-tagged reads
       pattern: "[ *.{fastq.gz/fq.gz} ]"
-  - fasta:
+  - fasta_fai:
       type: file
-      description: The reference fasta file
-      pattern: "*.fasta"
+      description: The reference fasta file and fasta.fai file
+      pattern: "*.{fa,fasta,fna,fai}"
   - read_structure:
       type: string
       description: |

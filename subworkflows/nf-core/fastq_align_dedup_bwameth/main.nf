@@ -8,18 +8,16 @@ include { PICARD_MARKDUPLICATES                         } from '../../../modules
 include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_DEDUPLICATED } from '../../../modules/nf-core/samtools/index/main'
 
 workflow FASTQ_ALIGN_DEDUP_BWAMETH {
-
     take:
-    ch_reads             // channel: [ val(meta), [ reads ] ]
-    ch_fasta             // channel: [ val(meta), [ fasta ] ]
-    ch_fasta_index       // channel: [ val(meta), [ fasta index ] ]
-    ch_bwameth_index     // channel: [ val(meta), [ bwameth index ] ]
-    skip_deduplication   // boolean: whether to deduplicate alignments
-    use_gpu              // boolean: whether to use GPU or CPU for bwameth alignment
+    ch_reads // channel: [ val(meta), [ reads ] ]
+    ch_fasta_fai // channel: [ val(meta), [ fasta ], [ fai ] ]
+    ch_bwameth_index // channel: [ val(meta), [ bwameth index ] ]
+    skip_deduplication // boolean: whether to deduplicate alignments
+    use_gpu // boolean: whether to use GPU or CPU for bwameth alignment
 
     main:
-    ch_alignment         = channel.empty()
-    ch_alignment_index   = channel.empty()
+    ch_alignment = channel.empty()
+    ch_alignment_index = channel.empty()
     ch_samtools_flagstat = channel.empty()
     ch_samtools_stats    = channel.empty()
     ch_picard_metrics    = channel.empty()
@@ -32,21 +30,22 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
         /*
         * Align with parabricks GPU enabled fq2bammeth implementation of bwameth
         */
-        PARABRICKS_FQ2BAMMETH (
+        PARABRICKS_FQ2BAMMETH(
             ch_reads,
-            ch_fasta,
+            ch_fasta_fai,
             ch_bwameth_index,
-            [] // known sites
+            [],
         )
         ch_alignment = PARABRICKS_FQ2BAMMETH.out.bam
-    } else {
+    }
+    else {
         /*
         * Align with CPU version of bwameth
         */
-        BWAMETH_ALIGN (
+        BWAMETH_ALIGN(
             ch_reads,
-            ch_fasta,
-            ch_bwameth_index
+            ch_fasta_fai,
+            ch_bwameth_index,
         )
         ch_alignment = BWAMETH_ALIGN.out.bam
     }
@@ -54,25 +53,25 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
     /*
      * Sort raw output BAM
      */
-    SAMTOOLS_SORT (
+    SAMTOOLS_SORT(
         ch_alignment,
-        [[:],[]], // [ [meta], [fasta]]
-        ''
+        ch_fasta_fai,
+        '',
     )
     ch_alignment = SAMTOOLS_SORT.out.bam
 
     /*
      * Run samtools index on alignment
      */
-    SAMTOOLS_INDEX_ALIGNMENTS (
+    SAMTOOLS_INDEX_ALIGNMENTS(
         ch_alignment
     )
-    ch_alignment_index = SAMTOOLS_INDEX_ALIGNMENTS.out.bai
+    ch_alignment_index = SAMTOOLS_INDEX_ALIGNMENTS.out.index
 
     /*
      * Run samtools flagstat
      */
-    SAMTOOLS_FLAGSTAT (
+    SAMTOOLS_FLAGSTAT(
         ch_alignment.join(ch_alignment_index)
     )
     ch_samtools_flagstat = SAMTOOLS_FLAGSTAT.out.flagstat
@@ -80,9 +79,9 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
     /*
      * Run samtools stats
      */
-    SAMTOOLS_STATS (
+    SAMTOOLS_STATS(
         ch_alignment.join(ch_alignment_index),
-        [[:],[]] // [ [meta], [fasta]]
+        ch_fasta_fai,
     )
     ch_samtools_stats = SAMTOOLS_STATS.out.stats
 
@@ -90,29 +89,28 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
         /*
         * Run Picard MarkDuplicates
         */
-        PICARD_MARKDUPLICATES (
+        PICARD_MARKDUPLICATES(
             ch_alignment,
-            ch_fasta,
-            ch_fasta_index
+            ch_fasta_fai,
         )
         /*
          * Run samtools index on deduplicated alignment
         */
-        SAMTOOLS_INDEX_DEDUPLICATED (
+        SAMTOOLS_INDEX_DEDUPLICATED(
             PICARD_MARKDUPLICATES.out.bam
         )
-        ch_alignment       = PICARD_MARKDUPLICATES.out.bam
-        ch_alignment_index = SAMTOOLS_INDEX_DEDUPLICATED.out.bai
-        ch_picard_metrics  = PICARD_MARKDUPLICATES.out.metrics
+        ch_alignment = PICARD_MARKDUPLICATES.out.bam
+        ch_alignment_index = SAMTOOLS_INDEX_DEDUPLICATED.out.index
+        ch_picard_metrics = PICARD_MARKDUPLICATES.out.metrics
     }
 
     /*
      * Collect MultiQC inputs
      */
-    ch_multiqc_files = ch_picard_metrics.collect{ _meta, metrics -> metrics }
-                        .mix(ch_samtools_flagstat.collect{ _meta, flagstat -> flagstat })
-                        .mix(ch_samtools_stats.collect{ _meta, stats -> stats  })
-
+    ch_multiqc_files = ch_picard_metrics
+        .collect { _meta, metrics -> metrics }
+        .mix(ch_samtools_flagstat.collect { _meta, flagstat -> flagstat })
+        .mix(ch_samtools_stats.collect { _meta, stats -> stats })
 
     emit:
     bam               = ch_alignment                     // channel: [ val(meta), [ bam ]       ]
