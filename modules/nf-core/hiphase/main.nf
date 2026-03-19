@@ -32,7 +32,7 @@ process HIPHASE {
     tuple val(meta), path("*.haplotag.csv"), emit: haplotag_csv, optional: true
     tuple val(meta), path("*.bam"), emit: bams, optional: true
     tuple val(meta), path("*.bam.{bai,csi}"), emit: bams_indexes, optional: true
-    tuple val("${task.process}"), val('hiphase'), eval("hiphase --version |& sed '1!d ; s/hiphase //'"), emit: versions_hiphase, topic: versions
+    tuple val("${task.process}"), val('hiphase'), eval("hiphase --version | sed 's/.* //g'"), emit: versions_hiphase, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

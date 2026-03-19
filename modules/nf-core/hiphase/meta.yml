@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "hiphase"
-description: Small and structural variant phasing tool for PacBio HiFi reads, supporting co-phasing of SNVs and SVs across multiple BAM files and samples
+description: Small and structural variant phasing tool for PacBio HiFi reads,
+  supporting co-phasing of SNVs and SVs across multiple BAM files and samples
 keywords:
   - pacbio
   - structural variant
@@ -14,7 +14,8 @@ tools:
       homepage: "https://github.com/PacificBiosciences/HiPhase"
       documentation: "https://github.com/PacificBiosciences/HiPhase"
       tool_dev_url: "https://github.com/PacificBiosciences/HiPhase"
-      licence: ["Pacific Biosciences Software License Agreement"]
+      licence:
+        - "Pacific Biosciences Software License Agreement"
       identifier: biotools:hiphase
 input:
   - - meta:
@@ -27,7 +28,7 @@ input:
         description: One or more sorted BAM/CRAM files
         pattern: "*.{bam,cram}"
         ontologies:
-          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_2572
     - bais:
         type: file
         description: Index files associated with the BAM/CRAM files
@@ -35,10 +36,11 @@ input:
         ontologies: []
     - snv:
         type: file
-        description: Compressed VCF file containing SNV/small variants to phase (optional)
+        description: Compressed VCF file containing SNV/small variants to phase
+          (optional)
         pattern: "*.{vcf.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_3016 # VCF
+          - edam: http://edamontology.org/format_3016
     - snv_index:
         type: file
         description: Index file for the SNV VCF (optional)
@@ -46,10 +48,11 @@ input:
         ontologies: []
     - sv:
         type: file
-        description: Compressed VCF file containing structural variants to co-phase (optional)
+        description: Compressed VCF file containing structural variants to
+          co-phase (optional)
         pattern: "*.{vcf.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_3016 # VCF
+          - edam: http://edamontology.org/format_3016
     - sv_index:
         type: file
         description: Index file for the SV VCF (optional)
@@ -57,7 +60,8 @@ input:
         ontologies: []
     - samples:
         type: list
-        description: "List of sample names to phase within the VCF, if empty only the first sample is phased."
+        description: "List of sample names to phase within the VCF, if empty only the
+          first sample is phased."
   - - meta2:
         type: map
         description: |
@@ -68,30 +72,32 @@ input:
         description: Reference genome FASTA file used for the BAM alignment
         pattern: "*.{fasta,fa}"
         ontologies:
-          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1929
     - fai:
         type: file
         description: FASTA index file (.fai) for the reference genome
         pattern: "*.fai"
         ontologies: []
-  - - output_bam:
-        type: boolean
-        description: Whether to output haplotagged BAM files. Set to true to emit phased BAM files with haplotag information.
-    - summary_file:
-        type: boolean
-        description: Whether to output a phasing summary file.
-    - blocks_file:
-        type: boolean
-        description: Whether to output a phasing blocks file.
-    - stats_file:
-        type: boolean
-        description: Whether to output a per-read phasing statistics file.
-    - haplotag_file:
-        type: boolean
-        description: Whether to output a haplotag assignments file.
-    - file_format:
-        type: string
-        description: Output file format for summary/blocks/stats/haplotag files, either 'tsv' or 'csv'.
+  - output_bam:
+      type: boolean
+      description: Whether to output haplotagged BAM files. Set to true to emit
+        phased BAM files with haplotag information.
+  - summary_file:
+      type: boolean
+      description: Whether to output a phasing summary file.
+  - blocks_file:
+      type: boolean
+      description: Whether to output a phasing blocks file.
+  - stats_file:
+      type: boolean
+      description: Whether to output a per-read phasing statistics file.
+  - haplotag_file:
+      type: boolean
+      description: Whether to output a haplotag assignments file.
+  - file_format:
+      type: string
+      description: Output file format for summary/blocks/stats/haplotag files,
+        either 'tsv' or 'csv'.
 output:
   vcfs:
     - - meta:
@@ -101,10 +107,12 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*_snv_phased.vcf.gz":
           type: file
-          description: Phased and compressed SNV VCF file (optional, only emitted when SNV VCF input is provided)
+          description: Phased and compressed SNV VCF file (optional, only emitted
+            when SNV VCF input is provided)
           pattern: "*_snv_phased.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3016 # VCF
+            - edam: http://edamontology.org/format_3016
+            - edam: http://edamontology.org/format_3989
   sv_vcfs:
     - - meta:
           type: map
@@ -113,10 +121,12 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*_sv_phased.vcf.gz":
           type: file
-          description: Phased and compressed SV VCF file (optional, only emitted when SV VCF input is provided)
+          description: Phased and compressed SV VCF file (optional, only emitted
+            when SV VCF input is provided)
           pattern: "*_sv_phased.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3016 # VCF
+            - edam: http://edamontology.org/format_3016
+            - edam: http://edamontology.org/format_3989
   vcfs_indexes:
     - - meta:
           type: map
@@ -150,7 +160,7 @@ output:
           description: TSV file containing phasing summary statistics (optional)
           pattern: "*.summary.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   summary_csv:
     - - meta:
           type: map
@@ -162,7 +172,7 @@ output:
           description: CSV file containing phasing summary statistics (optional)
           pattern: "*.summary.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
   blocks_tsv:
     - - meta:
           type: map
@@ -174,7 +184,7 @@ output:
           description: TSV file containing phasing block information (optional)
           pattern: "*.blocks.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   blocks_csv:
     - - meta:
           type: map
@@ -186,7 +196,7 @@ output:
           description: CSV file containing phasing block information (optional)
           pattern: "*.blocks.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
   stats_tsv:
     - - meta:
           type: map
@@ -198,7 +208,7 @@ output:
           description: TSV file containing per-read phasing statistics (optional)
           pattern: "*.stats.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   stats_csv:
     - - meta:
           type: map
@@ -210,7 +220,7 @@ output:
           description: CSV file containing per-read phasing statistics (optional)
           pattern: "*.stats.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
   haplotag_tsv:
     - - meta:
           type: map
@@ -219,10 +229,11 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.haplotag.tsv":
           type: file
-          description: TSV file containing haplotag assignments per read (optional)
+          description: TSV file containing haplotag assignments per read
+            (optional)
           pattern: "*.haplotag.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   haplotag_csv:
     - - meta:
           type: map
@@ -231,10 +242,11 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.haplotag.csv":
           type: file
-          description: CSV file containing haplotag assignments per read (optional)
+          description: CSV file containing haplotag assignments per read
+            (optional)
           pattern: "*.haplotag.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
   bams:
     - - meta:
           type: map
@@ -243,10 +255,11 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.bam":
           type: file
-          description: Haplotagged BAM file(s) with haplotype information in the HP tag (optional, only emitted when output_bam is true)
+          description: Haplotagged BAM file(s) with haplotype information in the
+            HP tag (optional, only emitted when output_bam is true)
           pattern: "*.bam"
           ontologies:
-            - edam: http://edamontology.org/format_2572 # BAM
+            - edam: http://edamontology.org/format_2572
   bams_indexes:
     - - meta:
           type: map
@@ -255,19 +268,31 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.bam.{bai,csi}":
           type: file
-          description: Index file(s) for the haplotagged BAM file(s) (optional, only emitted when output_bam is true)
+          description: Index file(s) for the haplotagged BAM file(s) (optional,
+            only emitted when output_bam is true)
           pattern: "*.bam.{bai,csi}"
           ontologies: []
   versions_hiphase:
-    - - "HIPHASE":
+    - - ${task.process}:
           type: string
-          description: Process name
+          description: Name of the process
       - hiphase:
           type: string
-          description: Software name
-      - version:
+          description: Name of the tool
+      - "hiphase --version | sed 's/.* //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
           type: string
-          description: Version of hiphase
+          description: Name of the process
+      - hiphase:
+          type: string
+          description: Name of the tool
+      - "hiphase --version | sed 's/.* //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@tanyasarkjain"
   - "@fellen31"
