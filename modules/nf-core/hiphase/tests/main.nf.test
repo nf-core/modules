@@ -79,7 +79,19 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    process.out.vcfs,
+                    process.out.vcfs_indexes,
+                    process.out.sv_vcfs,
+                    process.out.sv_vcfs_indexes,
+                    file(process.out.summary_tsv[0][1]).name,
+                    file(process.out.blocks_tsv[0][1]).name,
+                    file(process.out.stats_tsv[0][1]).name,
+                    file(process.out.haplotag_tsv[0][1]).name,
+                    process.out.bams,
+                    process.out.bams_indexes,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
 
@@ -106,10 +118,10 @@ nextflow_process {
                     []
                 ]
                 input[2] = true
-                input[3] = true
-                input[4] = false // produces empty file
-                input[5] = true
-                input[6] = false // produces empty file
+                input[3] = true // produces empty file
+                input[4] = true // produces empty file
+                input[5] = true // produces empty file
+                input[6] = true // produces empty file
                 input[7] = 'csv'
                 """
             }
@@ -118,7 +130,19 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    process.out.vcfs,
+                    process.out.vcfs_indexes,
+                    process.out.sv_vcfs,
+                    process.out.sv_vcfs_indexes,
+                    file(process.out.summary_csv[0][1]).name,
+                    file(process.out.blocks_csv[0][1]).name,
+                    file(process.out.stats_csv[0][1]).name,
+                    file(process.out.haplotag_csv[0][1]).name,
+                    process.out.bams,
+                    process.out.bams_indexes,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
 
