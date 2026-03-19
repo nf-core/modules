@@ -67,12 +67,10 @@ process HIPHASE {
     def vcf_index_format = args.contains('--csi-index') ? 'csi' : 'tbi'
     def touch_bams = output_bam ? bams.collect { file -> "touch ${prefix}_${file.baseName}_haplotagged.bam" }.join("\n") : ''
     def touch_bams_indexes = output_bam ? bams.collect { file -> "touch ${prefix}_${file.baseName}_haplotagged.bam.${bam_index_format}" }.join("\n") : ''
-    def touch_snv_vcf = snv ? "touch ${prefix}_snv_phased.vcf.gz" : ''
+    def touch_snv_vcf = snv ? "echo | gzip > ${prefix}_snv_phased.vcf.gz" : ''
     def touch_snv_vcf_index = snv ? "touch ${prefix}_snv_phased.vcf.gz.${vcf_index_format}" : ''
+    def touch_sv_vcf = sv ? "echo | gzip > ${prefix}_sv_phased.vcf.gz" : ''
     def touch_sv_vcf_index = sv ? "touch ${prefix}_sv_phased.vcf.gz.${vcf_index_format}" :''
-    def touch_sv_vcf = sv ? "touch ${prefix}_sv_phased.vcf" : ''
-
-
     """
     ${touch_bams}
     ${touch_bams_indexes}
