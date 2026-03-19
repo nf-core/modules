@@ -77,6 +77,21 @@ input:
   - - output_bam:
         type: boolean
         description: Whether to output haplotagged BAM files. Set to true to emit phased BAM files with haplotag information.
+    - summary_file:
+        type: boolean
+        description: Whether to output a phasing summary file.
+    - blocks_file:
+        type: boolean
+        description: Whether to output a phasing blocks file.
+    - stats_file:
+        type: boolean
+        description: Whether to output a per-read phasing statistics file.
+    - haplotag_file:
+        type: boolean
+        description: Whether to output a haplotag assignments file.
+    - file_format:
+        type: string
+        description: Output file format for summary/blocks/stats/haplotag files, either 'tsv' or 'csv'.
 output:
   vcfs:
     - - meta:
@@ -244,12 +259,15 @@ output:
           pattern: "*.bam.{bai,csi}"
           ontologies: []
   versions_hiphase:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - "HIPHASE":
+          type: string
+          description: Process name
+      - hiphase:
+          type: string
+          description: Software name
+      - version:
+          type: string
+          description: Version of hiphase
 authors:
   - "@tanyasarkjain"
   - "@fellen31"

@@ -11,6 +11,11 @@ process HIPHASE {
     tuple val(meta), path(bams), path(bais), path(snv), path(snv_index), path(sv), path(sv_index), val(samples)
     tuple val(meta2), path(fasta), path(fai)
     val output_bam
+    val summary_file
+    val blocks_file
+    val stats_file
+    val haplotag_file
+    val file_format
 
     output:
     tuple val(meta), path("*_snv_phased.vcf.gz"), emit: vcfs, optional: true
@@ -45,9 +50,12 @@ process HIPHASE {
             ["--bam", file, output_bam ? '--output-bam' : '', output_bam ? "${file.baseName}_haplotagged.bam" : '']
         }
         .join(" ")
-
     def sample_args = samples ? samples.collect { sample -> "--sample-name ${sample}" }.join(" ") : ''
 
+    def summary_file_arg = summary_file ? "--summary-file ${prefix}.summary.${file_format}" : ''
+    def blocks_file_arg = blocks_file ? "--blocks-file ${prefix}.blocks.${file_format}" : ''
+    def stats_file_arg = stats_file ? "--stats-file ${prefix}.stats.${file_format}" : ''
+    def haplotag_file_arg = haplotag_file ? "--haplotag-file ${prefix}.haplotag.${file_format}" : ''
     """
     hiphase \
         ${args} \
@@ -56,7 +64,11 @@ process HIPHASE {
         ${sample_args} \\
         ${bam_args} \\
         ${snv_args} \\
-        ${sv_args}
+        ${sv_args} \\
+        ${summary_file_arg} \\
+        ${blocks_file_arg} \ \
+        ${stats_file_arg} \\
+        ${haplotag_file_arg}
     """
 
     stub:
@@ -70,7 +82,11 @@ process HIPHASE {
     def touch_snv_vcf = snv ? "echo | gzip > ${prefix}_snv_phased.vcf.gz" : ''
     def touch_snv_vcf_index = snv ? "touch ${prefix}_snv_phased.vcf.gz.${vcf_index_format}" : ''
     def touch_sv_vcf = sv ? "echo | gzip > ${prefix}_sv_phased.vcf.gz" : ''
-    def touch_sv_vcf_index = sv ? "touch ${prefix}_sv_phased.vcf.gz.${vcf_index_format}" :''
+    def touch_sv_vcf_index = sv ? "touch ${prefix}_sv_phased.vcf.gz.${vcf_index_format}" : ''
+    def touch_summary_file = summary_file ? "touch ${prefix}.${file_format}" : ''
+    def touch_blocks_file = blocks_file ? "touch ${prefix}.${file_format}" : ''
+    def touch_stats_file = stats_file ? "touch ${prefix}.${file_format}" : ''
+    def touch_haplotag_file = haplotag_file ? "touch ${prefix}.${file_format}" : ''
     """
     ${touch_bams}
     ${touch_bams_indexes}
@@ -78,5 +94,9 @@ process HIPHASE {
     ${touch_snv_vcf_index}
     ${touch_sv_vcf}
     ${touch_sv_vcf_index}
+    ${touch_summary_file}
+    ${touch_blocks_file}
+    ${touch_stats_file}
+    ${touch_haplotag_file}
     """
 }
