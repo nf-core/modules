@@ -1,0 +1,135 @@
+nextflow_process {
+
+    name "Test nf-core LDAK_ADD_GRMS module"
+    script "../main.nf"
+    process "LDAK_ADD_GRMS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ldak"
+    tag "ldak/calc-kins"
+    tag "ldak/add-grms"
+
+    setup {
+        run("CALC_KINS", alias: "CALC_KINS_CHR01") {
+            script "../../calc-kins/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: "chr01.vcf" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+                ]
+                input[1] = "-0.25"
+                input[2] = [[:], []]
+                """
+            }
+        }
+
+        run("CALC_KINS", alias: "CALC_KINS_CHR02") {
+            script "../../calc-kins/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: "chr02.vcf" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+                ]
+                input[1] = "-0.25"
+                input[2] = [[:], []]
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens popgen - combine GRMs from setup-generated components") {
+
+        when {
+            process {
+                """
+                def mgrm = file("${outputDir}/ldak_test.mgrm")
+                mgrm.text = "chr01.vcf\\nchr02.vcf\\n"
+                mgrmFile = Channel.value(mgrm)
+
+                groupedGrms = CALC_KINS_CHR01.out.ldak_grm
+                    .mix(CALC_KINS_CHR02.out.ldak_grm)
+                    .map { meta, grmBin, grmId, grmDetails, grmAdjust ->
+                        tuple("ldak_grm", grmBin, grmId, grmDetails, grmAdjust)
+                    }
+                    .groupTuple(by: 0)
+
+                input[0] = groupedGrms.combine(mgrmFile).map { groupId, bins, ids, details, adjusts, mgrmPath ->
+                    tuple([ id: groupId, grm_prefix: groupId ], mgrmPath, bins + ids + details + adjusts)
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.combined_grm.size() == 1 },
+                { assert process.out.versions_ldak6.size() == 1 },
+                {
+                    def combinedTuple = process.out.combined_grm.get(0)
+                    assert combinedTuple.get(0).id == "ldak_grm"
+                    assert combinedTuple.get(0).grm_prefix == "ldak_grm"
+                    assert path(combinedTuple.get(1)).fileName.toString() == "ldak_grm.grm.bin"
+                    assert path(combinedTuple.get(2)).fileName.toString() == "ldak_grm.grm.id"
+                    assert path(combinedTuple.get(3)).fileName.toString() == "ldak_grm.grm.details"
+                    assert path(combinedTuple.get(4)).fileName.toString() == "ldak_grm.grm.adjust"
+                },
+                {
+                    def stableCombinedGrm = process.out.combined_grm.collect { combinedTuple ->
+                        [
+                            combinedTuple[0],
+                            path(combinedTuple[1]).fileName.toString(),
+                            path(combinedTuple[2]).fileName.toString(),
+                            path(combinedTuple[3]).fileName.toString(),
+                            path(combinedTuple[4]).fileName.toString()
+                        ]
+                    }
+                    assert snapshot(
+                        stableCombinedGrm,
+                        process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                def mgrm = file("${outputDir}/ldak_test.mgrm")
+                mgrm.text = "chr01.vcf\\nchr02.vcf\\n"
+                mgrmFile = Channel.value(mgrm)
+
+                groupedGrms = CALC_KINS_CHR01.out.ldak_grm
+                    .mix(CALC_KINS_CHR02.out.ldak_grm)
+                    .map { meta, grmBin, grmId, grmDetails, grmAdjust ->
+                        tuple("ldak_grm_stub", grmBin, grmId, grmDetails, grmAdjust)
+                    }
+                    .groupTuple(by: 0)
+
+                input[0] = groupedGrms.combine(mgrmFile).map { groupId, bins, ids, details, adjusts, mgrmPath ->
+                    tuple([ id: groupId, grm_prefix: groupId ], mgrmPath, bins + ids + details + adjusts)
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

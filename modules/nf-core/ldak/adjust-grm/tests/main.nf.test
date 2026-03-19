@@ -1,0 +1,190 @@
+nextflow_process {
+
+    name "Test Process LDAK_ADJUST_GRM"
+    script "../main.nf"
+    process "LDAK_ADJUST_GRM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ldak"
+    tag "ldak/calc-kins"
+    tag "ldak/add-grms"
+    tag "ldak/adjust-grm"
+
+    setup {
+        run("CALC_KINS", alias: "CALC_KINS_CHR21") {
+            script "../../calc-kins/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: "plink_simulated_chr21" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+                ]
+                input[1] = "-0.25"
+                input[2] = [[:], []]
+                """
+            }
+        }
+
+        run("CALC_KINS", alias: "CALC_KINS_CHR22") {
+            script "../../calc-kins/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: "plink_simulated_chr22" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+                ]
+                input[1] = "-0.25"
+                input[2] = [[:], []]
+                """
+            }
+        }
+
+        run("LDAK_ADD_GRMS") {
+            script "../../add-grms/main.nf"
+            process {
+                """
+                mgrm = file("${outputDir}/ldak_test.mgrm")
+                mgrm.text = "plink_simulated_chr21\\nplink_simulated_chr22\\n"
+                mgrm_file = Channel.value(mgrm)
+
+                grouped_grms = CALC_KINS_CHR21.out.ldak_grm
+                    .mix(CALC_KINS_CHR22.out.ldak_grm)
+                    .map { meta, grm_bin, grm_id, grm_details, grm_adjust ->
+                        tuple("ldak_grm", grm_bin, grm_id, grm_details, grm_adjust)
+                    }
+                    .groupTuple(by: 0)
+
+                input[0] = grouped_grms.combine(mgrm_file).map { group_id, bins, ids, details, adjusts, mgrm ->
+                    tuple([ id: group_id ], mgrm, bins + ids + details + adjusts)
+                }
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens popgen - explicit mpheno 1") {
+
+        when {
+            process {
+                """
+                input[0] = LDAK_ADD_GRMS.out.combined_grm.map { meta, grm_bin, grm_id, grm_details, grm_adjust ->
+                    tuple([ id: "ldak_grm_Y1_adj", grm_prefix: "ldak_grm" ], grm_bin, grm_id, grm_details, grm_adjust)
+                }
+                input[1] = [
+                    [ id: "plink_simulated_quantitative_phenoname" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe", checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id: "covariates" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_covariates.txt", checkIfExists: true)
+                ]
+                input[3] = [[:], []]
+                input[4] = 1
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.adjusted_grm.size() == 1 },
+                {
+                    def adjustedTuple = process.out.adjusted_grm.get(0)
+                    def grmBin = path(adjustedTuple.get(2))
+                    assert grmBin.fileName.toString() == "ldak_grm_Y1_adj.grm.bin"
+                    assert path(adjustedTuple.get(6)).fileName.toString() == "ldak_grm_Y1_adj.grm.root"
+                    def commandText = grmBin.parent.resolve(".command.sh").text
+                    assert commandText.contains("--mpheno 1")
+                },
+                {
+                    def stableGrm = process.out.adjusted_grm.collect { adjustedTuple ->
+                        [
+                            adjustedTuple[0],
+                            adjustedTuple[1],
+                            path(adjustedTuple[2]).fileName.toString(),
+                            path(adjustedTuple[3]).fileName.toString(),
+                            path(adjustedTuple[4]).fileName.toString(),
+                            path(adjustedTuple[5]).fileName.toString(),
+                            path(adjustedTuple[6]).fileName.toString()
+                        ]
+                    }
+                    assert snapshot(
+                        stableGrm,
+                        process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - fallback mpheno 1") {
+
+        when {
+            process {
+                """
+                input[0] = LDAK_ADD_GRMS.out.combined_grm.map { meta, grm_bin, grm_id, grm_details, grm_adjust ->
+                    tuple([ id: "ldak_grm_Y1_adj_fallback", grm_prefix: "ldak_grm" ], grm_bin, grm_id, grm_details, grm_adjust)
+                }
+                input[1] = [
+                    [ id: "plink_simulated_quantitative_phenoname" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe", checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id: "covariates" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_covariates.txt", checkIfExists: true)
+                ]
+                input[3] = [[:], []]
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    def grmBin = path(process.out.adjusted_grm.get(0).get(2))
+                    def commandText = grmBin.parent.resolve(".command.sh").text
+                    assert commandText.contains("--mpheno 1")
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = LDAK_ADD_GRMS.out.combined_grm.map { meta, grm_bin, grm_id, grm_details, grm_adjust ->
+                    tuple([ id: "ldak_grm_Y1_adj_stub", grm_prefix: "ldak_grm" ], grm_bin, grm_id, grm_details, grm_adjust)
+                }
+                input[1] = [
+                    [ id: "plink_simulated_quantitative_phenoname" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe", checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id: "covariates" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_covariates.txt", checkIfExists: true)
+                ]
+                input[3] = [[:], []]
+                input[4] = 1
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

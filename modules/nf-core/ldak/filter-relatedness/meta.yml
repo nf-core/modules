@@ -1,0 +1,85 @@
+name: ldak_filter_relatedness
+description: Filter related individuals from an LDAK GRM and create an unrelated subset GRM
+keywords:
+  - ldak
+  - grm
+  - relatedness
+  - kinship
+tools:
+  - ldak6:
+      description: LDAK toolset for kinship, heritability, and association analyses
+      homepage: https://dougspeed.com/ldak/
+      documentation: https://dougspeed.com/ldak/
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing GRM metadata.
+          Expected keys:
+            - id (string): Output prefix used for `.keep`, `.lose`, `.maxrel`, and `<id>_unrel.grm.*` files.
+            - grm_prefix (string, optional): GRM prefix passed to LDAK `--grm`; defaults to `id` when omitted.
+    - grm_bin:
+        type: file
+        description: GRM binary matrix (`.grm.bin`) for the GRM prefix
+    - grm_id:
+        type: file
+        description: GRM sample identifiers (`.grm.id`) for the GRM prefix
+    - grm_details:
+        type: file
+        description: GRM details (`.grm.details`) for the GRM prefix
+    - grm_adjust:
+        type: file
+        description: GRM adjustment factors (`.grm.adjust`) for the GRM prefix
+output:
+  filtered_list:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.keep:
+          type: file
+          description: IDs retained after relatedness filtering (`<meta.id>.keep`)
+      - ${meta.id}.lose:
+          type: file
+          description: IDs removed by relatedness filtering (`<meta.id>.lose`)
+      - ${meta.id}.maxrel:
+          type: file
+          description: Maximum pairwise relatedness summary (`<meta.id>.maxrel`)
+  filtered_grm:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}_unrel.grm.bin:
+          type: file
+          description: Unrelated subset GRM binary matrix (`<meta.id>_unrel.grm.bin`)
+      - ${meta.id}_unrel.grm.id:
+          type: file
+          description: Unrelated subset GRM sample identifiers (`<meta.id>_unrel.grm.id`)
+      - ${meta.id}_unrel.grm.details:
+          type: file
+          description: Unrelated subset GRM details (`<meta.id>_unrel.grm.details`)
+      - ${meta.id}_unrel.grm.adjust:
+          type: file
+          description: Unrelated subset GRM adjustment factors (`<meta.id>_unrel.grm.adjust`)
+  versions_ldak6:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ldak6:
+          type: string
+          description: The tool name
+      - ldak6 --version 2>&1 | head -n 1:
+          type: eval
+          description: The expression used to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ldak6:
+          type: string
+          description: The tool name
+      - ldak6 --version 2>&1 | head -n 1:
+          type: eval
+          description: The expression used to obtain the version of the tool
+authors:
+  - "andongni"
