@@ -14,17 +14,14 @@ nextflow_process {
         when {
             process {
                 """
-                def bam_dir = "\${workDir}/bwa_output"
-                file(bam_dir).mkdirs()
-
                 def base = params.modules_testdata_base_path + 'genomics/eukaryotes/limulus_polyphemus/radseq/bwa_output/'
-                ['msp_0','msp_1','msp_2','msp_3','msp_4','msp_5','msp_6','msp_7','msp_8','msp_9'].each { name ->
-                    file(base + name + '.bam', checkIfExists: true).copyTo(bam_dir + '/' + name + '.bam')
+                def bam_files = ['msp_0','msp_1','msp_2','msp_3','msp_4','msp_5','msp_6','msp_7','msp_8','msp_9'].collect { name ->
+                    file(base + name + '.bam', checkIfExists: true)
                 }
 
                 input[0] = [
                     [ id:'test_radseq' ],
-                    file(bam_dir)
+                    bam_files
                 ]
                 input[1] = file(params.modules_testdata_base_path + 'genomics/eukaryotes/limulus_polyphemus/radseq/popmap.tsv', checkIfExists: true)
                 """
@@ -64,17 +61,14 @@ nextflow_process {
         when {
             process {
                 """
-                def bam_dir = "\${workDir}/bwa_output"
-                file(bam_dir).mkdirs()
-
                 def base = params.modules_testdata_base_path + 'genomics/eukaryotes/limulus_polyphemus/radseq/bwa_output/'
-                ['msp_0','msp_1','msp_2','msp_3','msp_4','msp_5','msp_6','msp_7','msp_8','msp_9'].each { name ->
-                    file(base + name + '.bam', checkIfExists: true).copyTo(bam_dir + '/' + name + '.bam')
+                def bam_files = ['msp_0','msp_1','msp_2','msp_3','msp_4','msp_5','msp_6','msp_7','msp_8','msp_9'].collect { name ->
+                    file(base + name + '.bam', checkIfExists: true)
                 }
 
                 input[0] = [
                     [ id:'test_radseq' ],
-                    file(bam_dir)
+                    bam_files
                 ]
                 input[1] = file(params.modules_testdata_base_path + 'genomics/eukaryotes/limulus_polyphemus/radseq/popmap.tsv', checkIfExists: true)
                 """

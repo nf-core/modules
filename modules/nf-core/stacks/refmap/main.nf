@@ -8,7 +8,7 @@ process STACKS_REFMAP {
         'biocontainers/stacks:2.68--h077b44d_0' }"
 
     input:
-    tuple val(meta), path(bam_path)
+    tuple val(meta), path(bams)
     path(popmap)
 
     output:
@@ -36,7 +36,7 @@ process STACKS_REFMAP {
     def args = task.ext.args ?: ''
     """
     ref_map.pl \\
-        --samples ${bam_path} \\
+        --samples . \\
         --popmap ${popmap} \\
         -o . \\
         -T $task.cpus \\
