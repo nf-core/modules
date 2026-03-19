@@ -1,0 +1,59 @@
+name: calc_genotype_error_t2
+description: Calculate LDAK genotype error T2 diagnostics from HE overall/within/across outputs
+keywords:
+  - ldak
+  - genotype-error
+  - he
+  - qc
+tools:
+  - r-base:
+      description: R programming language runtime used for statistical post-processing
+      homepage: https://www.r-project.org/
+      documentation: https://www.r-project.org/
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing report metadata.
+          Expected keys:
+            - id (string): Output prefix for T2 report (for example, 'genotype_error_Y1').
+    - he_overall_file:
+        type: file
+        description: LDAK HE overall result file (`*.he`)
+    - he_within_file:
+        type: file
+        description: LDAK HE within-batch result file (`*.he.within`)
+    - he_across_file:
+        type: file
+        description: LDAK HE across-batch result file (`*.he.across`)
+output:
+  genotype_error_results:
+    - - meta:
+          type: map
+          description: Metadata map propagated from input
+      - ${meta.id}.txt:
+          type: file
+          description: Genotype error T2 summary report (`<meta.id>.txt`)
+  versions_r_base:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - r-base:
+          type: string
+          description: The tool name
+      - Rscript --version 2>&1 | cut -d" " -f3:
+          type: eval
+          description: The expression used to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - r-base:
+          type: string
+          description: The tool name
+      - Rscript --version 2>&1 | cut -d" " -f3:
+          type: eval
+          description: The expression used to obtain the version of the tool
+authors:
+  - "andongni"

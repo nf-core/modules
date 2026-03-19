@@ -1,0 +1,182 @@
+nextflow_process {
+
+    name "Test Process CALC_GENOTYPE_ERROR_T2"
+    script "../main.nf"
+    process "CALC_GENOTYPE_ERROR_T2"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ldak"
+    tag "ldak/calc-kins"
+    tag "ldak/add-grms"
+    tag "ldak/adjust-grm"
+    tag "ldak/he"
+    tag "ldak/calc-genotype-error-t2"
+
+    setup {
+        run("CALC_KINS", alias: "CALC_KINS_CHR21") {
+            script "../../calc-kins/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: "plink_simulated_chr21" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+                ]
+                input[1] = "-0.25"
+                input[2] = [[:], []]
+                """
+            }
+        }
+
+        run("CALC_KINS", alias: "CALC_KINS_CHR22") {
+            script "../../calc-kins/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: "plink_simulated_chr22" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bed", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.bim", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated.fam", checkIfExists: true)
+                ]
+                input[1] = "-0.25"
+                input[2] = [[:], []]
+                """
+            }
+        }
+
+        run("LDAK_ADD_GRMS") {
+            script "../../add-grms/main.nf"
+            process {
+                """
+                mgrm_file = Channel
+                    .of("plink_simulated_chr21", "plink_simulated_chr22")
+                    .collectFile(name: "ldak_test.mgrm", newLine: true)
+
+                grouped_grms = CALC_KINS_CHR21.out.ldak_grm
+                    .mix(CALC_KINS_CHR22.out.ldak_grm)
+                    .map { meta, grm_bin, grm_id, grm_details, grm_adjust ->
+                        tuple("ldak_grm", grm_bin, grm_id, grm_details, grm_adjust)
+                    }
+                    .groupTuple(by: 0)
+
+                input[0] = grouped_grms.combine(mgrm_file).map { group_id, bins, ids, details, adjusts, mgrm ->
+                    tuple([ id: group_id ], mgrm, bins + ids + details + adjusts)
+                }
+                """
+            }
+        }
+
+        run("LDAK_ADJUST_GRM") {
+            script "../../adjust-grm/main.nf"
+            process {
+                """
+                input[0] = LDAK_ADD_GRMS.out.combined_grm.map { meta, grm_bin, grm_id, grm_details, grm_adjust ->
+                    tuple([ id: "ldak_grm_Y1_adj", grm_prefix: "ldak_grm" ], grm_bin, grm_id, grm_details, grm_adjust)
+                }
+                input[1] = [
+                    [ id: "plink_simulated_quantitative_phenoname" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe", checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id: "covariates" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_covariates.txt", checkIfExists: true)
+                ]
+                input[3] = [[:], []]
+                input[4] = 1
+                """
+            }
+        }
+
+        run("LDAK_HE") {
+            script "../../he/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: "he_Y1_ldak_grm_adj" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe", checkIfExists: true)
+                ]
+                input[1] = LDAK_ADJUST_GRM.out.adjusted_grm.map { meta, meta2, grm_bin, grm_id, grm_details, grm_adjust, grm_root ->
+                    tuple([ id: meta.id, grm_prefix: meta.id ], grm_bin, grm_id, grm_details, grm_adjust, grm_root)
+                }
+                input[2] = ""
+                input[3] = 0
+                input[4] = [[:], []]
+                input[5] = [[:], []]
+                input[6] = [[:], []]
+                input[7] = 1
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens popgen - calculate genotype error fixture-free") {
+
+        when {
+            process {
+                """
+                he_input = LDAK_HE.out.he_results.map { meta, overall_file ->
+                    within_file = file("he.within")
+                    within_file.text = file(overall_file).text
+                    across_file = file("he.across")
+                    across_file.text = file(overall_file).text
+                    tuple([ id: "genotype_error_he_Y1_ldak_grm_adj" ], overall_file, within_file, across_file)
+                }
+
+                input[0] = he_input
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.genotype_error_results.size() == 1 },
+                {
+                    def resultFile = path(process.out.genotype_error_results.get(0).get(1))
+                    assert resultFile.fileName.toString() == "genotype_error_he_Y1_ldak_grm_adj.txt"
+                    assert resultFile.text.contains("T2 Statistic")
+                    assert resultFile.text.contains("P-value (H0: T2 <= 0)")
+                },
+                {
+                    def stableResults = process.out.genotype_error_results.collect { resultTuple ->
+                        [resultTuple[0], path(resultTuple[1]).fileName.toString()]
+                    }
+                    assert snapshot(
+                        stableResults,
+                        process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - genotype error stub fixture-free") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                he_input = LDAK_HE.out.he_results.map { meta, overall_file ->
+                    within_file = file("he.stub.within")
+                    within_file.text = file(overall_file).text
+                    across_file = file("he.stub.across")
+                    across_file.text = file(overall_file).text
+                    tuple([ id: "genotype_error_stub" ], overall_file, within_file, across_file)
+                }
+
+                input[0] = he_input
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

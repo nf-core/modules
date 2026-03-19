@@ -1,0 +1,102 @@
+{
+    "homo_sapiens popgen - inflation stub fixture-free": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "inflation_Y1_stub"
+                        },
+                        "inflation_Y1_stub.txt:md5,e86f2e446f2a47a7fc0395e98fa6d548"
+                    ]
+                ],
+                "1": [
+                    [
+                        "CALC_INFLATION",
+                        "r-base",
+                        "version"
+                    ]
+                ],
+                "inflation_results": [
+                    [
+                        {
+                            "id": "inflation_Y1_stub"
+                        },
+                        "inflation_Y1_stub.txt:md5,e86f2e446f2a47a7fc0395e98fa6d548"
+                    ]
+                ],
+                "versions_r_base": [
+                    [
+                        "CALC_INFLATION",
+                        "r-base",
+                        "version"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.4"
+        },
+        "timestamp": "2026-03-19T02:15:59.867389586"
+    },
+    "homo_sapiens popgen - inflation report from setup-generated REML outputs fixture-free": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "inflation_Y1"
+                    },
+                    [
+                        "LDAK Inflation Analysis Results",
+                        "================================",
+                        "",
+                        "Number of quarter files processed: 2",
+                        "LDAK file processed: reml_full_ldak_grm.reml",
+                        "",
+                        "Quarter Results:",
+                        "  Mean Heritability: -0.027727",
+                        "  Mean SE: 0.088477",
+                        "",
+                        "LDAK Results:",
+                        "  Heritability: -0.027727",
+                        "  SE: 0.088477",
+                        "",
+                        "Inflation Analysis:",
+                        "  T1 Statistic (Documentation Formula): -0.027727",
+                        "  Inflation Ratio (Legacy, Quarter/LDAK): 1",
+                        "  Interpretation:",
+                        "    - T1 ~= 0: No inflation (good quality control)",
+                        "    - T1 > 0.05: Possible population structure or relatedness not fully captured",
+                        "    - T1 < -0.05: Possible over-correction",
+                        "",
+                        "Statistical Test Results:",
+                        "  Number of quarters used: 2",
+                        "  P-value: 0.571789",
+                        "  Mean T1 (analytical): -0.027727",
+                        "  SD T1 (analytical): 0.153247",
+                        "",
+                        "Individual Results:",
+                        "  reml_full_ldak_grm.quarter1.reml ( quarter ): H2 = -0.027727 SE = 0.088477",
+                        "  reml_full_ldak_grm.quarter2.reml ( quarter ): H2 = -0.027727 SE = 0.088477",
+                        "  reml_full_ldak_grm.reml ( ldak ): H2 = -0.027727 SE = 0.088477"
+                    ]
+                ]
+            ],
+            {
+                "versions_r_base": [
+                    [
+                        "CALC_INFLATION",
+                        "r-base",
+                        "version"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.4"
+        },
+        "timestamp": "2026-03-19T02:15:49.060417582"
+    }
+}
