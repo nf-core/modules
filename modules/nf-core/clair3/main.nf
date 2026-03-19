@@ -28,7 +28,9 @@ process CLAIR3 {
     script:
     def model = ""
     if (!user_model) {
-        model = "/opt/models/${packaged_model}"
+        model = workflow.containerEngine in ['singularity', 'docker', 'podman'] ?
+        "/opt/models/${packaged_model}" :
+        "\${CONDA_PREFIX:-\$MAMBA_ROOT_PREFIX}/bin/models/${packaged_model}"
     }
     if (!packaged_model) {
         model = "${user_model}"
