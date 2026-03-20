@@ -38,7 +38,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.results[0][1]).getText().contains("C\tERR5069949.2257580\t2697049") }
+                { assert path(process.out.results[0][1]).getText().contains("C\tERR5069949.2257580\t2697049") },
+                { assert snapshot(
+                    file(process.out.results[0][1]).name,
+                    process.out.versions
+                ).match() }
             )
         }
 
@@ -73,7 +77,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.results[0][1]).getText().contains("C\tERR5069949.2257580\t2697049") }
+                { assert path(process.out.results[0][1]).getText().contains("C\tERR5069949.2257580\t2697049") },
+                { assert snapshot(
+                    file(process.out.results[0][1]).name,
+                    process.out.versions
+                ).match() }
             )
         }
     }
@@ -109,7 +117,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.results[0][1]).name).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

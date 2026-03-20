@@ -19,7 +19,7 @@ process PLINK_FASTEPISTASIS {
     tuple val(meta), path("*.epi.cc.summary"),  emit: fepisummary, optional:true
     tuple val(meta), path("*.log")           ,  emit: flog
     tuple val(meta), path("*.nosex")         ,  emit: fnosex,      optional:true
-    path "versions.yml"                      ,  emit: versions
+    tuple val("${task.process}"), val('plink'), eval("plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'"), emit: versions_plink, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,7 +30,6 @@ process PLINK_FASTEPISTASIS {
     // define input string based on provided input files
     // in hierarchical order
     def input_command = ""
-    def outmeta = ""
     if (bed){
         input_command = "--bed ${bed} --bim ${bim} --fam ${fam}"
         prefix = task.ext.prefix ?: "${meta.id}"
@@ -52,29 +51,22 @@ process PLINK_FASTEPISTASIS {
         --fast-epistasis \\
         $args \\
         --out $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = ""
     // define input string based on provided input files
     // in hierarchical order
     def input_command = ""
-    def outmeta = ""
     if (bed){
         input_command = "--bed ${bed} --bim ${bim} --fam ${fam}"
         prefix = task.ext.prefix ?: "${meta.id}"
     } else if (vcf) {
         input_command = "--vcf ${vcf}"
-        prefix = task.ext.prefix ?: "${meta2.id} --pheno ${pheno}"
+        prefix = task.ext.prefix ?: "${meta2.id} --pheno ${phe}"
         meta = meta2
     } else if (bcf) {
-        input_command = "--bcf ${bcf} --pheno ${pheno}"
+        input_command = "--bcf ${bcf} --pheno ${phe}"
         prefix = task.ext.prefix ?: "${meta3.id}"
         meta = meta3
     } else {
@@ -85,10 +77,5 @@ process PLINK_FASTEPISTASIS {
     touch ${prefix}.fepisummary
     touch ${prefix}.flog
     touch ${prefix}.fnosex
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')
-    END_VERSIONS
     """
 }

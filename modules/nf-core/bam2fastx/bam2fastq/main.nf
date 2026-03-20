@@ -1,10 +1,3 @@
-def deprecation_message = """
-WARNING: This module has been deprecated. Please use nf-core/pbtk/bam2fastq
-
-Reason:
-This module is no longer fit for purpose because bam2fastx has been deprecated by PacificBiosciences
-
-"""
 process BAM2FASTX_BAM2FASTQ {
     tag "$meta.id"
     label 'process_medium'
@@ -19,24 +12,26 @@ process BAM2FASTX_BAM2FASTQ {
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: fastq
-    path "versions.yml",                 emit: versions
+    tuple val("${task.process}"), val('bam2fastx'), eval("bam2fastq --version 2>&1) | sed 's/^.*bam2fastq //'"), emit: versions_bam2fastx, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/pbtk/bam2fastq
+
+Reason:
+This module is no longer fit for purpose because bam2fastx has been deprecated by PacificBiosciences
+
+"""
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    assert true: deprecation_message
+    assert false: deprecation_message
     """
     bam2fastq \\
         $args \\
         -o ${prefix} \\
         $bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bam2fastx: \$(echo \$(bam2fastq --version 2>&1) | sed 's/^.*bam2fastq //' ))
-    END_VERSIONS
     """
 }

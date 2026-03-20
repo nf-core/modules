@@ -36,12 +36,7 @@ input:
         description: Reference genome file
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
         ontologies: []
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - fasta_index:
+    - fai:
         type: file
         description: Reference genome index file
         pattern: "*.{fai,fasta.fai,fa.fai,fasta.gz.fai,fa.gz.fai}"
@@ -80,13 +75,28 @@ output:
           description: Output CRAM file
           pattern: "*.{cram}"
           ontologies: []
+  versions_picard:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - picard:
+          type: string
+          description: The tool name
+      - "picard AddOrReplaceReadGroups --version 2>&1 | sed -n 's/.*Version://p'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - picard:
+          type: string
+          description: The tool name
+      - "picard AddOrReplaceReadGroups --version 2>&1 | sed -n 's/.*Version://p'":
+          type: string
+          description: The command used to generate the version of the tool
+
 authors:
   - "@sateeshperi"
   - "@mjcipriano"

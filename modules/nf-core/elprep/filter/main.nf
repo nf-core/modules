@@ -28,7 +28,7 @@ process ELPREP_FILTER {
     tuple val(meta), path("*.table")                , optional: true, emit: table
     tuple val(meta), path("*.activity_profile.igv") , optional: true, emit: activity_profile
     tuple val(meta), path("*.assembly_regions.igv") , optional: true, emit: assembly_regions
-    path "versions.yml"                             , emit: versions
+    tuple val("${task.process}"), val('elprep'), eval('elprep 2>&1 | sed -n \'2s/^.*version //;s/ compiled.*$//p\''), emit: versions_elprep, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -84,11 +84,6 @@ process ELPREP_FILTER {
         $args
 
     mv logs/elprep/*.log .
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        elprep: \$(elprep 2>&1 | head -n2 | tail -n1 |sed 's/^.*version //;s/ compiled.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -114,10 +109,5 @@ process ELPREP_FILTER {
     ${bqsr_tables_only_cmd}
     ${activity_profile_cmd}
     ${assembly_regions_cmd}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        elprep: \$(elprep 2>&1 | head -n2 | tail -n1 |sed 's/^.*version //;s/ compiled.*\$//')
-    END_VERSIONS
     """
 }

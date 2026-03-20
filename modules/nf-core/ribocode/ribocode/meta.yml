@@ -1,0 +1,120 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "ribocode_ribocode"
+description: Call ORFs with RiboCode from Ribo-Seq data
+keywords:
+  - ribo-seq
+  - ribosome profiling
+  - orf calling
+tools:
+  - "ribocode":
+      description: "A package for detecting the actively translated ORFs using ribosome-profiling
+        data"
+      homepage: "https://github.com/xryanglab/RiboCode"
+      documentation: "https://github.com/xryanglab/RiboCode"
+      tool_dev_url: "https://github.com/xryanglab/RiboCode"
+      doi: "10.1093/nar/gky179"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing annotation information
+          e.g. [ id:'genome' ]
+    - annotation:
+        type: directory
+        description: Directory containing RiboCode annotation files from ribocode/prepare
+        pattern: "annotation"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing config information
+          e.g. [ id:'config' ]
+    - config:
+        type: file
+        description: RiboCode configuration file containing P-site offsets from ribocode/metaplots
+        pattern: "*_config.txt"
+
+        ontologies: []
+output:
+  orf_txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: Text file containing all detected ORFs with detailed information
+          pattern: "*.txt"
+          ontologies: []
+  orf_txt_collapsed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_collapsed.txt":
+          type: file
+          description: Text file containing collapsed ORFs (merged isoforms)
+          pattern: "*_collapsed.txt"
+          ontologies: []
+  orf_pdf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_ORFs_category.pdf":
+          type: file
+          description: PDF file with ORF category distribution plots
+          pattern: "*_ORFs_category.pdf"
+          ontologies: []
+  psites_hd5:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_psites.hd5":
+          type: file
+          description: HDF5 file containing P-site positions
+          pattern: "*_psites.hd5"
+          ontologies: []
+  versions_ribocode:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - ribocode:
+          type: string
+          description: Name of the tool
+      - RiboCode --version  2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - ribocode:
+          type: string
+          description: Name of the tool
+      - RiboCode --version  2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@JackCurragh"

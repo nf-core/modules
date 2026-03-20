@@ -1,18 +1,18 @@
 process BCFTOOLS_CONSENSUS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/474a5ea8dc03366b04df884d89aeacc4f8e6d1ad92266888e7a8e7958d07cde8/data':
-        'community.wave.seqera.io/library/bcftools_htslib:0a3fa2654b52006f' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/474a5ea8dc03366b04df884d89aeacc4f8e6d1ad92266888e7a8e7958d07cde8/data'
+        : 'community.wave.seqera.io/library/bcftools_htslib:0a3fa2654b52006f'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(fasta), path(mask)
 
     output:
     tuple val(meta), path('*.fa'), emit: fasta
-    path  "versions.yml"         , emit: versions
+    tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,32 +20,20 @@ process BCFTOOLS_CONSENSUS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def masking = mask ? "-m $mask" : ""
+    def masking = mask ? "-m ${mask}" : ""
     """
-    cat $fasta \\
+    cat ${fasta} \\
         | bcftools \\
             consensus \\
-            $vcf \\
-            $args \\
-            $masking \\
+            ${vcf} \\
+            ${args} \\
+            ${masking} \\
             > ${prefix}.fa
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def masking = mask ? "-m $mask" : ""
     """
     touch ${prefix}.fa
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
-    END_VERSIONS
     """
 }

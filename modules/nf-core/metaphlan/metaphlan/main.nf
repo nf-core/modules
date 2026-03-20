@@ -52,16 +52,19 @@ process METAPHLAN_METAPHLAN {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_type = "${input}" =~ /.*\.(fastq|fq)/ ? "--input_type fastq" : "${input}" =~ /.*\.(fasta|fna|fa)/ ? "--input_type fasta" : "${input}".endsWith(".bowtie2out.txt") ? "--input_type bowtie2out" : "--input_type sam"
-    def input_data = ("${input_type}".contains("fastq")) && !meta.single_end ? "${input[0]},${input[1]}" : "${input}"
-    def bowtie2_out = "${input_type}" == "--input_type bowtie2out" || "${input_type}" == "--input_type sam" ? '' : "--bowtie2out ${prefix}.bowtie2out.txt"
-    def samfile_out = save_samfile ? "-s ${prefix}.sam" : ''
+    def samfile_cmd = save_samfile ? "touch ${prefix}.sam" : ''
+    def input_type = "${input}" =~ /.*\.(fastq|fq)/ ? "fastq" :
+        "${input}" =~ /.*\.(fasta|fna|fa)/? "fasta" :
+        "${input}".endsWith(".bowtie2out.txt") ? "bowtie2out" :
+        "sam"
+    def bowtie2_cmd = "${input_type}" == "bowtie2out" || "${input_type}" == "sam" ? '' : "touch ${prefix}.bowtie2out.txt"
+
     """
-    echo "${args}"
     touch ${prefix}.biom
     touch ${prefix}_profile.txt
+    ${samfile_cmd}
+    ${bowtie2_cmd}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

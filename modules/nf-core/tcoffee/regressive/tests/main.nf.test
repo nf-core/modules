@@ -13,8 +13,6 @@ nextflow_process {
 
     test("align_sequence - compressed - seatoxin") {
 
-        config "./sequence.config"
-
         when {
             process {
                 """
@@ -31,15 +29,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match()},
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() },
                 { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains("1ahl") },
             )
         }
     }
 
     test("align_sequence - uncompressed - seatoxin") {
-
-        config "./sequence.config"
 
         when {
             process {
@@ -57,15 +53,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match()},
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() },
                 { assert path(process.out.alignment.get(0).get(1)).getText().contains("1ahl") },
             )
         }
     }
 
     test("align_with_guide_tree - uncompressed - seatoxin") {
-
-        config "./tree.config"
 
         setup {
 
@@ -98,7 +92,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match()},
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() },
                 { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains("1ahl") },
             )
         }
@@ -107,7 +101,6 @@ nextflow_process {
 
     test("align_sequence - uncompressed - seatoxin - stub") {
         options "-stub"
-        config "./sequence.config"
 
         when {
             process {
@@ -127,7 +120,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.alignment,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )

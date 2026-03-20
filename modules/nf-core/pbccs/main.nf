@@ -44,15 +44,13 @@ process PBCCS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch dummy.chunk1.bam
-    touch dummy.chunk1.bam.pbi
-    touch dummy.report.txt
-    touch dummy.report.json
-    echo "test" > dummy.metrics.json
-    gzip dummy.metrics.json
+    touch ${prefix}.chunk1.bam
+    touch ${prefix}.chunk1.bam.pbi
+    touch ${prefix}.report.txt
+    touch ${prefix}.report.json
+    echo | gzip > ${prefix}.metrics.json.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

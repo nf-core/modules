@@ -16,13 +16,14 @@ process MTMALIGN_ALIGN {
     output:
     tuple val(meta), path("${prefix}.aln${compress ? '.gz' : ''}"), emit: alignment
     tuple val(meta), path("${prefix}.pdb${compress ? '.gz' : ''}"), emit: structure
-    path "versions.yml"                                           , emit: versions
+    // mtm-align -v prints the wrong version (20180725), so extract it from the cosmetic output in the help message
+    tuple val("${task.process}"), val('mtm-align'), eval('mtm-align -h | sed -n "s/.*Version \\([0-9]*\\).*/\\1/p"'), emit: versions_mtmalign, topic: versions
+    tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     // mTMalign is not capable of writing to stdout
     // if -o /dev/stdout is specified, the output file will be polluted with debug messages emitted by mTMalign
@@ -46,13 +47,6 @@ process MTMALIGN_ALIGN {
     if ${compress}; then
         pigz -p ${task.cpus} ${prefix}.aln ${prefix}.pdb
     fi
-
-    # mtm-align -v prints the wrong version 20180725, so extract it from the cosmetic output in the help message
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mTM-align: \$( mtm-align -h | grep -e "\\(Version [[:digit:]]*\\)" | grep -oe "[[:digit:]]*" )
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
-    END_VERSIONS
     """
 
     stub:
@@ -60,12 +54,5 @@ process MTMALIGN_ALIGN {
     """
     touch ${prefix}.aln${compress ? '.gz' : ''}
     touch ${prefix}.pdb${compress ? '.gz' : ''}
-
-    # mtm-align -v prints the wrong version 20180725, so extract it from the cosmetic output in the help message
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mTM-align: \$( mtm-align -h | grep -e "\\(Version [[:digit:]]*\\)" | grep -oe "[[:digit:]]*" )
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
-    END_VERSIONS
     """
 }

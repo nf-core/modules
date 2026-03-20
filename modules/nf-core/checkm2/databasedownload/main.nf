@@ -24,13 +24,17 @@ process CHECKM2_DATABASEDOWNLOAD {
 
     output:
     tuple val(meta), path("checkm2_db_v${db_version}.dmnd"), emit: database
-    path("versions.yml")                                   , emit: versions
+    tuple val("${task.process}"), val('aria2'), eval("aria2c --version 2>&1 | sed '1s/[^ ]* [^ ]* //; q'"), topic: versions, emit: versions_checkm2_databasedownload
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
+    // Append user-agent if not already present
+    if( !args.contains('--user-agent') ) {
+        args = args ? "${args} --user-agent=\"Wget/1.21.4\"" : '--user-agent="Wget/1.21.4"'
+    }
     zenodo_id  = db_zenodo_id ?: 14897628  // Default to version 3 if no ID provided
     api_data   = downloadZenodoApiEntry(zenodo_id)
     db_version = api_data.metadata.version
@@ -48,10 +52,8 @@ process CHECKM2_DATABASEDOWNLOAD {
     db_path=\$(find -name *.dmnd)
     mv \$db_path checkm2_db_v${db_version}.dmnd
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        aria2: \$(echo \$(aria2c --version 2>&1) | grep 'aria2 version' | cut -f3 -d ' ')
-    END_VERSIONS
+    # cleanup
+    rm -f checkm2_database.tar.gz
     """
 
     stub:
@@ -59,10 +61,5 @@ process CHECKM2_DATABASEDOWNLOAD {
     meta       = [id: 'checkm2_db', version: db_version]
     """
     touch checkm2_db_v${db_version}.dmnd
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        aria2: \$(echo \$(aria2c --version 2>&1) | grep 'aria2 version' | cut -f3 -d ' ')
-    END_VERSIONS
     """
 }

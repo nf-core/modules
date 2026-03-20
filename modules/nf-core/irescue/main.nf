@@ -45,7 +45,6 @@ process IRESCUE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}/counts

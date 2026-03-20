@@ -4,8 +4,8 @@ process SRATOOLS_FASTERQDUMP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-5f89fe0cd045cb1d615630b9261a1d17943a9b6a:2f4a4c900edd6801ff0068c2b3048b4459d119eb-0' :
-        'biocontainers/mulled-v2-5f89fe0cd045cb1d615630b9261a1d17943a9b6a:2f4a4c900edd6801ff0068c2b3048b4459d119eb-0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/37/37aacd127aa32161d8b38a83efb18df01a8ab1d769a93e88f80342d27801b548/data' :
+        'community.wave.seqera.io/library/sra-tools_pigz:4a694d823f6f7fcf' }"
 
     input:
     tuple val(meta), path(sra)
@@ -14,7 +14,8 @@ process SRATOOLS_FASTERQDUMP {
 
     output:
     tuple val(meta), path('*.fastq.gz'), emit: reads
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('sratools'), eval("prefetch --version 2>&1 | grep -Eo '[0-9.]+'"), topic: versions, emit: versions_sratools
+    tuple val("${task.process}"), val('pigz'), eval("pigz --version 2>&1 | sed 's/pigz //g'"), topic: versions, emit: versions_pigz
 
     when:
     task.ext.when == null || task.ext.when
@@ -50,12 +51,6 @@ process SRATOOLS_FASTERQDUMP {
         --no-name \\
         --processes $task.cpus \\
         *.fastq
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sratools: \$(fasterq-dump --version 2>&1 | grep -Eo '[0-9.]+')
-        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-    END_VERSIONS
     """
 
     stub:
@@ -93,11 +88,5 @@ process SRATOOLS_FASTERQDUMP {
         --no-name \\
         --processes $task.cpus \\
         *.fastq
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sratools: \$(fasterq-dump --version 2>&1 | grep -Eo '[0-9.]+')
-        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-    END_VERSIONS
     """
 }

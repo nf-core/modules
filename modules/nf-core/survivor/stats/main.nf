@@ -15,13 +15,12 @@ process SURVIVOR_STATS {
 
     output:
     tuple val(meta), path("*.stats"), emit: stats
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('survivor'), eval("SURVIVOR 2>&1 | grep 'Version' | sed 's/Version: //'"), topic: versions, emit: versions_survivor
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed = vcf.getName().endsWith(".gz") ? true : false
     vcf_name = vcf.getName().replace(".gz", "")
@@ -40,11 +39,6 @@ process SURVIVOR_STATS {
         ${prefix}.stats
 
     rm $vcf_name
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        survivor: \$(echo \$(SURVIVOR 2>&1 | grep "Version" | sed 's/^Version: //'))
-    END_VERSIONS
     """
 
     stub:
@@ -52,9 +46,5 @@ process SURVIVOR_STATS {
 
     """
     touch ${prefix}.stats
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        survivor: \$(echo \$(SURVIVOR 2>&1 | grep "Version" | sed 's/^Version: //'))
-    END_VERSIONS
     """
 }

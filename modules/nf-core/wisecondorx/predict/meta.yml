@@ -12,7 +12,8 @@ tools:
       documentation: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
       tool_dev_url: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
       doi: "10.1093/nar/gky1263"
-      licence: ["Attribution-NonCommercial-ShareAlike CC BY-NC-SA"]
+      licence:
+        - "Attribution-NonCommercial-ShareAlike CC BY-NC-SA"
       identifier: ""
 input:
   - - meta:
@@ -42,8 +43,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - blacklist:
         type: file
-        description: OPTIONAL - A BED file containing blacklist regions (used mainly
-          when the reference is small)
+        description: OPTIONAL - A BED file containing blacklist regions (used
+          mainly when the reference is small)
         pattern: "*.bed"
         ontologies: []
 output:
@@ -125,13 +126,27 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "genome_wide.png"
+  versions_wisecondorx:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - wisecondorx:
+          type: string
+          description: The name of the tool
+      - pip list |& sed -n 's/wisecondorx *//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - wisecondorx:
+          type: string
+          description: The name of the tool
+      - pip list |& sed -n 's/wisecondorx *//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

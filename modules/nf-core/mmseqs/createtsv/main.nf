@@ -14,7 +14,7 @@ process MMSEQS_CREATETSV {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('mmseqs'), eval('mmseqs version'), topic: versions, emit: versions_mmseqs
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,10 +44,6 @@ process MMSEQS_CREATETSV {
         ${args} \\
         --threads ${task.cpus}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //')
-    END_VERSIONS
     """
 
     stub:
@@ -57,9 +53,5 @@ process MMSEQS_CREATETSV {
     echo ${args}
     touch ${prefix}.tsv
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //')
-    END_VERSIONS
     """
 }

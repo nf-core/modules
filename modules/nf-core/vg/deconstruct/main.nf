@@ -23,7 +23,7 @@ process VG_DECONSTRUCT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def snarls = pb ? "--snarls ${pb}" : ""
-    def gbwt_arg = gbwt ? "--gbwt ${gwbt}" : ""
+    def gbwt_arg = gbwt ? "--gbwt ${gbwt}" : ""
     """
     vg deconstruct \\
         --threads $task.cpus \\

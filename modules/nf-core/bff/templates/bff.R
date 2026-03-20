@@ -133,6 +133,12 @@ if(preprocessing){
 
   # perform preprocessing
   counts <- ProcessCountMatrix(rawCountData = hto_matrix, barcodeWhitelist = barcodes_list)
+
+  # Add '-1' suffix back to match original 10X barcodes (is removed by calling Read10X(strip.suffix = TRUE) in ProcessCountMatrix())
+  barcodes <- readLines(gzfile(paste0(hto_matrix,"/barcodes.tsv.gz")))
+  if(all(grepl("\\\\-1\$", barcodes))) {
+    colnames(counts) <- paste0(colnames(counts), "-1")
+  }
 }else{
     # perform preprocessing
   counts <- Read10X(hto_matrix)

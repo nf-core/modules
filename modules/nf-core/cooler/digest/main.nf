@@ -13,8 +13,8 @@ process COOLER_DIGEST {
     val  enzyme
 
     output:
-    path "*.bed"                  , emit: bed
-    path "versions.yml"           , emit: versions
+    path "*.bed", emit: bed
+    tuple val("${task.process}"), val('cooler'), eval('cooler --version 2>&1 | sed "s/cooler, version //"'), emit: versions_cooler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

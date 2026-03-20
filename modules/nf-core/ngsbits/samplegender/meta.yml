@@ -11,7 +11,8 @@ tools:
       homepage: "https://github.com/imgag/ngs-bits"
       documentation: "https://github.com/imgag/ngs-bits"
       tool_dev_url: "https://github.com/imgag/ngs-bits"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -36,7 +37,8 @@ input:
           e.g. [ id:'test' ]
     - fasta:
         type: file
-        description: The reference FASTA to use (mandatory when CRAM files are used)
+        description: The reference FASTA to use (mandatory when CRAM files are
+          used)
         pattern: "*.{fasta,fa,fna}"
         ontologies: []
   - - meta3:
@@ -51,8 +53,8 @@ input:
         ontologies: []
   - method:
       type: string
-      description: The method to use to define the gender (possibilities are 'xy', 'hetx'
-        and 'sry')
+      description: The method to use to define the gender (possibilities are 'xy',
+        'hetx' and 'sry')
       pattern: "(xy|hetx|sry)"
 output:
   tsv:
@@ -63,17 +65,32 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.tsv":
           type: file
-          description: An output TSV file containing the results of the gender prediction
+          description: An output TSV file containing the results of the gender
+            prediction
           pattern: "*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
+  versions_ngsbits:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ngsbits:
+          type: string
+          description: The name of the tool
+      - SampleGender --version  2>&1 | sed 's/SampleGender //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ngsbits:
+          type: string
+          description: The name of the tool
+      - SampleGender --version  2>&1 | sed 's/SampleGender //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

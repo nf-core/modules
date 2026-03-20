@@ -1,7 +1,7 @@
 name: "VERIFYBAMID_VERIFYBAMID2"
-description: Detecting and estimating inter-sample DNA contamination became a crucial
-  quality assessment step to ensure high quality sequence reads and reliable downstream
-  analysis.
+description: Detecting and estimating inter-sample DNA contamination became a
+  crucial quality assessment step to ensure high quality sequence reads and
+  reliable downstream analysis.
 keywords:
   - contamination
   - bam
@@ -15,7 +15,8 @@ tools:
       documentation: "http://griffan.github.io/VerifyBamID"
       tool_dev_url: "https://github.com/Griffan/VerifyBamID"
       doi: "10.1101/gr.246934.118"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:verifybamid
 input:
   - - meta:
@@ -45,13 +46,14 @@ input:
         ontologies: []
     - svd_bed:
         type: file
-        description: .Bed file for markers used in this analysis,format(chr\tpos-1\tpos\trefAllele\taltAllele)[Required]
+        description: .Bed file for markers used in this
+          analysis,format(chr\tpos-1\tpos\trefAllele\taltAllele)[Required]
         pattern: "*.bed"
         ontologies: []
   - refvcf:
       type: file
-      description: Reference panel VCF with genotype information, for generation of
-        .UD .mu .bed files [Optional]
+      description: Reference panel VCF with genotype information, for generation
+        of .UD .mu .bed files [Optional]
       pattern: "*.vcf"
       ontologies: []
   - references:
@@ -101,8 +103,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.mu":
           type: file
-          description: .mu matrix file of genotype matrix from customized reference
-            vcf input
+          description: .mu matrix file of genotype matrix from customized
+            reference vcf input
           pattern: "*.mu"
           ontologies: []
   self_sm:
@@ -113,8 +115,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.selfSM":
           type: file
-          description: Shares the same format as legacy VB1 and the key information
-            FREEMIX indicates the estimated contamination level.
+          description: Shares the same format as legacy VB1 and the key
+            information FREEMIX indicates the estimated contamination level.
           pattern: "*.selfSM"
           ontologies: []
   ancestry:
@@ -128,13 +130,27 @@ output:
           description: Ancestry information
           pattern: "*.Ancestry"
           ontologies: []
+  versions_verifybamid2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - verifybamid2:
+          type: string
+          description: The name of the tool
+      - verifybamid2 --help 2>&1 | sed -n '3s/.*Version://p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - verifybamid2:
+          type: string
+          description: The name of the tool
+      - verifybamid2 --help 2>&1 | sed -n '3s/.*Version://p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@manifestoso"
 maintainers:

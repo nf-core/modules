@@ -39,7 +39,6 @@ process FOLDMASON_MSA2LDDTREPORT {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.html

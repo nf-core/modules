@@ -13,7 +13,7 @@ process GATK4_UNMARKDUPLICATES {
     output:
     tuple val(meta), path("${prefix}.bam"), emit: bam
     tuple val(meta), path("${prefix}.bai"), emit: bai
-    path "versions.yml",                    emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,7 +21,7 @@ process GATK4_UNMARKDUPLICATES {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}_UnmarkDuplicates"
-    def input_list = bam.collect { "--input ${it}" }.join(' ')
+    def input_list = bam.collect { bam_ -> "--input ${bam_}" }.join(' ')
     def avail_mem = 3072
     if (!task.memory) {
         log.info('[GATK UnmarkDuplicates] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
@@ -36,11 +36,6 @@ process GATK4_UNMARKDUPLICATES {
         ${input_list} \\
         --output ${prefix}.bam \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -48,10 +43,5 @@ process GATK4_UNMARKDUPLICATES {
     """
     touch ${prefix}.bam
     touch ${prefix}.bai
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

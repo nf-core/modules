@@ -1,0 +1,82 @@
+{
+    "homo_sapiens - empty channels - stub": {
+        "content": [
+            {
+                "vcf_index": [
+                    [
+                        {
+                            "id": "allid",
+                            "chr": "chr21"
+                        },
+                        "allid_chr21.ligate.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "allid_chr21.ligate.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ],
+                    [
+                        {
+                            "id": "allid",
+                            "chr": "chr22"
+                        },
+                        "allid_chr22.ligate.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "allid_chr22.ligate.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-06T14:04:32.890807138"
+    },
+    "Impute with quilt one individual, no renaming, posfile, no chunks, no map, no fasta": {
+        "content": [
+            [
+                [
+                    "allid_chr22.ligate.vcf.gz",
+                    "allid_chr22.ligate.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=903, phased=true, phasedAutodetect=false]",
+                    [
+                        "NA12878"
+                    ],
+                    "98f97eac82da7e115c7965906e49b563"
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-06T14:03:25.847677815"
+    },
+    "Impute with quilt two individual bam, renaming, posfile, chunks, map, no fasta": {
+        "content": [
+            [
+                [
+                    "allid_chr21.ligate.vcf.gz",
+                    "allid_chr21.ligate.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr21], sampleCount=2, variantCount=836, phased=true, phasedAutodetect=false]",
+                    [
+                        "MySample1",
+                        "MySample2"
+                    ],
+                    "a1601c083256c8e3315c6dd128e4aea6"
+                ],
+                [
+                    "allid_chr22.ligate.vcf.gz",
+                    "allid_chr22.ligate.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr22], sampleCount=2, variantCount=903, phased=true, phasedAutodetect=false]",
+                    [
+                        "MySample1",
+                        "MySample2"
+                    ],
+                    "3a47675c78aacc7c0a385284160f4c07"
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-06T14:04:14.879818839"
+    }
+}
