@@ -1,0 +1,58 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: variantextractor
+description: |
+  Deterministic and standard extractor of SNVs, indels and structural variants (SVs)
+  from VCF files. Homogenizes multiallelic variants, MNPs and SVs (including imprecise
+  paired breakends and single breakends) to facilitate downstream processing.
+keywords:
+  - vcf
+  - variant
+  - structural variant
+  - normalization
+  - homogenization
+tools:
+  - variant-extractor:
+      description: |
+        Deterministic and standard extractor of SNVs, indels and structural variants
+        from VCF files built under the frame of EUCANCan.
+      homepage: https://github.com/EUCANCan/variant-extractor
+      documentation: https://eucancan.github.io/variant-extractor/
+      tool_dev_url: https://github.com/EUCANCan/variant-extractor
+      doi: "10.1016/j.xgen.2024.100639"
+      licence:
+        - "MIT"
+      identifier: biotools:variant_extractor
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          e.g. [ id:'sample1' ]
+    - vcf:
+        type: file
+        description: Input VCF file containing variants to be extracted and homogenized.
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+            e.g. [ id:'sample1' ]
+      - "*.vcf":
+          type: file
+          description: |
+            VCF file with variants extracted and homogenized (multiallelic split,
+            MNPs decomposed, SV breakends deduplicated).
+          pattern: "*.vcf"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions.
+        pattern: "versions.yml"
+authors:
+  - "@sbreuch"
+maintainers:
+  - "@sbreuch"
