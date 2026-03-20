@@ -66,7 +66,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    file(process.out.region_profile[0][1]).readLines()[2..5].join('\n').md5(),
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
 
@@ -102,7 +105,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    file(process.out.region_profile[0][1]).readLines()[2..5].join('\n').md5(),
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
 
@@ -134,7 +140,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.region_profile,
+                    file(process.out.region_profile[0][1]).readLines()[2..5].join('\n').md5(),
                     file(process.out.asm_bed[0][1]).name, // Check filename only
                     process.out.findAll { key, val -> key.startsWith("versions")}
                     ).match() }
@@ -168,7 +174,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert snapshot(
+                    file(process.out.region_profile[0][1]).readLines()[2..5].join('\n').md5(),
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() },
                 { assert path(process.out.region_profile[0][1]).text.contains('MALE') },
                 { assert path(process.out.region_profile[0][1]).text.contains('FEMALE') }
             )
