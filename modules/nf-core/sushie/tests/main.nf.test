@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process SUSHIE"
     script "../main.nf"
     process "SUSHIE"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -11,6 +12,9 @@ nextflow_process {
     test("homo_sapiens - popgen - afr") {
 
         when {
+              params {
+                module_args = '--gwas-header chrom snp pos a0 a1 beta se pval z'
+              }
             process {
                 """
                 input[0] = [
