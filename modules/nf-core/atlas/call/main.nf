@@ -16,7 +16,7 @@ process ATLAS_CALL {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    tuple val("${task.process}"), val('atlas'), eval("(atlas 2>&1) | grep Atlas | head -n 1 | sed -e 's/^[[:space:]]*Atlas //'"), emit: versions_atlas, topic: versions
+    tuple val("${task.process}"), val('atlas'), eval("(atlas 2>&1) | grep ATLAS | head -n 1 | sed -e 's/^[[:space:]]*ATLAS //'"), emit: versions_atlas, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
