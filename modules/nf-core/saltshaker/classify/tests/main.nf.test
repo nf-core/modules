@@ -71,7 +71,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--blacklist --vcf'
+                module_args = '--blacklist --vcf --dominant-fraction 0.5 --radius 600 --high-het 10 --multiple-threshold 5 --noise 0.3'
             }
             process {
                 """
@@ -96,7 +96,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--blacklist'
+                module_args = '--blacklist --dominant-fraction 0.5 --radius 600 --high-het 10 --multiple-threshold 5 --noise 0.3'
             }
             process {
                 """
@@ -124,7 +124,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--blacklist'
+                module_args = '--blacklist --dominant-fraction 0.5 --radius 600 --high-het 10 --multiple-threshold 5 --noise 0.3'
             }
             process {
                 """
