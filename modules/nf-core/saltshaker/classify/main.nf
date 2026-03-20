@@ -9,11 +9,6 @@ process SALTSHAKER_CLASSIFY {
 
     input:
     tuple val(meta), path(call)
-    val dominant_fraction
-    val group_radius
-    val high_heteroplasmy
-    val multiple_threshold
-    val noise_threshold
     val mito_name
 
     output:
@@ -33,11 +28,6 @@ process SALTSHAKER_CLASSIFY {
     saltshaker classify \\
         --prefix $prefix \\
         --input-dir . \\
-        --dominant-fraction $dominant_fraction \\
-        --radius $group_radius \\
-        --high-het $high_heteroplasmy \\
-        --multiple-threshold $multiple_threshold \\
-        --noise $noise_threshold \\
         --chr-format $mito_name \\
         $args
 
