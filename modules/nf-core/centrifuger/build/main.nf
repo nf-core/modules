@@ -14,8 +14,6 @@ process CENTRIFUGER_BUILD {
     path conversion_table
     path reference_list
 
-
-
     output:
     tuple val(meta), path("${prefix}/"), emit: db
     tuple val("${task.process}"), val("centrifuger"), eval("centrifuger -v 2>&1 | head -n 1 | cut -d ' ' -f 2"), emit: versions_centrifuger, topic: versions
