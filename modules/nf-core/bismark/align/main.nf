@@ -16,7 +16,7 @@ process BISMARK_ALIGN {
     tuple val(meta), path("*bam")       , emit: bam
     tuple val(meta), path("*report.txt"), emit: report
     tuple val(meta), path("*fq.gz")     , emit: unmapped, optional: true
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val("bismark"), eval('bismark --version | grep Version | sed -e "s/Bismark Version: v//" | xargs'), topic: versions, emit: versions_bismark
 
     when:
     task.ext.when == null || task.ext.when
@@ -48,7 +48,8 @@ process BISMARK_ALIGN {
             def tmem = (task.memory as MemoryUnit).toBytes()
             def mcore = (tmem / mem_per_multicore) as int
             ccore = Math.min(ccore, mcore)
-        } catch (all) {
+        } catch (Exception e) {
+            log.warn "Error catched: ${e}"
             log.warn "Not able to define bismark align multicore based on available memory"
         }
         if(ccore > 1){
@@ -61,23 +62,12 @@ process BISMARK_ALIGN {
         --genome ${index} \\
         --bam \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bismark: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bam
     touch ${prefix}.report.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bismark: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
-    END_VERSIONS
     """
 }

@@ -10,11 +10,11 @@ workflow BAM_METHYLDACKEL {
     ch_fasta_index          // channel: [ val(meta), [ fasta index ] ]
 
     main:
-    ch_methydackel_extract_bedgraph  = Channel.empty()
-    ch_methydackel_extract_methylkit = Channel.empty()
-    ch_methydackel_mbias             = Channel.empty()
-    ch_multiqc_files                 = Channel.empty()
-    ch_versions                      = Channel.empty()
+    ch_methydackel_extract_bedgraph  = channel.empty()
+    ch_methydackel_extract_methylkit = channel.empty()
+    ch_methydackel_mbias             = channel.empty()
+    ch_multiqc_files                 = channel.empty()
+    ch_versions                      = channel.empty()
 
     /*
      * Extract per-base methylation and plot methylation bias
@@ -42,9 +42,9 @@ workflow BAM_METHYLDACKEL {
     /*
      * Collect MultiQC inputs
      */
-    ch_multiqc_files = ch_methydackel_extract_bedgraph.collect{ meta, bedgraph -> bedgraph  }
-                        .mix(ch_methydackel_extract_methylkit.collect{ meta, methylkit -> methylkit })
-                        .mix(ch_methydackel_mbias.collect{ meta, txt -> txt  })
+    ch_multiqc_files = ch_methydackel_extract_bedgraph.collect{ _meta, bedgraph -> bedgraph  }
+                        .mix(ch_methydackel_extract_methylkit.collect{ _meta, methylkit -> methylkit })
+                        .mix(ch_methydackel_mbias.collect{ _meta, txt -> txt  })
 
     emit:
     methydackel_extract_bedgraph  = ch_methydackel_extract_bedgraph  // channel: [ val(meta), [ bedgraph ]  ]

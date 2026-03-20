@@ -1,5 +1,6 @@
 name: ensemblvep_filtervep
-description: Filter variants based on Ensembl Variant Effect Predictor (VEP) annotations.
+description: Filter variants based on Ensembl Variant Effect Predictor (VEP)
+  annotations.
 keywords:
   - annotation
   - vcf
@@ -12,7 +13,8 @@ tools:
         or structural variants) on genes, transcripts, and protein sequence, as well as regulatory regions.
       homepage: https://www.ensembl.org/info/docs/tools/vep/index.html
       documentation: https://www.ensembl.org/info/docs/tools/vep/script/index.html
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: ""
 input:
   - - meta:
@@ -25,11 +27,11 @@ input:
         description: VCF/TAB file annotated with vep
         pattern: "*.{vcf,tab,tsv,txt}"
         ontologies:
-          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3475
   - feature_file:
       type: file
-      description: File containing features on separate lines. To be used with --filter
-        option.
+      description: File containing features on separate lines. To be used with
+        --filter option.
       ontologies: []
 output:
   output:
@@ -43,14 +45,47 @@ output:
           description: VCF/TAB file
           pattern: "*.{vcf,tab,txt,tsv}"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
+  versions_ensemblvep:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - ensemblvep:
+          type: string
+          description: The tool name
+      - "vep --help | sed -n '/ensembl-vep/s/.*: //p'":
+          type: eval
+          description: The command used to generate the version of the tool
+  versions_perlmathcdf:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - perl-math-cdf:
+          type: string
+          description: The tool name
+      - perl -MMath::CDF -e 'print \\$Math::CDF::VERSION':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - ensemblvep:
+          type: string
+          description: The tool name
+      - "vep --help | sed -n '/ensembl-vep/s/.*: //p'":
+          type: eval
+          description: The command used to generate the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - perl-math-cdf:
+          type: string
+          description: The tool name
+      - perl -MMath::CDF -e 'print \\$Math::CDF::VERSION':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ramprasadn"
 maintainers:

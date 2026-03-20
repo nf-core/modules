@@ -1,6 +1,6 @@
 process FASTQC {
     tag "${meta.id}"
-    label 'process_medium'
+    label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -8,12 +8,12 @@ process FASTQC {
         'biocontainers/fastqc:0.12.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(reads, stageAs: '?/*')
 
     output:
-    tuple val(meta), path("*.html"), emit: html
-    tuple val(meta), path("*.zip") , emit: zip
-    path  "versions.yml"           , emit: versions
+    tuple val(meta)             , path("*.html")                                                       , emit: html
+    tuple val(meta)             , path("*.zip")                                                        , emit: zip
+    tuple val("${task.process}"), val('fastqc'), eval('fastqc --version | sed "/FastQC v/!d; s/.*v//"'), emit: versions_fastqc, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,10 +28,11 @@ process FASTQC {
 
     // The total amount of allocated RAM by FastQC is equal to the number of threads defined (--threads) time the amount of RAM defined (--memory)
     // https://github.com/s-andrews/FastQC/blob/1faeea0412093224d7f6a07f777fad60a5650795/fastqc#L211-L222
-    // Dividing the task.memory by task.cpu allows to stick to requested amount of RAM in the label
-    def memory_in_mb = task.memory ? task.memory.toUnit('MB') / task.cpus : null
+    // Dividing the task.memory by task.cpus allows to stick to requested amount of RAM in the label
+    def memory_in_mb = task.memory ? ((int) (task.memory.toUnit('MB') / task.cpus)) : null
     // FastQC memory value allowed range (100 - 10000)
     def fastqc_memory = memory_in_mb > 10000 ? 10000 : (memory_in_mb < 100 ? 100 : memory_in_mb)
+    def fastqc_memory_arg = fastqc_memory ? "--memory ${fastqc_memory}" : ''
 
     """
     printf "%s %s\\n" ${rename_to} | while read old_name new_name; do
@@ -41,13 +42,8 @@ process FASTQC {
     fastqc \\
         ${args} \\
         --threads ${task.cpus} \\
-        --memory ${fastqc_memory} \\
+        ${fastqc_memory_arg} \\
         ${renamed_files}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastqc: \$( fastqc --version | sed '/FastQC v/!d; s/.*v//' )
-    END_VERSIONS
     """
 
     stub:
@@ -55,10 +51,5 @@ process FASTQC {
     """
     touch ${prefix}.html
     touch ${prefix}.zip
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastqc: \$( fastqc --version | sed '/FastQC v/!d; s/.*v//' )
-    END_VERSIONS
     """
 }

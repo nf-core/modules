@@ -4,6 +4,8 @@ nextflow_process {
     script "../main.nf"
     process "GLIMPSE_CONCORDANCE"
 
+    config "./nextflow.config"
+
     tag "modules"
     tag "modules_nfcore"
     tag "glimpse"
@@ -12,79 +14,58 @@ nextflow_process {
     tag "bcftools/index"
 
     test("test_glimpse_concordance") {
-        setup {
-            run("GLIMPSE_PHASE") {
-                script "../../phase/main.nf"
-                process {
-                """
-                ch_sample     = Channel.of('NA12878 2').collectFile(name: 'sampleinfos.txt')
-                region        = Channel.fromList([
-                    ["chr21:16600000-16750000","chr21:16650000-16700000"]
-                ])
-                input_vcf     = Channel.of([
-                    [ id:'input'], // meta map
-                    file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true)
-                ])
-                ref_panel     = Channel.of([
-                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true)
-                ])
-                ch_map        = Channel.of([
-                    file(params.modules_testdata_base_path + "delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true),
-                ])
-
-                input[0]      = input_vcf
-                    | combine(ch_sample)
-                    | combine(region)
-                    | combine(ref_panel)
-                    | combine(ch_map)
-                """
-                }
-            }
-            run("BCFTOOLS_INDEX") {
-                script "../../../bcftools/index/main.nf"
-                process {
-                """
-                input[0] = GLIMPSE_PHASE.out.phased_variants
-                """
-                }
-            }
-        }
         when {
             process {
                 """
-                allele_freq = Channel.fromList([
-                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.sites.vcf.gz",checkIfExists:true),
-                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.sites.vcf.gz.csi",checkIfExists:true)
-                ]).collect()
-                truth = Channel.fromList([
-                    file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.bcf",checkIfExists:true),
-                    file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.bcf.csi",checkIfExists:true)
-                ]).collect()
-                estimate = GLIMPSE_PHASE.out.phased_variants
-                    | join (BCFTOOLS_INDEX.out.csi)
-                input[0] = estimate
-                    | combine (allele_freq)
-                    | combine (truth)
-                    | combine (["chr21"])
-                input[1] = []
-                input[2] = []
+                input[0] = [
+                    [ id: "NA12878" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.sites.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.sites.vcf.gz.csi",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz.csi",checkIfExists:true),
+                    "chr21"
+                ]
+                input[1] = 0.7
+                input[2] = 3
                 input[3] = []
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.errors_cal,
-                    process.out.errors_spl,
-                    process.out.rsquare_spl,
-                    process.out.versions
-                ).match() }
-            )
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+
+    }
+
+    test("test_glimpse_concordance -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: "NA12878" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.sites.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.sites.vcf.gz.csi",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz.csi",checkIfExists:true),
+                    "chr21"
+                ]
+                input[1] = 0.7
+                input[2] = 3
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }

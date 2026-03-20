@@ -14,7 +14,7 @@ process SEQKIT_RMDUP {
     output:
     tuple val(meta), path("${prefix}.${extension}") , emit: fastx
     tuple val(meta), path("*.log")                  , emit: log
-    path "versions.yml"                             , emit: versions
+    tuple val("${task.process}"), val('seqkit'), eval("seqkit version | sed 's/^.*v//'"), emit: versions_seqkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,11 +37,6 @@ process SEQKIT_RMDUP {
         $fastx \\
         -o ${prefix}.${extension} \\
         2>| >(tee ${prefix}.log >&2)
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$(seqkit version | cut -d' ' -f2)
-    END_VERSIONS
     """
 
     stub:
@@ -57,10 +52,5 @@ process SEQKIT_RMDUP {
     echo \\
         '[INFO] 0 duplicated records removed' \\
         > ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$(seqkit version | cut -d' ' -f2)
-    END_VERSIONS
     """
 }

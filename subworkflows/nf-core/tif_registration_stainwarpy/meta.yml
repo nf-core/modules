@@ -1,0 +1,67 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "tif_registration_stainwarpy"
+
+description: Register H&E stained and multiplexed tissue images and transform segmentation masks using stainwarpy
+keywords:
+  - image registration
+  - histology
+  - hne
+  - multiplexed
+  - segmentation mask
+
+components:
+  - stainwarpy/extractchannel
+  - stainwarpy/register
+  - stainwarpy/transformsegmask
+
+input:
+  - ch_hne:
+      type: file
+      description: |
+        Channel containing H&E stained tissue image in TIF/OME-TIF format
+        Structure: [ val(meta), path(ome.tif) ]
+      pattern: "*.{tif,ome.tif,tiff,ome.tiff}"
+  - ch_multiplexed:
+      type: file
+      description: |
+        Channel containing multiplexed tissue image in TIF/OME-TIF format
+        Structure: [ val(meta), path(ome.tif) ]
+      pattern: "*.{tif,ome.tif,tiff,ome.tiff}"
+  - ch_segmask:
+      type: file
+      description: |
+        Channel containing segmentation mask in TIF/OME-TIF/npy format. (optional input)
+        Structure: [ val(meta), path(ome.tif) ]
+      pattern: "*.{tif,ome.tif,tiff,ome.tiff,npy}"
+  - val_fixed_img:
+      type: string
+      description: |
+        Fixed image to use for registration ("multiplexed" or "hne")
+  - val_final_img_sz:
+      type: string
+      description: |
+        Final image size to output registered image and segmentation mask ("multiplexed" or "hne")
+
+output:
+  - transformed_image:
+      type: file
+      description: |
+        Channel containing registered tissue image
+        Structure: [ val(meta), path(ome.tif) ]
+      pattern: "*_transformed_image.ome.tif"
+  - transformed_segmask:
+      type: file
+      description: |
+        Channel containing transformed segmentation mask (empty if 'ch_segmask' not provided)
+        Structure: [ val(meta), path(ome.tif) ]
+      pattern: "*_transformed_segmentation_mask.ome.tif"
+  - metrics:
+      type: file
+      description: |
+        Channel containing registration metrics and transformation map file
+        Structure: [ val(meta), path(json) ]
+      pattern: "*_registration_metrics_tform_map.json"
+authors:
+  - "@tckumarasekara"
+maintainers:
+  - "@tckumarasekara"

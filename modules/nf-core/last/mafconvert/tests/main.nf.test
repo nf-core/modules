@@ -85,8 +85,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam.collect { bam(it[1]).getReadsMD5() },
-                    process.out.versions
+                    process.out.alignment.collect { bam(it[1]).getReadsMD5() },
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -124,8 +124,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.cram.collect { cram(it[1], it[1].replaceAll(/[^\/]+\.cram$/, 'genome.fasta')).getReadsMD5() },
-                    process.out.versions
+                    process.out.alignment.collect { cram(it[1], it[1].replaceAll(/[^\/]+\.cram$/, 'genome.fasta')).getReadsMD5() },
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }

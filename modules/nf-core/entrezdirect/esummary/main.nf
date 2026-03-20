@@ -13,7 +13,7 @@ process ENTREZDIRECT_ESUMMARY {
 
     output:
     tuple val(meta), path("*.xml"), emit: xml
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('ENTREZDIRECT'), eval('esummary -version 2>&1'), emit: versions_esummary, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,23 +30,14 @@ process ENTREZDIRECT_ESUMMARY {
         -db $database \\
         $input > ${prefix}.xml
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        esummary: \$(esummary -version)
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (!uid && !uids_file) error "No input. Valid input: an identifier or a .txt file with identifiers"
     if (uid && uids_file) error "Only one input is required: a single identifier or a .txt file with identifiers"
     """
     touch ${prefix}.xml
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        esummary: \$(esummary -version)
-    END_VERSIONS
     """
 }

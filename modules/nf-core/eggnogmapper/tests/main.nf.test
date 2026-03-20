@@ -3,129 +3,177 @@ nextflow_process {
     name "Test Process EGGNOGMAPPER"
     script "../main.nf"
     process "EGGNOGMAPPER"
+
     tag "modules"
     tag "modules_nfcore"
     tag "eggnogmapper"
+    tag "diamond"
     tag "diamond/makedb"
+    tag "mmseqs"
+    tag "mmseqs/createdb"
 
-    setup {
-        run("DIAMOND_MAKEDB") {
-            script "../../diamond/makedb/main.nf"
-            process {
-                """
-                input[0] = [ [id:'test2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
-                input[1] = []
-                input[2] = []
-                input[3] = []
-                """
+    test("sarscov2 - proteome - diamond") {
+        setup {
+            run("DIAMOND_MAKEDB") {
+                script "../../diamond/makedb/main.nf"
+                process {
+                    """
+                    input[0] = [ [id:'dmnd_db'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                    input[1] = []
+                    input[2] = []
+                    input[3] = []
+                    """
+                }
             }
         }
-    }
-
-    test("Should search for protein annotations against the eggnogmapper db") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
-                eggnog_db = file("https://github.com/nf-core/test-datasets/raw/eddf5b0e3336e0f93c81d4b4843b07257f9efaec/data/delete_me/eggnogmapper/eggnog.db", checkIfExists: true)
+                input[1] = DIAMOND_MAKEDB.out.db.map { _meta, db -> [ 'diamond', db ] }
+                eggnog_db = file(params.modules_testdata_base_path + '/delete_me/eggnogmapper/eggnog.db', checkIfExists: true)
                 eggnog_db.copyTo("${workDir}/tmp/eggnog.db")
-                eggnog_data_dir = "${workDir}/tmp/"
-                input[1] = eggnog_db
-                input[2] = eggnog_data_dir
-                input[3] = DIAMOND_MAKEDB.out.db
+                input[2] = "${workDir}/tmp/"
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert path(process.out.annotations.get(0).get(1)).readLines().contains("ENSSASP00005000002.1\tENSSASP00005000002.1\t0.0\t14179.0\tCOG0498@1|root,COG0498@2|Bacteria,1MUWQ@1224|Proteobacteria,2VHR6@28216|Betaproteobacteria,2KUMA@206389|Rhodocyclales\t1224|Proteobacteria\tE\tthreonine synthase\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-") },
-                { assert path(process.out.orthologs.get(0).get(1)).readLines().contains("ENSSASP00005000002.1\tENSSASP00005000002.1\t0.0\t14179.0\t1\t7096\t1\t7096\t100.0\t100.0\t100.0") },
-                { assert snapshot(path(process.out.hits.get(0).get(1)).readLines().size() >= 12).match("hits") },
                 { assert snapshot(
-                    process.out.versions.collect{ path(it).yaml }
-                ).match("versions") }
-            )
-        }
-
-    }
-
-    test("Should search for protein annotations against the eggnogmapper db -- empty-params") {
-
-        when {
-            params {
-                outdir = "$outputDir"
-            }
-            process {
-                """
-                eggnog_db = file("https://github.com/nf-core/test-datasets/raw/eddf5b0e3336e0f93c81d4b4843b07257f9efaec/data/delete_me/eggnogmapper/eggnog.db", checkIfExists: true)
-                eggnog_db.copyTo("${workDir}/tmp/eggnog.db")
-
-                ch_synced_inputs = DIAMOND_MAKEDB.out.db.map { meta, dmnd ->
-                        dmnd.copyTo("${workDir}/tmp/eggnog_proteins.dmnd")
-
-                        return true
-                    }
-                    | combine ( Channel.fromPath( "${workDir}/tmp/" ) )
-                eggnog_data_dir = ch_synced_inputs.map { sync_status, data_dir -> data_dir }
-
-                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
-                input[1] = []
-                input[2] = eggnog_data_dir
-                input[3] = [[], []]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert path(process.out.annotations.get(0).get(1)).readLines().contains("ENSSASP00005000002.1\tENSSASP00005000002.1\t0.0\t14179.0\tCOG0498@1|root,COG0498@2|Bacteria,1MUWQ@1224|Proteobacteria,2VHR6@28216|Betaproteobacteria,2KUMA@206389|Rhodocyclales\t1224|Proteobacteria\tE\tthreonine synthase\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-") },
-                { assert path(process.out.orthologs.get(0).get(1)).readLines().contains("ENSSASP00005000002.1\tENSSASP00005000002.1\t0.0\t14179.0\t1\t7096\t1\t7096\t100.0\t100.0\t100.0") },
-                { assert snapshot(path(process.out.hits.get(0).get(1)).readLines().size()  >= 12).match("hits--emptyparams") },
-                { assert snapshot(
-                    process.out.versions.collect{ path(it).yaml }
-                ).match("versions--empty-params") }
-            )
-        }
-
-    }
-
-    test("Should search for protein annotations against the eggnogmapper db - stub") {
-
-        options '-stub'
-
-
-        when {
-
-            params {
-                outdir = "$outputDir"
-            }
-            process {
-                """
-                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
-                eggnog_db = file("https://github.com/nf-core/test-datasets/raw/eddf5b0e3336e0f93c81d4b4843b07257f9efaec/data/delete_me/eggnogmapper/eggnog.db", checkIfExists: true)
-                eggnog_db.copyTo("${workDir}/tmp/eggnog.db")
-                eggnog_data_dir = "${workDir}/tmp/"
-                input[1] = eggnog_db
-                input[2] = eggnog_data_dir
-                input[3] = DIAMOND_MAKEDB.out.db
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
+                    file(process.out.annotations[0][1]).readLines()[3..6],
+                    file(process.out.orthologs[0][1]).readLines()[5..18],
+                    process.out.hits[0][1],
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - proteome - mmseqs") {
+        setup {
+            run("MMSEQS_CREATEDB") {
+                script "../../mmseqs/createdb/main.nf"
+                process {
+                    """
+                    input[0] = [ [id:'mmseqs_db'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                input[1] = MMSEQS_CREATEDB.out.db.map { _meta, db -> [ 'mmseqs', db ] }
+                eggnog_db = file(params.modules_testdata_base_path + '/delete_me/eggnogmapper/eggnog.db', checkIfExists: true)
+                eggnog_db.copyTo("${workDir}/tmp/eggnog.db")
+                input[2] = "${workDir}/tmp/"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    file(process.out.annotations[0][1]).readLines()[3..6],
+                    file(process.out.orthologs[0][1]).readLines().size(),
+                    file(process.out.hits[0][1]).readLines().size(),
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - proteome - no_search") {
+        setup {
+            run("DIAMOND_MAKEDB") {
+                script "../../diamond/makedb/main.nf"
+                process {
+                    """
+                    input[0] = [ [id:'dmnd_db'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                    input[1] = []
+                    input[2] = []
+                    input[3] = []
+                    """
+                }
+            }
+            run("EGGNOGMAPPER", alias: "EGGNOGMAPPER_SETUP") {
+                script "../main.nf"
+                process {
+                    """
+                    input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                    input[1] = DIAMOND_MAKEDB.out.db.map { _meta, db -> [ 'diamond', db ] }
+                    eggnog_db = file(params.modules_testdata_base_path + '/delete_me/eggnogmapper/eggnog.db', checkIfExists: true)
+                    eggnog_db.copyTo("${workDir}/tmp/eggnog.db")
+                    input[2] = "${workDir}/tmp/"
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                input[1] = EGGNOGMAPPER_SETUP.out.orthologs.map { _meta, orthologs -> [ 'no_search', orthologs ] }
+                eggnog_db = file(params.modules_testdata_base_path + '/delete_me/eggnogmapper/eggnog.db', checkIfExists: true)
+                eggnog_db.copyTo("${workDir}/tmp/eggnog.db")
+                input[2] = "${workDir}/tmp/"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    file(process.out.annotations[0][1]).readLines()[3..6],
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - proteome - diamond - stub") {
+        options '-stub'
+        setup {
+            run("DIAMOND_MAKEDB") {
+                script "../../diamond/makedb/main.nf"
+                process {
+                    """
+                    input[0] = [ [id:'dmnd_db'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                    input[1] = []
+                    input[2] = []
+                    input[3] = []
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                input[1] = DIAMOND_MAKEDB.out.db.map { _meta, db -> [ 'diamond', db ] }
+                eggnog_db = file(params.modules_testdata_base_path + '/delete_me/eggnogmapper/eggnog.db', checkIfExists: true)
+                eggnog_db.copyTo("${workDir}/tmp/eggnog.db")
+                input[2] = "${workDir}/tmp/"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

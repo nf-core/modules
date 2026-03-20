@@ -2,7 +2,6 @@
 name: "vcf_gather_bcftools"
 description: |
   Concatenate several VCF files using bcftools concat.
-  Especially works well with the scatter subworkflows in nf-core.
   An additional option can be given to sort the concatenated VCF.
 keywords:
   - concat
@@ -18,26 +17,20 @@ input:
   - meta:
       type: map
       description: |
-        Groovy Map containing at least two fields: 'id' and a common field for each VCF that needs to be merged
+        Groovy Map containing at least a common field for each VCF that needs to be merged
         e.g. [ id:'test.001', common_meta:'test' ]
   - ch_vcfs:
       type: file(s)
       description: |
-        VCF files and their indices that should be concatenated
-        Structure: [ meta, vcf, tbi ]
-  - ch_scatter_output:
-      type: file and integer
-      description: |
-        The output created from a scatter subworkflow (contains a BED file and scatter_count).
-        The BED file isn't actually used in the pipeline so can remain empty if you manually set this input channel
-        Structure: [ meta, bed, scatter_count ]
-  - common_meta:
-      type: string
+        VCF files and their indices that should be concatenated as well as the expected number of vcf
+        Structure: [ meta, vcf, tbi, count ]
+  - arr_common_meta:
+      type: array
       description: |
         OPTIONAL:
-        The string of the common meta to use as the new 'id'.
+        A string array of the common meta keys to use to group the vcfs.
         Please make sure all VCFs that need to be concatenated have the same value in the
-        the meta field specified. (and that only the ID is different between these files)
+        the meta fields specified - the subworkflow will error if a required key is missing from a meta map.
   - sort:
       type: boolean
       description: |
@@ -55,16 +48,17 @@ output:
         The concatenated (and possible sorted) VCF file
         Structure: [ meta, vcf ]
       pattern: "*.vcf.gz"
-  - tbi:
+  - index:
       type: file
       description: |
         The indices of the output VCFs
-        Structure: [ meta, tbi ]
-      pattern: "*.vcf.gz.tbi"
-  - versions:
+        Structure: [ meta, [tbi, csi] ]
+      pattern: "*.vcf.gz.{tbi,csi}"
+  - vcf_index:
       type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      description: |
+        Aggregated channel with the vcf and indices
+        Structure: [ meta, vcf, [tbi, csi] ]
 authors:
   - "@nvnieuwk"
 maintainers:

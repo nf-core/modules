@@ -5,8 +5,8 @@ process SENTIEON_VARCAL {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f1dfe59ef66d7326b43db9ab1f39ce6220b358a311078c949a208f9c9815d4e/data'
-        : 'community.wave.seqera.io/library/sentieon:202503.01--1863def31ed8e4d5'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/73e9111552beb76e2ad3ad89eb75bed162d7c5b85b2433723ecb4fc96a02674a/data'
+        : 'community.wave.seqera.io/library/sentieon:202503.02--def60555294d04fa'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
@@ -21,7 +21,7 @@ process SENTIEON_VARCAL {
     tuple val(meta), path("*.idx"),      emit: idx
     tuple val(meta), path("*.tranches"), emit: tranches
     tuple val(meta), path("*plots.R"),   emit: plots, optional: true
-    path "versions.yml",                 emit: versions
+    tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
     task.ext.when == null || task.ext.when
@@ -75,11 +75,6 @@ process SENTIEON_VARCAL {
         ${labels_command} \\
         ${args} \\
         ${prefix}.recal
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 
     stub:
@@ -89,10 +84,5 @@ process SENTIEON_VARCAL {
     touch ${prefix}.idx
     touch ${prefix}.tranches
     touch ${prefix}plots.R
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 }

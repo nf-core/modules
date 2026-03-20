@@ -14,13 +14,13 @@ process GATK4_COLLECTSVEVIDENCE {
     path dict
 
     output:
-    tuple val(meta), path("*.sr.txt.gz"),     emit: split_read_evidence
+    tuple val(meta), path("*.sr.txt.gz"), emit: split_read_evidence
     tuple val(meta), path("*.sr.txt.gz.tbi"), emit: split_read_evidence_index
-    tuple val(meta), path("*.pe.txt.gz"),     emit: paired_end_evidence
+    tuple val(meta), path("*.pe.txt.gz"), emit: paired_end_evidence
     tuple val(meta), path("*.pe.txt.gz.tbi"), emit: paired_end_evidence_index
-    tuple val(meta), path("*.sd.txt.gz"),     emit: site_depths,       optional: true
+    tuple val(meta), path("*.sd.txt.gz"), emit: site_depths, optional: true
     tuple val(meta), path("*.sd.txt.gz.tbi"), emit: site_depths_index, optional: true
-    path "versions.yml",                      emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -49,11 +49,6 @@ process GATK4_COLLECTSVEVIDENCE {
         ${sd_vcf} \\
         ${reference} \\
         --tmp-dir . \\
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -67,10 +62,5 @@ process GATK4_COLLECTSVEVIDENCE {
     touch ${prefix}.pe.txt.gz.tbi
     ${sd_vcf}
     ${sd_vcf_tbi}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

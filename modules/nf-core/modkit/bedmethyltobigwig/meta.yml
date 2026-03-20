@@ -23,7 +23,7 @@ input:
     - bedmethyl:
         type: file
         description: bedMethyl file
-        pattern: "*.{bed}"
+        pattern: "*.{bed,bed.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_3003" # BED
   - - meta2:
@@ -56,13 +56,28 @@ output:
           pattern: "*.{bw}"
           ontologies:
             - edam: "http://edamontology.org/format_3006"
+  versions_modkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - modkit:
+          type: string
+          description: The name of the tool
+      - modkit --version | sed 's/modkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - modkit:
+          type: string
+          description: The name of the tool
+      - modkit --version | sed 's/modkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
   - "@Schmytzi"

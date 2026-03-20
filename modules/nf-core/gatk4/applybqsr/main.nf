@@ -14,10 +14,10 @@ process GATK4_APPLYBQSR {
     path dict
 
     output:
-    tuple val(meta), path("${prefix}.bam"),  emit: bam,  optional: true
-    tuple val(meta), path("${prefix}*bai"),  emit: bai,  optional: true
+    tuple val(meta), path("${prefix}.bam"), emit: bam, optional: true
+    tuple val(meta), path("${prefix}*bai"), emit: bai, optional: true
     tuple val(meta), path("${prefix}.cram"), emit: cram, optional: true
-    path "versions.yml",                     emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,11 +46,6 @@ process GATK4_APPLYBQSR {
         ${interval_command} \\
         --tmp-dir . \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -63,10 +58,5 @@ process GATK4_APPLYBQSR {
     else
         touch ${prefix}.bai
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

@@ -30,7 +30,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					process.out.bam[0][1].collect { file(it).name }, // bam -> htsjdk.samtools.SAMFormatException: Error parsing SAM header. Unrecognized header record type.
-					process.out.versions
+					process.out.findAll { key, val -> key.startsWith("versions") }
 					).match()
 				}
             )
