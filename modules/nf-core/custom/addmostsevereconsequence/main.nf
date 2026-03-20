@@ -14,7 +14,7 @@ process CUSTOM_ADDMOSTSEVERECONSEQUENCE {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    tuple val("${task.process}"), val('addmostsevereconsequence'), val("1.1"), topic: versions, emit: versions_addmostsevereconsequence
+    tuple val("${task.process}"), val('addmostsevereconsequence'), val("1.2"), topic: versions, emit: versions_addmostsevereconsequence
     tuple val("${task.process}"), val('bgzip'), eval("bgzip --version | sed '1!d;s/.* //'"), topic: versions, emit: versions_bgzip
 
     when:
