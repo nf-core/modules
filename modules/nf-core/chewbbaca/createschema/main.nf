@@ -16,7 +16,7 @@ process CHEWBBACA_CREATESCHEMA {
     tuple val(meta), path("results/$meta.id"), emit: schema
     path "results/cds_coordinates.tsv"       , emit: cds_coordinates
     path "results/invalid_cds.txt"           , emit: invalid_cds
-    path "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val("chewbbaca"), eval("chewie --version 2>&1 | sed 's/chewBBACA version: //'"), topic: versions, emit: versions_chewbbaca
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,11 +40,6 @@ process CHEWBBACA_CREATESCHEMA {
         $prodigal_tf_opt \\
         $cds_opt \\
         --cpu $task.cpus
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        chewbbaca: \$(echo \$(chewie --version 2>&1 | sed 's/^.*chewBBACA version: //g; s/Using.*\$//' ))
-    END_VERSIONS
     """
 
     stub:
@@ -52,16 +47,11 @@ process CHEWBBACA_CREATESCHEMA {
 
     """
     mkdir -p results/${prefix}/short/
-    touch results/${prefix}/contigs-protein{1..*}.fasta
+    touch results/${prefix}/contigs-protein{1..5}.fasta
     touch results/${prefix}/.genes_list
     touch results/${prefix}/.schema_config
-    touch results/${prefix}/short/contigs-protein{1..*}_short.fasta
+    touch results/${prefix}/short/contigs-protein{1..5}_short.fasta
     touch results/cds_coordinates.tsv
     touch results/invalid_cds.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        chewbbaca: \$(echo \$(chewie --version 2>&1 | sed 's/^.*chewBBACA version: //g; s/Using.*\$//' ))
-    END_VERSIONS
     """
 }

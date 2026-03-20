@@ -12,7 +12,7 @@ process AGAT_CONVERTBED2GFF {
 
     output:
     tuple val(meta), path("*.gff"), emit: gff
-    tuple val("${task.process}"), val('agat'), eval('agat_convert_bed2gff.pl --help | grep Version | cut -d" " -f11'), emit: versions_agat, topic: versions
+    tuple val("${task.process}"), val('agat'), eval("agat --version | sed 's/v//'"), topic: versions, emit: versions_agat
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,13 +25,11 @@ process AGAT_CONVERTBED2GFF {
         --bed ${bed} \\
         --output ${prefix}.gff \\
         ${args}
-
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.gff
-
     """
 }

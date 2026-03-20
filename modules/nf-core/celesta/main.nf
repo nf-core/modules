@@ -43,7 +43,6 @@ process CELESTA {
         error "celesta module was created only for Docker, Singularity or Podman. It does not support Conda!"
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.0'
 
     """
     touch ${prefix}_celesta_stub_results.csv

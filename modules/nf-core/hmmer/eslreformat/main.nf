@@ -9,6 +9,7 @@ process HMMER_ESLREFORMAT {
 
     input:
     tuple val(meta), path(seqfile)
+    val postprocessing_script
 
     output:
     tuple val(meta), path("*.*.gz"), emit: seqreformated
@@ -21,13 +22,11 @@ process HMMER_ESLREFORMAT {
     def args     = task.ext.args ?: ''
     def prefix   = task.ext.prefix ?: "${meta.id}"
     def suffix   = args ? args.trim().tokenize(" ")[-1] : "sequences"
-    // Use for any postprocessing of the sequence file, e.g. removal of gap characters
-    def postproc = task.ext.postprocessing ?: ""
     """
     esl-reformat \\
         $args \\
         $seqfile \\
-        $postproc \\
+        $postprocessing_script \\
         | gzip -c > ${prefix}.${suffix}.gz
 
     cat <<-END_VERSIONS > versions.yml
