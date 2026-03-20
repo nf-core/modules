@@ -28,9 +28,11 @@ process CLAIR3 {
     script:
     def model = ""
     if (!user_model) {
-        model = workflow.containerEngine in ['singularity', 'docker', 'podman'] ?
-        "/opt/models/${packaged_model}" :
-        "\${CONDA_PREFIX:-\$MAMBA_ROOT_PREFIX}/bin/models/${packaged_model}"
+        if (workflow.containerEngine in ['singularity', 'docker', 'podman']) {
+            model = "/opt/models/${packaged_model}"
+        } else {
+            error "Clair3 packaged models are only available in Docker/Singularity/Podman containers. Please use one of these profiles or provide a user_model instead."
+        }
     }
     if (!packaged_model) {
         model = "${user_model}"
