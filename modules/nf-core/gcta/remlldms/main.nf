@@ -1,0 +1,50 @@
+process GCTA_REMLLDMS {
+    tag "gcta_reml_ldms_${meta.id}_${meta2.id}"
+    label 'process_medium'
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'docker://community.wave.seqera.io/library/gcta:1.94.1--9bc35dc424fcf6e9' :
+        'community.wave.seqera.io/library/gcta:1.94.1--9bc35dc424fcf6e9' }"
+
+    input:
+    tuple val(meta), path(phenotypes_file)
+    tuple val(meta2), path(mgrm_file), path(grm_files)
+    tuple val(meta3), path(quant_covariates_file)
+    tuple val(meta4), path(cat_covariates_file)
+    val(mpheno)
+
+    output:
+    tuple val(meta), path("*.hsq"), emit: reml_results
+    tuple val("${task.process}"), val("gcta"), eval("gcta --version 2>&1 | grep 'version v' | tr -s ' ' | cut -d' ' -f3 | sed 's/^v//'"), emit: versions_gcta, topic: versions
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def mpheno_value = (mpheno == null || (mpheno instanceof Collection && mpheno.isEmpty())) ? 1 : mpheno
+    def mpheno_param = "--mpheno ${mpheno_value}"
+    def qcovar_param = quant_covariates_file ? "--qcovar ${quant_covariates_file}" : ''
+    def covar_param = cat_covariates_file ? "--covar ${cat_covariates_file}" : ''
+    def extra_args = task.ext.args ?: ''
+
+    """
+    set -euo pipefail
+
+    gcta \\
+        --reml-no-constrain \\
+        --mgrm ${mgrm_file} \\
+        --pheno ${phenotypes_file} \\
+        ${mpheno_param} \\
+        ${qcovar_param} \\
+        ${covar_param} \\
+        --out "${prefix}" \\
+        --thread-num ${task.cpus} ${extra_args}
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch "${prefix}.hsq"
+    """
+}
