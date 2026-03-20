@@ -1,0 +1,70 @@
+name: "openms_psmfeatureextractor"
+description: Computes extra features for each input PSM for use with Percolator rescoring.
+keywords:
+  - features
+  - idXML
+  - openms
+  - percolator
+  - proteomics
+  - psm
+tools:
+  - "openms":
+      description: "OpenMS is an open-source software C++ library for LC-MS data management and analyses"
+      homepage: "https://openms.de"
+      documentation: "https://openms.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/OpenMS/OpenMS"
+      doi: "10.1038/s41592-024-02197-7"
+      licence: ["BSD"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - id_file:
+        type: file
+        description: Peptide identification file from a search engine.
+        pattern: "*.{idXML,mzid}"
+        ontologies: []
+
+output:
+  idxml:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "${prefix}.idXML":
+          type: file
+          description: Peptide identification file with extra PSM features added.
+          pattern: "*.idXML"
+          ontologies: []
+  versions_openms:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - openms:
+          type: string
+          description: The name of the tool
+      - "FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - openms:
+          type: string
+          description: The name of the tool
+      - "FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@jonasscheid"
+maintainers:
+  - "@jonasscheid"
