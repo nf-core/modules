@@ -14,8 +14,6 @@ nextflow_process {
         when {
             process {
                 """
-                // TODO nf-core: define inputs of the process here. Example:
-
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/stitchr/stitchr_vdjdb.tsv', checkIfExists: true),
@@ -52,8 +50,6 @@ nextflow_process {
         when {
             process {
                 """
-                // TODO nf-core: define inputs of the process here. Example:
-
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/stitchr/stitchr_vdjdb.tsv', checkIfExists: true),
