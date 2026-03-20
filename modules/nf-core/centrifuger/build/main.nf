@@ -6,6 +6,7 @@ process CENTRIFUGER_BUILD {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/centrifuger:1.1.0--hf426362_0':
         'biocontainers/centrifuger:1.1.0--hf426362_0' }"
+    
     input:
     tuple val(meta), path(reference)
     path taxonomy_nodes
