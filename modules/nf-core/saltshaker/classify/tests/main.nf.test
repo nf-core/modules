@@ -92,11 +92,11 @@ nextflow_process {
 
     }
 
-    test("classify - no-vcf") {
+    test("classify - defaults") {
 
         when {
             params {
-                module_args = '--blacklist --dominant-fraction 0.5 --radius 600 --high-het 10 --multiple-threshold 5 --noise 0.3'
+                module_args = ''
             }
             process {
                 """
@@ -118,13 +118,13 @@ nextflow_process {
 
     }
 
-    test("classify - no-vcf - stub") {
+    test("classify - defaults - stub") {
 
         options "-stub"
 
         when {
             params {
-                module_args = '--blacklist --dominant-fraction 0.5 --radius 600 --high-het 10 --multiple-threshold 5 --noise 0.3'
+                module_args = ''
             }
             process {
                 """
