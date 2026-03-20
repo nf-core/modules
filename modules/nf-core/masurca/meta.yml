@@ -1,0 +1,77 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+# # TODO nf-core: Add a description of the module and list keywords
+name: "masurca"
+description: write your description here
+keywords:
+  - sort
+  - example
+  - genomics
+tools:
+  ## TODO nf-core: Add a description and other details for the software below
+  - "masurca":
+      description: "MaSuRCA (Maryland Super-Read Celera Assembler) genome assembly software."
+      homepage: "https://github.com/alekseyzimin/masurca/blob/v4.1.4/README.md"
+      documentation: "https://github.com/alekseyzimin/masurca/blob/v4.1.4/README.md"
+      tool_dev_url: "https://github.com/alekseyzimin/masurca"
+      doi: ""
+      licence: ["GPL v3"]
+      identifier: biotools:masurca
+
+input:
+  ### TODO nf-core: Add a description of all of the variables used as input
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2573" # CRAM
+          - edam: "http://edamontology.org/format_3462" # SAM
+
+output:
+  ### TODO nf-core: Add a description of all of the variables used as output
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: Sorted BAM/CRAM/SAM file
+          pattern: "*.{bam,cram,sam}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+            - edam: "http://edamontology.org/format_2573" # CRAM
+            - edam: "http://edamontology.org/format_3462" # SAM
+  versions_masurca:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "masurca":
+          type: string
+          description: The name of the tool
+      - "masurca --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - masurca:
+          type: string
+          description: The name of the tool
+      - masurca --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@LiaOb21"
+maintainers:
+  - "@LiaOb21"
