@@ -59,7 +59,13 @@ process GCTA_CALCULATELDSCORES {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    printf "SNP\tA1\tA2\tFreq\tb\tse\tp\tldscore\n" > ${prefix}_gcta_ld.score.ld
+    printf "%s\\n" \
+        "SNP A1 A2 Freq b se p N ldscore_SNP" \
+        "stub_snp1 A G 0.10 0.01 0.02 0.50 100 1.00" \
+        "stub_snp2 A G 0.20 0.02 0.03 0.40 100 2.00" \
+        "stub_snp3 A G 0.30 0.03 0.04 0.30 100 3.00" \
+        "stub_snp4 A G 0.40 0.04 0.05 0.20 100 4.00" \
+        > ${prefix}_gcta_ld.score.ld
     printf "stub_snp1\n" > ${prefix}_snp_group1.txt
     printf "stub_snp2\n" > ${prefix}_snp_group2.txt
     printf "stub_snp3\n" > ${prefix}_snp_group3.txt
