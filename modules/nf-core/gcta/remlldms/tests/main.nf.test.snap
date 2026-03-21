@@ -1,30 +1,15 @@
 {
-    "homo_sapiens gsmr - quantitative phenotype with ldms mgrm - stub": {
+    "homo_sapiens gsmr - quantitative phenotype with ldms mgrm and no covariates": {
         "content": [
+            [
+                [
+                    {
+                        "id": "QuantitativeTrait"
+                    },
+                    "QuantitativeTrait.hsq:md5,842502be482083726be1385c9f14fc87"
+                ]
+            ],
             {
-                "0": [
-                    [
-                        {
-                            "id": "QuantitativeTrait"
-                        },
-                        "QuantitativeTrait.hsq:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    [
-                        "GCTA_REMLLDMS",
-                        "gcta",
-                        "1.94.1"
-                    ]
-                ],
-                "reml_results": [
-                    [
-                        {
-                            "id": "QuantitativeTrait"
-                        },
-                        "QuantitativeTrait.hsq:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
                 "versions_gcta": [
                     [
                         "GCTA_REMLLDMS",
@@ -38,7 +23,33 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.4"
         },
-        "timestamp": "2026-03-13T15:57:32.371358163"
+        "timestamp": "2026-03-21T00:46:00.96459978"
+    },
+    "homo_sapiens gsmr - quantitative phenotype with ldms mgrm - stub": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "QuantitativeTrait"
+                    },
+                    "QuantitativeTrait.hsq:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ]
+            ],
+            {
+                "versions_gcta": [
+                    [
+                        "GCTA_REMLLDMS",
+                        "gcta",
+                        "1.94.1"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.4"
+        },
+        "timestamp": "2026-03-21T00:46:19.286589279"
     },
     "homo_sapiens gsmr - ldms mgrm with mpheno selection": {
         "content": [
@@ -47,7 +58,7 @@
                     {
                         "id": "QuantitativeTraitMpheno2"
                     },
-                    "QuantitativeTraitMpheno2.hsq:md5,2ceb8590010a6e274f8339b3c77e18ef"
+                    "QuantitativeTraitMpheno2.hsq:md5,2e6e9fa7a62e7439a2b9bc0b7e2f2e4f"
                 ]
             ],
             {
@@ -64,7 +75,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.4"
         },
-        "timestamp": "2026-03-20T21:28:39.89049807"
+        "timestamp": "2026-03-21T00:45:48.897882933"
     },
     "homo_sapiens gsmr - quantitative phenotype with ldms mgrm and covariates": {
         "content": [
@@ -73,7 +84,7 @@
                     {
                         "id": "QuantitativeTrait"
                     },
-                    "QuantitativeTrait.hsq:md5,3a0b00fba467f22b6090f0233188856a"
+                    "QuantitativeTrait.hsq:md5,3a8396598d6245a65dd169e1517c8c4c"
                 ]
             ],
             {
@@ -90,6 +101,32 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.4"
         },
-        "timestamp": "2026-03-16T19:11:15.129305749"
+        "timestamp": "2026-03-21T00:45:55.049389536"
+    },
+    "homo_sapiens gsmr - ldms mgrm mpheno defaults to first phenotype when empty": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "QuantitativeTraitMphenoDefault"
+                    },
+                    "QuantitativeTraitMphenoDefault.hsq:md5,3a8396598d6245a65dd169e1517c8c4c"
+                ]
+            ],
+            {
+                "versions_gcta": [
+                    [
+                        "GCTA_REMLLDMS",
+                        "gcta",
+                        "1.94.1"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.4"
+        },
+        "timestamp": "2026-03-21T00:46:07.259583763"
     }
 }
