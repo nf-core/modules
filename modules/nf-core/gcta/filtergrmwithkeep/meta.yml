@@ -18,6 +18,8 @@ input:
         description: |
           Groovy map containing dense GRM metadata
           e.g. `[ id:'plink_simulated' ]`
+          `meta.id` is required and is the dense GRM basename contract used by `gcta --grm`.
+          Input files must therefore be staged as `<meta.id>.grm.id`, `<meta.id>.grm.bin`, and `<meta.id>.grm.N.bin`.
     - grm_id:
         type: file
         description: Dense GRM sample identifier file
@@ -52,6 +54,7 @@ output:
           description: |
             Groovy map containing dense GRM metadata
             e.g. `[ id:'plink_simulated' ]`
+            `meta.id` is preserved from the input dense GRM basename contract.
       - "*_unrel.grm.id":
           type: file
           description: Filtered GRM sample identifier file
