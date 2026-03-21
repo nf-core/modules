@@ -9,7 +9,7 @@ nextflow_process {
     tag "gcta"
     tag "gcta/fastgwa"
     tag "gawk"
-    tag "gcta/testhelpers"
+    tag "tests/helpers/gcta_prepare_sparse"
     config "./nextflow.config"
 
     setup {
@@ -84,7 +84,7 @@ nextflow_process {
         }
 
         run("GCTA_TEST_PREPARE_SPARSE", alias: "GCTA_TEST_PREPARE_SPARSE_DENSE") {
-            script "./helpers/gcta_prepare_sparse/main.nf"
+            script "../tests/helpers/gcta_prepare_sparse/main.nf"
             process {
                 """
                 input[0] = [
