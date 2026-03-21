@@ -8,8 +8,8 @@ nextflow_process {
     tag "modules_nfcore"
     tag "gcta"
     tag "gcta/addgrms"
+    tag "gcta/makegrmpart"
     tag "gawk"
-    tag "tests/helpers/gcta_makegrm"
 
     setup {
         run("GAWK", alias: "GAWK_VARIANTS_LDMS1") {
@@ -40,36 +40,50 @@ nextflow_process {
             }
         }
 
-        run("GCTA_TEST_MAKEGRM", alias: "GCTA_TEST_MAKEGRM_LDMS1") {
-            script "../tests/helpers/gcta_makegrm/main.nf"
+        run("GCTA_MAKEGRMPART", alias: "GCTA_MAKEGRMPART_LDMS1") {
+            script "../../makegrmpart/main.nf"
             process {
                 """
-                input[0] = GAWK_VARIANTS_LDMS1.out.output.map { meta, ldms1_variants_file ->
+                file('plink_simulated.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'plink_simulated_ldms1', part_gcta_job:1, nparts_gcta:1 ],
+                    file('plink_simulated.mbfile'),
                     [
-                        [ id:'plink_simulated_ldms1' ],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true),
-                        ldms1_variants_file
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
                     ]
-                }
+                ]
+                input[1] = GAWK_VARIANTS_LDMS1.out.output
                 """
             }
         }
 
-        run("GCTA_TEST_MAKEGRM", alias: "GCTA_TEST_MAKEGRM_LDMS2") {
-            script "../tests/helpers/gcta_makegrm/main.nf"
+        run("GCTA_MAKEGRMPART", alias: "GCTA_MAKEGRMPART_LDMS2") {
+            script "../../makegrmpart/main.nf"
             process {
                 """
-                input[0] = GAWK_VARIANTS_LDMS2.out.output.map { meta, ldms2_variants_file ->
+                file('plink_simulated.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'plink_simulated_ldms2', part_gcta_job:1, nparts_gcta:1 ],
+                    file('plink_simulated.mbfile'),
                     [
-                        [ id:'plink_simulated_ldms2' ],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true),
-                        ldms2_variants_file
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
                     ]
-                }
+                ]
+                input[1] = GAWK_VARIANTS_LDMS2.out.output
                 """
             }
         }
@@ -85,8 +99,8 @@ nextflow_process {
                     .of('plink_simulated_ldms1.part_1_1\\nplink_simulated_ldms2.part_1_1')
                     .collectFile(name:'plink_simulated_ldms.mgrm', newLine: true)
 
-                grm_files = GCTA_TEST_MAKEGRM_LDMS1.out.grm_files
-                    .mix(GCTA_TEST_MAKEGRM_LDMS2.out.grm_files)
+                grm_files = GCTA_MAKEGRMPART_LDMS1.out.grm_files
+                    .mix(GCTA_MAKEGRMPART_LDMS2.out.grm_files)
                     .map { meta, grm_id, grm_bin, grm_n_bin -> [grm_id, grm_bin, grm_n_bin] }
                     .collect()
                     .map { rows -> rows.sort { left, right -> left[0].name <=> right[0].name }.flatten() }
@@ -125,8 +139,8 @@ nextflow_process {
                     .of('plink_simulated_ldms1.part_1_1\\nplink_simulated_ldms2.part_1_1')
                     .collectFile(name:'plink_simulated_ldms.mgrm', newLine: true)
 
-                grm_files = GCTA_TEST_MAKEGRM_LDMS1.out.grm_files
-                    .mix(GCTA_TEST_MAKEGRM_LDMS2.out.grm_files)
+                grm_files = GCTA_MAKEGRMPART_LDMS1.out.grm_files
+                    .mix(GCTA_MAKEGRMPART_LDMS2.out.grm_files)
                     .map { meta, grm_id, grm_bin, grm_n_bin -> [grm_id, grm_bin, grm_n_bin] }
                     .collect()
                     .map { rows -> rows.sort { left, right -> left[0].name <=> right[0].name }.flatten() }
