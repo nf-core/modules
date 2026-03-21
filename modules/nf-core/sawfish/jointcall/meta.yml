@@ -196,7 +196,7 @@ output:
       - sawfish:
           type: string
           description: The tool name
-      - sawfish --version | sed "s/sawfish //g":
+      - sawfish --version | sed "s/.* //g":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -207,7 +207,7 @@ topics:
       - sawfish:
           type: string
           description: The tool name
-      - sawfish --version | sed "s/sawfish //g":
+      - sawfish --version | sed "s/.* //g":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
