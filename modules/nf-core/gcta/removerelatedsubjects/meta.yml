@@ -16,21 +16,24 @@ input:
   - - meta:
         type: map
         description: |
-          Groovy map containing dense GRM metadata
-          e.g. `[ id:'plink_simulated' ]`
+          Groovy map containing dense GRM metadata.
+          `meta.id` is the required GRM basename consumed by `--grm` and must match
+          the staged dense GRM files.
+          e.g. `[ id:'tiny_dense' ]` requires
+          `tiny_dense.grm.id`, `tiny_dense.grm.bin`, and `tiny_dense.grm.N.bin`.
     - grm_id:
         type: file
-        description: Dense GRM sample identifier file
+        description: Dense GRM sample identifier file with basename `${meta.id}`
         pattern: "*.grm.id"
         ontologies: []
     - grm_bin:
         type: file
-        description: Dense GRM binary matrix file
+        description: Dense GRM binary matrix file with basename `${meta.id}`
         pattern: "*.grm.bin"
         ontologies: []
     - grm_n_bin:
         type: file
-        description: Dense GRM sample-count matrix file
+        description: Dense GRM sample-count matrix file with basename `${meta.id}`
         pattern: "*.grm.N.bin"
         ontologies: []
 
@@ -39,8 +42,8 @@ output:
     - - meta:
           type: map
           description: |
-            Groovy map containing dense GRM metadata
-            e.g. `[ id:'plink_simulated' ]`
+            Groovy map containing dense GRM metadata.
+            `meta.id` remains the dense-GRM basename contract used for `--grm`.
       - "*_unrel05.grm.id":
           type: file
           description: Relatedness-filtered GRM sample identifier file
@@ -60,8 +63,8 @@ output:
     - - meta:
           type: map
           description: |
-            Groovy map containing dense GRM metadata
-            e.g. `[ id:'plink_simulated' ]`
+            Groovy map containing dense GRM metadata.
+            `meta.id` remains the dense-GRM basename contract used for `--grm`.
       - "*_unrel05.grm.id":
           type: file
           description: Keep file of unrelated individuals emitted by GCTA
