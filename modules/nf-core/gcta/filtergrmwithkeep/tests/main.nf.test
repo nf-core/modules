@@ -8,33 +8,44 @@ nextflow_process {
     tag "modules_nfcore"
     tag "gcta"
     tag "gcta/filtergrmwithkeep"
-    tag "tests/helpers/dense_grm"
+    tag "gcta/makegrmpart"
+    tag "gcta/removerelatedsubjects"
 
     setup {
-        run("GCTA_TEST_DENSE_GRM", alias: "GCTA_TEST_DENSE_GRM_CONTRACT") {
-            script "../tests/helpers/dense_grm/main.nf"
+        run("GCTA_MAKEGRMPART", alias: "GCTA_MAKEGRMPART_DENSE") {
+            script "../../makegrmpart/main.nf"
             process {
                 """
+                file('plink_simulated.mbfile').text = 'plink_simulated\\n'
+
                 input[0] = [
-                    [ id:'contract_dense' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    [ id:'plink_simulated_dense', part_gcta_job:1, nparts_gcta:1 ],
+                    file('plink_simulated.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
                 ]
+                input[1] = [[ id:'all_variants' ], []]
                 """
             }
         }
 
-        run("GCTA_TEST_DENSE_GRM", alias: "GCTA_TEST_DENSE_GRM_STUB") {
-            script "../tests/helpers/dense_grm/main.nf"
+        run("GCTA_REMOVERELATEDSUBJECTS", alias: "GCTA_REMOVERELATEDSUBJECTS_KEEP") {
+            script "../../removerelatedsubjects/main.nf"
             process {
                 """
-                input[0] = [
-                    [ id:'stub_dense' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
-                ]
+                dense_grm = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
+
+                input[0] = dense_grm
                 """
             }
         }
@@ -46,15 +57,13 @@ nextflow_process {
         when {
             process {
                 """
-                keep_file = GCTA_TEST_DENSE_GRM_CONTRACT.out.dense_grm.map { meta, grm_id, grm_bin, grm_n_bin ->
-                    def first_sample = file(grm_id).readLines().first()
-                    def keep_file = file('contract_keep.keep')
-                    keep_file.text = first_sample + "\\n"
-                    [[ id:'contract_keep' ], keep_file]
+                dense_grm = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
                 }
 
-                input[0] = GCTA_TEST_DENSE_GRM_CONTRACT.out.dense_grm
-                input[1] = keep_file
+                input[0] = dense_grm
+                input[1] = GCTA_REMOVERELATEDSUBJECTS_KEEP.out.keep_file
                 """
             }
         }
@@ -63,12 +72,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.filtered_grm.size() == 1 },
-                { assert process.out.filtered_grm.get(0).get(0).id == "contract_dense" },
+                { assert process.out.filtered_grm.get(0).get(0).id == "plink_simulated_dense.part_1_1" },
                 {
                     assert snapshot(
-                        process.out.filtered_grm.collect { row ->
-                            [row[0], file(row[1]).name, file(row[2]).name, file(row[3]).name]
-                        }
+                        process.out.filtered_grm
                     ).match("filtered_grm")
                 },
                 {
@@ -88,15 +95,15 @@ nextflow_process {
         when {
             process {
                 """
-                file('contract_keep.keep').text = "fid1 iid1\\n"
+                dense_grm = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
 
-                input[0] = GCTA_TEST_DENSE_GRM_CONTRACT.out.dense_grm.map { meta, grm_id, grm_bin, grm_n_bin ->
+                input[0] = dense_grm.map { meta, grm_id, grm_bin, grm_n_bin ->
                     [[ id:'contract_dense_mismatch' ], grm_id, grm_bin, grm_n_bin]
                 }
-                input[1] = Channel.value([
-                    [ id:'contract_keep' ],
-                    file('contract_keep.keep')
-                ])
+                input[1] = GCTA_REMOVERELATEDSUBJECTS_KEEP.out.keep_file
                 """
             }
         }
@@ -116,13 +123,13 @@ nextflow_process {
         when {
             process {
                 """
-                file('stub_keep.keep').text = "fid1 iid1\\n"
+                dense_grm = GCTA_MAKEGRMPART_DENSE.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
 
-                input[0] = GCTA_TEST_DENSE_GRM_STUB.out.dense_grm
-                input[1] = Channel.value([
-                    [ id:'stub_keep' ],
-                    file('stub_keep.keep')
-                ])
+                input[0] = dense_grm
+                input[1] = GCTA_REMOVERELATEDSUBJECTS_KEEP.out.keep_file
                 """
             }
         }
@@ -131,12 +138,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.filtered_grm.size() == 1 },
-                { assert process.out.filtered_grm.get(0).get(0).id == "stub_dense" },
+                { assert process.out.filtered_grm.get(0).get(0).id == "plink_simulated_dense.part_1_1" },
                 {
                     assert snapshot(
-                        process.out.filtered_grm.collect { row ->
-                            [row[0], file(row[1]).name, file(row[2]).name, file(row[3]).name]
-                        }
+                        process.out.filtered_grm
                     ).match("stub_filtered_grm")
                 },
                 {
