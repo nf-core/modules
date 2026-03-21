@@ -8,33 +8,53 @@ nextflow_process {
     tag "modules_nfcore"
     tag "gcta"
     tag "gcta/makebksparse"
-    tag "tests/helpers/dense_grm"
+    tag "gcta/makegrmpart"
 
     setup {
-        run("GCTA_TEST_DENSE_GRM", alias: "GCTA_TEST_DENSE_GRM_CONTRACT") {
-            script "../tests/helpers/dense_grm/main.nf"
+        run("GCTA_MAKEGRMPART", alias: "GCTA_MAKEGRMPART_CONTRACT") {
+            script "../../makegrmpart/main.nf"
             process {
                 """
+                file('contract_dense.mbfile').text = 'plink_simulated\\n'
+
                 input[0] = [
-                    [ id:'contract_dense' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    [ id:'contract_dense', part_gcta_job:1, nparts_gcta:1 ],
+                    file('contract_dense.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
                 ]
+                input[1] = [[ id:'all_variants' ], []]
                 """
             }
         }
 
-        run("GCTA_TEST_DENSE_GRM", alias: "GCTA_TEST_DENSE_GRM_STUB") {
-            script "../tests/helpers/dense_grm/main.nf"
+        run("GCTA_MAKEGRMPART", alias: "GCTA_MAKEGRMPART_STUB") {
+            script "../../makegrmpart/main.nf"
             process {
                 """
+                file('stub_dense.mbfile').text = 'plink_simulated\\n'
+
                 input[0] = [
-                    [ id:'stub_dense' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    [ id:'stub_dense', part_gcta_job:1, nparts_gcta:1 ],
+                    file('stub_dense.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
                 ]
+                input[1] = [[ id:'all_variants' ], []]
                 """
             }
         }
@@ -46,7 +66,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = GCTA_TEST_DENSE_GRM_CONTRACT.out.dense_grm
+                input[0] = GCTA_MAKEGRMPART_CONTRACT.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
                 input[1] = Channel.value(0.05)
                 """
             }
@@ -56,7 +79,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.sparse_grm_files.size() == 1 },
-                { assert process.out.sparse_grm_files.get(0).get(0).id == "contract_dense" },
+                { assert process.out.sparse_grm_files.get(0).get(0).id == "contract_dense.part_1_1" },
                 { assert snapshot(process.out.sparse_grm_files).match("sparse_grm_files") },
                 { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("versions") }
             )
@@ -69,7 +92,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = GCTA_TEST_DENSE_GRM_CONTRACT.out.dense_grm.map { meta, grm_id, grm_bin, grm_n_bin ->
+                input[0] = GCTA_MAKEGRMPART_CONTRACT.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }.map { meta, grm_id, grm_bin, grm_n_bin ->
                     [[ id:'contract_dense_mismatch' ], grm_id, grm_bin, grm_n_bin]
                 }
                 input[1] = Channel.value(0.05)
@@ -92,7 +118,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = GCTA_TEST_DENSE_GRM_STUB.out.dense_grm
+                input[0] = GCTA_MAKEGRMPART_STUB.out.grm_files.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def prefix = meta.id + '.part_' + meta.nparts_gcta + '_' + meta.part_gcta_job
+                    [[ id:prefix ], grm_id, grm_bin, grm_n_bin]
+                }
                 input[1] = Channel.value(0.05)
                 """
             }
@@ -102,7 +131,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.sparse_grm_files.size() == 1 },
-                { assert process.out.sparse_grm_files.get(0).get(0).id == "stub_dense" },
+                { assert process.out.sparse_grm_files.get(0).get(0).id == "stub_dense.part_1_1" },
                 { assert snapshot(process.out.sparse_grm_files).match("stub_sparse_grm_files") },
                 { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("stub_versions") }
             )
