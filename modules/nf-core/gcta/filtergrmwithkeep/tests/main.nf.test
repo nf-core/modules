@@ -8,6 +8,37 @@ nextflow_process {
     tag "modules_nfcore"
     tag "gcta"
     tag "gcta/filtergrmwithkeep"
+    tag "tests/helpers/dense_grm"
+
+    setup {
+        run("GCTA_TEST_DENSE_GRM", alias: "GCTA_TEST_DENSE_GRM_CONTRACT") {
+            script "../tests/helpers/dense_grm/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'contract_dense' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("GCTA_TEST_DENSE_GRM", alias: "GCTA_TEST_DENSE_GRM_STUB") {
+            script "../tests/helpers/dense_grm/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'stub_dense' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
 
     test("homo_sapiens popgen - filter dense GRM with keep file") {
         config "./nextflow.config"
@@ -15,24 +46,9 @@ nextflow_process {
         when {
             process {
                 """
-                file('contract_dense.grm.id').text = "fid1 iid1\\n"
-
-                grmBuffer = java.nio.ByteBuffer.allocate(4).order(java.nio.ByteOrder.LITTLE_ENDIAN)
-                grmBuffer.putFloat(1.0f)
-                file('contract_dense.grm.bin').bytes = grmBuffer.array()
-
-                grmNBuffer = java.nio.ByteBuffer.allocate(4).order(java.nio.ByteOrder.LITTLE_ENDIAN)
-                grmNBuffer.putFloat(100.0f)
-                file('contract_dense.grm.N.bin').bytes = grmNBuffer.array()
-
                 file('contract_keep.keep').text = "fid1 iid1\\n"
 
-                input[0] = Channel.value([
-                    [ id:'contract_dense' ],
-                    file('contract_dense.grm.id'),
-                    file('contract_dense.grm.bin'),
-                    file('contract_dense.grm.N.bin')
-                ])
+                input[0] = GCTA_TEST_DENSE_GRM_CONTRACT.out.dense_grm
                 input[1] = Channel.value([
                     [ id:'contract_keep' ],
                     file('contract_keep.keep')
@@ -58,24 +74,11 @@ nextflow_process {
         when {
             process {
                 """
-                file('contract_dense.grm.id').text = "fid1 iid1\\n"
-
-                grmBuffer = java.nio.ByteBuffer.allocate(4).order(java.nio.ByteOrder.LITTLE_ENDIAN)
-                grmBuffer.putFloat(1.0f)
-                file('contract_dense.grm.bin').bytes = grmBuffer.array()
-
-                grmNBuffer = java.nio.ByteBuffer.allocate(4).order(java.nio.ByteOrder.LITTLE_ENDIAN)
-                grmNBuffer.putFloat(100.0f)
-                file('contract_dense.grm.N.bin').bytes = grmNBuffer.array()
-
                 file('contract_keep.keep').text = "fid1 iid1\\n"
 
-                input[0] = Channel.value([
-                    [ id:'contract_dense_mismatch' ],
-                    file('contract_dense.grm.id'),
-                    file('contract_dense.grm.bin'),
-                    file('contract_dense.grm.N.bin')
-                ])
+                input[0] = GCTA_TEST_DENSE_GRM_CONTRACT.out.dense_grm.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    [[ id:'contract_dense_mismatch' ], grm_id, grm_bin, grm_n_bin]
+                }
                 input[1] = Channel.value([
                     [ id:'contract_keep' ],
                     file('contract_keep.keep')
@@ -99,17 +102,9 @@ nextflow_process {
         when {
             process {
                 """
-                file('stub_dense.grm.id').text = "fid1 iid1\\n"
-                file('stub_dense.grm.bin').bytes = []
-                file('stub_dense.grm.N.bin').bytes = []
                 file('stub_keep.keep').text = "fid1 iid1\\n"
 
-                input[0] = Channel.value([
-                    [ id:'stub_dense' ],
-                    file('stub_dense.grm.id'),
-                    file('stub_dense.grm.bin'),
-                    file('stub_dense.grm.N.bin')
-                ])
+                input[0] = GCTA_TEST_DENSE_GRM_STUB.out.dense_grm
                 input[1] = Channel.value([
                     [ id:'stub_keep' ],
                     file('stub_keep.keep')
