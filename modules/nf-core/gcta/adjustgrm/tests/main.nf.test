@@ -8,6 +8,37 @@ nextflow_process {
     tag "modules_nfcore"
     tag "gcta"
     tag "gcta/adjustgrm"
+    tag "tests/helpers/dense_grm"
+
+    setup {
+        run("GCTA_TEST_DENSE_GRM", alias: "GCTA_TEST_DENSE_GRM_CONTRACT") {
+            script "../tests/helpers/dense_grm/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'tiny_dense' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("GCTA_TEST_DENSE_GRM", alias: "GCTA_TEST_DENSE_GRM_STUB") {
+            script "../tests/helpers/dense_grm/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'stub_dense' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
 
     test("homo_sapiens popgen - adjust dense GRM") {
         config "./nextflow.config"
@@ -15,11 +46,7 @@ nextflow_process {
         when {
             process {
                 """
-                file('tiny_dense.grm.id').text = 'sample1 sample1\\n'
-                file('tiny_dense.grm.bin').bytes = java.nio.ByteBuffer.allocate(4).order(java.nio.ByteOrder.LITTLE_ENDIAN).putFloat(1.0f).array()
-                file('tiny_dense.grm.N.bin').bytes = java.nio.ByteBuffer.allocate(4).order(java.nio.ByteOrder.LITTLE_ENDIAN).putFloat(100.0f).array()
-
-                input[0] = [[ id:'tiny_dense' ], file('tiny_dense.grm.id'), file('tiny_dense.grm.bin'), file('tiny_dense.grm.N.bin')]
+                input[0] = GCTA_TEST_DENSE_GRM_CONTRACT.out.dense_grm
                 input[1] = 1
                 """
             }
@@ -53,11 +80,7 @@ nextflow_process {
         when {
             process {
                 """
-                file('tiny_dense.grm.id').text = 'sample1 sample1\\n'
-                file('tiny_dense.grm.bin').bytes = java.nio.ByteBuffer.allocate(4).order(java.nio.ByteOrder.LITTLE_ENDIAN).putFloat(1.0f).array()
-                file('tiny_dense.grm.N.bin').bytes = java.nio.ByteBuffer.allocate(4).order(java.nio.ByteOrder.LITTLE_ENDIAN).putFloat(100.0f).array()
-
-                input[0] = [[ id:'tiny_dense' ], file('tiny_dense.grm.id'), file('tiny_dense.grm.bin'), file('tiny_dense.grm.N.bin')]
+                input[0] = GCTA_TEST_DENSE_GRM_CONTRACT.out.dense_grm
                 input[1] = 0
                 """
             }
@@ -91,11 +114,9 @@ nextflow_process {
         when {
             process {
                 """
-                file('tiny_dense.grm.id').text = 'sample1 sample1\\n'
-                file('tiny_dense.grm.bin').bytes = java.nio.ByteBuffer.allocate(4).order(java.nio.ByteOrder.LITTLE_ENDIAN).putFloat(1.0f).array()
-                file('tiny_dense.grm.N.bin').bytes = java.nio.ByteBuffer.allocate(4).order(java.nio.ByteOrder.LITTLE_ENDIAN).putFloat(100.0f).array()
-
-                input[0] = [[ id:'tiny_dense_mismatched' ], file('tiny_dense.grm.id'), file('tiny_dense.grm.bin'), file('tiny_dense.grm.N.bin')]
+                input[0] = GCTA_TEST_DENSE_GRM_CONTRACT.out.dense_grm.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    [[ id:'tiny_dense_mismatched' ], grm_id, grm_bin, grm_n_bin]
+                }
                 input[1] = 1
                 """
             }
@@ -115,10 +136,9 @@ nextflow_process {
         when {
             process {
                 """
-                file('tiny_dense.grm.id').text = 'sample1 sample1\\n'
-                file('tiny_dense.grm.bin').bytes = java.nio.ByteBuffer.allocate(4).order(java.nio.ByteOrder.LITTLE_ENDIAN).putFloat(1.0f).array()
-
-                input[0] = [[ id:'tiny_dense' ], file('tiny_dense.grm.id'), file('tiny_dense.grm.bin')]
+                input[0] = GCTA_TEST_DENSE_GRM_CONTRACT.out.dense_grm.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    [[ id:meta.id ], grm_id, grm_bin]
+                }
                 input[1] = 1
                 """
             }
@@ -136,11 +156,7 @@ nextflow_process {
         when {
             process {
                 """
-                file('tiny_dense.grm.id').text = 'sample1 sample1\\n'
-                file('tiny_dense.grm.bin').bytes = java.nio.ByteBuffer.allocate(4).order(java.nio.ByteOrder.LITTLE_ENDIAN).putFloat(1.0f).array()
-                file('tiny_dense.grm.N.bin').bytes = java.nio.ByteBuffer.allocate(4).order(java.nio.ByteOrder.LITTLE_ENDIAN).putFloat(100.0f).array()
-
-                input[0] = [[ id:'tiny_dense' ], file('tiny_dense.grm.id'), file('tiny_dense.grm.bin'), file('tiny_dense.grm.N.bin')]
+                input[0] = GCTA_TEST_DENSE_GRM_STUB.out.dense_grm
                 input[1] = 1
                 """
             }
@@ -149,7 +165,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.grm_files.get(0).get(0).id == "tiny_dense" },
+                { assert process.out.grm_files.get(0).get(0).id == "stub_dense" },
                 {
                     def grm_row = process.out.grm_files.get(0)
                     def expected_prefix = "${grm_row.get(0).id}_adj"
