@@ -28,20 +28,21 @@ input:
         type: map
         description: |
           Groovy map containing dense GRM metadata
-          e.g. `[ id:'plink_simulated' ]`
+          Public contract: `meta2.id` must be the GRM basename passed to `--grm`
+          (for example `plink_simulated_dense.part_1_1` for `plink_simulated_dense.part_1_1.grm.{id,bin,N.bin}`)
     - grm_id:
         type: file
-        description: Dense GRM sample identifier file
+        description: Dense GRM sample identifier file (`<meta2.id>.grm.id`)
         pattern: "*.grm.id"
         ontologies: []
     - grm_bin:
         type: file
-        description: Dense GRM binary matrix file
+        description: Dense GRM binary matrix file (`<meta2.id>.grm.bin`)
         pattern: "*.grm.bin"
         ontologies: []
     - grm_n_bin:
         type: file
-        description: Dense GRM sample-count matrix file
+        description: Dense GRM sample-count matrix file (`<meta2.id>.grm.N.bin`)
         pattern: "*.grm.N.bin"
         ontologies: []
   - - meta3:

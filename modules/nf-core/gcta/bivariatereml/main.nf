@@ -26,6 +26,10 @@ process GCTA_BIVARIATEREML {
     def qcovar_param = quant_covariates_file ? "--qcovar ${quant_covariates_file}" : ''
     def covar_param = cat_covariates_file ? "--covar ${cat_covariates_file}" : ''
     def extra_args = task.ext.args ?: ''
+    def expected_grm_basename = grm_id.name.replaceFirst(/\.grm\.id$/, '')
+    if (meta2.id != expected_grm_basename) {
+        throw new IllegalArgumentException("GCTA_BIVARIATEREML contract violation: meta2.id '${meta2.id}' must match GRM basename '${expected_grm_basename}'")
+    }
 
     """
     set -euo pipefail
