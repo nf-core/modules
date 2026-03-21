@@ -1,0 +1,165 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "regenie_step2"
+description: Run REGENIE step 2 association testing from precomputed step 1 predictions
+keywords:
+  - regenie
+  - gwas
+  - association
+  - burden test
+  - genomics
+tools:
+  - "regenie":
+      description: "Regenie is a C++ program for whole genome regression modelling of large genome-wide association studies (GWAS)."
+      homepage: "https://rgcgithub.github.io/regenie/"
+      documentation: "https://rgcgithub.github.io/regenie/options/"
+      tool_dev_url: "https://github.com/rgcgithub/regenie"
+      doi: "10.1038/s41588-021-00870-7"
+      licence: ["MIT"]
+      identifier: "biotools:regenie"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing genotype information
+          Keep only the genotype analysis identifier and optional numeric chromosome in this map
+          The PLINK bundle must already be staged with basename `meta.id`, or `meta.id.chr<meta.chr>` when `chr` is provided
+          e.g. `[ id:'cohort', chr:22 ]`
+    - plink_genotype_file:
+        type: file
+        description: PLINK primary genotype file in BED or PGEN format
+        pattern: "*.{bed,pgen}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+    - plink_variant_file:
+        type: file
+        description: PLINK variant metadata file in BIM or PVAR format
+        pattern: "*.{bim,pvar,zst}"
+        ontologies: []
+    - plink_sample_file:
+        type: file
+        description: PLINK sample metadata file in FAM or PSAM format
+        pattern: "*.{fam,psam}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing phenotype file information and phenotype selector
+          Keep `id` for the phenotype file identity and use `pheno_col` for the phenotype column passed to `--phenoColList`
+          e.g. `[ id:'plink_simulated_quantitative_phenoname', pheno_col:'QuantitativeTrait', is_binary:true ]`
+    - pheno:
+        type: file
+        description: Phenotype file passed to `--phenoFile`
+        pattern: "*.{phe,pheno,txt,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing step 1 prediction information
+          e.g. `[ id:'Phenotype' ]`
+    - predictions:
+        type: file
+        description: REGENIE step 1 prediction list file passed to `--pred`
+        pattern: "*_pred.list"
+        ontologies: []
+    - loco_files:
+        type: file
+        description: REGENIE step 1 LOCO prediction files staged alongside the prediction list
+        pattern: "*.loco.gz"
+        ontologies:
+          - edam: "http://edamontology.org/format_3987" # GZIP
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing covariate file information
+          e.g. `[ id:'covariates' ]`
+    - covar:
+        type: file
+        optional: true
+        description: Optional covariate file passed to `--covarFile`; provide `[]` when absent
+        pattern: "*.{covar,cov,txt,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+  - bsize:
+      type: integer
+      description: Optional block size passed to `--bsize`; pass `[]` to use the module default of `400`
+  - test_model:
+      type: string
+      description: Optional association test passed to `--test`; pass `[]` to use the module default of `additive`
+
+output:
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing genotype information
+            e.g. `[ id:'cohort', chr:22 ]`
+      - meta2:
+          type: map
+          description: |
+            Groovy Map containing phenotype file information and phenotype selector
+            e.g. `[ id:'plink_simulated_quantitative_phenoname', pheno_col:'QuantitativeTrait', is_binary:true ]`
+      - "*.regenie.gz":
+          type: file
+          description: REGENIE step 2 association results
+          pattern: "*.regenie.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3987" # GZIP
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing genotype information
+            e.g. `[ id:'cohort', chr:22 ]`
+      - meta2:
+          type: map
+          description: |
+            Groovy Map containing phenotype file information and phenotype selector
+            e.g. `[ id:'plink_simulated_quantitative_phenoname', pheno_col:'QuantitativeTrait', is_binary:true ]`
+      - "*.log":
+          type: file
+          description: REGENIE step 2 log file
+          pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Text
+  versions_regenie:
+    - - "${task.process}":
+          type: string
+          description: The process the versions were collected from
+      - "regenie":
+          type: string
+          description: The tool name
+      - "regenie --version 2>&1 | head -n 1":
+          type: eval
+          description: The command used to generate the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - regenie:
+          type: string
+          description: The tool name
+      - regenie --version 2>&1 | head -n 1:
+          type: eval
+          description: The command used to generate the version of the tool
+authors:
+  - "@andongni"
+maintainers:
+  - "@andongni"
+containers:
+  conda:
+    linux_amd64:
+      lock_file: "https://wave.seqera.io/v1alpha1/builds/bd-5d361f9fcb2f85cf_1/condalock"
+  docker:
+    linux_amd64:
+      build_id: "bd-5d361f9fcb2f85cf_1"
+      name: "community.wave.seqera.io/library/regenie:4.1.2--5d361f9fcb2f85cf"
+      scanId: "sc-cc9eb5ed5eb381dd_2"
+  singularity:
+    linux_amd64:
+      build_id: "bd-7c121fb4ecd57890_1"
+      name: "oras://community.wave.seqera.io/library/regenie:4.1.2--7c121fb4ecd57890"
+      https: "https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7a/7a05bf71ea09adc5ebf9f0c656c9b326c0f16ba8e4966914972e58313469a466/data"
