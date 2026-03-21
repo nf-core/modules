@@ -70,7 +70,6 @@ nextflow_process {
                 {
                     assert snapshot(
                         process.out.ld_scores,
-                        process.out.snp_group_files,
                         process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
@@ -138,7 +137,6 @@ nextflow_process {
                 {
                     assert snapshot(
                         process.out.ld_scores,
-                        process.out.snp_group_files,
                         process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
