@@ -46,13 +46,15 @@ nextflow_process {
         when {
             process {
                 """
-                file('contract_keep.keep').text = "fid1 iid1\\n"
+                keep_file = GCTA_TEST_DENSE_GRM_CONTRACT.out.dense_grm.map { meta, grm_id, grm_bin, grm_n_bin ->
+                    def first_sample = file(grm_id).readLines().first()
+                    def keep_file = file('contract_keep.keep')
+                    keep_file.text = first_sample + "\\n"
+                    [[ id:'contract_keep' ], keep_file]
+                }
 
                 input[0] = GCTA_TEST_DENSE_GRM_CONTRACT.out.dense_grm
-                input[1] = Channel.value([
-                    [ id:'contract_keep' ],
-                    file('contract_keep.keep')
-                ])
+                input[1] = keep_file
                 """
             }
         }
@@ -62,7 +64,19 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.filtered_grm.size() == 1 },
                 { assert process.out.filtered_grm.get(0).get(0).id == "contract_dense" },
-                { assert snapshot(process.out.filtered_grm).match("filtered_grm") },
+                {
+                    assert snapshot(
+                        process.out.filtered_grm.collect { row ->
+                            [row[0], file(row[1]).name, file(row[2]).name, file(row[3]).name]
+                        }
+                    ).match("filtered_grm")
+                },
+                {
+                    def row = process.out.filtered_grm.get(0)
+                    assert file(row.get(1)).exists()
+                    assert file(row.get(2)).exists()
+                    assert file(row.get(3)).exists()
+                },
                 { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("versions") }
             )
         }
@@ -118,7 +132,19 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.filtered_grm.size() == 1 },
                 { assert process.out.filtered_grm.get(0).get(0).id == "stub_dense" },
-                { assert snapshot(process.out.filtered_grm).match("stub_filtered_grm") },
+                {
+                    assert snapshot(
+                        process.out.filtered_grm.collect { row ->
+                            [row[0], file(row[1]).name, file(row[2]).name, file(row[3]).name]
+                        }
+                    ).match("stub_filtered_grm")
+                },
+                {
+                    def row = process.out.filtered_grm.get(0)
+                    assert file(row.get(1)).exists()
+                    assert file(row.get(2)).exists()
+                    assert file(row.get(3)).exists()
+                },
                 { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("stub_versions") }
             )
         }
