@@ -8,51 +8,99 @@ nextflow_process {
     tag "modules_nfcore"
     tag "gcta"
     tag "gcta/remlldms"
+    tag "tests/helpers/makegrm"
+    tag "gawk"
+
+    setup {
+        run("GAWK", alias: "GAWK_QUANTITATIVE_PHENOTYPE") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'QuantitativeTrait' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ]
+                input[1] = Channel.of('{ print \$1, \$2, \$3 }').collectFile(name:'quantitative_phenotypes.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_MULTI_PHENOTYPES") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'QuantitativeTraitMpheno' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ]
+                input[1] = Channel.of('{ print \$1, \$2, \$3, (\$3 * 0.5) + ((NR % 7) / 10.0) }').collectFile(name:'multi_phenotypes.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_QUANTITATIVE_COVARIATES") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'covariates_quant' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+                input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$4, \$5 }').collectFile(name:'quantitative_covariates.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_CATEGORICAL_COVARIATES") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'covariates_cat' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+                input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$3 }').collectFile(name:'categorical_covariates.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GCTA_MAKEGRM_HELPER", alias: "GCTA_MAKEGRM_LDMS1") {
+            script "../tests/helpers/makegrm/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'plink_simulated_ldms1.part_1_1' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+                input[1] = [[ id:'all_variants' ], []]
+                """
+            }
+        }
+    }
 
     test("homo_sapiens gsmr - ldms mgrm with mpheno selection") {
         config "./nextflow.config"
         when {
             process {
-                '''
-                def sample_ids = (1..150).collect { idx -> "SAMPLE_${idx}" }
-                def write_float_binary = { filename, values ->
-                    def buffer = java.nio.ByteBuffer.allocate(values.size() * 4).order(java.nio.ByteOrder.LITTLE_ENDIAN)
-                    values.each { value -> buffer.putFloat((value as Number).floatValue()) }
-                    file(filename).bytes = buffer.array()
-                }
-
-                file('ldms1.grm.id').text = sample_ids.collect { sid -> "${sid} ${sid}" }.join('\\n') + '\\n'
-
-                def ldms1_relationships = []
-                for (int i = 0; i < sample_ids.size(); i++) {
-                    for (int j = 0; j <= i; j++) {
-                        ldms1_relationships << Math.exp(-Math.abs(i - j) / 20.0d).floatValue()
+                """
+                input[0] = GAWK_MULTI_PHENOTYPES.out.output.map { meta, pheno -> [[ id:'QuantitativeTraitMpheno2' ], pheno] }
+                input[1] = Channel
+                    .of('plink_simulated_ldms1.part_1_1')
+                    .collectFile(name:'plink_simulated_ldms.mgrm', newLine: true)
+                    .combine(GCTA_MAKEGRM_LDMS1.out.grm_files)
+                    .map { mgrm_file, meta, grm_id, grm_bin, grm_n_bin ->
+                        [[ id:'plink_simulated_ldms' ], mgrm_file, [grm_id, grm_bin, grm_n_bin]]
                     }
-                }
-                write_float_binary('ldms1.grm.bin', ldms1_relationships)
-                write_float_binary('ldms1.grm.N.bin', ldms1_relationships.collect { 2200.0f })
-                file('synthetic_ldms.mgrm').text = 'ldms1\\n'
-
-                file('multi_phenotypes.phe').text = sample_ids.withIndex().collect { sid, idx ->
-                    def trait1 = ((idx % 13) - 6) + ((idx % 4) / 10.0)
-                    def trait2 = trait1 + ((idx % 5) / 10.0)
-                    "${sid} ${sid} ${trait1} ${trait2}"
-                }.join('\\n') + '\\n'
-
-                file('quantitative_covariates.txt').text = sample_ids.withIndex().collect { sid, idx ->
-                    "${sid} ${sid} ${((idx % 9) - 4) / 3.0} ${((idx % 7) - 3) / 2.5}"
-                }.join('\\n') + '\\n'
-
-                file('categorical_covariates.txt').text = sample_ids.withIndex().collect { sid, idx ->
-                    "${sid} ${sid} ${(idx % 3) + 1}"
-                }.join('\\n') + '\\n'
-
-                input[0] = [[ id:'QuantitativeTraitMpheno2' ], file('multi_phenotypes.phe')]
-                input[1] = [[ id:'synthetic_ldms' ], file('synthetic_ldms.mgrm'), [file('ldms1.grm.id'), file('ldms1.grm.bin'), file('ldms1.grm.N.bin')]]
-                input[2] = [[ id:'covariates_quant' ], file('quantitative_covariates.txt')]
-                input[3] = [[ id:'covariates_cat' ], file('categorical_covariates.txt')]
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output
                 input[4] = 2
-                '''
+                """
             }
         }
 
@@ -75,45 +123,19 @@ nextflow_process {
         config "./nextflow.config"
         when {
             process {
-                '''
-                def sample_ids = (1..150).collect { idx -> "SAMPLE_${idx}" }
-                def write_float_binary = { filename, values ->
-                    def buffer = java.nio.ByteBuffer.allocate(values.size() * 4).order(java.nio.ByteOrder.LITTLE_ENDIAN)
-                    values.each { value -> buffer.putFloat((value as Number).floatValue()) }
-                    file(filename).bytes = buffer.array()
-                }
-
-                file('ldms1.grm.id').text = sample_ids.collect { sid -> "${sid} ${sid}" }.join('\\n') + '\\n'
-
-                def ldms1_relationships = []
-                for (int i = 0; i < sample_ids.size(); i++) {
-                    for (int j = 0; j <= i; j++) {
-                        ldms1_relationships << Math.exp(-Math.abs(i - j) / 20.0d).floatValue()
+                """
+                input[0] = GAWK_QUANTITATIVE_PHENOTYPE.out.output
+                input[1] = Channel
+                    .of('plink_simulated_ldms1.part_1_1')
+                    .collectFile(name:'plink_simulated_ldms.mgrm', newLine: true)
+                    .combine(GCTA_MAKEGRM_LDMS1.out.grm_files)
+                    .map { mgrm_file, meta, grm_id, grm_bin, grm_n_bin ->
+                        [[ id:'plink_simulated_ldms' ], mgrm_file, [grm_id, grm_bin, grm_n_bin]]
                     }
-                }
-                write_float_binary('ldms1.grm.bin', ldms1_relationships)
-                write_float_binary('ldms1.grm.N.bin', ldms1_relationships.collect { 2200.0f })
-                file('synthetic_ldms.mgrm').text = 'ldms1\\n'
-
-                file('quantitative_phenotypes.phe').text = sample_ids.withIndex().collect { sid, idx ->
-                    def trait1 = ((idx % 13) - 6) + ((idx % 4) / 10.0)
-                    "${sid} ${sid} ${trait1}"
-                }.join('\\n') + '\\n'
-
-                file('quantitative_covariates.txt').text = sample_ids.withIndex().collect { sid, idx ->
-                    "${sid} ${sid} ${((idx % 9) - 4) / 3.0} ${((idx % 7) - 3) / 2.5}"
-                }.join('\\n') + '\\n'
-
-                file('categorical_covariates.txt').text = sample_ids.withIndex().collect { sid, idx ->
-                    "${sid} ${sid} ${(idx % 3) + 1}"
-                }.join('\\n') + '\\n'
-
-                input[0] = [[ id:'QuantitativeTrait' ], file('quantitative_phenotypes.phe')]
-                input[1] = [[ id:'synthetic_ldms' ], file('synthetic_ldms.mgrm'), [file('ldms1.grm.id'), file('ldms1.grm.bin'), file('ldms1.grm.N.bin')]]
-                input[2] = [[ id:'covariates_quant' ], file('quantitative_covariates.txt')]
-                input[3] = [[ id:'covariates_cat' ], file('categorical_covariates.txt')]
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output
                 input[4] = 1
-                '''
+                """
             }
         }
 
@@ -136,37 +158,19 @@ nextflow_process {
         config "./nextflow.config"
         when {
             process {
-                '''
-                def sample_ids = (1..150).collect { idx -> "SAMPLE_${idx}" }
-                def write_float_binary = { filename, values ->
-                    def buffer = java.nio.ByteBuffer.allocate(values.size() * 4).order(java.nio.ByteOrder.LITTLE_ENDIAN)
-                    values.each { value -> buffer.putFloat((value as Number).floatValue()) }
-                    file(filename).bytes = buffer.array()
-                }
-
-                file('ldms1.grm.id').text = sample_ids.collect { sid -> "${sid} ${sid}" }.join('\\n') + '\\n'
-
-                def ldms1_relationships = []
-                for (int i = 0; i < sample_ids.size(); i++) {
-                    for (int j = 0; j <= i; j++) {
-                        ldms1_relationships << Math.exp(-Math.abs(i - j) / 20.0d).floatValue()
+                """
+                input[0] = GAWK_QUANTITATIVE_PHENOTYPE.out.output
+                input[1] = Channel
+                    .of('plink_simulated_ldms1.part_1_1')
+                    .collectFile(name:'plink_simulated_ldms.mgrm', newLine: true)
+                    .combine(GCTA_MAKEGRM_LDMS1.out.grm_files)
+                    .map { mgrm_file, meta, grm_id, grm_bin, grm_n_bin ->
+                        [[ id:'plink_simulated_ldms' ], mgrm_file, [grm_id, grm_bin, grm_n_bin]]
                     }
-                }
-                write_float_binary('ldms1.grm.bin', ldms1_relationships)
-                write_float_binary('ldms1.grm.N.bin', ldms1_relationships.collect { 2200.0f })
-                file('synthetic_ldms.mgrm').text = 'ldms1\\n'
-
-                file('quantitative_phenotypes.phe').text = sample_ids.withIndex().collect { sid, idx ->
-                    def trait1 = ((idx % 13) - 6) + ((idx % 4) / 10.0)
-                    "${sid} ${sid} ${trait1}"
-                }.join('\\n') + '\\n'
-
-                input[0] = [[ id:'QuantitativeTrait' ], file('quantitative_phenotypes.phe')]
-                input[1] = [[ id:'synthetic_ldms' ], file('synthetic_ldms.mgrm'), [file('ldms1.grm.id'), file('ldms1.grm.bin'), file('ldms1.grm.N.bin')]]
                 input[2] = [[ id:'covariates_quant' ], []]
                 input[3] = [[ id:'covariates_cat' ], []]
                 input[4] = 1
-                '''
+                """
             }
         }
 
@@ -189,46 +193,19 @@ nextflow_process {
         config "./nextflow.config"
         when {
             process {
-                '''
-                def sample_ids = (1..150).collect { idx -> "SAMPLE_${idx}" }
-                def write_float_binary = { filename, values ->
-                    def buffer = java.nio.ByteBuffer.allocate(values.size() * 4).order(java.nio.ByteOrder.LITTLE_ENDIAN)
-                    values.each { value -> buffer.putFloat((value as Number).floatValue()) }
-                    file(filename).bytes = buffer.array()
-                }
-
-                file('ldms1.grm.id').text = sample_ids.collect { sid -> "${sid} ${sid}" }.join('\\n') + '\\n'
-
-                def ldms1_relationships = []
-                for (int i = 0; i < sample_ids.size(); i++) {
-                    for (int j = 0; j <= i; j++) {
-                        ldms1_relationships << Math.exp(-Math.abs(i - j) / 20.0d).floatValue()
+                """
+                input[0] = GAWK_MULTI_PHENOTYPES.out.output.map { meta, pheno -> [[ id:'QuantitativeTraitMphenoDefault' ], pheno] }
+                input[1] = Channel
+                    .of('plink_simulated_ldms1.part_1_1')
+                    .collectFile(name:'plink_simulated_ldms.mgrm', newLine: true)
+                    .combine(GCTA_MAKEGRM_LDMS1.out.grm_files)
+                    .map { mgrm_file, meta, grm_id, grm_bin, grm_n_bin ->
+                        [[ id:'plink_simulated_ldms' ], mgrm_file, [grm_id, grm_bin, grm_n_bin]]
                     }
-                }
-                write_float_binary('ldms1.grm.bin', ldms1_relationships)
-                write_float_binary('ldms1.grm.N.bin', ldms1_relationships.collect { 2200.0f })
-                file('synthetic_ldms.mgrm').text = 'ldms1\\n'
-
-                file('multi_phenotypes.phe').text = sample_ids.withIndex().collect { sid, idx ->
-                    def trait1 = ((idx % 13) - 6) + ((idx % 4) / 10.0)
-                    def trait2 = trait1 + ((idx % 5) / 10.0)
-                    "${sid} ${sid} ${trait1} ${trait2}"
-                }.join('\\n') + '\\n'
-
-                file('quantitative_covariates.txt').text = sample_ids.withIndex().collect { sid, idx ->
-                    "${sid} ${sid} ${((idx % 9) - 4) / 3.0} ${((idx % 7) - 3) / 2.5}"
-                }.join('\\n') + '\\n'
-
-                file('categorical_covariates.txt').text = sample_ids.withIndex().collect { sid, idx ->
-                    "${sid} ${sid} ${(idx % 3) + 1}"
-                }.join('\\n') + '\\n'
-
-                input[0] = [[ id:'QuantitativeTraitMphenoDefault' ], file('multi_phenotypes.phe')]
-                input[1] = [[ id:'synthetic_ldms' ], file('synthetic_ldms.mgrm'), [file('ldms1.grm.id'), file('ldms1.grm.bin'), file('ldms1.grm.N.bin')]]
-                input[2] = [[ id:'covariates_quant' ], file('quantitative_covariates.txt')]
-                input[3] = [[ id:'covariates_cat' ], file('categorical_covariates.txt')]
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output
                 input[4] = []
-                '''
+                """
             }
         }
 
@@ -247,49 +224,23 @@ nextflow_process {
         }
     }
 
-    test("homo_sapiens gsmr - fails when mpheno index is out of range") {
+    test("homo_sapiens gsmr - fails when mgrm references missing GRM basename") {
         config "./nextflow.config"
         when {
             process {
-                '''
-                def sample_ids = (1..150).collect { idx -> "SAMPLE_${idx}" }
-                def write_float_binary = { filename, values ->
-                    def buffer = java.nio.ByteBuffer.allocate(values.size() * 4).order(java.nio.ByteOrder.LITTLE_ENDIAN)
-                    values.each { value -> buffer.putFloat((value as Number).floatValue()) }
-                    file(filename).bytes = buffer.array()
-                }
-
-                file('ldms1.grm.id').text = sample_ids.collect { sid -> "${sid} ${sid}" }.join('\\n') + '\\n'
-
-                def ldms1_relationships = []
-                for (int i = 0; i < sample_ids.size(); i++) {
-                    for (int j = 0; j <= i; j++) {
-                        ldms1_relationships << Math.exp(-Math.abs(i - j) / 20.0d).floatValue()
+                """
+                input[0] = GAWK_QUANTITATIVE_PHENOTYPE.out.output.map { meta, pheno -> [[ id:'QuantitativeTraitInvalidLdms' ], pheno] }
+                input[1] = Channel
+                    .of('plink_simulated_ldms_missing.part_1_1')
+                    .collectFile(name:'plink_simulated_ldms_broken.mgrm', newLine: true)
+                    .combine(GCTA_MAKEGRM_LDMS1.out.grm_files)
+                    .map { mgrm_file, meta, grm_id, grm_bin, grm_n_bin ->
+                        [[ id:'plink_simulated_ldms' ], mgrm_file, [grm_id, grm_bin, grm_n_bin]]
                     }
-                }
-                write_float_binary('ldms1.grm.bin', ldms1_relationships)
-                write_float_binary('ldms1.grm.N.bin', ldms1_relationships.collect { 2200.0f })
-                file('synthetic_ldms.mgrm').text = 'ldms1\\n'
-
-                file('quantitative_phenotypes.phe').text = sample_ids.withIndex().collect { sid, idx ->
-                    def trait1 = ((idx % 13) - 6) + ((idx % 4) / 10.0)
-                    "${sid} ${sid} ${trait1}"
-                }.join('\\n') + '\\n'
-
-                file('quantitative_covariates.txt').text = sample_ids.withIndex().collect { sid, idx ->
-                    "${sid} ${sid} ${((idx % 9) - 4) / 3.0} ${((idx % 7) - 3) / 2.5}"
-                }.join('\\n') + '\\n'
-
-                file('categorical_covariates.txt').text = sample_ids.withIndex().collect { sid, idx ->
-                    "${sid} ${sid} ${(idx % 3) + 1}"
-                }.join('\\n') + '\\n'
-
-                input[0] = [[ id:'QuantitativeTraitInvalidMpheno' ], file('quantitative_phenotypes.phe')]
-                input[1] = [[ id:'synthetic_ldms' ], file('synthetic_ldms.mgrm'), [file('ldms1.grm.id'), file('ldms1.grm.bin'), file('ldms1.grm.N.bin')]]
-                input[2] = [[ id:'covariates_quant' ], file('quantitative_covariates.txt')]
-                input[3] = [[ id:'covariates_cat' ], file('categorical_covariates.txt')]
-                input[4] = 3
-                '''
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output
+                input[4] = 1
+                """
             }
         }
 
@@ -307,37 +258,19 @@ nextflow_process {
 
         when {
             process {
-                '''
-                def sample_ids = (1..150).collect { idx -> "SAMPLE_${idx}" }
-                def write_float_binary = { filename, values ->
-                    def buffer = java.nio.ByteBuffer.allocate(values.size() * 4).order(java.nio.ByteOrder.LITTLE_ENDIAN)
-                    values.each { value -> buffer.putFloat((value as Number).floatValue()) }
-                    file(filename).bytes = buffer.array()
-                }
-
-                file('ldms1.grm.id').text = sample_ids.collect { sid -> "${sid} ${sid}" }.join('\\n') + '\\n'
-
-                def ldms1_relationships = []
-                for (int i = 0; i < sample_ids.size(); i++) {
-                    for (int j = 0; j <= i; j++) {
-                        ldms1_relationships << Math.exp(-Math.abs(i - j) / 20.0d).floatValue()
+                """
+                input[0] = GAWK_QUANTITATIVE_PHENOTYPE.out.output
+                input[1] = Channel
+                    .of('plink_simulated_ldms1.part_1_1')
+                    .collectFile(name:'plink_simulated_ldms.mgrm', newLine: true)
+                    .combine(GCTA_MAKEGRM_LDMS1.out.grm_files)
+                    .map { mgrm_file, meta, grm_id, grm_bin, grm_n_bin ->
+                        [[ id:'plink_simulated_ldms' ], mgrm_file, [grm_id, grm_bin, grm_n_bin]]
                     }
-                }
-                write_float_binary('ldms1.grm.bin', ldms1_relationships)
-                write_float_binary('ldms1.grm.N.bin', ldms1_relationships.collect { 2200.0f })
-                file('synthetic_ldms.mgrm').text = 'ldms1\\n'
-
-                file('quantitative_phenotypes.phe').text = sample_ids.withIndex().collect { sid, idx ->
-                    def trait1 = ((idx % 13) - 6) + ((idx % 4) / 10.0)
-                    "${sid} ${sid} ${trait1}"
-                }.join('\\n') + '\\n'
-
-                input[0] = [[ id:'QuantitativeTrait' ], file('quantitative_phenotypes.phe')]
-                input[1] = [[ id:'synthetic_ldms' ], file('synthetic_ldms.mgrm'), [file('ldms1.grm.id'), file('ldms1.grm.bin'), file('ldms1.grm.N.bin')]]
                 input[2] = [[ id:'covariates_quant' ], []]
                 input[3] = [[ id:'covariates_cat' ], []]
                 input[4] = 1
-                '''
+                """
             }
         }
 
