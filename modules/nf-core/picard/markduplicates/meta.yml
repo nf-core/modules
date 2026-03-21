@@ -14,7 +14,8 @@ tools:
         data and formats such as SAM/BAM/CRAM and VCF.
       homepage: https://broadinstitute.github.io/picard/
       documentation: https://broadinstitute.github.io/picard/
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:picard_tools
 input:
   - - meta:
@@ -62,8 +63,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.bai":
           type: file
-          description: An optional BAM index file. If desired, --CREATE_INDEX must be
-            passed as a flag
+          description: An optional BAM index file. If desired, --CREATE_INDEX must
+            be passed as a flag
           pattern: "*.{bai}"
           ontologies: []
   cram:
@@ -95,9 +96,20 @@ output:
       - picard:
           type: string
           description: The tool name
-      - "picard MarkDuplicates --version 2>&1 | sed -n 's/.*Version://p'":
-          type: string
+      - picard MarkDuplicates --version 2>&1 | sed -n 's/.*Version://p':
+          type: eval
           description: The command used to generate the version of the tool
+  crai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.crai":
+          type: file
+          description: An optional CRAM index file. If desired, --CREATE_INDEX must be passed as a flag
+          pattern: "*.{crai}"
+          ontologies: []
 topics:
   versions:
     - - ${task.process}:
@@ -106,8 +118,8 @@ topics:
       - picard:
           type: string
           description: The tool name
-      - "picard MarkDuplicates --version 2>&1 | sed -n 's/.*Version://p'":
-          type: string
+      - picard MarkDuplicates --version 2>&1 | sed -n 's/.*Version://p':
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@drpatelh"
