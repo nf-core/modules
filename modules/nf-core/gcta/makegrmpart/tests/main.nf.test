@@ -50,6 +50,95 @@ nextflow_process {
         }
     }
 
+    test("homo_sapiens popgen - plink1") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                file('gcta_grm.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'gcta_grm_bed', part_gcta_job:1, nparts_gcta:2 ],
+                    file('gcta_grm.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                input[1] = [[ id:'snp_group0' ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.grm_files.size() == 1 },
+                { assert process.out.grm_files.get(0).get(0).id == 'gcta_grm_bed' },
+                {
+                    assert snapshot(
+                        process.out.grm_files,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - plink1 - extract snp group") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                file('gcta_grm_extract.mbfile').text = 'plink_simulated\\n'
+
+                def bimFile = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                def extractSnps = bimFile.readLines()
+                    .take(10)
+                    .collect { row -> row.trim().split(/\\s+/)[1] }
+                    .join('\\n') + '\\n'
+                file('snp_group_extract.txt').text = extractSnps
+
+                input[0] = [
+                    [ id:'gcta_grm_bed_extract', part_gcta_job:1, nparts_gcta:2 ],
+                    file('gcta_grm_extract.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        bimFile
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                input[1] = [[ id:'snp_group_extract', snp_group:1 ], file('snp_group_extract.txt')]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.grm_files.size() == 1 },
+                { assert process.out.grm_files.get(0).get(0).id == 'gcta_grm_bed_extract' },
+                {
+                    assert snapshot(
+                        process.out.grm_files,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
     test("homo_sapiens popgen - plink1 - stub") {
         options "-stub"
         config "./nextflow.config"
