@@ -9,7 +9,7 @@ nextflow_process {
     tag "gcta"
     tag "gcta/addgrms"
     tag "gawk"
-    tag "gcta/testhelpers"
+    tag "tests/helpers/gcta_makegrm"
 
     setup {
         run("GAWK", alias: "GAWK_VARIANTS_LDMS1") {
@@ -41,7 +41,7 @@ nextflow_process {
         }
 
         run("GCTA_TEST_MAKEGRM", alias: "GCTA_TEST_MAKEGRM_LDMS1") {
-            script "./helpers/gcta_makegrm/main.nf"
+            script "../tests/helpers/gcta_makegrm/main.nf"
             process {
                 """
                 input[0] = GAWK_VARIANTS_LDMS1.out.output.map { meta, ldms1_variants_file ->
@@ -58,7 +58,7 @@ nextflow_process {
         }
 
         run("GCTA_TEST_MAKEGRM", alias: "GCTA_TEST_MAKEGRM_LDMS2") {
-            script "./helpers/gcta_makegrm/main.nf"
+            script "../tests/helpers/gcta_makegrm/main.nf"
             process {
                 """
                 input[0] = GAWK_VARIANTS_LDMS2.out.output.map { meta, ldms2_variants_file ->
