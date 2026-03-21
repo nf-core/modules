@@ -16,36 +16,39 @@ input:
   - - meta:
         type: map
         description: |
-          Groovy map containing dense GRM metadata
-          e.g. `[ id:'plink_simulated' ]`
+          Groovy map containing dense GRM metadata.
+          `meta.id` is the required GRM basename consumed by `--grm` and must match
+          the staged dense GRM files.
+          e.g. `[ id:'tiny_dense' ]` requires
+          `tiny_dense.grm.id`, `tiny_dense.grm.bin`, and `tiny_dense.grm.N.bin`.
     - grm_id:
         type: file
-        description: Dense GRM sample identifier file
+        description: Dense GRM sample identifier file with basename `${meta.id}`
         pattern: "*.grm.id"
         ontologies: []
     - grm_bin:
         type: file
-        description: Dense GRM binary matrix file
+        description: Dense GRM binary matrix file with basename `${meta.id}`
         pattern: "*.grm.bin"
         ontologies: []
     - grm_n_bin:
         type: file
-        description: Dense GRM sample-count matrix file
+        description: Dense GRM sample-count matrix file with basename `${meta.id}`
         pattern: "*.grm.N.bin"
         ontologies: []
   - grm_adj:
       type: integer
       description: |
         GRM adjustment value passed to `--grm-adj`.
-        When an empty string is supplied, the module falls back to `0`.
+        If not provided (`null`), the module falls back to integer `0`.
 
 output:
   grm_files:
     - - meta:
           type: map
           description: |
-            Groovy map containing dense GRM metadata
-            e.g. `[ id:'plink_simulated' ]`
+            Groovy map containing dense GRM metadata.
+            `meta.id` remains the dense-GRM basename contract used for `--grm`.
       - "*_adj.grm.id":
           type: file
           description: Adjusted GRM sample identifier file

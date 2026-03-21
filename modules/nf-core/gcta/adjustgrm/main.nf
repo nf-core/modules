@@ -19,7 +19,7 @@ process GCTA_ADJUSTGRM {
 
     script:
     def args = task.ext.args ?: ''
-    def grm_adj_value = (grm_adj == null || grm_adj == '') ? 0 : grm_adj
+    def grm_adj_value = grm_adj == null ? 0 : grm_adj
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
