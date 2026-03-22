@@ -29,8 +29,8 @@ process BOLT_REML {
     def pheno_col_arg = meta2.pheno_col ? "--phenoCol=\"${meta2.pheno_col}\"" : ''
     def covariates_columns = meta3.covariates_columns ?: ''
     def covariates_cat_columns = meta3.covariates_cat_columns ?: ''
-    def covariate_names = covariates_columns ? covariates_columns.split(',')*.trim().findAll { it } : []
-    def categorical_covariate_names = covariates_cat_columns ? covariates_cat_columns.split(',')*.trim().findAll { it } : []
+    def covariate_names = covariates_columns ? covariates_columns.split(',')*.trim().findAll { column -> column } : []
+    def categorical_covariate_names = covariates_cat_columns ? covariates_cat_columns.split(',')*.trim().findAll { column -> column } : []
     def quantitative_covariate_names = covariate_names - categorical_covariate_names
     def covar_file_arg = (covariates_file && covariate_names) ? "--covarFile \"${covariates_file}\"" : ''
     def covar_cols_arg = categorical_covariate_names.collect { column_name -> "--covarCol=\"${column_name.replace('"', '\\"')}\"" }.join(' ')
