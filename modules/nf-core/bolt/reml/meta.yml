@@ -69,7 +69,7 @@ output:
           description: |
             Groovy map containing PLINK genotype bundle metadata.
             e.g. `[ id:'cohort_a' ]`
-      - "*.bolt.reml.log":
+      - "${meta.id}.bolt.reml.log":
           type: file
           description: BOLT-LMM REML log file
           pattern: "*.bolt.reml.log"
