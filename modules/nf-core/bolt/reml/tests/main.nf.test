@@ -78,6 +78,13 @@ nextflow_process {
                     assert !command.contains("--qCovarCol=")
                 },
                 {
+                    def logText = file(process.out.reml_log.get(0).get(1)).text
+                    assert logText.contains("=== Reading phenotype and covariate data ===")
+                    assert logText.contains("=== Estimating variance parameters ===")
+                    assert logText.contains("h2 with all VCs:")
+                    assert logText.contains("plink_simulated_pc1.pc1_phenotype.phe")
+                },
+                {
                     assert snapshot(
                         process.out.reml_log.collect { meta, log -> [meta, file(log).name] },
                         process.out.findAll { key, val -> key.startsWith('versions') }
@@ -125,6 +132,14 @@ nextflow_process {
                     assert command.contains('--qCovarCol="Age"')
                     assert command.contains('--qCovarCol="PC1"')
                     assert command.contains('--qCovarCol="PC2"')
+                },
+                {
+                    def logText = file(process.out.reml_log.get(0).get(1)).text
+                    assert logText.contains("Using categorical covariate: Sex")
+                    assert logText.contains("Using quantitative covariate: Age")
+                    assert logText.contains("Using quantitative covariate: PC1")
+                    assert logText.contains("Using quantitative covariate: PC2")
+                    assert logText.contains("h2 with all VCs:")
                 },
                 {
                     assert snapshot(
