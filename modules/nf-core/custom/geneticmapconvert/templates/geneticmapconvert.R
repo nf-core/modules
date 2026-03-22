@@ -205,20 +205,17 @@ process_map_file <- function(
   minimac_file <- paste0(prefix, ".minimac.map")
   plink_file <- paste0(prefix, ".plink.map")
   stitch_file <- paste0(prefix, ".stitch.map")
-  eagle_file <- paste0(prefix, ".eagle.map")
 
   # Write headers
   writeLines("pos\tchr\tcM", glimpse_file)
   writeLines("#chr\tposition\tGenetic_Map(cM)", minimac_file)
   writeLines("position COMBINED_rate.cM.Mb. Genetic_Map.cM.", stitch_file)
-  writeLines("chr position COMBINED_rate.cM.Mb. Genetic_Map.cM.", eagle_file)
 
   # Write data to files
   con_glimpse <- file(glimpse_file, open = "a")
   con_minimac <- file(minimac_file, open = "a")
   con_plink <- file(plink_file, open = "a")
   con_stitch <- file(stitch_file, open = "a")
-  con_eagle <- file(stitch_file, open = "a")
 
   # Write data to files
   writeLines(
@@ -241,18 +238,10 @@ process_map_file <- function(
     paste(map_df[["pos"]], map_df[["rate"]], map_df[["cm"]], sep = " "),
     con_stitch
   )
-  writeLines(
-    paste(
-      map_df[["chr"]], map_df[["pos"]],
-      map_df[["rate"]], map_df[["cm"]], sep = " "
-    ),
-    con_eagle
-  )
   close(con_glimpse)
   close(con_minimac)
   close(con_plink)
   close(con_stitch)
-  close(con_eagle)
 }
 
 ext_args <- parse_args("${args}")

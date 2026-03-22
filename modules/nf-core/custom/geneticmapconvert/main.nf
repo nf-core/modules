@@ -15,7 +15,6 @@ process CUSTOM_GENETICMAPCONVERT {
     tuple val(meta), path("${prefix}.plink.map")  , emit: plink_map
     tuple val(meta), path("${prefix}.stitch.map") , emit: stitch_map
     tuple val(meta), path("${prefix}.minimac.map"), emit: minimac_map
-    tuple val(meta), path("${prefix}.eagle.map")  , emit: eagle_map
     path "versions.yml", emit: versions_geneticmapconvert, topic: versions
 
     when:

@@ -77,19 +77,6 @@ output:
             tab-delimited file with header and columns:
             chr, pos, cM
           pattern: "*.minimac.map"
-  eagle_map:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test' ]
-      - ${prefix}.eagle.map:
-          type: file
-          description: |
-            File containing the map in STITCH format:
-            space-delimited file with header and columns:
-            chr, pos, rate, cM
-          pattern: "*.eagle.map"
   versions_geneticmapconvert:
     - versions.yml:
         type: file

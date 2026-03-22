@@ -10,6 +10,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "custom"
     tag "custom/geneticmapconvert"
+    tag "tabix/bgzip"
 
     test("Convert map with pos\\tchr\\tcm - with header - meta.chr (glimpse format)") {
         when {
@@ -34,14 +35,24 @@ nextflow_process {
         }
     }
 
-    test("Convert map with pos\\tchr\\tcM - with header - meta.chr (compressed eagle format)") {
+    test("Convert map with pos\\tchr\\tcM - with header - meta.chr (glimpse compressed format)") {
+        setup {
+            run("TABIX_BGZIP"){
+                script "../../../tabix/bgzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: "test", chr:"chr21"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.glimpse.map', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
         when {
             process {
                 """
-                input[0] = [
-                    [id: "test", chr:"21"],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.21.eagle.map.gz', checkIfExists: true)
-                ]
+                input[0] = TABIX_BGZIP.out.output
                 """
             }
         }
