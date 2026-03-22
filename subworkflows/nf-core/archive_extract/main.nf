@@ -7,8 +7,6 @@ workflow ARCHIVE_EXTRACT {
     archive // Channel: [[meta], archive]
 
     main:
-    versions = channel.empty()
-
     archive_to_extract = archive.branch { _meta, archive_ ->
         tar: archive_.toString().endsWith('.tar.gz')
         gz: archive_.toString().endsWith('.gz')
@@ -33,10 +31,7 @@ workflow ARCHIVE_EXTRACT {
             UNZIP.out.unzipped_archive,
         )
 
-    versions = versions.mix(UNZIP.out.versions)
-
     emit:
     extracted     // channel: [ meta, extracted_archive ]
     not_extracted // channel: [ meta, not_extracted_archive ]
-    versions      // channel: [ versions.yml ]
 }
