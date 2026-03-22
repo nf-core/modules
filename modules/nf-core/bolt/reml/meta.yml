@@ -20,17 +20,22 @@ input:
           e.g. `[ id:'cohort_a' ]`
     - bed:
         type: file
-        description: PLINK BED genotype file(s) passed to `--bed`
+        description: |
+          One or more PLINK BED genotype files passed to repeated `--bed` arguments.
+          Entries must be matched by position to `bim` and must have distinct basenames after staging.
         pattern: "*.bed"
         ontologies: []
     - bim:
         type: file
-        description: PLINK BIM variant file(s) matched to `bed` and passed to `--bim`
+        description: |
+          One or more PLINK BIM variant files passed to repeated `--bim` arguments.
+          Entries must be matched by position to `bed` and must have distinct basenames after staging.
         pattern: "*.bim"
         ontologies: []
     - fam:
         type: file
-        description: PLINK FAM sample file passed to `--fam`
+        description: |
+          Single PLINK FAM sample file shared by all matched `bed`/`bim` pairs and passed to `--fam`
         pattern: "*.fam"
         ontologies: []
   - - meta2:

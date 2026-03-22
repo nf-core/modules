@@ -194,4 +194,74 @@ nextflow_process {
             )
         }
     }
+
+    test("homo_sapiens popgen - matched multi-pair bed bim inputs") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                generated_pc1_phenotype = GAWK_PC1_PHENOTYPE.out.output.map { meta, phenotype_file ->
+                    [[ id:'generated_pc1', pheno_col:'Y1' ], phenotype_file]
+                }
+
+                source_bed_location = params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed'
+                source_bim_location = params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim'
+                source_bed = file(source_bed_location, checkIfExists: true)
+                source_bim = file(source_bim_location, checkIfExists: true)
+                unique_pair_dir = java.nio.file.Files.createTempDirectory('bolt_reml_multi_pair_')
+                unique_bed = unique_pair_dir.resolve('plink_simulated_part2.bed')
+                unique_bim = unique_pair_dir.resolve('plink_simulated_part2.bim')
+                if (source_bed_location.startsWith('http://') || source_bed_location.startsWith('https://')) {
+                    java.nio.file.Files.copy(new URL(source_bed_location).openStream(), unique_bed, java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+                    java.nio.file.Files.copy(new URL(source_bim_location).openStream(), unique_bim, java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+                } else {
+                    java.nio.file.Files.copy(java.nio.file.Paths.get(source_bed.toString()), unique_bed, java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+                    java.nio.file.Files.copy(java.nio.file.Paths.get(source_bim.toString()), unique_bim, java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+                }
+
+                input[0] = [
+                    [ id:'plink_simulated_quantitative_multi_pair' ],
+                    [
+                        source_bed,
+                        file(unique_bed.toString(), checkIfExists: true)
+                    ],
+                    [
+                        source_bim,
+                        file(unique_bim.toString(), checkIfExists: true)
+                    ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+                input[1] = generated_pc1_phenotype
+                input[2] = [
+                    [ id:'covariates_none', covariates_columns:'', covariates_cat_columns:'' ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_log.size() == 1 },
+                { assert process.out.reml_log.get(0).get(0).id == "plink_simulated_quantitative_multi_pair" },
+                { assert file(process.out.reml_log.get(0).get(1)).name == "plink_simulated_quantitative_multi_pair.bolt.reml.log" },
+                {
+                    def command = path(process.out.reml_log.get(0).get(1)).parent.resolve(".command.sh").text
+                    assert command.count('--bed "') == 2
+                    assert command.count('--bim "') == 2
+                    assert command.contains('--fam "')
+                    assert command.contains('plink_simulated_part2.bed')
+                    assert command.contains('plink_simulated_part2.bim')
+                },
+                {
+                    assert snapshot(
+                        process.out.reml_log.collect { meta, log -> [meta, file(log).name] },
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
 }
