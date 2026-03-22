@@ -15,9 +15,9 @@ tools:
       documentation: "https://docs.crispresso.com"
       tool_dev_url: "https://github.com/pinellolab/CRISPResso2"
       doi: "10.1038/s41587-019-0032-3"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:crispresso2
-
 input:
   - - meta:
         type: map
@@ -31,7 +31,6 @@ input:
         pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
-
 output:
   results:
     - - meta:
@@ -61,20 +60,33 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-      - "CRISPResso_on_*/*.txt":
+      - CRISPResso_on_*/*.txt:
           type: file
           description: CRISPResso text output files
           pattern: "CRISPResso_on_*/*.txt"
           ontologies:
             - edam: http://edamontology.org/format_2330 # Textual format
+  versions_crispresso2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - crispresso2:
+          type: string
+          description: The name of the tool
+      - CRISPResso --version 2>&1 | sed 's/CRISPResso //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - crispresso2:
+          type: string
+          description: The name of the tool
+      - CRISPResso --version 2>&1 | sed 's/CRISPResso //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@sathyasjali"
 maintainers:
