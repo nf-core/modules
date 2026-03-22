@@ -39,7 +39,9 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - uses: nf-core/setup-nextflow@v2
       - name: Run prek
-        uses: j178/prek-action@0bb87d7f00b0c99306c8bcb8b8beba1eb581c037 # v1
+        uses: j178/prek-action@79f765515bd648eb4d6bb1b17277b7cb22cb6468 # v2.0.0
+        with:
+          extra_args: ""
 
   ###################
   # nf-core linting #
@@ -134,7 +136,7 @@ jobs:
         with:
           python-version: "3.14"
 
-      - uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
+      - uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         id: cache-pip
         with:
           path: ~/.cache/pip
