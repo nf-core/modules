@@ -20,7 +20,9 @@ process BOLT_REML {
     task.ext.when == null || task.ext.when
 
     script:
-    def bed_bim_flags = [bed, bim]
+    def bed_list = bed instanceof Collection ? bed : [bed]
+    def bim_list = bim instanceof Collection ? bim : [bim]
+    def bed_bim_flags = [bed_list, bim_list]
         .transpose()
         .collect { bed_file, bim_file -> "--bed \"${bed_file}\" --bim \"${bim_file}\"" }
         .join(' ')
@@ -31,8 +33,8 @@ process BOLT_REML {
     def categorical_covariate_names = covariates_cat_columns ? covariates_cat_columns.split(',')*.trim().findAll { it } : []
     def quantitative_covariate_names = covariate_names - categorical_covariate_names
     def covar_file_arg = (covariates_file && covariate_names) ? "--covarFile \"${covariates_file}\"" : ''
-    def covar_cols_arg = categorical_covariate_names.collect { column_name -> "--covarCol=${column_name}" }.join(' ')
-    def qcovar_cols_arg = quantitative_covariate_names.collect { column_name -> "--qCovarCol=${column_name}" }.join(' ')
+    def covar_cols_arg = categorical_covariate_names.collect { column_name -> "--covarCol=\"${column_name.replace('"', '\\"')}\"" }.join(' ')
+    def qcovar_cols_arg = quantitative_covariate_names.collect { column_name -> "--qCovarCol=\"${column_name.replace('"', '\\"')}\"" }.join(' ')
     def extra_args = task.ext.args ?: ''
 
     """
