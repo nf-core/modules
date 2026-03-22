@@ -132,7 +132,6 @@ process_map_file <- function(
 
   # Read the map file into a data.table
   map_df <- fread(file_path, sep = detected_sep, header = detected_header)
-  print(map_df)
   colnames(map_df) <- detected_cols
 
   # Initialize columns missing columns
@@ -173,13 +172,21 @@ process_map_file <- function(
     stop("Error: mismatch between chr given and the chr present in file")
   }
 
+  # Order position to ensure all successive rows have increasing position
+  map_df <- map_df[order(map_df[["pos"]]), ]
+  stopifnot(all(diff(map_df[["pos"]]) > 0))
+
+  # Normalize cM (needed by stitch)
+  map_df[["cm"]] <- map_df[["cm"]] - map_df[["cm"]][1]
+
+  if (map_df[["cm"]][1] != 0) {
+    stop("cm[0] needs to be 0 for STITCH software")
+  }
+
   # Compute forward rate for previous row (interval prev -> current)
-  delta_bp <- c(diff(map_df[["pos"]]), NA)
-  delta_cm <- c(diff(map_df[["cm"]]), NA)
-  rate <- ifelse(
-    delta_bp > 0 & !is.na(delta_bp),
-    (delta_cm / delta_bp * 1e6), 0
-  )
+  delta_bp <- c(diff(map_df[["pos"]]))
+  delta_cm <- c(diff(map_df[["cm"]]))
+  rate <- c(delta_cm / delta_bp * 1e6, 0)
 
   if (!"rate" %in% colnames(map_df)) {
     map_df[["rate"]] <- rate
