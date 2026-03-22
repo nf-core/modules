@@ -8,7 +8,7 @@ process HDL_H2 {
 
     input:
     tuple val(meta), path(sumstats)
-    tuple val(ref_meta), path(hdl_ref_panel_dir)
+    tuple val(meta2), path(hdl_ref_panel_dir)
 
     output:
     tuple val(meta), path("${meta.id}.h2.tsv"), emit: heritability_results

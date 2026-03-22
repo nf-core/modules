@@ -15,11 +15,11 @@ nextflow_process {
                 """
                 input[0] = tuple(
                     [id: "trait1"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/sumstats/trait1_canonical.tsv", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/sumstats/trait1_canonical.tsv", checkIfExists: true)
                 )
                 input[1] = tuple(
                     [id: "trait2"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/sumstats/trait2_canonical.tsv", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/sumstats/trait2_canonical.tsv", checkIfExists: true)
                 )
                 input[2] = tuple(
                     [id: "hdl_reference"],
@@ -46,11 +46,11 @@ nextflow_process {
                 """
                 input[0] = tuple(
                     [id: "trait1"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/sumstats/trait1_canonical.tsv", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/sumstats/trait1_canonical.tsv", checkIfExists: true)
                 )
                 input[1] = tuple(
                     [id: "trait2"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/hdl/sumstats/trait2_canonical.tsv", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/sumstats/trait2_canonical.tsv", checkIfExists: true)
                 )
                 input[2] = tuple(
                     [id: "hdl_reference"],

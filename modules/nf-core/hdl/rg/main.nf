@@ -9,7 +9,7 @@ process HDL_RG {
     input:
     tuple val(meta), path(sumstats1)
     tuple val(meta2), path(sumstats2)
-    tuple val(ref_meta), path(hdl_ref_panel_dir)
+    tuple val(meta3), path(hdl_ref_panel_dir)
 
     output:
     tuple val(meta), val(meta2), path("${meta.id}.${meta2.id}.rg.tsv"), emit: correlation_results
