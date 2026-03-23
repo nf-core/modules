@@ -9,7 +9,7 @@ process MCSTAGING_PHENOIMAGER2MC {
 
     output:
     tuple val(meta), path("*.tif"), emit: tif
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('phenoimager2mc'), eval('python /phenoimager2mc/scripts/phenoimager2mc.py --version | sed "s/v//g"'), emit: versions_phenoimager2mc, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,10 +29,7 @@ process MCSTAGING_PHENOIMAGER2MC {
         -o "${prefix}.tif" \
         $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        phenoimager2mc: \$(python /phenoimager2mc/scripts/phenoimager2mc.py --version | sed 's/v//g')
-    END_VERSIONS
+    sed -i -E 's/UUID="urn:uuid:[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}"/                                                    /g' ${prefix}.tif
     """
 
     stub:
@@ -44,9 +41,5 @@ process MCSTAGING_PHENOIMAGER2MC {
     """
     touch input
     touch "${prefix}.tif"
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        phenoimager2mc: \$(python /phenoimager2mc/scripts/phenoimager2mc.py --version | sed 's/v//g')
-    END_VERSIONS
     """
 }

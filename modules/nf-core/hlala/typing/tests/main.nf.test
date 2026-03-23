@@ -55,7 +55,7 @@ nextflow_process {
                     [ id: 'test'],
                     file("https://dl.dropboxusercontent.com/s/xr99u3vqaimk4vo/NA12878.mini.cram", checkIfExists: true)
                 ]).combine(
-                    SAMTOOLS_INDEX.out.bai.map{ it[1] }
+                    SAMTOOLS_INDEX.out.index.map{ it[1] }
                 ).combine(
                     HLALA_PREPAREGRAPH.out.graph.map{ it[1] }
                 )

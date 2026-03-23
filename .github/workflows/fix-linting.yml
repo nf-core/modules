@@ -34,8 +34,10 @@ jobs:
 
       - name: Run prek
         id: prek
-        uses: j178/prek-action@0bb87d7f00b0c99306c8bcb8b8beba1eb581c037 # v1
+        uses: j178/prek-action@79f765515bd648eb4d6bb1b17277b7cb22cb6468 # v2.0.0
         continue-on-error: true
+        with:
+          extra_args: ""
 
       - name: Post nothing-to-do comment
         if: steps.prek.outcome == 'success'

@@ -13,7 +13,7 @@ process ENTREZDIRECT_ESEARCH {
 
     output:
     tuple val(meta), path("*.xml") , emit: xml
-    path "versions.yml"            , emit: versions
+    tuple val("${task.process}"), val('ENTREZDIRECT'), eval('esearch -version 2>&1'), emit: versions_esearch, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,19 +27,12 @@ process ENTREZDIRECT_ESEARCH {
         -query $term \\
         $args > ${prefix}.xml
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        esearch: \$(esearch -version)
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.xml
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        esearch: \$(esearch -version)
-    END_VERSIONS
+
     """
 }
