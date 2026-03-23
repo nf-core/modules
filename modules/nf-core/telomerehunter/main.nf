@@ -34,11 +34,14 @@ process TELOMEREHUNTER {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
+    def control_stub = control_bam ? """
+    mkdir -p ${prefix}/control_TelomerCnt_${prefix}
+    touch ${prefix}/control_TelomerCnt_${prefix}/${prefix}_control_summary.tsv
+    """ : ""
     """
     mkdir -p ${prefix}/tumor_TelomerCnt_${prefix}
-    mkdir -p ${prefix}/control_TelomerCnt_${prefix}
     touch ${prefix}/${prefix}_summary.tsv
     touch ${prefix}/tumor_TelomerCnt_${prefix}/${prefix}_tumor_summary.tsv
-    touch ${prefix}/control_TelomerCnt_${prefix}/${prefix}_control_summary.tsv
+    ${control_stub}
     """
 }
