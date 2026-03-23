@@ -1,0 +1,103 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "telomerehunter"
+description: "In silico estimation of telomere content and composition from cancer genomes"
+keywords:
+  - bam
+  - genomics
+  - telomere
+  - telomerehunter
+  - cancer
+tools:
+  - "telomerehunter":
+      description: "In silico estimation of telomere content and composition from cancer genomes"
+      homepage: "https://github.com/linasieverling/TelomereHunter"
+      documentation: "https://github.com/linasieverling/TelomereHunter"
+      tool_dev_url: "https://github.com/linasieverling/TelomereHunter"
+      doi: "10.1186/s12859-019-2851-0"
+      licence: ["GPL v3"]
+      args_id: "$args"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - tumor_bam:
+        type: file
+        description: Indexed BAM file of the tumor sample
+        pattern: "*.{bam}"
+        ontologies: []
+    - tumor_bai:
+        type: file
+        description: BAM index file for the tumor sample
+        pattern: "*.{bai}"
+        ontologies: []
+    - control_bam:
+        type: file
+        description: Optional indexed BAM file of the control sample
+        pattern: "*.{bam}"
+        ontologies: []
+    - control_bai:
+        type: file
+        description: Optional BAM index file for the control sample
+        pattern: "*.{bai}"
+        ontologies: []
+output:
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "${prefix}/${prefix}_summary.tsv":
+          type: file
+          description: Combined summary TSV with telomere content estimates
+          pattern: "*_summary.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  tumor:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "${prefix}/tumor_TelomerCnt_${prefix}/":
+          type: directory
+          description: Directory with tumor telomere analysis results
+          ontologies: []
+  control:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "${prefix}/control_TelomerCnt_${prefix}/":
+          type: directory
+          description: Directory with control telomere analysis results
+          ontologies: []
+  versions_telomerehunter:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - telomerehunter:
+          type: string
+          description: The name of the tool
+      - "pip show telomerehunter 2>/dev/null | grep Version | cut -d ' ' -f2":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - telomerehunter:
+          type: string
+          description: The name of the tool
+      - "pip show telomerehunter 2>/dev/null | grep Version | cut -d ' ' -f2":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@jonathan-manning"
+maintainers:
+  - "@jonathan-manning"
