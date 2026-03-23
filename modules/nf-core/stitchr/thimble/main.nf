@@ -3,6 +3,7 @@ process STITCHR_THIMBLE {
     label 'process_single'
 
 
+    conda "${moduleDir}/environment.yml"
     container "ghcr.io/qbic-pipelines/stitchr:1.3.1"
 
 
