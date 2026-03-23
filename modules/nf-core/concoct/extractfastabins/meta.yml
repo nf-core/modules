@@ -17,7 +17,8 @@ tools:
       documentation: "https://concoct.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/BinPro/CONCOCT"
       doi: "10.1038/nmeth.3103"
-      licence: ["FreeBSD"]
+      licence:
+        - "FreeBSD"
       identifier: biotools:concoct
 input:
   - - meta:
@@ -32,7 +33,8 @@ input:
         ontologies: []
     - csv:
         type: boolean
-        description: Output table of merge_cutup_clustering with new cluster assignments
+        description: Output table of merge_cutup_clustering with new cluster
+          assignments
         pattern: ".csv"
 output:
   fasta:
@@ -43,18 +45,33 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}/*.fa.gz:
           type: file
-          description: FASTA files containing CONCOCT predicted bin clusters, named
-            numerically by CONCOCT cluster ID in a directory called `fasta_bins`
+          description: FASTA files containing CONCOCT predicted bin clusters,
+            named numerically by CONCOCT cluster ID in a directory called
+            `fasta_bins`
           pattern: "*.fa.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
+  versions_concoct:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - concoct:
+          type: string
+          description: The name of the tool
+      - concoct --version 2>&1 | sed -n 's/concoct //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - concoct:
+          type: string
+          description: The name of the tool
+      - concoct --version 2>&1 | sed -n 's/concoct //p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:
