@@ -164,8 +164,8 @@ output:
             type: map
             description: Metadata map
         - plots:
-            type: list
-            description: A list of plot files
+            type: file
+            description: Plot file
             pattern: "*.{png,pdf}"
   - other:
       description: Channel containing other outputs from differential analysis
@@ -174,8 +174,9 @@ output:
             type: map
             description: Metadata map
         - other_files:
-            type: list
-            description: A list of other output files from differential analysis
+            type: file
+            description: Other output file from differential analysis
+            pattern: "*.{rds,tsv,log}"
 authors:
   - "@pinin4fjords"
   - "@bjlang"

@@ -143,8 +143,8 @@ output:
             type: file
             description: |
               Additional outputs from gprofiler2, including gost results (RDS),
-              filtered GMT files, and R session logs.
-            pattern: "*.{rds,gmt,log}"
+              filtered GMT files, R session logs, and PNG plot files.
+            pattern: "*.{rds,gmt,log,png}"
   - gsea_report:
       description: Channel containing all the output from GSEA needed for further reporting.
       structure:
