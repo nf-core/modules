@@ -108,7 +108,7 @@ process CTATSPLICING_PREPGENOMELIB {
     touch $genome_lib/ref_genome.fa.fai
     touch $genome_lib/refGene.bed
     echo | gzip > $genome_lib/refGene.sort.bed.gz
-    echo | gzip > $genome_lib/refGene.sort.bed.gz.tbi
+    touch $genome_lib/refGene.sort.bed.gz.tbi
     touch $genome_lib/cancer_splicing_lib/cancer_splicing.idx
     """
 }
