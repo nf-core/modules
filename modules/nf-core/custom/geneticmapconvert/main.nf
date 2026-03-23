@@ -37,9 +37,9 @@ process CUSTOM_GENETICMAPCONVERT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        r-base: \$(R --version | sed '1!d; s/.*version //; s/ .*//'")
-        r-data.table: \$(Rscript -e "cat(packageVersion('data.table'))")
-        r-stringr: \$(Rscript -e "cat(packageVersion('stringr'))")
+        r-base: \$(R --version | sed '1!d; s/.*version //; s/ .*//')
+        r-data.table: \$(Rscript -e "cat(as.character(packageVersion('data.table')))")
+        r-stringr: \$(Rscript -e "cat(as.character(packageVersion('stringr')))")
     END_VERSIONS
     """
 }
