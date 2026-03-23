@@ -21,15 +21,12 @@ process DEEPARG_DOWNLOADDATA {
     tuple val("${task.process}"), val('deeparg'), val('1.0.4'), emit: versions_deeparg, topic: versions
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
-
-
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
     """
-
     # Theano needs a writable space and uses the home directory by default,
     # but the latter is not always writable, for instance when Singularity
     # is run in --no-home mode
@@ -44,7 +41,6 @@ process DEEPARG_DOWNLOADDATA {
 
     stub:
     def args = task.ext.args ?: ''
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     echo "deeparg \\
         download_data \\
