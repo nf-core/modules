@@ -14,7 +14,7 @@ process MUMMER {
     output:
     tuple val(meta), path("*.coords"), emit: coords
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    tuple val("${task.process}"), val('mummer'), eval("echo '3.23'"), topic: versions, emit: versions_mummer
+    tuple val("${task.process}"), val('mummer'), val("3.23"), topic: versions, emit: versions_mummer
 
     when:
     task.ext.when == null || task.ext.when

@@ -50,9 +50,9 @@ output:
       - mummer:
           type: string
           description: The tool name
-      - echo '3.23':
-          type: eval
-          description: The expression to obtain the version of the tool
+      - "3.23":
+          type: string
+          description: The version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -61,9 +61,9 @@ topics:
       - mummer:
           type: string
           description: The tool name
-      - echo '3.23':
-          type: eval
-          description: The expression to obtain the version of the tool
+      - "3.23":
+          type: string
+          description: The version of the tool
 authors:
   - "@mjcipriano"
   - "@sateeshperi"

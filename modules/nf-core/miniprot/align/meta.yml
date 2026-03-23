@@ -64,9 +64,8 @@ output:
           type: string
           description: The tool name
       - "miniprot --version":
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -76,7 +75,7 @@ topics:
           type: string
           description: The tool name
       - "miniprot --version":
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@yumisims"
