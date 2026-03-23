@@ -98,7 +98,8 @@ opt <- list(
     reml                       = FALSE,
     round_digits               = NULL,
     formula                    = "$formula",              # User-specified formula (e.g. "~ + (1 | sample_number)")
-    apply_voom                 = FALSE                    # Whether to apply `voomWithDreamWeights`
+    apply_voom                 = FALSE,                   # Whether to apply `voomWithDreamWeights`
+    seed                       = NULL
 )
 
 # Load external arguments to opt list
@@ -126,6 +127,11 @@ opt\$confint      <- as.logical(opt\$confint)
 
 if (!is.null(opt\$round_digits)){
   opt\$round_digits <- as.numeric(opt\$round_digits)
+}
+
+if (!is.null(opt\$seed)) {
+  opt\$seed <- as.numeric(opt\$seed)
+  set.seed(opt\$seed)
 }
 
 # Load metadata
