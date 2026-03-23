@@ -272,7 +272,7 @@ if (as.logical(opt\$apply_voom)) {
 }
 
 # Fit the DREAM model with ddf and reml options
-fitmm <- dream(vobjDream, form, metadata, ddf = opt\$ddf, reml = opt\$reml, BPARAM = bp)
+fitmm <- dream(vobjDream, form, metadata, ddf = opt\$ddf, reml = opt\$reml, BPPARAM = bp)
 
 # Parse stdev_coef_lim and winsor_tail_p into numeric vectors
 stdev_coef_lim_vals <- as.numeric(unlist(strsplit(opt\$stdev_coef_lim, ",")))
@@ -311,10 +311,11 @@ if (is_valid_string(contrast_string)) {
                   winsor.tail.p = winsor_tail_p_vals)
     results <- topTable(fit2, number = Inf,
                         adjust.method = opt\$adjust.method,
-                        p.value = opt\$p.value, lfc = opt\$lfc, confint = opt\$confint)
+                        p.value = opt\$p.value, lfc = opt\$lfc, confint = opt\$confint, sort.by = "none")
 }
 
 results\$gene_id <- rownames(results)
+results <- results[order(results$gene_id), , drop = FALSE]
 results <- results[, c("gene_id", setdiff(names(results), "gene_id"))]
 
 # Round results if required
