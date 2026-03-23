@@ -4,8 +4,8 @@ process BCFTOOLS_PLUGINSETGT {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/56/5648bfc7bfc9dc3229164176f714552a35868b63c48783021acd4245a78048b3/data'
-        : 'community.wave.seqera.io/library/bcftools_htslib:61fd353e1e0a1924'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0b/0b4d52ca9a56d07be3f78a12af654e5116f5112908dba277e6796fd9dfb83fe5/data'
+        : 'community.wave.seqera.io/library/bcftools_htslib:1.23.1--9f08ec665533d64a'}"
 
     input:
     tuple val(meta), path(vcf), path(index)
