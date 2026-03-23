@@ -315,7 +315,7 @@ if (is_valid_string(contrast_string)) {
 }
 
 results\$gene_id <- rownames(results)
-results <- results[order(results$gene_id), , drop = FALSE]
+results <- results[order(results\$gene_id), , drop = FALSE]
 results <- results[, c("gene_id", setdiff(names(results), "gene_id"))]
 
 # Round results if required
