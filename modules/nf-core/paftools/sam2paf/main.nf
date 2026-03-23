@@ -13,7 +13,8 @@ process PAFTOOLS_SAM2PAF {
 
     output:
     tuple val(meta), file("*.paf")          , emit: paf
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('paftools'), eval("paftools.js version"), topic: versions, emit: versions_paftools
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,11 +24,6 @@ process PAFTOOLS_SAM2PAF {
 
     """
     samtools view -h ${bam} | paftools.js sam2paf - > ${prefix}.paf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        paftools.js: \$(paftools.js --version)
-    END_VERSIONS
     """
 
     stub:
@@ -35,10 +31,5 @@ process PAFTOOLS_SAM2PAF {
 
     """
     touch ${prefix}.paf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        paftools.js: \$(paftools.js --version)
-    END VERSIONS
     """
 }
