@@ -1,0 +1,153 @@
+name: "exomiser_analyse"
+description: Phenotype-driven variant prioritisation for rare Mendelian
+  disorders.
+keywords:
+  - exomiser
+  - variant prioritisation
+  - rare disease
+  - Mendelian disorders
+tools:
+  - "exomiser":
+      description: "A Tool to Annotate and Prioritize Exome Variants"
+      homepage: "https://exomiser.readthedocs.io/en/stable/"
+      documentation: "https://exomiser.readthedocs.io/en/stable/"
+      tool_dev_url: "https://github.com/exomiser/Exomiser"
+      doi: "10.1038/s41525-024-00456-2"
+      licence:
+        - "AGPL-3.0"
+      identifier: biotools:exomiser
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1' ]`
+    - vcf:
+        type: file
+        description: "VCF file containing variants to be analysed."
+        pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
+    - ped:
+        type: file
+        description: "PED file containing family information."
+        pattern: "*.ped"
+        ontologies: []
+    - assembly:
+        type: string
+        description: "Genome assembly to use. e.g. GRCh37, GRCh38"
+    - phenopacket:
+        type: file
+        description: "Phenopacket file containing phenotype information."
+        pattern: "*.{yml,yaml,json}"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
+          - edam: http://edamontology.org/format_3464
+    - analysis_script:
+        type: file
+        description: "Custom analysis script for Exomiser analysis"
+        pattern: "*.{yml,yaml,json}"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
+          - edam: http://edamontology.org/format_3464
+  - - meta2:
+        type: map
+        description: Groovy Map containing reference cache information. e.g. `[
+          id:'sample1' ]`
+    - reference_cache:
+        type: file
+        description: "Reference cache for Exomiser analysis"
+        pattern: "exomiser_data/*"
+        ontologies: []
+    - reference_version:
+        type: string
+        description: "Reference version for Exomiser analysis"
+  - - meta3:
+        type: map
+        description: Groovy Map containing phenotype cache information. e.g. `[
+          id:'sample1' ]`
+    - phenotype_cache:
+        type: file
+        description: "Phenotype cache for Exomiser analysis"
+        pattern: "exomiser_data/*"
+        ontologies: []
+    - phenotype_version:
+        type: string
+        description: "Phenotype version for Exomiser analysis"
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - "*.{tsv}":
+          type: file
+          description: "TSV file containing prioritized variants."
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  json:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - "*.{json}":
+          type: file
+          description: "JSON file containing prioritized variants."
+          pattern: "*.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464
+  html:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - "*.{html}":
+          type: file
+          description: "HTML file containing prioritized variants."
+          pattern: "*.html"
+          ontologies: []
+  parquet:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - "*.{parquet}":
+          type: file
+          description: "Parquet file containing prioritized variants."
+          pattern: "*.parquet"
+          ontologies: []
+  vcf:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - "*.{vcf}":
+          type: file
+          description: "VCF file containing prioritized variants."
+          pattern: "*.vcf"
+          ontologies: []
+  versions_exomiser:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - exomiser:
+          type: string
+          description: The name of the tool
+      - exomiser --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - exomiser:
+          type: string
+          description: The name of the tool
+      - exomiser --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@matthdsm"
+maintainers:
+  - "@matthdsm"
