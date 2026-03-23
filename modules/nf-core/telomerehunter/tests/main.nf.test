@@ -27,7 +27,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.summary
+                    process.out.summary,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -53,7 +54,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.summary,
-                    process.out.control
+                    process.out.control,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -80,7 +82,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.summary
+                    process.out.summary,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }

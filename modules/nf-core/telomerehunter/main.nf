@@ -4,8 +4,8 @@ process TELOMEREHUNTER {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/03/032cd65d6d2c4637b637f1f7547d073d097e58fb41a5fb3c6189a94e1df7f217/data'
-        : 'community.wave.seqera.io/library/python_pysam_samtools_numpy_pruned:db6e043542c8de22' }"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/80/80328294e56cd32cb354e132be9fe29b20e59acbdd1e071cd94aec5c21f9abda/data'
+        : 'community.wave.seqera.io/library/python_pysam_samtools_numpy_pruned:e5e0b9c3eb477e2e' }"
 
     input:
     tuple val(meta), path(tumor_bam), path(tumor_bai), path(control_bam), path(control_bai)
