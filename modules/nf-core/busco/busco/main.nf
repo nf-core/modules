@@ -23,6 +23,7 @@ process BUSCO_BUSCO {
 
     output:
     tuple val(meta), path("*-busco.batch_summary.txt"), emit: batch_summary
+    tuple val(meta), path("*-busco.batch_summary.failed.txt"), emit: batch_summary_failed, optional: true
     tuple val(meta), path("short_summary.*.txt"), emit: short_summaries_txt, optional: true
     tuple val(meta), path("short_summary.*.json"), emit: short_summaries_json, optional: true
     tuple val(meta), path("*-busco.log"), emit: log, optional: true
@@ -105,14 +106,12 @@ process BUSCO_BUSCO {
     find . -xtype l -delete
 
     # Move files to avoid staging/publishing issues
-    mv ${prefix}-busco/batch_summary.txt ${prefix}-busco.batch_summary.txt
+    grep -v 'Run failed; check logs' ${prefix}-busco/batch_summary.txt > ${prefix}-busco.batch_summary.txt
     mv ${prefix}-busco/*/short_summary.*.{json,txt} . || echo "Short summaries were not available: No genes were found."
     mv ${prefix}-busco/logs/busco.log ${prefix}-busco.log
 
-    if grep 'Run failed; check logs' ${prefix}-busco.batch_summary.txt > /dev/null
-    then
-        echo "Busco run failed"
-        exit 1
+    if grep -q 'Run failed; check logs' ${prefix}-busco/batch_summary.txt; then
+        grep 'Run failed; check logs' ${prefix}-busco/batch_summary.txt > ${prefix}-busco.batch_summary.failed.txt
     fi
     """
 
