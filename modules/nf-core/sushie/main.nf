@@ -24,7 +24,10 @@ process SUSHIE {
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     // HOME is set to a writable location to avoid pathlib to fail when creating cache files
-
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "SUSHIE module does not support Conda. Please use Docker instead."
+    }
     """
     export HOME=\$PWD/nxf_home
 
@@ -42,6 +45,10 @@ process SUSHIE {
     stub:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "SUSHIE module does not support Conda. Please use Docker instead."
+    }
     """
     echo ${args}
 
