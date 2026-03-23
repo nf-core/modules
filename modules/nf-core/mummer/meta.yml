@@ -11,7 +11,8 @@ tools:
       documentation: http://mummer.sourceforge.net/
       tool_dev_url: http://mummer.sourceforge.net/
       doi: 10.1186/gb-2004-5-2-r12
-      licence: ["The Artistic License"]
+      licence:
+        - "The Artistic License"
       identifier: biotools:mummer
 input:
   - - meta:
@@ -38,17 +39,31 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.coords":
           type: file
-          description: File containing coordinates of matches between reference and
-            query sequence
+          description: File containing coordinates of matches between reference
+            and query sequence
           pattern: "*.coords"
           ontologies: []
+  versions_mummer:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - mummer:
+          type: string
+          description: The tool name
+      - "3.23":
+          type: string
+          description: The version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - mummer:
+          type: string
+          description: The tool name
+      - "3.23":
+          type: string
+          description: The version of the tool
 authors:
   - "@mjcipriano"
   - "@sateeshperi"
