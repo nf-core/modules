@@ -33,11 +33,12 @@ process MASURCA {
 
 
     output:
-    tuple val(meta), path("${prefix}/assemble.sh")                               , emit: script
-    tuple val(meta), path("${prefix}/CA*/final.genome.scf.fasta"), optional: true, emit: scaffolds
-    tuple val(meta), path("${prefix}/CA*/final.genome.ctg.fasta"), optional: true, emit: contigs
-    tuple val(meta), path("${prefix}/flye/assembly.fasta")       , optional: true, emit: flye_assembly
-    tuple val(meta), path("${prefix}/*_masurca_config.txt")                      , emit: config
+    tuple val(meta), path("assemble.sh")                               , emit: script
+    tuple val(meta), path("CA*/final.genome.scf.fasta"), optional: true, emit: scaffolds
+    tuple val(meta), path("CA*/final.genome.ctg.fasta"), optional: true, emit: contigs
+    tuple val(meta), path("flye/assembly.fasta")       , optional: true, emit: flye_assembly
+    tuple val(meta), path("*_masurca_config.txt")                      , emit: config
+    tuple val(meta), path("*-masurca.log")                             , emit: log
     tuple val("${task.process}"), val('masurca'), eval("masurca --version | sed 's/version //g'"), topic: versions, emit: versions_masurca
 
     when:
@@ -48,7 +49,7 @@ process MASURCA {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     //get input reads with absolute paths - illumina are mandatory, jump/pacbio/nanopore are optional
-    def illumina_reads = meta.single_end ? "\$(readlink -f ${illumina})" : "\$(readlink -f ${illumina[0]}) \$(readlink -f ${illumina[1]})"
+    def illumina_reads = [illumina].flatten().join(' ')
     def jump_reads = jump ? "\$(readlink -f ${jump[0]}) \$(readlink -f ${jump[1]})" : ""
     def pacbio_file = pacbio ? "\$(readlink -f ${pacbio})" : ""
     def nanopore_file = nanopore ? "\$(readlink -f ${nanopore})" : ""
@@ -156,15 +157,13 @@ process MASURCA {
     
     # Run the assembly
     cd ${prefix}
-    ./assemble.sh
+    ./assemble.sh > ${prefix}-masurca.log 2>&1
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    echo $args
-    
+    """   
     mkdir -p ${prefix}/CA
     mkdir -p ${prefix}/flye
     touch ${prefix}/assemble.sh
