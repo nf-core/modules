@@ -131,6 +131,7 @@ if (!is.null(opt\$round_digits)){
 
 if (!is.null(opt\$seed)) {
   opt\$seed <- as.numeric(opt\$seed)
+  RNGkind("L'Ecuyer-CMRG")
   set.seed(opt\$seed)
 }
 
@@ -245,12 +246,14 @@ print(form)
 # Parallel processing setup
 threads <- as.numeric(opt\$threads)
 
+bp <- SnowParam(workers =  threads, type = "SOCK", RNGseed = opt\$seed, progressbar = FALSE)
+
 # Optionally apply voom
 if (as.logical(opt\$apply_voom)) {
     # Standard usage of limma/voom
     dge <- DGEList(countMatrix)
     dge <- calcNormFactors(dge)
-    vobjDream <- voomWithDreamWeights(dge, form, metadata, BPPARAM = MulticoreParam(threads))
+    vobjDream <- voomWithDreamWeights(dge, form, metadata, BPPARAM = bp)
 
     # Write normalized counts matrix to a TSV file
      normalized_counts <- vobjDream\$E
@@ -269,7 +272,7 @@ if (as.logical(opt\$apply_voom)) {
 }
 
 # Fit the DREAM model with ddf and reml options
-fitmm <- dream(vobjDream, form, metadata, ddf = opt\$ddf, reml = opt\$reml)
+fitmm <- dream(vobjDream, form, metadata, ddf = opt\$ddf, reml = opt\$reml, BPARAM = bp)
 
 # Parse stdev_coef_lim and winsor_tail_p into numeric vectors
 stdev_coef_lim_vals <- as.numeric(unlist(strsplit(opt\$stdev_coef_lim, ",")))
