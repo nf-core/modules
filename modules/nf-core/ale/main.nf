@@ -13,7 +13,7 @@ process ALE {
 
     output:
     tuple val(meta), path("*_ALEoutput.txt"), emit: ale
-    tuple val("${task.process}"), val('ALE'), eval("echo 20180904"), emit: versions_ale, topic: versions
+    tuple val("${task.process}"), val('ALE'), val("20180904"), emit: versions_ale, topic: versions
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
