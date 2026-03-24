@@ -26,8 +26,8 @@ process DEEPARG_PREDICT {
     tuple val(meta), path("*.align.daa.tsv"), emit: daa_tsv
     tuple val(meta), path("*.mapping.ARG"), emit: arg
     tuple val(meta), path("*.mapping.potential.ARG"), emit: potential_arg
-    tuple val("${task.process}"), val('deeparg'), val('1.0.4'), emit: versions_deeparg, topic: versions
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('deeparg'), val('1.0.4'), emit: versions_deeparg, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
