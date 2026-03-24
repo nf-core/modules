@@ -15,7 +15,8 @@ process TELSEQ {
 
     output:
     tuple val(meta), path("*.telseq.tsv"), emit: output
-    path "versions.yml"                  , emit: versions
+    tuple val("${task.process}"), val('telseq'), eval("telseq --help 2>&1 | sed -n 's/^Version: //p'"), emit: versions_telseq, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools --version | sed -n '1s/samtools //p'"), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,22 +42,11 @@ process TELSEQ {
     awk '/^ReadGroup/ {ok=1;} {if(ok) print;}' tmp.tsv > ${prefix}.telseq.tsv
     rm tmp.tsv
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        telseq: \$(telseq --help 2>&1 | grep "^Version" -m1 | cut -d ' ' -f2)
-        samtools: \$(samtools --version |& sed '1!d ; s/samtools //')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.telseq.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        telseq: \$(telseq --help 2>&1 | grep "^Version" -m1 | cut -d ' ' -f2)
-        samtools: \$(samtools --version |& sed '1!d ; s/samtools //')
-    END_VERSIONS
     """
 }

@@ -85,13 +85,37 @@ output:
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_telseq:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - telseq:
+          type: string
+          description: The name of the tool
+      - "telseq --help 2>&1 | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of telseq
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - "samtools --version | sed -n '1s/samtools //p'":
+          type: eval
+          description: The expression to obtain the version of samtools
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - toolname:
+          type: string
+          description: The name of the tool
+      - version_command:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@lindenb"
 maintainers:
