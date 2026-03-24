@@ -11,6 +11,9 @@ nextflow_process {
 
     test("homo_sapiens - ont bam - telomere reads") {
         when {
+            params {
+                module_args = '--rng 42'
+            }
             process {
                 """
                 input[0] = [
@@ -31,6 +34,9 @@ nextflow_process {
                 { assert process.out.plots },
                 { assert process.out.qc },
                 { assert snapshot(
+                    file(process.out.tlens.get(0).get(1)).name,
+                    process.out.plots.collect { meta, pngs -> pngs.collect { png -> file(png).name } },
+                    process.out.qc.collect { meta, dir -> file(dir).list().sort() },
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
@@ -39,6 +45,9 @@ nextflow_process {
 
     test("homo_sapiens - pacbio bam - no telomere reads") {
         when {
+            params {
+                module_args = '--rng 42'
+            }
             process {
                 """
                 input[0] = [
@@ -64,6 +73,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = '--rng 42'
+            }
             process {
                 """
                 input[0] = [

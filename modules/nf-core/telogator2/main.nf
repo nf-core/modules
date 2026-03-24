@@ -38,8 +38,6 @@ process TELOGATOR2 {
     """
     mkdir -p ${prefix}/qc
     touch ${prefix}/tlens_by_allele.tsv
-    touch ${prefix}/all_final_alleles.png
-    touch ${prefix}/violin_atl.png
     touch ${prefix}/qc/stats.txt
     """
 }
