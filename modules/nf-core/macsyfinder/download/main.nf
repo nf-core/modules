@@ -11,7 +11,7 @@ process MACSYFINDER_DOWNLOAD {
     val model_name
 
     output:
-    path "models"       , emit: models
+    path "models", emit: models
     tuple val("${task.process}"), val('macsyfinder'), eval('macsyfinder --version 2>&1 | sed "1!d;s/^.*MacSyFinder //;s/ .*$//"'), topic: versions, emit: versions_macsyfinder
     tuple val("${task.process}"), val('msf_data'), eval('msf_data --version 2>&1 | sed "4!d;s/^- MacSyLib //;s/ *$//"'), topic: versions, emit: versions_macsydata
 
