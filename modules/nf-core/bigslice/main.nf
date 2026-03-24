@@ -13,17 +13,25 @@ process BIGSLICE {
     path(hmmdb)
 
     output:
-    tuple val(meta), path("${prefix}/result/data.db")    , emit: db
+    tuple val(meta), path("${prefix}/result/data.db")   , emit: db
     tuple val(meta), path("${prefix}/result/tmp/**/*.fa"), emit: fa
+    tuple val(meta), path("${prefix}/result/tsv_export") , emit: tsv
     tuple val("${task.process}"), val('bigslice'), eval("echo 2.0.2"), topic: versions, emit: versions_bigslice
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def args   = task.ext.args ?: ''
+    def args2  = task.ext.args2 ?: ''
+    prefix     = task.ext.prefix ?: "${meta.id}"
     def sample = meta.id
+    def export_tsv_cmd = args2 ? """
+    bigslice \\
+        --export-tsv ${prefix}/result/tsv_export \\
+        --program_db_folder ${hmmdb} \\
+        ${prefix}
+    """ : ''
     """
     mkdir -p input/dataset/${sample} input/taxonomy
     cp bgc_files/* input/dataset/${sample}/
@@ -39,16 +47,24 @@ process BIGSLICE {
         -i input \\
         --program_db_folder ${hmmdb} \\
         ${prefix}
+
+    mkdir -p ${prefix}/result/tsv_export
+    ${export_tsv_cmd}
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def args   = task.ext.args ?: ''
+    def args2  = task.ext.args2 ?: ''
+    prefix     = task.ext.prefix ?: "${meta.id}"
     """
     echo $args
 
     mkdir -p ${prefix}/result/tmp/2e555308dfc411186cf012334262f127
+    mkdir -p ${prefix}/result/tsv_export
     touch ${prefix}/result/data.db
     touch ${prefix}/result/tmp/2e555308dfc411186cf012334262f127/test.fa
+    if [ -n "${args2}" ]; then
+        touch ${prefix}/result/tsv_export/bgcs.tsv
+    fi
     """
 }

@@ -24,13 +24,12 @@ input:
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
     - bgc:
-        type: directory
+        type: file
         description: |
-          Path to a folder containing genomic regions in GenBank format, structured for BiG-SLiCE.
-          Each genome should have its own subfolder with region `.gbk` files.
-          The folder should also contain a datasets.tsv, and a taxonomy folder, with TSV taxonomy files per dataset.
-          See the tool's wiki for more information: https://github.com/medema-group/bigslice/wiki/Input-folder
-        pattern: "*"
+          List of GenBank (.gbk) files containing genomic region annotations for BiG-SLiCE input.
+          Each file represents a BGC region. The module internally organises them into the required
+          BiG-SLiCE input folder structure (datasets.tsv and taxonomy TSV).
+        pattern: "*.gbk"
   - hmmdb:
       type: directory
       description: |
@@ -61,6 +60,17 @@ output:
           pattern: "*.fa"
           ontologies:
             - edam: "http://edamontology.org/format_1929" # FASTA
+  tsv:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample/dataset information
+      - ${prefix}/result/tsv_export:
+          type: directory
+          description: |
+            Directory containing TSV exports of all parsed BGC metadata, vectorized
+            features and clustering results. The directory is always created; files
+            are only present when `--export-tsv` is passed via `task.ext.args2`.
+          pattern: "tsv_export"
   versions_bigslice:
     - - ${task.process}:
           type: string
