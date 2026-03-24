@@ -52,7 +52,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "${prefix}/${prefix}_summary.tsv":
+      - ${prefix}/${prefix}_summary.tsv:
           type: file
           description: Combined summary TSV with telomere content estimates
           pattern: "*_summary.tsv"
@@ -64,7 +64,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "${prefix}/tumor_TelomerCnt_${prefix}/":
+      - ${prefix}/tumor_TelomerCnt_${prefix}/:
           type: directory
           description: Directory with tumor telomere analysis results
           ontologies: []
@@ -74,48 +74,48 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "${prefix}/control_TelomerCnt_${prefix}/":
+      - ${prefix}/control_TelomerCnt_${prefix}/:
           type: directory
           description: Directory with control telomere analysis results
           ontologies: []
   versions_telomerehunter:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
       - telomerehunter:
           type: string
           description: The name of the tool
-      - "pip show telomerehunter 2>/dev/null | grep Version | cut -d ' ' -f2":
+      - "pip show telomerehunter | sed -n 's/^Version: //p'":
           type: eval
           description: The expression to obtain the version of the tool
   versions_samtools:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
       - samtools:
           type: string
           description: The name of the tool
-      - "samtools version | sed '1!d; s/.* //'":
+      - samtools version | sed '1!d; s/.* //':
           type: eval
           description: The expression to obtain the version of samtools
 topics:
   versions:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
       - telomerehunter:
           type: string
           description: The name of the tool
-      - "pip show telomerehunter 2>/dev/null | grep Version | cut -d ' ' -f2":
+      - "pip show telomerehunter | sed -n 's/^Version: //p'":
           type: eval
           description: The expression to obtain the version of the tool
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
       - samtools:
           type: string
           description: The name of the tool
-      - "samtools version | sed '1!d; s/.* //'":
+      - samtools version | sed '1!d; s/.* //':
           type: eval
           description: The expression to obtain the version of samtools
 authors:
