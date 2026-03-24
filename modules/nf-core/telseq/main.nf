@@ -15,7 +15,7 @@ process TELSEQ {
 
     output:
     tuple val(meta), path("*.telseq.tsv"), emit: output
-    tuple val("${task.process}"), val('telseq'), eval("telseq --help 2>&1 | sed -n 's/^Version: //p'"), emit: versions_telseq, topic: versions
+    tuple val("${task.process}"), val('telseq'), eval('echo 0.0.2'), emit: versions_telseq, topic: versions
     tuple val("${task.process}"), val('samtools'), eval("samtools --version | sed -n '1s/samtools //p'"), emit: versions_samtools, topic: versions
 
     when:
