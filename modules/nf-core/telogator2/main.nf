@@ -23,25 +23,12 @@ process TELOGATOR2 {
     prefix = task.ext.prefix ?: "${meta.id}"
     def ref_arg = fasta ? "--ref ${fasta}" : ""
     """
-    set +e
     telogator2 \\
         -i ${reads} \\
         -o ${prefix} \\
         -p ${task.cpus} \\
         ${ref_arg} \\
-        ${args} \\
-    > telogator2.log 2>&1
-    exit_code=\$?
-    cat telogator2.log
-    set -e
-
-    if [ \$exit_code -ne 0 ]; then
-        if grep -q 'No telomere reads found' telogator2.log; then
-            echo "Warning: No telomere reads found in input"
-        else
-            exit \$exit_code
-        fi
-    fi
+        ${args}
     """
 
     stub:

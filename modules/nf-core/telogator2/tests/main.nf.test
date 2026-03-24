@@ -49,11 +49,8 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.results,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert process.failed },
+                { assert process.stdout.toString().contains('No telomere reads found') }
             )
         }
     }
