@@ -4,8 +4,8 @@ process BUSCO_BUSCO {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/41/4137d65ab5b90d2ae4fa9d3e0e8294ddccc287e53ca653bb3c63b8fdb03e882f/data'
-        : 'community.wave.seqera.io/library/busco:6.0.0--a9a1426105f81165'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/64/6456c1880785adefb4fc9b480bb7662479d5662c17f70d5e8715b7f2a63ee28b/data'
+        : 'community.wave.seqera.io/library/busco_numpy:b66937518a305dd7'}"
     // Note: one test had to be disabled when switching to Busco 6.0.0, cf https://github.com/nf-core/modules/pull/8781/files
     // Try to restore it when upgrading Busco to a later version
 
@@ -23,6 +23,7 @@ process BUSCO_BUSCO {
 
     output:
     tuple val(meta), path("*-busco.batch_summary.txt"), emit: batch_summary
+    tuple val(meta), path("*-busco.batch_summary.failed.txt"), emit: batch_summary_failed, optional: true
     tuple val(meta), path("short_summary.*.txt"), emit: short_summaries_txt, optional: true
     tuple val(meta), path("short_summary.*.json"), emit: short_summaries_json, optional: true
     tuple val(meta), path("*-busco.log"), emit: log, optional: true
@@ -105,14 +106,12 @@ process BUSCO_BUSCO {
     find . -xtype l -delete
 
     # Move files to avoid staging/publishing issues
-    mv ${prefix}-busco/batch_summary.txt ${prefix}-busco.batch_summary.txt
+    grep -v 'Run failed; check logs' ${prefix}-busco/batch_summary.txt > ${prefix}-busco.batch_summary.txt
     mv ${prefix}-busco/*/short_summary.*.{json,txt} . || echo "Short summaries were not available: No genes were found."
     mv ${prefix}-busco/logs/busco.log ${prefix}-busco.log
 
-    if grep 'Run failed; check logs' ${prefix}-busco.batch_summary.txt > /dev/null
-    then
-        echo "Busco run failed"
-        exit 1
+    if grep -q 'Run failed; check logs' ${prefix}-busco/batch_summary.txt; then
+        grep 'Run failed; check logs' ${prefix}-busco/batch_summary.txt > ${prefix}-busco.batch_summary.failed.txt
     fi
     """
 

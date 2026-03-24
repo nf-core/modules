@@ -13,12 +13,29 @@ process FASTAVALIDATOR {
     output:
     tuple val(meta), path('*.success.log')  , emit: success_log , optional: true
     tuple val(meta), path('*.error.log')    , emit: error_log   , optional: true
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('py_fasta_validator'), eval('py_fasta_validator --version | cut -d" " -f3'), emit: versions_py_fasta_validator, topic: versions
+
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "Fastavalidator module does not support Conda. Please use Docker / Singularity instead."
+    }
+    def deprecation_message = """
+    WARNING: This module has been deprecated.
+
+    Reason:
+    This module is no longer recommended for use to validate FASTA files as it is not
+    maintained by the original developers.
+    It is recommended to use fa-lint
+    - nf-core/modules/falint
+
+    """
+    assert false: deprecation_message
+
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     py_fasta_validator \\
@@ -41,22 +58,28 @@ process FASTAVALIDATOR {
         echo "Validation successful..." \\
             > "${prefix}.success.log"
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        py_fasta_validator: \$(py_fasta_validator -v | sed 's/.* version //')
-    END_VERSIONS
     """
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "Fastavalidator module does not support Conda. Please use Docker / Singularity instead."
+    }
+    def deprecation_message = """
+    WARNING: This module has been deprecated.
+
+    Reason:
+    This module is no longer recommended for use to validate FASTA files as it is not
+    maintained by the original developers.
+    It is recommended to use fa-lint
+    - nf-core/modules/falint
+
+    """
+    assert false: deprecation_message
+
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "Validation successful..." \\
         > "${prefix}.success.log"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        py_fasta_validator: \$(py_fasta_validator -v | sed 's/.* version //')
-    END_VERSIONS
     """
 }

@@ -18,7 +18,8 @@ tools:
       documentation: https://caravagnalab.github.io/mobster/
       tool_dev_url: https://github.com/caravagnalab/mobster
       doi: "10.1038/s41588-020-0675-5"
-      licence: ["GPL-3.0"]
+      licence:
+        - "GPL-3.0"
       identifier: biotools:mobster-R
 input:
   - - meta:
@@ -102,6 +103,14 @@ output:
           pattern: "*_mobster_report.png"
           ontologies:
             - edam: "http://edamontology.org/format_3603" # png
+  versions_mobster:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
   versions:
     - versions.yml:
         type: file

@@ -56,13 +56,27 @@ output:
           description: Alignment in gff format
           pattern: "*.gff"
           ontologies: []
+  versions_miniprot:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - miniprot:
+          type: string
+          description: The tool name
+      - "miniprot --version":
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - miniprot:
+          type: string
+          description: The tool name
+      - "miniprot --version":
+          type: eval
+          description: The command used to generate the version of the tool
 authors:
   - "@yumisims"
   - "@muffato"

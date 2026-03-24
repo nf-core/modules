@@ -1,12 +1,11 @@
 process BIGSLICE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
-    // WARN: Version information not provided correctly by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bigslice:2.0.2--pyh8ed023e_0':
-        'biocontainers/bigslice:2.0.2--pyh8ed023e_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/bigslice:2.0.2--pyh8ed023e_0'
+        : 'biocontainers/bigslice:2.0.2--pyh8ed023e_0'}"
 
     input:
     tuple val(meta), path(bgc, stageAs: 'bgc_files/*')
@@ -42,7 +41,7 @@ process BIGSLICE {
     touch input/taxonomy/taxonomy.tsv
 
     bigslice \\
-        $args \\
+        ${args} \\
         --num_threads ${task.cpus} \\
         -i input \\
         --program_db_folder ${hmmdb} \\
@@ -57,7 +56,7 @@ process BIGSLICE {
     def args2  = task.ext.args2 ?: ''
     prefix     = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
 
     mkdir -p ${prefix}/result/tmp/2e555308dfc411186cf012334262f127
     mkdir -p ${prefix}/result/tsv_export

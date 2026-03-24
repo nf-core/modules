@@ -166,8 +166,8 @@ if __name__ == "__main__":
         .decode()
         .split("\\n")[0]
     )
-    print(version)
+
     f = open("versions.yml", "a")
-    f.write("$task.process:")
-    f.write(f"    pyclone-vi: {version}\\n")
+    f.write("PYCLONEVI:\\n")
+    f.write(f"    pyclonevi: {version}\\n")
     f.close()
