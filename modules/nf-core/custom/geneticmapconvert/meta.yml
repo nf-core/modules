@@ -1,0 +1,95 @@
+name: "custom_geneticmapconvert"
+description: |
+  This R script allows to automatically detect the different genetic map format and
+  convert the input file in all the other format type.
+keywords:
+  - map
+  - convertion
+  - R
+tools:
+  - custom:
+      description: Custom script to convert any genetic map format
+      homepage: https://github.com/nf-core/tools
+      documentation: https://github.com/nf-core/tools
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - map_file:
+        type: file
+        description: Genomic map file to process
+        ontologies: []
+output:
+  glimpse_map:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.glimpse.map:
+          type: file
+          description: |
+            File containing the map in Glimpse format:
+            tab-delimited file with header and columns:
+            pos, chr, cM
+          pattern: "*.glimpse.map"
+  plink_map:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.plink.map:
+          type: file
+          description: |
+            File containing the map in PLINK format:
+            space-delimited file without header and columns:
+            chr, id, cM, pos
+          pattern: "*.plink.map"
+  stitch_map:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.stitch.map:
+          type: file
+          description: |
+            File containing the map in STITCH format:
+            space-delimited file with header and columns:
+            pos, rate, cM
+          pattern: "*.stitch.map"
+  minimac_map:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.minimac.map:
+          type: file
+          description: |
+            File containing the map in Minimac format:
+            tab-delimited file with header and columns:
+            chr, pos, cM
+          pattern: "*.minimac.map"
+  versions_geneticmapconvert:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
+authors:
+  - "@LouisLeNezet"
+maintainers:
+  - "@LouisLeNezet"
