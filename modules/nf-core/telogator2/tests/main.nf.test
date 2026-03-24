@@ -4,6 +4,7 @@ nextflow_process {
     name "Test Process TELOGATOR2"
     script "../main.nf"
     process "TELOGATOR2"
+    config "./nextflow.config"
     tag "modules"
     tag "modules_nfcore"
     tag "telogator2"
@@ -25,10 +26,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.tlens.get(0).get(1)).readLines().first() ==
+                    '#chr\tposition\tref_samp\tallele_id\tTL_p75\tread_TLs\tread_lengths\tread_mapq\ttvr_len\ttvr_consensus\tsupporting_reads' },
+                { assert process.out.plots },
                 { assert process.out.qc },
                 { assert snapshot(
-                    process.out.tlens,
-                    process.out.plots,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
