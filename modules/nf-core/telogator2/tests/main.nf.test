@@ -17,8 +17,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam.bai', checkIfExists: true)
                 ]
-                input[1] = [ [ id:'genome' ], [] ]
-                input[2] = [ [ id:'genome' ], [] ]
+                input[1] = [ [ id:'genome' ], [], [] ]
                 """
             }
         }
@@ -43,8 +42,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true)
                 ]
-                input[1] = [ [ id:'genome' ], [] ]
-                input[2] = [ [ id:'genome' ], [] ]
+                input[1] = [ [ id:'genome' ], [], [] ]
                 """
             }
         }
@@ -72,8 +70,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true)
                 ]
-                input[1] = [ [ id:'genome' ], [] ]
-                input[2] = [ [ id:'genome' ], [] ]
+                input[1] = [ [ id:'genome' ], [], [] ]
                 """
             }
         }
