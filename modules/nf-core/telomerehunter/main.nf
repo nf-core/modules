@@ -15,7 +15,7 @@ process TELOMEREHUNTER {
     tuple val(meta), path("${prefix}/tumor_TelomerCnt_${prefix}/")  , emit: tumor
     tuple val(meta), path("${prefix}/control_TelomerCnt_${prefix}/"), emit: control, optional: true
     tuple val("${task.process}"), val('telomerehunter'), eval("pip show telomerehunter | sed -n 's/^Version: //p'"), emit: versions_telomerehunter, topic: versions
-    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d; s/.* //'"), emit: versions_samtools, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools --version |& sed '1!d; s/^.*samtools //'"), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
