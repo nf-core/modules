@@ -3,9 +3,9 @@ process TELSEQ {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-5ce2a0c04652b0d0cc87f012a2240e1e5a90bc90:eb084e8aa92146f3987d00af8d38b36214d1f39f-0':
-        'biocontainers/mulled-v2-5ce2a0c04652b0d0cc87f012a2240e1e5a90bc90:eb084e8aa92146f3987d00af8d38b36214d1f39f-0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'oras://community.wave.seqera.io/library/bamtools_samtools_telseq:61779b50bdead17c'
+        : 'community.wave.seqera.io/library/bamtools_samtools_telseq:428dab7df99f37d4' }"
 
     input:
     tuple val(meta ), path(bam), path(bai)
