@@ -34,9 +34,7 @@ process MASURCA {
 
     output:
     tuple val(meta), path("assemble.sh")                               , emit: script
-    tuple val(meta), path("CA*/final.genome.scf.fasta"), optional: true, emit: scaffolds
-    tuple val(meta), path("CA*/final.genome.ctg.fasta"), optional: true, emit: contigs
-    tuple val(meta), path("flye/assembly.fasta")       , optional: true, emit: flye_assembly
+    tuple val(meta), path("CA*/primary.genome.scf.fasta")              , emit: scaffolds
     tuple val(meta), path("*_masurca_config.txt")                      , emit: config
     tuple val(meta), path("*-masurca.log")                             , emit: log
     tuple val("${task.process}"), val('masurca'), eval("masurca --version | sed 's/version //g'"), topic: versions, emit: versions_masurca
@@ -49,12 +47,12 @@ process MASURCA {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     //get input reads with absolute paths - illumina are mandatory, jump/pacbio/nanopore are optional
-    def illumina_reads = [illumina].flatten().join(' ')
-    def jump_reads = jump ? "\$(readlink -f ${jump[0]}) \$(readlink -f ${jump[1]})" : ""
-    def pacbio_file = pacbio ? "\$(readlink -f ${pacbio})" : ""
-    def nanopore_file = nanopore ? "\$(readlink -f ${nanopore})" : ""
-    def other_reads_file = other_reads ? "\$(readlink -f ${other_reads})" : ""
-    def reference_genome_file = reference_genome ? "\$(readlink -f ${reference_genome})" : ""
+    def illumina_reads = illumina.collect { it.toRealPath() }.join(' ')
+    def jump_reads = jump ? jump.collect { it.toRealPath() }.join(' ') : ""
+    def pacbio_file = pacbio ? pacbio.toRealPath() : ""
+    def nanopore_file = nanopore ? nanopore.toRealPath() : ""
+    def other_reads_file = other_reads ? other_reads.toRealPath() : ""
+    def reference_genome_file = reference_genome ? reference_genome.toRealPath() : ""
 
     // Configuration parameters with defaults from task.ext
     def extend_jump_reads = task.ext.extend_jump_reads != null ? task.ext.extend_jump_reads : 0
@@ -64,10 +62,8 @@ process MASURCA {
     def mega_reads_one_pass = task.ext.mega_reads_one_pass != null ? task.ext.mega_reads_one_pass : 0
     def limit_jump_coverage = task.ext.limit_jump_coverage ?: 300
     def ca_parameters = task.ext.ca_parameters ?: 'cgwErrorRate=0.15'
-    def close_gaps = task.ext.close_gaps != null ? task.ext.close_gaps : 1
+    def close_gaps = task.ext.close_gaps != null ? task.ext.close_gaps : 0
     def jf_size = task.ext.jf_size ?: 200000000
-    def soap_assembly = task.ext.soap_assembly != null ? task.ext.soap_assembly : 0
-    def flye_assembly = task.ext.flye_assembly != null ? task.ext.flye_assembly : 0
     """
     echo "DATA" > ${prefix}_masurca_config.txt
     echo "#Illumina paired end reads supplied as <two-character prefix> <fragment mean> <fragment stdev> <forward_reads> <reverse_reads>" >> ${prefix}_masurca_config.txt
@@ -86,7 +82,7 @@ process MASURCA {
     if [ -n "${pacbio_file}" ] && [ -n "${nanopore_file}" ]; then
         echo "#if you have both PacBio and Nanopore, supply both as NANOPORE type" >> ${prefix}_masurca_config.txt
         cat ${pacbio_file} ${nanopore_file} > ${prefix}_long_reads.fastq.gz
-        echo "NANOPORE=\$(readlink -f ${prefix}_long_reads.fastq.gz)" >> ${prefix}_masurca_config.txt
+        echo "NANOPORE= ${prefix}_long_reads.fastq.gz" >> ${prefix}_masurca_config.txt
     elif [ -n "${pacbio_file}" ]; then
         echo "#PacBio/CCS reads must be in a single fasta or fastq file with absolute path" >> ${prefix}_masurca_config.txt
         echo "PACBIO=${pacbio_file}" >> ${prefix}_masurca_config.txt
@@ -137,26 +133,18 @@ process MASURCA {
     echo "JF_SIZE = ${jf_size}" >> ${prefix}_masurca_config.txt
     echo "#ILLUMINA ONLY. Set this to 1 to use SOAPdenovo contigging/scaffolding module." >> ${prefix}_masurca_config.txt
     echo "#Assembly will be worse but will run faster. Useful for very large (>=8Gbp) genomes from Illumina-only data" >> ${prefix}_masurca_config.txt
-    echo "SOAP_ASSEMBLY=${soap_assembly}" >> ${prefix}_masurca_config.txt
+    echo "SOAP_ASSEMBLY=0" >> ${prefix}_masurca_config.txt
     echo "#If you are doing Hybrid Illumina paired end + Nanopore/PacBio assembly ONLY (no Illumina mate pairs or OTHER frg files)." >> ${prefix}_masurca_config.txt
     echo "#Set this to 1 to use Flye assembler for final assembly of corrected mega-reads." >> ${prefix}_masurca_config.txt
     echo "#A lot faster than CABOG, AND QUALITY IS THE SAME OR BETTER." >> ${prefix}_masurca_config.txt
     echo "#Works well even when MEGA_READS_ONE_PASS is set to 1." >> ${prefix}_masurca_config.txt
     echo "#DO NOT use if you have less than 15x coverage by long reads." >> ${prefix}_masurca_config.txt
-    echo "FLYE_ASSEMBLY=${flye_assembly}" >> ${prefix}_masurca_config.txt
+    echo "FLYE_ASSEMBLY=0" >> ${prefix}_masurca_config.txt
     echo "END" >> ${prefix}_masurca_config.txt
     
     # Generate assembly script
     masurca ${prefix}_masurca_config.txt
     
-    # Create output directory and move files
-    mkdir -p ${prefix}
-    mv assemble.sh ${prefix}/
-    mv ${prefix}_masurca_config.txt ${prefix}/
-    chmod +x ${prefix}/assemble.sh
-    
-    # Run the assembly
-    cd ${prefix}
     ./assemble.sh > ${prefix}-masurca.log 2>&1
     """
 
@@ -164,12 +152,10 @@ process MASURCA {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """   
-    mkdir -p ${prefix}/CA
-    mkdir -p ${prefix}/flye
-    touch ${prefix}/assemble.sh
-    touch ${prefix}/${prefix}_masurca_config.txt
-    touch ${prefix}/CA/final.genome.scf.fasta
-    touch ${prefix}/CA/final.genome.ctg.fasta
-    touch ${prefix}/flye/assembly.fasta
+    mkdir -p CA
+    touch assemble.sh
+    touch ${prefix}_masurca_config.txt
+    touch CA/primary.genome.scf.fasta
+    touch ${prefix}-masurca.log
     """
 }
