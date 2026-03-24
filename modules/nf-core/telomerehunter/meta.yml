@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "telomerehunter"
-description: "In silico estimation of telomere content and composition from cancer genomes"
+description: "In silico estimation of telomere content and composition from cancer
+  genomes"
 keywords:
   - bam
   - genomics
@@ -9,12 +9,14 @@ keywords:
   - cancer
 tools:
   - "telomerehunter":
-      description: "In silico estimation of telomere content and composition from cancer genomes"
+      description: "In silico estimation of telomere content and composition from cancer
+        genomes"
       homepage: "https://github.com/linasieverling/TelomereHunter"
       documentation: "https://github.com/linasieverling/TelomereHunter"
       tool_dev_url: "https://github.com/linasieverling/TelomereHunter"
       doi: "10.1186/s12859-019-2851-0"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       args_id: "$args"
       identifier: ""
 input:
@@ -107,6 +109,15 @@ topics:
       - "pip show telomerehunter 2>/dev/null | grep Version | cut -d ' ' -f2":
           type: eval
           description: The expression to obtain the version of the tool
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - "samtools version | sed '1!d; s/.* //'":
+          type: eval
+          description: The expression to obtain the version of samtools
 authors:
   - "@pinin4fjords"
 maintainers:
