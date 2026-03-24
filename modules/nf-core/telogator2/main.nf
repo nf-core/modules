@@ -13,7 +13,7 @@ process TELOGATOR2 {
 
     output:
     tuple val(meta), path("${prefix}/tlens_by_allele.tsv"), emit: tlens
-    tuple val(meta), path("${prefix}/*.png")              , emit: plots, optional: true
+    tuple val(meta), path("${prefix}/*.png")              , emit: plots
     tuple val(meta), path("${prefix}/qc")                 , emit: qc
     tuple val("${task.process}"), val('telogator2'), eval("telogator2 --version | sed 's/telogator2 //'"), emit: versions_telogator2, topic: versions
 
@@ -38,6 +38,8 @@ process TELOGATOR2 {
     """
     mkdir -p ${prefix}/qc
     touch ${prefix}/tlens_by_allele.tsv
+    touch ${prefix}/all_final_alleles.png
+    touch ${prefix}/violin_atl.png
     touch ${prefix}/qc/stats.txt
     """
 }
