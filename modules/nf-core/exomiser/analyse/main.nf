@@ -10,11 +10,11 @@ process EXOMISER_ANALYSE {
     tuple val(meta3), path(phenotype_cache, stageAs: 'exomiser_data/*'), val(phenotype_version)
 
     output:
-    tuple val(meta), path("*.{tsv}"), emit: tsv
-    tuple val(meta), path("*.{json}"), emit: json
-    tuple val(meta), path("*.{html}"), emit: html
-    tuple val(meta), path("*.{parquet}"), emit: parquet
-    tuple val(meta), path("*.{vcf}"), emit: vcf
+    tuple val(meta), path("*.tsv"), emit: tsv
+    tuple val(meta), path("*.json"), emit: json
+    tuple val(meta), path("*.html"), emit: html
+    tuple val(meta), path("*.parquet"), emit: parquet
+    tuple val(meta), path("*.vcf"), emit: vcf
     tuple val("${task.process}"), val('exomiser'), eval("exomiser --version"), topic: versions, emit: versions_exomiser
 
     when:
@@ -23,7 +23,7 @@ process EXOMISER_ANALYSE {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error("EXOMISERCLI_ANALYSE module does not support Conda. Please use Docker / Singularity / Podman instead.")
+        error("EXOMISER_ANALYSE module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -45,14 +45,15 @@ process EXOMISER_ANALYSE {
         ${vcf_cmd}\\
         ${analysis_cmd} \\
         ${args} \\
-        --output-directory=\$PWD \
-        --output-filename=${prefix} \
-        --exomiser.data-directory=./exomiser-data \
-        --exomiser.${assembly}.data-version=${reference_version} \
-        --exomiser.phenotype.data-version=${phenotype_version}
+        --output-directory=\$PWD \\
+        --output-filename=${prefix}
     """
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error("EXOMISER_ANALYSE module does not support Conda. Please use Docker / Singularity / Podman instead.")
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
