@@ -86,6 +86,16 @@ output:
       - "pip show telomerehunter 2>/dev/null | grep Version | cut -d ' ' -f2":
           type: eval
           description: The expression to obtain the version of the tool
+  versions_samtools:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - "samtools version | sed '1!d; s/.* //'":
+          type: eval
+          description: The expression to obtain the version of samtools
 topics:
   versions:
     - - "${task.process}":
