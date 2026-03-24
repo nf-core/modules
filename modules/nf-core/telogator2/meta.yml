@@ -53,15 +53,39 @@ input:
         pattern: "*.fai"
         ontologies: []
 output:
-  results:
+  tlens:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - ${prefix}:
+      - ${prefix}/tlens_by_allele.tsv:
+          type: file
+          description: TSV file with telomere length estimates per allele
+          pattern: "*/tlens_by_allele.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  plots:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/*.png:
+          type: file
+          description: PNG plots including allele visualizations and violin plots
+          pattern: "*/*.png"
+          ontologies:
+            - edam: http://edamontology.org/format_3603
+  qc:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/qc:
           type: directory
-          description: Directory containing telogator2 output files including telomere length estimates and TVR characterization
+          description: Directory containing QC statistics, read length distributions, and run metadata
           ontologies: []
   versions_telogator2:
     - - ${task.process}:

@@ -12,7 +12,9 @@ process TELOGATOR2 {
     tuple val(meta2), path(fasta), path(fai)
 
     output:
-    tuple val(meta), path("${prefix}"), emit: results
+    tuple val(meta), path("${prefix}/tlens_by_allele.tsv"), emit: tlens
+    tuple val(meta), path("${prefix}/*.png")              , emit: plots, optional: true
+    tuple val(meta), path("${prefix}/qc")                 , emit: qc
     tuple val("${task.process}"), val('telogator2'), eval("telogator2 --version | sed 's/telogator2 //'"), emit: versions_telogator2, topic: versions
 
     when:
@@ -34,7 +36,10 @@ process TELOGATOR2 {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p ${prefix}
-    touch ${prefix}/telomere_length_summary.tsv
+    mkdir -p ${prefix}/qc
+    touch ${prefix}/tlens_by_allele.tsv
+    touch ${prefix}/all_final_alleles.png
+    touch ${prefix}/violin_atl.png
+    touch ${prefix}/qc/stats.txt
     """
 }
