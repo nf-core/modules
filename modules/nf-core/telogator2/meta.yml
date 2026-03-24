@@ -77,15 +77,61 @@ output:
           pattern: "*/*.png"
           ontologies:
             - edam: http://edamontology.org/format_3603
-  qc:
+  cmd:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - ${prefix}/qc:
-          type: directory
-          description: Directory containing QC statistics, read length distributions, and run metadata
+      - ${prefix}/qc/cmd.txt:
+          type: file
+          description: Text file recording the telogator2 command that was run
+          pattern: "*/qc/cmd.txt"
+          ontologies: []
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/qc/stats.txt:
+          type: file
+          description: Text file with QC statistics including read counts and telomere read filtering
+          pattern: "*/qc/stats.txt"
+          ontologies: []
+  qc_readlens:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/qc/qc_readlens.png:
+          type: file
+          description: PNG plot of read length distribution
+          pattern: "*/qc/qc_readlens.png"
+          ontologies:
+            - edam: http://edamontology.org/format_3603
+  readlens:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/qc/readlens.npz:
+          type: file
+          description: Numpy compressed array of read length data
+          pattern: "*/qc/readlens.npz"
+          ontologies: []
+  rng:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/qc/rng.txt:
+          type: file
+          description: Text file recording the random seed used
+          pattern: "*/qc/rng.txt"
           ontologies: []
   versions_telogator2:
     - - ${task.process}:

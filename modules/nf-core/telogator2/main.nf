@@ -12,9 +12,13 @@ process TELOGATOR2 {
     tuple val(meta2), path(fasta), path(fai)
 
     output:
-    tuple val(meta), path("${prefix}/tlens_by_allele.tsv"), emit: tlens
-    tuple val(meta), path("${prefix}/*.png")              , emit: plots
-    tuple val(meta), path("${prefix}/qc")                 , emit: qc
+    tuple val(meta), path("${prefix}/tlens_by_allele.tsv")  , emit: tlens
+    tuple val(meta), path("${prefix}/*.png")                , emit: plots
+    tuple val(meta), path("${prefix}/qc/cmd.txt")           , emit: cmd
+    tuple val(meta), path("${prefix}/qc/stats.txt")         , emit: stats
+    tuple val(meta), path("${prefix}/qc/qc_readlens.png")   , emit: qc_readlens
+    tuple val(meta), path("${prefix}/qc/readlens.npz")      , emit: readlens
+    tuple val(meta), path("${prefix}/qc/rng.txt")           , emit: rng
     tuple val("${task.process}"), val('telogator2'), eval("telogator2 --version | sed 's/telogator2 //'"), emit: versions_telogator2, topic: versions
 
     when:
@@ -40,6 +44,10 @@ process TELOGATOR2 {
     touch ${prefix}/tlens_by_allele.tsv
     touch ${prefix}/all_final_alleles.png
     touch ${prefix}/violin_atl.png
+    touch ${prefix}/qc/cmd.txt
+    touch ${prefix}/qc/qc_readlens.png
+    touch ${prefix}/qc/readlens.npz
+    touch ${prefix}/qc/rng.txt
     touch ${prefix}/qc/stats.txt
     """
 }
