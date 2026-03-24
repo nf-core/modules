@@ -110,12 +110,21 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - toolname:
+      - telseq:
           type: string
           description: The name of the tool
-      - version_command:
+      - 'echo 0.0.2':
           type: eval
-          description: The expression to obtain the version of the tool
+          description: The expression to obtain the version of telseq
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - "samtools --version | sed -n '1s/samtools //p'":
+          type: eval
+          description: The expression to obtain the version of samtools
 authors:
   - "@lindenb"
 maintainers:
