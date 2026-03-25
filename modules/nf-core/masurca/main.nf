@@ -1,28 +1,11 @@
-// TODO nf-core: If in doubt look at other nf-core/modules to see how we are doing things! :)
-//               https://github.com/nf-core/modules/tree/master/modules/nf-core/
-//               You can also ask for help via your pull request or on the #modules channel on the nf-core Slack workspace:
-//               https://nf-co.re/join
-// TODO nf-core: A module file SHOULD only define input and output files as command-line parameters.
-//               All other parameters MUST be provided using the "task.ext" directive, see here:
-//               https://www.nextflow.io/docs/latest/process.html#ext
-//               where "task.ext" is a string.
-//               Any parameters that need to be evaluated in the context of a particular sample
-//               e.g. single-end/paired-end data MUST also be defined and evaluated appropriately.
-// TODO nf-core: Software that can be piped together SHOULD be added to separate module files
-//               unless there is a run-time, storage advantage in implementing in this way
-//               e.g. it's ok to have a single module for bwa to output BAM instead of SAM:
-//                 bwa mem | samtools view -B -T ref.fasta
-// TODO nf-core: Optional inputs are not currently supported by Nextflow. However, using an empty
-//               list (`[]`) instead of a file can be used to work around this issue.
-
 process MASURCA {
     tag "$meta.id"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cf/cf6402ed20c3b089ab88cd8884ddace90693501453a515f9188ae681e8ca8556/data':
-        'community.wave.seqera.io/library/masurca:4.1.4--d05ef74c4881d55c' }"
+        'oras://community.wave.seqera.io/library/coreutils_file_masurca_mummer_perl:73ce913377915362':
+        'community.wave.seqera.io/library/coreutils_file_masurca_mummer_perl:93f95b0aad1db22b' }"
 
     input:
     tuple val(meta), path(illumina), path(jump), path(pacbio), path(nanopore), path(other_reads), path(reference_genome)
@@ -47,8 +30,8 @@ process MASURCA {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     //get input reads with absolute paths - illumina are mandatory, jump/pacbio/nanopore are optional
-    def illumina_reads = illumina.collect { it.toRealPath() }.join(' ')
-    def jump_reads = jump ? jump.collect { it.toRealPath() }.join(' ') : ""
+    def illumina_reads = [illumina].flatten().collect { it.toRealPath() }.join(' ')
+    def jump_reads = jump ? [jump].flatten().collect { it.toRealPath() }.join(' ') : ""
     def pacbio_file = pacbio ? pacbio.toRealPath() : ""
     def nanopore_file = nanopore ? nanopore.toRealPath() : ""
     def other_reads_file = other_reads ? other_reads.toRealPath() : ""

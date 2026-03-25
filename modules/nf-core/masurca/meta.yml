@@ -1,19 +1,18 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-# # TODO nf-core: Add a description of the module and list keywords
 name: "masurca"
-description: write your description here
+description: The MaSuRCA (Maryland Super Read Cabog Assembler) genome assembly and analysis toolkit
 keywords:
-  - sort
-  - example
+  - denovo
+  - assembly
+  - debruijn
   - genomics
 tools:
-  ## TODO nf-core: Add a description and other details for the software below
   - "masurca":
       description: "MaSuRCA (Maryland Super-Read Celera Assembler) genome assembly software."
       homepage: "https://github.com/alekseyzimin/masurca/blob/v4.1.4/README.md"
       documentation: "https://github.com/alekseyzimin/masurca/blob/v4.1.4/README.md"
       tool_dev_url: "https://github.com/alekseyzimin/masurca"
-      doi: ""
+      doi: "10.1101/gr.213405.116"
       licence: ["GPL v3"]
       identifier: biotools:masurca
 
