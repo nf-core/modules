@@ -13,11 +13,10 @@ include { CUSTOM_SUMMARISETELOMEREESTIMATION } from '../../../modules/nf-core/cu
 workflow BAM_TELOMERE_ESTIMATION {
 
     take:
-    ch_reads            // channel: [ val(meta), val(data_type), path(reads), path(reads_index) ]
-                        //   data_type: 'short' or 'long'
+    ch_reads            // channel: [ val(meta), val(data_type), path(reads), path(reads_index), path(bed) ]
+                        //   data_type: 'short' or 'long'; bed: optional exome BED for telseq ([] if not needed)
     ch_control          // channel: [ val(meta), path(control_bam), path(control_bai) ]
     ch_fasta            // channel: [ val(meta2), path(fasta), path(fai) ]
-    ch_bed              // channel: [ val(meta4), path(bed) ]
     run_telomerehunter  // val(boolean): enable telomerehunter content profiling
     length_estimator    // val(string):  'short'|'long'|null - global override
 
@@ -26,31 +25,30 @@ workflow BAM_TELOMERE_ESTIMATION {
     //
     // Route by data_type ('short' -> telseq, 'long' -> telogator2)
     //
-    ch_reads_validated = ch_reads.map { meta, data_type, reads, index ->
+    ch_reads_validated = ch_reads.map { meta, data_type, reads, index, bed ->
         def category = length_estimator ?: data_type
         if (!(category in ['short', 'long'])) {
             error("Invalid data_type '${category}' for sample ${meta.id}. Must be 'short' or 'long'.")
         }
-        [ meta, category, reads, index ]
+        [ meta, category, reads, index, bed ]
     }
 
-    ch_short_reads = ch_reads_validated.filter { _meta, dt, _reads, _index -> dt == 'short' }
-    ch_long_reads  = ch_reads_validated.filter { _meta, dt, _reads, _index -> dt == 'long' }
+    ch_short_reads = ch_reads_validated.filter { _meta, dt, _reads, _index, _bed -> dt == 'short' }
+    ch_long_reads  = ch_reads_validated.filter { _meta, dt, _reads, _index, _bed -> dt == 'long' }
 
     //
     // TELSEQ: short-read telomere length
     //
     TELSEQ(
-        ch_short_reads.map { meta, _dt, reads, index -> [ meta, reads, index ] },
-        ch_fasta,
-        ch_bed
+        ch_short_reads.map { meta, _dt, reads, index, bed -> [ meta, reads, index, bed ] },
+        ch_fasta
     )
 
     //
     // TELOGATOR2: long-read telomere length
     //
     TELOGATOR2(
-        ch_long_reads.map { meta, _dt, reads, index -> [ meta, reads, index ] },
+        ch_long_reads.map { meta, _dt, reads, index, _bed -> [ meta, reads, index ] },
         ch_fasta
     )
 
@@ -68,7 +66,7 @@ workflow BAM_TELOMERE_ESTIMATION {
     //
     // Pair each sample with its matched control (if any), then gate on run_telomerehunter
     ch_th_input = ch_reads_validated
-        .map { meta, _dt, bam, bai -> [ meta, bam, bai ] }
+        .map { meta, _dt, bam, bai, _bed -> [ meta, bam, bai ] }
         .join(ch_control, remainder: true)
         .map { items ->
             def meta = items[0]

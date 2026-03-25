@@ -21,7 +21,7 @@ input:
         Structure: [ val(meta), val(data_type), path(reads), path(reads_index) ]
         data_type: 'short' routes to telseq, 'long' routes to telogator2.
         The calling pipeline is responsible for determining the sequencing type.
-        Reads must be indexed.
+        Reads must be indexed. bed is an optional exome BED for telseq ([] if not needed).
   - ch_control:
       type: file
       description: |
@@ -33,12 +33,6 @@ input:
       description: |
         Reference genome FASTA with index.
         Structure: [ val(meta2), path(fasta), path(fai) ]
-  - ch_bed:
-      type: file
-      description: |
-        Optional BED file for telseq exome mode.
-        Structure: [ val(meta4), path(bed) ]
-        Pass Channel.of([ [], [] ]) if not needed.
   - run_telomerehunter:
       type: boolean
       description: Enable telomerehunter content profiling

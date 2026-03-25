@@ -42,6 +42,11 @@ input:
         description: bam index file
         pattern: "*.{bai,crai}"
         ontologies: []
+    - bed:
+        type: file
+        description: Optional exome regions in BED format. These regions will be excluded
+        pattern: "*.bed"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -56,16 +61,6 @@ input:
         type: file
         description: Fasta index file
         pattern: "*.fai"
-        ontologies: []
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing bed information
-          e.g. [ id:'genome' ]
-    - bed:
-        type: file
-        description: Optional exome regions in BED format. These regions will be excluded
-        pattern: "*.bed"
         ontologies: []
 output:
   output:

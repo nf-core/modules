@@ -23,7 +23,8 @@ nextflow_workflow {
                     [ id:'test_sr' ],
                     'short',
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    []
                 ])
                 input[1] = Channel.empty()
                 input[2] = Channel.value([
@@ -31,9 +32,8 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ])
-                input[3] = Channel.value([ [], [] ])
-                input[4] = false
-                input[5] = null
+                input[3] =false
+                input[4] =null
                 """
             }
         }
@@ -61,7 +61,8 @@ nextflow_workflow {
                     [ id:'test_sr_th' ],
                     'short',
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    []
                 ])
                 input[1] = Channel.empty()
                 input[2] = Channel.value([
@@ -69,9 +70,8 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ])
-                input[3] = Channel.value([ [], [] ])
-                input[4] = true
-                input[5] = null
+                input[3] =true
+                input[4] =null
                 """
             }
         }
@@ -103,13 +103,13 @@ nextflow_workflow {
                     [ id:'test_lr_th' ],
                     'long',
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam.bai', checkIfExists: true),
+                    []
                 ])
                 input[1] = Channel.empty()
                 input[2] = Channel.value([ [id:'genome'], [], [] ])
-                input[3] = Channel.value([ [], [] ])
-                input[4] = true
-                input[5] = null
+                input[3] =true
+                input[4] =null
                 """
             }
         }
@@ -139,7 +139,8 @@ nextflow_workflow {
                     [ id:'test_global' ],
                     '',
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    []
                 ])
                 input[1] = Channel.empty()
                 input[2] = Channel.value([
@@ -147,9 +148,8 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ])
-                input[3] = Channel.value([ [], [] ])
-                input[4] = false
-                input[5] = 'short'
+                input[3] =false
+                input[4] ='short'
                 """
             }
         }
@@ -176,7 +176,8 @@ nextflow_workflow {
                     [ id:'test_sr_stub' ],
                     'short',
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    []
                 ])
                 input[1] = Channel.empty()
                 input[2] = Channel.value([
@@ -184,9 +185,8 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ])
-                input[3] = Channel.value([ [], [] ])
-                input[4] = false
-                input[5] = null
+                input[3] =false
+                input[4] =null
                 """
             }
         }
@@ -210,13 +210,13 @@ nextflow_workflow {
                     [ id:'test_lr_stub' ],
                     'long',
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam.bai', checkIfExists: true),
+                    []
                 ])
                 input[1] = Channel.empty()
                 input[2] = Channel.value([ [id:'genome'], [], [] ])
-                input[3] = Channel.value([ [], [] ])
-                input[4] = false
-                input[5] = null
+                input[3] =false
+                input[4] =null
                 """
             }
         }
@@ -242,13 +242,13 @@ nextflow_workflow {
                     [ id:'test_lr' ],
                     'long',
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam.bai', checkIfExists: true),
+                    []
                 ])
                 input[1] = Channel.empty()
                 input[2] = Channel.value([ [id:'genome'], [], [] ])
-                input[3] = Channel.value([ [], [] ])
-                input[4] = false
-                input[5] = null
+                input[3] =false
+                input[4] =null
                 """
             }
         }
