@@ -423,8 +423,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.results, process.out.model, process.out.normalised_counts, process.out.versions).match() }
-            )
+                { assert snapshot([process.out.results, process.out.model, process.out.normalised_counts, process.out.versions]).match() }            )
         }
     }
 }
