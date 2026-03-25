@@ -311,11 +311,10 @@ if (is_valid_string(contrast_string)) {
                   winsor.tail.p = winsor_tail_p_vals)
     results <- topTable(fit2, number = Inf,
                         adjust.method = opt\$adjust.method,
-                        p.value = opt\$p.value, lfc = opt\$lfc, confint = opt\$confint, sort.by = "none")
+                        p.value = opt\$p.value, lfc = opt\$lfc, confint = opt\$confint)
 }
 
 results\$gene_id <- rownames(results)
-results <- results[order(results\$gene_id), , drop = FALSE]
 results <- results[, c("gene_id", setdiff(names(results), "gene_id"))]
 
 # Round results if required
