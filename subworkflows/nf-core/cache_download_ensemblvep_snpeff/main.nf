@@ -9,9 +9,10 @@ workflow CACHE_DOWNLOAD_ENSEMBLVEP_SNPEFF {
     take:
     ensemblvep_info
     snpeff_info
+    ensemblvep_preflight_check
 
     main:
-    ENSEMBLVEP_DOWNLOAD(ensemblvep_info)
+    ENSEMBLVEP_DOWNLOAD(ensemblvep_info, ensemblvep_preflight_check)
     SNPEFF_DOWNLOAD(snpeff_info)
 
     emit:
