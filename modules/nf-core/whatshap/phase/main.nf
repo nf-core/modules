@@ -8,9 +8,8 @@ process WHATSHAP_PHASE {
         : 'community.wave.seqera.io/library/whatshap:2.8--7fe530bc624a3e5a' }"
 
     input:
-    tuple val(meta), path(vcf), path(tbi)
-    tuple val(meta2), path(bam), path(bai)
-    tuple val(meta3), path(fasta), path(fai)
+    tuple val(meta),  path(vcf),   path(tbi), path(bam), path(bai)
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*.vcf.gz"),     emit: vcf
