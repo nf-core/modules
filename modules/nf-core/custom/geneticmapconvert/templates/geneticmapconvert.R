@@ -25,85 +25,30 @@ parse_args <- function(x) {
   parsed_args[! is.na(parsed_args)]
 }
 
-read_first_line <- function(file_path) {
-  is_url <- grepl("^https?://", file_path)
-  con <- if (is_url) url(file_path, "rb") else file(file_path, "rb")
-
-  if (endsWith(file_path, ".gz")) {
-    con <- gzcon(con)
-  }
-
-  on.exit(close(con), add = TRUE)
-  readLines(con, n = 1, warn = FALSE)
-}
-
-# Function to detect separator
-detect_separator <- function(first_line) {
-  counts <- c(
-    tab = str_count(first_line, "\\t"),
-    comma = str_count(first_line, ","),
-    semicolon = str_count(first_line, ";"),
-    space = str_count(first_line, " ")
-  )
-
-  separators <- c("\\t", ",", ";", " ")
-  separators[which.max(counts)]
-}
-
-# Function to detect header
-detect_header <- function(first_line) {
-  header_keywords <- c(
-    "pos", "cm", "snp",
-    "position", "Genetic_Map",
-    "rate", "COMBINED_rate"
-  )
-  if (any(sapply(
-    header_keywords, function(keyword) {
-      grepl(keyword, first_line, ignore.case = TRUE)
-    }
-  ))) {
-    TRUE
+case_when_base <- function(x) {
+  if (x %in% c("chr", "#chr", "chrom", "chromosome")) {
+    "chr"
+  } else if (x %in% c("id", "snp", "marker", "rsid")) {
+    "id"
+  } else if (x %in% c("pos", "position", "bp")) {
+    "pos"
+  } else if (x %in% c("cm", "genetic_map", "genetic_map_cm_")) {
+    "cm"
+  } else if (x %in% c(
+    "rate", "combined_rate", "cm_cb", "cm_mb",
+    "combined_rate_cm_mb_"
+  )) {
+    "rate"
   } else {
-    FALSE
+    x
   }
 }
 
-# Function to detect column names
-detect_column_names <- function(first_line, detected_sep, detected_header) {
-  if (detected_header) {
-    cols <- str_split(first_line, detected_sep)[[1]]
-    cols <- tolower(cols)
-    matching_cols <- list(
-      "combined_rate" = "rate",
-      "cm.cb" = "rate",
-      "cm/mb" = "rate",
-      "position" = "pos",
-      "genetic_map" = "cm",
-      "#chr" = "chr"
-    )
-    sapply(cols, function(col) {
-      # Then check pattern matches
-      for (pattern in names(matching_cols)) {
-        if (grepl(pattern, col, fixed = TRUE)) {
-          return(matching_cols[[pattern]])
-        }
-      }
-      col
-    })
-  } else {
-    num_cols <- length(str_split(first_line, detected_sep)[[1]])
-    if (num_cols == 3) {
-      c("chr", "pos", "cm")
-    } else if (num_cols == 4) {
-      c("chr", "id", "cm", "pos")
-    } else {
-      stop(
-        "Error: Cannot auto-detect column names for file with",
-        num_cols,
-        " columns without header"
-      )
-    }
-  }
+normalize_names <- function(x) {
+  x <- tolower(x)
+  x <- gsub("[^a-z0-9#]+", "_", x)
+
+  sapply(x, case_when_base)
 }
 
 # Main function to process the map file
@@ -111,38 +56,50 @@ process_map_file <- function(
   file_path, chr = NULL, prefix = "output",
   tolerance = NA
 ) {
-  # Read the first line
-  first_line <- read_first_line(file_path)
-  cat(first_line, "\n")
-
-  # Check if first line is empty
-  if (str_trim(first_line) == "") {
-    stop("Error: First line is empty")
+  if (chr == "null") {
+    chr <- NULL
   }
-
-  # Auto-detect format
-  detected_sep <- detect_separator(first_line)
-  cat("Detected: SEP='", detected_sep, "'\n")
-  detected_header <- detect_header(first_line)
-  cat("Detected: HEADER=", detected_header, "\n")
-  detected_cols <- detect_column_names(
-    first_line, detected_sep, detected_header
-  )
-  cat("Detected: COLS=", detected_cols, "\n")
-
   # Read the map file into a data.table
-  map_df <- fread(file_path, sep = detected_sep, header = detected_header)
-  colnames(map_df) <- detected_cols
+  options(warn = 2) # all warnings will be set to error
+  map_df <- data.table::fread(
+    file_path,
+    sep = "auto",
+    header = "auto",
+    showProgress = FALSE
+  )
+  no_header <- all(stringr::str_detect(colnames(map_df), "^V[0-9]+\\\\z"))
+  if (no_header) {
+    if (dim(map_df)[2] == 3) {
+      colnames(map_df) <- c("chr", "pos", "cm")
+    } else if (dim(map_df)[2] == 4) {
+      colnames(map_df) <- c("chr", "id", "cm", "pos")
+    } else {
+      stop(
+        "Cannot auto-detect column names for file with ",
+        dim(map_df)[2],
+        " columns without header"
+      )
+    }
+  } else {
+    colnames(map_df) <- normalize_names(colnames(map_df))
+  }
 
   # Initialize columns missing columns
   if (!"chr" %in% colnames(map_df)) {
     # Ensure chromosome column is present
+    print(chr)
     if (is.null(chr)) {
-      stop("Error: Chromosome column missing and chr not present in meta")
+      stop("Chromosome column missing and chr not present in meta")
     }
     map_df[["chr"]] <- as.character(chr)
   } else {
     map_df[["chr"]] <- as.character(map_df[["chr"]])
+  }
+
+  print(map_df)
+
+  if (length(unique(map_df[["chr"]])) > 1) {
+    stop("More than one chromosome present in file")
   }
 
   if (!"id" %in% colnames(map_df)) {
@@ -151,30 +108,33 @@ process_map_file <- function(
 
   # Ensure necessary columns are present
   if (!all(c("pos", "cm") %in% colnames(map_df))) {
-    stop("Error: Position and cM missing")
+    stop("Position and cM missing")
   }
 
   if (!is.numeric(map_df[["cm"]])) {
-    stop("Error: cM column should be numeric")
+    stop("cM column should be numeric")
   }
 
   if (!is.numeric(map_df[["pos"]])) {
-    stop("Error: pos column should be numeric")
+    stop("pos column should be numeric")
   }
 
   missing_row <- any(is.na(map_df[["pos"]]) | is.na(map_df[["cm"]]))
 
   if (missing_row) {
-    stop("Error: Position or cM missing")
+    stop("Position or cM missing")
   }
 
   if (!is.null(chr) && any(map_df[["chr"]] != chr)) {
-    stop("Error: mismatch between chr given and the chr present in file")
+    stop("Mismatch between chr given and the chr present in file")
   }
 
   # Order position to ensure all successive rows have increasing position
   map_df <- map_df[order(map_df[["pos"]]), ]
-  stopifnot(all(diff(map_df[["pos"]]) > 0))
+  if (any(duplicated(map_df[["pos"]]))) {
+    print(map_df[duplicated(map_df[["pos"]]), ])
+    stop("pos column shouldn't have any duplicate row")
+  }
 
   # Normalize cM (needed by stitch)
   map_df[["cm"]] <- map_df[["cm"]] - map_df[["cm"]][1]
@@ -192,6 +152,7 @@ process_map_file <- function(
     map_df[["rate"]] <- rate
   } else {
     map_df[["diff"]] <- abs(map_df[["rate"]] - rate)
+
     tolerance <- ifelse(
       is.na(tolerance) || is.null(tolerance),
       10e-6,
@@ -204,7 +165,7 @@ process_map_file <- function(
   }
 
   if (!is.numeric(map_df[["rate"]])) {
-    stop("Error: pos column should be numeric")
+    stop("rate column should be numeric")
   }
 
   # Process the data
@@ -219,36 +180,22 @@ process_map_file <- function(
   writeLines("position COMBINED_rate.cM.Mb. Genetic_Map.cM.", stitch_file)
 
   # Write data to files
-  con_glimpse <- file(glimpse_file, open = "a")
-  con_minimac <- file(minimac_file, open = "a")
-  con_plink <- file(plink_file, open = "a")
-  con_stitch <- file(stitch_file, open = "a")
-
-  # Write data to files
-  writeLines(
-    paste(map_df[["pos"]], map_df[["chr"]], map_df[["cm"]], sep = "\t"),
-    con_glimpse
+  fwrite(
+    map_df[, c("pos", "chr", "cm")], glimpse_file,
+    sep = "\t", append = TRUE, col.names = FALSE
   )
-  writeLines(
-    paste(map_df[["chr"]], map_df[["pos"]], map_df[["cm"]], sep = "\t"),
-    con_minimac
+  fwrite(
+    map_df[, c("chr", "pos", "cm")], minimac_file,
+    sep = "\t", append = TRUE, col.names = FALSE
   )
-  writeLines(
-    paste(
-      map_df[["chr"]], map_df[["id"]],
-      map_df[["cm"]], map_df[["pos"]],
-      sep = " "
-    ),
-    con_plink
+  fwrite(
+    map_df[, c("chr", "id", "cm", "pos")], plink_file,
+    sep = " ", append = TRUE, col.names = FALSE
   )
-  writeLines(
-    paste(map_df[["pos"]], map_df[["rate"]], map_df[["cm"]], sep = " "),
-    con_stitch
+  fwrite(
+    map_df[, c("pos", "rate", "cm")], stitch_file,
+    sep = " ", append = TRUE, col.names = FALSE
   )
-  close(con_glimpse)
-  close(con_minimac)
-  close(con_plink)
-  close(con_stitch)
 }
 
 ext_args <- parse_args("${args}")
