@@ -25,6 +25,7 @@ workflow BAM_DEDUP_STATS_SAMTOOLS_UMITOOLS {
             [[], [], []],
             [],
             [],
+            [],
         )
 
         SAMTOOLS_INDEX_PRIMARY(SAMTOOLS_VIEW_PRIMARY.out.bam)

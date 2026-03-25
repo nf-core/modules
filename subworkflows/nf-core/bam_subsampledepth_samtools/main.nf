@@ -36,6 +36,7 @@ workflow BAM_SUBSAMPLEDEPTH_SAMTOOLS {
         ch_input_subsample,
         ch_fasta,
         [],
+        [],
         []
     )
 
