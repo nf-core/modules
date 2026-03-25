@@ -285,7 +285,7 @@ nextflow_process {
     test("RNAseq - Feature Counts - formula + comparison contrast string - interaction with seed") {
         when {
             params {
-                module_args = "--seed 2"
+                module_args = "--seed 2 --round_digits 2"
             }
             process {
                 """
