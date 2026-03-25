@@ -33,6 +33,7 @@ process BIOAWK {
     """
 
     stub:
+    def prefix      = task.ext.prefix ?: "${meta.id}"
     """
     echo "" > "${prefix}.${output_file_extension}"
     """
