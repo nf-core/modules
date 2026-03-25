@@ -25,7 +25,7 @@ process GEMMI_VALIDATE {
     gemmi \\
         validate \\
             $args \\
-            ${cif} > ${prefix}.log   
+            ${cif} > ${prefix}.log 2>&1
     """
 
     stub:

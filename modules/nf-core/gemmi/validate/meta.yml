@@ -1,76 +1,65 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-# # TODO nf-core: Add a description of the module and list keywords
 name: "gemmi_validate"
-description: write your description here
+description: "Validate mmCIF files with gemmi and capture the validation report."
 keywords:
-- sort
-- example
-- genomics
+- structural-biology
+- crystallography
+- validation
+- gemmi
 tools:
-## TODO nf-core: Add a description and other details for the software below
 - "gemmi":
-    description: ""
-    homepage: ""
-    documentation: ""
-    tool_dev_url: ""
-    doi: ""
-    licence: null
-    identifier: null
+    description: "Gemmi is a library and command-line tool for parsing, manipulating, and converting macromolecular structural biology data formats such as mmCIF, PDB, and MTZ."
+    homepage: "https://gemmi.readthedocs.io/"
+    documentation: "https://gemmi.readthedocs.io/en/latest/cif.html#validation"
+    tool_dev_url: "https://github.com/project-gemmi/gemmi"
+    doi: "10.21105/joss.04200"
+    licence: ["MPL-2.0"]
+    identifier: ""
 
 input:
-  ### TODO nf-core: Add a description of all of the variables used as input
 - - meta:
       type: map
       description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
-  - bam:
+        Groovy Map containing sample metadata, e.g. `[ id: 'sample1' ]`.
+  - cif:
       type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+      description: Input CIF/mmCIF file to validate.
+      pattern: "*.cif"
       ontologies:
-      - edam: "http://edamontology.org/format_2572"     # BAM
-      - edam: "http://edamontology.org/format_2573"     # CRAM
-      - edam: "http://edamontology.org/format_3462"     # SAM
+      - edam: "http://edamontology.org/format_1477"      # mmCIF can be treated as structure format
 
 output:
-  ### TODO nf-core: Add a description of all of the variables used as output
-  bam:
+  log:
   - - meta:
         type: map
         description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-    - "*.bam":
+          Groovy Map containing sample metadata, e.g. `[ id: 'sample1' ]`.
+    - "*.log":
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-        ontologies:
-        - edam: "http://edamontology.org/format_2572"     # BAM
-        - edam: "http://edamontology.org/format_2573"     # CRAM
-        - edam: "http://edamontology.org/format_3462"     # SAM
+        description: Validation report from gemmi validate.
+        pattern: "*.log"
   versions_gemmi:
   - - "${task.process}":
         type: string
-        description: The name of the process
+        description: The name of the process.
     - "gemmi":
         type: string
-        description: The name of the tool
+        description: The name of the tool.
     - "gemmi --version":
         type: eval
-        description: The expression to obtain the version of the tool
+        description: The expression to obtain the version of the tool.
 
 topics:
   versions:
   - - ${task.process}:
         type: string
-        description: The name of the process
+        description: The name of the process.
     - gemmi:
         type: string
-        description: The name of the tool
+        description: The name of the tool.
     - gemmi --version:
         type: eval
-        description: The expression to obtain the version of the tool
+        description: The expression to obtain the version of the tool.
 authors:
 - "@npechl"
 maintainers:
