@@ -24,7 +24,8 @@ process HIFITRIMMER_FILTERBAM {
    def args = task.ext.args ?: ''
    def args2 = task.ext.args2 ?: ''
    def suffix = args.contains('-f') ? "fastq.gz"  : "fasta.gz"
-   def input_convert = !input.name.endsWith('bam') ? "<(samtools import ${input} ${args2} -@ ${task.cpus})" : input
+   def input_convert = input.name.endsWith('cram') ? "<(samtools view ${input} -u ${args2} -@ ${task.cpus})" :
+        !input.name.endsWith('bam') ? "<(samtools import ${input} ${args2} -@ ${task.cpus})" : input
    """
    hifi_trimmer filter_bam \\
       -t ${task.cpus} \\
