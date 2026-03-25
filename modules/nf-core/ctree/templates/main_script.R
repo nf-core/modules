@@ -61,10 +61,11 @@ add_dummy_driver = function(input_table, variant_colname, is_driver_colname) {
     return(input_table)
 }
 
+
 initialize_ctree_obj_pyclone = function(ctree_input) {
   ctree_input = add_dummy_driver(ctree_input, variant_colname="variantID", is_driver_colname="is.driver")
-  
-  
+
+
   # the CCF table must report CCF values for each cluster and sample
   # cluster | nMuts | is.driver | is.clonal | sample1 | sample2 | ...
   CCF_table = ctree_input %>%
@@ -78,7 +79,7 @@ initialize_ctree_obj_pyclone = function(ctree_input) {
     dplyr::filter(any(CCF>0)) %>%
     dplyr::ungroup() %>% unique() %>%
     tidyr::pivot_wider(names_from="sample_id", values_from="CCF", values_fill=0)
-  
+
   # the driver table must contain patient and variant IDs and report clonality and driver status
   # patientID | variantID | is.driver | is.clonal | cluster | sample1 | sample2 | ...
   drivers_table = ctree_input %>%
@@ -89,11 +90,11 @@ initialize_ctree_obj_pyclone = function(ctree_input) {
     dplyr::filter(is.driver==TRUE) %>%
     dplyr::mutate(variantID=replace(variantID, is.na(variantID), "")) %>%
     tidyr::pivot_wider(names_from="sample_id", values_from="CCF", values_fill=0)
-  
+
   samples = unique(ctree_input[["sample_id"]])  # if multisample, this is a list
   patient = unique(ctree_input[["patientID"]])
-  
-  
+
+
   ctree_init = list("CCF_table"=CCF_table,
                     "drivers_table"=drivers_table,
                     "samples"=samples,
