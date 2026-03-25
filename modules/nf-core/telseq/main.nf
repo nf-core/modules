@@ -8,10 +8,8 @@ process TELSEQ {
         : 'community.wave.seqera.io/library/bamtools_samtools_telseq:428dab7df99f37d4' }"
 
     input:
-    tuple val(meta ), path(bam), path(bai)
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fai)
-    tuple val(meta4), path(bed)
+    tuple val(meta), path(bam), path(bai), path(bed)
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*.telseq.tsv"), emit: output
