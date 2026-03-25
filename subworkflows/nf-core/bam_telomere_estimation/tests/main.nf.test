@@ -12,8 +12,8 @@ nextflow_workflow {
     tag "telogator2"
     tag "telomerehunter"
     tag "custom/summarisetelomereestimation"
-    tag "samtools/index"
-    tag "samtools/faidx"
+
+
 
     test("short-read - telseq routing") {
         when {
@@ -21,7 +21,7 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id:'test_sr' ],
-                    'wgs',
+                    'short',
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
                 ])
@@ -59,7 +59,7 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id:'test_sr_th' ],
-                    'wgs',
+                    'short',
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
                 ])
@@ -101,7 +101,7 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id:'test_lr_th' ],
-                    'ont',
+                    'long',
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam.bai', checkIfExists: true)
                 ])
@@ -149,43 +149,7 @@ nextflow_workflow {
                 ])
                 input[3] = Channel.value([ [], [] ])
                 input[4] = false
-                input[5] = 'telseq'
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert workflow.success },
-                { assert workflow.out.length_tsv },
-                { assert workflow.out.summary },
-                { assert snapshot(
-                    workflow.out.length_tsv.collect { meta, tsv -> file(tsv).name },
-                    workflow.out.summary.collect { meta, tsv -> file(tsv).name }
-                ).match() }
-            )
-        }
-    }
-
-    test("short-read - auto-index BAM and FASTA") {
-        when {
-            workflow {
-                """
-                input[0] = Channel.of([
-                    [ id:'test_autoindex' ],
-                    'wgs',
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    []
-                ])
-                input[1] = Channel.empty()
-                input[2] = Channel.value([
-                    [id:'genome'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
-                    []
-                ])
-                input[3] = Channel.value([ [], [] ])
-                input[4] = false
-                input[5] = null
+                input[5] = 'short'
                 """
             }
         }
@@ -210,7 +174,7 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id:'test_sr_stub' ],
-                    'wgs',
+                    'short',
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
                 ])
@@ -244,7 +208,7 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id:'test_lr_stub' ],
-                    'ont',
+                    'long',
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam.bai', checkIfExists: true)
                 ])
@@ -276,7 +240,7 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id:'test_lr' ],
-                    'ont',
+                    'long',
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam.bai', checkIfExists: true)
                 ])

@@ -9,8 +9,6 @@ keywords:
   - bam
   - cram
 components:
-  - samtools/index
-  - samtools/faidx
   - telseq
   - telogator2
   - telomerehunter
@@ -21,9 +19,9 @@ input:
       description: |
         Channel of aligned reads with data type and optional index.
         Structure: [ val(meta), val(data_type), path(reads), path(reads_index) ]
-        data_type values: 'wgs', 'wes', 'short_read' route to telseq;
-        'long_read', 'ont', 'pacbio' route to telogator2.
-        reads_index may be [] for auto-indexing.
+        data_type: 'short' routes to telseq, 'long' routes to telogator2.
+        The calling pipeline is responsible for determining the sequencing type.
+        Reads must be indexed.
   - ch_control:
       type: file
       description: |
@@ -33,9 +31,8 @@ input:
   - ch_fasta:
       type: file
       description: |
-        Reference genome FASTA with optional index.
+        Reference genome FASTA with index.
         Structure: [ val(meta2), path(fasta), path(fai) ]
-        fai may be [] for auto-indexing.
   - ch_bed:
       type: file
       description: |
@@ -50,7 +47,7 @@ input:
       description: |
         Global override for length estimation tool. If set, all samples
         use this tool regardless of per-sample data_type.
-        Values: 'telseq', 'telogator2', or null.
+        Values: 'short', 'long', or null.
 output:
   - length_tsv:
       type: file
