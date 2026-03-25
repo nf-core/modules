@@ -9,9 +9,8 @@ process TELSEQ {
 
     input:
     tuple val(meta ), path(bam), path(bai)
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fai)
-    tuple val(meta4), path(bed)
+    tuple val(meta2), path(fasta), path(fai)
+    tuple val(meta3), path(bed)
 
     output:
     tuple val(meta), path("*.telseq.tsv"), emit: output

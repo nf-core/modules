@@ -52,17 +52,12 @@ input:
         description: Reference genome file
         pattern: "*.{fa,fasta}"
         ontologies: []
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing reference index information
-          e.g. [ id:'genome' ]
     - fai:
         type: file
         description: Fasta index file
         pattern: "*.fai"
         ontologies: []
-  - - meta4:
+  - - meta3:
         type: map
         description: |
           Groovy Map containing bed information
