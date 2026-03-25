@@ -3,9 +3,9 @@ process KNOTANNOTSV {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/77/776546fb3850096f76abd8b63e0eac6b26807e629060e28c81e50ce056f3b8dd/data':
-        'community.wave.seqera.io/library/perl-excel-writer-xlsx_perl-sort-key_perl-yaml-libyaml_git:a0a865d27eeceb13' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/knotannotsv:1.1.5--hdfd78af_0' :
+        'biocontainers/knotannotsv:1.1.5--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(annotsv_tsv)
@@ -23,12 +23,12 @@ process KNOTANNOTSV {
     def args = task.ext.args ?: ''
     def knot_prefix = task.ext.prefix ? "--outPrefix ${task.ext.prefix}" : "" // For knotAnnotSV, this a true prefix
     def knot_script = knot_out_xl ? 'knotAnnotSV2XL.pl' : 'knotAnnotSV.pl'
+    def config_file = "\${CONDA_PREFIX:-/usr/local}/share/knotAnnotSV/config_AnnotSV.yaml"
     """
-    git clone https://github.com/mobidic/knotAnnotSV.git --branch v1.1.5 --single-branch # CHANGE when UPDATE
 
-    perl knotAnnotSV/${knot_script} \\
+    ${knot_script} \\
         ${args} \\
-        --configFile knotAnnotSV/config_AnnotSV.yaml \\
+        --configFile ${config_file} \\
         ${knot_prefix} \\
         --annotSVfile ${annotsv_tsv}
     """
