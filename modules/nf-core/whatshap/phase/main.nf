@@ -41,11 +41,6 @@ process WHATSHAP_PHASE {
         ${prefix}.vcf
 
     tabix -p vcf ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        whatshap: \$(whatshap --version 2>&1 | sed 's/whatshap //g')
-    END_VERSIONS
     """
 
     stub:
