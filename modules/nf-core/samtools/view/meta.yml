@@ -54,6 +54,12 @@ input:
       description: Optional file with read names to output only select alignments
       pattern: "*.{txt,list}"
       ontologies: []
+  - bed:
+      type: file
+      description: Optional BED file for filtering alignments by genomic region (-L)
+      pattern: "*.{bed}"
+      ontologies:
+        - edam: http://edamontology.org/format_3003 # BED
   - index_format:
       type: string
       description: Index format, used together with ext.args = '--write-index'

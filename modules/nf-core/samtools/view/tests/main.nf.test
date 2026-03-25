@@ -25,6 +25,7 @@ nextflow_process {
                 input[1] = [[],[],[]]
                 input[2] = []
                 input[3] = []
+                input[4] = []
                 """
             }
         }
@@ -51,7 +52,8 @@ nextflow_process {
                 ]
                 input[1] = [[],[],[]]
                 input[2] = []
-                input[3] = 'csi'
+                input[3] = []
+                input[4] = 'csi'
                 """
             }
         }
@@ -78,7 +80,8 @@ nextflow_process {
                 ]
                 input[1] = [[],[],[]]
                 input[2] = []
-                input[3] = 'bai'
+                input[3] = []
+                input[4] = 'bai'
                 """
             }
         }
@@ -106,7 +109,8 @@ nextflow_process {
                 input[1] = [[],[],[]]
                 input[2] = Channel.of('testN:1')
                     .collectFile(name: 'selected_reads.txt')
-                input[3] = 'bai'
+                input[3] = []
+                input[4] = 'bai'
                 """
             }
         }
@@ -134,7 +138,8 @@ nextflow_process {
                 input[1] = [[],[],[]]
                 input[2] = Channel.of('testN:1')
                     .collectFile(name: 'selected_reads.txt')
-                input[3] = 'crai'
+                input[3] = []
+                input[4] = 'crai'
                 """
             }
         }
@@ -166,6 +171,7 @@ nextflow_process {
                 ]
                 input[2] = []
                 input[3] = []
+                input[4] = []
                 """
             }
         }
@@ -197,6 +203,7 @@ nextflow_process {
                 ]
                 input[2] = []
                 input[3] = []
+                input[4] = []
                 """
             }
         }
@@ -228,6 +235,7 @@ nextflow_process {
                 ]
                 input[2] = []
                 input[3] = []
+                input[4] = []
                 """
             }
         }
@@ -260,6 +268,7 @@ nextflow_process {
                 input[2] = Channel.of("testN:2817", "testN:2814")
                     .collectFile(name: "readnames.list", newLine: true)
                 input[3] = []
+                input[4] = []
                 """
             }
         }
@@ -268,6 +277,34 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam", "bai", "unselected", "unselected_index"])).match()}
+            )
+        }
+    }
+
+    test("bam_with_bed") {
+        when {
+            params {
+                samtools_args = "--output-fmt bam"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    []
+                ]
+                input[1] = [[],[],[]]
+                input[2] = []
+                input[3] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam"])).match()}
             )
         }
     }
@@ -290,6 +327,7 @@ nextflow_process {
                 input[1] = [[],[],[]]
                 input[2] = []
                 input[3] = []
+                input[4] = []
                 """
             }
         }
@@ -319,7 +357,8 @@ nextflow_process {
                 ]
                 input[1] = [[],[],[]]
                 input[2] = []
-                input[3] = 'csi'
+                input[3] = []
+                input[4] = 'csi'
                 """
             }
         }
@@ -349,7 +388,8 @@ nextflow_process {
                 ]
                 input[1] = [[],[],[]]
                 input[2] = []
-                input[3] = 'bai'
+                input[3] = []
+                input[4] = 'bai'
                 """
             }
         }
@@ -380,7 +420,8 @@ nextflow_process {
                 input[1] = [[],[],[]]
                 input[2] = Channel.of('testN:1')
                     .collectFile(name: 'selected_reads.txt')
-                input[3] = 'bai'
+                input[3] = []
+                input[4] = 'bai'
                 """
             }
         }
@@ -411,7 +452,8 @@ nextflow_process {
                 input[1] = [[],[],[]]
                 input[2] = Channel.of('testN:1')
                     .collectFile(name: 'selected_reads.txt')
-                input[3] = 'crai'
+                input[3] = []
+                input[4] = 'crai'
                 """
             }
         }

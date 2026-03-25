@@ -11,6 +11,7 @@ process SAMTOOLS_VIEW {
     tuple val(meta), path(input), path(index)
     tuple val(meta2), path(fasta), path(fai)
     path qname
+    path bed
     val index_format
 
     output:
@@ -43,6 +44,7 @@ process SAMTOOLS_VIEW {
     output_file = index_format ? "${prefix}.${file_type}##idx##${prefix}.${file_type}.${index_format} --write-index" : "${prefix}.${file_type}"
     // Can't choose index type of unselected file
     readnames = qname ? "--qname-file ${qname} --output-unselected ${prefix}.unselected.${file_type}" : ""
+    def bedfile = bed ? "-L ${bed}" : ""
 
     if ("${input}" == "${prefix}.${file_type}") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
@@ -62,6 +64,7 @@ process SAMTOOLS_VIEW {
         --threads ${task.cpus - 1} \\
         ${reference} \\
         ${readnames} \\
+        ${bedfile} \\
         ${args} \\
         -o ${output_file} \\
         ${input} \\
