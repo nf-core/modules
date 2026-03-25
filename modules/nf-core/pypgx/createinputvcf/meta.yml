@@ -65,12 +65,11 @@ output:
           pattern: "*.vcf.gz.tbi"
           ontologies: []
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - versions:
+        type: map
+        description: |
+          Groovy map containing software versions
+          e.g. [ id:'pypgx', version:'0.25.0' ]
 authors:
   - "@jorisvansteenbrugge"
 maintainers:

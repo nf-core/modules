@@ -14,7 +14,7 @@ process PYPGX_CREATEINPUTVCF {
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi
-    path("versions.yml"), emit: versions
+    tuple val("${task.process}"), val('pypgx'), eval('pypgx -v 2>&1 | sed "s/.* //"'), topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,11 +29,6 @@ process PYPGX_CREATEINPUTVCF {
         ${prefix}.vcf.gz \\
         ${fasta} \\
         $bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pypgx: \$(echo \$(pypgx -v 2>&1) | sed 's/.* //')
-    END_VERSIONS
     """
 
     stub:
@@ -41,10 +36,5 @@ process PYPGX_CREATEINPUTVCF {
     """
     echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pypgx: \$(echo \$(pypgx -v 2>&1) | sed 's/.* //')
-    END_VERSIONS
     """
 }
