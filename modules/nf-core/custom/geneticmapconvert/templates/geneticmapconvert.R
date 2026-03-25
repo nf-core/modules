@@ -168,6 +168,9 @@ process_map_file <- function(
     stop("rate column should be numeric")
   }
 
+  map_df[["rate"]] <- signif(map_df[["rate"]], digits = 8)
+  map_df[["cm"]] <- signif(map_df[["cm"]], digits = 8)
+
   # Process the data
   glimpse_file <- paste0(prefix, ".glimpse.map")
   minimac_file <- paste0(prefix, ".minimac.map")
