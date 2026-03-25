@@ -4,6 +4,7 @@ nextflow_process {
     name "Test Process BIOAWK"
     script "../main.nf"
     process "BIOAWK"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -13,15 +14,18 @@ nextflow_process {
         config "./nextflow.config"
 
         when {
+            params {
+                bioawk_command = "-c fastx \'{print \">\" \$name ORS length(\$seq)}\'"
+                bioawk_prefix = "sample_1"
+            }
+
             process {
                 """
                 input[0] = [
 				    [ id:'test', single_end:false ], // meta map
 				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
 				]
-				input[1] = "fa"
-				input[2] = true
-
+				input[1] = "fa.gz"
                 """
             }
         }
@@ -35,9 +39,13 @@ nextflow_process {
     }
 
     test("fasta bioawk tsv") {
-        config "./nextflow_telomere_check.config"
 
         when {
+            params {
+                bioawk_command = "-c fastx \'{s = toupper(\$seq); copy_s = s; g = gsub(/G/, \"\", s); pct = 100*g/length(copy_s); rev = (pct < 30); out = rev ? revcomp(\$seq) : \$seq; printf \"%s\t%d\t%.2f\t%s\t%s\\n\", out, g, pct, (rev ? \"true\" : \"false\"), copy_s}\'"
+                bioawk_prefix = "telomere_summary"
+            }
+
             process {
                 """
                 input[0] = [
@@ -45,8 +53,6 @@ nextflow_process {
 				    file(params.modules_testdata_base_path + 'generic/telomere/telomeric_motifs.fasta', checkIfExists: true)
 				]
 				input[1] = "tsv"
-				input[2] = false
-
                 """
             }
         }

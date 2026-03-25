@@ -30,15 +30,16 @@ input:
           Input biological sequence file (optionally gzipped) to be manipulated via the program specified in `$args`.
         pattern: "*.{bed,gff,sam,vcf,fastq,fasta,tab,bed.gz,gff.gz,sam.gz,vcf.gz,fastq.gz,fasta.gz,tab.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1930
+          - edam: "http://edamontology.org/format_3003"
+          - edam: "http://edamontology.org/format_3016"
+          - edam: "http://edamontology.org/format_3989"
+          - edam: "http://edamontology.org/format_1975"
+          - edam: "http://edamontology.org/format_1929"
+          - edam: "http://edamontology.org/format_1930"
           - edam: http://edamontology.org/format_3475
-  - suffix:
+  - output_file_extension:
       type: string
       description: The suffix to add to the output file name.
-  - zip_bool:
-      type: boolean
-      description: Whether to gzip the output file.
-      pattern: "true|false"
 output:
   output:
     - - meta:
@@ -46,22 +47,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${file_output}:
+      - "*.${output_file_extension}":
           type: file
           description: Manipulated version of the input sequence file.
           ontologies: []
-  gz_output:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.gz":
-          type: file
-          description: Manipulated and gzipped version of the input sequence file.
-          pattern: "*.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989
   versions_bioawk:
     - - ${task.process}:
           type: string

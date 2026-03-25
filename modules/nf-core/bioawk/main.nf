@@ -9,12 +9,10 @@ process BIOAWK {
 
     input:
     tuple val(meta), path(input)
-    val suffix
-    val zip_bool
+    val output_file_extension
 
     output:
-    tuple val(meta), path("${file_output}"),    optional: true, emit: output
-    tuple val(meta), path("*.gz"),              optional: true, emit: gz_output
+    tuple val(meta), path("*.${output_file_extension}"), emit: output
     tuple val("${task.process}"), val('bioawk'), val("1.0"), emit: versions_bioawk, topic: versions
     // WARN: Version information not provided by tool on CLI. Please update version string above when bumping container versions.
 
@@ -24,19 +22,14 @@ process BIOAWK {
     script:
     def args        = task.ext.args ?: ''
     def prefix      = task.ext.prefix ?: "${meta.id}"
-    file_output     = "${prefix}.${suffix}"
-    if ("${input}" == "${file_output}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate."
+    if ("${input}" == "${prefix}.${output_file_extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate."
 
+    def compress_output = output_file_extension.endsWith(".gz") ? " | gzip " : ""
     """
     bioawk \
-        $args \
-        $input \
-        > ${file_output}
-
-    if [ "${zip_bool}" = "true" ]; then
-        gzip "${file_output}"
-    fi
-
+            $args \
+            $input \
+            ${compress_output} > ${prefix}.${output_file_extension}
     """
 
     stub:
