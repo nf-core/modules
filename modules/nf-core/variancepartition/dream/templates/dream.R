@@ -246,7 +246,7 @@ print(form)
 # Parallel processing setup
 threads <- as.numeric(opt\$threads)
 
-bp <- SnowParam(workers =  threads, type = "SOCK", RNGseed = opt\$seed, progressbar = FALSE)
+bp <- MulticoreParam(workers =  threads, RNGseed = opt\$seed, progressbar = FALSE)
 
 # Optionally apply voom
 if (as.logical(opt\$apply_voom)) {
