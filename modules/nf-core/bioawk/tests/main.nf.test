@@ -42,7 +42,7 @@ nextflow_process {
                 """
                 input[0] = [
 				    [ id:'test', single_end:false ], // meta map
-				    file('/lustre/scratch124/tol/teams/tola/users/dp24/nf-modules/modules/nf-core/bioawk/tests/telomere.fasta', checkIfExists: true)
+				    file(params.modules_testdata_base_path + 'generic/telomere/telomeric_motifs.fasta', checkIfExists: true)
 				]
 				input[1] = "tsv"
 				input[2] = false
