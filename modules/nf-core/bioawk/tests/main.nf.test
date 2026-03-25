@@ -4,13 +4,13 @@ nextflow_process {
     name "Test Process BIOAWK"
     script "../main.nf"
     process "BIOAWK"
-    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "bioawk"
 
-    test("test-bioawk") {
+    test("fasta bioawk fasta.gz") {
+        config "./nextflow.config"
 
         when {
             process {
@@ -19,6 +19,33 @@ nextflow_process {
 				    [ id:'test', single_end:false ], // meta map
 				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
 				]
+				input[1] = "fa"
+				input[2] = true
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("fasta bioawk tsv") {
+        config "./nextflow_telomere_check.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file('/lustre/scratch124/tol/teams/tola/users/dp24/nf-modules/modules/nf-core/bioawk/tests/telomere.fasta', checkIfExists: true)
+				]
+				input[1] = "tsv"
+				input[2] = false
 
                 """
             }

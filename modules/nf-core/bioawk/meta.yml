@@ -1,7 +1,6 @@
-schema_version: 1.1.0
 name: "bioawk"
-description: Bioawk is an extension to Brian Kernighan's awk, adding the support of several common biological data formats.
-
+description: Bioawk is an extension to Brian Kernighan's awk, adding the support
+  of several common biological data formats.
 keywords:
   - bioawk
   - fastq
@@ -9,7 +8,6 @@ keywords:
   - sam
   - file manipulation
   - awk
-
 tools:
   - bioawk:
       description: BWK awk modified for biological data
@@ -17,9 +15,9 @@ tools:
       documentation: https://github.com/lh3/bioawk
       tool_dev_url: https://github.com/lh3/bioawk
       licence:
-        - Free software license (https://github.com/lh3/bioawk/blob/master/README.awk#L1)
+        - Free software license
+          (https://github.com/lh3/bioawk/blob/master/README.awk#L1)
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -31,9 +29,28 @@ input:
         description: |
           Input biological sequence file (optionally gzipped) to be manipulated via the program specified in `$args`.
         pattern: "*.{bed,gff,sam,vcf,fastq,fasta,tab,bed.gz,gff.gz,sam.gz,vcf.gz,fastq.gz,fasta.gz,tab.gz}"
-
+        ontologies:
+          - edam: http://edamontology.org/format_1930
+          - edam: http://edamontology.org/format_3475
+  - suffix:
+      type: string
+      description: The suffix to add to the output file name.
+  - zip_bool:
+      type: boolean
+      description: Whether to gzip the output file.
+      pattern: "true|false"
 output:
   output:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${file_output}:
+          type: file
+          description: Manipulated version of the input sequence file.
+          ontologies: []
+  gz_output:
     - - meta:
           type: map
           description: |
@@ -43,32 +60,31 @@ output:
           type: file
           description: Manipulated and gzipped version of the input sequence file.
           pattern: "*.gz"
-
+          ontologies:
+            - edam: http://edamontology.org/format_3989
   versions_bioawk:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "bioawk":
+      - bioawk:
           type: string
           description: The name of the tool
       - "1.0":
           type: string
-          description: The version of the tool
-
+          description: The expression to obtain the version of the tool
 topics:
   versions:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "bioawk":
+      - bioawk:
           type: string
           description: The name of the tool
       - "1.0":
           type: string
-          description: The version of the tool
-
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
-
 maintainers:
   - "@jfy133"
+schema_version: 1.1.0

@@ -1,5 +1,5 @@
 {
-    "test-bioawk": {
+    "fasta bioawk fasta.gz": {
         "content": [
             {
                 "0": [
@@ -12,7 +12,17 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,5fe88e58a71f10551df56518c35ba91a"
+                    
+                ],
+                "2": [
+                    [
+                        "BIOAWK",
+                        "bioawk",
+                        "1.0"
+                    ]
+                ],
+                "gz_output": [
+                    
                 ],
                 "output": [
                     [
@@ -23,15 +33,68 @@
                         "sample_1.fa.gz:md5,b558dd15d8940373a032a827d490e693"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,5fe88e58a71f10551df56518c35ba91a"
+                "versions_bioawk": [
+                    [
+                        "BIOAWK",
+                        "bioawk",
+                        "1.0"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2024-08-28T10:24:46.397249"
+        "timestamp": "2026-03-25T12:35:30.509942773"
+    },
+    "fasta bioawk tsv": {
+        "content": [
+            {
+                "0": [
+                    
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "telomere_summary.tsv:md5,20facddd524fd8f6c0c03505f0be3e7a"
+                    ]
+                ],
+                "2": [
+                    [
+                        "BIOAWK",
+                        "bioawk",
+                        "1.0"
+                    ]
+                ],
+                "gz_output": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "telomere_summary.tsv:md5,20facddd524fd8f6c0c03505f0be3e7a"
+                    ]
+                ],
+                "output": [
+                    
+                ],
+                "versions_bioawk": [
+                    [
+                        "BIOAWK",
+                        "bioawk",
+                        "1.0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-03-25T12:39:43.207782527"
     }
 }
