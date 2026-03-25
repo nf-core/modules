@@ -34,7 +34,6 @@ process BIOAWK {
 
     stub:
     """
-    touch ${file_output}
-    echo "" > ${file_output}.gz
+    echo "" > "${prefix}.${output_file_extension}"
     """
 }
