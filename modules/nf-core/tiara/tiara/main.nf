@@ -13,19 +13,17 @@ process TIARA_TIARA {
 
     output:
     tuple val(meta), path("${prefix}.{txt,txt.gz}"), emit: classifications
-    tuple val(meta), path("log_*.{txt,txt.gz}"), emit: log
-    tuple val(meta), path("*.{fasta,fasta.gz}"), emit: fasta, optional: true
-    tuple val("${task.process}"), val('tiara'), val(VERSION), topic: versions, emit: versions_tiara
-
+    tuple val(meta), path("log_*.{txt,txt.gz}")    , emit: log
+    tuple val(meta), path("*.{fasta,fasta.gz}")    , emit: fasta, optional: true
+    tuple val("${task.process}"), val('tiara'), val("1.0.3"), topic: versions, emit: versions_tiara
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    VERSION = '1.0.3'
     """
     tiara -i ${fasta} \
         -o ${prefix}.txt \
@@ -46,8 +44,6 @@ process TIARA_TIARA {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.txt
     touch log_${prefix}.txt
