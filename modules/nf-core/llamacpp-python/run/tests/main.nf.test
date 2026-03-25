@@ -1,0 +1,79 @@
+nextflow_process {
+
+    name "Test Process LLAMACPP_PYTHON_RUN"
+    script "../main.nf"
+    process "LLAMACPP_PYTHON_RUN"
+
+    tag "modules"
+    tag "modules_local"
+    tag "llamacpp_python"
+    tag "llamacpp_python/run"
+
+    test("run inference with downloaded gguf model") {
+
+        config "./nextflow.config"
+
+        setup {
+            run("HF_DOWNLOAD") {
+                script "../../../huggingface/download/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test_model' ],
+                        "ggml-org/gemma-3-1b-it-GGUF",
+                        "gemma-3-1b-it-Q4_K_M.gguf"
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = HF_DOWNLOAD.out.output.map { meta, model ->
+                    [ [ id:'test_run' ], file("${moduleDir}/tests/data/prompt.json"), model ]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.output.size() == 1 },
+                { assert process.out.output[0][0] == [ id:'test_run' ] },
+                { assert file(process.out.output[0][1]).name == "output.txt" },
+                { assert file(process.out.output[0][1]).size() > 0 },
+                { assert snapshot(process.out.versions_llama_cpp_python).match() }
+            )
+        }
+    }
+
+    test("stub - run inference with json prompt") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_run' ],
+                    file("${moduleDir}/tests/data/prompt.json"),
+                    file("${moduleDir}/tests/data/stub_model.gguf")
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.output.size() == 1 },
+                { assert process.out.output[0][0] == [ id:'test_run' ] },
+                { assert file(process.out.output[0][1]).name == "output.txt" },
+                { assert snapshot(process.out.versions_llama_cpp_python).match() }
+            )
+        }
+    }
+}

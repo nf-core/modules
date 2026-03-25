@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: llamacpp-python
+description: Python wrapper for running locally-hosted LLM with llama.cpp
+keywords:
+  - llm
+  - llama
+  - ai
+input:
+  - prompt_file:
+      type: file
+      description: |
+        Prompt file
+        Structure: [ val(meta), path(prompt_file) ]
+  - gguf_model:
+      type: file
+      description: |
+        GGUF model
+        Structure: [ val(meta), path(gguf_model) ]
+output:
+  - output:
+      type: file
+      description: |
+        Output of the LLM query
+        Structure: [ val(meta), path("output.txt") ]
+      pattern: "output.txt"
+  - versions_llama_cpp_python:
+      type: file
+      description: |
+        File containing software versions
+        Structure: path(versions.yml)
+      pattern: "versions.yml"
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - llama-cpp-python:
+          type: string
+          description: The name of the tool
+      - python3 -c 'import llama_cpp; print(llama_cpp.__version__)':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@toniher"
+  - "@lucacozzuto"
+maintainers:
+  - "@toniher"
+  - "@lucacozzuto"
+
