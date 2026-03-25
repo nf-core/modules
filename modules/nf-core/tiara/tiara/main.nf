@@ -48,7 +48,6 @@ process TIARA_TIARA {
     prefix = task.ext.prefix ?: "${meta.id}"
     
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    VERSION = '1.0.3'
     """
     touch ${prefix}.txt
     touch log_${prefix}.txt
