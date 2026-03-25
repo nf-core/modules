@@ -93,6 +93,33 @@ nextflow_process {
         }
     }
 
+    test("hifi_trimmer filter_bam test - input cram") {
+
+        when {
+            params {
+                filter_bam_args    = ""
+            }
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test_cram' ], // meta map
+                        file(params.modules_testdata_base_path + '/genomics/eukaryotes/Pipistrellus_nathusii/genome/test.cram', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '/delete_me/hifitrimmer/test.bed.gz', checkIfExists: true)
+                    ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
     test("hifi_trimmer test - stub") {
 
         options "-stub"
