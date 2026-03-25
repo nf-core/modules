@@ -34,7 +34,6 @@ process MASURCA {
     def jump_reads = jump ? [jump].flatten().collect { it.toRealPath() }.join(' ') : ""
     def pacbio_file = pacbio ? pacbio.toRealPath() : ""
     def nanopore_file = nanopore ? nanopore.toRealPath() : ""
-    def other_reads_file = other_reads ? other_reads.toRealPath() : ""
     def reference_genome_file = reference_genome ? reference_genome.toRealPath() : ""
 
     // Configuration parameters with defaults from task.ext
@@ -72,12 +71,6 @@ process MASURCA {
     elif [ -n "${nanopore_file}" ]; then
         echo "#Nanopore reads must be in a single fasta or fastq file with absolute path" >> ${prefix}_masurca_config.txt
         echo "NANOPORE=${nanopore_file}" >> ${prefix}_masurca_config.txt
-    fi
-
-    # Other reads (optional) - Sanger, 454, etc.
-    if [ -n "${other_reads_file}" ]; then
-        echo "#Other reads (Sanger, 454, etc) one frg file, concatenate your frg files into one if you have many" >> ${prefix}_masurca_config.txt
-        echo "OTHER=${other_reads_file}" >> ${prefix}_masurca_config.txt
     fi
 
     # Reference genome (optional) - for synteny-assisted assembly
