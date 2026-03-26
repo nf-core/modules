@@ -11,10 +11,11 @@ process MINIA {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path('*.contigs.fa'), emit: contigs
-    tuple val(meta), path('*.unitigs.fa'), emit: unitigs
+    tuple val(meta), path('*.contigs.fa.gz'), emit: contigs
+    tuple val(meta), path('*.unitigs.fa.gz'), emit: unitigs
     tuple val(meta), path('*.h5')        , emit: h5
-    path  "versions.yml"                 , emit: versions
+    tuple val(meta), path("*-minia.log") , emit: log
+    tuple val("${task.process}"), val("minia"), eval("minia -v | grep Minia | sed 's/Minia version //g'"), topic: versions, emit: versions_minia
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,24 +30,22 @@ process MINIA {
         $args \\
         -nb-cores $task.cpus \\
         -in input_files.txt \\
-        -out $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        minia: \$(echo \$(minia --version 2>&1 | grep Minia) | sed 's/^.*Minia version //;')
-    END_VERSIONS
+        -out $prefix > ${prefix}-minia.log 2>&1
+    
+    if [ -f ${prefix}.contigs.fa ]; then
+        gzip -cn ${prefix}.contigs.fa > ${prefix}.contigs.fa.gz
+    fi
+    if [ -f ${prefix}.unitigs.fa ]; then
+        gzip -cn ${prefix}.unitigs.fa > ${prefix}.unitigs.fa.gz
+    fi
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.contigs.fa
-    touch ${prefix}.unitigs.fa
+    echo "" | gzip > ${prefix}.contigs.fa.gz
+    echo "" | gzip > ${prefix}.unitigs.fa.gz
     touch ${prefix}.h5
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        minia: \$(echo \$(minia --version 2>&1 | grep Minia) | sed 's/^.*Minia version //;')
-    END_VERSIONS
+    touch ${prefix}-minia.log
     """
 }
