@@ -15,7 +15,7 @@ process PYPGX_RUNNGSPIPELINE {
     tuple val(meta), path("*pypgx_output/results.zip"), emit: results
     tuple val(meta), path("*pypgx_output/cnv-calls.zip"), emit: cnv_calls, optional: true
     tuple val(meta), path("*pypgx_output/consolidated-variants.zip"), emit: consolidated_variants
-    tuple val("${task.process}"), val('pypgx'), eval('pypgx -v 2>&1 | sed "s/.* //"'), topic: versions
+    tuple val("${task.process}"), val('pypgx'), eval('pypgx -v 2>&1 | sed "s/.* //"'), emit: versions_pypgx, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

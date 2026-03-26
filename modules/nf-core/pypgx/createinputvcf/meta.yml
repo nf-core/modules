@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "pypgx_createinputvcf"
 description: Call SNVs/indels from BAM files for all target genes.
 keywords:
@@ -12,7 +11,8 @@ tools:
       documentation: "https://pypgx.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/sbslee/pypgx"
       doi: "10.1371/journal.pone.0272129"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -52,7 +52,7 @@ output:
           description: VCF file containing called SNVs/indels
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   tbi:
     - - meta:
           type: map
@@ -64,12 +64,27 @@ output:
           description: File containing the VCF tabix index
           pattern: "*.vcf.gz.tbi"
           ontologies: []
+  versions_pypgx:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pypgx:
+          type: string
+          description: The name of the tool
+      - pypgx -v 2>&1 | sed "s/.* //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions:
-        type: map
-        description: |
-          Groovy map containing software versions
-          e.g. [ id:'pypgx', version:'0.25.0' ]
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pypgx:
+          type: string
+          description: The name of the tool
+      - pypgx -v 2>&1 | sed "s/.* //":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jorisvansteenbrugge"
 maintainers:

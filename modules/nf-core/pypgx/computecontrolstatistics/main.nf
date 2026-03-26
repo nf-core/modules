@@ -13,7 +13,7 @@ process PYPGX_COMPUTECONTROLSTATISTICS {
 
     output:
     tuple val(meta), path('*.zip'), emit: control_stats
-    tuple val("${task.process}"), val('pypgx'), eval('pypgx -v 2>&1 | sed "s/.* //"'), topic: versions
+    tuple val("${task.process}"), val('pypgx'), eval('pypgx -v 2>&1 | sed "s/.* //"'), emit: versions_pypgx, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
