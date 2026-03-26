@@ -1,0 +1,34 @@
+nextflow_workflow {
+
+    name "Test Workflow SNPCLUSTERING"
+    script "../main.nf"
+    workflow "SNPCLUSTERING"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/snpclustering"
+    tag "bcftools/filter"
+    tag "plink2/indeppairwise"
+    tag "plink2/recodevcf"
+    tag "flashpca2"
+
+    test("vcf.gz input") {
+
+        when {
+            workflow {
+                """
+                input[0] = [ id:'test' ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.vcf.gz', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true)
+                input[3] = 0.01
+                input[4] = 0.10
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+        }
+    }
+}

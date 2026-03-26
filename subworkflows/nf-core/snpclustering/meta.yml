@@ -1,0 +1,60 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/nf-core/meta-schema.json
+
+name: "snpclustering"
+description: "End-to-end unsupervised clustering of genomic samples starting from multi-sample VCF files. Performs variant filtering (MAF + missingness), optional LD pruning, PCA (FlashPCA2 or IncrementalPCA), KMeans/DBSCAN clustering and internal validation."
+keywords:
+  - genomics
+  - clustering
+  - unsupervised clustering
+  - VCF
+  - nf-core
+authors:
+  - "Donald Baku (@dbaku42)"
+components:
+  - bcftools/filter
+  - plink2/indep/pairwise
+  - plink2/recode/vcf
+  - plink2/indeppairwise
+  - plink2/recodevcf
+  - flashpca2
+input:
+  - meta:
+      type: map
+      description: "Groovy Map containing sample metadata"
+  - vcf:
+      type: file
+      description: "Multi-sample VCF file (bgzipped and indexed)"
+      pattern: "*.{vcf,vcf.gz}"
+  - vcf_index:
+      type: file
+      description: "Index of the VCF file (.tbi or .csi)"
+      pattern: "*.{tbi,csi}"
+  - maf:
+      type: float
+      description: "Minimum minor allele frequency threshold"
+      default: 0.01
+  - missing:
+      type: float
+      description: "Maximum missingness threshold"
+      default: 0.10
+output:
+  - meta:
+      type: map
+      description: "Groovy Map containing sample metadata"
+  - cluster_labels:
+      type: file
+      description: "CSV file with per-sample cluster assignments"
+      pattern: "cluster_labels.csv"
+  - metrics:
+      type: file
+      description: "Table with all cluster quality metrics"
+      pattern: "*_metrics.tsv"
+  - plots:
+      type: file
+      description: "Directory containing publication-ready plots"
+      pattern: "plots/"
+  - versions:
+      type: file
+      description: "File containing versions of all tools used"
+      pattern: "versions.yml"
