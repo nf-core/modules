@@ -40,24 +40,24 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3752
   versions_anarcii:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "anarcii":
+      - anarcii:
           type: string
           description: The name of the tool
-      - "anarcii --version":
+      - anarcii --version | sed "s/^anarcii //":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
   versions:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "anarcii":
+      - anarcii:
           type: string
           description: The name of the tool
-      - "anarcii --version":
+      - anarcii --version | sed "s/^anarcii //":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
