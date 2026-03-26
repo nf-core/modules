@@ -34,7 +34,8 @@ process BIOAWK {
 
     stub:
     def prefix      = task.ext.prefix ?: "${meta.id}"
+    def compress_output = output_file_extension.endsWith(".gz") ? " | gzip " : ""
     """
-    echo "" > "${prefix}.${output_file_extension}"
+    echo "" ${compress_output} > "${prefix}.${output_file_extension}"
     """
 }
