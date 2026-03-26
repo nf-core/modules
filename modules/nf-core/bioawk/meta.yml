@@ -30,13 +30,13 @@ input:
           Input biological sequence file (optionally gzipped) to be manipulated via the program specified in `$args`.
         pattern: "*.{bed,gff,sam,vcf,fastq,fasta,tab,bed.gz,gff.gz,sam.gz,vcf.gz,fastq.gz,fasta.gz,tab.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_3003"
-          - edam: "http://edamontology.org/format_3016"
-          - edam: "http://edamontology.org/format_3989"
-          - edam: "http://edamontology.org/format_1975"
-          - edam: "http://edamontology.org/format_1929"
-          - edam: "http://edamontology.org/format_1930"
-          - edam: http://edamontology.org/format_3475
+          - edam: http://edamontology.org/format_3003 # BED
+          - edam: http://edamontology.org/format_3016 # VCF
+          - edam: http://edamontology.org/format_3989 # GZIP
+          - edam: http://edamontology.org/format_1975 # GFF3
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_3475 # TSV
   - output_file_extension:
       type: string
       description: The suffix to add to the output file name.
