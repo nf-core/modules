@@ -223,8 +223,8 @@ workflow DIA_PROTEOMICS_ANALYSIS {
             empirical: [meta_exp_searchdb, empirical_lib, empirical_log]
         }
 
-    ch_speclib = input.speclib.filter{ tuple -> tuple[1] != null }
-    ch_empirical = input.empirical.filter{ tuple -> tuple[1] != null }
+    ch_speclib = input.speclib.filter{ tuple -> tuple[1] != null }.unique()
+    ch_empirical = input.empirical.filter{ tuple -> tuple[1] != null }.unique()
 
     //
     // Compute initial mass accuracy settings (before any DIA-NN analysis)
@@ -340,7 +340,7 @@ workflow DIA_PROTEOMICS_ANALYSIS {
         .map{ tuple -> sortListsByPathName(tuple, 1) }
         .combine(ch_initial_mass_settings_by_exp, by: 0)             // [meta_exp_searchdb, [ms_files], [speclib], [quant], mass_settings]
         .map { meta, ms_files, speclib, diann_quant, mass_settings ->
-            [meta + mass_settings, ms_files, [], [], speclib, diann_quant]
+            [meta + mass_settings, ms_files, [], [], speclib.unique{ it.name }, diann_quant]
         }
 
     DIANN_ASSEMBLEEMPIRICALLIBRARY(ch_empirical_input)
@@ -393,7 +393,7 @@ workflow DIA_PROTEOMICS_ANALYSIS {
         .groupTuple()                                                // [meta_exp_searchdb, [ms_file], [fasta], [empirical_library], [diann_quant]]
         .map{ tuple -> sortListsByPathName(tuple, 1) }              // [meta_exp_searchdb, [sorted_ms_file], [sorted_fasta], [sorted_empirical_library], [sorted_diann_quant]]
         .map { meta, ms_files, fasta, empirical_library, diann_quant ->
-            [meta, [], ms_files.collect{ f -> f.name}, fasta, empirical_library, diann_quant] // Use ms_file_names instead of ms_files for final quant
+            [meta, [], ms_files.collect{ f -> f.name}, fasta.unique{ it.name }, empirical_library.unique{ it.name }, diann_quant] // Use ms_file_names instead of ms_files for final quant; deduplicate shared files
         }
 
     DIANN_FINALQUANTIFICATION(ch_final_quantification_input)
