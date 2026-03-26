@@ -125,9 +125,29 @@
                     "r-data.table": "1.17.8",
                     "r-stringr": "1.6.0"
                 }
-            }
+            },
+            [
+                "pos\tchr\tcM",
+                "12968320\tchr21\t0",
+                "12970435\tchr21\t0.00133"
+            ],
+            [
+                "chr21 . 0 12968320",
+                "chr21 . 0.00133 12970435",
+                "chr21 . 0.005809 12977762"
+            ],
+            [
+                "position COMBINED_rate.cM.Mb. Genetic_Map.cM.",
+                "12968320 0.62884161 0",
+                "12970435 0.61130067 0.00133"
+            ],
+            [
+                "#chr\tposition\tGenetic_Map(cM)",
+                "chr21\t12968320\t0",
+                "chr21\t12970435\t0.00133"
+            ]
         ],
-        "timestamp": "2026-03-25T23:01:18.058896732",
+        "timestamp": "2026-03-26T12:56:43.63897932",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "26.02.0"
@@ -287,6 +307,79 @@
             "nextflow": "26.02.0"
         }
     },
+    "Test with comma separator and keep id": {
+        "content": [
+            {
+                "glimpse_map": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.glimpse.map:md5,f8436a50a76806347db9e274deac93a4"
+                    ]
+                ],
+                "minimac_map": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.minimac.map:md5,584101d8544bb3c8d0e7ca30307a4a8e"
+                    ]
+                ],
+                "plink_map": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.plink.map:md5,f181dc5717646db4298c174c3642c7f7"
+                    ]
+                ],
+                "stitch_map": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.stitch.map:md5,6caae6ed9b5b3d68229a74f528c3e737"
+                    ]
+                ],
+                "versions_geneticmapconvert": [
+                    "versions.yml:md5,bf7d372b346eed33795c113d39c875d1"
+                ]
+            },
+            {
+                "CUSTOM_GENETICMAPCONVERT": {
+                    "r-base": "4.5.3",
+                    "r-data.table": "1.17.8",
+                    "r-stringr": "1.6.0"
+                }
+            },
+            [
+                "pos\tchr\tcM",
+                "12968320\tchr21\t0",
+                "12970435\tchr21\t0.00133"
+            ],
+            [
+                "chr21 id1 0 12968320",
+                "chr21 id2 0.00133 12970435",
+                "chr21 id3 0.005809 12977762"
+            ],
+            [
+                "position COMBINED_rate.cM.Mb. Genetic_Map.cM.",
+                "12968320 0.62884161 0",
+                "12970435 0.61130067 0.00133"
+            ],
+            [
+                "#chr\tposition\tGenetic_Map(cM)",
+                "chr21\t12968320\t0",
+                "chr21\t12970435\t0.00133"
+            ]
+        ],
+        "timestamp": "2026-03-26T12:47:23.315297056",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "26.02.0"
+        }
+    },
     "Convert map with pos\\tchr\\tcM - with header - meta.chr (glimpse compressed format)": {
         "content": [
             {
@@ -336,9 +429,29 @@
                     "r-data.table": "1.17.8",
                     "r-stringr": "1.6.0"
                 }
-            }
+            },
+            [
+                "pos\tchr\tcM",
+                "12968320\tchr21\t0",
+                "12970435\tchr21\t0.00133"
+            ],
+            [
+                "chr21 . 0 12968320",
+                "chr21 . 0.00133 12970435",
+                "chr21 . 0.005809 12977762"
+            ],
+            [
+                "position COMBINED_rate.cM.Mb. Genetic_Map.cM.",
+                "12968320 0.62884161 0",
+                "12970435 0.61130067 0.00133"
+            ],
+            [
+                "#chr\tposition\tGenetic_Map(cM)",
+                "chr21\t12968320\t0",
+                "chr21\t12970435\t0.00133"
+            ]
         ],
-        "timestamp": "2026-03-25T23:01:09.88756906",
+        "timestamp": "2026-03-26T12:56:32.796219434",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "26.02.0"

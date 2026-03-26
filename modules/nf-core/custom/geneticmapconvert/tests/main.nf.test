@@ -66,7 +66,11 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     sanitizeOutput(process.out),
-                    path(process.out.versions_geneticmapconvert[0]).yaml
+                    path(process.out.versions_geneticmapconvert[0]).yaml,
+                    path(process.out.glimpse_map[0][1]).readLines()[0..2],
+                    path(process.out.plink_map[0][1]).readLines()[0..2],
+                    path(process.out.stitch_map[0][1]).readLines()[0..2],
+                    path(process.out.minimac_map[0][1]).readLines()[0..2]
                 ).match() }
             )
         }
@@ -89,7 +93,11 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     sanitizeOutput(process.out),
-                    path(process.out.versions_geneticmapconvert[0]).yaml
+                    path(process.out.versions_geneticmapconvert[0]).yaml,
+                    path(process.out.glimpse_map[0][1]).readLines()[0..2],
+                    path(process.out.plink_map[0][1]).readLines()[0..2],
+                    path(process.out.stitch_map[0][1]).readLines()[0..2],
+                    path(process.out.minimac_map[0][1]).readLines()[0..2]
                 ).match() }
             )
         }
@@ -166,7 +174,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
-                { assert process.errorReport.contains("cm[n] must equal cm[n-1] + ( (pos[n] - pos[n-1]) * rate[n-1])") }
+                { assert process.errorReport.contains("cm[n] must equal cm[n-1] + ( (pos[n] - pos[n-1]) / 1e6 * rate[n-1])") }
             )
         }
     }
@@ -327,17 +335,17 @@ nextflow_process {
         }
     }
 
-    test("Test with comma separator") {
+    test("Test with comma separator and keep id") {
         when {
             process {
                 """
                 def mapFile = file("${launchDir}/genetic_map")
                 mapFile.text = [
-                    "pos,chr,cM",
-                    "12968320,chr21,0",
-                    "12970435,chr21,0.00133000000000005",
-                    "12977762,chr21,0.00580899999999995",
-                    "12983047,chr21,0.00905599999999995"
+                    "pos,chr,cM,SNP",
+                    "12968320,chr21,0,id1",
+                    "12970435,chr21,0.00133000000000005,id2",
+                    "12977762,chr21,0.00580899999999995,id3",
+                    "12983047,chr21,0.00905599999999995,id4"
                 ].join('''\n''')
                 genetic_map = channel.fromPath(mapFile)
                 input[0] = channel.of([
@@ -349,7 +357,15 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success }
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions_geneticmapconvert[0]).yaml,
+                    path(process.out.glimpse_map[0][1]).readLines()[0..2],
+                    path(process.out.plink_map[0][1]).readLines()[0..2],
+                    path(process.out.stitch_map[0][1]).readLines()[0..2],
+                    path(process.out.minimac_map[0][1]).readLines()[0..2]
+                ).match() }
             )
         }
     }
