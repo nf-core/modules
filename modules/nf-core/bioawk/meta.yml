@@ -42,7 +42,8 @@ input:
       description: Optional file containing logic for awk to execute. If you don't
         wish to use a file, you can use `ext.args2` to specify the logic.
       pattern: "*"
-      ontologies: []
+      ontologies:
+        - edam: http://edamontology.org/data_3671 # TXT
   - disable_redirect_output:
       type: boolean
       description: |

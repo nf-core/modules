@@ -24,8 +24,7 @@ process BIOAWK {
 
     script:
     def args        = task.ext.args ?: ''
-    def args2       = task.ext.args2 ?: '' // args2 is used to specify a program when no program file has been given
-    program         = program_file ? "-f ${program_file}" : "${args2}"
+    program         = program_file ? "-f ${program_file}" : "${args}"
     awk_ext         = bioawk_extension ? "-c ${bioawk_extension}" : ""
     def prefix      = task.ext.prefix ?: "${meta.id}"
     output_cmd      = output_file_extension.endsWith("gz") ? "| gzip > ${prefix}.${output_file_extension}" : "> ${prefix}.${output_file_extension}"
@@ -37,7 +36,6 @@ process BIOAWK {
     """
     bioawk \\
             ${awk_ext} \\
-            ${args} \\
             ${program} \\
             ${input} \\
             ${output}
