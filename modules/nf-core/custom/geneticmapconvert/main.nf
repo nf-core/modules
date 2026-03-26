@@ -39,6 +39,7 @@ process CUSTOM_GENETICMAPCONVERT {
     "${task.process}":
         r-base: \$(R --version | sed '1!d; s/.*version //; s/ .*//')
         r-data.table: \$(Rscript -e "cat(as.character(packageVersion('data.table')))")
+        r-janitor: \$(Rscript -e "cat(as.character(packageVersion('janitor')))")
         r-stringr: \$(Rscript -e "cat(as.character(packageVersion('stringr')))")
     END_VERSIONS
     """

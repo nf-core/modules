@@ -302,11 +302,13 @@ process_map_file(
 
 version_rbase <- paste(R.version[["major"]], R.version[["minor"]], sep = ".")
 version_datatable <- packageVersion("data.table")
+version_janitor <- packageVersion("janitor")
 version_stringr <- packageVersion("stringr")
 
 writeLines(c(
   '"${task.process}":',
   paste("    r-base:", version_rbase),
   paste("    r-data.table:", version_datatable),
+  paste("    r-janitor:", version_janitor),
   paste("    r-stringr:", version_stringr)
 ), "versions.yml")
