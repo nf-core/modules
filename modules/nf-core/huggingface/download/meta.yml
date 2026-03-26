@@ -1,60 +1,66 @@
-name: huggignface_hub
+name: hf_download
 description: Tool for downloading models from HuggingFace
 keywords:
-  - llm
-  - llama
-  - ai
+- llm
+- llama
+- ai
 tools:
-  - huggignface_hub:
-      description: "HuggingFace Hub CLI interface"
-      homepage: "https://huggingface.co/docs/huggingface_hub/guides/cli"
-      licence: ["MIT"]
+- huggingface_hub:
+    description: "HuggingFace Hub CLI interface"
+    homepage: "https://huggingface.co/docs/huggingface_hub/guides/cli"
+    licence:
+    - "MIT"
+    identifier: ''
 input:
+- - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1' ]`- prompt_file:
+  - hf_repo:
+      type: string
+      description: HuggingFace repository
+  - hf_file:
+      type: string
+      description: HuggingFace GGUF file
+  - hf_home:
+      type: string
+      description: HuggingFace default cache directory
+output:
+  output:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`- prompt_file:
-    - hf_repo:
-        type: string
-        description: HuggingFace repository
+          e.g. `[ id:'sample1' ]`
     - hf_file:
-        type: string
-        description: HuggingFace GGUF file
-output:
-  output:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - output:
-          type: file
-          description: Model in GGUF format
-          pattern: "*.gguf"
-  versions_huggingface_hub:
-    - versions.yml:
         type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
-
+        description: Downloaded HuggingFace GGUF file
+        ontologies: []
+  versions_huggingface_hub:
+  - - ${task.process}:
+        type: string
+        description: The name of the process
+    - huggingface_hub:
+        type: string
+        description: The name of the tool
+    - hf --version 2>&1 | awk '{print \$NF}':
+        type: eval
+        description: The expression to obtain the version of the tool
 topics:
   versions:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - huggingface_hub:
-          type: string
-          description: The name of the tool
-      - hf --version:
-          type: eval
-          description: The expression to obtain only the version number of the tool (e.g. "1.6.0")
-
+  - - ${task.process}:
+        type: string
+        description: The name of the process
+    - huggingface_hub:
+        type: string
+        description: The name of the tool
+    - hf --version 2>&1 | awk '{print \$NF}':
+        type: eval
+        description: The expression to obtain the version of the tool
 authors:
-  - "@toniher"
-  - "@lucacozzuto"
+- "@toniher"
+- "@lucacozzuto"
 maintainers:
-  - "@toniher"
-  - "@lucacozzuto"
+- "@toniher"
+- "@lucacozzuto"
