@@ -11,7 +11,7 @@ import llama_cpp
 # Helper to create messages from a text file
 def create_messages_from_textfile(textfile, system_prompt):
     try:
-        with open(textfile, "r", encoding="utf-8") as f:
+        with open(textfile, encoding="utf-8") as f:
             content = f.read()
         return [
             {"role": "system", "content": system_prompt.strip()},
@@ -28,7 +28,7 @@ def load_messages(messages_file, system_prompt):
         print(f"Messages file '{messages_file}' does not exist.", file=sys.stderr)
         sys.exit(1)
     try:
-        with open(messages_file, "r", encoding="utf-8") as f:
+        with open(messages_file, encoding="utf-8") as f:
             content = f.read()
             try:
                 return json.loads(content)
@@ -111,9 +111,7 @@ def main():
     parser = argparse.ArgumentParser(description="Submit a process with model.")
     parser.add_argument("-s", "--messages", required=True, help="JSON message")
     parser.add_argument("-m", "--model", required=True, help="Model used")
-    parser.add_argument(
-        "-t", "--temperature", default=0.9, type=float, help="Temperature"
-    )
+    parser.add_argument("-t", "--temperature", default=0.9, type=float, help="Temperature")
     parser.add_argument("-o", "--output", default="output.txt", help="Output text")
     parser.add_argument("-c", "--context", default=2048, type=int, help="Context size")
     parser.add_argument("--chat_format", default="chatml", help="Chat format")
