@@ -10,8 +10,8 @@ process SAMTOOLS_VIEW {
     input:
     tuple val(meta), path(input), path(index)
     tuple val(meta2), path(fasta), path(fai)
-    path qname
-    path bed
+    tuple val(meta3), path(qname)
+    tuple val(meta4), path(bed)
     val index_format
 
     output:
