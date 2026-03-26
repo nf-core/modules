@@ -13,7 +13,7 @@ process PYPGX_PREPAREDEPTHOFCOVERAGE {
     output:
     tuple val(meta), path('*.zip'), emit: coverage
     tuple val("${task.process}"), val('pypgx'), eval('pypgx -v 2>&1 | grep -oE "[0-9]+\\.[0-9]+\\.[0-9]+" | head -1'), emit: versions_pypgx, topic: versions
-    
+
     when:
     task.ext.when == null || task.ext.when
 
