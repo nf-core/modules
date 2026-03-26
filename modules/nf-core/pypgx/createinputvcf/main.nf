@@ -14,7 +14,7 @@ process PYPGX_CREATEINPUTVCF {
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi
-    tuple val("${task.process}"), val('pypgx'), eval('pypgx -v 2>&1 | grep -oP "[0-9]+\\.[0-9]+\\.[0-9]+" | head -1'), emit: versions_pypgx, topic: versions
+    tuple val("${task.process}"), val('pypgx'), eval('pypgx -v 2>&1 | grep -oE "[0-9]+\\.[0-9]+\\.[0-9]+" | head -1'), emit: versions_pypgx, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
