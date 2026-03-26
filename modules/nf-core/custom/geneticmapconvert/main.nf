@@ -4,8 +4,8 @@ process CUSTOM_GENETICMAPCONVERT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/478e13754fbd7fffdf605023630cf022f51ac0cd87c83b55e02e1efa1c1df343/data':
-        'community.wave.seqera.io/library/r-data.table_r-janitor_r-r.utils_r-stringr:5d09c4c0ae484583' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/06/062aabd31ebac6f139125e485d5566e928c1b79caf488daa596df02bd1ccbf23/data':
+        'community.wave.seqera.io/library/r-data.table_r-janitor_r-r.utils:c8ebef5bb002374e' }"
 
     input:
     tuple val(meta), path(map_file)
@@ -40,7 +40,6 @@ process CUSTOM_GENETICMAPCONVERT {
         r-base: \$(R --version | sed '1!d; s/.*version //; s/ .*//')
         r-data.table: \$(Rscript -e "cat(as.character(packageVersion('data.table')))")
         r-janitor: \$(Rscript -e "cat(as.character(packageVersion('janitor')))")
-        r-stringr: \$(Rscript -e "cat(as.character(packageVersion('stringr')))")
     END_VERSIONS
     """
 }

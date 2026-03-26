@@ -197,7 +197,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
-                { assert process.errorReport.contains("(converted from warning) NAs introduced by coercion") }
+                { assert process.errorReport.contains("tolerance must be numeric") }
             )
         }
     }
@@ -269,6 +269,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
+                { assert process.errorReport.contains("Ambiguous no-header input, inferring to be chr, pos, cm") },
                 { assert process.errorReport.contains("More than one chromosome present in file") }
             )
         }

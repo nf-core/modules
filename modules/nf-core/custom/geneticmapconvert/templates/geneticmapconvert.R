@@ -64,6 +64,27 @@ nullify <- function(x) {
   if (is.character(x) && (tolower(x) == "null" || x == "")) NULL else x
 }
 
+#' Parse tolerance value
+#'
+#' @param x Tolerance to check
+#'
+#' @return 1e-6 if x value is null and x
+#' if x is > 0 and numeric else error
+#'
+#' @examples
+#' parse_tolerance(NULL) # 1e-6
+#' parse_tolerance("0.1") # 0.1
+#' parse_tolerance(NA) # error
+#' parse_tolerance("ABC") # error
+#' parse_tolerance("-1.5") # error
+parse_tolerance <- function(x) {
+  if (is.null(x)) return(1e-6)
+  out <- suppressWarnings(as.numeric(x))
+  if (is.na(out)) stop("tolerance must be numeric")
+  if (out < 0) stop("tolerance must be non-negative")
+  out
+}
+
 #' Return the corresponding normalise column name
 #'
 #' @param x non normalised column name
@@ -78,12 +99,13 @@ convert_colnames <- function(x) {
   x <- janitor::make_clean_names(tolower(x))
 
   recode <- c(
-    chr = "chr", `#chr` = "chr", chrom = "chr", chromosome = "chr",
+    chr = "chr", `#chr` = "chr", chrom = "chr",
+    chromosome = "chr", `_chr` = "chr",
     id = "id", snp = "id", marker = "id", rsid = "id",
     pos = "pos", position = "pos", bp = "pos",
     cm = "cm", genetic_map = "cm",
     genetic_map_cm = "cm", genetic_map_cm_ = "cm",
-    rate = "rate", combined_rate = "rate", cm_cb = "rate", cm_mb = "rate",
+    rate = "rate", combined_rate = "rate", cm_mb = "rate",
     combined_rate_cm_mb_ = "rate", combined_rate_cm_mb = "rate"
   )
 
@@ -108,7 +130,13 @@ process_map_file <- function(
     header = "auto",
     showProgress = FALSE
   )
-  no_header <- all(stringr::str_detect(colnames(map_df), "^V[0-9]+\\\\z"))
+
+  if (nrow(map_df) == 0) stop("Input map is empty")
+
+  no_header <- all(grepl(
+    "^V[0-9]+\\\\z", colnames(map_df),
+    ignore.case = TRUE, perl = TRUE
+  ))
   if (no_header) {
     if (dim(map_df)[2] == 3) {
       message("Ambiguous no-header input, inferring to be chr, pos, cm")
@@ -175,8 +203,6 @@ process_map_file <- function(
     stop("pos column shouldn't have any duplicate row")
   }
 
-  if (nrow(map_df) == 0) stop("Input map is empty")
-
   # Normalize cM (needed by stitch)
   map_df[, cm := cm - cm[1]]
 
@@ -193,12 +219,6 @@ process_map_file <- function(
     map_df[["rate"]] <- rate
   } else {
     map_df[["diff"]] <- abs(map_df[["rate"]] - rate)
-
-    tolerance <- ifelse(
-      is.null(tolerance),
-      1e-6,
-      as.numeric(tolerance)
-    )
     if (any(map_df[["diff"]] > tolerance)) {
       print(map_df[map_df[["diff"]] > tolerance, ])
       stop("cm[n] must equal cm[n-1] + ( (pos[n] - pos[n-1]) / 1e6 * rate[n-1])")
@@ -261,6 +281,7 @@ opt <- list(
   chr = "${meta.chr}",
   tolerance = NULL
 )
+
 opt_types <- lapply(opt, class)
 
 # Apply parameter overrides
@@ -297,18 +318,16 @@ process_map_file(
   file_path = opt[["map_file"]],
   chr =  opt[["chr"]],
   prefix =  opt[["output_prefix"]],
-  tolerance =  opt[["tolerance"]]
+  tolerance =  parse_tolerance(opt[["tolerance"]])
 )
 
 version_rbase <- paste(R.version[["major"]], R.version[["minor"]], sep = ".")
 version_datatable <- packageVersion("data.table")
 version_janitor <- packageVersion("janitor")
-version_stringr <- packageVersion("stringr")
 
 writeLines(c(
   '"${task.process}":',
   paste("    r-base:", version_rbase),
   paste("    r-data.table:", version_datatable),
-  paste("    r-janitor:", version_janitor),
-  paste("    r-stringr:", version_stringr)
+  paste("    r-janitor:", version_janitor)
 ), "versions.yml")
