@@ -10,7 +10,7 @@ process HF_DOWNLOAD {
 
     output:
     tuple val(meta), path(hf_file), emit: output
-    tuple val("${task.process}"), val("huggingface_hub"), eval("hf --version 2>&1 | awk '{print \$NF}'"), topic: versions, emit: versions_huggingface_hub
+    tuple val("${task.process}"), val("huggingface_hub"), eval("hf --version 2>&1 | tail -n1 | awk '{print \$NF}'"), topic: versions, emit: versions_huggingface_hub
 
     when:
     task.ext.when == null || task.ext.when

@@ -44,7 +44,7 @@ output:
       - huggingface_hub:
           type: string
           description: The name of the tool
-      - hf --version 2>&1 | awk '{print \$NF}':
+      - hf --version 2>&1 | tail -n1 | awk '{print \$NF}':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -55,7 +55,7 @@ topics:
       - huggingface_hub:
           type: string
           description: The name of the tool
-      - hf --version 2>&1 | awk '{print \$NF}':
+      - hf --version 2>&1 | tail -n1 | awk '{print \$NF}':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
