@@ -45,7 +45,7 @@ process BIOAWK {
 
     stub:
     def prefix     = task.ext.prefix ?: "${meta.id}"
-    def create_cmd = suffix.endsWith("gz") ? "echo '' | gzip >" : "touch"
+    def create_cmd = output_file_extension.endsWith("gz") ? "echo '' | gzip >" : "touch"
     """
     ${create_cmd} ${prefix}.${output_file_extension}
     """
