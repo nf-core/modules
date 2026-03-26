@@ -5,9 +5,10 @@ nextflow_process {
     process "LLAMACPP_PYTHON_RUN"
 
     tag "modules"
-    tag "modules_local"
-    tag "llamacpp_python"
-    tag "llamacpp_python/run"
+    tag "modules_nfcore"
+    tag "llamacpp-python"
+    tag "llamacpp-python/run"
+    tag "huggingface/download"
 
     test("run inference with downloaded gguf model") {
 
@@ -45,7 +46,7 @@ nextflow_process {
                 { assert process.out.output[0][0] == [ id:'test_run' ] },
                 { assert file(process.out.output[0][1]).name == "output.txt" },
                 { assert file(process.out.output[0][1]).size() > 0 },
-                { assert snapshot(process.out.versions_llama_cpp_python).match() }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
     }
@@ -72,7 +73,7 @@ nextflow_process {
                 { assert process.out.output.size() == 1 },
                 { assert process.out.output[0][0] == [ id:'test_run' ] },
                 { assert file(process.out.output[0][1]).name == "output.txt" },
-                { assert snapshot(process.out.versions_llama_cpp_python).match() }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
     }

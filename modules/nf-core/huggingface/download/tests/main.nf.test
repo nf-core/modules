@@ -5,7 +5,7 @@ nextflow_process {
     process "HF_DOWNLOAD"
 
     tag "modules"
-    tag "modules_local"
+    tag "modules_nfcore"
     tag "huggingface"
     tag "huggingface/download"
 
@@ -31,7 +31,7 @@ nextflow_process {
                 { assert process.out.output[0][0] == [ id:'test_model' ] },
                 { assert file(process.out.output[0][1]).name == "gemma-3-1b-it-Q4_K_M.gguf" },
                 { assert file(process.out.output[0][1]).size() > 0 },
-                { assert snapshot(process.out.versions_huggingface_hub).match() }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
     }
@@ -59,7 +59,7 @@ nextflow_process {
                 { assert process.out.output.size() == 1 },
                 { assert process.out.output[0][0] == [ id:'test_model' ] },
                 { assert file(process.out.output[0][1]).name == "gemma-3-1b-it-Q4_K_M.gguf" },
-                { assert snapshot(process.out.versions_huggingface_hub).match() }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
     }
