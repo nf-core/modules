@@ -3,8 +3,8 @@ process ANARCII {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-    'https://depot.galaxyproject.org/singularity/python_pip_anarcii:4e5c3ffabd22d3fc':
+    container "${ workflow.containerEngine == 'singularity' ?
+    'docker://community.wave.seqera.io/library/python_pip_anarcii:4e5c3ffabd22d3fc' :
     'community.wave.seqera.io/library/python_pip_anarcii:4e5c3ffabd22d3fc' }"
 
     input:
