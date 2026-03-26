@@ -106,7 +106,8 @@ opt <- list(
     p.value = 1,                 # topTable
     lfc = 0,                     # topTable
     confint = FALSE ,            # topTable
-    round_digits = NULL
+    round_digits = NULL,
+    seed = NULL
 )
 opt_types <- lapply(opt, class)
 
@@ -127,6 +128,10 @@ for ( ao in names(args_opt)){
 }
 if ( ! is.null(opt\$round_digits)){
     opt\$round_digits <- as.numeric(opt\$round_digits)
+}
+if ( ! is.null(opt\$seed)){
+    opt\$seed <- as.numeric(opt\$seed)
+    set.seed(opt\$seed)
 }
 
 # If there is no option supplied, convert string "null" to NULL
