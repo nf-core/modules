@@ -13,8 +13,8 @@ process BIOAWK {
 
     output:
     tuple val(meta), path("*.${output_file_extension}"), emit: output
-// WARN: Version information not provided by tool on CLI. Please update version string above when bumping container versions.
-tuple val("${task.process}"), val('bioawk'), val("1.0"), emit: versions_bioawk, topic: versions
+    // WARN: Version information not provided by tool on CLI. Please update version string above when bumping container versions.
+    tuple val("${task.process}"), val('bioawk'), val("1.0"), emit: versions_bioawk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,9 +26,9 @@ tuple val("${task.process}"), val('bioawk'), val("1.0"), emit: versions_bioawk, 
 
     def compress_output = output_file_extension.endsWith(".gz") ? " | gzip " : ""
     """
-    bioawk \
-            $args \
-            $input \
+    bioawk \\
+            $args \\
+            $input \\
             ${compress_output} > ${prefix}.${output_file_extension}
     """
 

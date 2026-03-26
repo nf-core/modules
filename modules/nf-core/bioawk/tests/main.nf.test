@@ -41,7 +41,7 @@ nextflow_process {
 
         when {
             params {
-                bioawk_command = "-c gfastx \'{s = toupper(\$seq); g = gsub(/G/, \"\", s); printf \"%s\\t%d\\n\", s, g}\'"
+                bioawk_command = "-c fastx \'{s = toupper(\$seq); g = gsub(/G/, \"\", s); printf \"%s\\t%d\\n\", s, g}\'"
                 bioawk_prefix = "telomere_summary"
             }
 
