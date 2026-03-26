@@ -9,6 +9,9 @@ process BIOAWK {
 
     input:
     tuple val(meta), path(input)
+    path(program_file)
+    val(disable_redirect_output)
+    val bioawk_extension
     val output_file_extension
 
     output:
@@ -21,21 +24,28 @@ process BIOAWK {
 
     script:
     def args        = task.ext.args ?: ''
+    def args2       = task.ext.args2 ?: '' // args2 is used to specify a program when no program file has been given
+    program         = program_file ? "-f ${program_file}" : "${args2}"
+    awk_ext         = bioawk_extension ? "-c ${bioawk_extension}" : ""
     def prefix      = task.ext.prefix ?: "${meta.id}"
+    output_cmd      = output_file_extension.endsWith("gz") ? "| gzip > ${prefix}.${output_file_extension}" : "> ${prefix}.${output_file_extension}"
+    output          = disable_redirect_output ? "" : output_cmd
+
     if ("${input}" == "${prefix}.${output_file_extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate."
 
-    def compress_output = output_file_extension.endsWith(".gz") ? " | gzip " : ""
     """
     bioawk \\
-            $args \\
-            $input \\
-            ${compress_output} > ${prefix}.${output_file_extension}
+            ${awk_ext} \\
+            ${args} \\
+            ${program} \\
+            ${input} \\
+            ${output}
     """
 
     stub:
     def prefix      = task.ext.prefix ?: "${meta.id}"
-    def compress_output = output_file_extension.endsWith(".gz") ? " | gzip " : ""
+    def create_cmd = suffix.endsWith("gz") ? "echo '' | gzip >" : "touch"
     """
-    echo "" ${compress_output} > "${prefix}.${output_file_extension}"
+    ${create_cmd} ${prefix}.${output_file_extension}
     """
 }

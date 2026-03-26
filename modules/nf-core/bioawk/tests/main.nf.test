@@ -14,7 +14,7 @@ nextflow_process {
 
         when {
             params {
-                bioawk_command = "-c fastx \'{print \">\" \$name ORS length(\$seq)}\'"
+                bioawk_command = "\'{print \">\" \$name ORS length(\$seq)}\'"
                 bioawk_prefix = "sample_1"
             }
 
@@ -24,7 +24,10 @@ nextflow_process {
 				    [ id:'test', single_end:false ], // meta map
 				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
 				]
-				input[1] = "fa.gz"
+				input[1] = []
+				input[2] = false
+				input[3] = "fastx"
+				input[4] = "fa.gz"
                 """
             }
         }
@@ -41,7 +44,7 @@ nextflow_process {
 
         when {
             params {
-                bioawk_command = "-c fastx \'{s = toupper(\$seq); g = gsub(/G/, \"\", s); printf \"%s\\t%d\\n\", s, g}\'"
+                bioawk_command = "\'{s = toupper(\$seq); g = gsub(/G/, \"\", s); printf \"%s\\t%d\\n\", s, g}\'"
                 bioawk_prefix = "telomere_summary"
             }
 
@@ -51,7 +54,10 @@ nextflow_process {
 				    [ id:'test', single_end:false ], // meta map
 				    file(params.modules_testdata_base_path + 'generic/telomere/telomeric_motifs.fasta', checkIfExists: true)
 				]
-				input[1] = "tsv"
+				input[1] = []
+				input[2] = false
+				input[3] = "fastx"
+				input[4] = "tsv"
                 """
             }
         }

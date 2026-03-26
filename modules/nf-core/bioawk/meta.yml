@@ -37,6 +37,23 @@ input:
           - edam: http://edamontology.org/format_1929 # FASTA
           - edam: http://edamontology.org/format_1930 # FASTQ
           - edam: http://edamontology.org/format_3475 # TSV
+  - program_file:
+      type: file
+      description: Optional file containing logic for awk to execute. If you don't
+        wish to use a file, you can use `ext.args2` to specify the logic.
+      pattern: "*"
+      ontologies: []
+  - disable_redirect_output:
+      type: boolean
+      description: |
+        Disable the redirection of awk output to a given file. This is
+        useful if you want to use awk's built-in redirect to write files instead
+        of the shell's redirect.
+  - bioawk_extension:
+      type: string
+      description: |
+        The extension to use for the bioawk program.
+        enum: ["fastx", "bed", "vcf", "sam"]
   - output_file_extension:
       type: string
       description: The suffix to add to the output file name.
