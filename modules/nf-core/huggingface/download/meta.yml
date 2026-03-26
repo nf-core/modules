@@ -9,55 +9,55 @@ tools:
       description: "HuggingFace Hub CLI interface"
       homepage: "https://huggingface.co/docs/huggingface_hub/guides/cli"
       licence:
-      - "MIT"
-      identifier: ''
+        - "MIT"
+      identifier: ""
 input:
-- - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`- prompt_file:
-  - hf_repo:
-      type: string
-      description: HuggingFace repository
-  - hf_file:
-      type: string
-      description: HuggingFace GGUF file
-  - hf_home:
-      type: string
-      description: HuggingFace default cache directory
-output:
-  output:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
+          e.g. `[ id:'sample1' ]`- prompt_file:
+    - hf_repo:
+        type: string
+        description: HuggingFace repository
     - hf_file:
-        type: file
-        description: Downloaded HuggingFace GGUF file
-        ontologies: []
+        type: string
+        description: HuggingFace GGUF file
+    - hf_home:
+        type: string
+        description: HuggingFace default cache directory
+output:
+  output:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - hf_file:
+          type: file
+          description: Downloaded HuggingFace GGUF file
+          ontologies: []
   versions_huggingface_hub:
-  - - ${task.process}:
-        type: string
-        description: The name of the process
-    - huggingface_hub:
-        type: string
-        description: The name of the tool
-    - hf --version 2>&1 | awk '{print \$NF}':
-        type: eval
-        description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - huggingface_hub:
+          type: string
+          description: The name of the tool
+      - hf --version 2>&1 | awk '{print \$NF}':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
-  - - ${task.process}:
-        type: string
-        description: The name of the process
-    - huggingface_hub:
-        type: string
-        description: The name of the tool
-    - hf --version 2>&1 | awk '{print \$NF}':
-        type: eval
-        description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - huggingface_hub:
+          type: string
+          description: The name of the tool
+      - hf --version 2>&1 | awk '{print \$NF}':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@toniher"
   - "@lucacozzuto"
