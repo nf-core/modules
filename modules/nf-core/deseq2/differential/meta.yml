@@ -195,6 +195,14 @@ output:
           description: Dump of R SessionInfo
           pattern: "*.R_sessionInfo.log"
           ontologies: []
+  versions_deseq2:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
   versions:
     - versions.yml:
         type: file
@@ -206,3 +214,7 @@ authors:
   - "@pinin4fjords"
 maintainers:
   - "@pinin4fjords"
+versions:
+  - versions.yml:
+      type: file
+      description: YAML file containing versions of tools used in the module

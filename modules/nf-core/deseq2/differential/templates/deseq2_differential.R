@@ -22,6 +22,65 @@ is_valid_string <- function(input) {
   !is.null(input) && nzchar(trimws(input))
 }
 
+#' Rewrite a contrast expression using sanitised design column names
+#'
+#' `makeContrasts()` requires syntactically valid coefficient names. The DREAM
+#' design matrix is sanitised with `make.names()`, so a user may provide
+#' contrasts using the original names (for example containing spaces). This
+#' helper rewrites exact design-column matches to their sanitised equivalents.
+#'
+#' @param contrast_string User-provided contrast expression.
+#' @param design_names Original design matrix column names.
+#' original_design_names
+#' @return Contrast expression compatible with `makeContrasts()`.
+normalise_contrast_string <- function(contrast_string, design_names) {
+    if (!is_valid_string(contrast_string)) {
+        return(contrast_string)
+    }
+
+    sanitised_names <- make.names(design_names)
+    replacement_order <- order(nchar(design_names), decreasing = TRUE)
+    normalised <- contrast_string
+
+    for (idx in replacement_order) {
+        normalised <- gsub(
+            design_names[[idx]],
+            sanitised_names[[idx]],
+            normalised,
+            fixed = TRUE
+        )
+    }
+
+    normalised
+}
+
+#' Resolve user-supplied metadata column names against loaded metadata
+#'
+#' Metadata is read with `check.names = TRUE`, so columns containing spaces are
+#' sanitised by R. This helper accepts either the original column name or the
+#' sanitised version and returns the column present in `metadata`.
+#'
+#' @param column_name Column name provided by the user.
+#' @param metadata Loaded metadata data frame.
+#'
+#' @return Resolved column name present in metadata.
+resolve_metadata_column <- function(column_name, metadata) {
+    if (!is_valid_string(column_name)) {
+        return(column_name)
+    }
+
+    if (column_name %in% colnames(metadata)) {
+        return(column_name)
+    }
+
+    sanitised_name <- make.names(column_name)
+    if (sanitised_name %in% colnames(metadata)) {
+        return(sanitised_name)
+    }
+
+    column_name
+}
+
 #' Parse out options from a string without recourse to optparse
 #'
 #' @param x Long-form argument list like --opt1 val1 --opt2 val2
@@ -192,7 +251,11 @@ if ( ! is.null(opt\$round_digits)){
 }
 
 # If there is no option supplied, convert string "null" to NULL
-keys <- c("formula", "contrast_string", "contrast_variable", "reference_level", "target_level", "seed", "blocking_variable", "transcript_lengths_file")
+keys <- c(
+  "formula", "contrast_string", "contrast_variable", "reference_level",
+  "target_level", "seed", "blocking_variables", "transcript_lengths_file",
+  "exclude_samples_col", "exclude_samples_values"
+)
 opt[keys] <- lapply(opt[keys], nullify)
 
 if ( ! is.null(opt\$seed)){
@@ -286,9 +349,11 @@ if (length(missing_samples) > 0) {
 ## CHECK CONTRAST SPECIFICATION               ##
 ################################################
 ################################################
+contrast_variable <- NULL
+blocking.vars <- c()
+
 if (! is_valid_string(opt\$formula)) {
-  contrast_variable <- make.names(opt\$contrast_variable)
-  blocking.vars <- c()
+  contrast_variable <- resolve_metadata_column(opt\$contrast_variable, sample.sheet)
 
   if (!contrast_variable %in% colnames(sample.sheet)) {
     stop(
@@ -307,7 +372,12 @@ if (! is_valid_string(opt\$formula)) {
       )
     )
   } else if (is_valid_string(opt\$blocking_variables)) {
-    blocking.vars = make.names(unlist(strsplit(opt\$blocking_variables, split = ';')))
+    blocking.vars <- vapply(
+      unlist(strsplit(opt\$blocking_variables, split = ';')),
+      resolve_metadata_column,
+      character(1),
+      metadata = sample.sheet
+    )
     if (!all(blocking.vars %in% colnames(sample.sheet))) {
       missing_block <- paste(blocking.vars[! blocking.vars %in% colnames(sample.sheet)], collapse = ',')
       stop(
@@ -435,9 +505,12 @@ if (!is.null(opt\$contrast_string)) {
   } else {
     # Parse as limma-style contrast expression
     design_mat <- model.matrix(as.formula(model), data = as.data.frame(colData(dds)))
-    colnames(design_mat) <- make.names(colnames(design_mat))
+    original_design_names <- colnames(design_mat)
+    colnames(design_mat) <- make.names(original_design_names)
+    contrast_string <- normalise_contrast_string(opt\$contrast_string, original_design_names)
+    message("Normalised contrast string: ", contrast_string)
     numeric_contrast <- as.numeric(
-      limma::makeContrasts(contrasts = opt\$contrast_string, levels = colnames(design_mat))
+      limma::makeContrasts(contrasts = contrast_string, levels = colnames(design_mat))
     )
 
     # Run DESeq2 results with numeric contrast
