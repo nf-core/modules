@@ -36,26 +36,28 @@ output:
           pattern: "*.{tbi,csi}"
           ontologies: []
   versions_tabix:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The process the versions were collected from
-      - "tabix":
+      - tabix:
           type: string
           description: The tool name
-      - tabix -h 2>&1 | grep -oP 'Version:\\s*\\K[^\\s]+':
-          type: string
-          description: The command used to generate the version of the tool
+      - tabix -h 2>&1 | grep -oP 'Version:\s*\K[^\s]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 topics:
   versions:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The process the versions were collected from
-      - "tabix":
+      - tabix:
           type: string
           description: The tool name
-      - tabix -h 2>&1 | grep -oP 'Version:\\s*\\K[^\\s]+':
-          type: string
-          description: The command used to generate the version of the tool
+      - tabix -h 2>&1 | grep -oP 'Version:\s*\K[^\s]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@joseespinosa"
   - "@drpatelh"

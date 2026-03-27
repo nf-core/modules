@@ -13,10 +13,9 @@ tools:
       documentation: "https://odelaneau.github.io/GLIMPSE/commands.html"
       tool_dev_url: "https://github.com/odelaneau/GLIMPSE"
       doi: "10.1038/s41588-020-00756-0"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:glimpse2
-requirements:
-  - AVX2
 input:
   - - meta:
         type: map
@@ -35,18 +34,14 @@ input:
         ontologies: []
     - input_region:
         type: string
-        description: Target region used for imputation, including left and right buffers
-          (e.g. chr20:1000000-2000000).
+        description: Target region used for imputation, including left and right
+          buffers (e.g. chr20:1000000-2000000).
         pattern: "chrXX:leftBufferPosition-rightBufferPosition"
     - output_region:
         type: string
-        description: Target imputed region, excluding left and right buffers (e.g. chr20:1000000-2000000).
+        description: Target imputed region, excluding left and right buffers (e.g.
+          chr20:1000000-2000000).
         pattern: "chrXX:leftBufferPosition-rightBufferPosition"
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing genomic map information
-          e.g. `[ map:'GRCh38' ]`
     - map:
         type: file
         description: File containing the genetic map.
@@ -64,14 +59,30 @@ output:
           description: binary reference panel
           pattern: "*.bin"
           ontologies: []
+  versions_glimpse2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - glimpse2:
+          type: string
+          description: The name of the tool
+      - GLIMPSE2_split_reference --help | grep -oE 'v[0-9.]+' | cut -c2-:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - glimpse2:
+          type: string
+          description: The name of the tool
+      - GLIMPSE2_split_reference --help | grep -oE 'v[0-9.]+' | cut -c2-:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@LouisLeNezet"
 maintainers:
   - "@LouisLeNezet"
+requirements:
+  - AVX2

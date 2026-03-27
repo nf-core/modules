@@ -11,10 +11,10 @@ process AUTOCYCLER_COMBINE {
     tuple val(meta), path(clusters)
 
     output:
-    tuple val(meta), path("$prefix/consensus_assembly.fasta"), emit: fasta
-    tuple val(meta), path("$prefix/consensus_assembly.gfa"),   emit: gfa
-    tuple val(meta), path("$prefix/consensus_assembly.yaml"),  emit: stats
-    path "versions.yml",                                       emit: versions
+    tuple val(meta), path("combine/${prefix}/consensus_assembly.fasta"), emit: fasta
+    tuple val(meta), path("combine/${prefix}/consensus_assembly.gfa"),   emit: gfa
+    tuple val(meta), path("combine/${prefix}/consensus_assembly.yaml"),  emit: stats
+    tuple val("${task.process}"), val("autocycler"), eval("autocycler --version |  sed 's/^[^ ]* //'"), emit: versions_autocycler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,24 +26,18 @@ process AUTOCYCLER_COMBINE {
     autocycler combine \\
         $args \\
         -i $clusters \\
-        -a $prefix
+        -a combine
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        autocycler: \$(autocycler --version |  sed 's/^[^ ]* //')
-    END_VERSIONS
+    mkdir combine/$prefix
+    mv combine/consensus_assembly.fasta combine/${prefix}/consensus_assembly.fasta
+    mv combine/consensus_assembly.gfa combine/${prefix}/consensus_assembly.gfa
+    mv combine/consensus_assembly.yaml combine/${prefix}/consensus_assembly.yaml
     """
 
     stub:
-    def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir $prefix
-    touch $prefix/consensus_assembly.{fasta,gfa,yaml}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        autocycler: \$(autocycler --version |  sed 's/^[^ ]* //')
-    END_VERSIONS
+    mkdir -p combine/$prefix
+    touch combine/${prefix}/consensus_assembly.{fasta,gfa,yaml}
     """
 }

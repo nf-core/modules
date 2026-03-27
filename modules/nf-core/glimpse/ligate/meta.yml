@@ -1,6 +1,6 @@
 name: "glimpse_ligate"
-description: Concatenates imputation chunks in a single VCF/BCF file ligating phased
-  information.
+description: Concatenates imputation chunks in a single VCF/BCF file ligating
+  phased information.
 keywords:
   - ligate
   - low-coverage
@@ -14,7 +14,8 @@ tools:
       documentation: "https://odelaneau.github.io/GLIMPSE/commands.html"
       tool_dev_url: "https://github.com/odelaneau/GLIMPSE"
       doi: "10.1038/s41588-020-00756-0"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -29,7 +30,8 @@ input:
         ontologies: []
     - input_index:
         type: file
-        description: Index file of the input VCF/BCF file containing genotype likelihoods.
+        description: Index file of the input VCF/BCF file containing genotype
+          likelihoods.
         pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
         ontologies: []
 output:
@@ -46,13 +48,27 @@ output:
             Phased information (HS field) is updated accordingly for the full region.
           pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
           ontologies: []
+  versions_glimpse:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - glimpse:
+          type: string
+          description: The name of the tool
+      - "GLIMPSE_ligate --help | sed -n '/Version/s/.*: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - glimpse:
+          type: string
+          description: The name of the tool
+      - "GLIMPSE_ligate --help | sed -n '/Version/s/.*: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@louislenezet"
 maintainers:

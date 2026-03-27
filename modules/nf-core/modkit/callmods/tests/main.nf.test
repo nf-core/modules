@@ -28,7 +28,7 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     process.out.log.collect { tuple -> file(tuple[1]).name },
-                    process.out.versions.collect { file(it).name }
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
@@ -55,7 +55,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    path(process.out.versions.get(0)).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }

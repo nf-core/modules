@@ -45,9 +45,10 @@ output:
       - bamstats:
           type: string
           description: The name of the tool
-      - 'bamstats --version | grep "version: " | sed -e s"/version: //':
-          type: string
-          description: The version of the tool
+      - 'bamstats --version | grep "version: " | sed -e s"/version: //"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -56,8 +57,9 @@ topics:
       - bamstats:
           type: string
           description: The name of the tool
-      - 'bamstats --version | grep "version: " | sed -e s"/version: //':
+      - 'bamstats --version | grep "version: " | sed -e s"/version: //"':
           type: eval
           description: The expression to obtain the version of the tool
+
 authors:
   - "@johnoooh"

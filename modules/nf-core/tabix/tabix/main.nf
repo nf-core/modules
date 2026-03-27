@@ -30,7 +30,6 @@ process TABIX_TABIX {
     def args = task.ext.args ?: ''
     def index = args.contains("-C ") || args.contains("--csi") ? "csi" : "tbi"
     """
-    touch ${tab}.tbi
-    touch ${tab}.csi
+    touch ${tab}.${index}
     """
 }

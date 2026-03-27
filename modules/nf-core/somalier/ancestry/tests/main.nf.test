@@ -57,8 +57,8 @@ nextflow_process {
                     """
                     input[0] = [
                         [id:"NA12878"],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz.csi', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz.csi', checkIfExists: true)
                     ]
                     input[1] = [
                         [id: "hg38"],
@@ -93,7 +93,7 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.tsv[0][1]).name, // Samples order and value change drastically
                     file(process.out.html[0][1]).name, // Not stable as consequence
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -116,10 +116,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
     }

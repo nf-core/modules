@@ -19,7 +19,7 @@ process METAPHLAN3_MERGEMETAPHLANTABLES {
     script:
     def args  = task.ext.args   ?: ''
     prefix    = task.ext.prefix ?: "${meta.id}"
-    def input = profiles.sort{it.toString()}.join(" ")
+    def input = profiles.sort{profile -> profile.toString()}.join(" ")
     """
     merge_metaphlan_tables.py \\
         $args \\

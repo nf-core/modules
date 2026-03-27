@@ -38,7 +38,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.bcf_gz,
                     process.out.tbi.collect{meta, tbi -> file(tbi).name},
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -72,11 +72,10 @@ nextflow_process {
                     process.out.hap,
                     process.out.legend,
                     process.out.samples,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
-
     }
 
     test("homo_sapiens - vcf1, tbi, bed, fasta - to gvcf") {
@@ -106,11 +105,10 @@ nextflow_process {
                 { assert snapshot(
                     process.out.vcf_gz,
                     process.out.csi.collect{meta, csi -> file(csi).name},
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
-
     }
 
     test("homo_sapiens - vcf1, tbi, [], fasta - to bcf - stub") {
@@ -171,7 +169,6 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
     test("homo_sapiens - vcf1, tbi, bed, fasta - to gvcf - stub") {
@@ -202,6 +199,5 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 }

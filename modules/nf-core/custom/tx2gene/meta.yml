@@ -6,6 +6,7 @@ keywords:
   - gene
   - gtf
   - pseudoalignment
+  - rsem
   - transcript
 tools:
   - "custom":
@@ -37,7 +38,7 @@ input:
         description: quants file
   - quant_type:
       type: string
-      description: Quantification type, 'kallisto' or 'salmon'
+      description: Quantification type, 'kallisto', 'salmon', or 'rsem'
   - id:
       type: string
       description: Gene ID attribute in the GTF file (default= gene_id)
@@ -60,10 +61,14 @@ output:
   versions:
     - versions.yml:
         type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+        description: YAML file containing versions of tools used in the module
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
 authors:
   - "@pinin4fjords"
 maintainers:

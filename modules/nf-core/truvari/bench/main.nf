@@ -4,8 +4,8 @@ process TRUVARI_BENCH {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/truvari:5.3.0--pyhdfd78af_0':
-        'biocontainers/truvari:5.3.0--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/truvari:5.4.0--pyhdfd78af_0':
+        'biocontainers/truvari:5.4.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(truth_vcf), path(truth_tbi), path(bed)
@@ -23,7 +23,8 @@ process TRUVARI_BENCH {
     tuple val(meta), path("*.tp-comp.vcf.gz.tbi"), emit: tp_comp_tbi
     tuple val(meta), path("*.summary.json")      , emit: summary
     tuple val(meta), path("*.log.txt")           , emit: log
-    path "versions.yml"                          , emit: versions
+    tuple val("${task.process}"), val('truvari'), eval("truvari version | sed 's/Truvari v//'"), topic: versions, emit: versions_truvari
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -53,10 +54,6 @@ process TRUVARI_BENCH {
     mv ${prefix}/summary.json       ./${prefix}.summary.json
     mv ${prefix}/log.txt            ./${prefix}.log.txt
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        truvari: \$(echo \$(truvari version 2>&1) | sed 's/^Truvari v//' ))
-    END_VERSIONS
     """
 
     stub:
@@ -72,10 +69,5 @@ process TRUVARI_BENCH {
     touch ${prefix}.tp-comp.vcf.gz.tbi
     touch ${prefix}.summary.json
     touch ${prefix}.log.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        truvari: \$(echo \$(truvari version 2>&1) | sed 's/^Truvari v//' ))
-    END_VERSIONS
     """
 }

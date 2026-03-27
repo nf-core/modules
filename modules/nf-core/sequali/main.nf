@@ -15,7 +15,7 @@ process SEQUALI {
 
     tuple val(meta), path("*.html"), emit: html
     tuple val(meta), path("*.json"), emit: json
-    path "versions.yml"            , emit: versions
+    tuple val("${task.process}"), val('sequali'), eval('sequali --version |& sed \'1!d ; s/sequali //\''), emit: versions_sequali, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,24 +34,13 @@ process SEQUALI {
         --json ${prefix}.json \\
         $read_1_bam \\
         $read_2
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sequali: \$(sequali --version |& sed '1!d ; s/sequali //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     touch ${prefix}.html
     touch ${prefix}.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sequali: \$(sequali --version |& sed '1!d ; s/sequali //')
-    END_VERSIONS
     """
 }

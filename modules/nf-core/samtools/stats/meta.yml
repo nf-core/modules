@@ -41,7 +41,12 @@ input:
     - fasta:
         type: file
         description: Reference file the CRAM was created with (optional)
-        pattern: "*.{fasta,fa}"
+        pattern: "*.{fasta,fa,fna}"
+        ontologies: []
+    - fai:
+        type: file
+        description: FASTA ref index file
+        pattern: "*.{fasta,fa,fna}.fai"
         ontologies: []
 output:
   stats:
@@ -62,21 +67,22 @@ output:
       - samtools:
           type: string
           description: Name of the tool
-      - samtools version | sed "1!d;s/.* //:
-          type: string
-          description: The command used to generate the version of the tool
+      - samtools version | sed "1!d;s/.* //":
+          type: eval
+          description: The expression to obtain the version of the tool
 
 topics:
   versions:
     - - ${task.process}:
           type: string
-          description: The process the versions were collected from
+          description: Name of the process
       - samtools:
           type: string
-          description: The tool name
-      - samtools version | sed "1!d;s/.* //:
-          type: string
-          description: The command used to generate the version of the tool
+          description: Name of the tool
+      - samtools version | sed "1!d;s/.* //":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@drpatelh"
   - "@FriederikeHanssen"
@@ -85,3 +91,4 @@ maintainers:
   - "@drpatelh"
   - "@FriederikeHanssen"
   - "@ramprasadn"
+  - "@matthdsm"

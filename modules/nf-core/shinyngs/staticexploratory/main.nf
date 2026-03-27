@@ -48,7 +48,6 @@ process SHINYNGS_STATICEXPLORATORY {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: meta.id
     """
     mkdir -p ${prefix}/png ${prefix}/html

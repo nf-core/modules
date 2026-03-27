@@ -1,11 +1,3 @@
-def deprecation_message = """
-WARNING: The getchromsizes process has been deprecated. Please use nf-core/modules/samtools/faidx.
-
-Reason:
-Getting chromosome sizes was added to samtools/faidx (https://github.com/nf-core/modules/pull/7041)
-via a boolean switch, making 'getchromsizes' unnecessary.
-"""
-
 process CUSTOM_GETCHROMSIZES {
     tag "$fasta"
     label 'process_single'
@@ -28,9 +20,15 @@ process CUSTOM_GETCHROMSIZES {
     task.ext.when == null || task.ext.when
 
     script:
+    def deprecation_message = """
+WARNING: The getchromsizes process has been deprecated. Please use nf-core/modules/samtools/faidx.
+
+Reason:
+Getting chromosome sizes was added to samtools/faidx (https://github.com/nf-core/modules/pull/7041)
+via a boolean switch, making 'getchromsizes' unnecessary.
+"""
     assert false: deprecation_message
 
-    def args = task.ext.args ?: ''
     """
     samtools faidx $fasta
     cut -f 1,2 ${fasta}.fai > ${fasta}.sizes
@@ -42,8 +40,12 @@ process CUSTOM_GETCHROMSIZES {
     """
 
     stub:
-    """
-    >&2 echo "${deprecation_message}"
-    false
-    """
+    def deprecation_message = """
+WARNING: The getchromsizes process has been deprecated. Please use nf-core/modules/samtools/faidx.
+
+Reason:
+Getting chromosome sizes was added to samtools/faidx (https://github.com/nf-core/modules/pull/7041)
+via a boolean switch, making 'getchromsizes' unnecessary.
+"""
+    assert false: deprecation_message
 }

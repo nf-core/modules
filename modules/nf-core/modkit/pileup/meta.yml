@@ -6,8 +6,8 @@ keywords:
   - long-read
 tools:
   - "modkit":
-      description: A bioinformatics tool for working with modified bases in Oxford Nanopore
-        sequencing data
+      description: A bioinformatics tool for working with modified bases in Oxford
+        Nanopore sequencing data
       homepage: https://github.com/nanoporetech/modkit
       documentation: https://github.com/nanoporetech/modkit
       tool_dev_url: https://github.com/nanoporetech/modkit
@@ -36,8 +36,8 @@ input:
           e.g. `[ id:'hg38' ]`
     - fasta:
         type: file
-        description: Reference sequence in FASTA format. Required for motif (e.g. CpG)
-          filtering
+        description: Reference sequence in FASTA format. Required for motif (e.g.
+          CpG) filtering
         pattern: "*.fasta"
         ontologies: []
     - fai:
@@ -52,32 +52,21 @@ input:
           e.g. `[ id:'regions' ]`
     - bed:
         type: file
-        description: BED file that will restrict threshold estimation and pileup results
-          to positions overlapping intervals in the file
+        description: BED file that will restrict threshold estimation and pileup
+          results to positions overlapping intervals in the file
         pattern: "*.bed"
         ontologies: []
 output:
-  bed:
+  bedgz:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-      - "*.bed":
+      - "*.bed.gz":
           type: file
-          description: bedMethyl output file(s)
+          description: bgzf-compressed bedMethyl output file(s)
           pattern: "*.bed"
-          ontologies: []
-  bedgraph:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
-      - "*.bedgraph":
-          type: file
-          description: bedgraph output files
-          pattern: "*.bedgraph"
           ontologies: []
   log:
     - - meta:
@@ -90,15 +79,31 @@ output:
           description: File for debug logs to be written to
           pattern: "*.log"
           ontologies: []
+  versions_modkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - modkit:
+          type: string
+          description: The name of the tool
+      - modkit --version | sed 's/modkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - modkit:
+          type: string
+          description: The name of the tool
+      - modkit --version | sed 's/modkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Michal-Babins"
   - "@fellen31"
 maintainers:
   - "@fellen31"
+  - "@jkh00"

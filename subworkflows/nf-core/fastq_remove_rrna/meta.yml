@@ -15,6 +15,7 @@ components:
   - ribodetector
   - samtools/fastq
   - samtools/view
+  - seqkit/replace
   - seqkit/stats
   - sortmerna
 input:
@@ -97,15 +98,6 @@ output:
             type: file
             description: Tool-specific log files
             pattern: "*.log"
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-      structure:
-        - versions:
-            type: file
-            description: File containing software versions
-            pattern: "versions.yml"
 authors:
   - "@pinin4fjords"
 maintainers:

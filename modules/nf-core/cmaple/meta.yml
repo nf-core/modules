@@ -33,8 +33,15 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - aln:
         type: file
-        description: Multiple sequence alignment file in FASTA, PHYLIP, or MAPLE format
-        pattern: "*.{fa,fasta,faa,fna,fas,aln,afa,phy,phylip,maple}"
+        description: |
+          Multiple sequence alignment file in FASTA, PHYLIP, or MAPLE format.
+          Can be gzipped on uncompressed.
+        pattern: "*.{fa,fasta,faa,fna,fas,aln,afa,phy,phylip,maple}{.gz,}"
+        ontologies:
+          - edam: http://edamontology.org/data_0863 # Sequence alignment
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1997 # PHYLIP format
+          - edam: http://edamontology.org/format_3989 # GZIP format
     - newick:
         type: file
         description: A Newick formatted tree based on multiple sequence alignment
@@ -68,13 +75,28 @@ output:
           ontologies:
             - edam: "http://edamontology.org/format_2330" # Textual format
 
+  versions_cmaple:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cmaple:
+          type: string
+          description: The name of the tool
+      - cmaple --help | grep -m1 -oE "[0-9]+(\.[0-9]+)+":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cmaple:
+          type: string
+          description: The name of the tool
+      - cmaple --help | grep -m1 -oE "[0-9]+(\.[0-9]+)+":
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
   - "@vagkaratzas"

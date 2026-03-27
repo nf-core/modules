@@ -24,11 +24,13 @@ process RTN_TNI {
     script:
     def args = task.ext.args ?: ''
 
+    """
+    echo ${args}
+    """
+
     template 'rtn_tni.r'
 
     stub:
-    def args = task.ext.args ?: ''
-
     """
     touch tni.rds
     touch tni_permutated.rds

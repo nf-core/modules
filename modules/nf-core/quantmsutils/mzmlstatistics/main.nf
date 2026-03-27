@@ -35,8 +35,6 @@ process QUANTMSUTILS_MZMLSTATISTICS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-
     """
     touch "${meta.id}_ms_info.parquet"
     touch "${meta.id}_ms2_info.parquet"

@@ -4,8 +4,8 @@ process QSV_CAT {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/86/864fcf1e6a250b588eaabd4df01334e44bc528fd29049c4fb24f7c56c8c33695/data'
-        : 'community.wave.seqera.io/library/qsv:5.1.0--9a6a0c23d3b279b5'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2df331cae7b5792b31a2c8d72221809b452e84ac380c6d2718a84d473a21759b/data'
+        : 'community.wave.seqera.io/library/qsv:14.0.0--9f7fc928b4bd192e'}"
 
     input:
     tuple val(meta), path(csv, name: 'inputs/in*/*')

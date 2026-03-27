@@ -1,6 +1,6 @@
 name: "shapeit5_switch"
-description: Program to compute switch error rate and genotyping error rate given
-  simulated or trio data.
+description: Program to compute switch error rate and genotyping error rate
+  given simulated or trio data.
 keywords:
   - error
   - phasing
@@ -13,7 +13,8 @@ tools:
       documentation: "https://odelaneau.github.io/shapeit5/docs/documentation"
       tool_dev_url: "https://github.com/odelaneau/shapeit5"
       doi: "10.1101/2022.10.19.512867 "
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:shapeit5
 input:
   - - meta:
@@ -33,8 +34,8 @@ input:
         ontologies: []
     - region:
         type: string
-        description: Target region used for imputation, including left and right buffers
-          (e.g. chr20:1000000-2000000).
+        description: Target region used for imputation, including left and right
+          buffers (e.g. chr20:1000000-2000000).
         pattern: "chrXX:leftBufferPosition-rightBufferPosition"
     - pedigree:
         type: file
@@ -42,15 +43,10 @@ input:
           Pedigree information in the following format: offspring father mother.
         pattern: "*.{txt, tsv}"
         ontologies: []
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
     - truth:
         type: file
-        description: Validation dataset called at the same positions as the imputed
-          file.
+        description: Validation dataset called at the same positions as the
+          imputed file.
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
         ontologies: []
     - truth_index:
@@ -58,11 +54,6 @@ input:
         description: Index file of the truth VCF/BCF file.
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
         ontologies: []
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
     - freq:
         type: file
         description: File containing allele frequencies at each site.
@@ -86,13 +77,27 @@ output:
           pattern: "*.txt.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_shapeit5:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - shapeit5:
+          type: string
+          description: The name of the tool
+      - 'SHAPEIT5_switch | sed "5!d;s/^.*Version *: //; s/ .*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - shapeit5:
+          type: string
+          description: The name of the tool
+      - 'SHAPEIT5_switch | sed "5!d;s/^.*Version *: //; s/ .*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@LouisLeNezet"
 maintainers:

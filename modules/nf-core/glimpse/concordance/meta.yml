@@ -1,6 +1,6 @@
 name: "glimpse_concordance"
-description: Compute the r2 correlation between imputed dosages (in MAF bins) and
-  highly-confident genotype calls from the high-coverage dataset.
+description: Compute the r2 correlation between imputed dosages (in MAF bins)
+  and highly-confident genotype calls from the high-coverage dataset.
 keywords:
   - concordance
   - low-coverage
@@ -14,7 +14,8 @@ tools:
       documentation: "https://odelaneau.github.io/GLIMPSE/commands.html"
       tool_dev_url: "https://github.com/odelaneau/GLIMPSE"
       doi: "10.1038/s41588-020-00756-0"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -42,8 +43,8 @@ input:
         ontologies: []
     - truth:
         type: file
-        description: Validation dataset called at the same positions as the imputed
-          file.
+        description: Validation dataset called at the same positions as the
+          imputed file.
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
         ontologies: []
     - truth_index:
@@ -52,8 +53,8 @@ input:
         ontologies: []
     - region:
         type: string
-        description: Target region used for imputation, including left and right buffers
-          (e.g. chr20:1000000-2000000).
+        description: Target region used for imputation, including left and right
+          buffers (e.g. chr20:1000000-2000000).
         pattern: "chrXX:leftBufferPosition-rightBufferPosition"
   - min_prob:
       type: float
@@ -78,8 +79,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.error.cal.txt.gz":
           type: file
-          description: Calibration correlation errors between imputed dosages (in MAF
-            bins) and highly-confident genotype.
+          description: Calibration correlation errors between imputed dosages (in
+            MAF bins) and highly-confident genotype.
           pattern: "*.errors.cal.txt.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -91,8 +92,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.error.grp.txt.gz":
           type: file
-          description: Groups correlation errors between imputed dosages (in MAF bins)
-            and highly-confident genotype.
+          description: Groups correlation errors between imputed dosages (in MAF
+            bins) and highly-confident genotype.
           pattern: "*.errors.grp.txt.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -104,8 +105,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.error.spl.txt.gz":
           type: file
-          description: Samples correlation errors between imputed dosages (in MAF bins)
-            and highly-confident genotype.
+          description: Samples correlation errors between imputed dosages (in MAF
+            bins) and highly-confident genotype.
           pattern: "*.errors.spl.txt.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -117,8 +118,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.rsquare.grp.txt.gz":
           type: file
-          description: Groups r-squared correlation between imputed dosages (in MAF
-            bins) and highly-confident genotype.
+          description: Groups r-squared correlation between imputed dosages (in
+            MAF bins) and highly-confident genotype.
           pattern: "*.rsquare.grp.txt.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -130,18 +131,32 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.rsquare.spl.txt.gz":
           type: file
-          description: Samples r-squared correlation between imputed dosages (in MAF
-            bins) and highly-confident genotype.
+          description: Samples r-squared correlation between imputed dosages (in
+            MAF bins) and highly-confident genotype.
           pattern: "*.rsquare.spl.txt.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_glimpse:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - glimpse:
+          type: string
+          description: The name of the tool
+      - "GLIMPSE_concordance --help | sed -n '/Version/s/.*: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - glimpse:
+          type: string
+          description: The name of the tool
+      - "GLIMPSE_concordance --help | sed -n '/Version/s/.*: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@louislenezet"
 maintainers:

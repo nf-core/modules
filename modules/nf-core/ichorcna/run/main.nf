@@ -4,8 +4,8 @@ process ICHORCNA_RUN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-ichorcna:0.5.1--r43hdfd78af_0' :
-        'biocontainers/r-ichorcna:0.5.1--r43hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f0/f07cec06705b4443052d3d7eaccebdbd0078366f7d074bfd4a6893980c6e2c4b/data' :
+        'community.wave.seqera.io/library/r-ichorcna:0.5.1--eed4be826f05c9d4' }"
 
     input:
     tuple val(meta), path(wig)
@@ -75,7 +75,6 @@ process ICHORCNA_RUN {
     """
 
     stub:
-    def args = task.ext.args   ?: ''
     prefix = task.ext.prefix   ?: "${meta.id}"
 
     """

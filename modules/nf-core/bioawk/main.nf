@@ -1,38 +1,41 @@
 process BIOAWK {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bioawk:1.0--h5bf99c6_6':
+        'https://depot.galaxyproject.org/singularity/bioawk:1.0--h5bf99c6_6' :
         'biocontainers/bioawk:1.0--h5bf99c6_6' }"
 
     input:
     tuple val(meta), path(input)
+    val output_file_extension
 
     output:
-    tuple val(meta), path("*.gz"), emit: output
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path("*.${output_file_extension}"), emit: output
+    // WARN: Version information not provided by tool on CLI. Please update version string above when bumping container versions.
+    tuple val("${task.process}"), val('bioawk'), val("1.0"), emit: versions_bioawk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args  = task.ext.args ?: '' // args is used for the main arguments of the tool
-    prefix = task.ext.prefix ?: "${meta.id}"
-    if ("${input}" == "${prefix}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
-    def VERSION = '1.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def args        = task.ext.args ?: ''
+    def prefix      = task.ext.prefix ?: "${meta.id}"
+    if ("${input}" == "${prefix}.${output_file_extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate."
+
+    def compress_output = output_file_extension.endsWith(".gz") ? " | gzip " : ""
     """
     bioawk \\
-        $args \\
-        $input \\
-        > ${prefix}
+            $args \\
+            $input \\
+            ${compress_output} > ${prefix}.${output_file_extension}
+    """
 
-    gzip ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bioawk: $VERSION
-    END_VERSIONS
+    stub:
+    def prefix      = task.ext.prefix ?: "${meta.id}"
+    def compress_output = output_file_extension.endsWith(".gz") ? " | gzip " : ""
+    """
+    echo "" ${compress_output} > "${prefix}.${output_file_extension}"
     """
 }

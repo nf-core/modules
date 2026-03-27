@@ -2,9 +2,6 @@
     "Should run glimpse ligate": {
         "content": [
             [
-                "versions.yml:md5,44addcaef4965ff6409a8293c5bcad84"
-            ],
-            [
                 [
                     {
                         "id": "input"
@@ -13,28 +10,26 @@
                     "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=903, phased=true, phasedAutodetect=true]",
                     "bfeec64e4bbd1211d3dd284aff482995"
                 ]
-            ]
+            ],
+            {
+                "versions_glimpse2": [
+                    [
+                        "GLIMPSE2_LIGATE",
+                        "glimpse2",
+                        "2.0.0"
+                    ]
+                ]
+            }
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2025-11-26T20:54:57.8806397"
+        "timestamp": "2026-02-06T09:32:54.092859439"
     },
     "Should run glimpse ligate -- stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "input"
-                        },
-                        "input.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,44addcaef4965ff6409a8293c5bcad84"
-                ],
                 "merged_variants": [
                     [
                         {
@@ -43,15 +38,19 @@
                         "input.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,44addcaef4965ff6409a8293c5bcad84"
+                "versions_glimpse2": [
+                    [
+                        "GLIMPSE2_LIGATE",
+                        "glimpse2",
+                        "2.0.0"
+                    ]
                 ]
             }
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2025-11-26T20:46:48.337059937"
+        "timestamp": "2026-02-06T09:33:00.96755241"
     }
 }

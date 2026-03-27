@@ -14,13 +14,12 @@ process CRISPRCLEANR_NORMALIZE {
 
     output:
     tuple val(meta), path("*_norm_table.tsv"), emit: norm_count_file
-    path "versions.yml",                       emit: versions
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
@@ -40,26 +39,25 @@ process CRISPRCLEANR_NORMALIZE {
 
     write.table(correctedCounts, file=paste0("${prefix}","_norm_table.tsv"),row.names=FALSE,quote=FALSE,sep="\t")
 
-    version_file_path <- "versions.yml"
-    version_crisprcleanr <- paste(unlist(packageVersion("CRISPRcleanR")), collapse = ".")
-    f <- file(version_file_path, "w")
-    writeLines('"${task.process}":', f)
-    writeLines("    crisprcleanr: ", f, sep = "")
-    writeLines(version_crisprcleanr, f)
-    close(f)
+    version_crisprcleanr <- as.character(packageVersion("CRISPRcleanR"))
+    version_rbase <- paste(R.version[['major']],R.version[['minor']], sep = ".")
+    writeLines(c(
+            '"${task.process}":',
+            paste('    r-base:', version_rbase),
+            paste('    crisprcleanr:', version_crisprcleanr)
+    ), 'versions.yml')
 
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     touch ${prefix}_norm_table.tsv
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        R: R --version | sed '1!d; s/.*version //; s/ .*//'
-        CRISPRcleanR: Rscript -e 'packageVersion("CRISPRcleanR")'
+        r-base: R --version | sed '1!d; s/.*version //; s/ .*//'
+        crisprcleanr: Rscript -e 'packageVersion("CRISPRcleanR")'
     END_VERSIONS
     """
 
