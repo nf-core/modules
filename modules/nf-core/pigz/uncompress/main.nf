@@ -13,7 +13,7 @@ process PIGZ_UNCOMPRESS {
 
     output:
     tuple val(meta), path("${uncompressed_filename}") , emit: file
-    path "versions.yml"                               , emit: versions
+    tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,20 +29,11 @@ process PIGZ_UNCOMPRESS {
         $args \\
         ${zip}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz[[:space:]]*//' )
-    END_VERSIONS
     """
 
     stub:
     uncompressed_filename = zip.toString() - '.gz'
     """
     touch $uncompressed_filename
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz[[:space:]]*//' )
-    END_VERSIONS
     """
 }
