@@ -1,9 +1,13 @@
 name: tabix_tabix
-description: create tabix index from a sorted bgzip tab-delimited genome file
+description: |
+  Create a tabix index from a sorted bgzip TAB-delimited genome file, or
+  extract regions from a bgzipped VCF file using an optional regions file.
 keywords:
   - index
   - tabix
   - vcf
+  - extract
+  - regions
 tools:
   - tabix:
       description: Generic indexer for TAB-delimited genome position files.
@@ -23,6 +27,25 @@ input:
         description: TAB-delimited genome position file compressed with bgzip
         pattern: "*.{bed.gz,gff.gz,sam.gz,vcf.gz}"
         ontologies: []
+    - index:
+        type: file
+        description: |
+          Tabix index file for the input (required when using regions).
+          Pass [] when only creating an index.
+        pattern: "*.{tbi,csi}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing regions information
+          e.g. [ id:'regions' ]
+    - regions:
+        type: file
+        description: |
+          Optional file of regions to extract (BED or chr:start-end format).
+          Pass [] to create an index instead of extracting regions.
+        pattern: "*.{bed,txt,tsv}"
+        ontologies: []
 output:
   index:
     - - meta:
@@ -32,9 +55,33 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.{tbi,csi}":
           type: file
-          description: Tabix index file (either tbi or csi)
+          description: Tabix index file (tbi or csi). Emitted when no regions file is provided.
           pattern: "*.{tbi,csi}"
           ontologies: []
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "${prefix}.vcf.gz":
+          type: file
+          description: bgzipped VCF of extracted regions. Emitted when a regions file is provided.
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3016 # VCF
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "${prefix}.vcf.gz.tbi":
+          type: file
+          description: Tabix index for the extracted VCF. Emitted when a regions file is provided.
+          pattern: "*.vcf.gz.tbi"
+          ontologies:
+            - edam: http://edamontology.org/format_3326 # Index
   versions_tabix:
     - - ${task.process}:
           type: string
