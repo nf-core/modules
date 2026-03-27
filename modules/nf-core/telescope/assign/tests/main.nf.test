@@ -35,11 +35,9 @@ nextflow_process {
             def logFile = path(process.out.log[0][1])
             assert logFile.exists()
             assert logFile.readLines().last().contains("telescope assign complete")
-
-
-                assert snapshot(
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match()
+            assert snapshot(
+                process.out.findAll { key, val -> key.startsWith('versions') }
+            ).match()
         }
 
     }
