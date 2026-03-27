@@ -24,15 +24,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - tab:
         type: file
-        description: TAB-delimited genome position file compressed with bgzip
+        description: TAB-delimited genome position file compressed with bgzip, with its index staged alongside when using regions
         pattern: "*.{bed.gz,gff.gz,sam.gz,vcf.gz}"
-        ontologies: []
-    - index:
-        type: file
-        description: |
-          Tabix index file for the input (required when using regions).
-          Pass [] when only creating an index.
-        pattern: "*.{tbi,csi}"
         ontologies: []
   - - meta2:
         type: map
@@ -64,24 +57,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}.vcf.gz":
+      - "${prefix}.vcf":
           type: file
-          description: bgzipped VCF of extracted regions. Emitted when a regions file is provided.
-          pattern: "*.vcf.gz"
+          description: Plain VCF of extracted regions. Emitted when a regions file is provided.
+          pattern: "*.vcf"
           ontologies:
             - edam: http://edamontology.org/format_3016 # VCF
-  tbi:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "${prefix}.vcf.gz.tbi":
-          type: file
-          description: Tabix index for the extracted VCF. Emitted when a regions file is provided.
-          pattern: "*.vcf.gz.tbi"
-          ontologies:
-            - edam: http://edamontology.org/format_3326 # Index
   versions_tabix:
     - - ${task.process}:
           type: string

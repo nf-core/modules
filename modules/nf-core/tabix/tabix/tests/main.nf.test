@@ -126,7 +126,7 @@ nextflow_process {
                             ]
                 input[1] = [
                                 [ id:'vcf_regions' ],
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed.gz', checkIfExists: true)
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
                             ]
                 """
             }
@@ -157,7 +157,7 @@ nextflow_process {
                             ]
                 input[1] = [
                                 [ id:'vcf_regions_stub' ],
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed.gz', checkIfExists: true)
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
                             ]
                 """
             }
