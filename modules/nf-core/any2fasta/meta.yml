@@ -27,7 +27,7 @@ input:
         type: file
         description: |
           Input sequence file in any supported format (GenBank, GFF, FASTQ, FASTA,
-          CLUSTAL, Stockholm, GFA). May be gzip, bzip2, zip, or zstd compressed.
+          CLUSTAL, Stockholm, GFA). May be gzip, bzip2, zip, or zstd compressed. GFF3 must include a FASTA inside.
         pattern: "*.{gb,gbk,fa,fasta,fna,fq,fastq,gff,gfa,clw,sth,gb.gz,gbk.gz,fa.gz,fasta.gz,fq.gz,fastq.gz}"
 
 output:
