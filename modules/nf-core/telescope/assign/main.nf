@@ -14,7 +14,7 @@ process TELESCOPE_ASSIGN {
     tuple val(meta_bam), path("*{updated,other}.sam"), emit: sam, optional: true // only for --updated_sam
     tuple val(meta_bam), path("*.tsv"), emit: tsv, optional: true // for when there's no alignments
     tuple val(meta_bam), path("*.log"), emit: log, optional: true
-    tuple val("${task.process}"), val('telescope'), eval("telescope version | sed '1!d;s/.* //'"), emit: versions_telescope, topic: versions
+    tuple val("${task.process}"), val('telescope'), eval("telescope --version | sed '1!d;s/.* //'"), emit: versions_telescope, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
