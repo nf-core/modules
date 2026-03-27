@@ -1,0 +1,95 @@
+nextflow_process {
+
+    name "Test Process CIVICPY_ANNOTATE"
+    script "../main.nf"
+    process "CIVICPY_ANNOTATE"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "civicpy"
+    tag "civicpy/annotate"
+
+    test("homo_sapiens - vcf - GRCh38") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_sample' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz',    checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz.tbi', checkIfExists: true)
+                ]
+                input[1] = 'GRCh38'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    process.out.versions_civicpy
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - vcf - GRCh37") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_sample' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz',    checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz.tbi', checkIfExists: true)
+                ]
+                input[1] = 'GRCh37'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    process.out.versions_civicpy
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - vcf - GRCh38 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_sample' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz',    checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz.tbi', checkIfExists: true)
+                ]
+                input[1] = 'GRCh38'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.vcf[0][1]).name,
+                    process.out.versions_civicpy
+                ).match() }
+            )
+        }
+
+    }
+
+}
