@@ -172,8 +172,6 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         inputs.samples_and_matrix.filter{index -> index[0].differential_method == 'dream' }
     )
 
-    ch_versions = ch_versions.mix( VARIANCEPARTITION_DREAM.out.versions.first() )
-
     // ----------------------------------------------------
     // Collect results
     // ----------------------------------------------------
