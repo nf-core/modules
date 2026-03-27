@@ -2,7 +2,7 @@ process TELESCOPE_ASSIGN {
     tag "$meta_bam.id"
     label 'process_single'
 
-    //conda "${moduleDir}/environment.yml" -- No conda at the moment
+    conda "${moduleDir}/environment.yml"
     container 'docker.io/hanalysis/telescope_1.0.3_clip'
 
     input:
