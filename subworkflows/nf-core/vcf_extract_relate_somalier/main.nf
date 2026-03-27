@@ -22,7 +22,8 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         }
 
     TABIX_TABIX(
-        ch_input.no_tbi
+        ch_input.no_tbi,
+        [[],[]]
     )
 
     ch_somalierextract_input = ch_input.no_tbi
