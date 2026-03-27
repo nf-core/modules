@@ -101,7 +101,7 @@ output:
       - telescope:
           type: string
           description: The tool name
-      - "telescope version | sed '1!d;s/.* //'":
+      - "telescope --version | sed '1!d;s/.* //'":
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -113,7 +113,7 @@ topics:
       - telescope:
           type: string
           description: The tool name
-      - "telescope version | sed '1!d;s/.* //'":
+      - "telescope --version | sed '1!d;s/.* //'":
           type: eval
           description: The expression to obtain the version of the tool
 
