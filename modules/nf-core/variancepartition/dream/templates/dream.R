@@ -23,6 +23,65 @@ is_valid_string <- function(input) {
   !is.null(input) && nzchar(trimws(input))
 }
 
+#' Rewrite a contrast expression using sanitised design column names
+#'
+#' `makeContrasts()` requires syntactically valid coefficient names. The DREAM
+#' design matrix is sanitised with `make.names()`, so a user may provide
+#' contrasts using the original names (for example containing spaces). This
+#' helper rewrites exact design-column matches to their sanitised equivalents.
+#'
+#' @param contrast_string User-provided contrast expression.
+#' @param design_names Original design matrix column names.
+#' original_design_names
+#' @return Contrast expression compatible with `makeContrasts()`.
+normalise_contrast_string <- function(contrast_string, design_names) {
+    if (!is_valid_string(contrast_string)) {
+        return(contrast_string)
+    }
+
+    sanitised_names <- make.names(design_names)
+    replacement_order <- order(nchar(design_names), decreasing = TRUE)
+    normalised <- contrast_string
+
+    for (idx in replacement_order) {
+        normalised <- gsub(
+            design_names[[idx]],
+            sanitised_names[[idx]],
+            normalised,
+            fixed = TRUE
+        )
+    }
+
+    normalised
+}
+
+#' Resolve user-supplied metadata column names against loaded metadata
+#'
+#' Metadata is read with `check.names = TRUE`, so columns containing spaces are
+#' sanitised by R. This helper accepts either the original column name or the
+#' sanitised version and returns the column present in `metadata`.
+#'
+#' @param column_name Column name provided by the user.
+#' @param metadata Loaded metadata data frame.
+#'
+#' @return Resolved column name present in metadata.
+resolve_metadata_column <- function(column_name, metadata) {
+    if (!is_valid_string(column_name)) {
+        return(column_name)
+    }
+
+    if (column_name %in% colnames(metadata)) {
+        return(column_name)
+    }
+
+    sanitised_name <- make.names(column_name)
+    if (sanitised_name %in% colnames(metadata)) {
+        return(sanitised_name)
+    }
+
+    column_name
+}
+
 #' Parse out options from a string without recourse to optparse
 #'
 #' @param x Long-form argument list like --opt1 val1 --opt2 val2
@@ -138,6 +197,8 @@ if (!is.null(opt\$seed)) {
 # Load metadata
 metadata <- read_delim_flexible(opt\$sample_file, header = TRUE, stringsAsFactors = TRUE)
 rownames(metadata) <- metadata[[opt\$sample_id_col]]
+contrast_variable <- NULL
+blocking.vars <- c()
 
 # Check if required parameters have been provided
 if (is_valid_string(opt\$formula)) {
@@ -164,8 +225,7 @@ if (length(missing) > 0) {
 }
 
 if (!is_valid_string(opt\$formula)) {
-  contrast_variable <- make.names(opt\$contrast_variable)
-  blocking.vars <- c()
+  contrast_variable <- resolve_metadata_column(opt\$contrast_variable, metadata)
 
   if (!contrast_variable %in% colnames(metadata)) {
     stop(
@@ -184,7 +244,12 @@ if (!is_valid_string(opt\$formula)) {
       )
     )
   } else if (is_valid_string(opt\$blocking_variables)) {
-    blocking.vars = make.names(unlist(strsplit(opt\$blocking_variables, split = ';')))
+    blocking.vars <- vapply(
+      unlist(strsplit(opt\$blocking_variables, split = ';')),
+      resolve_metadata_column,
+      character(1),
+      metadata = metadata
+    )
     if (!all(blocking.vars %in% colnames(metadata))) {
       missing_block <- paste(blocking.vars[! blocking.vars %in% colnames(metadata)], collapse = ',')
       stop(
@@ -199,8 +264,10 @@ if (!is_valid_string(opt\$formula)) {
 
 # Ensure contrast variable is factor, then relevel
 if (!is.null(opt\$contrast_reference) && opt\$contrast_reference != "") {
-    metadata[[opt\$contrast_variable]] <- factor(metadata[[opt\$contrast_variable]])
-    metadata[[opt\$contrast_variable]] <- relevel(metadata[[opt\$contrast_variable]], ref = opt\$contrast_reference)
+    if (!is.null(contrast_variable) && contrast_variable %in% colnames(metadata)) {
+        metadata[[contrast_variable]] <- factor(metadata[[contrast_variable]])
+        metadata[[contrast_variable]] <- relevel(metadata[[contrast_variable]], ref = opt\$contrast_reference)
+    }
 }
 
 # Exclude samples in metadata if specified
@@ -256,7 +323,7 @@ if (as.logical(opt\$apply_voom)) {
     vobjDream <- voomWithDreamWeights(dge, form, metadata, BPPARAM = bp)
 
     # Write normalized counts matrix to a TSV file
-     normalized_counts <- vobjDream\$E
+    normalized_counts <- vobjDream\$E
     if (!is.null(opt\$round_digits)) {
         normalized_counts <- apply(normalized_counts, 2, function(x) round(x, opt\$round_digits))
     }
@@ -302,7 +369,11 @@ if (!is.null(opt\$contrast_string)) {
 if (is_valid_string(contrast_string)) {
     cat("Using contrast string:", contrast_string, "\n")
 
-    colnames(fitmm\$design) <- make.names(colnames(fitmm\$design))
+    original_design_names <- colnames(fitmm\$design)
+    colnames(fitmm\$design) <- make.names(original_design_names)
+    contrast_string <- normalise_contrast_string(contrast_string, original_design_names)
+    cat("Normalised contrast string:", contrast_string, "\n")
+
     contrast_matrix <- makeContrasts(contrast = contrast_string, levels = colnames(fitmm\$design))
     fit2 <- contrasts.fit(fitmm, contrast_matrix)
     fit2 <- eBayes(fit2, proportion = opt\$proportion,

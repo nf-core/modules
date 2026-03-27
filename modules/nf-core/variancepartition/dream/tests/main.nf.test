@@ -41,7 +41,7 @@ nextflow_process {
                 { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
                 { assert path(process.out.results[0][1]).getText().contains("1309.83") },
                 { assert path(process.out.results[0][1]).getText().contains("557\t279.88\t18.81") },
-                { assert snapshot(process.out.model, process.out.versions).match() }
+                { assert snapshot(process.out.model, process.out.versions_variancepartition).match() }
             )
         }
     }
@@ -77,7 +77,7 @@ nextflow_process {
                 { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
                 { assert path(process.out.results[0][1]).getText().contains("5.07") },
                 { assert path(process.out.results[0][1]).getText().contains("2.97\t3.88\t38.17") },
-                { assert snapshot(process.out.model, process.out.normalised_counts, process.out.versions).match() }
+                { assert snapshot(process.out.model, process.out.normalised_counts, process.out.versions_variancepartition).match() }
             )
         }
     }
@@ -111,7 +111,7 @@ nextflow_process {
                 { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
                 { assert path(process.out.results[0][1]).getText().contains("-849.67") },
                 { assert path(process.out.results[0][1]).getText().contains("-1050\t549\t-3.78") },
-                { assert snapshot(process.out.model, process.out.versions).match() }
+                { assert snapshot(process.out.model, process.out.versions_variancepartition).match() }
             )
         }
     }
@@ -146,7 +146,7 @@ nextflow_process {
                 { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
                 { assert path(process.out.results[0][1]).getText().contains("1050") },
                 { assert path(process.out.results[0][1]).getText().contains("849.67\t432.83\t3.8") },
-                { assert snapshot(process.out.model, process.out.versions).match() }
+                { assert snapshot(process.out.model, process.out.versions_variancepartition).match() }
             )
         }
     }
@@ -180,7 +180,7 @@ nextflow_process {
                 { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
                 { assert path(process.out.results[0][1]).getText().contains("2124\t549\t4.84") },
                 { assert path(process.out.results[0][1]).getText().contains("1707.33") },
-                { assert snapshot(process.out.model, process.out.versions).match() }
+                { assert snapshot(process.out.model, process.out.versions_variancepartition).match() }
             )
         }
     }
@@ -211,7 +211,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.model, process.out.versions).match() },
+                { assert snapshot(process.out.model, process.out.versions_variancepartition).match() },
                 { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
                 { assert path(process.out.results[0][1]).getText().contains("-95.67") },
                 { assert path(process.out.results[0][1]).getText().contains("1050\t549\t4.16") }
