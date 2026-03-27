@@ -70,7 +70,7 @@ nextflow_process {
                         process.out.unmapped_diamond,
                         process.out.unmapped_fasta,
                         process.out.unmapped2classification,
-                        process.out.versions
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -123,7 +123,7 @@ nextflow_process {
                         process.out.unmapped_diamond,
                         process.out.unmapped_fasta,
                         process.out.unmapped2classification,
-                        process.out.versions
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -176,7 +176,7 @@ nextflow_process {
                         process.out.unmapped_diamond,
                         process.out.unmapped_fasta,
                         process.out.unmapped2classification,
-                        process.out.versions
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )

@@ -9,12 +9,13 @@ process CNVNATOR_CNVNATOR {
 
     input:
     tuple val(meta), path(bam), path(bai)
-    tuple val(meta2), path(root)
+    tuple val(meta2), path(root, stageAs:'input/')
     tuple val(meta3), path(fasta)
     tuple val(meta4), path(fai)
+    val step // Without this parameter Nextflow can't distinguish between different steps, and resume becomes unreliable across the workflow chain
 
     output:
-    tuple val(output_meta), path("${prefix}.root"), emit: root
+    tuple val(output_meta), path("${prefix}.root"), emit: root, optional: true
     tuple val(output_meta), path("${prefix}.tab") , emit: tab, optional: true
     tuple val("${task.process}"), val('cnvnator'), eval("cnvnator 2>&1 | sed -n '3s/CNVnator v//p'"), topic: versions, emit: versions_cnvnator
 
@@ -25,30 +26,30 @@ process CNVNATOR_CNVNATOR {
     def args      = task.ext.args   ?: ''
     def input_cmd = bam             ? "-tree ${bam}"      : ''
     output_meta   = bam             ? meta                : meta2
-    prefix        = task.ext.prefix ?: bam ? "${meta.id}" : "${meta2.id}"
+    prefix        = task.ext.prefix ?: "${output_meta.id}"
     if (fasta) {
         reference = fasta.isDirectory() ? "-d ${fasta}" : "-fasta ${fasta}"
     } else {
         reference = ''
     }
     def calls_cmd = args.contains("-call") ? "> ${prefix}.tab" : ''
+    cp_cmd    = root ? "cp input/* ${prefix}.root" :""
     """
+    ${cp_cmd}
     cnvnator \\
         -root ${prefix}.root \\
-        $args \\
-        $reference \\
-        $input_cmd \\
-        $calls_cmd
+        ${args} \\
+        ${reference} \\
+        ${input_cmd} \\
+        ${calls_cmd}
     """
 
     stub:
     def args      = task.ext.args   ?: ''
-    prefix        = task.ext.prefix ?: bam ? "${meta.id}" : "${meta2.id}"
     output_meta   = bam             ? meta                : meta2
-    def calls_cmd = args.contains("-call") ? "touch ${prefix}.tab" : ''
+    prefix        = task.ext.prefix ?: "${output_meta.id}"
+    def touch_cmd = args.contains("-call") ? "touch ${prefix}.tab" : "touch ${prefix}.root"
     """
-    touch ${prefix}.root
-    $calls_cmd
-
+    ${touch_cmd}
     """
 }

@@ -14,7 +14,9 @@ process VARDICTJAVA {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('vardict-java'), eval('realpath \$( command -v vardict-java ) | sed \'s/.*java-//;s/-.*//\''), emit: versions_vardictjava, topic: versions
+    tuple val("${task.process}"), val('var2vcf_valid.pl'), eval('var2vcf_valid.pl -h | sed \'2!d;s/.* //\''), emit: versions_var2vcfvalid, topic: versions
+    tuple val("${task.process}"), val('htslib'), eval("tabix -h 2>&1 | sed -n '2s/Version: *//p'"), emit: versions_htslib, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,12 +46,6 @@ process VARDICTJAVA {
     | ${convert_to_vcf} \\
         ${args2} \\
     | bgzip ${args3} --threads ${task.cpus} > ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vardict-java: \$( realpath \$( command -v vardict-java ) | sed 's/.*java-//;s/-.*//' )
-        var2vcf_valid.pl: \$( var2vcf_valid.pl -h | sed '2!d;s/.* //' )
-    END_VERSIONS
     """
 
     stub:
@@ -57,11 +53,5 @@ process VARDICTJAVA {
 
     """
     echo '' | gzip > ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vardict-java: \$( realpath \$( command -v vardict-java ) | sed 's/.*java-//;s/-.*//' )
-        var2vcf_valid.pl: \$( var2vcf_valid.pl -h | sed '2!d;s/.* //' )
-    END_VERSIONS
     """
 }

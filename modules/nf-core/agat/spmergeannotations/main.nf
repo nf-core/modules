@@ -4,8 +4,8 @@ process AGAT_SPMERGEANNOTATIONS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/03/033434db0bd6ba28660401e1059286f36641fd8ce55faa11973fe5eaf312adcd/data' :
-        'community.wave.seqera.io/library/agat:1.5.1--ae3cd948ce5e9795' }"
+        'https://depot.galaxyproject.org/singularity/agat:1.6.1--pl5321hdfd78af_1' :
+        'biocontainers/agat:1.6.1--pl5321hdfd78af_1' }"
 
     input:
     tuple val(meta), path(gffs)
@@ -13,7 +13,7 @@ process AGAT_SPMERGEANNOTATIONS {
 
     output:
     tuple val(meta), path("*.gff"), emit: gff
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('agat'), eval("agat --version | sed 's/v//'"), topic: versions, emit: versions_agat
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +23,7 @@ process AGAT_SPMERGEANNOTATIONS {
     def prefix       = task.ext.prefix ?: "${meta.id}"
     def config_param = config ? "--config ${config}" : ''
     def file_names   = "${gffs}".split(' ')
-    def gff_param    = file_names.collect { "--gff ${it}" }.join(' ')
+    def gff_param    = file_names.collect { gff_file -> "--gff ${gff_file}" }.join(' ')
     if ( file_names.contains ( "${prefix}.gff" ) ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     agat_sp_merge_annotations.pl \\
@@ -31,11 +31,6 @@ process AGAT_SPMERGEANNOTATIONS {
         ${config_param} \\
         ${args} \\
         --output ${prefix}.gff
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        agat: \$(agat_sp_merge_annotations.pl -h | sed -n 's/.*(AGAT) - Version: \\(.*\\) .*/\\1/p')
-    END_VERSIONS
     """
 
     stub:
@@ -44,10 +39,5 @@ process AGAT_SPMERGEANNOTATIONS {
     if ( file_names.contains ( "${prefix}.gff" ) ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${prefix}.gff
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        agat: \$(agat_sp_merge_annotations.pl -h | sed -n 's/.*(AGAT) - Version: \\(.*\\) .*/\\1/p')
-    END_VERSIONS
     """
 }

@@ -1,6 +1,6 @@
 name: sratools_fasterqdump
-description: Extract sequencing reads in FASTQ format from a given NCBI Sequence Read
-  Archive (SRA).
+description: Extract sequencing reads in FASTQ format from a given NCBI Sequence
+  Read Archive (SRA).
 keywords:
   - sequencing
   - FASTQ
@@ -11,7 +11,8 @@ tools:
       homepage: https://github.com/ncbi/sra-tools
       documentation: https://github.com/ncbi/sra-tools/wiki
       tool_dev_url: https://github.com/ncbi/sra-tools
-      licence: ["Public Domain"]
+      licence:
+        - "Public Domain"
       identifier: ""
 input:
   - - meta:
@@ -45,17 +46,51 @@ output:
             ]
       - "*.fastq.gz":
           type: file
-          description: Extracted FASTQ file or files if the sequencing reads are paired-end.
+          description: Extracted FASTQ file or files if the sequencing reads are
+            paired-end.
           pattern: "*.fastq.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_sratools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sratools:
+          type: string
+          description: The name of the tool
+      - prefetch --version 2>&1 | grep -Eo '[0-9.]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_pigz:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed 's/pigz //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sratools:
+          type: string
+          description: The name of the tool
+      - prefetch --version 2>&1 | grep -Eo '[0-9.]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed 's/pigz //g':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Midnighter"
 maintainers:

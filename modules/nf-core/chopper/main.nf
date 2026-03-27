@@ -4,8 +4,8 @@ process CHOPPER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/chopper:0.9.0--hdcf5f25_0':
-        'biocontainers/chopper:0.9.0--hdcf5f25_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f4/f4a12f8d5bb8a08aa9a0a14377465521422e7274bcb6be56daa6a06f30ac0bf7/data':
+        'community.wave.seqera.io/library/chopper:0.12.0b--f39108dd84394289' }"
 
     input:
     tuple val(meta), path(fastq)
@@ -13,7 +13,7 @@ process CHOPPER {
 
     output:
     tuple val(meta), path("*.fastq.gz") , emit: fastq
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('chopper'), eval("chopper --version 2>&1 | cut -d ' ' -f 2"), topic: versions, emit: versions_chopper
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,21 +36,11 @@ process CHOPPER {
         $args2 | \\
     gzip \\
         $args3 > ${prefix}.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        chopper: \$(chopper --version 2>&1 | cut -d ' ' -f 2)
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo | gzip > ${prefix}.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        chopper: \$(chopper --version 2>&1 | cut -d ' ' -f 2)
-    END_VERSIONS
     """
 }

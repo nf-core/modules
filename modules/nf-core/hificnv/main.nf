@@ -18,7 +18,7 @@ process HIFICNV {
     tuple val(meta), path("*.depth.bw")        , emit: depth
     tuple val(meta), path("*.maf.bw")          , emit: maf     , optional: true
     tuple val(meta), path("*.vcf.gz")          , emit: vcf
-    path "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val('hificnv'), eval("hificnv --version | sed 's/.* //g'"), emit: versions_hificnv, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,11 +42,6 @@ process HIFICNV {
         --threads ${task.cpus} \\
         --output-prefix ${prefix} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hificnv: \$(hificnv --version 2>&1 | sed 's/^.*hificnv //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -58,10 +53,5 @@ process HIFICNV {
     touch ${prefix}.copynum.bedgraph
     ${create_maf}
     echo "" | gzip > ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hificnv: \$(hificnv --version 2>&1 | sed 's/.* //')
-    END_VERSIONS
     """
 }

@@ -28,6 +28,5 @@ in the utils_nfcore_pipeline subworkflow that is included in the nf-core templat
 
 """
     assert false: deprecation_message
-    def args = task.ext.args ?: ''
     template 'dumpsoftwareversions.py'
 }

@@ -1,6 +1,6 @@
 name: "glimpse_phase"
-description: main GLIMPSE algorithm, performs phasing and imputation refining genotype
-  likelihoods
+description: main GLIMPSE algorithm, performs phasing and imputation refining
+  genotype likelihoods
 keywords:
   - phase
   - imputation
@@ -14,7 +14,8 @@ tools:
       documentation: "https://odelaneau.github.io/GLIMPSE/commands.html"
       tool_dev_url: "https://github.com/odelaneau/GLIMPSE"
       doi: "10.1038/s41588-020-00756-0"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -29,7 +30,8 @@ input:
         ontologies: []
     - input_index:
         type: file
-        description: Index file of the input VCF/BCF file containing genotype likelihoods.
+        description: Index file of the input VCF/BCF file containing genotype
+          likelihoods.
         pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
         ontologies: []
     - samples_file:
@@ -41,15 +43,16 @@ input:
           GLIMPSE does NOT handle the use of sex (M/F) instead of ploidy.
         pattern: "*.{txt,tsv}"
         ontologies:
-          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3475
     - input_region:
         type: string
-        description: Target region used for imputation, including left and right buffers
-          (e.g. chr20:1000000-2000000).
+        description: Target region used for imputation, including left and right
+          buffers (e.g. chr20:1000000-2000000).
         pattern: "chrXX:leftBufferPosition-rightBufferPosition"
     - output_region:
         type: string
-        description: Target imputed region, excluding left and right buffers (e.g. chr20:1000000-2000000).
+        description: Target imputed region, excluding left and right buffers (e.g.
+          chr20:1000000-2000000).
         pattern: "chrXX:leftBufferPosition-rightBufferPosition"
     - reference:
         type: file
@@ -81,13 +84,27 @@ output:
             sampled haplotypes in the last (max 16) main iterations (HS field) and info-score.
           pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
           ontologies: []
+  versions_glimpse:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - glimpse:
+          type: string
+          description: The name of the tool
+      - "GLIMPSE_phase --help | sed -n '/Version/s/.*: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - glimpse:
+          type: string
+          description: The name of the tool
+      - "GLIMPSE_phase --help | sed -n '/Version/s/.*: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@louislenezet"
 maintainers:

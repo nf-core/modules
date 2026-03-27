@@ -4,15 +4,15 @@ process BEDOPS_CONVERT2BED {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bedops:2.4.41--h4ac6f70_2':
-        'biocontainers/bedops:2.4.41--h4ac6f70_2' }"
+        'https://depot.galaxyproject.org/singularity/bedops:2.4.42--h9948957_0':
+        'biocontainers/bedops:2.4.42--h9948957_0' }"
 
     input:
     tuple val(meta), path(in_file)
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val("bedops"), eval('convert2bed --version | sed -n "s/.*version: *\\([^ ]*\\).*/\\1/p"'), emit: versions_bedops, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,22 +27,11 @@ process BEDOPS_CONVERT2BED {
         -i $format \\
         < $in_file \\
         > ${prefix}.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bedops/convert2bed: \$(convert2bed --version | grep vers | sed 's/^.*.version:  //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bedops/convert2bed: \$(convert2bed --version | grep vers | sed 's/^.*.version:  //')
-    END_VERSIONS
     """
 }

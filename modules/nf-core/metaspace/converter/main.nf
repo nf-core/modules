@@ -7,7 +7,12 @@ process METASPACE_CONVERTER {
         'community.wave.seqera.io/library/python_pip_metaspace-converter:958b8906de66e072' }"
 
     input:
-    val(ds_id)
+    val ds_id
+    val database_name_
+    val database_version_
+    val fdr_
+    val use_tic_
+    val metadata_as_obs_
 
     output:
     path("AnnData_${ds_id}.h5ad")    , emit: adata_object
@@ -18,11 +23,20 @@ process METASPACE_CONVERTER {
     task.ext.when == null || task.ext.when
 
     script:
-    database_name    = task.ext.database_name ?: "HMDB"
-    database_version = task.ext.database_version ?: "v4"
-    fdr              = task.ext.fdr ?: "0.1"
-    use_tic          = task.ext.use_tic ?: "true"
-    metadata_as_obs  = task.ext.metadata_as_obs ?: "false"
+
+    database_name    = database_name_ ?: 'HMDB'
+    database_version = database_version_ ?: 'v4'
+    fdr              = fdr_ ?: '0.1'
+    use_tic          = use_tic_ ?: 'true'
+    metadata_as_obs  = metadata_as_obs_ ?: 'false'
+
+    """
+    echo ${database_name}
+    echo ${database_version}
+    echo ${fdr}
+    echo ${use_tic}
+    echo ${metadata_as_obs}
+    """
 
     template 'run_metaspace_converter.py'
 

@@ -52,7 +52,6 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(
                     file(workflow.out.bam[0][1]).name,
-                    workflow.out.versions[0]
                 ).match() }
             )
         }
@@ -86,7 +85,6 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(
                     file(workflow.out.bam[0][1]).name,
-                    workflow.out.versions[0]
                 ).match() }
             )
         }
@@ -121,7 +119,6 @@ nextflow_workflow {
                     file(workflow.out.bam[0][1]).name,
                     workflow.out.bam_index,
                     workflow.out.reports,
-                    workflow.out.versions,
                     ).match()
                 }
             )
@@ -157,7 +154,6 @@ nextflow_workflow {
                     file(workflow.out.bam[0][1]).name,
                     workflow.out.bam_index,
                     workflow.out.reports,
-                    workflow.out.versions,
                     ).match()
                 }
             )
@@ -193,7 +189,6 @@ nextflow_workflow {
                     file(workflow.out.bam[0][1]).name,
                     workflow.out.bam_index,
                     workflow.out.reports,
-                    workflow.out.versions,
                     ).match()
                 }
             )
@@ -229,7 +224,6 @@ nextflow_workflow {
                     file(workflow.out.bam[0][1]).name,
                     workflow.out.bam_index,
                     workflow.out.reports,
-                    workflow.out.versions,
                     ).match()
                 }
             )
@@ -264,7 +258,6 @@ nextflow_workflow {
                 { assert snapshot(
                     file(workflow.out.bam[0][1]).name,
                     file(workflow.out.reports[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    file(workflow.out.versions[0]).name
                 ).match() }
             )
         }
@@ -298,7 +291,6 @@ nextflow_workflow {
                 { assert snapshot(
                     file(workflow.out.bam[0][1]).name,
                     file(workflow.out.reports[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    file(workflow.out.versions[0]).name
                 ).match() }
             )
         }

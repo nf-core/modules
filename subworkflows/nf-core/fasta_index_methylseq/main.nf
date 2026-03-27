@@ -26,7 +26,6 @@ workflow FASTA_INDEX_METHYLSEQ {
     ch_bismark_index = channel.empty()
     ch_bwameth_index = channel.empty()
     ch_bwamem_index  = channel.empty()
-    ch_versions      = channel.empty()
 
     // Check if fasta file is gzipped and decompress if needed
     fasta
@@ -68,13 +67,11 @@ workflow FASTA_INDEX_METHYLSEQ {
                     ch_fasta
                 )
                 ch_bismark_index = BISMARK_GENOMEPREPARATION_HISAT.out.index
-                ch_versions      = ch_versions.mix(BISMARK_GENOMEPREPARATION_HISAT.out.versions)
             } else {
                 BISMARK_GENOMEPREPARATION_BOWTIE (
                     ch_fasta
                 )
                 ch_bismark_index = BISMARK_GENOMEPREPARATION_BOWTIE.out.index
-                ch_versions      = ch_versions.mix(BISMARK_GENOMEPREPARATION_BOWTIE.out.versions)
             }
         }
     }
@@ -104,7 +101,6 @@ workflow FASTA_INDEX_METHYLSEQ {
                 use_mem2
             )
             ch_bwameth_index = BWAMETH_INDEX.out.index
-            ch_versions      = ch_versions.mix(BWAMETH_INDEX.out.versions)
         }
     }
 
@@ -146,8 +142,7 @@ workflow FASTA_INDEX_METHYLSEQ {
         } else {
             log.info "Fasta index not provided. Generating fasta index from FASTA file."
             SAMTOOLS_FAIDX (
-                ch_fasta,
-                [[:], []],
+                ch_fasta.combine(channel.of([[]])),
                 false
             )
             ch_fasta_index = SAMTOOLS_FAIDX.out.fai
@@ -161,5 +156,4 @@ workflow FASTA_INDEX_METHYLSEQ {
     bismark_index = ch_bismark_index // channel: [ val(meta), [ bismark index ] ]
     bwameth_index = ch_bwameth_index // channel: [ val(meta), [ bwameth index ] ]
     bwamem_index  = ch_bwamem_index  // channel: [ val(meta), [ bwamem index ] ]
-    versions      = ch_versions      // channel: [ versions.yml ]
 }

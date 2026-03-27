@@ -19,10 +19,11 @@ process SHAPEIT5_PHASERARE {
 
     input:
     tuple val(meta), path(input), path(input_index), path(pedigree), val(input_region), path(scaffold), path(scaffold_index), val(scaffold_region), path(map)
+    val(output_suffix)
 
     output:
-        tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: phased_variant
-        path "versions.yml"                               , emit: versions
+    tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: phased_variant
+    tuple val("${task.process}"), val('shapeit5'), eval('SHAPEIT5_phase_rare | sed "5!d;s/^.*Version *: //; s/ .*$//"'), topic: versions, emit: versions_shapeit5
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,7 +31,7 @@ process SHAPEIT5_PHASERARE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "vcf.gz"
+    def suffix = output_suffix ?: "vcf.gz"
 
     if ("${input}" == "${prefix}.${suffix}") {
         error("Input and output names are the same, set prefix in module configuration to disambiguate!")
@@ -53,24 +54,14 @@ process SHAPEIT5_PHASERARE {
         --scaffold-region ${scaffold_region} \\
         --thread ${task.cpus} \\
         --output ${prefix}.${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        shapeit5: "\$(SHAPEIT5_phase_rare | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1)"
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "vcf.gz"
+    def suffix = output_suffix ?: "vcf.gz"
 
     def create_cmd = suffix.endsWith(".gz") ? "echo '' | gzip >" : "touch"
     """
     ${create_cmd} ${prefix}.${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        shapeit5: "\$(SHAPEIT5_phase_rare | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1)"
-    END_VERSIONS
     """
 }

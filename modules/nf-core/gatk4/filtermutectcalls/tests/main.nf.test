@@ -47,7 +47,7 @@ nextflow_process {
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
                     path(process.out.tbi[0][1]).linesGzip.toString().contains("TBI"),
                     file(process.out.stats[0][1]).readLines()[0]
-                    ).match() }
+                ).match() }
             )
         }
 
@@ -90,10 +90,9 @@ nextflow_process {
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
                     path(process.out.tbi[0][1]).linesGzip.toString().contains("TBI"),
                     file(process.out.stats[0][1]).readLines()[0..5]
-                    ).match() }
+                ).match() }
             )
         }
-
     }
 
     test("human - vcf - use-val") {
@@ -133,10 +132,9 @@ nextflow_process {
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
                     path(process.out.tbi[0][1]).linesGzip.toString().contains("TBI"),
                     file(process.out.stats[0][1]).readLines()[0]
-                    ).match() }
+                ).match() }
             )
         }
-
     }
 
     test("human - vcf - stub") {
@@ -176,7 +174,5 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
 }

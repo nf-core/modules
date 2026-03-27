@@ -4,15 +4,15 @@ process DATAVZRD {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7e/7e1ff6edeffa771f340c0c044fde514b61bc4691ede6b79728263bf20c7990f6/data'
-        : 'community.wave.seqera.io/library/datavzrd:2.61.7--3dfa5861de05f6ac'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fac402dd116a0e60cbda098a2362d7d732fda3f903b1b851179737e981ea1ae6/data'
+        : 'community.wave.seqera.io/library/datavzrd:2.63.3--b2276ffa6612b97f'}"
 
     input:
     tuple val(meta), path(config_file), path(table)
 
     output:
     tuple val(meta), path("${prefix}"), emit: report
-    path "versions.yml",                emit: versions
+    tuple val("${task.process}"), val('datavzrd'),  eval("datavzrd --version | sed -e 's/[^0-9.]//g'"), topic: versions, emit: versions_datavzrd
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,11 +26,6 @@ process DATAVZRD {
         ${args} \\
         ${config_file} \\
         --output ${prefix} \\
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        datavzrd: \$(echo \$( datavzrd --version | sed -e 's/[^0-9.]//g' ))
-    END_VERSIONS
     """
 
     stub:
@@ -54,10 +49,5 @@ process DATAVZRD {
     touch ./${prefix}/network/heatmap.js
     touch ./${prefix}/network/data/data_1.js
     touch ./${prefix}/network/plots/plot_0.js
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        datavzrd: \$(echo \$( datavzrd --version | sed -e 's/[^0-9.]//g' ))
-    END_VERSIONS
     """
 }

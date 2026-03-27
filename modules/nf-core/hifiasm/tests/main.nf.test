@@ -59,7 +59,7 @@ nextflow_process {
                     process.out.hap2_contigs,
                     process.out.fasta,
                     process.out.paf,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -133,7 +133,7 @@ nextflow_process {
                     process.out.primary_contigs,
                     process.out.hap1_contigs,
                     process.out.hap2_contigs,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -191,7 +191,7 @@ nextflow_process {
                     process.out.primary_contigs,
                     process.out.hap1_contigs,
                     process.out.hap2_contigs,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -249,7 +249,7 @@ nextflow_process {
                     process.out.raw_unitigs,
                     process.out.processed_unitigs,
                     process.out.hap1_contigs,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -309,7 +309,7 @@ nextflow_process {
                     process.out.primary_contigs,
                     process.out.alternate_contigs,
                     process.out.hap1_contigs,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }

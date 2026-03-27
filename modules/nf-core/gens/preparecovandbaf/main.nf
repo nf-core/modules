@@ -4,8 +4,8 @@ process PREPARECOVANDBAF {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a9/a9f414681caefff508dcab89f4872ae3cda18d15b9b610b679fa5eb5023b4b7c/data':
-        'community.wave.seqera.io/library/tabix_pip_gens-input-data-tools:5d39cfe6f6bf258b' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/67/67abc0d3d1eaaeaff3eafb36babecf56b5912c2e7b0c5100a9f32eda1c82cb30/data':
+        'community.wave.seqera.io/library/htslib_python_pip_gens-input-data-tools:8fd1a0ecd4a60110' }"
 
     input:
     tuple val(meta), path(read_counts), path(gvcf), path(gvcf_tbi)

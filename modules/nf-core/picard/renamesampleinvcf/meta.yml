@@ -44,10 +44,9 @@ output:
       - picard:
           type: string
           description: The tool name
-      - "picard RenameSampleInVcf --version 2>&1 | sed -n 's/^Version:*//p'":
+      - "picard RenameSampleInVcf --version 2>&1 | sed -n 's/.*Version://p'":
           type: string
           description: The command used to generate the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -56,10 +55,9 @@ topics:
       - picard:
           type: string
           description: The tool name
-      - "picard RenameSampleInVcf --version 2>&1 | sed -n 's/^Version:*//p'":
+      - "picard RenameSampleInVcf --version 2>&1 | sed -n 's/.*Version://p'":
           type: string
           description: The command used to generate the version of the tool
-
 authors:
   - "@Lucpen"
 maintainers:

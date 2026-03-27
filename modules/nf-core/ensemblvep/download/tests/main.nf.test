@@ -21,6 +21,7 @@ nextflow_process {
                     params.vep_species,
                     params.vep_cache_version
                 ])
+                input[1] = true
                 """
             }
         }
@@ -28,11 +29,29 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out.cache,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
+        }
+    }
+
+    test("ENSEMBLVEP download cache - preflight fails for invalid species") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id:"invalid_species"],
+                    "GRCh38",
+                    "invalid_species",
+                    params.vep_cache_version
+                ])
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assert process.failed
         }
     }
 
@@ -49,6 +68,7 @@ nextflow_process {
                     params.vep_species,
                     params.vep_cache_version
                 ])
+                input[1] = true
                 """
             }
         }
@@ -56,10 +76,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out.cache,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
