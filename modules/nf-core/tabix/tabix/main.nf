@@ -8,28 +8,31 @@ process TABIX_TABIX {
         'community.wave.seqera.io/library/htslib:1.21--ff8e28a189fbecaa' }"
 
     input:
-    tuple val(meta), path(tab)
+    tuple val(meta), path(vcf), path(tbi)
+    tuple val(meta2), path(regions)
 
     output:
-    tuple val(meta), path("*.{tbi,csi}"), emit: index
+    tuple val(meta), path("${prefix}.vcf"), emit: vcf
     tuple val("${task.process}"), val('tabix'), eval("tabix -h 2>&1 | grep -oP 'Version:\\s*\\K[^\\s]+'")   , topic: versions   , emit: versions_tabix
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args        = task.ext.args   ?: ''
+    prefix          = task.ext.prefix ?: "${meta.id}"
+    def regions_arg = regions ? "-R ${regions}" : ""
     """
     tabix \\
-        --threads $task.cpus \\
-        $args \\
-        $tab
+        ${regions_arg} \\
+        ${args} \\
+        ${vcf} \\
+        > ${prefix}.vcf
 
     """
     stub:
-    def args = task.ext.args ?: ''
-    def index = args.contains("-C ") || args.contains("--csi") ? "csi" : "tbi"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${tab}.${index}
+    touch ${prefix}.vcf
     """
 }
