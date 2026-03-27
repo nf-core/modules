@@ -24,8 +24,15 @@ input:
           e.g. [ id:'test', single_end:false ]
     - tab:
         type: file
-        description: TAB-delimited genome position file compressed with bgzip, with its index staged alongside when using regions
+        description: TAB-delimited genome position file compressed with bgzip
         pattern: "*.{bed.gz,gff.gz,sam.gz,vcf.gz}"
+        ontologies: []
+    - tai:
+        type: file
+        description: |
+          Tabix index for the input file. Required when extracting regions.
+          Pass [] when creating an index instead.
+        pattern: "*.{tbi,csi}"
         ontologies: []
   - - meta2:
         type: map
