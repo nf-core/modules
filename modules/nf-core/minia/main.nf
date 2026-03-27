@@ -15,7 +15,7 @@ process MINIA {
     tuple val(meta), path('*.unitigs.fa.gz'), emit: unitigs
     tuple val(meta), path('*.h5')           , emit: h5
     tuple val(meta), path("*-minia.log")    , emit: log
-    tuple val("${task.process}"), val("minia"), eval("minia -v | grep Minia | sed 's/Minia version //g'"), topic: versions, emit: versions_minia
+    tuple val("${task.process}"), val("minia"), eval("minia -v | sed -n 's/Minia version //p'"), topic: versions, emit: versions_minia
 
     when:
     task.ext.when == null || task.ext.when
