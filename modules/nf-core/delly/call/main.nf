@@ -4,8 +4,8 @@ process DELLY_CALL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/delly:1.3.3--h4d20210_0' :
-        'biocontainers/delly:1.3.3--h4d20210_0' }"
+        'https://depot.galaxyproject.org/singularity/delly:1.7.3--hd6466ae_0' :
+        'biocontainers/delly:1.7.3--hd6466ae_0' }"
 
     input:
     tuple val(meta), path(input), path(input_index), path(vcf), path(vcf_index), path(exclude_bed)
