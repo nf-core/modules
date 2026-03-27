@@ -63,6 +63,80 @@ nullify <- function(x) {
   if (is.character(x) && (tolower(x) == "null" || x == "")) NULL else x
 }
 
+#' Check for Non-Empty, Non-Whitespace String
+#'
+#' This function checks if the input is non-NULL and contains more than just whitespace.
+#' It returns TRUE if the input is a non-empty, non-whitespace string, and FALSE otherwise.
+#'
+#' @param input A variable to check.
+#' @return A logical value: TRUE if the input is a valid, non-empty, non-whitespace string; FALSE otherwise.
+#' @examples
+#' is_valid_string("Hello World") # Returns TRUE
+#' is_valid_string("   ")         # Returns FALSE
+#' is_valid_string(NULL)          # Returns FALSE
+is_valid_string <- function(input) {
+  !is.null(input) && nzchar(trimws(input))
+}
+
+#' Rewrite a contrast expression using sanitised design column names
+#'
+#' `makeContrasts()` requires syntactically valid coefficient names. The DREAM
+#' design matrix is sanitised with `make.names()`, so a user may provide
+#' contrasts using the original names (for example containing spaces). This
+#' helper rewrites exact design-column matches to their sanitised equivalents.
+#'
+#' @param contrast_string User-provided contrast expression.
+#' @param design_names Original design matrix column names.
+#' original_design_names
+#' @return Contrast expression compatible with `makeContrasts()`.
+normalise_contrast_string <- function(contrast_string, design_names) {
+    if (!is_valid_string(contrast_string)) {
+        return(contrast_string)
+    }
+
+    sanitised_names <- make.names(design_names)
+    replacement_order <- order(nchar(design_names), decreasing = TRUE)
+    normalised <- contrast_string
+
+    for (idx in replacement_order) {
+        normalised <- gsub(
+            design_names[[idx]],
+            sanitised_names[[idx]],
+            normalised,
+            fixed = TRUE
+        )
+    }
+
+    normalised
+}
+
+#' Resolve user-supplied metadata column names against loaded metadata
+#'
+#' Metadata is read with `check.names = TRUE`, so columns containing spaces are
+#' sanitised by R. This helper accepts either the original column name or the
+#' sanitised version and returns the column present in `metadata`.
+#'
+#' @param column_name Column name provided by the user.
+#' @param metadata Loaded metadata data frame.
+#'
+#' @return Resolved column name present in metadata.
+resolve_metadata_column <- function(column_name, metadata) {
+    if (!is_valid_string(column_name)) {
+        return(column_name)
+    }
+
+    if (column_name %in% colnames(metadata)) {
+        return(column_name)
+    }
+
+    sanitised_name <- make.names(column_name)
+    if (sanitised_name %in% colnames(metadata)) {
+        return(sanitised_name)
+    }
+
+    column_name
+}
+
 ################################################
 ################################################
 ## PARSE PARAMETERS FROM NEXTFLOW             ##
@@ -135,7 +209,11 @@ if ( ! is.null(opt\$seed)){
 }
 
 # If there is no option supplied, convert string "null" to NULL
-keys <- c("formula", "contrast_string", "contrast_variable", "reference_level", "target_level")
+keys <- c(
+    "formula", "contrast_string", "contrast_variable", "reference_level",
+    "target_level", "blocking_variables", "exclude_samples_col",
+    "exclude_samples_values", "block"
+)
 opt[keys] <- lapply(opt[keys], nullify)
 
 # Check if required parameters have been provided
@@ -225,10 +303,13 @@ if (length(missing_samples) > 0) {
 ################################################
 ################################################
 
-contrast_variable <- make.names(opt\$contrast_variable)
+contrast_variable <- NULL
 blocking.vars <- c()
+original_design_names <- NULL
 
 if (!is.null(opt\$contrast_variable)) {
+    contrast_variable <- resolve_metadata_column(opt\$contrast_variable, sample.sheet)
+
     if (!contrast_variable %in% colnames(sample.sheet)) {
         stop(
             paste0(
@@ -245,8 +326,13 @@ if (!is.null(opt\$contrast_variable)) {
             'column of the sample sheet'
             )
         )
-    } else if (!is.null(opt\$blocking_variables)) {
-        blocking.vars = make.names(unlist(strsplit(opt\$blocking_variables, split = ';')))
+    } else if (is_valid_string(opt\$blocking_variables)) {
+        blocking.vars = vapply(
+          unlist(strsplit(opt\$blocking_variables, split = ';')),
+          resolve_metadata_column,
+          character(1),
+          metadata = sample.sheet
+        )
         if (!all(blocking.vars %in% colnames(sample.sheet))) {
             missing_block <- paste(blocking.vars[! blocking.vars %in% colnames(sample.sheet)], collapse = ',')
             stop(
@@ -259,7 +345,7 @@ if (!is.null(opt\$contrast_variable)) {
     }
 
     # Handle conflicts between blocking variables and block
-    if (!is.null(opt\$block) && !is.null(opt\$blocking_variables)) {
+    if (is_valid_string(opt\$block) && is_valid_string(opt\$blocking_variables)) {
         if (opt\$block %in% blocking.vars) {
             warning(paste("Variable", opt\$block, "is specified both as a fixed effect and a random effect. It will be treated as a random effect only."))
             blocking.vars <- setdiff(blocking.vars, opt\$block)
@@ -304,11 +390,12 @@ if ((! is.null(opt\$exclude_samples_col)) && (! is.null(opt\$exclude_samples_val
 ################################################
 ################################################
 
-if (!is.null(opt\$formula)) {
+if (is_valid_string(opt\$formula)) {
     model <- opt\$formula
     model_formula <- as.formula(model)
     cat("Using user-specified formula:\n   ", deparse(model_formula), "\n")
     design <- model.matrix(model_formula, data = sample.sheet)
+    original_design_names <- colnames(design)
     colnames(design) <- make.names(colnames(design))
     cat("Column names after make.names():\n   ", paste(colnames(design), collapse = ", "), "\n")
 
@@ -338,6 +425,7 @@ if (!is.null(opt\$formula)) {
         as.formula(model),
         data=sample.sheet
     )
+    original_design_names <- colnames(design)
 
     # Adjust column names for the contrast variable
     colnames(design) <- sub(
@@ -420,9 +508,10 @@ fit <- do.call(lmFit, lmfit_args)
 # Contrasts bit
 
 # Create the contrast string for the specified comparison
-if (!is.null(opt\$contrast_string)) {
+if (is_valid_string(opt\$contrast_string)) {
     cat("Using contrast string:", opt\$contrast_string, "\n")
-    contrast_string <- as.character(opt\$contrast_string)
+    contrast_string <- normalise_contrast_string(as.character(opt\$contrast_string), original_design_names)
+    cat("Normalised contrast string:", contrast_string, "\n")
     contrast.matrix <- makeContrasts(contrasts=contrast_string, levels=colnames(design))
 
 } else {
