@@ -21,7 +21,8 @@ process CHROMAP_CHROMAP {
     tuple val(meta), path("*.bam")        , optional:true, emit: bam
     tuple val(meta), path("*.tagAlign.gz"), optional:true, emit: tagAlign
     tuple val(meta), path("*.pairs.gz")   , optional:true, emit: pairs
-    path "versions.yml"                                  , emit: versions
+    tuple val("${task.process}"), val('chromap'), eval("chromap --version 2>&1"), topic: versions, emit: versions_chromap
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -65,12 +66,6 @@ process CHROMAP_CHROMAP {
             -o ${prefix}.${file_extension}
 
         $compression_cmds
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            chromap: \$(echo \$(chromap --version 2>&1))
-            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-        END_VERSIONS
         """
     } else {
         """
@@ -84,12 +79,6 @@ process CHROMAP_CHROMAP {
             -o ${prefix}.${file_extension}
 
         $compression_cmds
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            chromap: \$(echo \$(chromap --version 2>&1))
-            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-        END_VERSIONS
         """
     }
 
@@ -100,11 +89,5 @@ process CHROMAP_CHROMAP {
     touch ${prefix}.bam
     echo "" | gzip > ${prefix}.tagAlign.gz
     echo "" | gzip > ${prefix}.pairs.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        chromap: \$(echo \$(chromap --version 2>&1))
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }
