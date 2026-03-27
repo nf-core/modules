@@ -1,21 +1,22 @@
 process TIARA_TIARA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/tiara:1.0.3' :
-        'biocontainers/tiara:1.0.3' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e5/e5909e63835fda5723b1408001568a306e234dd0035b3518af8a8930625e449d/data'
+        : 'community.wave.seqera.io/library/tiara:1.0.3--e367cb0eaef39fa3'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${prefix}.{txt,txt.gz}")  , emit: classifications
-    tuple val(meta), path("log_*.{txt,txt.gz}")      , emit: log
-    tuple val(meta), path("*.{fasta,fasta.gz}")          , emit: fasta, optional: true
-    path "versions.yml"                                  , emit: versions
+    tuple val(meta), path("${prefix}.{txt,txt.gz}"), emit: classifications
+    tuple val(meta), path("log_*.{txt,txt.gz}")    , emit: log
+    tuple val(meta), path("*.{fasta,fasta.gz}")    , emit: fasta, optional: true
+    tuple val("${task.process}"), val('tiara'), val("1.0.3"), topic: versions, emit: versions_tiara
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +24,6 @@ process TIARA_TIARA {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     tiara -i ${fasta} \
         -o ${prefix}.txt \
@@ -40,24 +40,13 @@ process TIARA_TIARA {
             find . -name "*_${fasta}*" -exec sh -c 'file=`basename {}`; mv "\$file" "\${file%%_*}_${prefix}.fasta"' \\;
         fi
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tiara: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    touch ${prefix}.out.txt
-    touch log_${prefix}.out.txt
+    touch ${prefix}.txt
+    touch log_${prefix}.txt
     touch bacteria_${prefix}.fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tiara: ${VERSION}
-    END_VERSIONS
     """
 }

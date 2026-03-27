@@ -1,0 +1,208 @@
+nextflow_process {
+
+    name "Test Process CUSTOM_GENETICMAPCONVERT"
+    script "../main.nf"
+    process "CUSTOM_GENETICMAPCONVERT"
+
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "custom"
+    tag "custom/geneticmapconvert"
+    tag "tabix/bgzip"
+
+    test("Convert map with pos\\tchr\\tcm - with header - meta.chr (glimpse format)") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test", chr:"chr21"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.glimpse.map', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions_geneticmapconvert[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("Convert map with pos\\tchr\\tcM - with header - meta.chr (glimpse compressed format)") {
+        setup {
+            run("TABIX_BGZIP"){
+                script "../../../tabix/bgzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: "test", chr:"chr21"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.glimpse.map', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = TABIX_BGZIP.out.output
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions_geneticmapconvert[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("Convert map with chr\\tpos\\tcm - with header - meta.chr (minimac format)") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test", chr:"chr21"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.minimac.map', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions_geneticmapconvert[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("Convert map with pos rate cm - with header - meta.chr (stitch format)") {
+        when {
+            params {
+                geneticmapconvert_args = "--tolerance 10e-4"
+            }
+            process {
+                """
+                input[0] = [
+                    [id: "test", chr:"chr21"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.stitch.map', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions_geneticmapconvert[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("Convert map with pos rate cm - with header - meta.chr (stitch format) -- error rate") {
+        when {
+            params {
+                geneticmapconvert_args = "--tolerance 10e-6"
+            }
+            process {
+                """
+                input[0] = [
+                    [id: "test", chr:"chr21"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.stitch.map', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("cm[n] must equal cm[n-1] + ( (pos[n] - pos[n-1]) * rate[n-1])") }
+            )
+        }
+    }
+
+    test("Convert map with chr id cm pos - no header - meta.chr (plink format)") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test", chr:"chr21"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.plink.map', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions_geneticmapconvert[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("Test error chr not corresponding") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test", chr:"chr22"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.plink.map', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("Error: mismatch between chr given and the chr present in file") }
+            )
+        }
+    }
+
+    test("Test stub") {
+        tag "stub"
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test", chr:"chr21"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.plink.map', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert snapshot(
+                sanitizeOutput(process.out),
+                path(process.out.versions_geneticmapconvert[0]).yaml
+            ).match()
+        }
+    }
+
+}
