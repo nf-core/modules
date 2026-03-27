@@ -18,7 +18,7 @@ process LIMMA_DIFFERENTIAL {
     tuple val(meta), path("*.limma.model.txt")            , emit: model
     tuple val(meta), path("*.R_sessionInfo.log")          , emit: session_info
     tuple val(meta), path("*.normalised_counts.tsv")      , emit: normalised_counts, optional: true
-    path "versions.yml"                                   , emit: versions
+    path "versions.yml"                                   , emit: versions_limma, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

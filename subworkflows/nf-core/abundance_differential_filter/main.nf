@@ -94,14 +94,10 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         norm_inputs.samples_and_matrix.filter{index -> index[0].differential_method == 'limma'}
     )
 
-    ch_versions = ch_versions.mix(LIMMA_NORM.out.versions.first())
-
     LIMMA_DIFFERENTIAL(
         inputs.contrasts_for_diff_with_formula.filter{index -> index[0].differential_method == 'limma' },
         inputs.samples_and_matrix.filter{index -> index[0].differential_method == 'limma' }
     )
-
-    ch_versions = ch_versions.mix(LIMMA_DIFFERENTIAL.out.versions.first())
 
     // ----------------------------------------------------
     // Run DESeq2
