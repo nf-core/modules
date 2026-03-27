@@ -12,8 +12,8 @@ process TABIX_TABIX {
     tuple val(meta2), path(regions)
 
     output:
-    tuple val(meta), path("*.{tbi,csi}"),   emit: index, optional: true
-    tuple val(meta), path("${prefix}.vcf"), emit: vcf,   optional: true
+    tuple val(meta), path("*.{tbi,csi}"),      emit: index, optional: true
+    tuple val(meta), path("${prefix}.vcf.gz"), emit: vcf,   optional: true
     tuple val("${task.process}"), val('tabix'), eval("tabix -h 2>&1 | grep -oP 'Version:\\s*\\K[^\\s]+'")   , topic: versions   , emit: versions_tabix
 
     when:
@@ -23,7 +23,7 @@ process TABIX_TABIX {
     def args = task.ext.args ?: ''
     prefix          = task.ext.prefix ?: "${meta.id}"
     def regions_arg = regions ? "-R ${regions}" : ""
-    def output_arg  = regions ? "> ${prefix}.vcf" : ""
+    def output_arg  = regions ? "| bgzip --threads ${task.cpus} > ${prefix}.vcf.gz" : ""
 
     """
     tabix \\
@@ -39,7 +39,7 @@ process TABIX_TABIX {
     prefix = task.ext.prefix ?: "${meta.id}"
     def ext = args.contains("-C ") || args.contains("--csi") ? "csi" : "tbi"
     def index = regions ? "" : "touch ${tab}.${ext}"
-    def vcf   = regions ? "touch ${prefix}.vcf" : ""
+    def vcf   = regions ? "touch ${prefix}.vcf.gz" : ""
     """
     ${index}
     ${vcf}

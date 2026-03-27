@@ -64,10 +64,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}.vcf":
+      - "${prefix}.vcf.gz":
           type: file
-          description: Plain VCF of extracted regions. Emitted when a regions file is provided.
-          pattern: "*.vcf"
+          description: bgzipped VCF of extracted regions. Emitted when a regions file is provided.
+          pattern: "*.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3016 # VCF
   versions_tabix:
