@@ -1,16 +1,14 @@
 name: Monthly Full Module Test
 on:
   schedule:
-    # Every Sunday at 2 AM UTC - will test 1/4 of modules each week
-    - cron: '0 2 * * 0'
+    # Every Sunday at 2 AM UTC - cycles through all batches of 100 modules
+    - cron: "0 2 * * 0"
   workflow_dispatch:
     inputs:
       batch:
-        description: 'Batch to test (1=a-f, 2=g-m, 3=n-s, 4=t-z)'
+        description: "Batch number to test (1-based; each batch is 100 modules)"
         required: true
-        type: choice
-        options: ['1', '2', '3', '4']
-        default: '1'
+        default: "1"
 
 # Cancel if a newer run is started
 concurrency:
@@ -35,8 +33,8 @@ jobs:
       - runner=4cpu-linux-x64
       - image=ubuntu22-full-x64
     outputs:
-      batch_number: ${{ steps.set-batch.outputs.batch_number }}
-      batch_label: ${{ steps.set-batch.outputs.batch_label }}
+      batch_number: ${{ steps.list.outputs.batch_number }}
+      batch_label: ${{ steps.list.outputs.batch_label }}
       paths: ${{ steps.list.outputs.paths }}
       modules: ${{ steps.list.outputs.modules }}
       shard: ${{ steps.set-shards.outputs.shard }}
@@ -44,57 +42,47 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
-      - name: Determine batch to test
-        id: set-batch
+      - name: List 100 modules for this batch
+        id: list
         run: |
+          BATCH_SIZE=100
+
+          # All module directories that have a main.nf, sorted deterministically
+          ALL_PATHS=$(find modules/nf-core -name "main.nf" -type f | \
+            sed 's|/main.nf||' | sort)
+
+          TOTAL=$(echo "$ALL_PATHS" | wc -l | tr -d ' ')
+          TOTAL_BATCHES=$(( (TOTAL + BATCH_SIZE - 1) / BATCH_SIZE ))
+
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             BATCH=${{ github.event.inputs.batch }}
           else
-            # Calculate batch based on week of month (1-4)
-            WEEK_OF_MONTH=$(( ($(date +%-d) - 1) / 7 + 1 ))
-            # Ensure we stay within 1-4 range
-            BATCH=$(( (WEEK_OF_MONTH - 1) % 4 + 1 ))
+            # Cycle through all batches using week-of-year
+            WEEK=$(date +%V | sed 's/^0//')
+            BATCH=$(( (WEEK - 1) % TOTAL_BATCHES + 1 ))
           fi
 
-          # Set batch label
-          case $BATCH in
-            1) LABEL="a-f" ;;
-            2) LABEL="g-m" ;;
-            3) LABEL="n-s" ;;
-            4) LABEL="t-z" ;;
-          esac
+          # Clamp to valid range
+          if [ "$BATCH" -lt 1 ]; then BATCH=1; fi
+          if [ "$BATCH" -gt "$TOTAL_BATCHES" ]; then BATCH=$TOTAL_BATCHES; fi
 
-          echo "batch_number=$BATCH" >> $GITHUB_OUTPUT
-          echo "batch_label=$LABEL" >> $GITHUB_OUTPUT
-          echo "Testing batch $BATCH: modules starting with $LABEL"
+          START=$(( (BATCH - 1) * BATCH_SIZE + 1 ))
+          END=$(( BATCH * BATCH_SIZE ))
 
-      - name: List all modules in batch ${{ steps.set-batch.outputs.batch_label }}
-        id: list
-        run: |
-          BATCH=${{ steps.set-batch.outputs.batch_number }}
-
-          # Define regex patterns for each batch
-          case $BATCH in
-            1) PATTERN='^[a-fA-F]' ;;
-            2) PATTERN='^[g-mG-M]' ;;
-            3) PATTERN='^[n-sN-S]' ;;
-            4) PATTERN='^[t-zT-Z]' ;;
-          esac
-
-          # Find all module test files matching the batch pattern
-          PATHS=$(find modules/nf-core -name "main.nf.test" -type f | \
-            grep -E "modules/nf-core/[^/]*${PATTERN}" | \
-            sed 's|/tests/main.nf.test||' | \
+          PATHS=$(echo "$ALL_PATHS" | sed -n "${START},${END}p" | \
             jq -R -s -c 'split("\n") | map(select(length > 0))')
 
+          BATCH_LABEL="modules ${START}-$(echo "$PATHS" | jq 'length + '${START}' - 1') of ${TOTAL}"
+
+          echo "batch_number=$BATCH" >> $GITHUB_OUTPUT
+          echo "batch_label=$BATCH_LABEL" >> $GITHUB_OUTPUT
           echo "paths=$PATHS" >> $GITHUB_OUTPUT
 
-          # Extract module names
           MODULES=$(echo "$PATHS" | jq -c 'map(gsub("modules/nf-core/"; ""))')
           echo "modules=$MODULES" >> $GITHUB_OUTPUT
 
-          echo "Found $(echo "$PATHS" | jq 'length') modules in batch $BATCH"
-          echo "Sample modules: $(echo "$MODULES" | jq -r '.[0:5] | join(", ")')"
+          echo "Batch $BATCH of $TOTAL_BATCHES: $(echo "$PATHS" | jq 'length') modules"
+          echo "Sample: $(echo "$MODULES" | jq -r '.[0:5] | join(", ")')"
 
       - name: Get number of shards
         id: set-shards
@@ -103,12 +91,12 @@ jobs:
         env:
           NFT_VER: ${{ env.NFT_VER }}
         with:
-          max_shards: 32
+          max_shards: 100
           paths: "${{ join(fromJson(steps.list.outputs.paths), ' ') }}"
 
       - name: Debug output
         run: |
-          echo "Batch: ${{ steps.set-batch.outputs.batch_number }} (${{ steps.set-batch.outputs.batch_label }})"
+          echo "Batch: ${{ steps.list.outputs.batch_number }} (${{ steps.list.outputs.batch_label }})"
           echo "Paths: ${{ steps.list.outputs.paths }}"
           echo "Modules: ${{ steps.list.outputs.modules }}"
           echo "Shards: ${{ steps.set-shards.outputs.total_shards }}"
