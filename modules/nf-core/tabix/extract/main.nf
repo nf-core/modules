@@ -10,10 +10,9 @@ process TABIX_EXTRACT {
     input:
     tuple val(meta), path(vcf), path(tbi)
     tuple val(meta2), path(regions)
-    val create_index
 
     output:
-    tuple val(meta), path("${prefix}.vcf.gz"),     emit: vcf
+    tuple val(meta), path("${prefix}.vcf.gz"),     emit: vcf, optional: true
     tuple val(meta), path("${prefix}.vcf.gz.tbi"), emit: tbi, optional: true
     tuple val("${task.process}"), val('tabix'), eval("tabix -h 2>&1 | grep -oP 'Version:\\s*\\K[^\\s]+'"), topic: versions, emit: versions_tabix
 
@@ -25,7 +24,6 @@ process TABIX_EXTRACT {
     def args2       = task.ext.args2 ?: ''
     prefix          = task.ext.prefix ?: "${meta.id}"
     def regions_arg = regions ? "-R ${regions}" : ""
-    def index_cmd   = create_index ? "tabix ${prefix}.vcf.gz" : ""
     """
     tabix \\
         ${regions_arg} \\
@@ -33,13 +31,13 @@ process TABIX_EXTRACT {
         ${vcf} \\
         | bgzip ${args2} > ${prefix}.vcf.gz
 
-    ${index_cmd}
+    tabix ${prefix}.vcf.gz
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | bgzip > ${prefix}.vcf.gz
-    ${ create_index ? "touch ${prefix}.vcf.gz.tbi" : "" }
+    touch ${prefix}.vcf.gz.tbi
     """
 }

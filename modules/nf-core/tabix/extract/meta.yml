@@ -47,12 +47,6 @@ input:
           Pass an empty list [] to extract all records.
         pattern: "*.{bed,txt,tsv}"
         ontologies: []
-  - create_index:
-      type: boolean
-      description: |
-        Whether to create a tabix index (.tbi) for the output VCF.
-        Set to true to emit the tbi output channel.
-
 output:
   vcf:
     - - meta:
