@@ -34,7 +34,7 @@ nextflow_process {
                     file(process.out.unitigs[0][1]).name,
                     file(process.out.h5[0][1]).name,
                     file(process.out.log[0][1]).name,
-                    process.out.versions_minia,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
