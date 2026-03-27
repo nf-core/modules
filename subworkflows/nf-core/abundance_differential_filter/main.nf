@@ -31,7 +31,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     main:
 
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     // Set up how the channels crossed below will be used to generate channels for processing
     def criteria = multiMapCriteria { meta, abundance, analysis_method, fc_threshold, stat_threshold, samplesheet, transcript_length, control_features, meta_contrast, variable, reference, target, formula, comparison ->
@@ -90,15 +90,15 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // LIMMA_NORM directly. It internally runs normalization + DE analysis.
 
     LIMMA_NORM(
-        norm_inputs.contrasts_for_norm_with_formula.filter{it[0].differential_method == 'limma'},
-        norm_inputs.samples_and_matrix.filter{it[0].differential_method == 'limma'}
+        norm_inputs.contrasts_for_norm_with_formula.filter{index -> index[0].differential_method == 'limma'},
+        norm_inputs.samples_and_matrix.filter{index -> index[0].differential_method == 'limma'}
     )
 
     ch_versions = ch_versions.mix(LIMMA_NORM.out.versions.first())
 
     LIMMA_DIFFERENTIAL(
-        inputs.contrasts_for_diff_with_formula.filter{ it[0].differential_method == 'limma' },
-        inputs.samples_and_matrix.filter{ it[0].differential_method == 'limma' }
+        inputs.contrasts_for_diff_with_formula.filter{index -> index[0].differential_method == 'limma' },
+        inputs.samples_and_matrix.filter{index -> index[0].differential_method == 'limma' }
     )
 
     ch_versions = ch_versions.mix(LIMMA_DIFFERENTIAL.out.versions.first())
@@ -115,19 +115,19 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // DESEQ2_NORM directly. It internally runs normalization + DE analysis.
 
     DESEQ2_NORM(
-        norm_inputs.contrasts_for_norm_with_formula.filter{it[0].differential_method == 'deseq2'},
-        norm_inputs.samples_and_matrix.filter{it[0].differential_method == 'deseq2'},
-        norm_inputs.control_features.filter{it[0].differential_method == 'deseq2'},
-        norm_inputs.transcript_length.filter{it[0].differential_method == 'deseq2'}
+        norm_inputs.contrasts_for_norm_with_formula.filter{index -> index[0].differential_method == 'deseq2'},
+        norm_inputs.samples_and_matrix.filter{index -> index[0].differential_method == 'deseq2'},
+        norm_inputs.control_features.filter{index -> index[0].differential_method == 'deseq2'},
+        norm_inputs.transcript_length.filter{index -> index[0].differential_method == 'deseq2'}
     )
 
     ch_versions = ch_versions.mix(DESEQ2_NORM.out.versions.first())
 
     DESEQ2_DIFFERENTIAL(
-        inputs.contrasts_for_diff_with_formula.filter{it[0].differential_method == 'deseq2'},
-        inputs.samples_and_matrix.filter{it[0].differential_method == 'deseq2'},
-        inputs.control_features.filter{it[0].differential_method == 'deseq2'},
-        inputs.transcript_length.filter{it[0].differential_method == 'deseq2'}
+        inputs.contrasts_for_diff_with_formula.filter{index -> index[0].differential_method == 'deseq2'},
+        inputs.samples_and_matrix.filter{index -> index[0].differential_method == 'deseq2'},
+        inputs.control_features.filter{index -> index[0].differential_method == 'deseq2'},
+        inputs.transcript_length.filter{index -> index[0].differential_method == 'deseq2'}
     )
 
     ch_versions = ch_versions.mix(DESEQ2_DIFFERENTIAL.out.versions.first())
@@ -140,8 +140,8 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // not produce a normalized matrix.
 
     PROPR_PROPD(
-        inputs.contrasts_for_diff.filter{it[0].differential_method == 'propd'},
-        inputs.samples_and_matrix.filter { it[0].differential_method == 'propd' }
+        inputs.contrasts_for_diff.filter{index -> index[0].differential_method == 'propd'},
+        inputs.samples_and_matrix.filter {index -> index[0].differential_method == 'propd' }
     )
 
     ch_versions = ch_versions.mix(PROPR_PROPD.out.versions.first())
@@ -163,13 +163,13 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         }
 
     DREAM_NORM(
-        norm_inputs.contrasts_for_norm_with_formula.filter{it[0].differential_method == 'dream'},
-        norm_inputs.samples_and_matrix.filter{it[0].differential_method == 'dream'}
+        norm_inputs.contrasts_for_norm_with_formula.filter{index -> index[0].differential_method == 'dream'},
+        norm_inputs.samples_and_matrix.filter{index -> index[0].differential_method == 'dream'}
     )
 
     VARIANCEPARTITION_DREAM(
         dream_inputs,
-        inputs.samples_and_matrix.filter{ it[0].differential_method == 'dream' }
+        inputs.samples_and_matrix.filter{index -> index[0].differential_method == 'dream' }
     )
 
     ch_versions = ch_versions.mix( VARIANCEPARTITION_DREAM.out.versions.first() )
@@ -194,6 +194,18 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     ch_variance_stabilised_matrix = DESEQ2_NORM.out.rlog_counts
         .mix(DESEQ2_NORM.out.vst_counts)
         .groupTuple()
+
+    ch_dispersion_plot = DESEQ2_DIFFERENTIAL.out.dispersion_plot_png
+
+    ch_md_plot = LIMMA_DIFFERENTIAL.out.md_plot
+
+    ch_rdata = DESEQ2_DIFFERENTIAL.out.rdata
+        .mix(LIMMA_DIFFERENTIAL.out.rdata)
+
+    ch_size_factors = DESEQ2_DIFFERENTIAL.out.size_factors
+
+    ch_session_info = DESEQ2_DIFFERENTIAL.out.session_info
+        .mix(LIMMA_DIFFERENTIAL.out.session_info)
 
     // ----------------------------------------------------
     // Filter DE results
@@ -242,6 +254,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     ch_versions = ch_versions.mix(CUSTOM_FILTERDIFFERENTIALTABLE.out.versions.first())
 
     emit:
+
     // main results
     results_genewise           = ch_results
     results_genewise_filtered  = CUSTOM_FILTERDIFFERENTIALTABLE.out.filtered
@@ -249,9 +262,24 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // pairwise results
     adjacency                  = PROPR_PROPD.out.adjacency
 
-    // other
+    // other matrices
     normalised_matrix          = ch_normalised_matrix
     variance_stabilised_matrix = ch_variance_stabilised_matrix
+
+    // differential model
     model                      = ch_model
+
+    // size factors
+    size_factors               = ch_size_factors
+
+    // plots
+    dispersion_plot            = ch_dispersion_plot
+    md_plot                    = ch_md_plot
+
+    // rdata and session info
+    rdata                      = ch_rdata
+    session_info               = ch_session_info
+
+    // versions
     versions                   = ch_versions
 }

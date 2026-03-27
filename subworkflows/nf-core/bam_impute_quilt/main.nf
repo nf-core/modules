@@ -5,8 +5,7 @@ include { BCFTOOLS_INDEX  } from '../../../modules/nf-core/bcftools/index'
 workflow BAM_IMPUTE_QUILT {
     take:
     ch_input // channel (mandatory):   [ [id], [bam], [bai], bampaths, bamnames ]
-    ch_hap_legend // channel (mandatory):   [ [panel, chr], hap, legend ]
-    ch_posfile // channel (mandatory):   [ [panel, chr], posfile ]
+    ch_hap_legend_posfile // channel (mandatory):   [ [panel, chr], hap, legend, posfile ]
     ch_chunks // channel (optional) :   [ [panel, chr], chr, start, end ]
     ch_map // channel (optional) :   [ [panel, chr], map ]
     ch_fasta // channel (optional) :   [ [genome], fa, fai ]
@@ -15,11 +14,8 @@ workflow BAM_IMPUTE_QUILT {
 
     main:
 
-    ch_versions = channel.empty()
-
     // Make final channel with parameters
-    ch_parameters = ch_hap_legend
-        .combine(ch_posfile, by: 0)
+    ch_parameters = ch_hap_legend_posfile
         .combine(ch_map, by: 0)
         .combine(ch_chunks, by: 0)
 
@@ -55,7 +51,6 @@ workflow BAM_IMPUTE_QUILT {
         }
 
     QUILT_QUILT(ch_bam_params, ch_fasta)
-    ch_versions = ch_versions.mix(QUILT_QUILT.out.versions.first())
 
     // Ligate all phased files in one and index it
     ligate_input = QUILT_QUILT.out.vcf
@@ -67,7 +62,6 @@ workflow BAM_IMPUTE_QUILT {
         .groupTuple()
 
     GLIMPSE2_LIGATE(ligate_input)
-    ch_versions = ch_versions.mix(GLIMPSE2_LIGATE.out.versions.first())
 
     BCFTOOLS_INDEX(GLIMPSE2_LIGATE.out.merged_variants)
 
@@ -80,5 +74,4 @@ workflow BAM_IMPUTE_QUILT {
 
     emit:
     vcf_index = ch_vcf_index // channel:   [ [id, chr], vcf, tbi ]
-    versions  = ch_versions // channel:   [ versions.yml ]
 }

@@ -10,7 +10,7 @@ process CELLRANGERATAC_COUNT {
 
     output:
     tuple val(meta), path("${meta.id}/outs/*"), emit: outs
-    path "versions.yml"                       , emit: versions
+    tuple val("${task.process}"), val('cellrangeratac'), eval("cellranger-atac --version | sed 's/.*cellranger-atac-//'"), emit: versions_cellrangeratac, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,11 +33,6 @@ process CELLRANGERATAC_COUNT {
         --localcores=$task.cpus \\
         --localmem=${task.memory.toGiga()} \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellrangeratac: \$(echo \$( cellranger-atac --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-    END_VERSIONS
     """
 
     stub:
@@ -55,10 +50,5 @@ process CELLRANGERATAC_COUNT {
 
     mkdir -p "${meta.id}/outs/raw_peak_bc_matrix/"
     touch ${meta.id}/outs/raw_peak_bc_matrix/{barcodes.tsv,peaks.bed,matrix.mtx}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellrangeratac: \$(echo \$( cellranger-atac --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-    END_VERSIONS
     """
 }

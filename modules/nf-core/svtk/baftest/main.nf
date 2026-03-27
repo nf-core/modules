@@ -13,7 +13,7 @@ process SVTK_BAFTEST {
 
     output:
     tuple val(meta), path("*.metrics")  , emit: metrics
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('svtk'), val('0.0.20190615'), topic: versions, emit: versions_svtk
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,8 +22,6 @@ process SVTK_BAFTEST {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def VERSION = '0.0.20190615' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
     svtk baf-test \\
         ${bed} \\
@@ -31,10 +29,11 @@ process SVTK_BAFTEST {
         --batch ${batch} \\
         ${args} \\
         > ${prefix}.metrics
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        svtk: ${VERSION}
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.metrics
     """
 }

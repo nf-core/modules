@@ -18,6 +18,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_raw_matrix.h5ad', checkIfExists: true),
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/intermediates/SRR28679759_cellbender.h5", checkIfExists: true)
                 ]
+                input[1] = ''
                 """
             }
         }
@@ -40,6 +41,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_raw_matrix.h5ad', checkIfExists: true),
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/intermediates/SRR28679759_cellbender.h5", checkIfExists: true)
                 ]
+                input[1] = ''
                 """
             }
         }

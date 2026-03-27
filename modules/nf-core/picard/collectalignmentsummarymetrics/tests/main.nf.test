@@ -28,9 +28,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.metrics[0][1]).readLines()[5..8],
-                    process.out.versions
-                    ).match()
-                }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match()}
             )
         }
     }
@@ -57,15 +56,14 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.metrics[0][1]).readLines()[5..8],
-                    process.out.versions
-                    ).match()
-                }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match()}
             )
         }
     }
 
-    test("test-picard-collectalignmentsummarymetrics-stub") {
-        options '-stub'
+    test("test-picard-collectalignmentsummarymetrics - stub") {
+        options "-stub"
         when {
             process {
                 """
@@ -81,9 +79,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
-
 }

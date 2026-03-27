@@ -12,7 +12,7 @@ process CONCOCT_EXTRACTFASTABINS {
 
     output:
     tuple val(meta), path("${prefix}/*.fa.gz"), emit: fasta
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('concoct'), eval("concoct --version 2>&1 | sed -n 's/concoct //p'"), topic: versions, emit: versions_concoct
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,23 +34,12 @@ process CONCOCT_EXTRACTFASTABINS {
         mv \${i} \${i/\\///${prefix}_}
         gzip \${i/\\///${prefix}_}
     done
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        concoct: \$(echo \$(concoct --version 2> /dev/null) | sed 's/concoct //g' )
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}
     echo "" | gzip > ${prefix}/${prefix}.fa.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        concoct: \$(echo \$(concoct --version 2> /dev/null) | sed 's/concoct //g' )
-    END_VERSIONS
     """
 }

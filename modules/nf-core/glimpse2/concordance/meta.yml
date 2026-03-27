@@ -1,6 +1,6 @@
 name: "glimpse2_concordance"
-description: Program to compute the genotyping error rate at the sample or marker
-  level.
+description: Program to compute the genotyping error rate at the sample or
+  marker level.
 keywords:
   - concordance
   - low-coverage
@@ -14,7 +14,8 @@ tools:
       documentation: "https://odelaneau.github.io/GLIMPSE/commands.html"
       tool_dev_url: "https://github.com/odelaneau/GLIMPSE"
       doi: "10.1038/s41588-020-00756-0"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:glimpse2
 input:
   - - meta:
@@ -33,8 +34,8 @@ input:
         ontologies: []
     - truth:
         type: file
-        description: Validation dataset called at the same positions as the imputed
-          file.
+        description: Validation dataset called at the same positions as the
+          imputed file.
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
         ontologies: []
     - truth_index:
@@ -55,11 +56,12 @@ input:
         description: List of samples to process, one sample ID per line.
         pattern: "*.{txt,tsv}"
         ontologies:
-          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3475
     - region:
         type: string
-        description: Target region used for imputation, including left and right buffers
-          (e.g. chr20:1000000-2000000). Can also be a list of such regions.
+        description: Target region used for imputation, including left and right
+          buffers (e.g. chr20:1000000-2000000). Can also be a list of such
+          regions.
         pattern: "chrXX:leftBufferPosition-rightBufferPosition"
   - - meta2:
         type: map
@@ -68,11 +70,11 @@ input:
           e.g. [ id:'test', single_end:false ]
     - groups:
         type: file
-        description: Alternative to frequency bins, group bins are user defined, provided
-          in a file.
+        description: Alternative to frequency bins, group bins are user defined,
+          provided in a file.
         pattern: "*.{txt,tsv}"
         ontologies:
-          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3475
     - bins:
         type: string
         description: |
@@ -82,7 +84,8 @@ input:
         pattern: "0 0.01 0.05 ... 0.5"
     - ac_bins:
         type: string
-        description: User-defined allele count bins used for rsquared computations.
+        description: User-defined allele count bins used for rsquared
+          computations.
         pattern: "1 2 5 10 20 ... 100000"
     - allele_counts:
         type: string
@@ -109,11 +112,11 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.error.cal.txt.gz":
           type: file
-          description: Calibration correlation errors between imputed dosages (in MAF
-            bins) and highly-confident genotype.
+          description: Calibration correlation errors between imputed dosages (in
+            MAF bins) and highly-confident genotype.
           pattern: "*.errors.cal.txt.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   errors_grp:
     - - meta:
           type: map
@@ -122,11 +125,11 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.error.grp.txt.gz":
           type: file
-          description: Groups correlation errors between imputed dosages (in MAF bins)
-            and highly-confident genotype.
+          description: Groups correlation errors between imputed dosages (in MAF
+            bins) and highly-confident genotype.
           pattern: "*.errors.grp.txt.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   errors_spl:
     - - meta:
           type: map
@@ -135,11 +138,11 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.error.spl.txt.gz":
           type: file
-          description: Samples correlation errors between imputed dosages (in MAF bins)
-            and highly-confident genotype.
+          description: Samples correlation errors between imputed dosages (in MAF
+            bins) and highly-confident genotype.
           pattern: "*.errors.spl.txt.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   rsquare_grp:
     - - meta:
           type: map
@@ -148,11 +151,11 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.rsquare.grp.txt.gz":
           type: file
-          description: Groups r-squared correlation between imputed dosages (in MAF
-            bins) and highly-confident genotype.
+          description: Groups r-squared correlation between imputed dosages (in
+            MAF bins) and highly-confident genotype.
           pattern: "*.rsquare.grp.txt.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   rsquare_spl:
     - - meta:
           type: map
@@ -161,11 +164,11 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.rsquare.spl.txt.gz":
           type: file
-          description: Samples r-squared correlation between imputed dosages (in MAF
-            bins) and highly-confident genotype.
+          description: Samples r-squared correlation between imputed dosages (in
+            MAF bins) and highly-confident genotype.
           pattern: "*.rsquare.spl.txt.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   rsquare_per_site:
     - - meta:
           type: map
@@ -174,18 +177,32 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*_r2_sites.txt.gz":
           type: file
-          description: Variant r-squared correlation between imputed dosages (in MAF
-            bins) and highly-confident genotype.
+          description: Variant r-squared correlation between imputed dosages (in
+            MAF bins) and highly-confident genotype.
           pattern: "_r2_sites.txt.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
+  versions_glimpse2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - glimpse2:
+          type: string
+          description: The name of the tool
+      - GLIMPSE2_concordance --help | grep -oE 'v[0-9.]+' | cut -c2-:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions.
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - glimpse2:
+          type: string
+          description: The name of the tool
+      - GLIMPSE2_concordance --help | grep -oE 'v[0-9.]+' | cut -c2-:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@louislenezet"
 maintainers:

@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Use the @nf-core-bot token to check out so we can push later
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           token: ${{ secrets.nf_core_bot_auth_token }}
 
@@ -34,8 +34,10 @@ jobs:
 
       - name: Run prek
         id: prek
-        uses: j178/prek-action@564dda4cfa5e96aafdc4a5696c4bf7b46baae5ac # v1
+        uses: j178/prek-action@79f765515bd648eb4d6bb1b17277b7cb22cb6468 # v2.0.0
         continue-on-error: true
+        with:
+          extra_args: ""
 
       - name: Post nothing-to-do comment
         if: steps.prek.outcome == 'success'

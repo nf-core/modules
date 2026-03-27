@@ -20,11 +20,11 @@ process WIPERTOOLS_FASTQGATHER {
     script:
     def args = task.ext.args ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}_gather"
-    fastq_string = fastq.collect{ it.name }.sort().join(" ")
+    fastq_string = fastq.collect{ file -> file.name }.sort().join(" ")
 
     // Check if the output file name is in the list of input files
-    if (fastq.any { it.name == "${prefix}.fastq.gz" }) {
-        error 'Output file name "${prefix}.fastq.gz}" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
+    if (fastq.any { file -> file.name == "${prefix}.fastq.gz" }) {
+        error 'Output file name "${prefix}.fastq.gz" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
     }
 
     """
@@ -44,8 +44,8 @@ process WIPERTOOLS_FASTQGATHER {
     prefix      = task.ext.prefix ?: "${meta.id}_gather"
 
     // Check if the output file name is in the list of input files
-    if (fastq.any { it.name == "${prefix}.fastq.gz" }) {
-        error 'Output file name "${prefix}.fastq.gz}" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
+    if (fastq.any { file -> file.name == "${prefix}.fastq.gz" }) {
+        error 'Output file name "${prefix}.fastq.gz" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
     }
     """
     echo "" | gzip > ${prefix}.fastq.gz

@@ -30,7 +30,6 @@ process RIBOCODE_PREPARE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
 
     """
     mkdir annotation

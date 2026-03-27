@@ -11,28 +11,25 @@ workflow VCF_GATHER_BCFTOOLS {
     main:
 
     // Check if arr_common_meta is an array or list
-    if (!(arr_common_meta instanceof List || arr_common_meta instanceof Object[])) {
+    if (!(arr_common_meta instanceof List || arr_common_meta instanceof Collection)) {
         error("ERROR: arr_common_meta should be an array or list, got ${arr_common_meta.getClass()}")
     }
 
     ch_concat_input = ch_vcfs
         .map { meta, vcf, index, count ->
-            def missingKeys = arr_common_meta.findAll { key -> !(key in meta) }
+            def missingKeys = arr_common_meta.findAll { key -> !(key in meta.keySet()) }
             if (missingKeys) {
                 error("ERROR: Keys ${missingKeys} from arr_common_meta not found in meta. Available keys: ${meta.keySet()}")
             }
-            newMeta = arr_common_meta ?
+            def newMeta = arr_common_meta ?
                 arr_common_meta.collectEntries { key -> [(key): meta[key]] } :
                 meta
             [groupKey(newMeta, count), meta, vcf, index]
         }
         .groupTuple()
-        .ifEmpty {
-            error("ERROR: grouping operation resulted in an empty channel.")
-        }
         .branch { key, meta, vcf, index ->
             def cleanedMetas = meta.collect { m ->
-                m.findAll { k, v -> !(k in arr_common_meta) }
+                m.findAll { k, _v -> !(k in arr_common_meta) }
             }
             def newMeta = arr_common_meta ? key.target + [metas: cleanedMetas] : meta[0]
             def out_tuple = [newMeta, vcf, index]

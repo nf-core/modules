@@ -17,7 +17,7 @@ process EXPANSIONHUNTER {
     tuple val(meta), path("*.vcf.gz")        , emit: vcf
     tuple val(meta), path("*.json.gz")       , emit: json
     tuple val(meta), path("*_realigned.bam") , emit: bam
-    tuple val("${task.process}"), val('expansionhunter'), eval("ExpansionHunter --version 2>&1 | head -1 | sed 's/^.*ExpansionHunter v//'"), topic: versions, emit: versions_expansionhunter
+    tuple val("${task.process}"), val('expansionhunter'), eval("ExpansionHunter --version | head -1 | sed -n 's/^.*ExpansionHunter v//; s/]//p'"), topic: versions, emit: versions_expansionhunter
     tuple val("${task.process}"), val('bgzip'), eval("bgzip --version | sed '1!d;s/.* //'"), topic: versions, emit: versions_bgzip
 
     when:

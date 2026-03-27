@@ -5,7 +5,7 @@ process DEEPVARIANT_VCFSTATSREPORT {
     // FIXME Conda is not supported at the moment
     // BUG https://github.com/nf-core/modules/issues/1754
     // BUG https://github.com/bioconda/bioconda-recipes/issues/30310
-    container "docker.io/google/deepvariant:1.9.0"
+    container "docker.io/google/deepvariant:1.10.0"
 
     input:
     tuple val(meta), path(vcf)
@@ -27,8 +27,8 @@ process DEEPVARIANT_VCFSTATSREPORT {
     """
     /opt/deepvariant/bin/vcf_stats_report \\
         --input_vcf=${vcf} \\
-        --outfile_base ${prefix}
-
+        --outfile_base ${prefix} \\
+        ${args}
     """
 
     stub:
