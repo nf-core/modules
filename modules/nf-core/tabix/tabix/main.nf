@@ -8,54 +8,38 @@ process TABIX_TABIX {
         'community.wave.seqera.io/library/htslib:1.21--ff8e28a189fbecaa' }"
 
     input:
-    tuple val(meta), path(tab), path(index)
+    tuple val(meta),  path(tab)
     tuple val(meta2), path(regions)
 
     output:
-    tuple val(meta), path("*.{tbi,csi}"),  emit: index, optional: true
-    tuple val(meta), path("${prefix}.vcf.gz"),     emit: vcf,   optional: true
-    tuple val(meta), path("${prefix}.vcf.gz.tbi"), emit: tbi,   optional: true
-    tuple val("${task.process}"), val('tabix'), eval("tabix -h 2>&1 | grep -oP 'Version:\\s*\\K[^\\s]+'"), topic: versions, emit: versions_tabix
+    tuple val(meta), path("*.{tbi,csi}"),   emit: index, optional: true
+    tuple val(meta), path("${prefix}.vcf"), emit: vcf,   optional: true
+    tuple val("${task.process}"), val('tabix'), eval("tabix -h 2>&1 | grep -oP 'Version:\\s*\\K[^\\s]+'")   , topic: versions   , emit: versions_tabix
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args        = task.ext.args  ?: ''
-    def args2       = task.ext.args2 ?: ''
+    def args = task.ext.args ?: ''
     prefix          = task.ext.prefix ?: "${meta.id}"
     def regions_arg = regions ? "-R ${regions}" : ""
-    if (regions) {
-        """
-        tabix \\
-            ${regions_arg} \\
-            ${args} \\
-            ${tab} \\
-            | bgzip ${args2} > ${prefix}.vcf.gz
+    def output_arg  = regions ? "> ${prefix}.vcf" : ""
 
-        tabix ${prefix}.vcf.gz
-        """
-    } else {
-        """
-        tabix \\
-            --threads $task.cpus \\
-            $args \\
-            $tab
-        """
-    }
+    """
+    tabix \\
+        ${regions_arg} \\
+        --threads $task.cpus \\
+        $args \\
+        $tab \\
+        ${output_arg}
 
+    """
     stub:
     def args = task.ext.args ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
-    def idx  = args.contains("-C ") || args.contains("--csi") ? "csi" : "tbi"
-    if (regions) {
-        """
-        echo "" | bgzip > ${prefix}.vcf.gz
-        touch ${prefix}.vcf.gz.tbi
-        """
-    } else {
-        """
-        touch ${tab}.${idx}
-        """
-    }
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def index = args.contains("-C ") || args.contains("--csi") ? "csi" : "tbi"
+    """
+    touch ${tab}.${index}
+    touch ${prefix}.vcf
+    """
 }

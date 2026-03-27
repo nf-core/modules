@@ -22,6 +22,7 @@ nextflow_process {
                                 [ id:'tbi_bed' ],
                                 [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed.gz', checkIfExists: true) ]
                             ]
+                input[1] = [[], []]
                 """
             }
         }
@@ -45,6 +46,7 @@ nextflow_process {
                                 [ id:'tbi_gff' ],
                                 [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3.gz', checkIfExists: true) ]
                             ]
+                input[1] = [[], []]
                 """
             }
         }
@@ -69,6 +71,7 @@ nextflow_process {
                                 [ id:'tbi_vcf' ],
                                 [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true) ]
                             ]
+                input[1] = [[], []]
                 """
             }
         }
@@ -93,6 +96,7 @@ nextflow_process {
                                 [ id:'vcf_csi' ],
                                 [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true) ]
                             ]
+                input[1] = [[], []]
                 """
             }
         }
@@ -104,6 +108,67 @@ nextflow_process {
             )
         }
 
+    }
+
+    test("sarscov2_vcf_tbi_regions") {
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                                [ id:'vcf_regions' ],
+                                [
+                                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true)
+                                ]
+                            ]
+                input[1] = [
+                                [ id:'vcf_regions' ],
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed.gz', checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2_vcf_tbi_regions_stub") {
+        options "-stub"
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                                [ id:'vcf_regions_stub' ],
+                                [
+                                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true)
+                                ]
+                            ]
+                input[1] = [
+                                [ id:'vcf_regions_stub' ],
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed.gz', checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
     }
 
     test("sarscov2_vcf_csi_stub") {
@@ -118,6 +183,7 @@ nextflow_process {
                                 [ id:'vcf_csi_stub' ],
                                 [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true) ]
                             ]
+                input[1] = [[], []]
                 """
             }
         }
