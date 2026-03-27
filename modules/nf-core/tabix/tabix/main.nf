@@ -37,9 +37,11 @@ process TABIX_TABIX {
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def index = args.contains("-C ") || args.contains("--csi") ? "csi" : "tbi"
+    def ext = args.contains("-C ") || args.contains("--csi") ? "csi" : "tbi"
+    def index = regions ? "" : "touch ${tab}.${ext}"
+    def vcf   = regions ? "touch ${prefix}.vcf" : ""
     """
-    touch ${tab}.${index}
-    touch ${prefix}.vcf
+    ${index}
+    ${vcf}
     """
 }
