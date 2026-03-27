@@ -4,7 +4,7 @@ process MINIA {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/minia:3.2.6--59431d46a6352d84' :
+        'https://community.wave.seqera.io/library/minia:3.2.6--59431d46a6352d84' :
         'community.wave.seqera.io/library/minia:3.2.6--a3c6327b13b0c75a' }"
 
     input:
