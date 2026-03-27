@@ -121,16 +121,12 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         norm_inputs.transcript_length.filter{index -> index[0].differential_method == 'deseq2'}
     )
 
-    ch_versions = ch_versions.mix(DESEQ2_NORM.out.versions.first())
-
     DESEQ2_DIFFERENTIAL(
         inputs.contrasts_for_diff_with_formula.filter{index -> index[0].differential_method == 'deseq2'},
         inputs.samples_and_matrix.filter{index -> index[0].differential_method == 'deseq2'},
         inputs.control_features.filter{index -> index[0].differential_method == 'deseq2'},
         inputs.transcript_length.filter{index -> index[0].differential_method == 'deseq2'}
     )
-
-    ch_versions = ch_versions.mix(DESEQ2_DIFFERENTIAL.out.versions.first())
 
     // ----------------------------------------------------
     // Run propd
