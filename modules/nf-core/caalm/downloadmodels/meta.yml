@@ -1,0 +1,60 @@
+name: "caalm_downloadmodels"
+description: |
+  Downloads the CAALM model weights from HuggingFace Hub (lczong/CAALM) into a
+  local models/ directory. The downloaded directory is used as input to the
+  CAALM_CAALM annotation module for CAZyme prediction.
+keywords:
+  - cazyme
+  - model
+  - download
+  - huggingface
+  - deep learning
+tools:
+  - "huggingface_hub":
+      description: |
+        huggingface_hub is a Python library for interacting with the Hugging Face Hub,
+        providing utilities for downloading and uploading models, datasets, and spaces.
+      homepage: "https://github.com/huggingface/huggingface_hub"
+      documentation: "https://huggingface.co/docs/huggingface_hub"
+      tool_dev_url: "https://github.com/huggingface/huggingface_hub"
+      licence:
+        - "Apache-2.0"
+      identifier: ""
+
+input: []
+
+output:
+  models:
+    - models:
+        type: directory
+        description: |
+          Directory containing the downloaded CAALM model weights from HuggingFace Hub
+          (lczong/CAALM), including level0, level1, and level2 model files.
+        pattern: "models"
+  versions_huggingface_hub:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - huggingface_hub:
+          type: string
+          description: The name of the tool
+      - python -c 'import huggingface_hub; print(huggingface_hub.__version__)':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - huggingface_hub:
+          type: string
+          description: The name of the tool
+      - python -c 'import huggingface_hub; print(huggingface_hub.__version__)':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"
