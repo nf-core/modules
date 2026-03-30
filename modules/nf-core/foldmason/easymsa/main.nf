@@ -4,8 +4,8 @@ process FOLDMASON_EASYMSA {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-            'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/06/067e6389ab95497b753ba1deabaa6acbce25b99c8cfcf39c06d5c1af42fd7751/data':
-            'community.wave.seqera.io/library/foldmason_pigz:88809eb5649534b0' }"
+            'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/29/299b6d1a8a81632118e9c0cd110f9d89aae58b5a0132543a7fedbecb656da570/data':
+            'community.wave.seqera.io/library/foldmason_pigz:289a5a7a978299df' }"
 
 
     input:
