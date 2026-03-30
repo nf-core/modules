@@ -27,6 +27,7 @@ input:
           'fq.gz', 'bam'
         pattern: "^.*\\.(fastq|fastq\\.gz|fq|fq\\.gz|bam)$"
         ontologies:
+          - edam: "http://edamontology.org/format_1930" # FASTQ
           - edam: "http://edamontology.org/format_2572" # BAM
           - edam: "http://edamontology.org/format_3989" # GZIP
   - - meta2:
@@ -47,7 +48,8 @@ input:
         type: file
         description: (optional) minimap2 index file for the reference
         pattern: "*.mmi"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_2333" # BINARY
   - - meta4:
         type: map
         description: |
@@ -57,7 +59,9 @@ input:
         description: (optional) file(s) containing genomic intervals for use in base
           quality score recalibration (BQSR)
         pattern: "*.{bed,interval_list,picard,list,intervals}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+          - edam: "http://edamontology.org/format_3475" # TSV
   - - meta5:
         type: map
         description: |
@@ -87,6 +91,7 @@ output:
           pattern: "*.{bam,cram}"
           ontologies:
             - edam: "http://edamontology.org/format_2572" # BAM
+            - edam: "http://edamontology.org/format_3462" # CRAM
   index:
     - - meta:
           type: map
@@ -97,7 +102,8 @@ output:
           type: file
           description: Index corresponding to sorted BAM or CRAM file
           pattern: "*.{bai,crai}"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3327" # BAI
   bqsr_table:
     - - meta:
           type: map
@@ -109,7 +115,8 @@ output:
           description: (optional) table from base quality score recalibration calculation,
             to be used with parabricks/applybqsr
           pattern: "*.table"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   qc_metrics:
     - - meta:
           type: map
