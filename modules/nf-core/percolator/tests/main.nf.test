@@ -1,0 +1,54 @@
+nextflow_process {
+
+    name "Test Process PERCOLATOR"
+    script "../main.nf"
+    process "PERCOLATOR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "percolator"
+
+    test("percolator - OVEMB150205_12.pin") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('https://raw.githubusercontent.com/medbioinf/test-datasets/refs/heads/percolator_tests/data/proteomics/percolator/OVEMB150205_12.pin', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    
+    test("percolator - OVEMB150205_12.pin - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('https://raw.githubusercontent.com/medbioinf/test-datasets/refs/heads/percolator_tests/data/proteomics/percolator/OVEMB150205_12.pin', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

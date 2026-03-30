@@ -1,0 +1,80 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "percolator"
+description: Rescore peptide-spectrum matches and estimate false discovery rates using the Percolator semi-supervised learning algorithm.
+keywords:
+  - proteomics
+  - spectrum identification
+  - psm
+  - rescoring
+  - false discovery rate
+  - features
+tools:
+  - "percolator":
+      description: "Semi-supervised learning for peptide identification from shotgun
+        proteomics datasets."
+      homepage: "http://percolator.ms"
+      documentation: "http://percolator.ms"
+      tool_dev_url: "https://github.com/percolator/percolator"
+      doi: "10.1038/nmeth1113"
+      licence: ["Apache-2.0"]
+      identifier: biotools:percolator
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1' ]`
+    - peptide_identification:
+        type: file
+        description: peptide identifications as PIN file
+        pattern: "*.{pin}"
+        ontologies: []
+
+output:
+  target_pout:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - "*.target.pout":
+          type: file
+          description: percolator output file containing the target PSMs
+          pattern: "*.{target.pout}"
+          ontologies: []
+
+  decoy_pout:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - "*.decoy.pout":
+          type: file
+          description: percolator output file containing the decoys PSMs
+          pattern: "*.{decoy.pout}"
+          ontologies: []
+
+  versions_percolator:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - percolator:
+          type: string
+          description: The name of the tool
+      - percolator --help 2>&1 | head -1 | sed "s;Percolator version \([^,]*\),.*;\1;":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - percolator:
+          type: string
+          description: The name of the tool
+      - percolator --help 2>&1 | head -1 | sed "s;Percolator version \([^,]*\),.*;\1;":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@julianu"
+maintainers:
+  - "@julianu"
