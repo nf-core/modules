@@ -1,0 +1,160 @@
+name: "telogator2"
+description: "Allele-specific telomere length estimation and TVR characterization from long reads"
+keywords:
+  - bam
+  - cram
+  - genomics
+  - telomere
+  - long-read
+  - pacbio
+  - nanopore
+tools:
+  - "telogator2":
+      description: "A method for measuring allele-specific TL and characterizing telomere variant repeat (TVR) sequences from long reads"
+      homepage: "https://github.com/zstephens/telogator2"
+      documentation: "https://github.com/zstephens/telogator2"
+      tool_dev_url: "https://github.com/zstephens/telogator2"
+      doi: "10.1093/bioinformatics/btae078"
+      licence:
+        - "MIT"
+      args_id: "$args"
+      identifier: "biotools:telogator2"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - reads:
+        type: file
+        description: BAM or CRAM file of long reads (PacBio or ONT)
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: http://edamontology.org/format_2572
+    - reads_index:
+        type: file
+        description: Index file for the input BAM/CRAM
+        pattern: "*.{bai,crai}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Optional reference genome FASTA file
+        pattern: "*.{fa,fasta,fa.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929
+    - fai:
+        type: file
+        description: Optional FASTA index file
+        pattern: "*.fai"
+        ontologies: []
+output:
+  tlens:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/tlens_by_allele.tsv:
+          type: file
+          description: TSV file with telomere length estimates per allele
+          pattern: "*/tlens_by_allele.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  plots:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/*.png:
+          type: file
+          description: PNG plots including allele visualizations and violin plots
+          pattern: "*/*.png"
+          ontologies:
+            - edam: http://edamontology.org/format_3603
+  cmd:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/qc/cmd.txt:
+          type: file
+          description: Text file recording the telogator2 command that was run
+          pattern: "*/qc/cmd.txt"
+          ontologies: []
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/qc/stats.txt:
+          type: file
+          description: Text file with QC statistics including read counts and telomere read filtering
+          pattern: "*/qc/stats.txt"
+          ontologies: []
+  qc_readlens:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/qc/qc_readlens.png:
+          type: file
+          description: PNG plot of read length distribution
+          pattern: "*/qc/qc_readlens.png"
+          ontologies:
+            - edam: http://edamontology.org/format_3603
+  readlens:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/qc/readlens.npz:
+          type: file
+          description: Numpy compressed array of read length data
+          pattern: "*/qc/readlens.npz"
+          ontologies: []
+  rng:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/qc/rng.txt:
+          type: file
+          description: Text file recording the random seed used
+          pattern: "*/qc/rng.txt"
+          ontologies: []
+  versions_telogator2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - telogator2:
+          type: string
+          description: The name of the tool
+      - "telogator2 --version | sed 's/telogator2 //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - telogator2:
+          type: string
+          description: The name of the tool
+      - "telogator2 --version | sed 's/telogator2 //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

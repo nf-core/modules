@@ -65,7 +65,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
         contrasts_and_samples:
             [ meta_with_contrast, samplesheet ]
         features:
-            [ meta_with_method, featuresheet ]
+            [ meta_with_contrast, featuresheet ]
         features_cols:
             [ features_id, features_symbol ]
     }
@@ -97,28 +97,32 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // Perform enrichment analysis with GSEA
     // ----------------------------------------------------
 
-    // NOTE that GCT input can be more than 1, if they come from different tools (eg. limma, deseq2).
-    // CLS input can be as many as combinations of input x contrasts
-    // Whereas features can be only one file.
-
     CUSTOM_TABULARTOGSEAGCT(ch_input_for_gsea.input)
-
     CUSTOM_TABULARTOGSEACLS(ch_input_for_gsea.contrasts_and_samples)
-
     CUSTOM_TABULARTOGSEACHIP(
-        ch_input_for_gsea.features.first(),
-        ch_input_for_gsea.features_cols.first()
+        ch_input_for_gsea.features,
+        ch_input_for_gsea.features_cols
     )
 
-    ch_input_for_gsea = CUSTOM_TABULARTOGSEAGCT.out.gct
+    ch_in_gsea = CUSTOM_TABULARTOGSEAGCT.out.gct
         .join(CUSTOM_TABULARTOGSEACLS.out.cls)
         .join( ch_input_for_gsea.genesets )
+        .join( CUSTOM_TABULARTOGSEACHIP.out.chip )
+        .multiMap { meta, gct, cls, genesets, chip ->
+            input:
+            [meta, gct, cls, genesets]
+            ref_target:
+            [meta.reference, meta.target]
+            chip:
+            [meta, chip]
+        }
 
     GSEA_GSEA(
-        ch_input_for_gsea,
-        ch_input_for_gsea.map{ index -> tuple(index[0].reference, index[0].target) },
-        CUSTOM_TABULARTOGSEACHIP.out.chip.first()
+        ch_in_gsea.input,
+        ch_in_gsea.ref_target,
+        ch_in_gsea.chip
     )
+
     // ----------------------------------------------------
     // Perform enrichment analysis with DECOUPLER
     // ----------------------------------------------------
@@ -139,7 +143,12 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
         ch_input_for_other.genesets.filter{ index -> index[0].functional_method == 'grea' }
     )
 
-    // collect versions info
+    // ----------------------------------------------------
+    // collect generic outputs
+    // ----------------------------------------------------
+
+    ch_session_info = GPROFILER2_GOST.out.session_info
+
     ch_versions = ch_versions
         .mix(GPROFILER2_GOST.out.versions)
         .mix(CUSTOM_TABULARTOGSEAGCT.out.versions)
@@ -153,22 +162,44 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // nf-core/differentialabundance pipeline
 
     // gprofiler2-specific outputs
-    gprofiler2_all_enrich = GPROFILER2_GOST.out.all_enrich
-    gprofiler2_sub_enrich = GPROFILER2_GOST.out.sub_enrich
-    gprofiler2_plot_html  = GPROFILER2_GOST.out.plot_html
+    gprofiler2_plot_html            = GPROFILER2_GOST.out.plot_html
+    gprofiler2_all_enrich           = GPROFILER2_GOST.out.all_enrich
+    gprofiler2_sub_enrich           = GPROFILER2_GOST.out.sub_enrich
+    gprofiler2_artifacts            = GPROFILER2_GOST.out.plot_png
+    gprofiler2_sub_plot             = GPROFILER2_GOST.out.sub_plot
+    gprofiler2_rds                  = GPROFILER2_GOST.out.rds
+    gprofiler2_filtered_gmt         = GPROFILER2_GOST.out.filtered_gmt
 
     // gsea-specific outputs
-    gsea_report           = GSEA_GSEA.out.report_tsvs_ref.join(GSEA_GSEA.out.report_tsvs_target)
+    gsea_report_tsv                 = GSEA_GSEA.out.report_tsvs_ref.join(GSEA_GSEA.out.report_tsvs_target)
+    gsea_report_html                = GSEA_GSEA.out.report_htmls_ref.join(GSEA_GSEA.out.report_htmls_target)
+    gsea_index_html                 = GSEA_GSEA.out.index_html
+    gsea_heat_map_corr_plot         = GSEA_GSEA.out.heat_map_corr_plot
+    gsea_ranked_gene_list           = GSEA_GSEA.out.ranked_gene_list
+    gsea_gene_set_sizes             = GSEA_GSEA.out.gene_set_sizes
+    gsea_histogram                  = GSEA_GSEA.out.histogram
+    gsea_heatmap                    = GSEA_GSEA.out.heatmap
+    gsea_pvalues_vs_nes_plot        = GSEA_GSEA.out.pvalues_vs_nes_plot
+    gsea_ranked_list_corr           = GSEA_GSEA.out.ranked_list_corr
+    gsea_butterfly_plot             = GSEA_GSEA.out.butterfly_plot
+    gsea_gene_set_tsv               = GSEA_GSEA.out.gene_set_tsv
+    gsea_gene_set_html              = GSEA_GSEA.out.gene_set_html
+    gsea_gene_set_heatmap           = GSEA_GSEA.out.gene_set_heatmap
+    gsea_gene_set_enplot            = GSEA_GSEA.out.gene_set_enplot
+    gsea_gene_set_dist              = GSEA_GSEA.out.gene_set_dist
+    gsea_snapshot                   = GSEA_GSEA.out.snapshot
+    gsea_archive                    = GSEA_GSEA.out.archive
+    gsea_rpt                        = GSEA_GSEA.out.rpt
 
     // decoupler-specific outputs
-    decoupler_dc_estimate = DECOUPLER_DECOUPLER.out.dc_estimate
-    decoupler_dc_pvals = DECOUPLER_DECOUPLER.out.dc_pvals
-    decoupler_png = DECOUPLER_DECOUPLER.out.png
-
+    decoupler_dc_estimate           = DECOUPLER_DECOUPLER.out.dc_estimate
+    decoupler_dc_pvals              = DECOUPLER_DECOUPLER.out.dc_pvals
+    decoupler_png                   = DECOUPLER_DECOUPLER.out.png
 
     // grea-specific outputs
-    grea_results          = PROPR_GREA.out.results
+    grea_results                    = PROPR_GREA.out.results
 
     // tool versions
-    versions              = ch_versions
+    session_info                    = ch_session_info
+    versions                        = ch_versions
 }
