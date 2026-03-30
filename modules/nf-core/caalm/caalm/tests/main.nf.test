@@ -1,13 +1,14 @@
 nextflow_process {
 
-    name "Test Process CAALM"
+    name "Test Process CAALM_CAALM"
     script "../main.nf"
-    process "CAALM"
+    process "CAALM_CAALM"
     config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "caalm"
+    tag "caalm/caalm"
 
     test("cazyme - faa") {
 

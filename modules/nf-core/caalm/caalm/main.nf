@@ -1,4 +1,4 @@
-process CAALM {
+process CAALM_CAALM {
     tag "$meta.id"
     label 'process_high'
 
@@ -9,6 +9,7 @@ process CAALM {
 
     input:
     tuple val(meta), path(fasta)
+    path(models)
 
     output:
     tuple val(meta), path("${prefix}_predictions.tsv")      , emit: predictions
@@ -28,6 +29,11 @@ process CAALM {
     """
     caalm \\
         $args \\
+        --level0-model ${models}/level0 \\
+        --level1-model ${models}/level1 \\
+        --level2-model ${models}/level2/model.pt \\
+        --level2-faiss-dir ${models}/level2/faiss \\
+        --level2-label-tsv-dir ${models}/level2/refdb \\
         --output-name ${prefix} \\
         -o . \\
         ${fasta}
