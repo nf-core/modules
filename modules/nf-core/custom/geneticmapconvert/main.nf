@@ -24,6 +24,10 @@ process CUSTOM_GENETICMAPCONVERT {
     prefix = task.ext.prefix ?: "${meta.id}"
     args = task.ext.args ?: ''
 
+    """
+    echo ${args}
+    """
+
     template 'geneticmapconvert.R'
 
     stub:
