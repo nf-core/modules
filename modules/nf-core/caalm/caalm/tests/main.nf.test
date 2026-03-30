@@ -20,7 +20,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file("${projectDir}/modules/nf-core/caalm/tests/fixtures/protein_mini_with_cazymes.faa", checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/database/protein_mini_with_cazymes.faa', checkIfExists: true)
                 ]
                 """
             }
@@ -45,7 +45,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file("${projectDir}/modules/nf-core/caalm/tests/fixtures/protein_mini_with_cazymes.faa", checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/database/protein_mini_with_cazymes.faa', checkIfExists: true)
                 ]
                 """
             }
@@ -72,7 +72,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file("${projectDir}/modules/nf-core/caalm/tests/fixtures/protein_mini_with_cazymes.faa", checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/database/protein_mini_with_cazymes.faa', checkIfExists: true)
                 ]
                 """
             }
@@ -99,7 +99,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file("${projectDir}/modules/nf-core/caalm/tests/fixtures/protein_mini_with_cazymes.faa", checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/database/protein_mini_with_cazymes.faa', checkIfExists: true)
                 ]
                 """
             }
