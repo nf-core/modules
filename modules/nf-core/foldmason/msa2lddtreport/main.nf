@@ -4,8 +4,8 @@ process FOLDMASON_MSA2LDDTREPORT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-            'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a8/a88d162c3f39a1518d48c3faec235e6fcde750586da868b62fc5f0a08a89aa9d/data' :
-            'community.wave.seqera.io/library/foldmason:2.7bd21ed--e7f739473ad6578d' }"
+            'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dc/dc0b27a73277c851f0a1df09fc5fa4f0ff80832e6779f143420a7e2321ac62b4/data' :
+            'community.wave.seqera.io/library/foldmason:4.dd3c235--375019dcc3c5fe6f' }"
     input:
     tuple val(meta) , path(msa)
     tuple val(meta2), path(db)
@@ -14,7 +14,8 @@ process FOLDMASON_MSA2LDDTREPORT {
 
     output:
     tuple val(meta), path("${prefix}.html"), emit: html
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val('foldmason'), eval('foldmason version'), emit: versions_foldmason, topic: versions
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,21 +32,11 @@ process FOLDMASON_MSA2LDDTREPORT {
         $args \\
         ${options_tree} \\
         --threads $task.cpus
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        foldmason: \$(foldmason | grep "foldmason Version:" | cut -d":" -f 2 | awk '{\$1=\$1;print}')
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.html
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        foldmason: \$(foldmason | grep "foldmason Version:" | cut -d":" -f 2 | awk '{\$1=\$1;print}')
-    END_VERSIONS
     """
 }
