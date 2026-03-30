@@ -85,7 +85,7 @@ workflow VCF_PHASE_SHAPEIT5 {
         }
         .groupTuple()
 
-    SHAPEIT5_LIGATE(ch_ligate_input)
+    SHAPEIT5_LIGATE(ch_ligate_input,'')
 
     BCFTOOLS_INDEX_LIGATE(SHAPEIT5_LIGATE.out.merged_variants)
 
