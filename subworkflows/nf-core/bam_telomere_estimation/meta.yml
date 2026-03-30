@@ -1,0 +1,84 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "bam_telomere_estimation"
+description: Estimate telomere length and content from aligned reads using telseq, telogator2, and telomerehunter
+keywords:
+  - telomere
+  - telseq
+  - telogator2
+  - telomerehunter
+  - bam
+  - cram
+components:
+  - telseq
+  - telogator2
+  - telomerehunter
+  - custom/summarisetelomereestimation
+input:
+  - ch_reads:
+      type: file
+      description: |
+        Channel of aligned reads with data type and optional index.
+        Structure: [ val(meta), val(data_type), path(reads), path(reads_index) ]
+        data_type: 'short' routes to telseq, 'long' routes to telogator2.
+        The calling pipeline is responsible for determining the sequencing type.
+        Reads must be indexed. bed is an optional exome BED for telseq ([] if not needed).
+  - ch_control:
+      type: file
+      description: |
+        Channel of control/normal BAM files for telomerehunter.
+        Structure: [ val(meta), path(control_bam), path(control_bai) ]
+        Pass Channel.empty() if not needed.
+  - ch_fasta:
+      type: file
+      description: |
+        Reference genome FASTA with index.
+        Structure: [ val(meta2), path(fasta), path(fai) ]
+  - run_telomerehunter:
+      type: boolean
+      description: Enable telomerehunter content profiling
+  - length_estimator:
+      type: string
+      description: |
+        Global override for length estimation tool. If set, all samples
+        use this tool regardless of per-sample data_type.
+        Values: 'short', 'long', or null.
+output:
+  - length_tsv:
+      type: file
+      description: |
+        Raw telomere length TSV from telseq or telogator2.
+        Structure: [ val(meta), path(tsv) ]
+  - content_tsv:
+      type: file
+      description: |
+        Raw telomere content TSV from telomerehunter (empty if not run).
+        Structure: [ val(meta), path(tsv) ]
+  - summary:
+      type: file
+      description: |
+        Normalised summary combining length and content per sample.
+        Structure: [ val(meta), path(tsv) ]
+  - telomerehunter_tumor:
+      type: directory
+      description: |
+        Telomerehunter tumor analysis directory (empty if not run).
+        Structure: [ val(meta), path(dir) ]
+  - telomerehunter_control:
+      type: directory
+      description: |
+        Telomerehunter control analysis directory (empty if not run).
+        Structure: [ val(meta), path(dir) ]
+  - telogator2_plots:
+      type: file
+      description: |
+        Telogator2 allele and violin plots.
+        Structure: [ val(meta), path(*.png) ]
+  - telogator2_stats:
+      type: file
+      description: |
+        Telogator2 QC statistics.
+        Structure: [ val(meta), path(stats.txt) ]
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"
