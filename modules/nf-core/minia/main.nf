@@ -4,8 +4,8 @@ process MINIA {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a3/a3d1f6e0ab4974d2bd48bdbbbc0f96dc353e86e06b44b7c7b33a82462c7cd5d4/data' :
-        'community.wave.seqera.io/library/minia:3.2.6--7fd896fcd6b7ed99' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e8/e81f3434dbaa7e70bc0d11dbdf149efbf157955376d2f93e02e3be7dc3656101/data' :
+        'community.wave.seqera.io/library/minia:3.2.6--5ceb3664bb860bc7' }"
 
     input:
     tuple val(meta), path(reads)
