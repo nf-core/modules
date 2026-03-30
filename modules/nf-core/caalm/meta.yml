@@ -1,62 +1,132 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-# # TODO nf-core: Add a description of the module and list keywords
 name: "caalm"
-description: write your description here
+description: |
+  Annotates carbohydrate-active enzyme (CAZyme) families from protein sequences
+  using protein language model (ESM) embeddings and FAISS-based nearest-neighbour
+  search. Performs three-level hierarchical classification: binary CAZyme detection
+  (Level 0), CAZy class assignment (Level 1), and CAZy family assignment (Level 2).
 keywords:
-  - sort
-  - example
-  - genomics
+  - cazyme
+  - annotation
+  - protein
+  - language model
+  - deep learning
+  - classification
 tools:
-  ## TODO nf-core: Add a description and other details for the software below
   - "caalm":
-      description: ""
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
-      doi: ""
-      licence: null
-      identifier: null
+      description: |
+        CAALM (Carbohydrate Activity Annotation with protein Language Models) predicts
+        CAZyme class and family membership from protein FASTA sequences using ESM-based
+        embeddings and FAISS nearest-neighbour retrieval.
+      homepage: "https://github.com/lczong/CAALM"
+      documentation: "https://github.com/lczong/CAALM"
+      tool_dev_url: "https://github.com/lczong/CAALM"
+      licence:
+        - "MIT"
+      identifier: ""
 
 input:
-  ### TODO nf-core: Add a description of all of the variables used as input
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - bam:
+    - fasta:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
+        description: Protein sequences in FASTA format.
+        pattern: "*.{fa,fasta,faa}"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
-          - edam: "http://edamontology.org/format_3462" # SAM
+          - edam: http://edamontology.org/format_1929 # FASTA
 
 output:
-  ### TODO nf-core: Add a description of all of the variables used as output
-  bam:
+  predictions:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.bam":
+      - ${prefix}_predictions.tsv:
           type: file
-          description: Sorted BAM/CRAM/SAM file
-          pattern: "*.{bam,cram,sam}"
+          description: |
+            Tab-separated file with per-sequence CAZy class and family predictions
+            across all three classification levels.
+          pattern: "*_predictions.tsv"
           ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
-            - edam: "http://edamontology.org/format_2573" # CRAM
-            - edam: "http://edamontology.org/format_3462" # SAM
+            - edam: http://edamontology.org/format_3475 # TSV
+  probabilities:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_probabilities.jsonl:
+          type: file
+          description: |
+            JSON Lines file with per-sequence probability scores at all three
+            classification levels.
+          pattern: "*_probabilities.jsonl"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  statistics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_statistics.tsv:
+          type: file
+          description: |
+            Tab-separated summary file with counts and percentages of predicted
+            CAZyme classes and families across the input sequences.
+          pattern: "*_statistics.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  embeddings_level0:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_level0_embeddings.npy:
+          type: file
+          description: |
+            NumPy array file containing Level 0 ESM embeddings for each input
+            sequence. Optional; produced when `--save-level0-embeddings` is passed.
+          pattern: "*_level0_embeddings.npy"
+          ontologies: []
+  embeddings_level1:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_level1_embeddings.npy:
+          type: file
+          description: |
+            NumPy array file containing Level 1 projected embeddings for each input
+            sequence. Optional; produced when `--save-level1-embeddings` is passed.
+          pattern: "*_level1_embeddings.npy"
+          ontologies: []
+  embeddings_level2:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_level2_embeddings.npy:
+          type: file
+          description: |
+            NumPy array file containing Level 2 projected embeddings for each input
+            sequence. Optional; produced when `--save-level2-embeddings` is passed.
+          pattern: "*_level2_embeddings.npy"
+          ontologies: []
   versions_caalm:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "caalm":
+      - caalm:
           type: string
           description: The name of the tool
-      - "caalm --version":
+      - caalm --version 2>&1 | head -1:
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -68,9 +138,10 @@ topics:
       - caalm:
           type: string
           description: The name of the tool
-      - caalm --version:
+      - caalm --version 2>&1 | head -1:
           type: eval
           description: The expression to obtain the version of the tool
+
 authors:
   - "@vagkaratzas"
 maintainers:
