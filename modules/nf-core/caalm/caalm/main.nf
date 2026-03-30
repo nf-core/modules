@@ -18,6 +18,7 @@ process CAALM_CAALM {
     tuple val(meta), path("${prefix}_level0_embeddings.npy"), emit: embeddings_level0, optional: true
     tuple val(meta), path("${prefix}_level1_embeddings.npy"), emit: embeddings_level1, optional: true
     tuple val(meta), path("${prefix}_level2_embeddings.npy"), emit: embeddings_level2, optional: true
+    tuple val(meta), path("${prefix}.log")                  , emit: log
     tuple val("${task.process}"), val('caalm'), eval("caalm --version 2>&1 | head -1"), topic: versions, emit: versions_caalm
 
     when:
@@ -36,7 +37,8 @@ process CAALM_CAALM {
         --level2-label-tsv-dir ${models}/level2/refdb \\
         --output-name ${prefix} \\
         -o . \\
-        ${fasta}
+        ${fasta} \\
+        > ${prefix}.log
     """
 
     stub:
@@ -48,6 +50,7 @@ process CAALM_CAALM {
     touch ${prefix}_predictions.tsv
     touch ${prefix}_probabilities.jsonl
     touch ${prefix}_statistics.tsv
+    touch ${prefix}.log
 
     if [[ "$args" == *"--save-level0-embeddings"* ]]; then touch ${prefix}_level0_embeddings.npy; fi
     if [[ "$args" == *"--save-level1-embeddings"* ]]; then touch ${prefix}_level1_embeddings.npy; fi

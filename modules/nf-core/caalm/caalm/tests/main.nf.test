@@ -37,7 +37,16 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    process.out.predictions,
+                    process.out.probabilities,
+                    process.out.statistics,
+                    path(process.out.log[0][1]).readLines().size(),
+                    path(process.out.embeddings_level0[0][1]).exists(),
+                    path(process.out.embeddings_level1[0][1]).exists(),
+                    path(process.out.embeddings_level2[0][1]).exists(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
 

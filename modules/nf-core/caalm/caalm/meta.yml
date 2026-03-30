@@ -124,6 +124,18 @@ output:
             sequence. Optional; produced when `--save-level2-embeddings` is passed.
           pattern: "*_level2_embeddings.npy"
           ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.log:
+          type: file
+          description: Log file containing the stdout and stderr output of the caalm run.
+          pattern: "*.log"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
   versions_caalm:
     - - ${task.process}:
           type: string
