@@ -26,7 +26,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out,
+                    process.out.versions,
                     file(process.out.anarcii.get(0).get(1)).readLines()[0].contains("Name,Chain,Score,Query start,Query end")
                 ).match() }
             )
