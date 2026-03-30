@@ -15,6 +15,7 @@ process CAALM_DOWNLOADMODELS {
 
     script:
     """
+    export HF_HUB_DISABLE_XET=1
     python -c "from huggingface_hub import snapshot_download; snapshot_download('lczong/CAALM', local_dir='models')"
     """
 

@@ -9,33 +9,15 @@ nextflow_process {
     tag "modules_nfcore"
     tag "caalm"
     tag "caalm/caalm"
-
-    test("cazyme - faa") {
-
-        when {
-            params {
-                module_args = ""
-            }
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'proteomics/database/protein_mini_with_cazymes.faa', checkIfExists: true)
-                ]
-                """
-            }
-        }
-
-        then {
-            assert process.success
-            assertAll(
-                { assert snapshot(sanitizeOutput(process.out)).match() }
-            )
-        }
-
-    }
+    tag "caalm/downloadmodels"
 
     test("cazyme - faa - embeddings") {
+
+        setup {
+            run("CAALM_DOWNLOADMODELS") {
+                script "../../downloadmodels/main.nf"
+            }
+        }
 
         when {
             params {
@@ -47,6 +29,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'proteomics/database/protein_mini_with_cazymes.faa', checkIfExists: true)
                 ]
+                input[1] = CAALM_DOWNLOADMODELS.out.models
                 """
             }
         }
@@ -74,6 +57,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'proteomics/database/protein_mini_with_cazymes.faa', checkIfExists: true)
                 ]
+                input[1] = []
                 """
             }
         }
@@ -101,6 +85,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'proteomics/database/protein_mini_with_cazymes.faa', checkIfExists: true)
                 ]
+                input[1] = []
                 """
             }
         }
