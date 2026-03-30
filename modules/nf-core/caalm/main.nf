@@ -11,12 +11,12 @@ process CAALM {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${prefix}_predictions.tsv"),                          emit: predictions
-    tuple val(meta), path("${prefix}_probabilities.jsonl"),                      emit: probabilities
-    tuple val(meta), path("${prefix}_statistics.tsv"),                           emit: statistics
-    tuple val(meta), path("${prefix}_level0_embeddings.npy"), optional: true,   emit: embeddings_level0
-    tuple val(meta), path("${prefix}_level1_embeddings.npy"), optional: true,   emit: embeddings_level1
-    tuple val(meta), path("${prefix}_level2_embeddings.npy"), optional: true,   emit: embeddings_level2
+    tuple val(meta), path("${prefix}_predictions.tsv")      , emit: predictions
+    tuple val(meta), path("${prefix}_probabilities.jsonl")  , emit: probabilities
+    tuple val(meta), path("${prefix}_statistics.tsv")       , emit: statistics
+    tuple val(meta), path("${prefix}_level0_embeddings.npy"), emit: embeddings_level0, optional: true
+    tuple val(meta), path("${prefix}_level1_embeddings.npy"), emit: embeddings_level1, optional: true
+    tuple val(meta), path("${prefix}_level2_embeddings.npy"), emit: embeddings_level2, optional: true
     tuple val("${task.process}"), val('caalm'), eval("caalm --version 2>&1 | head -1"), topic: versions, emit: versions_caalm
 
     when:
