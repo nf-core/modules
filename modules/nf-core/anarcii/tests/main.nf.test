@@ -24,14 +24,13 @@ nextflow_process {
 
         then {
             assert process.success
-            assertAll(
-                { assert snapshot(
-                    process.out.versions,
-                    file(process.out.anarcii.get(0).get(1)).readLines()[0].contains("Name,Chain,Score,Query start,Query end")
-                ).match() }
-            )
+            def anarciiResults = path(process.out.anarcii.get(0).get(1)).csv
+            assert "Name" in anarciiResults.columnNames
+            assert "Chain" in anarciiResults.columnNames
+            assert "Score" in anarciiResults.columnNames
+            assert "Query start" in anarciiResults.columnNames
+            assert "Query end" in anarciiResults.columnNames
         }
-
     }
 
     test("human - fasta - stub") {

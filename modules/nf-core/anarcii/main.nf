@@ -4,7 +4,7 @@ process ANARCII {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' ?
-    'oras://community.wave.seqera.io/library/python_pip_anarcii:702a76f5b5d01657' :
+    'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c5/c56cb3320588978063f0893876f4f2b6f088dadc75628f60a746ee54e72350a6/data' :
     'community.wave.seqera.io/library/python_pip_anarcii:4e5c3ffabd22d3fc' }"
 
     input:
