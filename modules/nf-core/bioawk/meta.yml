@@ -50,11 +50,6 @@ input:
         Disable the redirection of awk output to a given file. This is
         useful if you want to use awk's built-in redirect to write files instead
         of the shell's redirect.
-  - bioawk_extension:
-      type: string
-      description: |
-        The extension to use for the bioawk program.
-        enum: ["fastx", "bed", "vcf", "sam"]
   - output_file_extension:
       type: string
       description: The suffix to add to the output file name.

@@ -11,7 +11,6 @@ process BIOAWK {
     tuple val(meta), path(input)
     path(program_file)
     val(disable_redirect_output)
-    val bioawk_extension
     val output_file_extension
 
     output:
@@ -24,8 +23,7 @@ process BIOAWK {
 
     script:
     def args        = task.ext.args ?: ''
-    program         = program_file ? "-f ${program_file}" : "${args}"
-    awk_ext         = bioawk_extension ? "-c ${bioawk_extension}" : ""
+    program         = program_file ? "-f ${program_file}" : "${args2}"
     def prefix      = task.ext.prefix ?: "${meta.id}"
     output_cmd      = output_file_extension.endsWith("gz") ? "| gzip > ${prefix}.${output_file_extension}" : "> ${prefix}.${output_file_extension}"
     output          = disable_redirect_output ? "" : output_cmd
@@ -35,7 +33,7 @@ process BIOAWK {
     def compress_output = output_file_extension.endsWith(".gz") ? " | gzip " : ""
     """
     bioawk \\
-            ${awk_ext} \\
+            ${args} \\
             ${program} \\
             ${input} \\
             ${output}
