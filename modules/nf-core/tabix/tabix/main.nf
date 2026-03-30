@@ -8,8 +8,7 @@ process TABIX_TABIX {
         'community.wave.seqera.io/library/htslib:1.21--ff8e28a189fbecaa' }"
 
     input:
-    tuple val(meta),  path(tab), path(tai)
-    tuple val(meta2), path(regions)
+    tuple val(meta),  path(tab), path(tai), path(regions)
 
     output:
     tuple val(meta), path("*.{tbi,csi}"),      emit: index, optional: true
