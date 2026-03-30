@@ -36,6 +36,11 @@ input:
         pattern: "*.{fa,fasta,faa}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
+  - models:
+      type: directory
+      description: |
+        Model weights directory downloaded from HuggingFace Hub (`lczong/CAALM`),
+        containing the Level 0, Level 1, and Level 2 model files.
 
 output:
   predictions:

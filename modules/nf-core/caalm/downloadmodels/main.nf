@@ -15,6 +15,9 @@ process CAALM_DOWNLOADMODELS {
 
     script:
     """
+    # Redirect all HuggingFace cache I/O to the task work directory —
+    # \$HOME/.cache is read-only inside Singularity containers
+    export HF_HOME=.
     export HF_HUB_DISABLE_XET=1
     python -c "from huggingface_hub import snapshot_download; snapshot_download('lczong/CAALM', local_dir='models')"
     """
