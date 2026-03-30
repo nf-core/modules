@@ -105,7 +105,8 @@ output:
           description: Summary of read counts uniquely assigned to species A, species
             B, and ambiguous reads.
           pattern: "*_summary.txt"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
   versions_ngs_disambiguate:
     - - ${task.process}:
           type: string
