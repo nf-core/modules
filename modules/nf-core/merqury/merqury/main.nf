@@ -27,7 +27,7 @@ process MERQURY_MERQURY {
     tuple val(meta), path("${prefix}.qv")        , emit: assembly_qv
     tuple val(meta), path("${prefix}.*.qv")      , emit: scaffold_qv
     tuple val(meta), path("*.hist.ploidy")       , emit: read_ploidy
-    tuple val(meta), path("*.hapmers.blob.png")  , emit: hapmers_blob_png , optional: true
+    tuple val(meta), path("*.hapmers.blob.png")  , emit: hapmers_blob_png, optional: true
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('merqury'), val('1.3'), emit: versions_merqury, topic: versions
 
