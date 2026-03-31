@@ -13,22 +13,22 @@ tools:
       licence: ["MIT"]
 
 input:
-    - title:
-      type: val
-      description: The title of the project.
-  
-    - description:
-        type: val
-        description: A description of the project.
+  - title:
+    type: val
+    description: The title of the project.
 
-    - pi:
-        type: val
-        description: Email of the Principal Investigator. 
-          
+  - description:
+      type: val
+      description: A description of the project.
+
+  - pi:
+      type: val
+      description: Email of the Principal Investigator.
+
 output:
-  - 'output.log':
+  - "output.log":
       type: file
-      description: For a successful run, this file contains the projectID of the project created. 
+      description: For a successful run, this file contains the projectID of the project created.
 
 authors:
   - "@annaasklof"

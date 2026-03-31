@@ -24,11 +24,11 @@ nextflow_process {
         }
 
         then {
-            assertAll( 
+            assertAll(
                 { assert process.success },
                 { assert snapshot (
                     process.out.log.get(0).readLines().first().contains("Project created with id:")
-                    )   
+                    )
                 }
             )
         }
