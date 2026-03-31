@@ -37,7 +37,7 @@ process TABIX_TABIX {
     prefix = task.ext.prefix ?: "${meta.id}"
     def ext = args.contains("-C ") || args.contains("--csi") ? "csi" : "tbi"
     def index = regions ? "" : "touch ${tab}.${ext}"
-    def vcf   = regions ? "touch ${prefix}.vcf.gz" : ""
+    def vcf   = regions ? "echo | gzip > ${prefix}.vcf.gz" : ""
     """
     ${index}
     ${vcf}
