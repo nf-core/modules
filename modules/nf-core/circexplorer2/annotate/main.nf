@@ -14,7 +14,7 @@ process CIRCEXPLORER2_ANNOTATE {
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('circexplorer2'), eval("CIRCexplorer2 --version 2>&1; true"), topic: versions, emit: versions_circexplorer2
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,21 +30,11 @@ process CIRCEXPLORER2_ANNOTATE {
         -b $junctions \\
         -o ${prefix}.txt \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        circexplorer2: \$(echo \$(CIRCexplorer2 --version 2>&1) )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        circexplorer2: \$(echo \$(CIRCexplorer2 --version 2>&1) )
-    END_VERSIONS
     """
 }

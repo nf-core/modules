@@ -32,7 +32,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test'], // meta map
+                    [ id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = CHEWBBACA_CREATESCHEMA.out.schema
@@ -53,9 +53,8 @@ nextflow_process {
                     process.out.invalid_cds,
                     process.out.loci_summary_stats,
                     file(process.out.log[0][1]).name,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                    ).match() }
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
@@ -68,7 +67,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test'], // meta map
+                    [ id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = CHEWBBACA_CREATESCHEMA.out.schema
@@ -79,10 +78,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

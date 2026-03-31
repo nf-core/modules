@@ -11,8 +11,8 @@ process CHECKV_UPDATEDATABASE {
     path db
 
     output:
-    tuple val(meta), path("${prefix}/*")        , emit: checkv_db
-    path "versions.yml"                         , emit: versions
+    tuple val(meta), path("${prefix}/*"), emit: checkv_db
+    tuple val("${task.process}"), val("checkv"), eval("checkv -h 2>&1 | sed '1!d;s/^.*CheckV v//;s/:.*//'"), topic: versions, emit: versions_checkv
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,23 +28,14 @@ process CHECKV_UPDATEDATABASE {
         $args \\
         $checkv_db \\
         ./$prefix/  \\
-        $update_sequence \\
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        checkv: \$(checkv -h 2>&1  | sed -n 's/^.*CheckV v//; s/: assessing.*//; 1p')
-    END_VERSIONS
+        $update_sequence
     """
 
     stub:
     prefix    = task.ext.prefix ?: "${meta.id}"
     """
-    touch -p ${prefix}/**
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        checkv: \$(checkv -h 2>&1  | sed -n 's/^.*CheckV v//; s/: assessing.*//; 1p')
-    END_VERSIONS
+    mkdir -p ${prefix}/
+    touch ${prefix}/README.txt
     """
 
 }
