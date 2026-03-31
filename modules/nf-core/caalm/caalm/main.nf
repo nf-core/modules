@@ -30,6 +30,7 @@ process CAALM_CAALM {
     """
     caalm \\
         $args \\
+        --num-workers ${task.cpus} \\
         --level0-model ${models}/level0 \\
         --level1-model ${models}/level1 \\
         --level2-model ${models}/level2/model.pt \\
