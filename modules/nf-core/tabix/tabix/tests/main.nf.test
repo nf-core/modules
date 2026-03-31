@@ -115,10 +115,6 @@ nextflow_process {
     }
 
     test("sarscov2_vcf_tbi_regions") {
-        setup {
-            def regions = file("${workDir}/test.regions.txt")
-            regions.text = "MT192765.1\t196\t198\nMT192765.1\t4787\t4789\n"
-        }
         when {
             params {
                 module_args = '-h'
@@ -129,7 +125,7 @@ nextflow_process {
                                 [ id:'vcf_regions' ],
                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
-                                file("${workDir}/test.regions.txt", checkIfExists: true)
+                                file('https://raw.githubusercontent.com/luisas/test-datasets/refs/heads/add-bedgraph-subset-illumina/data/genomics/sarscov2/illumina/bed/test.bed', checkIfExists: true)
                             ]
                 """
             }
@@ -149,10 +145,6 @@ nextflow_process {
 
     test("sarscov2_vcf_tbi_regions_stub") {
         options "-stub"
-        setup {
-            def regions = file("${workDir}/test.regions.txt")
-            regions.text = "MT192765.1\t196\t198\nMT192765.1\t4787\t4789\n"
-        }
         when {
             params {
                 module_args = ''
@@ -163,7 +155,7 @@ nextflow_process {
                                 [ id:'vcf_regions_stub' ],
                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
-                                file("${workDir}/test.regions.txt", checkIfExists: true)
+                                file('https://raw.githubusercontent.com/luisas/test-datasets/refs/heads/add-bedgraph-subset-illumina/data/genomics/sarscov2/illumina/bed/test.bed', checkIfExists: true)
                             ]
                 """
             }
