@@ -30,6 +30,9 @@ process CAT_CAT {
     """
     assert false: deprecation_message
 
+    def file_list = files_in.collect { file -> file.toString() }
+    prefix   = task.ext.prefix ?: "${meta.id}${getFileSuffix(file_list[0])}"
+
     stub:
     def deprecation_message = """
     WARNING: This module has been deprecated. Please use nf-core/modules/find/concatenate
