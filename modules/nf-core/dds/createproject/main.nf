@@ -21,7 +21,7 @@ process DDS_CREATEPROJECT {
 
     script:
     def args = task.ext.args ?: ''
-    
+
     """
     printf '%s' $DDS_CLI_TOKEN > .dds_cli_token
     chmod 600 .dds_cli_token
@@ -35,7 +35,7 @@ process DDS_CREATEPROJECT {
 
     stub:
     def args = task.ext.args ?: ''
-    
+
     """
     touch output.log
 
