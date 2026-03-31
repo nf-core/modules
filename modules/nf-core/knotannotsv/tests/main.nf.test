@@ -27,6 +27,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert snapshot(path(process.out.html[0][1]).readLines().size()).match("test_HTML_output_lines_count") },
                 { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
@@ -49,6 +50,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert snapshot(file(process.out.xl[0][1]).length() >= 89000).match("test_Excel_output_min_size") },
                 { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
