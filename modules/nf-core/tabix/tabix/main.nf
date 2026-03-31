@@ -23,7 +23,6 @@ process TABIX_TABIX {
     prefix          = task.ext.prefix ?: "${meta.id}"
     def regions_arg = regions ? "-R ${regions}" : ""
     def output_arg  = regions ? "| bgzip --threads ${task.cpus} > ${prefix}.vcf.gz" : ""
-
     """
     tabix \\
         ${regions_arg} \\
