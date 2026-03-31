@@ -17,7 +17,7 @@ nextflow_process {
                     [ id:'test'],
                     file(params.modules_testdata_base_path + 'proteomics/msspectra/OVEMB150205_12.mzML', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/medbioinf/test-datasets/refs/heads/comet-testdata/data/proteomics/parameter/OVEMB150205.comet.params', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'proteomics/parameter/OVEMB150205.comet.params', checkIfExists: true),
                 ]
                 """
             }
@@ -42,7 +42,7 @@ nextflow_process {
                     [ id:'test'],
                     file(params.modules_testdata_base_path + 'proteomics/msspectra/OVEMB150205_12.mzML', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/medbioinf/test-datasets/refs/heads/comet-testdata/data/proteomics/parameter/OVEMB150205.comet.params', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'proteomics/parameter/OVEMB150205.comet.params', checkIfExists: true),
                 ]
                 """
             }
