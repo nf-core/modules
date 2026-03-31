@@ -7,8 +7,8 @@ process COMET {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/comet-ms:2026.01.1--h9ee0642_0'
-        : 'biocontainers/comet-ms:2026.01.1--h9ee0642_0'}"
+        ? 'https://depot.galaxyproject.org/singularity/comet-ms:2026011--h9ee0642_0'
+        : 'biocontainers/comet-ms:2026011--h9ee0642_0'}"
 
     input:
     tuple val(meta), path(mzml), path(fasta), path(comet_params)
