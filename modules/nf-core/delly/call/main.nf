@@ -11,6 +11,7 @@ process DELLY_CALL {
     tuple val(meta), path(input), path(input_index), path(vcf), path(vcf_index), path(exclude_bed)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
+    val(suffix)
 
     output:
     tuple val(meta), path("*.{bcf,vcf.gz}")  , emit: bcf
@@ -23,13 +24,12 @@ process DELLY_CALL {
     script:
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
-    def args3 = task.ext.args3 ?: "bcf"
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def exclude = exclude_bed ? "--exclude ${exclude_bed}" : ""
 
-    def bcf_output = args3 == "bcf" ? "--outfile ${prefix}.bcf" : ""
-    def vcf_output = args3 == "vcf" ? "| bgzip ${args2} --threads ${task.cpus} --stdout > ${prefix}.vcf.gz && tabix ${prefix}.vcf.gz" : ""
+    def bcf_output = suffix == "bcf" ? "--outfile ${prefix}.bcf" : ""
+    def vcf_output = suffix == "vcf" ? "| bgzip ${args2} --threads ${task.cpus} --stdout > ${prefix}.vcf.gz && tabix ${prefix}.vcf.gz" : ""
 
     def genotype = vcf ? "--vcffile ${vcf}" : ""
 
@@ -47,11 +47,10 @@ process DELLY_CALL {
     """
 
     stub:
-    def args3 = task.ext.args3 ?: "bcf"
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def bcf_output = args3 == "bcf" ? "touch ${prefix}.bcf && touch ${prefix}.bcf.csi" : ""
-    def vcf_output = args3 == "vcf" ? "echo '' | gzip > ${prefix}.vcf.gz && touch ${prefix}.vcf.gz.tbi" : ""
+    def bcf_output = suffix == "bcf" ? "touch ${prefix}.bcf && touch ${prefix}.bcf.csi" : ""
+    def vcf_output = suffix == "vcf" ? "echo '' | gzip > ${prefix}.vcf.gz && touch ${prefix}.vcf.gz.tbi" : ""
 
     """
     ${bcf_output}
