@@ -29,13 +29,6 @@ process COMET {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def output_sqt = task.ext.output_sqt == null ? 0 : (task.ext.output_sqt ? 1 : 0)
-    def output_txt = task.ext.output_txt == null ? 0 : (task.ext.output_txt ? 1 : 0)
-    def output_pepxml = task.ext.output_pepxml == null ? 0 : (task.ext.output_pepxml ? 1 : 0)
-    def output_mzidentml = task.ext.output_mzidentml == null ? 1 : (task.ext.output_mzidentml ? 1 : 0)
-    def output_percolator = task.ext.output_percolator == null ? 0 : (task.ext.output_percolator ? 1 : 0)
-    def num_output_lines = task.ext.num_output_lines == null ? 5 : task.ext.num_output_lines
-
     def comet_threads = 8
     if (!task.cpus) {
         log.info('[Comet] Available CPUs not known - defaulting to 8. Specify the number of CPUs to change this.')
@@ -55,16 +48,7 @@ process COMET {
 
     # adjust runtime parameters
     sed -i 's;database_name =.*;database_name = ${fasta};' \${PARAMS_FILE}
-
     sed -i "s;^num_threads.*;num_threads = ${comet_threads};" \${PARAMS_FILE}
-
-    sed -i "s;^output_sqtfile.*;output_sqtfile = ${output_sqt};" \${PARAMS_FILE}
-    sed -i "s;^output_txtfile.*;output_txtfile = ${output_txt};" \${PARAMS_FILE}
-    sed -i "s;^output_pepxmlfile.*;output_pepxmlfile =  ${output_pepxml};" \${PARAMS_FILE}
-    sed -i "s;^output_mzidentmlfile.*;output_mzidentmlfile = ${output_mzidentml};" \${PARAMS_FILE}
-    sed -i "s;^output_percolatorfile.*;output_percolatorfile = ${output_percolator};" \${PARAMS_FILE}
-
-    sed -i "s;^num_output_lines.*;num_output_lines = ${num_output_lines};" \${PARAMS_FILE}
 
     # run comet
     comet \\

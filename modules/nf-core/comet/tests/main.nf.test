@@ -4,12 +4,9 @@ nextflow_process {
     script "../main.nf"
     process "COMET"
 
-    config "./nextflow.config"
-
     tag "modules"
     tag "modules_nfcore"
     tag "comet"
-
 
     test("comet - mzml - test") {
 
@@ -20,7 +17,7 @@ nextflow_process {
                     [ id:'test'],
                     file(params.modules_testdata_base_path + 'proteomics/msspectra/OVEMB150205_12.mzML', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/UWPR/Comet/refs/heads/gh-pages/parameters/parameters_202601/comet.params.high-high', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/medbioinf/test-datasets/refs/heads/comet-testdata/data/proteomics/parameter/OVEMB150205.comet.params', checkIfExists: true),
                 ]
                 """
             }
@@ -45,7 +42,7 @@ nextflow_process {
                     [ id:'test'],
                     file(params.modules_testdata_base_path + 'proteomics/msspectra/OVEMB150205_12.mzML', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/UWPR/Comet/refs/heads/gh-pages/parameters/parameters_202601/comet.params.high-high', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/medbioinf/test-datasets/refs/heads/comet-testdata/data/proteomics/parameter/OVEMB150205.comet.params', checkIfExists: true),
                 ]
                 """
             }
