@@ -162,6 +162,36 @@ output:
       - caalm --version 2>&1 | head -1:
           type: eval
           description: The expression to obtain the version of the tool
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - "python --version | sed 's/Python //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_torch:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - torch:
+          type: string
+          description: The name of the tool
+      - "python -c 'import torch; print(torch.__version__)'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_faiss:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - faiss:
+          type: string
+          description: The name of the tool
+      - "python -c 'import faiss; print(faiss.__version__)'":
+          type: eval
+          description: The expression to obtain the version of the tool
 
 topics:
   versions:
@@ -172,6 +202,33 @@ topics:
           type: string
           description: The name of the tool
       - caalm --version 2>&1 | head -1:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - "python --version | sed 's/Python //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - torch:
+          type: string
+          description: The name of the tool
+      - "python -c 'import torch; print(torch.__version__)'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - faiss:
+          type: string
+          description: The name of the tool
+      - "python -c 'import faiss; print(faiss.__version__)'":
           type: eval
           description: The expression to obtain the version of the tool
 

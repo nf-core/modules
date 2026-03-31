@@ -20,6 +20,9 @@ process CAALM_CAALM {
     tuple val(meta), path("${prefix}_level2_embeddings.npy"), emit: embeddings_level2, optional: true
     tuple val(meta), path("${prefix}.log")                  , emit: log
     tuple val("${task.process}"), val('caalm'), eval("caalm --version 2>&1 | head -1"), topic: versions, emit: versions_caalm
+    tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //'"), topic: versions, emit: versions_python
+    tuple val("${task.process}"), val('torch'), eval("python -c 'import torch; print(torch.__version__)'"), topic: versions, emit: versions_torch
+    tuple val("${task.process}"), val('faiss'), eval("python -c 'import faiss; print(faiss.__version__)'"), topic: versions, emit: versions_faiss
 
     when:
     task.ext.when == null || task.ext.when
