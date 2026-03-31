@@ -28,7 +28,6 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
                 { assert process.success },
                 { snapshot(
@@ -93,7 +92,6 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
                 { assert process.success },
                 { snapshot(
