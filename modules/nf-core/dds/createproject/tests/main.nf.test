@@ -1,0 +1,59 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test dds/createproject
+nextflow_process {
+
+    name "Test Process DDS_CREATEPROJECT"
+    script "../main.nf"
+    process "DDS_CREATEPROJECT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dds"
+    tag "dds/createproject"
+
+    test("dds/createproject") {
+
+        when {
+            process {
+                """
+                input[0] = "Test title"
+                input[1] = "Test description"
+                input[2] = "test-pi@mail.com"
+                """
+            }
+        }
+
+        then {
+            assertAll( 
+                { assert process.success },
+                { assert snapshot (
+                    process.out.log.get(0).readLines().first().contains("Project created with id:")
+                    )   
+                }
+            )
+        }
+    }
+
+    test("dds/createproject - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = "Test title"
+                input[1] = "Test description"
+                input[2] = "test-pi@mail.com"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match()
+                }
+            )
+        }
+    }
+}
