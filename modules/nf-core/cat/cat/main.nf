@@ -18,6 +18,18 @@ process CAT_CAT {
     task.ext.when == null || task.ext.when
 
     script:
+    def deprecation_message = """
+    WARNING: This module has been deprecated. Please use nf-core/modules/find/concatenate
+
+    Reason:
+    This module passes all input files as shell arguments, which can exceed the UNIX ARG_MAX
+    limit when concatenating large numbers of files. The find/concatenate module resolves this
+    by staging files into a directory and enumerating them with `find`, and also enforces
+    consistent input compression (all gzipped or all uncompressed). Also enables faster, parallel
+    decompression with pigz.
+    """
+    assert false: deprecation_message
+
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def file_list = files_in.collect { file -> file.toString() }
@@ -55,6 +67,18 @@ process CAT_CAT {
     """
 
     stub:
+    def deprecation_message = """
+    WARNING: This module has been deprecated. Please use nf-core/modules/find/concatenate
+
+    Reason:
+    This module passes all input files as shell arguments, which can exceed the UNIX ARG_MAX
+    limit when concatenating large numbers of files. The find/concatenate module resolves this
+    by staging files into a directory and enumerating them with `find`, and also enforces
+    consistent input compression (all gzipped or all uncompressed). Also enables faster, parallel
+    decompression with pigz.
+    """
+    assert false: deprecation_message
+
     def file_list   = files_in.collect { file -> file.toString() }
     prefix          = task.ext.prefix ?: "${meta.id}${file_list[0].substring(file_list[0].lastIndexOf('.'))}"
     if(file_list.contains(prefix.trim())) {
