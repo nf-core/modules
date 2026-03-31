@@ -61,7 +61,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "${prefix}.vcf.gz":
           type: file
-          description: bgzipped VCF of extracted regions. Emitted when a regions file is provided.
+          description: Bgzipped VCF of extracted regions. Emitted when a regions file is provided.
           pattern: "*.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3016 # VCF
