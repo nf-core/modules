@@ -9,14 +9,14 @@ workflow FASTA_CLEAN_FCS {
     ramdisk_path // value: the path to the ramdisk
 
     main:
-    ch_versions = channel.empty()
+//    ch_versions = channel.empty()
 
     ch_fasta.map{
         meta, _fasta -> [ meta.taxid ?: error("taxid is mandatory in the meta map") ]
     }
 
     FCS_FCSADAPTOR ( ch_fasta )
-    ch_versions = ch_versions.mix(FCS_FCSADAPTOR.out.versions)
+//    ch_versions = ch_versions.mix(FCS_FCSADAPTOR.out.findAll { key, val -> key.startsWith('versions') }.map { k, v -> v })
 
     ch_cleaned_assembly = ch_fasta
         .join(FCS_FCSADAPTOR.out.cleaned_assembly, by:0, remainder: true )
@@ -25,7 +25,7 @@ workflow FASTA_CLEAN_FCS {
         }
 
     FCSGX_RUNGX ( ch_cleaned_assembly, database, ramdisk_path)
-    ch_versions = ch_versions.mix(FCSGX_RUNGX.out.versions)
+//    ch_versions = ch_versions.mix(FCSGX_RUNGX.out.findAll { key, val -> key.startsWith('versions') }.map { k, v -> v })
 
     emit:
     fcsadaptor_cleaned_assembly = ch_cleaned_assembly                       // channel: [ val(meta), [ cleaned_assembly ] ]
@@ -37,5 +37,5 @@ workflow FASTA_CLEAN_FCS {
     fcsgx_taxonomy_report       = FCSGX_RUNGX.out.taxonomy_report           // channel: [ val(meta), [ taxonomy_report ] ]
     fcsgx_log                   = FCSGX_RUNGX.out.log                       // channel: [ val(meta), [ log ] ]
     fcsgx_hits                  = FCSGX_RUNGX.out.hits                      // channel: [ val(meta), [ hits ] ]
-    versions                    = ch_versions                               // channel: [ versions.yml ]
+//    versions                    = ch_versions                               // channel: [ versions.yml ]
 }
