@@ -14,7 +14,8 @@ tools:
       homepage: https://www.htslib.org/doc/tabix.html
       documentation: https://www.htslib.org/doc/tabix.1.html
       doi: 10.1093/bioinformatics/btq671
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:tabix
 input:
   - - meta:
@@ -27,7 +28,7 @@ input:
         description: TAB-delimited genome position file compressed with bgzip
         pattern: "*.{bed.gz,gff.gz,sam.gz,vcf.gz}"
         ontologies: []
-    - index:
+    - tai:
         type: file
         description: |
           Tabix index for the input file. Required when extracting regions.
@@ -40,7 +41,8 @@ input:
           Optional file of regions to extract (BED or chr:start-end format).
           Pass [] to create an index instead of extracting regions.
         pattern: "*.{bed,txt,tsv}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3475
 output:
   index:
     - - meta:
@@ -50,7 +52,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.{tbi,csi}":
           type: file
-          description: Tabix index file (tbi or csi). Emitted when no regions file is provided.
+          description: Tabix index file (tbi or csi). Emitted when no regions file
+            is provided.
           pattern: "*.{tbi,csi}"
           ontologies: []
   vcf:
@@ -61,10 +64,12 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "${prefix}.vcf.gz":
           type: file
-          description: Bgzipped VCF of extracted regions. Emitted when a regions file is provided.
+          description: Bgzipped VCF of extracted regions. Emitted when a regions
+            file is provided.
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3016 # VCF
+            - edam: http://edamontology.org/format_3016
+            - edam: http://edamontology.org/format_3989
   versions_tabix:
     - - ${task.process}:
           type: string
@@ -75,7 +80,6 @@ output:
       - tabix -h 2>&1 | grep -oP 'Version:\s*\K[^\s]+':
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -87,7 +91,6 @@ topics:
       - tabix -h 2>&1 | grep -oP 'Version:\s*\K[^\s]+':
           type: eval
           description: The expression to obtain the version of the tool
-
 authors:
   - "@joseespinosa"
   - "@drpatelh"

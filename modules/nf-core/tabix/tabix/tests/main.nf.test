@@ -117,7 +117,7 @@ nextflow_process {
     test("sarscov2_vcf_tbi_regions") {
         when {
             params {
-                module_args = ''
+                module_args = '-h'
             }
             process {
                 """
@@ -134,7 +134,11 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["vcf"])).match() }
+                { assert snapshot(
+                    process.out.index,
+                    path(process.out.vcf[0][1]).vcf.getVariantsMD5(),
+                    process.out.versions_tabix
+                ).match() }
             )
         }
     }
