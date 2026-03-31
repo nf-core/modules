@@ -24,31 +24,29 @@ tools:
 input: []
 
 output:
-  level0:
-    - models/level0:
-        type: directory
-        description: |
-          Directory containing the Level 0 (binary CAZyme detection) model files
-          downloaded from HuggingFace Hub (lczong/CAALM).
-        pattern: "models/level0"
-        ontologies: []
-  level1:
-    - models/level1:
-        type: directory
-        description: |
-          Directory containing the Level 1 (CAZy class assignment) model files
-          downloaded from HuggingFace Hub (lczong/CAALM).
-        pattern: "models/level1"
-        ontologies: []
-  level2:
-    - models/level2:
-        type: directory
-        description: |
-          Directory containing the Level 2 (CAZy family assignment) model files
-          downloaded from HuggingFace Hub (lczong/CAALM), including the FAISS index,
-          reference database, and model weights.
-        pattern: "models/level2"
-        ontologies: []
+  models:
+    - - models/level0:
+          type: directory
+          description: |
+            Directory containing the Level 0 (binary CAZyme detection) model files
+            downloaded from HuggingFace Hub (lczong/CAALM).
+          pattern: "models/level0"
+          ontologies: []
+      - models/level1:
+          type: directory
+          description: |
+            Directory containing the Level 1 (CAZy class assignment) model files
+            downloaded from HuggingFace Hub (lczong/CAALM).
+          pattern: "models/level1"
+          ontologies: []
+      - models/level2:
+          type: directory
+          description: |
+            Directory containing the Level 2 (CAZy family assignment) model files
+            downloaded from HuggingFace Hub (lczong/CAALM), including the FAISS index,
+            reference database, and model weights.
+          pattern: "models/level2"
+          ontologies: []
   versions_huggingface_hub:
     - - ${task.process}:
           type: string
@@ -66,7 +64,7 @@ output:
       - python:
           type: string
           description: The name of the tool
-      - "python --version | sed 's/Python //'":
+      - python --version | sed 's/Python //':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -87,7 +85,7 @@ topics:
       - python:
           type: string
           description: The name of the tool
-      - "python --version | sed 's/Python //'":
+      - python --version | sed 's/Python //':
           type: eval
           description: The expression to obtain the version of the tool
 

@@ -29,9 +29,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'proteomics/database/protein_mini_with_cazymes.faa', checkIfExists: true)
                 ]
-                input[1] = CAALM_DOWNLOADMODELS.out.level0
-                    .combine(CAALM_DOWNLOADMODELS.out.level1)
-                    .combine(CAALM_DOWNLOADMODELS.out.level2)
+                input[1] = CAALM_DOWNLOADMODELS.out.models
                 """
             }
         }
