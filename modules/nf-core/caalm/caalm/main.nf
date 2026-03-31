@@ -9,7 +9,7 @@ process CAALM_CAALM {
 
     input:
     tuple val(meta), path(fasta)
-    path(models)
+    tuple path(level0), path(level1), path(level2)
 
     output:
     tuple val(meta), path("${prefix}_predictions.tsv")      , emit: predictions
@@ -31,11 +31,11 @@ process CAALM_CAALM {
     caalm \\
         $args \\
         --num-workers ${task.cpus} \\
-        --level0-model ${models}/level0 \\
-        --level1-model ${models}/level1 \\
-        --level2-model ${models}/level2/model.pt \\
-        --level2-faiss-dir ${models}/level2/faiss \\
-        --level2-label-tsv-dir ${models}/level2/refdb \\
+        --level0-model ${level0} \\
+        --level1-model ${level1} \\
+        --level2-model ${level2}/model.pt \\
+        --level2-faiss-dir ${level2}/faiss \\
+        --level2-label-tsv-dir ${level2}/refdb \\
         --output-name ${prefix} \\
         -o . \\
         ${fasta} \\

@@ -7,7 +7,9 @@ process CAALM_DOWNLOADMODELS {
         'community.wave.seqera.io/library/huggingface_hub_python:91b414233adf3eb1' }"
 
     output:
-    path("models"), emit: models
+    path("models/level0"), emit: level0
+    path("models/level1"), emit: level1
+    path("models/level2"), emit: level2
     tuple val("${task.process}"), val('huggingface_hub'), eval("python -c 'import huggingface_hub; print(huggingface_hub.__version__)'"), topic: versions, emit: versions_huggingface_hub
 
     when:

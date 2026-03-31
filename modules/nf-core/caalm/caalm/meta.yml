@@ -36,11 +36,27 @@ input:
         pattern: "*.{fa,fasta,faa}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
-  - models:
-      type: directory
-      description: |
-        Model weights directory downloaded from HuggingFace Hub (`lczong/CAALM`),
-        containing the Level 0, Level 1, and Level 2 model files.
+  - - level0:
+        type: directory
+        description: |
+          Directory containing the Level 0 (binary CAZyme detection) model files,
+          as produced by CAALM_DOWNLOADMODELS.
+        pattern: "models/level0"
+        ontologies: []
+    - level1:
+        type: directory
+        description: |
+          Directory containing the Level 1 (CAZy class assignment) model files,
+          as produced by CAALM_DOWNLOADMODELS.
+        pattern: "models/level1"
+        ontologies: []
+    - level2:
+        type: directory
+        description: |
+          Directory containing the Level 2 (CAZy family assignment) model files,
+          as produced by CAALM_DOWNLOADMODELS.
+        pattern: "models/level2"
+        ontologies: []
 
 output:
   predictions:
