@@ -94,7 +94,7 @@ output:
       - fcsgx:
           type: string
           description: The name of the tool
-      - gx --help | sed '/build/!d; s/.*:v//; s/-.*//:
+      - gx --help | sed '/build/!d; s/.*:v//; s/-.*//':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -105,7 +105,7 @@ topics:
       - fcsgx:
           type: string
           description: The name of the tool
-      - gx --help | sed '/build/!d; s/.*:v//; s/-.*//:
+      - gx --help | sed '/build/!d; s/.*:v//; s/-.*//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
