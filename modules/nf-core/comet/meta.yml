@@ -45,7 +45,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.comet.params":
+      - "${prefix}*.comet.params":
           type: file
           description: The parameter file used for the Comet search (for reproducibility)
           pattern: "*.comet.params"
@@ -55,7 +55,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.sqt":
+      - "${prefix}*.sqt":
           type: file
           description: Search results in SQT format
           pattern: "*.sqt"
@@ -65,7 +65,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.txt":
+      - "${prefix}*.txt":
           type: file
           description: Search results in simple TXT format
           pattern: "*.txt"
@@ -75,7 +75,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.pep.xml":
+      - "${prefix}*.pep.xml":
           type: file
           description: Search results in pepXML format
           pattern: "*.pep.xml"
@@ -85,7 +85,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.mzid":
+      - "${prefix}*.mzid":
           type: file
           description: Search results in mzIdentML format
           pattern: "*.mzid"
@@ -95,7 +95,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.pin":
+      - "${prefix}*.pin":
           type: file
           description: Search results in Percolator input format (pin)
           pattern: "*.pin"
