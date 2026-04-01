@@ -26,12 +26,14 @@ input:
         type: file
         description: Study locus file(s)
         pattern: "*.gwas"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
   - ld_files:
       type: file
       description: LD file(s)
       pattern: "*.ld"
-      ontologies: []
+      ontologies:
+        - edam: "http://edamontology.org/format_3475" # TSV
   - sample_sizes:
       type: string
       description: Sample size(s)
