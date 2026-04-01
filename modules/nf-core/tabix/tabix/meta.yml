@@ -56,20 +56,18 @@ output:
             is provided.
           pattern: "*.{tbi,csi}"
           ontologies: []
-  vcf:
+  extracted:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}.vcf.gz":
+      - "${prefix}.*gz":
           type: file
-          description: Bgzipped VCF of extracted regions. Emitted when a regions
-            file is provided.
-          pattern: "*.vcf.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3016
-            - edam: http://edamontology.org/format_3989
+          description: Bgzipped file of extracted regions, preserving the input file
+            extension. Emitted when a regions file is provided.
+          pattern: "*.*gz"
+          ontologies: []
   versions_tabix:
     - - ${task.process}:
           type: string
