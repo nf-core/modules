@@ -18,7 +18,6 @@ workflow BAM_STRINGTIE_MERGE {
     )
 
     STRINGTIE_STRINGTIE.out.transcript_gtf
-        .map { _meta, gtf -> [ gtf ] }
         .set { stringtie_gtfs }
 
     STRINGTIE_MERGE(

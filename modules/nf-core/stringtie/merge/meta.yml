@@ -14,25 +14,33 @@ tools:
         - "MIT"
       identifier: biotools:stringtie
 input:
-  - stringtie_gtf:
-      type: file
-      description: |
-        Stringtie transcript gtf output(s).
-      pattern: "*.gtf"
-      ontologies: []
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: |
+          Stringtie transcript gtf output(s).
+        ontologies: []
   - annotation_gtf:
       type: file
       description: |
         Annotation gtf file (optional).
-      pattern: "*.gtf"
       ontologies: []
 output:
   gtf:
-    - stringtie.merged.gtf:
-        type: file
-        description: Merged gtf file
-        pattern: "stringtie.merged.gtf"
-        ontologies: []
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.merged.gtf":
+          type: file
+          description: gtf
+          pattern: "*.{merged.gtf}"
+          ontologies: []
   versions_stringtie:
     - - ${task.process}:
           type: string
