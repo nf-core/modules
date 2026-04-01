@@ -54,6 +54,10 @@ input:
       type: boolean
       description: True if input is interleaved fastq file
 
+  - enable_bam_output:
+      type: boolean
+      description: True to enable BAM output of aligned reads
+
 output:
   coverage:
     - - meta:

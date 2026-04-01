@@ -63,6 +63,10 @@ input:
         Defaults to `"auto"` if not provided.
       pattern: "^(dir|file|auto)$"
 
+  - enable_bam_output:
+      type: boolean
+      description: True to enable BAM output of aligned reads
+
 output:
   coverage:
     - - meta:
