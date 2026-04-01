@@ -23,7 +23,6 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-
     - input:
         type: file
         description: |
@@ -32,6 +31,7 @@ input:
         pattern: "*.{fa,fq,fa.gz,fq.gz,bam}"
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
+
   - - meta2:
         type: map
         description: |
@@ -43,8 +43,8 @@ input:
         description: Reference FASTA file to map reads to, or minimap2/strobealign index.
           Not required if using BAM input.
         pattern: "*.{fasta,fasta.gz,mmi,sti}"
-
         ontologies: []
+
   - bam_input:
       type: boolean
       description: True if input is bam files
@@ -65,6 +65,9 @@ output:
           type: file
           description: Tab-delimited file containing coverage information for each contig and sample.
           pattern: "*.depths.{txt}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+
   bam_output:
     - - meta:
           type: map
@@ -78,7 +81,7 @@ output:
           pattern: "_bam_cache/*.bam"
           ontologies:
             - edam: "http://edamontology.org/format_2572" # BAM
-          
+
   versions_coverm:
     - - ${task.process}:
           type: string
