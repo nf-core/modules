@@ -6,16 +6,15 @@ process CENTRIFUGER_BUILD {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/centrifuger:1.1.0--hf426362_0':
         'biocontainers/centrifuger:1.1.0--hf426362_0' }"
-    
+
     input:
     tuple val(meta), path(reference)
     path taxonomy_nodes
     path taxonomy_names
     path conversion_table
-    path reference_list
 
     output:
-    tuple val(meta), path("${prefix}/"), emit: db
+    tuple val(meta), path("${prefix}"), emit: db
     tuple val("${task.process}"), val("centrifuger"), eval("centrifuger -v 2>&1 | head -n 1 | cut -d ' ' -f 2"), emit: versions_centrifuger, topic: versions
 
     when:
@@ -24,21 +23,32 @@ process CENTRIFUGER_BUILD {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    // if reference list inserted and not conversiont able --> use -l
-    def reference_input = (reference_list && !conversion_table)
-        ? "-l ${reference_list}"
-        : reference.collect { r -> "-r ${r}" }.join(' ')
-    def conversion_arg = conversion_table ? "--conversion-table ${conversion_table}" : ''
+
+    // Always use -l option: input FASTA file(s) are converted into a reference list
+    def refs = reference instanceof List ? reference : [reference]
+    // Create an input str so we can be used to create a file
+    def reference_list_str = refs.join("\n")
+
+    // check if conversion table is given.
+    if (!conversion_table) {
+        error "centrifuger-build requires a --conversion-table"
+    }
+
    """
     mkdir -p ${prefix}
 
+    #Create reference file from input files --> use it with -l option
+    cat <<EOF > reference_list.txt
+    ${reference_list_str}
+    EOF
+
     centrifuger-build \\
-        ${reference_input} \\
+        -l reference_list.txt \\
         --taxonomy-tree $taxonomy_nodes \\
         --name-table $taxonomy_names \\
-        ${conversion_arg} \\
+        --conversion-table ${conversion_table} \\
         -t ${task.cpus} \\
-        -o ${prefix} \\
+        -o ${prefix}/${prefix} \\
         $args
     """
 
@@ -46,6 +56,7 @@ process CENTRIFUGER_BUILD {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo ${args}
     mkdir -p ${prefix}/
     touch ${prefix}/${prefix}.1.cfr
     touch ${prefix}/${prefix}.2.cfr

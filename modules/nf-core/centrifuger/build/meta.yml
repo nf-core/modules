@@ -25,6 +25,7 @@ input:
         type: file
         description: |
           One or more reference genome sequence files in FASTA format.
+          These are internally converted into a reference list file for centrifuged-build using the -l
         ontologies: []
   - taxonomy_nodes:
       type: file
@@ -37,19 +38,9 @@ input:
   - conversion_table:
       type: file
       description: |
-        Optional mapping of sequence IDs to taxonomy IDs.
-        Optional.When not provided, exapcts reference_list with 2-columns format (file_path, taxID).
+        Mapping of sequence IDs to taxonomy IDs.
+        Required for all runs.
       ontologies: []
-  - reference_list:
-      type: file
-      description: |
-        Optional file containing a list of refenrece sequence files (one per line).
-        Can include taxonomy ID mapping in the second column (tab-seperated).
-        Alternative to providing individual reference files.
-      pattern: "*.{txt,tsv,list}"
-      optional: true
-      ontologies:
-        - edam: http://edamontology.org/format_3475
 output:
   db:
     - - meta:
@@ -57,10 +48,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}/:
+      - ${prefix}:
           type: directory
           description: Centrifuger database index files
-          pattern: "${prefix}/"
+          pattern: "${prefix}"
           ontologies: []
   versions_centrifuger:
     - - ${task.process}:
