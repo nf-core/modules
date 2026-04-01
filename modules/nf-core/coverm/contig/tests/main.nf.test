@@ -15,7 +15,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ], // meta map
                     [
                         file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_2.fastq.gz', checkIfExists: true),
@@ -29,6 +29,7 @@ nextflow_process {
                 ]
                 input[2] = false
                 input[3] = false
+                input[4] = false
                 """
             }
         }
@@ -48,9 +49,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test1.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test2.sorted.bam', checkIfExists: true)
+                    [ id:'test' ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test1.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test2.sorted.bam', checkIfExists: true)
+                    ]
                 ]
                 input[1] = [
                     [],
@@ -58,6 +61,7 @@ nextflow_process {
                 ]
                 input[2] = true
                 input[3] = false
+                input[4] = false
                 """
             }
         }
@@ -79,7 +83,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ], // meta map
                     [
                         file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_2.fastq.gz', checkIfExists: true),
@@ -91,6 +95,7 @@ nextflow_process {
                 ]
                 input[2] = false
                 input[3] = false
+                input[4] = true
                 """
             }
         }
