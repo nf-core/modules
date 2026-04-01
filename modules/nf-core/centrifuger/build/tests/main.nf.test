@@ -22,12 +22,15 @@ nextflow_process {
             }
         }
         then {
+            def unstable_Files = file(process.out.db.get(0).get(1)).list().sort()
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    unstable_Files,
+                    process.out.versions_centrifuger
+                    ).match() }
             )
         }
-
     }
 
    test("sarscov2 - fasta with reference file-stub") {
@@ -45,12 +48,15 @@ nextflow_process {
         }
 
     then {
+        def unstable_Files = file(process.out.db.get(0).get(1)).list().sort()
         assertAll(
         { assert process.success },
-        { assert snapshot(process.out).match() }
+        { assert snapshot(
+            unstable_Files,
+            process.out.versions_centrifuger
+            ).match() }
     )
         }
 
     }
-
 }

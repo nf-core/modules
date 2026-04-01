@@ -8,7 +8,7 @@ process CENTRIFUGER_BUILD {
         'biocontainers/centrifuger:1.1.0--hf426362_0' }"
 
     input:
-    tuple val(meta), path(reference)
+    tuple val(meta), path(references, stageAs: 'genomes/*')
     path taxonomy_nodes
     path taxonomy_names
     path conversion_table
@@ -24,23 +24,16 @@ process CENTRIFUGER_BUILD {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
-    // Always use -l option: input FASTA file(s) are converted into a reference list
-    def refs = reference instanceof List ? reference : [reference]
-    // Create an input str so we can be used to create a file
-    def reference_list_str = refs.join("\n")
-
     // check if conversion table is given.
     if (!conversion_table) {
-        error "centrifuger-build requires a --conversion-table"
+        error "CENTRIFUGER_BUILD mmodule always requires a --conversion-table"
     }
 
    """
-    mkdir -p ${prefix}
+    #Create reference file from staged input file(s)
+    ls -1 genomes/* > reference_list.txt
 
-    #Create reference file from input files --> use it with -l option
-    cat <<EOF > reference_list.txt
-    ${reference_list_str}
-    EOF
+    mkdir -p ${prefix}
 
     centrifuger-build \\
         -l reference_list.txt \\
@@ -62,5 +55,10 @@ process CENTRIFUGER_BUILD {
     touch ${prefix}/${prefix}.2.cfr
     touch ${prefix}/${prefix}.3.cfr
     touch ${prefix}/${prefix}.4.cfr
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        centrifuger: \$(centrifuger -v 2>&1 | head -n 1 | cut -d ' ' -f 2)
+    END_VERSIONS
     """
 }
