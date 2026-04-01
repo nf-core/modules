@@ -32,7 +32,7 @@ process IMC2MC {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo $args
-    
+
     touch ${prefix}.tif
     """
 }

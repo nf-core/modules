@@ -15,7 +15,7 @@ process MCSTAGING_IMC2MC {
 
     script:
     def deprecation_message = """
-WARNING: This module has been deprecated. Please use nf-core/modules/imc2mc 
+WARNING: This module has been deprecated. Please use nf-core/modules/imc2mc
 
 Reason:
 Renamed module to match the tool/subtool convention
