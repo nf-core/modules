@@ -101,7 +101,7 @@ workflow FASTA_GXF_BUSCO_PLOT {
                                                 ? channel.empty()
                                                 : ch_fasta
                                                 | map { meta, fasta -> [ meta.id, meta, fasta ] }
-                                                | join(
+                                                | combine(
                                                     ch_gxf.map { meta2, gxf -> [ meta2.id, gxf ] }
                                                     // Join with matching annotation
                                                     // to allow one annotations per fasta
