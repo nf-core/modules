@@ -13,7 +13,7 @@ process FCSGX_CLEANGENOME {
     output:
     tuple val(meta), path("*.cleaned.fasta")     , emit: cleaned
     tuple val(meta), path("*.contaminants.fasta"), emit: contaminants
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('fcsgx'), eval("gx --help | sed '/build/!d; s/.*:v//; s/-.*//'"), emit: versions_fcsgx, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,11 +29,6 @@ process FCSGX_CLEANGENOME {
         --output ${prefix}.cleaned.fasta \\
         --contam-fasta-out ${prefix}.contaminants.fasta \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fcsgx: \$( gx --help | sed '/build/!d; s/.*:v//; s/-.*//' )
-    END_VERSIONS
     """
 
     stub:
@@ -42,10 +37,5 @@ process FCSGX_CLEANGENOME {
     """
     touch ${prefix}.cleaned.fasta
     touch ${prefix}.contaminants.fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fcsgx: \$( gx --help | sed '/build/!d; s/.*:v//; s/-.*//' )
-    END_VERSIONS
     """
 }
