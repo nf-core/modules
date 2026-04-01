@@ -16,7 +16,7 @@ process COVERM_GENOME {
     val ref_mode
 
     output:
-    tuple val(meta), path("*.tsv"), emit: coverage
+    tuple val(meta), path('*.tsv')           , emit: coverage
     tuple val(meta), path('_bam_cache/*.bam'), emit: bam_output, optional: true
     tuple val("${task.process}"), val('coverm'), eval("coverm --version | sed 's/coverm //'"), emit: versions_coverm, topic: versions
 
