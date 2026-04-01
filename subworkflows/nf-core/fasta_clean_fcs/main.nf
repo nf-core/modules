@@ -23,7 +23,6 @@ workflow FASTA_CLEAN_FCS {
         }
 
     FCSGX_RUNGX ( ch_cleaned_assembly, database, ramdisk_path)
-//    ch_versions = ch_versions.mix(FCSGX_RUNGX.out.findAll { key, val -> key.startsWith('versions') }.map { k, v -> v })
 
     emit:
     fcsadaptor_cleaned_assembly = ch_cleaned_assembly                       // channel: [ val(meta), [ cleaned_assembly ] ]
