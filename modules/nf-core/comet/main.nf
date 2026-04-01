@@ -50,11 +50,8 @@ process COMET {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo ${args}
-
     touch ${prefix}.comet.params
     touch ${prefix}.sqt
     touch ${prefix}.txt
