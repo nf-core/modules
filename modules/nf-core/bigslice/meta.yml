@@ -8,15 +8,15 @@ keywords:
   - analysis
 tools:
   - "bigslice":
-      description: A highly scalable, user-interactive tool for the large scale analysis
-        of Biosynthetic Gene Clusters data
+      description: A highly scalable, user-interactive tool for the large scale
+        analysis of Biosynthetic Gene Clusters data
       homepage: "https://github.com/medema-group/bigslice"
       documentation: "https://github.com/medema-group/bigslice"
       tool_dev_url: "https://github.com/medema-group/bigslice"
       doi: "10.1093/gigascience/giaa154"
-      licence: ["AGPL v3-or-later"]
+      licence:
+        - "AGPL v3-or-later"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -30,46 +30,51 @@ input:
           Each file represents a BGC region. The module internally organises them into the required
           BiG-SLiCE input folder structure (datasets.tsv and taxonomy TSV).
         pattern: "*.gbk"
+        ontologies: []
   - hmmdb:
       type: directory
       description: |
         Path to the BiG-SLiCE HMM database folder containing biosynthetic and sub Pfams for annotation, in the required BiG-SLiCE format.
         An example directory in compressed archive format can be found here: https://github.com/medema-group/bigslice/releases/download/v2.0.0rc/bigslice-models.2022-11-30.tar.gz
-
+  - export_tsv:
+      type: boolean
+      description: |
+        If true, runs a second BiG-SLiCE invocation to export all results from the SQLite database
+        to TSV files under `tsv_export/`. Additional arguments for this step can be passed via `task.ext.args2`.
 output:
   db:
     - - meta:
           type: map
           description: Groovy Map containing sample/dataset information
-      - ${prefix}/result/data.db:
+      - ${prefix}/data.db:
           type: file
           description: |
             The results SQLite database. Contains various tables relevant to result
             BGCs, CDSs, GCFs, HMMs and HSPs.
           pattern: "data.db"
           ontologies:
-            - edam: "http://edamontology.org/format_3621" # SQLite format
+            - edam: "http://edamontology.org/format_3621"
   fa:
     - - meta:
           type: map
           description: Groovy Map containing sample/dataset information
-      - ${prefix}/result/tmp/**/*.fa:
+      - ${prefix}/tmp/**/*.fa:
           type: file
           description: |
             Predicted features as FASTA files. One file per hit HMM.
           pattern: "*.fa"
           ontologies:
-            - edam: "http://edamontology.org/format_1929" # FASTA
+            - edam: "http://edamontology.org/format_1929"
   tsv:
     - - meta:
           type: map
           description: Groovy Map containing sample/dataset information
-      - ${prefix}/result/tsv_export:
+      - ${prefix}/tsv_export:
           type: directory
           description: |
             Directory containing TSV exports of all parsed BGC metadata, vectorized
-            features and clustering results. The directory is always created; files
-            are only present when `--export-tsv` is passed via `task.ext.args2`.
+            features and clustering results. Only present when `export_tsv` input is
+            set to `true`. Optional output.
           pattern: "tsv_export"
   versions_bigslice:
     - - ${task.process}:
@@ -81,7 +86,6 @@ output:
       - 2.0.2:
           type: string
           description: The version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -93,7 +97,6 @@ topics:
       - 2.0.2:
           type: string
           description: The version of the tool
-
 authors:
   - "@vagkaratzas"
 maintainers:
