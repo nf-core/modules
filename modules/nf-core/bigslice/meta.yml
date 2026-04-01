@@ -42,40 +42,17 @@ input:
         If true, runs a second BiG-SLiCE invocation to export all results from the SQLite database
         to TSV files under `tsv_export/`. Additional arguments for this step can be passed via `task.ext.args2`.
 output:
-  db:
+  output:
     - - meta:
           type: map
           description: Groovy Map containing sample/dataset information
-      - ${prefix}/data.db:
-          type: file
-          description: |
-            The results SQLite database. Contains various tables relevant to result
-            BGCs, CDSs, GCFs, HMMs and HSPs.
-          pattern: "data.db"
-          ontologies:
-            - edam: "http://edamontology.org/format_3621"
-  fa:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample/dataset information
-      - ${prefix}/tmp/**/*.fa:
-          type: file
-          description: |
-            Predicted features as FASTA files. One file per hit HMM.
-          pattern: "*.fa"
-          ontologies:
-            - edam: "http://edamontology.org/format_1929"
-  tsv:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample/dataset information
-      - ${prefix}/tsv_export:
+      - ${prefix}/result:
           type: directory
           description: |
-            Directory containing TSV exports of all parsed BGC metadata, vectorized
-            features and clustering results. Only present when `export_tsv` input is
-            set to `true`. Optional output.
-          pattern: "tsv_export"
+            BiG-SLiCE result directory containing the SQLite database (`data.db`),
+            predicted feature FASTA files (`tmp/**/*.fa`), and optionally TSV exports
+            (`tsv_export/`) when `export_tsv` is `true`.
+          pattern: "result"
   versions_bigslice:
     - - ${task.process}:
           type: string

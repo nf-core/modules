@@ -74,11 +74,18 @@ nextflow_process {
 
         then {
             assert process.success
+            def stableFiles = []
+            def unstableNames = []
+            file(process.out.output[0][1]).eachFileRecurse { f ->
+                if (!f.isDirectory()) {
+                    if (f.name.endsWith('.db')) { unstableNames.add(f.name) }
+                    else { stableFiles.add(f) }
+                }
+            }
             assertAll(
                 { assert snapshot(
-                    file(process.out.db[0][1]).name,
-                    process.out.fa[0][1].size(),
-                    process.out.tsv,
+                    stableFiles.sort { it.name },
+                    unstableNames.sort(),
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
@@ -105,11 +112,18 @@ nextflow_process {
 
         then {
             assert process.success
+            def stableFiles = []
+            def unstableNames = []
+            file(process.out.output[0][1]).eachFileRecurse { f ->
+                if (!f.isDirectory()) {
+                    if (f.name.endsWith('.db')) { unstableNames.add(f.name) }
+                    else { stableFiles.add(f) }
+                }
+            }
             assertAll(
                 { assert snapshot(
-                    file(process.out.db[0][1]).name,
-                    process.out.fa[0][1].size(),
-                    file(process.out.tsv[0][1]).isDirectory(),
+                    stableFiles.sort { it.name },
+                    unstableNames.sort(),
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )

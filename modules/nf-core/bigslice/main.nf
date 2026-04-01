@@ -8,14 +8,12 @@ process BIGSLICE {
         : 'biocontainers/bigslice:2.0.2--pyh8ed023e_0'}"
 
     input:
-    tuple val(meta), path(bgc, stageAs: 'bgc_files/*')
+    tuple val(meta), path(bgc, stageAs: 'bgc_files/s*/*')
     path(hmmdb)
     val(export_tsv)
 
     output:
-    tuple val(meta), path("${prefix}/data.db")   , emit: db
-    tuple val(meta), path("${prefix}/tmp/**/*.fa"), emit: fa
-    tuple val(meta), path("${prefix}/tsv_export") , emit: tsv, optional: true
+    tuple val(meta), path("${prefix}/result"), emit: output
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('bigslice'), val("2.0.2"), topic: versions, emit: versions_bigslice
 
@@ -27,10 +25,10 @@ process BIGSLICE {
     def args2  = task.ext.args2 ?: ''
     prefix     = task.ext.prefix ?: "${meta.id}"
     def sample = meta.id
-    def export_tsv_cmd = export_tsv ? "bigslice --export-tsv ${prefix}/tsv_export --program_db_folder ${hmmdb} ${args2} ${prefix}" : ''
+    def export_tsv_cmd = export_tsv ? "bigslice --export-tsv ${prefix}/result/tsv_export --program_db_folder ${hmmdb} ${args2} ${prefix}" : ''
     """
     mkdir -p input/dataset/${sample} input/taxonomy
-    cp bgc_files/* input/dataset/${sample}/
+    find bgc_files -name '*.gbk' | xargs -I{} cp {} input/dataset/${sample}/
 
     printf "# dataset_name\\tdataset_path\\ttaxonomy_path\\tdescription\\n" > input/datasets.tsv
     printf "dataset\\tdataset\\ttaxonomy/taxonomy.tsv\\tBGC dataset\\n" >> input/datasets.tsv
@@ -45,10 +43,6 @@ process BIGSLICE {
         ${prefix}
 
     ${export_tsv_cmd}
-
-    mv ${prefix}/result/data.db ${prefix}/data.db
-    mv ${prefix}/result/tmp    ${prefix}/tmp
-    rm -rf ${prefix}/result
     """
 
     stub:
@@ -57,12 +51,12 @@ process BIGSLICE {
     """
     echo ${args}
 
-    mkdir -p ${prefix}/tmp/2e555308dfc411186cf012334262f127
-    touch ${prefix}/data.db
-    touch ${prefix}/tmp/2e555308dfc411186cf012334262f127/test.fa
+    mkdir -p ${prefix}/result/tmp/2e555308dfc411186cf012334262f127
+    touch ${prefix}/result/data.db
+    touch ${prefix}/result/tmp/2e555308dfc411186cf012334262f127/test.fa
     if ${export_tsv}; then
-        mkdir -p ${prefix}/tsv_export
-        touch ${prefix}/tsv_export/bgcs.tsv
+        mkdir -p ${prefix}/result/tsv_export
+        touch ${prefix}/result/tsv_export/bgcs.tsv
     fi
     """
 }
