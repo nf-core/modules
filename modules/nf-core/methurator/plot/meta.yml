@@ -1,0 +1,53 @@
+name: methurator_plot
+description: Plots results produced by methurator.
+keywords:
+  - rrbs
+  - BS-seq
+  - methylation
+  - 5mC
+  - methylseq
+  - bisulphite
+  - bisulfite
+  - bam
+tools:
+  - methurator:
+      description: |
+        methurator is a Python package designed to estimate sequencing saturation
+        for DNA methylation sequencing data.
+      homepage: https://github.com/VIBTOBIlab/methurator
+      documentation: https://github.com/VIBTOBIlab/methurator/README.md
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - summary_report:
+        type: file
+        description: |
+          YAML file summarizing the saturation analysis results.
+        pattern: "methurator_*.yml"
+output:
+  plots:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "plots/*.html":
+          type: file
+          description: |
+            HTML plots generated from the saturation analysis.
+          pattern: "plots/*.html"
+  versions:
+    - versions.yml:
+        type: file
+        description: |
+          File containing software versions
+        pattern: "versions.yml"
+authors:
+  - "@edogiuili"
+maintainers:
+  - "@edogiuili"

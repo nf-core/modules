@@ -1,0 +1,78 @@
+nextflow_process {
+
+    name "Test Process METHURATOR_GTESTIMATOR"
+    script "../main.nf"
+    process "METHURATOR_GTESTIMATOR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "methurator"
+    tag "methurator/gtestimator"
+
+    test("Run methurator gt-estimator on paired-end methylated [bam] | sarscov2 genome [fasta]") {
+
+        when {
+            params {
+                t_max = 10
+                minimum_coverage = 1
+                rrbs = false
+            }
+            process {
+                """
+                input[0] = [ [ id:'test_bam' ],
+                               file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = [ [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai')
+                ]
+                input[2] = [ [ id: 'test_fasta' ],
+                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.summary_report.size() == 1 },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("Run methurator gt-estimator on paired-end methylated [bam] | sarscov2 genome [fasta] - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                minimum_coverage = 1
+                t_max = 10
+                rrbs = false
+            }
+            process {
+                """
+                input[0] = [ [ id:'test_bam' ],
+                               file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = [ [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai')
+                ]
+                input[2] = [ [ id: 'test_fasta' ],
+                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.summary_report.size() == 1 },
+                { assert snapshot(process.out.versions).match("versions_stub") }
+            )
+        }
+    }
+}
