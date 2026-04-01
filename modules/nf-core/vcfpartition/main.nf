@@ -12,7 +12,7 @@ process VCFPARTITION {
 
     output:
     tuple val(meta), path("*.tsv"), emit: partitions
-    tuple val("${task.process}"), val('vcfpartition'), eval("vcfpartition --version | sed 's/vcfpartition, version //'"), topic: versions, emit: versions_vcfpartition
+    tuple val("${task.process}"), val('vcfpartition'), eval("vcfpartition --version | sed 's/.* //'"), topic: versions, emit: versions_vcfpartition
 
     when:
     task.ext.when == null || task.ext.when
