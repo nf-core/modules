@@ -157,6 +157,26 @@ output:
             type: file
             description: Statistical model object file
             pattern: "*.rds"
+  - plots:
+      description: Channel containing plots from differential analysis
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - plots:
+            type: file
+            description: Plot file
+            pattern: "*.{png,pdf}"
+  - other:
+      description: Channel containing other outputs from differential analysis
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - other_files:
+            type: file
+            description: Other output file from differential analysis
+            pattern: "*.{rds,tsv,log}"
 authors:
   - "@pinin4fjords"
   - "@bjlang"
