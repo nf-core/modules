@@ -4,8 +4,8 @@ process COVERM_GENOME {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/48/48a686497f66be8092dbea9421259a0cde29bde689c3bd178267217e9bc085d6/data'
-        : 'community.wave.seqera.io/library/coverm:0.7.0--f8f265199059d420'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c4/c4402aed2ff8bd062a013369c9049e68bdd159e849b271a227a8ce2727e941e1/data'
+        : 'community.wave.seqera.io/library/coverm:0.7.0--c57cbb9db4d660fb'}"
 
     input:
     tuple val(meta), path(input)
