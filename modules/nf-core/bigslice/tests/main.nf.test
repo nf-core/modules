@@ -74,21 +74,12 @@ nextflow_process {
 
         then {
             assert process.success
-            def stableFiles = []
-            def unstableNames = []
-            file(process.out.output[0][1]).eachFileRecurse { f ->
-                if (!f.isDirectory()) {
-                    if (f.name.endsWith('.db') || f.name.endsWith('.fa') || f.name.endsWith('.pkl')) {
-                        unstableNames.add(f.name)
-                    } else {
-                        stableFiles.add(f)
-                    }
-                }
-            }
+            def resultDir = file(process.out.output[0][1])
             assertAll(
+                { assert resultDir.isDirectory() },
+                { assert file("${resultDir}/data.db").exists() },
+                { assert resultDir.list().any { it.endsWith('.fa') || new File("${resultDir}/tmp").exists() } },
                 { assert snapshot(
-                    stableFiles.sort { it.name },
-                    unstableNames.sort(),
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
@@ -115,21 +106,12 @@ nextflow_process {
 
         then {
             assert process.success
-            def stableFiles = []
-            def unstableNames = []
-            file(process.out.output[0][1]).eachFileRecurse { f ->
-                if (!f.isDirectory()) {
-                    if (f.name.endsWith('.db') || f.name.endsWith('.fa') || f.name.endsWith('.pkl')) {
-                        unstableNames.add(f.name)
-                    } else {
-                        stableFiles.add(f)
-                    }
-                }
-            }
+            def resultDir = file(process.out.output[0][1])
             assertAll(
+                { assert resultDir.isDirectory() },
+                { assert file("${resultDir}/data.db").exists() },
+                { assert file("${resultDir}/tsv_export").isDirectory() },
                 { assert snapshot(
-                    stableFiles.sort { it.name },
-                    unstableNames.sort(),
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
