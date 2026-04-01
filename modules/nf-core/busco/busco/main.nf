@@ -58,7 +58,7 @@ process BUSCO_BUSCO {
         './*-busco/*/prodigal_output/predicted_genes/tmp/',
     ]
     def clean_cmd = clean_intermediates ? "rm -fr ${intermediate_files.join(' ')}" : ''
-    def bbtools_max_memory = (task.memory * 0.25).toGiga())
+    def bbtools_max_memory = (task.memory * 0.25).toGiga()
     def bbtools_memory = bbtools_max_memory > 120.Mb ? "${bbtools_max_memory}g" : "120m"
     """
     export BUSCO_BBTOOLS_MEMORY=${bbtools_memory}
