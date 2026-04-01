@@ -15,7 +15,6 @@ workflow FASTA_CLEAN_FCS {
     }
 
     FCS_FCSADAPTOR ( ch_fasta )
-//    ch_versions = ch_versions.mix(FCS_FCSADAPTOR.out.findAll { key, val -> key.startsWith('versions') }.map { k, v -> v })
 
     ch_cleaned_assembly = ch_fasta
         .join(FCS_FCSADAPTOR.out.cleaned_assembly, by:0, remainder: true )
