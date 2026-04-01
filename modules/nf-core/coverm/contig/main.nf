@@ -15,7 +15,7 @@ process COVERM_CONTIG {
     val enable_bam_output
 
     output:
-    tuple val(meta), path("*.depth.txt")     , emit: coverage
+    tuple val(meta), path('*.depth.txt')     , emit: coverage
     tuple val(meta), path('_bam_cache/*.bam'), emit: bam_output, optional: true
     tuple val("${task.process}"), val('coverm'), eval('coverm --version | sed "s/coverm //"'), emit: versions_coverm, topic: versions
 
