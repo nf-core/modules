@@ -1,7 +1,6 @@
 name: methurator_gtestimator
 description: |
-  Methurator is a Python package designed to estimate CpGs saturation
-  for DNA methylation sequencing data.
+  Run estimator for DNA methylation sequencing saturation.
 keywords:
   - rrbs
   - BS-seq
@@ -17,7 +16,8 @@ tools:
         for DNA methylation sequencing data.
       homepage: https://github.com/VIBTOBIlab/methurator
       documentation: https://github.com/VIBTOBIlab/methurator/README.md
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -29,6 +29,7 @@ input:
         type: file
         description: BAM/CRAM file
         pattern: "*.{bam,cram}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -38,6 +39,7 @@ input:
         type: file
         description: BAM/CRAM index file
         pattern: "*.{bai,crai}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -47,6 +49,7 @@ input:
         type: file
         description: Input genome fasta file
         pattern: "*.{fasta,fa}"
+        ontologies: []
 output:
   summary_report:
     - - meta:
@@ -54,17 +57,32 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "methurator_*.yml":
+      - methurator_summary.yml:
           type: file
           description: |
-            YAML file summarizing the saturation analysis results.
-          pattern: "methurator_*.yml"
+            methurator gtestimator summary report in YAML format
+          ontologies: []
+  versions_methurator:
+    - - ${task.process}:
+          type: string
+          description: methurator gtestimator
+      - methurator:
+          type: string
+          description: methurator
+      - methurator --version:
+          type: eval
+          description: methurator software versions
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: |
-          File containing software versions
-        pattern: "versions.yml"
+    - - ${task.process}:
+          type: string
+          description: methurator gtestimator
+      - methurator:
+          type: string
+          description: methurator
+      - methurator --version:
+          type: eval
+          description: methurator software versions
 authors:
   - "@edogiuili"
 maintainers:
