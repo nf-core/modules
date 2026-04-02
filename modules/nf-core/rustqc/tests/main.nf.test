@@ -31,42 +31,46 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert snapshot(
+                    // reproducible text outputs - full content
+                    process.out.featurecounts,
+                    process.out.preseq,
+                    process.out.rseqc[0][1].findAll { it.toString().endsWith("infer_experiment.txt") || it.toString().endsWith("tin.xls") || it.toString().endsWith("summary.txt") },
 
-                // featurecounts - validate content
-                { assert process.out.featurecounts[0][1].any {
-                    it.toString().endsWith(".featureCounts.tsv") &&
-                    file(it).text.contains("Geneid") &&
-                    file(it).text.contains("ENSG00000239435")
-                } },
-                { assert process.out.featurecounts[0][1].any { it.toString().contains("biotype_counts_mqc") } },
+                    // non-reproducible outputs - filenames only
+                    process.out.dupradar[0][1].collect { file(it).name }.sort(),
+                    process.out.samtools[0][1].collect { file(it).name }.sort(),
+                    process.out.qualimap[0][1].findAll { !file(it).isDirectory() }.collect { file(it).name }.sort(),
+                    process.out.rseqc[0][1].findAll {
+                        !file(it).isDirectory() &&
+                        !it.toString().endsWith("infer_experiment.txt") &&
+                        !it.toString().endsWith("tin.xls") &&
+                        !it.toString().endsWith("summary.txt")
+                    }.collect { file(it).name }.sort()
+                ).match() },
 
-                // preseq - validate header
-                { assert file(process.out.preseq[0][1]).text.contains("TOTAL_READS") },
-
-                // samtools - validate read counts
+                // content assertions for non-snapshottable outputs
+                // samtools flagstat - 5644 total reads
                 { assert process.out.samtools[0][1].any {
                     it.toString().endsWith(".flagstat") &&
                     file(it).text.contains("5644 + 0 in total")
                 } },
+                // samtools idxstats - 5642 reads on chr22
                 { assert process.out.samtools[0][1].any {
-                    it.toString().endsWith(".idxstats") } },
-
-                // rseqc - validate infer_experiment fractions
-                { assert process.out.rseqc[0][1].any {
-                    it.toString().endsWith("infer_experiment.txt") &&
-                    file(it).text.contains("Fraction of reads explained by")
+                    it.toString().endsWith(".idxstats") &&
+                    file(it).text.contains("chr22\t40001\t5642")
                 } },
-                // rseqc - tin exists
-                { assert process.out.rseqc[0][1].any { it.toString().endsWith("tin.xls") } },
-
-                // qualimap - validate aligned read count
+                // qualimap - 5,642 alignments, 23.55% exonic
                 { assert process.out.qualimap[0][1].any {
                     it.toString().endsWith("rnaseq_qc_results.txt") &&
-                    file(it).text.contains("total alignments = 5,642")
+                    file(it).text.contains("total alignments = 5,642") &&
+                    file(it).text.contains("exonic =  1,328 (23.55%)")
                 } },
-
-                // dupradar - existence
-                { assert process.out.dupradar[0][1].any { it.toString().contains("dupMatrix") } }
+                // dupradar - 664 reads for ENSG00000239435
+                { assert process.out.dupradar[0][1].any {
+                    it.toString().endsWith("dupMatrix.txt") &&
+                    file(it).text.contains("ENSG00000239435\t3389\t664")
+                } }
             )
         }
     }
