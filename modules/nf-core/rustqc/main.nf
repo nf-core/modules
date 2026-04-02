@@ -3,7 +3,9 @@ process RUSTQC {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "ghcr.io/seqeralabs/rustqc:0.1.1"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ff/ff773e08cba2bd2e83113b8796c9d5386c580618d14979e767dda5fe27171d6e/data'
+        : 'community.wave.seqera.io/library/rustqc:0.1.1--ae7c0692a311e5ed'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
