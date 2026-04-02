@@ -29,18 +29,33 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.hist":
+      - "*.hist.txt":
           type: file
           description: A formatted histogram file
           pattern: "*.hist"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_fastk:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - fastk:
+          type: string
+          description: Name of the tool
+      - "1.2":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - fastk:
+          type: string
+          description: Name of the tool
+      - "1.2":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@mahesh-panchal"
 maintainers:

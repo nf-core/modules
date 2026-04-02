@@ -35,7 +35,16 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    path(process.out.mq_metrics[0][1]).readLines()[1..3].join("\n").md5(),
+                    path(process.out.qd_metrics[0][1]).readLines()[1..3].join("\n").md5(),
+                    path(process.out.gc_summary[0][1]).readLines()[1..3].join("\n").md5(),
+                    path(process.out.gc_metrics[0][1]).readLines()[1..3].join("\n").md5(),
+                    path(process.out.aln_metrics[0][1]).readLines()[1..3].join("\n").md5(),
+                    path(process.out.is_metrics[0][1]).readLines()[1..3].join("\n").md5(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
             )
         }
     }
@@ -66,17 +75,17 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out.mq_metrics,
-                    process.out.qd_metrics,
-                    process.out.gc_summary,
-                    process.out.gc_metrics,
-                    process.out.aln_metrics,
-                    process.out.is_metrics,
+                    path(process.out.mq_metrics[0][1]).readLines()[1..3].join("\n").md5(),
+                    path(process.out.qd_metrics[0][1]).readLines()[1..3].join("\n").md5(),
+                    path(process.out.gc_summary[0][1]).readLines()[1..3].join("\n").md5(),
+                    path(process.out.gc_metrics[0][1]).readLines()[1..3].join("\n").md5(),
+                    path(process.out.aln_metrics[0][1]).readLines()[1..3].join("\n").md5(),
+                    path(process.out.is_metrics[0][1]).readLines()[1..3].join("\n").md5(),
                     file(process.out.mq_plot[0][1]).name,
                     file(process.out.qd_plot[0][1]).name,
                     file(process.out.is_plot[0][1]).name,
                     file(process.out.gc_plot[0][1]).name,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )

@@ -41,14 +41,13 @@ process ISOSEQ_REFINE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch dummy.bam
-    touch dummy.bam.pbi
-    touch dummy.consensusreadset.xml
-    touch dummy.filter_summary.report.json
-    touch dummy.report.csv
+    touch ${prefix}.bam
+    touch ${prefix}.bam.pbi
+    touch ${prefix}.consensusreadset.xml
+    touch ${prefix}.filter_summary.report.json
+    touch ${prefix}.report.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

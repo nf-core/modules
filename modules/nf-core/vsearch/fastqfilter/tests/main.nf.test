@@ -29,7 +29,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.fasta,
                     file(process.out.log[0]).readLines()[3..4],
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith("versions") },
                     ).match() }
             )
         }

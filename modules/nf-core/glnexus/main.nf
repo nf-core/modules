@@ -13,7 +13,7 @@ process GLNEXUS {
 
     output:
     tuple val(meta), path("*.bcf"), emit: bcf
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('glnexus'), eval("glnexus_cli 2>&1 | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+'"), topic: versions, emit: versions_glnexus
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,7 +24,7 @@ process GLNEXUS {
     def regions = bed ? "--bed ${bed}" : ""
 
     // Make list of GVCFs to merge
-    def input = gvcfs.collect { it.toString() }
+    def input = gvcfs.collect {vcf -> vcf.toString() }
     def avail_mem = 3
     if (!task.memory) {
         log.info '[Glnexus] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
@@ -39,21 +39,11 @@ process GLNEXUS {
         $args \\
         ${input.join(' ')} \\
         > ${prefix}.bcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        glnexus: \$( echo \$(glnexus_cli 2>&1) | head -n 1 | sed 's/^.*release v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        glnexus: \$( echo \$(glnexus_cli 2>&1) | head -n 1 | sed 's/^.*release v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

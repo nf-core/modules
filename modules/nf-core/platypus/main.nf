@@ -55,7 +55,6 @@ process PLATYPUS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '0.8.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 

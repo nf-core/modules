@@ -1,0 +1,122 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTQ_COMPLEXITY_FILTER"
+    script "../main.nf"
+    workflow "FASTQ_COMPLEXITY_FILTER"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_complexity_filter"
+
+    tag "prinseqplusplus"
+    tag "bbmap"
+    tag "bbmap/bbduk"
+    tag "fastp"
+
+    test("sarscov2 - fastq - single_end - prinseqplusplus") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = "prinseqplusplus" // val_complexity_filter_tool
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    file(workflow.out.filtered_reads[0][1]).name, // unstable
+                    workflow.out.logfile[0][1],
+                    workflow.out.versions.collect { path(it).yaml }
+                ).match()}
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - paired_end - bbduk") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = "bbduk" // val_complexity_filter_tool
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    workflow.out.filtered_reads[0][1],
+                    workflow.out.multiqc_files.collect { file(it[1]).name },
+                    workflow.out.versions.collect { path(it).yaml }
+                ).match()}
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - single_end - fastp") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = "fastp" // val_complexity_filter_tool
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    workflow.out.filtered_reads[0][1],
+                    path(workflow.out.logfile[0][1]).readLines().size(),
+                    path(workflow.out.report[0][1]).readLines().size(),
+                    workflow.out.multiqc_files[0][1],
+                    workflow.out.versions.collect { path(it).yaml }
+                ).match()}
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - single_end - fastp - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = "fastp" // val_complexity_filter_tool
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect { path(it).yaml }
+                ).match()}
+            )
+        }
+    }
+}

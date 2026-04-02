@@ -21,8 +21,6 @@ process SCIMAP_MCMICRO {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "Scimap module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION='2.1.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping
     """
     mkdir numba_cache_dir
@@ -41,8 +39,6 @@ process SCIMAP_MCMICRO {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "Scimap module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION='2.1.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping
     """
     touch ${cellbyfeature.baseName}.h5ad.csv

@@ -13,7 +13,7 @@ process MMSEQS_TAXONOMY {
 
     output:
     tuple val(meta), path("${prefix}_taxonomy"), emit: db_taxonomy
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('mmseqs'), eval('mmseqs version'), topic: versions, emit: versions_mmseqs
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,10 +42,6 @@ process MMSEQS_TAXONOMY {
         ${args} \\
         --threads ${task.cpus}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //')
-    END_VERSIONS
     """
 
     stub:
@@ -58,9 +54,5 @@ process MMSEQS_TAXONOMY {
     touch ${prefix}_taxonomy/${prefix}.dbtype
     touch ${prefix}_taxonomy/${prefix}.index
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //')
-    END_VERSIONS
     """
 }

@@ -84,7 +84,7 @@ process IQTREE {
         $constraint_tree_arg \\
         $trees_z_arg \\
         $suptree_arg \\
-        $trees_rf\\
+        $trees_rf_arg\\
         -pre $prefix \\
         -nt AUTO \\
         -ntmax $task.cpus \\

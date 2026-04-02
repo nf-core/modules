@@ -16,10 +16,10 @@ process GATK4_HAPLOTYPECALLER {
     tuple val(meta6), path(dbsnp_tbi)
 
     output:
-    tuple val(meta), path("*.vcf.gz"),        emit: vcf
-    tuple val(meta), path("*.tbi"),           emit: tbi, optional: true
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    tuple val(meta), path("*.tbi"), emit: tbi, optional: true
     tuple val(meta), path("*.realigned.bam"), emit: bam, optional: true
-    path "versions.yml",                      emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -52,11 +52,6 @@ process GATK4_HAPLOTYPECALLER {
         ${bamout_command} \\
         --tmp-dir . \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -69,10 +64,5 @@ process GATK4_HAPLOTYPECALLER {
     touch ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
     ${stub_realigned_bam}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

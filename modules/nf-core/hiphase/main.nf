@@ -1,21 +1,38 @@
 process HIPHASE {
-    tag "$meta.id"
-    label 'process_single'
+    tag "${meta.id}"
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hiphase:1.4.5--h9ee0642_0':
-        'biocontainers/hiphase:1.4.5--h9ee0642_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3a/3a9489e5b2b9b76b7680f06e60aa78f1c323a2e00a3947225ba4ccbb3607f502/data'
+        : 'community.wave.seqera.io/library/hiphase:1.6.0--f83f7bc3314ef63b'}"
 
     input:
-    tuple val(meta), path(vcf), path(csi)
-    tuple val(meta2), path(bam), path(bai)
-    tuple val(meta3), path(fasta)
+    tuple val(meta), path(bams), path(bais), path(snv), path(snv_index), path(sv), path(sv_index), val(samples)
+    tuple val(meta2), path(fasta), path(fai)
+    val output_bam
+    val summary_file
+    val blocks_file
+    val stats_file
+    val haplotag_file
+    val file_format
 
     output:
-    tuple val(meta), path("*.vcf"), emit: vcf
-    tuple val(meta), path("*.csv"), emit: csv
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*_snv_phased.vcf.gz"), emit: vcfs, optional: true
+    tuple val(meta), path("*_sv_phased.vcf.gz"), emit: sv_vcfs, optional: true
+    tuple val(meta), path("*_snv_phased.vcf.gz.{tbi,csi}"), emit: vcfs_indexes, optional: true
+    tuple val(meta), path("*_sv_phased.vcf.gz.{tbi,csi}"), emit: sv_vcfs_indexes, optional: true
+    tuple val(meta), path("*.summary.tsv"), emit: summary_tsv, optional: true
+    tuple val(meta), path("*.summary.csv"), emit: summary_csv, optional: true
+    tuple val(meta), path("*.blocks.tsv"), emit: blocks_tsv, optional: true
+    tuple val(meta), path("*.blocks.csv"), emit: blocks_csv, optional: true
+    tuple val(meta), path("*.stats.tsv"), emit: stats_tsv, optional: true
+    tuple val(meta), path("*.stats.csv"), emit: stats_csv, optional: true
+    tuple val(meta), path("*.haplotag.tsv"), emit: haplotag_tsv, optional: true
+    tuple val(meta), path("*.haplotag.csv"), emit: haplotag_csv, optional: true
+    tuple val(meta), path("*.bam"), emit: bams, optional: true
+    tuple val(meta), path("*.bam.{bai,csi}"), emit: bams_indexes, optional: true
+    tuple val("${task.process}"), val('hiphase'), eval("hiphase --version | sed 's/.* //g'"), emit: versions_hiphase, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,33 +40,63 @@ process HIPHASE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    // This is set up to allow for co-phasing SNVs and SVs, each input with their own VCF and output separately.
+    // The VCF files can contain multiple samples, with multiple BAM files, and the samples to be phased can be specified with the sample argument.
+    def snv_args = snv ? "--vcf ${snv} --output-vcf ${prefix}_snv_phased.vcf.gz" : ''
+    def sv_args = sv ? "--vcf ${sv} --output-vcf ${prefix}_sv_phased.vcf.gz" : ''
+    // Cannot use prefix for bam outputs as we can have multiple output BAM files leading to name collisions.
+    def bam_args = bams
+        .collectMany { file ->
+            ["--bam", file, output_bam ? '--output-bam' : '', output_bam ? "${file.baseName}_haplotagged.bam" : '']
+        }
+        .join(" ")
+    def sample_args = samples ? samples.collect { sample -> "--sample-name ${sample}" }.join(" ") : ''
 
+    def summary_file_arg = summary_file ? "--summary-file ${prefix}.summary.${file_format}" : ''
+    def blocks_file_arg = blocks_file ? "--blocks-file ${prefix}.blocks.${file_format}" : ''
+    def stats_file_arg = stats_file ? "--stats-file ${prefix}.stats.${file_format}" : ''
+    def haplotag_file_arg = haplotag_file ? "--haplotag-file ${prefix}.haplotag.${file_format}" : ''
     """
     hiphase \
-        --bam $bam \
-        --vcf $vcf \
-        --output-vcf ${prefix}.phased.vcf \
-        --output-bam ${prefix}.phased.bam \
-        --reference $fasta \
-        --stats-file ${prefix}.stats.csv \
-        $args \
-        --threads ${task.cpus}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hiphase: \$(hiphase --version |& sed '1!d ; s/hiphase //')
-    END_VERSIONS
+        ${args} \
+        --threads ${task.cpus} \\
+        --reference ${fasta} \\
+        ${sample_args} \\
+        ${bam_args} \\
+        ${snv_args} \\
+        ${sv_args} \\
+        ${summary_file_arg} \\
+        ${blocks_file_arg} \ \
+        ${stats_file_arg} \\
+        ${haplotag_file_arg}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    touch ${prefix}.phased.vcf
-    touch ${prefix}.stats.csv
+    def args = task.ext.args ?: ''
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hiphase: \$(hiphase --version |& sed '1!d ; s/hiphase //')
-    END_VERSIONS
+    def bam_index_format = args.contains('--csi-index') ? 'csi' : 'bai'
+    def vcf_index_format = args.contains('--csi-index') ? 'csi' : 'tbi'
+    def touch_bams = output_bam ? bams.collect { file -> "touch ${prefix}_${file.baseName}_haplotagged.bam" }.join("\n") : ''
+    def touch_bams_indexes = output_bam ? bams.collect { file -> "touch ${prefix}_${file.baseName}_haplotagged.bam.${bam_index_format}" }.join("\n") : ''
+    def touch_snv_vcf = snv ? "echo | gzip > ${prefix}_snv_phased.vcf.gz" : ''
+    def touch_snv_vcf_index = snv ? "touch ${prefix}_snv_phased.vcf.gz.${vcf_index_format}" : ''
+    def touch_sv_vcf = sv ? "echo | gzip > ${prefix}_sv_phased.vcf.gz" : ''
+    def touch_sv_vcf_index = sv ? "touch ${prefix}_sv_phased.vcf.gz.${vcf_index_format}" : ''
+    def touch_summary_file = summary_file ? "touch ${prefix}.${file_format}" : ''
+    def touch_blocks_file = blocks_file ? "touch ${prefix}.${file_format}" : ''
+    def touch_stats_file = stats_file ? "touch ${prefix}.${file_format}" : ''
+    def touch_haplotag_file = haplotag_file ? "touch ${prefix}.${file_format}" : ''
+    """
+    ${touch_bams}
+    ${touch_bams_indexes}
+    ${touch_snv_vcf}
+    ${touch_snv_vcf_index}
+    ${touch_sv_vcf}
+    ${touch_sv_vcf_index}
+    ${touch_summary_file}
+    ${touch_blocks_file}
+    ${touch_stats_file}
+    ${touch_haplotag_file}
     """
 }

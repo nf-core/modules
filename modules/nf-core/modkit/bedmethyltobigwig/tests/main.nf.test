@@ -9,6 +9,7 @@ nextflow_process {
     tag "modkit"
     tag "modkit/bedmethyltobigwig"
     tag "modkit/pileup"
+    tag "tabix/bgzip"
 
     setup {
         run("MODKIT_PILEUP"){
@@ -25,6 +26,15 @@ nextflow_process {
                 """
             }
         }
+
+        run("TABIX_BGZIP"){
+            script "../../../tabix/bgzip/main.nf"
+            process {
+                """
+                input[0] = MODKIT_PILEUP.out.bedgz
+                """
+            }
+        }
     }
 
     test("homo sapiens - bedmethyl, fai, list") {
@@ -32,7 +42,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = MODKIT_PILEUP.out.bed
+                input[0] = TABIX_BGZIP.out.output
                 input[1] = [
                     [ id : 'hg38' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
@@ -50,12 +60,12 @@ nextflow_process {
         }
     }
 
-    test("homo sapiens - bedmethyl, fai, string") {
+    test("homo sapiens - compressed bedmethyl, fai, string") {
 
         when {
             process {
                 """
-                input[0] = MODKIT_PILEUP.out.bed
+                input[0] = MODKIT_PILEUP.out.bedgz
                 input[1] = [
                     [ id : 'hg38' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
@@ -78,7 +88,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = MODKIT_PILEUP.out.bed
+                input[0] = TABIX_BGZIP.out.output
                 input[1] = [
                     [ id : 'hg38' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)

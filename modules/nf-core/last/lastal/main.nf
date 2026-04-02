@@ -14,7 +14,7 @@ process LAST_LASTAL {
     output:
     tuple val(meta), path("*.maf.gz"), emit: maf
     tuple val(meta), path("*.tsv")   , emit: multiqc
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('last'), eval("lastal --version | sed 's/lastal //'"), emit: versions_last, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -88,25 +88,13 @@ process LAST_LASTAL {
 
     # Combine the two stats file into one for MultiQC.
     paste ${prefix}.alignmentstats.txt ${prefix}.genomestats.txt > ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        last: \$(lastal --version 2>&1 | sed 's/lastal //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def trained_params = param_file ? "-p ${param_file}"  : ''
     """
     INDEX_NAME=STUB
     echo stub | gzip --no-name > ${prefix}.\$INDEX_NAME.maf.gz
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        last: \$(lastal --version 2>&1 | sed 's/lastal //')
-    END_VERSIONS
     """
 }

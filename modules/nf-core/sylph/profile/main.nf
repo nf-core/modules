@@ -13,7 +13,7 @@ process SYLPH_PROFILE {
 
     output:
     tuple val(meta), path('*.tsv'), emit: profile_out
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('sylph'), eval('sylph -V | awk "{print \$2}"'), topic: versions, emit: versions_sylph
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,22 +29,11 @@ process SYLPH_PROFILE {
         ${database}\\
         ${input} \\
         -o ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sylph: \$(sylph -V | awk '{print \$2}')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input = meta.single_end ? "${reads}" : "-1 ${reads[0]} -2 ${reads[1]}"
     """
     touch ${prefix}.tsv
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sylph: \$(sylph -V | awk '{print \$2}')
-    END_VERSIONS
     """
 }

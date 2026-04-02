@@ -47,7 +47,6 @@ process PLINK2_REMOVE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input = "${plink_genotype_file.getBaseName()}"
     def trio = plink_genotype_file.extension == 'pgen' ? "${prefix}.pgen ${prefix}.psam ${prefix}.pvar" : "${prefix}.bed ${prefix}.bim ${prefix}.fam"

@@ -3,9 +3,9 @@ process VERIFYBAMID_VERIFYBAMID2 {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/verifybamid2:2.0.1--hbb20b25_6' :
-        'biocontainers/verifybamid2:2.0.1--h19d48f6_8' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/97/9700eb810dc7a72011c9149b8ab6cc7fa9d273795632ddd00af019ab32816811/data'
+        : 'community.wave.seqera.io/library/verifybamid2:2.0.1--166cf392bec584ce'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -20,7 +20,7 @@ process VERIFYBAMID_VERIFYBAMID2 {
     tuple val(meta), path("*.mu")              , optional:true, emit: mu
     tuple val(meta), path("*.selfSM")          , optional:true, emit: self_sm
     tuple val(meta), path("*.Ancestry")        , optional:true, emit: ancestry
-    path "versions.yml"                                       , emit: versions
+    tuple val("${task.process}"), val('verifybamid2'), eval("verifybamid2 --help 2>&1 | sed -n '3s/.*Version://p'"), topic: versions, emit: versions_verifybamid2
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,23 +36,19 @@ process VERIFYBAMID_VERIFYBAMID2 {
         "--SVDPrefix ${svd_ud.baseName}" : "--UDPath ${svd_ud} --MeanPath ${svd_mu} --BedPath ${svd_bed}"
     def refvcf_args = "${refvcf}".endsWith(".vcf") ? "--RefVCF ${refvcf}" : ""
 
-    def reference_args = ("$references".endsWith('.fasta')) ?
-        "--Reference ${references}" : ''
+    def reference_args = "${references}".matches(/.+((fasta)|(fa)|(fna))(\.gz)*$/)
+        ? "--Reference ${references}"
+        : ''
 
     """
     verifybamid2 \\
-        --NumThread $task.cpus \\
+        --NumThread ${task.cpus} \\
         ${svd_args} \\
         ${bam_file} \\
         ${refvcf_args} \\
         ${reference_args}  \\
         ${args_list.join(' ')} \\
         > ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        verifybamid: \$(echo \$(verifybamid2 --help 2>&1 | sed -e '3p;d' | sed -e 's/ Version://'))
-    END_VERSIONS
     """
 
     stub:
@@ -64,10 +60,5 @@ process VERIFYBAMID_VERIFYBAMID2 {
     touch ${prefix}.mu
     touch ${prefix}.selfSM
     touch ${prefix}.Ancestry
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        verifybamid: \$(echo \$(verifybamid2 --help 2>&1 | sed -e '3p;d' | sed -e 's/ Version://'))
-    END_VERSIONS
     """
 }

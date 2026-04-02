@@ -59,7 +59,8 @@ tables = lapply(patients_tsv, FUN = function(p_table){
         mutate(across(everything(), as.character))
 }
 )
-multisample_table = dplyr::bind_rows(tables)
+# filter to keep only mutations with NV different from 0
+multisample_table = dplyr::bind_rows(tables) %>% dplyr::filter(NV != 0)
 
 #Extract input data information
 input_data = multisample_table[,c("Indiv","chr","from","to","ref","alt")]
@@ -211,13 +212,15 @@ SparseSignatures_version = sessionInfo()\$otherPkgs\$SparseSignatures\$Version
 dplyr_version = sessionInfo()\$otherPkgs\$dplyr\$Version
 ggplot2_version = sessionInfo()\$otherPkgs\$ggplot2\$Version
 patchwork_version = sessionInfo()\$otherPkgs\$patchwork\$Version
-bsg_hs37_version = sessionInfo()\$otherPkgs\$BSgenome.Hsapiens.1000genomes.hs37d5\$Version
-bsg_hg38_version = sessionInfo()\$otherPkgs\$BSgenome.Hsapiens.UCSC.hg38\$Version
 writeLines(paste0('"', "$task.process", '"', ":"), f)
 writeLines(paste("    SparseSignatures:", SparseSignatures_version), f)
 writeLines(paste("    dplyr:", dplyr_version), f)
 writeLines(paste("    ggplot2:", ggplot2_version), f)
 writeLines(paste("    patchwork:", patchwork_version), f)
+library(BSgenome.Hsapiens.1000genomes.hs37d5)
+bsg_hs37_version = sessionInfo()\$otherPkgs\$BSgenome.Hsapiens.1000genomes.hs37d5\$Version
 writeLines(paste("    BSgenome.Hsapiens.1000genomes.hs37d5:", bsg_hs37_version), f)
-writeLines(paste("    BSgenome.Hsapiens.UCSC.hg38", bsg_hg38_version), f)
+library(BSgenome.Hsapiens.UCSC.hg38)
+bsg_hg38_version = sessionInfo()\$otherPkgs\$BSgenome.Hsapiens.UCSC.hg38\$Version
+writeLines(paste("    BSgenome.Hsapiens.UCSC.hg38:", bsg_hg38_version), f)
 close(f)

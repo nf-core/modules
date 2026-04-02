@@ -10,7 +10,7 @@ process CELLRANGER_VDJ {
 
     output:
     tuple val(meta), path("**/outs/**"), emit: outs
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('cellranger'), eval('cellranger --version | sed "s/.*-//"'), emit: versions_cellranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,8 +46,8 @@ process CELLRANGER_VDJ {
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p "${meta.id}/outs/"
-    touch ${meta.id}/outs/fake_file.txt
+    mkdir -p "${prefix}/outs/"
+    touch ${prefix}/outs/fake_file.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

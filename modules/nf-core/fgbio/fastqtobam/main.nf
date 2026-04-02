@@ -4,16 +4,15 @@ process FGBIO_FASTQTOBAM {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b4/b4047e3e517b57fae311eab139a12f0887d898b7da5fceeb2a1029c73b9e3904/data'
-        : 'community.wave.seqera.io/library/fgbio:2.5.21--368dab1b4f308243'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4d/4d1150a2e123f49f8c268f0ab429847afae642376fa52af713b846b084df4a9f/data'
+        : 'community.wave.seqera.io/library/fgbio:3.1.2--6e9400d507a9dc55'}"
 
     input:
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*.bam"),  emit: bam,  optional: true
-    tuple val(meta), path("*.cram"), emit: cram, optional: true
-    path "versions.yml",             emit: versions
+    tuple val(meta), path("*.{bam,cram}"), emit: bam
+    tuple val("${task.process}"), val('fgbio'), eval('fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\\[.*$//"'), topic: versions, emit: versions_fgbio
 
     when:
     task.ext.when == null || task.ext.when
@@ -49,11 +48,6 @@ process FGBIO_FASTQTOBAM {
         --output ${prefix}.${suffix} \\
         ${sample_name} \\
         ${library_name}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fgbio: \$( echo \$(fgbio --version 2>&1 | tr -d '[:cntrl:]' ) | sed -e 's/^.*Version: //;s/\\[.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -61,10 +55,5 @@ process FGBIO_FASTQTOBAM {
     def suffix = task.ext.suffix ?: "bam"
     """
     touch ${prefix}.${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fgbio: \$( echo \$(fgbio --version 2>&1 | tr -d '[:cntrl:]' ) | sed -e 's/^.*Version: //;s/\\[.*\$//')
-    END_VERSIONS
     """
 }

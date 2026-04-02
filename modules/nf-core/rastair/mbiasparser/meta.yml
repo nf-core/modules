@@ -1,5 +1,6 @@
 name: rastair_mbiasparser
-description: Parses Rastair mbias output to assess the ideal cutoff for read trimming and reports the values.
+description: Parses Rastair mbias output to assess the ideal cutoff for read
+  trimming and reports the values.
 keywords:
   - methylation
   - rastair
@@ -18,7 +19,9 @@ tools:
         A tool for rapid genome-wide assessment of C->T conversion as a readout for methylation. The module uses R scripts bundled with Rastair.
       homepage: https://bitbucket.org/bsblabludwig/rastair/src/master/
       documentation: https://bitbucket.org/bsblabludwig/rastair/src/master/README.md
-      licence: ["GPL-3.0"]
+      licence:
+        - "GPL-3.0"
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -29,6 +32,7 @@ input:
         type: file
         description: Text file from `rastair mbias`
         pattern: "*.rastair_mbias.txt"
+        ontologies: []
 output:
   mbias_processed_pdf:
     - - meta:
@@ -40,6 +44,7 @@ output:
           type: file
           description: PDF plot of the methylation bias across reads.
           pattern: "*.rastair_mbias_processed.pdf"
+          ontologies: []
   mbias_processed_csv:
     - - meta:
           type: map
@@ -48,18 +53,21 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.rastair_mbias_processed.csv":
           type: file
-          description: CSV file containing the recommended trimming values for OT and OB reads.
+          description: CSV file containing the recommended trimming values for OT
+            and OB reads.
           pattern: "*.rastair_mbias_processed.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
   mbias_processed_str:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - trim_OT:
+      - TRIM_OT:
           type: string
           description: Recommended trimming value for Original Top (OT) reads.
-      - trim_OB:
+      - TRIM_OB:
           type: string
           description: Recommended trimming value for Original Bottom (OB) reads.
   versions:
