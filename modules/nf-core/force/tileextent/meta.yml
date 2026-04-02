@@ -23,29 +23,32 @@ tools:
 input:
   - aoi:
       type: file
-      description: Vector file (either shapefile geometry or geopackage) defining the
-        area of interest.
+      description: Vector file (either shapefile geometry or geopackage) defining
+        the area of interest.
       pattern: "*.{shp,gpkg}"
       ontologies: []
   - datacube_definition:
       type: file
-      description: Datacube file in FORCE format defining the properties of the targeted
-        datacube.
+      description: Datacube file in FORCE format defining the properties of the
+        targeted datacube.
       pattern: "*.{prj}"
       ontologies: []
   - shapefile_dbf:
       type: file
-      description: Optional attribute table for shapefiles. Required if aoi is a shapefile.
+      description: Optional attribute table for shapefiles. Required if aoi is a
+        shapefile.
       pattern: "*.{dbf}"
       ontologies: []
   - shapefile_prj:
       type: file
-      description: Optional projection for shapefiles. Required if aoi is a shapefile.
+      description: Optional projection for shapefiles. Required if aoi is a
+        shapefile.
       pattern: "*.{prj}"
       ontologies: []
   - shapefile_shx:
       type: file
-      description: Optional shape index for shapefiles. Required if aoi is a shapefile.
+      description: Optional shape index for shapefiles. Required if aoi is a
+        shapefile.
       pattern: "*.{shx}"
 
       ontologies: []
@@ -53,17 +56,33 @@ output:
   tile_allow:
     - tile_allow.txt:
         type: file
-        description: List of allowed datacube tiles. Each line contains an tile identifier.
+        description: List of allowed datacube tiles. Each line contains an tile
+          identifier.
         pattern: "tile_allow.txt"
         ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+  versions_force:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - force:
+          type: string
+          description: The name of the tool
+      - force-tile-extent -v:
+          type: eval
+          description: The expression to obtain the version of the tool
 
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - force:
+          type: string
+          description: The name of the tool
+      - force-tile-extent -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@Felix-Kummer"
 maintainers:

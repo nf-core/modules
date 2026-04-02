@@ -11,5 +11,4 @@ workflow MAFFT_ALIGN {
 
     emit:
     alignment = MAFFT_ALIGN_MODULE.out.fas      // channel: [ val(meta), *.fas ]
-    versions  = MAFFT_ALIGN_MODULE.out.versions // channel: [ versions.yml ]
 }

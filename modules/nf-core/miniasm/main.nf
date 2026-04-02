@@ -13,7 +13,7 @@ process MINIASM {
     output:
     tuple val(meta), path("*.gfa.gz")  , emit: gfa
     tuple val(meta), path("*.fasta.gz"), emit: assembly
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('miniasm'), eval('miniasm -V 2>&1'), emit: versions_miniasm, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,10 +33,6 @@ process MINIASM {
     gzip -n ${prefix}.gfa
     gzip -n ${prefix}.fasta
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        miniasm: \$( miniasm -V 2>&1 )
-    END_VERSIONS
     """
 
     stub:
@@ -45,10 +41,6 @@ process MINIASM {
     echo "" | gzip > ${prefix}.gfa.gz
     echo "" | gzip > ${prefix}.fasta.gz
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        miniasm: \$( miniasm -V 2>&1 )
-    END_VERSIONS
     """
 
 }

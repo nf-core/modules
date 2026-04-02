@@ -351,9 +351,7 @@ if ((is_valid_string(opt\$exclude_samples_col)) && (is_valid_string(opt\$exclude
 
 if (is_valid_string(opt\$formula)) {
   message("Using user-specified formula: ", opt\$formula)
-  user_f  <- as.formula(opt\$formula)
-  model_f <- update(user_f, ~ 0 + .)
-  model   <- paste(as.character(model_f), collapse = " ")
+  model  <- opt\$formula
 }  else {
   model <- '~ 0'
 
@@ -508,6 +506,12 @@ png(
   file = paste(opt\$output_prefix, 'deseq2.dispersion.png', sep = '.'),
   width = 600,
   height = 600
+)
+plotDispEsts(dds)
+dev.off()
+
+pdf(
+  file = paste(opt\$output_prefix, 'deseq2.dispersion.pdf', sep = '.')
 )
 plotDispEsts(dds)
 dev.off()

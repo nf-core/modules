@@ -30,7 +30,7 @@ process MACS2_CALLPEAK {
     def format    = meta.single_end ? 'BAM' : 'BAMPE'
     def control   = controlbam ? "--control $controlbam" : ''
     if(args_list.contains('--format')){
-        def id = args_list.findIndexOf{it=='--format'}
+        def id = args_list.findIndexOf{args_i -> args_i=='--format'}
         format = args_list[id+1]
         args_list.remove(id+1)
         args_list.remove(id)
@@ -52,7 +52,6 @@ process MACS2_CALLPEAK {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.gappedPeak

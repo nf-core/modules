@@ -12,7 +12,7 @@ process ELPREP_MERGE {
 
     output:
     tuple val(meta), path("output/**.{bam,sam}")    , emit: bam
-    path "versions.yml"                             , emit: versions
+    tuple val("${task.process}"), val('elprep'), eval('elprep 2>&1 | sed -n \'2s/^.*version //;s/ compiled.*$//p\''), emit: versions_elprep, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,22 +35,14 @@ process ELPREP_MERGE {
         ${single_end} \\
         --log-path . \\
         --nr-of-threads $task.cpus
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        elprep: \$(elprep 2>&1 | head -n2 | tail -n1 |sed 's/^.*version //;s/ compiled.*\$//')
-    END_VERSIONS
     """
 
     stub:
+    def args        = task.ext.args ?: ''
     def prefix      = task.ext.prefix ?: "${meta.id}"
     def suffix      = args.contains("--output-type sam") ? "sam" : "bam"
     """
     mkdir -p output
     touch output/${prefix}.${suffix}
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        elprep: \$(elprep 2>&1 | head -n2 | tail -n1 |sed 's/^.*version //;s/ compiled.*\$//')
-    END_VERSIONS
     """
 }

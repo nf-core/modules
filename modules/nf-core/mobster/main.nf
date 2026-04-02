@@ -4,8 +4,8 @@ process MOBSTER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/de/de31ce602ca40639c817dcd0f99f0260719a9a5f269759791d03576491ea3e87/data':
-        'community.wave.seqera.io/library/r-cnaqc_r-mobster_r-cli_r-dplyr_r-ggplot2:96c0dbada588b39a' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c9/c9ef4992af6754a36358a4fc7a52bdc3928c012070f06140a44ddcf174da4e62/data':
+        'community.wave.seqera.io/library/r-cnaqc_r-mobster_r-cli_r-dplyr_r-ggplot2:5a94f700b38065ea' }"
 
     input:
     tuple val(meta), path(rds_join)
@@ -17,7 +17,7 @@ process MOBSTER {
     tuple val(meta), path("*_mobster_report.rds")     , emit: mobster_report_rds
     tuple val(meta), path("*_mobster_report.pdf")     , emit: mobster_report_pdf
     tuple val(meta), path("*_mobster_report.png")     , emit: mobster_report_png
-    path "versions.yml"                               , emit: versions
+    path "versions.yml"                               , emit: versions_mobster       , topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,11 +38,11 @@ process MOBSTER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        CNAqc: \$(Rscript -e 'library(CNAqc); sessionInfo()\$otherPkgs\$CNAqc\$Version')
-        mobster: \$(Rscript -e 'library(mobster); sessionInfo()\$otherPkgs\$mobster\$Version')
-        cli: \$(Rscript -e 'library(cli); sessionInfo()\$otherPkgs\$cli\$Version')
-        dplyr: \$(Rscript -e 'library(dplyr); sessionInfo()\$otherPkgs\$dplyr\$Version')
-        ggplot2: \$(Rscript -e 'library(ggplot2); sessionInfo()\$otherPkgs\$ggplot2\$Version')
+        CNAqc: \$(Rscript -e "library(CNAqc); cat(as.character(packageVersion('CNAqc')))")
+        mobster: \$(Rscript -e "library(mobster); cat(as.character(packageVersion('mobster')))")
+        cli: \$(Rscript -e "library(cli); cat(as.character(packageVersion('cli')))")
+        dplyr: \$(Rscript -e "library(dplyr); cat(as.character(packageVersion('dplyr')))")
+        ggplot2: \$(Rscript -e "library(ggplot2); cat(as.character(packageVersion('ggplot2')))")
     END_VERSIONS
     """
 }

@@ -18,7 +18,6 @@ process GENOTYPHI_PARSE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """

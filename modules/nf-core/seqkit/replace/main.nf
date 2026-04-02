@@ -12,7 +12,7 @@ process SEQKIT_REPLACE {
 
     output:
     tuple val(meta), path("*.fast*"), emit: fastx
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('seqkit'), eval("seqkit version | sed 's/^.*v//'"), emit: versions_seqkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,13 +34,8 @@ process SEQKIT_REPLACE {
         replace \\
         ${args} \\
         --threads ${task.cpus} \\
-        -o ${prefix}.${endswith} \\
-        ${fastx}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$( seqkit version | sed 's/seqkit v//' )
-    END_VERSIONS
+        -i ${fastx} \\
+        -o ${prefix}.${endswith}
     """
 
     stub:
@@ -53,10 +48,5 @@ process SEQKIT_REPLACE {
 
     """
     echo "" | gzip > ${prefix}.${endswith}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$( seqkit version | sed 's/seqkit v//' )
-    END_VERSIONS
     """
 }

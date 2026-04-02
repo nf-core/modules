@@ -21,7 +21,7 @@ process CATPACK_CONTIGS {
     tuple val(meta), path("*.diamond"), optional: true, emit: diamond
     tuple val(meta), path("*.predicted_proteins.faa"), optional: true, emit: faa
     tuple val(meta), path("*.gff"), optional: true, emit: gff
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('catpack'), eval("CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g'"), topic: versions, emit: versions_catpack
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,11 +41,6 @@ process CATPACK_CONTIGS {
         ${premade_proteins} \\
         ${premade_table} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
-    END_VERSIONS
     """
 
     stub:
@@ -57,10 +52,5 @@ process CATPACK_CONTIGS {
     touch ${prefix}.diamond
     touch ${prefix}.predicted_proteins.faa
     touch ${prefix}.predicted_proteins.gff
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
-    END_VERSIONS
     """
 }

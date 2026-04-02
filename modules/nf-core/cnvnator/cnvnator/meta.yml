@@ -1,6 +1,6 @@
 name: "cnvnator_cnvnator"
-description: CNVnator is a command line tool for CNV/CNA analysis from depth-of-coverage
-  by mapped reads.
+description: CNVnator is a command line tool for CNV/CNA analysis from
+  depth-of-coverage by mapped reads.
 keywords:
   - cnvnator
   - cnv
@@ -11,7 +11,8 @@ tools:
       homepage: "https://github.com/abyzovlab/CNVnator"
       documentation: "https://github.com/abyzovlab/CNVnator/blob/master/README.md"
       tool_dev_url: "https://github.com/abyzovlab/CNVnator"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:cnvnator
 input:
   - - meta:
@@ -59,6 +60,9 @@ input:
         description: Path to a fasta file index
         pattern: "*.fai"
         ontologies: []
+  - step:
+      type: string
+      description: One of "his", "rd", "call", "stat", and "partition"
 output:
   root:
     - - output_meta:
@@ -82,14 +86,28 @@ output:
           description: A tab file containing cnvnator calls
           pattern: "*.tab"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
+  versions_cnvnator:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cnvnator:
+          type: string
+          description: The name of the tool
+      - cnvnator 2>&1 | sed -n '3s/CNVnator v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cnvnator:
+          type: string
+          description: The name of the tool
+      - cnvnator 2>&1 | sed -n '3s/CNVnator v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ramprasadn"
 maintainers:

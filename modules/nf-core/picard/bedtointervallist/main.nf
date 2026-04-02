@@ -1,33 +1,34 @@
 process PICARD_BEDTOINTERVALLIST {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/0861295baa7c01fc593a9da94e82b44a729dcaf8da92be8e565da109aa549b25/data' :
-        'community.wave.seqera.io/library/picard:3.4.0--e9963040df0a9bf6' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/0861295baa7c01fc593a9da94e82b44a729dcaf8da92be8e565da109aa549b25/data'
+        : 'community.wave.seqera.io/library/picard:3.4.0--e9963040df0a9bf6'}"
 
     input:
-    tuple val(meta) , path(bed)
+    tuple val(meta), path(bed)
     tuple val(meta2), path(dict)
     file arguments_file
 
     output:
     tuple val(meta), path('*.intervallist'), emit: intervallist
-    path  "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('picard'), eval("picard BedToIntervalList --version 2>&1 | sed -n 's/.*Version://p'"), topic: versions, emit: versions_picard
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args       = task.ext.args     ?: ''
-    def prefix     = task.ext.prefix   ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def args_file = arguments_file ? "--arguments_file ${arguments_file}" : ""
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[Picard BedToIntervalList] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        log.info('[Picard BedToIntervalList] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue()
     }
     """
     picard \\
@@ -39,20 +40,16 @@ process PICARD_BEDTOINTERVALLIST {
         --TMP_DIR . \\
         ${args_file} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(echo \$(picard BedToIntervalList --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[Picard BedToIntervalList] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        log.info('[Picard BedToIntervalList] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue()
     }
     def args_file = arguments_file ? "--arguments_file ${arguments_file}" : ""
     """
@@ -67,10 +64,5 @@ process PICARD_BEDTOINTERVALLIST {
         ${args}"
 
     touch ${prefix}.intervallist
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(echo \$(picard BedToIntervalList --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
     """
 }

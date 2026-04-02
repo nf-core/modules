@@ -13,7 +13,8 @@ tools:
       homepage: http://abacas.sourceforge.net/documentation.html
       documentation: http://abacas.sourceforge.net/documentation.html
       doi: "10.1093/bioinformatics/btp347"
-      licence: ["GPL v2-or-later"]
+      licence:
+        - "GPL v2-or-later"
       identifier: biotools:abacas
 input:
   - - meta:
@@ -57,13 +58,27 @@ output:
           pattern: "${prefix}.*"
           ontologies:
             - edam: "http://edamontology.org/format_3750" # YAML
+  versions_abacas:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - abacas:
+          type: string
+          description: The name of the tool
+      - abacas.pl --version 2>&1 | grep 'ABACAS\.' | sed 's/ABACAS\.//' || true:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - abacas:
+          type: string
+          description: The name of the tool
+      - abacas.pl --version 2>&1 | grep 'ABACAS\.' | sed 's/ABACAS\.//' || true:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@joseespinosa"
   - "@drpatelh"

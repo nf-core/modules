@@ -1,21 +1,20 @@
 process SAMTOOLS_BEDCOV {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.22.1--h96c455f_0' :
-        'biocontainers/samtools:1.22.1--h96c455f_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8c/8c5d2818c8b9f58e1fba77ce219fdaf32087ae53e857c4a496402978af26e78c/data'
+        : 'community.wave.seqera.io/library/htslib_samtools:1.23.1--5b6bb4ede7e612e5'}"
 
     input:
     tuple val(meta), path(input), path(input_index)
     tuple val(meta2), path(bed)
-    tuple val(meta3), path(fasta)
-    tuple val(meta4), path(fasta_index)
+    tuple val(meta3), path(fasta), path(fasta_index)
 
     output:
     tuple val(meta), path("*.tsv"), emit: coverage
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,16 +27,11 @@ process SAMTOOLS_BEDCOV {
     """
     samtools \\
         bedcov \\
-        $args \\
+        ${args} \\
         ${reference} \\
-        $bed \\
-        $input \\
+        ${bed} \\
+        ${input} \\
         > ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(samtools --version |& sed '1!d ; s/samtools //')
-    END_VERSIONS
     """
 
     stub:
@@ -45,10 +39,5 @@ process SAMTOOLS_BEDCOV {
 
     """
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(samtools --version |& sed '1!d ; s/samtools //')
-    END_VERSIONS
     """
 }

@@ -38,8 +38,6 @@ process IDEMUX {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-
     """
     echo -e "sample_name\twritten_reads" > demultipexing_stats.tsv
 

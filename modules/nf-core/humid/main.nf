@@ -45,9 +45,7 @@ process HUMID {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def umis = umi_file ?: ''
     def VERSION = '1.0.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     mkdir -p ${prefix}

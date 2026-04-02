@@ -31,11 +31,13 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2") },
-                { assert snapshot(file(process.out.tbi.get(0).get(1)).name).match() }
+                { assert path(process.out.vcf[0][1]).linesGzip.contains("##fileformat=VCFv4.2") },
+                { assert snapshot(
+                    file(process.out.tbi[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
 
@@ -63,11 +65,13 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match("versions_allelspecific") },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2") },
-                { assert snapshot(file(process.out.tbi.get(0).get(1)).name).match() }
+                { assert path(process.out.vcf[0][1]).linesGzip.contains("##fileformat=VCFv4.2") },
+                { assert snapshot(
+                    file(process.out.tbi[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
 
@@ -95,12 +99,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
 }

@@ -33,7 +33,7 @@ input:
           be fetched
         pattern: "[A-Z]?[a-z]* [a-z]*"
 output:
-  fasta:
+  reference:
     - - meta:
           type: map
           description: |
@@ -45,25 +45,33 @@ output:
           pattern: "*.{fasta,fa}"
           ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
-  gb:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
       - "*.gb":
           type: file
           description: Downloaded mitochondrial genome in Genbank format
           pattern: "*.gb"
           ontologies:
             - edam: http://edamontology.org/format_1936 # GenBank
+  versions_mitohifi:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - mitohifi:
+          type: string
+          description: The name of the tool
+      - echo 3.2.3:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - mitohifi:
+          type: string
+          description: The name of the tool
+      - echo 3.2.3:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@verku"
 maintainers:

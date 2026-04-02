@@ -1,0 +1,170 @@
+nextflow_process {
+
+    name "Test Process PHARMCAT_MATCHER"
+    script "../main.nf"
+    process "PHARMCAT_MATCHER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pharmcat"
+    tag "pharmcat/matcher"
+
+    config "./nextflow.config"
+
+    test("Matcher - JSON + HTML") {
+
+        when {
+            params {
+                module_args = ' --matcher-save-html '
+            }
+
+            process {
+                """
+                input[0] = [
+                    [id: 'PharmCAT'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz.tbi', checkIfExists: true),
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.matcher_json[0][1]).name,
+                    file(process.out.matcher_html[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+
+    test("Matcher - JSON ONLY") {
+
+        when {
+            params {
+                module_args = ''
+            }
+
+            process {
+                """
+                input[0] = [
+                    [id: 'PharmCAT'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz.tbi', checkIfExists: true),
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.matcher_html[1] == null },
+                { assert snapshot(
+                    file(process.out.matcher_json[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+    test("Matcher with genes - JSON ONLY") {
+
+        when {
+            params {
+                module_args = ''
+            }
+
+            process {
+                """
+                input[0] = [
+                    [id: 'PharmCAT'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz.tbi', checkIfExists: true),
+                ]
+                input[1] = ['CYP2D6', 'CYP2C9']
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.matcher_html[1] == null },
+                { assert snapshot(
+                    file(process.out.matcher_json[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+
+    test("Matcher with Genes - JSON + HTML") {
+
+        when {
+            params {
+                module_args = ' --matcher-save-html '
+            }
+
+            process {
+                """
+                input[0] = [
+                    [id: 'PharmCAT'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz.tbi', checkIfExists: true),
+                ]
+                input[1] = ['CYP2D6', 'CYP2C9']
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.matcher_json[0][1]).name,
+                    file(process.out.matcher_html[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+    test("Matcher - JSON + HTML - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ' --matcher-save-html '
+            }
+
+            process {
+                """
+                input[0] = [
+                    [id: 'PharmCAT'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz.tbi', checkIfExists: true),
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+    }
+}

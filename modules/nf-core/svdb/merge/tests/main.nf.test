@@ -31,7 +31,7 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -59,7 +59,7 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -87,7 +87,7 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -115,7 +115,7 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -146,7 +146,7 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -177,7 +177,7 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -208,7 +208,7 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -239,7 +239,7 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }

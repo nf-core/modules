@@ -38,7 +38,7 @@ nextflow_process {
                     file(process.out.txt.get(0).get(1)).name,
                     path(process.out.txt.get(0).get(1)).readLines()[1].contains("contig_1"),
                     process.out.json,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match() }
             )
         }
@@ -72,7 +72,7 @@ nextflow_process {
                     file(process.out.txt.get(0).get(1)).name,
                     path(process.out.txt.get(0).get(1)).readLines()[1].contains("contig_1"),
                     process.out.json,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match() }
             )
         }
@@ -106,7 +106,7 @@ nextflow_process {
                     file(process.out.txt.get(0).get(1)).name,
                     path(process.out.txt.get(0).get(1)).readLines()[1].contains("contig_1"),
                     process.out.json,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match() }
             )
         }
@@ -140,7 +140,7 @@ nextflow_process {
                     file(process.out.txt.get(0).get(1)).name,
                     path(process.out.txt.get(0).get(1)).readLines()[1].contains("contig_1"),
                     process.out.json,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match() }
             )
         }
@@ -167,7 +167,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    path(process.out.versions.get(0)).yaml
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
