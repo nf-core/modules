@@ -31,7 +31,7 @@ process DIANN {
 
     // Common outputs
     tuple val(meta), path("*.log.txt"), emit: log
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('diann'), eval('diann | grep "DIA-NN" | grep -oP "\\d+\\.\\d+(\\.\\w+)*(\\.[\\d]+)?"'), emit: versions_diann, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -50,9 +50,9 @@ process DIANN {
     //   to match against preprocessed .quant files in quant/ directory, avoiding unnecessary file staging
     def ms_input = ''
     if (ms_files && ms_files != []) {
-        ms_input = ms_files instanceof List ? ms_files.collect{ "--f ${it}" }.join(' ') : "--f ${ms_files}"
+        ms_input = ms_files instanceof List ? ms_files.collect{ms_file -> "--f ${ms_file}" }.join(' ') : "--f ${ms_files}"
     } else if (ms_file_names && ms_file_names != []) {
-        ms_input = ms_file_names instanceof List ? ms_file_names.collect{ "--f ${it}" }.join(' ') : "--f ${ms_file_names}"
+        ms_input = ms_file_names instanceof List ? ms_file_names.collect{ms_file -> "--f ${ms_file}" }.join(' ') : "--f ${ms_file_names}"
     }
 
     def fasta_input = fasta && fasta != [] ? "--fasta ${fasta}" : ''
@@ -72,11 +72,6 @@ process DIANN {
         --out ${prefix}.tsv \\
         ${quant_args} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        DIA-NN: \$(diann 2>&1 | grep "DIA-NN" | grep -oP "\\d+\\.\\d+(\\.\\w+)*(\\.[\\d]+)?")
-    END_VERSIONS
     """
 
     stub:
@@ -109,10 +104,5 @@ process DIANN {
 
     # Common outputs
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        DIA-NN: 1.8.1
-    END_VERSIONS
     """
 }

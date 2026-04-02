@@ -18,7 +18,8 @@ process MERQURY_HAPMERS {
     tuple val(meta), path('*_inherited_hapmers.fl.png') , emit: inherited_hapmers_fl_png
     tuple val(meta), path('*_inherited_hapmers.ln.png') , emit: inherited_hapmers_ln_png
     tuple val(meta), path('*_inherited_hapmers.st.png') , emit: inherited_hapmers_st_png
-    path "versions.yml"                                 , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('merqury'), val('1.3'), emit: versions_merqury, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,7 +27,6 @@ process MERQURY_HAPMERS {
     script:
     def args    = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = 1.3
     """
     # Nextflow changes the container --entrypoint to /bin/bash (container default entrypoint: /usr/local/env-execute)
     # Check for container variable initialisation script and source it.
@@ -47,17 +47,11 @@ process MERQURY_HAPMERS {
     mv inherited_hapmers.fl.png     ${prefix}_inherited_hapmers.fl.png
     mv inherited_hapmers.ln.png     ${prefix}_inherited_hapmers.ln.png
     mv inherited_hapmers.st.png     ${prefix}_inherited_hapmers.st.png
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        merqury: $VERSION
-    END_VERSIONS
     """
 
     stub:
     def args    = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = 1.3
     """
     # Nextflow changes the container --entrypoint to /bin/bash (container default entrypoint: /usr/local/env-execute)
     # Check for container variable initialisation script and source it.
@@ -87,10 +81,5 @@ process MERQURY_HAPMERS {
     touch ${prefix}_inherited_hapmers.fl.png
     touch ${prefix}_inherited_hapmers.ln.png
     touch ${prefix}_inherited_hapmers.st.png
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        merqury: $VERSION
-    END_VERSIONS
     """
 }

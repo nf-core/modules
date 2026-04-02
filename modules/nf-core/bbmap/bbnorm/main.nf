@@ -13,7 +13,7 @@ process BBMAP_BBNORM {
     output:
     tuple val(meta), path("*.fastq.gz"), emit: fastq
     tuple val(meta), path("*.log")     , emit: log
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('bbmap'), eval('bbversion.sh | grep -v "Duplicate cpuset"'), emit: versions_bbmap, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,10 +40,5 @@ process BBMAP_BBNORM {
         threads=$task.cpus \\
         $memory \\
         &> ${prefix}.bbnorm.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
-    END_VERSIONS
     """
 }

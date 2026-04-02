@@ -1,6 +1,6 @@
 name: bbmap_bbnorm
-description: BBNorm is designed to normalize coverage by down-sampling reads over
-  high-depth areas of a genome, to result in a flat coverage distribution.
+description: BBNorm is designed to normalize coverage by down-sampling reads
+  over high-depth areas of a genome, to result in a flat coverage distribution.
 keywords:
   - normalization
   - assembly
@@ -12,7 +12,8 @@ tools:
       homepage: "https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/"
       documentation: "https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/"
       tool_dev_url: "https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/bbnorm-guide/"
-      licence: ["BBMap - Bushnell B. - sourceforge.net/projects/bbmap/"]
+      licence:
+        - "BBMap - Bushnell B. - sourceforge.net/projects/bbmap/"
       identifier: biotools:bbmap
 input:
   - - meta:
@@ -50,13 +51,27 @@ output:
           description: log file
           pattern: "*.log"
           ontologies: []
+  versions_bbmap:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - bbmap:
+          type: string
+          description: The name of the tool
+      - bbversion.sh | grep -v "Duplicate cpuset":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - bbmap:
+          type: string
+          description: The name of the tool
+      - bbversion.sh | grep -v "Duplicate cpuset":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@danilodileo"
 maintainers:

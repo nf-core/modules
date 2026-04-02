@@ -38,7 +38,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(file(process.out.matrix.get(0).get(1)).name,
-                                  process.out.versions)
+                                  process.out.findAll { key, val -> key.startsWith('version') })
                                   .match()
                 }
             )

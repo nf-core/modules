@@ -21,7 +21,6 @@ process MIRTOP_COUNTS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mirtop \\
         counts \\
@@ -39,8 +38,6 @@ process MIRTOP_COUNTS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir counts
     touch counts/mirtop.tsv

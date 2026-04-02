@@ -21,8 +21,15 @@ process GLIMPSE2_LIGATE {
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
+
+    // Create file list using Groovy (most portable)
+    def file_list = input_list
+        .collect { file_path -> file_path.toString() }
+        .sort()
+        .join('\n')
+
     """
-    printf "%s\\n" ${input_list} | tr -d '[],' | sort -V > all_files.txt
+    echo "${file_list}" > all_files.txt
 
     GLIMPSE2_ligate \\
         ${args} \\

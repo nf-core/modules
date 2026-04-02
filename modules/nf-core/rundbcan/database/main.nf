@@ -14,7 +14,6 @@ process RUNDBCAN_DATABASE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
     """
     run_dbcan database \\
         --db_dir dbcan_db \\
@@ -27,9 +26,8 @@ process RUNDBCAN_DATABASE {
     """
 
     stub:
-    def args        = task.ext.args ?: ''
     """
-    mkdir  -p dbcan_db
+    mkdir -p dbcan_db
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

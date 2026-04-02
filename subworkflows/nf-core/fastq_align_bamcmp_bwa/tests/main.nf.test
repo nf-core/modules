@@ -21,7 +21,8 @@ nextflow_workflow {
                 process {
                     """
                     input[0] = [[ id:'homo_sapiens_genome' ],
-                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true) ]
                     """
                 }
             }
@@ -31,7 +32,8 @@ nextflow_workflow {
                 process {
                     """
                     input[0] = [[ id:'sarscov2_genome' ],
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true) ]
                     """
                 }
             }
@@ -46,7 +48,8 @@ nextflow_workflow {
                 input[1] = BWA_INDEX_HUMAN.out.index
                 input[2] = BWA_INDEX_COV2.out.index
                 input[3] = [[ id:'homo_sapiens_genome' ],
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true) ]
                 """
             }
         }
@@ -56,19 +59,16 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(
                     bam(workflow.out.bam[0][1]).getReadsMD5(),
-                    file(workflow.out.bai[0][1]).name,
-                    workflow.out.csi,
+                    file(workflow.out.index[0][1]).name,
                     workflow.out.stats,
                     workflow.out.flagstat,
                     workflow.out.idxstats,
                     bam(workflow.out.contaminant_bam[0][1]).getReadsMD5(),
                     bam(workflow.out.unfiltered_bam[0][1]).getReadsMD5(),
-                    file(workflow.out.unfiltered_bai[0][1]).name,
-                    workflow.out.unfiltered_csi,
+                    file(workflow.out.unfiltered_index[0][1]).name,
                     workflow.out.unfiltered_stats,
                     workflow.out.unfiltered_flagstat,
                     workflow.out.unfiltered_idxstats,
-                    workflow.out.versions
                 ).match() }
             )
         }

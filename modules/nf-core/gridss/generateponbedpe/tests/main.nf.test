@@ -18,9 +18,9 @@ nextflow_process {
             script "../../../bwa/index/main.nf"
             process {
                 """
-                input[0] = [ [id:'fasta'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                        ]
+                input[0] = [ [id:'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -30,20 +30,18 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true), //inputs
-                        [] //assembly
-                        ]
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ]
                 input[1] = [ [id:'fasta'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                        ]
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
                 input[2] = [ [id:'fasta_fai'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
-                        ]
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
                 input[3] = BWA_INDEX.out.index
                 """
             }
         }
-
     }
 
     test("human - vcf") {
@@ -53,11 +51,11 @@ nextflow_process {
                 """
                 input[0] = GRIDSS_GRIDSS.out.vcf.map{ it -> tuple( it[0], it[1], [], [] ) }
                 input[1] = [ [id:'fasta'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                        ]
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
                 input[2] = [ [id:'fasta_fai'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
-                        ]
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
                 input[3] = BWA_INDEX.out.index
                 """
             }
@@ -67,13 +65,12 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
-                    file(process.out.bed.get(0).get(1)).name,
-                    file(process.out.bedpe.get(0).get(1)).name
-                    ).match() }
+                    file(process.out.bed[0][1]).name,
+                    file(process.out.bedpe[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("human - vcf - stub") {
@@ -101,7 +98,5 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
 }

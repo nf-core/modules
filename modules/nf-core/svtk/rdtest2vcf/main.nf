@@ -14,14 +14,13 @@ process SVTK_RDTEST2VCF {
     output:
     tuple val(meta), path("*.vcf.gz")       , emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi")   , emit: tbi
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('svtk'), val('0.0.20190615'), topic: versions, emit: versions_svtk
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.0.20190615' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     def contigs = fasta_fai ? "--contigs ${fasta_fai}" : ""
 
     """
@@ -31,21 +30,13 @@ process SVTK_RDTEST2VCF {
         ${prefix}.vcf.gz \\
         ${contigs}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        svtk: ${VERSION}
-    END_VERSIONS
     """
+
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.0.20190615' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        svtk: ${VERSION}
-    END_VERSIONS
     """
 }

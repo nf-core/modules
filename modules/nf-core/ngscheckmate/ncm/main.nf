@@ -9,7 +9,7 @@ process NGSCHECKMATE_NCM {
     input:
     tuple val(meta), path(files)
     tuple val(meta2), path(snp_bed)
-    tuple val(meta3), path(fasta)
+    tuple val(meta3), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*_corr_matrix.txt"), emit: corr_matrix

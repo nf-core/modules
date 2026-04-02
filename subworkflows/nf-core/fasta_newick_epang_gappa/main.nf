@@ -21,7 +21,7 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     ch_pp_data // channel: [ meta: val(meta), data: [ alignmethod: val(alignmethod), queryseqfile: file(queryseqfile), refseqfile: file(refseqfile), refphylogeny: file(refphylogeny), hmmfile: file(hmmfile), model: val(model) ] ]
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     // Divide the input channel into three: One each for hmmer, clustalo and mafft alignment
     ch_hmmer_data    = ch_pp_data.filter { it -> it.data.alignmethod == 'hmmer'    }
@@ -36,7 +36,7 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
         []
     )
     // 1.a.2 This handles mixed input where some samples have hmmfile set, while others don't (sample sheet input)
-    ch_hmm = Channel.empty()
+    ch_hmm = channel.empty()
         .mix(HMMER_HMMBUILD.out.hmm.map { it -> [ it[0], it[1] ] })
         .mix(
             ch_hmmer_data
@@ -50,9 +50,10 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     HMMER_UNALIGNREF (
         ch_hmmer_data
             .filter { it -> ! it.data.hmmfile }
-            .map { it -> [ it.meta, it.data.refseqfile ] }
+            .map { it -> [ it.meta, it.data.refseqfile ] },
+        '| sed "/^>/!s/-//g"'
     )
-    ch_hmmer_unaligned = Channel.empty()
+    ch_hmmer_unaligned = channel.empty()
         .mix(HMMER_UNALIGNREF.out.seqreformated.map { it -> [ it[0], it[1] ] })
         .mix(
             ch_hmmer_data
@@ -65,7 +66,7 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     // 1.c Align the reference and query sequences to the profile
     ch_hmmer_alignref = ch_hmm
         .mix(ch_hmmer_unaligned)
-        .groupTuple(size: 2, sort: { a, b -> a =~ /\.hmm/ ? 1 : -1 })
+        .groupTuple(size: 2, sort: { a, _b -> a =~ /\.hmm/ ? 1 : -1 })
 
     HMMER_HMMALIGNREF (
         ch_hmmer_alignref.map { it -> [ it[0], it[1][0] ] },
@@ -73,10 +74,10 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     )
     ch_versions = ch_versions.mix(HMMER_HMMALIGNREF.out.versions)
 
-    ch_hmmer_alignquery = Channel.empty()
+    ch_hmmer_alignquery = channel.empty()
         .mix(ch_hmmer_data.map { it -> [ it.meta, it.data.queryseqfile ] })
         .mix(ch_hmm)
-        .groupTuple(size: 2, sort: { a, b -> a =~ /\.hmm/ ? 1 : -1 })
+        .groupTuple(size: 2, sort: { a, _b -> a =~ /\.hmm/ ? 1 : -1 })
 
     HMMER_HMMALIGNQUERY (
         ch_hmmer_alignquery.map { it -> [ it[0], it[1][0] ] },
@@ -92,10 +93,10 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     ch_versions = ch_versions.mix(HMMER_MASKQUERY.out.versions)
 
     // 1.e Reformat alignments to "afa" (aligned fasta)
-    HMMER_AFAFORMATREF ( HMMER_MASKREF.out.maskedaln )
+    HMMER_AFAFORMATREF ( HMMER_MASKREF.out.maskedaln, '' )
     ch_versions = ch_versions.mix(HMMER_AFAFORMATREF.out.versions)
 
-    HMMER_AFAFORMATQUERY ( HMMER_MASKQUERY.out.maskedaln )
+    HMMER_AFAFORMATQUERY ( HMMER_MASKQUERY.out.maskedaln, '' )
     ch_versions = ch_versions.mix(HMMER_AFAFORMATQUERY.out.versions)
 
     // 2.a CLUSTALO_ALIGN profile alignment of query sequences to reference alignment
@@ -114,7 +115,6 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
         ch_clustalo_data.map { it -> [ it.meta, it.data.refseqfile ] }
             .join(CLUSTALO_ALIGN.out.alignment)
     )
-    ch_versions = ch_versions.mix(EPANG_SPLIT_CLUSTALO.out.versions)
 
     // 3.a MAFFT profile alignment of query sequences to reference alignment
     MAFFT_ALIGN (
@@ -132,7 +132,6 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
         ch_mafft_data.map { it -> [ it.meta, it.data.refseqfile ] }
             .join(MAFFT_ALIGN.out.fas)
     )
-    ch_versions = ch_versions.mix(EPANG_SPLIT_MAFFT.out.versions)
 
     // 4. Do the placement
     ch_epang_query = ch_pp_data.map { it -> [ it.meta, it.data.model, it.data.refphylogeny ] }
@@ -157,7 +156,6 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
         ch_epang_query,
         [], []
     )
-    ch_versions = ch_versions.mix(EPANG_PLACE.out.versions)
 
     // 5. Calculate a tree with the placed sequences
     GAPPA_GRAFT ( EPANG_PLACE.out.jplace )

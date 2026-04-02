@@ -12,7 +12,8 @@ process RAW2OMETIFF {
 
     output:
     tuple val(meta), path("*.ome.tiff"), emit: ometiff
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('raw2ometiff'), eval('raw2ometiff --version |& sed -n "1s/Version = //p"')            , emit: versions_raw2ometiff, topic: versions
+    tuple val("${task.process}"), val('bioformats'), eval('raw2ometiff --version |& sed -n "2s/Bio-Formats version = //p"') , emit: versions_bioformats, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,23 +27,11 @@ process RAW2OMETIFF {
         ${prefix}.ome.tiff \\
         --max_workers $task.cpus \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        raw2ometiff: \$(raw2ometiff --version |& sed -n '1s/Version = //p')
-        bio-formats: \$(raw2ometiff --version |& sed -n '2s/Bio-Formats version = //p')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.ome.tiff
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        raw2ometiff: \$(raw2ometiff --version |& sed -n '1s/Version = //p')
-        bio-formats: \$(raw2ometiff --version |& sed -n '2s/Bio-Formats version = //p')
-    END_VERSIONS
     """
 }

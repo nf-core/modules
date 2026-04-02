@@ -1,0 +1,75 @@
+name: "gemmi_cif2json"
+description: Convert macromolecular structure files from mmCIF format to JSON format
+  using gemmi.
+keywords:
+  - structure
+  - mmcif
+  - cif
+  - json
+  - structural-biology
+tools:
+  - "gemmi":
+      description: |
+        Gemmi is a library and command-line tool for parsing, manipulating,
+        and converting macromolecular structural biology data formats such as
+        mmCIF, PDB, and MTZ.
+      homepage: "https://gemmi.readthedocs.io/"
+      documentation: "https://gemmi.readthedocs.io/en/latest/program.html"
+      tool_dev_url: "https://github.com/project-gemmi/gemmi"
+      doi: "10.5281/zenodo.3697983"
+      licence: ["MPL-2.0"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - cif:
+        type: file
+        description: macromolecular structure file in mmCIF (.cif) format
+        pattern: "*.cif"
+        ontologies:
+          - edam: "http://edamontology.org/format_1477" # mmCIF
+
+output:
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.json":
+          type: file
+          description: Structure file converted to JSON format
+          pattern: "*.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464" # JSON
+  versions_gemmi:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "gemmi":
+          type: string
+          description: The name of the tool
+      - "gemmi --version | sed -E 's/^gemmi ([^ ]+).*/\\1/'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "gemmi":
+          type: string
+          description: The name of the tool
+      - "gemmi --version | sed -E 's/^gemmi ([^ ]+).*/\\1/'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

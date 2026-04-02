@@ -24,7 +24,6 @@ process MTMALIGN_ALIGN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     // mTMalign is not capable of writing to stdout
     // if -o /dev/stdout is specified, the output file will be polluted with debug messages emitted by mTMalign

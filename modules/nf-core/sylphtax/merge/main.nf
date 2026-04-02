@@ -21,7 +21,6 @@ process SYLPHTAX_MERGE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     export SYLPH_TAXONOMY_CONFIG="/tmp/config.json"

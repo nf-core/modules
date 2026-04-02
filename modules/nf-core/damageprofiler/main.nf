@@ -15,7 +15,7 @@ process DAMAGEPROFILER {
 
     output:
     tuple val(meta), path("${prefix}"), emit: results
-    path  "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('damageprofiler'), eval("damageprofiler -v | sed 's/^DamageProfiler v//'"), emit: versions_damageprofiler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,11 +32,6 @@ process DAMAGEPROFILER {
         $args \\
         $reference \\
         $species_list
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        damageprofiler: \$(damageprofiler -v | sed 's/^DamageProfiler v//')
-    END_VERSIONS
     """
 
     stub:
@@ -64,10 +59,5 @@ process DAMAGEPROFILER {
     touch $prefix/edit_distance.svg
     touch $prefix/lgdistribution.txt
     touch $prefix/misincorporation.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        damageprofiler: \$(damageprofiler -v | sed 's/^DamageProfiler v//')
-    END_VERSIONS
     """
 }

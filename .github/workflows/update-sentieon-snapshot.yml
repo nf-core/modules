@@ -7,7 +7,7 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # renovate: datasource=github-releases depName=askimed/nf-test versioning=semver
-  NFT_VER: "0.9.3"
+  NFT_VER: "0.9.4"
   NXF_ANSI_LOG: false
   # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
   NXF_VER: "25.10.2"
@@ -104,6 +104,10 @@ jobs:
           --filter process,workflow \
           --tag sentieon \
           ${{ steps.get-test-path.outputs.test_path }}
+
+      - name: clean up
+        run: |
+          rm -rf setup-nextflow
 
       - name: Commit & push changes
         run: |

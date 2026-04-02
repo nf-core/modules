@@ -21,14 +21,12 @@ process FORCE_TILEEXTENT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     """
     force-tile-extent -d tmp/ -a tile_allow.txt $aoi
     rm -r tmp
     """
 
     stub:
-    def args = task.ext.args ?: ''
     """
     touch tile_allow.txt
     """

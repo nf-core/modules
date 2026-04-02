@@ -26,7 +26,6 @@ process PURECN_NORMALDB {
 
     script:
     def args            = task.ext.args     ?: ''
-    def prefix          = task.ext.prefix   ?: "${meta.id}"
     def normal_panel    = normal_vcf        ? "--normal-panel ${normal_vcf}" : ""
     """
     echo $coverage_files | tr ' ' '\\n' > coverages.list

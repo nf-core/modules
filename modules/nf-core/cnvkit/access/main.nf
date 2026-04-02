@@ -13,7 +13,7 @@ process CNVKIT_ACCESS {
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
-    path "versions.yml",            emit: versions
+    tuple val("${task.process}"), val('cnvkit'), eval('cnvkit.py version | sed -e "s/cnvkit v//g"'), topic: versions, emit: versions_cnvkit
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,7 +21,7 @@ process CNVKIT_ACCESS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def exclude_cmd = exclude_bed.collect { "-x ${it}" }.join(" ")
+    def exclude_cmd = exclude_bed.collect { bed_file -> "-x ${bed_file}" }.join(" ")
     """
     cnvkit.py \\
         access \\
@@ -29,11 +29,6 @@ process CNVKIT_ACCESS {
         ${exclude_cmd} \\
         ${args} \\
         --output ${prefix}.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cnvkit: \$(cnvkit.py version | sed -e "s/cnvkit v//g")
-    END_VERSIONS
     """
 
     stub:
@@ -41,9 +36,5 @@ process CNVKIT_ACCESS {
 
     """
     touch ${prefix}.bed
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cnvkit: \$(cnvkit.py version | sed -e "s/cnvkit v//g")
-    END_VERSIONS
     """
 }

@@ -59,10 +59,8 @@ nextflow_process {
         }
 
         then {
-            { assert snapshot(
-                    process.out.single_ch_image,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
+            { assert process.success }
+            { assert snapshot(process.out).match() }
         }
 
     }

@@ -18,7 +18,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
                 ]
-                input[1] = [ [id:'fasta'], [] ]
+                input[1] = [ [id:'fasta'], [], [] ]
                 """
             }
         }
@@ -41,7 +41,8 @@ nextflow_process {
                 ]
                 input[1] = [
                     [ id:'fasta'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    []
                 ]
                 """
             }
@@ -63,7 +64,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
                 ]
-                input[1] = [ [id:'fasta'], [] ]
+                input[1] = [ [id:'fasta'], [], [] ]
                 """
             }
         }

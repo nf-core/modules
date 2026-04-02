@@ -20,7 +20,8 @@ tools:
       homepage: https://github.com/FelixKrueger/Bismark
       documentation: https://github.com/FelixKrueger/Bismark/tree/master/Docs
       doi: 10.1093/bioinformatics/btr167
-      licence: ["GPL-3.0-or-later"]
+      licence:
+        - "GPL-3.0-or-later"
       identifier: biotools:bismark
 input:
   - - meta:
@@ -43,13 +44,27 @@ output:
           type: directory
           description: Bismark genome index directory
           pattern: "BismarkIndex"
+  versions_bismark:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bismark:
+          type: string
+          description: The name of the tool
+      - "bismark --version 2>&1 | sed -n 's/^.*Bismark Version: v//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bismark:
+          type: string
+          description: The name of the tool
+      - "bismark --version 2>&1 | sed -n 's/^.*Bismark Version: v//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@phue"
 maintainers:
