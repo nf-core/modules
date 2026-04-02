@@ -1,5 +1,5 @@
 name: methurator_plot
-description: Plots results produced by methurator.
+description: Plots results produced by methurator gtestimator.
 keywords:
   - rrbs
   - BS-seq
@@ -16,7 +16,8 @@ tools:
         for DNA methylation sequencing data.
       homepage: https://github.com/VIBTOBIlab/methurator
       documentation: https://github.com/VIBTOBIlab/methurator/README.md
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -29,6 +30,8 @@ input:
         description: |
           YAML file summarizing the saturation analysis results.
         pattern: "methurator_*.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
 output:
   plots:
     - - meta:
@@ -36,17 +39,33 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "plots/*.html":
+      - plots/*.html:
           type: file
           description: |
             HTML plots generated from the saturation analysis.
           pattern: "plots/*.html"
+          ontologies: []
+  versions_methurator:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - methurator:
+          type: string
+          description: The name of the tool
+      - methurator --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: |
-          File containing software versions
-        pattern: "versions.yml"
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - methurator:
+          type: string
+          description: The name of the tool
+      - methurator --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@edogiuili"
 maintainers:
