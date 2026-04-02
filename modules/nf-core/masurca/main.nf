@@ -3,12 +3,10 @@ process MASURCA {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/coreutils_file_masurca_mummer_perl:73ce913377915362':
-        'community.wave.seqera.io/library/coreutils_file_masurca_mummer_perl:93f95b0aad1db22b' }"
+    container "quay.io/ecoflowucl/masurca@sha256:49509d5c7d5e95e7de38127bb2d9bdd14e0d736e7397928132d05f2611aead05"
 
     input:
-    tuple val(meta), path(illumina), path(jump), path(pacbio), path(nanopore), path(other_reads), path(reference_genome)
+    tuple val(meta), path(illumina), path(jump), path(pacbio), path(nanopore), path(other_reads)
     val fragment_mean
     val fragment_stdev
     val jump_mean
@@ -17,7 +15,7 @@ process MASURCA {
 
     output:
     tuple val(meta), path("assemble.sh")                               , emit: script
-    tuple val(meta), path("CA*/primary.genome.scf.fasta")              , emit: scaffolds
+    tuple val(meta), path("*scaffolds.fa.gz")                          , emit: scaffolds
     tuple val(meta), path("*_masurca_config.txt")                      , emit: config
     tuple val(meta), path("*-masurca.log")                             , emit: log
     tuple val("${task.process}"), val('masurca'), eval("masurca --version | sed 's/version //g'"), topic: versions, emit: versions_masurca
@@ -34,7 +32,6 @@ process MASURCA {
     def jump_reads = jump ? [jump].flatten().collect { it.toRealPath() }.join(' ') : ""
     def pacbio_file = pacbio ? pacbio.toRealPath() : ""
     def nanopore_file = nanopore ? nanopore.toRealPath() : ""
-    def reference_genome_file = reference_genome ? reference_genome.toRealPath() : ""
 
     // Configuration parameters with defaults from task.ext
     def extend_jump_reads = task.ext.extend_jump_reads != null ? task.ext.extend_jump_reads : 0
@@ -71,12 +68,6 @@ process MASURCA {
     elif [ -n "${nanopore_file}" ]; then
         echo "#Nanopore reads must be in a single fasta or fastq file with absolute path" >> ${prefix}_masurca_config.txt
         echo "NANOPORE=${nanopore_file}" >> ${prefix}_masurca_config.txt
-    fi
-
-    # Reference genome (optional) - for synteny-assisted assembly
-    if [ -n "${reference_genome_file}" ]; then
-        echo "#synteny-assisted assembly, concatenate all reference genomes into one reference.fa; works for Illumina-only data" >> ${prefix}_masurca_config.txt
-        echo "REFERENCE=${reference_genome_file}" >> ${prefix}_masurca_config.txt
     fi
 
     echo "END" >> ${prefix}_masurca_config.txt
@@ -122,6 +113,10 @@ process MASURCA {
     masurca ${prefix}_masurca_config.txt
     
     ./assemble.sh > ${prefix}-masurca.log 2>&1
+
+    if [ -f CA*/primary.genome.scf.fasta ]; then
+        gzip -cn CA*/primary.genome.scf.fasta > ${prefix}.scaffolds.fa.gz
+    fi
     """
 
     stub:
@@ -131,7 +126,8 @@ process MASURCA {
     mkdir -p CA
     touch assemble.sh
     touch ${prefix}_masurca_config.txt
-    touch CA/primary.genome.scf.fasta
+    touch ${prefix}.scaffolds.fa.gz
     touch ${prefix}-masurca.log
     """
 }
+ 
