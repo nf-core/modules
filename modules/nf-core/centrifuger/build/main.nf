@@ -26,7 +26,7 @@ process CENTRIFUGER_BUILD {
 
     // check if conversion table is given.
     if (!conversion_table) {
-        error "CENTRIFUGER_BUILD mmodule always requires a --conversion-table"
+        error "CENTRIFUGER_BUILD module always requires a --conversion-table"
     }
 
    """
