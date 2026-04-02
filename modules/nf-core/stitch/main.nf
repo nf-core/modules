@@ -20,6 +20,7 @@ process STITCH {
     tuple val(meta), path("*.bgen")             , emit: bgen  , optional: { generate_input_only || !bgen_output }
     tuple val("${task.process}"), val('r-quilt'), eval('Rscript -e "cat(as.character(packageVersion(\'STITCH\')))"'), topic: versions, emit: versions_r_quilt
     tuple val("${task.process}"), val('r-base'), eval('R --version | sed "1!d; s/.*version //; s/ .*//"'), topic: versions, emit: versions_r_base
+    tuple val("${task.process}"), val('rsync'), eval("rsync --version | sed '1!d;s/^rsync  version //; s/ .*//'"), topic: versions, emit: versions_rsync
 
     when:
     task.ext.when == null || task.ext.when
@@ -49,7 +50,6 @@ process STITCH {
 
     // Rsync and Stitch command to copy RData from previous run if available
     def rsync_cmd            = rdata ? "rsync -rL ${rdata}/ RData" : ""
-    def rsync_version_cmd    = rdata ? "rsync: \$(rsync --version | head -n1 | sed 's/^rsync  version //; s/ .*\$//')" : ""
     def stitch_cmd           = seed  ? "Rscript <(cat \$(which STITCH.R) | tail -n +2 | cat <(echo 'set.seed(${seed})') -)" : "STITCH.R"
 
     """
@@ -83,7 +83,7 @@ process STITCH {
 
     def generate_plots_cmd = !generate_input_only
     def generate_file_cmd  = !generate_input_only ? bgen_output ? "touch ${prefix}.bgen" : "echo '' | gzip > ${prefix}.vcf.gz" : ""
-    def rsync_version_cmd  = rdata ? "rsync: \$(rsync --version | head -n1 | sed 's/^rsync  version //; s/ .*\$//')" : ""
+
     """
     mkdir -p input
     for i in {1..${nb_samples}}

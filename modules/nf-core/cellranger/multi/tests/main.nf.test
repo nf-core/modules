@@ -879,6 +879,8 @@ nextflow_process {
     }
     test("cellranger - multi - 10k - kidney - flex - singleplex") {
 
+        config "./singleplex_flex.config"
+
         when {
             process {
                 """
