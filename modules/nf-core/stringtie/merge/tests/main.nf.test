@@ -29,7 +29,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = STRINGTIE_STRINGTIE.out.transcript_gtf.map { meta, gtf -> [meta, gtf] }
+                input[0] = STRINGTIE_STRINGTIE.out.transcript_gtf
                 input[1] = [
                             [ id:'ref', strandedness:'reverse' ], // meta map
                             [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)]
@@ -52,7 +52,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = STRINGTIE_STRINGTIE.out.transcript_gtf.map { meta, gtf -> [meta, gtf] }
+                input[0] = STRINGTIE_STRINGTIE.out.transcript_gtf
                 input[1] = [
                             [ id:'ref', strandedness:'reverse' ], // meta map
                             [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)]
