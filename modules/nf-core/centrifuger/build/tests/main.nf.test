@@ -22,11 +22,11 @@ nextflow_process {
             }
         }
         then {
-            def unstable_Files = file(process.out.db.get(0).get(1)).list().sort()
+            def unstable_files = file(process.out.db.get(0).get(1)).list().sort()
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    unstable_Files,
+                    unstable_files,
                     process.out.versions_centrifuger
                     ).match() }
             )
@@ -48,11 +48,11 @@ nextflow_process {
         }
 
     then {
-        def unstable_Files = file(process.out.db.get(0).get(1)).list().sort()
+        def unstable_files = file(process.out.db.get(0).get(1)).list().sort()
         assertAll(
         { assert process.success },
         { assert snapshot(
-            unstable_Files,
+            unstable_files,
             process.out.versions_centrifuger
             ).match() }
     )
