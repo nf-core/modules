@@ -29,11 +29,27 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+
+                // dupradar - existence only (plots and tables are not reproducible)
                 { assert process.out.dupradar[0][1].any { it.toString().contains("dupMatrix") } },
-                { assert process.out.featurecounts[0][1].any { it.toString().contains("featureCounts") } },
-                { assert process.out.preseq[0][1].any { it.toString().contains("lc_extrap") } },
+
+                // featurecounts - content checks on reproducible tabular outputs
+                { assert process.out.featurecounts[0][1].any { it.toString().endsWith(".featureCounts.tsv") } },
+                { assert process.out.featurecounts[0][1].any { it.toString().contains("biotype_counts_mqc") } },
+
+                // preseq - check lc_extrap has expected header
+                { assert process.out.preseq[0][1].any { path(it).text.contains("TOTAL_READS") } },
+
+                // samtools - existence only (content not reproducible across runs)
                 { assert process.out.samtools[0][1].any { it.toString().contains("flagstat") } },
-                { assert process.out.rseqc[0][1].any { it.toString().contains("bam_stat") } },
+                { assert process.out.samtools[0][1].any { it.toString().contains("idxstats") } },
+                { assert process.out.samtools[0][1].any { it.toString().contains("stats") } },
+
+                // rseqc - content checks on reproducible text outputs
+                { assert process.out.rseqc[0][1].any { it.toString().contains("infer_experiment") && path(it).text.contains("Fraction of reads") } },
+                { assert process.out.rseqc[0][1].any { it.toString().contains("tin.xls") } },
+
+                // qualimap - existence only (html and images not reproducible)
                 { assert process.out.qualimap[0][1].any { it.toString().contains("qualimapReport") } }
             )
         }
@@ -60,8 +76,21 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+
+                // featurecounts
+                { assert process.out.featurecounts[0][1].any { it.toString().endsWith(".featureCounts.tsv") } },
+
+                // preseq
+                { assert process.out.preseq[0][1].any { path(it).text.contains("TOTAL_READS") } },
+
+                // samtools
                 { assert process.out.samtools[0][1].any { it.toString().contains("flagstat") } },
-                { assert process.out.rseqc[0][1].any { it.toString().contains("bam_stat") } }
+
+                // rseqc
+                { assert process.out.rseqc[0][1].any { it.toString().contains("infer_experiment") && path(it).text.contains("Fraction of reads") } },
+
+                // qualimap
+                { assert process.out.qualimap[0][1].any { it.toString().contains("qualimapReport") } }
             )
         }
     }
