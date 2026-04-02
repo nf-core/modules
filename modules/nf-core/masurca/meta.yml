@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "masurca"
-description: The MaSuRCA (Maryland Super Read Cabog Assembler) genome assembly and analysis toolkit
+description: The MaSuRCA (Maryland Super Read Cabog Assembler) genome assembly
+  and analysis toolkit
 keywords:
   - denovo
   - assembly
@@ -13,52 +13,114 @@ tools:
       documentation: "https://github.com/alekseyzimin/masurca/blob/v4.1.4/README.md"
       tool_dev_url: "https://github.com/alekseyzimin/masurca"
       doi: "10.1101/gr.213405.116"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:masurca
-
 input:
-  ### TODO nf-core: Add a description of all of the variables used as input
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - bam:
+    - illumina:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
+        description: |
+          Input paired-end FastQ files (R1 and R2).
+        pattern: "*.{fastq.gz,fastq,fq.gz,fq}"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
-          - edam: "http://edamontology.org/format_3462" # SAM
-
+          - edam: http://edamontology.org/format_1930
+    - jump:
+        type: file
+        description: |
+          Jump/mate-pair FastQ files.
+        pattern: "*.{fastq.gz,fastq,fq.gz,fq}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930
+    - pacbio:
+        type: file
+        description: |
+          PacBio FastQ files.
+        pattern: "*.{fastq.gz,fastq,fq.gz,fq}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930
+    - nanopore:
+        type: file
+        description: |
+          Nanopore FastQ files.
+        pattern: "*.{fastq.gz,fastq,fq.gz,fq}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930
+  - fragment_mean:
+      type: integer
+      description: Mean fragment size for Illumina paired-end reads
+  - fragment_stdev:
+      type: integer
+      description: Standard deviation of fragment size for Illumina paired-end
+        reads
+  - jump_mean:
+      type: integer
+      description: Mean fragment size for jump/mate-pair reads
+  - jump_stdev:
+      type: integer
+      description: Standard deviation of fragment size for jump/mate-pair reads
 output:
-  ### TODO nf-core: Add a description of all of the variables used as output
-  bam:
+  script:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.bam":
+      - "assemble.sh":
           type: file
-          description: Sorted BAM/CRAM/SAM file
-          pattern: "*.{bam,cram,sam}"
+          description: MaSuRCA assembly script
+          pattern: "assemble.sh"
+          ontologies: []
+  scaffolds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*scaffolds.fa.gz":
+          type: file
+          description: Assembled scaffolds in FASTA format
+          pattern: "*-scaffolds.fa.gz"
           ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
-            - edam: "http://edamontology.org/format_2573" # CRAM
-            - edam: "http://edamontology.org/format_3462" # SAM
+            - edam: http://edamontology.org/data_0925
+            - edam: http://edamontology.org/format_1929
+            - edam: http://edamontology.org/format_3989
+  config:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_masurca_config.txt":
+          type: file
+          description: MaSuRCA configuration file
+          pattern: "*_masurca_config.txt"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*-masurca.log":
+          type: file
+          description: MaSuRCA assembly log file
+          pattern: "*-masurca.log"
+          ontologies: []
   versions_masurca:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "masurca":
+      - masurca:
           type: string
           description: The name of the tool
-      - "masurca --version":
+      - masurca --version | sed 's/version //g':
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -67,7 +129,7 @@ topics:
       - masurca:
           type: string
           description: The name of the tool
-      - masurca --version:
+      - masurca --version | sed 's/version //g':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

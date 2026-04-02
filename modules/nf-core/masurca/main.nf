@@ -3,10 +3,10 @@ process MASURCA {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "quay.io/ecoflowucl/masurca@sha256:49509d5c7d5e95e7de38127bb2d9bdd14e0d736e7397928132d05f2611aead05"
+    container "ecoflowucl/masurca:v4.1.4"
 
     input:
-    tuple val(meta), path(illumina), path(jump), path(pacbio), path(nanopore), path(other_reads)
+    tuple val(meta), path(illumina), path(jump), path(pacbio), path(nanopore)
     val fragment_mean
     val fragment_stdev
     val jump_mean
@@ -108,10 +108,10 @@ process MASURCA {
     echo "#DO NOT use if you have less than 15x coverage by long reads." >> ${prefix}_masurca_config.txt
     echo "FLYE_ASSEMBLY=0" >> ${prefix}_masurca_config.txt
     echo "END" >> ${prefix}_masurca_config.txt
-    
+
     # Generate assembly script
     masurca ${prefix}_masurca_config.txt
-    
+
     ./assemble.sh > ${prefix}-masurca.log 2>&1
 
     if [ -f CA*/primary.genome.scf.fasta ]; then
@@ -122,12 +122,11 @@ process MASURCA {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    """   
+    """
     mkdir -p CA
     touch assemble.sh
     touch ${prefix}_masurca_config.txt
-    touch ${prefix}.scaffolds.fa.gz
+    echo "" | gzip > ${prefix}.scaffolds.fa.gz
     touch ${prefix}-masurca.log
     """
 }
- 
