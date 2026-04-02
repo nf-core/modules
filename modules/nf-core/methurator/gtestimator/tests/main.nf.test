@@ -39,7 +39,7 @@ nextflow_process {
                     // Avoid first 3 lines of the summary report as they contain the date and time of the run
                     file(process.out.summary_report[0][1]).readLines()[3..10],
                     process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                ).match()}
             )
         }
     }
