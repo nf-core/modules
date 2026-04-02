@@ -12,8 +12,8 @@ process COVERM_GENOME {
     tuple val(meta2), path(reference)
     val bam_input
     val interleaved
-    val enable_bam_output
     val ref_mode
+    val enable_bam_output
 
     output:
     tuple val(meta), path('*.tsv')           , emit: coverage

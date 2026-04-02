@@ -31,6 +31,7 @@ input:
         pattern: "*.{fa,fq,fa.gz,fq.gz,bam}"
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_2572 # BAM
 
   - - meta2:
         type: map
@@ -44,7 +45,8 @@ input:
           Reference FASTA file to map reads to, or minimap2/strobealign index.
           Not required if using BAM input.
         pattern: "*.{fasta,fasta.gz,mmi,sti}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
 
   - bam_input:
       type: boolean
@@ -85,7 +87,7 @@ output:
           description: BAM file containing aligned reads.
           pattern: "_bam_cache/*.bam"
           ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
+            - edam: http://edamontology.org/format_2572 # BAM
 
   versions_coverm:
     - - ${task.process}:

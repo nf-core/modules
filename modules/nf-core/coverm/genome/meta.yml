@@ -53,10 +53,6 @@ input:
       type: boolean
       description: True if input is interleaved fastq file
 
-  - enable_bam_output:
-      type: boolean
-      description: True to enable BAM output of aligned reads
-
   - ref_mode:
       type: string
       description: |
@@ -66,6 +62,10 @@ input:
           - `"auto"`: Automatically detect based on whether the `reference` path is a directory or file.
         Defaults to `"auto"` if not provided.
       pattern: "^(dir|file|auto)$"
+
+  - enable_bam_output:
+      type: boolean
+      description: True to enable BAM output of aligned reads
 
 output:
   coverage:
@@ -93,7 +93,7 @@ output:
           description: BAM file containing aligned reads.
           pattern: "_bam_cache/*.bam"
           ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
+            - edam: http://edamontology.org/format_2572 # BAM
 
   versions_coverm:
     - - ${task.process}:
