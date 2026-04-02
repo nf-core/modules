@@ -76,9 +76,20 @@ nextflow_process {
             assert process.success
             def resultDir = file(process.out.output[0][1])
             def allNames = []
-            resultDir.eachFileRecurse { f -> if (!f.isDirectory()) allNames.add(f.name) }
+            def tmpFaCount = 0
+            resultDir.eachFileRecurse { f ->
+                if (!f.isDirectory()) {
+                    def rel = resultDir.toPath().relativize(f.toPath()).toString()
+                    if (rel.startsWith('tmp/') || rel.startsWith('tmp\\')) {
+                        if (f.name.endsWith('.fa')) tmpFaCount++
+                    } else {
+                        allNames.add(f.name)
+                    }
+                }
+            }
             assertAll(
                 { assert resultDir.isDirectory() },
+                { assert tmpFaCount > 0 },
                 { assert snapshot(
                     allNames.sort(),
                     process.out.findAll { key, val -> key.startsWith("versions")}
@@ -109,9 +120,20 @@ nextflow_process {
             assert process.success
             def resultDir = file(process.out.output[0][1])
             def allNames = []
-            resultDir.eachFileRecurse { f -> if (!f.isDirectory()) allNames.add(f.name) }
+            def tmpFaCount = 0
+            resultDir.eachFileRecurse { f ->
+                if (!f.isDirectory()) {
+                    def rel = resultDir.toPath().relativize(f.toPath()).toString()
+                    if (rel.startsWith('tmp/') || rel.startsWith('tmp\\')) {
+                        if (f.name.endsWith('.fa')) tmpFaCount++
+                    } else {
+                        allNames.add(f.name)
+                    }
+                }
+            }
             assertAll(
                 { assert resultDir.isDirectory() },
+                { assert tmpFaCount > 0 },
                 { assert file(process.out.tsv[0][1]).isDirectory() },
                 { assert snapshot(
                     allNames.sort(),
