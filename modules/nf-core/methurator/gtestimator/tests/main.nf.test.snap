@@ -1,23 +1,53 @@
 {
-    "versions_stub": {
+    "Run methurator gt-estimator on paired-end methylated [bam] | sarscov2 genome [fasta] - stub": {
         "content": [
-            [
-                "versions.yml:md5,22b8f66df736ae7c456269f537532688"
-            ]
+            {
+                "summary_report": [
+                    [
+                        {
+                            "id": "test_bam"
+                        },
+                        "methurator_summary.yml:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_methurator": [
+                    [
+                        "METHURATOR_GTESTIMATOR",
+                        "methurator",
+                        "methurator, version 2.1.1"
+                    ]
+                ]
+            }
         ],
-        "timestamp": "2026-04-01T18:22:15.772095",
+        "timestamp": "2026-04-02T23:42:39.24087",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.0"
         }
     },
-    "versions": {
+    "Run methurator gt-estimator on paired-end methylated [bam] | sarscov2 genome [fasta]": {
         "content": [
             [
-                "versions.yml:md5,22b8f66df736ae7c456269f537532688"
-            ]
+                "    methurator_version: 2.1.1",
+                "    command: methurator gt_estimator",
+                "    options:",
+                "      cov_files:",
+                "      - ./covs/test.paired_end.methylated.sorted_CpG.bedGraph.gz",
+                "      outdir: .",
+                "      minimum_coverage: '1'",
+                "      t_step: 0.05"
+            ],
+            {
+                "versions_methurator": [
+                    [
+                        "METHURATOR_GTESTIMATOR",
+                        "methurator",
+                        "methurator, version 2.1.1"
+                    ]
+                ]
+            }
         ],
-        "timestamp": "2026-04-01T18:17:57.637285",
+        "timestamp": "2026-04-02T15:49:50.342905",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.0"
