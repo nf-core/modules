@@ -35,13 +35,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.summary_report.size() == 1 },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    // Avoid first 3 lines of the summary report as they contain the date and time of the run
+                    file(process.out.summary_report[0][1]).readLines()[3..10],
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
-
     }
-
     test("Run methurator gt-estimator on paired-end methylated [bam] | sarscov2 genome [fasta] - stub") {
 
         options "-stub"
@@ -70,8 +71,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.summary_report.size() == 1 },
-                { assert snapshot(process.out.versions).match("versions_stub") }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
