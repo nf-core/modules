@@ -4,8 +4,8 @@ process RUSTQC {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dd/dd41fd90345a39c4f28523d4ab1a38ca8a4c55b708e98877b6a805f3392203a9/data'
-        : 'community.wave.seqera.io/library/rustqc_freetype_fontconfig_fonts-conda-ecosystem:4e6b2c4b887c5224'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/58/58923a16e4a0186cb9c4a3b3b9df8a7c791731a634f1294bd0ea74d55c3666f7/data'
+        : 'community.wave.seqera.io/library/rustqc:0.1.1--c6684d9942e792a7'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
