@@ -13,7 +13,8 @@ process BIGSLICE {
     val(export_tsv)
 
     output:
-    tuple val(meta), path("${prefix}/result"), emit: output
+    tuple val(meta), path("${prefix}/result")                  , emit: output
+    tuple val(meta), path("${prefix}/result/tsv_export")       , emit: tsv, optional: true
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('bigslice'), val("2.0.2"), topic: versions, emit: versions_bigslice
 

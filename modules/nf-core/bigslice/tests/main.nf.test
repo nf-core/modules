@@ -75,11 +75,12 @@ nextflow_process {
         then {
             assert process.success
             def resultDir = file(process.out.output[0][1])
+            def allNames = []
+            resultDir.eachFileRecurse { f -> if (!f.isDirectory()) allNames.add(f.name) }
             assertAll(
                 { assert resultDir.isDirectory() },
-                { assert file("${resultDir}/data.db").exists() },
-                { assert resultDir.list().any { it.endsWith('.fa') || new File("${resultDir}/tmp").exists() } },
                 { assert snapshot(
+                    allNames.sort(),
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
@@ -107,11 +108,13 @@ nextflow_process {
         then {
             assert process.success
             def resultDir = file(process.out.output[0][1])
+            def allNames = []
+            resultDir.eachFileRecurse { f -> if (!f.isDirectory()) allNames.add(f.name) }
             assertAll(
                 { assert resultDir.isDirectory() },
-                { assert file("${resultDir}/data.db").exists() },
-                { assert file("${resultDir}/tsv_export").isDirectory() },
+                { assert file(process.out.tsv[0][1]).isDirectory() },
                 { assert snapshot(
+                    allNames.sort(),
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )

@@ -53,6 +53,17 @@ output:
             predicted feature FASTA files (`tmp/**/*.fa`), and optionally TSV exports
             (`tsv_export/`) when `export_tsv` is `true`.
           pattern: "result"
+  tsv:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample/dataset information
+      - ${prefix}/result/tsv_export:
+          type: directory
+          description: |
+            Directory containing TSV exports of all parsed BGC metadata, vectorized
+            features and clustering results. Only present when `export_tsv` input is
+            set to `true`.
+          pattern: "tsv_export"
   versions_bigslice:
     - - ${task.process}:
           type: string
@@ -76,5 +87,7 @@ topics:
           description: The version of the tool
 authors:
   - "@vagkaratzas"
+  - "@SkyLex"
 maintainers:
   - "@vagkaratzas"
+  - "@SkyLex"
