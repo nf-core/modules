@@ -127,7 +127,13 @@ nextflow_process {
 
         then {
             assert process.success
+            assert snapshot(
+                process.out.bam.collect { meta, bam -> [ meta, file(bam).name ] },
+                process.out.unassembled_bam.collect { meta, bam -> [ meta, file(bam).name ] },
+                process.out.findAll { key, val -> key.startsWith('versions') }
+            ).match()
             assert process.out.bam.size() > 0
+            assert process.out.unassembled_bam.size() > 0
         }
     }
 
@@ -151,7 +157,15 @@ nextflow_process {
 
         then {
             assert process.success
+            assert snapshot(
+                process.out.bam.collect { meta, bam -> [ meta, file(bam).name ] },
+                process.out.unassembled_bam.collect { meta, bam -> [ meta, file(bam).name ] },
+                process.out.vcf.collect { meta, vcf -> [ meta, file(vcf).name ] },
+                process.out.tbi.collect { meta, tbi -> [ meta, file(tbi).name ] },
+                process.out.findAll { key, val -> key.startsWith('versions') }
+            ).match()
             assert process.out.bam.size() > 0
+            assert process.out.unassembled_bam.size() > 0
             assert process.out.vcf.size() > 0
             assert process.out.tbi.size() > 0
         }
@@ -178,7 +192,13 @@ nextflow_process {
 
         then {
             assert process.success
+            assert snapshot(
+                process.out.bam.collect { meta, bam -> [ meta, file(bam).name ] },
+                process.out.unassembled_bam.collect { meta, bam -> [ meta, file(bam).name ] },
+                process.out.findAll { key, val -> key.startsWith('versions') }
+            ).match()
             assert process.out.bam.size() > 0
+            assert process.out.unassembled_bam.size() > 0
         }
     }
 
