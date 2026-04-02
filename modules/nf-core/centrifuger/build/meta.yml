@@ -1,0 +1,85 @@
+name: "centrifuger_build"
+description: Build centrifuger database for taxonomic profiling
+keywords:
+  - metagenomics
+  - taxonomic-classification
+  - database-build
+  - centrifuger
+  - centrifuge
+tools:
+  - "centrifuger":
+      description: "Lossless compression of microbial genomes for efficient and accurate metagenomic sequence classification."
+      homepage: "https://github.com/mourisl/centrifuger"
+      documentation: "https://github.com/mourisl/centrifuger"
+      tool_dev_url: "https://github.com/mourisl/centrifuger"
+      doi: "10.1186/s13059-024-03244-4"
+      licence:
+        - "MIT"
+      identifier: biotools:centrifuger
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information. e.g. `[id:'test',
+          single_end:false ]`
+    - references:
+        type: file
+        description: |
+          One or more reference genome sequence files in FASTA format.
+          These are staged into the work directory and used to generate.a renference list file (used with -l option).
+        ontologies:
+          - edam: http://edamontology.org/format_1929
+  - taxonomy_nodes:
+      type: file
+      description: File describing parent-child relationships of a taxonomic tree in NCBI nodes.dmp format
+      ontologies:
+        - edam: http://edamontology.org/format_1964
+  - taxonomy_names:
+      type: file
+      description: File describing individual members of a taxonomic tree in NCBI names.dmp format
+      ontologies:
+        - edam: http://edamontology.org/format_1964
+  - conversion_table:
+      type: file
+      description: |
+        Required: a tab-seperated file, mapping sequence IDs to taxonomy IDs.
+      ontologies:
+        - edam: http://edamontology.org/format_3475
+
+output:
+  db:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}:
+          type: directory
+          description: Centrifuger database index files
+          pattern: "${prefix}"
+          ontologies: []
+  versions_centrifuger:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - centrifuger:
+          type: string
+          description: The name of the tool
+      - centrifuger -v 2>&1 | head -n 1 | cut -d ' ' -f 2:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - centrifuger:
+          type: string
+          description: The name of the tool
+      - centrifuger -v 2>&1 | head -n 1 | cut -d ' ' -f 2:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@haris18s"
+maintainers:
+  - "@haris18s"
