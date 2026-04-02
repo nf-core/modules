@@ -37,12 +37,12 @@ process CENTRIFUGER_BUILD {
 
     centrifuger-build \\
         -l reference_list.txt \\
-        --taxonomy-tree $taxonomy_nodes \\
-        --name-table $taxonomy_names \\
+        --taxonomy-tree ${taxonomy_nodes} \\
+        --name-table ${taxonomy_names} \\
         --conversion-table ${conversion_table} \\
         -t ${task.cpus} \\
         -o ${prefix}/${prefix} \\
-        $args
+        ${args}
     """
 
     stub:
