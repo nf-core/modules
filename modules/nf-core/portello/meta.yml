@@ -1,5 +1,6 @@
 name: "portello"
-description: Transfer HiFi read mappings from their own assembly contigs to a standard reference
+description: Transfer HiFi read mappings from their own assembly contigs to a
+  standard reference
 keywords:
   - assembly
   - transfer
@@ -11,9 +12,9 @@ tools:
       homepage: "https://github.com/PacificBiosciences/portello"
       documentation: "https://github.com/PacificBiosciences/portello"
       tool_dev_url: "https://github.com/PacificBiosciences/portello"
-      licence: ["Pacific Biosciences Software License Agreement"]
+      licence:
+        - "Pacific Biosciences Software License Agreement"
       identifier: biotools:portello
-
 input:
   - - meta:
         type: map
@@ -22,32 +23,33 @@ input:
           e.g. `[ id:'sample1' ]`
     - asm_to_ref_bam:
         type: file
-        description: Assembly contig to reference genome alignment file in BAM/CRAM format
+        description: Assembly contig to reference genome alignment file in
+          BAM/CRAM format
         pattern: "*.{bam,cram}"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_2573"
     - asm_to_ref_bai:
         type: file
         description: BAM/CRAM index file
         pattern: "*.{bam,cram}.bai"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_2573"
     - read_to_asm_bam:
         type: file
         description: Read to assembly alignment file in BAM/CRAM format
         pattern: "*.{bam,cram}"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_2573"
     - read_to_asm_bai:
         type: file
         description: BAM/CRAM/SAM index file
         pattern: "*.{bam,cram}.bai"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_2573"
   - - meta2:
         type: map
         description: |
@@ -58,15 +60,16 @@ input:
         description: Reference genome FASTA file
         pattern: "*.fa*"
         ontologies:
-          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/format_1929"
   - assembly_mode:
       type: string
       description: The assembly mode used for the input BAM files
-      enum: [fully-phased, partially-phased]
+      enum:
+        - fully-phased
+        - partially-phased
   - output_vcf:
       type: boolean
       description: Whether to output phased variant calls in VCF format
-
 output:
   bam:
     - - meta:
@@ -79,7 +82,7 @@ output:
           description: Remapped BAM file
           pattern: "*_remapped.{bam}"
           ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
+            - edam: "http://edamontology.org/format_2572"
   unassembled_bam:
     - - meta:
           type: map
@@ -91,7 +94,7 @@ output:
           description: Unassembled BAM file
           pattern: "*_unassembled.{bam}"
           ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
+            - edam: "http://edamontology.org/format_2572"
   vcf:
     - - meta:
           type: map
@@ -100,8 +103,10 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.vcf.gz":
           type: file
-          description: VCF file with phased heterozygous small variant calls from the input assembly contigs
+          description: VCF file with phased heterozygous small variant calls from
+            the input assembly contigs
           pattern: "*.{vcf.gz}"
+          ontologies: []
   tbi:
     - - meta:
           type: map
@@ -112,6 +117,7 @@ output:
           type: file
           description: VCF index file
           pattern: "*.{vcf.gz.tbi}"
+          ontologies: []
   versions_portello:
     - - "${task.process}":
           type: string
@@ -122,16 +128,15 @@ output:
       - "portello --version":
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
-    - - ${task.process}:
+    - - "${task.process}":
           type: string
           description: The name of the process
-      - portello:
+      - "portello":
           type: string
           description: The name of the tool
-      - portello --version:
+      - "portello --version":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
