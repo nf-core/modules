@@ -47,10 +47,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    process.out.plots.collect { it.collect { it instanceof Map ? it : file(it).name } },
+                    process.out.findAll { key, val -> key.startsWith('versions') }).match()
+                }
             )
         }
-
     }
 
     test("Run methurator plot on the output of methurator gt-estimator - stub") {
@@ -68,7 +70,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions_stub") }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
