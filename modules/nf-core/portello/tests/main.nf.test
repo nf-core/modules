@@ -1,0 +1,260 @@
+nextflow_process {
+
+    name "Test Process PORTELLO"
+    script "../main.nf"
+    process "PORTELLO"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "portello"
+
+    setup {
+
+        run("HIFIASM") { // Diploid assembly
+            script "../../hifiasm/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id : 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [],
+                    [],
+                    []
+                ]
+                input[2] = [
+                    [],
+                    [],
+                    []
+                ]
+                input[3] = [
+                    [],
+                    []
+                ]
+                """
+            }
+        }
+
+        run("FIND_CONCATENATE") {
+            script "../../find/concatenate/main.nf"
+            process {
+                """
+                input[0] = HIFIASM.out.hap1_contigs.join(HIFIASM.out.hap2_contigs)
+                                .map { meta, file1, file2 -> [ meta, [file1, file2] ] }
+                """
+            }
+        }
+
+        run("PBMM2_ALIGN") { // Read-to-assembly alignments
+            script "../../pbmm2/align/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
+                ]
+
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        run("SAMTOOLS_INDEX") {
+            script "../../samtools/index/main.nf"
+            process {
+                """
+                input[0] = PBMM2_ALIGN.out.bam
+                """
+            }
+        }
+
+        run("MINIMAP2_INDEX") {
+            script "../../minimap2/index/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        run("MINIMAP2_ALIGN") { // Assembly-to-ref alignments
+            script "../../minimap2/align/main.nf"
+            process {
+                """
+                input[0] = FIND_CONCATENATE.out.file_out
+                input[1] = MINIMAP2_INDEX.out.index
+                input[2] = true
+                input[3] = 'bai'
+                input[4] = false
+                input[5] = false
+                """
+            }
+        }
+    }
+
+    test("portello - [bam, bai, bam, bai], fasta, partially-phased, false") {
+        when {
+            process {
+                """
+                input[0] = MINIMAP2_ALIGN.out.bam
+                                .join(MINIMAP2_ALIGN.out.index)
+                                .join(PBMM2_ALIGN.out.bam)
+                                .join(SAMTOOLS_INDEX.out.index)
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                ]
+                input[2] = "partially-phased"
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert process.out.bam.size() > 0
+        }
+    }
+
+    test("portello - [bam, bai, bam, bai], fasta, partially-phased, true") {
+        when {
+            process {
+                """
+                input[0] = MINIMAP2_ALIGN.out.bam
+                                .join(MINIMAP2_ALIGN.out.index)
+                                .join(PBMM2_ALIGN.out.bam)
+                                .join(SAMTOOLS_INDEX.out.index)
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                ]
+                input[2] = "partially-phased"
+                input[3] = true
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert process.out.bam.size() > 0
+            assert process.out.vcf.size() > 0
+            assert process.out.tbi.size() > 0
+        }
+    }
+
+
+    test("portello - [bam, bai, bam, bai], fasta, fully-phased, false") {
+        when {
+            process {
+                """
+                input[0] = MINIMAP2_ALIGN.out.bam
+                                .join(MINIMAP2_ALIGN.out.index)
+                                .join(PBMM2_ALIGN.out.bam)
+                                .join(SAMTOOLS_INDEX.out.index)
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                ]
+                input[2] = "fully-phased"
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert process.out.bam.size() > 0
+        }
+    }
+
+    test("portello - [bam, bai, bam, bai], fasta, partially-phased, false - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = MINIMAP2_ALIGN.out.bam
+                                .join(MINIMAP2_ALIGN.out.index)
+                                .join(PBMM2_ALIGN.out.bam)
+                                .join(SAMTOOLS_INDEX.out.index)
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                ]
+                input[2] = "partially-phased"
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+    }
+
+    test("portello - [bam, bai, bam, bai], fasta, fully-phased, false - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = MINIMAP2_ALIGN.out.bam
+                                .join(MINIMAP2_ALIGN.out.index)
+                                .join(PBMM2_ALIGN.out.bam)
+                                .join(SAMTOOLS_INDEX.out.index)
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                ]
+                input[2] = "fully-phased"
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+    }
+
+    test("portello - [bam, bai, bam, bai], fasta, partially-phased, true - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = MINIMAP2_ALIGN.out.bam
+                                .join(MINIMAP2_ALIGN.out.index)
+                                .join(PBMM2_ALIGN.out.bam)
+                                .join(SAMTOOLS_INDEX.out.index)
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                ]
+                input[2] = "partially-phased"
+                input[3] = true
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+    }
+
+}
