@@ -67,25 +67,23 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*.depths.{txt}"
-      - "*.depth.txt":
+      - "*.depth.tsv":
           type: file
           description: Tab-delimited file containing coverage information for each contig and sample.
-          pattern: "*.depths.{txt}"
+          pattern: "*.depth.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
 
-  bam_output:
+  bam:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*.depths.{txt}"
-      - "_bam_cache/*.bam":
+      - "*.bam":
           type: file
           description: BAM file containing aligned reads.
-          pattern: "_bam_cache/*.bam"
+          pattern: "*.bam"
           ontologies:
             - edam: http://edamontology.org/format_2572 # BAM
 

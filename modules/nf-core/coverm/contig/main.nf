@@ -15,8 +15,8 @@ process COVERM_CONTIG {
     val enable_bam_output
 
     output:
-    tuple val(meta), path('*.depth.txt')     , emit: coverage
-    tuple val(meta), path('_bam_cache/*.bam'), emit: bam_output, optional: true
+    tuple val(meta), path('*.depth.tsv'), emit: coverage
+    tuple val(meta), path('*.bam')      , emit: bam, optional: true
     tuple val("${task.process}"), val('coverm'), eval('coverm --version | sed "s/coverm //"'), emit: versions_coverm, topic: versions
 
     when:
@@ -39,12 +39,14 @@ process COVERM_CONTIG {
         ${reference_str} \\
         ${bam_output_str} \\
         ${args} \\
-        --output-file ${prefix}.depth.txt
+        --output-file ${prefix}.depth.tsv
+
+    mv _bam_cache/*.bam . || true
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.depth.txt
+    touch ${prefix}.depth.tsv
     """
 }

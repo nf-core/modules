@@ -7,7 +7,7 @@
                         "id": "test",
                         "single_end": false
                     },
-                    "test.tsv:md5,60ac75e5dce5da12263fbeea80f9c7fa"
+                    "test.depth.tsv:md5,60ac75e5dce5da12263fbeea80f9c7fa"
                 ]
             ],
             [
@@ -23,7 +23,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-04-01T18:52:50.584540107",
+        "timestamp": "2026-04-02T10:28:19.627971102",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
@@ -32,26 +32,7 @@
     "coverm_genome - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    
-                ],
-                "2": [
-                    [
-                        "COVERM_GENOME",
-                        "coverm",
-                        "0.7.0"
-                    ]
-                ],
-                "bam_output": [
+                "bam": [
                     
                 ],
                 "coverage": [
@@ -60,7 +41,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.depth.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "versions_coverm": [
@@ -72,7 +53,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-04-01T17:24:13.910774722",
+        "timestamp": "2026-04-02T10:28:38.187957121",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
@@ -86,7 +67,7 @@
                         "id": "test",
                         "single_end": false
                     },
-                    "test.tsv:md5,70b9ad4a4d90d9c6eb0ef4b52adaf636"
+                    "test.depth.tsv:md5,70b9ad4a4d90d9c6eb0ef4b52adaf636"
                 ]
             ],
             [
@@ -102,7 +83,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-04-01T18:53:00.353617844",
+        "timestamp": "2026-04-02T10:28:30.762759915",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
@@ -116,7 +97,7 @@
                         "id": "test",
                         "single_end": false
                     },
-                    "test.tsv:md5,c16918076fbb85545cd0f29a228cb54f"
+                    "test.depth.tsv:md5,c16918076fbb85545cd0f29a228cb54f"
                 ]
             ],
             [
@@ -126,8 +107,14 @@
                         "single_end": false
                     },
                     [
-                        "coverm-genome.test1_1.fastq.gz.bam",
-                        "coverm-genome.test2_1.fastq.gz.bam"
+                        {
+                            "readCount": 100053,
+                            "meanQuality": 31
+                        },
+                        {
+                            "readCount": 49986,
+                            "meanQuality": 0
+                        }
                     ]
                 ]
             ],
@@ -141,7 +128,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-04-01T19:01:47.048131055",
+        "timestamp": "2026-04-02T10:35:10.06954145",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"

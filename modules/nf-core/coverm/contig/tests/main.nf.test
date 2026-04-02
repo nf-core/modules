@@ -39,7 +39,14 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.coverage,
-                    process.out.bam_output.collect { meta, bam_files -> [ meta, bam_files.collect { file(it).name } ] },
+                    process.out.bam.collect { meta, bam_files ->
+                        [
+                            meta,
+                            bam_files.collect { file ->
+                                bam(file).getStatistics(include:["readCount","meanQuality"])
+                            }
+                        ]
+                    },
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
@@ -75,7 +82,14 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.coverage,
-                    process.out.bam_output.collect { meta, bam_files -> [ meta, bam_files.collect { file(it).name } ] },
+                    process.out.bam.collect { meta, bam_files ->
+                        [
+                            meta,
+                            bam_files.collect { file ->
+                                bam(file).getStatistics(include:["readCount","meanQuality"])
+                            }
+                        ]
+                    },
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
@@ -111,7 +125,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
