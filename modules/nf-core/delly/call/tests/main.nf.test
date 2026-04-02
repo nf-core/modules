@@ -9,9 +9,7 @@ nextflow_process {
     tag "delly"
     tag "delly/call"
 
-    test("homo_sapiens - bam, bai, [], [], [], fasta, fai") {
-
-        config "./vcf.config"
+    test("homo_sapiens - bam, bai, [], [], [], fasta, fai, vcf") {
 
         when {
             process {
@@ -32,6 +30,7 @@ nextflow_process {
                     [ id:'fai' ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai", checkIfExists:true)
                 ]
+                input[3] = 'vcf'
                 """
             }
         }
@@ -45,7 +44,110 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - cram, crai, [], [], [], fasta, fai") {
+    test("homo_sapiens - bam, bai, [], [], [], fasta, fai, bcf") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai", checkIfExists:true),
+                    [],
+                    [],
+                    []
+                ]
+                input[1] = [
+                    [ id:'fasta' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/chr21/sequence/genome.fasta", checkIfExists:true)
+                ]
+                input[2] = [
+                    [ id:'fai' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai", checkIfExists:true)
+                ]
+                input[3] = 'bcf'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - bam, bai, [], [], [], fasta, fai, []") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai", checkIfExists:true),
+                    [],
+                    [],
+                    []
+                ]
+                input[1] = [
+                    [ id:'fasta' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/chr21/sequence/genome.fasta", checkIfExists:true)
+                ]
+                input[2] = [
+                    [ id:'fai' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai", checkIfExists:true)
+                ]
+                input[3] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+            )
+        }
+    }
+
+    test("homo_sapiens - bam, bai, [], [], [], fasta, fai, bcf - config") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai", checkIfExists:true),
+                    [],
+                    [],
+                    []
+                ]
+                input[1] = [
+                    [ id:'fasta' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/chr21/sequence/genome.fasta", checkIfExists:true)
+                ]
+                input[2] = [
+                    [ id:'fai' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai", checkIfExists:true)
+                ]
+                input[3] = 'bcf'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - cram, crai, [], [], [], fasta, fai, bcf") {
 
         when {
             process {
@@ -66,6 +168,7 @@ nextflow_process {
                     [ id:'fai' ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai", checkIfExists:true)
                 ]
+                input[3] = 'bcf'
                 """
             }
         }
@@ -79,7 +182,7 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - cram, crai, [], [], bed, fasta, fai") {
+    test("homo_sapiens - cram, crai, [], [], bed, fasta, fai, bcf") {
 
         when {
             process {
@@ -100,6 +203,7 @@ nextflow_process {
                     [ id:'fai' ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai", checkIfExists:true)
                 ]
+                input[3] = 'bcf'
                 """
             }
         }
@@ -113,7 +217,7 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - cram, crai, vcf, tbi, [], fasta, fai") {
+    test("homo_sapiens - cram, crai, vcf, tbi, [], fasta, fai, bcf") {
 
         when {
             process {
@@ -134,6 +238,7 @@ nextflow_process {
                     [ id:'fai' ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai", checkIfExists:true)
                 ]
+                input[3] = 'bcf'
                 """
             }
         }
@@ -147,9 +252,8 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - bam, bai, [], [], [], fasta, fai - stub") {
+    test("homo_sapiens - bam, bai, [], [], [], fasta, fai, vcf - stub") {
 
-        config "./vcf.config"
         options "-stub"
 
         when {
@@ -171,6 +275,7 @@ nextflow_process {
                     [ id:'fai' ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai", checkIfExists:true)
                 ]
+                input[3] = 'vcf'
                 """
             }
         }

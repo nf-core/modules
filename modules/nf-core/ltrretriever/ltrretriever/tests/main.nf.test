@@ -12,7 +12,7 @@ nextflow_process {
     tag "gunzip"
     tag "ltrharvest"
     tag "ltrfinder"
-    tag "cat/cat"
+    tag "find/concatenate"
 
     test("sarscov2-genome-no_ltr") {
 
@@ -44,8 +44,8 @@ nextflow_process {
                 }
             }
 
-            run("CAT_CAT") {
-                script "../../../cat/cat/main.nf"
+            run("FIND_CONCATENATE") {
+                script "../../../find/concatenate/main.nf"
 
                 process {
                     """
@@ -62,7 +62,7 @@ nextflow_process {
                     [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = CAT_CAT.out.file_out.map { meta, tabout -> tabout }
+                input[1] = FIND_CONCATENATE.out.file_out.map { meta, tabout -> tabout }
                 input[2] = []
                 input[3] = []
                 input[4] = []
@@ -117,8 +117,8 @@ nextflow_process {
                 }
             }
 
-            run("CAT_CAT") {
-                script "../../../cat/cat/main.nf"
+            run("FIND_CONCATENATE") {
+                script "../../../find/concatenate/main.nf"
 
                 process {
                     """
@@ -132,7 +132,7 @@ nextflow_process {
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
-                input[1] = CAT_CAT.out.file_out.map { meta, tabout -> tabout }
+                input[1] = FIND_CONCATENATE.out.file_out.map { meta, tabout -> tabout }
                 input[2] = []
                 input[3] = []
                 input[4] = []
