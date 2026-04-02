@@ -10,7 +10,7 @@ process STRINGTIE_MERGE {
 
     input:
     tuple val(meta), path(gtf)
-    path annotation_gtf
+    tuple val(meta2), path(annotation_gtf)
 
     output:
     tuple val(meta), path("${prefix}.gtf"), emit: merged_gtf

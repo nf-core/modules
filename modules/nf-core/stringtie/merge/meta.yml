@@ -27,13 +27,18 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_2306"
           - edam: "http://edamontology.org/format_1975"
-  - annotation_gtf:
-      type: file
-      description: |
-        Reference annotation gtf file (optional).
-      pattern: "*.{gtf}"
-      ontologies:
-        - edam: "http://edamontology.org/format_2306"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - annotation_gtf:
+        type: file
+        description: |
+          Reference annotation gtf file (optional).
+        pattern: "*.{gtf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2306"
 output:
   versions_stringtie:
     - - ${task.process}:
