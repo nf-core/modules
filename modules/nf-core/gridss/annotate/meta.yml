@@ -1,0 +1,69 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gridss_annotate"
+description: Annotates single breakends in a GRIDSS VCF with RepeatMasker annotations using gridss_annotate_vcf_repeatmasker.
+keywords:
+  - gridss
+  - structural variants
+  - annotation
+  - repeatmasker
+  - vcf
+tools:
+  - gridss:
+      description: "GRIDSS: the Genomic Rearrangement IDentification Software Suite"
+      documentation: "https://github.com/PapenfussLab/gridss/wiki/GRIDSS-Documentation"
+      tool_dev_url: "https://github.com/PapenfussLab/gridss"
+      doi: "10.1186/s13059-021-02423-x"
+      licence:
+        - "GPL v3"
+      identifier: biotools:gridss
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test']
+    - vcf:
+        type: file
+        description: Input VCF file generated with GRIDSS
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test']
+      - "*.annotated.vcf.gz":
+          type: file
+          description: RepeatMasker-annotated VCF file
+          pattern: "*.annotated.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+            - edam: "http://edamontology.org/format_3989" # GZIP format
+  versions_gridss:
+    - - ${task.process}:
+          type: string
+          description: The process
+      - gridss:
+          type: string
+          description: The tool name
+      - "echo \\$(GeneratePonBedpe --version 2>&1) | sed 's/-gridss//'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process
+      - gridss:
+          type: string
+          description: The tool name
+      - "echo \\$(GeneratePonBedpe --version 2>&1) | sed 's/-gridss//'":
+          type: string
+          description: The command used to generate the version of the tool
+authors:
+  - "@emmcauley"
+maintainers:
+  - "@emmcauley"
