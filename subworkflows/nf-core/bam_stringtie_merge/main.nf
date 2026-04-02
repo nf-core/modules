@@ -24,7 +24,7 @@ workflow BAM_STRINGTIE_MERGE {
         stringtie_gtfs,
         ch_chrgtf.map { _meta, gtf -> [ gtf ] }
     )
-    ch_stringtie_gtfs = STRINGTIE_MERGE.out.gtf
+    ch_stringtie_gtfs = STRINGTIE_MERGE.out.merged_gtf
 
     emit:
     stringtie_gtf = ch_stringtie_gtfs // channel: [ meta, gtf ]
