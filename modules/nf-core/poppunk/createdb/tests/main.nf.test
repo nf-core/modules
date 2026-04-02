@@ -1,0 +1,41 @@
+nextflow_process {
+    name "Test Process POPPUNK_CREATEDB"
+    script "../main.nf"
+    process "POPPUNK_CREATEDB"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "poppunk"
+    tag "poppunk/createdb"
+
+    // PopPUNK requires a minimum number of sufficiently diverse same-species genomes
+    // to compute meaningful k-mer distances. No suitable tiny test data exists in
+    // nf-core/test-datasets, so only a stub test is provided here.
+    // To test with real data, run manually with multiple same-species genome FASTAs,
+    // e.g. multiple H. influenzae strains from NCBI.
+
+    test("haemophilus_influenzae - fasta - createdb - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                def fasta1 = file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz', checkIfExists: true)
+                def fasta2 = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/fasta/haemophilus_influenzae.fna.gz', checkIfExists: true)
+                def rfile = file(workDir.toString() + '/rfile.txt')
+                rfile.text = ["sample1", "genome.fna.gz"].join("\t") + System.lineSeparator() +
+                             ["sample2", "haemophilus_influenzae.fna.gz"].join("\t") + System.lineSeparator()
+                input[0] = [
+                    [ id:'test' ],
+                    rfile,
+                    [fasta1, fasta2]
+                ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

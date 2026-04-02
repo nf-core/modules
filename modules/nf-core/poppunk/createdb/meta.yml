@@ -1,0 +1,100 @@
+name: "poppunk_createdb"
+description: Create a PopPUNK database of kmer sketches and pairwise distances
+  from a set of assemblies
+keywords:
+  - genomics
+  - bacteria
+  - clustering
+  - sketching
+  - poppunk
+tools:
+  - "poppunk":
+      description: "PopPUNK (POPulation Partitioning Using Nucleotide Kmers) - rapid
+        bacterial population analysis. Note: this module runs with --qc-filter continue
+        by default; override via task.ext.args."
+      homepage: "https://poppunk.bacpop.org/index.html"
+      documentation: "https://poppunk.bacpop.org/index.html"
+      tool_dev_url: "https://github.com/bacpop/PopPUNK"
+      doi: "10.1101/gr.241455.118"
+      licence:
+        - "Apache-2.0"
+      identifier: biotools:poppunk
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - r_file:
+        type: file
+        description: |
+          Tab-separated file listing sample names and paths to their assembly FASTA files.
+          Format: <sample_name>\t<path/to/assembly.fa>
+        pattern: "*.{txt,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+    - fasta:
+        type: file
+        description: List of assembly FASTA files for all samples listed in the
+          r_file
+        pattern: "*.{fa,fa.gz,fasta,fasta.gz,fna,fna.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929
+output:
+  db:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${meta.id}:
+          type: directory
+          description: Directory containing the full PopPUNK database output files
+  h5:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${meta.id}/${meta.id}.h5:
+          type: file
+          description: HDF5 file containing the k-mer sketches for all input
+            genomes
+          pattern: "*.h5"
+          ontologies: []
+  dists:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${meta.id}/${meta.id}.dists.*:
+          type: file
+          description: Pairwise distance matrix files (numpy and pickle format)
+          pattern: "*.dists.*"
+          ontologies: []
+  versions_poppunk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - poppunk:
+          type: string
+          description: The name of the tool
+      - poppunk --version 2>&1 | head -1 | sed 's/^.*v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - poppunk:
+          type: string
+          description: The name of the tool
+      - poppunk --version 2>&1 | head -1 | sed 's/^.*v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@cwoodside1278"
+maintainers:
+  - "@cwoodside1278"
