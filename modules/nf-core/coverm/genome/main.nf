@@ -55,5 +55,6 @@ process COVERM_GENOME {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.depth.tsv
+    touch ${prefix}.bam
     """
 }

@@ -44,9 +44,7 @@ nextflow_process {
                     process.out.bam.collect { meta, bam_files ->
                         [
                             meta,
-                            bam_files.collect { file ->
-                                bam(file).getStatistics(include:["readCount","meanQuality"])
-                            }
+                            bam_files.collect { file -> bam(file).getReadsMD5() }
                         ]
                     },
                     process.out.findAll { key, val -> key.startsWith("versions")}
@@ -88,9 +86,7 @@ nextflow_process {
                     process.out.bam.collect { meta, bam_files ->
                         [
                             meta,
-                            bam_files.collect { file ->
-                                bam(file).getStatistics(include:["readCount","meanQuality"])
-                            }
+                            bam_files.collect { file -> bam(file).getReadsMD5() }
                         ]
                     },
                     process.out.findAll { key, val -> key.startsWith("versions")}
@@ -142,9 +138,7 @@ nextflow_process {
                     process.out.bam.collect { meta, bam_files ->
                         [
                             meta,
-                            bam_files.collect { file ->
-                                bam(file).getStatistics(include:["readCount","meanQuality"])
-                            }
+                            bam_files.collect { file -> bam(file).getReadsMD5() }
                         ]
                     },
                     process.out.findAll { key, val -> key.startsWith("versions")}
