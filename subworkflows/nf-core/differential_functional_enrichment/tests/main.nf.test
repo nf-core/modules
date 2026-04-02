@@ -251,7 +251,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
-                    workflow.out.gsea_report,
+                    workflow.out.gsea_report_tsv,
                     path(workflow.out.versions.get(0)).yaml,
                     workflow.out.versions
                 ).match()}
@@ -469,7 +469,7 @@ nextflow_workflow {
                     path(workflow.out.gprofiler2_all_enrich[0][1]).exists(), // This generates empty md5sums and linting fails
                     workflow.out.gprofiler2_sub_enrich,
                     workflow.out.gprofiler2_plot_html.collect{ meta, html -> file(html).name }, //assert unstable file
-                    workflow.out.gsea_report,
+                    workflow.out.gsea_report_tsv,
                     workflow.out.grea_results,
                     workflow.out.versions
                 ).match()},
