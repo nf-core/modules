@@ -47,7 +47,7 @@ nextflow_process {
                         file(process.out.log[0][1]).text.contains('fcs_gx_report.txt contamination summary:'),
                         file(process.out.log[0][1]).text.contains('fcs_gx_report.txt action summary:'),
                         process.out.hits,
-                        process.out.versions
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
