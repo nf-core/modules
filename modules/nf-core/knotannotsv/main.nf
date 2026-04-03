@@ -34,11 +34,11 @@ process KNOTANNOTSV {
 
     stub:
     def args = task.ext.args ?: ''
-    def knot_prefix = task.ext.prefix // For knotAnnotSV, this a true prefix
+    def knot_prefix = task.ext.prefix ? "${task.ext.prefix}_" : "" // For knotAnnotSV, this a true prefix
     """
     echo $args
 
-    touch ${knot_prefix}_${meta.id}.html
-    touch ${knot_prefix}_${meta.id}.xlsm
+    touch ${knot_prefix}${meta.id}.html
+    touch ${knot_prefix}${meta.id}.xlsm
     """
 }
