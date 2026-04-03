@@ -13,6 +13,11 @@ nextflow_process {
     test("homo_sapiens - annotsv_tsv, knot_out_xl - HTML output") {
 
         when {
+            params {
+                module_args = "--genomeBuild hg38"
+                module_prefix = "knot"
+            }
+
             process {
                 """
                 input[0] = [
@@ -36,6 +41,11 @@ nextflow_process {
     test("homo_sapiens - annotsv_tsv, knot_out_xl - XLSM output") {
 
         when {
+            params {
+                module_args = "--genomeBuild hg38"
+                module_prefix = "knot"
+            }
+
             process {
                 """
                 input[0] = [
@@ -61,6 +71,11 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = "--genomeBuild hg38"
+                module_prefix = "knot"
+            }
+
             process {
                 """
                 input[0] = [
