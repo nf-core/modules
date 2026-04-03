@@ -22,9 +22,9 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/tsv/sv_query.tsv", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/tsv/sv_query.tsv", checkIfExists: true),
+                    false
                 ]
-                input[1] = false
                 """
             }
         }
@@ -50,9 +50,9 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/tsv/sv_query.tsv", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/tsv/sv_query.tsv", checkIfExists: true),
+                    true
                 ]
-                input[1] = true
                 """
             }
         }
@@ -80,9 +80,9 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/tsv/sv_query.tsv", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/tsv/sv_query.tsv", checkIfExists: true),
+                    false
                 ]
-                input[1] = false
                 """
             }
         }
