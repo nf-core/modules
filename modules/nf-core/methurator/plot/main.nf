@@ -12,7 +12,7 @@ process METHURATOR_PLOT {
 
     output:
     tuple val(meta), path("plots/*.html"), emit: plots
-    tuple val("${task.process}"), val('methurator'), eval('methurator --version'), emit: versions_methurator, topic: versions
+    tuple val("${task.process}"), val('methurator'), eval("methurator --version | sed 's/.* //'"), emit: versions_methurator, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

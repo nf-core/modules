@@ -68,10 +68,10 @@ output:
           description: methurator gtestimator
       - methurator:
           type: string
-          description: methurator
-      - methurator --version:
+          description: The name of the tool
+      - methurator --version | sed 's/.* //':
           type: eval
-          description: methurator software versions
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -79,10 +79,10 @@ topics:
           description: methurator gtestimator
       - methurator:
           type: string
-          description: methurator
-      - methurator --version:
+          description: The name of the tool
+      - methurator --version | sed 's/.* //':
           type: eval
-          description: methurator software versions
+          description: The expression to obtain the version of the tool
 authors:
   - "@edogiuili"
 maintainers:
