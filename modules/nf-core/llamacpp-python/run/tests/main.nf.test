@@ -33,8 +33,22 @@ nextflow_process {
         when {
             process {
                 """
+                // Generate prompt.json with provided content
+                def promptFile = file('prompt.json')
+                promptFile.text = '''[
+    {
+        "role": "system",
+        "content": "A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions"
+    },
+    {
+        "role": "user",
+        "content": "Describe Barcelona in one paragraph"
+    }
+]
+'''
+
                 input[0] = HUGGINGFACE_DOWNLOAD.out.output.map { meta, model ->
-                    [ [ id:'test_run' ], file("${moduleDir}/tests/data/prompt.json"), model ]
+                    [ [ id:'test_run' ], promptFile, model ]
                 }
                 """
             }
@@ -59,10 +73,28 @@ nextflow_process {
         when {
             process {
                 """
+                // Generate prompt.json with provided content
+                def promptFile = file('prompt.json')
+                promptFile.text = '''[
+    {
+        "role": "system",
+        "content": "A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions"
+    },
+    {
+        "role": "user",
+        "content": "Describe Barcelona in one paragraph"
+    }
+]
+'''
+
+                // Generate an empty stub_model.gguf file
+                def modelFile = file('stub_model.gguf')
+                modelFile.createNewFile()
+
                 input[0] = [
                     [ id:'test_run' ],
-                    file("${moduleDir}/tests/data/prompt.json"),
-                    file("${moduleDir}/tests/data/stub_model.gguf")
+                    promptFile,
+                    modelFile
                 ]
                 """
             }
