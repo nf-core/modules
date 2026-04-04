@@ -89,7 +89,7 @@ nextflow_process {
 
                 // Generate an empty stub_model.gguf file
                 def modelFile = file('stub_model.gguf')
-                modelFile.createNewFile()
+                modelFile.text = ''
 
                 input[0] = [
                     [ id:'test_run' ],
