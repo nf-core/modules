@@ -1,11 +1,11 @@
 {
-    "stub - download gguf file": {
+    "stub - download gguf file - gemma3": {
         "content": [
             {
                 "output": [
                     [
                         {
-                            "id": "test_model"
+                            "id": "test_model_gemma3"
                         },
                         "gemma-3-1b-it-Q4_K_M.gguf:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -19,13 +19,13 @@
                 ]
             }
         ],
-        "timestamp": "2026-04-04T20:59:17.940382342",
+        "timestamp": "2026-04-04T22:00:17.896195894",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
         }
     },
-    "download gguf file": {
+    "download gguf file - gemma3": {
         "content": [
             {
                 "versions_huggingface_hub": [
@@ -37,7 +37,25 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-26T08:38:24.630341776",
+        "timestamp": "2026-04-04T21:36:18.125789808",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    },
+    "download gguf file - smollm3": {
+        "content": [
+            {
+                "versions_huggingface_hub": [
+                    [
+                        "HUGGINGFACE_DOWNLOAD",
+                        "huggingface_hub",
+                        "1.6.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-04-04T21:55:38.228583826",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"

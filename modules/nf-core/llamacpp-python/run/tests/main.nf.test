@@ -31,6 +31,9 @@ nextflow_process {
         }
 
         when {
+            params {
+              module_args = '--seed 42'
+            }
             process {
                 """
                 // Generate prompt.json with provided content
@@ -71,6 +74,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+              module_args = '--seed 42'
+            }
             process {
                 """
                 // Generate prompt.json with provided content
