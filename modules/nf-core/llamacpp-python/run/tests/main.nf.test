@@ -15,7 +15,7 @@ nextflow_process {
         config "./nextflow.config"
 
         setup {
-            run("HF_DOWNLOAD") {
+            run("HUGGINGFACE_DOWNLOAD") {
                 script "../../../huggingface/download/main.nf"
                 process {
                     """
@@ -33,7 +33,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = HF_DOWNLOAD.out.output.map { meta, model ->
+                input[0] = HUGGINGFACE_DOWNLOAD.out.output.map { meta, model ->
                     [ [ id:'test_run' ], file("${moduleDir}/tests/data/prompt.json"), model ]
                 }
                 """

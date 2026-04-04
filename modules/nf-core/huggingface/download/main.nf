@@ -1,4 +1,4 @@
-process HF_DOWNLOAD {
+process HUGGINGFACE_DOWNLOAD {
     tag "$meta.id"
     label 'process_medium'
 
