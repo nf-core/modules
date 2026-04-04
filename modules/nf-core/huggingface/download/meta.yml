@@ -1,12 +1,12 @@
-name: hf_download
-description: Tool for downloading models from HuggingFace
+name: huggingface_download
+description: Command-line interface for downloading models in GGUF format from Hugging Face Hub
 keywords:
   - llm
   - llama
   - ai
 tools:
   - huggingface_hub:
-      description: "HuggingFace Hub CLI interface"
+      description: "Command-line interface for interacting with Hugging Face Hub, allowing to download, upload and interact with models and datasets"
       homepage: "https://huggingface.co/docs/huggingface_hub/guides/cli"
       licence:
         - "MIT"
@@ -19,13 +19,13 @@ input:
           e.g. `[ id:'sample1' ]`- prompt_file:
     - hf_repo:
         type: string
-        description: HuggingFace repository
+        description: Hugging Face repository
     - hf_file:
         type: string
-        description: HuggingFace GGUF file
+        description: Hugging Face GGUF file
     - hf_home:
         type: string
-        description: HuggingFace default cache directory
+        description: Hugging Face default cache directory
 output:
   output:
     - - meta:
@@ -35,7 +35,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - hf_file:
           type: file
-          description: Downloaded HuggingFace GGUF file
+          description: Downloaded Hugging Face GGUF file
           ontologies: []
   versions_huggingface_hub:
     - - ${task.process}:
