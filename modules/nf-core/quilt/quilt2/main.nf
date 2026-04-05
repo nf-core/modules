@@ -25,7 +25,6 @@ process QUILT_QUILT2 {
     script:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "vcf.gz"
 
     def extensions   = bams.collect { path -> path.extension }
     def extension    = extensions.flatten().unique()
@@ -70,23 +69,21 @@ process QUILT_QUILT2 {
         --nCores=${task.cpus} \\
         --outputdir="." \\
         --reference_vcf_file=${reference_vcf_file} \\
-        --output_filename=${prefix}.${suffix} \\
+        --output_filename=${prefix}.vcf.gz \\
         ${args}
     """
 
     stub:
     def args          = task.ext.args   ?: ''
     def prefix        = task.ext.prefix ?: "${meta.id}"
-    def suffix        = task.ext.suffix ?: "vcf.gz"
-    def create_cmd    = suffix.endsWith(".gz") ? "echo '' | gzip >" : "touch"
     def make_plots    = args.contains("--make_plots=TRUE")
     def save_ref      = args.contains("--save_prepared_reference=TRUE")
     def nGibbsSamples = args.contains("--nGibbsSamples=") ? args.split("--nGibbsSamples=")[1].split(" ")[0] : 7
     def n_seek_its    = args.contains("--n_seek_its=")    ? args.split("--n_seek_its=")[1].split(" ")[0]    : 3
 
     """
-    ${create_cmd} ${prefix}.${suffix}
-    touch ${prefix}.${suffix}.tbi
+    echo '' | gzip > ${prefix}.vcf.gz
+    touch ${prefix}.vcf.gz.tbi
     if [ "${save_ref}" == true ]
     then
         mkdir -p RData
