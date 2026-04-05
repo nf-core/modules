@@ -2,17 +2,12 @@ process DORADO_BASECALLER {
     tag "$meta.id"
     label 'process_gpu'
 
-    // No bioconda package for dorado (ONTPL licence, not on bioconda/conda-forge).
-    // Docker image from nanoporetech/dorado Docker Hub — SHA tag maps to v1.4.0 (released 2026-02-19).
-    // Track 2 (TODO): submit dorado to bioconda → auto-generate depot.galaxyproject.org Singularity image
-    //                 and replace container spec with standard nf-core biocontainers format.
+    // dorado is not on bioconda (ONTPL licence). Using the official ONT Docker Hub image
+    // directly — same pattern as nf-core/parabricks modules (nvcr.io/nvidia/...).
+    // SHA tag maps to v1.4.0 (released 2026-02-19). Tracking semantic version tags:
+    // nanoporetech/dorado#1584. conda null: no bioconda package available.
     conda null
-    // Track 1 (lab use): local SIF — dorado not on bioconda, no depot.galaxyproject.org image available.
-    // Track 2 (nf-core upstream): replace with biocontainers URI once dorado is on bioconda.
-    //   Docker equivalent: nanoporetech/dorado:shac8f356489fa8b44b31beba841b84d2879de2088e (= v1.4.0)
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        '/data1/greenbab/software/images/dorado_compiled_v1.4.0.sif' :
-        'nanoporetech/dorado:shac8f356489fa8b44b31beba841b84d2879de2088e' }"
+    container "nanoporetech/dorado:shac8f356489fa8b44b31beba841b84d2879de2088e"
 
     input:
     tuple val(meta), path(pod5)                         // pod5 file or directory of pod5 files
