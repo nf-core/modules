@@ -78,8 +78,43 @@ nextflow_process {
     }
 
     // -------------------------------------------------------------------------
+    // Track 2 stub test — uses public GIAB HG002 pod5 from nf-core/test-datasets
+    // Pending: nf-core/test-datasets#1968 merge before this URL resolves
+    // -------------------------------------------------------------------------
+
+    test("homo sapiens - GIAB HG002 pod5, sup,5mCG_5hmCG@latest, no models_dir, no reference - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'HG002' ],
+                    file("${params.modules_testdata_base_path}genomics/homo_sapiens/nanopore/pod5/HG002_PAW70337_giab_10reads.pod5",
+                         checkIfExists: true)
+                ]
+                input[1] = "sup,5mCG_5hmCG@latest"
+                input[2] = [[], []]
+                input[3] = [[], [], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    // -------------------------------------------------------------------------
     // Real GPU tests — require --tag "gpu" and componc_gpu_batch partition
-    // Run via SLURM: nf-test test ... --profile singularity --tag gpu
+    // Run via SLURM: nf-test test ... --profile singularity,gpu --tag gpu
     // -------------------------------------------------------------------------
 
     test("homo sapiens - pod5, sup,5mCG_5hmCG@latest, with models_dir, no reference") {
