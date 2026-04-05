@@ -87,7 +87,9 @@ output:
           description: |
             BAM file containing basecalled reads with base quality scores and
             modification tags (MM/ML) when modified base calling is enabled.
-            Unmapped if no reference provided; mapped and sorted if reference provided.
+            Output sort order is SO:unknown (dorado does not sort).
+            Pipe to SAMTOOLS_SORT + SAMTOOLS_INDEX for coordinate-sorted, indexed BAMs.
+            Unmapped if no reference provided; mapped (unsorted) if reference provided.
           pattern: "*.bam"
           ontologies: []
   summary:
