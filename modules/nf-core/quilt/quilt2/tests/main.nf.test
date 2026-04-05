@@ -1,0 +1,296 @@
+nextflow_process {
+
+    name "Test Process QUILT2"
+    script "../main.nf"
+    process "QUILT_QUILT2"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "quilt/quilt2"
+    tag "quilt"
+
+    config "./nextflow.config"
+
+    test("homo_sapiens - bam, reference vcf, map - fasta") {
+        when {
+            params{
+                quilt_args = "--save_prepared_reference=TRUE --seed=1"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'NA12878', chr:'chr22' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai', checkIfExists: true),
+                    [], [],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi', checkIfExists: true),
+                    [], [], [],
+                    "chr22", "16570000", "16610000", "100", "10000",
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.stitch.map", checkIfExists:true)
+                ]
+                input[1] = [
+                    [id: 'GRCh38'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.tbi,
+                    process.out.rdata,
+                    process.out.vcf.collect{ meta, vcf -> [
+                        meta,
+                        path(vcf).vcf.header.getGenotypeSamples().sort(),
+                        path(vcf).vcf.variantsMD5
+                    ]},
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("QUILT2 - stub") {
+        options '-stub'
+        when {
+            params{
+                quilt_args = "--save_prepared_reference=TRUE --make_plots=TRUE"
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'NA12878', chr:'chr22' ],
+                    [], [], [], [], [], [], [], [],
+                    [], "chr22", "16570000", "16610000", "100", "10000", []
+                ])
+                input[1] = [
+                    [id: 'GRCh38'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def dir = new File(process.out.plots[0][1])
+            def list = []
+            dir.eachFileRecurse { file -> list << file.getName() }
+            assertAll(
+                { assert snapshot(
+                    process.out.vcf,
+                    process.out.tbi,
+                    list.sort(),
+                    process.out.rdata,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("QUILT2 no optional files") {
+        when {
+            params{
+                quilt_args = "--seed=1"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', chr:'chr22' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai', checkIfExists: true),
+                    [], [],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi', checkIfExists: true),
+                    [], [], [],
+                    "chr22", "16570000", "16610000", "100", "10000",
+                    []
+                ]
+                input[1] = [[id: null], [], []]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.tbi,
+                    process.out.rdata,
+                    process.out.vcf.collect{ meta, vcf -> [
+                        meta,
+                        path(vcf).vcf.header.getGenotypeSamples().sort(),
+                        path(vcf).vcf.variantsMD5
+                    ]},
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("QUILT2 with bamlist and renaming") {
+        when {
+            params{
+                quilt_args = "--seed=1"
+            }
+            process {
+                """
+                bamlist = Channel.of(
+                    "NA12878.chr21_22.1X.bam",
+                ).collectFile(name : 'bamlist.txt', newLine : true)
+
+                bamnames = Channel.of(
+                    "Mysample1",
+                ).collectFile(name : 'bamnames.txt', newLine : true)
+
+                ch_input = Channel.of([
+                    [ id:'test', chr:'chr20' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai', checkIfExists: true)
+                ])
+                .combine(bamlist)
+                .combine(bamnames)
+                .combine(Channel.of([
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi', checkIfExists: true),
+                    [], [], [],
+                    "chr22", "16570000", "16610000", "100", "10000",
+                    []
+                ]))
+
+                input[0] = ch_input
+                input[1] = [[id: null], [], []]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.tbi,
+                    process.out.rdata,
+                    process.out.vcf.collect{ meta, vcf -> [
+                        meta,
+                        path(vcf).vcf.header.getGenotypeSamples().sort(),
+                        path(vcf).vcf.variantsMD5
+                    ]},
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("QUILT2 quick start example") {
+        setup {
+            run("WGET", alias: "DOWNLOAD_QUICKSTART") {
+                script "../../../wget/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'quilt2_quickstart' ],
+                        "https://zenodo.org/records/12786681/files/QUILT2_example_2024.tar.xz",
+                        "tar.xz"
+                    ]
+                    """
+                }
+            }
+
+            run("XZ_DECOMPRESS", alias: "XZ_DECOMPRESS_QUICKSTART") {
+                script "../../../xz/decompress/main.nf"
+                process {
+                    """
+                    input[0] = DOWNLOAD_QUICKSTART.out.outfile
+                    """
+                }
+            }
+
+            run("UNTAR", alias: "UNTAR_QUICKSTART") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = XZ_DECOMPRESS_QUICKSTART.out.file.map { meta, archive -> [meta, archive] }
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                quilt_args = "--save_prepared_reference=TRUE --seed=1"
+            }
+            process {
+                """
+                bamlist = Channel.of(
+                    "NA12878.haplotagged.1.0.bam",
+                    "NA12878.ont.1.0.bam",
+                    "NA12878.illumina.1.0.bam",
+                ).collectFile(name: 'bamlist.txt', newLine: true)
+
+                ch_quickstart = UNTAR_QUICKSTART.out.untar.map { meta, dir ->
+                    [
+                        [ id:'quickstart', chr:'chr20' ],
+                        [
+                            dir.resolve('NA12878.haplotagged.1.0.bam'),
+                            dir.resolve('NA12878.ont.1.0.bam'),
+                            dir.resolve('NA12878.illumina.1.0.bam'),
+                        ],
+                        [
+                            dir.resolve('NA12878.haplotagged.1.0.bam.bai'),
+                            dir.resolve('NA12878.ont.1.0.bam.bai'),
+                            dir.resolve('NA12878.illumina.1.0.bam.bai'),
+                        ],
+                        dir.resolve('ALL.chr20_GRCh38.genotypes.20170504.chr20.2000001.4000000.noNA12878.vcf.gz'),
+                        dir.resolve('ALL.chr20_GRCh38.genotypes.20170504.chr20.2000001.4000000.noNA12878.vcf.gz.tbi'),
+                        dir.resolve('CEU-chr20-final.b38.txt.gz')
+                    ]
+                }
+
+                input[0] = ch_quickstart.combine(bamlist).map { meta, bams, bais, reference_vcf, reference_vcf_index, genetic_map, bamlist_file ->
+                    [
+                        meta,
+                        bams,
+                        bais,
+                        bamlist_file,
+                        [],
+                        reference_vcf,
+                        reference_vcf_index,
+                        [],
+                        [],
+                        [],
+                        "chr20",
+                        "2000001",
+                        "4000000",
+                        "100",
+                        "500000",
+                        genetic_map
+                    ]
+                }
+                input[1] = [[id: null], [], []]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.tbi,
+                    process.out.rdata,
+                    process.out.vcf.collect{ meta, vcf -> [
+                        meta,
+                        path(vcf).vcf.header.getGenotypeSamples().sort(),
+                        path(vcf).vcf.variantsMD5
+                    ]},
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+}
