@@ -15,7 +15,7 @@ process ANNOSINE {
     output:
     tuple val(meta), path("${prefix}.log"), emit: log
     tuple val(meta), path("${prefix}.fa") , emit: fa, optional: true
-    tuple val("${task.process}"), val('annosine'), eval('pip show annosine2 | grep "^Version" | sed "s/Version: //"'), emit: versions_annosine, topic: versions
+    tuple val("${task.process}"), val('annosine'), eval('pip show annosine2 | sed -n "s/Version: //p"'), emit: versions_annosine, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
