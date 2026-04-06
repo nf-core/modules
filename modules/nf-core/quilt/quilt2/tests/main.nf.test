@@ -8,6 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "quilt/quilt2"
     tag "quilt"
+    tag "samtools/view"
     tag "wget"
     tag "xz/decompress"
     tag "untar"
@@ -32,6 +33,78 @@ nextflow_process {
                     "chr22", "16570000", "16610000", "100", "10000",
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.stitch.map", checkIfExists:true)
                 ]
+                input[1] = [
+                    [id: 'GRCh38'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.tbi,
+                    process.out.rdata,
+                    process.out.vcf.collect{ meta, vcf -> [
+                        meta,
+                        path(vcf).vcf.header.getGenotypeSamples().sort(),
+                        path(vcf).vcf.variantsMD5
+                    ]},
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - cram, reference vcf, map - fasta") {
+        setup {
+            run("SAMTOOLS_VIEW", alias: "BAM_TO_CRAM") {
+                script "../../../samtools/view/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [id: 'NA12878'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai', checkIfExists: true)
+                    ])
+                    input[1] = Channel.of([
+                        [id: 'GRCh38'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                    ])
+                    input[2] = [[], []]
+                    input[3] = [[], []]
+                    input[4] = 'crai'
+                    """
+                }
+            }
+        }
+
+        when {
+            params{
+                quilt_args = "--save_prepared_reference=TRUE --seed=1"
+                samtools_args = "--output-fmt cram,no_ref --write-index"
+            }
+            process {
+                """
+                input[0] = BAM_TO_CRAM.out.cram
+                    .join(BAM_TO_CRAM.out.crai)
+                    .map { meta, cram, crai ->
+                        [
+                            meta + [chr:'chr22'],
+                            cram,
+                            crai,
+                            [], [],
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi', checkIfExists: true),
+                            [], [], [],
+                            "chr22", "16570000", "16610000", "100", "10000",
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.stitch.map", checkIfExists:true)
+                        ]
+                    }
                 input[1] = [
                     [id: 'GRCh38'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
