@@ -65,7 +65,7 @@ output:
       - "annosine":
           type: string
           description: The name of the tool
-      - 'pip show annosine2 | grep "^Version" | sed "s/Version: //"':
+      - "pip show annosine2 | sed -n 's/Version: //p'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -76,7 +76,7 @@ topics:
       - "annosine":
           type: string
           description: The name of the tool
-      - 'pip show annosine2 | grep "^Version" | sed "s/Version: //"':
+      - "pip show annosine2 | sed -n 's/Version: //p'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
