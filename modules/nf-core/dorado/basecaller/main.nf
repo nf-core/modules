@@ -2,12 +2,11 @@ process DORADO_BASECALLER {
     tag "$meta.id"
     label 'process_gpu'
 
-    // dorado is not on bioconda (ONTPL licence). Using Docker Hub image directly —
-    // same pattern as nf-core/parabricks modules (nvcr.io/nvidia/...).
-    // sahuno/dorado:1.4.0 wraps nanoporetech/dorado v1.4.0 + samtools.
-    // Tracking ONT semantic version tags: nanoporetech/dorado#1584.
+    // dorado is not on bioconda (ONTPL licence). Using
+    // Docker Hub image directly. SHA tag pins to v1.4.0; a semver tag is tracked in
+    // nanoporetech/dorado#1584. Same pattern as nf-core/parabricks modules.
     conda null
-    container "sahuno/dorado:1.4.0"
+    container "docker.io/nanoporetech/dorado:shac8f356489fa8b44b31beba841b84d2879de2088e"
 
     input:
     tuple val(meta), path(pod5)                         // pod5 file or directory of pod5 files
@@ -18,7 +17,6 @@ process DORADO_BASECALLER {
     output:
     tuple val(meta), path("*.bam")      , emit: bam
     tuple val(meta), path("*_summary.tsv"), emit: summary , optional: true
-    tuple val(meta), path("*.log")      , emit: log       , optional: true
     tuple val("${task.process}"), val('dorado'), eval("dorado --version 2>&1 | head -1 | sed 's/^//'"), emit: versions_dorado, topic: versions
 
     when:
@@ -34,7 +32,7 @@ process DORADO_BASECALLER {
     dorado \\
         basecaller \\
         ${args} \\
-        --device ${task.ext.device ?: 'cuda:all'} \\
+        --device cuda:all \\
         ${models_arg} \\
         ${ref_arg} \\
         ${model} \\
@@ -47,7 +45,6 @@ process DORADO_BASECALLER {
     """
     touch ${prefix}.bam
     touch ${prefix}_summary.tsv
-    touch ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
