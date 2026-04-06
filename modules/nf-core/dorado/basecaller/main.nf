@@ -2,12 +2,12 @@ process DORADO_BASECALLER {
     tag "$meta.id"
     label 'process_gpu'
 
-    // dorado is not on bioconda (ONTPL licence). Using Docker Hub image directly —
-    // same pattern as nf-core/parabricks modules (nvcr.io/nvidia/...).
-    // sahuno/dorado:1.4.0 wraps nanoporetech/dorado v1.4.0 + samtools.
-    // Tracking ONT semantic version tags: nanoporetech/dorado#1584.
+    // dorado is not on bioconda (ONTPL licence). Using the official nanoporetech
+    // Docker Hub image directly — same pattern as nf-core/parabricks modules
+    // (nvcr.io/nvidia/...). SHA tag pins to v1.4.0; a semver tag is tracked in
+    // nanoporetech/dorado#1584.
     conda null
-    container "sahuno/dorado:1.4.0"
+    container "nanoporetech/dorado:shac8f356489fa8b44b31beba841b84d2879de2088e"
 
     input:
     tuple val(meta), path(pod5)                         // pod5 file or directory of pod5 files
