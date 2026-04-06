@@ -106,17 +106,6 @@ output:
           pattern: "*_summary.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475
-  log:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
-      - "*.log":
-          type: file
-          description: Debug log file.
-          pattern: "*.log"
-          ontologies: []
   versions_dorado:
     - - ${task.process}:
           type: string
@@ -124,7 +113,7 @@ output:
       - dorado:
           type: string
           description: The name of the tool
-      - "dorado --version 2>&1 | head -1 | sed 's/^//'":
+      - dorado --version 2>&1 | head -1 | sed 's/^//':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -135,7 +124,7 @@ topics:
       - dorado:
           type: string
           description: The name of the tool
-      - "dorado --version 2>&1 | head -1 | sed 's/^//'":
+      - dorado --version 2>&1 | head -1 | sed 's/^//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
