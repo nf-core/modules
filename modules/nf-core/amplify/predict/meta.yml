@@ -44,15 +44,15 @@ output:
             probability scores
           pattern: "*.{tsv}"
           ontologies:
-            - edam: "http://edamontology.org/format_3475"
-  versions_amplify_predict:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions_amplify:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - amplify/predict:
+      - AMPlify:
           type: string
           description: The name of the tool
-      - "AMPlify --help | grep 'AMPlify v' | sed -e 's/^.*AMPlify v//' ":
+      - AMPlify --help 2>&1 | sed -n 's/AMPlify v//p':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -60,10 +60,10 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - amplify/predict:
+      - AMPlify:
           type: string
           description: The name of the tool
-      - "AMPlify --help | grep 'AMPlify v' | sed -e 's/^.*AMPlify v//' ":
+      - AMPlify --help 2>&1 | sed -n 's/AMPlify v//p':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

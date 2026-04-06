@@ -2,7 +2,6 @@ process AMPLIFY_PREDICT {
     tag "$meta.id"
     label 'process_single'
 
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/amplify:2.0.0--py36hdfd78af_1':
@@ -31,13 +30,11 @@ process AMPLIFY_PREDICT {
 
     #rename output, because tool includes date and time in name
     mv *.tsv ${prefix}.tsv
-
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv
-
     """
 }
