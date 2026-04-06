@@ -28,7 +28,7 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
     output:
     path ("antismash_db"), emit: database
     path ("antismash_dir"), emit: antismash_dir
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('antismash-lite'), eval("antismash --version | sed 's/antiSMASH //'"), emit: versions_antismash, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,10 +40,9 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
         Reason:
         This module includes non-standard workarounds to allow for use with container engines, due to database caching systems with antiSMASH not being compatible with the biocontainers build system.
         The new module antismash/antismashdownloaddatabases uses a different nf-core hosted container that works around this issue, thus providing a much better developer and user experience.
-
     """
 
-    assert false: deprecation_message
+    assert true: deprecation_message
     def args = task.ext.args ?: ''
     cp_cmd = workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1 ?
         "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" :
@@ -54,11 +53,6 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
         ${args}
 
     ${cp_cmd}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        antismash-lite: \$(echo \$(antismash --version) | sed 's/antiSMASH //;s/-.*//g')
-    END_VERSIONS
     """
 
     stub:
@@ -68,10 +62,9 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
         Reason:
         This module includes non-standard workarounds to allow for use with container engines, due to database caching systems with antiSMASH not being compatible with the biocontainers build system.
         The new module antismash/antismash uses a different nf-core hosted container that works around this issue, thus providing a much better developer and user experience.
-
     """
 
-    assert false: deprecation_message
+    assert true: deprecation_message
     def args = task.ext.args ?: ''
     cp_cmd = workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1 ?
         "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" :
@@ -83,10 +76,5 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
 
     mkdir antismash_dir
     mkdir antismash_db
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        antismash-lite: \$(echo \$(antismash --version) | sed 's/antiSMASH //;s/-.*//g')
-    END_VERSIONS
     """
 }
