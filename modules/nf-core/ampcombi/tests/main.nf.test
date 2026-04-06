@@ -27,6 +27,8 @@ nextflow_process {
 
         then {
             assertAll(
+                //{ assert process.success },
+                //{ assert snapshot(sanitizeOutput(process.out)).match()},
                 { assert process.failed },
                 { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
             )
