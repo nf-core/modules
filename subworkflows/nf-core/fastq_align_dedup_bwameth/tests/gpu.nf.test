@@ -45,15 +45,12 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
-                ])
-                input[2] = Channel.of([
-                            [:],
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
-                input[3] = UNTAR.out.untar
-                input[4] = false // skip_deduplication
-                input[5] = true // use_gpu
+                input[2] = UNTAR.out.untar
+                input[3] = false // skip_deduplication
+                input[4] = true // use_gpu
                 """
             }
         }
@@ -90,15 +87,12 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
-                ])
-                input[2] = Channel.of([
-                            [:],
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
-                input[3] = UNTAR.out.untar
-                input[4] = true // skip_deduplication
-                input[5] = true // use_gpu
+                input[2] = UNTAR.out.untar
+                input[3] = true // skip_deduplication
+                input[4] = true // use_gpu
                 """
             }
         }

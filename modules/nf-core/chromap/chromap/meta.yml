@@ -1,7 +1,6 @@
 name: chromap_chromap
 description: |
-  Performs preprocessing and alignment of chromatin fastq files to
-  fasta reference files using chromap.
+  Performs preprocessing and alignment of chromatin fastq files to fasta reference files using chromap.
 keywords:
   - chromap
   - alignment
@@ -16,7 +15,8 @@ keywords:
   - duplicate removal
 tools:
   - chromap:
-      description: Fast alignment and preprocessing of chromatin profiles
+      description: |
+        Fast alignment and preprocessing of chromatin profiles
       homepage: https://github.com/haowenz/chromap
       documentation: https://github.com/haowenz/chromap
       tool_dev_url: https://github.com/haowenz/chromap
@@ -43,6 +43,11 @@ input:
         type: file
         description: |
           The fasta reference file.
+        ontologies: []
+    - fai:
+        type: file
+        description: |
+          The fasta reference index file.
         ontologies: []
   - - meta3:
         type: map
@@ -122,13 +127,46 @@ output:
           pattern: "*.pairs.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_chromap:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - chromap:
+          type: string
+          description: The name of the tool
+      - chromap --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - chromap:
+          type: string
+          description: The name of the tool
+      - chromap --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mahesh-panchal"
   - "@joseespinosa"

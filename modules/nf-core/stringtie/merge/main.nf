@@ -13,8 +13,7 @@ process STRINGTIE_MERGE {
 
     output:
     path "stringtie.merged.gtf", emit: gtf
-    path  "versions.yml"       , emit: versions
-
+    tuple val("${task.process}"), val('stringtie'), eval('stringtie --version'), emit: versions_stringtie, topic: versions
     when:
     task.ext.when == null || task.ext.when
 
@@ -28,19 +27,11 @@ process STRINGTIE_MERGE {
         -o stringtie.merged.gtf \\
         $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        stringtie: \$(stringtie --version 2>&1)
-    END_VERSIONS
     """
 
     stub:
     """
     touch stringtie.merged.gtf
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        stringtie: \$(stringtie --version 2>&1)
-    END_VERSIONS
     """
 }

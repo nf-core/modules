@@ -34,6 +34,10 @@ input:
         description: VCF/BCF files index.
         pattern: "*.csi"
         ontologies: []
+  - suffix_:
+      type: string
+      description: Output format
+      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
 output:
   merged_variants:
     - - meta:

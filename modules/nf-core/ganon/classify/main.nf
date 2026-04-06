@@ -17,7 +17,7 @@ process GANON_CLASSIFY {
     tuple val(meta), path("*.all"), emit: all, optional: true
     tuple val(meta), path("*.unc"), emit: unc, optional: true
     tuple val(meta), path("*.log"), emit: log
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('ganon'), eval("ganon --version 2>1 | sed 's/.*ganon //g'"), emit: versions_ganon, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,10 +38,6 @@ process GANON_CLASSIFY {
         ${input} \
         2>&1 | tee ${prefix}.log
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ganon: \$(echo \$(ganon --version 2>1) | sed 's/.*ganon //g')
-    END_VERSIONS
     """
 
     stub:
@@ -54,9 +50,5 @@ process GANON_CLASSIFY {
     touch ${prefix}.unc
     touch ${prefix}.log
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ganon: \$(echo \$(ganon --version 2>1) | sed 's/.*ganon //g')
-    END_VERSIONS
     """
 }
