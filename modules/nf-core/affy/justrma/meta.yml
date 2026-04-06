@@ -26,14 +26,14 @@ input:
         description: |
           CSV or TSV format sample sheet with sample metadata and CEL file names
         ontologies:
-          - edam: "http://edamontology.org/format_3752"
-          - edam: "http://edamontology.org/format_3475"
+          - edam: "http://edamontology.org/format_3752" # CSV
+          - edam: "http://edamontology.org/format_3475" # TSV
     - celfiles_dir:
         type: list
         description: Path to a directory containing CEL files
         pattern: "*.{CEL,CEL.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_1638"
+          - edam: "http://edamontology.org/format_1638" # CEL
   - - meta2:
         type: map
         description: |
@@ -67,7 +67,7 @@ output:
           description: TSV-format intensity matrix
           pattern: "matrix.tsv"
           ontologies:
-            - edam: "http://edamontology.org/format_3475"
+            - edam: "http://edamontology.org/format_3475" # TSV
   annotation:
     - - meta:
           type: map
@@ -79,14 +79,14 @@ output:
           description: TSV-format annotation table
           pattern: "*.annotation.tsv"
           ontologies:
-            - edam: "http://edamontology.org/format_3475"
+            - edam: "http://edamontology.org/format_3475" # TSV
   versions_affy:
     - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: "http://edamontology.org/format_3750"
+          - edam: "http://edamontology.org/format_3750" # YAML
 topics:
   versions:
     - versions.yml:
@@ -94,7 +94,7 @@ topics:
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: "http://edamontology.org/format_3750"
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@pinin4fjords"
 maintainers:
