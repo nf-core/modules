@@ -8,8 +8,7 @@ process GENMOD_SCORE {
         'community.wave.seqera.io/library/genmod_python:31b2fba4d3b7ba6f' }"
 
     input:
-    tuple val(meta), path(input_vcf), path (fam)
-    path (score_config)
+    tuple val(meta), path(input_vcf), path (fam), path (score_config)
 
     output:
     tuple val(meta), path("*_score.vcf"), emit: vcf
