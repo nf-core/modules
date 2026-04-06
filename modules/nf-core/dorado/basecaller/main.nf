@@ -34,7 +34,7 @@ process DORADO_BASECALLER {
     dorado \\
         basecaller \\
         ${args} \\
-        --device ${task.ext.device ?: 'cuda:all'} \\
+        --device cuda:all \\
         ${models_arg} \\
         ${ref_arg} \\
         ${model} \\
