@@ -4,8 +4,8 @@ process HISAT2_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d2/d2ec9b73c6b92e99334c6500b1b622edaac316315ac1708f0b425df3131d0a83/data' :
-        'community.wave.seqera.io/library/hisat2_samtools:6be64e12472a7b75' }"
+        'oras://community.wave.seqera.io/library/hisat2_samtools:5a258fe6e30b2c20' :
+        'community.wave.seqera.io/library/hisat2_samtools:6ca0ef72b662d5c8' }"
 
     input:
     tuple val(meta), path(reads)
@@ -88,6 +88,5 @@ process HISAT2_ALIGN {
     touch ${prefix}.hisat2.summary.log
     touch ${prefix}.bam
     """
-
 
 }

@@ -14,7 +14,8 @@ process AUTHENTICT_DEAM2CONT {
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('authentict'), eval("echo \$(AuthentiCT --version 2>&1)"), emit: versions_authentict, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools --version 2>&1 | head -n1 | sed 's/^.*samtools //'"), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,22 +35,11 @@ process AUTHENTICT_DEAM2CONT {
         ${positions_file} \\
         - \\
         > ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        authentict: \$(echo \$(AuthentiCT --version 2>&1) )
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub :
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        authentict: \$(echo \$(AuthentiCT --version 2>&1) )
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }

@@ -1,0 +1,62 @@
+nextflow_process {
+
+    name "Test Process CENTRIFUGER_BUILD"
+    script "../main.nf"
+    process "CENTRIFUGER_BUILD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "centrifuger"
+    tag "centrifuger/build"
+
+
+    test("sarscov2 - fasta with reference file") {
+        when {
+            process {
+                """
+                input[0] = [[ id:'test' ],file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)]
+                input[1] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/nodes.dmp", checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/names.dmp", checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/seqid2taxid.map", checkIfExists: true)
+                """
+            }
+        }
+        then {
+            def unstable_files = file(process.out.db.get(0).get(1)).list().sort()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    unstable_files,
+                    process.out.versions_centrifuger
+                    ).match() }
+            )
+        }
+    }
+
+   test("sarscov2 - fasta with reference file-stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[ id:'test' ],file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)]
+                input[1] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/nodes.dmp", checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/names.dmp", checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/seqid2taxid.map", checkIfExists: true)
+                """
+            }
+        }
+
+    then {
+        def unstable_files = file(process.out.db.get(0).get(1)).list().sort()
+        assertAll(
+        { assert process.success },
+        { assert snapshot(
+            unstable_files,
+            process.out.versions_centrifuger
+            ).match() }
+    )
+        }
+
+    }
+}
