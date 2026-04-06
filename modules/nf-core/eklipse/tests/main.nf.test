@@ -7,7 +7,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "eklipse"
 
-    test("homo_sapiens [bam]") {
+    test("homo_sapiens - bam") {
 
         when {
             process {
@@ -25,11 +25,32 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(file(process.out.deletions[0][1]),
-                                  file(process.out.genes[0][1]),
-                                  file(process.out.circos[0][1]),
-                                  file(process.out.versions[0])).match()
-                                }
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test_illumina_mt.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test_illumina_mt.bam.bai', checkIfExists: true)
+                ]
+                input[1] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.NC_012920_1.gb', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
     }
