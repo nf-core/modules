@@ -80,14 +80,7 @@ output:
           pattern: "*.annotation.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475"
-  versions_bioconductoraffy:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750"
-  versions_rbase:
+  versions_affy:
     - versions.yml:
         type: file
         description: File containing software versions
@@ -96,12 +89,6 @@ output:
           - edam: "http://edamontology.org/format_3750"
 topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750"
     - versions.yml:
         type: file
         description: File containing software versions
