@@ -4,8 +4,8 @@ process PEDDY {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3a/3a1f7f39ed4c0e429d5a5805cdfa5251cbe56d4f2cf9cf4257172db1a56ab6bf/data' :
-        'community.wave.seqera.io/library/peddy:0.4.8--e3cef30bae621593' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4d/4db23bec88305fd6ded604f143d6292303a9822677e007fbdc14f9a763e097ec/data' :
+        'community.wave.seqera.io/library/peddy_numpy:a2456db0b53651ad' }"
 
     input:
     tuple val(meta), path(vcf), path(vcf_tbi)
