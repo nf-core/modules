@@ -18,7 +18,8 @@ tools:
       homepage: https://github.com/nanoporetech/dorado
       documentation: https://software-docs.nanoporetech.com/dorado/latest/
       tool_dev_url: https://github.com/nanoporetech/dorado
-      licence: ["Oxford Nanopore Technologies PLC. Public License Version 1.0"]
+      licence:
+        - "Oxford Nanopore Technologies PLC. Public License Version 1.0"
       identifier: ""
 input:
   - - meta:
@@ -33,15 +34,15 @@ input:
           Use --recursive in task.ext.args to scan directories recursively.
         pattern: "*.pod5"
         ontologies: []
-  - - model:
-        type: string
-        description: |
-          Combined model string for automatic model resolution. Use the format
-          "{speed},{mod}@{version}" to basecall with modification calling in a
-          single argument, e.g. "sup,5mCG_5hmCG@latest", "hac,5mCG_5hmCG@v5.0.0".
-          For basecalling only (no mod calls) use "{speed}@{version}" e.g.
-          "sup@latest", "hac@v5.0.0". Can also be a path to an existing model
-          directory. Models are auto-downloaded if not found in models_dir.
+  - model:
+      type: string
+      description: |
+        Combined model string for automatic model resolution. Use the format
+        "{speed},{mod}@{version}" to basecall with modification calling in a
+        single argument, e.g. "sup,5mCG_5hmCG@latest", "hac,5mCG_5hmCG@v5.0.0".
+        For basecalling only (no mod calls) use "{speed}@{version}" e.g.
+        "sup@latest", "hac@v5.0.0". Can also be a path to an existing model
+        directory. Models are auto-downloaded if not found in models_dir.
   - - meta2:
         type: map
         description: |
@@ -100,9 +101,11 @@ output:
             e.g. `[ id:'test', single_end:false ]`
       - "*_summary.tsv":
           type: file
-          description: Per-read summary TSV with alignment statistics. Present when --emit-summary is set in task.ext.args.
+          description: Per-read summary TSV with alignment statistics. Present when
+            --emit-summary is set in task.ext.args.
           pattern: "*_summary.tsv"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3475
   log:
     - - meta:
           type: map
@@ -115,6 +118,17 @@ output:
           pattern: "*.log"
           ontologies: []
   versions_dorado:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dorado:
+          type: string
+          description: The name of the tool
+      - "dorado --version 2>&1 | head -1 | sed 's/^//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
     - - ${task.process}:
           type: string
           description: The name of the process
