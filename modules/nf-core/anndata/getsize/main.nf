@@ -13,7 +13,7 @@ process ANNDATA_GETSIZE {
 
     output:
     tuple val(meta), path("*.txt"), emit: size
-    path "versions.yml"           , emit: versions, topic: versions
+    path "versions.yml"           , emit: versions_anndata, topic: versions
 
 
     when:

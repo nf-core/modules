@@ -15,7 +15,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/pbmc1k.h5ad', checkIfExists: true),
                 ]
                 input[1] = 'cells'
@@ -27,10 +27,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
+                    sanitizeOutput(process.out),
+                    path(process.out.versions_anndata[0]).yaml
                 ).match() }
-                { assert snapshot(sanitizeOutput(process.out)).match() },
             )
         }
 
@@ -42,7 +41,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/pbmc1k.h5ad', checkIfExists: true),
                 ]
                 input[1] = 'genes'
@@ -53,7 +52,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions_anndata[0]).yaml
+                ).match() }
             )
         }
 
@@ -67,7 +69,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/pbmc1k.h5ad', checkIfExists: true),
                 ]
                 input[1] = 'cells'
@@ -79,10 +81,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
+                    sanitizeOutput(process.out),
+                    path(process.out.versions_anndata[0]).yaml
                 ).match() }
-                { assert snapshot(sanitizeOutput(process.out)).match() },
             )
         }
 
@@ -96,7 +97,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/pbmc1k.h5ad', checkIfExists: true),
                 ]
                 input[1] = 'genes'
@@ -107,7 +108,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions_anndata[0]).yaml
+                ).match() }
             )
         }
 
