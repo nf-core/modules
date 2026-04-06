@@ -26,7 +26,7 @@ input:
         description: H5AD file of anndata object
         pattern: "*.h5ad"
         ontologies:
-          - edam: "http://edamontology.org/format_3590"
+          - edam: "http://edamontology.org/format_3590" # HDF5
   - size_type:
       type: string
       description: either 'cells', 'genes', 'obs', or 'var'
@@ -42,14 +42,14 @@ output:
           description: text file containing the requested size
           pattern: "*.txt"
           ontologies:
-            - edam: "http://edamontology.org/format_2330"
+            - edam: "http://edamontology.org/format_2330" # Textual format
   versions_anndata:
     - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: "http://edamontology.org/format_3750"
+          - edam: "http://edamontology.org/format_3750" # YAML
 topics:
   versions:
     - versions.yml:
