@@ -8,7 +8,7 @@ process WHATSHAP_PHASE {
         : 'community.wave.seqera.io/library/whatshap:2.8--7fe530bc624a3e5a' }"
 
     input:
-    tuple val(meta),  path(vcf),   path(tbi), path(bam), path(bai)
+    tuple val(meta),  path(vcf),   path(tbi), path(bam), path(bai), path(pedigree)
     tuple val(meta2), path(fasta), path(fai)
 
     output:
@@ -22,6 +22,7 @@ process WHATSHAP_PHASE {
     script:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def input_ped = pedigree ? "--ped ${pedigree}" : ""
 
     if ("${vcf}" == "${prefix}.vcf" || "${vcf}" == "${prefix}.vcf.gz") {
         error("Input and output names are the same, set prefix in module configuration to disambiguate!")
