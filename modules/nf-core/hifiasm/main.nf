@@ -24,8 +24,7 @@ process HIFIASM {
     tuple val(meta), path("*.ec.fa.gz")                              , emit: corrected_reads  , optional: true
     tuple val(meta), path("*.ovlp.paf.gz")                           , emit: read_overlaps    , optional: true
     tuple val(meta), path("${prefix}.stderr.log")                    , emit: log
-    tuple val("${task.process}"), val('hifasm'), eval('hifiasm --version 2>&1'), emit: versions_hifiasm, topic: versions
-
+    tuple val("${task.process}"), val('hifiasm'), eval('hifiasm --version 2>&1'), emit: versions_hifiasm, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

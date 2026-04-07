@@ -17,7 +17,6 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
     ch_fasta_fai = channel.empty()
     ch_bismark_index = channel.empty()
     ch_bwameth_index = channel.empty()
-    ch_versions = channel.empty()
 
     // Check if fasta file is gzipped and decompress if needed
     fasta_fai
@@ -99,7 +98,6 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
                 )
             }
             ch_bwameth_index = BWAMETH_INDEX.out.index
-            ch_versions = ch_versions.mix(BWAMETH_INDEX.out.versions)
         }
     }
 
@@ -107,5 +105,4 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
     fasta_fai     = ch_fasta_fai // channel: [ val(meta), [ fasta ], [ fai ] ]
     bismark_index = ch_bismark_index // channel: [ val(meta), [ bismark index ] ]
     bwameth_index = ch_bwameth_index // channel: [ val(meta), [ bwameth index ] ]
-    versions      = ch_versions // channel: [ versions.yml ]
 }
