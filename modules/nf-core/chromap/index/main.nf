@@ -4,11 +4,11 @@ process CHROMAP_INDEX {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/chromap:0.2.6--hdcf5f25_0' :
-        'biocontainers/chromap:0.2.6--hdcf5f25_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/80/809e5a0166357804ca10097100e96844100019a11a3aaebf14e2cceb2ee98c0a/data' :
+        'community.wave.seqera.io/library/chromap:0.3.2--4ec4bca51cd82195' }"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(fasta), path(fai)
 
     output:
     tuple val(meta), path ("*.index"), emit: index
