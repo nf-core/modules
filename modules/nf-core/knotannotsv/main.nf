@@ -22,6 +22,7 @@ process KNOTANNOTSV {
     script:
     def args = task.ext.args ?: ''
     // Bellow for knotAnnotSV, this a true prefix
+    prefix = task.ext.prefix ?: "${meta.id}"
     def knot_prefix = task.ext.prefix ? "--outPrefix ${task.ext.prefix}" : ""
     def knot_script = knot_out_xl ? 'knotAnnotSV2XL.pl' : 'knotAnnotSV.pl'
     def config_file = "\${CONDA_PREFIX:-/usr/local}/share/knotAnnotSV/config_AnnotSV.yaml"
