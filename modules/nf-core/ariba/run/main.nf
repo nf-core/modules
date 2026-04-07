@@ -23,6 +23,7 @@ process ARIBA_RUN {
     prefix   = task.ext.prefix ?: "${meta.id}"
     def db_name = db.getName().replace('.tar.gz', '')
     """
+    export MPLCONFIGDIR=\$PWD/.matplotlib
     tar -xzvf ${db}
     ariba \\
         run \\
@@ -36,6 +37,7 @@ process ARIBA_RUN {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export MPLCONFIGDIR=\$PWD/.matplotlib
     mkdir -p ${prefix}
     touch ${prefix}/report.tsv
     touch ${prefix}/debug.report.tsv
