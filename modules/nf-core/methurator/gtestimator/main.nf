@@ -8,12 +8,10 @@ process METHURATOR_GTESTIMATOR {
         : 'biocontainers/methurator:2.1.1--pyhdfd78af_0'}"
 
     input:
-    tuple val(meta), path(bam)
-    tuple val(meta2), path(bai)
-    tuple val(meta3), path(fasta)
+    tuple val(meta), path(bam), path(bai), path(fasta)
 
     output:
-    tuple val(meta), path("methurator_summary.yml"), emit: summary_report
+    tuple val(meta), path("${prefix}.yml"), emit: summary_report
     tuple val("${task.process}"), val('methurator'), eval("methurator --version | sed 's/.* //'"), emit: versions_methurator, topic: versions
 
     when:
@@ -24,6 +22,7 @@ process METHURATOR_GTESTIMATOR {
     if (params.rrbs) {
         args += '--rrbs'
     }
+    prefix = task.ext.prefix?: "${meta.id}"
     """
     methurator gt-estimator \\
         ${bam} \\
@@ -35,11 +34,13 @@ process METHURATOR_GTESTIMATOR {
         --compute_ci \\
         ${args}
 
+    mv methurator_summary.yml ${prefix}.yml
     """
 
     stub:
+    prefix = task.ext.prefix?: "${meta.id}"
     """
-    touch methurator_summary.yml
+    touch ${prefix}.yml
 
     """
 }

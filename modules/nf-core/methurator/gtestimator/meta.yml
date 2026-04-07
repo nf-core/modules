@@ -25,26 +25,17 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
+        ontologies: []
     - bam:
         type: file
-        description: BAM/CRAM file
+        description: Single BAM file
         pattern: "*.{bam,cram}"
         ontologies: []
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
     - bai:
         type: file
-        description: BAM/CRAM index file
+        description: Single BAM/CRAM index file
         pattern: "*.{bai,crai}"
         ontologies: []
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
     - fasta:
         type: file
         description: Input genome fasta file
@@ -57,10 +48,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - methurator_summary.yml:
+          ontologies: []
+      - "${prefix}.yml":
           type: file
           description: |
-            methurator gtestimator summary report in YAML format
+            YAML file summarizing the saturation analysis results.
+          pattern: "${prefix}.yml"
           ontologies: []
   versions_methurator:
     - - ${task.process}:
