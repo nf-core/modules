@@ -50,23 +50,18 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_2572"
           - edam: "http://edamontology.org/format_2573"
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
     - ref_fasta:
         type: file
         description: Reference genome FASTA file
         pattern: "*.fa*"
         ontologies:
           - edam: "http://edamontology.org/format_1929"
-  - assembly_mode:
-      type: string
-      description: The assembly mode used for the input BAM files
-      enum:
-        - fully-phased
-        - partially-phased
+    - assembly_mode:
+        type: string
+        description: The assembly mode used for the input BAM files
+        enum:
+          - fully-phased
+          - partially-phased
   - output_vcf:
       type: boolean
       description: Whether to output phased variant calls in VCF format
