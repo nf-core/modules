@@ -4,17 +4,18 @@ process MINIA {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/minia:3.2.6--h9a82719_0' :
-        'biocontainers/minia:3.2.6--h9a82719_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/40/40a4c0032d52284f76044828f50750948f2717e63f084e1ea80f6bd068b65b25/data' :
+        'community.wave.seqera.io/library/minia:3.2.6--df502ab09998dab4' }"
 
     input:
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path('*.contigs.fa'), emit: contigs
-    tuple val(meta), path('*.unitigs.fa'), emit: unitigs
-    tuple val(meta), path('*.h5')        , emit: h5
-    path  "versions.yml"                 , emit: versions
+    tuple val(meta), path('*.contigs.fa.gz'), emit: contigs
+    tuple val(meta), path('*.unitigs.fa.gz'), emit: unitigs
+    tuple val(meta), path('*.h5')           , emit: h5
+    tuple val(meta), path("*-minia.log")    , emit: log
+    tuple val("${task.process}"), val("minia"), eval("minia -v | sed -n 's/Minia version //p'"), topic: versions, emit: versions_minia
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,24 +30,22 @@ process MINIA {
         $args \\
         -nb-cores $task.cpus \\
         -in input_files.txt \\
-        -out $prefix
+        -out $prefix > ${prefix}-minia.log 2>&1
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        minia: \$(echo \$(minia --version 2>&1 | grep Minia) | sed 's/^.*Minia version //;')
-    END_VERSIONS
+    if [ -f ${prefix}.contigs.fa ]; then
+        gzip -cn ${prefix}.contigs.fa > ${prefix}.contigs.fa.gz
+    fi
+    if [ -f ${prefix}.unitigs.fa ]; then
+        gzip -cn ${prefix}.unitigs.fa > ${prefix}.unitigs.fa.gz
+    fi
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.contigs.fa
-    touch ${prefix}.unitigs.fa
+    echo "" | gzip > ${prefix}.contigs.fa.gz
+    echo "" | gzip > ${prefix}.unitigs.fa.gz
     touch ${prefix}.h5
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        minia: \$(echo \$(minia --version 2>&1 | grep Minia) | sed 's/^.*Minia version //;')
-    END_VERSIONS
+    touch ${prefix}-minia.log
     """
 }

@@ -10,7 +10,8 @@ tools:
         Transcript assembly and quantification for RNA-Seq
       homepage: https://ccb.jhu.edu/software/stringtie/index.shtml
       documentation: https://ccb.jhu.edu/software/stringtie/index.shtml?t=manual
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:stringtie
 input:
   - stringtie_gtf:
@@ -32,13 +33,27 @@ output:
         description: Merged gtf file
         pattern: "stringtie.merged.gtf"
         ontologies: []
+  versions_stringtie:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stringtie:
+          type: string
+          description: The name of the tool
+      - stringtie --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stringtie:
+          type: string
+          description: The name of the tool
+      - stringtie --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@yuukiiwa"
 maintainers:
