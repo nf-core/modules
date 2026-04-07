@@ -13,7 +13,7 @@ process ARIBA_RUN {
 
     output:
     tuple val(meta), path("${prefix}/*"), emit: results
-    tuple val("${task.process}"), val('ariba'), eval('ariba version 2>/dev/null | sed "1!d;s/ARIBA version: //"'), emit: versions_ariba, topic: versions
+    tuple val("${task.process}"), val('ariba'), eval("ariba version 2>/dev/null | sed '1!d;s/ARIBA version: //'"), emit: versions_ariba, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -12,7 +12,8 @@ tools:
       documentation: "https://sanger-pathogens.github.io/ariba/"
       tool_dev_url: "https://github.com/sanger-pathogens/ariba"
       doi: "10.1099/mgen.0.000131"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -35,7 +36,7 @@ input:
         description: An Ariba prepared database
         pattern: "*.tar.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_3989
 output:
   results:
     - - meta:
@@ -49,24 +50,24 @@ output:
           pattern: "*"
           ontologies: []
   versions_ariba:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "ariba":
+      - ariba:
           type: string
           description: The name of the tool
-      - 'ariba version 2>/dev/null | sed "1!d;s/ARIBA version: //"':
+      - "ariba version 2>/dev/null | sed '1!d;s/ARIBA version: //'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
   versions:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "ariba":
+      - ariba:
           type: string
           description: The name of the tool
-      - 'ariba version 2>/dev/null | sed "1!d;s/ARIBA version: //"':
+      - "ariba version 2>/dev/null | sed '1!d;s/ARIBA version: //'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
