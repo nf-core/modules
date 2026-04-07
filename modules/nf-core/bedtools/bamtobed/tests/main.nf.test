@@ -11,7 +11,7 @@ nextflow_process {
     test("sarscov2 - bam") {
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true)
@@ -26,16 +26,15 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
     test("stub") {
 
         options "-stub"
-            
+
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true)
@@ -47,10 +46,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.bed[0][1]).name).match() }
+                { assert snapshot(process.out).match() }
             )
         }
-
     }
-
 }

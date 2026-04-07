@@ -14,6 +14,7 @@ process JUPYTERNOTEBOOK {
     tuple val(meta), path(notebook)
     val parameters
     path input_files
+    val kernel_
 
     output:
     tuple val(meta), path("*.html")    , emit: report
@@ -24,40 +25,26 @@ process JUPYTERNOTEBOOK {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def parametrize = (task.ext.parametrize == null) ?  true : task.ext.parametrize
-    def implicit_params = (task.ext.implicit_params == null) ? true : task.ext.implicit_params
-    def meta_params = (task.ext.meta_params == null) ? true : task.ext.meta_params
-    def kernel   = task.ext.kernel ?: '-'
+    def kernel   = kernel_ ?: '-'
+    // Implicit parameters can be overwritten by supplying a value with parameters
+    notebook_parameters = [
+        meta: meta,
+        cpus: task.cpus,
+    ] + (parameters ?: [:])
 
     // Dump parameters to yaml file.
     // Using a yaml file over using the CLI params because
     //  * no issue with escaping
     //  * allows to pass nested maps instead of just single values
-    def params_cmd = ""
-    def render_cmd = ""
-    def meta_string = meta.collect { key, value -> "${key}: ${value}" }.join('\n')
-    def params_string = parameters.collect { key, value -> "${key}: ${value}" }.join('\n')
-    if (parametrize) {
-        if (implicit_params) {
-            params_cmd += 'echo cpus: ' + task.cpus + ' >> ./.params.yml \n'
-            params_cmd += 'echo "artifact_dir: artifacts"  >> ./.params.yml \n'
-            params_cmd += 'echo "input_dir: ./"  >> ./.params.yml \n'
-        }
-        if (meta_params) {
-            params_cmd += 'echo "' + meta_string + '" >> ./.params.yml \n'
-        }
-        params_cmd += 'echo "' + params_string + '" >> ./.params.yml'
-        render_cmd = "papermill -f .params.yml"
-    } else {
-        render_cmd = "papermill"
-    }
+    def yamlBuilder = new groovy.yaml.YamlBuilder()
+    yamlBuilder.call(notebook_parameters)
+    def yaml_content = yamlBuilder.toString().tokenize('\n').join("\n    ")
     """
-    set -o pipefail
-
-    # write .params.yml file if required
-    $params_cmd
+    # Dump parameters to yaml file
+    cat <<- END_YAML_PARAMS > params.yml
+    ${yaml_content}
+    END_YAML_PARAMS
 
     # Create output directory
     mkdir artifacts
@@ -73,7 +60,7 @@ process JUPYTERNOTEBOOK {
 
     # Convert notebook to ipynb using jupytext, execute using papermill, convert using nbconvert
     jupytext --to notebook --output - --set-kernel ${kernel} ${notebook} > ${notebook}.ipynb
-    ${render_cmd} ${notebook}.ipynb ${notebook}.executed.ipynb
+    papermill -f params.yml ${notebook}.ipynb ${notebook}.executed.ipynb
     jupyter nbconvert --stdin --to html --output ${prefix}.html < ${notebook}.executed.ipynb
 
     cat <<-END_VERSIONS > versions.yml
@@ -100,4 +87,3 @@ process JUPYTERNOTEBOOK {
     END_VERSIONS
     """
 }
-

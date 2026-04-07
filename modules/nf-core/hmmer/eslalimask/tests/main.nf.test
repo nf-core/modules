@@ -14,7 +14,7 @@ nextflow_process {
     setup {
         run("HMMER_HMMALIGN") {
             script "../../hmmalign/main.nf"
-            
+
             process {
                 """
                 input[0] = [
@@ -93,5 +93,5 @@ nextflow_process {
             )
         }
     }
-    
+
 }

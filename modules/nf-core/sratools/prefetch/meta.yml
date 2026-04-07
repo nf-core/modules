@@ -10,7 +10,8 @@ tools:
       homepage: https://github.com/ncbi/sra-tools
       documentation: https://github.com/ncbi/sra-tools/wiki
       tool_dev_url: https://github.com/ncbi/sra-tools
-      licence: ["Public Domain"]
+      licence:
+        - "Public Domain"
       identifier: ""
 input:
   - - meta:
@@ -42,15 +43,51 @@ output:
           description: >
             Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
+      - ${id}:
+          type: directory
+          description: Directory containing SRA data files
           pattern: "*/*.sra"
-      - id: {}
+          ontologies: []
+  versions_sratools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sratools:
+          type: string
+          description: The name of the tool
+      - prefetch --version 2>&1 | grep -Eo '[0-9.]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_curl:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - curl:
+          type: string
+          description: The name of the tool
+      - curl --version | sed '1!d;s/^curl //; s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sratools:
+          type: string
+          description: The name of the tool
+      - prefetch --version 2>&1 | grep -Eo '[0-9.]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - curl:
+          type: string
+          description: The name of the tool
+      - curl --version | sed '1!d;s/^curl //; s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Midnighter"
 maintainers:

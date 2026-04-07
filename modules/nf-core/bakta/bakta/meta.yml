@@ -6,12 +6,14 @@ keywords:
   - bacteria
 tools:
   - bakta:
-      description: Rapid & standardized annotation of bacterial genomes, MAGs & plasmids.
+      description: Rapid & standardized annotation of bacterial genomes, MAGs &
+        plasmids.
       homepage: https://github.com/oschwengers/bakta
       documentation: https://github.com/oschwengers/bakta
       tool_dev_url: https://github.com/oschwengers/bakta
       doi: "10.1099/mgen.0.000685"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:bakta
 input:
   - - meta:
@@ -23,20 +25,40 @@ input:
         type: file
         description: |
           FASTA file to be annotated. Has to contain at least a non-empty string dummy value.
-        ontologies: []
+        pattern: "*.{fa,fas,fna,fasta}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
   - db:
       type: file
       description: |
-        Path to the Bakta database. Must have amrfinderplus database directory already installed within it (in a directory called 'amrfinderplus-db/').
-      ontologies: []
+        Path to the Bakta database directory. Must have amrfinderplus database directory already installed within it (in a directory called 'amrfinderplus-db/').
+      ontologies:
+        - edam: http://edamontology.org/data_1049 # Directory name
   - proteins:
       type: file
-      description: FASTA/GenBank file of trusted proteins to first annotate from (optional)
-      ontologies: []
+      description: FASTA/GenBank file of trusted proteins to first annotate from
+        (optional)
+      pattern: "*.{fa,fas,fna,fasta,faa}"
+      ontologies:
+        - edam: http://edamontology.org/format_1929 # FASTA
   - prodigal_tf:
       type: file
-      description: Training file to use for Prodigal (optional)
-      ontologies: []
+      description: Training file to use for Prodigal for CDS prediction(optional)
+      pattern: "*.{tf,trn}"
+      ontologies:
+        - edam: http://edamontology.org/format_2333 # Binary format
+  - regions:
+      type: file
+      description: GFF3 or GenBank file of pre-annotated regions (optional)
+      pattern: "*.{gbff,gff3}"
+      ontologies:
+        - edam: http://edamontology.org/format_2206 # Sequence feature table format (text)
+  - hmms:
+      type: file
+      description: HMM database file for custom annotation (optional)
+      pattern: "*.hmm"
+      ontologies:
+        - edam: http://edamontology.org/format_1370 # HMMER database format
 output:
   embl:
     - - meta:
@@ -48,7 +70,8 @@ output:
           type: file
           description: annotations & sequences in (multi) EMBL format
           pattern: "*.embl"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_1927 # EMBL format
   faa:
     - - meta:
           type: map
@@ -59,7 +82,8 @@ output:
           type: file
           description: CDS/sORF amino acid sequences as FASTA
           pattern: "*.faa"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
   ffn:
     - - meta:
           type: map
@@ -70,7 +94,8 @@ output:
           type: file
           description: feature nucleotide sequences as FASTA
           pattern: "*.ffn"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
   fna:
     - - meta:
           type: map
@@ -81,7 +106,8 @@ output:
           type: file
           description: replicon/contig DNA sequences as FASTA
           pattern: "*.fna"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
   gbff:
     - - meta:
           type: map
@@ -92,7 +118,8 @@ output:
           type: file
           description: annotations & sequences in (multi) GenBank format
           pattern: "*.gbff"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_1936 # GenBank format
   gff:
     - - meta:
           type: map
@@ -103,7 +130,8 @@ output:
           type: file
           description: annotations & sequences in GFF3 format
           pattern: "*.gff3"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_1975 # GFF3 format
   hypotheticals_tsv:
     - - meta:
           type: map
@@ -112,8 +140,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}.hypotheticals.tsv:
           type: file
-          description: additional information on hypothetical protein CDS as simple
-            human readable tab separated values
+          description: additional information on hypothetical protein CDS as
+            simple human readable tab separated values
           pattern: "*.hypotheticals.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -127,7 +155,8 @@ output:
           type: file
           description: hypothetical protein CDS amino acid sequences as FASTA
           pattern: "*.hypotheticals.faa"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
   tsv:
     - - meta:
           type: map
@@ -150,14 +179,29 @@ output:
           type: file
           description: genome statistics and annotation summary
           pattern: "*.txt"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_bakta:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bakta:
+          type: string
+          description: The name of the tool
+      - bakta --version 2>&1 | sed 's/bakta //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bakta:
+          type: string
+          description: The name of the tool
+      - bakta --version 2>&1 | sed 's/bakta //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rpetit3"
   - "@oschwengers"

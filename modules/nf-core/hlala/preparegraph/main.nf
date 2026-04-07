@@ -25,7 +25,6 @@ process HLALA_PREPAREGRAPH {
     } else {
         bin="/usr/local/opt/hla-la/bin/HLA-LA"
     }
-    def args = task.ext.args ?: ''
 
     """
     ${bin} \\

@@ -26,19 +26,15 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.reference_dict[0][1]).name,
-                    process.out.versions
-                    ).match()
-                }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match()}
 
             )
         }
-
     }
 
     test("sarscov2 - fasta - stub") {
-
         options "-stub"
-
         when {
             process {
                 """
@@ -52,10 +48,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
-
 }

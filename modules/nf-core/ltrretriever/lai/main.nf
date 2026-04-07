@@ -50,9 +50,7 @@ process LTRRETRIEVER_LAI {
     """
 
     stub:
-    def args            = task.ext.args     ?: ''
     def prefix          = task.ext.prefix   ?: "${meta.id}"
-    def monoploid_param = monoploid_seqs    ? "-mono $monoploid_seqs"                       : ''
     def lai_output_name = monoploid_seqs    ? "${annotation_out}.${monoploid_seqs}.out.LAI" : "${annotation_out}.LAI"
     def VERSION         = 'beta3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """

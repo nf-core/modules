@@ -1,0 +1,126 @@
+nextflow_process {
+
+    name "Test Process LOCALCDSEARCH_ANNOTATE"
+    script "../main.nf"
+    process "LOCALCDSEARCH_ANNOTATE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "localcdsearch"
+    tag "localcdsearch/annotate"
+    tag "localcdsearch/download"
+
+    setup {
+        run("LOCALCDSEARCH_DOWNLOAD") {
+            script "../../download/main.nf"
+            process {
+                """
+                input[0] = ['smart']
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - smart") {
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                input[1] = LOCALCDSEARCH_DOWNLOAD.out.db
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(
+                    process.out.result,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - smart - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                input[1] = LOCALCDSEARCH_DOWNLOAD.out.db
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.result,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - smart - sites") {
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                input[1] = LOCALCDSEARCH_DOWNLOAD.out.db
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.result,
+                    process.out.annot_sites,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - smart - sites - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                input[1] = LOCALCDSEARCH_DOWNLOAD.out.db
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.result,
+                    process.out.annot_sites,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
+}

@@ -37,7 +37,6 @@ process GEM3_GEM3INDEXER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """

@@ -28,17 +28,26 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
-                { assert path(process.out.genome_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    process.out.vcf_tbi.collect { file(it[1]).getName() },
+                    path(process.out.genome_vcf.get(0).get(1)).vcf.variantsMD5,
+                    process.out.genome_vcf_tbi.collect { file(it[1]).getName() },
+                    process.out.versions
+                    ).match() }
             )
         }
 
     }
 
     test("human - cram - target") {
+
         config "./nextflow.config"
+
         when {
+            params{
+                module_args = '--exome'
+            }
             process {
                 """
                 input[0] = [ [ id:'test'], // meta map
@@ -56,9 +65,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
-                { assert path(process.out.genome_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    process.out.vcf_tbi.collect { file(it[1]).getName() },
+                    path(process.out.genome_vcf.get(0).get(1)).vcf.variantsMD5,
+                    process.out.genome_vcf_tbi.collect { file(it[1]).getName() },
+                    process.out.versions
+                    ).match() }
             )
         }
 

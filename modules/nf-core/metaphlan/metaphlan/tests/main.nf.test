@@ -35,6 +35,7 @@ nextflow_process {
                     file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz',checkIfExists: true )
                 ])
                 input[1] = UNTAR.out.untar.map{ it[1] }
+                input[2] = false
                 """
             }
         }
@@ -64,6 +65,7 @@ nextflow_process {
                     file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz',checkIfExists: true ) ]
                 ])
                 input[1] = UNTAR.out.untar.map{ it[1] }
+                input[2] = false
                 """
             }
         }
@@ -92,6 +94,7 @@ nextflow_process {
                     file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta',checkIfExists: true )
                 ])
                 input[1] = UNTAR.out.untar.map{ it[1] }
+                input[2] = false
                 """
             }
         }
@@ -109,6 +112,37 @@ nextflow_process {
         }
     }
 
+    test("sarscov2 - illumina pair end [fastq] - save sam") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [ file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz',checkIfExists: true ),
+                    file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz',checkIfExists: true )]
+                ])
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        path(process.out.profile[0][1]).readLines()[2..5],
+                        path(process.out.biom[0][1]).readLines().last().contains('Biological Observation Matrix'),
+                        process.out.bt2out,
+                        sam(process.out.sam.get(0).get(1)).getFileType(),
+                        process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
     test("sarscov2 - illumina pair end [fastq] - stub") {
 
         options "-stub"
@@ -122,6 +156,7 @@ nextflow_process {
                     file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz',checkIfExists: true )]
                 ])
                 input[1] = UNTAR.out.untar.map{ it[1] }
+                input[2] = false
                 """
             }
         }

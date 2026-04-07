@@ -25,7 +25,6 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot (
                      file(process.out.db.get(0)).list().sort(),
-                     process.out.versions,
                 ).match() }
             )
         }

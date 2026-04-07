@@ -25,14 +25,14 @@ process EKLIPSE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def ref_gb = ref_gb ? "$ref_gb" : "/usr/local/bin/data/NC_012920.1.gb"
+    def ref_gb_path = ref_gb ? "$ref_gb" : "/usr/local/bin/data/NC_012920.1.gb"
     def VERSION = "1.8" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     echo "$bam\t${prefix}" > infile.txt
     eKLIPse.py \\
         -in infile.txt \\
         $args \\
-        -ref $ref_gb
+        -ref $ref_gb_path
     mv eKLIPse_*/eKLIPse_deletions.csv eKLIPse_${prefix}_deletions.csv
     mv eKLIPse_*/eKLIPse_genes.csv eKLIPse_${prefix}_genes.csv
     mv eKLIPse_*/eKLIPse_${prefix}.png eKLIPse_${prefix}.png

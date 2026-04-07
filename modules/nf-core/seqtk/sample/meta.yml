@@ -6,8 +6,8 @@ keywords:
   - reads
 tools:
   - seqtk:
-      description: Seqtk is a fast and lightweight tool for processing sequences in
-        the FASTA or FASTQ format. Seqtk sample command subsamples sequences.
+      description: Seqtk is a fast and lightweight tool for processing sequences
+        in the FASTA or FASTQ format. Seqtk sample command subsamples sequences.
       homepage: https://github.com/lh3/seqtk
       documentation: https://docs.csc.fi/apps/seqtk/
       tool_dev_url: https://github.com/lh3/seqtk
@@ -39,13 +39,27 @@ output:
           description: Subsampled FastQ files
           pattern: "*.{fastq.gz}"
           ontologies: []
+  versions_seqtk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqtk:
+          type: string
+          description: The name of the tool
+      - "seqtk 2>&1 | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqtk:
+          type: string
+          description: The name of the tool
+      - "seqtk 2>&1 | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@kaurravneet4123"
   - "@sidorov-si"

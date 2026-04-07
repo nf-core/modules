@@ -11,7 +11,7 @@ nextflow_process {
     tag "popscle/freemuxlet"
 
     test("demultiplexing") {
-        setup { 
+        setup {
             run("POPSCLE_DSCPILEUP") {
                 script "../../dscpileup/main.nf"
                 process {
@@ -29,8 +29,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = POPSCLE_DSCPILEUP.out.plp.collect{ meta, plp -> plp }.map{ 
-                            plp -> [[ id: 'sample1'], 
+                input[0] = POPSCLE_DSCPILEUP.out.plp.collect{ meta, plp -> plp }.map{
+                            plp -> [[ id: 'sample1'],
                                     plp[0].getParent(),
                                     2 ]}
                 """
@@ -52,7 +52,7 @@ nextflow_process {
 
     test("demultiplexing - auxiliary - files") {
         config "./nextflow.config"
-        setup { 
+        setup {
             run("POPSCLE_DSCPILEUP") {
                 script "../../dscpileup/main.nf"
                 process {
@@ -70,8 +70,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = POPSCLE_DSCPILEUP.out.plp.collect{ meta, plp -> plp }.map{ 
-                            plp -> [[ id: 'sample1'], 
+                input[0] = POPSCLE_DSCPILEUP.out.plp.collect{ meta, plp -> plp }.map{
+                            plp -> [[ id: 'sample1'],
                                     plp[0].getParent(),
                                     2 ]}
                 """
@@ -96,8 +96,8 @@ nextflow_process {
     test("demultiplexing - stub") {
 
         options "-stub"
-        
-        setup { 
+
+        setup {
             run("POPSCLE_DSCPILEUP") {
                 script "../../dscpileup/main.nf"
                 process {
@@ -115,8 +115,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = POPSCLE_DSCPILEUP.out.plp.collect{ meta, plp -> plp }.map{ 
-                            plp -> [[ id: 'sample1'], 
+                input[0] = POPSCLE_DSCPILEUP.out.plp.collect{ meta, plp -> plp }.map{
+                            plp -> [[ id: 'sample1'],
                                     plp[0].toString() - '.plp.gz',
                                     2 ]}
                 """
@@ -140,7 +140,7 @@ nextflow_process {
         options "-stub"
         config "./nextflow.config"
 
-        setup { 
+        setup {
             run("POPSCLE_DSCPILEUP") {
                 script "../../dscpileup/main.nf"
                 process {
@@ -158,8 +158,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = POPSCLE_DSCPILEUP.out.plp.collect{ meta, plp -> plp }.map{ 
-                            plp -> [[ id: 'sample1'], 
+                input[0] = POPSCLE_DSCPILEUP.out.plp.collect{ meta, plp -> plp }.map{
+                            plp -> [[ id: 'sample1'],
                                     plp[0].toString() - '.plp.gz',
                                     2 ]}
                 """

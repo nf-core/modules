@@ -61,13 +61,48 @@ output:
           description: TBI file produces by Manta
           pattern: "*.vcf.gz.tbi"
           ontologies: []
+  versions_manta:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - manta:
+          type: string
+          description: The name of the tool
+      - configManta.py --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools --version | head -1 | sed -e s'/samtools //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - manta:
+          type: string
+          description: The name of the tool
+      - configManta.py --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools --version | head -1 | sed -e s'/samtools //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@FriederikeHanssen"
 maintainers:

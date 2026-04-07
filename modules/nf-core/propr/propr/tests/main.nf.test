@@ -24,7 +24,7 @@ nextflow_process {
                 """
             }
         }
-        
+
         then {
             assertAll(
                 { assert process.success },
@@ -60,7 +60,7 @@ nextflow_process {
     }
 
     test("Test propr/propr while running alr+pcor.bshrink") {
-        
+
         tag "alr_pcorbshrink"
         config "./alr_pcorbshrink.config"
 
@@ -175,7 +175,7 @@ nextflow_process {
                 """
             }
         }
-        
+
         then {
             assertAll(
                 { assert process.success },
@@ -201,7 +201,7 @@ nextflow_process {
                 """
             }
         }
-        
+
         then {
             assertAll(
                 { assert process.success },
@@ -227,7 +227,7 @@ nextflow_process {
                 """
             }
         }
-        
+
         then {
             assertAll(
                 { assert process.success },

@@ -1,0 +1,66 @@
+nextflow_process {
+
+    name "Test Process SYLPH_SKETCHGENOMES"
+    script "../main.nf"
+    process "SYLPH_SKETCHGENOMES"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sylph"
+    tag "sylph/sketchgenomes"
+
+    test("sarscov2 - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/fasta/haemophilus_influenzae.fna.gz", checkIfExists: true)]
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/fasta/haemophilus_influenzae.fna.gz", checkIfExists: true)]
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+
+    }
+
+}

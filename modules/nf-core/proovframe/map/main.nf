@@ -8,7 +8,9 @@ process PROOVFRAME_MAP {
         'biocontainers/proovframe:0.9.7--hdfd78af_1' }"
 
     input:
-    tuple val(meta), path(faa), path(fasta)
+    tuple val(meta), path(fasta)
+    tuple val(meta2), path(faa)
+    tuple val(meta3), path(db)
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
@@ -20,12 +22,15 @@ process PROOVFRAME_MAP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def db_type = db ? "--db ${db}" : (faa ? "--aa ${faa}" : "")
+
     """
     proovframe \\
         map \\
         ${args} \\
-        -a ${faa} \\
-        -o ${prefix}.tsv  \\
+        --threads ${task.cpus} \\
+        ${db_type} \\
+        -o ${prefix}.tsv \\
         ${fasta}
 
     cat <<-END_VERSIONS > versions.yml
@@ -35,7 +40,6 @@ process PROOVFRAME_MAP {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv

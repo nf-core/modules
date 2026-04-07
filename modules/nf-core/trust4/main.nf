@@ -15,7 +15,7 @@ process TRUST4 {
     val(cell_barcode_read)
     val(umi_read)
     val(read_format)
-    
+
 
     output:
     tuple val(meta), path("*.tsv")                  , emit: tsv
@@ -88,7 +88,6 @@ process TRUST4 {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_airr.tsv

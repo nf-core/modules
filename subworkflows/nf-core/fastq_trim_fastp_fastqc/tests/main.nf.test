@@ -22,21 +22,21 @@ nextflow_workflow {
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-                    ]
+                    ],
+                    [] // adapter_fasta
                 ])
-                input[1]=[]    // adapter_fasta
-                input[2]=false // save_trimmed_fail
-                input[3]=false // discard_trimmed_pass
-                input[4]=false // save_merged
-                input[5]=false // skip_fastp
-                input[6]=false // skip_fastqc
+                input[1]=false // save_trimmed_fail
+                input[2]=false // discard_trimmed_pass
+                input[3]=false // save_merged
+                input[4]=false // skip_fastp
+                input[5]=false // skip_fastqc
                 """
             }
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success},
                 { assert workflow.out.fastqc_raw_html },
                 { assert workflow.out.fastqc_raw_zip },
                 { assert workflow.out.fastqc_trim_html },
@@ -44,12 +44,12 @@ nextflow_workflow {
                 { assert workflow.out.trim_html },
                 { assert workflow.out.trim_log },
                 { assert snapshot(
-                    workflow.out.reads,
-                    workflow.out.trim_json,
-                    workflow.out.trim_reads_fail,
-                    workflow.out.trim_reads_merged,
-                    workflow.out.versions
-                    ).match()}
+                        workflow.out.reads,
+                        workflow.out.trim_reads_fail,
+                        workflow.out.trim_reads_merged,
+                        workflow.out.versions
+                    ).match()
+                }
             )
         }
     }
@@ -65,14 +65,14 @@ nextflow_workflow {
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-                    ]
+                    ],
+                    [] // adapter_fasta
                 ])
-                input[1]=[]    // adapter_fasta
-                input[2]=false // save_trimmed_fail
-                input[3]=false // discard_trimmed_pass
-                input[4]=false // save_merged
-                input[5]=false // skip_fastp
-                input[6]=true  // skip_fastqc
+                input[1]=false // save_trimmed_fail
+                input[2]=false // discard_trimmed_pass
+                input[3]=false // save_merged
+                input[4]=false // skip_fastp
+                input[5]=true  // skip_fastqc
                 """
             }
         }
@@ -88,7 +88,6 @@ nextflow_workflow {
                 { assert workflow.out.trim_log },
                 { assert snapshot(
                     workflow.out.reads,
-                    workflow.out.trim_json,
                     workflow.out.trim_reads_fail,
                     workflow.out.trim_reads_merged,
                     workflow.out.versions
@@ -108,14 +107,14 @@ nextflow_workflow {
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-                    ]
+                    ],
+                    [] // adapter_fasta
                 ])
-                input[1]=[]    // adapter_fasta
-                input[2]=false // save_trimmed_fail
-                input[3]=false // discard_trimmed_pass
-                input[4]=false // save_merged
-                input[5]=true  // skip_fastp
-                input[6]=false // skip_fastqc
+                input[1]=false // save_trimmed_fail
+                input[2]=false // discard_trimmed_pass
+                input[3]=false // save_merged
+                input[4]=true  // skip_fastp
+                input[5]=false // skip_fastqc
                 """
             }
         }
@@ -154,14 +153,14 @@ nextflow_workflow {
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-                    ]
+                    ],
+                    [] // adapter_fasta
                 ])
-                input[1]=[]    // adapter_fasta
-                input[2]=false // save_trimmed_fail
-                input[3]=false // discard_trimmed_pass
-                input[4]=false // save_merged
-                input[5]=false // skip_fastp
-                input[6]=false // skip_fastqc
+                input[1]=false // save_trimmed_fail
+                input[2]=false // discard_trimmed_pass
+                input[3]=false // save_merged
+                input[4]=false // skip_fastp
+                input[5]=false // skip_fastqc
                 """
             }
         }
@@ -186,14 +185,14 @@ nextflow_workflow {
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-                    ]
+                    ],
+                    [] // adapter_fasta
                 ])
-                input[1]=[]    // adapter_fasta
-                input[2]=false // save_trimmed_fail
-                input[3]=false // discard_trimmed_pass
-                input[4]=false // save_merged
-                input[5]=false // skip_fastp
-                input[6]=true  // skip_fastqc
+                input[1]=false // save_trimmed_fail
+                input[2]=false // discard_trimmed_pass
+                input[3]=false // save_merged
+                input[4]=false // skip_fastp
+                input[5]=true  // skip_fastqc
                 """
             }
         }
@@ -218,14 +217,14 @@ nextflow_workflow {
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-                    ]
+                    ],
+                    [] // adapter_fasta
                 ])
-                input[1]=[]    // adapter_fasta
-                input[2]=false // save_trimmed_fail
-                input[3]=false // discard_trimmed_pass
-                input[4]=false // save_merged
-                input[5]=true  // skip_fastp
-                input[6]=false // skip_fastqc
+                input[1]=false // save_trimmed_fail
+                input[2]=false // discard_trimmed_pass
+                input[3]=false // save_merged
+                input[4]=true  // skip_fastp
+                input[5]=false // skip_fastqc
                 """
             }
         }

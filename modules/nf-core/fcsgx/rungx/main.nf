@@ -17,7 +17,7 @@ process FCSGX_RUNGX {
     tuple val(meta), path("*.taxonomy.rpt")     , emit: taxonomy_report
     tuple val(meta), path("*.summary.txt")      , emit: log
     tuple val(meta), path("*.hits.tsv.gz")      , emit: hits, optional: true
-    path "versions.yml"                         , emit: versions
+    tuple val("${task.process}"), val('fcsgx'), eval("gx --help | sed '/build/!d; s/.*:v//; s/-.*//'"), emit: versions_fcsgx, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,7 +34,7 @@ process FCSGX_RUNGX {
         exit 1
     fi
     # Clean up shared memory on exit
-    trap "rm -rf "${database}" EXIT
+    trap "rm -rf ${database}" EXIT
     # Copy DB to RAM-disk when supplied. Otherwise, rungx is very slow.
     rclone copy ${gxdb} ${database}
 
@@ -50,11 +50,6 @@ process FCSGX_RUNGX {
         --out-basename ${prefix} \\
         --out-dir . \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fcsgx: \$( gx --help | sed '/build/!d; s/.*:v//; s/-.*//' )
-    END_VERSIONS
     """
 
     stub:
@@ -65,10 +60,5 @@ process FCSGX_RUNGX {
     touch ${prefix}.taxonomy.rpt
     touch ${prefix}.summary.txt
     echo "" | gzip > ${prefix}.hits.tsv.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fcsgx: \$( gx --help | sed '/build/!d; s/.*:v//; s/-.*//' )
-    END_VERSIONS
     """
 }

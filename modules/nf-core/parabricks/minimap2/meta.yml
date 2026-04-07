@@ -26,7 +26,9 @@ input:
         description: Input read file, supported formats - 'fastq', 'fastq.gz', 'fq',
           'fq.gz', 'bam'
         pattern: "^.*\\.(fastq|fastq\\.gz|fq|fq\\.gz|bam)$"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_3989" # GZIP
   - - meta2:
         type: map
         description: |
@@ -35,12 +37,13 @@ input:
         type: file
         description: reference fasta file - must be unzipped
         pattern: "*.fasta"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
   - - meta3:
         type: map
         description: |
           Groovy Map containing index information
-    - interval_file:
+    - intervals:
         type: file
         description: (optional) file(s) containing genomic intervals for use in base
           quality score recalibration (BQSR)
@@ -56,7 +59,8 @@ input:
           be true to perform BQSR.
         pattern: "*.vcf.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: "http://edamontology.org/format_3016" # VCF
+          - edam: "http://edamontology.org/format_3989" # GZIP
   - output_fmt:
       type: string
       description: Output format for the alignment. Options are 'bam' or 'cram'
@@ -72,7 +76,8 @@ output:
           type: file
           description: Sorted BAM file
           pattern: "*.bam"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
   bai:
     - - meta:
           type: map
@@ -139,14 +144,36 @@ output:
           description: (optional) metrics calculated from marking duplicates in the
             bam file
           pattern: "*.duplicate-metrics.txt"
-          ontologies: []
-  versions:
-    - versions.yml:
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # TXT
+  compatible_versions:
+    - compatible_versions.yml:
         type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+        description: File containing info on compatible CPU-based software versions.
+        pattern: "compatible_versions.yml"
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
+  versions_parabricks:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - parabricks:
+          type: string
+          description: The tool name
+      - "pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - parabricks:
+          type: string
+          description: The tool name
+      - "pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@haidyi"
 maintainers:

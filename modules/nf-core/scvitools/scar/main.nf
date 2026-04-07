@@ -4,11 +4,15 @@ process SCVITOOLS_SCAR {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9b/9b999caba5a5a6bc19bd324d9f1ac28e092a750140b453071956ebc304b7c4aa/data':
-        'community.wave.seqera.io/library/scvi-tools:1.2.0--680d378b86801b8a' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c8/c8764e4208e9639a54d636fc65c839c55dedbfd68def57baea90d1d2007d6a7f/data':
+        'community.wave.seqera.io/library/scvi-tools:1.3.3--df115aabdccb7d6b' }"
 
     input:
     tuple val(meta), path(filtered), path(unfiltered)
+    val(input_layer)
+    val(output_layer)
+    val(max_epochs)
+    val(n_batch)
 
     output:
     tuple val(meta), path("*.h5ad"), emit: h5ad
@@ -19,9 +23,6 @@ process SCVITOOLS_SCAR {
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
-    input_layer = task.ext.input_layer ?: "X"
-    output_layer = task.ext.output_layer ?: "scar"
-    max_epochs = task.ext.max_epochs ?: ""
     template 'scar.py'
 
     stub:

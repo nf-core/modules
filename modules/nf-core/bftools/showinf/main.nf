@@ -11,8 +11,8 @@ process BFTOOLS_SHOWINF {
     tuple val(meta), path(image)
 
     output:
-    tuple val(meta), path("*.xml"), emit: xml
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.xml.gz")                                                             , emit: xml
+    tuple val("${task.process}"), val("bftools"), eval("showinf -version | sed -n '1s/[^ ]* //p'"), emit: versions_bftools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,26 +22,16 @@ process BFTOOLS_SHOWINF {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    export BF_FLAGS='-XX:+PerfDisableSharedMem'
     showinf -nopix -no-upgrade -omexml-only \\
         $args \\
-        $image > ${prefix}.xml
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        showinf: \$(showinf -version | head -n1 | cut -d' ' -f2)
-    END_VERSIONS
+        $image | gzip > ${prefix}.xml.gz
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo '<?xml version="1.0" encoding="UTF-8">' > ${prefix}.xml
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        showinf: \$(showinf -version | head -n1 | cut -d' ' -f2)
-    END_VERSIONS
+    echo '<?xml version="1.0" encoding="UTF-8">' | gzip > ${prefix}.xml.gz
     """
 }

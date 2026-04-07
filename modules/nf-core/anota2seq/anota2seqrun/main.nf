@@ -12,11 +12,11 @@ process ANOTA2SEQ_ANOTA2SEQRUN {
     tuple val(meta2), path(samplesheet), path(counts)
 
     output:
-    tuple val(meta), path("*.translated_mRNA.anota2seq.results.tsv")           , emit: translated_mrna
-    tuple val(meta), path("*.total_mRNA.anota2seq.results.tsv")                , emit: total_mrna
-    tuple val(meta), path("*.translation.anota2seq.results.tsv")               , emit: translation
-    tuple val(meta), path("*.buffering.anota2seq.results.tsv")                 , emit: buffering
-    tuple val(meta), path("*.mRNA_abundance.anota2seq.results.tsv")            , emit: mrna_abundance
+    tuple val(meta), path("*.translated_mRNA.anota2seq.results.tsv")           , emit: translated_mrna, optional: true
+    tuple val(meta), path("*.total_mRNA.anota2seq.results.tsv")                , emit: total_mrna, optional: true
+    tuple val(meta), path("*.translation.anota2seq.results.tsv")               , emit: translation, optional: true
+    tuple val(meta), path("*.buffering.anota2seq.results.tsv")                 , emit: buffering, optional: true
+    tuple val(meta), path("*.mRNA_abundance.anota2seq.results.tsv")            , emit: mrna_abundance, optional: true
     tuple val(meta), path("*.Anota2seqDataSet.rds")                            , emit: rdata
     tuple val(meta), path("*.fold_change.png")                                 , emit: fold_change_plot
     tuple val(meta), path("*.interaction_p_distribution.pdf")                  , emit: interaction_p_distribution_plot                  , optional: true

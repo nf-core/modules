@@ -16,7 +16,7 @@ process COMEBIN_RUNCOMEBIN {
     tuple val(meta), path("${prefix}/comebin.log")             , emit: log
     tuple val(meta), path("${prefix}/embeddings.tsv")          , emit: embeddings
     tuple val(meta), path("${prefix}/covembeddings.tsv")       , emit: covembeddings
-    path "versions.yml"                                        , emit: versions
+    tuple val("${task.process}"), val('comebin'), eval("run_comebin.sh | sed '2!d;s/COMEBin version: //'"), topic: versions, emit: versions_comebin
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,14 +25,14 @@ process COMEBIN_RUNCOMEBIN {
     def args               = task.ext.args ?: ''
     prefix                 = task.ext.prefix ?: "${meta.id}"
     def clean_assembly     = assembly.toString() - ~/\.gz$/
-    def decompress_contigs = assembly.toString() == clean_assembly ? "" : "gunzip -q -f $assembly"
-    def cleanup            = decompress_contigs ? "rm ${clean_assembly}" : ""
+    // ISSUE: temporary files will be generated in the directory of the assembly file, following links, copying prevents that
+    def setup_contigs      = assembly.toString() == clean_assembly ? "cat ${assembly} > local_assembly.fasta" : "zcat ${assembly} > local_assembly.fasta"
     """
-    ${decompress_contigs}
+    ${setup_contigs}
 
     run_comebin.sh \\
         -t ${task.cpus} \\
-        -a ${clean_assembly} \\
+        -a local_assembly.fasta \\
         -p bam/ \\
         -o . \\
         $args
@@ -41,16 +41,16 @@ process COMEBIN_RUNCOMEBIN {
 
     find ${prefix}/comebin_res_bins/*.fa -exec gzip {} \\;
 
-    ${cleanup}
+    # avoid file name collisions
+    for filename in ${prefix}/comebin_res_bins/*.fa.gz; do
+        mv "\${filename}" "${prefix}/comebin_res_bins/${prefix}.\$(basename \${filename})"
+    done
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        comebin: \$(run_comebin.sh | sed -n 2p | grep -o -E "[0-9]+(\\.[0-9]+)+")
-    END_VERSIONS
+    # clean up
+    rm local_assembly.fasta
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}/comebin_res_bins
@@ -62,10 +62,5 @@ process COMEBIN_RUNCOMEBIN {
     touch ${prefix}/comebin.log
     touch ${prefix}/embeddings.tsv
     touch ${prefix}/covembeddings.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        comebin: \$(run_comebin.sh | sed -n 2p | grep -o -E "[0-9]+(\\.[0-9]+)+")
-    END_VERSIONS
     """
 }

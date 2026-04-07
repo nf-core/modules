@@ -13,7 +13,7 @@ process SVYNC {
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val(meta), path("*.tbi")   , emit: tbi
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('svync'), eval("svync --version | sed 's/svync version //'"), emit: versions_svync, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,11 +33,6 @@ process SVYNC {
         --input $vcf \\
         | bgzip --threads $task.cpus $args2 > ${prefix}.vcf.gz \\
         && tabix $args3 ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        svync: \$(svync --version | sed 's/svync version //')
-    END_VERSIONS
     """
 
     stub:
@@ -48,10 +43,5 @@ process SVYNC {
     """
     echo | gzip -n > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        svync: \$(svync --version | sed 's/svync version //')
-    END_VERSIONS
     """
 }

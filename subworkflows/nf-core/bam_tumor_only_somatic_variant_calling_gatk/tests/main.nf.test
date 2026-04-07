@@ -21,27 +21,31 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([ [ id:'test2'],
+                input[0]  = Channel.of([ [ id:'test2'],
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true)
                     ], [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
                     ], []
                 ])
-                input[1] = Channel.of([[ id:'reference' ],
+                input[1]  = Channel.of([[ id:'reference' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ])
-                input[2] = Channel.of([[ id:'reference' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                input[2]  = Channel.of([[ id:'reference' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                    ], []
                 ])
-                input[3] = Channel.of([[ id:'reference' ],
+                input[3]  = Channel.of([[ id:'reference' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.dict', checkIfExists: true)
                 ])
-                input[4] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz', checkIfExists: true))
-                input[5] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz.tbi', checkIfExists: true))
-                input[6] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz', checkIfExists: true))
-                input[7] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz.tbi', checkIfExists: true))
-                input[8] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.interval_list', checkIfExists: true))
+                input[4]  = []
+                input[5]  = []
+                input[6]  = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz', checkIfExists: true))
+                input[7]  = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz.tbi', checkIfExists: true))
+                input[8]  = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz', checkIfExists: true))
+                input[9]  = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz.tbi', checkIfExists: true))
+                input[10] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.interval_list', checkIfExists: true))
                 """
             }
         }
@@ -58,8 +62,7 @@ nextflow_workflow {
                     file(workflow.out.mutect2_tbi[0][1]).name,
                     workflow.out.mutect2_vcf.collect { meta, vcf -> [meta, "${file(vcf).name},variantsMD5:${path(vcf).vcf.variantsMD5}"] },
                     workflow.out.pileup_table,
-                    workflow.out.segmentation_table,
-                    workflow.out.versions
+                    workflow.out.segmentation_table
                 ).match() }
             )
         }
@@ -72,27 +75,31 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([ [ id:'test'],
+                input[0]  = Channel.of([ [ id:'test'],
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true)
                     ], [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
                     ], []
                 ])
-                input[1] = Channel.of([[ id:'reference' ],
+                input[1]  = Channel.of([[ id:'reference' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ])
-                input[2] = Channel.of([[ id:'reference' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                input[2]  = Channel.of([[ id:'reference' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                    ], []
                 ])
-                input[3] = Channel.of([[ id:'reference' ],
+                input[3]  = Channel.of([[ id:'reference' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.dict', checkIfExists: true)
                 ])
-                input[4] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz', checkIfExists: true))
-                input[5] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz.tbi', checkIfExists: true))
-                input[6] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz', checkIfExists: true))
-                input[7] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz.tbi', checkIfExists: true))
-                input[8] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.interval_list', checkIfExists: true))
+                input[4]  = []
+                input[5]  = []
+                input[6]  = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz', checkIfExists: true))
+                input[7]  = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz.tbi', checkIfExists: true))
+                input[8]  = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz', checkIfExists: true))
+                input[9]  = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz.tbi', checkIfExists: true))
+                input[10] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.interval_list', checkIfExists: true))
                 """
             }
         }

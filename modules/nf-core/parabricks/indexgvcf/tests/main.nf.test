@@ -28,8 +28,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.gvcf_index[0][1]).name,
-                    process.out.versions
-                    ).match() 
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
                 }
             )
         }
@@ -76,7 +76,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out,
+                    path(process.out.compatible_versions.get(0)).yaml
+                    ).match() }
             )
         }
 

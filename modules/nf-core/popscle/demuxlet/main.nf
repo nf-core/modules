@@ -37,9 +37,7 @@ process POPSCLE_DEMUXLET {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input = plp_prefix ? "--plp ${plp_prefix}" : "--sam $bam"
     def VERSION = '0.1' // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     """
     touch ${prefix}.best

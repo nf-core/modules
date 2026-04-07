@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "minimac4_compressref"
-description: Compression of a reference panel for genotype imputation to `.msav` format
+description: Compression of a reference panel for genotype imputation to `.msav`
+  format
 keywords:
   - haplotypes
   - reference compression
@@ -12,9 +12,9 @@ tools:
       documentation: "https://github.com/statgen/Minimac4"
       tool_dev_url: "https://github.com/statgen/Minimac4"
       doi: "10.1038/ng.3656"
-      licence: ["GPL v3-or-later"]
+      licence:
+        - "GPL v3-or-later"
       identifier: biotools:minimac4
-
 input:
   - - meta:
         type: map
@@ -34,7 +34,6 @@ input:
         pattern: "*.{tbi,csi}"
         ontologies:
           - edam: "http://edamontology.org/format_3700"
-
 output:
   msav:
     - - meta:
@@ -46,16 +45,28 @@ output:
           type: file
           description: Multy-sample variant compressed file
           pattern: "*.{msav}"
-
           ontologies: []
+  versions_minimac4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - minimac4:
+          type: string
+          description: The name of the tool
+      - minimac4 --version |& sed '1!d ; s/minimac v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - minimac4:
+          type: string
+          description: The name of the tool
+      - minimac4 --version |& sed '1!d ; s/minimac v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@LouisLeNezet"
 maintainers:

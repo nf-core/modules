@@ -28,13 +28,13 @@ nextflow_process {
 
                     input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/CTAT_HumanFusionLib.mini.dat.gz')
                     input[3] = "homo_sapiens"
-                    input[4] = "http://ftp.ebi.ac.uk/pub/databases/Pfam/releases/Pfam37.4/Pfam-A.hmm.gz"
+                    input[4] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/Pfam-A.hmm.gz')
                     input[5] = [
-                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm",
-                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3f",
-                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3i",
-                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3m",
-                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3p"
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_dfam.hmm'),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_dfam.hmm.h3f'),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_dfam.hmm.h3i'),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_dfam.hmm.h3m'),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_dfam.hmm.h3p')
                     ]
                     input[6] = "https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/AnnotFilterRule.pm"
                     """
@@ -48,8 +48,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     [
-                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/v0.0.1/rnaseq_1.fastq.gz"),
-                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/v0.0.1/rnaseq_2.fastq.gz")
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz'),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_2.fastq.gz')
                     ], // reads
                     [
                         file("https://github.com/FusionInspector/FusionInspector/raw/master/test/fusion_targets.A.txt")
@@ -85,8 +85,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     [
-                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/v0.0.1/rnaseq_1.fastq.gz"),
-                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/v0.0.1/rnaseq_2.fastq.gz")
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz'),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_2.fastq.gz')
                     ], // reads
                     [
                         file("https://github.com/FusionInspector/FusionInspector/raw/master/test/fusion_targets.A.txt")

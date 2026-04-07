@@ -1,10 +1,3 @@
-def deprecation_message = """
-WARNING: This module has been deprecated. Please use nf-core/modules/fcsgx/rungx
-
-Reason:
-This module is now renamed as FCSGX_RUNGX and as been updated to the latest version
-"""
-
 process FCS_FCSGX {
     tag "$meta.id"
     label 'process_low'
@@ -26,6 +19,12 @@ process FCS_FCSGX {
     task.ext.when == null || task.ext.when
 
     script:
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/fcsgx/rungx
+
+Reason:
+This module is now renamed as FCSGX_RUNGX and as been updated to the latest version
+"""
     // Comment out this block to disable the deprecation warning
     assert false: deprecation_message
 
@@ -34,7 +33,6 @@ process FCS_FCSGX {
         error "FCS_FCSGX module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def FCSGX_VERSION = '0.4.0'
 
     """
@@ -53,6 +51,12 @@ process FCS_FCSGX {
     """
 
     stub:
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/fcsgx/rungx
+
+Reason:
+This module is now renamed as FCSGX_RUNGX and as been updated to the latest version
+"""
     // Comment out this block to disable the deprecation warning
     assert false: deprecation_message
 

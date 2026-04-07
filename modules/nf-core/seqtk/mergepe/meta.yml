@@ -6,9 +6,9 @@ keywords:
   - fastx
 tools:
   - seqtk:
-      description: Seqtk is a fast and lightweight tool for processing sequences in
-        the FASTA or FASTQ format. Seqtk mergepe command merges pair-end reads into
-        one interleaved file.
+      description: Seqtk is a fast and lightweight tool for processing sequences
+        in the FASTA or FASTQ format. Seqtk mergepe command merges pair-end reads
+        into one interleaved file.
       homepage: https://github.com/lh3/seqtk
       documentation: https://docs.csc.fi/apps/seqtk/
       tool_dev_url: https://github.com/lh3/seqtk
@@ -22,8 +22,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - reads:
         type: file
-        description: List of input FastQ files of size 1 and 2 for single-end and paired-end
-          data,respectively.
+        description: List of input FastQ files of size 1 and 2 for single-end and
+          paired-end data,respectively.
         pattern: "*.{fastq.gz}"
         ontologies: []
 output:
@@ -35,18 +35,32 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.fastq.gz":
           type: file
-          description: If single-end reads, the output is the same as the input, 1 FastQ
-            file for each read. If pair-end reads, the read pairs will be interleaved
-            and output as 1 FastQ file for each read pair.
+          description: If single-end reads, the output is the same as the input, 1
+            FastQ file for each read. If pair-end reads, the read pairs will be
+            interleaved and output as 1 FastQ file for each read pair.
           pattern: "*.{fastq.gz}"
           ontologies: []
+  versions_seqtk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqtk:
+          type: string
+          description: The name of the tool
+      - "seqtk 2>&1 | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqtk:
+          type: string
+          description: The name of the tool
+      - "seqtk 2>&1 | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@emnilsson"
 maintainers:

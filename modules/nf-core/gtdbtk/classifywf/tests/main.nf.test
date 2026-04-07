@@ -46,7 +46,6 @@ nextflow_process {
                     ]
                 input[1] = UNTAR.out.untar
                 input[2] = false
-                input[3] = []
                 """
             }
         }
@@ -62,7 +61,8 @@ nextflow_process {
                         process.out.user_msa,
                         process.out.filtered,
                         file(process.out.log[0][1]).readLines().contains('INFO: Done.'),
-                        process.out.versions,
+                        process.out.versions_gtdbtk,
+                        process.out.versions_gtdbtk_db,
                     ).match() }
             )
         }
@@ -90,7 +90,6 @@ nextflow_process {
                     ]
                 input[1] = [[:],[]]
                 input[2] = false
-                input[3] = []
                 """
             }
         }

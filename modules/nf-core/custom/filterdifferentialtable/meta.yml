@@ -69,6 +69,30 @@ output:
           pattern: "*_filtered.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  filtered_up:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_filtered_up.tsv":
+          type: file
+          description: Filtered differential expression table for overexpressed genes
+          pattern: "*_filtered_up.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  filtered_down:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_filtered_down.tsv":
+          type: file
+          description: Filtered differential expression table for underexpressed genes
+          pattern: "*_filtered_down.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   versions:
     - versions.yml:
         type: file

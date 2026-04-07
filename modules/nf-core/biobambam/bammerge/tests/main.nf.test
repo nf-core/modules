@@ -17,11 +17,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    [
-				        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-				        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true)
-				    ]
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true)
+                    ]
                 ]
 
                 """
@@ -32,12 +32,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-					bam(process.out.bam[0][1]).getReadsMD5(),
-					file(process.out.bam_index[0][1]).name,
-					process.out.checksum,
-					process.out.versions
-					).match()
-				}
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    file(process.out.bam_index[0][1]).name,
+                    process.out.checksum,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match()}
             )
         }
     }
@@ -48,12 +47,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    [
-				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true),
-				    ]
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true),
+                    ]
                 ]
-
                 """
             }
         }
@@ -62,12 +60,12 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-					bam(process.out.bam[0][1]).getReadsMD5(),
-					file(process.out.bam_index[0][1]).name,
-					process.out.checksum,
-					process.out.versions
-					).match()
-				}
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    file(process.out.bam_index[0][1]).name,
+                    process.out.checksum,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
             )
         }
     }

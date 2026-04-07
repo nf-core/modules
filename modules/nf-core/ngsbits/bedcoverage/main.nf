@@ -4,8 +4,8 @@ process NGSBITS_BEDCOVERAGE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ngs-bits:2025_03--py313h572c47f_0':
-        'biocontainers/ngs-bits:2025_03--py313h572c47f_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2b/2be56a07ac1d5a447a10fd061be4d6144620bec00bac834f58c2bdef0330147f/data':
+        'community.wave.seqera.io/library/ngs-bits:2025_09--f6ea3a4494373ed6' }"
 
     input:
     tuple val(meta), path(reads), path(reads_index), path(bed)

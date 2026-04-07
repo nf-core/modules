@@ -38,11 +38,9 @@ process NANOFILT {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "filtered_${meta.id}"
-    def sum    = summary_file ? "--summary ${summary_file}" : ''
     """
-    touch ${prefix}.fastq.gz
+    echo "" | gzip > ${prefix}.fastq.gz
     touch ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml

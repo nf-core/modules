@@ -23,7 +23,8 @@ input:
         type: file
         description: BAM file
         pattern: "*.bam"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
   - - meta2:
         type: map
         description: |
@@ -32,7 +33,7 @@ input:
     - bam_index:
         type: file
         description: BAM index file
-        pattern: "*.bai"
+        pattern: "*.bam.bai"
         ontologies: []
   - - meta3:
         type: map
@@ -62,7 +63,8 @@ input:
         type: file
         description: Reference fasta - must be unzipped.
         pattern: "*.fasta"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
 output:
   bam:
     - - meta:
@@ -74,7 +76,8 @@ output:
           type: file
           description: BAM file after applying BQSR.
           pattern: "*.bam"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
   bai:
     - - meta:
           type: map
@@ -84,15 +87,29 @@ output:
       - "*.bai":
           type: file
           description: bai index corresponding to output bam file.
-          pattern: "*.bai"
+          pattern: "*.bam.bai"
           ontologies: []
+  versions_parabricks:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - parabricks:
+          type: string
+          description: The tool name
+      - "pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions.
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - parabricks:
+          type: string
+          description: The tool name
+      - "pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@bsiranosian"
 maintainers:

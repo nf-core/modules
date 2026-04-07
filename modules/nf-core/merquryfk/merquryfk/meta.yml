@@ -44,8 +44,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - mathaptab:
         type: file
-        description: trio maternal histogram ktab files from the program FastK (option
-          -t)
+        description: trio maternal histogram ktab files from the program FastK
+          (option -t)
         pattern: "*.ktab*"
         ontologies: []
   - - meta3:
@@ -55,8 +55,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - pathaptab:
         type: file
-        description: trio paternal histogram ktab files from the program FastK (option
-          -t)
+        description: trio paternal histogram ktab files from the program FastK
+          (option -t)
         pattern: "*.ktab*"
         ontologies: []
 output:
@@ -70,7 +70,8 @@ output:
           type: file
           description: Assembly statistics file
           pattern: "*.completeness.stats"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   bed:
     - - meta:
           type: map
@@ -79,9 +80,11 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}.*_only.bed:
           type: file
-          description: Assembly only kmer positions not supported by reads in bed format
+          description: Assembly only kmer positions not supported by reads in bed
+            format
           pattern: "*_only.bed"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   assembly_qv:
     - - meta:
           type: map
@@ -92,40 +95,8 @@ output:
           type: file
           description: "error and qv table for each scaffold of the assembly"
           pattern: "*.qv"
-          ontologies: []
-  spectra_cn_fl:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${prefix}.*.spectra-cn.fl.{png,pdf}:
-          type: file
-          description: "Unstacked copy number spectra filled plot in PNG or PDF format"
-          pattern: "*.spectra-cn.fl.{png,pdf}"
-          ontologies: []
-  spectra_cn_ln:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${prefix}.*.spectra-cn.ln.{png,pdf}:
-          type: file
-          description: "Unstacked copy number spectra line plot in PNG or PDF format"
-          pattern: "*.spectra-cn.ln.{png,pdf}"
-          ontologies: []
-  spectra_cn_st:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${prefix}.*.spectra-cn.st.{png,pdf}:
-          type: file
-          description: "Stacked copy number spectra line plot in PNG or PDF format"
-          pattern: "*.spectra-cn.st.{png,pdf}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   qv:
     - - meta:
           type: map
@@ -136,40 +107,8 @@ output:
           type: file
           description: "error and qv of each assembly as a whole"
           pattern: "*.qv"
-          ontologies: []
-  spectra_asm_fl:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${prefix}.spectra-asm.fl.{png,pdf}:
-          type: file
-          description: "Unstacked assembly spectra filled plot in PNG or PDF format"
-          pattern: "*.spectra-asm.fl.{png,pdf}"
-          ontologies: []
-  spectra_asm_ln:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${prefix}.spectra-asm.ln.{png,pdf}:
-          type: file
-          description: "Unstacked assembly spectra line plot in PNG or PDF format"
-          pattern: "*.spectra-asm.ln.{png,pdf}"
-          ontologies: []
-  spectra_asm_st:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${prefix}.spectra-asm.st.{png,pdf}:
-          type: file
-          description: "Stacked assembly spectra line plot in PNG or PDF format"
-          pattern: "*.spectra-asm.st.{png,pdf}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   phased_block_bed:
     - - meta:
           type: map
@@ -180,7 +119,8 @@ output:
           type: file
           description: Assembly kmer positions separated by block in bed format
           pattern: "*.phased.block.bed"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   phased_block_stats:
     - - meta:
           type: map
@@ -191,58 +131,80 @@ output:
           type: file
           description: phased assembly statistics file
           pattern: "*.phased.block.stats"
-          ontologies: []
-  continuity_N:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  images:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}.continuity.N.{pdf,png}:
+      - "*.{pdf,png}":
           type: file
-          description: "Stacked assembly N continuity plot in PNG or PDF format"
-          pattern: "*.continuity.N.{png,pdf}"
-          ontologies: []
-  block_N:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${prefix}.block.N.{pdf,png}:
-          type: file
-          description: "Stacked assembly N continuity by block plot in PNG or PDF format"
-          pattern: "*.block.N.{png,pdf}"
-          ontologies: []
-  block_blob:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${prefix}.block.blob.{pdf,png}:
-          type: file
-          description: "Stacked assembly block plot in PNG or PDF format"
-          pattern: "*.block.blob.{png,pdf}"
-          ontologies: []
-  hapmers_blob:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${prefix}.hapmers.blob.{pdf,png}:
-          type: file
-          description: "Stacked assembly hapmers block plot in PNG or PDF format"
-          pattern: "*.hapmers.blob.{png,pdf}"
-          ontologies: []
+          description: Output graphs from MerquryFK
+          pattern: "*.{pdf,png}"
+          ontologies:
+            - edam: http://edamontology.org/format_3508 # PDF
+            - edam: http://edamontology.org/format_3603 # PNG
+  versions_merquryfk:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - merquryfk:
+          type: string
+          description: The name of the tool
+      - "1.2":
+          type: string
+          description: The expression to obtain the version of the tool
+  versions_fastk:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - fastk:
+          type: string
+          description: Name of the tool
+      - "1.2":
+          type: string
+          description: The expression to obtain the version of the tool
+  versions_r:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - R:
+          type: string
+          description: Name of the tool
+      - R --version | sed "1!d; s/.*version //; s/ .*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - merquryfk:
+          type: string
+          description: The name of the tool
+      - "1.2":
+          type: string
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - fastk:
+          type: string
+          description: Name of the tool
+      - "1.2":
+          type: string
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - R:
+          type: string
+          description: Name of the tool
+      - R --version | sed "1!d; s/.*version //; s/ .*//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mahesh-panchal"
   - "@yumisims"

@@ -1,6 +1,6 @@
 name: "vsearch_sort"
-description: Sort fasta entries by decreasing abundance (--sortbysize) or sequence
-  length (--sortbylength).
+description: Sort fasta entries by decreasing abundance (--sortbysize) or
+  sequence length (--sortbylength).
 keywords:
   - vsearch/sort
   - vsearch
@@ -11,11 +11,12 @@ keywords:
   - population genetics
 tools:
   - vsearch:
-      description: VSEARCH is a versatile open-source tool for microbiome analysis,
-        including chimera detection, clustering, dereplication and rereplication, extraction,
-        FASTA/FASTQ/SFF file processing, masking, orienting, pair-wise alignment, restriction
-        site cutting, searching, shuffling, sorting, subsampling, and taxonomic classification
-        of amplicon sequences for metagenomics, genomics, and population genetics. (USEARCH
+      description: VSEARCH is a versatile open-source tool for microbiome
+        analysis, including chimera detection, clustering, dereplication and
+        rereplication, extraction, FASTA/FASTQ/SFF file processing, masking,
+        orienting, pair-wise alignment, restriction site cutting, searching,
+        shuffling, sorting, subsampling, and taxonomic classification of amplicon
+        sequences for metagenomics, genomics, and population genetics. (USEARCH
         alternative)
       homepage: https://github.com/torognes/vsearch
       documentation: https://github.com/torognes/vsearch/releases/download/v2.21.1/vsearch_manual.pdf
@@ -34,8 +35,8 @@ input:
         ontologies: []
   - sort_arg:
       type: string
-      description: Argument to provide to sort algorithm. Sort by abundance with --sortbysize
-        or by sequence length with --sortbylength.
+      description: Argument to provide to sort algorithm. Sort by abundance with
+        --sortbysize or by sequence length with --sortbylength.
       enum: ["--sortbysize", "--sortbylength"]
 output:
   fasta:
@@ -49,13 +50,29 @@ output:
           description: Sorted FASTA file
           pattern: "*.{fasta}"
           ontologies: []
+  versions_vsearch:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - vsearch:
+          type: string
+          description: The tool name
+      - vsearch --version 2>&1 | sed -n "1s/.*v\([0-9.]*\).*/\\1/p":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - vsearch:
+          type: string
+          description: The tool name
+      - vsearch --version 2>&1 | sed -n "1s/.*v\([0-9.]*\).*/\\1/p":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@mirpedrol"
 maintainers:
