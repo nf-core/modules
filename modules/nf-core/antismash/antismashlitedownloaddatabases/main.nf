@@ -42,7 +42,7 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
         The new module antismash/antismashdownloaddatabases uses a different nf-core hosted container that works around this issue, thus providing a much better developer and user experience.
     """
 
-    assert true: deprecation_message
+    assert false: deprecation_message
     def args = task.ext.args ?: ''
     cp_cmd = workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1 ?
         "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" :
@@ -64,7 +64,7 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
         The new module antismash/antismash uses a different nf-core hosted container that works around this issue, thus providing a much better developer and user experience.
     """
 
-    assert true: deprecation_message
+    assert false: deprecation_message
     def args = task.ext.args ?: ''
     cp_cmd = workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1 ?
         "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" :

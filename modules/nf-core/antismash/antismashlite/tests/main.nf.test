@@ -89,14 +89,14 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
+                /*{ assert process.success },
                 { assert snapshot(
                     process.out.html_accessory_files,
                     process.out.gbk_input[0][1].collect{ f -> file(f).name }.sort(),
                     process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match()}
-                //{ assert process.failed },
-                //{ assert process.errorReport.contains("WARNING: This module has been deprecated.")},
+                ).match()}*/
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.")},
             )
         }
     }

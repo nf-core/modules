@@ -63,13 +63,13 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
+                /*{ assert process.success },
                 { assert snapshot(
                     file(process.out.database[0]).list().sort(),
                     process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match()}
-                //{ assert process.failed },
-                //{ assert process.errorReport.contains("WARNING: This module has been deprecated.")}
+                ).match()}*/
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
             )
         }
     }

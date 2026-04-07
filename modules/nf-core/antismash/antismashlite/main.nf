@@ -52,7 +52,7 @@ process ANTISMASH_ANTISMASHLITE {
         The new module antismash/antismash uses a different nf-core hosted container that works around this issue, thus providing a much better developer and user experience.
     """
 
-    assert true: deprecation_message
+    assert false: deprecation_message
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     gff_flag = gff ? "--genefinding-gff3 ${gff}" : ""
@@ -82,7 +82,7 @@ process ANTISMASH_ANTISMASHLITE {
         The new module antismash/antismash uses a different nf-core hosted container that works around this issue, thus providing a much better developer and user experience.
     """
 
-    assert true: deprecation_message
+    assert false: deprecation_message
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}/css
