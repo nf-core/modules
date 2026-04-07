@@ -49,8 +49,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = HOMER_MAKETAGDIRECTORY.out.tagdir
-                input[1] = []
+                input[0] = "factor"
+                input[1] = HOMER_MAKETAGDIRECTORY.out.tagdir
+                input[2] = [[:], []]
+                input[3] = []
                 """
             }
         }
@@ -71,8 +73,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = HOMER_MAKETAGDIRECTORY.out.tagdir
-                input[1] = []
+                input[0] = "factor"
+                input[1] = HOMER_MAKETAGDIRECTORY.out.tagdir
+                input[2] = [[:], []]
+                input[3] = []
                 """
             }
         }
@@ -92,8 +96,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = HOMER_MAKETAGDIRECTORY.out.tagdir
-                input[1] = UNZIP.out.unzipped_archive.map { it[1] }
+                input[0] = "factor"
+                input[1] = HOMER_MAKETAGDIRECTORY.out.tagdir
+                input[2] = [[:], []]
+                input[3] = UNZIP.out.unzipped_archive.map { it[1] }
                 """
             }
         }
