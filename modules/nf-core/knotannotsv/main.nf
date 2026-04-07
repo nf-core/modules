@@ -8,7 +8,7 @@ process KNOTANNOTSV {
         : 'biocontainers/knotannotsv:1.1.5--hdfd78af_0'}"
 
     input:
-    tuple val(meta), path(annotsv_tsv), val(knot_out_xl)
+    tuple val(meta), path(annotsv_tsv, stageAs: "${prefix}.tsv"), val(knot_out_xl)
 
     output:
     tuple val(meta), path("*.html"), emit: html, optional: true
