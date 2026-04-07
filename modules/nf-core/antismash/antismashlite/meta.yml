@@ -254,7 +254,7 @@ output:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - antismash:
+      - antismash-lite:
           type: string
           description: The name of the tool
       - antismash --version | sed 's/antiSMASH //':
@@ -265,7 +265,7 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - antismash:
+      - antismash-lite:
           type: string
           description: The name of the tool
       - antismash --version | sed 's/antiSMASH //':
