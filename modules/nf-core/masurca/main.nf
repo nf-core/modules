@@ -11,6 +11,15 @@ process MASURCA {
     val fragment_stdev
     val jump_mean
     val jump_stdev
+    val extend_jump_reads
+    val graph_kmer_size
+    val use_linking_mates
+    val lhe_coverage
+    val mega_reads_one_pass
+    val limit_jump_coverage
+    val ca_parameters
+    val close_gaps
+    val jf_size
 
 
     output:
@@ -34,15 +43,15 @@ process MASURCA {
     def nanopore_file = nanopore ? nanopore.toRealPath() : ""
 
     // Configuration parameters with defaults from task.ext
-    def extend_jump_reads = task.ext.extend_jump_reads != null ? task.ext.extend_jump_reads : 0
-    def graph_kmer_size = task.ext.graph_kmer_size ?: 'auto'
-    def use_linking_mates = task.ext.use_linking_mates != null ? task.ext.use_linking_mates : 0
-    def lhe_coverage = task.ext.lhe_coverage ?: 25
-    def mega_reads_one_pass = task.ext.mega_reads_one_pass != null ? task.ext.mega_reads_one_pass : 0
-    def limit_jump_coverage = task.ext.limit_jump_coverage ?: 300
-    def ca_parameters = task.ext.ca_parameters ?: 'cgwErrorRate=0.15'
-    def close_gaps = task.ext.close_gaps != null ? task.ext.close_gaps : 0
-    def jf_size = task.ext.jf_size ?: 200000000
+    // def extend_jump_reads = task.ext.extend_jump_reads != null ? task.ext.extend_jump_reads : 0
+    // def graph_kmer_size = task.ext.graph_kmer_size ?: 'auto'
+    // def use_linking_mates = task.ext.use_linking_mates != null ? task.ext.use_linking_mates : 0
+    // def lhe_coverage = task.ext.lhe_coverage ?: 25
+    // def mega_reads_one_pass = task.ext.mega_reads_one_pass != null ? task.ext.mega_reads_one_pass : 0
+    // def limit_jump_coverage = task.ext.limit_jump_coverage ?: 300
+    // def ca_parameters = task.ext.ca_parameters ?: 'cgwErrorRate=0.15'
+    // def close_gaps = task.ext.close_gaps != null ? task.ext.close_gaps : 0
+    // def jf_size = task.ext.jf_size ?: 200000000
     """
     echo "DATA" > ${prefix}_masurca_config.txt
     echo "#Illumina paired end reads supplied as <two-character prefix> <fragment mean> <fragment stdev> <forward_reads> <reverse_reads>" >> ${prefix}_masurca_config.txt
