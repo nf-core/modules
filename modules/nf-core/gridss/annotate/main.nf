@@ -21,7 +21,6 @@ process GRIDSS_ANNOTATE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-
     mkdir -p ${prefix}_work
 
     gridss_annotate_vcf_repeatmasker \\
