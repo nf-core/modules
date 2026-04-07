@@ -36,7 +36,7 @@ input:
         description: An Ariba prepared database
         pattern: "*.tar.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989
+          - edam: http://edamontology.org/format_3989 # GZIP format
 output:
   results:
     - - meta:
@@ -56,7 +56,7 @@ output:
       - ariba:
           type: string
           description: The name of the tool
-      - "ariba version 2>/dev/null | sed '1!d;s/ARIBA version: //'":
+      - "ariba version 2>&1 | sed '1!d;s/ARIBA version: //'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -67,7 +67,7 @@ topics:
       - ariba:
           type: string
           description: The name of the tool
-      - "ariba version 2>/dev/null | sed '1!d;s/ARIBA version: //'":
+      - "ariba version 2>&1 | sed '1!d;s/ARIBA version: //'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
