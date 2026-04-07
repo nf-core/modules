@@ -33,6 +33,7 @@ process WHATSHAP_PHASE {
         --output ${prefix}.vcf \\
         --reference ${fasta} \\
         ${args} \\
+        ${input_ped} \\
         ${vcf} \\
         ${bam}
 
