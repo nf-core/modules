@@ -29,7 +29,7 @@ process METHURATOR_PLOT {
     def prefix = task.ext.prefix ?: "${meta.id}.html"
     """
     mkdir plots/
-    touch plots/${prefix}
+    touch plots/${prefix}.html
 
     """
 }
