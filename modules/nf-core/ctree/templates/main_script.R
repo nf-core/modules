@@ -61,51 +61,47 @@ add_dummy_driver = function(input_table, variant_colname, is_driver_colname) {
     return(input_table)
 }
 
+
 initialize_ctree_obj_pyclone = function(ctree_input) {
-    driver_cluster = unique(ctree_input[which(ctree_input["is.driver"]==TRUE),c("cluster")])
-    # the CCF table must report CCF values for each cluster and sample
-    # cluster | nMuts | is.driver | is.clonal | sample1 | sample2 | ...
-    CCF_table = ctree_input %>%
-        dplyr::select(sample_id, cluster, nMuts, is.driver, is.clonal, CCF) %>%
-        dplyr::mutate(is.driver=ifelse(is.driver=="", FALSE, TRUE)) %>%
-        dplyr::filter(cluster!="Tail") %>%
-        dplyr::group_by(cluster) %>%
-        dplyr::mutate(is.driver=any(is.driver)) %>%
-        dplyr::filter(any(CCF>0)) %>%
-        dplyr::ungroup() %>%
-        unique() %>%
-        tidyr::pivot_wider(names_from="sample_id", values_from="CCF", values_fill=0)
+  ctree_input = add_dummy_driver(ctree_input, variant_colname="variantID", is_driver_colname="is.driver")
 
-    # the driver table must contain patient and variant IDs and report clonality and driver status
-    # patientID | variantID | is.driver | is.clonal | cluster | sample1 | sample2 | ...
-    drivers_table = ctree_input %>%
-        dplyr::filter(cluster %in% CCF_table[["cluster"]]) %>%
-        dplyr::mutate(is.driver=as.logical(is.driver)) %>%
-        dplyr::select(patientID, sample_id, variantID, cluster, is.driver, is.clonal, CCF) %>%
-        dplyr::filter(is.driver==TRUE) %>%
-        dplyr::mutate(variantID=replace(variantID, is.na(variantID), "")) %>%
-        tidyr::pivot_wider(names_from="sample_id", values_from="CCF", values_fill=0) %>%
-        dplyr::mutate(cluster=as.character(cluster))
 
-    samples = unique(ctree_input[["sample_id"]])  # if multisample, this is a list
-    patient = unique(ctree_input[["patientID"]])
+  # the CCF table must report CCF values for each cluster and sample
+  # cluster | nMuts | is.driver | is.clonal | sample1 | sample2 | ...
+  CCF_table = ctree_input %>%
+    dplyr::select(sample_id, cluster, nMuts, is.driver, is.clonal, CCF) %>%
+    dplyr::mutate(is.driver=replace(is.driver, is.driver=="", "FALSE")) %>%
+    dplyr::mutate(is.driver=as.logical(is.driver)) %>%
+    dplyr::filter(cluster!="Tail") %>%
+    dplyr::mutate(cluster=as.character(cluster)) %>%
+    dplyr::group_by(cluster) %>%
+    dplyr::mutate(is.driver=any(is.driver)) %>%
+    dplyr::filter(any(CCF>0)) %>%
+    dplyr::ungroup() %>% unique() %>%
+    tidyr::pivot_wider(names_from="sample_id", values_from="CCF", values_fill=0)
 
-    CCF_table = add_dummy_driver(CCF_table, variant_colname="variantID", is_driver_colname="is.driver") %>%
-        dplyr::mutate(cluster=as.character(cluster))
+  # the driver table must contain patient and variant IDs and report clonality and driver status
+  # patientID | variantID | is.driver | is.clonal | cluster | sample1 | sample2 | ...
+  drivers_table = ctree_input %>%
+    dplyr::filter(cluster %in% CCF_table[["cluster"]]) %>%
+    dplyr::mutate(is.driver=as.logical(is.driver)) %>%
+    dplyr::mutate(cluster=as.character(cluster)) %>%
+    dplyr::select(patientID, sample_id, variantID, cluster, is.driver, is.clonal, CCF) %>%
+    dplyr::filter(is.driver==TRUE) %>%
+    dplyr::mutate(variantID=replace(variantID, is.na(variantID), "")) %>%
+    tidyr::pivot_wider(names_from="sample_id", values_from="CCF", values_fill=0)
 
-    if (nrow(drivers_table)==0) {
-        drivers_table = CCF_table %>%
-            dplyr::filter(is.driver) %>%
-            dplyr::select(-nMuts) %>%
-            dplyr::mutate(patientID=patient)
-    }
+  samples = unique(ctree_input[["sample_id"]])  # if multisample, this is a list
+  patient = unique(ctree_input[["patientID"]])
 
-    ctree_init = list("CCF_table"=CCF_table,
-                      "drivers_table"=drivers_table,
-                      "samples"=samples,
-                      "patient"=patient)
-    return(ctree_init)
+
+  ctree_init = list("CCF_table"=CCF_table,
+                    "drivers_table"=drivers_table,
+                    "samples"=samples,
+                    "patient"=patient)
+  return(ctree_init)
 }
+
 
 if ( grepl(".rds\$", tolower("$ctree_input")) ) {
     best_fit = readRDS("$ctree_input")

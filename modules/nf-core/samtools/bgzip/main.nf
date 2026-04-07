@@ -1,11 +1,11 @@
 process SAMTOOLS_BGZIP {
-    tag "$fasta"
+    tag "${fasta}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.22.1--h96c455f_0' :
-        'biocontainers/samtools:1.22.1--h96c455f_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8c/8c5d2818c8b9f58e1fba77ce219fdaf32087ae53e857c4a496402978af26e78c/data'
+        : 'community.wave.seqera.io/library/htslib_samtools:1.23.1--5b6bb4ede7e612e5'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -23,20 +23,20 @@ process SAMTOOLS_BGZIP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     output = "${prefix}.fasta.gz"
     """
-    FILE_TYPE=\$(htsfile $fasta)
+    FILE_TYPE=\$(htsfile ${fasta})
     case "\$FILE_TYPE" in
         *BGZF-compressed*)
             # Do nothing or just rename if the file was already compressed
-            [ "\$(basename $fasta)" != "\$(basename ${output})" ] && ln -s $fasta ${output} ;;
+            [ "\$(basename ${fasta})" != "\$(basename ${output})" ] && ln -s ${fasta} ${output} ;;
         *gzip-compressed*)
-            [ "\$(basename $fasta)" == "\$(basename ${output})" ] && echo "Filename collision (\$basename $fasta)" && exit 1
-            zcat  $fasta | bgzip -c $args -@${task.cpus} > ${output} ;;
+            [ "\$(basename ${fasta})" == "\$(basename ${output})" ] && echo "Filename collision (\$basename ${fasta})" && exit 1
+            zcat  ${fasta} | bgzip -c ${args} -@${task.cpus} > ${output} ;;
         *bzip2-compressed*)
-            bzcat $fasta | bgzip -c $args -@${task.cpus} > ${output} ;;
+            bzcat ${fasta} | bgzip -c ${args} -@${task.cpus} > ${output} ;;
         *XZ-compressed*)
-            xzcat $fasta | bgzip -c $args -@${task.cpus} > ${output} ;;
+            xzcat ${fasta} | bgzip -c ${args} -@${task.cpus} > ${output} ;;
         *)
-            bgzip -c $args -@${task.cpus} $fasta > ${output} ;;
+            bgzip -c ${args} -@${task.cpus} ${fasta} > ${output} ;;
     esac
     """
 
@@ -44,7 +44,7 @@ process SAMTOOLS_BGZIP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     output = "${prefix}.gz"
     """
-    [ "\$(basename $fasta)" == "\$(basename ${output})" ] && echo "Filename collision \$(basename $fasta)" && exit 1
+    [ "\$(basename ${fasta})" == "\$(basename ${output})" ] && echo "Filename collision \$(basename ${fasta})" && exit 1
     echo '' | bgzip > ${output}
     """
 }

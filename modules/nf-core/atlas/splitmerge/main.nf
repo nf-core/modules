@@ -13,7 +13,7 @@ process ATLAS_SPLITMERGE {
     output:
     tuple val(meta), path("*_mergedReads.bam"), emit: bam
     tuple val(meta), path("*.txt.gz")         , emit: txt
-    path "versions.yml"                       , emit: versions
+    tuple val("${task.process}"), val('atlas'), eval("atlas | sed -e '2!d;s/.*Atlas //'"), emit: versions_atlas, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,10 +27,5 @@ process ATLAS_SPLITMERGE {
         readGroupSettings=${read_group_settings}\\
         ${optional} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        atlas: \$((atlas 2>&1) | grep Atlas | head -n 1 | sed -e 's/^[ \t]*Atlas //')
-    END_VERSIONS
     """
 }
