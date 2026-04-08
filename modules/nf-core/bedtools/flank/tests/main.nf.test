@@ -9,6 +9,8 @@ nextflow_process {
     tag "bedtools"
     tag "bedtools/flank"
 
+    config "./nextflow.config"
+
    test("sarscov2 - [bed], [sizes]") {
 
         when {
@@ -32,7 +34,7 @@ nextflow_process {
 
     test("sarscov2 - [bed], [sizes] - stub") {
 
-        option "-stub"
+        options "-stub"
 
         when {
             process {
