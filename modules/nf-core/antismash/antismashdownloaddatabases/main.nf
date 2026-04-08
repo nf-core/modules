@@ -6,7 +6,7 @@ process ANTISMASH_ANTISMASHDOWNLOADDATABASES {
 
     output:
     path "antismash_db", emit: database
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('antismash'), eval("antismash --version | sed 's/antiSMASH //;s/-.*//g'"), emit: versions_antismash, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -17,11 +17,6 @@ process ANTISMASH_ANTISMASHDOWNLOADDATABASES {
     download-antismash-databases \\
         --database-dir antismash_db \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        antismash: \$(echo \$(antismash --version) | sed 's/antiSMASH //;s/-.*//g')
-    END_VERSIONS
     """
 
     stub:
@@ -40,10 +35,5 @@ process ANTISMASH_ANTISMASHDOWNLOADDATABASES {
     mkdir antismash_db/pfam
     mkdir antismash_db/resfam
     mkdir antismash_db/tigrfam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        antismash: \$(echo \$(antismash --version) | sed 's/antiSMASH //;s/-.*//g')
-    END_VERSIONS
     """
 }
