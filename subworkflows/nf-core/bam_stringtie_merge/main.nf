@@ -8,7 +8,6 @@ workflow BAM_STRINGTIE_MERGE {
     ch_chrgtf // channel: [ meta, gtf ]
 
     main:
-    ch_versions = channel.empty()
     ch_stringtie_gtfs = channel.empty()
 
     STRINGTIE_STRINGTIE(
