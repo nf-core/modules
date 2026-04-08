@@ -42,7 +42,6 @@ process KNOTANNOTSV {
     """
     echo ${args}
 
-    touch ${prefix}.html
-    touch ${prefix}.xlsm
+    touch ${out_file}
     """
 }
