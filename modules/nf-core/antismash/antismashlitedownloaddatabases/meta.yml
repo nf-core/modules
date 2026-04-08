@@ -58,13 +58,27 @@ output:
           antismash installation folder which is being modified during the antiSMASH database downloading step. The modified files are normally downloaded by download-antismash-databases itself, and must be retrieved by the user by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database and installation folder in pipelines.
         pattern: "antismash_dir"
         ontologies: []
+  versions_antismash:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - antismash-lite:
+          type: string
+          description: The name of the tool
+      - antismash --version | sed 's/antiSMASH //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - antismash-lite:
+          type: string
+          description: The name of the tool
+      - antismash --version | sed 's/antiSMASH //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jasmezz"
 maintainers:
