@@ -12,7 +12,8 @@ process MINDAGAP_MINDAGAP {
 
     output:
     tuple val(meta), path("*.{tif,tiff}"), emit: tiff
-    path "versions.yml"                  , emit: versions
+    tuple val("${task.process}"), val('mindagap'), eval("mindagap.py test -v"), emit: versions_mindagap, topic: versions
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,20 +24,10 @@ process MINDAGAP_MINDAGAP {
     mindagap.py \\
         $panorama \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mindagap: \$(mindagap.py test -v)
-    END_VERSIONS
     """
 
     stub:
     """
     touch ${panorama.baseName}_gridfilled.tiff
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mindagap: \$(mindagap.py test -v)
-    END_VERSIONS
     """
 }

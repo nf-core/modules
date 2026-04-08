@@ -1,0 +1,69 @@
+name: "imc2mc"
+description: Staging module transforming Imaging Mass Cytometry .txt files to
+  .tif files with OME-XML metadata. Includes optional hot pixel removal.
+keywords:
+  - imaging
+  - ome-tif
+  - staging
+  - MCMICRO
+tools:
+  - "imc2mc":
+      description: "Formatting Imaging Mass Cytrometry (IMC) output files to be compatible
+        with the MCMICRO pipeline."
+      homepage: "https://github.com/SchapiroLabor/imc2mc"
+      documentation: "https://github.com/SchapiroLabor/imc2mc/README.md"
+      tool_dev_url: "https://github.com/SchapiroLabor/imc2mc"
+      licence:
+        - "GPL-3.0 license"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - txtfile:
+        type: file
+        description: Acquisition TXT file
+        pattern: "*.{txt}"
+        ontologies:
+          - edam: http://edamontology.org/format_1964
+output:
+  tif:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.tif":
+          type: file
+          description: One output .tif file containing acquisition and metadata
+          pattern: "*.{tif}"
+          ontologies:
+            - edam: http://edamontology.org/format_3591
+  versions_imc2mc:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - imc2mc:
+          type: string
+          description: The name of the tool
+      - imc2mc --version | sed 's/v//g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - imc2mc:
+          type: string
+          description: The name of the tool
+      - imc2mc --version | sed 's/v//g':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@MargotCh"
+  - "@kbestak"
+maintainers:
+  - "@MargotCh"

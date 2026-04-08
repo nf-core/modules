@@ -39,7 +39,9 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - uses: nf-core/setup-nextflow@v2
       - name: Run prek
-        uses: j178/prek-action@0bb87d7f00b0c99306c8bcb8b8beba1eb581c037 # v1
+        uses: j178/prek-action@53276d8b0d10f8b6672aa85b4588c6921d0370cc # v2.0.1
+        with:
+          extra_args: ""
 
   ###################
   # nf-core linting #
@@ -68,7 +70,7 @@ jobs:
         with:
           fetch-depth: 2 # To retrieve the preceding commit.
 
-      - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3
+      - uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4
         id: filter
         with:
           filters: |
@@ -134,7 +136,7 @@ jobs:
         with:
           python-version: "3.14"
 
-      - uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
+      - uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         id: cache-pip
         with:
           path: ~/.cache/pip

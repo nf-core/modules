@@ -15,7 +15,7 @@ process PYPGX_RUNNGSPIPELINE {
     tuple val(meta), path("*pypgx_output/results.zip"), emit: results
     tuple val(meta), path("*pypgx_output/cnv-calls.zip"), emit: cnv_calls, optional: true
     tuple val(meta), path("*pypgx_output/consolidated-variants.zip"), emit: consolidated_variants
-    path("versions.yml"), emit: versions
+    tuple val("${task.process}"), val('pypgx'), eval('pypgx -v 2>&1 | grep -oE "[0-9]+\\.[0-9]+\\.[0-9]+" | head -1'), emit: versions_pypgx, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,11 +37,6 @@ process PYPGX_RUNNGSPIPELINE {
         --variants ${vcf} \\
         ${depth_coverage} \\
         ${control_statistics}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pypgx: \$(echo \$(pypgx -v 2>&1) | sed 's/.* //')
-    END_VERSIONS
     """
 
     stub:
@@ -53,10 +48,5 @@ process PYPGX_RUNNGSPIPELINE {
     python -c 'import zipfile; zipfile.ZipFile("${prefix}_pypgx_output/results.zip", "w").close()'
     python -c 'import zipfile; zipfile.ZipFile("${prefix}_pypgx_output/cnv-calls.zip", "w").close()'
     python -c 'import zipfile; zipfile.ZipFile("${prefix}_pypgx_output/consolidated-variants.zip", "w").close()'
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pypgx: \$(echo \$(pypgx -v 2>&1) | sed 's/.* //')
-    END_VERSIONS
     """
 }
