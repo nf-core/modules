@@ -1,4 +1,4 @@
-process LLAMACPP_PYTHON_RUN {
+process LLAMACPPPYTHON_RUN {
     tag "${meta.id}"
     label 'process_medium'
     label 'process_gpu'
@@ -20,7 +20,7 @@ process LLAMACPP_PYTHON_RUN {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    llamacpp-python.py \
+    llama-cpp-python.py \
         --model ${gguf_model} \
         --messages ${prompt_file} \
         --output ${prefix}.txt \

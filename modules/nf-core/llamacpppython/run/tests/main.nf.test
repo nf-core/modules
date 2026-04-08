@@ -1,8 +1,8 @@
 nextflow_process {
 
-    name "Test Process LLAMACPP_PYTHON_RUN"
+    name "Test Process LLAMACPPPYTHON_RUN"
     script "../main.nf"
-    process "LLAMACPP_PYTHON_RUN"
+    process "LLAMACPPPYTHON_RUN"
 
     tag "modules"
     tag "modules_nfcore"
@@ -62,7 +62,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.output.size() == 1 },
                 { assert process.out.output[0][0] == [ id:'test_run' ] },
-                { assert file(process.out.output[0][1]).name == "output.txt" },
+                { assert file(process.out.output[0][1]).name == "test_run.txt" },
                 { assert file(process.out.output[0][1]).size() > 0 },
                 { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
@@ -111,7 +111,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.output.size() == 1 },
                 { assert process.out.output[0][0] == [ id:'test_run' ] },
-                { assert file(process.out.output[0][1]).name == "output.txt" },
+                { assert file(process.out.output[0][1]).name == "test_run.txt" },
                 { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
