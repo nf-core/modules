@@ -29,11 +29,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = STRINGTIE_STRINGTIE.out.transcript_gtf
-                input[1] = [
-                            [ id:'ref', strandedness:'reverse' ], // meta map
-                            [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)]
-                            ]
+                input = [
+                    (STRINGTIE_STRINGTIE.out.transcript_gtf + [ [ id:'ref', strandedness:'reverse' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ])
+                ]
                 """
             }
         }
@@ -41,7 +39,7 @@ nextflow_process {
         then {
             assertAll(
             { assert process.success },
-            { assert snapshot(process.out.gtf).match("fs_gtf") },
+            { assert snapshot(process.out.merged_gtf).match("fs_gtf") },
             { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("fs_versions") }
             )
         }
@@ -52,11 +50,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = STRINGTIE_STRINGTIE.out.transcript_gtf
-                input[1] = [
-                            [ id:'ref', strandedness:'reverse' ], // meta map
-                            [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)]
-                            ]
+                input = [
+                    (STRINGTIE_STRINGTIE.out.transcript_gtf + [ [ id:'ref', strandedness:'reverse' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ])
+                ]
                 """
             }
         }
@@ -64,7 +60,7 @@ nextflow_process {
         then {
             assertAll(
             { assert process.success },
-            { assert snapshot(process.out.gtf).match("rs_gtf") },
+            { assert snapshot(process.out.merged_gtf).match("rs_gtf") },
             { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("rs_versions") }
             )
         }

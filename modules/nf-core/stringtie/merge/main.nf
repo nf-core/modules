@@ -9,8 +9,7 @@ process STRINGTIE_MERGE {
         : 'biocontainers/stringtie:2.2.1--hecb563c_2'}"
 
     input:
-    tuple val(meta), path(gtf)
-    tuple val(meta2), path(annotation_gtf)
+    tuple val(meta), path(gtf), val(meta2), path(annotation_gtf)
 
     output:
     tuple val(meta), path("${prefix}.gtf"), emit: merged_gtf
