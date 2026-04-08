@@ -9,6 +9,7 @@ process TELOMEREHUNTER {
 
     input:
     tuple val(meta), path(tumor_bam), path(tumor_bai), path(control_bam), path(control_bai)
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("${prefix}/${prefix}_summary.tsv")        , emit: summary
@@ -23,11 +24,32 @@ process TELOMEREHUNTER {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def control = control_bam ? "-ibc ${control_bam}" : ""
     """
+    # telomerehunter doesn't support CRAM (pysam opened in BAM-only mode).
+    # Convert to BAM if needed, following the approach used in nf-core/telseq.
+    if ${tumor_bam.name.endsWith(".cram")}
+    then
+        samtools view -T ${fasta} -b -o tumor.bam ${tumor_bam}
+        samtools index tumor.bam
+        tumor_arg="-ibt tumor.bam"
+    else
+        tumor_arg="-ibt ${tumor_bam}"
+    fi
+
+    control_arg=""
+    if ${control_bam ? control_bam.name.endsWith(".cram") : false}
+    then
+        samtools view -T ${fasta} -b -o control.bam ${control_bam}
+        samtools index control.bam
+        control_arg="-ibc control.bam"
+    elif ${control_bam ? true : false}
+    then
+        control_arg="-ibc ${control_bam}"
+    fi
+
     telomerehunter \\
-        -ibt ${tumor_bam} \\
-        ${control} \\
+        \${tumor_arg} \\
+        \${control_arg} \\
         -o . \\
         -p ${prefix} \\
         ${args}
