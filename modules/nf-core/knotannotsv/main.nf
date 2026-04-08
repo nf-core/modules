@@ -32,7 +32,7 @@ process KNOTANNOTSV {
     ${knot_script} \\
         ${args} \\
         --configFile ${config_file} \\
-        --annotSVfile ${annotsv_tsv}
+        --annotSVfile ${prefix}.tsv
     """
 
     stub:
