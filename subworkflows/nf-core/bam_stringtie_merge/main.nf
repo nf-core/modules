@@ -19,7 +19,8 @@ workflow BAM_STRINGTIE_MERGE {
     STRINGTIE_STRINGTIE.out.transcript_gtf.set { stringtie_gtfs }
 
     STRINGTIE_MERGE(
-        stringtie_gtfs.combine(ch_chrgtf)
+        stringtie_gtfs,
+        ch_chrgtf
     )
     ch_stringtie_gtfs = STRINGTIE_MERGE.out.merged_gtf
 
