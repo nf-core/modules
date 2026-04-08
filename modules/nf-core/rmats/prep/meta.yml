@@ -29,12 +29,15 @@ input:
         pattern: "*.{bam}"
         ontologies:
           - edam: http://edamontology.org/format_2572
-  - reference_gtf:
-      type: file
-      description: Annotation GTF file
-      pattern: "*.{gtf}"
-      ontologies:
-        - edam: http://edamontology.org/format_2306
+  - - meta2:
+        type: map
+        description: Groovy Map containing genome information
+    - reference_gtf:
+        type: file
+        description: Annotation GTF file
+        pattern: "*.{gtf}"
+        ontologies:
+          - edam: http://edamontology.org/format_2306
   - rmats_read_len:
       type: integer
       description: Read length in bases
