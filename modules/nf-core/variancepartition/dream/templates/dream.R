@@ -98,7 +98,8 @@ opt <- list(
     reml                       = FALSE,
     round_digits               = NULL,
     formula                    = "$formula",              # User-specified formula (e.g. "~ + (1 | sample_number)")
-    apply_voom                 = FALSE                    # Whether to apply `voomWithDreamWeights`
+    apply_voom                 = FALSE,                   # Whether to apply `voomWithDreamWeights`
+    seed                       = NULL
 )
 
 # Load external arguments to opt list
@@ -126,6 +127,12 @@ opt\$confint      <- as.logical(opt\$confint)
 
 if (!is.null(opt\$round_digits)){
   opt\$round_digits <- as.numeric(opt\$round_digits)
+}
+
+if (!is.null(opt\$seed)) {
+  opt\$seed <- as.numeric(opt\$seed)
+  RNGkind("L'Ecuyer-CMRG")
+  set.seed(opt\$seed)
 }
 
 # Load metadata
@@ -239,12 +246,14 @@ print(form)
 # Parallel processing setup
 threads <- as.numeric(opt\$threads)
 
+bp <- MulticoreParam(workers =  threads, RNGseed = opt\$seed, progressbar = FALSE)
+
 # Optionally apply voom
 if (as.logical(opt\$apply_voom)) {
     # Standard usage of limma/voom
     dge <- DGEList(countMatrix)
     dge <- calcNormFactors(dge)
-    vobjDream <- voomWithDreamWeights(dge, form, metadata, BPPARAM = MulticoreParam(threads))
+    vobjDream <- voomWithDreamWeights(dge, form, metadata, BPPARAM = bp)
 
     # Write normalized counts matrix to a TSV file
      normalized_counts <- vobjDream\$E
@@ -263,7 +272,7 @@ if (as.logical(opt\$apply_voom)) {
 }
 
 # Fit the DREAM model with ddf and reml options
-fitmm <- dream(vobjDream, form, metadata, ddf = opt\$ddf, reml = opt\$reml)
+fitmm <- dream(vobjDream, form, metadata, ddf = opt\$ddf, reml = opt\$reml, BPPARAM = bp)
 
 # Parse stdev_coef_lim and winsor_tail_p into numeric vectors
 stdev_coef_lim_vals <- as.numeric(unlist(strsplit(opt\$stdev_coef_lim, ",")))

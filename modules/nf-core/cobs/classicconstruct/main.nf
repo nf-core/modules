@@ -12,8 +12,7 @@ process COBS_CLASSICCONSTRUCT {
 
     output:
     tuple val(meta), path("*.index.cobs_classic")   , emit: index
-    path "versions.yml"                             , emit: versions
-
+    tuple val("${task.process}"), val('cobs'), eval("cobs version 2>&1 | grep -Eo '[0-9]+\\.[0-9]+\\.[0-9]+'"), emit: versions_cobs, topic: versions
     when:
     task.ext.when == null || task.ext.when
 
@@ -29,22 +28,11 @@ process COBS_CLASSICCONSTRUCT {
         --threads $task.cpus \\
         $input \\
         ${prefix}.index.cobs_classic
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cobs: \$(cobs version 2>&1 | awk '{print \$3}')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.index.cobs_classic
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cobs: \$(cobs version 2>&1 | awk '{print \$3}')
-    END_VERSIONS
     """
 }

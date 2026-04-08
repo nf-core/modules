@@ -31,10 +31,10 @@ process BLAST_BLASTDBCMD {
     }
     def extension  = args.contains("-outfmt") && !args.contains("-outfmt %f") ? "txt" : "fasta"
     """
-    DB=`find -L ./ -name "*.nhr" | sed 's/\\.nhr\$//'`
+    DB=`find -L ./ -name "*.nto" | sed 's/\\.nto\$//'`
     if test -z "\$DB"
     then
-        DB=`find -L ./ -name "*.phr" | sed 's/\\.phr\$//'`
+        DB=`find -L ./ -name "*.pto" | sed 's/\\.pto\$//'`
     fi
 
     blastdbcmd \\

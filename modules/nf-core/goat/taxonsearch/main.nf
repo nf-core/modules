@@ -12,39 +12,28 @@ process GOAT_TAXONSEARCH {
 
     output:
     tuple val(meta), path("*.tsv"), emit: taxonsearch
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('goat'), eval("goat-cli --version | cut -d' ' -f2"), emit: versions_goat, topic: versions
 
     when:
-    task.ext.when == null || task.ext.when
-
+        task.ext.when == null || task.ext.when
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    input = taxa_file ? "-f ${taxa_file}" : "-t \"${taxon}\""
-    if (!taxon && !taxa_file) error "No input. Valid input: single taxon identifier or a .txt file with identifiers"
-    if (taxon && taxa_file ) error "Only one input is required: a single taxon identifier or a .txt file with identifiers"
-    """
-    goat-cli taxon search \\
-        $args \\
-        $input > ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        goat: \$(goat-cli --version | cut -d' ' -f2)
-    END_VERSIONS
-    """
+        def args = task.ext.args ?: ''
+        def prefix = task.ext.prefix ?: "${meta.id}"
+        input = taxa_file ? "-f ${taxa_file}" : "-t \"${taxon}\""
+        if (!taxon && !taxa_file) error "No input. Valid input: single taxon identifier or a .txt file with identifiers"
+        if (taxon && taxa_file ) error "Only one input is required: a single taxon identifier or a .txt file with identifiers"
+        """
+        goat-cli taxon search \\
+            $args \\
+            $input > ${prefix}.tsv
+        """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    input = taxa_file ? "-f ${taxa_file}" : "-t \"${taxon}\""
-    if (!taxon && !taxa_file) error "No input. Valid input: single taxon identifier or a .txt file with identifiers"
-    if (taxon && taxa_file ) error "Only one input is required: a single taxon identifier or a .txt file with identifiers"
-    """
-    touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        goat: \$(goat-cli --version | cut -d' ' -f2)
-    END_VERSIONS
-    """
+        def prefix = task.ext.prefix ?: "${meta.id}"
+        input = taxa_file ? "-f ${taxa_file}" : "-t \"${taxon}\""
+        if (!taxon && !taxa_file) error "No input. Valid input: single taxon identifier or a .txt file with identifiers"
+        if (taxon && taxa_file ) error "Only one input is required: a single taxon identifier or a .txt file with identifiers"
+        """
+        touch ${prefix}.tsv
+        """
 }
