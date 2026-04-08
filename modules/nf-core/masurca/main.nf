@@ -135,7 +135,7 @@ process MASURCA {
     mkdir -p CA
     touch assemble.sh
     touch ${prefix}_masurca_config.txt
-    echo "" | gzip > ${prefix}.scaffolds.fa.gz
+    echo | gzip > ${prefix}.scaffolds.fa.gz
     touch ${prefix}-masurca.log
     """
 }
