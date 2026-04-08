@@ -20,7 +20,6 @@ process HMTNOTE_ANNOTATE {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     hmtnote \\
         annotate \\
