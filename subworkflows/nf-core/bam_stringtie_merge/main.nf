@@ -25,5 +25,4 @@ workflow BAM_STRINGTIE_MERGE {
 
     emit:
     stringtie_gtf = ch_stringtie_gtfs // channel: [ meta, gtf ]
-    versions      = ch_versions // channel: [ path(versions.yml) ]
 }
