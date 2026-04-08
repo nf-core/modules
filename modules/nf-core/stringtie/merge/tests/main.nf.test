@@ -39,8 +39,10 @@ nextflow_process {
         then {
             assertAll(
             { assert process.success },
-            { assert snapshot(process.out.merged_gtf).match("fs_gtf") },
-            { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("fs_versions") }
+            { assert snapshot(
+                process.out.merged_gtf,
+                process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
