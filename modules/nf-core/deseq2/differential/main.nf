@@ -24,7 +24,7 @@ process DESEQ2_DIFFERENTIAL {
     tuple val(meta), path("*.vst.tsv")                         , optional: true, emit: vst_counts
     tuple val(meta), path("*.deseq2.model.txt")                , emit: model
     tuple val(meta), path("*.R_sessionInfo.log")               , emit: session_info
-    path "versions.yml"                                        , emit: versions
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
