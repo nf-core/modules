@@ -29,7 +29,7 @@ process EKLIPSE {
     eKLIPse.py \\
         -in infile.txt \\
         -ref ${ref_gb_path} \\
-        ${args} 
+        ${args}
     mv eKLIPse_*/eKLIPse_deletions.csv eKLIPse_${prefix}_deletions.csv
     mv eKLIPse_*/eKLIPse_genes.csv eKLIPse_${prefix}_genes.csv
     mv eKLIPse_*/eKLIPse_${prefix}.png eKLIPse_${prefix}.png
