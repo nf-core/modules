@@ -23,7 +23,7 @@ process LLAMACPP_PYTHON_RUN {
     llamacpp-python.py \
         --model ${gguf_model} \
         --messages ${prompt_file} \
-        --output output.txt \
+        --output ${prefix}.txt \
         ${args}
     """
 
