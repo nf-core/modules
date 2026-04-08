@@ -8,7 +8,7 @@ process KNOTANNOTSV {
         : 'biocontainers/knotannotsv:1.1.5--hdfd78af_0'}"
 
     input:
-    tuple val(meta), path(annotsv_tsv, stageAs: "${prefix}.tsv"), val(knot_out_xl)
+    tuple val(meta), path(annotsv_tsv), val(knot_out_xl)
 
     output:
     tuple val(meta), path("*.html"), emit: html, optional: true
@@ -21,27 +21,27 @@ process KNOTANNOTSV {
 
     script:
     def args = task.ext.args ?: ''
-    // Bellow for knotAnnotSV, this a true prefix
-    prefix = task.ext.prefix ?: "${meta.id}"
-    def knot_prefix = task.ext.prefix ? "--outPrefix ${task.ext.prefix}" : ""
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def knot_script = knot_out_xl ? 'knotAnnotSV2XL.pl' : 'knotAnnotSV.pl'
     def config_file = "\${CONDA_PREFIX:-/usr/local}/share/knotAnnotSV/config_AnnotSV.yaml"
     """
+    # This tool always name outFile based on inFile (eg: sample.tsv -> sample.html)
+    # So rename inFile on-the-fly to re-enable control of outName by 'ext.prefix'
+    mv ${annotsv_tsv} ${prefix}.tsv
+
     ${knot_script} \\
         ${args} \\
         --configFile ${config_file} \\
-        ${knot_prefix} \\
         --annotSVfile ${annotsv_tsv}
     """
 
     stub:
     def args = task.ext.args ?: ''
-    // Bellow for knotAnnotSV, this a true prefix
-    def knot_prefix = task.ext.prefix ? "${task.ext.prefix}_" : ""
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo ${args}
 
-    touch ${knot_prefix}${meta.id}.html
-    touch ${knot_prefix}${meta.id}.xlsm
+    touch ${prefix}.html
+    touch ${prefix}.xlsm
     """
 }
