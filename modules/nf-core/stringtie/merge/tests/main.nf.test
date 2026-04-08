@@ -40,7 +40,8 @@ nextflow_process {
             { assert process.success },
             { assert snapshot(
                 process.out.merged_gtf,
-                process.out.findAll { key, val -> key.startsWith('versions') }
+                process.out.findAll { key, val -> key.startsWith('versions') },
+                sanitizeOutput(process.out)
                 ).match() }
             )
         }
@@ -60,8 +61,11 @@ nextflow_process {
         then {
             assertAll(
             { assert process.success },
-            { assert snapshot(process.out.merged_gtf).match("rs_gtf") },
-            { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("rs_versions") }
+            { assert snapshot(
+                process.out.merged_gtf,
+                process.out.findAll { key, val -> key.startsWith('versions') },
+                sanitizeOutput(process.out)
+                ).match() },
             )
         }
     }
