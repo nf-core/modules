@@ -11,7 +11,7 @@ process BAMCLIPPER {
     input:
     tuple val(meta), path(bam), path(bai), path(bedpe)
 
-output:
+    output:
     tuple val(meta), path("*.primerclipped.bam")    , emit: bam
     tuple val(meta), path("*.primerclipped.bam.bai"), emit: bai
     tuple val("${task.process}"), val('bamclipper'), val("1.0.0"), emit: versions_bamclipper, topic: versions
