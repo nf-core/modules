@@ -24,32 +24,19 @@ process TELOMEREHUNTER {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def tumor_is_cram = tumor_bam.name.endsWith(".cram")
+    def control_is_cram = control_bam ? control_bam.name.endsWith(".cram") : false
+    def tumor = tumor_is_cram ? "tumor.bam" : "${tumor_bam}"
+    def control = control_bam ? (control_is_cram ? "control.bam" : "${control_bam}") : ""
     """
     # telomerehunter doesn't support CRAM (pysam opened in BAM-only mode).
     # Convert to BAM if needed, following the approach used in nf-core/telseq.
-    if ${tumor_bam.name.endsWith(".cram")}
-    then
-        samtools view -T ${fasta} -b -o tumor.bam ${tumor_bam}
-        samtools index tumor.bam
-        tumor_arg="-ibt tumor.bam"
-    else
-        tumor_arg="-ibt ${tumor_bam}"
-    fi
-
-    control_arg=""
-    if ${control_bam ? control_bam.name.endsWith(".cram") : false}
-    then
-        samtools view -T ${fasta} -b -o control.bam ${control_bam}
-        samtools index control.bam
-        control_arg="-ibc control.bam"
-    elif ${control_bam ? true : false}
-    then
-        control_arg="-ibc ${control_bam}"
-    fi
+    if ${tumor_is_cram}; then samtools view -T ${fasta} -b -o tumor.bam ${tumor_bam} && samtools index tumor.bam; fi
+    if ${control_is_cram}; then samtools view -T ${fasta} -b -o control.bam ${control_bam} && samtools index control.bam; fi
 
     telomerehunter \\
-        \${tumor_arg} \\
-        \${control_arg} \\
+        -ibt ${tumor} \\
+        ${control ? "-ibc ${control}" : ""} \\
         -o . \\
         -p ${prefix} \\
         ${args}
