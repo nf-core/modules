@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "gridss_annotate"
-description: Annotates single breakends in a GRIDSS VCF with RepeatMasker annotations using gridss_annotate_vcf_repeatmasker.
+description: Annotates single breakends in a GRIDSS VCF with RepeatMasker
+  annotations using gridss_annotate_vcf_repeatmasker.
 keywords:
   - gridss
   - structural variants
@@ -27,7 +27,7 @@ input:
         description: Input VCF file generated with GRIDSS
         pattern: "*.{vcf,vcf.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_3016" # VCF
+          - edam: "http://edamontology.org/format_3016"
 output:
   vcf:
     - - meta:
@@ -35,13 +35,13 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test']
-      - "*.annotated.vcf.gz":
+      - "*.vcf.gz":
           type: file
-          description: RepeatMasker-annotated VCF file
-          pattern: "*.annotated.vcf.gz"
+          description: Annotated VCF file compressed with bgzip
+          pattern: "*.vcf.gz"
           ontologies:
-            - edam: "http://edamontology.org/format_3016" # VCF
-            - edam: "http://edamontology.org/format_3989" # GZIP format
+            - edam: "http://edamontology.org/format_3016"
+            - edam: http://edamontology.org/format_3989
   versions_gridss:
     - - ${task.process}:
           type: string
@@ -49,9 +49,9 @@ output:
       - gridss:
           type: string
           description: The tool name
-      - "echo \\$(GeneratePonBedpe --version 2>&1) | sed 's/-gridss//'":
-          type: string
-          description: The command used to generate the version of the tool
+      - GeneratePonBedpe --version | sed 's/-gridss//':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -60,9 +60,9 @@ topics:
       - gridss:
           type: string
           description: The tool name
-      - "echo \\$(GeneratePonBedpe --version 2>&1) | sed 's/-gridss//'":
-          type: string
-          description: The command used to generate the version of the tool
+      - GeneratePonBedpe --version | sed 's/-gridss//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@emmcauley"
 maintainers:
