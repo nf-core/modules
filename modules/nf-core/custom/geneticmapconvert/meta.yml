@@ -1,0 +1,109 @@
+name: "custom_geneticmapconvert"
+description: |
+  This R script allows to automatically detect the different genetic map format and
+  convert the input file in all the other format type.
+keywords:
+  - map
+  - convertion
+  - R
+tools:
+  - custom:
+      description: Custom script to convert any genetic map format
+      homepage: https://github.com/nf-core/tools
+      documentation: https://github.com/nf-core/tools
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - map_file:
+        type: file
+        description: |
+          Genomic map file to process.
+          This file should contain the data of only one chromosome.
+          It should be a flat file (comma, semicolon, tab or space delimited) with
+          at least the physical position and its corresponding recombination
+          distance in centiMorgans.
+          The columns names will be normalised (no space, extra character transformed to "_")
+          and then automatically recognise as:
+            - chr: _chr, chrom, chromosome
+            - pos: position, bp
+            - id: snp, marker, rsid
+            - cm: genetic_map_cm
+            - rate: combined_rate, combined_rate_cm_mb, cm_mb
+          If no header present, then it will try for 3 columns table with chr, pos, cm format
+          and for 4 columns table with chr, id, cm, pos format.
+        ontologies: []
+output:
+  glimpse_map:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.glimpse.map:
+          type: file
+          description: |
+            File containing the map in Glimpse format:
+            tab-delimited file with header and columns:
+            pos, chr, cM
+          pattern: "*.glimpse.map"
+  plink_map:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.plink.map:
+          type: file
+          description: |
+            File containing the map in PLINK format:
+            space-delimited file without header and columns:
+            chr, id, cM, pos
+          pattern: "*.plink.map"
+  stitch_map:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.stitch.map:
+          type: file
+          description: |
+            File containing the map in STITCH format:
+            space-delimited file with header and columns:
+            pos, rate, cM
+          pattern: "*.stitch.map"
+  minimac_map:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.minimac.map:
+          type: file
+          description: |
+            File containing the map in Minimac format:
+            tab-delimited file with header and columns:
+            chr, pos, cM
+          pattern: "*.minimac.map"
+  versions_geneticmapconvert:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
+authors:
+  - "@LouisLeNezet"
+maintainers:
+  - "@LouisLeNezet"

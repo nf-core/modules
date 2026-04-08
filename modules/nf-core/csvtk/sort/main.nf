@@ -14,7 +14,7 @@ process CSVTK_SORT {
 
     output:
     tuple val(meta), path("${prefix}.${out_extension}"), emit: sorted
-    path "versions.yml"                                , emit: versions
+    tuple val("${task.process}"), val('csvtk'), eval('csvtk version | sed -e "s/csvtk v//g"'), emit: versions_csvtk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,11 +34,6 @@ process CSVTK_SORT {
         --out-delimiter "${out_delimiter}" \\
         --out-file ${prefix}.${out_extension} \\
         $csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        csvtk: \$(echo \$( csvtk version | sed -e "s/csvtk v//g" ))
-    END_VERSIONS
     """
 
     stub:
@@ -46,10 +41,5 @@ process CSVTK_SORT {
     out_extension = out_format == "tsv" ? 'tsv' : 'csv'
     """
     touch ${prefix}.${out_extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        csvtk: \$(echo \$( csvtk version | sed -e "s/csvtk v//g" ))
-    END_VERSIONS
     """
 }

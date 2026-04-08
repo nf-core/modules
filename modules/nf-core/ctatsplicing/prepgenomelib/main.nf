@@ -11,7 +11,8 @@ process CTATSPLICING_PREPGENOMELIB {
 
     output:
     tuple val(meta), path(genome_lib), emit: reference
-    path "versions.yml"              , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('ctatsplicing'), val("0.0.3"), emit: versions_ctatsplicing, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,20 +22,13 @@ process CTATSPLICING_PREPGENOMELIB {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "CTATSPLICING_PREPGENOMELIB module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def VERSION = '0.0.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     /usr/local/src/CTAT-SPLICING/prep_genome_lib/ctat-splicing-lib-integration.py \\
         --cancer_introns_tsv $cancer_intron_tsv \\
         --genome_lib_dir $genome_lib
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ctatsplicing: $VERSION
-    END_VERSIONS
     """
 
     stub:
-    def VERSION = '0.0.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     mkdir -p $genome_lib/
     mkdir -p $genome_lib/ref_genome.fa.star.idx
@@ -114,12 +108,7 @@ process CTATSPLICING_PREPGENOMELIB {
     touch $genome_lib/ref_genome.fa.fai
     touch $genome_lib/refGene.bed
     echo | gzip > $genome_lib/refGene.sort.bed.gz
-    echo | gzip > $genome_lib/refGene.sort.bed.gz.tbi
+    touch $genome_lib/refGene.sort.bed.gz.tbi
     touch $genome_lib/cancer_splicing_lib/cancer_splicing.idx
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ctatsplicing: $VERSION
-    END_VERSIONS
     """
 }
