@@ -39,8 +39,6 @@ nextflow_process {
             assertAll(
             { assert process.success },
             { assert snapshot(
-                process.out.merged_gtf,
-                process.out.findAll { key, val -> key.startsWith('versions') },
                 sanitizeOutput(process.out)
                 ).match() }
             )
