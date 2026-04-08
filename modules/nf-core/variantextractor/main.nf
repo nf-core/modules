@@ -12,7 +12,7 @@ process VARIANTEXTRACTOR {
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
-    path "versions.yml"           , emit: versions
+    path "versions.yml"           , emit: versions_variantextractor, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,6 +21,12 @@ process VARIANTEXTRACTOR {
     prefix       = task.ext.prefix ?: "${meta.id}"
     pass_only    = task.ext.args?.contains('--pass-only')       ? 'True'  : 'False'
     ensure_pairs = task.ext.args?.contains('--no-ensure-pairs') ? 'False' : 'True'
+
+    """
+    echo ${pass_only}
+    echo ${ensure_pairs}
+    """
+
     template 'variantextractor.py'
 
     stub:

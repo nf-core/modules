@@ -47,11 +47,21 @@ output:
             MNPs decomposed, SV breakends deduplicated).
           pattern: "*.vcf"
           ontologies: []
-  versions:
+  versions_variantextractor:
     - versions.yml:
         type: file
         description: File containing software versions.
         pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750"
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: YAML file containing versions of tools used in the module
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750"
 authors:
   - "@sbreuch"
 maintainers:
