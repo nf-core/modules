@@ -1,0 +1,421 @@
+nextflow_process {
+
+    name "Test Process CUSTOM_GENETICMAPCONVERT"
+    script "../main.nf"
+    process "CUSTOM_GENETICMAPCONVERT"
+
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "custom"
+    tag "custom/geneticmapconvert"
+    tag "tabix/bgzip"
+
+    test("Convert map with pos\\tchr\\tcm - with header - meta.chr (glimpse format)") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test", chr:"chr21"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.glimpse.map', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions_geneticmapconvert[0]).yaml,
+                    path(process.out.glimpse_map[0][1]).readLines()[0..2],
+                    path(process.out.plink_map[0][1]).readLines()[0..2],
+                    path(process.out.stitch_map[0][1]).readLines()[0..2],
+                    path(process.out.minimac_map[0][1]).readLines()[0..2]
+                ).match() }
+            )
+        }
+    }
+
+    test("Convert map with pos\\tchr\\tcM - with header - meta.chr (glimpse compressed format)") {
+        setup {
+            run("TABIX_BGZIP"){
+                script "../../../tabix/bgzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: "test", chr:"chr21"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.glimpse.map', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = TABIX_BGZIP.out.output
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions_geneticmapconvert[0]).yaml,
+                    path(process.out.glimpse_map[0][1]).readLines()[0..2],
+                    path(process.out.plink_map[0][1]).readLines()[0..2],
+                    path(process.out.stitch_map[0][1]).readLines()[0..2],
+                    path(process.out.minimac_map[0][1]).readLines()[0..2]
+                ).match() }
+            )
+        }
+    }
+
+    test("Convert map with chr\\tpos\\tcm - with header - meta.chr (minimac format)") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test", chr:"chr21"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.minimac.map', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions_geneticmapconvert[0]).yaml,
+                    path(process.out.glimpse_map[0][1]).readLines()[0..2],
+                    path(process.out.plink_map[0][1]).readLines()[0..2],
+                    path(process.out.stitch_map[0][1]).readLines()[0..2],
+                    path(process.out.minimac_map[0][1]).readLines()[0..2]
+                ).match() }
+            )
+        }
+    }
+
+    test("Convert map with pos rate cm - with header - meta.chr (stitch format)") {
+        when {
+            params {
+                geneticmapconvert_args = "--tolerance 10e-4"
+            }
+            process {
+                """
+                input[0] = [
+                    [id: "test", chr:"chr21"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.stitch.map', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions_geneticmapconvert[0]).yaml,
+                    path(process.out.glimpse_map[0][1]).readLines()[0..2],
+                    path(process.out.plink_map[0][1]).readLines()[0..2],
+                    path(process.out.stitch_map[0][1]).readLines()[0..2],
+                    path(process.out.minimac_map[0][1]).readLines()[0..2]
+                ).match() }
+            )
+        }
+    }
+
+    test("Convert map with pos rate cm - with header - no meta.chr (stitch format)") {
+        when {
+            params {
+                geneticmapconvert_args = "--tolerance 10e-4"
+            }
+            process {
+                """
+                input[0] = [
+                    [id: "test"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.stitch.map', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("Chromosome column missing and chr not present in meta") }
+            )
+        }
+    }
+
+    test("Convert map with pos rate cm - with header - meta.chr (stitch format) -- error rate") {
+        when {
+            params {
+                geneticmapconvert_args = "--tolerance 10e-6"
+            }
+            process {
+                """
+                input[0] = [
+                    [id: "test", chr:"chr21"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.stitch.map', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("cm[n] must equal cm[n-1] + ( (pos[n] - pos[n-1]) / 1e6 * rate[n-1])") }
+            )
+        }
+    }
+
+    test("Convert map with pos rate cm - with header - meta.chr (stitch format) -- error tolerance not numeric") {
+        when {
+            params {
+                geneticmapconvert_args = "--tolerance ABC"
+            }
+            process {
+                """
+                input[0] = [
+                    [id: "test", chr:"chr21"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.stitch.map', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("tolerance must be numeric") }
+            )
+        }
+    }
+
+    test("Convert map with chr id cm pos - no header - meta.chr (plink format)") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test", chr:"chr21"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.plink.map', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions_geneticmapconvert[0]).yaml,
+                    path(process.out.glimpse_map[0][1]).readLines()[0..2],
+                    path(process.out.plink_map[0][1]).readLines()[0..2],
+                    path(process.out.stitch_map[0][1]).readLines()[0..2],
+                    path(process.out.minimac_map[0][1]).readLines()[0..2]
+                ).match() }
+            )
+        }
+    }
+
+    test("Test error - chr not corresponding") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test", chr:"chr22"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.plink.map', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("Mismatch between chr given and the chr present in file") }
+            )
+        }
+    }
+
+    test("Test error - badly recognize") {
+        when {
+            process {
+                """
+                def mapFile = file("${launchDir}/genetic_map")
+                mapFile.text = [
+                    "12968320 0.628841607565037 0",
+                    "12970435 0.611300668759369 0.00133000000000005"
+                ].join('''\n''')
+                genetic_map = channel.fromPath(mapFile)
+                input[0] = channel.of([
+                    [id: "test", chr:"chr22"]
+                ]).combine(genetic_map)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("Ambiguous no-header input, inferring to be chr, pos, cm") },
+                { assert process.errorReport.contains("More than one chromosome present in file") }
+            )
+        }
+    }
+
+    test("Test error - unsorted file, duplicate position") {
+        when {
+            process {
+                """
+                def mapFile = file("${launchDir}/genetic_map")
+                mapFile.text = [
+                    "pos rate cm",
+                    "12970435 0.611300668759369 0.00133000000000005",
+                    "12968320 0.628841607565037 0",
+                    "12968320 0.628841607565037 0"
+                ].join('''\n''')
+                genetic_map = channel.fromPath(mapFile)
+                input[0] = channel.of([
+                    [id: "test", chr:"chr22"]
+                ]).combine(genetic_map)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("pos column shouldn't have any duplicate row") }
+            )
+        }
+    }
+
+    test("Test error - multiple chromosomes") {
+        when {
+            process {
+                """
+                def mapFile = file("${launchDir}/genetic_map")
+                mapFile.text = [
+                    "pos	chr	cM",
+                    "12968320	chr21	0",
+                    "12970435	chr21	0.00133000000000005",
+                    "12977762	chr21	0.00580899999999995",
+                    "12983047	chr21	0.00905599999999995",
+                    "12985513	chr21	0.010579",
+                    "12987409	chr22	0.0118510000000001",
+                    "12988569	chr22	0.0126810000000001",
+                    "12988657	chr22	0.012744",
+                    "12990722	chr22	0.014228",
+                    "12996886	chr22	0.018667"
+                ].join('''\n''')
+                genetic_map = channel.fromPath(mapFile)
+                input[0] = channel.of([
+                    [id: "test"]
+                ]).combine(genetic_map)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("More than one chromosome present in file") }
+            )
+        }
+    }
+
+    test("Test with comma separator and keep id") {
+        when {
+            process {
+                """
+                def mapFile = file("${launchDir}/genetic_map")
+                mapFile.text = [
+                    "pos,chr,cM,SNP",
+                    "12968320,chr21,0,id1",
+                    "12970435,chr21,0.00133000000000005,id2",
+                    "12977762,chr21,0.00580899999999995,id3",
+                    "12983047,chr21,0.00905599999999995,id4"
+                ].join('''\n''')
+                genetic_map = channel.fromPath(mapFile)
+                input[0] = channel.of([
+                    [id: "test"]
+                ]).combine(genetic_map)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions_geneticmapconvert[0]).yaml,
+                    path(process.out.glimpse_map[0][1]).readLines()[0..2],
+                    path(process.out.plink_map[0][1]).readLines()[0..2],
+                    path(process.out.stitch_map[0][1]).readLines()[0..2],
+                    path(process.out.minimac_map[0][1]).readLines()[0..2]
+                ).match() }
+            )
+        }
+    }
+
+    test("Test start with blank line") {
+        when {
+            process {
+                """
+                def mapFile = file("${launchDir}/genetic_map")
+                mapFile.text = [
+                    " ; ; ",
+                    "21;12968320;0",
+                    "21;12970435;0.00133000000000005"
+                ].join('''\n''')
+                genetic_map = channel.fromPath(mapFile)
+                input[0] = channel.of([
+                    [id: "test", chr: "21"]
+                ]).combine(genetic_map)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("More than one chromosome present in file") }
+            )
+        }
+    }
+
+    test("Test stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test", chr:"chr21"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.plink.map', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert snapshot(
+                sanitizeOutput(process.out),
+                path(process.out.versions_geneticmapconvert[0]).yaml
+            ).match()
+        }
+    }
+
+}

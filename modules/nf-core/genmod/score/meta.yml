@@ -27,11 +27,11 @@ input:
         type: file
         description: PED file with family information
         ontologies: []
-  - score_config:
-      type: file
-      description: rank model config file
-      pattern: "*.{ini}"
-      ontologies: []
+    - score_config:
+        type: file
+        description: rank model config file
+        pattern: "*.{ini}"
+        ontologies: []
 output:
   vcf:
     - - meta:

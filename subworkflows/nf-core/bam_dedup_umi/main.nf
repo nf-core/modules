@@ -17,7 +17,6 @@ workflow BAM_DEDUP_UMI {
     ch_fasta_fai // channel: [ val(meta), path(fasta), path(fai) ]
     umi_dedup_tool // string: 'umicollapse' or 'umitools'
     umitools_dedup_stats // boolean: whether to generate UMI-tools dedup stats
-    bam_csi_index // boolean: whether to generate CSI index
     ch_transcriptome_bam // channel: [ val(meta), path(bam) ]
     ch_transcript_fasta_fai // channel: [ val(meta), path(fasta), path(fai) ]
     umitools_dedup_primary_only // boolean: whether to filter to primary alignments before dedup
@@ -120,7 +119,6 @@ workflow BAM_DEDUP_UMI {
         .mix(UMI_DEDUP_GENOME.out.flagstat)
         .mix(UMI_DEDUP_GENOME.out.idxstats)
         .transpose()
-        .map { item -> item[1] }
 
     emit:
     bam                            = UMI_DEDUP_GENOME.out.bam // channel: [ val(meta), path(bam) ]
