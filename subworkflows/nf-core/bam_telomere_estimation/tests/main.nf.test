@@ -1,0 +1,269 @@
+nextflow_workflow {
+
+    name "Test Subworkflow BAM_TELOMERE_ESTIMATION"
+    script "../main.nf"
+    workflow "BAM_TELOMERE_ESTIMATION"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/bam_telomere_estimation"
+    tag "telseq"
+    tag "telogator2"
+    tag "telomerehunter"
+    tag "custom/summarisetelomereestimation"
+
+
+
+    test("short-read - telseq routing") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test_sr' ],
+                    'short',
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    []
+                ])
+                input[1] = Channel.empty()
+                input[2] = Channel.value([
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[3] =false
+                input[4] =null
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.length_tsv },
+                { assert workflow.out.summary },
+                { assert workflow.out.telogator2_plots.size() == 0 },
+                { assert workflow.out.telogator2_stats.size() == 0 },
+                { assert snapshot(
+                    workflow.out.length_tsv.collect { meta, tsv -> file(tsv).name },
+                    workflow.out.summary.collect { meta, tsv -> file(tsv).name }
+                ).match() }
+            )
+        }
+    }
+
+    test("short-read - telseq with telomerehunter") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test_sr_th' ],
+                    'short',
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    []
+                ])
+                input[1] = Channel.empty()
+                input[2] = Channel.value([
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[3] =true
+                input[4] =null
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.length_tsv },
+                { assert workflow.out.content_tsv },
+                { assert workflow.out.summary },
+                { assert workflow.out.telomerehunter_tumor },
+                { assert snapshot(
+                    workflow.out.length_tsv.collect { meta, tsv -> file(tsv).name },
+                    workflow.out.content_tsv.collect { meta, tsv -> file(tsv).name },
+                    workflow.out.summary.collect { meta, tsv -> file(tsv).name }
+                ).match() }
+            )
+        }
+    }
+
+    test("long-read - telogator2 with telomerehunter") {
+        when {
+            params {
+                telogator2_module_args = '--rng 42'
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test_lr_th' ],
+                    'long',
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam.bai', checkIfExists: true),
+                    []
+                ])
+                input[1] = Channel.empty()
+                input[2] = Channel.value([ [id:'genome'], [], [] ])
+                input[3] =true
+                input[4] =null
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.length_tsv },
+                { assert workflow.out.content_tsv },
+                { assert workflow.out.summary },
+                { assert workflow.out.telomerehunter_tumor },
+                { assert workflow.out.telogator2_plots },
+                { assert snapshot(
+                    workflow.out.length_tsv.collect { meta, tsv -> file(tsv).name },
+                    workflow.out.content_tsv.collect { meta, tsv -> file(tsv).name },
+                    workflow.out.summary.collect { meta, tsv -> file(tsv).name }
+                ).match() }
+            )
+        }
+    }
+
+    test("short-read - global length_estimator override") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test_global' ],
+                    '',
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    []
+                ])
+                input[1] = Channel.empty()
+                input[2] = Channel.value([
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[3] =false
+                input[4] ='short'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.length_tsv },
+                { assert workflow.out.summary },
+                { assert snapshot(
+                    workflow.out.length_tsv.collect { meta, tsv -> file(tsv).name },
+                    workflow.out.summary.collect { meta, tsv -> file(tsv).name }
+                ).match() }
+            )
+        }
+    }
+
+    test("short-read - telseq routing -- stub") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test_sr_stub' ],
+                    'short',
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    []
+                ])
+                input[1] = Channel.empty()
+                input[2] = Channel.value([
+                    [id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[3] =false
+                input[4] =null
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.summary.collect { meta, tsv -> file(tsv).name }
+                ).match() }
+            )
+        }
+    }
+
+    test("long-read - telogator2 routing -- stub") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test_lr_stub' ],
+                    'long',
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam.bai', checkIfExists: true),
+                    []
+                ])
+                input[1] = Channel.empty()
+                input[2] = Channel.value([ [id:'genome'], [], [] ])
+                input[3] =false
+                input[4] =null
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.summary.collect { meta, tsv -> file(tsv).name }
+                ).match() }
+            )
+        }
+    }
+
+    test("long-read - telogator2 routing") {
+        when {
+            params {
+                telogator2_module_args = '--rng 42'
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test_lr' ],
+                    'long',
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam.bai', checkIfExists: true),
+                    []
+                ])
+                input[1] = Channel.empty()
+                input[2] = Channel.value([ [id:'genome'], [], [] ])
+                input[3] =false
+                input[4] =null
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.length_tsv },
+                { assert workflow.out.summary },
+                { assert workflow.out.telogator2_plots },
+                { assert snapshot(
+                    workflow.out.length_tsv.collect { meta, tsv -> file(tsv).name },
+                    workflow.out.summary.collect { meta, tsv -> file(tsv).name }
+                ).match() }
+            )
+        }
+    }
+}

@@ -9,6 +9,7 @@ process BLAST_MAKEBLASTDB {
 
     input:
     tuple val(meta), path(fasta)
+    path(taxid_map)
 
     output:
     tuple val(meta), path("${prefix}"), emit: db
@@ -22,6 +23,7 @@ process BLAST_MAKEBLASTDB {
     prefix             = task.ext.prefix ?: "${meta.id}"
     def is_compressed  = fasta.getExtension() == "gz" ? true : false
     def fasta_name     = is_compressed ? fasta.getBaseName() : fasta
+    def taxid_map_cmd  = taxid_map ? "-taxid_map ${taxid_map}" : ""
     """
     if [ "${is_compressed}" == "true" ]; then
         gzip -c -d ${fasta} > ${fasta_name}
@@ -30,7 +32,8 @@ process BLAST_MAKEBLASTDB {
     makeblastdb \\
         -in ${fasta_name} \\
         -out ${prefix}/${fasta_name} \\
-        ${args}
+        ${args} \\
+        ${taxid_map_cmd}
 
     """
 

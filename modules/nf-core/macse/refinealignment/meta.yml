@@ -1,0 +1,91 @@
+name: "macse_refinealignment"
+description: improves the input nucleotide alignment in a codon-aware manner
+keywords:
+  - multiple sequence alignment
+  - codon-aware
+  - fasta
+tools:
+  - "macse":
+      description: "MACSE: Multiple Alignment of Coding SEquences Accounting for Frameshifts
+        and Stop Codons."
+      homepage: https://www.agap-ge2pop.org/macse/
+      documentation: https://www.agap-ge2pop.org/macse/macse-documentation/
+      tool_dev_url: https://github.com/nf-core/masce
+      doi: "10.1371/journal.pone.0022594"
+      licence:
+        - "CeCILL 2.1"
+      identifier: biotools:macse
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Aligned sequences in FASTA format. May be gzipped or
+          uncompressed.
+        pattern: "*.{fa,fas,fasta,aln}"
+        ontologies:
+          - edam: http://edamontology.org/format_2554
+          - edam: http://edamontology.org/format_1921
+          - edam: http://edamontology.org/format_1984
+output:
+  nt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_NT.{fa,fas,fasta,aln}":
+          type: file
+          description: Aligned sequences in FASTA format. May be gzipped or
+            uncompressed.
+          pattern: "*_NT.{fa,fas,fasta,aln}"
+          ontologies:
+            - edam: http://edamontology.org/format_2554
+            - edam: http://edamontology.org/format_1921
+            - edam: http://edamontology.org/format_1984
+  aa:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_AA.{fa,fas,fasta,aln}":
+          type: file
+          description: Aligned sequences in FASTA format. May be gzipped or
+            uncompressed.
+          pattern: "*_AA.{fa,fas,fasta,aln}"
+          ontologies:
+            - edam: http://edamontology.org/format_2554
+            - edam: http://edamontology.org/format_1921
+            - edam: http://edamontology.org/format_1984
+  versions_macse:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - macse:
+          type: string
+          description: The name of the tool
+      - "macse --version | sed -n 's/.*V\\([0-9]*\\.[0-9]*\\).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - macse:
+          type: string
+          description: The name of the tool
+      - "macse --version | sed -n 's/.*V\\([0-9]*\\.[0-9]*\\).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@charles-plessy"
+  - "@pmuskusv"
+  - "@takiifujita-ui"
+  - "@leapicard"
+maintainers:
+  - "@leapicard"

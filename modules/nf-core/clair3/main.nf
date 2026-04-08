@@ -3,9 +3,9 @@ process CLAIR3 {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e7/e70b0f4389028f4dc88efde1aac7139927c898cf7add680e14724d97fecd3d32/data'
-        : 'community.wave.seqera.io/library/clair3:1.2.0--b1b03d4e9d1b6a2e'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    'docker://hkubal/clair3:v2.0.0' :
+    'docker.io/hkubal/clair3:v2.0.0' }"
 
     input:
     tuple val(meta), path(bam), path(bai), val(packaged_model), path(user_model), val(platform)
@@ -19,7 +19,8 @@ process CLAIR3 {
     tuple val(meta), path("${prefix}phased_merge_output.vcf.gz.tbi"), emit: phased_tbi, optional: true
     tuple val(meta), path("${prefix}merge_output.gvcf.gz"),           emit: gvcf, optional: true
     tuple val(meta), path("${prefix}merge_output.gvcf.gz.tbi"),       emit: gtbi, optional: true
-    path "versions.yml",                                              emit: versions
+    tuple val("${task.process}"), val('clair3'), eval('run_clair3.sh --version | sed "s/^Clair3 v//"'), emit: versions_clair3, topic: versions
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,10 +28,11 @@ process CLAIR3 {
     script:
     def model = ""
     if (!user_model) {
-        // In seqera containers `MAMBA_ROOT_PREFIX` is always available
-        // whereas `CONDA_PREFIX` may not be
-        // see https://github.com/seqeralabs/wave/issues/886
-        model = "\${CONDA_PREFIX:-\$MAMBA_ROOT_PREFIX}/bin/models/${packaged_model}"
+        if (workflow.containerEngine in ['singularity', 'docker', 'podman']) {
+            model = "/opt/models/${packaged_model}"
+        } else {
+            error "Clair3 packaged models are only available in Docker/Singularity/Podman containers. Please use one of these profiles or provide a user_model instead."
+        }
     }
     if (!packaged_model) {
         model = "${user_model}"
@@ -42,12 +44,12 @@ process CLAIR3 {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     run_clair3.sh \\
-        --bam_fn=${bam} \\
-        --ref_fn=${reference} \\
+        --bam_fn=\${PWD}/${bam} \\
+        --ref_fn=\${PWD}/${reference} \\
         --threads=${task.cpus} \\
         --output=. \\
         --platform=${platform} \\
-        --model=${model} \\
+        --model_path=${model} \\
         ${args}
 
     # Rename to add prefix
@@ -61,11 +63,6 @@ process CLAIR3 {
         mv "\$file" "${prefix}\$file"
     fi
     done
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        clair3: \$(run_clair3.sh  --version |& sed '1!d ; s/Clair3 v//')
-    END_VERSIONS
     """
 
     stub:
@@ -77,10 +74,5 @@ process CLAIR3 {
     touch ${prefix}merge_output.vcf.gz.tbi
     echo "" | gzip > ${prefix}merge_output.gvcf.gz
     touch ${prefix}merge_output.gvcf.gz.tbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        clair3: \$(run_clair3.sh --version |& sed '1!d ; s/Clair3 v//')
-    END_VERSIONS
     """
 }
