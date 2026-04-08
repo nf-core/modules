@@ -83,7 +83,7 @@ output:
       - eklipse:
           type: string
           description: The name of the tool
-      - "":
+      - eKLIPse.py 2>&1 | sed -n 's/.*\[v\([^]]*\)\].*/\1/p' | tr '-' '.':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -94,7 +94,7 @@ topics:
       - eklipse:
           type: string
           description: The name of the tool
-      - "":
+      - eKLIPse.py 2>&1 | sed -n 's/.*\[v\([^]]*\)\].*/\1/p' | tr '-' '.':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
