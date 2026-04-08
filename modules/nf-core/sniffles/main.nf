@@ -4,8 +4,8 @@ process SNIFFLES {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sniffles:2.4--pyhdfd78af_0' :
-        'biocontainers/sniffles:2.4--pyhdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/73397171642c8f96d79b94a16d5142eee4b389473aba7a04ca4493e62aa6e4ac/data' :
+        'community.wave.seqera.io/library/sniffles:2.7.3--4d6ef29e260d91be' }"
 
     input:
     tuple val(meta), path(input), path(index)
@@ -19,7 +19,7 @@ process SNIFFLES {
     tuple val(meta), path("*.vcf.gz")    , emit: vcf, optional: true
     tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi, optional: true
     tuple val(meta), path("*.snf")       , emit: snf, optional: true
-    path "versions.yml"                  , emit: versions
+    tuple val("${task.process}"), val('sniffles'), eval("sniffles --version | sed 's/.* //g'"), emit: versions_sniffles, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,11 +41,6 @@ process SNIFFLES {
         $vcf \\
         $snf \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sniffles: \$(sniffles --help 2>&1 | grep Version |sed 's/^.*Version //')
-    END_VERSIONS
     """
 
     stub:
@@ -56,10 +51,5 @@ process SNIFFLES {
     """
     ${vcf}
     ${snf}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sniffles: \$(sniffles --help 2>&1 | grep Version |sed 's/^.*Version //')
-    END_VERSIONS
     """
 }

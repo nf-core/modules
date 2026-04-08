@@ -27,8 +27,8 @@ process PURGEDUPS_PURGEDUPS {
         ${args} \\
         -T ${cutoff} \\
         -c ${basecov} \\
-        ${paf} 2> >(tee test.purge_dups.log >&2) | gzip \
-        > test.dups.bed.gz
+        ${paf} 2> >(tee ${prefix}.purge_dups.log >&2) | gzip \
+        > ${prefix}.dups.bed.gz
     """
 
     stub:

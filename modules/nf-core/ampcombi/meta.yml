@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "ampcombi"
 description: A tool to parse and summarise results from antimicrobial peptides tools
   and present functional classification.
@@ -22,7 +21,8 @@ tools:
       homepage: "https://github.com/Darcy220606/AMPcombi"
       documentation: "https://github.com/Darcy220606/AMPcombi"
       tool_dev_url: "https://github.com/Darcy220606/AMPcombi/tree/dev"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -190,13 +190,27 @@ output:
           pattern: "/amp_ref_database/*.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
+  versions_ampcombi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ampcombi:
+          type: string
+          description: The name of the tool
+      - 0.1.7:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ampcombi:
+          type: string
+          description: The name of the tool
+      - 0.1.7:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@darcy220606"
   - "@louperelo"

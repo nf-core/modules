@@ -25,7 +25,7 @@ process ARTIC_MINION {
     tuple val(meta), path("${prefix}.pass.vcf.gz")                    , emit: vcf
     tuple val(meta), path("${prefix}.pass.vcf.gz.tbi")                , emit: tbi
     tuple val(meta), path("*.json")                                   , emit: json, optional:true
-    path  "versions.yml"                                              , emit: versions
+    tuple val("${task.process}"), val('artic'), eval("artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//'"), topic: versions, emit: versions_artic
 
     when:
     task.ext.when == null || task.ext.when
@@ -49,11 +49,6 @@ process ARTIC_MINION {
         --model-dir ${model_dir_val} \\
         --model ${model} \\
         ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        artic: \$(artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -101,10 +96,5 @@ process ARTIC_MINION {
     touch ${prefix}.sorted.bam.bai
     touch ${prefix}.trimmed.rg.sorted.bam
     touch ${prefix}.trimmed.rg.sorted.bam.bai
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        artic: \$(artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//')
-    END_VERSIONS
     """
 }

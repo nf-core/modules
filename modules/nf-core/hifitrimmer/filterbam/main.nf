@@ -4,8 +4,8 @@ process HIFITRIMMER_FILTERBAM {
 
    conda "${moduleDir}/environment.yml"
    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-      'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2f/2f9ae9ae67cf4c1ee39387e2607cac90cd699a6233ed742970dfc29e5ab43539/data' :
-      'community.wave.seqera.io/library/hifi_trimmer_htslib_samtools:db636d1a487afe47' }"
+      'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2d413393b4194a57d7508e03614d1f4b1ba64b7294a817fd9547613421bc9343/data' :
+      'community.wave.seqera.io/library/hifi_trimmer_htslib_samtools:3a74b5c5520eaff2' }"
 
    input:
    tuple val(meta), path(input), path(bed)
@@ -23,8 +23,10 @@ process HIFITRIMMER_FILTERBAM {
    def prefix = task.ext.prefix ?: "${meta.id}"
    def args = task.ext.args ?: ''
    def args2 = task.ext.args2 ?: ''
+   def args3 = task.ext.args3 ?: ''
    def suffix = args.contains('-f') ? "fastq.gz"  : "fasta.gz"
-   def input_convert = !input.name.endsWith('bam') ? "<(samtools import ${input} ${args2} -@ ${task.cpus})" : input
+   def input_convert = input.name.endsWith('cram') ? "<(samtools view ${input} -u ${args3} -@ ${task.cpus})" :
+        !input.name.endsWith('bam') ? "<(samtools import ${input} ${args2} -@ ${task.cpus})" : input
    """
    hifi_trimmer filter_bam \\
       -t ${task.cpus} \\
