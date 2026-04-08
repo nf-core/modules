@@ -1,5 +1,5 @@
 process MASURCA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
@@ -21,12 +21,11 @@ process MASURCA {
     val close_gaps
     val jf_size
 
-
     output:
-    tuple val(meta), path("assemble.sh")                               , emit: script
-    tuple val(meta), path("*scaffolds.fa.gz")                          , emit: scaffolds
-    tuple val(meta), path("*_masurca_config.txt")                      , emit: config
-    tuple val(meta), path("*-masurca.log")                             , emit: log
+    tuple val(meta), path("assemble.sh"), emit: script
+    tuple val(meta), path("*scaffolds.fa.gz"), emit: scaffolds
+    tuple val(meta), path("*_masurca_config.txt"), emit: config
+    tuple val(meta), path("*-masurca.log"), emit: log
     tuple val("${task.process}"), val('masurca'), eval("masurca --version | sed 's/version //g'"), topic: versions, emit: versions_masurca
 
     when:
