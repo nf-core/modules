@@ -10,7 +10,7 @@ process BWA_MEM {
     input:
     tuple val(meta) , path(reads)
     tuple val(meta2), path(index)
-    tuple val(meta3), path(fasta)
+    tuple val(meta3), path(fasta), path(fai)
     val   sort_bam
 
     output:

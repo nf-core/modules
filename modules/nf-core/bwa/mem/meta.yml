@@ -56,6 +56,12 @@ input:
         ontologies:
           - edam: "http://edamontology.org/data_2044"
           - edam: "http://edamontology.org/format_1929"
+    - fai:
+        type: file
+        description: Reference genome FASTA index file
+        pattern: "*.{fai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3326"
   - sort_bam:
       type: boolean
       description: use samtools sort (true) or samtools view (false)
