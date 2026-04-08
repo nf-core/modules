@@ -15,7 +15,6 @@ nextflow_process {
         when {
             params {
                 module_args = "--genomeBuild hg38"
-                module_prefix = { "knot_${meta.id}" }
             }
 
             process {
