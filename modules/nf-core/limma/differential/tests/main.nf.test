@@ -380,6 +380,31 @@ nextflow_process {
 
     }
 
+    test("test_limma_differential - voom_mixed with seed") {
+
+        config "./nextflow.voom_mixed_seed.config"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                        .map{tuple(it, it.variable, it.reference, it.target)}
+                input[1] = Channel.of([[id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.results, process.out.model, process.out.normalised_counts, process.out.versions).match() }
+            )
+        }
+
+    }
+
     test("test_limma_differential - stub") {
 
         options "-stub"
@@ -398,8 +423,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot([process.out.results, process.out.model, process.out.normalised_counts, process.out.versions]).match() }
-            )
+                { assert snapshot([process.out.results, process.out.model, process.out.normalised_counts, process.out.versions]).match() }            )
         }
     }
 }

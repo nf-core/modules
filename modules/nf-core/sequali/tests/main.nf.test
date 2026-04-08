@@ -25,7 +25,7 @@ nextflow_process {
                     path(process.out.html[0][1]).getFileName().toString(),
                     path(process.out.json[0][1]).getFileName().toString(),
                     path(process.out.json[0][1]).json.remove('summary'),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -52,7 +52,7 @@ nextflow_process {
                     path(process.out.html[0][1]).getFileName().toString(),
                     path(process.out.json[0][1]).getFileName().toString(),
                     path(process.out.json[0][1]).json.remove('summary'),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -79,7 +79,7 @@ nextflow_process {
                     path(process.out.html[0][1]).getFileName().toString(),
                     path(process.out.json[0][1]).getFileName().toString(),
                     path(process.out.json[0][1]).json.remove('summary'),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
