@@ -29,8 +29,7 @@ process TELOMEREHUNTER {
     def tumor = tumor_is_cram ? "tumor.bam" : "${tumor_bam}"
     def control = control_bam ? (control_is_cram ? "control.bam" : "${control_bam}") : ""
     """
-    # telomerehunter doesn't support CRAM (pysam opened in BAM-only mode).
-    # Convert to BAM if needed, following the approach used in nf-core/telseq.
+    # telomerehunter doesn't support CRAM (pysam opened in BAM-only mode)
     if ${tumor_is_cram}; then samtools view -T ${fasta} -b -o tumor.bam ${tumor_bam} && samtools index tumor.bam; fi
     if ${control_is_cram}; then samtools view -T ${fasta} -b -o control.bam ${control_bam} && samtools index control.bam; fi
 
