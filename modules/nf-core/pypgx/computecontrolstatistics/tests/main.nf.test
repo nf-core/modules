@@ -18,7 +18,6 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.PGx.CYP2D6.bam.bai', checkIfExists: true)
                 ]
                 input[1] = "VDR"
-                input[2] = "GRCh37"
                 """
             }
         }
@@ -32,8 +31,9 @@ nextflow_process {
                 {assert process.success},
                 {assert zipFile.isValid()},
                 {assert snapshot(
-		    metaFile,
-                    dataFile).match()}
+                    metaFile,
+                    dataFile,
+                    process.out.findAll { key, val -> key.startsWith('versions') }).match()}
             )
         }
     }
@@ -51,7 +51,6 @@ nextflow_process {
                     []
                 ]
                 input[1] = ""
-                input[2] = ""
                 """
             }
         }

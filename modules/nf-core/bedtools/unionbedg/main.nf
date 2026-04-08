@@ -1,11 +1,11 @@
 process BEDTOOLS_UNIONBEDG {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bedtools:2.31.1--hf5e1c6e_0' :
-        'biocontainers/bedtools:2.31.1--hf5e1c6e_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/bedtools:2.31.1--hf5e1c6e_0'
+        : 'biocontainers/bedtools:2.31.1--hf5e1c6e_0'}"
 
     input:
     tuple val(meta), path(bedgraph)
@@ -13,7 +13,7 @@ process BEDTOOLS_UNIONBEDG {
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
-    path  "versions.yml"          , emit: versions
+    tuple val("${task.process}"), val('bedtools'), eval("bedtools --version | sed -e 's/bedtools v//g'"), topic: versions, emit: versions_bedtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,29 +22,23 @@ process BEDTOOLS_UNIONBEDG {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def sizes = chrom_sizes ? "-g ${chrom_sizes}" : ''
-    bedgraph.collect { if ("$it" == "${prefix}.bed") error "$it has the same name as the output, use \"task.ext.prefix\" to disambiguate!" }
+    bedgraph.collect { bed ->
+        if ("${bed}" == "${prefix}.bed") {
+            error("${bed} has the same name as the output, use \"task.ext.prefix\" to disambiguate!")
+        }
+    }
     """
     bedtools \\
         unionbedg \\
-        -i $bedgraph \\
-        $sizes \\
-        $args \\
+        -i ${bedgraph} \\
+        ${sizes} \\
+        ${args} \\
         > ${prefix}.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bedtools: \$(bedtools --version | sed -e "s/bedtools v//g")
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bedtools: \$(bedtools --version | sed -e "s/bedtools v//g")
-    END_VERSIONS
     """
 }

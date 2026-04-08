@@ -2,7 +2,7 @@ process CELLRANGER_MKVDJREF {
     tag "$fasta"
     label 'process_high'
 
-    container "nf-core/cellranger:8.0.0"
+    container "nf-core/cellranger:10.0.0"
 
     input:
     path fasta          // optional
@@ -12,7 +12,7 @@ process CELLRANGER_MKVDJREF {
 
     output:
     path "${reference_name}", emit: reference
-    path "versions.yml"     , emit: versions
+    tuple val("${task.process}"), val('cellranger'), eval('cellranger --version | sed "s/.*-//"'), emit: versions_cellranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

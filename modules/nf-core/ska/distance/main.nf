@@ -39,7 +39,6 @@ process SKA_DISTANCE {
     """
 
     stub:
-    def args         = task.ext.args ?: ''
     def prefix       = task.ext.prefix ?: "${meta.id}"
     def output_dist  = task.ext.args =~ "-d" ? "" : "touch ${prefix}.distances.tsv"
     def output_clust = task.ext.args =~ "-c" ? "" : "touch ${prefix}.clusters.tsv"

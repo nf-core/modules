@@ -4,8 +4,8 @@ process AGAT_SPADDINTRONS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/agat:1.4.2--pl5321hdfd78af_0':
-        'biocontainers/agat:1.4.2--pl5321hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/agat:1.6.1--pl5321hdfd78af_1' :
+        'biocontainers/agat:1.6.1--pl5321hdfd78af_1' }"
 
     input:
     tuple val(meta), path(gff)
@@ -13,38 +13,28 @@ process AGAT_SPADDINTRONS {
 
     output:
     tuple val(meta), path("${output}"), emit: gff
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('agat'), eval("agat --version | sed 's/v//'"), topic: versions, emit: versions_agat
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def config_param = config ? "--config $config" : ""
-    def prefix = meta.id ?: gff.getBaseName()
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def config_param = config ? "--config ${config}" : ""
     output = "${prefix}.intron.gff"
     """
     agat_sp_add_introns.pl \\
-        --gff $gff \\
-        $config_param \\
-        --out $output \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        agat: \$(agat_sp_add_introns.pl --help | sed -n 's/.*(AGAT) - Version: \\(.*\\) .*/\\1/p')
-    END_VERSIONS
+        --gff ${gff} \\
+        ${config_param} \\
+        --out ${output} \\
+        ${args}
     """
 
     stub:
-    def prefix = meta.id ?: gff.getBaseName()
+    def prefix = task.ext.prefix ?: "${meta.id}"
     output = "${prefix}.intron.gff"
     """
     touch ${output}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        agat: \$(agat_sp_add_introns.pl --help | sed -n 's/.*(AGAT) - Version: \\(.*\\) .*/\\1/p')
-    END_VERSIONS
     """
 }

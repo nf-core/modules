@@ -11,7 +11,8 @@ tools:
       homepage: http://pairtools.readthedocs.io/
       documentation: http://pairtools.readthedocs.io/
       tool_dev_url: https://github.com/mirnylab/pairtools
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -22,9 +23,10 @@ input:
     - input:
         type: file
         description: pair file
+        ontologies: []
 output:
-  - pairs:
-      - meta:
+  pairs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -33,8 +35,9 @@ output:
           type: file
           description: Duplicates removed pairs
           pattern: "*.{pairs.gz}"
-  - stat:
-      - meta:
+          ontologies: []
+  stat:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,11 +46,28 @@ output:
           type: file
           description: stats of the pairs
           pattern: "*.{pairs.stat}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_pairtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pairtools:
+          type: string
+          description: The name of the tool
+      - pairtools --version | sed 's/.*pairtools.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pairtools:
+          type: string
+          description: The name of the tool
+      - pairtools --version | sed 's/.*pairtools.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jianhong"
 maintainers:

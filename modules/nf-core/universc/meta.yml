@@ -28,24 +28,39 @@ input:
         type: file
         description: FASTQ or FASTQ.GZ file, list of 2 files for paired-end data
         pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
-  - - reference:
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'Hg38' ]
+    - reference:
         type: file
         description: Reference genome file
+        ontologies: []
+  - technology:
+      type: string
+      description: Technology to pass to universc `--technology argument`
 output:
-  - outs:
-      - meta:
+  outs:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/outs/*:
           type: file
           description: Files containing the outputs of Cell Ranger
-          pattern: "sample-${meta.id}/outs/*"
-      - sample-${meta.id}/outs/*:
-          type: file
-          description: Files containing the outputs of Cell Ranger
-          pattern: "sample-${meta.id}/outs/*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software version
-          pattern: "versions.yml"
+          pattern: "${prefix}/outs/*"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kbattenb"
   - "@tomkellygenetics"

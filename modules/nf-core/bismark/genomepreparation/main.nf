@@ -4,15 +4,15 @@ process BISMARK_GENOMEPREPARATION {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bismark:0.24.2--hdfd78af_0' :
-        'biocontainers/bismark:0.24.2--hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/38/38e61d14ccaed82f60c967132963eb467d0fa4bccb7a21404c49b4f377735f03/data' :
+        'community.wave.seqera.io/library/bismark:0.25.1--1f50935de5d79c47' }"
 
     input:
     tuple val(meta), path(fasta, name:"BismarkIndex/")
 
     output:
     tuple val(meta), path("BismarkIndex"), emit: index
-    path "versions.yml"                  , emit: versions
+    tuple val("${task.process}"), val('bismark'), eval("bismark --version 2>&1 | sed -n 's/^.*Bismark Version: v//p'"), emit: versions_bismark, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,15 +23,9 @@ process BISMARK_GENOMEPREPARATION {
     bismark_genome_preparation \\
         ${args} \\
         BismarkIndex
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bismark: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     """
     rm $fasta
 
@@ -52,10 +46,5 @@ process BISMARK_GENOMEPREPARATION {
     touch BismarkIndex/Bisulfite_Genome/GA_conversion/BS_GA.rev.1.bt2
     touch BismarkIndex/Bisulfite_Genome/GA_conversion/BS_GA.rev.2.bt2
     touch BismarkIndex/Bisulfite_Genome/GA_conversion/genome_mfa.GA_conversion.fa
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bismark: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
-    END_VERSIONS
     """
 }

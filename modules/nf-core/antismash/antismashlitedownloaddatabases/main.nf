@@ -12,13 +12,13 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
     These files are also emitted as output channels in this module to enable the antismash-lite module to use them as mount volumes to the docker/singularity containers.
     */
 
-    containerOptions {
+    containerOptions (
         ['singularity', 'apptainer'].contains(workflow.containerEngine)
             ? "-B ${database_css}:/usr/local/lib/python3.10/site-packages/antismash/outputs/html/css,${database_detection}:/usr/local/lib/python3.10/site-packages/antismash/detection,${database_modules}:/usr/local/lib/python3.10/site-packages/antismash/modules"
             : workflow.containerEngine == 'docker'
                 ? "-v \$PWD/${database_css}:/usr/local/lib/python3.10/site-packages/antismash/outputs/html/css -v \$PWD/${database_detection}:/usr/local/lib/python3.10/site-packages/antismash/detection -v \$PWD/${database_modules}:/usr/local/lib/python3.10/site-packages/antismash/modules"
                 : ''
-    }
+    )
 
     input:
     path database_css
@@ -28,30 +28,47 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
     output:
     path ("antismash_db"), emit: database
     path ("antismash_dir"), emit: antismash_dir
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('antismash-lite'), eval("antismash --version | sed 's/antiSMASH //'"), emit: versions_antismash, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    def deprecation_message = """
+        WARNING: This module has been deprecated. Please use nf-core/modules/antismash/antismashdownaddatabases
+
+        Reason:
+        This module includes non-standard workarounds to allow for use with container engines, due to database caching systems with antiSMASH not being compatible with the biocontainers build system.
+        The new module antismash/antismashdownloaddatabases uses a different nf-core hosted container that works around this issue, thus providing a much better developer and user experience.
+    """
+
+    assert false: deprecation_message
     def args = task.ext.args ?: ''
-    cp_cmd = session.config.conda && session.config.conda.enabled ? "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" : "cp -r /usr/local/lib/python3.10/site-packages/antismash antismash_dir;"
+    cp_cmd = workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1 ?
+        "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" :
+        "cp -r /usr/local/lib/python3.10/site-packages/antismash antismash_dir;"
     """
     download-antismash-databases \\
         --database-dir antismash_db \\
         ${args}
 
     ${cp_cmd}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        antismash-lite: \$(echo \$(antismash --version) | sed 's/antiSMASH //;s/-.*//g')
-    END_VERSIONS
     """
 
     stub:
+    def deprecation_message = """
+        WARNING: This module has been deprecated. Please use nf-core/modules/antismash/antismash
+
+        Reason:
+        This module includes non-standard workarounds to allow for use with container engines, due to database caching systems with antiSMASH not being compatible with the biocontainers build system.
+        The new module antismash/antismash uses a different nf-core hosted container that works around this issue, thus providing a much better developer and user experience.
+    """
+
+    assert false: deprecation_message
     def args = task.ext.args ?: ''
-    cp_cmd = session.config.conda && session.config.conda.enabled ? "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" : "cp -r /usr/local/lib/python3.10/site-packages/antismash antismash_dir;"
+    cp_cmd = workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1 ?
+        "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" :
+        "cp -r /usr/local/lib/python3.10/site-packages/antismash antismash_dir;"
     """
     echo "download-antismash-databases --database-dir antismash_db ${args}"
 
@@ -59,10 +76,5 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
 
     mkdir antismash_dir
     mkdir antismash_db
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        antismash-lite: \$(echo \$(antismash --version) | sed 's/antiSMASH //;s/-.*//g')
-    END_VERSIONS
     """
 }

@@ -1,15 +1,15 @@
 name: cellranger_count
-description: Module to use Cell Ranger's pipelines analyze sequencing data produced
-  from Chromium Single Cell Gene Expression.
+description: Module to use Cell Ranger's pipelines analyze sequencing data
+  produced from Chromium Single Cell Gene Expression.
 keywords:
   - align
   - count
   - reference
 tools:
   - cellranger:
-      description: Cell Ranger by 10x Genomics is a set of analysis pipelines that process
-        Chromium single-cell data to align reads, generate feature-barcode matrices,
-        perform clustering and other secondary analysis, and more.
+      description: Cell Ranger by 10x Genomics is a set of analysis pipelines that
+        process Chromium single-cell data to align reads, generate feature-barcode
+        matrices, perform clustering and other secondary analysis, and more.
       homepage: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
       documentation: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
       tool_dev_url: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
@@ -36,29 +36,44 @@ input:
           throws an error if a pair of R1 and R2 fastq files does not have the same filename except for the "_R1"/"_R2" part.
           Renaming the files does not affect the results (see README.md for detailed tests).
         pattern: "*{R1,R2}*.fastq.gz"
-  - - reference:
-        type: directory
-        description: Folder containing all the reference indices needed by Cell Ranger
+        ontologies: []
+  - reference:
+      type: directory
+      description: Folder containing all the reference indices needed by Cell
+        Ranger
 output:
-  - outs:
-      - meta:
-          type: file
-          description: Files containing the outputs of Cell Ranger, see official 10X Genomics
-            documentation for a complete list
-          pattern: "${meta.id}/outs/*"
+  outs:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "**/outs/**":
           type: file
-          description: Files containing the outputs of Cell Ranger, see official 10X Genomics
-            documentation for a complete list
+          description: Files containing the outputs of Cell Ranger, see official
+            10X Genomics documentation for a complete list
           pattern: "${meta.id}/outs/*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software version
-          pattern: "versions.yml"
+          ontologies: []
+  versions_cellranger:
+    - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ggabernet"
   - "@edmundmiller"
 maintainers:
   - "@ggabernet"
   - "@edmundmiller"
+versions:
+  - versions.yml:
+      type: file
+      description: YAML file containing versions of tools used in the module

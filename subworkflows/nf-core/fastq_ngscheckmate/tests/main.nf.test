@@ -1,0 +1,114 @@
+nextflow_workflow {
+
+    name "Test Workflow FASTQ_NGSCHECKMATE"
+    script "../main.nf"
+    workflow "FASTQ_NGSCHECKMATE"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_ngscheckmate"
+    tag "ngscheckmate"
+    tag "ngscheckmate/fastq"
+    tag "ngscheckmate/vafncm"
+
+    test("fastq_ngscheckmate") {
+
+        when {
+
+            workflow {
+                """
+                input[0] = Channel.of (
+                    [
+                        [ id:'test1' ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
+                    ],
+                    [
+                        [ id:'test2' ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_2.fastq.gz', checkIfExists: true)
+                            ]
+                    ],
+                    [
+                        [ id:'test3' ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
+                            ]
+                    ]
+                )
+                input[1] = Channel.value([
+                        [ id:'snp_pt' ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/ngscheckmate//SNP.pt', checkIfExists: true)
+                        ]
+                    ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.corr_matrix,
+                    workflow.out.matched,
+                    workflow.out.all,
+                    workflow.out.vaf,
+                    file(workflow.out.pdf[0][1]).name
+                    ).match() }
+            )
+        }
+    }
+
+    test("fastq_ngscheckmate - stub") {
+        options '-stub'
+        when {
+
+            workflow {
+                """
+                input[0] = Channel.of (
+                    [
+                        [ id:'test1' ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
+                    ],
+                    [
+                        [ id:'test2' ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_2.fastq.gz', checkIfExists: true)
+                            ]
+                    ],
+                    [
+                        [ id:'test3' ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
+                            ]
+                    ]
+                )
+                input[1] = Channel.value([
+                        [ id:'sarscov2' ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/ngscheckmate/SNP.pt', checkIfExists: true)
+                        ]
+                    ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out
+                ).match() }
+            )
+        }
+    }
+
+}

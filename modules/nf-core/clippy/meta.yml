@@ -11,7 +11,8 @@ tools:
       documentation: "https://github.com/ulelab/clippy"
       tool_dev_url: "https://github.com/ulelab/clippy"
       doi: "10.7554/eLife.84034"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -23,48 +24,68 @@ input:
         type: file
         description: BED file of crosslinks
         pattern: "*.{bed,bed.gz}"
-  - - gtf:
-        type: file
-        description: A GTF file of genes to call peaks on
-        pattern: "*.{gtf}"
-  - - fai:
-        type: file
-        description: FAI file corresponding to the reference sequence
-        pattern: "*.{fai}"
+        ontologies: []
+  - gtf:
+      type: file
+      description: A GTF file of genes to call peaks on
+      pattern: "*.{gtf}"
+      ontologies: []
+  - fai:
+      type: file
+      description: FAI file corresponding to the reference sequence
+      pattern: "*.{fai}"
+      ontologies: []
 output:
-  - peaks:
-      - meta:
-          type: file
-          description: BED file of peaks called by Clippy
-          pattern: "*_broadPeaks.bed.gz"
+  peaks:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*_Peaks.bed":
           type: file
           description: BED file of peaks called by Clippy
           pattern: "*_broadPeaks.bed.gz"
-  - summits:
-      - meta:
-          type: file
-          description: BED file of peak summits called by Clippy
-          pattern: "*[0-9].bed.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  summits:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*_Summits.bed":
           type: file
           description: BED file of peak summits called by Clippy
           pattern: "*[0-9].bed.gz"
-  - intergenic_gtf:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  intergenic_gtf:
+    - - meta:
           type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          description: Groovy Map containing sample information
       - "*_intergenic_regions.gtf":
           type: file
           description: GTF file of intergenic regions
           pattern: "*_intergenic_regions.gtf"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_clippy:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - clippy:
+          type: string
+          description: The name of the tool
+      - clippy -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - clippy:
+          type: string
+          description: The name of the tool
+      - clippy -v:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@marc-jones"
   - "@CharlotteAnne"

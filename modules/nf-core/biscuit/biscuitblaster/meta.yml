@@ -1,5 +1,6 @@
 name: biscuit_blaster
-description: A fast, compact one-liner to produce duplicate-marked, sorted, and indexed BAM files using Biscuit
+description: A fast, compact one-liner to produce duplicate-marked, sorted, and
+  indexed BAM files using Biscuit
 keywords:
   - biscuit
   - DNA methylation
@@ -10,12 +11,13 @@ keywords:
   - bam
 tools:
   - biscuit:
-      description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification
-        data
+      description: A utility for analyzing sodium bisulfite conversion-based DNA
+        methylation/modification data
       homepage: https://huishenlab.github.io/biscuit/
       documentation: https://huishenlab.github.io/biscuit/biscuitblaster/
       tool_dev_url: https://github.com/huishenlab/biscuit
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:biscuit
   - samblaster:
       description: |
@@ -26,7 +28,8 @@ tools:
       documentation: https://github.com/GregoryFaust/samblaster
       tool_dev_url: https://github.com/GregoryFaust/samblaster
       doi: "10.1093/bioinformatics/btu314"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:biscuit
   - samtools:
       description: |
@@ -36,7 +39,8 @@ tools:
       homepage: http://www.htslib.org/
       documentation: http://www.htslib.org/doc/samtools.html
       doi: 10.1093/bioinformatics/btp352
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:biscuit
 input:
   - - meta:
@@ -49,6 +53,7 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -57,6 +62,7 @@ input:
     - fasta:
         type: file
         description: Input genome fasta file
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -66,8 +72,8 @@ input:
         type: directory
         description: Directory containing biscuit genome index
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -76,8 +82,9 @@ output:
           type: file
           description: Output BAM file containing read alignments
           pattern: "*.{bam}"
-  - bai:
-      - meta:
+          ontologies: []
+  bai:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -86,11 +93,66 @@ output:
           type: file
           description: Output BAM index
           pattern: "*.{bai}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_biscuit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - biscuit:
+          type: string
+          description: The name of the tool
+      - "biscuit version |& sed '1!d; s/^.*BISCUIT Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools --version |& sed '1!d; s/^.*samtools //':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_samblaster:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samblaster:
+          type: string
+          description: The name of the tool
+      - "samblaster --version |& sed 's/^.*samblaster: Version //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - biscuit:
+          type: string
+          description: The name of the tool
+      - "biscuit version |& sed '1!d; s/^.*BISCUIT Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools --version |& sed '1!d; s/^.*samtools //':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samblaster:
+          type: string
+          description: The name of the tool
+      - "samblaster --version |& sed 's/^.*samblaster: Version //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@njspix"
 maintainers:

@@ -1,15 +1,71 @@
 {
-    "test-angsd-docounts": {
+    "homo_sapiens - bam bai [] - only qs": {
+        "content": [
+            {
+                "counts": [
+                    
+                ],
+                "depth_global": [
+                    
+                ],
+                "depth_sample": [
+                    
+                ],
+                "icounts": [
+                    
+                ],
+                "pos": [
+                    
+                ],
+                "qs": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.qs:md5,785310b221d8f17c785751c8df3e5866"
+                    ]
+                ],
+                "versions_angsd": [
+                    [
+                        "ANGSD_DOCOUNTS",
+                        "angsd",
+                        "0.940-dirty"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-03-14T15:17:09.696941753",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "homo_sapiens - bam bai [] - all params": {
         "content": [
             [
-                "ind0TotDepth\t",
-                "1\t",
-                "1\t",
-                "1\t",
-                "1\t",
-                "1\t"
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.depthSample:md5,23d382c3add835e53bd440577d2f1332"
+                ]
             ],
-            "test.icnts.gz",
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.depthGlobal:md5,23d382c3add835e53bd440577d2f1332"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.qs:md5,785310b221d8f17c785751c8df3e5866"
+                ]
+            ],
             [
                 "chr\tpos\ttotDepth",
                 "chr21\t5011214\t1",
@@ -19,13 +75,94 @@
                 "chr21\t5011218\t1"
             ],
             [
-                "versions.yml:md5,211a931297225fefaa891d02b755e215"
-            ]
+                "totA\ttotC\ttotG\ttotT",
+                "0\t0\t0\t1",
+                "0\t1\t0\t0",
+                "1\t0\t0\t0",
+                "1\t0\t0\t0",
+                "0\t0\t0\t1"
+            ],
+            "test.icnts.gz",
+            {
+                "versions_angsd": [
+                    [
+                        "ANGSD_DOCOUNTS",
+                        "angsd",
+                        "0.940-dirty"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-03-14T15:17:25.558778207",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-21T15:43:59.931683"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
+    "homo_sapiens - bam bai [] -- stub": {
+        "content": [
+            {
+                "counts": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.counts.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "depth_global": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.depthGlobal:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "depth_sample": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.depthSample:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "icounts": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.icnts.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "pos": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.pos.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "qs": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.qs:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_angsd": [
+                    [
+                        "ANGSD_DOCOUNTS",
+                        "angsd",
+                        "0.940-dirty"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-03-14T15:17:34.215884036",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     }
 }

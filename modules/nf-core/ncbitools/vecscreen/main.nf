@@ -5,11 +5,11 @@ process NCBITOOLS_VECSCREEN {
     container "docker.io/biocontainers/ncbi-tools-bin:6.1.20170106-6-deb_cv2"
 
     input:
-    tuple val(meta), path(fasta_file)
-    tuple val(adapters_database_meta), path(adapters_database_directory)
+    tuple val(meta) , path(fasta_file)
+    tuple val(meta2), path(adapters_database_directory)
 
     output:
-    tuple val(meta), path("${meta.id}.vecscreen.out")    , emit: vecscreen_output
+    tuple val(meta), path("${prefix}.vecscreen.out")    , emit: vecscreen_output
     path "versions.yml"                                  , emit: versions
 
     when:
@@ -21,7 +21,7 @@ process NCBITOOLS_VECSCREEN {
         error "The VecScreen module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args   = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     // WARN: VecScreen doesn't output a version number and doesn't appear to have a Github repository. 1.0 is arbitrarily used here as the version number
     """
     DB=`find -L ${adapters_database_directory} -maxdepth 1 -name "*.nin" | sed 's/\\.nin\$//'`
@@ -34,6 +34,7 @@ process NCBITOOLS_VECSCREEN {
     """
 
     stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
     // WARN: VecScreen doesn't output a version number and doesn't appear to have a Github repository. 1.0 is arbitrarily used here as the version number
     """
     touch ${prefix}.vecscreen.out

@@ -13,7 +13,8 @@ process SMNCOPYNUMBERCALLER {
     output:
     tuple val(meta), path("out/*.tsv"),  emit: smncopynumber
     tuple val(meta), path("out/*.json"), emit: run_metrics
-    path "versions.yml" , emit: versions
+    tuple val("${task.process}"), val('smncopynumbercaller'), val('1.1.2'), topic: versions, emit: versions_smncopynumbercaller
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,7 +22,6 @@ process SMNCOPYNUMBERCALLER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "1.1.2" // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     """
     echo $bam | tr ' ' '
     ' > manifest.txt
@@ -31,24 +31,13 @@ process SMNCOPYNUMBERCALLER {
         --prefix $prefix \\
         --outDir "out" \\
         --threads $task.cpus
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        SMNCopyNumberCaller: $VERSION
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "1.1.2"
     """
     mkdir out
     touch out/${prefix}.tsv
     touch out/${prefix}.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        SMNCopyNumberCaller: $VERSION
-    END_VERSIONS
     """
 }

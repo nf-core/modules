@@ -4,8 +4,8 @@ process QUAST {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/quast:5.2.0--py39pl5321heaaa4ec_4' :
-        'biocontainers/quast:5.2.0--py39pl5321heaaa4ec_4' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a5/a515d04307ea3e0178af75132105cd36c87d0116c6f9daecf81650b973e870fd/data' :
+        'community.wave.seqera.io/library/quast:5.3.0--755a216045b6dbdd' }"
 
     input:
     tuple val(meta) , path(consensus)
@@ -18,7 +18,7 @@ process QUAST {
     tuple val(meta), path("${prefix}_transcriptome.tsv") , optional: true , emit: transcriptome
     tuple val(meta), path("${prefix}_misassemblies.tsv") , optional: true , emit: misassemblies
     tuple val(meta), path("${prefix}_unaligned.tsv")     , optional: true , emit: unaligned
-    path "versions.yml"                                  , emit: versions
+    tuple val("${task.process}"), val('quast'), eval('quast.py --version 2>&1 | grep "QUAST" | sed \'s/^.*QUAST v//; s/ .*\$//\''), emit: versions_quast, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,17 +42,10 @@ process QUAST {
     [ -f  ${prefix}/contigs_reports/misassemblies_report.tsv         ] && ln -s ${prefix}/contigs_reports/misassemblies_report.tsv ${prefix}_misassemblies.tsv
     [ -f  ${prefix}/contigs_reports/unaligned_report.tsv             ] && ln -s ${prefix}/contigs_reports/unaligned_report.tsv ${prefix}_unaligned.tsv
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        quast: \$(quast.py --version 2>&1 | sed 's/^.*QUAST v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
-    def args      = task.ext.args   ?: ''
-    prefix        = task.ext.prefix ?: "${meta.id}"
-    def features  = gff             ? "--features $gff" : ''
-    def reference = fasta           ? "-r $fasta" : ''
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     mkdir -p $prefix
@@ -128,9 +121,5 @@ process QUAST {
         touch $prefix/genome_stats/features_frcurve_plot.pdf
     fi
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        quast: \$(quast.py --version 2>&1 | sed 's/^.*QUAST v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

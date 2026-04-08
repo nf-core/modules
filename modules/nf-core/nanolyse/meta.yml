@@ -23,14 +23,17 @@ input:
         description: |
           Basecalled reads in FASTQ.GZ format
         pattern: "*.fastq.gz"
-  - - fasta:
-        type: file
-        description: |
-          A reference fasta file against which to filter.
-        pattern: "*.fasta"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+  - fasta:
+      type: file
+      description: |
+        A reference fasta file against which to filter.
+      pattern: "*.fasta"
+      ontologies: []
 output:
-  - fastq:
-      - meta:
+  fastq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,16 +42,21 @@ output:
           type: file
           description: Reads with contaminants removed in FASTQ format
           pattern: "*.fastq.gz"
-  - log:
-      - "*.log":
-          type: file
-          description: Log of the Nanolyse run.
-          pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  log:
+    - "*.log":
+        type: file
+        description: Log of the Nanolyse run.
+        pattern: "*.log"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@yuukiiwa"
 maintainers:

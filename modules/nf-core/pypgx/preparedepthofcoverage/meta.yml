@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "pypgx_preparedepthofcoverage"
-description: Prepare a depth of coverage file for all target genes with SV from BAM
-  files.
+description: Prepare a depth of coverage file for all target genes with SV from
+  BAM files.
 keywords:
   - Pharmacogenetics
   - pypgx
@@ -13,7 +12,8 @@ tools:
       documentation: "https://pypgx.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/sbslee/pypgx"
       doi: "10.1371/journal.pone.0272129"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -25,20 +25,15 @@ input:
         type: file
         description: Input BAM file
         pattern: "*.{bam}"
+        ontologies: []
     - bai:
         type: file
         description: Input BAM index file
         pattern: "*.{bam.bai}"
-  - - pgx_genes:
-        type: list
-        description: List of PGx genes supported by PyPGx to include in variant calling.
-  - - assembly_version:
-        type: string
-        description: Genome assembly version to use.
-        pattern: "{GRCh37,GRCh38}"
+        ontologies: []
 output:
-  - coverage:
-      - meta:
+  coverage:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,12 +45,28 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
           pattern: "*.{zip}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions_pypgx:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pypgx:
+          type: string
+          description: The name of the tool
+      - pypgx -v 2>&1 | grep -oE "[0-9]+\.[0-9]+\.[0-9]+" | head -1:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pypgx:
+          type: string
+          description: The name of the tool
+      - pypgx -v 2>&1 | grep -oE "[0-9]+\.[0-9]+\.[0-9]+" | head -1:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
-  - "@jorivansteenbrugge"
+  - "@jorisvansteenbrugge"
 maintainers:
-  - "@jorivansteenbrugge"
+  - "@jorisvansteenbrugge"

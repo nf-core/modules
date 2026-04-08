@@ -1,6 +1,6 @@
 name: "rtgtools_vcfeval"
-description: The VCFeval tool of RTG tools. It is used to evaluate called variants
-  for agreement with a baseline variant set
+description: The VCFeval tool of RTG tools. It is used to evaluate called
+  variants for agreement with a baseline variant set
 keywords:
   - benchmarking
   - vcf
@@ -10,9 +10,10 @@ tools:
       description: "RealTimeGenomics Tools -- Utilities for accurate VCF comparison
         and manipulation"
       homepage: "https://www.realtimegenomics.com/products/rtg-tools"
-      documentation: "https://github.com/RealTimeGenomics/rtg-tools"
+      documentation: "https://cdn.jsdelivr.net/gh/RealTimeGenomics/rtg-tools@master/installer/resources/tools/RTGOperationsManual.pdf"
       tool_dev_url: "https://github.com/RealTimeGenomics/rtg-tools"
-      licence: ["BSD"]
+      licence:
+        - "BSD"
       identifier: ""
 input:
   - - meta:
@@ -24,30 +25,37 @@ input:
         type: file
         description: A VCF with called variants to benchmark against the standard
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
     - query_vcf_tbi:
         type: file
-        description: The index of the VCF file with called variants to benchmark against the standard
+        description: The index of the VCF file with called variants to benchmark
+          against the standard
         pattern: "*.{vcf.gz.tbi, vcf.tbi}"
+        ontologies: []
     - truth_vcf:
         type: file
         description: A standard VCF to compare against
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
     - truth_vcf_tbi:
         type: file
         description: The index of the standard VCF to compare against
         pattern: "*.{vcf.gz.tbi, vcf.tbi}"
+        ontologies: []
     - truth_bed:
         type: file
         description: A BED file containing the strict regions where VCFeval should
-          only evaluate the fully overlapping variants (optional)
-          This input should be used to provide the golden truth BED files.
+          only evaluate the fully overlapping variants (optional) This input
+          should be used to provide the golden truth BED files.
         pattern: "*.bed"
+        ontologies: []
     - regions_bed:
         type: file
-        description: A BED file containing the regions where VCFeval will evaluate every
-          fully and partially overlapping variant (optional)
-          This input should be used to provide the regions used by the analysis
+        description: A BED file containing the regions where VCFeval will evaluate
+          every fully and partially overlapping variant (optional) This input
+          should be used to provide the regions used by the analysis
         pattern: "*.bed"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -55,10 +63,12 @@ input:
           e.g. [ id:'test', single_end:false ]
     - sdf:
         type: file
-        description: The SDF (RTG Sequence Data File) folder of the reference genome
+        description: The SDF (RTG Sequence Data File) folder of the reference
+          genome
+        ontologies: []
 output:
-  - tp_vcf:
-      - meta:
+  tp_vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,8 +77,10 @@ output:
           type: file
           description: A VCF file for the true positive variants
           pattern: "*.tp.vcf.gz"
-  - tp_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tp_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -77,8 +89,9 @@ output:
           type: file
           description: The index of the VCF file for the true positive variants
           pattern: "*.tp.vcf.gz.tbi"
-  - fn_vcf:
-      - meta:
+          ontologies: []
+  fn_vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -87,8 +100,10 @@ output:
           type: file
           description: A VCF file for the false negative variants
           pattern: "*.fn.vcf.gz"
-  - fn_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  fn_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -97,8 +112,9 @@ output:
           type: file
           description: The index of the VCF file for the false negative variants
           pattern: "*.fn.vcf.gz.tbi"
-  - fp_vcf:
-      - meta:
+          ontologies: []
+  fp_vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -107,8 +123,10 @@ output:
           type: file
           description: A VCF file for the false positive variants
           pattern: "*.fp.vcf.gz"
-  - fp_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  fp_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -117,8 +135,9 @@ output:
           type: file
           description: The index of the VCF file for the false positive variants
           pattern: "*.fp.vcf.gz.tbi"
-  - baseline_vcf:
-      - meta:
+          ontologies: []
+  baseline_vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -127,19 +146,22 @@ output:
           type: file
           description: A VCF file for the true positive variants from the baseline
           pattern: "*.tp-baseline.vcf.gz"
-  - baseline_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  baseline_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.tp-baseline.vcf.gz.tbi":
           type: file
-          description: The index of the VCF file for the true positive variants from the
-            baseline
+          description: The index of the VCF file for the true positive variants
+            from the baseline
           pattern: "*.tp-baseline.vcf.gz.tbi"
-  - snp_roc:
-      - meta:
+          ontologies: []
+  snp_roc:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -148,8 +170,10 @@ output:
           type: file
           description: TSV files containing ROC data for the SNPs
           pattern: "*.snp_roc.tsv.gz"
-  - non_snp_roc:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  non_snp_roc:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -158,8 +182,10 @@ output:
           type: file
           description: TSV files containing ROC data for all variants except SNPs
           pattern: "*.non_snp_roc.tsv.gz"
-  - weighted_roc:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  weighted_roc:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -168,8 +194,10 @@ output:
           type: file
           description: TSV files containing weighted ROC data for all variants
           pattern: "*.weighted_snp_roc.tsv.gz"
-  - summary:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -178,8 +206,9 @@ output:
           type: file
           description: A TXT file containing the summary of the evaluation
           pattern: "*.summary.txt"
-  - phasing:
-      - meta:
+          ontologies: []
+  phasing:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -188,11 +217,28 @@ output:
           type: file
           description: A TXT file containing the data on the phasing
           pattern: "*.phasing.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_rtgtools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rtgtools:
+          type: string
+          description: The name of the tool
+      - "rtg version | sed 's/Product: RTG Tools //; q'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rtgtools:
+          type: string
+          description: The name of the tool
+      - "rtg version | sed 's/Product: RTG Tools //; q'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

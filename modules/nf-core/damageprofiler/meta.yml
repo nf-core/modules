@@ -1,6 +1,6 @@
 name: damageprofiler
-description: A Java based tool to determine damage patterns on ancient DNA as a replacement
-  for mapDamage
+description: A Java based tool to determine damage patterns on ancient DNA as a
+  replacement for mapDamage
 keywords:
   - damage
   - deamination
@@ -14,13 +14,14 @@ keywords:
   - archaeogenetics
 tools:
   - damageprofiler:
-      description: A Java based tool to determine damage patterns on ancient DNA as
-        a replacement for mapDamage
+      description: A Java based tool to determine damage patterns on ancient DNA
+        as a replacement for mapDamage
       homepage: https://github.com/Integrative-Transcriptomics/DamageProfiler
       documentation: https://damageprofiler.readthedocs.io/
       tool_dev_url: https://github.com/Integrative-Transcriptomics/DamageProfiler
       doi: "10.1093/bioinformatics/btab190"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:damageprofiler
 input:
   - - meta:
@@ -32,21 +33,30 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
-  - - fasta:
-        type: file
-        description: OPTIONAL FASTA reference file
-        pattern: "*.{fasta,fna,fa}"
-  - - fai:
-        type: file
-        description: OPTIONAL FASTA index file from samtools faidx
-        pattern: "*.{fai}"
-  - - specieslist:
-        type: file
-        description: OPTIONAL text file with list of target reference headers
-        pattern: "*.{txt}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_3462" # CRAM
+          - edam: "http://edamontology.org/format_2573" # SAM
+  - fasta:
+      type: file
+      description: OPTIONAL FASTA reference file
+      pattern: "*.{fasta,fna,fa}"
+      ontologies:
+        - edam: "http://edamontology.org/format_1332" # FASTA
+  - fai:
+      type: file
+      description: OPTIONAL FASTA index file from samtools faidx
+      pattern: "*.{fai}"
+      ontologies:
+        - edam: "http://edamontology.org/format_1332" # Tabix
+  - specieslist:
+      type: file
+      description: OPTIONAL text file with list of target reference headers
+      pattern: "*.{txt}"
+      ontologies: []
 output:
-  - results:
-      - meta:
+  results:
+    - - meta:
           type: directory
           description: DamageProfiler results directory
           pattern: "*/*"
@@ -54,11 +64,27 @@ output:
           type: directory
           description: DamageProfiler results directory
           pattern: "*/*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions_damageprofiler:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - damageprofiler:
+          type: string
+          description: The name of the tool
+      - damageprofiler -v | sed 's/^DamageProfiler v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - damageprofiler:
+          type: string
+          description: The name of the tool
+      - damageprofiler -v | sed 's/^DamageProfiler v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

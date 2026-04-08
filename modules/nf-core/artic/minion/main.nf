@@ -4,13 +4,14 @@ process ARTIC_MINION {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/artic:1.6.1--pyhdfd78af_0' :
-        'biocontainers/artic:1.6.1--pyhdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5a747cc579edfc0cb2176b749afc02550ab5de678ae6a40d2cfadeba6c0de25d/data' :
+        'community.wave.seqera.io/library/artic:1.6.2--d4956cdc155b8612' }"
 
     input:
     tuple val(meta), path(fastq)
     tuple val(meta2), path(model_dir), val(model)
     tuple val(meta3), path(fasta), path(bed)
+    path hdf5_plugin_path
 
     output:
     tuple val(meta), path("${prefix}.*")                              , emit: results
@@ -23,8 +24,8 @@ process ARTIC_MINION {
     tuple val(meta), path("${prefix}.consensus.fasta")                , emit: fasta
     tuple val(meta), path("${prefix}.pass.vcf.gz")                    , emit: vcf
     tuple val(meta), path("${prefix}.pass.vcf.gz.tbi")                , emit: tbi
-    tuple val(meta), path("*.json"), optional:true                    , emit: json
-    path  "versions.yml"                                              , emit: versions
+    tuple val(meta), path("*.json")                                   , emit: json, optional:true
+    tuple val("${task.process}"), val('artic'), eval("artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//'"), topic: versions, emit: versions_artic
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,26 +33,22 @@ process ARTIC_MINION {
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
-    def model_dir_cmd   = model_dir   ? "--model-dir $model_dir" : "--model-dir \$(which artic | sed 's/artic/models/')"
-    def hd5_plugin_path = task.ext.hd5_plugin_path ? "export HDF5_PLUGIN_PATH=" + task.ext.hd5_plugin_path : "export HDF5_PLUGIN_PATH=/usr/local/lib/python3.6/site-packages/ont_fast5_api/vbz_plugin"
+
+    def model_dir_val   = model_dir ?: "\$(which artic | sed 's/artic/models/')"
+    def hd5_plugin_path = hdf5_plugin_path?: "/usr/local/lib/python3.6/site-packages/ont_fast5_api/vbz_plugin"
     """
-    $hd5_plugin_path
+    export HDF5_PLUGIN_PATH=${hd5_plugin_path}
 
     artic \\
         minion \\
-        $args \\
-        --threads $task.cpus \\
-        --read-file $fastq \\
-        --bed $bed \\
-        --ref $fasta \\
-        $model_dir_cmd \\
-        --model $model \\
-        $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        artic: \$(artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//')
-    END_VERSIONS
+        ${args} \\
+        --threads ${task.cpus} \\
+        --read-file ${fastq} \\
+        --bed ${bed} \\
+        --ref ${fasta} \\
+        --model-dir ${model_dir_val} \\
+        --model ${model} \\
+        ${prefix}
     """
 
     stub:
@@ -99,10 +96,5 @@ process ARTIC_MINION {
     touch ${prefix}.sorted.bam.bai
     touch ${prefix}.trimmed.rg.sorted.bam
     touch ${prefix}.trimmed.rg.sorted.bam.bai
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        artic: \$(artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//')
-    END_VERSIONS
     """
 }

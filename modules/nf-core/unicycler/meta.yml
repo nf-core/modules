@@ -25,13 +25,15 @@ input:
         description: |
           List of input Illumina FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
+        ontologies: []
     - longreads:
         type: file
         description: |
           List of input FastQ files of size 1, PacBio or Nanopore long reads.
+        ontologies: []
 output:
-  - scaffolds:
-      - meta:
+  scaffolds:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,8 +42,9 @@ output:
           type: file
           description: Fasta file containing scaffolds
           pattern: "*.{scaffolds.fa.gz}"
-  - gfa:
-      - meta:
+          ontologies: []
+  gfa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,8 +53,9 @@ output:
           type: file
           description: gfa file containing assembly
           pattern: "*.{assembly.gfa.gz}"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,11 +64,14 @@ output:
           type: file
           description: unicycler log file
           pattern: "*.{log}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@JoseEspinosa"
   - "@drpatelh"

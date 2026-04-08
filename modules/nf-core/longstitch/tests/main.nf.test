@@ -1,0 +1,473 @@
+nextflow_process {
+
+    name "Test Process LONGSTITCH"
+    script "../main.nf"
+    process "LONGSTITCH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "longstitch"
+
+    test("longstitch - run - testdata #1") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/scaffolding/longstitch/test_scaffolds1.fa', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/scaffolding/longstitch/test_reads1.fa.gz', checkIfExists: true),
+                ]
+                input[2] = "run"
+                input[3] = []
+                input[4] = "482700"
+                input[5] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.tigmint_ntLink_fasta,
+                    process.out.tigmint_ntLink_arcs_fasta,
+                    process.out.ntLink_arcs_fasta,
+                    file(process.out.scaffold_dot[0][1]).name,
+                    process.out.links_scaffolds_dist_gv,
+                    process.out.links_assembly_correspondence_tsv,
+                    process.out.links_gv,
+                    process.out.links_log,
+                    process.out.links_scaffolds,
+                    process.out.links_scaffolds_fa,
+                    process.out.arcs_tsv,
+                    process.out.arcs_gv,
+                    process.out.arcs_scaffolds_fa,
+                    process.out.arcs_scaffolds_renamed,
+                    process.out.abyss_scaffolds_fa,
+                    process.out.stitch_path,
+                    process.out.trimmed_scaffolds_agp,
+                    process.out.trimmed_scaffolds_fasta,
+                    process.out.trimmed_scaffolds_path,
+                    process.out.trimmed_scaffolds_tsv,
+                    process.out.verbose_mapping_tsv,
+                    process.out.tsv,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("longstitch - tigmint-ntLink-arks - testdata #1") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/scaffolding/longstitch/test_scaffolds1.fa', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/scaffolding/longstitch/test_reads1.fa.gz', checkIfExists: true),
+                ]
+                input[2] = "tigmint-ntLink-arks"
+                input[3] = []
+                input[4] = "482700"
+                input[5] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.tigmint_ntLink_fasta,
+                    process.out.tigmint_ntLink_arcs_fasta,
+                    process.out.ntLink_arcs_fasta,
+                    file(process.out.scaffold_dot[0][1]).name,
+                    process.out.links_scaffolds_dist_gv,
+                    process.out.links_assembly_correspondence_tsv,
+                    file(process.out.links_gv[0][1]).name,
+                    file(process.out.links_log[0][1]).name,
+                    process.out.links_scaffolds,
+                    process.out.links_scaffolds_fa,
+                    process.out.arcs_tsv,
+                    file(process.out.arcs_gv[0][1]).name,
+                    process.out.arcs_scaffolds_fa,
+                    process.out.arcs_scaffolds_renamed,
+                    process.out.abyss_scaffolds_fa,
+                    process.out.stitch_path,
+                    process.out.trimmed_scaffolds_agp,
+                    process.out.trimmed_scaffolds_fasta,
+                    process.out.trimmed_scaffolds_path,
+                    process.out.trimmed_scaffolds_tsv,
+                    process.out.verbose_mapping_tsv,
+                    process.out.tsv,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("longstitch - tigmint-ntLink - testdata #1") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/scaffolding/longstitch/test_scaffolds1.fa', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/scaffolding/longstitch/test_reads1.fa.gz', checkIfExists: true),
+                ]
+                input[2] = "tigmint-ntLink"
+                input[3] = []
+                input[4] = "482700"
+                input[5] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.tigmint_ntLink_fasta,
+                    process.out.tigmint_ntLink_arcs_fasta,
+                    process.out.ntLink_arcs_fasta,
+                    file(process.out.scaffold_dot[0][1]).name,
+                    process.out.links_scaffolds_dist_gv,
+                    process.out.links_assembly_correspondence_tsv,
+                    process.out.links_gv,
+                    process.out.links_log,
+                    process.out.links_scaffolds,
+                    process.out.links_scaffolds_fa,
+                    process.out.arcs_tsv,
+                    process.out.arcs_gv,
+                    process.out.arcs_scaffolds_fa,
+                    process.out.arcs_scaffolds_renamed,
+                    process.out.abyss_scaffolds_fa,
+                    process.out.stitch_path,
+                    process.out.trimmed_scaffolds_agp,
+                    process.out.trimmed_scaffolds_fasta,
+                    process.out.trimmed_scaffolds_path,
+                    process.out.trimmed_scaffolds_tsv,
+                    process.out.verbose_mapping_tsv,
+                    process.out.tsv,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("longstitch - ntLink-arks - testdata #1") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/scaffolding/longstitch/test_scaffolds1.fa', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/scaffolding/longstitch/test_reads1.fa.gz', checkIfExists: true),
+                ]
+                input[2] = "ntLink-arks"
+                input[3] = []
+                input[4] = "482700"
+                input[5] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.tigmint_ntLink_fasta,
+                    process.out.tigmint_ntLink_arcs_fasta,
+                    process.out.ntLink_arcs_fasta,
+                    file(process.out.scaffold_dot[0][1]).name,
+                    process.out.links_scaffolds_dist_gv,
+                    process.out.links_assembly_correspondence_tsv,
+                    file(process.out.links_gv[0][1]).name,
+                    file(process.out.links_log[0][1]).name,
+                    process.out.links_scaffolds,
+                    process.out.links_scaffolds_fa,
+                    process.out.arcs_tsv,
+                    file(process.out.arcs_gv[0][1]).name,
+                    process.out.arcs_scaffolds_fa,
+                    process.out.arcs_scaffolds_renamed,
+                    process.out.abyss_scaffolds_fa,
+                    process.out.stitch_path,
+                    process.out.trimmed_scaffolds_agp,
+                    process.out.trimmed_scaffolds_fasta,
+                    process.out.trimmed_scaffolds_path,
+                    process.out.trimmed_scaffolds_tsv,
+                    process.out.verbose_mapping_tsv,
+                    process.out.tsv,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("longstitch - run - testdata #2") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/scaffolding/longstitch/test_scaffolds2.fa', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/scaffolding/longstitch/test_reads2.fa.gz', checkIfExists: true),
+                ]
+                input[2] = "run"
+                input[3] = []
+                input[4] = "250000"
+                input[5] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.tigmint_ntLink_fasta,
+                    process.out.tigmint_ntLink_arcs_fasta,
+                    process.out.ntLink_arcs_fasta,
+                    file(process.out.scaffold_dot[0][1]).name,
+                    process.out.links_scaffolds_dist_gv,
+                    process.out.links_assembly_correspondence_tsv,
+                    process.out.links_gv,
+                    process.out.links_log,
+                    process.out.links_scaffolds,
+                    process.out.links_scaffolds_fa,
+                    process.out.arcs_tsv,
+                    process.out.arcs_gv,
+                    process.out.arcs_scaffolds_fa,
+                    process.out.arcs_scaffolds_renamed,
+                    process.out.abyss_scaffolds_fa,
+                    process.out.stitch_path,
+                    process.out.trimmed_scaffolds_agp,
+                    process.out.trimmed_scaffolds_fasta,
+                    process.out.trimmed_scaffolds_path,
+                    process.out.trimmed_scaffolds_tsv,
+                    process.out.verbose_mapping_tsv,
+                    process.out.tsv,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("longstitch - tigmint-ntLink-arks - testdata #2") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/scaffolding/longstitch/test_scaffolds2.fa', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/scaffolding/longstitch/test_reads2.fa.gz', checkIfExists: true),
+                ]
+                input[2] = "tigmint-ntLink-arks"
+                input[3] = []
+                input[4] = "250000"
+                input[5] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.tigmint_ntLink_fasta,
+                    process.out.tigmint_ntLink_arcs_fasta,
+                    process.out.ntLink_arcs_fasta,
+                    file(process.out.scaffold_dot[0][1]).name,
+                    process.out.links_scaffolds_dist_gv,
+                    process.out.links_assembly_correspondence_tsv,
+                    file(process.out.links_gv[0][1]).name,
+                    file(process.out.links_log[0][1]).name,
+                    process.out.links_scaffolds,
+                    process.out.links_scaffolds_fa,
+                    process.out.arcs_tsv,
+                    file(process.out.arcs_gv[0][1]).name,
+                    process.out.arcs_scaffolds_fa,
+                    process.out.arcs_scaffolds_renamed,
+                    process.out.abyss_scaffolds_fa,
+                    process.out.stitch_path,
+                    process.out.trimmed_scaffolds_agp,
+                    process.out.trimmed_scaffolds_fasta,
+                    process.out.trimmed_scaffolds_path,
+                    process.out.trimmed_scaffolds_tsv,
+                    process.out.verbose_mapping_tsv,
+                    process.out.tsv,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("longstitch - tigmint-ntLink - testdata #2") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/scaffolding/longstitch/test_scaffolds2.fa', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/scaffolding/longstitch/test_reads2.fa.gz', checkIfExists: true),
+                ]
+                input[2] = "tigmint-ntLink"
+                input[3] = []
+                input[4] = "250000"
+                input[5] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.tigmint_ntLink_fasta,
+                    process.out.tigmint_ntLink_arcs_fasta,
+                    process.out.ntLink_arcs_fasta,
+                    file(process.out.scaffold_dot[0][1]).name,
+                    process.out.links_scaffolds_dist_gv,
+                    process.out.links_assembly_correspondence_tsv,
+                    process.out.links_gv,
+                    process.out.links_log,
+                    process.out.links_scaffolds,
+                    process.out.links_scaffolds_fa,
+                    process.out.arcs_tsv,
+                    process.out.arcs_gv,
+                    process.out.arcs_scaffolds_fa,
+                    process.out.arcs_scaffolds_renamed,
+                    process.out.abyss_scaffolds_fa,
+                    process.out.stitch_path,
+                    process.out.trimmed_scaffolds_agp,
+                    process.out.trimmed_scaffolds_fasta,
+                    process.out.trimmed_scaffolds_path,
+                    process.out.trimmed_scaffolds_tsv,
+                    process.out.verbose_mapping_tsv,
+                    process.out.tsv,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("longstitch - ntLink-arks - testdata #2") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/scaffolding/longstitch/test_scaffolds2.fa', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/scaffolding/longstitch/test_reads2.fa.gz', checkIfExists: true),
+                ]
+                input[2] = "ntLink-arks"
+                input[3] = []
+                input[4] = "250000"
+                input[5] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.tigmint_ntLink_fasta,
+                    process.out.tigmint_ntLink_arcs_fasta,
+                    process.out.ntLink_arcs_fasta,
+                    file(process.out.scaffold_dot[0][1]).name,
+                    process.out.links_scaffolds_dist_gv,
+                    process.out.links_assembly_correspondence_tsv,
+                    file(process.out.links_gv[0][1]).name,
+                    file(process.out.links_log[0][1]).name,
+                    process.out.links_scaffolds,
+                    process.out.links_scaffolds_fa,
+                    process.out.arcs_tsv,
+                    file(process.out.arcs_gv[0][1]).name,
+                    process.out.arcs_scaffolds_fa,
+                    process.out.arcs_scaffolds_renamed,
+                    process.out.abyss_scaffolds_fa,
+                    process.out.stitch_path,
+                    process.out.trimmed_scaffolds_agp,
+                    process.out.trimmed_scaffolds_fasta,
+                    process.out.trimmed_scaffolds_path,
+                    process.out.trimmed_scaffolds_tsv,
+                    process.out.verbose_mapping_tsv,
+                    process.out.tsv,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("longstitch - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/scaffolding/longstitch/test_scaffolds1.fa', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/scaffolding/longstitch/test_reads1.fa.gz', checkIfExists: true),
+                ]
+                input[2] = "run"
+                input[3] = []
+                input[4] = "482700"
+                input[5] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

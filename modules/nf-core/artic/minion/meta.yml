@@ -7,12 +7,13 @@ keywords:
   - demultiplexed reads
 tools:
   - artic:
-      description: ARTIC pipeline - a bioinformatics pipeline for working with virus
-        sequencing data sequenced with nanopore
+      description: ARTIC pipeline - a bioinformatics pipeline for working with
+        virus sequencing data sequenced with nanopore
       homepage: https://artic.readthedocs.io/en/latest/
       documentation: https://artic.readthedocs.io/en/latest/
       tool_dev_url: https://github.com/artic-network/fieldbioinformatics
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:artic
 input:
   - - meta:
@@ -24,6 +25,7 @@ input:
         type: file
         description: FastQ file containing reads
         pattern: "*.{fastq.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -31,7 +33,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - model_dir:
         type: directory
-        description: Path containing clair3 models, defaults to models packaged with conda installation
+        description: Path containing clair3 models, defaults to models packaged
+          with conda installation
         pattern: "*"
     - model:
         type: string
@@ -47,13 +50,18 @@ input:
         type: file
         description: Scheme reference fasta file
         pattern: "*.{fasta}"
+        ontologies: []
     - bed:
         type: file
         description: Scheme BED file
         pattern: "*.{bed}"
+        ontologies: []
+  - hdf5_plugin_path:
+      type: directory
+      description: Optional path to HDF5 plugin library
 output:
-  - results:
-      - meta:
+  results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,8 +70,10 @@ output:
           type: file
           description: Aggregated FastQ files
           pattern: "*.fastq.gz"
-  - bam:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -72,8 +82,9 @@ output:
           type: file
           description: BAM file
           pattern: "*.{sorted.bam}"
-  - bai:
-      - meta:
+          ontologies: []
+  bai:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -82,8 +93,9 @@ output:
           type: file
           description: BAM index file
           pattern: "*.{sorted.bai}"
-  - bam_trimmed:
-      - meta:
+          ontologies: []
+  bam_trimmed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -92,8 +104,9 @@ output:
           type: file
           description: BAM file with the primers left on
           pattern: "*.{trimmed.rg.sorted.bam}"
-  - bai_trimmed:
-      - meta:
+          ontologies: []
+  bai_trimmed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -102,8 +115,9 @@ output:
           type: file
           description: BAM index file of bam_trimmed
           pattern: "*.{sorted.bai}"
-  - bam_primertrimmed:
-      - meta:
+          ontologies: []
+  bam_primertrimmed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -112,8 +126,9 @@ output:
           type: file
           description: BAM containing reads after primer-binding site trimming
           pattern: "*.{trimmed.rg.sorted.bam}"
-  - bai_primertrimmed:
-      - meta:
+          ontologies: []
+  bai_primertrimmed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -122,8 +137,9 @@ output:
           type: file
           description: BAM index file of bam_primertrimmed
           pattern: "*.{primertrimmed.rg.sorted.bam.bai}"
-  - fasta:
-      - meta:
+          ontologies: []
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -132,18 +148,21 @@ output:
           type: file
           description: FAST file with consensus sequence
           pattern: "*.{consensus.fasta}"
-  - vcf:
-      - meta:
+          ontologies: []
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - ${prefix}.pass.vcf.gz:
           type: file
-          description: VCF file containing detected variants passing quality filter
+          description: VCF file containing detected variants passing quality
+            filter
           pattern: "*.{pass.vcf.gz}"
-  - tbi:
-      - meta:
+          ontologies: []
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -152,8 +171,9 @@ output:
           type: file
           description: VCF index
           pattern: "*.{pass.vcf.gz.tbi}"
-  - json:
-      - meta:
+          ontologies: []
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -162,11 +182,29 @@ output:
           type: file
           description: JSON file for MultiQC
           pattern: "*.json"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions_artic:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - artic:
+          type: string
+          description: The tool name
+      - artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - artic:
+          type: string
+          description: The tool name
+      - artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@joseespinosa"
   - "@drpatelh"

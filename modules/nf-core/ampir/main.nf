@@ -16,17 +16,16 @@ process AMPIR {
     output:
     tuple val(meta), path("*.faa"), emit: amps_faa
     tuple val(meta), path("*.tsv"), emit: amps_tsv
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('ampir'), eval('Rscript -e "library(ampir); cat(paste((unlist(packageVersion(\'ampir\'))), collapse = \'.\'))"'), emit: versions_ampir, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     if ("$faa" == "${prefix}.faa") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
-    #!/usr/bin/env Rscript
+    Rscript - <<'EOF'
     library(ampir)
 
     input_seqs <- read_faa('${faa}')
@@ -35,22 +34,14 @@ process AMPIR {
     output_seqs <- input_seqs[row.names(prediction), ]
     write.table(prediction, file = "${prefix}.tsv", row.names = FALSE, sep = "\t", quote = FALSE, dec = '.')
     df_to_faa(output_seqs, "${prefix}.faa")
-
-    version_file_path <- "versions.yml"
-    version_ampir <- paste(unlist(packageVersion("ampir")), collapse = ".")
-    f <- file(version_file_path, "w")
-    writeLines('"${task.process}":', f)
-    writeLines("    ampir: ", f, sep = "")
-    writeLines(version_ampir, f)
-    close(f)
+    EOF
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("$faa" == "${prefix}.faa") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${faa}" == "${prefix}.faa") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
-    #!/usr/bin/env Rscript
+    Rscript - <<'EOF'
     library(ampir)
 
     t <- file("${prefix}.tsv", "w")
@@ -58,13 +49,6 @@ process AMPIR {
 
     a <- file("${prefix}.faa", "w")
     close(a)
-
-    version_file_path <- "versions.yml"
-    version_ampir <- paste(unlist(packageVersion("ampir")), collapse = ".")
-    f <- file(version_file_path, "w")
-    writeLines('"${task.process}":', f)
-    writeLines("    ampir: ", f, sep = "")
-    writeLines(version_ampir, f)
-    close(f)
+    EOF
     """
 }

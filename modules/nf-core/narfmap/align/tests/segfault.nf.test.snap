@@ -7,7 +7,7 @@
                         "id": "test",
                         "single_end": true
                     },
-                    "test.bam:md5,c38463b4da3a56010093cf2ce7634b86"
+                    "test.bam:md5,4c3f0f32808e0b8e06b4bded09c1e17d"
                 ]
             ],
             [
@@ -18,14 +18,34 @@
                 "decompHashTableAutoHits...",
                 "decompHashTableSetFlags..."
             ],
-            [
-                "versions.yml:md5,f7f7afeeca9aecd25ef825978aac55d7"
-            ]
+            {
+                "versions_narfmap": [
+                    [
+                        "NARFMAP_ALIGN",
+                        "narfmap",
+                        "1.4.2"
+                    ]
+                ],
+                "versions_pigz": [
+                    [
+                        "NARFMAP_ALIGN",
+                        "pigz",
+                        "2.8"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "NARFMAP_ALIGN",
+                        "samtools",
+                        "1.23"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-07-08T12:32:26.897477754"
+        "timestamp": "2026-02-24T10:28:33.37180556"
     }
 }

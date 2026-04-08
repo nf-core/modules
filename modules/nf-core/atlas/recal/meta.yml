@@ -6,12 +6,13 @@ keywords:
   - bias
 tools:
   - "atlas":
-      description: "ATLAS, a suite of methods to accurately genotype and estimate genetic
-        diversity"
+      description: "ATLAS, a suite of methods to accurately genotype and estimate genetic\
+        \ diversity"
       homepage: "https://bitbucket.org/wegmannlab/atlas/wiki/Home"
       documentation: "https://bitbucket.org/wegmannlab/atlas/wiki/Home"
       doi: "10.1101/105346"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:atlas_db
 input:
   - - meta:
@@ -23,28 +24,34 @@ input:
         type: file
         description: BAM file
         pattern: "*.bam"
+        ontologies: []
     - bai:
         type: file
         description: BAI file
         pattern: "*.bai"
+        ontologies: []
     - empiric:
         type: file
         description: Optional txt file from PMD estimations (atlas/pmd)
         pattern: "*.txt"
+        ontologies: []
     - readgroups:
         type: file
         description: read groups
-  - - alleles:
-        type: file
-        description: Optional bed file with known alleles
-        pattern: "*.bed"
-  - - invariant_sites:
-        type: file
-        description: Optional bed file with invariant site coordinates
-        pattern: "*.bed"
+        ontologies: []
+  - alleles:
+      type: file
+      description: Optional bed file with known alleles
+      pattern: "*.bed"
+      ontologies: []
+  - invariant_sites:
+      type: file
+      description: Optional bed file with invariant site coordinates
+      pattern: "*.bed"
+      ontologies: []
 output:
-  - recal_patterns:
-      - meta:
+  recal_patterns:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,11 +61,28 @@ output:
           description: file containing the sequencing bias for each of the Read Group
             pools
           pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_atlas:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - atlas:
+          type: string
+          description: The name of the tool
+      - "((atlas 2>&1) | grep Atlas | head -n 1 | sed -e 's/^[ \t]*Atlas //')":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - atlas:
+          type: string
+          description: The name of the tool
+      - "((atlas 2>&1) | grep Atlas | head -n 1 | sed -e 's/^[ \t]*Atlas //')":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ltcrod"
 maintainers:

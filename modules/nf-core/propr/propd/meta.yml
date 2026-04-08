@@ -48,33 +48,40 @@ input:
         type: file
         description: |
           CSV or TSV format sample sheet with sample metadata
+        ontologies: []
     - counts:
         type: file
         description: |
           Raw TSV or CSV format expression matrix as output from the nf-core
           RNA-seq workflow
+        ontologies: []
 output:
-  - results_genewise:
-      - meta:
+  results_genewise:
+    - - meta:
           type: file
           description: |
-            TSV-format table of genes associated with differential expression 
+            TSV-format table of genes associated with differential expression
             information as compiled from the propd results
           pattern: "*.propd.genewise.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.propd.genewise.tsv":
           type: file
           description: |
-            TSV-format table of genes associated with differential expression 
+            TSV-format table of genes associated with differential expression
             information as compiled from the propd results
           pattern: "*.propd.genewise.tsv"
-  - genewise_plot:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  genewise_plot:
+    - - meta:
           type: file
           description: |
-            PNG-format plot of accumulated between group variance vs median log
-            fold change. Genes with high between group variance and high log fold
-            change are likely to be differentially expressed.
-          pattern: "*.propd.genewise.png"
+            TSV-format table of genes associated with differential expression
+            information as compiled from the propd results
+          pattern: "*.propd.genewise.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.propd.genewise.png":
           type: file
           description: |
@@ -82,71 +89,85 @@ output:
             fold change. Genes with high between group variance and high log fold
             change are likely to be differentially expressed.
           pattern: "*.propd.genewise.png"
-  - rdata:
-      - meta:
+          ontologies: []
+  rdata:
+    - - meta:
           type: file
           description: |
-            (Optional) R data containing propd object
-          pattern: "*.propd.rds"
+            TSV-format table of genes associated with differential expression
+            information as compiled from the propd results
+          pattern: "*.propd.genewise.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.propd.rds":
           type: file
           description: |
             (Optional) R data containing propd object
           pattern: "*.propd.rds"
-  - results_pairwise:
-      - meta:
+          ontologies: []
+  results_pairwise:
+    - - meta:
           type: file
           description: |
-            (Optional) TSV-format table of the native propd pairwise results. This 
-            table contains the differential proportionality values associated to 
-            each pair of genes.
-          pattern: "*.propd.pairwise.tsv"
+            TSV-format table of genes associated with differential expression
+            information as compiled from the propd results
+          pattern: "*.propd.genewise.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.propd.pairwise.tsv":
           type: file
           description: |
-            (Optional) TSV-format table of the native propd pairwise results. This 
-            table contains the differential proportionality values associated to 
+            (Optional) TSV-format table of the native propd pairwise results. This
+            table contains the differential proportionality values associated to
             each pair of genes.
           pattern: "*.propd.pairwise.tsv"
-  - results_pairwise_filtered:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  results_pairwise_filtered:
+    - - meta:
           type: file
           description: |
-            (Optional) TSV-format table of the filtered propd pairwise results. This
-            table contains the pairs of genes with significant differential 
-            proportionality values.
-          pattern: "*.propd.pairwise_filtered.tsv"
+            TSV-format table of genes associated with differential expression
+            information as compiled from the propd results
+          pattern: "*.propd.genewise.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.propd.pairwise_filtered.tsv":
           type: file
           description: |
             (Optional) TSV-format table of the filtered propd pairwise results. This
-            table contains the pairs of genes with significant differential 
+            table contains the pairs of genes with significant differential
             proportionality values.
           pattern: "*.propd.pairwise_filtered.tsv"
-  - adjacency:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  adjacency:
+    - - meta:
           type: file
           description: |
-            (Optional) CSV-format table of the adjacency matrix defining a graph, with 
-            edges (1) associated to pairs of genes that are significantly differentially
-            proportional.
-          pattern: "*.propd.adjacency.csv"
+            TSV-format table of genes associated with differential expression
+            information as compiled from the propd results
+          pattern: "*.propd.genewise.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.propd.adjacency.csv":
           type: file
           description: |
-            (Optional) CSV-format table of the adjacency matrix defining a graph, with 
+            (Optional) CSV-format table of the adjacency matrix defining a graph, with
             edges (1) associated to pairs of genes that are significantly differentially
             proportional.
           pattern: "*.propd.adjacency.csv"
-  - fdr:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  fdr:
+    - - meta:
           type: file
           description: |
-            (Optional) TSV-format table of FDR values. When permutation tests is performed,
-            this table is generated with the FDR values calculated by the permutation tests.
-            This is a more conservative test than the default BH method, but more
-            computationally expensive.
-          pattern: "*.propd.fdr.tsv"
+            TSV-format table of genes associated with differential expression
+            information as compiled from the propd results
+          pattern: "*.propd.genewise.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.propd.fdr.tsv":
           type: file
           description: |
@@ -155,16 +176,21 @@ output:
             This is a more conservative test than the default BH method, but more
             computationally expensive.
           pattern: "*.propd.fdr.tsv"
-  - session_info:
-      - "*.R_sessionInfo.log":
-          type: file
-          description: dump of R SessionInfo
-          pattern: "*.R_sessionInfo.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  session_info:
+    - "*.R_sessionInfo.log":
+        type: file
+        description: dump of R SessionInfo
+        pattern: "*.R_sessionInfo.log"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@suzannejin"
   - "@caraiz2001"

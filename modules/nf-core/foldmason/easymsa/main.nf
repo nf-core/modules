@@ -4,8 +4,8 @@ process FOLDMASON_EASYMSA {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-            'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/06/067e6389ab95497b753ba1deabaa6acbce25b99c8cfcf39c06d5c1af42fd7751/data':
-            'community.wave.seqera.io/library/foldmason_pigz:88809eb5649534b0' }"
+            'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/29/299b6d1a8a81632118e9c0cd110f9d89aae58b5a0132543a7fedbecb656da570/data':
+            'community.wave.seqera.io/library/foldmason_pigz:289a5a7a978299df' }"
 
 
     input:
@@ -16,7 +16,8 @@ process FOLDMASON_EASYMSA {
     output:
     tuple val(meta), path("${prefix}_3di.fa${compress ? '.gz' : ''}"), emit: msa_3di
     tuple val(meta), path("${prefix}_aa.fa${compress ? '.gz' : ''}") , emit: msa_aa
-    path "versions.yml"                                              , emit: versions
+    tuple val("${task.process}"), val('foldmason'), eval('foldmason version'), emit: versions_foldmason, topic: versions
+    tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,25 +39,12 @@ process FOLDMASON_EASYMSA {
         pigz -p ${task.cpus} ${prefix}_3di.fa
         pigz -p ${task.cpus} ${prefix}_aa.fa
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        foldmason: \$(foldmason | grep "foldmason Version:" | cut -d":" -f 2 | awk '{\$1=\$1;print}')
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo ""  ${compress ? '| gzip' : ''} > ${prefix}_3di.fa${compress ? '.gz' : ''}
     echo ""  ${compress ? '| gzip' : ''} > ${prefix}_aa.fa${compress ? '.gz' : ''}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        foldmason: \$(foldmason | grep "foldmason Version:" | cut -d":" -f 2 | awk '{\$1=\$1;print}')
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
-    END_VERSIONS
     """
 }

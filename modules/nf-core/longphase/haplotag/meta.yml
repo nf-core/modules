@@ -1,7 +1,7 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "longphase_haplotag"
-description: LongPhase is an ultra-fast program for simultaneously co-phasing SNPs,
-  small indels, large SVs, and (5mC) modifications for Nanopore and PacBio platforms.
+description: LongPhase is an ultra-fast program for simultaneously co-phasing
+  SNPs, small indels, large SVs, and (5mC) modifications for Nanopore and PacBio
+  platforms.
 keywords:
   - haplotag
   - long-read
@@ -15,9 +15,9 @@ tools:
       documentation: "https://github.com/twolinin/longphase"
       tool_dev_url: "https://github.com/twolinin/longphase"
       doi: "10.1093/bioinformatics/btac058"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -28,22 +28,27 @@ input:
         type: file
         description: Sorted BAM/CRAM file
         pattern: "*.{bam,cram}"
+        ontologies: []
     - bai:
         type: file
         description: Index of sorted BAM/CRAM file
         pattern: "*.{bai,crai,csi}"
+        ontologies: []
     - snps:
         type: file
         description: VCF file with SNPs (and INDELs)
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
     - svs:
         type: file
         description: VCF file with SVs
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
     - mods:
         type: file
         description: modcall-generated VCF with modifications
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -53,6 +58,7 @@ input:
         type: file
         description: Reference fasta file
         pattern: "*.fasta"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -62,9 +68,10 @@ input:
         type: file
         description: Reference fai index
         pattern: "*.fai"
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,8 +80,9 @@ output:
           type: file
           description: BAM file with haplotagged reads
           pattern: "*.bam"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -83,11 +91,28 @@ output:
           type: file
           description: Log file
           pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_longphase:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - longphase:
+          type: string
+          description: The name of the tool
+      - "longphase --version | head -n 1 | sed 's/Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - longphase:
+          type: string
+          description: The name of the tool
+      - "longphase --version | head -n 1 | sed 's/Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@fellen31"
 maintainers:

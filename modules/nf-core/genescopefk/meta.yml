@@ -9,7 +9,8 @@ tools:
       description: "A derivative of GenomeScope2.0 modified to work with FastK"
       homepage: "https://github.com/thegenemyers/GENESCOPE.FK"
       tool_dev_url: "https://github.com/thegenemyers/GENESCOPE.FK"
-      licence: ["https://github.com/thegenemyers/GENESCOPE.FK/blob/main/LICENSE"]
+      license:
+        - "https://github.com/thegenemyers/GENESCOPE.FK/blob/main/LICENSE"
       identifier: ""
 input:
   - - meta:
@@ -19,12 +20,13 @@ input:
           e.g. [ id:'test', single_end:false ]
     - fastk_histex_histogram:
         type: file
-        description: A histogram formatted for GeneScope using the -G parameter from
-          Fastk Histex
+        description: A histogram formatted for GeneScope using the -G parameter
+          from Fastk Histex
         pattern: "*.hist"
+        ontologies: []
 output:
-  - linear_plot:
-      - meta:
+  linear_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -33,8 +35,9 @@ output:
           type: file
           description: A GeneScope linear plot in PNG format
           pattern: "*_linear_plot.png"
-  - log_plot:
-      - meta:
+          ontologies: []
+  log_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,8 +46,9 @@ output:
           type: file
           description: A GeneScope log plot in PNG format
           pattern: "*_log_plot.png"
-  - model:
-      - meta:
+          ontologies: []
+  model:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,8 +57,9 @@ output:
           type: file
           description: GeneScope model fit summary
           pattern: "*_model.txt"
-  - summary:
-      - meta:
+          ontologies: []
+  summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -63,8 +68,9 @@ output:
           type: file
           description: GeneScope histogram summary
           pattern: "*_summary.txt"
-  - transformed_linear_plot:
-      - meta:
+          ontologies: []
+  transformed_linear_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,8 +79,9 @@ output:
           type: file
           description: A GeneScope transformed linear plot in PNG format
           pattern: "*_transformed_linear_plot.png"
-  - transformed_log_plot:
-      - meta:
+          ontologies: []
+  transformed_log_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -83,8 +90,9 @@ output:
           type: file
           description: A GeneScope transformed log plot in PNG format
           pattern: "*_transformed_log_plot.png"
-  - kmer_cov:
-      - meta:
+          ontologies: []
+  kmer_cov:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -93,11 +101,38 @@ output:
           type: float
           description: Average kmer coverage value extracted from summary file
           pattern: "[0-9.]+"
-  - versions:
-      - versions.yml:
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_genescopefk.log":
           type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: GeneScopeFK command stdout log
+          pattern: "*_genescopefk.log"
+          ontologies: []
+  versions_genescopefk:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - genescopefk:
+          type: string
+          description: Name of the tool
+      - "R --version | sed '1!d; s/.*version //; s/ .*//'":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - genescopefk:
+          type: string
+          description: Name of the tool
+      - "R --version | sed '1!d; s/.*version //; s/ .*//'":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@mahesh-panchal"
 maintainers:

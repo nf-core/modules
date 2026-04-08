@@ -23,9 +23,10 @@ input:
         type: file
         description: |
           Reference database in FASTA format.
+        ontologies: []
 output:
-  - index:
-      - meta:
+  index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,11 +35,29 @@ output:
           type: file
           description: miniprot fasta index.
           pattern: "*.mpi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_miniprot:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - miniprot:
+          type: string
+          description: The tool name
+      - "miniprot --version":
+          type: eval
+          description: The command used to generate the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - miniprot:
+          type: string
+          description: The tool name
+      - "miniprot --version":
+          type: eval
+          description: The command used to generate the version of the tool
 authors:
   - "@yumisims"
   - "@muffato"

@@ -6,12 +6,14 @@ keywords:
   - coverage
 tools:
   - allelecounter:
-      description: Takes a file of locations and a [cr|b]am file and generates a count
-        of coverage of each allele at that location (given any filter settings)
+      description: Takes a file of locations and a [cr|b]am file and generates a
+        count of coverage of each allele at that location (given any filter
+        settings)
       homepage: https://github.com/cancerit/alleleCount
       documentation: https://github.com/cancerit/alleleCount
       tool_dev_url: https://github.com/cancerit/alleleCount
-      licence: ["GPL 3.0"]
+      licence:
+        - "GPL 3.0"
       identifier: ""
 input:
   - - meta:
@@ -23,20 +25,31 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_3462" # CRAM
+          - edam: "http://edamontology.org/format_2573" # SAM
     - input_index:
         type: file
         description: BAM/CRAM/SAM index file
         pattern: "*.{bai,crai,sai}"
-  - - loci:
-        type: file
-        description: loci file <CHR><tab><POS1>
-        pattern: "*.{tsv}"
-  - - fasta:
-        type: file
-        description: Input genome fasta file. Required when passing CRAM files.
+        ontologies:
+          - edam: "http://edamontology.org/format_3327" # BAI
+          - edam: "http://edamontology.org/format_3462" # CRAI
+  - loci:
+      type: file
+      description: loci file <CHR><tab><POS1>
+      pattern: "*.{tsv}"
+      ontologies:
+        - edam: "http://edamontology.org/format_3475" # TSV
+  - fasta:
+      type: file
+      description: Input genome fasta file. Required when passing CRAM files.
+      ontologies:
+        - edam: "http://edamontology.org/format_1929" # FASTA
 output:
-  - allelecount:
-      - meta:
+  allelecount:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,11 +58,28 @@ output:
           type: file
           description: Allele count file
           pattern: "*.{alleleCount}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_allelecounter:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - alleleCounter:
+          type: string
+          description: The name of the tool
+      - alleleCounter --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - alleleCounter:
+          type: string
+          description: The name of the tool
+      - alleleCounter --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@fullama"
   - "@fbdtemme"

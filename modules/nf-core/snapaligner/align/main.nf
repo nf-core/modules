@@ -4,8 +4,8 @@ process SNAPALIGNER_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/snap-aligner:2.0.3--hd03093a_0':
-        'biocontainers/snap-aligner:2.0.3--hd03093a_0' }"
+        'https://depot.galaxyproject.org/singularity/snap-aligner:2.0.5--h077b44d_2':
+        'biocontainers/snap-aligner:2.0.5--h077b44d_2' }"
 
     input:
     tuple val(meta) , path(reads, stageAs: "?/*")
@@ -14,7 +14,7 @@ process SNAPALIGNER_ALIGN {
     output:
     tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path("*.bai"), optional: true, emit: bai
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('snap-aligner'), eval("snap-aligner 2>&1 | sed 's/^.*version //;s/.\$//;q'"), topic: versions, emit: versions_snapaligner
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,10 +34,11 @@ process SNAPALIGNER_ALIGN {
         -o ${prefix}.bam \\
         -t ${task.cpus} \\
         $args
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        snapaligner: \$(snap-aligner 2>&1| head -n 1 | sed 's/^.*version //;s/.\$//')
-    END_VERSIONS
+    stub:
+    """
+    touch test.bam
+    touch test.bam.bai
     """
 }

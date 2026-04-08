@@ -1,12 +1,11 @@
 {
-    "test-purgedups-pbcstat": {
+    "purgedups-pbcstat": {
         "content": [
             {
                 "0": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         "test.PB.stat:md5,51e126445de86be9812e4b291f869f9c"
                     ]
@@ -14,20 +13,22 @@
                 "1": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         "test.PB.base.cov:md5,fe8c98de33f46406c239cc9a1e124a38"
                     ]
                 ],
                 "2": [
-                    "versions.yml:md5,fe831cb8cfe7b32de33d4836f5c34fd5"
+                    [
+                        "PURGEDUPS_PBCSTAT",
+                        "purge_dups",
+                        "1.2.6"
+                    ]
                 ],
                 "basecov": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         "test.PB.base.cov:md5,fe8c98de33f46406c239cc9a1e124a38"
                     ]
@@ -35,21 +36,81 @@
                 "stat": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         "test.PB.stat:md5,51e126445de86be9812e4b291f869f9c"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,fe831cb8cfe7b32de33d4836f5c34fd5"
+                "versions_purgedups": [
+                    [
+                        "PURGEDUPS_PBCSTAT",
+                        "purge_dups",
+                        "1.2.6"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-08-23T16:20:14.330937"
+        "timestamp": "2026-03-02T13:29:54.376174"
+    },
+    "purgedups-pbcstat - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.PB.stat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.PB.base.cov:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    [
+                        "PURGEDUPS_PBCSTAT",
+                        "purge_dups",
+                        "1.2.6"
+                    ]
+                ],
+                "basecov": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.PB.base.cov:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "stat": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.PB.stat:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_purgedups": [
+                    [
+                        "PURGEDUPS_PBCSTAT",
+                        "purge_dups",
+                        "1.2.6"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-03-02T13:30:03.409787"
     }
 }

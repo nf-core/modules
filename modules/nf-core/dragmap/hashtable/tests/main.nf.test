@@ -23,16 +23,15 @@ nextflow_process {
         }
 
         then {
+            assert { process.success }
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                         file(process.out.hashmap[0][1]).name,
-                        file(process.out.versions[0]).name
+                        process.out.findAll { key, val -> key.startsWith("versions") },
                     ).match()
                 }
             )
         }
-
     }
 
     test("sarscov2 - fasta - stub") {
@@ -51,19 +50,16 @@ nextflow_process {
         }
 
         then {
+            assert { process.success }
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                        file(process.out.hashmap[0][1]).name,
-                        file(process.out.versions[0]).name
-                    ).match()
-                }
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith("versions") },
+                ).match() }
             )
         }
-
     }
 
     // TODO Add test using alt-masked bed file
     // https://github.com/Illumina/dragmap#build-hash-table-using-an-alt-masked-bed-file
-
 }

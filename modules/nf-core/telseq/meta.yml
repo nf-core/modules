@@ -27,19 +27,26 @@ tools:
       licence: ["MIT"]
       identifier: "biotools:samtools"
 input:
-  - - "meta ":
+  - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'genome' ]
+          e.g. [ id:'test', single_end:false ]
     - bam:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - bai:
         type: file
         description: bam index file
         pattern: "*.{bai,crai}"
+        ontologies: []
+    - bed:
+        type: file
+        description: Optional exome regions in BED format. These regions will be excluded
+        pattern: "*.bed"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -49,27 +56,15 @@ input:
         type: file
         description: Reference genome file
         pattern: "*.{fa,fasta}"
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing reference index information
-          e.g. [ id:'genome' ]
+        ontologies: []
     - fai:
         type: file
         description: Fasta index file
         pattern: "*.fai"
-  - - meta4:
-        type: map
-        description: |
-          Groovy Map containing bed information
-          e.g. [ id:'genome' ]
-    - bed:
-        type: file
-        description: Optional exome regions in BED format. These regions will be excluded
-        pattern: "*.bed"
+        ontologies: []
 output:
-  - output:
-      - meta:
+  output:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -78,11 +73,48 @@ output:
           type: file
           description: Telseq output
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_telseq:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - telseq:
+          type: string
+          description: The name of the tool
+      - "echo 0.0.2":
+          type: eval
+          description: The expression to obtain the version of telseq
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - "samtools --version | sed -n '1s/samtools //p'":
+          type: eval
+          description: The expression to obtain the version of samtools
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - telseq:
+          type: string
+          description: The name of the tool
+      - "echo 0.0.2":
+          type: eval
+          description: The expression to obtain the version of telseq
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - "samtools --version | sed -n '1s/samtools //p'":
+          type: eval
+          description: The expression to obtain the version of samtools
 authors:
   - "@lindenb"
 maintainers:

@@ -45,7 +45,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert workflow.out.db.get(0).get(1) ==~ ".*/db" },
+                { assert workflow.out.db.get(0).get(1) ==~ ".*/kraken2-database" },
                 { assert snapshot (
                         workflow.out.versions,
                         path("${workflow.out.db[0][1]}/hash.k2d"),
@@ -92,7 +92,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert workflow.out.db.get(0).get(1) ==~ ".*/db" },
+                { assert workflow.out.db.get(0).get(1) ==~ ".*/kraken2-database" },
                 { assert snapshot (
                         workflow.out.versions,
                         path("${workflow.out.db[0][1]}/hash.k2d"),
@@ -140,7 +140,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert workflow.out.db.get(0).get(1) ==~ ".*/db" },
+                { assert workflow.out.db.get(0).get(1) ==~ ".*/kraken2-database" },
                 { assert snapshot (
                         workflow.out.versions,
                         path("${workflow.out.db[0][1]}/hash.k2d"),

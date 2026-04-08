@@ -23,8 +23,8 @@ input:
         description: "The 'Tag Directory'"
         pattern: "tagDir"
 output:
-  - bedGraph:
-      - meta:
+  bedGraph:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -33,11 +33,15 @@ output:
           type: file
           description: The UCSC bed graph
           pattern: "*.bedGraph.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@edmundmiller"
 maintainers:

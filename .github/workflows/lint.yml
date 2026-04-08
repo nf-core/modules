@@ -29,15 +29,17 @@ env:
   NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
-  NXF_VER: "24.10.1"
+  NXF_VER: "25.10.2"
+  NXF_SYNTAX_PARSER: "v2"
 
 jobs:
   pre-commit:
     runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5
-      - uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: nf-core/setup-nextflow@v2
+      - name: Run prek
+        uses: j178/prek-action@53276d8b0d10f8b6672aa85b4588c6921d0370cc # v2.0.1
         with:
           extra_args: ""
 
@@ -64,11 +66,11 @@ jobs:
           sudo rm -rf ./* || true
           sudo rm -rf ./.* || true
 
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 2 # To retrieve the preceding commit.
 
-      - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3
+      - uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4
         id: filter
         with:
           filters: |
@@ -80,33 +82,29 @@ jobs:
           list-files: "json"
 
       - name: Get module name
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         id: module_names
         with:
           script: |
             return [...new Set(${{ steps.filter.outputs.modules_files }}
+              .filter(x => x.endsWith('main.nf') || x.endsWith('.nf.test.snap'))
               .map(path => path
                 .replace('modules/nf-core/', '')
-                .split('/')
-                .slice(0, 2)
-                .filter(x => !x.startsWith('main.nf') && x !== 'tests' && x !== 'templates' && x !== 'meta.yml' && x !== 'environment.yml' && !x.endsWith('.md'))
-                .join('/'))
+                .replace(/\/(main\.nf|tests\/.*)$/, '')
               )
-            ];
+            )];
       - name: Get subworkflow name
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         id: subworkflow_names
         with:
           script: |
             return [...new Set(${{ steps.filter.outputs.subworkflows_files }}
+              .filter(x => x.endsWith('main.nf') || x.endsWith('.nf.test.snap'))
               .map(path => path
                 .replace('subworkflows/nf-core/', '')
-                .split('/')
-                .slice(0, 2)
-                .filter(x => !x.startsWith('main.nf') && x !== 'tests' && x !== 'templates' && x !== 'meta.yml' && x !== 'environment.yml' && !x.endsWith('.md'))
-                .join('/'))
+                .replace(/\/(main\.nf|tests\/.*)$/, '')
               )
-            ];
+            )];
 
       - name: debug
         run: |
@@ -122,7 +120,7 @@ jobs:
       - image=ubuntu22-full-x64
     name: nf-core lint modules
     needs: nf-core-changes
-    if: ${{ (needs.nf-core-changes.outputs.modules == 'true') }}
+    if: ${{ needs.nf-core-changes.outputs.modules_files != '[]' }}
     strategy:
       fail-fast: false
       matrix:
@@ -132,13 +130,13 @@ jobs:
         run: |
           sudo rm -rf ./* || true
           sudo rm -rf ./.* || true
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Set up Python
-        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
         with:
-          python-version: "3.13"
+          python-version: "3.14"
 
-      - uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
+      - uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         id: cache-pip
         with:
           path: ~/.cache/pip
@@ -149,7 +147,7 @@ jobs:
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4
+      - uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5
         with:
           distribution: "temurin"
           java-version: "17"
@@ -170,7 +168,7 @@ jobs:
       - image=ubuntu22-full-x64
     name: nf-core lint subworkflows
     needs: nf-core-changes
-    if: ${{ (needs.nf-core-changes.outputs.subworkflows == 'true') }}
+    if: ${{ needs.nf-core-changes.outputs.subworkflows_files != '[]' }}
     strategy:
       fail-fast: false
       matrix:
@@ -180,11 +178,11 @@ jobs:
         run: |
           sudo rm -rf ./* || true
           sudo rm -rf ./.* || true
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Set up Python
-        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
         with:
-          python-version: "3.13"
+          python-version: "3.14"
 
       - name: Set up Nextflow
         uses: nf-core/setup-nextflow@v2

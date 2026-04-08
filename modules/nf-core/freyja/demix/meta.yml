@@ -13,47 +13,82 @@ tools:
       documentation: "https://github.com/andersen-lab/Freyja/wiki"
       tool_dev_url: "https://github.com/andersen-lab/Freyja"
       doi: "10.1038/s41586-022-05049-6"
-      licence: ["BSD-2-Clause"]
-      identifier: ""
+      licence:
+        - "BSD-2-Clause"
+      identifier: "biotools:freyja"
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - variants:
         type: file
         description: File containing identified variants in a gff-like format
         pattern: "*.variants.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
     - depths:
         type: file
         description: File containing depth of the variants
         pattern: "*.depth.tsv"
-  - - barcodes:
-        type: file
-        description: File containing lineage defining barcodes
-        pattern: "*barcodes.csv"
-  - - lineages_meta:
-        type: file
-        description: File containing lineage metadata that correspond to barcodes
-        pattern: "*lineages.json"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - barcodes:
+      type: file
+      description: File containing lineage defining barcodes
+      pattern: "*barcodes.csv"
+      ontologies:
+        - edam: http://edamontology.org/format_3752 # CSV
+  - lineages_meta:
+      type: file
+      description: Optional file containing lineage metadata that correspond to
+        barcodes
+      pattern: "*lineages.json"
+      ontologies:
+        - edam: http://edamontology.org/format_3464 # JSON
+  - lineages_topology:
+      type: file
+      description: Optional file containing lineage topology information that
+        correspond to barcodes
+      pattern: "*lineages.yml"
+      ontologies:
+        - edam: http://edamontology.org/format_3750 # YAML
 output:
-  - demix:
-      - meta:
+  demix:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*.tsv":
           type: file
-          description: a tsv file that includes the lineages present, their corresponding
-            abundances, and summarization by constellation
+          description: a tsv file that includes the lineages present, their
+            corresponding abundances, and summarization by constellation
           pattern: "*.demix.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_freyja:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - freyja:
+          type: string
+          description: The name of the tool
+      - freyja --version | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - freyja:
+          type: string
+          description: The name of the tool
+      - freyja --version | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Joon-Klaps"
 maintainers:

@@ -5,8 +5,8 @@ process HAPPY_SOMPY {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hap.py:0.3.14--py27h5c5a3ab_0':
-        'biocontainers/hap.py:0.3.14--py27h5c5a3ab_0' }"
+        'https://depot.galaxyproject.org/singularity/hap.py:0.3.15--py27hcb73b3d_0':
+        'biocontainers/hap.py:0.3.15--py27hcb73b3d_0' }"
 
     input:
     tuple val(meta), path(query_vcf), path(truth_vcf), path(regions_bed), path(targets_bed)
@@ -20,7 +20,7 @@ process HAPPY_SOMPY {
     tuple val(meta), path('*.features.csv')           , emit: features, optional: true
     tuple val(meta), path('*.metrics.json')           , emit: metrics
     tuple val(meta), path('*.stats.csv')              , emit: stats
-    path "versions.yml"                               , emit: versions
+    tuple val("${task.process}"), val('happy'), val('0.3.15'), topic: versions, emit: versions_happy
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,8 +32,7 @@ process HAPPY_SOMPY {
     def targets = targets_bed ? "-T ${targets_bed}" : ""
     def false_positives = false_positives_bed ? "--false-positives ${false_positives_bed}" : ""
     def ambiguous = ambiguous_beds ? "--ambiguous ${ambiguous_beds}" : ""
-    def bams = bams ? "--bam ${bams}" : ""
-    def VERSION = '0.3.14' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def bams_opt = bams ? "--bam ${bams}" : ""
     """
     som.py \\
         ${truth_vcf} \\
@@ -44,26 +43,17 @@ process HAPPY_SOMPY {
         ${targets} \\
         ${false_positives} \\
         ${ambiguous} \\
-        ${bams} \\
+        ${bams_opt} \\
         -o ${prefix}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hap.py: $VERSION
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.3.14' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.features.csv
     touch ${prefix}.metrics.json
     touch ${prefix}.stats.csv
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hap.py: $VERSION
-    END_VERSIONS
     """
 }

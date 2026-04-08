@@ -1,0 +1,91 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "SCANPY_HASHSOLO"
+description: Probabilistic demultiplexing of cell hashing data
+keywords:
+  - anndata
+  - single-cell
+  - hashing
+  - demultiplexing
+  - scanpy
+tools:
+  - "scanpy":
+      description: "Single-cell analysis in Python. Scales to >100M cells."
+      homepage: "https://github.com/scverse/scanpy"
+      documentation: "https://scanpy.readthedocs.io/en/stable/generated/scanpy.external.pp.hashsolo.html"
+      tool_dev_url: "https://github.com/scverse/scanpy"
+      doi: "10.1186/s13059-017-1382-0"
+      licence: ["BSD-3"]
+      identifier: biotools:scanpy
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - data:
+        type: file
+        description: |
+          A directory in 10x Genomics format containing `matrix.mtx.gz`, `features.tsv.gz`, `barcodes.tsv.gz` (hashing count matrix), or an AnnData (`.h5ad`) file with hashing counts stored in `.obs`.
+        ontologies:
+          - edam: "http://edamontology.org/data_3917" # count matrix
+    - cell_hashing_columns:
+        type: list
+        description: |
+          Groovy list (`['hash_1', 'hash_2']`) of `.obs` columns that contain cell hashing counts.
+          Can be `[]` if the data is in 10x Genomics format, as the columns are derived from the input.
+
+output:
+  assignment:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_assignment_hashsolo.csv":
+          type: file
+          description: |
+            CSV file containing hashsolo assignment results
+          pattern: "*_assignment_hashsolo.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  h5ad:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_hashsolo.h5ad":
+          type: file
+          description: |
+            Processed AnnData object containing hashsolo results
+          pattern: "*_hashsolo.h5ad"
+          ontologies:
+            - edam: "http://edamontology.org/format_3590" # HDF5 format
+  params:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+          pattern: "*_params_hashsolo.csv"
+      - "*_params_hashsolo.csv":
+          type: file
+          description: |
+            CSV file containing parameters used in hashsolo analysis
+          pattern: "*_params_hashsolo.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@seohyonkim"
+  - "@LuisHeinzlmeier"
+maintainers:
+  - "@seohyonkim"
+  - "@LuisHeinzlmeier"

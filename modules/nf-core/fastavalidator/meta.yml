@@ -17,7 +17,8 @@ tools:
       documentation: "https://github.com/linsalrob/py_fasta_validator"
       tool_dev_url: "https://github.com/linsalrob/py_fasta_validator"
       doi: "10.5281/zenodo.5002710"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -29,9 +30,10 @@ input:
         type: file
         description: Input fasta file
         pattern: "*.fasta"
+        ontologies: []
 output:
-  - success_log:
-      - meta:
+  success_log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing file information
@@ -40,8 +42,9 @@ output:
           type: file
           description: Log file for successful validation
           pattern: "*.success.log"
-  - error_log:
-      - meta:
+          ontologies: []
+  error_log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing file information
@@ -50,11 +53,28 @@ output:
           type: file
           description: Log file for failed validation
           pattern: "*.error.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_py_fasta_validator:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - py_fasta_validator:
+          type: string
+          description: The name of the tool
+      - py_fasta_validator --version | cut -d" " -f3:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - py_fasta_validator:
+          type: string
+          description: The name of the tool
+      - py_fasta_validator --version | cut -d" " -f3:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@gallvp"
 maintainers:

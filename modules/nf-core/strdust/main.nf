@@ -4,8 +4,8 @@ process STRDUST {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/22/221e56e37fd3e90c073638096d7baafbb7ff436c1b6aed0005b15e47a87a071b/data':
-        'community.wave.seqera.io/library/htslib_strdust:6994d409d546bb89' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6f/6f04a42bd6b0a404b5572375b4cd7cb6058d3324fd13591776691356f369df28/data':
+        'community.wave.seqera.io/library/htslib_strdust:a87586002d487c58' }"
 
     input:
     tuple val(meta) , path(bam), path(bai)
@@ -16,7 +16,8 @@ process STRDUST {
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val(meta), path("*.tbi")   , emit: tbi     , optional: true
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('strdust'), eval("STRdust --version |& sed '1!d ; s/STRdust //'"), topic: versions, emit: versions_strdust
+    tuple val("${task.process}"), val('bgzip'), eval("bgzip --version |& sed '1!d ; s/bgzip (htslib) //'"), topic: versions, emit: versions_bgzip
 
     when:
     task.ext.when == null || task.ext.when
@@ -45,12 +46,6 @@ process STRDUST {
         | bgzip $args2 --threads $task.cpus \\
         > ${prefix}.vcf.gz
     $tabix_cmd
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        STRdust: \$(STRdust --version |& sed '1!d ; s/STRdust //')
-        bgzip: \$(bgzip --version |& sed '1!d ; s/bgzip (htslib) //')
-    END_VERSIONS
     """
 
     stub:
@@ -60,11 +55,5 @@ process STRDUST {
     """
     echo "" | bgzip > ${prefix}.vcf.gz
     $tabix_cmd
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        strdust: \$(STRdust --version |& sed '1!d ; s/STRdust //')
-        bgzip: \$(bgzip --version |& sed '1!d ; s/bgzip (htslib) //')
-    END_VERSIONS
     """
 }

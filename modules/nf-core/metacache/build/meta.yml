@@ -1,0 +1,92 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "metacache_build"
+description: Taxonomic profiling database building with MetaCache
+keywords:
+  - genomics
+  - metagenomics
+  - taxonomy
+  - short reads
+  - long reads
+  - kmer
+  - k-mer
+  - metacache
+  - build
+  - reference
+tools:
+  - "metacache":
+      description: |
+        MetaCache is a classification system for mapping genomic sequences (short reads, long reads, contigs, ...) from metagenomic samples to their most likely taxon of origin. It aims to reduce the memory requirement usually associated with k-mer based methods while retaining their speed. MetaCache uses locality sensitive hashing to quickly identify candidate regions within one or multiple reference genomes. A read is then classified based on the similarity to those regions.
+
+        For an independent comparison to other tools in terms of classification accuracy see the LEMMI benchmarking site.
+
+        The latest version of MetaCache classifies around 60 Million reads (of length 100) per minute against all complete bacterial, viral and archaea genomes from NCBI RefSeq Release 97 running with 88 threads on a workstation with 2 Intel(R) Xeon(R) Gold 6238 CPUs.
+      homepage: "https://muellan.github.io/metacache"
+      documentation: "https://github.com/muellan/metacache/tree/master/docs"
+      tool_dev_url: "https://github.com/muellan/metacache"
+      licence: ["GPL v3-or-later"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+
+    - genome_files:
+        # Mandatory
+        type: file
+        description: "(possibly gzipped) fasta or fastq files of full genomes, for example
+          from an NCBI assembly"
+        pattern: "*.{fna,fa,fasta,fnq,fq,fastq}{,.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+          - edam: "http://edamontology.org/format_1930"
+          - edam: "http://edamontology.org/format_1954"
+          - edam: "http://edamontology.org/data_2044"
+  - taxonomy:
+      # Optional
+      type: file
+      description: "NCBI taxonomy formatted files nodes.dmp and names.dmp"
+      pattern: "{names,nodes,merged}.dmp"
+      ontologies:
+        - edam: "http://edamontology.org/data_3028"
+  - seq2taxid:
+      # Optional
+      type: file
+      description: >
+        NCBI-style 'accession2taxid' tab-separated file with 3 or 4 columns:
+        accession, accession_version, taxid, and gid (optional)
+      pattern: "*"
+      ontologies: []
+output:
+  db:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.meta":
+          type: file
+          description: "sequence signature database binary file"
+          pattern: "*.meta"
+          ontologies:
+            - edam: "http://edamontology.org/format_2333" # Binary format
+      - "*.cache*":
+          type: file
+          description: "sequence signature database binary files"
+          pattern: "*.cache+([0-9])"
+          ontologies:
+            - edam: "http://edamontology.org/format_2333" # Binary format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@Gullumluvl"
+maintainers:
+  - "@Gullumluvl"

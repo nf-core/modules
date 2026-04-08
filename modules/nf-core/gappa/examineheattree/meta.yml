@@ -25,9 +25,10 @@ input:
         description: jplace file output from phylogenetic placement, e.g. EPA-NG, gzipped
           or not
         pattern: "*.{jplace,jplace.gz}"
+        ontologies: []
 output:
-  - newick:
-      - meta:
+  newick:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,8 +37,9 @@ output:
           type: file
           description: phylogenetic tree file in newick format
           pattern: "*.newick"
-  - nexus:
-      - meta:
+          ontologies: []
+  nexus:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,8 +48,9 @@ output:
           type: file
           description: coloured phylogenetic tree file in nexus format
           pattern: "*.nexus"
-  - phyloxml:
-      - meta:
+          ontologies: []
+  phyloxml:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -56,8 +59,9 @@ output:
           type: file
           description: coloured phylogenetic tree file in phyloxml format
           pattern: "*.phyloxml"
-  - svg:
-      - meta:
+          ontologies: []
+  svg:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,8 +70,9 @@ output:
           type: file
           description: coloured phylogenetic tree file in svg format
           pattern: "*.svg"
-  - colours:
-      - meta:
+          ontologies: []
+  colours:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -76,8 +81,9 @@ output:
           type: file
           description: colours used in plot
           pattern: "*.colours.txt"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -86,11 +92,14 @@ output:
           type: file
           description: log file from the run
           pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@erikrikarddaniel"
 maintainers:

@@ -38,7 +38,7 @@ process MOTUS_PROFILE {
         -t $task.cpus \\
         -n $prefix \\
         -o ${prefix}.out \\
-        2> >(tee ${prefix}.log >&2)
+        2>| >(tee ${prefix}.log >&2)
 
     ## mOTUs version number is not available from command line.
     ## mOTUs save the version number in index database folder.
@@ -55,14 +55,7 @@ process MOTUS_PROFILE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def inputs = reads[0].getExtension() == 'bam' ?
-                    "-i ${reads}" :
-                    reads[0].getExtension() == 'mgc' ? "-m $reads" :
-                        meta.single_end ?
-                            "-s $reads" : "-f ${reads[0]} -r ${reads[1]}"
-    def refdb = db ? "-db ${db}" : ""
     """
     touch ${prefix}.out
     touch ${prefix}.log

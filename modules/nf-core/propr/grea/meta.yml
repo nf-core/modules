@@ -30,6 +30,9 @@ input:
           Adjacency matrix representing the graph connections (ie. 1 for edges, 0 otherwise).
           This can be the adjacency matrix output from gene ratio approaches like propr/propd.
         pattern: "*.{csv,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3475 # TSV
   - - meta2:
         type: map
         description: |
@@ -43,30 +46,37 @@ input:
           concept id (eg. GO term, pathway, etc), the second column is the concept description, and the
           rest are nodes (eg. genes) that is associated to the given concept.
         pattern: "*.{gmt}"
+        ontologies: []
 output:
-  - results:
-      - meta:
+  results:
+    - - meta:
           type: file
           description: |
             Groovy Map containing sample information.
             This can be used at the workflow level to pass optional parameters to the module.
             [id: 'test', ...]
+          ontologies: []
       - "*.grea.tsv":
           type: file
           description: |
             Output file containing the information about the tested concepts (ie. gene sets)
             and enrichment statistics.
           pattern: "*.grea.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-  - session_info:
-      - "*.R_sessionInfo.log":
-          type: file
-          description: dump of R SessionInfo
-          pattern: "*.R_sessionInfo.log"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  session_info:
+    - "*.R_sessionInfo.log":
+        type: file
+        description: dump of R SessionInfo
+        pattern: "*.R_sessionInfo.log"
+        ontologies: []
 authors:
   - "@caraiz2001"
   - "@suzannejin"

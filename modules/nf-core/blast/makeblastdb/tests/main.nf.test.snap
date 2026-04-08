@@ -1,8 +1,7 @@
 {
-    "Should build a blast db folder from a fasta file": {
+    "makeblastdb - fasta": {
         "content": [
             [
-                "genome.fasta",
                 "genome.fasta.ndb",
                 "genome.fasta.nhr",
                 "genome.fasta.nin",
@@ -13,7 +12,6 @@
                 "genome.fasta.nto"
             ],
             [
-                "genome.fasta:md5,6e9fe4042a72f2345f644f239272b7e6",
                 "genome.fasta.ndb:md5,0d553c830656469211de113c5022f06d",
                 "genome.fasta.nhr:md5,f4b4ddb034fd3dd7b25c89e9d50c004e",
                 "genome.fasta.not:md5,1e53e9d08f1d23af0299cfa87478a7bb",
@@ -21,19 +19,88 @@
                 "genome.fasta.ntf:md5,de1250813f0c7affc6d12dac9d0fb6bb",
                 "genome.fasta.nto:md5,33cdeccccebe80329f1fdbee7f5874cb"
             ],
-            "versions.yml:md5,cb63396fd8d8f4df57913b63452d6ba8"
+            {
+                "versions_makeblastdb": [
+                    [
+                        "BLAST_MAKEBLASTDB",
+                        "makeblastdb",
+                        "2.17.0+"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-08-09T15:40:32.52079"
+        "timestamp": "2026-02-11T14:44:37.88135"
     },
-    "Should build a blast db folder from a zipped fasta file": {
+    "makeblastdb - fasta.gz - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "genome.fasta.fasta:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.fasta.ndb:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.fasta.nhr:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.fasta.nin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.fasta.njs:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.fasta.not:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.fasta.nsq:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.fasta.ntf:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.fasta.nto:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.gz:md5,6e9fe4042a72f2345f644f239272b7e6"
+                        ]
+                    ]
+                ],
+                "1": [
+                    [
+                        "BLAST_MAKEBLASTDB",
+                        "makeblastdb",
+                        "2.17.0+"
+                    ]
+                ],
+                "db": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "genome.fasta.fasta:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.fasta.ndb:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.fasta.nhr:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.fasta.nin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.fasta.njs:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.fasta.not:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.fasta.nsq:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.fasta.ntf:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.fasta.nto:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.gz:md5,6e9fe4042a72f2345f644f239272b7e6"
+                        ]
+                    ]
+                ],
+                "versions_makeblastdb": [
+                    [
+                        "BLAST_MAKEBLASTDB",
+                        "makeblastdb",
+                        "2.17.0+"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-11T14:44:47.814955"
+    },
+    "makeblastdb - fasta.gz": {
         "content": [
             [
-                "genome.fasta",
-                "genome.fasta.gz",
                 "genome.fasta.ndb",
                 "genome.fasta.nhr",
                 "genome.fasta.nin",
@@ -44,7 +111,6 @@
                 "genome.fasta.nto"
             ],
             [
-                "genome.fasta:md5,6e9fe4042a72f2345f644f239272b7e6",
                 "genome.fasta.ndb:md5,0d553c830656469211de113c5022f06d",
                 "genome.fasta.nhr:md5,f4b4ddb034fd3dd7b25c89e9d50c004e",
                 "genome.fasta.not:md5,1e53e9d08f1d23af0299cfa87478a7bb",
@@ -52,12 +118,20 @@
                 "genome.fasta.ntf:md5,de1250813f0c7affc6d12dac9d0fb6bb",
                 "genome.fasta.nto:md5,33cdeccccebe80329f1fdbee7f5874cb"
             ],
-            "versions.yml:md5,cb63396fd8d8f4df57913b63452d6ba8"
+            {
+                "versions_makeblastdb": [
+                    [
+                        "BLAST_MAKEBLASTDB",
+                        "makeblastdb",
+                        "2.17.0+"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-08-09T15:40:37.45154"
+        "timestamp": "2026-02-11T14:44:42.886952"
     }
 }

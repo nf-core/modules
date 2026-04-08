@@ -15,26 +15,28 @@ tools:
       licence: ["MIT"]
       identifier: biotools:nextclade
 input:
-  - - dataset:
-        type: string
-        description: Name of dataset to retrieve. A list of available datasets can be
-          obtained using the nextclade dataset list command.
-        pattern: ".+"
-  - - tag:
-        type: string
-        description: Version tag of the dataset to download. A list of available datasets
-          can be obtained using the nextclade dataset list command.
-        pattern: ".+"
-output:
   - dataset:
-      - $prefix:
-          type: directory
-          description: Directory containing the dataset
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+      type: string
+      description: Name of dataset to retrieve. A list of available datasets can be
+        obtained using the nextclade dataset list command.
+      pattern: ".+"
+  - tag:
+      type: string
+      description: Version tag of the dataset to download. A list of available datasets
+        can be obtained using the nextclade dataset list command.
+      pattern: ".+"
+output:
+  dataset:
+    - $prefix:
+        type: directory
+        description: Directory containing the dataset
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@antunderwood"
   - "@drpatelh"

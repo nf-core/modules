@@ -1,0 +1,103 @@
+nextflow_process {
+
+    name "Test Process FASTQDL"
+    script "../main.nf"
+    process "FASTQDL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fastqdl"
+
+    test("fastqdl - run") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    'ERR5069949'
+                    ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+        test("fastqdl - experiment") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    'ERX4876079'
+                    ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("fastqdl - run - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of ([
+                    [ id:'test' ],
+                    'ERR5069949'
+                    ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+test("fastqdl - experiment - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of ([
+                    [ id:'test' ],
+                    'ERX4876079'
+                    ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

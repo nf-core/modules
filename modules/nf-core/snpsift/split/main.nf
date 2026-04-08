@@ -1,18 +1,18 @@
 process SNPSIFT_SPLIT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/snpsift:4.3.1t--hdfd78af_3' :
-        'biocontainers/snpsift:4.3.1t--hdfd78af_3' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3d/3d8ec79a01bcc86a5ce258c66fc18e48c1826aebc7e7114454757919162ff9e6/data'
+        : 'community.wave.seqera.io/library/snpsift:5.4.0c--6546f37f72acfb46'}"
 
     input:
     tuple val(meta), path(vcf)
 
     output:
     tuple val(meta), path("*.vcf"), emit: out_vcfs
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,21 +24,22 @@ process SNPSIFT_SPLIT {
         """
         SnpSift \\
             split \\
-            $args \\
-            $vcf
+            ${args} \\
+            ${vcf}
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
             snpsift: \$( echo \$(SnpSift split -h 2>&1) | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g' )
         END_VERSIONS
         """
-    } else {
+    }
+    else {
         """
         SnpSift \\
             split \\
             -j \\
-            $args \\
-            $vcf \\
+            ${args} \\
+            ${vcf} \\
             > ${prefix}.joined.vcf
 
         cat <<-END_VERSIONS > versions.yml
@@ -48,4 +49,16 @@ process SNPSIFT_SPLIT {
         """
     }
 
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}.chr1.vcf
+    touch ${prefix}.chr2.vcf
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        snpsift: \$( echo \$(SnpSift split -h 2>&1) | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g' )
+    END_VERSIONS
+    """
 }

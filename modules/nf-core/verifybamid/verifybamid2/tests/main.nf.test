@@ -60,12 +60,13 @@ nextflow_process {
                     process.out.mu,
                     process.out.self_sm,
                     process.out.ancestry,
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith("versions") },
                     file(process.out.ud[0][1]).name
                     ).match() }
             )
         }
     }
+
 
     test("Should run with panel input") {
         config "./nextflow.config"
@@ -90,8 +91,152 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.log[0][1]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
+            )
+        }
+    }
+
+    test("Should run with SVD input - stub") {
+        config "./nextflow.config"
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ],
+                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam'),
+                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai') ]
+                input[1] = [ file(params.modules_testdata_base_path + 'delete_me/verifybamid/test.genome.vcf.UD'),
+                             file(params.modules_testdata_base_path + 'delete_me/verifybamid/test.genome.vcf.mu'),
+                             file(params.modules_testdata_base_path + 'delete_me/verifybamid/test.genome.vcf.bed') ]
+                input[2] = []
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta')
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "bed", "mu", "ud", "self_sm", "ancestry"])
+                    ).match() }
+            )
+        }
+    }
+
+    test("Should run with RefVCF input - stub") {
+        config "./nextflow.config"
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ],
+                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam'),
+                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai') ]
+                input[1] = [ [], [], [] ]
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf')
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta')
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "bed", "mu", "ud", "self_sm", "ancestry"])
+                    ).match() }
+            )
+        }
+    }
+
+    test("Should run with panel input - stub") {
+        config "./nextflow.config"
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ],
+                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam'),
+                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai') ]
+                input[1] = [ file(params.modules_testdata_base_path + 'delete_me/verifybamid/test.genome.vcf.UD'),
+                             file(params.modules_testdata_base_path + 'delete_me/verifybamid/test.genome.vcf.mu'),
+                             file(params.modules_testdata_base_path + 'delete_me/verifybamid/test.genome.vcf.bed') ]
+                input[2] = []
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta')
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "bed", "mu", "ud", "self_sm", "ancestry"])
+                    ).match() }
+            )
+        }
+    }
+
+    test("Should run with alternative .fa reference input -stub") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ],
+                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam'),
+                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai') ]
+                input[1] = [ [], [], [] ]
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf')
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz')
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.log[0][1]).name,
+                    process.out.bed,
+                    process.out.mu,
+                    process.out.self_sm,
+                    process.out.ancestry,
+                    process.out.findAll { key, val -> key.startsWith("versions") },
+                    file(process.out.ud[0][1]).name
+                    ).match() }
+            )
+        }
+    }
+
+    test("Should run with alternative .fa reference input") {
+        config "./nextflow.config"
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ],
+                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam'),
+                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai') ]
+                input[1] = [ [], [], [] ]
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf')
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz')
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "bed", "mu", "ud", "self_sm", "ancestry"])
+                    ).match() }
             )
         }
     }

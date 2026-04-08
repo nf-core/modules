@@ -2,8 +2,9 @@ name: "clame"
 description: binning of metagenomic sequences
 keywords:
   - sort
-  - example
   - genomics
+  - binning
+  - metagenomics
 tools:
   - "clame":
       description: "CLAME is a binning software for metagenomic reads. It immplements
@@ -25,9 +26,10 @@ input:
         type: file
         description: Nucleotide sequences in FASTA format
         pattern: "*.{fasta,fa,fna,faa}"
+        ontologies: []
 output:
-  - fasta:
-      - meta:
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,8 +39,9 @@ output:
           description: Output fasta file for all the bins reported, optional since it
             will be created when bins can be found
           pattern: "*.{fasta}"
-  - bins:
-      - meta:
+          ontologies: []
+  bins:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,8 +50,9 @@ output:
           type: file
           description: All bins reported
           pattern: "*.{binning}"
-  - fm:
-      - meta:
+          ontologies: []
+  fm:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,8 +61,9 @@ output:
           type: file
           description: FM-index output
           pattern: "*.{fm9}"
-  - index:
-      - meta:
+          ontologies: []
+  index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -68,8 +73,9 @@ output:
           description: 1st column contains the original name for each read, 2nd column
             the index used by CLAME
           pattern: "*.{index}"
-  - links:
-      - meta:
+          ontologies: []
+  links:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -78,8 +84,9 @@ output:
           type: file
           description: Histogram links by number of reads
           pattern: "*.{links}"
-  - result:
-      - meta:
+          ontologies: []
+  result:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -88,10 +95,13 @@ output:
           type: file
           description: Adjacency list for the overlap detected by each read
           pattern: "*.{result}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@alxndrdiaz"
