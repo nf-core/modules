@@ -30,7 +30,6 @@ process LLAMACPP_PYTHON_RUN {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch output.txt
-
+    touch ${prefix}.txt
     """
 }
