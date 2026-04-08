@@ -10,7 +10,7 @@ process LLAMACPP_PYTHON_RUN {
     tuple val(meta), path(prompt_file), path(gguf_model)
 
     output:
-    tuple val(meta), path("output.txt"), emit: output
+    tuple val(meta), path("${prefix}.txt"), emit: output
     tuple val("${task.process}"), val("llama-cpp-python"), eval("python3 -c 'import llama_cpp; print(llama_cpp.__version__)'"), topic: versions, emit: versions_llama_cpp_python
 
     when:
