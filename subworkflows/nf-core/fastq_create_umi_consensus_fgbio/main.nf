@@ -23,9 +23,8 @@ include { SAMTOOLS_SORT as SORTBAM                              } from '../../..
 workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     take:
     reads // channel: [mandatory] [ val(meta), [ reads ] ]
-    fasta_fai // channel: [mandatory] [ val(meta), /path/to/reference/fasta, /path/to/reference/fasta.fai ]
+    fasta_fai_dict // channel: [mandatory] [ val(meta), /path/to/reference/fasta, /path/to/reference/fasta.fai, /path/to/reference/dictionary ]
     bwa_index // channel: [optional]  [ val(meta), /path/to/reference/bwaindex ]
-    dict // channel: [mandatory] [ val(meta), /path/to/reference/dictionary ]
     groupreadsbyumi_strategy // string:  [mandatory] grouping strategy - default: "Adjacency"
     aligner // string:  [mandatory] "bwa-mem" or "bwa-mem2"
     duplex // bool:    [mandatory] true or false depending on UMI structure
@@ -54,7 +53,7 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     if (aligner == "bwa-mem") {
 
         if (!bwa_index) {
-            BWAMEM1_INDEX(fasta_fai)
+            BWAMEM1_INDEX(fasta_fai_dict)
         }
 
         // sets bwaindex to correct input
@@ -62,13 +61,13 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
         // appropriately tagged interleaved FASTQ reads are mapped to the reference
         // the aligner should be set with the following parameters "-p -K 150000000 -Y"
         // to be configured in ext.args of your config
-        BWAMEM1_MEM_PRE(BAM2FASTQ_PRE.out.fastq, bwaindex, fasta_fai, false)
+        BWAMEM1_MEM_PRE(BAM2FASTQ_PRE.out.fastq, bwaindex, fasta_fai_dict, false)
         aligned_bam = aligned_bam.mix(BWAMEM1_MEM_PRE.out.bam)
     }
     else {
 
         if (!bwa_index) {
-            BWAMEM2_INDEX(fasta_fai)
+            BWAMEM2_INDEX(fasta_fai_dict)
         }
 
         // sets bwaindex to correct input
@@ -76,13 +75,13 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
         // appropriately tagged interleaved FASTQ reads are mapped to the reference
         // the aligner should be set with the following parameters "-p -K 150000000 -Y"
         // to be configured in ext.args of your config
-        BWAMEM2_MEM_PRE(BAM2FASTQ_PRE.out.fastq, bwaindex, fasta_fai, false)
+        BWAMEM2_MEM_PRE(BAM2FASTQ_PRE.out.fastq, bwaindex, fasta_fai_dict, false)
         aligned_bam = BWAMEM2_MEM_PRE.out.bam
     }
 
     // in order to tag mates information in the BAM file
     // FGBIO tool ZipperBams is used to merge info from mapped and unmapped BAM files
-    ZIPPERBAMS_PRE(FASTQTOBAM.out.bam, aligned_bam, fasta_fai, dict)
+    ZIPPERBAMS_PRE(aligned_bam.join(FASTQTOBAM.out.bam), fasta_fai_dict)
 
     // appropriately tagged reads are now grouped by UMI information
     // note that in tests ext.args has been set to recommended --edits 1
@@ -109,7 +108,7 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
         consensus_bam = CALLUMICONSENSUS.out.bam
     }
 
-    FILTERCONSENSUS(consensus_bam, fasta_fai, min_reads, min_baseq, max_base_error_rate)
+    FILTERCONSENSUS(consensus_bam, fasta_fai_dict, min_reads, min_baseq, max_base_error_rate)
 
     // now the consensus uBAM needs to be converted into FASTQ again
     // to be aligned
@@ -117,22 +116,22 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
 
     if (aligner == "bwa-mem") {
         // index made available through previous steps
-        BWAMEM1_MEM_POST(BAM2FASTQ_POST.out.fastq, bwaindex, fasta_fai, false)
+        BWAMEM1_MEM_POST(BAM2FASTQ_POST.out.fastq, bwaindex, fasta_fai_dict, false)
         aligned_bam_post = BWAMEM1_MEM_POST.out.bam
     }
     else {
         // index made available through previous steps
-        BWAMEM2_MEM_POST(BAM2FASTQ_POST.out.fastq, bwaindex, fasta_fai, false)
+        BWAMEM2_MEM_POST(BAM2FASTQ_POST.out.fastq, bwaindex, fasta_fai_dict, false)
         aligned_bam_post = BWAMEM2_MEM_POST.out.bam
     }
 
     // in order to tag mates information in the BAM file
     // FGBIO tool ZipperBams is used to merge info from mapped and unmapped BAM files
-    ZIPPERBAMS_POST(consensus_bam, aligned_bam_post, fasta_fai, dict)
+    ZIPPERBAMS_POST(aligned_bam_post.join(consensus_bam), fasta_fai_dict)
     // FGBIO versions are emitted via topic channels
 
     // finally sort bam file
-    SORTBAM(ZIPPERBAMS_POST.out.bam, fasta_fai, '')
+    SORTBAM(ZIPPERBAMS_POST.out.bam, fasta_fai_dict, '')
 
     emit:
     ubam               = FASTQTOBAM.out.bam // channel: [ val(meta), [ bam ] ]
