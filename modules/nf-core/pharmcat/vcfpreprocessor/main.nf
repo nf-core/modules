@@ -11,7 +11,8 @@ process PHARMCAT_VCFPREPROCESSOR {
     tuple val(meta), path(vcf_gz), path(vcf_index)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
-    tuple val(meta4), path(pharmcat_positions)
+    tuple val(meta4), path(pharmcat_positions), path(pharmcat_positions_index)
+    tuple val(meta5), path(pharmcat_uniallelic_positions), path(pharmcat_uniallelic_positions_index)
 
     output:
     tuple val(meta), path("*.preprocessed.vcf.bgz"),                                                                                                    emit: preprocessed_vcf

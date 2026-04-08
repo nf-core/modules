@@ -13,7 +13,7 @@ process CATPACK_SUMMARISE {
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('catpack'), eval("CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g'"), topic: versions, emit: versions_catpack
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,11 +31,6 @@ process CATPACK_SUMMARISE {
         -i ${classification} \\
         ${insert_contigs} \\
         -o ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
-    END_VERSIONS
     """
 
     stub:
@@ -53,10 +48,5 @@ process CATPACK_SUMMARISE {
         -o ${prefix}.txt"
 
     touch ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
-    END_VERSIONS
     """
 }

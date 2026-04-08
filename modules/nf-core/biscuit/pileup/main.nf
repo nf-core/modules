@@ -4,8 +4,8 @@ process BISCUIT_PILEUP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5b/5b542bbe1f99afd494ef07423ea8b52f2b8a081b85f92db2726c283c78da3cf0/data':
-        'community.wave.seqera.io/library/biscuit_samtools:84373c8a97fa63b8' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/27/2790659e7b390a29fa72483e7eed0101298dd2959dce2f8f3744b4f93517d323/data':
+        'community.wave.seqera.io/library/biscuit_htslib:b5833b773bc32c9c' }"
 
     input:
     tuple val(meta), path(normal_bams), path(normal_bais), path(tumor_bam), path(tumor_bai)
@@ -14,7 +14,8 @@ process BISCUIT_PILEUP {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('biscuit'), eval("biscuit version |& sed '1!d; s/^.*BISCUIT Version: //'"), emit: versions_biscuit, topic: versions
+    tuple val("${task.process}"), val("bgzip"), eval('bgzip --version | head -1 | sed "s/bgzip (htslib) //"')    , emit: versions_bgzip, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,21 +38,11 @@ process BISCUIT_PILEUP {
         $index/$fasta \\
         $input \\
         | bgzip -@ $bgzip_cpus $args2 > ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo | gzip > ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        biscuit: \$( biscuit version |& sed '1!d; s/^.*BISCUIT Version: //' )
-    END_VERSIONS
     """
 }

@@ -5,7 +5,7 @@
                 "empty_fastq": [
                     [
                         {
-                            "id": "SampleZ",
+                            "id": "SampleZ_S5_L001",
                             "lane": 1,
                             "readgroup": {
                                 "ID": "AAAATTTTGG.GGCCCCAAAA.1",
@@ -24,7 +24,7 @@
                 "fastq": [
                     [
                         {
-                            "id": "Sample1",
+                            "id": "Sample1_S1_L001",
                             "lane": 1,
                             "readgroup": {
                                 "ID": "GAACTGAGCG.TCGTGGAGCG.1",
@@ -41,7 +41,7 @@
                     ],
                     [
                         {
-                            "id": "Sample23",
+                            "id": "Sample23_S3_L001",
                             "lane": 1,
                             "readgroup": {
                                 "ID": "CGTCTCATAT.TATAGTAGCT.1",
@@ -58,7 +58,7 @@
                     ],
                     [
                         {
-                            "id": "SampleA",
+                            "id": "SampleA_S2_L001",
                             "lane": 1,
                             "readgroup": {
                                 "ID": "AGGTCAGATA.CTACAAGATA.1",
@@ -75,7 +75,7 @@
                     ],
                     [
                         {
-                            "id": "sampletest",
+                            "id": "sampletest_S4_L001",
                             "lane": 1,
                             "readgroup": {
                                 "ID": "ATTCCATAAG.TGCCTGGTGG.1",
@@ -123,12 +123,7 @@
                             "id": "HMTFYDRXX",
                             "lane": 1
                         },
-                        [
-                            "Errors.log",
-                            "FastqComplete.txt",
-                            "Info.log",
-                            "Warnings.log"
-                        ]
+                        "Logs"
                     ]
                 ],
                 "reports": [
@@ -154,16 +149,44 @@
                         ]
                     ]
                 ],
+                "sav_data": [
+                    [
+                        {
+                            "id": "HMTFYDRXX"
+                        },
+                        "multiqc_data"
+                    ]
+                ],
+                "sav_plots": [
+                    
+                ],
+                "sav_report": [
+                    [
+                        {
+                            "id": "HMTFYDRXX"
+                        },
+                        "multiqc_report.html"
+                    ]
+                ],
                 "stats": [
                     
+                ],
+                "undetermined": [
+                    [
+                        {
+                            "id": "HMTFYDRXX",
+                            "lane": 1
+                        },
+                        "Undetermined_S0_L001_R1_001.fastq.gz"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-03-16T13:47:40.083238326",
         "meta": {
-            "nf-test": "0.9.3",
+            "nf-test": "0.9.4",
             "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-02-17T15:53:44.616782"
+        }
     },
     "bcl2fastq": {
         "content": [
@@ -261,6 +284,25 @@
                         ]
                     ]
                 ],
+                "sav_data": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "multiqc_data"
+                    ]
+                ],
+                "sav_plots": [
+                    
+                ],
+                "sav_report": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "multiqc_report.html"
+                    ]
+                ],
                 "stats": [
                     [
                         {
@@ -276,13 +318,16 @@
                             "Stats.json:md5,8e5f038b8aa9e465599d3575f930e604"
                         ]
                     ]
+                ],
+                "undetermined": [
+                    
                 ]
             }
         ],
+        "timestamp": "2026-03-16T13:48:09.325036018",
         "meta": {
-            "nf-test": "0.9.3",
+            "nf-test": "0.9.4",
             "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-02-17T15:52:15.463745"
+        }
     }
 }

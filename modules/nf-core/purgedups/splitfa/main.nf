@@ -12,7 +12,8 @@ process PURGEDUPS_SPLITFA {
 
     output:
     tuple val(meta), path("*.split.fasta.gz"), emit: split_fasta
-    path "versions.yml"                      , emit: versions
+    // WARN: Incorrect version printed inside the container, please check this if bumping version ( \$( purge_dups -h |& sed '3!d; s/.*: //' ))
+    tuple val("${task.process}"), val('purge_dups'), val('1.2.6'), emit: versions_purgedups, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,26 +21,17 @@ process PURGEDUPS_SPLITFA {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.6' // WARN: Incorrect version printed inside the container, please check this if bumping version
     """
-    split_fa $args $assembly | gzip -c > ${prefix}.split.fasta.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        purgedups: $VERSION
-    END_VERSIONS
+    split_fa \\
+        ${args} \\
+        ${assembly} \\
+        | gzip -c > ${prefix}.split.fasta.gz
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.6' // WARN: Incorrect version printed inside the container, please check this if bumping version
     """
     echo | gzip > ${prefix}.split.fasta.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        purgedups: $VERSION
-    END_VERSIONS
     """
 
 }

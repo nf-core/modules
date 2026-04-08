@@ -22,7 +22,7 @@ process BOWTIE2_ALIGN {
     tuple val(meta), path("*.crai")     , emit: crai    , optional:true
     tuple val(meta), path("*.log")      , emit: log
     tuple val(meta), path("*fastq.gz")  , emit: fastq   , optional:true
-    tuple val("${task.process}"), val('bowtie2'), eval("bowtie2 --version 2>&1 | sed -n '1s/.*bowtie2-align-s version //p'"), emit: versions_bowtie2, topic: versions
+    tuple val("${task.process}"), val('bowtie2'), eval("bowtie2 --version 2>&1 | sed -n 's/.*bowtie2-align-s version //p'"), emit: versions_bowtie2, topic: versions
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
     tuple val("${task.process}"), val('pigz'), eval("pigz --version 2>&1 | sed 's/pigz //'"), emit: versions_pigz, topic: versions
 
@@ -33,6 +33,7 @@ process BOWTIE2_ALIGN {
     def args = task.ext.args ?: ""
     def args2 = task.ext.args2 ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def rg = args.contains("--rg-id") ? "" : "--rg-id ${prefix} --rg SM:${prefix}"
 
     def unaligned = ""
     def reads_args = ""
@@ -61,6 +62,7 @@ process BOWTIE2_ALIGN {
         $reads_args \\
         --threads $task.cpus \\
         $unaligned \\
+        $rg \\
         $args \\
         2>| >(tee ${prefix}.bowtie2.log >&2) \\
         | samtools $samtools_command $args2 --threads $task.cpus ${reference} -o ${prefix}.${extension} -

@@ -12,8 +12,8 @@ process BCLCONVERT {
     tuple val(meta), path("output/**_S[1-9]*_I?_00?.fastq.gz"), emit: fastq_idx, optional: true
     tuple val(meta), path("output/**Undetermined_S0*_R?_00?.fastq.gz"), emit: undetermined, optional: true
     tuple val(meta), path("output/**Undetermined_S0*_I?_00?.fastq.gz"), emit: undetermined_idx, optional: true
-    tuple val(meta), path("output/Reports/*.{csv,xml,bin}"), emit: reports
-    tuple val(meta), path("output/Logs/*.{log,txt}"), emit: logs
+    tuple val(meta), path("output/Reports"), emit: reports
+    tuple val(meta), path("output/Logs"), emit: logs
     tuple val(meta), path("output/InterOp/*.bin"), emit: interop, optional: true
     tuple val("${task.process}"), val('bclconvert'), eval("bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //'"), topic: versions, emit: versions_bclconvert
 
@@ -102,46 +102,4 @@ process BCLCONVERT {
     echo "fake InterOp file" > output/InterOp/QMetricsOut.bin
     echo "fake InterOp file" > output/InterOp/TileMetricsOut.bin
     """
-}
-
-def generateReadgroup(ch_fastq_list_csv, ch_fastq) {
-    return ch_fastq_list_csv
-        .collect() // make it a value channel
-        .map { meta, csv_file ->
-            def fastq_metadata = []
-            csv_file
-                .splitCsv(header: true)
-                .each { row ->
-                    // Create the readgroup tuple
-                    // RGID,RGSM,RGLB,Lane,Read1File,Read2File
-                    def rg = [:]
-                    // row.RGID is index1.index2.lane
-                    rg.ID = row.RGID
-                    // RGPU is a custom column in the samplesheet containing the flowcell ID
-                    rg.PU = row.RGPU ? row.RGPU : meta.id + "." + row.Lane
-                    rg.SM = row.RGSM
-                    rg.LB = row.RGLB ? row.RGLB : ""
-                    rg.PL = "ILLUMINA"
-
-                    // replace the meta id with the sample name
-                    def new_meta = [id: row.RGSM, readgroup: rg]
-                    // Return the new meta with fastq file
-                    fastq_metadata << [new_meta, file(row.Read1File).name]
-                    if (row.Read2File) {
-                        fastq_metadata << [new_meta, file(row.Read2File).name]
-                    }
-                }
-            return [meta, fastq_metadata]
-        }
-        .join(ch_fastq, by:[0]) // -> [ meta, [fq_meta, fastq_filename], [fastq_file, ...] ]
-        .transpose(by:[2]) // -> [ meta, [fq_meta, fastq_filename], fastq_file ]
-        .map { meta, fastq_metadata, fastq_file ->
-            def fastq_meta = fastq_metadata.find { _meta, filename -> filename == file(fastq_file).name }
-            return [meta + fastq_meta[0], file(fastq_file)]
-        }
-        .groupTuple(by: [0])
-        .map { meta, fastq ->
-            meta.single_end = fastq.size() == 1
-            return [meta, fastq.flatten()]
-        }
 }

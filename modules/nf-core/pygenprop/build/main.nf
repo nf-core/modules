@@ -14,7 +14,7 @@ process PYGENPROP_BUILD {
 
     output:
     tuple val(meta), path("*.micro"), emit: meda
-    tuple val("${task.process}"), val('pygenprop'), eval("echo 1.1"), topic: versions, emit: versions_pygenprop
+    tuple val("${task.process}"), val('pygenprop'), val('1.1'), topic: versions, emit: versions_pygenprop
     tuple val("${task.process}"), val('python'), eval('python -V | sed "s/Python //g"'), topic: versions, emit: versions_python
 
     when:
