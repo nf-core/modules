@@ -8,7 +8,7 @@ process WGET {
         'community.wave.seqera.io/library/wget:1.21.4--8b0fcde81c17be5e' }"
 
     input:
-    tuple val(meta), val(url)
+    tuple val(meta), val(url), val(suffix)
 
     output:
     tuple val(meta), path("${prefix}.${suffix}"), emit: outfile
@@ -20,7 +20,6 @@ process WGET {
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
-    suffix   = task.ext.suffix ?: 'html'
     """
     wget \\
         -O - \\
@@ -36,7 +35,6 @@ process WGET {
 
     stub:
     prefix   = task.ext.prefix ?: "${meta.id}"
-    suffix   = task.ext.suffix ?: 'html'
     """
     touch ${prefix}.${suffix}
 
