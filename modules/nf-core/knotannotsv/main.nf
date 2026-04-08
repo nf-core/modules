@@ -38,6 +38,7 @@ process KNOTANNOTSV {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def out_file = knot_out_xl ? "${prefix}.xlsm" : "${prefix}.html"
     """
     echo ${args}
 
