@@ -27,11 +27,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.output.size() == 1 },
-                { assert process.out.output[0][0] == [ id:'test_model_gemma3' ] },
-                { assert file(process.out.output[0][1]).name == "gemma-3-1b-it-Q4_K_M.gguf" },
-                { assert file(process.out.output[0][1]).size() > 0 },
-                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
+                { assert snapshot(
+                    process.out.output.size(),
+                    process.out.output[0][0],
+                    file(process.out.output[0][1]).name,
+                    file(process.out.output[0][1]).size() > 0,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
@@ -54,11 +56,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.output.size() == 1 },
-                { assert process.out.output[0][0] == [ id:'test_model_smollm3' ] },
-                { assert file(process.out.output[0][1]).name == "SmolLM3-3B-UD-IQ2_XXS.gguf" },
-                { assert file(process.out.output[0][1]).size() > 0 },
-                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
+                { assert snapshot(
+                    process.out.output.size(),
+                    process.out.output[0][0],
+                    file(process.out.output[0][1]).name,
+                    file(process.out.output[0][1]).size() > 0,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
