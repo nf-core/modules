@@ -22,7 +22,7 @@ process SOURMASH_SKETCH {
     def args = task.ext.args ?: "dna --param-string 'scaled=1000,k=21,k=31,k=51,abund'"
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    find -L library/* -type f > library.txt
+    find -L library/ -type f > library.txt
 
     sourmash sketch \\
         ${args} \\
