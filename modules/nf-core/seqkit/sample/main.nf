@@ -21,7 +21,7 @@ process SEQKIT_SAMPLE {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     extension = "fastq"
-    if ("${fastx}" ==~ /.+\.fasta|.+\.fasta\.gz|.+\.fa|.+\.fa\.gz|.+\.fas|.+\.fas\.gz|.+\.fna|.+\.fna\.gz|.+\.fsa|.+\.fsa\.gz/) {
+    if ("${fastx}" ==~ /.+\.(fasta|fa|fas|fna|fsa)(\.gz)?/) {
         extension = "fasta"
     }
     extension = fastx.toString().endsWith('.gz') ? "${extension}.gz" : extension

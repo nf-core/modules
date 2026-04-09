@@ -26,7 +26,7 @@ input:
     - fastx:
         type: file
         description: Input FASTA or FASTQ file
-        pattern: "*.{fsa,fas,fa,fasta,fastq,fq,fsa.gz,fas.gz,fa.gz,fasta.gz,fastq.gz,fq.gz}"
+        pattern: "*.{fsa,fas,fa,fasta,fastq,fq}{,.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
 output:
