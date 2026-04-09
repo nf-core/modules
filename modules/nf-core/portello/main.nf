@@ -8,8 +8,7 @@ process PORTELLO {
         : 'community.wave.seqera.io/library/portello:0.7.0--e30f230f4d2812dd'}"
 
     input:
-    tuple val(meta), path(asm_to_ref_bam), path(asm_to_ref_bai), path(read_to_asm_bam), path(read_to_asm_bai), path(ref_fasta), val(assembly_mode)
-    val output_vcf
+    tuple val(meta), path(asm_to_ref_bam), path(asm_to_ref_bai), path(read_to_asm_bam), path(read_to_asm_bai), path(ref_fasta), val(assembly_mode), val(output_vcf)
 
     output:
     tuple val(meta), path("*_remapped.bam"), emit: bam
