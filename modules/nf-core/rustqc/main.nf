@@ -58,7 +58,7 @@ process RUSTQC {
           ${prefix}/rseqc/read_duplication/${prefix}.{pos.DupRate,seq.DupRate}.xls \\
           ${prefix}/rseqc/read_duplication/${prefix}.DupRate_plot.{r,png} \\
           ${prefix}/rseqc/read_distribution/${prefix}.read_distribution.txt \\
-          ${prefix}/rseqc/junction_annotation/${prefix}.{junction.xls,junction.bed,junction_plot.r,junction_annotation.txt,splice_events.png,splice_junction.png} \\
+          ${prefix}/rseqc/junction_annotation/${prefix}.{junction.xls,junction.bed,junction_plot.r,junction_annotation.log,splice_events.png,splice_junction.png} \\
           ${prefix}/rseqc/junction_saturation/${prefix}.junctionSaturation_{plot.r,plot.png,summary.txt} \\
           ${prefix}/rseqc/inner_distance/${prefix}.inner_distance{.txt,_freq.txt,_plot.r,_plot.png,_summary.txt,_mean.txt} \\
           ${prefix}/rseqc/tin/${prefix}.{tin.xls,summary.txt}
