@@ -78,7 +78,7 @@ workflow BAM_TELOMERE_ESTIMATION {
         }
         .filter { _meta, _bam, _bai, _cbam, _cbai -> run_telomerehunter as boolean }
 
-    TELOMEREHUNTER(ch_th_input)
+    TELOMEREHUNTER(ch_th_input, ch_fasta)
 
     ch_content_tsv          = TELOMEREHUNTER.out.summary
     ch_telomerehunter_tumor = TELOMEREHUNTER.out.tumor
