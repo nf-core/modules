@@ -36,8 +36,8 @@ process MASURCA {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     //get input reads with absolute paths - illumina are mandatory, jump/pacbio/nanopore are optional
-    def illumina_reads = [illumina].flatten().collect { it.toRealPath() }.join(' ')
-    def jump_reads = jump ? [jump].flatten().collect { it.toRealPath() }.join(' ') : ""
+    def illumina_reads = [illumina].flatten()
+    def jump_reads = jump ? [jump].flatten() : []
     def pacbio_file = pacbio ? pacbio.toRealPath() : ""
     def nanopore_file = nanopore ? nanopore.toRealPath() : ""
 
@@ -49,12 +49,12 @@ process MASURCA {
     config_lines << "#Illumina paired end reads supplied as <two-character prefix> <fragment mean> <fragment stdev> <forward_reads> <reverse_reads>"
     config_lines << "#if single-end, do not specify <reverse_reads>"
     config_lines << "#MUST HAVE Illumina paired end reads to use MaSuRCA"
-    config_lines << "PE= pe ${fragment_mean} ${fragment_stdev} ${illumina_reads}"
+    config_lines << "PE= pe ${fragment_mean} ${fragment_stdev} ${illumina_reads.collect{ fq -> "\$PWD/${fq}"}.join(" ") }"
 
     // Jump/mate pair reads (optional)
     if (jump_reads) {
         config_lines << "#Illumina mate pair reads supplied as <two-character prefix> <fragment mean> <fragment stdev> <forward_reads> <reverse_reads>"
-        config_lines << "JUMP= sh ${jump_mean} ${jump_stdev} ${jump_reads}"
+        config_lines << "JUMP= sh ${jump_mean} ${jump_stdev} ${jump_reads.collect{ fq -> "\$PWD/${fq}" }.join(" ")}"
     }
 
 
@@ -111,13 +111,13 @@ process MASURCA {
     config_lines << "FLYE_ASSEMBLY=0"
     config_lines << "END"
 
-    def config_content = config_lines.join('\n')
+    def config_content = config_lines.collectMany{ cfg -> cfg.tokenize('\n') }.join('\n    ')
 
     """
     # Write the config file
-cat > ${prefix}_masurca_config.txt <<-CONFIG_EOF
-${config_content}
-CONFIG_EOF
+    cat > ${prefix}_masurca_config.txt <<-CONFIG_EOF
+    ${config_content}
+    CONFIG_EOF
 
     # Concatenate long reads if both PacBio and Nanopore are present
     ${long_reads_concat ? "cat ${pacbio_file} ${nanopore_file} > ${long_reads_concat}" : ""}
