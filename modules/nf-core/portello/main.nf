@@ -40,7 +40,6 @@ process PORTELLO {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     def vcf_output = output_vcf ? "echo | gzip -c > ${prefix}.vcf.gz; touch ${prefix}.vcf.gz.tbi" : ''
     """
     echo ${args}
