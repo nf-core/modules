@@ -264,12 +264,27 @@ nextflow_process {
         }
 
         then {
+            // The truncated tx2gene covers only a subset of transcripts.
+            // Without filtering, unmapped transcripts would appear as fake
+            // genes (gene_id = transcript_id), inflating the gene count to
+            // match the transcript count (yeast has ~1:1 gene:transcript).
+            // With filtering, gene rows should be strictly fewer.
+            def gene_counts = path(process.out.counts_gene[0][1])
+            def gene_lines = gene_counts.readLines()
+            def tx_lines = path(process.out.counts_transcript[0][1]).readLines()
+            def n_genes = gene_lines.size() - 1        // subtract header
+            def n_transcripts = tx_lines.size() - 1
+
+            // Read .command.err from the work directory to check for warning
+            def commandErr = gene_counts.parent.resolve('.command.err').text
+
             assertAll(
                 { assert process.success },
-                // Gene-level outputs should only contain genes from the tx2gene,
-                // not fake entries from unmapped transcripts
-                { assert process.out.counts_gene },
-                { assert process.out.counts_transcript }
+                { assert n_genes > 0 },
+                { assert n_genes < n_transcripts :
+                    "Gene count rows ($n_genes) should be fewer than transcript rows ($n_transcripts) after filtering unmapped transcripts" },
+                { assert commandErr.contains("transcripts found in quantification output but missing from") :
+                    "Expected warning about unmapped transcripts in .command.err" }
             )
         }
     }
