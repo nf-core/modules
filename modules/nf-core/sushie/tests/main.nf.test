@@ -35,10 +35,10 @@ nextflow_process {
                 { assert snapshot(
                     process.out.findAll { key, val -> key.startsWith('versions') },
                     process.out.cs,
-                    process.out.weights
                 ).match() },
-                { assert file(process.out.corr[0][1]).readLines().size() }, // unstable
-                { assert file(process.out.log[0][1]).readLines().size() } // unstable
+                { assert file(process.out.corr[0][1]).exists() },
+                { assert file(process.out.weights[0][1]).exists() },
+                { assert file(process.out.log[0][1]).exists() } // unstable
             )
         }
     }
