@@ -24,14 +24,16 @@ process TELOMEREHUNTER {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    // telomerehunter doesn't support CRAM (pysam opened in BAM-only mode)
     def tumor_is_cram = tumor_bam.name.endsWith(".cram")
     def control_is_cram = control_bam ? control_bam.name.endsWith(".cram") : false
     def tumor = tumor_is_cram ? "tumor.bam" : "${tumor_bam}"
     def control = control_bam ? (control_is_cram ? "control.bam" : "${control_bam}") : ""
+    def tumor_to_bam_cmd = tumor_is_cram ? "samtools view -T ${fasta} -b -o tumor.bam ${tumor_bam} && samtools index tumor.bam" : ""
+    def control_to_bam_cmd = control_is_cram ? "samtools view -T ${fasta} -b -o control.bam ${control_bam} && samtools index control.bam" : ""
     """
-    # telomerehunter doesn't support CRAM (pysam opened in BAM-only mode)
-    if ${tumor_is_cram}; then samtools view -T ${fasta} -b -o tumor.bam ${tumor_bam} && samtools index tumor.bam; fi
-    if ${control_is_cram}; then samtools view -T ${fasta} -b -o control.bam ${control_bam} && samtools index control.bam; fi
+    ${tumor_to_bam_cmd}
+    ${control_to_bam_cmd}
 
     telomerehunter \\
         -ibt ${tumor} \\
