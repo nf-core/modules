@@ -18,7 +18,7 @@ process RUSTQC {
     tuple val(meta), path("${prefix}/samtools/*"),                                                      emit: samtools
     tuple val(meta), path("${prefix}/rseqc/**"),                                                        emit: rseqc
     tuple val(meta), path("${prefix}/qualimap/**"),                                                     emit: qualimap
-    tuple val("${task.process}"), val('rustqc'), eval("rustqc --version | sed 's/rustqc //'"),          emit: versions_rustqc, topic: versions
+    tuple val("${task.process}"), val('rustqc'), eval("rustqc --version | sed 's/rustqc //; s/ .*//'"),  emit: versions_rustqc, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
