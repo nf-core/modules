@@ -128,7 +128,7 @@ output:
       - rustqc:
           type: string
           description: The tool name
-      - "rustqc --version | head -1 | sed 's/rustqc //; s/ .*//'":
+      - "rustqc --version 2>&1 | sed -n '1s/rustqc //; 1s/ .*//p'":
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -140,7 +140,7 @@ topics:
       - rustqc:
           type: string
           description: The tool name
-      - "rustqc --version | head -1 | sed 's/rustqc //; s/ .*//'":
+      - "rustqc --version 2>&1 | sed -n '1s/rustqc //; 1s/ .*//p'":
           type: eval
           description: The expression to obtain the version of the tool
 
