@@ -7,23 +7,6 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "portello"
-    tag "minimap2/index"
-
-    setup {
-
-        run("MINIMAP2_INDEX") {
-            script "../../minimap2/index/main.nf"
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
-                ]
-                """
-            }
-        }
-
-    }
 
     test("portello - [bam, bai, bam, bai], fasta, partially-phased, false") {
         when {
@@ -46,8 +29,8 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                process.out.bam.collect { meta, bam -> [ meta, file(bam).name ] },
-                process.out.unassembled_bam.collect { meta, bam -> [ meta, file(bam).name ] },
+                process.out.bam.collect { meta, bam_file -> [ meta, file(bam_file).name + ":md5," + bam(bam_file, stringency: "silent").getReadsMD5() ] },
+                process.out.unassembled_bam.collect { meta, bam_file -> [ meta, file(bam_file).name + ":md5," + bam(bam_file, stringency: "silent").getReadsMD5() ] },
                 process.out.findAll { key, val -> key.startsWith('versions') }
             ).match()
             assert process.out.bam.size() > 0
@@ -77,10 +60,10 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                process.out.bam.collect { meta, bam -> [ meta, file(bam).name ] },
-                process.out.unassembled_bam.collect { meta, bam -> [ meta, file(bam).name ] },
-                process.out.vcf.collect { meta, vcf -> [ meta, file(vcf).name ] },
-                process.out.tbi.collect { meta, tbi -> [ meta, file(tbi).name ] },
+                process.out.bam.collect { meta, bam_file -> [ meta, file(bam_file).name + ":md5," + bam(bam_file, stringency: "silent").getReadsMD5() ] },
+                process.out.unassembled_bam.collect { meta, bam_file -> [ meta, file(bam_file).name + ":md5," + bam(bam_file, stringency: "silent").getReadsMD5() ] },
+                process.out.vcf.collect { meta, vcf_file -> [ meta, file(vcf_file).name + ":md5," + path(vcf_file).vcf.variantsMD5 ] },
+                process.out.tbi.collect { meta, tbi_file -> [ meta, file(tbi_file).name ] },
                 process.out.findAll { key, val -> key.startsWith('versions') }
             ).match()
             assert process.out.bam.size() > 0
@@ -112,8 +95,8 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                process.out.bam.collect { meta, bam -> [ meta, file(bam).name ] },
-                process.out.unassembled_bam.collect { meta, bam -> [ meta, file(bam).name ] },
+                process.out.bam.collect { meta, bam_file -> [ meta, file(bam_file).name + ":md5," + bam(bam_file, stringency: "silent").getReadsMD5() ] },
+                process.out.unassembled_bam.collect { meta, bam_file -> [ meta, file(bam_file).name + ":md5," + bam(bam_file, stringency: "silent").getReadsMD5() ] },
                 process.out.findAll { key, val -> key.startsWith('versions') }
             ).match()
             assert process.out.bam.size() > 0
