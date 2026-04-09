@@ -286,7 +286,25 @@ fitmm <- eBayes(fitmm, proportion = opt\$proportion,
 
 # Display design matrix
 head(fitmm\$design, 3)
+cat("Raw coefficient names from dream():\n")
 print(colnames(fitmm\$design))
+
+# Normalize coefficient names consistently before building contrasts
+normalized_coef_names <- make.names(colnames(fitmm\$design))
+colnames(fitmm\$design) <- normalized_coef_names
+
+if (!is.null(colnames(fitmm\$coefficients))) {
+    colnames(fitmm\$coefficients) <- normalized_coef_names
+}
+if (!is.null(colnames(fitmm\$stdev.unscaled))) {
+    colnames(fitmm\$stdev.unscaled) <- normalized_coef_names
+}
+if (!is.null(fitmm\$cov.coefficients)) {
+    rownames(fitmm\$cov.coefficients) <- normalized_coef_names
+    colnames(fitmm\$cov.coefficients) <- normalized_coef_names
+}
+
+cat("Coefficient names used for contrasts:", paste(normalized_coef_names, collapse = ", "), "\n")
 
 # If contrast_string is provided, use that for makeContrast
 if (!is.null(opt\$contrast_string)) {
@@ -302,8 +320,7 @@ if (!is.null(opt\$contrast_string)) {
 if (is_valid_string(contrast_string)) {
     cat("Using contrast string:", contrast_string, "\n")
 
-    colnames(fitmm\$design) <- make.names(colnames(fitmm\$design))
-    contrast_matrix <- makeContrasts(contrast = contrast_string, levels = colnames(fitmm\$design))
+    contrast_matrix <- makeContrasts(contrast = contrast_string, levels = normalized_coef_names)
     fit2 <- contrasts.fit(fitmm, contrast_matrix)
     fit2 <- eBayes(fit2, proportion = opt\$proportion,
                   stdev.coef.lim = stdev_coef_lim_vals,
