@@ -3,82 +3,13 @@ nextflow_process {
     name "Test Process PORTELLO"
     script "../main.nf"
     process "PORTELLO"
-    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "portello"
-    tag "pbmm2/align"
-    tag "hifiasm"
-    tag "minimap2/align"
     tag "minimap2/index"
-    tag "samtools/index"
-    tag "find/concatenate"
 
     setup {
-
-        run("HIFIASM") { // Diploid assembly
-            script "../../hifiasm/main.nf"
-            process {
-                """
-                input[0] = [
-                    [ id : 'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
-                    []
-                ]
-                input[1] = [
-                    [],
-                    [],
-                    []
-                ]
-                input[2] = [
-                    [],
-                    [],
-                    []
-                ]
-                input[3] = [
-                    [],
-                    []
-                ]
-                """
-            }
-        }
-
-        run("FIND_CONCATENATE") {
-            script "../../find/concatenate/main.nf"
-            process {
-                """
-                input[0] = HIFIASM.out.hap1_contigs.join(HIFIASM.out.hap2_contigs)
-                                .map { meta, file1, file2 -> [ meta, [file1, file2] ] }
-                """
-            }
-        }
-
-        run("PBMM2_ALIGN") { // Read-to-assembly alignments
-            script "../../pbmm2/align/main.nf"
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
-                ]
-
-                input[1] = [
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
-                ]
-                """
-            }
-        }
-
-        run("SAMTOOLS_INDEX") {
-            script "../../samtools/index/main.nf"
-            process {
-                """
-                input[0] = PBMM2_ALIGN.out.bam
-                """
-            }
-        }
 
         run("MINIMAP2_INDEX") {
             script "../../minimap2/index/main.nf"
@@ -92,41 +23,22 @@ nextflow_process {
             }
         }
 
-        run("MINIMAP2_ALIGN") { // Assembly-to-ref alignments
-            script "../../minimap2/align/main.nf"
-            process {
-                """
-                input[0] = FIND_CONCATENATE.out.file_out
-                input[1] = MINIMAP2_INDEX.out.index
-                input[2] = true
-                input[3] = 'bai'
-                input[4] = false
-                input[5] = false
-                """
-            }
-        }
     }
 
     test("portello - [bam, bai, bam, bai], fasta, partially-phased, false") {
         when {
             process {
                 """
-                input[0] = MINIMAP2_ALIGN.out.bam
-                                .join(MINIMAP2_ALIGN.out.index)
-                                .join(PBMM2_ALIGN.out.bam)
-                                .join(SAMTOOLS_INDEX.out.index)
-                                .map { meta, asm_to_ref_bam, asm_to_ref_bai, read_to_asm_bam, read_to_asm_bai ->
-                                    [
-                                        meta,
-                                        asm_to_ref_bam,
-                                        asm_to_ref_bai,
-                                        read_to_asm_bam,
-                                        read_to_asm_bai,
-                                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
-                                        "partially-phased"
-                                    ]
-                                }
-                input[1] = false
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                    "partially-phased",
+                    false
+                ]
                 """
             }
         }
@@ -143,26 +55,21 @@ nextflow_process {
         }
     }
 
+
     test("portello - [bam, bai, bam, bai], fasta, partially-phased, true") {
         when {
             process {
                 """
-                input[0] = MINIMAP2_ALIGN.out.bam
-                                .join(MINIMAP2_ALIGN.out.index)
-                                .join(PBMM2_ALIGN.out.bam)
-                                .join(SAMTOOLS_INDEX.out.index)
-                                .map { meta, asm_to_ref_bam, asm_to_ref_bai, read_to_asm_bam, read_to_asm_bai ->
-                                    [
-                                        meta,
-                                        asm_to_ref_bam,
-                                        asm_to_ref_bai,
-                                        read_to_asm_bam,
-                                        read_to_asm_bai,
-                                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
-                                        "partially-phased"
-                                    ]
-                                }
-                input[1] = true
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                    "partially-phased",
+                    true
+                ]
                 """
             }
         }
@@ -188,22 +95,16 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = MINIMAP2_ALIGN.out.bam
-                                .join(MINIMAP2_ALIGN.out.index)
-                                .join(PBMM2_ALIGN.out.bam)
-                                .join(SAMTOOLS_INDEX.out.index)
-                                .map { meta, asm_to_ref_bam, asm_to_ref_bai, read_to_asm_bam, read_to_asm_bai ->
-                                    [
-                                        meta,
-                                        asm_to_ref_bam,
-                                        asm_to_ref_bai,
-                                        read_to_asm_bam,
-                                        read_to_asm_bai,
-                                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
-                                        "fully-phased"
-                                    ]
-                                }
-                input[1] = false
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                    "fully-phased",
+                    false
+                ]
                 """
             }
         }
@@ -227,22 +128,16 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = MINIMAP2_ALIGN.out.bam
-                                .join(MINIMAP2_ALIGN.out.index)
-                                .join(PBMM2_ALIGN.out.bam)
-                                .join(SAMTOOLS_INDEX.out.index)
-                                .map { meta, asm_to_ref_bam, asm_to_ref_bai, read_to_asm_bam, read_to_asm_bai ->
-                                    [
-                                        meta,
-                                        asm_to_ref_bam,
-                                        asm_to_ref_bai,
-                                        read_to_asm_bam,
-                                        read_to_asm_bai,
-                                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
-                                        "partially-phased"
-                                    ]
-                                }
-                input[1] = false
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                    "partially-phased",
+                    false
+                ]
                 """
             }
         }
@@ -260,22 +155,16 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = MINIMAP2_ALIGN.out.bam
-                                .join(MINIMAP2_ALIGN.out.index)
-                                .join(PBMM2_ALIGN.out.bam)
-                                .join(SAMTOOLS_INDEX.out.index)
-                                .map { meta, asm_to_ref_bam, asm_to_ref_bai, read_to_asm_bam, read_to_asm_bai ->
-                                    [
-                                        meta,
-                                        asm_to_ref_bam,
-                                        asm_to_ref_bai,
-                                        read_to_asm_bam,
-                                        read_to_asm_bai,
-                                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
-                                        "fully-phased"
-                                    ]
-                                }
-                input[1] = false
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                    "fully-phased",
+                    false
+                ]
                 """
             }
         }
@@ -293,22 +182,16 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = MINIMAP2_ALIGN.out.bam
-                                .join(MINIMAP2_ALIGN.out.index)
-                                .join(PBMM2_ALIGN.out.bam)
-                                .join(SAMTOOLS_INDEX.out.index)
-                                .map { meta, asm_to_ref_bam, asm_to_ref_bai, read_to_asm_bam, read_to_asm_bai ->
-                                    [
-                                        meta,
-                                        asm_to_ref_bam,
-                                        asm_to_ref_bai,
-                                        read_to_asm_bam,
-                                        read_to_asm_bai,
-                                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
-                                        "partially-phased"
-                                    ]
-                                }
-                input[1] = true
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                    "partially-phased",
+                    true
+                ]
                 """
             }
         }
