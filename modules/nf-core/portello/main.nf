@@ -23,7 +23,6 @@ process PORTELLO {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     def vcf_output = output_vcf ? "--phased-het-vcf-prefix ${prefix}" : ""
     """
     portello \
