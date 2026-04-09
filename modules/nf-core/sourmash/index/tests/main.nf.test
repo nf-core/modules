@@ -38,12 +38,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions,
-                                  file(process.out.signature_index.get(0).get(1)).name)
-                                  .match() }
+                { assert snapshot(
+                        file(process.out.signature_index.get(0).get(1)).name
+                    ).match()
+                }
             )
         }
-
     }
 
     test("sarscov2 genome [fasta] - stub") {
