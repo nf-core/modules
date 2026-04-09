@@ -15,7 +15,7 @@ process PORTELLO {
     tuple val(meta), path("*_unassembled.bam"), emit: unassembled_bam
     tuple val(meta), path("*.vcf.gz"), emit: vcf, optional: true
     tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi, optional: true
-    tuple val("${task.process}"), val('portello'), eval("portello --version"), topic: versions, emit: versions_portello
+    tuple val("${task.process}"), val('portello'), eval("portello --version | sed -e 's/portello //'"), topic: versions, emit: versions_portello
 
     when:
     task.ext.when == null || task.ext.when
