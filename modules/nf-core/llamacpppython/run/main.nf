@@ -4,7 +4,7 @@ process LLAMACPPPYTHON_RUN {
     label 'process_gpu'
 
     conda "${moduleDir}/environment.yml"
-    container "${task.ext.use_gpu ? 'quay.io/nf-core/llama-cpp-python:0.1.9' : 'community.wave.seqera.io/library/llama-cpp-python:0.3.16--b351398cd0ea7fc5'}"
+    container "${task.accelerator ? 'quay.io/nf-core/llama-cpp-python:0.1.9' : 'community.wave.seqera.io/library/llama-cpp-python:0.3.16--b351398cd0ea7fc5'}"
 
     input:
     tuple val(meta), path(prompt_file), path(gguf_model)
