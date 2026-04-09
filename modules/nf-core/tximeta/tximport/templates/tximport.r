@@ -222,9 +222,14 @@ if ("tx2gene" %in% names(transcript_info) && !is.null(transcript_info\$tx2gene))
     # like SummarizedExperiment that try to match gene IDs against the tx2gene.
     if (length(transcript_info\$extra) > 0) {
         real_genes <- setdiff(rownames(gi[[1]]), transcript_info\$extra)
-        gi    <- lapply(gi,    function(x) x[real_genes, , drop = FALSE])
-        gi.ls <- lapply(gi.ls, function(x) x[real_genes, , drop = FALSE])
-        gi.s  <- lapply(gi.s,  function(x) x[real_genes, , drop = FALSE])
+        filter_rows <- function(txi_list, genes) {
+            lapply(txi_list, function(x) {
+                if (is.matrix(x)) x[genes, , drop = FALSE] else x
+            })
+        }
+        gi    <- filter_rows(gi, real_genes)
+        gi.ls <- filter_rows(gi.ls, real_genes)
+        gi.s  <- filter_rows(gi.s, real_genes)
     }
 
     gene_info <- transcript_info\$gene[match(rownames(gi[[1]]), transcript_info\$gene[["gene_id"]]),]
