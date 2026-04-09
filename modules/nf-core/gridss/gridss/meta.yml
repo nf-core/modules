@@ -73,7 +73,7 @@ output:
       - gridss:
           type: string
           description: The tool name
-      - GeneratePonBedpe --version | sed 's/-gridss//':
+      - GeneratePonBedpe --version 2>&1 | sed 's/-gridss//':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -84,7 +84,7 @@ topics:
       - gridss:
           type: string
           description: The tool name
-      - GeneratePonBedpe --version | sed 's/-gridss//':
+      - GeneratePonBedpe --version 2>&1 | sed 's/-gridss//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
