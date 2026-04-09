@@ -41,81 +41,86 @@ process MASURCA {
     def pacbio_file = pacbio ? pacbio.toRealPath() : ""
     def nanopore_file = nanopore ? nanopore.toRealPath() : ""
 
-    // Configuration parameters with defaults from task.ext
-    // def extend_jump_reads = task.ext.extend_jump_reads != null ? task.ext.extend_jump_reads : 0
-    // def graph_kmer_size = task.ext.graph_kmer_size ?: 'auto'
-    // def use_linking_mates = task.ext.use_linking_mates != null ? task.ext.use_linking_mates : 0
-    // def lhe_coverage = task.ext.lhe_coverage ?: 25
-    // def mega_reads_one_pass = task.ext.mega_reads_one_pass != null ? task.ext.mega_reads_one_pass : 0
-    // def limit_jump_coverage = task.ext.limit_jump_coverage ?: 300
-    // def ca_parameters = task.ext.ca_parameters ?: 'cgwErrorRate=0.15'
-    // def close_gaps = task.ext.close_gaps != null ? task.ext.close_gaps : 0
-    // def jf_size = task.ext.jf_size ?: 200000000
+    // Build the config file
+    def config_lines = []
+
+    // DATA section
+    config_lines << "DATA"
+    config_lines << "#Illumina paired end reads supplied as <two-character prefix> <fragment mean> <fragment stdev> <forward_reads> <reverse_reads>"
+    config_lines << "#if single-end, do not specify <reverse_reads>"
+    config_lines << "#MUST HAVE Illumina paired end reads to use MaSuRCA"
+    config_lines << "PE= pe ${fragment_mean} ${fragment_stdev} ${illumina_reads}"
+
+    // Jump/mate pair reads (optional)
+    if (jump_reads) {
+        config_lines << "#Illumina mate pair reads supplied as <two-character prefix> <fragment mean> <fragment stdev> <forward_reads> <reverse_reads>"
+        config_lines << "JUMP= sh ${jump_mean} ${jump_stdev} ${jump_reads}"
+    }
+
+
+    // PacBio and Nanopore reads handling
+    def long_reads_concat = ""
+    if (pacbio_file && nanopore_file) {
+        config_lines << "#if you have both PacBio and Nanopore, supply both as NANOPORE type"
+        long_reads_concat = "${prefix}_long_reads.fastq.gz"
+        config_lines << "NANOPORE= ${long_reads_concat}"
+    } else if (pacbio_file) {
+        config_lines << "#PacBio/CCS reads must be in a single fasta or fastq file with absolute path"
+        config_lines << "PACBIO=${pacbio_file}"
+    } else if (nanopore_file) {
+        config_lines << "#Nanopore reads must be in a single fasta or fastq file with absolute path"
+        config_lines << "NANOPORE=${nanopore_file}"
+    }
+
+    config_lines << "END"
+    config_lines << ""
+
+    // PARAMETERS section
+    config_lines << "PARAMETERS"
+    config_lines << "#set this to 1 if your Illumina jumping library reads are shorter than 100bp"
+    config_lines << "EXTEND_JUMP_READS=${extend_jump_reads}"
+    config_lines << "#this is k-mer size for deBruijn graph values between 25 and 127 are supported, auto will compute the optimal size based on the read data and GC content"
+    config_lines << "GRAPH_KMER_SIZE = ${graph_kmer_size}"
+    config_lines << "#set this to 1 for all Illumina-only assemblies"
+    config_lines << "#set this to 0 if you have more than 15x coverage by long reads (Pacbio or Nanopore) or any other long reads/mate pairs (Illumina MP, Sanger, 454, etc)"
+    config_lines << "USE_LINKING_MATES = ${use_linking_mates}"
+    config_lines << "#use at most this much coverage by the longest Pacbio or Nanopore reads, discard the rest of the reads"
+    config_lines << "#can increase this to 30 or 35 if your reads are short (N50<7000bp)"
+    config_lines << "LHE_COVERAGE=${lhe_coverage}"
+    config_lines << "#set to 0 (default) to do two passes of mega-reads for slower, but higher quality assembly, otherwise set to 1"
+    config_lines << "MEGA_READS_ONE_PASS=${mega_reads_one_pass}"
+    config_lines << "#this parameter is useful if you have too many Illumina jumping library mates. Typically set it to 60 for bacteria and 300 for the other organisms"
+    config_lines << "LIMIT_JUMP_COVERAGE = ${limit_jump_coverage}"
+    config_lines << "#these are the additional parameters to Celera Assembler.  do not worry about performance, number or processors or batch sizes -- these are computed automatically."
+    config_lines << "#CABOG ASSEMBLY ONLY: set cgwErrorRate=0.25 for bacteria and 0.1<=cgwErrorRate<=0.15 for other organisms."
+    config_lines << "CA_PARAMETERS = ${ca_parameters}"
+    config_lines << "#CABOG ASSEMBLY ONLY: whether to attempt to close gaps in scaffolds with Illumina  or long read data"
+    config_lines << "CLOSE_GAPS=${close_gaps}"
+    config_lines << "#number of cpus to use, set this to the number of CPUs/threads per node you will be using"
+    config_lines << "NUM_THREADS = ${task.cpus}"
+    config_lines << "#this is mandatory jellyfish hash size -- a safe value is estimated_genome_size*20"
+    config_lines << "JF_SIZE = ${jf_size}"
+    config_lines << "#ILLUMINA ONLY. Set this to 1 to use SOAPdenovo contigging/scaffolding module."
+    config_lines << "#Assembly will be worse but will run faster. Useful for very large (>=8Gbp) genomes from Illumina-only data"
+    config_lines << "SOAP_ASSEMBLY=0"
+    config_lines << "#If you are doing Hybrid Illumina paired end + Nanopore/PacBio assembly ONLY (no Illumina mate pairs or OTHER frg files)."
+    config_lines << "#Set this to 1 to use Flye assembler for final assembly of corrected mega-reads."
+    config_lines << "#A lot faster than CABOG, AND QUALITY IS THE SAME OR BETTER."
+    config_lines << "#Works well even when MEGA_READS_ONE_PASS is set to 1."
+    config_lines << "#DO NOT use if you have less than 15x coverage by long reads."
+    config_lines << "FLYE_ASSEMBLY=0"
+    config_lines << "END"
+
+    def config_content = config_lines.join('\n')
+
     """
-    echo "DATA" > ${prefix}_masurca_config.txt
-    echo "#Illumina paired end reads supplied as <two-character prefix> <fragment mean> <fragment stdev> <forward_reads> <reverse_reads>" >> ${prefix}_masurca_config.txt
-    echo "#if single-end, do not specify <reverse_reads>" >> ${prefix}_masurca_config.txt
-    echo "#MUST HAVE Illumina paired end reads to use MaSuRCA" >> ${prefix}_masurca_config.txt
-    echo "PE= pe ${fragment_mean} ${fragment_stdev} ${illumina_reads}" >> ${prefix}_masurca_config.txt
+    # Write the config file
+cat > ${prefix}_masurca_config.txt <<-CONFIG_EOF
+${config_content}
+CONFIG_EOF
 
-    # Jump/mate pair reads (optional)
-    if [ -n "${jump_reads}" ]; then
-        echo "#Illumina mate pair reads supplied as <two-character prefix> <fragment mean> <fragment stdev> <forward_reads> <reverse_reads>" >> ${prefix}_masurca_config.txt
-        echo "JUMP= sh ${jump_mean} ${jump_stdev} ${jump_reads}" >> ${prefix}_masurca_config.txt
-    fi
-
-    # PacBio and Nanopore reads handling
-    # If both exist, concatenate them and supply as NANOPORE (per MaSuRCA docs)
-    if [ -n "${pacbio_file}" ] && [ -n "${nanopore_file}" ]; then
-        echo "#if you have both PacBio and Nanopore, supply both as NANOPORE type" >> ${prefix}_masurca_config.txt
-        cat ${pacbio_file} ${nanopore_file} > ${prefix}_long_reads.fastq.gz
-        echo "NANOPORE= ${prefix}_long_reads.fastq.gz" >> ${prefix}_masurca_config.txt
-    elif [ -n "${pacbio_file}" ]; then
-        echo "#PacBio/CCS reads must be in a single fasta or fastq file with absolute path" >> ${prefix}_masurca_config.txt
-        echo "PACBIO=${pacbio_file}" >> ${prefix}_masurca_config.txt
-    elif [ -n "${nanopore_file}" ]; then
-        echo "#Nanopore reads must be in a single fasta or fastq file with absolute path" >> ${prefix}_masurca_config.txt
-        echo "NANOPORE=${nanopore_file}" >> ${prefix}_masurca_config.txt
-    fi
-
-    echo "END" >> ${prefix}_masurca_config.txt
-
-
-    echo "" >> ${prefix}_masurca_config.txt
-    echo "PARAMETERS" >> ${prefix}_masurca_config.txt
-    echo "#set this to 1 if your Illumina jumping library reads are shorter than 100bp" >> ${prefix}_masurca_config.txt
-    echo "EXTEND_JUMP_READS=${extend_jump_reads}" >> ${prefix}_masurca_config.txt
-    echo "#this is k-mer size for deBruijn graph values between 25 and 127 are supported, auto will compute the optimal size based on the read data and GC content" >> ${prefix}_masurca_config.txt
-    echo "GRAPH_KMER_SIZE = ${graph_kmer_size}" >> ${prefix}_masurca_config.txt
-    echo "#set this to 1 for all Illumina-only assemblies" >> ${prefix}_masurca_config.txt
-    echo "#set this to 0 if you have more than 15x coverage by long reads (Pacbio or Nanopore) or any other long reads/mate pairs (Illumina MP, Sanger, 454, etc)" >> ${prefix}_masurca_config.txt
-    echo "USE_LINKING_MATES = ${use_linking_mates}" >> ${prefix}_masurca_config.txt
-    echo "#use at most this much coverage by the longest Pacbio or Nanopore reads, discard the rest of the reads" >> ${prefix}_masurca_config.txt
-    echo "#can increase this to 30 or 35 if your reads are short (N50<7000bp)" >> ${prefix}_masurca_config.txt
-    echo "LHE_COVERAGE=${lhe_coverage}" >> ${prefix}_masurca_config.txt
-    echo "#set to 0 (default) to do two passes of mega-reads for slower, but higher quality assembly, otherwise set to 1" >> ${prefix}_masurca_config.txt
-    echo "MEGA_READS_ONE_PASS=${mega_reads_one_pass}" >> ${prefix}_masurca_config.txt
-    echo "#this parameter is useful if you have too many Illumina jumping library mates. Typically set it to 60 for bacteria and 300 for the other organisms" >> ${prefix}_masurca_config.txt
-    echo "LIMIT_JUMP_COVERAGE = ${limit_jump_coverage}" >> ${prefix}_masurca_config.txt
-    echo "#these are the additional parameters to Celera Assembler.  do not worry about performance, number or processors or batch sizes -- these are computed automatically." >> ${prefix}_masurca_config.txt
-    echo "#CABOG ASSEMBLY ONLY: set cgwErrorRate=0.25 for bacteria and 0.1<=cgwErrorRate<=0.15 for other organisms." >> ${prefix}_masurca_config.txt
-    echo "CA_PARAMETERS = ${ca_parameters}" >> ${prefix}_masurca_config.txt
-    echo "#CABOG ASSEMBLY ONLY: whether to attempt to close gaps in scaffolds with Illumina  or long read data" >> ${prefix}_masurca_config.txt
-    echo "CLOSE_GAPS=${close_gaps}" >> ${prefix}_masurca_config.txt
-    echo "#number of cpus to use, set this to the number of CPUs/threads per node you will be using" >> ${prefix}_masurca_config.txt
-    echo "NUM_THREADS = ${task.cpus}" >> ${prefix}_masurca_config.txt
-    echo "#this is mandatory jellyfish hash size -- a safe value is estimated_genome_size*20" >> ${prefix}_masurca_config.txt
-    echo "JF_SIZE = ${jf_size}" >> ${prefix}_masurca_config.txt
-    echo "#ILLUMINA ONLY. Set this to 1 to use SOAPdenovo contigging/scaffolding module." >> ${prefix}_masurca_config.txt
-    echo "#Assembly will be worse but will run faster. Useful for very large (>=8Gbp) genomes from Illumina-only data" >> ${prefix}_masurca_config.txt
-    echo "SOAP_ASSEMBLY=0" >> ${prefix}_masurca_config.txt
-    echo "#If you are doing Hybrid Illumina paired end + Nanopore/PacBio assembly ONLY (no Illumina mate pairs or OTHER frg files)." >> ${prefix}_masurca_config.txt
-    echo "#Set this to 1 to use Flye assembler for final assembly of corrected mega-reads." >> ${prefix}_masurca_config.txt
-    echo "#A lot faster than CABOG, AND QUALITY IS THE SAME OR BETTER." >> ${prefix}_masurca_config.txt
-    echo "#Works well even when MEGA_READS_ONE_PASS is set to 1." >> ${prefix}_masurca_config.txt
-    echo "#DO NOT use if you have less than 15x coverage by long reads." >> ${prefix}_masurca_config.txt
-    echo "FLYE_ASSEMBLY=0" >> ${prefix}_masurca_config.txt
-    echo "END" >> ${prefix}_masurca_config.txt
+    # Concatenate long reads if both PacBio and Nanopore are present
+    ${long_reads_concat ? "cat ${pacbio_file} ${nanopore_file} > ${long_reads_concat}" : ""}
 
     # Generate assembly script
     masurca ${prefix}_masurca_config.txt
