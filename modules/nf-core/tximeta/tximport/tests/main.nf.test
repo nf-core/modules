@@ -214,6 +214,66 @@ nextflow_process {
 
     }
 
+    test("saccharomyces_cerevisiae - salmon - gtf - mismatched_transcripts") {
+
+        setup {
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'test'], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/salmon_results.tar.gz', checkIfExists: true)
+                    ])
+                    """
+                }
+            }
+            run("CUSTOM_TX2GENE") {
+                script "../../../custom/tx2gene/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'test'], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome_gfp.gtf', checkIfExists: true)
+                    ])
+                    input[1] = UNTAR.out.untar.map { meta, dir -> [ meta, dir.listFiles().collect() ] }
+                    input[2] = 'salmon'
+                    input[3] = 'gene_id'
+                    input[4] = 'gene_name'
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map { meta, dir -> [ meta, dir.listFiles().collect() ] }
+                // Remove half the entries from tx2gene to simulate FASTA/GTF mismatch
+                input[1] = CUSTOM_TX2GENE.out.tx2gene.map { meta, tx2gene ->
+                    def lines = tx2gene.readLines()
+                    def header = lines[0]
+                    def kept = lines[1..Math.max(1, (int)(lines.size() / 2))]
+                    def modified = file("\${workDir}/truncated_tx2gene.tsv")
+                    modified.text = ([header] + kept).join('\\n') + '\\n'
+                    [meta, modified]
+                }
+                input[2] = 'salmon'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // Gene-level outputs should only contain genes from the tx2gene,
+                // not fake entries from unmapped transcripts
+                { assert process.out.counts_gene },
+                { assert process.out.counts_transcript }
+            )
+        }
+    }
+
     test("saccharomyces_cerevisiae - salmon - gtf - stub") {
 
         options "-stub"
