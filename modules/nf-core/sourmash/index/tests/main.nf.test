@@ -40,8 +40,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        process.out.versions_sourmash,
-                        file(process.out.signature_index.get(0).get(1)).name
+                        file(process.out.signature_index.get(0).get(1)).name,
+                        process.out.findAll { key, val -> key.startsWith("versions")}
                     ).match()
                 }
             )
