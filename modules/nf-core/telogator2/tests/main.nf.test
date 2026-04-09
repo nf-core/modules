@@ -70,10 +70,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.tlens.get(0).get(1)).readLines().first() ==
-                    '#chr\tposition\tref_samp\tallele_id\tTL_p75\tread_TLs\tread_lengths\tread_mapq\ttvr_len\ttvr_consensus\tsupporting_reads' },
                 { assert process.out.plots },
                 { assert snapshot(
+                    path(process.out.tlens.get(0).get(1)).readLines().first(),
                     file(process.out.tlens.get(0).get(1)).name,
                     process.out.plots.collect { meta, pngs -> pngs.collect { png -> file(png).name } },
                     process.out.cmd,
