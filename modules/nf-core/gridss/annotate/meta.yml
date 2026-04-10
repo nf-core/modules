@@ -1,10 +1,11 @@
-name: "gridss_somaticfilter"
-description: GRIDSS is a module software suite containing tools useful for the
-  detection of genomic rearrangements.
+name: "gridss_annotate"
+description: Annotates single breakends in a GRIDSS VCF with RepeatMasker
+  annotations using gridss_annotate_vcf_repeatmasker.
 keywords:
   - gridss
   - structural variants
-  - somatic variants
+  - annotation
+  - repeatmasker
   - vcf
 tools:
   - gridss:
@@ -23,41 +24,24 @@ input:
           e.g. [ id:'test']
     - vcf:
         type: file
-        description: Input VCF file, must be generated with GRIDSS
+        description: Input VCF file generated with GRIDSS
         pattern: "*.{vcf,vcf.gz}"
-        ontologies: []
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing information for PONDIR
-          e.g. [ id:'test']
-    - pondir:
-        type: directory
-        description: Directory containing Panel Of Normal bed/bedpe used to filter
-          FP somatic events. Use gridss.GeneratePonBedpe to generate the PON.
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
 output:
-  high_conf_sv:
+  vcf:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test']
-      - "*.high_confidence_somatic.vcf.bgz":
+      - "*.vcf.gz":
           type: file
-          description: VCF file including high confidence somatic SVs
-          pattern: "*.vcf.bgz"
-          ontologies: []
-  all_sv:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test']
-      - "*.all_somatic.vcf.bgz":
-          type: file
-          description: VCF file including all somatic SVs
-          pattern: "*.vcf.bgz"
-          ontologies: []
+          description: Annotated VCF file compressed with bgzip
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
+            - edam: http://edamontology.org/format_3989
   versions_gridss:
     - - ${task.process}:
           type: string
@@ -80,6 +64,6 @@ topics:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
-  - "@kubranarci"
+  - "@emmcauley"
 maintainers:
-  - "@famosab"
+  - "@emmcauley"
