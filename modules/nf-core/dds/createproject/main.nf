@@ -10,6 +10,7 @@ process DDS_CREATEPROJECT {
     val title
     val description
     val pi
+    path token_file
 
     output:
     path 'output.log', emit: log
@@ -22,9 +23,7 @@ process DDS_CREATEPROJECT {
     def args = task.ext.args ?: ''
 
     """
-    printf '%s' $DDS_CLI_TOKEN > .dds_cli_token
-    chmod 600 .dds_cli_token
-    DDS_CLI_ENV="dev-instance" dds --token-path .dds_cli_token project create  --title "$title" --description "$description" --principal-investigator "$pi" > output.log
+    dds --token-path $token_file project create --title "$title" --description "$description" --principal-investigator "$pi" > output.log
     """
 
     stub:
