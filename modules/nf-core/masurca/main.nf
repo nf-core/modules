@@ -65,7 +65,7 @@ process MASURCA {
     if (pacbio_file && nanopore_file) {
         config_lines << "#if you have both PacBio and Nanopore, supply both as NANOPORE type"
         long_reads_concat = "${prefix}_long_reads.fastq.gz"
-        config_lines << "NANOPORE= ${long_reads_concat}"
+        config_lines << "NANOPORE= \$PWD/${long_reads_concat}"
     } else if (pacbio_file) {
         config_lines << "#PacBio/CCS reads must be in a single fasta or fastq file with absolute path"
         config_lines << "PACBIO=${pacbio_file}"
@@ -127,7 +127,7 @@ process MASURCA {
     # Generate assembly script
     masurca ${prefix}_masurca_config.txt
 
-    ./assemble.sh > ${prefix}-masurca.log 2>&1
+    ./assemble.sh > ${prefix}-masurca.log 2>&1 || (cat ${prefix}-masurca.log >&2 && exit 1)
 
     if [ -f CA*/primary.genome.scf.fasta ]; then
         gzip -cn CA*/primary.genome.scf.fasta > ${prefix}.scaffolds.fa.gz
