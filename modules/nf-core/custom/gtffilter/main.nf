@@ -20,13 +20,13 @@ process CUSTOM_GTFFILTER {
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = task.ext.suffix ?: "gtf" + (gtf.extension == 'gz' ? '.gz' : '')
+    suffix = "gtf" + (gtf.extension == 'gz' ? '.gz' : '')
     args   = task.ext.args ?: ''
     template 'gtffilter.py'
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = task.ext.suffix ?: "gtf" + (gtf.extension == 'gz' ? '.gz' : '')
+    suffix = "gtf" + (gtf.extension == 'gz' ? '.gz' : '')
     """
     touch ${prefix}.${suffix}
 
