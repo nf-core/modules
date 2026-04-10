@@ -81,7 +81,7 @@ workflow BAM_TELOMERE_ESTIMATION {
 
     // Append optional cytoband to fasta tuple for telomerehunter
     // Callers pass Channel.value([cytoband_path]) or Channel.value([[]])
-    def ch_fasta_cytoband = ch_fasta
+    ch_fasta_cytoband = ch_fasta
         .combine(ch_cytoband)
         .map { meta, fasta, fai, cytoband -> [ meta, fasta, fai, cytoband ] }
 
