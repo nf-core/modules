@@ -14,11 +14,9 @@ nextflow_process {
 
         when {
             params {
-                t_max = 10
-                minimum_coverage = 1
-                compute_ci = true
-                rrbs = false
+                module_args = '--t-max 10 --minimum-coverage 1 --compute_ci'
             }
+
             process {
                 """
                 input[0] = [ [ id:'test', single_end:false ],
@@ -47,10 +45,7 @@ nextflow_process {
 
         when {
             params {
-                minimum_coverage = 1
-                t_max = 10
-                compute_ci = true
-                rrbs = false
+                module_args = '--t-max 10 --minimum-coverage 1 --compute_ci'
             }
             process {
                 """
