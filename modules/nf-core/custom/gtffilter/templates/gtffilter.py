@@ -25,10 +25,11 @@
 import argparse
 import gzip
 import logging
+import os
 import platform
 import re
 import statistics
-from typing import Set
+from typing import Optional, Set
 
 # Create a logger
 logging.basicConfig(format="%(name)s - %(asctime)s %(levelname)s: %(message)s")
@@ -79,14 +80,16 @@ def tab_delimited(file: str) -> float:
         return statistics.median(line.count("\\t") for line in data.split("\\n"))
 
 
-def filter_gtf(fasta: str, gtf_in: str, filtered_gtf_out: str, skip_transcript_id_check: bool) -> None:
+def filter_gtf(fasta: Optional[str], gtf_in: str, filtered_gtf_out: str, skip_transcript_id_check: bool) -> None:
     """Filter GTF file based on FASTA sequence names."""
     if tab_delimited(gtf_in) != 8:
         raise ValueError("Invalid GTF file: Expected 9 tab-separated columns.")
 
-    seq_names_in_genome = extract_fasta_seq_names(fasta)
-    logger.info(f"Extracted chromosome sequence names from {fasta}")
-    logger.debug("All sequence IDs from FASTA: " + ", ".join(sorted(seq_names_in_genome)))
+    seq_names_in_genome = None
+    if fasta and os.path.isfile(fasta):
+        seq_names_in_genome = extract_fasta_seq_names(fasta)
+        logger.info(f"Extracted chromosome sequence names from {fasta}")
+        logger.debug("All sequence IDs from FASTA: " + ", ".join(sorted(seq_names_in_genome)))
 
     seq_names_in_gtf = set()
     try:
@@ -99,7 +102,7 @@ def filter_gtf(fasta: str, gtf_in: str, filtered_gtf_out: str, skip_transcript_i
                 seq_name = line.split("\\t")[0]
                 seq_names_in_gtf.add(seq_name)  # Add sequence name to the set
 
-                if seq_name in seq_names_in_genome:
+                if seq_names_in_genome is None or seq_name in seq_names_in_genome:
                     if skip_transcript_id_check or re.search(r'transcript_id "([^"]+)"', line):
                         out.write(line.encode() if is_gz else line)
                         line_count += 1
