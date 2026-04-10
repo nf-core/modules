@@ -54,11 +54,6 @@ process BLOBTK_PLOT {
     stub:
     prefix      = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.png
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blobtk: \$(blobtk --version | cut -d' ' -f2)
-    END_VERSIONS
+    touch ${prefix}.${format}
     """
 }

@@ -30,7 +30,7 @@ workflow QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT {
     //
     ch_tx2gene_quants = quant_results
         .first()
-        .map { meta, results -> [ [:], results ] }
+        .map { _meta, results -> [ [:], results ] }
 
     CUSTOM_TX2GENE (
         gtf.map { gtf_file -> [ [:], gtf_file ] },
