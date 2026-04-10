@@ -1,34 +1,31 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "dds_createproject"
-description: This moduel is used to create a project on the SciLifeLab Data Delivery System (DDS).
+description: This module is used to create a project on the SciLifeLab Data
+  Delivery System (DDS).
 keywords:
-  - DDS
+  - dds
+  - scilifelab
+  - data delivery
 tools:
   - "dds":
-      description: "The Data Delivery System (DDS) is a cloud-based system for the delivery of data from SciLifeLab platforms to their users."
+      description: "The Data Delivery System (DDS) is a cloud-based system for the delivery
+        of data from SciLifeLab platforms to their users."
       homepage: "https://delivery.scilifelab.se"
       documentation: "https://scilifelabdatacentre.github.io/dds_cli/"
       tool_dev_url: "https://github.com/ScilifelabDataCentre/dds_cli"
-      licence: "MIT"
-
+      licence:
+        - "MIT"
+      identifier: ""
 input:
   - title:
-      type: val
+      type: string
       description: The title of the project.
-
   - description:
-      type: val
-      description: A description of the project. 
-
+      type: string
+      description: A description of the project.
   - pi:
-      type: val
+      type: string
       description: Email of the Principal Investigator.
-
 output:
-  - 'output.log':
-        type: file
-        description: For a successful run, this file contains the projectID of the project created.
-
   versions_dds:
     - - ${task.process}:
           type: string
@@ -39,6 +36,10 @@ output:
       - dds --version:
           type: eval
           description: The expression to obtain the version of the tool
+  log:
+    - output.log:
+        type: file
+        description: File containing the projectID of the project created.
 topics:
   versions:
     - - ${task.process}:
