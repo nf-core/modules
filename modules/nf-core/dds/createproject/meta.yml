@@ -27,12 +27,12 @@ input:
   - pi:
       type: string
       description: Email of the Principal Investigator.
+  - token_file:
+      type: file
+      description: Path to a DDS CLI token file (created via `dds auth`). Must be
+        readable by the pipeline user.
+      ontologies: []
 output:
-  log:
-    - output.log:
-        type: file
-        description: File containing the projectID of the project created.
-
   versions_dds:
     - - ${task.process}:
           type: string
@@ -40,10 +40,14 @@ output:
       - dds:
           type: string
           description: The name of the tool
-      - dds --version:
+      - dds --version | sed 's/.*version //':
           type: eval
           description: The expression to obtain the version of the tool
-
+  log:
+    - output.log:
+        type: file
+        description: File containing the projectID of the project created.
+        ontologies: []
 topics:
   versions:
     - - ${task.process}:
@@ -52,7 +56,7 @@ topics:
       - dds:
           type: string
           description: The name of the tool
-      - dds --version:
+      - dds --version | sed 's/.*version //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
