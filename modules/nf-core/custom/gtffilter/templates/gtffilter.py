@@ -22,6 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import argparse
 import gzip
 import logging
 import platform
@@ -114,7 +115,11 @@ def filter_gtf(fasta: str, gtf_in: str, filtered_gtf_out: str, skip_transcript_i
     logger.info(f"Extracted {line_count} matching sequences from {gtf_in} into {filtered_gtf_out}")
 
 
-filter_gtf("${fasta}", "${gtf}", "${prefix}.${suffix}", False)
+parser = argparse.ArgumentParser()
+parser.add_argument("--skip_transcript_id_check", action="store_true", default=False)
+parsed_args = parser.parse_args("${args}".split() if "${args}".strip() else [])
+
+filter_gtf("${fasta}", "${gtf}", "${prefix}.${suffix}", parsed_args.skip_transcript_id_check)
 
 # Versions
 
