@@ -11,8 +11,8 @@ process EAUTILS_GTF2BED {
     tuple val(meta), path(gtf)
 
     output:
-    tuple val(meta), path("${prefix}.bed"), emit: bed
-    path "versions.yml"           , emit: versions, topic: versions
+    tuple val(meta), path("${prefix}.bed") , emit: bed
+    path "versions.yml"                    , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
