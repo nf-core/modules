@@ -8,17 +8,18 @@ keywords:
   - data delivery
 tools:
   - "dds":
-      description: "The Data Delivery System (DDS) is a cloud-based system for the delivery of data from SciLifeLab platforms to their users."
+      description: "The Data Delivery System (DDS) is a cloud-based system for the delivery
+        of data from SciLifeLab platforms to their users."
       homepage: "https://delivery.scilifelab.se"
       documentation: "https://scilifelabdatacentre.github.io/dds_cli/"
       tool_dev_url: "https://github.com/ScilifelabDataCentre/dds_cli"
-      licence: ["MIT"]
-
+      licence:
+        - "MIT"
+      identifier: ""
 input:
   - title:
       type: string
       description: The title of the project.
-
   - description:
       type: string
       description: A description of the project.
@@ -26,12 +27,11 @@ input:
   - pi:
       type: string
       description: Email of the Principal Investigator.
-
 output:
   log:
-    - - "output.log":
-          type: file
-          description: For a successful run, this file contains the projectID of the project created.
+    - output.log:
+        type: file
+        description: File containing the projectID of the project created.
 
   versions_dds:
     - - ${task.process}:
@@ -43,6 +43,7 @@ output:
       - dds --version:
           type: eval
           description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
