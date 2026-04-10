@@ -16,7 +16,7 @@ process GRIDSS_GENERATEPONBEDPE {
     output:
     tuple val(meta), path("*.bedpe"), emit: bedpe
     tuple val(meta), path("*.bed"), emit: bed
-    tuple val("${task.process}"), val('gridss'), eval("echo \$(GeneratePonBedpe --version 2>&1) | sed 's/-gridss//'"), topic: versions, emit: versions_gridss
+    tuple val("${task.process}"), val('gridss'), eval("GeneratePonBedpe --version 2>&1 | sed 's/-gridss//'"), topic: versions, emit: versions_gridss
 
     when:
     task.ext.when == null || task.ext.when

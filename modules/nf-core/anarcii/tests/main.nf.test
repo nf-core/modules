@@ -1,0 +1,60 @@
+// nf-core modules test anarcii
+nextflow_process {
+
+    name "Test Process ANARCII"
+    script "../main.nf"
+    process "ANARCII"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "anarcii"
+
+    test("human - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/anarcii/anarcii_vdjdb.fasta', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def anarciiResults = path(process.out.anarcii.get(0).get(1)).csv
+            assert "Name" in anarciiResults.columnNames
+            assert "Chain" in anarciiResults.columnNames
+            assert "Score" in anarciiResults.columnNames
+            assert "Query start" in anarciiResults.columnNames
+            assert "Query end" in anarciiResults.columnNames
+        }
+    }
+
+    test("human - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/anarcii/anarcii_vdjdb.fasta', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
