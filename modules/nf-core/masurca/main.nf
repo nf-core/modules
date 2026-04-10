@@ -127,7 +127,7 @@ process MASURCA {
     # Generate assembly script
     masurca ${prefix}_masurca_config.txt
 
-    ./assemble.sh > ${prefix}-masurca.log 2>&1 || (cat ${prefix}-masurca.log >&2; for f in CA*.log; do echo "=== \$f ==="; cat "\$f"; done >&2; exit 1)
+    ./assemble.sh > ${prefix}-masurca.log 2>&1 || (cat ${prefix}-masurca.log >&2; for f in CA*.log; do echo "=== \$f ==="; cat "\$f"; done >&2; find . -name "000001.out" | while read f; do echo "=== \$f ==="; cat "\$f"; done >&2; exit 1)
 
     if [ -f CA*/primary.genome.scf.fasta ]; then
         gzip -cn CA*/primary.genome.scf.fasta > ${prefix}.scaffolds.fa.gz
