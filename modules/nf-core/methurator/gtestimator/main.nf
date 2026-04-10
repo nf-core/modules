@@ -19,19 +19,13 @@ process METHURATOR_GTESTIMATOR {
 
     script:
     def args = task.ext.args ?: ''
-    if (params.rrbs) {
-        args += '--rrbs'
-    }
-    prefix = task.ext.prefix?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     methurator gt-estimator \\
         ${bam} \\
         --fasta ${fasta} \\
-        --minimum-coverage ${params.minimum_coverage} \\
-        --t-max ${params.t_max} \\
         -@ ${task.cpus} \\
         --outdir . \\
-        --compute_ci \\
         ${args}
 
     mv methurator_summary.yml ${prefix}.yml

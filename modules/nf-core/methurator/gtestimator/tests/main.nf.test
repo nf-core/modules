@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process METHURATOR_GTESTIMATOR"
     script "../main.nf"
     process "METHURATOR_GTESTIMATOR"
+    config './nextflow.config'
 
     tag "modules"
     tag "modules_nfcore"
@@ -15,6 +16,7 @@ nextflow_process {
             params {
                 t_max = 10
                 minimum_coverage = 1
+                compute_ci = true
                 rrbs = false
             }
             process {
@@ -47,6 +49,7 @@ nextflow_process {
             params {
                 minimum_coverage = 1
                 t_max = 10
+                compute_ci = true
                 rrbs = false
             }
             process {
