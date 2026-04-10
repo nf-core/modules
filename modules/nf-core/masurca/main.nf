@@ -3,7 +3,9 @@ process MASURCA {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "ecoflowucl/masurca:v4.1.4"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://community.wave.seqera.io/v2/library/masurca/blobs/sha256:70f76916a4e082b75bb01e08aeb139631056907cdf1bb0012dc10298a37694c0' :
+        'community.wave.seqera.io/library/masurca:4.1.4--6c6f779135534097' }"
 
     input:
     tuple val(meta), path(illumina), path(jump), path(pacbio), path(nanopore)
