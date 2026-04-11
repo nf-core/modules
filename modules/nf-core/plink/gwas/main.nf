@@ -26,25 +26,21 @@ process PLINK_GWAS {
     script:
     def args = task.ext.args ?: ''
     def prefix = ""
-    def chr_arg = ""
     // define input string based on provided input files
     // in hierarchical order
     def input_command = ""
     if (bed) {
         def pheno_arg = phe ? "--pheno ${phe}" : ""
         input_command = "--bed ${bed} --bim ${bim} --fam ${fam} ${pheno_arg}".trim()
-        chr_arg = meta.chr != null ? "--chr ${meta.chr}" : ""
         prefix = task.ext.prefix ?: "${meta.id}"
     }
     else if (vcf) {
         input_command = "--vcf ${vcf} --pheno ${phe}"
-        chr_arg = meta2.chr != null ? "--chr ${meta2.chr}" : ""
         prefix = task.ext.prefix ?: "${meta2.id}"
         meta = meta2
     }
     else if (bcf) {
         input_command = "--bcf ${bcf} --pheno ${phe}"
-        chr_arg = meta3.chr != null ? "--chr ${meta3.chr}" : ""
         prefix = task.ext.prefix ?: "${meta3.id}"
         meta = meta3
     }
@@ -57,7 +53,6 @@ process PLINK_GWAS {
         ${input_command} \\
         --threads ${task.cpus} \\
         --assoc \\
-        ${chr_arg} \\
         ${args} \\
         --out ${prefix}
     """

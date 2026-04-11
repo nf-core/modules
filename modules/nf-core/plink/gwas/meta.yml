@@ -19,8 +19,7 @@ input:
         type: map
         description: |
           Groovy Map containing genotype sample information for PLINK BED/BIM/FAM input
-          May optionally include `chr` for chromosome-restricted analysis
-          e.g. [ id:'test' ] or [ id:'test', chr:1 ]
+          e.g. [ id:'test' ]
     - bed:
         type: file
         description: PLINK binary biallelic genotype table file
@@ -40,8 +39,7 @@ input:
         type: map
         description: |
           Groovy Map containing genotype sample information for VCF input
-          May optionally include `chr` for chromosome-restricted analysis
-          e.g. [ id:'test' ] or [ id:'test', chr:1 ]
+          e.g. [ id:'test' ]
     - vcf:
         type: file
         description: Variant calling file (vcf), optionally gzip-compressed
@@ -51,8 +49,7 @@ input:
         type: map
         description: |
           Groovy Map containing genotype sample information for BCF input
-          May optionally include `chr` for chromosome-restricted analysis
-          e.g. [ id:'test' ] or [ id:'test', chr:1 ]
+          e.g. [ id:'test' ]
     - bcf:
         type: file
         description: PLINK variant information + sample ID + genotype call binary file

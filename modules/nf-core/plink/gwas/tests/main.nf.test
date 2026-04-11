@@ -125,7 +125,7 @@ nextflow_process {
         }
     }
 
-    test("plink - binary phenotype metadata with bed and chromosome restriction") {
+    test("plink - binary phenotype metadata with bed input") {
 
         config "./nextflow.config"
 
@@ -136,7 +136,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                        [id:"test", chr:1],
+                        [id:"test"],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
@@ -156,12 +156,11 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.log.get(0).get(1) ==~ ".*/*.log" },
                 { assert process.out.assoc.size() == 1 },
-                { assert process.out.assoc.get(0).get(0).chr == 1 },
                 {
                     def assocFile = path(process.out.assoc.get(0).get(1))
                     def commandText = assocFile.parent.resolve(".command.sh").text
                     assert commandText.contains("--pheno ")
-                    assert commandText.contains("--chr 1")
+                    assert !commandText.contains("--chr ")
                 },
                 { assert snapshot(
                     process.out.assoc,
