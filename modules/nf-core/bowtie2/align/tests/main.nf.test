@@ -293,7 +293,7 @@ nextflow_process {
                 ]
                 input[1] = BOWTIE2_BUILD.out.index
                 input[2] = [
-                    [ id:'test'], 
+                    [ id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ]
