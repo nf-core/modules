@@ -9,7 +9,7 @@ nextflow_process {
     tag "bowtie2/build"
     tag "bowtie2/align"
 
-    test("sarscov2 - fastq, index, fasta, false, false - bam") {
+    test("sarscov2 - fastq, index, fasta_fai, false, false - bam") {
 
         setup {
             run("BOWTIE2_BUILD") {
@@ -59,7 +59,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - fastq, index, fasta, false, false - sam") {
+    test("sarscov2 - fastq, index, fasta_fai, false, false - sam") {
 
         config "./sam.config"
         setup {
@@ -110,7 +110,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - fastq, index, fasta, false, false - sam2") {
+    test("sarscov2 - fastq, index, fasta_fai, false, false - sam2") {
 
         config "./sam2.config"
         setup {
@@ -161,7 +161,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - fastq, index, fasta, false, true - bam") {
+    test("sarscov2 - fastq, index, fasta_fai, false, true - bam") {
 
         setup {
             run("BOWTIE2_BUILD") {
@@ -211,7 +211,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [fastq1, fastq2], index, fasta, false, false - bam") {
+    test("sarscov2 - [fastq1, fastq2], index, fasta_fai, false, false - bam") {
 
         setup {
             run("BOWTIE2_BUILD") {
@@ -264,7 +264,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [fastq1, fastq2], index, fasta, false, true - bam") {
+    test("sarscov2 - [fastq1, fastq2], index, fasta_fai, false, true - bam") {
 
         setup {
             run("BOWTIE2_BUILD") {
@@ -317,7 +317,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - fastq, large_index, fasta, false, false - bam") {
+    test("sarscov2 - fastq, large_index, fasta_fai, false, false - bam") {
 
         config "./large_index.config"
         setup {
@@ -368,7 +368,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [fastq1, fastq2], large_index, fasta, false, false - bam") {
+    test("sarscov2 - [fastq1, fastq2], large_index, fasta_fai, false, false - bam") {
 
         config "./large_index.config"
         setup {
@@ -422,7 +422,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [fastq1, fastq2], index, fasta, true, false - bam") {
+    test("sarscov2 - [fastq1, fastq2], index, fasta_fai, true, false - bam") {
 
         setup {
             run("BOWTIE2_BUILD") {
@@ -475,7 +475,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - fastq, index, fasta, true, false - bam") {
+    test("sarscov2 - fastq, index, fasta_fai, true, false - bam") {
 
         setup {
             run("BOWTIE2_BUILD") {
@@ -526,7 +526,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [fastq1, fastq2], index, fasta, true, true - cram") {
+    test("sarscov2 - [fastq1, fastq2], index, fasta_fai, true, true - cram") {
 
         config "./cram_crai.config"
         setup {
@@ -578,7 +578,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - [fastq1, fastq2], index, fasta, false, false - stub") {
+    test("sarscov2 - [fastq1, fastq2], index, fasta_fai, false, false - stub") {
 
         options "-stub"
         setup {
@@ -633,7 +633,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - fastq, index, fasta, true, false - stub") {
+    test("sarscov2 - fastq, index, fasta_fai, true, false - stub") {
 
         options "-stub"
         setup {
