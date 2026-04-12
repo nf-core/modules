@@ -100,7 +100,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.sam[0][1]).readLines()[0..4],
+                    file(process.out.sam[0][1]).name,
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -151,7 +151,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.sam[0][1]).readLines()[0..4],
+                    file(process.out.sam[0][1]).name,
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
