@@ -20,7 +20,10 @@ nextflow_process {
                     [ id:'test', single_end:false, strandness:"unstranded" ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true),
                 ]
-                input[1] = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)]
+                input[1] = [
+                    [id: 'hg38'], // meta2 map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
                 input[2] = 150
                 """
             }
@@ -50,7 +53,10 @@ nextflow_process {
                     [ id:'test', single_end:true, strandness:"unstranded" ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true),
                 ]
-                input[1] = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)]
+                input[1] = [
+                    [id: 'hg38'], // meta2 map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
                 input[2] = 150
                 """
             }
@@ -78,7 +84,10 @@ nextflow_process {
                     [ id:'test', single_end:false, strandness:"forward" ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true),
                 ]
-                input[1] = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)]
+                input[1] = [
+                    [id: 'hg38'], // meta2 map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
                 input[2] = 150
                 """
             }
@@ -106,7 +115,10 @@ nextflow_process {
                     [ id:'test', single_end:false, strandness:"reverse" ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true),
                 ]
-                input[1] = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)]
+                input[1] = [
+                    [id: 'hg38'], // meta2 map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
                 input[2] = 150
                 """
             }
@@ -134,12 +146,17 @@ nextflow_process {
                     [ id:'test', single_end:false, strandness:"unstranded" ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true),
                 ]
-                input[1] = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)]
+                input[1] = [
+                    [id: 'hg38'], // meta2 map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
                 input[2] = 150
                 """
             }
             params {
                 novel_splice_site = true
+                minimum_intron_length = 48
+                max_exon_length = 488
             }
         }
 
@@ -164,7 +181,10 @@ nextflow_process {
                     [ id:'test', single_end:false, strandness:"unstranded" ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true),
                 ]
-                input[1] = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)]
+                input[1] = [
+                    [id: 'hg38'], // meta2 map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
                 input[2] = 150
                 """
             }
@@ -196,7 +216,10 @@ nextflow_process {
                     [ id:'test', single_end:false, strandness:"unstranded" ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true),
                 ]
-                input[1] = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)]
+                input[1] = [
+                    [id: 'hg38'], // meta2 map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
                 input[2] = 150
                 """
             }
