@@ -22,9 +22,10 @@ input:
         type: map
         description: |
           Groovy Map containing genotype information
-          Keep only the genotype analysis identifier and optional numeric chromosome in this map
-          The PLINK bundle must already be staged with basename `meta.id`, or `meta.id.chr<meta.chr>` when `chr` is provided
-          e.g. `[ id:'cohort', chr:22 ]`
+          Keep only the shared genotype analysis identifier in this map
+          Multi-chromosome support is represented by emitting multiple PLINK bundles that share `meta.id`
+          REGENIE consumes the staged basename of `plink_genotype_file` as the `--bed` or `--pgen` prefix, so the `.bed/.bim/.fam` or `.pgen/.pvar/.psam` files for each shard must share one basename
+          e.g. `[ id:'cohort' ]`
     - plink_genotype_file:
         type: file
         description: PLINK primary genotype file in BED or PGEN format
@@ -94,7 +95,7 @@ output:
           type: map
           description: |
             Groovy Map containing genotype information
-            e.g. `[ id:'cohort', chr:22 ]`
+            e.g. `[ id:'cohort' ]`
       - meta2:
           type: map
           description: |
@@ -111,7 +112,7 @@ output:
           type: map
           description: |
             Groovy Map containing genotype information
-            e.g. `[ id:'cohort', chr:22 ]`
+            e.g. `[ id:'cohort' ]`
       - meta2:
           type: map
           description: |
@@ -152,7 +153,7 @@ maintainers:
 containers:
   conda:
     linux_amd64:
-      lock_file: "https://wave.seqera.io/v1alpha1/builds/bd-5d361f9fcb2f85cf_1/condalock"
+      lock_file: "modules/nf-core/regenie/step2/.conda-lock/linux_amd64-bd-5d361f9fcb2f85cf_1.txt"
   docker:
     linux_amd64:
       build_id: "bd-5d361f9fcb2f85cf_1"

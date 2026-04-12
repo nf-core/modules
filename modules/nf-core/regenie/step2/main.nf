@@ -29,7 +29,7 @@ process REGENIE_STEP2 {
     def covar_arg = covar ? "--covarFile ${covar}" : ''
     def pheno_col = meta2.pheno_col
     def genotype_flag = plink_genotype_file.name.endsWith('.pgen') ? '--pgen' : '--bed'
-    def prefix = task.ext.prefix ?: (meta.chr != null ? "${meta.id}.chr${meta.chr}" : "${meta.id}")
+    def prefix = plink_genotype_file.baseName
     def bsize_arg = bsize ?: 400
     def test_model_arg = test_model ?: 'additive'
 
@@ -51,7 +51,7 @@ process REGENIE_STEP2 {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: (meta.chr != null ? "${meta.id}.chr${meta.chr}" : "${meta.id}")
+    def prefix = plink_genotype_file.baseName
     """
     printf '' | gzip > ${prefix}_${meta2.pheno_col}.regenie.gz
     touch ${prefix}.log
