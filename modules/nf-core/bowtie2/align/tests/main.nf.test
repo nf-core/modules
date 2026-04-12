@@ -40,7 +40,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[4] = true //sort
                 """
             }
         }
@@ -49,7 +49,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name,
+                    bam(process.out.bam[0][1]).getHeaderMD5(),
+                    bam(process.out.bam[0][1]).getSamLines(5),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -91,7 +92,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[4] = true //sort
                 """
             }
         }
@@ -100,7 +101,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.sam[0][1]).name,
+                    bam(process.out.sam[0][1]).getHeaderMD5(),
+                    bam(process.out.sam[0][1]).getSamLines(5),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -142,7 +144,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[4] = true //sort
                 """
             }
         }
@@ -151,7 +153,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.sam[0][1]).name,
+                    bam(process.out.sam[0][1]).getHeaderMD5(),
+                    bam(process.out.sam[0][1]).getSamLines(10),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -192,7 +195,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[4] = true //sort
                 """
             }
         }
@@ -201,7 +204,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name,
+                    bam(process.out.bam[0][1]).getHeaderMD5(),
+                    bam(process.out.bam[0][1]).getSamLines(5),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -245,7 +249,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[4] = true //sort
                 """
             }
         }
@@ -254,7 +258,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name,
+                    bam(process.out.bam[0][1]).getHeaderMD5(),
+                    bam(process.out.bam[0][1]).getSamLines(5),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -298,7 +303,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[4] = true //sort
                 """
             }
         }
@@ -307,7 +312,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name,
+                    bam(process.out.bam[0][1]).getHeaderMD5(),
+                    bam(process.out.bam[0][1]).getSamLines(5),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -349,7 +355,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[4] = true //sort
                 """
             }
         }
@@ -358,7 +364,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name,
+                    bam(process.out.bam[0][1]).getHeaderMD5(),
+                    bam(process.out.bam[0][1]).getSamLines(5),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -403,7 +410,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[4] = true //sort
                 """
             }
         }
@@ -412,7 +419,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name,
+                    bam(process.out.bam[0][1]).getHeaderMD5(),
+                    bam(process.out.bam[0][1]).getSamLines(5),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -456,7 +464,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[4] = true //sort
                 """
             }
         }
@@ -465,7 +473,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name,
+                    bam(process.out.bam[0][1]).getHeaderMD5(),
+                    bam(process.out.bam[0][1]).getSamLines(5),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -506,7 +515,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[3] = false //save_unaligned
-                input[4] = false //sort
+                input[4] = true //sort
                 """
             }
         }
@@ -515,7 +524,8 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name,
+                    bam(process.out.bam[0][1]).getHeaderMD5(),
+                    bam(process.out.bam[0][1]).getSamLines(5),
                     process.out.log,
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
