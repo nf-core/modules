@@ -9,9 +9,8 @@ nextflow_process {
     tag "quilt/quilt2"
     tag "quilt"
     tag "samtools/view"
-    tag "wget"
-    tag "xz/decompress"
-    tag "untar"
+    tag "bcftools/query"
+    tag "gawk"
 
     config "./nextflow.config"
 
@@ -119,6 +118,90 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.tbi,
+                    process.out.rdata,
+                    process.out.vcf.collect{ meta, vcf -> [
+                        meta,
+                        path(vcf).vcf.header.getGenotypeSamples().sort(),
+                        path(vcf).vcf.variantsMD5
+                    ]},
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - bam, reference vcf, map, optional outputs - fasta") {
+        setup {
+            run("BCFTOOLS_QUERY") {
+                script "../../../bcftools/query/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'NA12878'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi', checkIfExists: true)
+                    ]
+                    input[1] = []
+                    input[2] = []
+                    input[3] = []
+                    """
+                }
+            }
+
+            run("GAWK", alias: "GAWK_NAME") {
+                script "../../../gawk/main.nf"
+                process {
+                    """
+                    program  = Channel.of('BEGIN{print "NA12878"} {print}').collectFile(name: 'program.txt', newLine: true)
+                    input[0] = BCFTOOLS_QUERY.out.output
+                    input[1] = program
+                    input[2] = false
+                    """
+                }
+            }
+        }
+
+        when {
+            params{
+                bcftools_query_args = "-f '[%GT]\\n' -r chr22"
+                bcftools_query_suffix = "phasefile.txt"
+                gawk_suffix = "phasefile.name.txt"
+                quilt_args = "--save_prepared_reference=TRUE --make_plots=TRUE --impute_rare_common=FALSE --seed=1"
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'NA12878', chr:'chr22' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai', checkIfExists: true),
+                    [], [],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.posfile', checkIfExists: true),
+                ])
+                .combine(GAWK_NAME.out.output.map { it[1] })
+                .combine(channel.of([
+                    [], "chr22", "16570000", "16610000", "100", "10000",
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.stitch.map", checkIfExists:true)
+                ]))
+                input[1] = [
+                    [id: 'GRCh38'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def plots_dir = new File(process.out.plots[0][1])
+            def plots = []
+            plots_dir.eachFileRecurse { file -> plots << file.getName() }
+            assertAll(
+                { assert snapshot(
+                    process.out.tbi,
+                    plots.sort(),
                     process.out.rdata,
                     process.out.vcf.collect{ meta, vcf -> [
                         meta,
