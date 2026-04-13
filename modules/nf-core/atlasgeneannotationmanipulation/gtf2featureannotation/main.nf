@@ -24,7 +24,6 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference_cdna = fasta ? "--parse-cdnas ${fasta}" : ""
-    VERSION = '1.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     gtf2featureAnnotation.R \\
