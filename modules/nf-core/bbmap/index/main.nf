@@ -12,7 +12,7 @@ process BBMAP_INDEX {
 
     output:
     path 'ref'                    , emit: index
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('bbmap'), eval('bbversion.sh | grep -v "Duplicate cpuset"'), emit: versions_bbmap, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,21 +25,11 @@ process BBMAP_INDEX {
         $args \\
         threads=$task.cpus \\
         -Xmx${task.memory.toGiga()}g
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
-    END_VERSIONS
     """
     stub:
     """
     mkdir -p ref
     touch ref/info.txt
     touch ref/summary.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
-    END_VERSIONS
     """
 }

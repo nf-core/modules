@@ -15,7 +15,7 @@ process ENTREZDIRECT_XTRACT {
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('xtract'), eval('xtract -version 2>&1'), emit: versions_xtract, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,19 +31,12 @@ process ENTREZDIRECT_XTRACT {
         $args \\
         > ${prefix}.txt
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        xtract: \$(xtract -version)
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        xtract: \$(xtract -version)
-    END_VERSIONS
+
     """
 }
