@@ -35,7 +35,6 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
 
     stub:
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    VERSION = '1.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.anno.tsv
 
