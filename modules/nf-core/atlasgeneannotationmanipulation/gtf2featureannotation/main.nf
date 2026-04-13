@@ -41,7 +41,7 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         atlas-gene-annotation-manipulation: ${VERSION}
-    END_VERSIONS
+   touch ${prefix}.anno.tsv
     """
 
 }
