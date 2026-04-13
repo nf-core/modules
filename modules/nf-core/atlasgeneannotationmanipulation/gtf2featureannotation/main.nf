@@ -36,11 +36,6 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
     stub:
     def prefix  = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.anno.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        atlas-gene-annotation-manipulation: ${VERSION}
    touch ${prefix}.anno.tsv
     """
 
