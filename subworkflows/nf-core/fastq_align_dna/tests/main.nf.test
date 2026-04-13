@@ -30,7 +30,11 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/bowtie2/build/main.nf"
                 process {
                     """
-                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                    input[0] = Channel.value([
+                        [ id:'genome' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                    ])
                     """
                 }
             }
@@ -40,7 +44,10 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([[ id:'test', single_end:true ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]])
                 input[1] = BOWTIE2_BUILD.out.index
-                input[2] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[2] = Channel.value([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
                 input[3] = "bowtie2"
                 input[4] = true
                 """
@@ -63,7 +70,11 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/bowtie2/build/main.nf"
                 process {
                     """
-                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                    input[0] = Channel.value([
+                        [ id:'genome' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                    ])
                     """
                 }
             }

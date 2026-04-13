@@ -12,7 +12,7 @@ process GANON_REPORT {
 
     output:
     tuple val(meta), path("*.tre"), emit: tre
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('ganon'), eval("ganon --version 2>1 | sed 's/.*ganon //g'"), emit: versions_ganon, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,10 +31,6 @@ process GANON_REPORT {
         --db-prefix \${dbprefix%%.*ibf} \\
         ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ganon: \$(echo \$(ganon --version 2>1) | sed 's/.*ganon //g')
-    END_VERSIONS
     """
 
     stub:
@@ -43,9 +39,5 @@ process GANON_REPORT {
     """
     touch ${prefix}.tre
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ganon: \$(echo \$(ganon --version 2>1) | sed 's/.*ganon //g')
-    END_VERSIONS
     """
 }

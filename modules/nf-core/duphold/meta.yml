@@ -18,8 +18,9 @@ tools:
       documentation: "https://github.com/brentp/duphold"
       tool_dev_url: "https://github.com/brentp/duphold"
       doi: "10.1093/gigascience/giz040"
-      licence: ["MIT"]
-      identifier: ""
+      licence:
+        - "MIT"
+      identifier: biotools:duphold
 input:
   - - meta:
         type: map
@@ -71,13 +72,27 @@ output:
           pattern: "*.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_duphold:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - duphold:
+          type: string
+          description: The name of the tool
+      - 'duphold -h | sed -e "s/^version: //;q"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - duphold:
+          type: string
+          description: The name of the tool
+      - 'duphold -h | sed -e "s/^version: //;q"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:
