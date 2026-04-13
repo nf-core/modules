@@ -5,13 +5,13 @@ nextflow_workflow {
     workflow "SNPCLUSTERING"
     config "./nextflow.config"
 
-    tag "subworkflows"
-    tag "subworkflows/snpclustering"
-    tag "local/vcf_to_bed"
-    tag "local/pca"
-    tag "local/clustering"
-    tag "local/cluster_metrics"
-    tag "local/cluster_viz"
+    tag "subworkflows_nfcore"
+    tag "plink2/vcf"
+    tag "subworkflows/../../modules/local/plink2_pgen2bed"
+    tag "subworkflows/../../modules/local/pca"
+    tag "subworkflows/../../modules/local/clustering"
+    tag "subworkflows/../../modules/local/cluster_metrics"
+    tag "subworkflows/../../modules/local/cluster_viz"
 
     test("chr22 VCF with 100 samples") {
         when {
