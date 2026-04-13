@@ -37,11 +37,11 @@ process MASURCA {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    //get input reads with absolute paths - illumina are mandatory, jump/pacbio/nanopore are optional
+    //get input reads - illumina are mandatory, jump/pacbio/nanopore are optional
     def illumina_reads = [illumina].flatten()
     def jump_reads = jump ? [jump].flatten() : []
-    def pacbio_file = pacbio ? pacbio.toRealPath() : ""
-    def nanopore_file = nanopore ? nanopore.toRealPath() : ""
+    def pacbio_name = pacbio ? pacbio.name : ""
+    def nanopore_name = nanopore ? nanopore.name : ""
 
     // Build the config file
     def config_lines = []
@@ -62,16 +62,16 @@ process MASURCA {
 
     // PacBio and Nanopore reads handling
     def long_reads_concat = ""
-    if (pacbio_file && nanopore_file) {
+    if (pacbio_name && nanopore_name) {
         config_lines << "#if you have both PacBio and Nanopore, supply both as NANOPORE type"
         long_reads_concat = "${prefix}_long_reads.fastq.gz"
         config_lines << "NANOPORE= \$PWD/${long_reads_concat}"
-    } else if (pacbio_file) {
+    } else if (pacbio_name) {
         config_lines << "#PacBio/CCS reads must be in a single fasta or fastq file with absolute path"
-        config_lines << "PACBIO=${pacbio_file}"
-    } else if (nanopore_file) {
+        config_lines << "PACBIO=\$PWD/${pacbio_name}"
+    } else if (nanopore_name) {
         config_lines << "#Nanopore reads must be in a single fasta or fastq file with absolute path"
-        config_lines << "NANOPORE=${nanopore_file}"
+        config_lines << "NANOPORE=\$PWD/${nanopore_name}"
     }
 
     config_lines << "END"
@@ -122,7 +122,7 @@ process MASURCA {
     CONFIG_EOF
 
     # Concatenate long reads if both PacBio and Nanopore are present
-    ${long_reads_concat ? "cat ${pacbio_file} ${nanopore_file} > ${long_reads_concat}" : ""}
+    ${long_reads_concat ? "cat \$PWD/${pacbio_name} \$PWD/${nanopore_name} > ${long_reads_concat}" : ""}
 
     # Generate assembly script
     masurca ${prefix}_masurca_config.txt
