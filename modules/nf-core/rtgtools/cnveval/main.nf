@@ -34,10 +34,11 @@ process RTGTOOLS_CNVEVAL {
         --output=${prefix} \\
         --threads=${task.cpus}
 
-    cd ${prefix}/
-    mv done progress ..
-    for f in * ; do mv "\$f" "../${prefix}.\$f" ; done
-    cd ..
+    mv ${prefix}/done ${prefix}/progress .
+    for f in ${prefix}/* ; do
+        filename=$(basename "$f")
+        mv "$f" "${prefix}.${filename}"
+    done
     """
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
