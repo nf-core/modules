@@ -14,8 +14,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
-                    [ id:'test' ], // meta map
+                input[0] = [
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz.tbi', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv2.vcf.gz', checkIfExists: true),
