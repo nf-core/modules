@@ -234,6 +234,10 @@ nextflow_workflow {
                     workflow.out.normalised_matrix,
                     workflow.out.variance_stabilised_matrix,
                     workflow.out.model,
+                    workflow.out.size_factors.collect { file(it[1]).name }.sort(),
+                    workflow.out.dispersion_plot.collect { file(it[1]).name }.sort(),
+                    workflow.out.rdata.collect { file(it[1]).name }.sort(),
+                    workflow.out.session_info.collect { file(it[1]).name }.sort(),
                     workflow.out.versions
                 ).match() }
             )
@@ -318,6 +322,9 @@ nextflow_workflow {
                     workflow.out.results_genewise_filtered,
                     workflow.out.normalised_matrix,
                     workflow.out.model,
+                    workflow.out.md_plot.collect { file(it[1]).name }.sort(),
+                    workflow.out.rdata.collect { file(it[1]).name }.sort(),
+                    workflow.out.session_info.collect { file(it[1]).name }.sort(),
                     workflow.out.versions
                 ).match() }
             )
@@ -376,6 +383,9 @@ nextflow_workflow {
                     workflow.out.results_genewise_filtered,
                     workflow.out.normalised_matrix,
                     workflow.out.model,
+                    workflow.out.md_plot.collect { file(it[1]).name }.sort(),
+                    workflow.out.rdata.collect { file(it[1]).name }.sort(),
+                    workflow.out.session_info.collect { file(it[1]).name }.sort(),
                     workflow.out.versions
                 ).match() }
             )
@@ -439,6 +449,10 @@ nextflow_workflow {
                     workflow.out.normalised_matrix,
                     workflow.out.variance_stabilised_matrix,
                     workflow.out.model,
+                    workflow.out.size_factors.collect { file(it[1]).name }.sort(),
+                    workflow.out.dispersion_plot.collect { file(it[1]).name }.sort(),
+                    workflow.out.rdata.collect { file(it[1]).name }.sort(),
+                    workflow.out.session_info.collect { file(it[1]).name }.sort(),
                     workflow.out.versions
                 ).match() }
             )
@@ -564,6 +578,11 @@ nextflow_workflow {
                     workflow.out.normalised_matrix,
                     workflow.out.variance_stabilised_matrix,
                     workflow.out.model,
+                    workflow.out.size_factors.collect { file(it[1]).name }.sort(),
+                    workflow.out.dispersion_plot.collect { file(it[1]).name }.sort(),
+                    workflow.out.md_plot.collect { file(it[1]).name }.sort(),
+                    workflow.out.rdata.collect { file(it[1]).name }.sort(),
+                    workflow.out.session_info.collect { file(it[1]).name }.sort(),
                     workflow.out.versions
                 ).match() }
             )
@@ -640,6 +659,11 @@ nextflow_workflow {
                     workflow.out.normalised_matrix,
                     workflow.out.variance_stabilised_matrix,
                     workflow.out.model,
+                    workflow.out.size_factors.collect { file(it[1]).name }.sort(),
+                    workflow.out.dispersion_plot.collect { file(it[1]).name }.sort(),
+                    workflow.out.md_plot.collect { file(it[1]).name }.sort(),
+                    workflow.out.rdata.collect { file(it[1]).name }.sort(),
+                    workflow.out.session_info.collect { file(it[1]).name }.sort(),
                     workflow.out.versions
                 ).match() }
             )

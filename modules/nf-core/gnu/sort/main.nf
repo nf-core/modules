@@ -8,7 +8,7 @@ process GNU_SORT {
         'biocontainers/coreutils:9.5' }"
 
     input:
-    tuple val(meta), path(input)
+    tuple val(meta), path(input), val(suffix)
 
     output:
     tuple val(meta), path( "${output_file}" )   , emit: sorted
@@ -20,21 +20,17 @@ process GNU_SORT {
     script:
     def args        = task.ext.args     ?: ''
     def prefix      = task.ext.prefix   ?: "${meta.id}"
-    suffix          = task.ext.suffix   ?: "${input.extension}"
     output_file     = "${prefix}.${suffix}"
     if ("$input" == "$output_file") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     sort ${args} ${input} > ${output_file}
-
     """
 
     stub:
     def prefix      = task.ext.prefix   ?: "${meta.id}"
-    suffix          = task.ext.suffix   ?: "${input.extension}"
     output_file     = "${prefix}.${suffix}"
     if ("$input" == "$output_file") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${output_file}
-
     """
 }

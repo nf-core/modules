@@ -1,6 +1,6 @@
 name: "argnorm"
-description: Normalize antibiotic resistance genes (ARGs) using the ARO ontology (developed
-  by CARD).
+description: Normalize antibiotic resistance genes (ARGs) using the ARO ontology
+  (developed by CARD).
 keywords:
   - amr
   - antimicrobial resistance
@@ -17,9 +17,9 @@ tools:
       homepage: "https://argnorm.readthedocs.io/en/latest/"
       documentation: "https://argnorm.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/BigDataBiology/argNorm"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:argnorm
-
 input:
   - - meta:
         type: map
@@ -53,13 +53,27 @@ output:
           pattern: "*.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
+  versions_argnorm:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "argnorm":
+          type: string
+          description: The name of the tool
+      - "argnorm --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "argnorm":
+          type: string
+          description: The name of the tool
+      - "argnorm --version":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Vedanth-Ramji"
 maintainers:
