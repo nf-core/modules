@@ -13,19 +13,20 @@ process CUSTOM_GTFFILTER {
 
     output:
     tuple val(meta), path("${prefix}.${suffix}"), emit: gtf
-    path "versions.yml"                         , emit: versions
+    path "versions.yml"                         , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = task.ext.suffix ?: "gtf" + (gtf.extension == 'gz' ? '.gz' : '')
+    suffix = "gtf" + (gtf.extension == 'gz' ? '.gz' : '')
+    args   = task.ext.args ?: ''
     template 'gtffilter.py'
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = task.ext.suffix ?: "gtf" + (gtf.extension == 'gz' ? '.gz' : '')
+    suffix = "gtf" + (gtf.extension == 'gz' ? '.gz' : '')
     """
     touch ${prefix}.${suffix}
 

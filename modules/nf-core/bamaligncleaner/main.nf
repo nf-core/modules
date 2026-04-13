@@ -12,7 +12,7 @@ process BAMALIGNCLEANER {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('bamaligncleaner'), eval("bamAlignCleaner --version | sed 's/.*version //'"), emit: versions_bamaligncleaner, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,11 +26,6 @@ process BAMALIGNCLEANER {
         $args \\
         -o ${prefix}.bam \\
         ${bam}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bamaligncleaner: \$(bamAlignCleaner --version | sed 's/.*version //')
-    END_VERSIONS
     """
 
     stub:
@@ -38,10 +33,5 @@ process BAMALIGNCLEANER {
 
     """
     touch ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bamaligncleaner: \$(bamAlignCleaner --version | sed 's/.*version //')
-    END_VERSIONS
     """
 }

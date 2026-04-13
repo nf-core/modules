@@ -32,7 +32,7 @@ process SENTIEON_DEDUP {
     def args3 = task.ext.args3 ?: ''
     def args4 = task.ext.args4 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}.cram"
-    def metrics = task.ext.metrics ?: "${prefix}.metrics"
+    def metrics = "${prefix}.metrics"
     def input_list = bam.collect {input -> "-i ${input}" }.join(' ')
     def prefix_basename = prefix.substring(0, prefix.lastIndexOf("."))
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64
@@ -51,7 +51,7 @@ process SENTIEON_DEDUP {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}.cram"
-    def metrics = task.ext.metrics ?: "${prefix}.metrics"
+    def metrics = "${prefix}.metrics"
     def prefix_basename = prefix.substring(0, prefix.lastIndexOf("."))
 
     """

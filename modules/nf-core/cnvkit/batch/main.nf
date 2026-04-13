@@ -8,9 +8,8 @@ process CNVKIT_BATCH {
         : 'community.wave.seqera.io/library/cnvkit_htslib_samtools:86928c121163aca7'}"
 
     input:
-    tuple val(meta), path(tumor), path(normal)
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fasta_fai)
+    tuple val(meta), path(tumor), path(tumor_index), path(normal), path(normal_index)
+    tuple val(meta2), path(fasta), path(fasta_fai)
     tuple val(meta4), path(targets)
     tuple val(meta5), path(reference)
     val panel_of_normals
@@ -22,7 +21,8 @@ process CNVKIT_BATCH {
     tuple val(meta), path("*.cns"), emit: cns, optional: true
     tuple val(meta), path("*.pdf"), emit: pdf, optional: true
     tuple val(meta), path("*.png"), emit: png, optional: true
-    path "versions.yml",            emit: versions
+    tuple val("${task.process}"), val('cnvkit'), eval('cnvkit.py version | sed -e "s/cnvkit v//g"'), emit: versions_cnvkit, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -86,9 +86,6 @@ process CNVKIT_BATCH {
     samtools_cram_convert += normal_cram ? "    samtools index ${normal_out}\n" : ''
     samtools_cram_convert += tumor_cram ? "    samtools view -T ${fasta} ${fai_reference} ${tumor} -@ ${task.cpus} -o ${tumor_out}\n" : ''
     samtools_cram_convert += tumor_cram ? "    samtools index ${tumor_out}\n" : ''
-    def versions = normal_cram || tumor_cram
-        ? "samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')\n        cnvkit: \$(cnvkit.py version | sed -e 's/cnvkit v//g')"
-        : "cnvkit: \$(cnvkit.py version | sed -e 's/cnvkit v//g')"
     """
     ${samtools_cram_convert}
     cnvkit.py \\
@@ -100,26 +97,15 @@ process CNVKIT_BATCH {
         ${target_args} \\
         --processes ${task.cpus} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ${versions}
-    END_VERSIONS
     """
     stub:
     def tumor_exists = tumor ? true : false
-    def normal_exists = normal ? true : false
     def reference_exists = reference ? true : false
     // identify BED naming pattern
     def bed_prefix = reference_exists ? reference.BaseName : targets ? targets.BaseName : ""
     def bed_suffix = reference_exists ? "-tmp.bed" : ".bed"
     // execute samtools only when cram files are input, cnvkit runs natively on cram but is prohibitively slow
-    def tumor_cram = tumor_exists && tumor.Extension == "cram" ? true : false
-    def normal_cram = normal_exists && normal.Extension == "cram" ? true : false
     def out_base_name = tumor_exists ? tumor.BaseName : normal.BaseName
-    def versions = normal_cram || tumor_cram
-        ? "samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')\n        cnvkit: \$(cnvkit.py version | sed -e 's/cnvkit v//g')"
-        : "cnvkit: \$(cnvkit.py version | sed -e 's/cnvkit v//g')"
     """
     touch ${bed_prefix}.antitarget${bed_suffix}
     touch ${bed_prefix}.target${bed_suffix}
@@ -130,9 +116,5 @@ process CNVKIT_BATCH {
     touch ${out_base_name}.cnr
     touch ${out_base_name}.cns
     touch ${out_base_name}.targetcoverage.cnn
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ${versions}
-    END_VERSIONS
     """
 }
