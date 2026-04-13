@@ -48,13 +48,8 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome/genome.fa.fai', checkIfExists: true)
                 ])
                 input[4] = channel.of([ [:], biotypes_header ])
-                input[5] = false  // skip_preseq
-                input[6] = false  // skip_biotype_qc
-                input[7] = false  // skip_qualimap
-                input[8] = false  // skip_dupradar
-                input[9] = false  // skip_rseqc
-                input[10] = 'gene_biotype' // biotype
-                input[11] = ['bam_stat', 'inner_distance', 'infer_experiment', 'junction_annotation', 'junction_saturation', 'read_distribution', 'read_duplication', 'tin']
+                input[5] = ['preseq', 'biotype_qc', 'qualimap', 'dupradar', 'rseqc_bam_stat', 'rseqc_inner_distance', 'rseqc_infer_experiment', 'rseqc_junction_annotation', 'rseqc_junction_saturation', 'rseqc_read_distribution', 'rseqc_read_duplication', 'rseqc_tin']
+                input[6] = 'gene_biotype'
                 """
             }
         }
@@ -117,13 +112,8 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome/genome.fa.fai', checkIfExists: true)
                 ])
                 input[4] = channel.of([ [:], biotypes_header ])
-                input[5] = false  // skip_preseq
-                input[6] = false  // skip_biotype_qc
-                input[7] = false  // skip_qualimap
-                input[8] = false  // skip_dupradar
-                input[9] = false  // skip_rseqc
-                input[10] = 'gene_biotype' // biotype
-                input[11] = ['bam_stat', 'infer_experiment', 'junction_annotation', 'junction_saturation', 'read_distribution', 'read_duplication', 'tin']
+                input[5] = ['preseq', 'biotype_qc', 'qualimap', 'dupradar', 'rseqc_bam_stat', 'rseqc_infer_experiment', 'rseqc_junction_annotation', 'rseqc_junction_saturation', 'rseqc_read_distribution', 'rseqc_read_duplication', 'rseqc_tin']
+                input[6] = 'gene_biotype'
                 """
             }
         }
@@ -152,7 +142,7 @@ nextflow_workflow {
         }
     }
 
-    test("saccharomyces_cerevisiae paired-end [bam] - skip all optional") {
+    test("saccharomyces_cerevisiae paired-end [bam] - no tools enabled") {
 
         when {
             workflow {
@@ -178,13 +168,8 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome/genome.fa.fai', checkIfExists: true)
                 ])
                 input[4] = channel.of([ [:], biotypes_header ])
-                input[5] = true   // skip_preseq
-                input[6] = true   // skip_biotype_qc
-                input[7] = true   // skip_qualimap
-                input[8] = true   // skip_dupradar
-                input[9] = true   // skip_rseqc
-                input[10] = ''    // biotype
-                input[11] = []    // rseqc_modules
+                input[5] = [] // tools - none enabled
+                input[6] = '' // biotype
                 """
             }
         }
@@ -228,13 +213,8 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome/genome.fa.fai', checkIfExists: true)
                 ])
                 input[4] = channel.of([ [:], biotypes_header ])
-                input[5] = false  // skip_preseq
-                input[6] = false  // skip_biotype_qc
-                input[7] = false  // skip_qualimap
-                input[8] = false  // skip_dupradar
-                input[9] = false  // skip_rseqc
-                input[10] = 'gene_biotype' // biotype
-                input[11] = ['bam_stat', 'inner_distance', 'infer_experiment', 'junction_annotation', 'junction_saturation', 'read_distribution', 'read_duplication', 'tin']
+                input[5] = ['preseq', 'biotype_qc', 'qualimap', 'dupradar', 'rseqc_bam_stat', 'rseqc_inner_distance', 'rseqc_infer_experiment', 'rseqc_junction_annotation', 'rseqc_junction_saturation', 'rseqc_read_distribution', 'rseqc_read_duplication', 'rseqc_tin']
+                input[6] = 'gene_biotype'
                 """
             }
         }
