@@ -17,7 +17,7 @@ process HUGGINGFACE_DOWNLOAD {
 
     script:
     """
-    export HF_HOME="${hf_home:-./hf_cache}"
+    export HF_HOME="${hf_home}"
     export HF_HUB_CACHE=\$HF_HOME
     hf download ${hf_repo} ${hf_file} --local-dir \$PWD
     """
