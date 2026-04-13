@@ -10,7 +10,7 @@ process BWA_INDEX {
         'community.wave.seqera.io/library/bwa_htslib_samtools:83b50ff84ead50d0' }"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("bwa"), emit: index

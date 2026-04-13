@@ -27,6 +27,12 @@ input:
         ontologies:
           - edam: "http://edamontology.org/data_2044" # Sequence
           - edam: "http://edamontology.org/format_1929" # FASTA
+    - fai:
+        type: file
+        description: Reference genome FASTA index file
+        pattern: "*.{fai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3326"
 output:
   index:
     - - meta:
