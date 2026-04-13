@@ -109,5 +109,5 @@ if __name__ == "__main__":
 
     # Versions
     with open("versions.yml", "w") as f:
-        f.write('"\\${task.process}":\\n')
+        f.write('"${task.process}":\\n')
         f.write(f"    python: {platform.python_version()}\\n")
