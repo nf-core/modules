@@ -2,59 +2,50 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/nf-core/meta-schema.json
 
 name: "snpclustering"
-description: "End-to-end unsupervised clustering of genomic samples from multi-sample VCF files. Performs variant filtering (MAF + missingness), LD pruning, dimensionality reduction with FlashPCA2, clustering with KMeans and DBSCAN, internal validation metrics, t-SNE/UMAP visualizations and HTML report."
+description: "Convert a multi-sample VCF to PLINK BED format, run FlashPCA-based dimensionality reduction, clustering, cluster quality metrics, and visualisation."
 keywords:
   - genomics
-  - unsupervised clustering
-  - genomic sample clustering
-  - VCF
-  - FlashPCA2
-  - KMeans
-  - DBSCAN
+  - clustering
+  - pca
+  - vcf
+  - plink
+  - flashpca
   - nf-core
 authors:
   - "Donald Baku (@dbaku42)"
+
 components:
-  - bcftools/filter
-  - plink2/indeppairwise
   - plink2/vcf
-  - flashpca2
-  - local/kmeansclustering
-  - local/dbscanclustering
-  - local/clustermetrics
-  - local/clusterviz
-  - local/report
+  - ../../modules/local/plink2_pgen2bed
+  - ../../modules/local/pca
+  - ../../modules/local/clustering
+  - ../../modules/local/cluster_metrics
+  - ../../modules/local/cluster_viz
+
 input:
-  - vcf:
-      type: file
-      description: "Multi-sample VCF file (bgzipped and indexed)"
-      pattern: "*.vcf.gz"
-  - maf:
-      type: float
-      description: "Minimum minor allele frequency threshold"
-      default: 0.01
-  - missing:
-      type: float
-      description: "Maximum missingness threshold"
-      default: 0.10
+  - vcf_ch:
+      type: tuple
+      description: "Channel containing metadata and a multi-sample VCF file"
+      pattern: "[ val(meta), path(vcf) ]"
+
 output:
+  - plink_bed:
+      type: tuple
+      description: "Channel containing PLINK BED/BIM/FAM files"
+      pattern: "[ val(meta), path(bed), path(bim), path(fam) ]"
+  - pca:
+      type: tuple
+      description: "Channel containing PCA outputs"
   - cluster_labels:
-      type: file
-      description: "CSV file with per-sample cluster assignments"
-      pattern: "cluster_labels.csv"
+      type: tuple
+      description: "Channel containing cluster assignments"
   - metrics:
-      type: file
-      description: "Table with all cluster quality metrics"
-      pattern: "*_metrics.tsv"
+      type: tuple
+      description: "Channel containing clustering metrics"
   - plots:
-      type: file
-      description: "Directory containing PCA, t-SNE and UMAP plots"
-      pattern: "plots/"
-  - report:
-      type: file
-      description: "HTML report with results and visualizations"
-      pattern: "report.html"
+      type: tuple
+      description: "Channel containing clustering visualisations"
   - versions:
       type: file
-      description: "File containing versions of all tools used"
+      description: "File containing software versions"
       pattern: "versions.yml"
