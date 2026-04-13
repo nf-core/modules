@@ -36,7 +36,7 @@ process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION {
     stub:
     def prefix  = task.ext.prefix ?: "${meta.id}"
     """
-   touch ${prefix}.anno.tsv
+    touch ${prefix}.anno.tsv
     """
 
 }
