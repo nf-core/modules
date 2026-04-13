@@ -5,7 +5,9 @@ nextflow_workflow {
     workflow "SNPCLUSTERING"
     config "./nextflow.config"
 
+    tag "subworkflows"
     tag "subworkflows_nfcore"
+    tag "subworkflows/snpclustering"
     tag "plink2/vcf"
     tag "subworkflows/../../modules/local/plink2_pgen2bed"
     tag "subworkflows/../../modules/local/pca"
