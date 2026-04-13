@@ -39,7 +39,6 @@ process RTGTOOLS_CNVEVAL {
     for f in * ; do mv "\$f" "../${prefix}.\$f" ; done
     cd ..
     """
-
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
 
