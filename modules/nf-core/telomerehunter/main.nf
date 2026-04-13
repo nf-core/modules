@@ -9,7 +9,7 @@ process TELOMEREHUNTER {
 
     input:
     tuple val(meta), path(tumor_bam), path(tumor_bai), path(control_bam), path(control_bai)
-    tuple val(meta2), path(fasta), path(fai)
+    tuple val(meta2), path(fasta), path(fai), path(cytoband)
 
     output:
     tuple val(meta), path("${prefix}/${prefix}_summary.tsv")        , emit: summary
@@ -24,6 +24,7 @@ process TELOMEREHUNTER {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def cytoband_arg = cytoband ? "-b ${cytoband}" : ""
     // telomerehunter doesn't support CRAM (pysam opened in BAM-only mode)
     def tumor_is_cram = tumor_bam.name.endsWith(".cram")
     def control_is_cram = control_bam ? control_bam.name.endsWith(".cram") : false
@@ -38,6 +39,7 @@ process TELOMEREHUNTER {
     telomerehunter \\
         -ibt ${tumor} \\
         ${control ? "-ibc ${control}" : ""} \\
+        ${cytoband_arg} \\
         -o . \\
         -p ${prefix} \\
         ${args}
