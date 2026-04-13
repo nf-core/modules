@@ -16,9 +16,8 @@ process HUGGINGFACE_DOWNLOAD {
     task.ext.when == null || task.ext.when
 
     script:
-    def hf_home_resolved = hf_home ?: "${workflow.workDir}/hf_cache"
     """
-    export HF_HOME="${hf_home_resolved}"
+    export HF_HOME="${hf_home:-./hf_cache}"
     export HF_HUB_CACHE=\$HF_HOME
     hf download ${hf_repo} ${hf_file} --local-dir \$PWD
     """
