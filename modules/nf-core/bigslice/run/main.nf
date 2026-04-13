@@ -1,15 +1,15 @@
 /*
  * BIGSLICE_RUN: Executes BiG-SLiCE clustering analysis on prepared BGC data
- * 
+ *
  * BiG-SLiCE (Biosynthetic Gene cluster - Super Linear Clustering Engine) is a tool
  * for rapid clustering and analysis of biosynthetic gene clusters from genomic data.
- * 
+ *
  * This process:
  * 1. Takes the structured input directory created by BIGSLICE_PREP_INPUT
  * 2. Uses pre-trained machine learning models to analyze BGC features
  * 3. Performs hierarchical clustering of BGCs based on genetic similarity
  * 4. Generates interactive web application and detailed clustering results
- * 
+ *
  * Output structure:
  * output/
  * ├── app/                           # interactive web application for visualization
@@ -38,7 +38,7 @@ container "${ workflow.containerEngine == 'singularity' && !task. ext.singularit
   def VERSION = '2.0.2'
   """
   set -euo pipefail
-  
+
   # clean any existing output directory to ensure fresh results
   rm -rf output 2>/dev/null || true
 
@@ -50,7 +50,7 @@ container "${ workflow.containerEngine == 'singularity' && !task. ext.singularit
     -i "${input_dir}" \
     --program_db_folder "${models_dir}" \
     output
-      
+
   cat <<-END_VERSIONS > versions.yml
   "${task.process}":
       bigslice: \$(bigslice --version 2>&1 | grep -oP 'BiG-SLiCE \\K[0-9.]+' || echo "${VERSION}")

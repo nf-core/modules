@@ -1,10 +1,10 @@
 /*
  * BIGSLICE_PREP_INPUT: Prepares antiSMASH outputs for BiG-SLiCE analysis
- * 
+ *
  * This process transforms antiSMASH output directories into the specific
  * directory structure and file format that BiG-SLiCE expects for clustering
  * biosynthetic gene clusters (BGCs).
- * 
+ *
  * BiG-SLiCE input structure:
  * input/
  * ├── datasets.tsv              # dataset configuration file
@@ -54,7 +54,7 @@ container "${ workflow.containerEngine == 'singularity' && !task. ext.singularit
     [ -d "\$d" ] || continue                # skip if directory doesn't exist
     sample=\$(basename "\$d")               # extract sample name from directory path
     mkdir -p "\$OUT/\$sample"               # create sample-specific subdirectory
-    
+
     find -L "\$d" -type f \\( -name "*.region*.gbk" -o -name "*.gbk" \\) -print0 \
       | xargs -0 -I{} cp -f "{}" "\$OUT/\$sample/"
   done
@@ -63,7 +63,7 @@ container "${ workflow.containerEngine == 'singularity' && !task. ext.singularit
     cp "${params.bgc_bigslice_taxonomy}" "\$TAXROOT/dataset_taxonomy.tsv"
   else
     printf "accession\\ttaxdomain\\tphylum\\tclass\\torder\\tfamily\\tgenus\\tspecies\\torganism\\n" > "\$TAXROOT/dataset_taxonomy.tsv"
-    
+
     for d in "\$OUT"/*/; do
       [ -d "\$d" ] || continue
       acc=\$(basename "\$d")/                # sample accession (with trailing slash as per BiG-SLiCE format)
