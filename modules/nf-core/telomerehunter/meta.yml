@@ -27,23 +27,49 @@ input:
           e.g. [ id:'test' ]
     - tumor_bam:
         type: file
-        description: Indexed BAM file of the tumor sample
-        pattern: "*.{bam}"
+        description: Indexed BAM/CRAM file of the tumor sample. CRAM files are
+          automatically converted to BAM (telomerehunter uses pysam in BAM-only
+          mode).
+        pattern: "*.{bam,cram}"
         ontologies: []
     - tumor_bai:
         type: file
-        description: BAM index file for the tumor sample
-        pattern: "*.{bai}"
+        description: BAM/CRAM index file for the tumor sample
+        pattern: "*.{bai,crai}"
         ontologies: []
     - control_bam:
         type: file
-        description: Optional indexed BAM file of the control sample
-        pattern: "*.{bam}"
+        description: Optional indexed BAM/CRAM file of the control sample
+        pattern: "*.{bam,cram}"
         ontologies: []
     - control_bai:
         type: file
-        description: Optional BAM index file for the control sample
-        pattern: "*.{bai}"
+        description: Optional BAM/CRAM index file for the control sample
+        pattern: "*.{bai,crai}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Reference FASTA file (required when input is CRAM)
+        pattern: "*.{fa,fasta,fna}"
+        ontologies: []
+    - fai:
+        type: file
+        description: Reference FASTA index
+        pattern: "*.fai"
+        ontologies: []
+    - cytoband:
+        type: file
+        description: |
+          Optional cytoband file for the reference genome.
+          When not provided ([]), telomerehunter uses its bundled hg19 cytoband.
+          Must be supplied for hg38 data to avoid an IndexError caused by
+          chromosomes that are longer in hg38 than hg19.
+        pattern: "*.txt"
         ontologies: []
 output:
   summary:

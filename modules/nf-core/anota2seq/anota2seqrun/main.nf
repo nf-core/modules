@@ -27,11 +27,29 @@ process ANOTA2SEQ_ANOTA2SEQRUN {
     tuple val(meta), path("*.rvm_fit_for_omnibus_group.jpg")                   , emit: rvm_fit_for_omnibus_group_plot                   , optional: true
     tuple val(meta), path("*.simulated_vs_obt_dfbetas_without_interaction.pdf"), emit: simulated_vs_obt_dfbetas_without_interaction_plot, optional: true
     tuple val(meta), path("*.R_sessionInfo.log")                               , emit: session_info
-    path "versions.yml"                                                        , emit: versions
+    path "versions.yml", emit: versions_anota2seq, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     template 'anota2seqrun.r'
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    for analysis in translated_mRNA total_mRNA translation buffering mRNA_abundance; do
+        touch ${prefix}.\$analysis.anota2seq.results.tsv
+    done
+
+    touch ${prefix}.fold_change.png
+    touch ${prefix}.R_sessionInfo.log
+    touch ${prefix}.Anota2seqDataSet.rds
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
+        bioconductor-anota2seq: \$(Rscript -e "cat(as.character(packageVersion('anota2seq')))")
+    END_VERSIONS
+    """
 }
