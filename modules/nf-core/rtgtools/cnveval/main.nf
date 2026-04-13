@@ -34,10 +34,9 @@ process RTGTOOLS_CNVEVAL {
         --output=${prefix} \\
         --threads=${task.cpus}
 
-    mv ${prefix}/done ${prefix}/progress .
-    for f in ${prefix}/* ; do
-        filename=$(basename "$f")
-        mv "$f" "${prefix}.${filename}"
+    mv ${prefix}/done ${prefix}/progress . 2>/dev/null || true
+    for f in ${prefix}/*; do
+        mv "\$f" "${prefix}.\${f##*/}"
     done
     """
     stub:
