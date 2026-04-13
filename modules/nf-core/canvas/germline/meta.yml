@@ -28,6 +28,7 @@ input:
         description: |
           Groovy Map containing sample information.
           e.g. `[ id:'sample1' ]`
+        ontologies: []
     - bam:
         type: file
         description: Sorted BAM file of aligned WGS reads.
@@ -45,20 +46,21 @@ input:
         Typically produced by a variant caller such as DNAscope or DeepVariant.
       pattern: "*.{vcf,vcf.gz}"
       ontologies: []
-  - sex:
-      type: string
-      description: |
-        Sample sex. Must be either "male" or "female". Used to select the
-        appropriate ploidy VCF for sex chromosomes.
-  - male_ploidy_vcf:
-      type: file
-      description: |
-        VCF defining expected ploidy for sex chromosomes in male samples.
-        Both ploidy VCFs (male and female) must always be provided. The module
-        automatically selects the correct one based on the sex column in the samplesheet.
-        The sample name in the VCF header is automatically updated to match the SM tag in the BAM header.
-        Expected format (hg38 example):
+  - - sex:
+        type: string
+        description: |
+          Sample sex. Must be either "male" or "female". Used to select the
+          appropriate ploidy VCF for sex chromosomes.
+    - male_ploidy_vcf:
+        type: file
+        description: |
+          VCF defining expected ploidy for sex chromosomes in male samples.
+          Both ploidy VCFs (male and female) must always be provided. The module
+          automatically selects the correct one based on the sex value.
+          The sample name in the VCF header is automatically updated to match the SM tag in the BAM header.
+          Expected format (hg38 example):
 
+          ```
           ##fileformat=VCFv4.1
           ##INFO=<ID=END,Number=1,Type=Integer,Description="End position of the variant described in this record">
           ##FORMAT=<ID=CN,Number=1,Type=Integer,Description="Copy number genotype for imprecise events">
@@ -67,26 +69,29 @@ input:
           chrX    2781479  .   N    <CNV>  .     PASS    END=155701383     CN      1
           chrX    156030895 .  N    <CNV>  .     PASS    END=156040895     CN      1
           chrY    0        .   N    <CNV>  .     PASS    END=57227415      CN      1
+          ```
 
-      pattern: "*.vcf"
-      ontologies: []
-  - female_ploidy_vcf:
-      type: file
-      description: |
-        VCF defining expected ploidy for sex chromosomes in female samples.
-        Both ploidy VCFs (male and female) must always be provided. The module
-        automatically selects the correct one based on the sex column in the samplesheet.
-        The sample name in the VCF header is automatically updated to match the SM tag in the BAM header.
-        Expected format (hg38 example):
+        pattern: "*.vcf"
+        ontologies: []
+    - female_ploidy_vcf:
+        type: file
+        description: |
+          VCF defining expected ploidy for sex chromosomes in female samples.
+          Both ploidy VCFs (male and female) must always be provided. The module
+          automatically selects the correct one based on the sex value.
+          The sample name in the VCF header is automatically updated to match the SM tag in the BAM header.
+          Expected format (hg38 example):
 
+          ```
           ##fileformat=VCFv4.1
           ##INFO=<ID=END,Number=1,Type=Integer,Description="End position of the variant described in this record">
           ##FORMAT=<ID=CN,Number=1,Type=Integer,Description="Copy number genotype for imprecise events">
           #CHROM  POS  ID  REF  ALT    QUAL  FILTER  INFO          FORMAT  SAMPLE
           chrY    0    .   N    <CNV>  .     PASS    END=57227415  CN      0
+          ```
 
-      pattern: "*.vcf"
-      ontologies: []
+        pattern: "*.vcf"
+        ontologies: []
   - genomedir:
       type: directory
       description: |
@@ -103,6 +108,7 @@ input:
       type: file
       description: |
         BED file of regions to exclude from CNV calling (e.g. centromeres, telomeres).
+        Named filter13 following Canvas reference package conventions.
         Available from s3://canvas-cnv-public.
       pattern: "*.bed"
       ontologies: []
@@ -114,12 +120,13 @@ output:
           description: |
             Groovy Map containing sample information.
             e.g. `[ id:'sample1' ]`
-      - "${meta.id}_CNV_germline.vcf":
+          ontologies: []
+      - "*.vcf.gz":
           type: file
           description: |
-            VCF file containing germline CNV calls. Canvas:REF entries (non-variant regions)
+            Bgzipped VCF file containing germline CNV calls. Canvas:REF entries (non-variant regions)
             are excluded. Requires further annotation for standard SV ALT notation.
-          pattern: "*_CNV_germline.vcf"
+          pattern: "*.vcf.gz"
           ontologies: []
   covandvarfreq:
     - - meta:
@@ -127,12 +134,13 @@ output:
           description: |
             Groovy Map containing sample information.
             e.g. `[ id:'sample1' ]`
-      - "CNV.CoverageAndVariantFrequency.txt":
+          ontologies: []
+      - "*.CoverageAndVariantFrequency.txt":
           type: file
           description: |
             Tab-separated file with per-bin coverage and variant allele frequency values.
             Used as input for CANVAS_CREATESEG to generate segmentation files.
-          pattern: "CNV.CoverageAndVariantFrequency.txt"
+          pattern: "*.CoverageAndVariantFrequency.txt"
           ontologies: []
 
   versions_canvas:
@@ -142,9 +150,9 @@ output:
       - canvas:
           type: string
           description: The name of the tool
-      - dotnet /opt/canvas/Canvas.dll --version 2>&1 | head -1:
-          type: eval
-          description: The expression to obtain the version of the tool
+      - 1.40.0.1613+master:
+          type: string
+          description: The version of the tool (hardcoded as Canvas is an archived tool)
 
 topics:
   versions:
@@ -154,9 +162,9 @@ topics:
       - canvas:
           type: string
           description: The name of the tool
-      - dotnet /opt/canvas/Canvas.dll --version 2>&1 | head -1:
-          type: eval
-          description: The expression to obtain the version of the tool
+      - 1.40.0.1613+master:
+          type: string
+          description: The version of the tool (hardcoded as Canvas is an archived tool)
 
 authors:
   - "@ktruve"

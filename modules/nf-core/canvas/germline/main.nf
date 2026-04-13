@@ -7,29 +7,24 @@ process CANVAS_GERMLINE {
     input:
     tuple val(meta), path(bam), path(bai)
     path germline_snv_vcf
-    val  sex
-    path male_ploidy_vcf
-    path female_ploidy_vcf
+    tuple val(sex), path(male_ploidy_vcf), path(female_ploidy_vcf)
     path genomedir
     path reference
     path filter13
 
     output:
-    tuple val(meta), path("${meta.id}_CNV_germline.vcf"),         emit: vcf
-    tuple val(meta), path("CNV.CoverageAndVariantFrequency.txt"), emit: covandvarfreq
-    tuple val("${task.process}"), val('canvas'), eval("dotnet /opt/canvas/Canvas.dll --version 2>&1 | head -1"), topic: versions, emit: versions_canvas
+    tuple val(meta), path("${prefix}.vcf.gz"),                          emit: vcf
+    tuple val(meta), path("${prefix}.CoverageAndVariantFrequency.txt"), emit: covandvarfreq
+    tuple val("${task.process}"), val('canvas'), val('1.40.0.1613+master'), topic: versions, emit: versions_canvas
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def ploidy_vcf = (sex == 'male') ? male_ploidy_vcf : female_ploidy_vcf
     """
-    if [ "${sex}" = "male" ]; then
-        PLOIDYVCF=\$(mod_sex_vcf.py ${male_ploidy_vcf} ${prefix} ./)
-    else
-        PLOIDYVCF=\$(mod_sex_vcf.py ${female_ploidy_vcf} ${prefix} ./)
-    fi
+    PLOIDYVCF=\$(mod_sex_vcf.py ${ploidy_vcf} ${prefix} ./)
 
     SNV_VCF=${germline_snv_vcf}
     if [[ ${germline_snv_vcf} == *.gz ]]; then
@@ -53,15 +48,15 @@ process CANVAS_GERMLINE {
         gunzip CNV.vcf.gz
     fi
 
-    grep -v 'Canvas:REF' CNV.vcf > ${prefix}_CNV_germline.vcf
+    grep -v 'Canvas:REF' CNV.vcf | bgzip > ${prefix}.vcf.gz
 
-    find . -name "CNV.CoverageAndVariantFrequency.txt" | head -1 | xargs -I{} cp {} ./CNV.CoverageAndVariantFrequency.txt
+    find . -name "CNV.CoverageAndVariantFrequency.txt" | head -1 | xargs -I{} cp {} ./${prefix}.CoverageAndVariantFrequency.txt
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_CNV_germline.vcf
-    touch CNV.CoverageAndVariantFrequency.txt
+    touch ${prefix}.vcf.gz
+    touch ${prefix}.CoverageAndVariantFrequency.txt
     """
 }
