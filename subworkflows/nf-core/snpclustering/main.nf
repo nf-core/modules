@@ -3,49 +3,76 @@ nextflow.enable.dsl = 2
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    IMPORT NF-CORE MODULES
+    IMPORT MODULES
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-
-include { BCFTOOLS_FILTER       } from '../../../modules/nf-core/bcftools/filter/main'
-include { PLINK2_INDEP_PAIRWISE } from '../../../modules/nf-core/plink2/indeppairwise/main'
-include { PLINK2_RECODE_VCF     } from '../../../modules/nf-core/plink2/recodevcf/main'
-include { FLASHPCA2             } from '../../../modules/nf-core/flashpca2/main'
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    SUBWORKFLOW
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
+include { PLINK2_VCF }         from '../../../modules/nf-core/plink2/vcf/main'
+include { PLINK2_PGEN2BED }    from '../../../modules/local/plink2_pgen2bed'
+include { PCA_FLASHPCA }       from '../../../modules/local/pca'
+include { CLUSTERING }         from '../../../modules/local/clustering'
+include { CLUSTER_METRICS }    from '../../../modules/local/cluster_metrics'
+include { CLUSTER_VIZ }        from '../../../modules/local/cluster_viz'
 
 workflow SNPCLUSTERING {
+
     take:
-    meta
-    vcf
-    vcf_index
-    maf
-    missing
+    vcf_ch
 
     main:
-    versions = Channel.empty()
+    def versions_ch = Channel.empty()
 
-    BCFTOOLS_FILTER ( vcf.join(vcf_index), maf, missing )
-    versions = versions.mix(BCFTOOLS_FILTER.out.versions.first())
+    PLINK2_VCF(vcf_ch)
+    versions_ch = versions_ch.mix(PLINK2_VCF.out.versions.ifEmpty([]))
 
-    PLINK2_INDEP_PAIRWISE ( BCFTOOLS_FILTER.out.vcf )
-    versions = versions.mix(PLINK2_INDEP_PAIRWISE.out.versions.first())
+    ch_pgen_triple = PLINK2_VCF.out.pgen
+        .join(PLINK2_VCF.out.pvar)
+        .join(PLINK2_VCF.out.psam)
 
-    PLINK2_RECODE_VCF ( PLINK2_INDEP_PAIRWISE.out.pgen )
-    versions = versions.mix(PLINK2_RECODE_VCF.out.versions.first())
+    PLINK2_PGEN2BED(ch_pgen_triple)
+    versions_ch = versions_ch.mix(PLINK2_PGEN2BED.out.versions.ifEmpty([]))
 
-    FLASHPCA2 ( PLINK2_RECODE_VCF.out.vcf )
-    versions = versions.mix(FLASHPCA2.out.versions.first())
+    ch_bed_triple = PLINK2_PGEN2BED.out.bed
+        .join(PLINK2_PGEN2BED.out.bim)
+        .join(PLINK2_PGEN2BED.out.fam)
 
-    // TODO: qui aggiungeremo KMeans/DBSCAN/plot quando creeremo i moduli local
+    parser_script_ch = Channel.value(
+        file("${projectDir}/subworkflows/nf-core/snpclustering/scripts/flashpca_outpc_to_tsv.py", checkIfExists: true)
+    )
+
+    PCA_FLASHPCA(ch_bed_triple, parser_script_ch)
+    ch_pca = PCA_FLASHPCA.out.pca
+    versions_ch = versions_ch.mix(PCA_FLASHPCA.out.versions.ifEmpty([]))
+
+    ch_pca_for_clustering = ch_pca.map { meta, features, scaled, pca_scores, pca_info ->
+        tuple(meta, pca_scores, pca_info)
+    }
+    
+    clustering_script_ch = Channel.value(
+    file("${projectDir}/subworkflows/nf-core/snpclustering/scripts/clustering.py", checkIfExists: true)
+)
+    CLUSTERING(ch_pca_for_clustering, clustering_script_ch)
+
+    ch_for_metrics_viz = ch_pca_for_clustering.join(CLUSTERING.out.clusters)
+    cluster_metrics_script_ch = Channel.value(
+    file("${projectDir}/subworkflows/nf-core/snpclustering/scripts/cluster_metrics.py", checkIfExists: true)
+)
+    CLUSTER_METRICS(ch_for_metrics_viz, cluster_metrics_script_ch)
+
+    cluster_viz_script_ch = Channel.value(
+    file("${projectDir}/subworkflows/nf-core/snpclustering/scripts/cluster_viz.py", checkIfExists: true)
+)
+    CLUSTER_VIZ(ch_for_metrics_viz, cluster_viz_script_ch)
+
+    versions_ch = versions_ch
+        .mix(CLUSTER_METRICS.out.versions.ifEmpty([]))
+        .mix(CLUSTER_VIZ.out.versions.ifEmpty([]))
+        .unique()
 
     emit:
-    cluster_labels = Channel.empty()   // placeholder
-    metrics        = Channel.empty()   // placeholder
-    plots          = Channel.empty()
-    versions       = versions
+    plink_bed      = ch_bed_triple
+    pca            = ch_pca
+    cluster_labels = CLUSTERING.out.clusters
+    metrics        = CLUSTER_METRICS.out.metrics
+    plots          = CLUSTER_VIZ.out.plots
+    versions       = versions_ch
 }

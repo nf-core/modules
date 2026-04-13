@@ -1,34 +1,41 @@
 nextflow_workflow {
 
-    name "Test Workflow SNPCLUSTERING"
+    name "Test SNPCLUSTERING workflow"
     script "../main.nf"
     workflow "SNPCLUSTERING"
     config "./nextflow.config"
 
     tag "subworkflows"
-    tag "subworkflows_nfcore"
     tag "subworkflows/snpclustering"
-    tag "bcftools/filter"
-    tag "plink2/indeppairwise"
-    tag "plink2/recodevcf"
-    tag "flashpca2"
+    tag "local/vcf_to_bed"
+    tag "local/pca"
+    tag "local/clustering"
+    tag "local/cluster_metrics"
+    tag "local/cluster_viz"
 
-    test("vcf.gz input") {
-
+    test("chr22 VCF with 100 samples") {
         when {
             workflow {
                 """
-                input[0] = [ id:'test' ]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.vcf.gz', checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true)
-                input[3] = 0.01
-                input[4] = 0.10
+                vcf_ch = Channel.of([
+                    [ id: 'test_chr22' ],
+                    file('https://raw.githubusercontent.com/dbaku42/nf-core-snpclustering/main/test/test_chr22_100samples.vcf.gz', checkIfExists: true)
+                ])
+
+                input[0] = vcf_ch
                 """
             }
         }
 
         then {
-            assert workflow.success
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.plink_bed.size() > 0 },
+                { assert workflow.out.pca.size() > 0 },
+                { assert workflow.out.cluster_labels.size() > 0 },
+                { assert workflow.out.metrics.size() > 0 },
+                { assert workflow.out.plots.size() > 0 }
+            )
         }
     }
 }
