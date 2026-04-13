@@ -23,7 +23,7 @@ process RTGTOOLS_CNVEVAL {
     script:
     def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def avail_mem = task.memory.toGiga() + "G"
+    def avail_mem = task.memory ? task.memory.toGiga() + "G": ""
 
     """
     rtg RTG_MEM=$avail_mem cnveval \\
