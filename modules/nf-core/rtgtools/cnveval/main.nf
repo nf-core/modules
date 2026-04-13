@@ -11,10 +11,10 @@ process RTGTOOLS_CNVEVAL {
     tuple val(meta), path(query_vcf), path(query_vcf_tbi), path(truth_vcf), path(truth_vcf_tbi), path(evaluation_regions_bed)
 
     output:
-    tuple val(meta), path("*.baseline.bed.gz")          , emit: baseline_bed
-    tuple val(meta), path("*.calls.bed.gz")             , emit: calls_bed
-    tuple val(meta), path("*.weighted_roc.tsv.gz")      , emit: weighted_roc
-    tuple val(meta), path("*.summary.txt")              , emit: summary
+    tuple val(meta), path("*.baseline.bed.gz")    , emit: baseline_bed
+    tuple val(meta), path("*.calls.bed.gz")       , emit: calls_bed
+    tuple val(meta), path("*.weighted_roc.tsv.gz"), emit: weighted_roc
+    tuple val(meta), path("*.summary.txt")        , emit: summary
     tuple val("${task.process}"), val('rtgtools'), eval("rtg version | sed 's/Product: RTG Tools //; q'"), topic: versions, emit: versions_rtgtools
 
     when:
