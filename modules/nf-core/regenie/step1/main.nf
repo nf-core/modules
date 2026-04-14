@@ -17,7 +17,7 @@ process REGENIE_STEP1 {
 
     output:
     tuple val(meta2), path("*_pred.list"), path("*.loco.gz"), emit: predictions
-    tuple val(meta2), path("*.log"), emit: log
+    tuple val(meta), path("*.log"), emit: log
     tuple val("${task.process}"), val('regenie'), eval('regenie --version 2>&1 | sed -n "1{s/^v//;s/\\.gz$//;p}"'), topic: versions, emit: versions_regenie
 
     when:
@@ -30,7 +30,6 @@ process REGENIE_STEP1 {
     def genotype_flag = plink_genotype_file.name.endsWith('.pgen') ? '--pgen' : '--bed'
     def prefix = plink_genotype_file.baseName
     def bsize_arg = bsize ?: 1000
-
     """
     regenie \\
         --step 1 \\
