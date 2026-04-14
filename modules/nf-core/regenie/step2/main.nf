@@ -20,7 +20,7 @@ process REGENIE_STEP2 {
     output:
     tuple val(meta), path("*.regenie.gz"), emit: results
     tuple val(meta), path("*.log"), emit: log
-    tuple val("${task.process}"), val('regenie'), eval("regenie --version 2>&1 | head -n 1"), topic: versions, emit: versions_regenie
+    tuple val("${task.process}"), val('regenie'), eval("regenie --version 2>&1 | head -n 1 | sed 's/\\.gz\$//'"), topic: versions, emit: versions_regenie
 
     when:
     task.ext.when == null || task.ext.when

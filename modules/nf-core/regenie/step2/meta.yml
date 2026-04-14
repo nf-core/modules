@@ -127,7 +127,7 @@ output:
       - "regenie":
           type: string
           description: The tool name
-      - "regenie --version 2>&1 | head -n 1"
+      - "regenie --version 2>&1 | head -n 1 | sed 's/\\.gz$//'"
           type: eval
           description: The command used to generate the version of the tool
 
@@ -139,7 +139,7 @@ topics:
       - regenie:
           type: string
           description: The tool name
-      - regenie --version 2>&1 | head -n 1:
+      - regenie --version 2>&1 | head -n 1 | sed 's/\.gz$//':
           type: eval
           description: The command used to generate the version of the tool
 authors:
