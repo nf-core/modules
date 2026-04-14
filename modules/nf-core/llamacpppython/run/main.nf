@@ -11,25 +11,24 @@ process LLAMACPPPYTHON_RUN {
 
     output:
     tuple val(meta), path("${prefix}.txt"), emit: output
-    tuple val("${task.process}"), val("llama-cpp-python"), eval("python3 -c 'import llama_cpp; print(llama_cpp.__version__)'"), topic: versions, emit: versions_llama_cpp_python
+    path "versions.yml", emit: versions_llama_cpp_python, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    llama-cpp-python.py \
-        --model ${gguf_model} \
-        --messages ${prompt_file} \
-        --output ${prefix}.txt \
-        ${args}
-    """
+    template 'llama-cpp-python.py'
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        llama-cpp-python: \$(python3 -c 'import llama_cpp; print(llama_cpp.__version__)')
+    END_VERSIONS
     """
 }

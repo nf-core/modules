@@ -3,6 +3,7 @@
 import argparse
 import json
 import os
+import shlex
 import sys
 
 import llama_cpp
@@ -107,7 +108,7 @@ def llamacpp_python(
         sys.exit(1)
 
 
-def main():
+def main(args_string=None):
     parser = argparse.ArgumentParser(description="Submit a process with model.")
     parser.add_argument("-s", "--messages", required=True, help="JSON message")
     parser.add_argument("-m", "--model", required=True, help="Model used")
@@ -118,7 +119,7 @@ def main():
     parser.add_argument("--seed", default=None, type=int, help="Defined seed")
     parser.add_argument("--verbose", action="store_true", help="Verbose output")
 
-    args = parser.parse_args()
+    args = parser.parse_args(shlex.split(args_string) if args_string is not None else None)
     llamacpp_python(
         messages_file=args.messages,
         model_file=args.model,
@@ -131,5 +132,15 @@ def main():
     )
 
 
+def write_versions():
+    versions = {"${task.process}": {"llama-cpp-python": llama_cpp.__version__}}
+    with open("versions.yml", "w", encoding="utf-8") as f:
+        for process, pkgs in versions.items():
+            f.write(f'"{process}":\\n')
+            for pkg, ver in pkgs.items():
+                f.write(f"    {pkg}: {ver}\\n")
+
+
 if __name__ == "__main__":
-    main()
+    main("--model ${gguf_model} --messages ${prompt_file} --output ${prefix}.txt ${args}")
+    write_versions()
