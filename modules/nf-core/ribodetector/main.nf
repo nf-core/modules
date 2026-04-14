@@ -2,10 +2,10 @@ process RIBODETECTOR {
 	tag "$meta.id"
 	label 'process_medium'
 
-	conda "${moduleDir}/environment.yml"
+	conda "${ task.accelerator ? "${moduleDir}/environment.gpu.yml" : "${moduleDir}/environment.yml" }"
 	container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4d/4de8fe74d21198e6fc8218cb3209d929b3d7dab750678501b096b0ccc324307b/data' :
-        'community.wave.seqera.io/library/ribodetector:0.3.2--cbe1c77fa14eeb53' }"
+        (task.accelerator ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/eb/ebcccef2cd8b4c10d4bbd8fce542b46502b7817115cb144b9566792b0aac9bc0/data' : 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/463b8ad941e7f1f2decef20844d666c1c8ac233e166d2bc766164c4a93905a3c/data') :
+        (task.accelerator ? 'community.wave.seqera.io/library/ribodetector_pytorch-gpu:f2d45093d4093307' : 'community.wave.seqera.io/library/ribodetector:0.3.3--ad3d7071e408b502') }"
 
 	input:
 	tuple val(meta), path(fastq)
@@ -23,7 +23,7 @@ process RIBODETECTOR {
 	def args = task.ext.args ?: ''
 	def prefix = task.ext.prefix ?: "${meta.id}"
 	ribodetector_bin = task.accelerator ? "ribodetector" : "ribodetector_cpu"
-	ribodetector_mem = task.accelerator ? "-m $task.memory.toGiga()" : ""
+	ribodetector_mem = task.accelerator ? "-m ${task.memory.toGiga()}" : ""
 	output = meta.single_end ? "${prefix}.nonrna.fastq.gz" : "${prefix}.nonrna.1.fastq.gz ${prefix}.nonrna.2.fastq.gz"
 
 	"""
@@ -44,8 +44,8 @@ process RIBODETECTOR {
 	"""
 	echo $args
 
-	echo | gzip > ${prefix}.nonrna.1.fastq.gz
-	echo | gzip > ${prefix}.nonrna.2.fastq.gz
+	echo "" | gzip > ${prefix}.nonrna.1.fastq.gz
+	echo "" | gzip > ${prefix}.nonrna.2.fastq.gz
 	touch ${prefix}.log
 	"""
 }
